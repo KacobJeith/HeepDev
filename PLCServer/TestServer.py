@@ -19,8 +19,9 @@ def ReadClientList(filename) :
 
 			if len(curStr) > 0 :
 				stringList = curStr.split(',')
-				newClient = PLCClient(int(stringList[1]), stringList[0], stringList[2])
-				clientList.append(newClient)
+				if len(stringList) == 3 :
+					newClient = PLCClient(int(stringList[1]), stringList[0], stringList[2], [])
+					clientList.append(newClient)
 			else :
 				break
 		inFile.close()
@@ -43,6 +44,7 @@ def AddClientToList(clientList, newClient) :
 
 import socket 
 from PLCClient import PLCClient
+from ControlValue import ControlValue
 
 clientList = []
 
@@ -60,7 +62,10 @@ while 1:
     client, address = s.accept() 
     data = client.recv(size) 
     print "Client Address: ", address[0]
-    newClient = PLCClient(0, address[0], 'TestClient')
+    controlList = []
+    controlList.append(ControlValue(100, 2, 'Slider1'))
+    controlList.append(ControlValue(200, 100, 'Slider2'))
+    newClient = PLCClient(0, address[0], 'TestClient', controlList)
     AddClientToList(clientList, newClient)
     WriteClientList(clientList, filename)
     print "Received Data: ", data
