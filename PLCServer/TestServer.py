@@ -7,8 +7,7 @@ A simple echo server
 def WriteClientList(clientList, filename) :
 	outFile = open(filename, 'w')
 	for x in range(0, len(clientList)) :
-		outFile.write(clientList[0])
-		outFile.write('\n')
+		outFile.write(clientList[x].GetClientString())
 	outFile.close()
 
 def ReadClientList(filename) :
@@ -17,8 +16,11 @@ def ReadClientList(filename) :
 		inFile = open(filename, 'r')
 		while 1:
 			curStr = inFile.readline()
+
 			if len(curStr) > 0 :
-				clientList.append(curStr)
+				stringList = curStr.split(',')
+				newClient = PLCClient(int(stringList[1]), stringList[0], stringList[2])
+				clientList.append(newClient)
 			else :
 				break
 		inFile.close()
@@ -29,7 +31,7 @@ def ReadClientList(filename) :
 def AddClientToList(clientList, newClient) :
 	addClient = 1
 	for x in range(0, len(clientList)) :
-		if clientList[x] == newClient :
+		if clientList[x].IPAddress == newClient.IPAddress :
 			addClient = 0
 			break
 
@@ -40,6 +42,7 @@ def AddClientToList(clientList, newClient) :
 
 
 import socket 
+from PLCClient import PLCClient
 
 clientList = []
 
@@ -57,7 +60,8 @@ while 1:
     client, address = s.accept() 
     data = client.recv(size) 
     print "Client Address: ", address[0]
-    AddClientToList(clientList, address[0])
+    newClient = PLCClient(0, address[0], 'TestClient')
+    AddClientToList(clientList, newClient)
     WriteClientList(clientList, filename)
     print "Received Data: ", data
     if data: 
