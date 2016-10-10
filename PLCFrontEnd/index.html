@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Test Listing Items</title>
+  </head>
+<body>
+
+  <div id = "TestText">
+    Test This Page
+  </div>
+
+<hr>
+
+<button type="button" onclick="server()">Get Server Info!</button>
+
+<footer>
+  <p>&copy; 2016 Jacob Dylan.</p>
+</footer>
+	  
+  <script>
+    var macroraw = document.getElementById("TestText");
+
+		function ListClients(ServerResponse)
+		{
+      macroraw.innerHTML = null;
+      var newText = document.createTextNode(ServerResponse);
+      macroraw.appendChild(newText);
+		}
+		
+		function server()
+		{
+      console.log("Start Update")
+
+		  xmlhttp = new XMLHttpRequest();
+		  xmlhttp.open("GET","getstring", true);
+		  xmlhttp.onreadystatechange=function(){
+		  		if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		  			string=xmlhttp.responseText;
+		  			console.log("Updating images");
+            console.log(string)
+		  			ListClients(string);
+		  		}
+		  }
+		  xmlhttp.send();
+      
+		}
+	</script>
+	
+  </body>
+</html>
