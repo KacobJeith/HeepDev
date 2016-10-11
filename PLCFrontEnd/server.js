@@ -3,7 +3,7 @@ var http = require('http'),
      url = require('url'),
  choices = ["hello world", "goodbye world"];
 
-var filename = 'clientList.tbl'
+var filename = '../PLCServer/clientList.tbl'
 
 var parseStuff = function(path, response)
 {
