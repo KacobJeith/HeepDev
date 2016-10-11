@@ -11,9 +11,8 @@ fileName = "ServerTable.tbl"
 foundServerIP = "NONE"
 
 try: 
-	#TODO: handle instances where there are multiple IPs
-	ipv4Address = socket.gethostbyname(socket.gethostname()).split('.')
-	TCP_STUB = ".".join(ipv4Address[0:3]) + "."
+	ipv4 = [(s.connect(('8.8.8.8', 53)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1].split('.')
+	TCP_STUB = '.'.join(ipv4[0:3]) + '.';
 	print TCP_STUB
 except:
 	print 'No IPv4 Address Available'
