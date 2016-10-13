@@ -1,7 +1,7 @@
 import socket
 
 doSearch = 1
-TCP_STUB = '10.0.0.'
+TCP_STUB = '1.1.1.'
 TCP_IP = 'none'
 TCP_PORT = 5000
 BUFFER_SIZE = 1024
@@ -9,6 +9,15 @@ MESSAGE = "Hello, World!"
 fileName = "ServerTable.tbl"
 
 foundServerIP = "NONE"
+
+try: 
+	ipv4 = ([(s.connect(('8.8.8.8', 53)), s.getsockname()[0], s.close()) 
+			for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1].split('.'))
+	TCP_STUB = '.'.join(ipv4[0:3]) + '.';
+	print TCP_STUB
+except:
+	print 'No IPv4 Address Available'
+
 
 try:
 	myFile = open(fileName, 'r')
