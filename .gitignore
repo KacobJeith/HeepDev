@@ -34,3 +34,4 @@
 
 # Outputs
 *.tbl
+*.pyc
