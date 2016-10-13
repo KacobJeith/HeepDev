@@ -43,6 +43,7 @@ def AddClientToList(clientList, newClient) :
 
 
 import socket 
+from PLCServer import PLCServer
 from PLCClient import PLCClient
 from ControlValue import ControlValue
 
