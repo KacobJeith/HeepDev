@@ -16,12 +16,6 @@ class ServerConnection:
 		return
 
 
-	def GetDefaultGateway(self) :		
-		ipv4 = ([(s.connect(('8.8.8.8', 53)), s.getsockname()[0], s.close()) 
-				for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1].split('.'))
-		TCP_STUB = '.'.join(ipv4[0:3]) + '.';
-		return TCP_STUB
-
 	def WriteClientList(self) :
 		outFile = open(self.fileName, 'w')
 		for x in range(0, len(self.clientList)) :
@@ -64,7 +58,7 @@ class ServerConnection:
 		self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.sock.bind((self.host, self.TCP_PORT)) 
 		self.sock.listen(self.backlog)
-		
+
 		while 1: 
 		    client, address = self.sock.accept() 
 		    data = client.recv(self.size) 
