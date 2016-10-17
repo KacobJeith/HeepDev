@@ -32,13 +32,23 @@ http.createServer(function(request, response){
     if(path=="/getstring")
     {
         console.log("request recieved");
+
         var string = fs.readFile(filename, 'utf8', function(err, data) {
-            if (err) throw err;
-            console.log('OK: ' + filename);
-            console.log(data);
-            response.writeHead(200, {"Content-Type": "text/plain"});
-            response.end(data, "utf-8");
+            
+            try{
+                if (err) throw err;
+                console.log('OK: ' + filename);
+                console.log(data);
+                response.writeHead(200, {"Content-Type": "text/plain"});
+                response.end(data, "utf-8");
+            }
+            catch(e){
+                response.writeHead(200, {"Content-Type": "text/plain"});
+                response.end("Failed to load file", "utf-8");
+            }
+
         });
+        
     }
     else{
 		parseStuff(path, response);
