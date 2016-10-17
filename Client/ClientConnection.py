@@ -91,7 +91,7 @@ class ClientConnection:
 
 		return 'Failed to find server IP'
 
-	def Connect(self) :
+	def Connect(self) : 
 		# First Check for File and try to connect
 		ipString = 'None' 
 		try :
