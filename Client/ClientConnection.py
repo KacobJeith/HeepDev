@@ -1,6 +1,7 @@
 import socket
 import time
 from threading import Thread
+import traceback
 
 class ClientConnection:
 
@@ -11,6 +12,7 @@ class ClientConnection:
 	BUFFER_SIZE = 1500
 
 	connectionAttempts = [0]*255
+	threadList = []
 
 	def __init__(self):
 		return
@@ -55,6 +57,9 @@ class ClientConnection:
 		writeFile.write('\n')
 		writeFile.close()
 
+	def WaitForThreadsToComplete(self) :
+		return
+
 	def SearchForServerIP(self) :
 		TCP_STUB = self.GetDefaultGateway()
 
@@ -65,6 +70,8 @@ class ClientConnection:
 				time.sleep(0.01)
 				t = Thread( target = self.AttemptIPConnection, args=(TCP_IP, x,) )
 				t.start()
+				self.threadList.append(2)
+				print threadList
 				#self.AttemptIPConnection(TCP_IP, x)
 				
 			except:
