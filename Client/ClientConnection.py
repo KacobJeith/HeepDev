@@ -28,7 +28,7 @@ class ClientConnection:
 		return ipStr
 
 	def AttemptIPConnection(self, ipAddress, connectionTableAddr) :
-		print ipAddress
+		
 		tempMessage = "Replace this message"
 		try :
 			self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -37,12 +37,15 @@ class ClientConnection:
 			self.sock.send(tempMessage)
 			data = self.sock.recv(self.BUFFER_SIZE)
 
+			print ipAddress
 			print ("received data:", data)
 			if data == tempMessage :
-				print ('Worked!')
 				self.connectionAttempts[connectionTableAddr] = 1
+				return 1
 		except : 
-			print ('Failed')
+			pass
+
+		return 0
 
 	def GetDefaultGateway(self) :		
 		ipv4 = ([(s.connect(('8.8.8.8', 53)), s.getsockname()[0], s.close()) 
@@ -93,8 +96,8 @@ class ClientConnection:
 		ipString = 'None' 
 		try :
 			ipString = self.GetServerFromFile()
-			self.AttemptIPConnection(ipString, 0)
-			return
+			if self.AttemptIPConnection(ipString, 0) == 1 : 
+				return
 		except Exception:
 			self.sock.close()
 			print(traceback.format_exc())
