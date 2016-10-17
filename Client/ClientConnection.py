@@ -1,4 +1,7 @@
 import socket
+import time
+from threading import Thread
+import traceback
 
 class ClientConnection:
 
@@ -7,6 +10,9 @@ class ClientConnection:
 	fileName = "serverTable.tbl"
 	TCP_PORT = 5000
 	BUFFER_SIZE = 1500
+
+	connectionAttempts = [0]*255
+	threadList = []
 
 	def __init__(self):
 		return
@@ -21,18 +27,26 @@ class ClientConnection:
 
 		return ipStr
 
-	def AttemptIPConnection(self, ipAddress) :
+	def AttemptIPConnection(self, ipAddress, connectionTableAddr) :
+		
 		tempMessage = "Replace this message"
+		try :
+			sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+			sock.settimeout(0.5)
+			sock.connect((ipAddress, self.TCP_PORT))
+			sock.send(tempMessage)
+			data = sock.recv(self.BUFFER_SIZE)
 
-		self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		self.sock.settimeout(0.1)
-		self.sock.connect((ipAddress, self.TCP_PORT))
-		self.sock.send(tempMessage)
-		data = self.sock.recv(self.BUFFER_SIZE)
+			print ipAddress
+			print ("received data:", data)
+			if data == tempMessage :
+				self.connectionAttempts[connectionTableAddr] = 1
+				self.sock = sock
+				return 1
+		except : 
+			pass
 
-		print ("received data:", data)
-		if data == tempMessage :
-			print ('Worked!')
+		return 0
 
 	def GetDefaultGateway(self) :		
 		ipv4 = ([(s.connect(('8.8.8.8', 53)), s.getsockname()[0], s.close()) 
@@ -47,38 +61,58 @@ class ClientConnection:
 		writeFile.write('\n')
 		writeFile.close()
 
+	def WaitForThreadsToComplete(self) :
+
+		for x in range(0, len(self.threadList)) :
+				self.threadList[x].join()
+
+		return
+
 	def SearchForServerIP(self) :
 		TCP_STUB = self.GetDefaultGateway()
+		self.threadList = []
 
-		for x in range(0, 255) :
+		for x in range(0, 254) :
 			TCP_IP = TCP_STUB + str(x)
-		
-			print TCP_IP
-		
+			
 			try:
-				self.AttemptIPConnection(TCP_IP)
-				self.WriteServerIPToFile(TCP_IP)
-				break;
+				t = Thread( target = self.AttemptIPConnection, args=(TCP_IP, x,) )
+				t.start()
+				self.threadList.append(t)
 			except:
-				print ('failed')
+				print ('Failed to schedule search thread')
 
-	def Connect(self) :
+		self.WaitForThreadsToComplete()
 
+	def GetServerIPFromTable(self) :
+		for x in range(0, len(self.connectionAttempts)) :
+			if self.connectionAttempts[x] == 1 :
+				return self.GetDefaultGateway() + str(x)
+
+		return 'Failed to find server IP'
+
+	def Connect(self) : 
 		# First Check for File and try to connect
 		ipString = 'None' 
 		try :
 			ipString = self.GetServerFromFile()
-			self.AttemptIPConnection(ipString)
-			return
-		except :
+			if self.AttemptIPConnection(ipString, 0) == 1 : 
+				return
+		except:
 			self.sock.close()
 			print ('Failed to connect via file')
 
 		try :
 			self.SearchForServerIP()
-		except :
+			ipString = self.GetServerIPFromTable()
+			self.WriteServerIPToFile(ipString)
+
+			print ('Server IP Found at: ', ipString)
+
+		except:
 			self.sock.close()
 			print ('Failed to connect to a network')
+
 		return
 
 
