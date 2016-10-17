@@ -1,4 +1,5 @@
 from ControlValue import ControlValue
+import json
 
 class PLCClient:
 
@@ -18,6 +19,9 @@ class PLCClient:
 		self.IPAddress = IPAddress
 		self.ClientName = ClientName
 		self.ControlList = ControlList
+
+	def toJSON(self):
+		return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
  
 	def GetClientString(self):
 		myString = self.IPAddress + ',' + str(self.ClientType) + ',' + self.ClientName

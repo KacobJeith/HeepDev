@@ -1,4 +1,5 @@
 import socket
+import json
 from ControlValue import ControlValue
 from PLCClient import PLCClient
 
@@ -6,8 +7,10 @@ class ServerConnection:
 
 	sock = socket.socket()
 	fileName = "clientList.tbl"
+	fileNameJSON = "clientList.json"
 	TCP_PORT = 5000
 	clientList = []
+	clientObjs = []
 	host = ''
 	backlog = 5 
 	size = 1024 
@@ -21,6 +24,11 @@ class ServerConnection:
 		for x in range(0, len(self.clientList)) :
 			outFile.write(self.clientList[x].GetClientString())
 		outFile.close()
+
+	def WriteClientListJSON(self, newClient) :
+		with open(self.fileNameJSON, 'w') as outfile:
+			clientObjsFromStr = json.loads(newClient)
+			json.dump(clientObjsFromStr, outfile, sort_keys=True, indent=4, separators=(',', ': '))
 
 	def ReadClientList(self) :
 		try :
@@ -69,6 +77,10 @@ class ServerConnection:
 		    newClient = PLCClient(0, address[0], 'TestClient', controlList)
 		    self.AddClientToList(newClient)
 		    self.WriteClientList()
+
+		    #write JSON file
+		    clientObjStr = newClient.toJSON()
+		    self.WriteClientListJSON(clientObjStr)
 		    print "Received Data: ", data
 		    if data: 
 		        client.send(data) 
