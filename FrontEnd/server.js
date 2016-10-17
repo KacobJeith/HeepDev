@@ -11,7 +11,7 @@ var parseStuff = function(path, response)
 	
 	if(path == "/")
 	{
-		truePath = "/index.html";
+		truePath = "/ReactFrontEnd.html";
 	}
 	
 	console.log("True Path " + truePath);

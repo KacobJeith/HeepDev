@@ -1,5 +1,4 @@
 import socket
-import json
 from ControlValue import ControlValue
 from PLCClient import PLCClient
 
@@ -10,7 +9,7 @@ class ServerConnection:
 	fileNameJSON = "clientList.json"
 	TCP_PORT = 5000
 	clientList = []
-	clientObjs = []
+	clientObjs = {}
 	host = ''
 	backlog = 5 
 	size = 1024 
@@ -25,10 +24,20 @@ class ServerConnection:
 			outFile.write(self.clientList[x].GetClientString())
 		outFile.close()
 
-	def WriteClientListJSON(self, newClient) :
-		with open(self.fileNameJSON, 'w') as outfile:
-			clientObjsFromStr = json.loads(newClient)
-			json.dump(clientObjsFromStr, outfile, sort_keys=True, indent=4, separators=(',', ': '))
+	def WriteClientListJSON(self) :
+		with open(self.fileNameJSON, 'a') as f:
+			clientObjsFromStr = json.loads(self.clientObjs)
+			json.dump(clientObjsFromStr, f, sort_keys=True, indent=4, separators=(',', ': '))
+
+
+	def ReadClientListJSON(self) :
+		try :
+			with open (self,fileNameJSON) as inFile:
+				self.clientObjs = json.load(inFile)
+				print(self.clientObjs)
+		except :
+			print 'No client file found'
+		return self.clientList
 
 	def ReadClientList(self) :
 		try :
@@ -60,6 +69,10 @@ class ServerConnection:
 
 		return self.clientList
 
+	#def AddClientToListJSON(self, newClient) :
+	#	return
+
+
 
 	def ListenToNetwork(self) :
 
@@ -68,20 +81,19 @@ class ServerConnection:
 		self.sock.listen(self.backlog)
 
 		while 1: 
-		    client, address = self.sock.accept() 
-		    data = client.recv(self.size) 
-		    print "Client Address: ", address[0]
-		    controlList = []
-		    controlList.append(ControlValue(100, 2, 'Slider1'))
-		    controlList.append(ControlValue(200, 100, 'Slider2'))
-		    newClient = PLCClient(0, address[0], 'TestClient', controlList)
-		    self.AddClientToList(newClient)
-		    self.WriteClientList()
+			client, address = self.sock.accept() 
+			data = client.recv(self.size) 
+			print "Client Address: ", address[0]
+			controlList = []
+			controlList.append(ControlValue(100, 2, 'Slider1'))
+			controlList.append(ControlValue(200, 100, 'Slider2'))
+			newClient = PLCClient(0, address[0], 'TestClient', controlList)
+			self.AddClientToList(newClient)
+			self.WriteClientList()
 
-		    #write JSON file
-		    clientObjStr = newClient.toJSON()
-		    self.WriteClientListJSON(clientObjStr)
-		    print "Received Data: ", data
-		    if data: 
-		        client.send(data) 
-		    client.close() 
+			self.clientObjs = newClient.toJSON()
+			self.WriteClientListJSON()
+			print "Received Data: ", data
+			if data: 
+				client.send(data) 
+			client.close() 

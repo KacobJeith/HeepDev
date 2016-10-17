@@ -21,7 +21,7 @@ class PLCClient:
 		self.ControlList = ControlList
 
 	def toJSON(self):
-		return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
+		return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4, separators=(',', ': '))
  
 	def GetClientString(self):
 		myString = self.IPAddress + ',' + str(self.ClientType) + ',' + self.ClientName
