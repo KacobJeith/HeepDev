@@ -93,10 +93,11 @@ class ClientConnection:
 		ipString = 'None' 
 		try :
 			ipString = self.GetServerFromFile()
-			self.AttemptIPConnection(ipString)
+			self.AttemptIPConnection(ipString, 0)
 			return
-		except :
+		except Exception:
 			self.sock.close()
+			print(traceback.format_exc())
 			print ('Failed to connect via file')
 
 		try :
@@ -110,6 +111,8 @@ class ClientConnection:
 			self.sock.close()
 			print(traceback.format_exc())
 			print ('Failed to connect to a network')
+
+
 		return
 
 
