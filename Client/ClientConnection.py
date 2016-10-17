@@ -58,31 +58,35 @@ class ClientConnection:
 		writeFile.close()
 
 	def WaitForThreadsToComplete(self) :
+
+		for x in range(0, len(self.threadList)) :
+				self.threadList[x].join()
+
 		return
 
 	def SearchForServerIP(self) :
 		TCP_STUB = self.GetDefaultGateway()
+		self.threadList = []
 
 		for x in range(0, 254) :
 			TCP_IP = TCP_STUB + str(x)
-		
+			
 			try:
 				time.sleep(0.01)
 				t = Thread( target = self.AttemptIPConnection, args=(TCP_IP, x,) )
 				t.start()
-				self.threadList.append(2)
-				print threadList
-				#self.AttemptIPConnection(TCP_IP, x)
-				
+				self.threadList.append(t)
 			except:
 				print ('Failed to schedule search thread')
 
-		time.sleep(2)
+		self.WaitForThreadsToComplete()
 
 	def GetServerIPFromTable(self) :
 		for x in range(0, len(self.connectionAttempts)) :
 			if self.connectionAttempts[x] == 1 :
 				return self.GetDefaultGateway() + str(x)
+
+		return 'Failed to find server IP'
 
 	def Connect(self) :
 		# First Check for File and try to connect
@@ -102,8 +106,9 @@ class ClientConnection:
 
 			print ('Server IP Found at: ', ipString)
 
-		except :
+		except Exception:
 			self.sock.close()
+			print(traceback.format_exc())
 			print ('Failed to connect to a network')
 		return
 
