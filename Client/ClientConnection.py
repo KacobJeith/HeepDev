@@ -31,16 +31,17 @@ class ClientConnection:
 		
 		tempMessage = "Replace this message"
 		try :
-			self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-			self.sock.settimeout(0.5)
-			self.sock.connect((ipAddress, self.TCP_PORT))
-			self.sock.send(tempMessage)
-			data = self.sock.recv(self.BUFFER_SIZE)
+			sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+			sock.settimeout(0.5)
+			sock.connect((ipAddress, self.TCP_PORT))
+			sock.send(tempMessage)
+			data = sock.recv(self.BUFFER_SIZE)
 
 			print ipAddress
 			print ("received data:", data)
 			if data == tempMessage :
 				self.connectionAttempts[connectionTableAddr] = 1
+				self.sock = sock
 				return 1
 		except : 
 			pass
@@ -75,7 +76,6 @@ class ClientConnection:
 			TCP_IP = TCP_STUB + str(x)
 			
 			try:
-				time.sleep(0.01)
 				t = Thread( target = self.AttemptIPConnection, args=(TCP_IP, x,) )
 				t.start()
 				self.threadList.append(t)
