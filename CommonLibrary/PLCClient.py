@@ -26,3 +26,8 @@ class PLCClient:
 		myString = myString + '\n'
 		return myString
 
+	def SetClientFromString(self, clientString) :
+		splitString = clientString.split(',')
+		self.IPAddress = splitString[0]
+		self.ClientType = int(splitString[1])
+		self.ClientName = splitString[2]
