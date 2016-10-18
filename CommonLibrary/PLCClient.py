@@ -21,7 +21,14 @@ class PLCClient:
 		return myString
 
 	def SetClientFromString(self, clientString) :
+		self.ControlList = []
 		splitString = clientString.split(',')
 		self.IPAddress = splitString[0]
 		self.ClientType = int(splitString[1])
 		self.ClientName = splitString[2]
+
+		it = 3
+		while it < len(splitString) :
+			control = ControlValue()
+			it = control.SetControlFromSplitString(splitString, it)
+			self.ControlList.append(control)
