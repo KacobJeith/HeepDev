@@ -10,7 +10,7 @@ class ServerConnection:
 	fileNameJSON = "clientList.json"
 	TCP_PORT = 5000
 	clientList = []
-	clientObjs = {}
+	clientObjs = []
 	host = ''
 	backlog = 5 
 	size = 1024 
@@ -36,8 +36,6 @@ class ServerConnection:
 		try :
 			with open (self,fileNameJSON) as inFile:
 				self.clientObjs = json.load(inFile)
-				inFile.close()
-			inFile.close()
 		except :
 			print 'No client file found'
 		return self.clientObjs
@@ -74,16 +72,16 @@ class ServerConnection:
 
 	def AddClientToListJSON(self, newClient) :
 		addClient = 1
-		clientDict = self.clientObjs
-		for x in clientDict.keys() : 
-			if x == newClient["IPAddress"] :
+		clientDictArray = self.clientObjs
+		for x in range(0, len(self.clientObjs)) : 
+			thisClientDict = self.clientObjs[x]
+			if thisClientDict["IPAddress"] == newClient["IPAddress"] :
 				addClient = 0
 				break
 
 		if addClient :
-			newIP = newClient["IPAddress"]
-			clientDict[newIP] = newClient
-			self.clientObjs = clientDict
+			clientDictArray.append(newClient)
+			self.clientObjs = clientDictArray
 
 		return self.clientObjs
 

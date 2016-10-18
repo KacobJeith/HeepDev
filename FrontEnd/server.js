@@ -45,8 +45,10 @@ app.post('/api/clients', function(req, res) {
     // treat Date.now() as unique-enough for our purposes.
     var newClient = {
       id: Date.now(),
-      ipaddress: req.body.author,
-      text: req.body.text,
+      ClientName: req.body.ClientName,
+      ClientType: req.body.ClientType,
+      ControlList: req.body.ControlList,
+      IPAddress: req.body.IPAddress
     };
     clients.push(newClient);
     fs.writeFile(CLIENT_FILE, JSON.stringify(clients, null, 4), function(err) {
