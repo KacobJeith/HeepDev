@@ -2,12 +2,6 @@ from ControlValue import ControlValue
 
 class PLCClient:
 
-	#Client Enums
-	OnOff = 0
-	Analog = 1
-	Light = 2
-	Other = 3
-
 	ClientType = 1
 	IPAddress = 'none'
 	ClientName = 'none'
