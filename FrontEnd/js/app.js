@@ -1,3 +1,5 @@
+
+
 var PLCClientsBox = React.createClass({
   
   loadClientsFromServer: function() {
@@ -39,13 +41,12 @@ var ClientsList = React.createClass({
     
     var clientNodes = this.props.data.map(function(client) {
       return (
-        <ClientMetaData ipaddress={client.IPAddress} >
-          {client.ClientName}
-        </ClientMetaData>
+        <ClientMetaData Client= {client}></ClientMetaData>
       );
     });
 
     return (
+
       <div className="clientList">        
         {clientNodes}
       </div>
@@ -55,24 +56,60 @@ var ClientsList = React.createClass({
 
 var ClientMetaData = React.createClass({
 
-  rawMarkup: function() {
-    var md = new Remarkable();
-    var rawMarkup = md.render(this.props.children.toString());
-    return { __html: rawMarkup };
-  },
-
   render: function() {
-    var md = new Remarkable();
     return (
-      <div className="Clients">
-        <h2 className="PLCIP">
-          {this.props.ipaddress}
-        </h2>
-        <span dangerouslySetInnerHTML={this.rawMarkup()} />
+      <div class="row">
+        <h3 class="PLCIP">
+          {this.props.Client.IPAddress}
+        </h3>
+        <div class="col-md-4"> 
+          <p>Name: {this.props.Client.ClientName}</p>
+          <p>Type: {this.props.Client.ClientType}</p>
+          <p>IP: {this.props.Client.IPAddress}</p>
+          <ControllerList data={this.props.Client["ControlList"]} />
+        </div>
       </div>
     );
   }
 });
+
+var ControllerList = React.createClass({
+  render: function() {
+    
+    var controllerNodes = this.props.data.map(function(controller) {
+      return (
+        <ControllerMetaData Controls= {controller}></ControllerMetaData>
+      );
+    });
+
+    return (
+
+      <div className="controllerList">        
+        {controllerNodes}
+      </div>
+    );
+  }
+});
+
+var ControllerMetaData = React.createClass({
+
+  render: function() {
+    return (
+      <div class="row">
+        <h4 class="ControllerLists">
+          {this.props.Controls.ControlName}
+        </h4>
+        <div class="col-md-4"> 
+          <p>Name: {this.props.Controls.ControlName}</p>
+          <p>Type: {this.props.Controls.HighValue}</p>
+          <p>IP: {this.props.Controls.LowValue}</p>
+        </div>
+      </div>
+    );
+  }
+});
+
+
 
 ReactDOM.render(
   <PLCClientsBox url="/api/clients" pollInterval={2000} />,

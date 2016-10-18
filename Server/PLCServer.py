@@ -20,8 +20,7 @@ class ServerConnection:
 
 	def __init__(self):
 		return
-
-
+		
 	def WriteClientList(self) :
 		outFile = open(self.fileName, 'w')
 		for x in range(0, len(self.clientList)) :
@@ -31,14 +30,14 @@ class ServerConnection:
 	def WriteClientListJSON(self) :
 		
 		with open(self.fileNameJSON, 'w') as f:
-			#clientObjsFromStr = json.loads(self.clientObjs)
 			json.dump(self.clientObjs, f, sort_keys=True, indent=4, separators=(',', ': '))
 
 
 	def ReadClientListJSON(self) :
 		try :
 			with open (self,fileNameJSON) as inFile:
-				self.clientObjs = json.load(inFile)
+				allExistingClients = json.load(inFile)
+			self.clientObjs = allExistingClients
 		except :
 			print 'No client file found'
 		return self.clientObjs

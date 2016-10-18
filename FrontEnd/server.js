@@ -40,11 +40,7 @@ app.post('/api/clients', function(req, res) {
       process.exit(1);
     }
     var clients = JSON.parse(data);
-    // NOTE: In a real implementation, we would likely rely on a database or
-    // some other approach (e.g. UUIDs) to ensure a globally unique id. We'll
-    // treat Date.now() as unique-enough for our purposes.
     var newClient = {
-      id: Date.now(),
       ClientName: req.body.ClientName,
       ClientType: req.body.ClientType,
       ControlList: req.body.ControlList,
