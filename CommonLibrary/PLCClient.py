@@ -7,11 +7,8 @@ class PLCClient:
 	ClientName = 'none'
 	ControlList = []
 
-	def __init__(self, ClientType, IPAddress, ClientName, ControlList):
-		self.ClientType = ClientType
-		self.IPAddress = IPAddress
-		self.ClientName = ClientName
-		self.ControlList = ControlList
+	def __init__(self):
+		return
  
 	def GetClientString(self):
 		myString = self.IPAddress + ',' + str(self.ClientType) + ',' + self.ClientName
