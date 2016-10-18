@@ -1,5 +1,7 @@
 import socket
-import json
+import sys
+sys.path.insert(0, '../CommonLibrary')
+
 from ControlValue import ControlValue
 from PLCClient import PLCClient
 
