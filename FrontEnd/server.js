@@ -1,57 +1,65 @@
-var http = require('http'),
-      fs = require('fs'),
-     url = require('url'),
- choices = ["hello world", "goodbye world"];
+var fs = require('fs');
+var path = require('path');
+var express = require('express');
+var bodyParser = require('body-parser');
+var app = express();
 
-var filename = '../Server/clientList.tbl'
+var CLIENT_FILE = path.join(__dirname, '../Server/clientList.json');
 
-var parseStuff = function(path, response)
-{
-	var truePath = path;
-	
-	if(path == "/")
-	{
-		truePath = "/ReactFrontEnd.html";
-	}
-	
-	console.log("True Path " + truePath);
-	
-	fs.readFile("." + truePath, function(err, file) {  
-            if(err) {  
-                // write an error response or nothing here  
-                return;  
-            }  
-            //response.writeHead(200, { 'Content-Type': 'text/html' });  
-            response.end(file, "utf-8");
-        });
-}
+app.set('port', (process.env.PORT || 3000));
 
-http.createServer(function(request, response){
-    var path = url.parse(request.url).pathname;
-	console.log("Path is " + path);
-    if(path=="/getstring")
-    {
-        console.log("request recieved");
+app.use('/', express.static(__dirname));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
-        var string = fs.readFile(filename, 'utf8', function(err, data) {
-            
-            try{
-                if (err) throw err;
-                console.log('OK: ' + filename);
-                console.log(data);
-                response.writeHead(200, {"Content-Type": "text/plain"});
-                response.end(data, "utf-8");
-            }
-            catch(e){
-                response.writeHead(200, {"Content-Type": "text/plain"});
-                response.end("Failed to load file", "utf-8");
-            }
+// Additional middleware which will set headers that we need on each request.
+app.use(function(req, res, next) {
+    // Set permissive CORS header - this allows this server to be used only as
+    // an API server in conjunction with something like webpack-dev-server.
+    res.setHeader('Access-Control-Allow-Origin', '*');
 
-        });
-        
+    // Disable caching so we'll always get the latest clients.
+    res.setHeader('Cache-Control', 'no-cache');
+    next();
+});
+
+app.get('/api/clients', function(req, res) {
+  fs.readFile(CLIENT_FILE, function(err, data) {
+    if (err) {
+      console.error(err);
+      process.exit(1);
     }
-    else{
-		parseStuff(path, response);
+    res.json(JSON.parse(data));
+  });
+});
+
+app.post('/api/clients', function(req, res) {
+  fs.readFile(CLIENT_FILE, function(err, data) {
+    if (err) {
+      console.error(err);
+      process.exit(1);
     }
-}).listen(8001);
-console.log("server initialized");
+    var clients = JSON.parse(data);
+    // NOTE: In a real implementation, we would likely rely on a database or
+    // some other approach (e.g. UUIDs) to ensure a globally unique id. We'll
+    // treat Date.now() as unique-enough for our purposes.
+    var newClient = {
+      id: Date.now(),
+      ipaddress: req.body.author,
+      text: req.body.text,
+    };
+    clients.push(newClient);
+    fs.writeFile(CLIENT_FILE, JSON.stringify(clients, null, 4), function(err) {
+      if (err) {
+        console.error(err);
+        process.exit(1);
+      }
+      res.json(clients);
+    });
+  });
+});
+
+
+app.listen(app.get('port'), function() {
+  console.log('Server started: http://localhost:' + app.get('port') + '/');
+});

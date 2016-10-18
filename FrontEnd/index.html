@@ -1,55 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Test Listing Items</title>
+    <title>PLC Console</title>
+    <!-- Not present in the tutorial. Just for basic styling. -->
+    <link rel="stylesheet" href="css/base.css" />
+    <script src="https://unpkg.com/react@15.3.0/dist/react.js"></script>
+    <script src="https://unpkg.com/react-dom@15.3.0/dist/react-dom.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <script src="https://unpkg.com/jquery@3.1.0/dist/jquery.min.js"></script>
+    <script src="https://unpkg.com/remarkable@1.7.1/dist/remarkable.min.js"></script>
   </head>
-<body>
-
-  <div id = "TestText">
-    Test This Page
-  </div>
-
-<hr>
-
-<button type="button" onclick="server()">Get Server Info!</button>
-
-<footer>
-  <p>&copy; 2016 Jacob Dylan.</p>
-</footer>
-	  
-  <script>
-    var macroraw = document.getElementById("TestText");
-
-		function ListClients(ServerResponse)
-		{
-      macroraw.innerHTML = null;
-      var newText = document.createTextNode(ServerResponse);
-      macroraw.appendChild(newText);
-		}
-		
-		function server()
-		{
-      console.log("Start Update")
-
-		  xmlhttp = new XMLHttpRequest();
-		  xmlhttp.open("GET","getstring", true);
-		  xmlhttp.onreadystatechange=function(){
-		  		if (xmlhttp.readyState==4 && xmlhttp.status==200){
-		  			string=xmlhttp.responseText;
-		  			console.log("Updating images");
-            console.log(string)
-		  			ListClients(string);
-		  		}
-		  }
-		  xmlhttp.send();
-      
-		}
-	</script>
-	
+  <body>
+    <div id="content"></div>
+    <script type="text/babel" src="js/PLCapp.js"></script>
+    <script type="text/babel">
+      // To get started with this tutorial running your own code, simply remove
+      // the script tag loading scripts/example.js and start writing code here.
+    </script>
   </body>
 </html>

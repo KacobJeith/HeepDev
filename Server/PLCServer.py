@@ -1,4 +1,5 @@
 import socket
+import json
 from ControlValue import ControlValue
 from PLCClient import PLCClient
 
@@ -25,19 +26,21 @@ class ServerConnection:
 		outFile.close()
 
 	def WriteClientListJSON(self) :
-		with open(self.fileNameJSON, 'a') as f:
-			clientObjsFromStr = json.loads(self.clientObjs)
-			json.dump(clientObjsFromStr, f, sort_keys=True, indent=4, separators=(',', ': '))
+		
+		with open(self.fileNameJSON, 'w') as f:
+			#clientObjsFromStr = json.loads(self.clientObjs)
+			json.dump(self.clientObjs, f, sort_keys=True, indent=4, separators=(',', ': '))
 
 
 	def ReadClientListJSON(self) :
 		try :
 			with open (self,fileNameJSON) as inFile:
 				self.clientObjs = json.load(inFile)
-				print(self.clientObjs)
+				inFile.close()
+			inFile.close()
 		except :
 			print 'No client file found'
-		return self.clientList
+		return self.clientObjs
 
 	def ReadClientList(self) :
 		try :
@@ -69,9 +72,20 @@ class ServerConnection:
 
 		return self.clientList
 
-	#def AddClientToListJSON(self, newClient) :
-	#	return
+	def AddClientToListJSON(self, newClient) :
+		addClient = 1
+		clientDict = self.clientObjs
+		for x in clientDict.keys() : 
+			if x == newClient["IPAddress"] :
+				addClient = 0
+				break
 
+		if addClient :
+			newIP = newClient["IPAddress"]
+			clientDict[newIP] = newClient
+			self.clientObjs = clientDict
+
+		return self.clientObjs
 
 
 	def ListenToNetwork(self) :
@@ -91,7 +105,10 @@ class ServerConnection:
 			self.AddClientToList(newClient)
 			self.WriteClientList()
 
-			self.clientObjs = newClient.toJSON()
+			newClient = json.loads(newClient.toJSON())
+			clientObjs = self.ReadClientListJSON()
+			print clientObjs
+			self.AddClientToListJSON(newClient)
 			self.WriteClientListJSON()
 			print "Received Data: ", data
 			if data: 
