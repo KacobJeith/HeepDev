@@ -32,10 +32,9 @@ class ServerConnection:
 				curStr = inFile.readline()
 
 				if len(curStr) > 0 :
-					stringList = curStr.split(',')
-					if len(stringList) == 3 :
-						newClient = PLCClient(int(stringList[1]), stringList[0], stringList[2], [])
-						self.clientList.append(newClient)
+					newClient = PLCClient()
+					newClient.SetClientFromString(curStr)
+					self.clientList.append(newClient)
 				else :
 					break
 			inFile.close()
@@ -66,10 +65,9 @@ class ServerConnection:
 		    client, address = self.sock.accept() 
 		    data = client.recv(self.size) 
 		    print "Client Address: ", address[0]
-		    controlList = []
-		    controlList.append(ControlValue(100, 2, 'Slider1'))
-		    controlList.append(ControlValue(200, 100, 'Slider2'))
-		    newClient = PLCClient(0, address[0], 'TestClient', controlList)
+		    newClient = PLCClient()
+		    newClient.SetClientFromString(data)
+		    newClient.IPAddress = address[0]
 		    self.AddClientToList(newClient)
 		    self.WriteClientList()
 		    print "Received Data: ", data
