@@ -87,6 +87,37 @@ class ServerConnection:
 
 		return self.clientObjs
 
+	def AddClient(self, clientString, address) :
+		print "Client Address: ", address[0]
+		newClient = PLCClient()
+		newClient.SetClientFromString(clientString)
+		newClient.IPAddress = address[0]
+		self.AddClientToList(newClient)
+		self.WriteClientList()
+		newClient = json.loads(newClient.toJSON())
+		clientObjs = self.ReadClientListJSON()
+		self.AddClientToListJSON(newClient)
+		self.WriteClientListJSON()
+
+		return 'Client Added'
+
+	def ParseClientInput(self, data, address) :
+		IsPLCServerString = 'IsPLCServer'
+		EchoString = 'Echo'
+		NewConnectString = 'NewConnect'
+
+		commandDataSplit = data.split(':')
+		print commandDataSplit
+
+		if commandDataSplit[0] == IsPLCServerString :
+			return 'Yes'
+		elif commandDataSplit[0] == EchoString :
+			return commandDataSplit[1]
+		elif commandDataSplit[0] == NewConnectString :
+			return self.AddClient(commandDataSplit[1], address)
+
+		return 'null'
+
 
 	def ListenToNetwork(self) :
 
@@ -97,19 +128,9 @@ class ServerConnection:
 		while 1: 
 			client, address = self.sock.accept() 
 			data = client.recv(self.size) 
-			print "Client Address: ", address[0]
-			newClient = PLCClient()
-			newClient.SetClientFromString(data)
-			newClient.IPAddress = address[0]
-			self.AddClientToList(newClient)
-			self.WriteClientList()
 
-			newClient = json.loads(newClient.toJSON())
-			clientObjs = self.ReadClientListJSON()
-			print clientObjs
-			self.AddClientToListJSON(newClient)
-			self.WriteClientListJSON()
-			print "Received Data: ", data
+			returnData = self.ParseClientInput(data, address)
+			
 			if data: 
-				client.send(data) 
+				client.send(returnData) 
 			client.close() 
