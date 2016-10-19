@@ -39,7 +39,9 @@ class ClientConnection:
 
 	def AttemptIPConnection(self, ipAddress, connectionTableAddr) :
 		
-		tempMessage = self.clientData.GetClientString()
+		#tempMessage = self.clientData.GetClientString()
+		tempMessage = 'IsPLCServer:'
+		#tempMessage = 'Echo:Steak'
 		try :
 			sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 			sock.settimeout(0.5)
@@ -49,7 +51,7 @@ class ClientConnection:
 
 			print ipAddress
 			print ("received data:", data)
-			if data == tempMessage :
+			if data == 'Yes' :
 				self.connectionAttempts[connectionTableAddr] = 1
 				self.sock = sock
 				return 1
@@ -100,6 +102,18 @@ class ClientConnection:
 				return self.GetDefaultGateway() + str(x)
 
 		return 'Failed to find server IP'
+
+	def SendDataToServer(self, data) :
+		self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		self.sock.settimeout(0.5)
+		self.sock.connect((self.serverIP, self.TCP_PORT))
+		self.sock.send(data)
+		data = self.sock.recv(self.BUFFER_SIZE)
+		return data
+
+	def SendClientDataToServer(self) :
+		toSend = 'NewConnect:' + self.clientData.GetClientString()
+		print self.SendDataToServer(toSend)
 
 	def Connect(self) : 
 		# First Check for File and try to connect
