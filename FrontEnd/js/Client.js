@@ -91,9 +91,10 @@ var ControllerMetaData = React.createClass({
           {this.props.Controls.ControlName}
         </h4>
         <div style={controllerDataStyle}> 
-          <p>Name: {this.props.Controls.ControlName}</p>
-          <p>Type: {this.props.Controls.HighValue}</p>
-          <p>IP: {this.props.Controls.LowValue}</p>
+          <p>ControlName: {this.props.Controls.ControlName}</p>
+          <p>ControlValueType: {this.props.Controls.ControlValueType}</p>
+          <p>HighValue: {this.props.Controls.HighValue}</p>
+          <p>LowValue: {this.props.Controls.LowValue}</p>
         </div>
       </div>
     );
