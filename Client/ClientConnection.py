@@ -106,6 +106,7 @@ class ClientConnection:
 		ipString = 'None' 
 		try :
 			ipString = self.GetServerFromFile()
+			self.serverIP = ipString
 			if self.AttemptIPConnection(ipString, 0) == 1 : 
 				return
 		except:
@@ -116,13 +117,15 @@ class ClientConnection:
 			self.SearchForServerIP()
 			ipString = self.GetServerIPFromTable()
 			self.WriteServerIPToFile(ipString)
+			self.serverIP = ipString
 
-			print ('Server IP Found at: ', ipString)
+			print ('Server IP Found at: ', self.serverIP)
 
 		except:
 			self.sock.close()
 			print ('Failed to connect to a network')
 
 		return
+
 
 
