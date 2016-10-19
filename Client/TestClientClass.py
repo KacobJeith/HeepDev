@@ -15,4 +15,5 @@ functionalClient.ControlList.append(OnOffControls)
 client.SetClientData(functionalClient)
 
 client.Connect()
-client.SendClientDataToServer()
+print client.SendClientDataToServer()
+print client.EchoDataFromServer('Test the Echo')

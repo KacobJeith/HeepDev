@@ -113,7 +113,12 @@ class ClientConnection:
 
 	def SendClientDataToServer(self) :
 		toSend = 'NewConnect:' + self.clientData.GetClientString()
-		print self.SendDataToServer(toSend)
+		return self.SendDataToServer(toSend) 
+
+	def EchoDataFromServer(self, data) :
+		toSend = 'Echo:' + data
+		return self.SendDataToServer(toSend)
+
 
 	def Connect(self) : 
 		# First Check for File and try to connect
