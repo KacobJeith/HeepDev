@@ -99,6 +99,8 @@ class ServerConnection:
 			data = client.recv(self.size) 
 			print "Client Address: ", address[0]
 			newClient = PLCClient()
+			newClient.SetClientFromString(data)
+			newClient.IPAddress = address[0]
 			self.AddClientToList(newClient)
 			self.WriteClientList()
 
