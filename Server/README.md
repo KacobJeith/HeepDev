@@ -4,4 +4,4 @@ This documents describes the server API functions for the PLC server. These comm
 
 ## Command List
 
-* NewConnect:<ClientInformationString> - Make the server either update the information for a client at this client's IP Address or add a new client with this IP Address and information.
+* NewConnect:(ClientInformationString) - Make the server either update the information for a client at this client's IP Address or add a new client with this IP Address and information.
