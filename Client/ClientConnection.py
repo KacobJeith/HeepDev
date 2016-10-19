@@ -39,14 +39,12 @@ class ClientConnection:
 
 	def AttemptIPConnection(self, ipAddress, connectionTableAddr) :
 		
-		#tempMessage = self.clientData.GetClientString()
-		tempMessage = 'IsPLCServer:'
-		#tempMessage = 'Echo:Steak'
+		connectMessage = 'IsPLCServer:'
 		try :
 			sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 			sock.settimeout(0.5)
 			sock.connect((ipAddress, self.TCP_PORT))
-			sock.send(tempMessage)
+			sock.send(connectMessage)
 			data = sock.recv(self.BUFFER_SIZE)
 
 			print ipAddress
