@@ -26,89 +26,20 @@ var PLCClientsBox = React.createClass({
   },
 
   render: function() {
+    var headerStyle = {
+      backgroundColor: "#43464c", 
+      paddingLeft: 15,
+      color: "#e1e3e8"
+    }
+
     return (
       <div className="clientsBox">
-      <h1>ClientsList</h1>
-      <ClientsList data={this.state.data} />
+        <h1 style={headerStyle}>Client Dashboard</h1>
+        <ClientsList data={this.state.data} />
       </div>
     );
   }
 });
-
-
-var ClientsList = React.createClass({
-  render: function() {
-    
-    var clientNodes = this.props.data.map(function(client) {
-      return (
-        <ClientMetaData Client= {client}></ClientMetaData>
-      );
-    });
-
-    return (
-
-      <div className="clientList">        
-        {clientNodes}
-      </div>
-    );
-  }
-});
-
-var ClientMetaData = React.createClass({
-
-  render: function() {
-    return (
-      <div class="row">
-        <h3 class="PLCIP">
-          {this.props.Client.IPAddress}
-        </h3>
-        <div class="col-md-4"> 
-          <p>Name: {this.props.Client.ClientName}</p>
-          <p>Type: {this.props.Client.ClientType}</p>
-          <p>IP: {this.props.Client.IPAddress}</p>
-          <ControllerList data={this.props.Client["ControlList"]} />
-        </div>
-      </div>
-    );
-  }
-});
-
-var ControllerList = React.createClass({
-  render: function() {
-    
-    var controllerNodes = this.props.data.map(function(controller) {
-      return (
-        <ControllerMetaData Controls= {controller}></ControllerMetaData>
-      );
-    });
-
-    return (
-
-      <div className="controllerList">        
-        {controllerNodes}
-      </div>
-    );
-  }
-});
-
-var ControllerMetaData = React.createClass({
-
-  render: function() {
-    return (
-      <div class="row">
-        <h4 class="ControllerLists">
-          {this.props.Controls.ControlName}
-        </h4>
-        <div class="col-md-4"> 
-          <p>Name: {this.props.Controls.ControlName}</p>
-          <p>Type: {this.props.Controls.HighValue}</p>
-          <p>IP: {this.props.Controls.LowValue}</p>
-        </div>
-      </div>
-    );
-  }
-});
-
 
 
 ReactDOM.render(
