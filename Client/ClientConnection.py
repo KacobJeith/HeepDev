@@ -3,6 +3,11 @@ import time
 from threading import Thread
 import traceback
 
+import sys
+sys.path.insert(0, '../CommonLibrary')
+from ControlValue import ControlValue
+from PLCClient import PLCClient
+
 class ClientConnection:
 
 	sock = socket.socket()
@@ -14,8 +19,13 @@ class ClientConnection:
 	connectionAttempts = [0]*255
 	threadList = []
 
+	clientData = PLCClient()
+
 	def __init__(self):
 		return
+
+	def SetClientData(self, clientData) :
+		self.clientData = clientData
 
 	def GetServerFromFile(self) :
 		myFile = open(self.fileName, 'r')
@@ -29,7 +39,7 @@ class ClientConnection:
 
 	def AttemptIPConnection(self, ipAddress, connectionTableAddr) :
 		
-		tempMessage = "Replace this message"
+		tempMessage = self.clientData.GetClientString()
 		try :
 			sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 			sock.settimeout(0.5)
