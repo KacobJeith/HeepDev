@@ -98,10 +98,7 @@ class ServerConnection:
 			client, address = self.sock.accept() 
 			data = client.recv(self.size) 
 			print "Client Address: ", address[0]
-			controlList = []
-			controlList.append(ControlValue(100, 2, 'Slider1'))
-			controlList.append(ControlValue(200, 100, 'Slider2'))
-			newClient = PLCClient(0, address[0], 'TestClient', controlList)
+			newClient = PLCClient()
 			self.AddClientToList(newClient)
 			self.WriteClientList()
 
