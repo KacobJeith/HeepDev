@@ -4,6 +4,8 @@ This documents describes the server API functions for the PLC server. These comm
 
 ## Command List
 
+* IsPLCServer: - The server will return "Yes" if it receives this message
+
 * NewConnect:(ClientInformationString) - Make the server either update the information for a client at this client's IP Address or add a new client with this IP Address and information
 
 * Echo:(InformationToBeRepeated) - Tell the server to echo some string back to the client
