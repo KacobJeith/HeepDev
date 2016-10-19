@@ -12,3 +12,5 @@ functionalClient.ControlList.append(ControlValue())
 client.SetClientData(functionalClient)
 
 client.Connect()
+
+print client.serverIP
