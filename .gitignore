@@ -35,3 +35,4 @@
 # Outputs
 *.tbl
 *.pyc
+*.json

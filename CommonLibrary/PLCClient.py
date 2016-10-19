@@ -1,3 +1,4 @@
+import json
 from ControlValue import ControlValue
 
 class PLCClient:
@@ -29,3 +30,6 @@ class PLCClient:
 			control = ControlValue()
 			it = control.SetControlFromSplitString(splitString, it)
 			self.ControlList.append(control)
+
+	def toJSON(self):
+		return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4, separators=(',', ': '))
