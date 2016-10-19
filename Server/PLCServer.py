@@ -130,7 +130,6 @@ class ServerConnection:
 			data = client.recv(self.size) 
 
 			returnData = self.ParseClientInput(data, address)
-
 			
 			if data: 
 				client.send(returnData) 
