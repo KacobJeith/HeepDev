@@ -1,0 +1,41 @@
+{
+  "name": "plc-clients",
+  "version": "0.0.0",
+  "private": true,
+  "license": "see LICENSE file",
+  "description": "Code to Display the active/present PLC-Clients",
+  "author": "jacobkeith",
+  "bugs": {
+    "url": "https://github.com/dfashbaugh/PLC/issues"
+  },
+  "homepage": "https://github.com/dfashbaugh/PLC",
+  "engines": {
+    "node": "0.12.x"
+  },
+  "scripts": {
+    "build": "babel src -d lib --copy-files",
+    "start": "babel-node lib/server.js",
+    "build-start": "npm run build && npm run start"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "jquery": "^3.1.1",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
+    "express": "^4.14.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.16.0",
+    "babel-core": "^6.17.0",
+    "babel-loader": "^6.2.5",
+    "babel-preset-es2015": "^6.16.0",
+    "babel-preset-react": "^6.16.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dfashbaugh/PLC.git"
+  },
+  "keywords": [
+    "PLC"
+  ]
+}
