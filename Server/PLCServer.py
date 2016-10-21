@@ -29,22 +29,29 @@ class ServerConnection:
 	def WriteClientListJSON(self) :
 
 		clientDictList = []
-		for x in range(0, len(clientList)) :
-			newClient = json.loads(clientList[x].toJSON())
+		for x in range(0, len(self.clientList)) :
+			newClient = self.clientList[x].toJSONDict()
 			clientDictList.append(newClient)
 
 		with open(self.fileNameJSON, 'w') as f:
 			json.dump(clientDictList, f, sort_keys=True, indent=4, separators=(',', ': '))
-
+		return
 
 	def ReadClientListJSON(self) :
+		self.clientList = []
+
 		try :
-			with open (self,fileNameJSON) as inFile:
+			with open (fileNameJSON, 'r') as inFile:
 				allExistingClients = json.load(inFile)
-			self.clientObjs = allExistingClients
+
+			for x in range(0, len(allExistingClients)) :
+				newClient = PLCClient()
+				newClient.fromDict(allExistingClients[0])
+				self.clientList.append(newClient)
+
 		except :
 			print 'No client file found'
-		return self.clientObjs
+		return
 
 	def ReadClientList(self) :
 		try :
@@ -76,20 +83,6 @@ class ServerConnection:
 
 		return self.clientList
 
-	def AddClientToListJSON(self, newClient) :
-		addClient = 1
-		clientDictArray = self.clientObjs
-		for x in range(0, len(self.clientObjs)) : 
-			thisClientDict = self.clientObjs[x]
-			if thisClientDict["IPAddress"] == newClient["IPAddress"] :
-				addClient = 0
-				break
-
-		if addClient :
-			clientDictArray.append(newClient)
-			self.clientObjs = clientDictArray
-
-		return self.clientObjs
 
 	def AddClient(self, clientString, address) :
 		print "Client Address: ", address[0]
@@ -98,9 +91,7 @@ class ServerConnection:
 		newClient.IPAddress = address[0]
 		self.AddClientToList(newClient)
 		self.WriteClientList()
-		newClient = json.loads(newClient.toJSON())
-		clientObjs = self.ReadClientListJSON()
-		self.AddClientToListJSON(newClient)
+
 		self.WriteClientListJSON()
 
 		return 'Client Added'
