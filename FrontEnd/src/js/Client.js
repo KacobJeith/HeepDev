@@ -45,15 +45,17 @@ var ClientMetaData = React.createClass({
       paddingLeft: standardTab
     }
 
+    var clientInfo = []; 
+
+    for (var key in this.props.Client){
+        key == "ControlList" ? clientInfo.push(<ControllerList data={this.props.Client[key]} />) : clientInfo.push(<p>{key}: {this.props.Client[key]}</p>);
+    }
 
     return (
       <div  style={clientCardStyle}>
         <h2 style={clientTitleStyle}> {this.props.Client.IPAddress} </h2>
         <div style={clientInfoStyle} > 
-          <p>Name: {this.props.Client.ClientName}</p>
-          <p>Type: {this.props.Client.ClientType}</p>
-          <p>IP: {this.props.Client.IPAddress}</p>
-          <ControllerList data={this.props.Client["ControlList"]} />
+          {clientInfo}
         </div>
       </div>
     );
@@ -85,16 +87,19 @@ var ControllerMetaData = React.createClass({
     paddingLeft: standardTab
     }
 
+    var dataToDisplay = []; 
+
+    for (var key in this.props.Controls){
+        dataToDisplay.push(<p>{key}: {this.props.Controls[key]}</p>);
+    }
+
     return (
       <div >
         <h4 >
           {this.props.Controls.ControlName}
         </h4>
         <div style={controllerDataStyle}> 
-          <p>ControlName: {this.props.Controls.ControlName}</p>
-          <p>ControlValueType: {this.props.Controls.ControlValueType}</p>
-          <p>HighValue: {this.props.Controls.HighValue}</p>
-          <p>LowValue: {this.props.Controls.LowValue}</p>
+          {dataToDisplay}
         </div>
       </div>
     );
