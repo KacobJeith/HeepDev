@@ -13,7 +13,6 @@ class ServerConnection:
 	fileNameJSON = "clientList.json"
 	TCP_PORT = 5000
 	clientList = []
-	clientObjs = []
 	host = ''
 	backlog = 5 
 	size = 1024 
@@ -28,9 +27,14 @@ class ServerConnection:
 		outFile.close()
 
 	def WriteClientListJSON(self) :
-		
+
+		clientDictList = []
+		for x in range(0, len(clientList)) :
+			newClient = json.loads(clientList[x].toJSON())
+			clientDictList.append(newClient)
+
 		with open(self.fileNameJSON, 'w') as f:
-			json.dump(self.clientObjs, f, sort_keys=True, indent=4, separators=(',', ': '))
+			json.dump(clientDictList, f, sort_keys=True, indent=4, separators=(',', ': '))
 
 
 	def ReadClientListJSON(self) :

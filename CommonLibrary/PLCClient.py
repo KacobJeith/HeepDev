@@ -43,6 +43,9 @@ class PLCClient:
 		self.prepareForJSON()
 		return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4, separators=(',', ': '))
 
+	def toJSONDict(self) :
+		return json.loads(self.toJSON())
+
 	def fromJSON(self, Data) :
 		self.fromDict(json.loads(Data))
 

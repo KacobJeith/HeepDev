@@ -21,8 +21,8 @@ clientList.append(tt)
 clientList.append(otherClient)
 
 
-newClient = json.loads(tt.toJSON())
-newOtherClient = json.loads(otherClient.toJSON())
+newClient = tt.toJSONDict()
+newOtherClient = otherClient.toJSONDict()
 #newClient = client.toJSON()
 #newOtherClient = otherClient.toJSON()
 clientDictList = []
