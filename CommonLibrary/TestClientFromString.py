@@ -30,6 +30,7 @@ print newClient
 
 anotherClient = PLCClient()
 anotherClient.fromJSON(test)
+print 'here'
 print anotherClient.ClientName
 print anotherClient.ControlList[1].ControlName
 
@@ -47,6 +48,7 @@ try :
 except :
 	print 'No client JSON file found'
 
+print 'Here'
 print allExistingClients
 aaaClient = PLCClient()
 aaaClient.fromDict(allExistingClients)

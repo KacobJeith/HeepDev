@@ -35,11 +35,18 @@ class PLCClient:
 			it = control.SetControlFromSplitString(splitString, it)
 			self.ControlList.append(control)
 
+	def prepareForJSON(self) :
+		self.ClientType = self.ClientType
+		self.IPAddress = self.IPAddress
+		self.ClientName = self.ClientName
+		self.ControlList = self.ControlList
+
 	def toJSON(self):
+		self.prepareForJSON()
 		return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4, separators=(',', ': '))
 
 	def fromJSON(self, Data) :
-		self.__dict__ = json.loads(Data)
+		self.fromDict(json.loads(Data))
 
 	def fromDict(self, Dict) :
 		self.__dict__ = Dict
