@@ -8,6 +8,7 @@ Control1 = ControlValue()
 Control1.ControlName = 'Forge'
 Control2 = ControlValue()
 Control2.ControlName = 'Fast'
+Control2.ControlValueType = Control2.OnOff
 
 otherClient.ControlList.append(Control1)
 otherClient.ControlList.append(Control2)
@@ -23,7 +24,6 @@ f.close()
 try :
 	with open ('Test.json', 'r') as inFile:
 		allExistingClients = json.load(inFile)
-	
 except :
 	print 'No client JSON file found'
 

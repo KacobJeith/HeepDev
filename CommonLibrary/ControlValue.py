@@ -49,6 +49,13 @@ class ControlValue:
 
 		return newIndex
 
+	def PrepareForJSONWrite(self) :
+		self.ControlValueType = self.ControlValueType
+		self.HighValue = self.HighValue
+		self.LowValue = self.LowValue
+		self.CurCtrlValue = self.CurCtrlValue
+		self.ControlName = self.ControlName
+
 	def FromDict(self, Dict) :
 		self.__dict__ = Dict
 

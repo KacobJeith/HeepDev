@@ -41,6 +41,9 @@ class PLCClient:
 		self.ClientName = self.ClientName
 		self.ControlList = self.ControlList
 
+		for x in range(0, len(self.ControlList)) :
+			self.ControlList[x].PrepareForJSONWrite()
+
 	def toJSON(self):
 		self.prepareForJSON()
 		return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4, separators=(',', ': '))
