@@ -48,3 +48,8 @@ class ControlValue:
 			newIndex = self.SetRangeFromSplitString(splitString, startIndex)
 
 		return newIndex
+
+	def FromDict(self, Dict) :
+		self.__dict__ = Dict
+
+

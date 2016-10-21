@@ -9,6 +9,10 @@ class PLCClient:
 	ControlList = []
 
 	def __init__(self):
+		ClientType = 1
+		IPAddress = 'none'
+		ClientName = 'none'
+		ControlList = []
 		return
  
 	def GetClientString(self):
@@ -33,3 +37,15 @@ class PLCClient:
 
 	def toJSON(self):
 		return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4, separators=(',', ': '))
+
+	def fromJSON(self, Data) :
+		self.__dict__ = json.loads(Data)
+
+	def fromDict(self, Dict) :
+		self.__dict__ = Dict
+		tempControlList = self.ControlList
+		self.ControlList = []
+		for x in range(0, len(tempControlList)) :
+			newControl = ControlValue()
+			newControl.FromDict(tempControlList[x])
+			self.ControlList.append(newControl)
