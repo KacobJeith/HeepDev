@@ -18,6 +18,7 @@ class ServerConnection:
 	size = 1024 
 
 	def __init__(self):
+		self.ReadClientListJSON()
 		return
 
 	def WriteClientListJSON(self) :
@@ -35,41 +36,23 @@ class ServerConnection:
 		self.clientList = []
 
 		try :
-			with open (fileNameJSON, 'r') as inFile:
+			with open (self.fileNameJSON, 'r') as inFile:
 				allExistingClients = json.load(inFile)
 
 			for x in range(0, len(allExistingClients)) :
 				newClient = PLCClient()
 				newClient.fromDict(allExistingClients[0])
 				self.clientList.append(newClient)
-
 		except :
 			print 'No client file found'
 		return
-
-	def ReadClientList(self) :
-		try :
-			inFile = open(self.fileName, 'r')
-			while 1:
-				curStr = inFile.readline()
-
-				if len(curStr) > 0 :
-					stringList = curStr.split(',')
-					if len(stringList) == 3 :
-						newClient = PLCClient(int(stringList[1]), stringList[0], stringList[2], [])
-						self.clientList.append(newClient)
-				else :
-					break
-			inFile.close()
-		except :
-			print 'No client file found'
-		return self.clientList
 
 	def AddClientToList(self, newClient) :
 		addClient = 1
 		for x in range(0, len(self.clientList)) :
 			if self.clientList[x].IPAddress == newClient.IPAddress :
 				addClient = 0
+				print 'Client already in list'
 				break
 
 		if addClient :
