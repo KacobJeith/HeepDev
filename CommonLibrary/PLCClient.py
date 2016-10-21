@@ -3,16 +3,11 @@ from ControlValue import ControlValue
 
 class PLCClient:
 
-	ClientType = 1
-	IPAddress = 'none'
-	ClientName = 'none'
-	ControlList = []
-
 	def __init__(self):
-		ClientType = 1
-		IPAddress = 'none'
-		ClientName = 'none'
-		ControlList = []
+		self.ClientType = 1
+		self.IPAddress = 'none'
+		self.ClientName = 'none'
+		self.ControlList = []
 		return
  
 	def GetClientString(self):
