@@ -9,8 +9,14 @@ client = ClientConnection()
 functionalClient = PLCClient()
 functionalClient.ClientName = 'This is a Test'
 functionalClient.ControlList.append(ControlValue())
+OnOffControls = ControlValue()
+OnOffControls.ControlName = 'gee'
+functionalClient.ControlList.append(OnOffControls)
 client.SetClientData(functionalClient)
 
 client.Connect()
+print client.SendClientDataToServer()
 
-print client.serverIP
+for x in range (0, 20) :
+	print client.EchoDataFromServer(str(x))
+	
