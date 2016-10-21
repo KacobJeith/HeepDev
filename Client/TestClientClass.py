@@ -16,4 +16,7 @@ client.SetClientData(functionalClient)
 
 client.Connect()
 print client.SendClientDataToServer()
-print client.EchoDataFromServer('Test the Echo')
+
+for x in range (0, 20) :
+	print client.EchoDataFromServer(str(x))
+	

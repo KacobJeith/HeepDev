@@ -1,12 +1,55 @@
 from PLCClient import PLCClient
+from ControlValue import ControlValue
+import json
 
-client = PLCClient()
-client.SetClientFromString('192.168.1.1,2,Kadelope,0,Mexico,0,Torid,1,Jao,0,100')
+tt = PLCClient()
+tt.ClientName = 'Floppy'
+tt.ControlList.append(ControlValue())
 
-print client.IPAddress
-print client.ControlList
+otherClient = PLCClient()
+otherClient.ClientName = 'Sloppy'
+Control1 = ControlValue()
+Control1.ControlName = 'Forge'
+Control2 = ControlValue()
+Control2.ControlName = 'Fast'
+Control2.ControlValueType = Control2.OnOff
+otherClient.ControlList.append(Control1)
+otherClient.ControlList.append(Control2)
 
-for x in range(0, len(client.ControlList)) :
-	print client.ControlList[x].ControlName
+clientList = []
+clientList.append(tt)
+clientList.append(otherClient)
 
-print client.GetClientString()
+
+newClient = tt.toJSONDict()
+newOtherClient = otherClient.toJSONDict()
+#newClient = client.toJSON()
+#newOtherClient = otherClient.toJSON()
+clientDictList = []
+clientDictList.append(newClient)
+clientDictList.append(newOtherClient)
+#print clientDictList
+with open('Test.json', 'w') as f:
+	json.dump(clientDictList, f, sort_keys=True, indent=4, separators=(',', ': '))
+f.close()
+
+
+
+try :
+	with open ('Test.json', 'r') as inFile:
+		allExistingClients = json.load(inFile)
+except :
+	print 'No client JSON file found'
+
+print len(allExistingClients)
+
+aaaClient = PLCClient()
+aaaClient.fromDict(allExistingClients[0])
+bbbClient = PLCClient()
+bbbClient.fromDict(allExistingClients[1])
+
+print 'These should be the same'
+print aaaClient.ControlList[0].ControlName
+print tt.ControlList[0].ControlName
+
+
