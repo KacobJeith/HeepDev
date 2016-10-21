@@ -19,12 +19,6 @@ class ServerConnection:
 
 	def __init__(self):
 		return
-		
-	def WriteClientList(self) :
-		outFile = open(self.fileName, 'w')
-		for x in range(0, len(self.clientList)) :
-			outFile.write(self.clientList[x].GetClientString())
-		outFile.close()
 
 	def WriteClientListJSON(self) :
 
@@ -90,7 +84,6 @@ class ServerConnection:
 		newClient.SetClientFromString(clientString)
 		newClient.IPAddress = address[0]
 		self.AddClientToList(newClient)
-		self.WriteClientList()
 
 		self.WriteClientListJSON()
 
