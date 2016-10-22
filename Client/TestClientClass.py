@@ -10,7 +10,7 @@ functionalClient = PLCClient()
 functionalClient.ClientName = 'This is not a Test'
 functionalClient.ControlList.append(ControlValue())
 OnOffControls = ControlValue()
-OnOffControls.ControlName = 'gear'
+OnOffControls.ControlName = 'gear' 
 functionalClient.ControlList.append(OnOffControls)
 client.SetClientData(functionalClient)
 
