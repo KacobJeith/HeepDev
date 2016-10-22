@@ -6,5 +6,5 @@ This documents describes the client API functions for the PLC clients. These com
 
 * IsAlive: - Will return "Yes" when the client is in communication. Intended to be used as a heart beat
 
-* SetVal:(ControlName, Value) - Set the value of a control with the given ControlName to the given Value
+* SetVal:(ControlName,Value) - Set the value of a control with the given ControlName to the given Value
 
