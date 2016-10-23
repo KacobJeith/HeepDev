@@ -1,5 +1,6 @@
-var standardTab = 10;
+import React from 'react';
 
+var standardTab = 10;
 
 var ClientsList = React.createClass({
   render: function() {
@@ -25,6 +26,7 @@ var ClientMetaData = React.createClass({
       backgroundColor: "#bbccca",
       width: 200,
       margin: 15,
+      float: 'left',
       display: "inline-block",
       borderRadius: 15, 
       borderColor: "#2b2d30", 
@@ -105,3 +107,5 @@ var ControllerMetaData = React.createClass({
     );
   }
 });
+
+export default ClientsList;
