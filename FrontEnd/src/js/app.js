@@ -3,40 +3,39 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import ClientsList from './Client';
 
-var PLCClientsBox = React.createClass({
-  
-  loadClientsFromServer: function() {
-    console.log('trying to load clients')
+class PLCClientsBox extends React.Component {
+  constructor() {
+    super();
+    this.state = {data: []};
+  }
+
+  loadClientsFromServer() {
     $.ajax({
       url: this.props.url,
       dataType: 'json',
       cache: false,
-      success: function(data) {
+      success: (data) => {
         this.setState({data: data});
-      }.bind(this),
+      },
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
-      }.bind(this)
+      }
     });
-  },
+  }
 
-  getInitialState: function() {
-    return {data: []};
-  },
-
-  componentDidMount: function() {
+  componentDidMount() {
     this.loadClientsFromServer();
-    setInterval(this.loadClientsFromServer, this.props.pollInterval);
-  },
+    setInterval(this.loadClientsFromServer.bind(this), this.props.pollInterval);
+  }
 
-  render: function() {
-    var headerStyle = {
+  render() {
+    const headerStyle = {
       backgroundColor: "#43464c", 
       paddingLeft: 15,
       color: "#e1e3e8"
     }
 
-    var footerStyle = {
+    const footerStyle = {
       clear:'left'
     }
 
@@ -48,7 +47,7 @@ var PLCClientsBox = React.createClass({
       </div>
     );
   }
-});
+}
 
 ReactDOM.render(
   <PLCClientsBox url="/api/clients" pollInterval={2000} />,
