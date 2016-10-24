@@ -8,3 +8,5 @@ This documents describes the client API functions for the PLC clients. These com
 
 * SetVal:(ControlName,Value) - Set the value of a control with the given ControlName to the given Value
 
+* GetAllControlValues: - Will return a series of tuples (ControlValueName,ControlValue) to indicate all current control values on the client
+
