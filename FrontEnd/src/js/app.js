@@ -41,9 +41,9 @@ class PLCClientsBox extends React.Component {
 
     return (
       <div className="clientsBox">
-        <h1 style={headerStyle}>Client Dashboard</h1>
-        <ClientsList data={this.state.data} /> 
-        <footer style={footerStyle}> <hr></hr> &copy; 2016 Jacob Dylan. </footer>
+        <h1 style={headerStyle} key="Header">Client Dashboard</h1>
+        <ClientsList data={this.state.data} key="Everything"/> 
+        <footer style={footerStyle} key="footer"> <hr></hr> &copy; 2016 Jacob Dylan. </footer>
       </div>
     );
   }
