@@ -29,10 +29,27 @@ class PLCClient:
 		self.ControlQueue.append( (ControlVal.ControlName, ControlVal.CurCtrlValue) )
 		return
 
+	def UpdateControlByName(self, name, value) :
+		for x in range(0, len(self.ControlList)) :
+			if self.ControlList[x].ControlName == name :
+				self.ControlList[x].CurCtrlValue = value
+				return
+		return
+
+	def UpdateControlsByString(self, controlString) :
+		controlList = controlString.split(';')
+		
+		for x in range(0, len(controlList)) :
+			if len(controlList[x]) > 0:
+				curCommand = controlList[x].split(',')
+				self.UpdateControlByName(curCommand[0], int(curCommand[1]))
+
+		return
+
 	def GetQueuedControlString(self) :
 		retString = ""
 		for x in range(0, len(self.ControlQueue)) :
-			retString = retString + '(' + self.ControlQueue[x][0] + ',' + str(self.ControlQueue[x][1]) +');'
+			retString = retString + self.ControlQueue[x][0] + ',' + str(self.ControlQueue[x][1]) +';'
 
 		self.ControlQueue = []
 		return retString

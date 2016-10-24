@@ -20,4 +20,4 @@ This documents describes the server API functions for the PLC server. These comm
 
 * UpdateControl:(ControlName,ControlValue) - Update a control on the server. This is mostly for display purposes
 
-* GetQueuedControlData: - Return a list of control updates in tuples ex. (ControlName,ControlValue);(ControlName2,ControlValue2);
+* GetQueuedControlData: - Return a list of control updates in tuples ex. ControlName,ControlValue;ControlName2,ControlValue2;
