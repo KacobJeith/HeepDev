@@ -2,25 +2,19 @@ import React from 'react';
 
 var standardTab = 10;
 
-var ClientsList = React.createClass({
-  render: function() {
-      var clientNodes = this.props.data.map(function(client) {
-      return (
-        <ClientMetaData Client= {client}></ClientMetaData>
-      );
-    });
-
-    return (
-      <div>        
-        {clientNodes}
-      </div>
+class ClientsList extends React.Component {
+  render() {
+    let clientNodes = this.props.data.map(client =>
+      <ClientMetaData Client= {client}></ClientMetaData>
     );
+
+    return  <div> {clientNodes} </div>;
   }
-});
+}
 
-var ClientMetaData = React.createClass({
+class ClientMetaData extends React.Component {
 
-  render: function() {
+  render() {
 
     var clientCardStyle = {
       backgroundColor: "#bbccca",
@@ -62,16 +56,16 @@ var ClientMetaData = React.createClass({
       </div>
     );
   }
-});
+}
 
-var ControllerList = React.createClass({
-  render: function() {
+class ControllerList extends React.Component {
+  
+
+  render() {
     
-    var controllerNodes = this.props.data.map(function(controller) {
-      return (
-        <ControllerMetaData Controls= {controller}></ControllerMetaData>
+    let controllerNodes = this.props.data.map( controller => 
+      <ControllerMetaData Controls= {controller}></ControllerMetaData> 
       );
-    });
 
     return (
 
@@ -80,7 +74,7 @@ var ControllerList = React.createClass({
       </div>
     );
   }
-});
+}
 
 class ControllerMetaData extends React.Component {
   render() {
