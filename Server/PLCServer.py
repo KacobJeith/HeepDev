@@ -73,6 +73,12 @@ class ServerConnection:
 
 		return 'Client Added'
 
+	def GetQueuedControlValues(self, address) :
+		IPAddress = address[0]
+		for x in range(0, len(self.clientList)) :
+			if IPAddress == self.clientList[x].IPAddress :
+				return 'changedControls'
+
 	def ParseClientInput(self, data, address) :
 		IsPLCServerString = 'IsPLCServer'
 		EchoString = 'Echo'

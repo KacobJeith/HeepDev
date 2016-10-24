@@ -8,8 +8,26 @@ class PLCClient:
 		self.IPAddress = 'none'
 		self.ClientName = 'none'
 		self.ControlList = []
+		self.ControlQueue = []
 		return
  
+	def QueueControl(self, ControlVal) :
+
+		for x in range(0, len(self.ControlQueue) ) :
+			if self.ControlQueue[x][0] == ControlVal.ControlName :
+				del self.ControlQueue[x]
+				break
+
+		self.ControlQueue.append( (ControlVal.ControlName, ControlVal.CurCtrlValue) )
+		return
+
+	def GetQueuedControlString(self) :
+		retString = ""
+		for x in range(0, len(self.ControlQueue)) :
+			retString = '(' + self.ControlQueue[x][0] + ',' + str(self.ControlQueue[x][1]) +');'
+
+		return retString
+
 	def GetClientString(self):
 		myString = self.IPAddress + ',' + str(self.ClientType) + ',' + self.ClientName
 		for x in range(0, len(self.ControlList)) :
