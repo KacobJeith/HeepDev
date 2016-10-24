@@ -11,11 +11,20 @@ class PLCClient:
 		self.ControlQueue = []
 		return
  
+ 	def QueueControlByName(self, name, ControlValue) :
+ 		for x in range(0, len(self.ControlList)) :
+ 			if self.ControlList[x].ControlName == name :
+ 				self.ControlList[x].CurCtrlValue = ControlValue
+ 				self.QueueControl(self.ControlList[x])
+ 				return
+
+ 		return
+
 	def QueueControl(self, ControlVal) :
 		for x in range(0, len(self.ControlQueue) ) :
 			if self.ControlQueue[x][0] == ControlVal.ControlName :
 				self.ControlQueue[x] = (ControlVal.ControlName, ControlVal.CurCtrlValue)
-				break
+				return
 
 		self.ControlQueue.append( (ControlVal.ControlName, ControlVal.CurCtrlValue) )
 		return
