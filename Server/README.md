@@ -17,3 +17,5 @@ This documents describes the server API functions for the PLC server. These comm
 * GetClientList: - Get the list of current clients that the server knows about
 
 * SendToClient:(ClientAddress,Data) - Send data to another client via the server
+
+* UpdateControl:(ControlName,ControlValue) - Update a control on the server. This is mostly for display purposes
