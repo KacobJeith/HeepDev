@@ -82,8 +82,8 @@ var ControllerList = React.createClass({
   }
 });
 
-var ControllerMetaData = React.createClass({
-  render: function() {
+class ControllerMetaData extends React.Component {
+  render() {
 
     var controllerDataStyle = {
     paddingLeft: standardTab
@@ -95,17 +95,15 @@ var ControllerMetaData = React.createClass({
         dataToDisplay.push(<p>{key}: {this.props.Controls[key]}</p>);
     }
 
-    return (
-      <div >
+    return <div >
         <h4 >
           {this.props.Controls.ControlName}
         </h4>
         <div style={controllerDataStyle}> 
           {dataToDisplay}
         </div>
-      </div>
-    );
+      </div>;
   }
-});
+}
 
 export default ClientsList;
