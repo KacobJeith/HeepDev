@@ -12,10 +12,9 @@ class PLCClient:
 		return
  
 	def QueueControl(self, ControlVal) :
-
 		for x in range(0, len(self.ControlQueue) ) :
 			if self.ControlQueue[x][0] == ControlVal.ControlName :
-				del self.ControlQueue[x]
+				self.ControlQueue[x] = (ControlVal.ControlName, ControlVal.CurCtrlValue)
 				break
 
 		self.ControlQueue.append( (ControlVal.ControlName, ControlVal.CurCtrlValue) )
@@ -24,8 +23,9 @@ class PLCClient:
 	def GetQueuedControlString(self) :
 		retString = ""
 		for x in range(0, len(self.ControlQueue)) :
-			retString = '(' + self.ControlQueue[x][0] + ',' + str(self.ControlQueue[x][1]) +');'
+			retString = retString + '(' + self.ControlQueue[x][0] + ',' + str(self.ControlQueue[x][1]) +');'
 
+		self.ControlQueue = []
 		return retString
 
 	def GetClientString(self):
