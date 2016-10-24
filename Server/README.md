@@ -19,3 +19,5 @@ This documents describes the server API functions for the PLC server. These comm
 * SendToClient:(ClientAddress,Data) - Send data to another client via the server
 
 * UpdateControl:(ControlName,ControlValue) - Update a control on the server. This is mostly for display purposes
+
+* GetQueuedControlData: - Return a list of control updates in tuples ex. (ControlName,ControlValue);(ControlName2,ControlValue2);
