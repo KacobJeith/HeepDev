@@ -41,7 +41,7 @@ class ServerConnection:
 
 			for x in range(0, len(allExistingClients)) :
 				newClient = PLCClient()
-				newClient.fromDict(allExistingClients[0])
+				newClient.fromDict(allExistingClients[x])
 				self.clientList.append(newClient)
 		except :
 			print 'No client file found'
