@@ -52,6 +52,7 @@ class ServerConnection:
 		for x in range(0, len(self.clientList)) :
 			if self.clientList[x].IPAddress == newClient.IPAddress :
 				addClient = 0
+				self.clientList[x] = newClient
 				print 'Client already in list'
 				break
 

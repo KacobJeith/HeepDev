@@ -7,10 +7,10 @@ from PLCClient import PLCClient
 client = ClientConnection()
 
 functionalClient = PLCClient()
-functionalClient.ClientName = 'This is a Test'
+functionalClient.ClientName = 'This is not a Test'
 functionalClient.ControlList.append(ControlValue())
 OnOffControls = ControlValue()
-OnOffControls.ControlName = 'gee'
+OnOffControls.ControlName = 'gear' 
 functionalClient.ControlList.append(OnOffControls)
 client.SetClientData(functionalClient)
 

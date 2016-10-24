@@ -1,4 +1,4 @@
-var fs = require('fs');
+import fs from 'fs';
 var path = require('path');
 var express = require('express');
 var bodyParser = require('body-parser');
@@ -6,7 +6,7 @@ var app = express();
 
 var CLIENT_FILE = path.join(__dirname, '../../Server/clientList.json');
 
-app.set('port', (process.env.PORT || 3000));
+app.set('port', (process.env.PORT || 3001));
 
 app.use('/', express.static(__dirname));
 app.use(bodyParser.json());
@@ -60,4 +60,28 @@ app.post('/api/clients', function(req, res) {
 
 app.listen(app.get('port'), function() {
   console.log('Server started: http://localhost:' + app.get('port') + '/');
+});
+
+
+
+var webpack = require('webpack');
+var WebpackDevServer = require('webpack-dev-server');
+
+var webpackDevConfig = require('./webpack.config.development');
+console.log(webpackDevConfig);
+
+new WebpackDevServer(webpack(webpackDevConfig), {
+  quiet: false,
+  stats: { colors: true },
+  historyApiFallback: true,
+  headers: {
+    'Access-Control-Allow-Origin': 'http://localhost:3001',
+    'Access-Control-Allow-Headers': 'X-Requested-With'
+  }
+}).listen(3000, 'localhost', function (err) {
+  if (err) {
+    console.log(err);
+  }
+
+  console.log('webpack dev server listening on localhost:3000');
 });

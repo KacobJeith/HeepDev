@@ -1,9 +1,12 @@
-{/*var React = require('react');
-var ReactDOM = require.('react-dom');
-*/}
+import React from 'react';
+import ReactDOM from 'react-dom';
+import $ from 'jquery';
+import ClientsList from './Client';
+
 var PLCClientsBox = React.createClass({
   
   loadClientsFromServer: function() {
+    console.log('trying to load clients')
     $.ajax({
       url: this.props.url,
       dataType: 'json',
@@ -33,17 +36,21 @@ var PLCClientsBox = React.createClass({
       color: "#e1e3e8"
     }
 
+    var footerStyle = {
+      clear:'left'
+    }
+
     return (
       <div className="clientsBox">
         <h1 style={headerStyle}>Client Dashboard</h1>
-        <ClientsList data={this.state.data} />
+        <ClientsList data={this.state.data} /> 
+        <footer style={footerStyle}> <hr></hr> &copy; 2016 Jacob Dylan. </footer>
       </div>
     );
   }
 });
 
-
 ReactDOM.render(
   <PLCClientsBox url="/api/clients" pollInterval={2000} />,
-  document.getElementById('content')
+  document.getElementById('root')
 );
