@@ -78,6 +78,21 @@ class ControllerList extends React.Component {
 }
 
 class ControllerMetaData extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {showResults: false};
+
+    this.onClick = this.onClick.bind(this);
+  }
+
+  onClick(){
+    console.log("Trying to Update state");
+    this.setState(prevState => ({
+      showResults: !prevState.showResults
+    }));
+  }
+
+
   render() {
 
     var controllerDataStyle = {
@@ -91,11 +106,11 @@ class ControllerMetaData extends React.Component {
     }
 
     return <div key="ControlsSection">
-        <h4 key="ControlHeading">
+        <h4 key="ControlHeading" onClick={this.onClick}>
           {this.props.Controls.ControlName}
         </h4>
-        <div style={controllerDataStyle} key="ControlData"> 
-          {dataToDisplay}
+        <div style={controllerDataStyle} key="ControlData" onClick={this.onClick}> 
+          {this.state.showResults ? dataToDisplay : null}
         </div>
       </div>;
   }
