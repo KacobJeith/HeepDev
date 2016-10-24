@@ -1,30 +1,26 @@
+import React from 'react';
+
 var standardTab = 10;
 
-
-var ClientsList = React.createClass({
-  render: function() {
-      var clientNodes = this.props.data.map(function(client) {
-      return (
-        <ClientMetaData Client= {client}></ClientMetaData>
-      );
-    });
-
-    return (
-      <div>        
-        {clientNodes}
-      </div>
+class ClientsList extends React.Component {
+  render() {
+    let clientNodes = this.props.data.map(client =>
+      <ClientMetaData Client= {client}></ClientMetaData>
     );
+
+    return  <div> {clientNodes} </div>;
   }
-});
+}
 
-var ClientMetaData = React.createClass({
+class ClientMetaData extends React.Component {
 
-  render: function() {
+  render() {
 
     var clientCardStyle = {
       backgroundColor: "#bbccca",
       width: 200,
       margin: 15,
+      float: 'left',
       display: "inline-block",
       borderRadius: 15, 
       borderColor: "#2b2d30", 
@@ -60,16 +56,16 @@ var ClientMetaData = React.createClass({
       </div>
     );
   }
-});
+}
 
-var ControllerList = React.createClass({
-  render: function() {
+class ControllerList extends React.Component {
+  
+
+  render() {
     
-    var controllerNodes = this.props.data.map(function(controller) {
-      return (
-        <ControllerMetaData Controls= {controller}></ControllerMetaData>
+    let controllerNodes = this.props.data.map( controller => 
+      <ControllerMetaData Controls= {controller}></ControllerMetaData> 
       );
-    });
 
     return (
 
@@ -78,10 +74,10 @@ var ControllerList = React.createClass({
       </div>
     );
   }
-});
+}
 
-var ControllerMetaData = React.createClass({
-  render: function() {
+class ControllerMetaData extends React.Component {
+  render() {
 
     var controllerDataStyle = {
     paddingLeft: standardTab
@@ -93,15 +89,15 @@ var ControllerMetaData = React.createClass({
         dataToDisplay.push(<p>{key}: {this.props.Controls[key]}</p>);
     }
 
-    return (
-      <div >
+    return <div >
         <h4 >
           {this.props.Controls.ControlName}
         </h4>
         <div style={controllerDataStyle}> 
           {dataToDisplay}
         </div>
-      </div>
-    );
+      </div>;
   }
-});
+}
+
+export default ClientsList;
