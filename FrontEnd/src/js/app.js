@@ -10,8 +10,6 @@ class PLCClientsBox extends React.Component {
   }
 
   loadClientsFromServer() {
-    console.log('trying to load clients')
-    console.log(this)
     $.ajax({
       url: this.props.url,
       dataType: 'json',
