@@ -12,6 +12,8 @@ This documents describes the server API functions for the PLC server. These comm
 
 * Echo:(InformationToBeRepeated) - Tell the server to echo some string back to the client
 
+* GetQueuedControlData: - Return a list of control updates in tuples ex. ControlName,ControlValue;ControlName2,ControlValue2;
+
 ### Not Implemented
 
 * GetClientList: - Get the list of current clients that the server knows about
@@ -19,5 +21,3 @@ This documents describes the server API functions for the PLC server. These comm
 * SendToClient:(ClientAddress,Data) - Send data to another client via the server
 
 * UpdateControl:(ControlName,ControlValue) - Update a control on the server. This is mostly for display purposes
-
-* GetQueuedControlData: - Return a list of control updates in tuples ex. ControlName,ControlValue;ControlName2,ControlValue2;
