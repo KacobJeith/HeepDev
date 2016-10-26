@@ -2,6 +2,12 @@ from PLCClient import PLCClient
 from ControlValue import ControlValue
 import json
 
+def CheckEquality(first, second, testName) :
+	if first == second :
+		return testName + ': Success'
+	return testName + ': Failed******'
+
+# Generate Clients that will be turned into JSON
 tt = PLCClient()
 tt.ClientName = 'Floppy'
 tt.ControlList.append(ControlValue())
@@ -20,36 +26,28 @@ clientList = []
 clientList.append(tt)
 clientList.append(otherClient)
 
-
+# Generate a JSON File
 newClient = tt.toJSONDict()
 newOtherClient = otherClient.toJSONDict()
-#newClient = client.toJSON()
-#newOtherClient = otherClient.toJSON()
 clientDictList = []
 clientDictList.append(newClient)
 clientDictList.append(newOtherClient)
-#print clientDictList
 with open('Test.json', 'w') as f:
 	json.dump(clientDictList, f, sort_keys=True, indent=4, separators=(',', ': '))
 f.close()
 
 
-
+# Load New PLC Clients from a JSON file
 try :
 	with open ('Test.json', 'r') as inFile:
 		allExistingClients = json.load(inFile)
 except :
 	print 'No client JSON file found'
 
-print len(allExistingClients)
-
 aaaClient = PLCClient()
 aaaClient.fromDict(allExistingClients[0])
 bbbClient = PLCClient()
 bbbClient.fromDict(allExistingClients[1])
 
-print 'These should be the same'
-print aaaClient.ControlList[0].ControlName
-print tt.ControlList[0].ControlName
-
+print CheckEquality(aaaClient.ControlList[0].ControlName, tt.ControlList[0].ControlName, 'FromJSONTest')
 
