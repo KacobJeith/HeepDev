@@ -4,7 +4,7 @@ from ControlValue import ControlValue
 def CheckEquality(first, second, testName) :
 	if first == second :
 		return testName + ': Success'
-	return testName + ': Failed'
+	return testName + ': Failed******'
 
 # Create Controls and PLC Client
 otherClient = PLCClient()
