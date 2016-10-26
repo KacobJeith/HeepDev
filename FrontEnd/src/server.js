@@ -27,9 +27,12 @@ app.get('/api/clients', function(req, res) {
   fs.readFile(CLIENT_FILE, function(err, data) {
     if (err) {
       console.error(err);
-      process.exit(1);
+      //process.exit(1);
     }
-    res.json(JSON.parse(data));
+    else {
+      res.json(JSON.parse(data));
+    }
+    
   });
 });
 
