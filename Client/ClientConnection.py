@@ -117,6 +117,9 @@ class ClientConnection:
 		toSend = 'Echo:' + data
 		return self.SendDataToServer(toSend)
 
+	def GetQueuedCommandsFromServer(self) :
+		toSend = 'GetQueuedControlData:'
+		return self.SendDataToServer(toSend)
 
 	def Connect(self) : 
 		# First Check for File and try to connect

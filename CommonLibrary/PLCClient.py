@@ -8,8 +8,52 @@ class PLCClient:
 		self.IPAddress = 'none'
 		self.ClientName = 'none'
 		self.ControlList = []
+		self.ControlQueue = []
 		return
  
+ 	def QueueControlByName(self, name, ControlValue) :
+ 		for x in range(0, len(self.ControlList)) :
+ 			if self.ControlList[x].ControlName == name :
+ 				self.ControlList[x].CurCtrlValue = ControlValue
+ 				self.QueueControl(self.ControlList[x])
+ 				return
+
+ 		return
+
+	def QueueControl(self, ControlVal) :
+		for x in range(0, len(self.ControlQueue) ) :
+			if self.ControlQueue[x][0] == ControlVal.ControlName :
+				self.ControlQueue[x] = (ControlVal.ControlName, ControlVal.CurCtrlValue)
+				return
+
+		self.ControlQueue.append( (ControlVal.ControlName, ControlVal.CurCtrlValue) )
+		return
+
+	def UpdateControlByName(self, name, value) :
+		for x in range(0, len(self.ControlList)) :
+			if self.ControlList[x].ControlName == name :
+				self.ControlList[x].CurCtrlValue = value
+				return
+		return
+
+	def UpdateControlsByString(self, controlString) :
+		controlList = controlString.split(';')
+		
+		for x in range(0, len(controlList)) :
+			if len(controlList[x]) > 0:
+				curCommand = controlList[x].split(',')
+				self.UpdateControlByName(curCommand[0], int(curCommand[1]))
+
+		return
+
+	def GetQueuedControlString(self) :
+		retString = ""
+		for x in range(0, len(self.ControlQueue)) :
+			retString = retString + self.ControlQueue[x][0] + ',' + str(self.ControlQueue[x][1]) +';'
+
+		self.ControlQueue = []
+		return retString
+
 	def GetClientString(self):
 		myString = self.IPAddress + ',' + str(self.ClientType) + ',' + self.ClientName
 		for x in range(0, len(self.ControlList)) :

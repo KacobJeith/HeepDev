@@ -73,10 +73,17 @@ class ServerConnection:
 
 		return 'Client Added'
 
+	def GetQueuedControlValues(self, address) :
+		IPAddress = address[0]
+		for x in range(0, len(self.clientList)) :
+			if IPAddress == self.clientList[x].IPAddress :
+				return self.clientList[x].GetQueuedControlString()
+
 	def ParseClientInput(self, data, address) :
 		IsPLCServerString = 'IsPLCServer'
 		EchoString = 'Echo'
 		NewConnectString = 'NewConnect'
+		GetQueuedDataString = 'GetQueuedControlData'
 
 		commandDataSplit = data.split(':')
 		print commandDataSplit
@@ -87,6 +94,8 @@ class ServerConnection:
 			return commandDataSplit[1]
 		elif commandDataSplit[0] == NewConnectString :
 			return self.AddClient(commandDataSplit[1], address)
+		elif commandDataSplit[0] == GetQueuedDataString :
+			return self.GetQueuedControlValues(address)
 
 		return 'null'
 
