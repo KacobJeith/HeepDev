@@ -1,0 +1,45 @@
+import sys
+sys.path.insert(0, '../../CommonLibrary')
+sys.path.insert(0, '../../Client')
+from ControlValue import ControlValue
+from PLCClient import PLCClient
+from ClientConnection import ClientConnection
+import time
+
+onRaspPi = 0
+
+if onRaspPi :
+	import RPi.GPIO as GPIO
+	GPIO.setmode(GPIO.BCM)
+	GPIO.setup(17, GPIO.OUT, initial=GPIO.LOW)
+
+def ToggleLight(lightOn) :
+	if onRaspPi :
+		if lightOn :
+			GPIO.output(17, GPIO.HIGH)
+		else :
+			GPIO.output(17, GPIO.LOW)
+	else :
+		print "Light is ", lightOn
+
+def SetupClientConnection() :
+	client = ClientConnection()
+	BlinkyLEDClient = PLCClient()
+	BlinkyLEDClient.ClientName = 'BlinkyLED'
+	OnOffControls = ControlValue()
+	OnOffControls.ControlValueType = OnOffControls.OnOff
+	OnOffControls.ControlName = 'LED State'
+	BlinkyLEDClient.ControlList.append(OnOffControls)
+	client.SetClientData(BlinkyLEDClient)
+	return client
+
+# Setup Client Connection
+client = SetupClientConnection()
+
+client.Connect()
+
+counter = 0
+while 1 :
+	time.sleep(0.5)
+	print client.EchoDataFromServer('Smellz')
+	print client.GetQueuedCommandsFromServer()
