@@ -1,5 +1,7 @@
 import socket
 import json
+from threading import Thread
+import time
 import sys
 sys.path.insert(0, '../CommonLibrary')
 
@@ -99,6 +101,23 @@ class ServerConnection:
 
 		return 'null'
 
+	def QueueCurrentCommands(self) :
+		fileName = 'CommandQueue.tmp'
+		commands = []
+		while 1 :
+			with open (fileName, 'r') as inFile :
+				for line in inFile :
+					print line
+					print 'test'
+			time.sleep(1)
+
+	def StartQueueCommandLoop(self) :
+		try:
+			t = Thread( target = self.QueueCurrentCommands, args=() )
+			t.start()
+		except:
+			print ('Failed to schedule search thread')
+
 
 	def ListenToNetwork(self) :
 
@@ -106,8 +125,12 @@ class ServerConnection:
 		self.sock.bind((self.host, self.TCP_PORT)) 
 		self.sock.listen(self.backlog)
 
+		self.StartQueueCommandLoop()
+
 		while 1: 
+
 			client, address = self.sock.accept() 
+
 			data = client.recv(self.size) 
 
 			returnData = self.ParseClientInput(data, address)
