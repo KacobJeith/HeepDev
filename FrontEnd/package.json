@@ -15,7 +15,7 @@
   "scripts": {
     "build": "babel src -d lib --copy-files",
     "start": "babel-node lib/server.js",
-    "build-start": "npm run build && npm run start"
+    "bs": "npm run build && npm run start"
   },
   "dependencies": {
     "body-parser": "^1.15.2",
