@@ -7,6 +7,8 @@ var app = express();
 var CLIENT_FILE = path.join(__dirname, '../../Server/clientList.json');
 var COMMAND_FILE = path.join(__dirname, '../../Server/CommandQueue.tmp');
 
+var cmd_fd = fs.openSync(COMMAND_FILE,'r');
+
 app.set('port', (process.env.PORT || 3001));
 
 app.use('/', express.static(__dirname));
@@ -28,12 +30,12 @@ app.get('/api/clients', function(req, res) {
   fs.readFile(CLIENT_FILE, function(err, data) {
     if (err) {
       console.error(err);
-      //process.exit(1);
+      process.exit(1);
     }
     else {
       res.json(JSON.parse(data));
     }
-    
+
   });
 });
 
@@ -44,10 +46,12 @@ app.post('/api/commands', function(req, res) {
   fs.appendFile(COMMAND_FILE, command, function(err, data) {
     if (err) {
       console.error(err);
-      //process.exit(1);
+      process.exit(1);
     }
     console.log(command);
+    fs.close(cmd_fd);
   });
+
 });
 
 

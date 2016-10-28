@@ -16,8 +16,8 @@ class ServerConnection:
 	TCP_PORT = 5000
 	clientList = []
 	host = ''
-	backlog = 5 
-	size = 1024 
+	backlog = 5
+	size = 1024
 
 	def __init__(self):
 		self.ReadClientListJSON()
@@ -123,7 +123,7 @@ class ServerConnection:
 			with open(fileName, "w") :
 				pass
 			self.AddCommandsToQueue(commands)
-			time.sleep(1)
+			time.sleep(0.1)
 
 	def StartQueueCommandLoop(self) :
 		try:
@@ -136,19 +136,19 @@ class ServerConnection:
 	def ListenToNetwork(self) :
 
 		self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		self.sock.bind((self.host, self.TCP_PORT)) 
+		self.sock.bind((self.host, self.TCP_PORT))
 		self.sock.listen(self.backlog)
 
 		self.StartQueueCommandLoop()
 
-		while 1: 
+		while 1:
 
-			client, address = self.sock.accept() 
+			client, address = self.sock.accept()
 
-			data = client.recv(self.size) 
+			data = client.recv(self.size)
 
 			returnData = self.ParseClientInput(data, address)
-			
-			if data: 
-				client.send(returnData) 
-			client.close() 
+
+			if data:
+				client.send(returnData)
+			client.close()
