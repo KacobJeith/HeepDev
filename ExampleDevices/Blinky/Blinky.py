@@ -27,7 +27,7 @@ def SetupClientConnection() :
 	BlinkyLEDClient = PLCClient()
 	BlinkyLEDClient.ClientName = 'BlinkyLED'
 	OnOffControls = ControlValue()
-	OnOffControls.ControlValueType = OnOffControls.OnOff
+	OnOffControls.ControlValueType = OnOffControls.Range
 	OnOffControls.ControlName = 'LEDState'
 	BlinkyLEDClient.ControlList.append(OnOffControls)
 	client.SetClientData(BlinkyLEDClient)
