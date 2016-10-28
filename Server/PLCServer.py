@@ -91,9 +91,12 @@ class ServerConnection:
 		destControlName = commandList[1]
 		destValue = int(commandList[2])
 
-		print destIP + ' ,' + destControlName + ' ,' + str(destValue)
+		for x in range(0, len(self.clientList)) : 
+			if self.clientList[x].IPAddress == destIP :
+				self.clientList[x].QueueControlByName(destControlName, destValue)
+				return 'Command Queued'
 
-		return 'UpdateClientControl:Not Implemented'
+		return 'Client not found'
 
 
 	def ParseClientInput(self, data, address) :

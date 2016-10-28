@@ -16,9 +16,10 @@ client.SetClientData(functionalClient)
 
 client.Connect()
 print client.SendClientDataToServer()
-print client.GetQueuedCommandsFromServer()
 print client.GetClientList()
-print client.UpdateClientControl()
+print client.UpdateClientControl('10.0.0.69', 'gear', 4)
+print client.GetQueuedCommandsFromServer()
+print client.GetQueuedCommandsFromServer()
 
 for x in range (0, 20) :
 	print client.EchoDataFromServer(str(x))
