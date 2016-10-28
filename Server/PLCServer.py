@@ -101,14 +101,28 @@ class ServerConnection:
 
 		return 'null'
 
+	def AddCommandsToQueue(self, commands) :
+		for x in range(0, len(commands)) :
+			splitString = commands[x].split(':')
+			for x in range(0, len(self.clientList)) :
+				if splitString[0] == self.clientList[x].IPAddress :
+					commandVals = splitString[1].split(',')
+					print commandVals[0]
+					print commandVals[1]
+					self.clientList[x].QueueControlByName(commandVals[0], commandVals[1])
+
 	def QueueCurrentCommands(self) :
 		fileName = 'CommandQueue.tmp'
-		commands = []
 		while 1 :
+			commands = []
 			with open (fileName, 'r') as inFile :
 				for line in inFile :
-					print line
-					print 'test'
+					if len(line) > 0 :
+						commands.append(line)
+			print commands
+			with open(fileName, "w") :
+				pass
+			self.AddCommandsToQueue(commands)
 			time.sleep(1)
 
 	def StartQueueCommandLoop(self) :

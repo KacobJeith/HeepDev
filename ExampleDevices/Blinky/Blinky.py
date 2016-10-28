@@ -28,15 +28,15 @@ def SetupClientConnection() :
 	BlinkyLEDClient.ClientName = 'BlinkyLED'
 	OnOffControls = ControlValue()
 	OnOffControls.ControlValueType = OnOffControls.OnOff
-	OnOffControls.ControlName = 'LED State'
+	OnOffControls.ControlName = 'LEDState'
 	BlinkyLEDClient.ControlList.append(OnOffControls)
 	client.SetClientData(BlinkyLEDClient)
 	return client
 
 # Setup Client Connection
 client = SetupClientConnection()
-
 client.Connect()
+client.SendClientDataToServer()
 
 counter = 0
 while 1 :
