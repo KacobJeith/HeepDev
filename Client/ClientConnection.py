@@ -121,6 +121,14 @@ class ClientConnection:
 		toSend = 'GetQueuedControlData:'
 		return self.SendDataToServer(toSend)
 
+	def GetClientList(self) :
+		toSend = 'GetClientList:'
+		return self.SendDataToServer(toSend)
+
+	def UpdateClientControl(self) :
+		toSend = 'UpdateClientControl:'
+		return self.SendDataToServer(toSend)
+
 	def Connect(self) : 
 		# First Check for File and try to connect
 		ipString = 'None' 

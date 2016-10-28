@@ -17,6 +17,8 @@ client.SetClientData(functionalClient)
 client.Connect()
 print client.SendClientDataToServer()
 print client.GetQueuedCommandsFromServer()
+print client.GetClientList()
+print client.UpdateClientControl()
 
 for x in range (0, 20) :
 	print client.EchoDataFromServer(str(x))

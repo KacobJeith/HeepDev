@@ -83,10 +83,10 @@ class ServerConnection:
 
 	def GetClientList(self) :
 		print 'Implement Get Client List command'
-		return 'Not Implemented'
+		return 'GetClientList:Not Implemented'
 
 	def UpdateClientControl(self) :
-		return 'Not Implemented'
+		return 'UpdateClientControl:Not Implemented'
 
 
 	def ParseClientInput(self, data, address) :
