@@ -85,7 +85,14 @@ class ServerConnection:
 		print 'Implement Get Client List command'
 		return 'GetClientList:Not Implemented'
 
-	def UpdateClientControl(self) :
+	def UpdateClientControl(self, commandData) :
+		commandList = commandData.split(',')
+		destIP = commandList[0]
+		destControlName = commandList[1]
+		destValue = int(commandList[2])
+
+		print destIP + ' ,' + destControlName + ' ,' + str(destValue)
+
 		return 'UpdateClientControl:Not Implemented'
 
 
@@ -111,7 +118,7 @@ class ServerConnection:
 		elif commandDataSplit[0] == GetClientListString :
 			return self.GetClientList()
 		elif commandDataSplit[0] == UpdateClientControlString :
-			return self.UpdateClientControl()
+			return self.UpdateClientControl(commandDataSplit[1])
 
 		return 'null'
 

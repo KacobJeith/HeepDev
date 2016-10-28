@@ -126,7 +126,7 @@ class ClientConnection:
 		return self.SendDataToServer(toSend)
 
 	def UpdateClientControl(self) :
-		toSend = 'UpdateClientControl:'
+		toSend = 'UpdateClientControl:TestIP,TestControl,2'
 		return self.SendDataToServer(toSend)
 
 	def Connect(self) : 
