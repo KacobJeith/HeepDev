@@ -1,4 +1,5 @@
 import React from 'react';
+import ControllerList from './Controls';
 
 var standardTab = 10;
 
@@ -56,63 +57,6 @@ class ClientMetaData extends React.Component {
       </div>
       </div>
     );
-  }
-}
-
-class ControllerList extends React.Component {
-  
-
-  render() {
-     
-    let controllerNodes = this.props.data.map( (controller,index) => 
-      <ControllerMetaData Controls={controller} key={index}></ControllerMetaData> 
-      );
-
-    return (
-
-      <div className="controllerList" key="AllControls">        
-        {controllerNodes}
-      </div>
-    );
-  }
-}
-
-class ControllerMetaData extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {showResults: false};
-
-    this.onClick = this.onClick.bind(this);
-  }
-
-  onClick(){
-    console.log("Trying to Update state");
-    this.setState(prevState => ({
-      showResults: !prevState.showResults
-    }));
-  }
-
-
-  render() {
-
-    var controllerDataStyle = {
-    paddingLeft: standardTab
-    }
-
-    var dataToDisplay = []; 
-
-    for (var key in this.props.Controls){
-        dataToDisplay.push(<p key={key}>{key}: {this.props.Controls[key]}</p>);
-    }
-
-    return <div key="ControlsSection">
-        <h4 key="ControlHeading" onClick={this.onClick}>
-          {this.props.Controls.ControlName}
-        </h4>
-        <div style={controllerDataStyle} key="ControlData" onClick={this.onClick}> 
-          {this.state.showResults ? dataToDisplay : null}
-        </div>
-      </div>;
   }
 }
 

@@ -34,8 +34,8 @@ class ControlValue:
 
 	def SetRangeFromSplitString(self, splitString, startIndex) :
 		self.ControlName = splitString[startIndex + 1]
-		self.LowValue = splitString[startIndex + 2]
-		self.HighValue = splitString[startIndex + 3]
+		self.LowValue = int(splitString[startIndex + 2])
+		self.HighValue = int(splitString[startIndex + 3])
 		return startIndex + 4
 
 	def SetControlFromSplitString(self, splitString, startIndex) :

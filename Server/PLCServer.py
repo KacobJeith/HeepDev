@@ -1,5 +1,7 @@
 import socket
 import json
+from threading import Thread
+import time
 import sys
 sys.path.insert(0, '../CommonLibrary')
 
@@ -14,8 +16,8 @@ class ServerConnection:
 	TCP_PORT = 5000
 	clientList = []
 	host = ''
-	backlog = 5 
-	size = 1024 
+	backlog = 5
+	size = 1024
 
 	def __init__(self):
 		self.ReadClientListJSON()
@@ -99,19 +101,54 @@ class ServerConnection:
 
 		return 'null'
 
+	def AddCommandsToQueue(self, commands) :
+		for x in range(0, len(commands)) :
+			splitString = commands[x].split(':')
+			for x in range(0, len(self.clientList)) :
+				if splitString[0] == self.clientList[x].IPAddress :
+					commandVals = splitString[1].split(',')
+					print commandVals[0]
+					print commandVals[1]
+					self.clientList[x].QueueControlByName(commandVals[0], commandVals[1])
+
+	def QueueCurrentCommands(self) :
+		fileName = 'CommandQueue.tmp'
+		while 1 :
+			commands = []
+			with open (fileName, 'r') as inFile :
+				for line in inFile :
+					if len(line) > 0 :
+						commands.append(line)
+			print commands
+			with open(fileName, "w") :
+				pass
+			self.AddCommandsToQueue(commands)
+			time.sleep(0.1)
+
+	def StartQueueCommandLoop(self) :
+		try:
+			t = Thread( target = self.QueueCurrentCommands, args=() )
+			t.start()
+		except:
+			print ('Failed to schedule search thread')
+
 
 	def ListenToNetwork(self) :
 
 		self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		self.sock.bind((self.host, self.TCP_PORT)) 
+		self.sock.bind((self.host, self.TCP_PORT))
 		self.sock.listen(self.backlog)
 
-		while 1: 
-			client, address = self.sock.accept() 
-			data = client.recv(self.size) 
+		self.StartQueueCommandLoop()
+
+		while 1:
+
+			client, address = self.sock.accept()
+
+			data = client.recv(self.size)
 
 			returnData = self.ParseClientInput(data, address)
-			
-			if data: 
-				client.send(returnData) 
-			client.close() 
+
+			if data:
+				client.send(returnData)
+			client.close()

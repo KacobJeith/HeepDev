@@ -5,6 +5,9 @@ var bodyParser = require('body-parser');
 var app = express();
 
 var CLIENT_FILE = path.join(__dirname, '../../Server/clientList.json');
+var COMMAND_FILE = path.join(__dirname, '../../Server/CommandQueue.tmp');
+
+var cmd_fd = fs.openSync(COMMAND_FILE,'r');
 
 app.set('port', (process.env.PORT || 3001));
 
@@ -27,37 +30,32 @@ app.get('/api/clients', function(req, res) {
   fs.readFile(CLIENT_FILE, function(err, data) {
     if (err) {
       console.error(err);
-      //process.exit(1);
+      process.exit(1);
     }
     else {
       res.json(JSON.parse(data));
     }
-    
+
   });
 });
 
-app.post('/api/clients', function(req, res) {
-  fs.readFile(CLIENT_FILE, function(err, data) {
+app.post('/api/commands', function(req, res) {
+  console.log("entering server code");
+  console.log(req.body);
+  const command = req.body["command"];
+
+  fs.appendFile(COMMAND_FILE, command, function(err, data) {
     if (err) {
       console.error(err);
+      res.end("AJAX FAILED :(");
       process.exit(1);
     }
-    var clients = JSON.parse(data);
-    var newClient = {
-      ClientName: req.body.ClientName,
-      ClientType: req.body.ClientType,
-      ControlList: req.body.ControlList,
-      IPAddress: req.body.IPAddress
-    };
-    clients.push(newClient);
-    fs.writeFile(CLIENT_FILE, JSON.stringify(clients, null, 4), function(err) {
-      if (err) {
-        console.error(err);
-        process.exit(1);
-      }
-      res.json(clients);
-    });
+    console.log(command);
+    fs.close(cmd_fd);
   });
+
+  res.end("AJAX WORKED?!");
+
 });
 
 
