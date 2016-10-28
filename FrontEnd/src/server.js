@@ -43,14 +43,18 @@ app.post('/api/commands', function(req, res) {
   console.log("entering server code");
   console.log(req.body);
   const command = req.body["command"];
+
   fs.appendFile(COMMAND_FILE, command, function(err, data) {
     if (err) {
       console.error(err);
+      res.end("AJAX FAILED :(");
       process.exit(1);
     }
     console.log(command);
     fs.close(cmd_fd);
   });
+
+  res.end("AJAX WORKED?!");
 
 });
 
