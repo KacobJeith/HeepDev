@@ -58,7 +58,6 @@ class PLCClient:
 		myString = self.IPAddress + ',' + str(self.ClientType) + ',' + self.ClientName
 		for x in range(0, len(self.ControlList)) :
 			myString = myString + ',' + self.ControlList[x].GetControlValueString()
-		myString = myString + '\n'
 		return myString
 
 	def SetClientFromString(self, clientString) :
