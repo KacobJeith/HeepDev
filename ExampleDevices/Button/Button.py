@@ -29,17 +29,21 @@ buttonPressed = 0
 if onRaspPi ==1 :
 	import RPi.GPIO as GPIO
 	GPIO.setmode(GPIO.BCM)
-	GPIO.setup(17, GPIO.OUT, initial=GPIO.LOW)
+	GPIO.setup(12, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 print 'Running!'
 while 1 :
 
 	if onRaspPi == 0 :
-		var = raw_input("Do you wanna press the button (y/n): ")
+		var = raw_input("Do you wanna press the button (y/*): ")
 		if var == 'y' :
 			buttonPressed = 1
 		else :
 			buttonPressed = 0
+	else :
+		if GPIO.input(12) == 0 :
+			time.sleep(0.2)
+			buttonPressed = 1
 
 	if buttonPressed == 1 :
 		buttonPressed = 0
