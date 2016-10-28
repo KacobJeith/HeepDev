@@ -17,7 +17,7 @@ client.SetClientData(functionalClient)
 client.Connect()
 print client.SendClientDataToServer()
 print client.GetClientList()
-print client.UpdateClientControl('10.0.0.69', 'gear', 4)
+print client.UpdateClientControl('10.0.0.196', 'LEDState', 1)
 print client.GetQueuedCommandsFromServer()
 print client.GetQueuedCommandsFromServer()
 
