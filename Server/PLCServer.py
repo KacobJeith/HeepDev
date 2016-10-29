@@ -81,11 +81,31 @@ class ServerConnection:
 			if IPAddress == self.clientList[x].IPAddress :
 				return self.clientList[x].GetQueuedControlString()
 
+	def GetClientList(self) :
+		print 'Implement Get Client List command'
+		return 'GetClientList:Not Implemented'
+
+	def UpdateClientControl(self, commandData) :
+		commandList = commandData.split(',')
+		destIP = commandList[0]
+		destControlName = commandList[1]
+		destValue = int(commandList[2])
+
+		for x in range(0, len(self.clientList)) : 
+			if self.clientList[x].IPAddress == destIP :
+				self.clientList[x].QueueControlByName(destControlName, destValue)
+				return 'Command Queued'
+
+		return 'Client not found'
+
+
 	def ParseClientInput(self, data, address) :
 		IsPLCServerString = 'IsPLCServer'
 		EchoString = 'Echo'
 		NewConnectString = 'NewConnect'
 		GetQueuedDataString = 'GetQueuedControlData'
+		GetClientListString = 'GetClientList'
+		UpdateClientControlString = 'UpdateClientControl'
 
 		commandDataSplit = data.split(':')
 		print commandDataSplit
@@ -98,6 +118,10 @@ class ServerConnection:
 			return self.AddClient(commandDataSplit[1], address)
 		elif commandDataSplit[0] == GetQueuedDataString :
 			return self.GetQueuedControlValues(address)
+		elif commandDataSplit[0] == GetClientListString :
+			return self.GetClientList()
+		elif commandDataSplit[0] == UpdateClientControlString :
+			return self.UpdateClientControl(commandDataSplit[1])
 
 		return 'null'
 
