@@ -121,6 +121,27 @@ class ClientConnection:
 		toSend = 'GetQueuedControlData:'
 		return self.SendDataToServer(toSend)
 
+	def StartInterruptServer(self) :
+		host = ''
+		backlog = 5
+		size = 1024
+
+		sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		sock.bind((host, self.TCP_PORT))
+		sock.listen(backlog)
+
+		while 1:
+			client, address = sock.accept()
+			data = client.recv(size)
+
+			if data:
+				client.send(returnData)
+			client.close()
+
+	def StartInterruptServerThread(self) :
+		t = Thread( target = self.StartInterruptServer, args=() )
+		t.start()
+
 	def Connect(self) : 
 		# First Check for File and try to connect
 		ipString = 'None' 
