@@ -135,7 +135,7 @@ class ClientConnection:
 			data = client.recv(size)
 
 			if data:
-				client.send(returnData)
+				client.send(data)
 			client.close()
 
 	def StartInterruptServerThread(self) :
