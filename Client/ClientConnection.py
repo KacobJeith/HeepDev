@@ -143,6 +143,14 @@ class ClientConnection:
 		t = Thread( target = self.StartInterruptServer, args=() )
 		t.start()
 
+	def GetClientList(self) :
+		toSend = 'GetClientList:'
+		return self.SendDataToServer(toSend)
+
+	def UpdateClientControl(self, destIP, controlName, controlValue) :
+		toSend = 'UpdateClientControl:'+destIP+','+controlName+','+str(controlValue)
+		return self.SendDataToServer(toSend)
+
 	def Connect(self) : 
 		# First Check for File and try to connect
 		ipString = 'None' 
