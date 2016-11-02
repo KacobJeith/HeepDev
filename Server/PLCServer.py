@@ -91,7 +91,7 @@ class ServerConnection:
 		destControlName = commandList[1]
 		destValue = int(commandList[2])
 
-		for x in range(0, len(self.clientList)) : 
+		for x in range(0, len(self.clientList)) :
 			if self.clientList[x].IPAddress == destIP :
 				self.clientList[x].QueueControlByName(destControlName, destValue)
 				return 'Command Queued'
@@ -145,7 +145,7 @@ class ServerConnection:
 						commands.append(line)
 
 						newL = line.split(':')
-						data = newL + ':' + newL[1]
+						data = 'SetVal:' + newL[1]
 						IP = newL[0]
 						sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 						sock.settimeout(0.5)
