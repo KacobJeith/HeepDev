@@ -127,7 +127,7 @@ class ServerConnection:
 						sock.settimeout(0.5)
 						sock.connect((IP, self.TCP_PORT))
 						sock.send(data)
-						data = sock.recv(self.BUFFER_SIZE)
+						data = sock.recv(self.size)
 
 			print commands
 			with open(fileName, "w") :
