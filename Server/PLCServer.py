@@ -135,6 +135,16 @@ class ServerConnection:
 					print commandVals[1]
 					self.clientList[x].QueueControlByName(commandVals[0], commandVals[1])
 
+	def SendCommandToClientInterrupt(self, IP, data) :
+		try :
+			sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+			sock.settimeout(0.5)
+			sock.connect((IP, self.TCP_PORT))
+			sock.send(data)
+			data = sock.recv(self.size)
+		except :
+			print 'Failed to contact client interrupt server'
+
 	def QueueCurrentCommands(self) :
 		fileName = 'CommandQueue.tmp'
 		while 1 :
@@ -147,11 +157,7 @@ class ServerConnection:
 						newL = line.split(':')
 						data = 'SetVal:' + newL[1]
 						IP = newL[0]
-						sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-						sock.settimeout(0.5)
-						sock.connect((IP, self.TCP_PORT))
-						sock.send(data)
-						data = sock.recv(self.size)
+						self.SendCommandToClientInterrupt(IP, data)
 
 			print commands
 			with open(fileName, "w") :
