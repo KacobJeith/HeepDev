@@ -23,4 +23,6 @@ print client.GetQueuedCommandsFromServer()
 
 for x in range (0, 20) :
 	print client.EchoDataFromServer(str(x))
+
+client.StartInterruptServerThread()
 	

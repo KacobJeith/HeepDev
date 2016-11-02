@@ -39,11 +39,7 @@ client.Connect()
 client.SendClientDataToServer()
 
 counter = 0
+client.StartInterruptServerThread()
 print 'Waiting for changes'
 while 1 :
-	time.sleep(0.5)
-	commandStr = client.GetQueuedCommandsFromServer()
-	if len(commandStr) > 0:
-		print 'Command Received: ', commandStr
-		client.clientData.UpdateControlsByString(commandStr)
-		ToggleLight(client.clientData.ControlList[0].CurCtrlValue)
+	ToggleLight(client.clientData.ControlList[0].CurCtrlValue)

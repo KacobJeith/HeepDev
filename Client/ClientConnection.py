@@ -109,6 +109,18 @@ class ClientConnection:
 		data = self.sock.recv(self.BUFFER_SIZE)
 		return data
 
+	def SendDataToClient(self, data, IP) :
+		try :
+			self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+			self.sock.settimeout(0.5)
+			self.sock.connect((IP, self.TCP_PORT))
+			self.sock.send(data)
+			data = self.sock.recv(self.BUFFER_SIZE)
+			return data
+		except :
+			print 'Failed to connect to client interrupt server'
+			return 'Failed'
+
 	def SendClientDataToServer(self) :
 		toSend = 'NewConnect:' + self.clientData.GetClientString()
 		return self.SendDataToServer(toSend) 
@@ -121,11 +133,57 @@ class ClientConnection:
 		toSend = 'GetQueuedControlData:'
 		return self.SendDataToServer(toSend)
 
+	def SetCommandValueFromInterrupt(self, data) :
+		self.clientData.UpdateControlsByString(data)
+		return 'Value Set'
+
+	def ParseInterruptCommand(self, data, address) :
+		IsAliveString = 'IsAlive'
+		SetValString = 'SetVal'
+
+		commandDataSplit = data.split(':')
+		print commandDataSplit
+
+		if commandDataSplit[0] == IsAliveString :
+			return 'Yes'
+		elif commandDataSplit[0] == SetValString :
+			return self.SetCommandValueFromInterrupt(commandDataSplit[1])
+
+		return 'null'
+
+
+	def StartInterruptServer(self) :
+		host = ''
+		backlog = 5
+		size = 1024
+
+		sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		sock.bind((host, self.TCP_PORT))
+		sock.listen(backlog)
+
+		while 1:
+			client, address = sock.accept()
+			data = client.recv(size)
+
+			returnData = self.ParseInterruptCommand(data, address)
+
+			if returnData:
+				client.send(returnData)
+				print returnData
+			client.close()
+
+	def StartInterruptServerThread(self) :
+		t = Thread( target = self.StartInterruptServer, args=() )
+		t.start()
+
 	def GetClientList(self) :
 		toSend = 'GetClientList:'
 		return self.SendDataToServer(toSend)
 
 	def UpdateClientControl(self, destIP, controlName, controlValue) :
+		clientInterruptCommand = 'SetVal:' + controlName + ',' + str(controlValue)
+		self.SendDataToClient(clientInterruptCommand, destIP)
+
 		toSend = 'UpdateClientControl:'+destIP+','+controlName+','+str(controlValue)
 		return self.SendDataToServer(toSend)
 

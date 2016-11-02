@@ -91,7 +91,7 @@ class ServerConnection:
 		destControlName = commandList[1]
 		destValue = int(commandList[2])
 
-		for x in range(0, len(self.clientList)) : 
+		for x in range(0, len(self.clientList)) :
 			if self.clientList[x].IPAddress == destIP :
 				self.clientList[x].QueueControlByName(destControlName, destValue)
 				return 'Command Queued'
@@ -135,6 +135,16 @@ class ServerConnection:
 					print commandVals[1]
 					self.clientList[x].QueueControlByName(commandVals[0], commandVals[1])
 
+	def SendCommandToClientInterrupt(self, IP, data) :
+		try :
+			sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+			sock.settimeout(0.5)
+			sock.connect((IP, self.TCP_PORT))
+			sock.send(data)
+			data = sock.recv(self.size)
+		except :
+			print 'Failed to contact client interrupt server'
+
 	def QueueCurrentCommands(self) :
 		fileName = 'CommandQueue.tmp'
 		while 1 :
@@ -143,6 +153,12 @@ class ServerConnection:
 				for line in inFile :
 					if len(line) > 0 :
 						commands.append(line)
+
+						newL = line.split(':')
+						data = 'SetVal:' + newL[1]
+						IP = newL[0]
+						self.SendCommandToClientInterrupt(IP, data)
+
 			print commands
 			with open(fileName, "w") :
 				pass
