@@ -121,14 +121,21 @@ class ClientConnection:
 		toSend = 'GetQueuedControlData:'
 		return self.SendDataToServer(toSend)
 
+	def SetCommandValueFromInterrupt(self, data) :
+		self.clientData.UpdateControlsByString(data)
+		return 'Value Set'
+
 	def ParseInterruptCommand(self, data, address) :
 		IsAliveString = 'IsAlive'
+		SetValString = 'SetVal'
 
 		commandDataSplit = data.split(':')
 		print commandDataSplit
 
 		if commandDataSplit[0] == IsAliveString :
 			return 'Yes'
+		elif commandDataSplit[0] == SetValString :
+			self.SetCommandValueFromInterrupt(commandDataSplit[1])
 
 		return 'null'
 
