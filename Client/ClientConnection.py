@@ -109,6 +109,14 @@ class ClientConnection:
 		data = self.sock.recv(self.BUFFER_SIZE)
 		return data
 
+	def SendDataToClient(self, data, IP) :
+		self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		self.sock.settimeout(0.5)
+		self.sock.connect((IP, self.TCP_PORT))
+		self.sock.send(data)
+		data = self.sock.recv(self.BUFFER_SIZE)
+		return data
+
 	def SendClientDataToServer(self) :
 		toSend = 'NewConnect:' + self.clientData.GetClientString()
 		return self.SendDataToServer(toSend) 
@@ -169,6 +177,9 @@ class ClientConnection:
 		return self.SendDataToServer(toSend)
 
 	def UpdateClientControl(self, destIP, controlName, controlValue) :
+		clientInterruptCommand = 'SetVal:' + controlName + ',' + str(controlValue)
+		self.SendDataToClient(clientInterruptCommand, destIP)
+
 		toSend = 'UpdateClientControl:'+destIP+','+controlName+','+str(controlValue)
 		return self.SendDataToServer(toSend)
 
