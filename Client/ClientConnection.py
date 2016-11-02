@@ -135,7 +135,7 @@ class ClientConnection:
 		if commandDataSplit[0] == IsAliveString :
 			return 'Yes'
 		elif commandDataSplit[0] == SetValString :
-			self.SetCommandValueFromInterrupt(commandDataSplit[1])
+			return self.SetCommandValueFromInterrupt(commandDataSplit[1])
 
 		return 'null'
 
