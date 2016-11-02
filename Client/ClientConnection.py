@@ -121,6 +121,18 @@ class ClientConnection:
 		toSend = 'GetQueuedControlData:'
 		return self.SendDataToServer(toSend)
 
+	def ParseInterruptCommand(self, data, address) :
+		IsAliveString = 'IsAlive'
+
+		commandDataSplit = data.split(':')
+		print commandDataSplit
+
+		if commandDataSplit[0] == IsAliveString :
+			return 'Yes'
+
+		return 'null'
+
+
 	def StartInterruptServer(self) :
 		host = ''
 		backlog = 5
@@ -134,9 +146,11 @@ class ClientConnection:
 			client, address = sock.accept()
 			data = client.recv(size)
 
-			if data:
-				client.send(data)
-				print data
+			returnData = self.ParseInterruptCommand(data, address)
+
+			if returnData:
+				client.send(returnData)
+				print returnData
 			client.close()
 
 	def StartInterruptServerThread(self) :

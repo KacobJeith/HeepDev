@@ -10,11 +10,9 @@ Currently, the clients have no way to reach out to each other. They are just rea
 
 ### Implemented
 
-None
+* IsAlive: - Will return "Yes" when the client is in communication. Intended to be used as a heart beat
 
 ### Not Implemented
-
-* IsAlive: - Will return "Yes" when the client is in communication. Intended to be used as a heart beat
 
 * SetVal:(ControlName,Value) - Set the value of a control with the given ControlName to the given Value
 
