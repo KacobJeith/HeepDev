@@ -110,12 +110,16 @@ class ClientConnection:
 		return data
 
 	def SendDataToClient(self, data, IP) :
-		self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		self.sock.settimeout(0.5)
-		self.sock.connect((IP, self.TCP_PORT))
-		self.sock.send(data)
-		data = self.sock.recv(self.BUFFER_SIZE)
-		return data
+		try :
+			self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+			self.sock.settimeout(0.5)
+			self.sock.connect((IP, self.TCP_PORT))
+			self.sock.send(data)
+			data = self.sock.recv(self.BUFFER_SIZE)
+			return data
+		except :
+			print 'Failed to connect to client interrupt server'
+			return 'Failed'
 
 	def SendClientDataToServer(self) :
 		toSend = 'NewConnect:' + self.clientData.GetClientString()
