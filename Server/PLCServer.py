@@ -119,6 +119,16 @@ class ServerConnection:
 				for line in inFile :
 					if len(line) > 0 :
 						commands.append(line)
+
+						newL = line.split(':')
+						data = 'SillyTest'
+						IP = newL[0]
+						sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+						sock.settimeout(0.5)
+						sock.connect((IP, self.TCP_PORT))
+						sock.send(data)
+						data = sock.recv(self.BUFFER_SIZE)
+
 			print commands
 			with open(fileName, "w") :
 				pass
