@@ -145,7 +145,7 @@ class ServerConnection:
 						commands.append(line)
 
 						newL = line.split(':')
-						data = 'SillyTest'
+						data = newL + ':' + newL[1]
 						IP = newL[0]
 						sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 						sock.settimeout(0.5)
