@@ -136,6 +136,7 @@ class ClientConnection:
 
 			if data:
 				client.send(data)
+				print data
 			client.close()
 
 	def StartInterruptServerThread(self) :
