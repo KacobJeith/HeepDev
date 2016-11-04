@@ -50,6 +50,7 @@ class ClientConnection:
 			print ipAddress
 			print ("received data:", data)
 			if data == 'Yes' :
+				print 'ServerFound'
 				self.connectionAttempts[connectionTableAddr] = 1
 				self.sock = sock
 				return 1
@@ -205,7 +206,7 @@ class ClientConnection:
 			self.WriteServerIPToFile(ipString)
 			self.serverIP = ipString
 
-			print ('Server IP Found at: ', self.serverIP)
+			print 'Server IP Found at: ' + self.serverIP
 
 		except:
 			self.sock.close()
