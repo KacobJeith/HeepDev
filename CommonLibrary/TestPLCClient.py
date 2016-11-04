@@ -13,7 +13,6 @@ Control1 = ControlValue()
 Control1.ControlName = 'Forge'
 Control2 = ControlValue()
 Control2.ControlName = 'Fast'
-Control2.ControlValueType = Control2.OnOff
 otherClient.ControlList.append(Control1)
 otherClient.ControlList.append(Control2)
 print CheckEquality(otherClient.ClientName, 'Sloppy', 'ClientNameSetTest')
@@ -35,3 +34,10 @@ print CheckEquality(otherClient.GetQueuedControlString(), '', 'GetQueuedControlS
 otherClient.UpdateControlsByString('Fast,20;Forge,30;')
 print CheckEquality(otherClient.ControlList[0].CurCtrlValue, 30, 'UpdateControlsByStringTest1')
 print CheckEquality(otherClient.ControlList[1].CurCtrlValue, 20, 'UpdateControlsByStringTest2')
+
+# Transfer client information via serialization
+controlStr = otherClient.GetClientString()
+newClient = PLCClient()
+newClient.SetClientFromString(controlStr)
+
+print CheckEquality(otherClient.ClientID, newClient.ClientID, 'Transfer client information')
