@@ -1,5 +1,7 @@
 import json
 from ControlValue import ControlValue
+from Vertex import Vertex
+from OutputData import OutputData
 
 class PLCClient:
 
@@ -10,8 +12,27 @@ class PLCClient:
 		self.ClientName = 'none'
 		self.ControlList = []
 		self.ControlQueue = []
+		self.VertexList = []
 		return
- 
+ 	
+ 	def AddVertexByString(self, vertexStr) :
+ 		newVertex = Vertex()
+ 		newVertex.SetVertexFromString(vertexStr)
+ 		self.VertexList.append(newVertex)
+
+ 	def AddVertex(self, vertex) :
+ 		self.VertexList.append(vertex)
+
+ 	def QueueOutput(self, outName, value) :
+ 		outputCommandQueue = []
+
+ 		for x in range(0, len(self.VertexList)) :
+ 			if outName == self.VertexList[x].outputName :
+ 				myOutput = OutputData(self.VertexList[x].inputName, self.VertexList[x].destinationID, self.VertexList[x].destinationIP, self.VertexList[x].sourceID, value)
+ 				outputCommandQueue.append(myOutput)
+
+ 		return outputCommandQueue
+
  	def QueueControlByName(self, name, ControlValue) :
  		for x in range(0, len(self.ControlList)) :
  			if self.ControlList[x].ControlName == name :

@@ -1,5 +1,7 @@
 from PLCClient import PLCClient
 from ControlValue import ControlValue
+from OutputData import OutputData
+from Vertex import Vertex
 
 def CheckEquality(first, second, testName) :
 	if first == second :
@@ -41,3 +43,30 @@ newClient = PLCClient()
 newClient.SetClientFromString(controlStr)
 
 print CheckEquality(otherClient.ClientID, newClient.ClientID, 'Transfer client information')
+
+newClient = PLCClient()
+myVertex = Vertex()
+myVertex.inputName = 'Chad'
+myVertex.outputName = 'Steve'
+myVertex.destinationID = 123456
+myVertex.sourceID = 666
+myVertex.destinationIP = 'myIP'
+newClient.AddVertex(myVertex)
+
+outputQueue = newClient.QueueOutput('Steve', 20)
+
+print CheckEquality( len(outputQueue), 1, 'Output Queue Size')
+
+myVertex = Vertex()
+myVertex.inputName = 'Rick'
+myVertex.outputName = 'Steve'
+myVertex.destinationID = 123223456
+myVertex.sourceID = 666
+myVertex.destinationIP = 'myIP'
+newClient.AddVertex(myVertex)
+
+outputQueue = newClient.QueueOutput('Steve', 20)
+
+print CheckEquality( len(outputQueue), 2, 'Output Queue Size Two Items')
+print CheckEquality( outputQueue[0].inputName, 'Chad', 'Output Queue input name 1')
+print CheckEquality( outputQueue[1].inputName, 'Rick', 'Output Queue input name 2')
