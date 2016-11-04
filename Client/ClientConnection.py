@@ -210,10 +210,12 @@ class ClientConnection:
 	def SendOutput(self, outputName, value) :
 		outputList = self.clientData.QueueOutput(outputName, value)
 
+		print len(outputList)
+
 		for x in range(0, len(outputList)) :
-			if SendDataDirectlyToClientIP(outputList[x]) == 'Failed' :
-				if RequestClientIPFromServerAndSendData(outputList[x]) == 'Failed' :
-					if SearchGloballyForIP(outputList[x]) == 'Failed' :
+			if self.SendDataDirectlyToClientIP(outputList[x]) == 'Failed' :
+				if self.RequestClientIPFromServerAndSendData(outputList[x]) == 'Failed' :
+					if self.SearchGloballyForIP(outputList[x]) == 'Failed' :
 						toSend = 'UpdateClientControl:'+destIP+','+controlName+','+str(controlValue)
 						self.SendDataToServer(toSend)
 
