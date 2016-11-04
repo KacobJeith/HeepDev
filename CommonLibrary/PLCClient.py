@@ -4,6 +4,7 @@ from ControlValue import ControlValue
 class PLCClient:
 
 	def __init__(self):
+		self.ClientID = 12345678910
 		self.ClientType = 1
 		self.IPAddress = 'none'
 		self.ClientName = 'none'
@@ -55,7 +56,7 @@ class PLCClient:
 		return retString
 
 	def GetClientString(self):
-		myString = self.IPAddress + ',' + str(self.ClientType) + ',' + self.ClientName
+		myString = str(self.ClientID) + ',' + self.IPAddress + ',' + str(self.ClientType) + ',' + self.ClientName
 		for x in range(0, len(self.ControlList)) :
 			myString = myString + ',' + self.ControlList[x].GetControlValueString()
 		return myString
@@ -63,11 +64,12 @@ class PLCClient:
 	def SetClientFromString(self, clientString) :
 		self.ControlList = []
 		splitString = clientString.split(',')
-		self.IPAddress = splitString[0]
-		self.ClientType = int(splitString[1])
-		self.ClientName = splitString[2]
+		self.ClientID = int(splitString[0])
+		self.IPAddress = splitString[1]
+		self.ClientType = int(splitString[2])
+		self.ClientName = splitString[3]
 
-		it = 3
+		it = 4
 		while it < len(splitString) :
 			control = ControlValue()
 			it = control.SetControlFromSplitString(splitString, it)
@@ -78,6 +80,7 @@ class PLCClient:
 		self.IPAddress = self.IPAddress
 		self.ClientName = self.ClientName
 		self.ControlList = self.ControlList
+		self.ClientID = self.ClientID
 
 		for x in range(0, len(self.ControlList)) :
 			self.ControlList[x].PrepareForJSONWrite()
