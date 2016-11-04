@@ -7,6 +7,7 @@ import sys
 sys.path.insert(0, '../CommonLibrary')
 from ControlValue import ControlValue
 from PLCClient import PLCClient
+from OutputData import OutputData
 
 class ClientConnection:
 
@@ -187,6 +188,37 @@ class ClientConnection:
 
 		toSend = 'UpdateClientControl:'+destIP+','+controlName+','+str(controlValue)
 		return self.SendDataToServer(toSend)
+
+	def SendDataDirectlyToClientIP(self, outData) :
+		clientInterruptCommand = 'SetVal:' + outData.inputName + ',' + str(outData.value)
+		return self.SendDataToClient(clientInterruptCommand, outData.destinationIP)
+
+	def RequestClientIPFromServerAndSendData(self, outData) : 
+		# Get Client Data from server
+		# Update Vertex IP
+		# Update outData IP
+		return self.SendDataDirectlyToClientIP(outData)
+
+	def SearchGloballyForIP(self, outData) :
+		# Schedule threads to find outData IP from outData ID
+		# Join threads to wait for them to die
+		# If not found, return 'Failed'
+		# Update Vertex IP 
+		# Update outData IP
+		return self.SendDataDirectlyToClientIP(outData)
+
+	def SendOutput(self, outputName, value) :
+		outputList = self.clientData.QueueOutput(outputName, value)
+
+		for x in range(0, len(outputList)) :
+			if SendDataDirectlyToClientIP(outputList[x]) == 'Failed' :
+				if RequestClientIPFromServerAndSendData(outputList[x]) == 'Failed' :
+					if SearchGloballyForIP(outputList[x]) == 'Failed' :
+						toSend = 'UpdateClientControl:'+destIP+','+controlName+','+str(controlValue)
+						self.SendDataToServer(toSend)
+
+
+
 
 	def Connect(self) : 
 		# First Check for File and try to connect
