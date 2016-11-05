@@ -106,6 +106,9 @@ class PLCClient:
 		for x in range(0, len(self.ControlList)) :
 			self.ControlList[x].PrepareForJSONWrite()
 
+		for x in range (0, len(self.VertexList)) :
+			self.VertexList[x].PrepareForJSON()
+
 	def toJSON(self):
 		self.prepareForJSON()
 		return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4, separators=(',', ': '))
