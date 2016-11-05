@@ -19,3 +19,5 @@ This documents describes the server API functions for the PLC server. These comm
 * GetClientList: - Get the list of current clients that the server knows about
 
 * UpdateClientControl:(ClientAddress,ControlName,ControlValue) - Update a client's control via the server
+
+* UpdateClientVertex:inputName,outputName,destIP,destID,sourceID
