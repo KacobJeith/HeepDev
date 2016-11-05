@@ -29,6 +29,13 @@ myVertex.destinationID = 123223456
 myVertex.sourceID = 666
 myVertex.destinationIP = 'myIP'
 otherClient.AddVertex(myVertex)
+myVertex = Vertex()
+myVertex.inputName = 'Lick'
+myVertex.outputName = 'Lock'
+myVertex.destinationID = 123223456
+myVertex.sourceID = 666
+myVertex.destinationIP = 'myIP'
+otherClient.AddVertex(myVertex)
 
 clientList = []
 clientList.append(tt)
@@ -57,6 +64,8 @@ aaaClient.fromDict(allExistingClients[0])
 bbbClient = PLCClient()
 bbbClient.fromDict(allExistingClients[1])
 
+
 print CheckEquality(aaaClient.ControlList[0].ControlName, tt.ControlList[0].ControlName, 'FromJSONControlTest')
-print CheckEquality(bbbClient.VertexList[0].sourceID, bbbClient.VertexList[0].sourceID, 'FromJSONVertexTest')
+print CheckEquality(bbbClient.VertexList[0].outputName, bbbClient.VertexList[0].outputName, 'FromJSONVertexTest')
+print CheckEquality(bbbClient.VertexList[1].outputName, bbbClient.VertexList[1].outputName, 'FromJSONVertexTest')
 
