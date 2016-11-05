@@ -14,10 +14,14 @@ This documents describes the server API functions for the PLC server. These comm
 
 * GetQueuedControlData: - Return a list of control updates in tuples ex. ControlName,ControlValue;ControlName2,ControlValue2;
 
+* UpdateClientControl:ClientAddress,ControlName,ControlValue - Update a client's control via the server
+
 ### Not Implemented
 
 * GetClientList: - Get the list of current clients that the server knows about
 
-* UpdateClientControl:(ClientAddress,ControlName,ControlValue) - Update a client's control via the server
+* UpdateClientVertex:inputName,outputName,destIP,destID,sourceID - Updates the server's client vertex list for the client that sent the command (client at sourceID)
 
-* UpdateClientVertex:inputName,outputName,destIP,destID,sourceID
+* GetClientIP:ClientID - Get the IP Address of the client with this ID
+
+* GetClientVertices:ClientID - Get the vertices for a client with this ID
