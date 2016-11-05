@@ -57,5 +57,6 @@ aaaClient.fromDict(allExistingClients[0])
 bbbClient = PLCClient()
 bbbClient.fromDict(allExistingClients[1])
 
-print CheckEquality(aaaClient.ControlList[0].ControlName, tt.ControlList[0].ControlName, 'FromJSONTest')
+print CheckEquality(aaaClient.ControlList[0].ControlName, tt.ControlList[0].ControlName, 'FromJSONControlTest')
+print CheckEquality(bbbClient.VertexList[0].sourceID, bbbClient.VertexList[0].sourceID, 'FromJSONVertexTest')
 

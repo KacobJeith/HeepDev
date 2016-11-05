@@ -127,3 +127,10 @@ class PLCClient:
 			newControl = ControlValue()
 			newControl.FromDict(tempControlList[x])
 			self.ControlList.append(newControl)
+
+		tempVertexList = self.VertexList
+		self.VertexList = []
+		for x in range(0, len(tempVertexList)) :
+			newVertex = Vertex()
+			newVertex.FromDict(tempVertexList[x])
+			self.VertexList.append(newVertex)

@@ -27,3 +27,6 @@ class Vertex:
 		self.destinationIP = self.destinationIP
 		self.destinationID = self.destinationID
 		self.sourceID = self.sourceID
+
+	def FromDict(self, Dict) :
+		self.__dict__ = Dict
