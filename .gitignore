@@ -8,4 +8,4 @@ FrontEnd/node_modules
 *.json
 
 # Exclusion Exceptions
-!FrontEnd/package.json
+!FrontEnd/ButtonCity/package.json
