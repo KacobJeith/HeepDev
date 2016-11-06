@@ -18,13 +18,13 @@ def SetupClientConnection() :
 	outControl = ControlValue()
 	outControl.ControlName = 'ButtonOut'
 	
-	myVertex = Vertex()
-	myVertex.inputName = 'LEDState'
-	myVertex.outputName = outControl.ControlName
-	myVertex.destinationID = 123456
-	myVertex.sourceID = 666
-	myVertex.destinationIP = '192.168.0.105'
-	ButtonClient.AddVertex(myVertex)
+	# myVertex = Vertex()
+	# myVertex.inputName = 'LEDState'
+	# myVertex.outputName = outControl.ControlName
+	# myVertex.destinationID = 123456
+	# myVertex.sourceID = 666
+	# myVertex.destinationIP = '192.168.0.105'
+	# ButtonClient.AddVertex(myVertex)
 
 	client.SetClientData(ButtonClient)
 	return client
@@ -59,6 +59,7 @@ while 1 :
 			buttonPressed = 1
 
 	if buttonPressed == 1 :
+		client.GetVerticesFromServer()
 		buttonPressed = 0
 		client.SendOutput('ButtonOut', lightState)
 		if lightState == 1 : 
