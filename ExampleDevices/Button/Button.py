@@ -18,7 +18,7 @@ def SetupClientConnection() :
 
 	outControl = ControlValue()
 	outControl.ControlName = 'ButtonOut'
-	outControl.ControlDirection = outControl.output
+	outControl.ControlDirection = outControl.Output
 	ButtonClient.ControlList.append(outControl)
 	
 	# myVertex = Vertex()
