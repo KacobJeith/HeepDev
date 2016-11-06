@@ -7,6 +7,7 @@ sys.path.insert(0, '../CommonLibrary')
 
 from ControlValue import ControlValue
 from PLCClient import PLCClient
+from Vertex import Vertex
 
 class ServerConnection:
 
@@ -98,6 +99,21 @@ class ServerConnection:
 
 		return 'Client not found'
 
+	def UpdateClientVertex(self, commandData) :
+		# Parse first vertex to get source ID. 
+		# TODO: Do this part better
+		splitData = commandData.split(';')
+		testVertex = Vertex()
+		testVertex.SetVertexFromString(splitData[0])
+		sourceID = testVertex.sourceID
+
+		for x in range(0, len(self.clientList)) :
+			if self.clientList[x].ClientID == sourceID :
+				self.clientList[x].SetVerticesFromString(commandData)
+				return 'Vertices Set'
+
+		return 'Client not found'
+
 
 	def ParseClientInput(self, data, address) :
 		IsPLCServerString = 'IsPLCServer'
@@ -106,6 +122,7 @@ class ServerConnection:
 		GetQueuedDataString = 'GetQueuedControlData'
 		GetClientListString = 'GetClientList'
 		UpdateClientControlString = 'UpdateClientControl'
+		UpdateClientVertexString = 'UpdateClientVertex'
 
 		commandDataSplit = data.split(':')
 		print commandDataSplit
@@ -122,6 +139,8 @@ class ServerConnection:
 			return self.GetClientList()
 		elif commandDataSplit[0] == UpdateClientControlString :
 			return self.UpdateClientControl(commandDataSplit[1])
+		elif commandDataSplit[0] == UpdateClientVertexString :
+			return self.UpdateClientVertex(commandDataSplit[1])
 
 		return 'null'
 

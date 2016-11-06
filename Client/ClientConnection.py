@@ -135,6 +135,10 @@ class ClientConnection:
 		toSend = 'GetQueuedControlData:'
 		return self.SendDataToServer(toSend)
 
+	def SendClientVertexDataToServer(self) :
+		toSend = 'UpdateClientVertex:' + self.clientData.GetVerticesString()
+		return self.SendDataToServer(toSend)
+
 	def SetCommandValueFromInterrupt(self, data) :
 		self.clientData.UpdateControlsByString(data)
 		return 'Value Set'
