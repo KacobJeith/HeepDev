@@ -10,7 +10,7 @@ class Vertex:
 		return
 
 	def GetVertexString(self) :
-		myStr = self.inputName + ',' + self.outputName + ',' + self.destinationIP + ',' + str(self.destinationID) + ',' + str(self.sourceID)
+		myStr = self.inputName + ',' + self.outputName + ',' + self.destinationIP + ',' + str(self.destinationID) + ',' + str(self.sourceID) + ';'
 		return myStr
 
 	def SetVertexFromString(self, inputStr) :

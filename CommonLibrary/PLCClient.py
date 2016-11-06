@@ -96,6 +96,24 @@ class PLCClient:
 			it = control.SetControlFromSplitString(splitString, it)
 			self.ControlList.append(control)
 
+	def GetVerticesString(self) :
+		retStr = ""
+
+		for x in range(0, len(self.VertexList)) :
+			retStr = retStr + self.VertexList[x].GetVertexString()
+
+		return retStr
+
+	def SetVerticesFromString(self, vertexString) :
+		self.VertexList = []
+		splitStringSemiColon = vertexString.split(';')
+		for x in range(0, len(splitStringSemiColon)) :
+			if len(splitStringSemiColon[x]) > 0 :
+				newVertex = Vertex()
+				newVertex.SetVertexFromString(splitStringSemiColon[x])
+				self.VertexList.append(newVertex)
+		return
+
 	def prepareForJSON(self) :
 		self.ClientType = self.ClientType
 		self.IPAddress = self.IPAddress

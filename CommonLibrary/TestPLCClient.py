@@ -70,3 +70,14 @@ outputQueue = newClient.QueueOutput('Steve', 20)
 print CheckEquality( len(outputQueue), 2, 'Output Queue Size Two Items')
 print CheckEquality( outputQueue[0].inputName, 'Chad', 'Output Queue input name 1')
 print CheckEquality( outputQueue[1].inputName, 'Rick', 'Output Queue input name 2')
+print CheckEquality( newClient.GetVerticesString(), 'Chad,Steve,myIP,123456,666;Rick,Steve,myIP,123223456,666;', 'Get Vertex String')
+
+VertexStr = newClient.GetVerticesString()
+vertClient = PLCClient()
+vertClient.SetVerticesFromString(newClient.GetVerticesString())
+print CheckEquality( newClient.GetVerticesString(), vertClient.GetVerticesString(), 'Vertex client setup')
+
+
+
+
+
