@@ -18,6 +18,8 @@ def SetupClientConnection() :
 
 	outControl = ControlValue()
 	outControl.ControlName = 'ButtonOut'
+	outControl.ControlDirection = outControl.output
+	ButtonClient.ControlList.append(outControl)
 	
 	# myVertex = Vertex()
 	# myVertex.inputName = 'LEDState'
