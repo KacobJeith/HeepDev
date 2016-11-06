@@ -55,6 +55,8 @@ class ServerConnection:
 		for x in range(0, len(self.clientList)) :
 			if self.clientList[x].IPAddress == newClient.IPAddress :
 				addClient = 0
+				vertexList = self.clientList[x].VertexList
+				newClient.VertexList = vertexList
 				self.clientList[x] = newClient
 				print 'Client already in list'
 				break

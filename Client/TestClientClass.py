@@ -23,6 +23,14 @@ myVertex.sourceID = 666
 myVertex.destinationIP = 'myIP'
 functionalClient.AddVertex(myVertex)
 
+myVertex = Vertex()
+myVertex.inputName = 'Lock'
+myVertex.outputName = 'Storm'
+myVertex.destinationID = 2332
+myVertex.sourceID = 666
+myVertex.destinationIP = 'myIP'
+functionalClient.AddVertex(myVertex)
+
 client.SetClientData(functionalClient)
 
 client.Connect()
