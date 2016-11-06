@@ -2,7 +2,7 @@
 
 This documents describes the server API functions for the PLC server. These commands will be used by clients to request information from the server.
 
-## Command List
+## From Client Command List
 
 ### Implemented
 
@@ -25,3 +25,13 @@ This documents describes the server API functions for the PLC server. These comm
 * GetClientList: - Get the list of current clients that the server knows about
 
 * GetClientIP:ClientID - Get the IP Address of the client with this ID
+
+## From Front End Command List
+
+### Implemented
+
+## Not Implemented
+
+* SetVertex:inputName,outputName,destIP,destID,sourceID - Set a vertex on a client at a given source ID
+
+* SetCommand:destID,controlName,controlValue
