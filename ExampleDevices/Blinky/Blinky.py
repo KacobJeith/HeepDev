@@ -26,6 +26,7 @@ def SetupClientConnection() :
 	client = ClientConnection()
 	BlinkyLEDClient = PLCClient()
 	BlinkyLEDClient.ClientName = 'BlinkyLED'
+	BlinkyLEDClient.ClientID = 444
 	OnOffControls = ControlValue()
 	OnOffControls.ControlValueType = OnOffControls.Range
 	OnOffControls.ControlName = 'LEDState'

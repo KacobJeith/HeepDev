@@ -14,6 +14,7 @@ def SetupClientConnection() :
 	client = ClientConnection()
 	ButtonClient = PLCClient()
 	ButtonClient.ClientName = 'Button'
+	ButtonClient.ClientID = 222
 
 	outControl = ControlValue()
 	outControl.ControlName = 'ButtonOut'
