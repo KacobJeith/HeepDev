@@ -110,6 +110,7 @@ class ServerConnection:
 		for x in range(0, len(self.clientList)) :
 			if self.clientList[x].ClientID == sourceID :
 				self.clientList[x].SetVerticesFromString(commandData)
+				self.WriteClientListJSON()
 				return 'Vertices Set'
 
 		return 'Client not found'
