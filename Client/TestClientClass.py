@@ -32,6 +32,7 @@ print client.GetClientList()
 print client.UpdateClientControl('10.0.0.196', 'LEDState', 1)
 print client.GetQueuedCommandsFromServer()
 print client.GetQueuedCommandsFromServer()
+print client.GetVerticesFromServer()
 
 for x in range (0, 20) :
 	print client.EchoDataFromServer(str(x))

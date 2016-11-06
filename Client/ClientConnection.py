@@ -139,6 +139,10 @@ class ClientConnection:
 		toSend = 'UpdateClientVertex:' + self.clientData.GetVerticesString()
 		return self.SendDataToServer(toSend)
 
+	def GetVerticesFromServer(self) :
+		toSend = 'GetClientVertices:' + str(self.clientData.ClientID)
+		return self.SendDataToServer(toSend)
+
 	def SetCommandValueFromInterrupt(self, data) :
 		self.clientData.UpdateControlsByString(data)
 		return 'Value Set'

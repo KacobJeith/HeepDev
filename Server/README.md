@@ -18,10 +18,10 @@ This documents describes the server API functions for the PLC server. These comm
 
 * UpdateClientVertex:inputName,outputName,destIP,destID,sourceID - Updates the server's client vertex list for the client that sent the command (client at sourceID)
 
+* GetClientVertices:ClientID - Get the vertices for a client with this ID
+
 ### Not Implemented
 
 * GetClientList: - Get the list of current clients that the server knows about
 
 * GetClientIP:ClientID - Get the IP Address of the client with this ID
-
-* GetClientVertices:ClientID - Get the vertices for a client with this ID

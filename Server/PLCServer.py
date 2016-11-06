@@ -115,6 +115,14 @@ class ServerConnection:
 
 		return 'Client not found'
 
+	def GetClientVertices(self, commandData) :
+		myClientID = int(commandData)
+		for x in range(0, len(self.clientList)) :
+			if self.clientList[x].ClientID == myClientID : 
+				return self.clientList[x].GetVerticesString()
+
+		return 'Client not found'
+
 
 	def ParseClientInput(self, data, address) :
 		IsPLCServerString = 'IsPLCServer'
@@ -124,6 +132,7 @@ class ServerConnection:
 		GetClientListString = 'GetClientList'
 		UpdateClientControlString = 'UpdateClientControl'
 		UpdateClientVertexString = 'UpdateClientVertex'
+		GetClientVertexString = 'GetClientVertices'
 
 		commandDataSplit = data.split(':')
 		print commandDataSplit
@@ -142,6 +151,8 @@ class ServerConnection:
 			return self.UpdateClientControl(commandDataSplit[1])
 		elif commandDataSplit[0] == UpdateClientVertexString :
 			return self.UpdateClientVertex(commandDataSplit[1])
+		elif commandDataSplit[0] == GetClientVertexString :
+			return self.GetClientVertices(commandDataSplit[1])
 
 		return 'null'
 
