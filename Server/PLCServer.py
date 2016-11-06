@@ -180,7 +180,15 @@ class ServerConnection:
 			print 'Failed to contact client interrupt server'
 
 	def SetVertexFromFrontEnd(self, commandStr) :
-		return 'Vertex Set'
+		newVertex = Vertex()
+		newVertex.SetVertexFromString(commandStr)
+		for x in range(0, len(self.clientList)) :
+			if self.clientList[x].ClientID == newVertex.sourceID :
+				self.clientList[x].VertexList.append(newVertex)
+				self.WriteClientListJSON()
+				return 'Vertex Set'
+
+		return 'Client not found'
 
 	def SetCommandFromFrontEnd(self, commandStr) :
 		commands = []
