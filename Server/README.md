@@ -30,7 +30,7 @@ This documents describes the server API functions for the PLC server. These comm
 
 ### Implemented
 
-## Not Implemented
+### Not Implemented
 
 * SetVertex:inputName,outputName,destIP,destID,sourceID - Set a vertex on a client at a given source ID
 
