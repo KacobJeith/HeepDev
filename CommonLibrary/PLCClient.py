@@ -35,7 +35,9 @@ class PLCClient:
 
  	def QueueControlByName(self, name, ControlValue) :
  		for x in range(0, len(self.ControlList)) :
+ 			print self.ControlList[x].ControlName
  			if self.ControlList[x].ControlName == name :
+ 				print self.ControlList[x].ControlName
  				self.ControlList[x].CurCtrlValue = ControlValue
  				self.QueueControl(self.ControlList[x])
  				return

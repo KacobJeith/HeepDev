@@ -1,5 +1,6 @@
 from ClientConnection import ClientConnection
 import sys
+import time
 sys.path.insert(0, '../CommonLibrary')
 from ControlValue import ControlValue
 from PLCClient import PLCClient

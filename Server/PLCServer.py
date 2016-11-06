@@ -160,12 +160,13 @@ class ServerConnection:
 
 	def AddCommandsToQueue(self, commands) :
 		for x in range(0, len(commands)) :
-			splitString = commands[x].split(':')
+			splitString = commands[x].split(',')
 			for x in range(0, len(self.clientList)) :
 				if splitString[0] == self.clientList[x].IPAddress :
-					commandVals = splitString[1].split(',')
-					print commandVals[0]
-					print commandVals[1]
+					commandVals = []
+					commandVals.append(splitString[1])
+					commandVals.append(splitString[2])
+					print self.clientList[x].ClientName + ',' + commandVals[0] + ',' + commandVals[1]
 					self.clientList[x].QueueControlByName(commandVals[0], commandVals[1])
 
 	def SendCommandToClientInterrupt(self, IP, data) :
@@ -178,24 +179,46 @@ class ServerConnection:
 		except :
 			print 'Failed to contact client interrupt server'
 
+	def SetVertexFromFrontEnd(self, commandStr) :
+		return 'Vertex Set'
+
+	def SetCommandFromFrontEnd(self, commandStr) :
+		commands = []
+		commands.append(commandStr)
+		newL = commandStr.split(',')
+		data = 'SetVal:' + newL[1] + ',' + newL[2]
+		IP = newL[0]
+		self.SendCommandToClientInterrupt(IP, data)
+		self.AddCommandsToQueue(commands)
+
+		return 'Command Queued'
+
+	def ParseFrontEndCommands(self, command) :
+		SetVertexString = 'SetVertex'
+		SetCommandString = 'SetCommand'
+
+		print command
+
+		commandDataSplit = command.split(':')
+
+		if commandDataSplit[0] == SetVertexString :
+			return self.SetVertexFromFrontEnd(commandDataSplit[1])
+		elif commandDataSplit[0] == SetCommandString :
+			return self.SetCommandFromFrontEnd(commandDataSplit[1])
+
+		return 'Failed to Find Command'
+
 	def QueueCurrentCommands(self) :
 		fileName = 'CommandQueue.tmp'
 		while 1 :
-			commands = []
+			
 			with open (fileName, 'r') as inFile :
 				for line in inFile :
 					if len(line) > 0 :
-						commands.append(line)
+						print self.ParseFrontEndCommands(line)
 
-						newL = line.split(':')
-						data = 'SetVal:' + newL[1]
-						IP = newL[0]
-						self.SendCommandToClientInterrupt(IP, data)
-
-			print commands
 			with open(fileName, "w") :
 				pass
-			self.AddCommandsToQueue(commands)
 			time.sleep(0.1)
 
 	def StartQueueCommandLoop(self) :
