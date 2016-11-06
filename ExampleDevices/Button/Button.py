@@ -62,7 +62,7 @@ while 1 :
 			buttonPressed = 1
 
 	if buttonPressed == 1 :
-		client.GetVerticesFromServer()
+		client.clientData.SetVerticesFromString(client.GetVerticesFromServer())
 		buttonPressed = 0
 		client.SendOutput('ButtonOut', lightState)
 		if lightState == 1 : 
