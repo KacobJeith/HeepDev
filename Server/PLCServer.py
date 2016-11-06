@@ -162,7 +162,7 @@ class ServerConnection:
 		for x in range(0, len(commands)) :
 			splitString = commands[x].split(',')
 			for x in range(0, len(self.clientList)) :
-				if splitString[0] == self.clientList[x].IPAddress :
+				if int(splitString[0]) == self.clientList[x].ClientID :
 					commandVals = []
 					commandVals.append(splitString[1])
 					commandVals.append(splitString[2])
@@ -190,12 +190,19 @@ class ServerConnection:
 
 		return 'Client not found'
 
+	def GetIPFromClientID(self, clientID) :
+		for x in range(0,len(self.clientList)) :
+			if self.clientList[x].ClientID == int(clientID) :
+				return self.clientList[x].IPAddress
+
+		return 'Not Found'
+
 	def SetCommandFromFrontEnd(self, commandStr) :
 		commands = []
 		commands.append(commandStr)
 		newL = commandStr.split(',')
 		data = 'SetVal:' + newL[1] + ',' + newL[2]
-		IP = newL[0]
+		IP = self.GetIPFromClientID(newL[0])
 		self.SendCommandToClientInterrupt(IP, data)
 		self.AddCommandsToQueue(commands)
 
