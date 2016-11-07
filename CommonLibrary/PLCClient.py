@@ -1,5 +1,7 @@
 import json
 from ControlValue import ControlValue
+from Vertex import Vertex
+from OutputData import OutputData
 
 class PLCClient:
 
@@ -10,8 +12,27 @@ class PLCClient:
 		self.ClientName = 'none'
 		self.ControlList = []
 		self.ControlQueue = []
+		self.VertexList = []
 		return
- 
+ 	
+ 	def AddVertexByString(self, vertexStr) :
+ 		newVertex = Vertex()
+ 		newVertex.SetVertexFromString(vertexStr)
+ 		self.VertexList.append(newVertex)
+
+ 	def AddVertex(self, vertex) :
+ 		self.VertexList.append(vertex)
+
+ 	def QueueOutput(self, outName, value) :
+ 		outputCommandQueue = []
+
+ 		for x in range(0, len(self.VertexList)) :
+ 			if outName == self.VertexList[x].outputName :
+ 				myOutput = OutputData(self.VertexList[x].inputName, self.VertexList[x].destinationID, self.VertexList[x].destinationIP, self.VertexList[x].sourceID, value)
+ 				outputCommandQueue.append(myOutput)
+
+ 		return outputCommandQueue
+
  	def QueueControlByName(self, name, ControlValue) :
  		for x in range(0, len(self.ControlList)) :
  			if self.ControlList[x].ControlName == name :
@@ -75,6 +96,24 @@ class PLCClient:
 			it = control.SetControlFromSplitString(splitString, it)
 			self.ControlList.append(control)
 
+	def GetVerticesString(self) :
+		retStr = ""
+
+		for x in range(0, len(self.VertexList)) :
+			retStr = retStr + self.VertexList[x].GetVertexString()
+
+		return retStr
+
+	def SetVerticesFromString(self, vertexString) :
+		self.VertexList = []
+		splitStringSemiColon = vertexString.split(';')
+		for x in range(0, len(splitStringSemiColon)) :
+			if len(splitStringSemiColon[x]) > 0 :
+				newVertex = Vertex()
+				newVertex.SetVertexFromString(splitStringSemiColon[x])
+				self.VertexList.append(newVertex)
+		return
+
 	def prepareForJSON(self) :
 		self.ClientType = self.ClientType
 		self.IPAddress = self.IPAddress
@@ -84,6 +123,9 @@ class PLCClient:
 
 		for x in range(0, len(self.ControlList)) :
 			self.ControlList[x].PrepareForJSONWrite()
+
+		for x in range (0, len(self.VertexList)) :
+			self.VertexList[x].PrepareForJSON()
 
 	def toJSON(self):
 		self.prepareForJSON()
@@ -103,3 +145,10 @@ class PLCClient:
 			newControl = ControlValue()
 			newControl.FromDict(tempControlList[x])
 			self.ControlList.append(newControl)
+
+		tempVertexList = self.VertexList
+		self.VertexList = []
+		for x in range(0, len(tempVertexList)) :
+			newVertex = Vertex()
+			newVertex.FromDict(tempVertexList[x])
+			self.VertexList.append(newVertex)

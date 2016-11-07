@@ -4,6 +4,7 @@ sys.path.insert(0, '../../Client')
 from ControlValue import ControlValue
 from PLCClient import PLCClient
 from ClientConnection import ClientConnection
+from Vertex import Vertex
 import time
 from threading import Thread
 
@@ -13,6 +14,21 @@ def SetupClientConnection() :
 	client = ClientConnection()
 	ButtonClient = PLCClient()
 	ButtonClient.ClientName = 'Button'
+	ButtonClient.ClientID = 333
+
+	outControl = ControlValue()
+	outControl.ControlName = 'ButtonOut'
+	outControl.ControlDirection = outControl.Output
+	ButtonClient.ControlList.append(outControl)
+	
+	# myVertex = Vertex()
+	# myVertex.inputName = 'LEDState'
+	# myVertex.outputName = outControl.ControlName
+	# myVertex.destinationID = 123456
+	# myVertex.sourceID = 666
+	# myVertex.destinationIP = '192.168.0.105'
+	# ButtonClient.AddVertex(myVertex)
+
 	client.SetClientData(ButtonClient)
 	return client
 
@@ -46,8 +62,9 @@ while 1 :
 			buttonPressed = 1
 
 	if buttonPressed == 1 :
+		client.clientData.SetVerticesFromString(client.GetVerticesFromServer())
 		buttonPressed = 0
-		client.UpdateClientControl('10.0.0.196', 'LEDState', lightState)
+		client.SendOutput('ButtonOut', lightState)
 		if lightState == 1 : 
 			lightState = 0
 		else :

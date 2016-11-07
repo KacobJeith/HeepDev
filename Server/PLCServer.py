@@ -7,6 +7,7 @@ sys.path.insert(0, '../CommonLibrary')
 
 from ControlValue import ControlValue
 from PLCClient import PLCClient
+from Vertex import Vertex
 
 class ServerConnection:
 
@@ -54,6 +55,8 @@ class ServerConnection:
 		for x in range(0, len(self.clientList)) :
 			if self.clientList[x].IPAddress == newClient.IPAddress :
 				addClient = 0
+				vertexList = self.clientList[x].VertexList
+				newClient.VertexList = vertexList
 				self.clientList[x] = newClient
 				print 'Client already in list'
 				break
@@ -98,6 +101,30 @@ class ServerConnection:
 
 		return 'Client not found'
 
+	def UpdateClientVertex(self, commandData) :
+		# Parse first vertex to get source ID. 
+		# TODO: Do this part better
+		splitData = commandData.split(';')
+		testVertex = Vertex()
+		testVertex.SetVertexFromString(splitData[0])
+		sourceID = testVertex.sourceID
+
+		for x in range(0, len(self.clientList)) :
+			if self.clientList[x].ClientID == sourceID :
+				self.clientList[x].SetVerticesFromString(commandData)
+				self.WriteClientListJSON()
+				return 'Vertices Set'
+
+		return 'Client not found'
+
+	def GetClientVertices(self, commandData) :
+		myClientID = int(commandData)
+		for x in range(0, len(self.clientList)) :
+			if self.clientList[x].ClientID == myClientID : 
+				return self.clientList[x].GetVerticesString()
+
+		return 'Client not found'
+
 
 	def ParseClientInput(self, data, address) :
 		IsPLCServerString = 'IsPLCServer'
@@ -106,6 +133,8 @@ class ServerConnection:
 		GetQueuedDataString = 'GetQueuedControlData'
 		GetClientListString = 'GetClientList'
 		UpdateClientControlString = 'UpdateClientControl'
+		UpdateClientVertexString = 'UpdateClientVertex'
+		GetClientVertexString = 'GetClientVertices'
 
 		commandDataSplit = data.split(':')
 		print commandDataSplit
@@ -122,17 +151,22 @@ class ServerConnection:
 			return self.GetClientList()
 		elif commandDataSplit[0] == UpdateClientControlString :
 			return self.UpdateClientControl(commandDataSplit[1])
+		elif commandDataSplit[0] == UpdateClientVertexString :
+			return self.UpdateClientVertex(commandDataSplit[1])
+		elif commandDataSplit[0] == GetClientVertexString :
+			return self.GetClientVertices(commandDataSplit[1])
 
 		return 'null'
 
 	def AddCommandsToQueue(self, commands) :
 		for x in range(0, len(commands)) :
-			splitString = commands[x].split(':')
+			splitString = commands[x].split(',')
 			for x in range(0, len(self.clientList)) :
-				if splitString[0] == self.clientList[x].IPAddress :
-					commandVals = splitString[1].split(',')
-					print commandVals[0]
-					print commandVals[1]
+				if int(splitString[0]) == self.clientList[x].ClientID :
+					commandVals = []
+					commandVals.append(splitString[1])
+					commandVals.append(splitString[2])
+					print self.clientList[x].ClientName + ',' + commandVals[0] + ',' + commandVals[1]
 					self.clientList[x].QueueControlByName(commandVals[0], commandVals[1])
 
 	def SendCommandToClientInterrupt(self, IP, data) :
@@ -145,24 +179,61 @@ class ServerConnection:
 		except :
 			print 'Failed to contact client interrupt server'
 
+	def SetVertexFromFrontEnd(self, commandStr) :
+		newVertex = Vertex()
+		newVertex.SetVertexFromString(commandStr)
+		for x in range(0, len(self.clientList)) :
+			if self.clientList[x].ClientID == newVertex.sourceID :
+				self.clientList[x].VertexList.append(newVertex)
+				self.WriteClientListJSON()
+				return 'Vertex Set'
+
+		return 'Client not found'
+
+	def GetIPFromClientID(self, clientID) :
+		for x in range(0,len(self.clientList)) :
+			if self.clientList[x].ClientID == int(clientID) :
+				return self.clientList[x].IPAddress
+
+		return 'Not Found'
+
+	def SetCommandFromFrontEnd(self, commandStr) :
+		commands = []
+		commands.append(commandStr)
+		newL = commandStr.split(',')
+		data = 'SetVal:' + newL[1] + ',' + newL[2]
+		IP = self.GetIPFromClientID(newL[0])
+		self.SendCommandToClientInterrupt(IP, data)
+		self.AddCommandsToQueue(commands)
+
+		return 'Command Queued'
+
+	def ParseFrontEndCommands(self, command) :
+		SetVertexString = 'SetVertex'
+		SetCommandString = 'SetCommand'
+
+		print command
+
+		commandDataSplit = command.split(':')
+
+		if commandDataSplit[0] == SetVertexString :
+			return self.SetVertexFromFrontEnd(commandDataSplit[1])
+		elif commandDataSplit[0] == SetCommandString :
+			return self.SetCommandFromFrontEnd(commandDataSplit[1])
+
+		return 'Failed to Find Command'
+
 	def QueueCurrentCommands(self) :
 		fileName = 'CommandQueue.tmp'
 		while 1 :
-			commands = []
+			
 			with open (fileName, 'r') as inFile :
 				for line in inFile :
 					if len(line) > 0 :
-						commands.append(line)
+						print self.ParseFrontEndCommands(line)
 
-						newL = line.split(':')
-						data = 'SetVal:' + newL[1]
-						IP = newL[0]
-						self.SendCommandToClientInterrupt(IP, data)
-
-			print commands
 			with open(fileName, "w") :
 				pass
-			self.AddCommandsToQueue(commands)
 			time.sleep(0.1)
 
 	def StartQueueCommandLoop(self) :
