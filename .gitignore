@@ -9,3 +9,4 @@ FrontEnd/node_modules
 
 # Exclusion Exceptions
 !FrontEnd/ButtonCity/package.json
+!FrontEnd/Flowchart/package.json
