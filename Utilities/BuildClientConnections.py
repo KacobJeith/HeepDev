@@ -22,10 +22,17 @@ def ReadClientListJSON(filePath) :
 		return clientList
 
 def DefineNewVertex(destClient, sourceClient, inputName, outputName) :
+	commandQueueFile = '../Server/CommandQueue.tmp'
+
 	destIP = destClient.IPAddress
 	destID = destClient.ClientID
 	sourceID = sourceClient.ClientID
-	print 'SetVertex:' + inputName + ',' + outputName + ',' + destIP + ',' + str(destID) + ',' + str(sourceID)
+	outStr = 'SetVertex:' + inputName + ',' + outputName + ',' + destIP + ',' + str(destID) + ',' + str(sourceID)
+	
+	writeFile = open(commandQueueFile, 'w')
+	writeFile.write(outStr)
+	writeFile.write('\n')
+	writeFile.close()
 
 def PrintAllClientControls(controlList) :
 
@@ -75,4 +82,4 @@ clientList = ReadClientListJSON(fileLocation)
 
 PrintAllClientInfo(clientList)
 
-DefineNewVertex(clientList[0], clientList[1], 'Smell', 'Sinpu')
+#DefineNewVertex(clientList[0], clientList[1], 'Test I', 'TestO')
