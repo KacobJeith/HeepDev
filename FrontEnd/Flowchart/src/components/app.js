@@ -7,7 +7,10 @@ class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      clientListData: [],
+      clientList: [],
+      currentlySelectedClient: [],
+      currentOutput: [],
+      currentInput: []
     }
 
     this.loadClientsFromServer = this.loadClientsFromServer.bind(this);
@@ -19,7 +22,7 @@ class App extends React.Component {
       url: url,
       cache: false,
       success: (data) => {
-        this.setState({clientListData: data});
+        this.setState({clientList: data});
 
       },
       error: function(xhr, status, err) {
@@ -43,9 +46,20 @@ class App extends React.Component {
         }
       };
 
+    const inputs = {
+      header: {
+        style: styles.header,
+        key: "Header"
+      },
+      flowchart: {
+          hideSourceOnDrag: true,
+          clientList: this.state.ClientList
+      }
+    }
+
     return (<div>
-      <h1 style={styles.header} key="Header">Client Dashboard</h1>
-      <Flowchart hideSourceOnDrag={true}/>
+      <h1 {...inputs.header}> Client Dashboard </h1>
+      <Flowchart {...inputs.flowchart}/>
       </div>
     );
   }
