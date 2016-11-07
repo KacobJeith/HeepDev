@@ -33,7 +33,8 @@ class Flowchart extends React.Component {
 		this.state = {
 			clients: {
 				'a':{top:20,left:80, title:'A'},
-				'b': {top:180,left:20,title:'B'}
+				'b': {top:180,left:20,title:'B'},
+				'c': {top: 50,left:50,title:'C'}
 			}
 		};
 	}
