@@ -21,6 +21,12 @@ def ReadClientListJSON(filePath) :
 
 		return clientList
 
+def DefineNewVertex(destClient, sourceClient, inputName, outputName) :
+	destIP = destClient.IPAddress
+	destID = destClient.ClientID
+	sourceID = sourceClient.ClientID
+	print 'SetVertex:' + inputName + ',' + outputName + ',' + destIP + ',' + str(destID) + ',' + str(sourceID)
+
 def PrintAllClientControls(controlList) :
 
 	for x in range(0, len(controlList)) :
@@ -42,7 +48,7 @@ def printAllClientVertices(vertexList) :
 		print '			DestinationID: ' + str(curVertex.destinationID)
 		print '			SourceID: ' + str(curVertex.sourceID)
 		print '			DestinationIP: ' + curVertex.destinationIP
-		
+
 	return
 
 def PrintAllClientInfo(clientList) :
@@ -68,3 +74,5 @@ fileLocation = '../Server/clientList.json'
 clientList = ReadClientListJSON(fileLocation)
 
 PrintAllClientInfo(clientList)
+
+DefineNewVertex(clientList[0], clientList[1], 'Smell', 'Sinpu')
