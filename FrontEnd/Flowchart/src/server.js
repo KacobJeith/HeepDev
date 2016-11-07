@@ -33,6 +33,7 @@ app.get('/api/clients', function(req, res) {
       process.exit(1);
     }
     else {
+      console.log(JSON.parse(data));
       res.json(JSON.parse(data));
     }
 
