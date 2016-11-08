@@ -6,6 +6,7 @@ FrontEnd/node_modules
 *.tbl
 *.pyc
 *.json
+*.tmp
 
 # Exclusion Exceptions
 !FrontEnd/ButtonCity/package.json
