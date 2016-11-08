@@ -7,7 +7,11 @@ class ClientGraphic extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			radius: 5
+			radius: 5,
+			originX: 0,
+			originY: 0,
+			top: this.props.top,
+			left: this.props.left,
 		}
 
 		this.inputs = [];
@@ -51,6 +55,8 @@ class ClientGraphic extends React.Component {
 				height: 120,
 				display: 'inline-block',
 				position: 'absolute',
+				top: this.state.top,
+				left: this.state.left,
 				color: 'black'
 			},
 			svgContainer: {
@@ -58,7 +64,8 @@ class ClientGraphic extends React.Component {
 				margin: 'auto'
 			},
 			text: {
-				textAlign: 'center'
+				textAlign: 'center',
+				cursor: '-webkit-grab'
 			},
 			svg: {
 				display: 'block',
@@ -68,7 +75,12 @@ class ClientGraphic extends React.Component {
 
 		const inputs = {
 			clientContainer: {
-				style: styles.clientContainer
+				style: styles.clientContainer,
+				draggable: true,
+				onDragStart : (event) => this.setState({originX: event.pageX,
+														originY: event.pageY}),
+				onDragEnd: (event) => this.setState({left: this.state.left + (event.pageX - this.state.originX),
+												     top: this.state.top + (event.pageY - this.state.originY)}),
 			},
 			svgContainer: {
 				style: styles.svgContainer

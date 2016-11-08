@@ -61,13 +61,22 @@ class DraggableContainer extends React.Component {
 
 	render() {
 		const styles = {
-
+			flowchart: {
+				height: '100%',
+				width: '100%',
+				position: 'relative'
+			}
 		}
 
 		let inputs = {
+			flowchart: {
+				style: styles.flowchart
+			},
 			clientGraphic: {
 				key: [],
 				client: [],
+				top: 0,
+				left: 0,
 				selectInput: (inputName, destIP, destID) => this.selectInput(inputName, destIP, destID),
 				selectOutput: (outputName, sourceID) => this.selectOutput(outputName, sourceID),
 			}
@@ -81,10 +90,12 @@ class DraggableContainer extends React.Component {
 			inputs.clientGraphic['client'] = this.props.clientList[client];
 
 			clientNodes.push(<ClientGraphic {...inputs.clientGraphic}/>);
+
+			inputs.clientGraphic['top'] = inputs.clientGraphic['top'] + 150;
 		};
 
 		return (
-			<div> 
+			<div {...inputs.flowchart}> 
 				{clientNodes}
 			</div>
 		);
