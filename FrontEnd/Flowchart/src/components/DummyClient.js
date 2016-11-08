@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { DragSource } from 'react-dnd';
 
 const style = {
   position: 'absolute',
@@ -24,7 +25,7 @@ var collect = (connect, monitor) => {
 };
 
 //@DragSource('Client', clientSource, collect)
-class Client extends Component {
+class DummyClient extends Component {
 	static propTypes = {
 		connectDragSource: PropTypes.func.isRequired,
 		isDragging: PropTypes.bool.isRequired,

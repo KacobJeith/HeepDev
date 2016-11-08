@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
-import Flowchart from './Flowchart';
+import DraggableContainer from './DraggableContainer';
 
 class App extends React.Component {
   constructor() {
@@ -24,6 +24,8 @@ class App extends React.Component {
       success: (data) => {
         this.setState({clientList: data});
 
+        console.log(this.state.clientList);
+
       },
       error: function(xhr, status, err) {
         console.error(url, status, err.toString());
@@ -32,8 +34,9 @@ class App extends React.Component {
 
   }
 
-  componentWillMount(){
+  componentDidMount(){
     this.loadClientsFromServer('/api/clients');
+    this.loadClientsFromServer.bind(this);
   }
 
 
@@ -53,13 +56,13 @@ class App extends React.Component {
       },
       flowchart: {
           hideSourceOnDrag: true,
-          clientList: this.state.ClientList
+          clientList: this.state.clientList
       }
     }
 
     return (<div>
       <h1 {...inputs.header}> Client Dashboard </h1>
-      <Flowchart {...inputs.flowchart}/>
+      <DraggableContainer {...inputs.flowchart}/>
       </div>
     );
   }
