@@ -1,5 +1,4 @@
 import React from 'react';
-import ClientInputList from './ClientInput';
 
 class ClientGraphic extends React.Component {
 	constructor() {
