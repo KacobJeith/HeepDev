@@ -60,10 +60,14 @@ class ClientGraphic extends React.Component {
 				style: styles.svgContainer
 			},
 			clientInput:{
-				inputs: this.inputs
+				inputs: this.inputs,
+				client: this.props.client,
+				selectInput: this.props.selectInput
 			},
 			clientOutput: {
-				outputs: this.outputs
+				outputs: this.outputs,
+				client: this.props.client,
+				selectOutput: this.props.selectOutput
 			},
 			svg: {
 				width: "100",
@@ -78,15 +82,6 @@ class ClientGraphic extends React.Component {
 				rx: "15",
 				ry: "15",
 				fill: "black",
-			},
-			circle: {
-				onClick: () => console.log("click!"),
-				onMouseEnter: () => this.setState({radius: 8}),
-				onMouseLeave: () => this.setState({radius: 5}),
-				cx: "50%",
-				cy: "10%",
-				r: this.state.radius,
-				fill: "green"
 			}
 		}
 
