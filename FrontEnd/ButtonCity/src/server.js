@@ -4,8 +4,8 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
 
-var CLIENT_FILE = path.join(__dirname, '../../Server/clientList.json');
-var COMMAND_FILE = path.join(__dirname, '../../Server/CommandQueue.tmp');
+var CLIENT_FILE = path.join(__dirname, '../../../Server/clientList.json');
+var COMMAND_FILE = path.join(__dirname, '../../../Server/CommandQueue.tmp');
 
 var cmd_fd = fs.openSync(COMMAND_FILE,'r');
 
