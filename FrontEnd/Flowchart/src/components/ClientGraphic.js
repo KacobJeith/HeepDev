@@ -41,14 +41,27 @@ class ClientGraphic extends React.Component {
 		const styles = {
 			clientContainer: {
 				backgroundColor: 'white',
-				margin: 15,
+				margin: 10,
+				borderWidth: 2,
+				borderStyle: 'solid',
+				borderRadius: 5,
+				padding: 3,
+				borderWidth: 2,
 				width: 120,
 				height: 120,
 				display: 'inline-block',
 				color: 'black'
 			},
 			svgContainer: {
-				display: 'absolute'
+				display: 'absolute',
+				margin: 'auto'
+			},
+			text: {
+				textAlign: 'center'
+			},
+			svg: {
+				display: 'block',
+				margin: 'auto'
 			}
 		}
 
@@ -58,6 +71,9 @@ class ClientGraphic extends React.Component {
 			},
 			svgContainer: {
 				style: styles.svgContainer
+			},
+			text: {
+				style: styles.text
 			},
 			clientInput:{
 				inputs: this.inputs,
@@ -72,7 +88,8 @@ class ClientGraphic extends React.Component {
 			svg: {
 				width: "100",
 				height: "100",
-				viewBox: "0 0 120 120"
+				viewBox: "0 0 120 120",
+				style: styles.svg
 			},
 			rect: {
 				x: "10",
@@ -86,7 +103,7 @@ class ClientGraphic extends React.Component {
 		}
 
 		return (<div {...inputs.clientContainer}> 
-					<p>
+					<p {...inputs.text}>
 						{this.props.client['ClientName']}
 					</p>
 					<div {...inputs.svgContainer}>
