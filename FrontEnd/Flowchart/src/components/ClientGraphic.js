@@ -50,6 +50,7 @@ class ClientGraphic extends React.Component {
 				width: 120,
 				height: 120,
 				display: 'inline-block',
+				position: 'absolute',
 				color: 'black'
 			},
 			svgContainer: {
