@@ -28,8 +28,8 @@ class ClientInput extends React.Component {
 				onClick: () => console.log("click!"),
 				onMouseEnter: () => this.setState({radius: 8}),
 				onMouseLeave: () => this.setState({radius: 5}),
-				cx: "50%",
-				cy: "10%",
+				cx: "10%",
+				cy: "50%",
 				r: this.state.radius,
 				fill: "green"
 			}
