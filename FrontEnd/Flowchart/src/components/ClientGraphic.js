@@ -1,22 +1,51 @@
 import React from 'react';
+import ClientInputList from './ClientInput';
+
+
 
 class ClientGraphic extends React.Component {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 		this.state = {
 			radius: 5
+		}
+
+		this.inputs = [];
+		this.outputs = [];
+
+		this.fillInputs();
+		this.fillOutputs();
+
+	}
+
+	fillInputs() {
+
+		for(let i = 0; i < this.props.client['ControlList'].length; i++){
+			if (!this.props.client['ControlList'][i]['ControlDirection']){
+				this.inputs.push(this.props.client['ControlList'][i]);
+			}
+		}
+	}
+
+	fillOutputs() {
+
+		for(let i = 0; i < this.props.client['ControlList'].length; i++){
+			if (this.props.client['ControlList'][i]['ControlDirection']){
+				this.outputs.push(this.props.client['ControlList'][i]);
+			}
 		}
 	}
 
 	render() {
+
 		const styles = {
 			clientContainer: {
-				backgroundColor: 'black',
+				backgroundColor: 'white',
 				margin: 15,
-				width: 200,
-				height: 200,
+				width: 120,
+				height: 120,
 				display: 'inline-block',
-				color: 'white'
+				color: 'black'
 			},
 			svgContainer: {
 				display: 'absolute'
@@ -31,7 +60,10 @@ class ClientGraphic extends React.Component {
 				style: styles.svgContainer
 			},
 			clientInput:{
-				controlList: this.props.client['ControlList']
+				inputs: this.inputs
+			},
+			clientOutputs: {
+				outputs: this.outputs
 			},
 			svg: {
 				width: "100",
@@ -45,7 +77,7 @@ class ClientGraphic extends React.Component {
 				height: "100",
 				rx: "15",
 				ry: "15",
-				fill: "blue",
+				fill: "black",
 			},
 			circle: {
 				onClick: () => console.log("click!"),
@@ -58,13 +90,14 @@ class ClientGraphic extends React.Component {
 			}
 		}
 
-		console.log(this.props.client);
 		return (<div {...inputs.clientContainer}> 
-					<p>{this.props.client['ClientName']}</p>
+					<p>
+						{this.props.client['ClientName']}
+					</p>
 					<div {...inputs.svgContainer}>
 						<svg {...inputs.svg}>
 							  <rect {...inputs.rect}/>
-							  <circle {...inputs.circle}/>
+							  <ClientInputList {...inputs.clientInput}/>
 						</svg>
 					</div>
 				</div>
