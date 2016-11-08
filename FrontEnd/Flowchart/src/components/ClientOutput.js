@@ -5,6 +5,7 @@ class ClientOutputList extends React.Component {
 	render() {
 		let inputs = {
 			clientOutput: {
+				key: [],
 				output:[],
 				client: this.props.client,
 				selectOutput: this.props.selectOutput
@@ -12,8 +13,10 @@ class ClientOutputList extends React.Component {
 		};
 
 		let allClientOutputs = this.props.outputs.map((thisOutput,index) => {
-			console.log(thisOutput["ControlName"]);
+
+			inputs.clientOutput['key'] = thisOutput['ControlName'];
 			inputs.clientOutput['output'] = thisOutput;
+
 			return <ClientOutput {...inputs.clientOutput}/>
 			});
 
@@ -25,7 +28,7 @@ class ClientOutput extends React.Component {
 	constructor() {
 		super();
 		this.state = {
-			radius: 5
+			radius: 6
 		}
 	}
 
@@ -35,8 +38,8 @@ class ClientOutput extends React.Component {
 			circle: {
 				onClick: () => this.props.selectOutput(	this.props.output['ControlName'],
 														this.props.client['ClientID']),
-				onMouseEnter: () => this.setState({radius: 8}),
-				onMouseLeave: () => this.setState({radius: 5}),
+				onMouseEnter: () => this.setState({radius: 9}),
+				onMouseLeave: () => this.setState({radius: 6}),
 				cx: "90%",
 				cy: "50%",
 				r: this.state.radius,

@@ -66,6 +66,7 @@ class DraggableContainer extends React.Component {
 
 		let inputs = {
 			clientGraphic: {
+				key: [],
 				client: [],
 				selectInput: (inputName, destIP, destID) => this.selectInput(inputName, destIP, destID),
 				selectOutput: (outputName, sourceID) => this.selectOutput(outputName, sourceID),
@@ -75,7 +76,10 @@ class DraggableContainer extends React.Component {
 		let clientNodes = [];
 		console.log(this.props.clientList);
 		for( var client in this.props.clientList){
+
+			inputs.clientGraphic['key'] = this.props.clientList[client]['ClientID'];
 			inputs.clientGraphic['client'] = this.props.clientList[client];
+
 			clientNodes.push(<ClientGraphic {...inputs.clientGraphic}/>);
 		};
 
