@@ -1,6 +1,6 @@
 import React from 'react';
 import ClientInputList from './ClientInput';
-
+import ClientOutputList from './ClientOutput';
 
 
 class ClientGraphic extends React.Component {
@@ -62,7 +62,7 @@ class ClientGraphic extends React.Component {
 			clientInput:{
 				inputs: this.inputs
 			},
-			clientOutputs: {
+			clientOutput: {
 				outputs: this.outputs
 			},
 			svg: {
@@ -98,6 +98,7 @@ class ClientGraphic extends React.Component {
 						<svg {...inputs.svg}>
 							  <rect {...inputs.rect}/>
 							  <ClientInputList {...inputs.clientInput}/>
+							  <ClientOutputList {...inputs.clientOutput}/>
 						</svg>
 					</div>
 				</div>
