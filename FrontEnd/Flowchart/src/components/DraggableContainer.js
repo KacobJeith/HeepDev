@@ -5,28 +5,50 @@ import ClientGraphic from './ClientGraphic';
 class DraggableContainer extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {
+			vertexPaths: {}
+		};
 
 		this.vertex = {
 			inputName: [],
 			outputName: [],
 			destIP: [],
 			destID: [],
-			sourceID: []
+			sourceID: [],
+			inputPosition: {top: 0, 
+							left: 0},
+			outputPosition: {top: 0,
+							 left: 0}
 		}
 	}
 
-	selectInput(inputName, destIP, destID) {
+	selectInput(inputName, destIP, destID, position) {
 		this.vertex['inputName'] = inputName;
 		this.vertex['destIP'] = destIP;
 		this.vertex['destID'] = destID;
-		console.log(this.vertex);
+		this.vertex['inputPosition'] = position;
+		const vertexName = this.vertex.sourceID + '->' + this.vertex.destID;
+		const vertexObject = this.state.vertexPaths;
+
+		vertexObject[[vertexName]] = {
+								x1: this.vertex.outputPosition['left'],
+								x2: this.vertex.inputPosition['left'],
+								y1: this.vertex.outputPosition['top'],
+								y2: this.vertex.inputPosition['top']
+							};
+
+		this.setState({vertexPaths: vertexObject});
+
+
+		console.log(this.state.vertexPaths);
 		this.sendVertexToServer();
+
 	}
 
-	selectOutput(outputName, sourceID){
+	selectOutput(outputName, sourceID, position){
 		this.vertex['outputName'] = outputName;
 		this.vertex['sourceID'] = sourceID;
+		this.vertex['outputPosition'] = position;
 		console.log(this.vertex);
 	}
 
@@ -62,9 +84,15 @@ class DraggableContainer extends React.Component {
 	render() {
 		const styles = {
 			flowchart: {
-				height: '100%',
-				width: '100%',
+				height: 1000,
+				width: 1000,
 				position: 'relative'
+			},
+			vertexSVGSpace: {
+				position: 'absolute',
+				width: 1000,
+				height: 1000,
+				viewBox: '0 0 1000 1000'
 			}
 		}
 
@@ -77,8 +105,20 @@ class DraggableContainer extends React.Component {
 				client: [],
 				top: 0,
 				left: 0,
-				selectInput: (inputName, destIP, destID) => this.selectInput(inputName, destIP, destID),
-				selectOutput: (outputName, sourceID) => this.selectOutput(outputName, sourceID),
+				selectInput: (inputName, destIP, destID, position) => this.selectInput(inputName, destIP, destID, position),
+				selectOutput: (outputName, sourceID, position) => this.selectOutput(outputName, sourceID, position),
+			},
+			vertexSVGSpace:{
+				style: styles.vertexSVGSpace
+			},
+			vertexSVG: {
+				key: [],
+				strokeWidth: 2,
+				stroke: "black",
+				x1:0,
+				x2:0,
+				y1:0,
+				y2:0
 			}
 		}
 
@@ -94,8 +134,24 @@ class DraggableContainer extends React.Component {
 			inputs.clientGraphic['top'] = inputs.clientGraphic['top'] + 150;
 		};
 
-		return (
+		var vertexDrawings = [];
+		for(var thisVertex in this.state.vertexPaths){
+			console.log("entering vertex drawing");
+			inputs.vertexSVG['key'] = thisVertex;
+			inputs.vertexSVG['x1'] = this.state.vertexPaths[thisVertex]['x1'];
+			inputs.vertexSVG['x2'] = this.state.vertexPaths[thisVertex]['x2'];
+			inputs.vertexSVG['y1'] = this.state.vertexPaths[thisVertex]['y1'];
+			inputs.vertexSVG['y2'] = this.state.vertexPaths[thisVertex]['y2'];
+
+			console.log(inputs.vertexSVG);
+			vertexDrawings.push(<line {...inputs.vertexSVG}/>);
+		}
+
+	return (
 			<div {...inputs.flowchart}> 
+				<svg {...inputs.vertexSVGSpace}>
+					{vertexDrawings}
+				</svg>
 				{clientNodes}
 			</div>
 		);

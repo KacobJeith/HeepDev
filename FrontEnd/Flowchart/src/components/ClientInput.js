@@ -37,9 +37,11 @@ class ClientInput extends React.Component {
 
 		const inputs = {
 			circle: {
-				onClick: () => this.props.selectInput(	this.props.input['ControlName'],
+				onClick: (event) => this.props.selectInput(	this.props.input['ControlName'],
 														this.props.client['IPAddress'],
-														this.props.client['ClientID']),
+														this.props.client['ClientID'],
+														{top: event.clientY,
+														 left: event.clientX}),
 				onMouseEnter: () => this.setState({radius: 9}),
 				onMouseLeave: () => this.setState({radius: 6}),
 				cx: "10%",
