@@ -39,7 +39,7 @@ class DraggableContainer extends React.Component {
 	}
 
 	getVertexNameFromSavedIO(){
-		return this.vertex.sourceID + '->' + this.vertex.destID;
+		return this.vertex.sourceID + '.' + this.vertex.outputName + '->' + this.vertex.destID + '.' + this.vertex.inputName;
 	}
 
 	commitUpdatedVertexCoordinates(vertexName) {

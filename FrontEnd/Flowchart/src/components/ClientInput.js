@@ -63,7 +63,7 @@ class ClientInput extends React.Component {
 														this.props.client['IPAddress'],
 														this.props.client['ClientID'],
 														{top: event.clientY - 40,
-														 left: event.clientX + 11}),									  
+														 left: event.clientX }),									  
 				onMouseEnter: () => this.setState({radius: 9}),
 				onMouseLeave: () => this.setState({radius: 6}),
 				cx: 10,
