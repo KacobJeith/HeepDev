@@ -16,6 +16,8 @@ class ClientGraphic extends React.Component {
 
 		this.inputs = [];
 		this.outputs = [];
+		this.dragOffset = {	top: 0,
+							left: 0};
 
 		this.fillInputs();
 		this.fillOutputs();
@@ -38,6 +40,19 @@ class ClientGraphic extends React.Component {
 				this.outputs.push(this.props.client['ControlList'][i]);
 			}
 		}
+	}
+
+	calculateDragPosition(event) {
+		this.calculateDragOffset(event);
+		this.setState({left: this.state.left + this.dragOffset['left'],
+					   top: this.state.top + this.dragOffset['top']});
+
+		this.props.updateVertexPositions(this.props.client['ClientID'], this.dragOffset);
+	}
+
+	calculateDragOffset(event) {
+		this.dragOffset['left'] = event.pageX - this.state.originX;
+		this.dragOffset['top']  = event.pageY - this.state.originY;
 	}
 
 	render() {
@@ -77,10 +92,11 @@ class ClientGraphic extends React.Component {
 			clientContainer: {
 				style: styles.clientContainer,
 				draggable: true,
-				onDragStart : (event) => this.setState({originX: event.pageX,
-														originY: event.pageY}),
-				onDragEnd: (event) => this.setState({left: this.state.left + (event.pageX - this.state.originX),
-												     top: this.state.top + (event.pageY - this.state.originY)}),
+				onDragStart : (event) => {this.setState({originX: event.pageX,
+														originY: event.pageY});},
+				//onDrag: (event) => {this.calculateDragPosition(event);},
+				onDragEnd: (event) => {this.calculateDragPosition(event);},
+				//onDragEnd: (event) => this.calculateDragPosition(event),
 			},
 			svgContainer: {
 				style: styles.svgContainer

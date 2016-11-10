@@ -45,6 +45,7 @@ class App extends React.Component {
         header: {
           backgroundColor: "#43464c", 
           paddingLeft: 15,
+          height: 40,
           color: "#e1e3e8"
         }
       };
