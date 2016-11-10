@@ -17,7 +17,7 @@ class ClientGraphic extends React.Component {
 		this.inputs = [];
 		this.outputs = [];
 		this.dragOffset = {	top: 0,
-							left: 0};
+							left: 10};
 
 		this.fillInputs();
 		this.fillOutputs();
@@ -66,7 +66,7 @@ class ClientGraphic extends React.Component {
 				borderRadius: 5,
 				padding: 3,
 				borderWidth: 2,
-				width: 120,
+				width: 200,
 				height: 120,
 				display: 'inline-block',
 				position: 'absolute',
@@ -108,6 +108,7 @@ class ClientGraphic extends React.Component {
 				selectInput: this.props.selectInput
 			},
 			clientOutput: {
+				containerWidth: styles.clientContainer['width'],
 				outputs: this.outputs,
 				client: this.props.client,
 				selectOutput: this.props.selectOutput
@@ -137,10 +138,10 @@ class ClientGraphic extends React.Component {
 						<svg {...inputs.svg}>
 							  <rect {...inputs.rect}/>
 						</svg>
+						<ClientInputList {...inputs.clientInput}/>
+						<ClientOutputList {...inputs.clientOutput}/>
 					</div>
 					
-					<ClientInputList {...inputs.clientInput}/>
-					<ClientOutputList {...inputs.clientOutput}/>
 					
 				</div>
 			);

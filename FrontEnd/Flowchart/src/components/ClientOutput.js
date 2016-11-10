@@ -8,9 +8,9 @@ class ClientOutputList extends React.Component {
 			outputSVG: {
 				position: 'absolute',
 				height: '100%',
-				width: 20,
-				left: 116,
-				top: 0
+				width: 100,
+				right: -11,
+				top: 0,
 			}
 		};
 
@@ -19,23 +19,28 @@ class ClientOutputList extends React.Component {
 				key: [],
 				output:[],
 				client: this.props.client,
-				selectOutput: this.props.selectOutput
+				selectOutput: this.props.selectOutput,
+				controlY: 0
 			},
 			outputSVG: {
-				style: styles.outputSVG
+				style: styles.outputSVG,
 			}
 		};
+
+
+		var controlY = Math.round(100/(this.props.outputs.length + 1));
 
 		let allClientOutputs = this.props.outputs.map((thisOutput,index) => {
 
 			inputs.clientOutput['key'] = thisOutput['ControlName'];
 			inputs.clientOutput['output'] = thisOutput;
+			inputs.clientOutput['controlY'] = inputs.clientOutput['controlY'] + controlY;
 
 			return <ClientOutput {...inputs.clientOutput}/>
 			});
 
 		return (<svg {...inputs.outputSVG}>
-					<g>{allClientOutputs}</g>
+					{allClientOutputs}
 				</svg>);
 	}
 }
@@ -58,15 +63,23 @@ class ClientOutput extends React.Component {
 														 left: event.clientX + 11}),
 				onMouseEnter: () => this.setState({radius: 9}),
 				onMouseLeave: () => this.setState({radius: 6}),
-				cx: 10,
-				cy: "50%",
+				cx: "90%",
+				cy: String(this.props.controlY ) + '%',
 				r: this.state.radius,
-				fill: "red"
+				fill: "red",
+			},
+			text: {
+				x: '33%',
+				y: String(this.props.controlY + 3) + '%',
+				fontSize: 10,
 			}
 		}
 
-		return (
-			<circle {...inputs.circle}/>
+		return (<g>
+					<circle {...inputs.circle}/>
+					<text {...inputs.text}> {this.props.output['ControlName']} </text>
+				</g>
+
 		);
 	}
 }
