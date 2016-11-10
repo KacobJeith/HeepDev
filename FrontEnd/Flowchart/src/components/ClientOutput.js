@@ -39,10 +39,10 @@ class ClientOutput extends React.Component {
 				onClick: (event) => this.props.selectOutput(	this.props.output['ControlName'],
 														this.props.client['ClientID'],
 														{top: event.clientY - 40,
-														 left: event.clientX}),
+														 left: event.clientX + 11}),
 				onMouseEnter: () => this.setState({radius: 9}),
 				onMouseLeave: () => this.setState({radius: 6}),
-				cx: "90%",
+				cx: 10,
 				cy: "50%",
 				r: this.state.radius,
 				fill: "red"

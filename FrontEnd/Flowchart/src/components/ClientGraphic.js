@@ -85,6 +85,20 @@ class ClientGraphic extends React.Component {
 			svg: {
 				display: 'block',
 				margin: 'auto'
+			},
+			inputSVG: {
+				position: 'absolute',
+				height: '100%',
+				width: 20,
+				left: -11,
+				top: 0
+			},
+			outputSVG: {
+				position: 'absolute',
+				height: '100%',
+				width: 20,
+				left: 116,
+				top: 0
 			}
 		}
 
@@ -94,9 +108,7 @@ class ClientGraphic extends React.Component {
 				draggable: true,
 				onDragStart : (event) => {this.setState({originX: event.pageX,
 														originY: event.pageY});},
-				//onDrag: (event) => {this.calculateDragPosition(event);},
 				onDragEnd: (event) => {this.calculateDragPosition(event);},
-				//onDragEnd: (event) => this.calculateDragPosition(event),
 			},
 			svgContainer: {
 				style: styles.svgContainer
@@ -128,6 +140,12 @@ class ClientGraphic extends React.Component {
 				rx: "15",
 				ry: "15",
 				fill: "black",
+			},
+			inputSVG: {
+				style: styles.inputSVG
+			},
+			outputSVG: {
+				style: styles.outputSVG
 			}
 		}
 
@@ -138,10 +156,15 @@ class ClientGraphic extends React.Component {
 					<div {...inputs.svgContainer}>
 						<svg {...inputs.svg}>
 							  <rect {...inputs.rect}/>
-							  <ClientInputList {...inputs.clientInput}/>
-							  <ClientOutputList {...inputs.clientOutput}/>
+							  
 						</svg>
 					</div>
+					<svg {...inputs.inputSVG}>
+						<ClientInputList {...inputs.clientInput}/>
+					</svg>
+					<svg {...inputs.outputSVG}>
+						<ClientOutputList {...inputs.clientOutput}/>
+					</svg>
 				</div>
 			);
 	}
