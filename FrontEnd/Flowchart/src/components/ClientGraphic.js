@@ -92,9 +92,11 @@ class ClientGraphic extends React.Component {
 			clientContainer: {
 				style: styles.clientContainer,
 				draggable: true,
-				onDragStart : (event) => this.setState({originX: event.pageX,
-														originY: event.pageY}),
-				onDragEnd: (event) => this.calculateDragPosition(event),
+				onDragStart : (event) => {this.setState({originX: event.pageX,
+														originY: event.pageY});},
+				//onDrag: (event) => {this.calculateDragPosition(event);},
+				onDragEnd: (event) => {this.calculateDragPosition(event);},
+				//onDragEnd: (event) => this.calculateDragPosition(event),
 			},
 			svgContainer: {
 				style: styles.svgContainer

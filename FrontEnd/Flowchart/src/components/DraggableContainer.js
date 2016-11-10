@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import ClientGraphic from './ClientGraphic';
 
@@ -8,6 +9,7 @@ class DraggableContainer extends React.Component {
 		this.state = {
 			vertexPaths: {}
 		};
+
 
 		this.vertex = {
 			inputName: [],
@@ -130,7 +132,8 @@ class DraggableContainer extends React.Component {
 				position: 'absolute',
 				width: 1000,
 				height: 1000,
-				viewBox: '0 0 1000 1000'
+				viewBox: '0 0 1000 1000',
+				pointerEvents: 'none'
 			}
 		}
 
@@ -186,11 +189,11 @@ class DraggableContainer extends React.Component {
 		}
 
 	return (
-			<div {...inputs.flowchart}> 
+			<div {...inputs.flowchart} ref="flowchart"> 
+				{clientNodes}
 				<svg {...inputs.vertexSVGSpace}>
 					{vertexDrawings}
 				</svg>
-				{clientNodes}
 			</div>
 		);
 
