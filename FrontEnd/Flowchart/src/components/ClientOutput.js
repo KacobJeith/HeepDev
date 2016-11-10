@@ -3,12 +3,26 @@ import React from 'react';
 class ClientOutputList extends React.Component {
 	
 	render() {
+
+		var styles = {
+			outputSVG: {
+				position: 'absolute',
+				height: '100%',
+				width: 20,
+				left: 116,
+				top: 0
+			}
+		};
+
 		let inputs = {
 			clientOutput: {
 				key: [],
 				output:[],
 				client: this.props.client,
 				selectOutput: this.props.selectOutput
+			},
+			outputSVG: {
+				style: styles.outputSVG
 			}
 		};
 
@@ -20,7 +34,9 @@ class ClientOutputList extends React.Component {
 			return <ClientOutput {...inputs.clientOutput}/>
 			});
 
-		return (<g>{allClientOutputs}</g>);
+		return (<svg {...inputs.outputSVG}>
+					<g>{allClientOutputs}</g>
+				</svg>);
 	}
 }
 

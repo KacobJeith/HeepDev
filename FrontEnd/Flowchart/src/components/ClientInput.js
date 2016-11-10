@@ -1,15 +1,30 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
+import $ from 'jquery';
 
 class ClientInputList extends React.Component {
 	
 	render() {
+		var styles = {
+			inputSVG: {
+				position: 'absolute',
+				height: '100%',
+				width: 20,
+				left: -11,
+				top: 0
+			}
+		}
+
 		let inputs = {
 			clientInput: {
 				key: [],
 				input:[],
 				client: this.props.client,
 				selectInput: this.props.selectInput
-			}
+			},
+			inputSVG: {
+				style: styles.inputSVG
+			},
 		};
 
 
@@ -21,7 +36,10 @@ class ClientInputList extends React.Component {
 			return <ClientInput {...inputs.clientInput}/>
 			});
 
-		return (<g>{allClientInputs}</g>);
+		return (<svg {...inputs.inputSVG}>
+					<g>{allClientInputs}</g>
+				</svg>
+				);
 	}
 }
 
@@ -37,11 +55,11 @@ class ClientInput extends React.Component {
 
 		const inputs = {
 			circle: {
-				onClick: (event) => this.props.selectInput(	this.props.input['ControlName'],
+				onClick: (event) => this.props.selectInput(this.props.input['ControlName'],
 														this.props.client['IPAddress'],
 														this.props.client['ClientID'],
 														{top: event.clientY - 40,
-														 left: event.clientX + 11}),
+														 left: event.clientX + 11}),									  
 				onMouseEnter: () => this.setState({radius: 9}),
 				onMouseLeave: () => this.setState({radius: 6}),
 				cx: 10,
@@ -52,7 +70,7 @@ class ClientInput extends React.Component {
 		}
 
 		return (
-			<circle {...inputs.circle}/>
+			<circle {...inputs.circle} ref="test"/>
 		);
 	}
 }
