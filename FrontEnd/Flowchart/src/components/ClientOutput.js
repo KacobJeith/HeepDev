@@ -18,6 +18,8 @@ class ClientOutputList extends React.Component {
 			clientOutput: {
 				key: [],
 				output:[],
+				top: this.props.top,
+				left: this.props.left,
 				client: this.props.client,
 				selectOutput: this.props.selectOutput,
 				controlY: 0
@@ -28,7 +30,7 @@ class ClientOutputList extends React.Component {
 		};
 
 
-		var controlY = Math.round(100/(this.props.outputs.length + 1));
+		var controlY = 100/(this.props.outputs.length + 1);
 
 		let allClientOutputs = this.props.outputs.map((thisOutput,index) => {
 
@@ -57,10 +59,10 @@ class ClientOutput extends React.Component {
 
 		const inputs = {
 			circle: {
-				onClick: (event) => this.props.selectOutput(	this.props.output['ControlName'],
+				onClick: () => this.props.selectOutput(this.props.output['ControlName'],
 														this.props.client['ClientID'],
-														{top: event.clientY - 40,
-														 left: event.clientX }),
+														{top: this.props.top + (126*this.props.controlY/100) + 12,
+										 				left: this.props.left + 219.33 }),
 				onMouseEnter: () => this.setState({radius: 9}),
 				onMouseLeave: () => this.setState({radius: 6}),
 				cx: "90%",

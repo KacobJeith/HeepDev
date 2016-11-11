@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 
 class ClientInputList extends React.Component {
-	
 	render() {
 		var styles = {
 			inputSVG: {
@@ -21,6 +20,8 @@ class ClientInputList extends React.Component {
 				input:[],
 				client: this.props.client,
 				selectInput: this.props.selectInput,
+				top: this.props.top,
+				left: this.props.left,
 				controlY: 0
 			},
 			inputSVG: {
@@ -29,7 +30,7 @@ class ClientInputList extends React.Component {
 		};
 
 		
-		var controlY = Math.round(100/(this.props.inputs.length + 1));
+		var controlY = 100/(this.props.inputs.length + 1);
 
 		let allClientInputs = this.props.inputs.map((thisInput,index) => {
 			
@@ -40,9 +41,11 @@ class ClientInputList extends React.Component {
 			return <ClientInput {...inputs.clientInput}/>
 			});
 
-		return (<svg {...inputs.inputSVG}>
-					<g>{allClientInputs}</g>
-				</svg>
+		return (<div height="100%" ref="inputs">
+					<svg {...inputs.inputSVG}>
+						<g>{allClientInputs}</g>
+					</svg>
+				</div>
 				);
 	}
 }
@@ -59,11 +62,11 @@ class ClientInput extends React.Component {
 
 		const inputs = {
 			circle: {
-				onClick: (event) => this.props.selectInput(this.props.input['ControlName'],
-														this.props.client['IPAddress'],
-														this.props.client['ClientID'],
-														{top: event.clientY - 40,
-														 left: event.clientX }),									  
+				onClick: (event) => {this.props.selectInput(this.props.input['ControlName'],
+										this.props.client['IPAddress'],
+										this.props.client['ClientID'],
+										{top: this.props.top + (126*this.props.controlY/100) + 12,
+										 left: this.props.left + 10 });},									  
 				onMouseEnter: () => this.setState({radius: 9}),
 				onMouseLeave: () => this.setState({radius: 6}),
 				cx: 10,
@@ -78,8 +81,8 @@ class ClientInput extends React.Component {
 			}
 		}
 
-		return (<g>
-					<circle {...inputs.circle}/>
+		return (<g ref="input">
+					<circle {...inputs.circle} />
 					<text {...inputs.text}> {this.props.input['ControlName']} </text>
 				</g>
 		);

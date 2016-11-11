@@ -24,6 +24,12 @@ class DraggableContainer extends React.Component {
 		}
 	}
 
+	componentDidMount() {
+		var thisEl = this.refs.flowchart;
+		// console.log(thisEl.getClientRects());
+		//console.log(document.getElementById("input").offsetLeft);
+	}
+
 	selectInput(inputName, destIP, destID, position) {
 		this.vertex['inputName'] = inputName;
 		this.vertex['destIP'] = destIP;

@@ -24,6 +24,12 @@ class ClientGraphic extends React.Component {
 
 	}
 
+	componentDidMount() {
+		var thisEl = this.refs.client.getClientRects();
+		this.setState({top: thisEl[0]["top"]});
+	 	this.setState({left: thisEl[0]["left"]});
+	}
+
 	fillInputs() {
 
 		for(let i = 0; i < this.props.client['ControlList'].length; i++){
@@ -105,13 +111,17 @@ class ClientGraphic extends React.Component {
 			clientInput:{
 				inputs: this.inputs,
 				client: this.props.client,
+				top: this.state.top,
+				left: this.state.left,
 				selectInput: this.props.selectInput
 			},
 			clientOutput: {
 				containerWidth: styles.clientContainer['width'],
 				outputs: this.outputs,
 				client: this.props.client,
-				selectOutput: this.props.selectOutput
+				selectOutput: this.props.selectOutput,
+				top: this.state.top,
+				left: this.state.left,
 			},
 			svg: {
 				width: "100",
@@ -130,7 +140,8 @@ class ClientGraphic extends React.Component {
 			}
 		}
 
-		return (<div {...inputs.clientContainer}> 
+
+		return (<div {...inputs.clientContainer} ref="client"> 
 					<p {...inputs.text}>
 						{this.props.client['ClientName']}
 					</p>
