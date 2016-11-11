@@ -17,10 +17,36 @@ class ClientGraphic extends React.Component {
 		this.inputs = [];
 		this.outputs = [];
 		this.dragOffset = {	top: 0,
-							left: 0};
+							left: 10};
 
 		this.fillInputs();
 		this.fillOutputs();
+
+	}
+
+	componentDidMount() {
+		var thisEl = this.refs.client.getClientRects();
+		var clientTop = thisEl[0]["top"];
+		var clientLeft = thisEl[0]["left"];
+
+		this.setState({top: clientTop});
+	 	this.setState({left: clientLeft});
+
+	 	//output position
+	 	var controlOutY = 100/(this.outputs.length + 1);
+
+		for (var i=0; i < this.outputs.length; i++){
+	 		this.outputs[i]['position'] = {top: clientTop + (126*(i+1)*controlOutY/100) + 12,
+	 										left: clientLeft + 219.33};
+		}
+
+		//input position
+		var allInputPositions = [];
+		var controlInY = 100/(this.inputs.length + 1);
+		for (var i=0; i < this.inputs.length; i++){
+			this.inputs[i]['position'] = {top: clientTop + (126*(i+1)*controlInY/100) + 12,
+										   left: clientLeft + 10};
+		};
 
 	}
 
@@ -47,7 +73,7 @@ class ClientGraphic extends React.Component {
 		this.setState({left: this.state.left + this.dragOffset['left'],
 					   top: this.state.top + this.dragOffset['top']});
 
-		this.props.updateVertexPositions(this.props.client['ClientID'], this.dragOffset);
+		this.props.updateVertexPositionsByOffset(this.props.client['ClientID'], this.dragOffset);
 	}
 
 	calculateDragOffset(event) {
@@ -66,7 +92,7 @@ class ClientGraphic extends React.Component {
 				borderRadius: 5,
 				padding: 3,
 				borderWidth: 2,
-				width: 120,
+				width: 200,
 				height: 120,
 				display: 'inline-block',
 				position: 'absolute',
@@ -94,9 +120,7 @@ class ClientGraphic extends React.Component {
 				draggable: true,
 				onDragStart : (event) => {this.setState({originX: event.pageX,
 														originY: event.pageY});},
-				//onDrag: (event) => {this.calculateDragPosition(event);},
 				onDragEnd: (event) => {this.calculateDragPosition(event);},
-				//onDragEnd: (event) => this.calculateDragPosition(event),
 			},
 			svgContainer: {
 				style: styles.svgContainer
@@ -107,12 +131,17 @@ class ClientGraphic extends React.Component {
 			clientInput:{
 				inputs: this.inputs,
 				client: this.props.client,
+				top: this.state.top,
+				left: this.state.left,
 				selectInput: this.props.selectInput
 			},
 			clientOutput: {
+				containerWidth: styles.clientContainer['width'],
 				outputs: this.outputs,
 				client: this.props.client,
-				selectOutput: this.props.selectOutput
+				selectOutput: this.props.selectOutput,
+				top: this.state.top,
+				left: this.state.left,
 			},
 			svg: {
 				width: "100",
@@ -131,17 +160,20 @@ class ClientGraphic extends React.Component {
 			}
 		}
 
-		return (<div {...inputs.clientContainer}> 
+
+		return (<div {...inputs.clientContainer} ref="client"> 
 					<p {...inputs.text}>
 						{this.props.client['ClientName']}
 					</p>
 					<div {...inputs.svgContainer}>
 						<svg {...inputs.svg}>
 							  <rect {...inputs.rect}/>
-							  <ClientInputList {...inputs.clientInput}/>
-							  <ClientOutputList {...inputs.clientOutput}/>
 						</svg>
+						<ClientInputList {...inputs.clientInput}/>
+						<ClientOutputList {...inputs.clientOutput}/>
 					</div>
+					
+					
 				</div>
 			);
 	}
