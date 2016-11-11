@@ -7,45 +7,102 @@ class DraggableContainer extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			vertexPaths: {}
+			vertexPaths: []
 		};
 
-
+		//this acts as a buffer to capture the most recent user clicks without triggering re-render
 		this.vertex = {
 			inputName: [],
 			outputName: [],
-			destIP: [],
-			destID: [],
+			destinationIP: [],
+			destinationID: [],
 			sourceID: [],
 			inputPosition: {top: 0, 
 							left: 0},
 			outputPosition: {top: 0,
 							 left: 0}
 		}
+
+
 	}
 
-	componentDidMount() {
-		var thisEl = this.refs.flowchart;
-		// console.log(thisEl.getClientRects());
-		//console.log(document.getElementById("input").offsetLeft);
+	componentDidMount(){
+
+		setTimeout(this.fillVertexesFromClientlist.bind(this), 1);
+
 	}
 
-	selectInput(inputName, destIP, destID, position) {
-		this.vertex['inputName'] = inputName;
-		this.vertex['destIP'] = destIP;
-		this.vertex['destID'] = destID;
-		this.vertex['inputPosition'] = position;
+	fillVertexesFromClientlist() {
 		
-		var vertexName = this.getVertexNameFromSavedIO();
-		this.commitUpdatedVertexCoordinates(vertexName);
+		console.log("building vertexes on initial load");
+		console.log(this.props.clientList);
+
+		for(var clientIndex in this.props.clientList) { //loop through client array
+			
+			var currentClient = this.props.clientList[clientIndex];
+			for( var index in currentClient['VertexList']) { //loop through VertexList array in client object
+				
+				var currentVertex = currentClient['VertexList'][index];
+				
+				this.selectOutput(currentVertex['outputName'],
+								  currentVertex['sourceID'],
+								  this.findControlPosition(currentVertex['sourceID'],currentVertex['outputName']));
+
+				this.selectInput(currentVertex['inputName'],
+				   			  	  currentVertex['destinationIP'],
+				   			  	  currentVertex['destinationID'],
+				   			  	  this.findControlPosition(currentVertex['destinationID'],currentVertex['inputName']));
+			}
+		}
 
 		console.log(this.state.vertexPaths);
-		this.sendVertexToServer();
-
+		this.forceUpdate();
 	}
 
-	getVertexNameFromSavedIO(){
-		return this.vertex.sourceID + '.' + this.vertex.outputName + '->' + this.vertex.destID + '.' + this.vertex.inputName;
+	findControlPosition(sourceID,controlName){
+
+		for(var clientIndex in this.props.clientList) {
+
+			if(this.props.clientList[clientIndex]['ClientID'] == sourceID){
+
+				for (var controlIndex in this.props.clientList[clientIndex]['ControlList']){
+
+					if(this.props.clientList[clientIndex]['ControlList'][controlIndex]['ControlName'] == controlName){
+
+						return this.props.clientList[clientIndex]['ControlList'][controlIndex]['position'];
+					}
+				}
+			}
+		}
+
+		return {top: -50, left: -50};
+	}
+
+
+	selectOutput(outputName, sourceID, position){
+		this.vertex['outputName'] = outputName;
+		this.vertex['sourceID'] = sourceID;
+		this.vertex['outputPosition'] = position;
+	}
+
+	selectInput(inputName, destinationIP, destinationID, position){
+		this.vertex['inputName'] = inputName;
+		this.vertex['destinationIP'] = destinationIP;
+		this.vertex['destinationID'] = destinationID;
+		this.vertex['inputPosition'] = position;
+		
+		//sourceID is assumed to be already saved...not necessarily safe assumption
+		var vertexName = this.nameVertex(this.vertex['sourceID'], this.vertex['outputName'], destinationID, inputName);
+		this.commitUpdatedVertexCoordinates(vertexName);
+	}
+
+	selectInputandSend(inputName, destinationIP, destinationID, position) {
+		this.selectInput(inputName, destinationIP, destinationID, position);
+		this.sendVertexToServer();
+	}
+
+	nameVertex(sourceID, outputName, destinationID, inputName) {
+		return sourceID + '.' + outputName + '->' + destinationID + '.' + inputName;
 	}
 
 	commitUpdatedVertexCoordinates(vertexName) {
@@ -53,7 +110,9 @@ class DraggableContainer extends React.Component {
 		const vertexObject = this.state.vertexPaths;
 		vertexObject[[vertexName]] = {
 								sourceID: this.vertex.sourceID,
-								destID: this.vertex.destID,
+								outputName: this.vertex.outputName,
+								destinationID: this.vertex.destinationID,
+								inputName: this.vertex.inputName,
 								x1: this.vertex.outputPosition['left'],
 								x2: this.vertex.inputPosition['left'],
 								y1: this.vertex.outputPosition['top'],
@@ -63,24 +122,20 @@ class DraggableContainer extends React.Component {
 		this.setState({vertexPaths: vertexObject});
 	}
 
-	updateVertexPositions(clientID, dragOffset) {
-		console.log("entering updateVertexPositions");
-		console.log(dragOffset);
-		console.log(clientID);
+	updateVertexPositionsByOffset(clientID, dragOffset) {
 
 		var currentVertexPaths = this.state.vertexPaths;
 
 		for(var thisVertex in this.state.vertexPaths) {	//iterate through all vertexes
 			
-			if(this.state.vertexPaths[thisVertex]['destID'] == clientID ) { //check if input ID matches
+			if(this.state.vertexPaths[thisVertex]['destinationID'] == clientID ) { //check if input ID matches
 				
-				console.log('apply offset to position2');
 				currentVertexPaths[thisVertex]['x2'] = currentVertexPaths[thisVertex]['x2'] + dragOffset['left'];
 				currentVertexPaths[thisVertex]['y2'] = currentVertexPaths[thisVertex]['y2'] + dragOffset['top'];
 
 			}
 			else if(this.state.vertexPaths[thisVertex]['sourceID'] == clientID){ //check if output id matches
-				console.log('//apply offset to position1');
+				
 				currentVertexPaths[thisVertex]['x1'] = currentVertexPaths[thisVertex]['x1'] + dragOffset['left'];
 				currentVertexPaths[thisVertex]['y1'] = currentVertexPaths[thisVertex]['y1'] + dragOffset['top'];
 				
@@ -89,13 +144,6 @@ class DraggableContainer extends React.Component {
 		}
 
 		this.setState({vertexPaths: currentVertexPaths});
-		console.log(this.state.vertexPaths);
-	}
-
-	selectOutput(outputName, sourceID, position){
-		this.vertex['outputName'] = outputName;
-		this.vertex['sourceID'] = sourceID;
-		this.vertex['outputPosition'] = position;
 	}
 
 	sendVertexToServer() {
@@ -103,8 +151,8 @@ class DraggableContainer extends React.Component {
 		const message = 'SetVertex' + ':' + 
 						this.vertex.inputName + ',' + 
 						this.vertex.outputName + ',' +
-						this.vertex.destIP + ',' + 
-						this.vertex.destID + ',' + 
+						this.vertex.destinationIP + ',' + 
+						this.vertex.destinationID + ',' + 
 						this.vertex.sourceID + '\n';
 
     	const messagePacket = {command: message};
@@ -114,11 +162,6 @@ class DraggableContainer extends React.Component {
 	      type: 'POST',
 	      data: messagePacket,
 	      success: (data) => {
-	        this.vertex['inputName'] = [];
-			this.vertex['destIP'] = [];
-			this.vertex['destID'] = [];
-			this.vertex['outputName'] = [];
-			this.vertex['sourceID'] = [];
 	      },
 	      error: function(xhr, status, err) {
 	        console.error('/api/commands', status, err.toString());
@@ -128,6 +171,7 @@ class DraggableContainer extends React.Component {
 	}
 
 	render() {
+
 		const styles = {
 			flowchart: {
 				height: 1000,
@@ -152,9 +196,9 @@ class DraggableContainer extends React.Component {
 				client: [],
 				top: 0,
 				left: 0,
-				selectInput: (inputName, destIP, destID, position) => this.selectInput(inputName, destIP, destID, position),
+				selectInput: (inputName, destinationIP, destinationID, position) => this.selectInputandSend(inputName, destinationIP, destinationID, position),
 				selectOutput: (outputName, sourceID, position) => this.selectOutput(outputName, sourceID, position),
-				updateVertexPositions: (clientID, dragOffset) => this.updateVertexPositions(clientID, dragOffset),
+				updateVertexPositionsByOffset: (clientID, dragOffset) => this.updateVertexPositionsByOffset(clientID, dragOffset),
 			},
 			vertexSVGSpace:{
 				style: styles.vertexSVGSpace

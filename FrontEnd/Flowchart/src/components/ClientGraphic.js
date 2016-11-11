@@ -26,8 +26,28 @@ class ClientGraphic extends React.Component {
 
 	componentDidMount() {
 		var thisEl = this.refs.client.getClientRects();
-		this.setState({top: thisEl[0]["top"]});
-	 	this.setState({left: thisEl[0]["left"]});
+		var clientTop = thisEl[0]["top"];
+		var clientLeft = thisEl[0]["left"];
+
+		this.setState({top: clientTop});
+	 	this.setState({left: clientLeft});
+
+	 	//output position
+	 	var controlOutY = 100/(this.outputs.length + 1);
+
+		for (var i=0; i < this.outputs.length; i++){
+	 		this.outputs[i]['position'] = {top: clientTop + (126*(i+1)*controlOutY/100) + 12,
+	 										left: clientLeft + 219.33};
+		}
+
+		//input position
+		var allInputPositions = [];
+		var controlInY = 100/(this.inputs.length + 1);
+		for (var i=0; i < this.inputs.length; i++){
+			this.inputs[i]['position'] = {top: clientTop + (126*(i+1)*controlInY/100) + 12,
+										   left: clientLeft + 10};
+		};
+
 	}
 
 	fillInputs() {
@@ -53,7 +73,7 @@ class ClientGraphic extends React.Component {
 		this.setState({left: this.state.left + this.dragOffset['left'],
 					   top: this.state.top + this.dragOffset['top']});
 
-		this.props.updateVertexPositions(this.props.client['ClientID'], this.dragOffset);
+		this.props.updateVertexPositionsByOffset(this.props.client['ClientID'], this.dragOffset);
 	}
 
 	calculateDragOffset(event) {
