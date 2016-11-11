@@ -102,7 +102,7 @@ class ServerConnection:
 		return 'Client not found'
 
 	def UpdateClientVertex(self, commandData) :
-		# Parse first vertex to get source ID. 
+		# Parse first vertex to get source ID.
 		# TODO: Do this part better
 		splitData = commandData.split(';')
 		testVertex = Vertex()
@@ -120,7 +120,7 @@ class ServerConnection:
 	def GetClientVertices(self, commandData) :
 		myClientID = int(commandData)
 		for x in range(0, len(self.clientList)) :
-			if self.clientList[x].ClientID == myClientID : 
+			if self.clientList[x].ClientID == myClientID :
 				return self.clientList[x].GetVerticesString()
 
 		return 'Client not found'
@@ -179,11 +179,23 @@ class ServerConnection:
 		except :
 			print 'Failed to contact client interrupt server'
 
+	def CheckVertexEquality(self, client, vertex) :
+		for x in range(0, len(client.VertexList)) :
+			if client.VertexList[x].destinationID == vertex.destinationID :
+				if client.VertexList[x].inputName == vertex.inputName :
+					if client.VertexList[x].outputName == vertex.outputName :
+						return 1
+
+		return 0
+
 	def SetVertexFromFrontEnd(self, commandStr) :
 		newVertex = Vertex()
 		newVertex.SetVertexFromString(commandStr)
 		for x in range(0, len(self.clientList)) :
 			if self.clientList[x].ClientID == newVertex.sourceID :
+				if self.CheckVertexEquality(self.clientList[x], newVertex) :
+					return 'Vertex Already Set'
+
 				self.clientList[x].VertexList.append(newVertex)
 				self.WriteClientListJSON()
 				return 'Vertex Set'
@@ -226,7 +238,7 @@ class ServerConnection:
 	def QueueCurrentCommands(self) :
 		fileName = 'CommandQueue.tmp'
 		while 1 :
-			
+
 			with open (fileName, 'r') as inFile :
 				for line in inFile :
 					if len(line) > 0 :
