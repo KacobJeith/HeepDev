@@ -197,6 +197,17 @@ class ServerConnection:
 
 		return 'Not Found'
 
+	def SetPositionFromFrontEnd(self, commandStr) :
+		newPosition = []
+		
+		for x in range(0, len(self.clientList)) :
+			if self.clientList[x].ClientID == newVertex.sourceID :
+				self.clientList[x].VertexList.append(newVertex)
+				self.WriteClientListJSON()
+				return 'Vertex Set'
+
+		return 'Client not found'
+
 	def SetCommandFromFrontEnd(self, commandStr) :
 		commands = []
 		commands.append(commandStr)
@@ -211,6 +222,7 @@ class ServerConnection:
 	def ParseFrontEndCommands(self, command) :
 		SetVertexString = 'SetVertex'
 		SetCommandString = 'SetCommand'
+		SetPositionString = 'SetPosition'
 
 		print command
 
@@ -220,6 +232,8 @@ class ServerConnection:
 			return self.SetVertexFromFrontEnd(commandDataSplit[1])
 		elif commandDataSplit[0] == SetCommandString :
 			return self.SetCommandFromFrontEnd(commandDataSplit[1])
+		elif commandDataSplit[0] == SetCommandString :
+			return self.SetPositionFromFrontEnd(commandDataSplit[1])
 
 		return 'Failed to Find Command'
 

@@ -10,6 +10,7 @@ class PLCClient:
 		self.ClientType = 1
 		self.IPAddress = 'none'
 		self.ClientName = 'none'
+		self.Position = {'top': 0, 'left': 0}
 		self.ControlList = []
 		self.ControlQueue = []
 		self.VertexList = []
@@ -68,6 +69,17 @@ class PLCClient:
 
 		return
 
+	def UpdatePositionByString(self, positionString) :
+		updatedPosition = positionString.split(',')
+		self.UpdatePositionByName(float(updatedPosition[0]), float(updatedPosition[1]))
+
+		return
+
+	def UpdatePositionByName(self, top, left) :
+		self.Position.top = top
+		self.Position.left = left
+		return
+
 	def GetQueuedControlString(self) :
 		retString = ""
 		for x in range(0, len(self.ControlQueue)) :
@@ -120,6 +132,7 @@ class PLCClient:
 		self.ClientName = self.ClientName
 		self.ControlList = self.ControlList
 		self.ClientID = self.ClientID
+		self.Position = self.Position
 
 		for x in range(0, len(self.ControlList)) :
 			self.ControlList[x].PrepareForJSONWrite()
