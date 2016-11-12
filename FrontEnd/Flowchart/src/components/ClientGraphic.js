@@ -71,11 +71,12 @@ class ClientGraphic extends React.Component {
 
 	calculateDragPosition(event) {
 		this.calculateDragOffset(event);
-		this.setState({left: this.state.left + this.dragOffset['left'],
-					   top: this.state.top + this.dragOffset['top']});
-
+		var newPosition = {left: this.state.left + this.dragOffset['left'],
+					   top: this.state.top + this.dragOffset['top']};
+		this.setState(newPosition);
+		
 		this.props.updateVertexPositionsByOffset(this.props.client['ClientID'], this.dragOffset);
-		this.sendPositionToServer();
+		this.sendPositionToServer(newPosition);
 	}
 
 	calculateDragOffset(event) {
@@ -83,12 +84,12 @@ class ClientGraphic extends React.Component {
 		this.dragOffset['top']  = event.pageY - this.state.originY;
 	}
 
-	sendPositionToServer() {
-
+	sendPositionToServer(newPosition) {
+		
 		const message = 'SetPosition' + ':' + 
 						this.props.client['ClientID'] + ',' +
-						this.state.top + ',' + 
-						this.state.left;
+						newPosition['top'] + ',' + 
+						newPosition['left'] + '\n';
 
     	const messagePacket = {command: message};
 
