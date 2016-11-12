@@ -71,7 +71,7 @@ class PLCClient:
 
 	def UpdatePositionByString(self, positionString) :
 		updatedPosition = positionString.split(',')
-		self.UpdatePositionByName(float(updatedPosition[1], float(updatedPosition[2]))
+		self.UpdatePositionByName( float(updatedPosition[1]), float(updatedPosition[2]))
 
 		return
 
