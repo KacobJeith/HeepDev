@@ -53,7 +53,7 @@ class ServerConnection:
 	def AddClientToList(self, newClient) :
 		addClient = 1
 		for x in range(0, len(self.clientList)) :
-			if self.clientList[x].IPAddress == newClient.IPAddress :
+			if self.clientList[x].ClientID == newClient.ClientID :
 				addClient = 0
 				vertexList = self.clientList[x].VertexList
 				newClient.VertexList = vertexList
