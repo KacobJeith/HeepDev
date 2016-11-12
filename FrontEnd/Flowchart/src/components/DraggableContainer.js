@@ -252,10 +252,11 @@ class DraggableContainer extends React.Component {
 
 	return (
 			<div {...inputs.flowchart} ref="flowchart"> 
-				{clientNodes}
+				
 				<svg {...inputs.vertexSVGSpace}>
 					{vertexDrawings}
 				</svg>
+				{clientNodes}
 			</div>
 		);
 
