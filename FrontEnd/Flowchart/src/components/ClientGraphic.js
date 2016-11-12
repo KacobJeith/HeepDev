@@ -1,4 +1,5 @@
 import React from 'react';
+import $ from 'jquery';
 import ClientInputList from './ClientInput';
 import ClientOutputList from './ClientOutput';
 
@@ -74,11 +75,34 @@ class ClientGraphic extends React.Component {
 					   top: this.state.top + this.dragOffset['top']});
 
 		this.props.updateVertexPositionsByOffset(this.props.client['ClientID'], this.dragOffset);
+		this.sendPositionToServer();
 	}
 
 	calculateDragOffset(event) {
 		this.dragOffset['left'] = event.pageX - this.state.originX;
 		this.dragOffset['top']  = event.pageY - this.state.originY;
+	}
+
+	sendPositionToServer() {
+
+		const message = 'SetPosition' + ':' + 
+						this.props.client['ClientID'] + ',' +
+						this.state.top + ',' + 
+						this.state.left;
+
+    	const messagePacket = {command: message};
+
+		$.ajax({
+	      url: '/api/commands',
+	      type: 'POST',
+	      data: messagePacket,
+	      success: (data) => {
+	      },
+	      error: function(xhr, status, err) {
+	        console.error('/api/commands', status, err.toString());
+	        console.log('Hitting sendVertexToServer error');
+	      }
+	    });
 	}
 
 	render() {
