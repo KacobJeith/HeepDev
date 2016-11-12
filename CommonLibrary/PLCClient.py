@@ -15,7 +15,7 @@ class PLCClient:
 		self.ControlQueue = []
 		self.VertexList = []
 		return
- 	
+
  	def AddVertexByString(self, vertexStr) :
  		newVertex = Vertex()
  		newVertex.SetVertexFromString(vertexStr)
@@ -61,7 +61,7 @@ class PLCClient:
 
 	def UpdateControlsByString(self, controlString) :
 		controlList = controlString.split(';')
-		
+
 		for x in range(0, len(controlList)) :
 			if len(controlList[x]) > 0:
 				curCommand = controlList[x].split(',')
@@ -71,7 +71,7 @@ class PLCClient:
 
 	def UpdatePositionByString(self, positionString) :
 		updatedPosition = positionString.split(',')
-		self.UpdatePositionByName(float(updatedPosition[0]), float(updatedPosition[1]))
+		self.UpdatePositionByName(float(updatedPosition[1], float(updatedPosition[2]))
 
 		return
 

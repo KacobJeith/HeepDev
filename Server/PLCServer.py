@@ -102,7 +102,7 @@ class ServerConnection:
 		return 'Client not found'
 
 	def UpdateClientVertex(self, commandData) :
-		# Parse first vertex to get source ID. 
+		# Parse first vertex to get source ID.
 		# TODO: Do this part better
 		splitData = commandData.split(';')
 		testVertex = Vertex()
@@ -120,7 +120,7 @@ class ServerConnection:
 	def GetClientVertices(self, commandData) :
 		myClientID = int(commandData)
 		for x in range(0, len(self.clientList)) :
-			if self.clientList[x].ClientID == myClientID : 
+			if self.clientList[x].ClientID == myClientID :
 				return self.clientList[x].GetVerticesString()
 
 		return 'Client not found'
@@ -198,13 +198,16 @@ class ServerConnection:
 		return 'Not Found'
 
 	def SetPositionFromFrontEnd(self, commandStr) :
-		newPosition = []
-		
+		newPosition = commandStr.split(',')
+		print newPosition
+		print self.clientList[0]
+
 		for x in range(0, len(self.clientList)) :
-			if self.clientList[x].ClientID == newVertex.sourceID :
-				self.clientList[x].VertexList.append(newVertex)
+			print self.clientList[x].ClientID
+			if str(self.clientList[x].ClientID) == newPosition[0] :
+				self.clientList[x].Position = {'top': float(newPosition[1]), 'left': float(newPosition[2])}
 				self.WriteClientListJSON()
-				return 'Vertex Set'
+				return 'Updated Client Position'
 
 		return 'Client not found'
 
@@ -232,7 +235,7 @@ class ServerConnection:
 			return self.SetVertexFromFrontEnd(commandDataSplit[1])
 		elif commandDataSplit[0] == SetCommandString :
 			return self.SetCommandFromFrontEnd(commandDataSplit[1])
-		elif commandDataSplit[0] == SetCommandString :
+		elif commandDataSplit[0] == SetPositionString :
 			return self.SetPositionFromFrontEnd(commandDataSplit[1])
 
 		return 'Failed to Find Command'
@@ -240,7 +243,7 @@ class ServerConnection:
 	def QueueCurrentCommands(self) :
 		fileName = 'CommandQueue.tmp'
 		while 1 :
-			
+
 			with open (fileName, 'r') as inFile :
 				for line in inFile :
 					if len(line) > 0 :
