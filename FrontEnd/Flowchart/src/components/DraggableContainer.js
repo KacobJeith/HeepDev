@@ -123,7 +123,6 @@ class DraggableContainer extends React.Component {
 	}
 
 	updateVertexPositionsByOffset(clientID, dragOffset) {
-
 		var currentVertexPaths = this.state.vertexPaths;
 
 		for(var thisVertex in this.state.vertexPaths) {	//iterate through all vertexes
@@ -222,7 +221,7 @@ class DraggableContainer extends React.Component {
 				left: 0,
 				selectInput: (inputName, destinationIP, destinationID, position) => this.selectInputandSend(inputName, destinationIP, destinationID, position),
 				selectOutput: (outputName, sourceID, position) => this.selectOutput(outputName, sourceID, position),
-				updateVertexPositionsByPosition: (clientID, newPosition) => this.updateVertexPositionsByPosition(clientID, newPosition),
+				updateVertexPositionsByOffset: (clientID, dragOffset) => this.updateVertexPositionsByOffset(clientID, dragOffset),
 			},
 			vertexSVGSpace:{
 				style: styles.vertexSVGSpace

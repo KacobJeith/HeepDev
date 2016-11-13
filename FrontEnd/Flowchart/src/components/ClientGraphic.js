@@ -24,6 +24,10 @@ class ClientGraphic extends React.Component {
 		this.originY = 0;
 		this.dragOffset = {	top: 0,
 							left: 10};
+		this.runningOffset = {top: 0,
+							left: 0};
+		this.lastPosition = {	top: 0,
+							left: 10};
 
 		this.fillInputs();
 		this.fillOutputs();
@@ -75,23 +79,25 @@ class ClientGraphic extends React.Component {
 	}
 
 	onDragStart(event) {
-		console.log("STARTDRAG");
-		console.log(this.state.top);
-		console.log(this.state.left);
+		//console.log("STARTDRAG");
+		//console.log(this.state.top);
+		//console.log(this.state.left);
 	    this.originX = event.screenX;
 	  	this.originY = event.screenY;
 	  	this.dragStartTop = this.state.top;
 	  	this.dragStartLeft = this.state.left;
-	  	console.log(this.dragStartTop)
+	  	this.lastPosition['left'] = event.screenX;
+	  	this.lastPosition['top'] = event.screenY;
+	  	//console.log(this.dragStartTop)
 	}
 
 	onDrag(event) {
 		this.calculateDragOffset(event);
 		var newPosition = {left: this.dragStartLeft + this.dragOffset['left'],
 					   		top: this.dragStartTop + this.dragOffset['top']};
-		console.log(this.dragStartTop);
+		console.log(this.runningOffset);
 		this.setState(newPosition);
-		this.props.updateVertexPositionsByPosition(this.props.client['ClientID'], this.dragOffset);
+		this.props.updateVertexPositionsByOffset(this.props.client['ClientID'], this.runningOffset);
 		
 	}
 
@@ -111,7 +117,15 @@ class ClientGraphic extends React.Component {
 
 		this.dragOffset['left'] = event.screenX - this.originX;
 		this.dragOffset['top']  = event.screenY - this.originY;
-		console.log(this.dragOffset);
+
+		
+		
+		this.runningOffset['left'] = event.screenX - this.lastPosition['left']  ;
+		this.lastPosition['left'] = event.screenX;
+
+		this.runningOffset['top'] = event.screenY - this.lastPosition['top']  ;
+		this.lastPosition['top'] = event.screenY;
+
 	}
 
 	sendPositionToServer(newPosition) {
