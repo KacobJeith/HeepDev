@@ -9,14 +9,19 @@ class ClientGraphic extends React.Component {
 		super(props);
 		this.state = {
 			radius: 5,
-			originX: 0,
-			originY: 0,
 			top: this.props.top,
 			left: this.props.left,
 		}
 
 		this.inputs = [];
 		this.outputs = [];
+		this.dragging = false;
+		this.dragStartTop = this.props.top;
+		this.dragStartLeft = this.props.left;
+
+
+		this.originX = 0;
+		this.originY = 0;
 		this.dragOffset = {	top: 0,
 							left: 10};
 
@@ -69,23 +74,48 @@ class ClientGraphic extends React.Component {
 		}
 	}
 
-	calculateDragPosition(event) {
+	onDragStart(event) {
+		console.log("STARTDRAG");
+		console.log(this.state.top);
+		console.log(this.state.left);
+	    this.originX = event.screenX;
+	  	this.originY = event.screenY;
+	  	this.dragStartTop = this.state.top;
+	  	this.dragStartLeft = this.state.left;
+	  	console.log(this.dragStartTop)
+	}
+
+	onDrag(event) {
 		this.calculateDragOffset(event);
-		var newPosition = {left: this.state.left + this.dragOffset['left'],
-					   top: this.state.top + this.dragOffset['top']};
+		var newPosition = {left: this.dragStartLeft + this.dragOffset['left'],
+					   		top: this.dragStartTop + this.dragOffset['top']};
+		console.log(this.dragStartTop);
 		this.setState(newPosition);
+		this.props.updateVertexPositionsByPosition(this.props.client['ClientID'], this.dragOffset);
 		
-		this.props.updateVertexPositionsByOffset(this.props.client['ClientID'], this.dragOffset);
+	}
+
+	calculateDragPosition(event) {
+		console.log('ABORT DRAG');
+		var newPosition = {left: this.state.left,
+					   		top: this.state.top};
+
 		this.sendPositionToServer(newPosition);
 	}
 
 	calculateDragOffset(event) {
-		this.dragOffset['left'] = event.pageX - this.state.originX;
-		this.dragOffset['top']  = event.pageY - this.state.originY;
+		if (event.screenX == 0 && event.screenY == 0){
+			console.log('skipping drag event');
+			return;
+		}
+
+		this.dragOffset['left'] = event.screenX - this.originX;
+		this.dragOffset['top']  = event.screenY - this.originY;
+		console.log(this.dragOffset);
 	}
 
 	sendPositionToServer(newPosition) {
-		
+
 		const message = 'SetPosition' + ':' + 
 						this.props.client['ClientID'] + ',' +
 						newPosition['top'] + ',' + 
@@ -143,8 +173,8 @@ class ClientGraphic extends React.Component {
 			clientContainer: {
 				style: styles.clientContainer,
 				draggable: true,
-				onDragStart : (event) => {this.setState({originX: event.pageX,
-														originY: event.pageY});},
+				onDragStart : (event) => {this.onDragStart(event)},
+				onDrag : (event) => {this.onDrag(event);},
 				onDragEnd: (event) => {this.calculateDragPosition(event);},
 			},
 			svgContainer: {
