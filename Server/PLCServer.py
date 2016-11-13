@@ -209,6 +209,20 @@ class ServerConnection:
 
 		return 'Not Found'
 
+	def SetPositionFromFrontEnd(self, commandStr) :
+		newPosition = commandStr.split(',')
+		print newPosition
+		print self.clientList[0]
+
+		for x in range(0, len(self.clientList)) :
+			print self.clientList[x].ClientID
+			if str(self.clientList[x].ClientID) == newPosition[0] :
+				self.clientList[x].Position = {'top': float(newPosition[1]), 'left': float(newPosition[2])}
+				self.WriteClientListJSON()
+				return 'Updated Client Position'
+
+		return 'Client not found'
+
 	def SetCommandFromFrontEnd(self, commandStr) :
 		commands = []
 		commands.append(commandStr)
@@ -223,6 +237,7 @@ class ServerConnection:
 	def ParseFrontEndCommands(self, command) :
 		SetVertexString = 'SetVertex'
 		SetCommandString = 'SetCommand'
+		SetPositionString = 'SetPosition'
 
 		print command
 
@@ -232,6 +247,8 @@ class ServerConnection:
 			return self.SetVertexFromFrontEnd(commandDataSplit[1])
 		elif commandDataSplit[0] == SetCommandString :
 			return self.SetCommandFromFrontEnd(commandDataSplit[1])
+		elif commandDataSplit[0] == SetPositionString :
+			return self.SetPositionFromFrontEnd(commandDataSplit[1])
 
 		return 'Failed to Find Command'
 

@@ -123,7 +123,6 @@ class DraggableContainer extends React.Component {
 	}
 
 	updateVertexPositionsByOffset(clientID, dragOffset) {
-
 		var currentVertexPaths = this.state.vertexPaths;
 
 		for(var thisVertex in this.state.vertexPaths) {	//iterate through all vertexes
@@ -215,15 +214,27 @@ class DraggableContainer extends React.Component {
 		}
 
 		let clientNodes = [];
+		var unsetYPosition = 0;
 
 		for( var client in this.props.clientList){
-
 			inputs.clientGraphic['key'] = this.props.clientList[client]['ClientID'];
 			inputs.clientGraphic['client'] = this.props.clientList[client];
+			inputs.clientGraphic['top'] = this.props.clientList[client]['Position']['top'] - 40;
+			inputs.clientGraphic['left'] = this.props.clientList[client]['Position']['left'] - 10;
 
-			clientNodes.push(<ClientGraphic {...inputs.clientGraphic}/>);
+			if (inputs.clientGraphic['top'] == 0){
 
-			inputs.clientGraphic['top'] = inputs.clientGraphic['top'] + 150;
+				inputs.clientGraphic['top'] == unsetYPosition;
+
+				clientNodes.push(<ClientGraphic {...inputs.clientGraphic}/>);
+
+				unsetYPosition += 150;
+			}
+			else{
+
+				clientNodes.push(<ClientGraphic {...inputs.clientGraphic}/>);
+			}
+			
 		};
 
 		var vertexDrawings = [];
@@ -240,10 +251,11 @@ class DraggableContainer extends React.Component {
 
 	return (
 			<div {...inputs.flowchart} ref="flowchart"> 
-				{clientNodes}
+				
 				<svg {...inputs.vertexSVGSpace}>
 					{vertexDrawings}
 				</svg>
+				{clientNodes}
 			</div>
 		);
 
