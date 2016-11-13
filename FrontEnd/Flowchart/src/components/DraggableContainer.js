@@ -145,30 +145,6 @@ class DraggableContainer extends React.Component {
 		this.setState({vertexPaths: currentVertexPaths});
 	}
 
-	updateVertexPositionsByPosition(clientID, newPosition) {
-
-		var currentVertexPaths = this.state.vertexPaths;
-
-		for(var thisVertex in this.state.vertexPaths) {	//iterate through all vertexes
-			
-			if(this.state.vertexPaths[thisVertex]['destinationID'] == clientID ) { //check if input ID matches
-				
-				currentVertexPaths[thisVertex]['x2'] = newPosition['left'];
-				currentVertexPaths[thisVertex]['y2'] = newPosition['top'];
-
-			}
-			else if(this.state.vertexPaths[thisVertex]['sourceID'] == clientID){ //check if output id matches
-				
-				currentVertexPaths[thisVertex]['x1'] = newPosition['left'];
-				currentVertexPaths[thisVertex]['y1'] = newPosition['top'];
-				
-			}
-
-		}
-
-		this.setState({vertexPaths: currentVertexPaths});
-	}
-
 	sendVertexToServer() {
 
 		const message = 'SetVertex' + ':' + 
