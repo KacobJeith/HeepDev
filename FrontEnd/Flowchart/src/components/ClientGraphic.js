@@ -15,19 +15,11 @@ class ClientGraphic extends React.Component {
 
 		this.inputs = [];
 		this.outputs = [];
-		this.dragging = false;
-		this.dragStartTop = this.props.top;
-		this.dragStartLeft = this.props.left;
 
-
-		this.originX = 0;
-		this.originY = 0;
-		this.dragOffset = {	top: 0,
-							left: 10};
-		this.runningOffset = {top: 0,
-							left: 0};
-		this.lastPosition = {	top: 0,
-							left: 10};
+		this.runningOffset = {top:  0,
+							  left: 0};
+		this.lastPosition =  {top:  0,
+							  left: 0};
 
 		this.fillInputs();
 		this.fillOutputs();
@@ -79,30 +71,25 @@ class ClientGraphic extends React.Component {
 	}
 
 	onDragStart(event) {
-		//console.log("STARTDRAG");
-		//console.log(this.state.top);
-		//console.log(this.state.left);
-	    this.originX = event.screenX;
-	  	this.originY = event.screenY;
-	  	this.dragStartTop = this.state.top;
-	  	this.dragStartLeft = this.state.left;
+
 	  	this.lastPosition['left'] = event.screenX;
 	  	this.lastPosition['top'] = event.screenY;
-	  	//console.log(this.dragStartTop)
+		
 	}
 
 	onDrag(event) {
+
 		this.calculateDragOffset(event);
-		var newPosition = {left: this.dragStartLeft + this.dragOffset['left'],
-					   		top: this.dragStartTop + this.dragOffset['top']};
-		console.log(this.runningOffset);
+		var newPosition = {left: this.state['left'] + this.runningOffset.left,
+					   		top: this.state['top'] + this.runningOffset.top};
+		
 		this.setState(newPosition);
 		this.props.updateVertexPositionsByOffset(this.props.client['ClientID'], this.runningOffset);
 		
 	}
 
 	calculateDragPosition(event) {
-		console.log('ABORT DRAG');
+		
 		var newPosition = {left: this.state.left,
 					   		top: this.state.top};
 
@@ -110,16 +97,12 @@ class ClientGraphic extends React.Component {
 	}
 
 	calculateDragOffset(event) {
+		// The final drag event is always 0, whichthrows off tracking unless you catch and ignore it
 		if (event.screenX == 0 && event.screenY == 0){
 			console.log('skipping drag event');
 			return;
 		}
 
-		this.dragOffset['left'] = event.screenX - this.originX;
-		this.dragOffset['top']  = event.screenY - this.originY;
-
-		
-		
 		this.runningOffset['left'] = event.screenX - this.lastPosition['left']  ;
 		this.lastPosition['left'] = event.screenX;
 
