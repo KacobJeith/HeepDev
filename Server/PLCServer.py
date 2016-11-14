@@ -83,6 +83,8 @@ class ServerConnection:
 			if sourceID == self.clientList[x].ClientID :
 				return self.clientList[x].GetQueuedControlString()
 
+		return 'Client not Found'
+
 	def GetClientList(self) :
 		print 'Implement Get Client List command'
 		return 'GetClientList:Not Implemented'

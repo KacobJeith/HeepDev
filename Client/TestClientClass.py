@@ -40,8 +40,8 @@ print client.SendClientDataToServer()
 print client.GetClientList()
 print client.QueueControlToServer(functionalClient.ClientID, 'gear' , 1)
 print client.GetQueuedCommandsFromServer()
-print client.GetQueuedCommandsFromServer()
-print client.GetVerticesFromServer()
+#print client.GetQueuedCommandsFromServer()
+#print client.GetVerticesFromServer()
 
 for x in range (0, 20) :
 	print client.EchoDataFromServer(str(x))
