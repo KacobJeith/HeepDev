@@ -80,7 +80,7 @@ class ServerConnection:
 
 	def GetQueuedControlValues(self, sourceID) :
 		for x in range(0, len(self.clientList)) :
-			if sourceID == self.clientList[x].ClientID :
+			if int(sourceID) == self.clientList[x].ClientID :
 				return self.clientList[x].GetQueuedControlString()
 
 		return 'Client not Found'
@@ -91,13 +91,13 @@ class ServerConnection:
 
 	def QueueControlChange(self, commandData) :
 		commandList = commandData.split(',')
-		destID = commandList[0]
+		destID = int(commandList[0])
 		destInputName = commandList[1]
 		destValue = int(commandList[2])
 
 		for x in range(0, len(self.clientList)) :
 			if self.clientList[x].ClientID == destID :
-				self.clientList[x].QueueControlByName(destControlName, destValue)
+				self.clientList[x].QueueControlByName(destInputName, destValue)
 				return 'Command Queued'
 
 		return 'Client not found'
