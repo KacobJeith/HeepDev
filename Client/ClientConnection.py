@@ -191,7 +191,7 @@ class ClientConnection:
 		return self.SendDataToServer(toSend)
 
 	def QueueControlToServer(self, destID, controlName, controlValue) :
-		toSend = 'QueueControlChange:'+destID+','+controlName+','+str(controlValue)
+		toSend = 'QueueControlChange:'+str(destID)+','+controlName+','+str(controlValue)
 		return self.SendDataToServer(toSend)
 
 	def SendDataDirectlyToClientIP(self, outData) :
