@@ -34,7 +34,7 @@ This documents describes the server API functions for the PLC server. These comm
 
 * SetCommand:destID,controlName,controlValue
 
-* SetPosition:clientID,X,Y - Sets the X Y position of a clients client card in the front end based on its client ID.
+* SetPosition:clientID,X,Y - Sets the X Y position of a client's client card in the front end based on its client ID.
 
 ### Not Implemented
 
