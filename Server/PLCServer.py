@@ -78,24 +78,23 @@ class ServerConnection:
 
 		return 'Client Added'
 
-	def GetQueuedControlValues(self, address) :
-		IPAddress = address[0]
+	def GetQueuedControlValues(self, sourceID) :
 		for x in range(0, len(self.clientList)) :
-			if IPAddress == self.clientList[x].IPAddress :
+			if sourceID == self.clientList[x].clientID :
 				return self.clientList[x].GetQueuedControlString()
 
 	def GetClientList(self) :
 		print 'Implement Get Client List command'
 		return 'GetClientList:Not Implemented'
 
-	def UpdateClientControl(self, commandData) :
+	def QueueControlChange(self, commandData) :
 		commandList = commandData.split(',')
-		destIP = commandList[0]
-		destControlName = commandList[1]
+		destID = commandList[0]
+		destInputName = commandList[1]
 		destValue = int(commandList[2])
 
 		for x in range(0, len(self.clientList)) :
-			if self.clientList[x].IPAddress == destIP :
+			if self.clientList[x].ClientID == destID :
 				self.clientList[x].QueueControlByName(destControlName, destValue)
 				return 'Command Queued'
 
@@ -132,7 +131,7 @@ class ServerConnection:
 		NewConnectString = 'NewConnect'
 		GetQueuedDataString = 'GetQueuedControlData'
 		GetClientListString = 'GetClientList'
-		UpdateClientControlString = 'UpdateClientControl'
+		QueueControlChangeString = 'QueueControlChange'
 		UpdateClientVertexString = 'UpdateClientVertex'
 		GetClientVertexString = 'GetClientVertices'
 
@@ -146,11 +145,11 @@ class ServerConnection:
 		elif commandDataSplit[0] == NewConnectString :
 			return self.AddClient(commandDataSplit[1], address)
 		elif commandDataSplit[0] == GetQueuedDataString :
-			return self.GetQueuedControlValues(address)
+			return self.GetQueuedControlValues(commandDataSplit[1])
 		elif commandDataSplit[0] == GetClientListString :
 			return self.GetClientList()
-		elif commandDataSplit[0] == UpdateClientControlString :
-			return self.UpdateClientControl(commandDataSplit[1])
+		elif commandDataSplit[0] == QueueControlChangeString :
+			return self.QueueControlChange(commandDataSplit[1])
 		elif commandDataSplit[0] == UpdateClientVertexString :
 			return self.UpdateClientVertex(commandDataSplit[1])
 		elif commandDataSplit[0] == GetClientVertexString :

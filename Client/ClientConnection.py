@@ -105,7 +105,7 @@ class ClientConnection:
 
 	def SendDataToServer(self, data) :
 		self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		self.sock.settimeout(0.5)
+		self.sock.settimeout(2)
 		self.sock.connect((self.serverIP, self.TCP_PORT))
 		self.sock.send(data)
 		data = self.sock.recv(self.BUFFER_SIZE)
@@ -114,7 +114,7 @@ class ClientConnection:
 	def SendDataToClient(self, data, IP) :
 		try :
 			self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-			self.sock.settimeout(0.5)
+			self.sock.settimeout(2)
 			self.sock.connect((IP, self.TCP_PORT))
 			self.sock.send(data)
 			data = self.sock.recv(self.BUFFER_SIZE)
