@@ -132,7 +132,7 @@ class ClientConnection:
 		return self.SendDataToServer(toSend)
 
 	def GetQueuedCommandsFromServer(self) :
-		toSend = 'GetQueuedControlData:' + str(self.clientData.clientID)
+		toSend = 'GetQueuedControlData:' + str(self.clientData.ClientID)
 		return self.SendDataToServer(toSend)
 
 	def SendClientVertexDataToServer(self) :
