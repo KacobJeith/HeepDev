@@ -105,7 +105,7 @@ class ClientConnection:
 
 	def SendDataToServer(self, data) :
 		self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		self.sock.settimeout(0.5)
+		self.sock.settimeout(2)
 		self.sock.connect((self.serverIP, self.TCP_PORT))
 		self.sock.send(data)
 		data = self.sock.recv(self.BUFFER_SIZE)
@@ -114,7 +114,7 @@ class ClientConnection:
 	def SendDataToClient(self, data, IP) :
 		try :
 			self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-			self.sock.settimeout(0.5)
+			self.sock.settimeout(2)
 			self.sock.connect((IP, self.TCP_PORT))
 			self.sock.send(data)
 			data = self.sock.recv(self.BUFFER_SIZE)
@@ -132,7 +132,7 @@ class ClientConnection:
 		return self.SendDataToServer(toSend)
 
 	def GetQueuedCommandsFromServer(self) :
-		toSend = 'GetQueuedControlData:'
+		toSend = 'GetQueuedControlData:' + str(self.clientData.ClientID)
 		return self.SendDataToServer(toSend)
 
 	def SendClientVertexDataToServer(self) :
@@ -190,11 +190,8 @@ class ClientConnection:
 		toSend = 'GetClientList:'
 		return self.SendDataToServer(toSend)
 
-	def UpdateClientControl(self, destIP, controlName, controlValue) :
-		clientInterruptCommand = 'SetVal:' + controlName + ',' + str(controlValue)
-		self.SendDataToClient(clientInterruptCommand, destIP)
-
-		toSend = 'UpdateClientControl:'+destIP+','+controlName+','+str(controlValue)
+	def QueueControlToServer(self, destID, controlName, controlValue) :
+		toSend = 'QueueControlChange:'+str(destID)+','+controlName+','+str(controlValue)
 		return self.SendDataToServer(toSend)
 
 	def SendDataDirectlyToClientIP(self, outData) :

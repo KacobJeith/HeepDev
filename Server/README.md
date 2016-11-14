@@ -12,13 +12,13 @@ This documents describes the server API functions for the PLC server. These comm
 
 * Echo:(InformationToBeRepeated) - Tell the server to echo some string back to the client
 
-* GetQueuedControlData: - Return a list of control updates in tuples ex. ControlName,ControlValue;ControlName2,ControlValue2;
-
-* UpdateClientControl:ClientAddress,ControlName,ControlValue - Update a client's control via the server
-
 * UpdateClientVertex:inputName,outputName,destIP,destID,sourceID - Updates the server's client vertex list for the client that sent the command (client at sourceID)
 
 * GetClientVertices:ClientID - Get the vertices for a client with this ID
+
+* QueueControlChange:DestID,inputName,Value - Update a client's input value by queing the information on the server. This is typically used as a fallback for a failed interrupt send.
+
+* GetQueuedControlData:sourceID - Return a list of control updates for the client at sourceIDin tuples ex. ControlName,ControlValue;ControlName2,ControlValue2;
 
 ### Not Implemented
 
@@ -33,6 +33,8 @@ This documents describes the server API functions for the PLC server. These comm
 * SetVertex:inputName,outputName,destIP,destID,sourceID - Set a vertex on a client at a given source ID
 
 * SetCommand:destID,controlName,controlValue
+
+* SetPosition:clientID,X,Y - Sets the X Y position of a client's client card in the front end based on its client ID.
 
 ### Not Implemented
 
