@@ -80,7 +80,7 @@ class ServerConnection:
 
 	def GetQueuedControlValues(self, sourceID) :
 		for x in range(0, len(self.clientList)) :
-			if sourceID == self.clientList[x].clientID :
+			if sourceID == self.clientList[x].ClientID :
 				return self.clientList[x].GetQueuedControlString()
 
 	def GetClientList(self) :
