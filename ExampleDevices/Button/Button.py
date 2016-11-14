@@ -13,8 +13,8 @@ onRaspPi = 0
 def SetupClientConnection() :
 	client = ClientConnection()
 	ButtonClient = PLCClient()
-	ButtonClient.ClientName = 'Button'
-	ButtonClient.ClientID = 111
+	ButtonClient.ClientName = 'Js Butt'
+	ButtonClient.ClientID = 001
 
 	outControl = ControlValue()
 	outControl.ControlName = 'ButtonOut'
