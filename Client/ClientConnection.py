@@ -132,7 +132,7 @@ class ClientConnection:
 		return self.SendDataToServer(toSend)
 
 	def GetQueuedCommandsFromServer(self) :
-		toSend = 'GetQueuedControlData:'
+		toSend = 'GetQueuedControlData:' + str(self.clientData.clientID)
 		return self.SendDataToServer(toSend)
 
 	def SendClientVertexDataToServer(self) :
@@ -190,11 +190,8 @@ class ClientConnection:
 		toSend = 'GetClientList:'
 		return self.SendDataToServer(toSend)
 
-	def UpdateClientControl(self, destIP, controlName, controlValue) :
-		clientInterruptCommand = 'SetVal:' + controlName + ',' + str(controlValue)
-		self.SendDataToClient(clientInterruptCommand, destIP)
-
-		toSend = 'UpdateClientControl:'+destIP+','+controlName+','+str(controlValue)
+	def QueueControlToServer(self, destID, controlName, controlValue) :
+		toSend = 'QueueControlChange:'+destID+','+controlName+','+str(controlValue)
 		return self.SendDataToServer(toSend)
 
 	def SendDataDirectlyToClientIP(self, outData) :
