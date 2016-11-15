@@ -1,4 +1,5 @@
 #include <iostream>
+#include "ControlValue.h"
 using namespace std;
 
 struct ExpectedValue
@@ -47,6 +48,8 @@ void CheckResults(std::string testName, ExpectedValue valueList [], int numberOf
 int main(void)
 {
 	cout << "Test Beginning" << endl;
+
+	ControlValue test("Test");
 
 	return 0;
 }
