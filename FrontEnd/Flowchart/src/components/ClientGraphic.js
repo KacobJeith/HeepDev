@@ -74,6 +74,8 @@ class ClientGraphic extends React.Component {
 
 	  	this.lastPosition['left'] = event.screenX;
 	  	this.lastPosition['top'] = event.screenY;
+
+	  	event.dataTransfer.setDragImage(this.refs.client, -99999,-99999)
 		
 	}
 
