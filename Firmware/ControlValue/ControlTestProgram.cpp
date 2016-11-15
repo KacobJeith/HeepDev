@@ -1,3 +1,5 @@
+#pragma once
+
 #include <iostream>
 #include "ControlValue.h"
 using namespace std;
@@ -44,6 +46,28 @@ void CheckResults(std::string testName, ExpectedValue valueList [], int numberOf
 	OnSuccess(testName);
 }
 
+void TestControlList()
+{
+	std::string TestName = "Control List Test";
+
+	ControlValue testInput("Test Input", ControlValue::input, ControlValue::Range);
+	ControlValue testOutput("Test Output", ControlValue::output, ControlValue::Range);
+
+	ControlValNode* head = InitializeLinkedList(testInput);
+	AddControlToList(head, testOutput);
+
+	ExpectedValue valueList [2];
+	valueList[0].valueName = "Control Direction Head";
+	valueList[0].expectedValue = ControlValue::input;
+	valueList[0].actualValue = head->controlData.GetControlDirection();
+
+	valueList[1].valueName = "Control Direction Next";
+	valueList[1].expectedValue = ControlValue::output;
+	valueList[1].actualValue = head->next->controlData.GetControlDirection();
+
+	CheckResults(TestName, valueList, 2);
+}
+
 void TestConstructor()
 {
 	std::string TestName = "Control Value Constructor Test";
@@ -80,6 +104,7 @@ int main(void)
 	cout << "Test Beginning" << endl;
 
 	TestConstructor();
+	TestControlList();
 
 	return 0;
 }

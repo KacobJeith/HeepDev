@@ -29,5 +29,5 @@ struct ControlValNode{
 	ControlValue controlData;
 };
 
-void AddControlToList(ControlValNode* head);
-ControlValNode* InitalizeLinkedList(ControlValue ctrl);
+void AddControlToList(ControlValNode* head, ControlValue ctrl);
+ControlValNode* InitializeLinkedList(ControlValue ctrl);
