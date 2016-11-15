@@ -23,9 +23,9 @@ def SetupClientConnection() :
 def MoveServo(isRaspPi, state) :
 	if isRaspPi :
 		if state :
-			wiringpi.pwmWrite(18, 250)
+			wiringpi.pwmWrite(18, 200)
    		else :
-			wiringpi.pwmWrite(18, 50)
+			wiringpi.pwmWrite(18, 100)
 		return
 
 	print 'Time State: ' + str(state)
