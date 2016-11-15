@@ -53,7 +53,7 @@ void TestControlList()
 	ControlValue testInput("Test Input", ControlValue::input, ControlValue::Range);
 	ControlValue testOutput("Test Output", ControlValue::output, ControlValue::Range);
 
-	ControlValNode* head = InitializeLinkedList(testInput);
+	ControlValNode* head = InitializeControlList(testInput);
 	AddControlToList(head, testOutput);
 
 	ExpectedValue valueList [2];

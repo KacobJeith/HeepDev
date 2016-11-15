@@ -14,7 +14,7 @@ void AddControlToList(ControlValNode* head, ControlValue ctrl)
     tracker->next = newNode;
 }
 
-ControlValNode* InitializeLinkedList(ControlValue ctrl)
+ControlValNode* InitializeControlList(ControlValue ctrl)
 {
     ControlValNode* head = new ControlValNode();
     //head->next = NULL;

@@ -30,4 +30,4 @@ struct ControlValNode{
 };
 
 void AddControlToList(ControlValNode* head, ControlValue ctrl);
-ControlValNode* InitializeLinkedList(ControlValue ctrl);
+ControlValNode* InitializeControlList(ControlValue ctrl);
