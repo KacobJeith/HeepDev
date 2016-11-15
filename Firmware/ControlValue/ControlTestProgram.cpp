@@ -49,7 +49,7 @@ int main(void)
 {
 	cout << "Test Beginning" << endl;
 
-	ControlValue test("Test");
+	ControlValue test("Test", ControlValue::input, ControlValue::Range);
 
 	return 0;
 }

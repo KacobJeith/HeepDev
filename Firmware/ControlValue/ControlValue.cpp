@@ -5,8 +5,10 @@ ControlValue::ControlValue()
 
 }
 
-ControlValue::ControlValue(char* name)
+ControlValue::ControlValue(char* name, ControlDirectionType direction, ControlType cType)
 	: controlName(name)
+	, controlDirection(direction)
+	, type(cType)
 {
 }
 
