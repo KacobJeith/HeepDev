@@ -23,3 +23,11 @@ private:
 	char* controlName;
 
 };
+
+struct ControlValNode{
+	ControlValNode* next;
+	ControlValue controlData;
+};
+
+void AddControlToList(ControlValNode* head);
+ControlValNode* InitalizeLinkedList(ControlValue ctrl);
