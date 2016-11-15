@@ -50,3 +50,9 @@ struct ControlValNode{
 
 void AddControlToList(ControlValNode* head, ControlValue ctrl);
 ControlValNode* InitializeControlList(ControlValue ctrl);
+
+#ifdef TESTING
+	void GetControlByName(ControlValNode* head, std::string name, ControlValue &ctrlVal);
+#else
+	void GetControlByName(ControlValNode* head, String name, ControlValue &ctrlVal);
+#endif

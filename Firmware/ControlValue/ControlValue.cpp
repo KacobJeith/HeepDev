@@ -23,6 +23,36 @@ ControlValNode* InitializeControlList(ControlValue ctrl)
     return head;
 }
 
+#ifdef TESTING
+void GetControlByName(ControlValNode* head, std::string name, ControlValue &ctrlVal)
+{
+	ControlValNode* tracker = head;
+    while(tracker)
+    {
+    	if(tracker->controlData.GetControlName() == name)
+    	{
+    		ctrlVal = tracker->controlData;
+    		return;
+    	}
+    	tracker = tracker->next;
+    }
+}
+#else
+void GetControlByName(ControlValNode* head, String name, ControlValue &ctrlVal)
+{
+	ControlValNode* tracker = head;
+    while(tracker)
+    {
+    	if(tracker->controlData.GetControlName().equals(name))
+    	{
+    		ctrlVal = tracker->controlData;
+    		return;
+    	}
+    	tracker = tracker->next;
+    }
+}
+#endif
+
 ControlValue::ControlValue()
 {
 
