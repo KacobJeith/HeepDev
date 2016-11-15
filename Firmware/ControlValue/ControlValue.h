@@ -1,14 +1,29 @@
+#define TESTING
+
+#ifdef TESTING
+#include <string>
+#endif
+
 class ControlValue {
 public:
 	enum ControlDirectionType {input = 0, output = 1};
 	enum ControlType {OnOff = 0, Range = 1};
 
 	ControlValue();
-	ControlValue(char* name, ControlDirectionType direction, ControlType cType);
+#ifdef TESTING
+	ControlValue(std::string name, ControlDirectionType direction, ControlType cType);
+#else
+	ControlValue(String name, ControlDirectionType direction, ControlType cType);
+#endif
 	~ControlValue();	
 
 	// Getters
-	char* 	GetControlName() 		{return controlName; };
+#ifdef TESTING
+	std::string 	GetControlName() 		{return controlName; };
+#else
+	String 			GetControlName() 		{return controlName; };
+#endif
+
 	int 	GetControlDirection() 	{return controlDirection; };
 	int 	GetControlType()		{return type; };
 
@@ -20,7 +35,11 @@ private:
 	int lowValue;
 	int curCtrlValue;
 
-	char* controlName;
+#ifdef TESTING
+	std::string controlName;
+#else 
+	String controlName
+#endif
 
 };
 

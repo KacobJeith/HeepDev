@@ -1,5 +1,3 @@
-#pragma once
-
 #include <iostream>
 #include "ControlValue.h"
 using namespace std;

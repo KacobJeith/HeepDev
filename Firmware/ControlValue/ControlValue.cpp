@@ -28,12 +28,21 @@ ControlValue::ControlValue()
 
 }
 
-ControlValue::ControlValue(char* name, ControlDirectionType direction, ControlType cType)
+#ifdef TESTING
+ControlValue::ControlValue(std::string name, ControlDirectionType direction, ControlType cType)
 	: controlName(name)
 	, controlDirection(direction)
 	, type(cType)
 {
 }
+#else
+ControlValue::ControlValue(String name, ControlDirectionType direction, ControlType cType)
+	: controlName(name)
+	, controlDirection(direction)
+	, type(cType)
+{
+}
+#endif
 
 ControlValue::~ControlValue()
 {
