@@ -46,7 +46,7 @@ void CheckResults(std::string testName, ExpectedValue valueList [], int numberOf
 
 void TestConstructor()
 {
-	std::string TestName = "Client Name Test";
+	std::string TestName = "Client Constructor Test";
 
 	Client test(10, "Test");
 
