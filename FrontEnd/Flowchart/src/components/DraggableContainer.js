@@ -170,29 +170,6 @@ class DraggableContainer extends React.Component {
 	    });
 	}
 
-	sendDeleteVertexToServer() {
-
-		const message = 'DeleteVertex' + ':' + 
-						this.vertex.sourceID + ',' +
-						this.vertex.destinationID + ',' + 
-						this.vertex.outputName + ',' +
-						this.vertex.inputName + '\n';
-
-    	const messagePacket = {command: message};
-
-		$.ajax({
-	      url: '/api/commands',
-	      type: 'POST',
-	      data: messagePacket,
-	      success: (data) => {
-	      },
-	      error: function(xhr, status, err) {
-	        console.error('/api/commands', status, err.toString());
-	        console.log('Hitting sendDeleteVertexToServer error');
-	      }
-	    });
-	}
-
 	render() {
 
 		const styles = {
@@ -205,8 +182,7 @@ class DraggableContainer extends React.Component {
 				position: 'absolute',
 				width: 1000,
 				height: 1000,
-				viewBox: '0 0 1000 1000',
-				pointerEvents: 'none'
+				viewBox: '0 0 1000 1000'
 			}
 		}
 
@@ -228,7 +204,8 @@ class DraggableContainer extends React.Component {
 			},
 			vertexSVG: {
 				key: [],
-				vertex:[]
+				vertex:[],
+
 			}
 		}
 
