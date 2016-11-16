@@ -78,10 +78,21 @@ vertClient.SetVerticesFromString(newClient.GetVerticesString())
 print CheckEquality( newClient.GetVerticesString(), vertClient.GetVerticesString(), 'Vertex client setup')
 
 # Vertex Deletion
-print newClient.GetVerticesString()
-newClient.RemoveVertexByName(123223456, 'Steve', 'Rick')
-print newClient.GetVerticesString()
-print CheckEquality( newClient.GetVerticesString(), 'Chad,Steve,myIP,123456,666;', 'Remove Second Vertex')
+deletionClient = newClient
+myVertex = Vertex()
+myVertex.inputName = 'canti'
+myVertex.outputName = 'lever'
+myVertex.destinationID = 98587649
+myVertex.sourceID = 987123
+myVertex.destinationIP = '10.10.10.10'
+deletionClient.AddVertex(myVertex)
+
+deletionClient.RemoveVertex(123223456, 'Steve', 'Rick')
+print CheckEquality( deletionClient.GetVerticesString(), 'Chad,Steve,myIP,123456,666;canti,lever,10.10.10.10,98587649,987123;', 'Remove Middle Vertex')
+deletionClient.RemoveVertex(123456, 'Steve', 'Chad')
+print CheckEquality( deletionClient.GetVerticesString(), 'canti,lever,10.10.10.10,98587649,987123;', 'Remove First Vertex')
+deletionClient.RemoveVertex(98587649, 'lever', 'canti')
+print CheckEquality( deletionClient.GetVerticesString(), '', 'Remove Only Vertex')
 
 
 
