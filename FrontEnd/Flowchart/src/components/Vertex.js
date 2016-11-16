@@ -5,12 +5,12 @@ class Vertex extends React.Component {
 	constructor() {
 		super();
 		this.state = {
-			color: 'black'
+			color: 'black',
+			strokeWidth: 3
 		}
 	}
 	
 	sendDeleteVertexToServer() {
-		console.log("Deleting Vertex");
 
 		const message = 'DeleteVertex' + ':' + 
 						this.props.vertex.sourceID + ',' +
@@ -25,6 +25,8 @@ class Vertex extends React.Component {
 	      type: 'POST',
 	      data: messagePacket,
 	      success: (data) => {
+	      	console.log('Vertex Deleted');
+	      	this.props.removeVertex(this.props.vertex);
 	      },
 	      error: function(xhr, status, err) {
 	        console.error('/api/commands', status, err.toString());
@@ -37,14 +39,14 @@ class Vertex extends React.Component {
 	render() {
 		var inputs = {
 			vertex: {
-				strokeWidth: 3,
+				strokeWidth: this.state.strokeWidth,
 				stroke: this.state.color,
 				x1:this.props.vertex['x1'],
 				x2:this.props.vertex['x2'],
 				y1:this.props.vertex['y1'],
 				y2:this.props.vertex['y2'],
-				onMouseEnter: () => this.setState({'color': 'red'}),
-				onMouseLeave: () => this.setState({'color': 'black'}),
+				onMouseEnter: () => this.setState({'color': 'red', 'strokeWidth': 4}),
+				onMouseLeave: () => this.setState({'color': 'black', 'strokeWidth': 3}),
 				onDoubleClick: () => this.sendDeleteVertexToServer(),
 			}
 		}

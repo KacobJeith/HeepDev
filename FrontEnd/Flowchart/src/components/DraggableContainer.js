@@ -170,6 +170,13 @@ class DraggableContainer extends React.Component {
 	    });
 	}
 
+	removeVertex(vertex) {
+		var vertexName = this.nameVertex(vertex.sourceID, vertex.outputName, vertex.destinationID, vertex.inputName);
+		var newVertexList = this.state.vertexPaths;
+		delete newVertexList[vertexName];
+		this.setState({vertexPaths: newVertexList});
+	}
+
 	render() {
 
 		const styles = {
@@ -205,7 +212,7 @@ class DraggableContainer extends React.Component {
 			vertexSVG: {
 				key: [],
 				vertex:[],
-
+				removeVertex: (vertex) => this.removeVertex(vertex),
 			}
 		}
 
