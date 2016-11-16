@@ -24,6 +24,15 @@ class PLCClient:
  	def AddVertex(self, vertex) :
  		self.VertexList.append(vertex)
 
+ 	def RemoveVertexByName(self, destID, outputName, inputName) :
+ 		newVertexList = []
+
+ 		for x in range(0, len(self.VertexList)) :
+ 			if (destID != self.VertexList[x].destinationID or outputName != self.VertexList[x].outputName or  inputName != self.VertexList[x].inputName) :
+ 				newVertexList.append(self.VertexList[x])
+
+		self.VertexList = newVertexList;
+
  	def QueueOutput(self, outName, value) :
  		outputCommandQueue = []
 

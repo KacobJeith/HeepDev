@@ -77,6 +77,14 @@ vertClient = PLCClient()
 vertClient.SetVerticesFromString(newClient.GetVerticesString())
 print CheckEquality( newClient.GetVerticesString(), vertClient.GetVerticesString(), 'Vertex client setup')
 
+# Vertex Deletion
+print newClient.GetVerticesString()
+newClient.RemoveVertexByName(123223456, 'Steve', 'Rick')
+print newClient.GetVerticesString()
+print CheckEquality( newClient.GetVerticesString(), 'Chad,Steve,myIP,123456,666;', 'Remove Second Vertex')
+
+
+
 
 
 
