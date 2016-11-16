@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import ClientGraphic from './ClientGraphic';
+import Vertex from './Vertex';
 
 class DraggableContainer extends React.Component {
 	constructor(props) {
@@ -169,6 +170,29 @@ class DraggableContainer extends React.Component {
 	    });
 	}
 
+	sendDeleteVertexToServer() {
+
+		const message = 'DeleteVertex' + ':' + 
+						this.vertex.sourceID + ',' +
+						this.vertex.destinationID + ',' + 
+						this.vertex.outputName + ',' +
+						this.vertex.inputName + '\n';
+
+    	const messagePacket = {command: message};
+
+		$.ajax({
+	      url: '/api/commands',
+	      type: 'POST',
+	      data: messagePacket,
+	      success: (data) => {
+	      },
+	      error: function(xhr, status, err) {
+	        console.error('/api/commands', status, err.toString());
+	        console.log('Hitting sendDeleteVertexToServer error');
+	      }
+	    });
+	}
+
 	render() {
 
 		const styles = {
@@ -204,12 +228,7 @@ class DraggableContainer extends React.Component {
 			},
 			vertexSVG: {
 				key: [],
-				strokeWidth: 2,
-				stroke: "black",
-				x1:0,
-				x2:0,
-				y1:0,
-				y2:0
+				vertex:[]
 			}
 		}
 
@@ -241,12 +260,9 @@ class DraggableContainer extends React.Component {
 		for(var thisVertex in this.state.vertexPaths){
 
 			inputs.vertexSVG['key'] = thisVertex;
-			inputs.vertexSVG['x1'] = this.state.vertexPaths[thisVertex]['x1'];
-			inputs.vertexSVG['x2'] = this.state.vertexPaths[thisVertex]['x2'];
-			inputs.vertexSVG['y1'] = this.state.vertexPaths[thisVertex]['y1'];
-			inputs.vertexSVG['y2'] = this.state.vertexPaths[thisVertex]['y2'];
+			inputs.vertexSVG['vertex'] = this.state.vertexPaths[thisVertex]
 
-			vertexDrawings.push(<line {...inputs.vertexSVG}/>);
+			vertexDrawings.push(<Vertex {...inputs.vertexSVG}/>);
 		}
 
 	return (
