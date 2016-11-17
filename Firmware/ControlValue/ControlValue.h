@@ -49,6 +49,7 @@ public:
 	~ControlValList();
 
 	void AddControlValToList(ControlValue ctrlVal);
+	ControlValue GetControlAtIndex(int index) {return ctrlValArray[index];};
 
 private:
 	ControlValue *ctrlValArray;

@@ -44,6 +44,29 @@ void CheckResults(std::string testName, ExpectedValue valueList [], int numberOf
 	OnSuccess(testName);
 }
 
+void TestAddControlToList()
+{
+	std::string TestName = "Add Control To List Test";
+
+	ControlValue test1("ONE", ControlValue::input, ControlValue::Range);
+	ControlValue test2("TWO", ControlValue::output, ControlValue::Range);
+
+	ControlValList valList(2);
+	valList.AddControlValToList(test1);
+	valList.AddControlValToList(test2);
+
+	ExpectedValue valueList [2];
+	valueList[0].valueName = "Control Direction One";
+	valueList[0].expectedValue = ControlValue::input;
+	valueList[0].actualValue = valList.GetControlAtIndex(0).GetControlDirection();
+
+	valueList[1].valueName = "Control Direction Two";
+	valueList[1].expectedValue = ControlValue::output;
+	valueList[1].actualValue = valList.GetControlAtIndex(1).GetControlDirection();
+
+	CheckResults(TestName, valueList, 2);
+}
+
 void TestConstructor()
 {
 	std::string TestName = "Control Value Constructor Test";
@@ -80,6 +103,7 @@ int main(void)
 	cout << "Test Beginning" << endl;
 
 	TestConstructor();
+	TestAddControlToList();
 
 	return 0;
 }
