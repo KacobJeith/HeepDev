@@ -36,5 +36,7 @@ This documents describes the server API functions for the PLC server. These comm
 
 * SetPosition:clientID,X,Y - Sets the X Y position of a client's client card in the front end based on its client ID.
 
+* DeleteVertex:sourceID,destinationID,outputName,inputName - removes the vertex connecting client 1 (sourceID:outputName) and client 2 (destinationID:inputName) 
+
 ### Not Implemented
 
