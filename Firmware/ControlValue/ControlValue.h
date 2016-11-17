@@ -58,6 +58,7 @@ public:
 
 	void AddControlValToList(ControlValue ctrlVal);
 	ControlValue GetControlAtIndex(int index) {return ctrlValArray[index];};
+	int GetMaxElementIndex() {return currentMaxElement; };
 
 private:
 	ControlValue *ctrlValArray;

@@ -25,8 +25,10 @@ public:
 
 #ifdef ONPC
 	std::string GetClientName() {return clientName; };
+	std::string GetClientString();
 #else
 	String 		GetClientName() {return clientName; };
+	String 		GetClientString();
 #endif
 
 private:
