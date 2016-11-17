@@ -48,7 +48,7 @@ void TestConstructor()
 {
 	std::string TestName = "Client Constructor Test";
 
-	Client test(10, "Test");
+	Client test(10, "Test", 0);
 
 	std::string ExpectedName = "Test";
 	std::string ReceivedName = test.GetClientName();
