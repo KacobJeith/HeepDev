@@ -44,6 +44,29 @@ void CheckResults(std::string testName, ExpectedValue valueList [], int numberOf
 	OnSuccess(testName);
 }
 
+void TestGetControlString()
+{
+	std::string TestName = "Control Value Constructor Test";
+
+	ControlValue test("Test", ControlValue::output, ControlValue::Range);
+
+	std::string controlOut = test.GetControlString();
+	std::string correctString = "1,1,Test,0,10";
+
+	int isValueCorrect = 0;
+	if(controlOut == correctString)
+	{
+		isValueCorrect = 1;
+	}
+
+	ExpectedValue valueList [1];
+	valueList[0].valueName = "Control String";
+	valueList[0].expectedValue = 1;
+	valueList[0].actualValue = isValueCorrect;
+
+	CheckResults(TestName, valueList, 1);
+}
+
 void TestAddControlToList()
 {
 	std::string TestName = "Add Control To List Test";
@@ -104,6 +127,7 @@ int main(void)
 
 	TestConstructor();
 	TestAddControlToList();
+	TestGetControlString();
 
 	return 0;
 }

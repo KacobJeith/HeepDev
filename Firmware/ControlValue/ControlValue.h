@@ -2,6 +2,7 @@
 
 #ifdef TESTING
 #include <string>
+#include <iostream>
 #endif
 
 class ControlValue {
@@ -20,12 +21,16 @@ public:
 	// Getters
 #ifdef TESTING
 	std::string 	GetControlName() 		{return controlName; };
+	std::string 	GetControlString();
 #else
 	String 			GetControlName() 		{return controlName; };
+	String 			GetControlString();
 #endif
 
 	int 	GetControlDirection() 	{return controlDirection; };
 	int 	GetControlType()		{return type; };
+
+
 
 private:
 	ControlDirectionType controlDirection;

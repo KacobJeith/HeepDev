@@ -26,6 +26,8 @@ ControlValue::ControlValue(std::string name, ControlDirectionType direction, Con
 	: controlName(name)
 	, controlDirection(direction)
 	, type(cType)
+	, highValue(10)
+	, lowValue(0)
 {
 }
 #else
@@ -33,6 +35,8 @@ ControlValue::ControlValue(String name, ControlDirectionType direction, ControlT
 	: controlName(name)
 	, controlDirection(direction)
 	, type(cType)
+	, highValue(10)
+	, lowValue(0)
 {
 }
 #endif
@@ -41,3 +45,20 @@ ControlValue::~ControlValue()
 {
 
 }
+
+#ifdef TESTING
+
+std::string ControlValue::GetControlString()
+{
+	std::string ctrlString = std::to_string(controlDirection) + "," + std::to_string(type) + "," + controlName + "," + std::to_string(lowValue) + "," + std::to_string(highValue);
+	return ctrlString;
+}
+
+#else
+
+String ControlValue::GetControlString()
+{
+	return "Test";
+}
+
+#endif
