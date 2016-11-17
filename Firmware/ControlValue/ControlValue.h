@@ -43,16 +43,14 @@ private:
 
 };
 
-struct ControlValNode{
-	ControlValNode* next;
-	ControlValue controlData;
+class ControlValList{
+public:
+	ControlValList(int numElements);
+	~ControlValList();
+
+	void AddControlValToList(ControlValue ctrlVal);
+
+private:
+	ControlValue *ctrlValArray;
+	int currentMaxElement;
 };
-
-void AddControlToList(ControlValNode* head, ControlValue ctrl);
-ControlValNode* InitializeControlList(ControlValue ctrl);
-
-#ifdef TESTING
-	void GetControlByName(ControlValNode* head, std::string name, ControlValue &ctrlVal);
-#else
-	void GetControlByName(ControlValNode* head, String name, ControlValue &ctrlVal);
-#endif

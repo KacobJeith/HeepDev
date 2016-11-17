@@ -1,57 +1,20 @@
 #include "ControlValue.h"
 
-void AddControlToList(ControlValNode* head, ControlValue ctrl)
+ControlValList::ControlValList(int numElements)
+	: currentMaxElement(0)
 {
-	ControlValNode* newNode;
-    
-    newNode = new ControlValNode();
-   
-    newNode->controlData = ctrl;
-    
-    ControlValNode* tracker = head;
-    while(tracker->next){tracker = tracker->next;}
-    
-    tracker->next = newNode;
+	ctrlValArray = new ControlValue[numElements];
 }
 
-ControlValNode* InitializeControlList(ControlValue ctrl)
+ControlValList::~ControlValList()
 {
-    ControlValNode* head = new ControlValNode();
-    //head->next = NULL;
-    head->controlData = ctrl;
-    
-    return head;
 }
 
-#ifdef TESTING
-void GetControlByName(ControlValNode* head, std::string name, ControlValue &ctrlVal)
+void ControlValList::AddControlValToList(ControlValue ctrlVal)
 {
-	ControlValNode* tracker = head;
-    while(tracker)
-    {
-    	if(tracker->controlData.GetControlName() == name)
-    	{
-    		ctrlVal = tracker->controlData;
-    		return;
-    	}
-    	tracker = tracker->next;
-    }
+	ctrlValArray[currentMaxElement] = ctrlVal;
+	currentMaxElement++;
 }
-#else
-void GetControlByName(ControlValNode* head, String name, ControlValue &ctrlVal)
-{
-	ControlValNode* tracker = head;
-    while(tracker)
-    {
-    	if(tracker->controlData.GetControlName().equals(name))
-    	{
-    		ctrlVal = tracker->controlData;
-    		return;
-    	}
-    	tracker = tracker->next;
-    }
-}
-#endif
 
 ControlValue::ControlValue()
 {

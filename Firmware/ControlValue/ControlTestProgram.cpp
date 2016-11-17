@@ -44,49 +44,6 @@ void CheckResults(std::string testName, ExpectedValue valueList [], int numberOf
 	OnSuccess(testName);
 }
 
-void TestGetControlByName()
-{
-	std::string TestName = "Get Control By Name Test";
-
-	ControlValue testInput("Test Input", ControlValue::input, ControlValue::Range);
-	ControlValue testOutput("Test Output", ControlValue::output, ControlValue::Range);
-
-	ControlValNode* head = InitializeControlList(testInput);
-	AddControlToList(head, testOutput);
-
-	ControlValue testReader;
-	GetControlByName(head, "Test Output", testReader);
-
-	ExpectedValue valueList [1];
-	valueList[0].valueName = "Control Direction Head";
-	valueList[0].expectedValue = ControlValue::output;
-	valueList[0].actualValue = testReader.GetControlDirection();
-
-	CheckResults(TestName, valueList, 1);
-}
-
-void TestControlList()
-{
-	std::string TestName = "Control List Test";
-
-	ControlValue testInput("Test Input", ControlValue::input, ControlValue::Range);
-	ControlValue testOutput("Test Output", ControlValue::output, ControlValue::Range);
-
-	ControlValNode* head = InitializeControlList(testInput);
-	AddControlToList(head, testOutput);
-
-	ExpectedValue valueList [2];
-	valueList[0].valueName = "Control Direction Head";
-	valueList[0].expectedValue = ControlValue::input;
-	valueList[0].actualValue = head->controlData.GetControlDirection();
-
-	valueList[1].valueName = "Control Direction Next";
-	valueList[1].expectedValue = ControlValue::output;
-	valueList[1].actualValue = head->next->controlData.GetControlDirection();
-
-	CheckResults(TestName, valueList, 2);
-}
-
 void TestConstructor()
 {
 	std::string TestName = "Control Value Constructor Test";
@@ -123,8 +80,6 @@ int main(void)
 	cout << "Test Beginning" << endl;
 
 	TestConstructor();
-	TestControlList();
-	TestGetControlByName();
 
 	return 0;
 }
