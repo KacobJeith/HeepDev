@@ -50,7 +50,13 @@ void TestSetFromControlString()
 
 	ControlValue test("1,1,Test,0,10");
 
-	ExpectedValue valueList [2];
+	std::string expectedName = "Test";
+	std::string actualName = test.GetControlName();
+	int isValueCorrect = 0;
+	if(actualName == expectedName)
+		isValueCorrect = 1;
+
+	ExpectedValue valueList [3];
 	valueList[0].valueName = "Control Direction";
 	valueList[0].expectedValue = 1;
 	valueList[0].actualValue = test.GetControlDirection();
@@ -59,7 +65,11 @@ void TestSetFromControlString()
 	valueList[1].expectedValue = 1;
 	valueList[1].actualValue = test.GetControlType();
 
-	CheckResults(TestName, valueList, 2);
+	valueList[2].valueName = "Control Name";
+	valueList[2].expectedValue = 1;
+	valueList[2].actualValue = isValueCorrect;
+
+	CheckResults(TestName, valueList, 3);
 }
 
 void TestGetControlString()

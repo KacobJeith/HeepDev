@@ -2,7 +2,6 @@
 
 #ifdef TESTING
 #include <string>
-#include <iostream>
 #endif
 
 class ControlValue {
