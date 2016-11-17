@@ -44,6 +44,24 @@ void CheckResults(std::string testName, ExpectedValue valueList [], int numberOf
 	OnSuccess(testName);
 }
 
+void TestSetFromControlString()
+{
+	std::string TestName = "Set from Control String Test";
+
+	ControlValue test("1,1,Test,0,10");
+
+	ExpectedValue valueList [2];
+	valueList[0].valueName = "Control Direction";
+	valueList[0].expectedValue = 1;
+	valueList[0].actualValue = test.GetControlDirection();
+
+	valueList[1].valueName = "Control Type";
+	valueList[1].expectedValue = 1;
+	valueList[1].actualValue = test.GetControlType();
+
+	CheckResults(TestName, valueList, 2);
+}
+
 void TestGetControlString()
 {
 	std::string TestName = "Control Value Constructor Test";
@@ -128,6 +146,7 @@ int main(void)
 	TestConstructor();
 	TestAddControlToList();
 	TestGetControlString();
+	TestSetFromControlString();
 
 	return 0;
 }

@@ -13,8 +13,10 @@ public:
 	ControlValue();
 #ifdef TESTING
 	ControlValue(std::string name, ControlDirectionType direction, ControlType cType);
+	ControlValue(std::string controlValString);
 #else
 	ControlValue(String name, ControlDirectionType direction, ControlType cType);
+	ControlValue(String controlValString);
 #endif
 	~ControlValue();	
 
@@ -22,9 +24,11 @@ public:
 #ifdef TESTING
 	std::string 	GetControlName() 		{return controlName; };
 	std::string 	GetControlString();
+	void			SetControlFromString(std::string controlString);
 #else
 	String 			GetControlName() 		{return controlName; };
 	String 			GetControlString();
+	void			SetControlFromString(String controlString);
 #endif
 
 	int 	GetControlDirection() 	{return controlDirection; };
