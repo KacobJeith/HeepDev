@@ -44,6 +44,32 @@ void CheckResults(std::string testName, ExpectedValue valueList [], int numberOf
 	OnSuccess(testName);
 }
 
+void TestGetClientString()
+{
+	std::string TestName = "GetClientString";
+
+	Client test(132, "TestClient", 2);
+
+	test.AddControlToClient(ControlValue("Test Output", ControlValue::output, ControlValue::Range));
+	test.AddControlToClient(ControlValue("Test Input", ControlValue::input, ControlValue::Range));
+
+	std::string correctString = "132,None,0,TestClient,1,1,Test Output,0,10,0,1,Test Input,0,10";
+	int stringCorrect = 0;
+	if(correctString == test.GetClientString())
+	{
+		stringCorrect = 1;
+	}
+
+	ExpectedValue valueList [1];
+
+	valueList[0].valueName = "Client String";
+	valueList[0].expectedValue = 1;
+	valueList[0].actualValue = stringCorrect;
+
+	CheckResults(TestName, valueList, 1);
+}
+
+
 void TestConstructor()
 {
 	std::string TestName = "Client Constructor Test";
@@ -76,6 +102,7 @@ int main(void)
 	cout << "Test Beginning" << endl;
 
 	TestConstructor();
+	TestGetClientString();
 
 	return 0;
 }
