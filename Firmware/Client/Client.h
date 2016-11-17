@@ -17,10 +17,11 @@ public:
 	~Client();	
 
 	// Setters
-
+	void 			AddControlToClient(ControlValue ctrlVal) {controlValueList.AddControlValToList(ctrlVal);};
 
 	// Getters
-	int 	GetClientID() 	{return clientID; };
+	int 			GetClientID() 					{return clientID; };
+	ControlValue 	GetControlAtIndex(int index) 	{return controlValueList.GetControlAtIndex(index); };
 
 #ifdef ONPC
 	std::string GetClientName() {return clientName; };
