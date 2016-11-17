@@ -69,6 +69,27 @@ void TestGetClientString()
 	CheckResults(TestName, valueList, 1);
 }
 
+void TestAddClientControl()
+{
+	std::string TestName = "Add Client Control";
+
+	Client test(132, "TestClient", 2);
+
+	test.AddControlToClient(ControlValue("Test Output", ControlValue::output, ControlValue::Range));
+	test.AddControlToClient(ControlValue("Test Input", ControlValue::input, ControlValue::Range));
+
+	ExpectedValue valueList [2];
+
+	valueList[0].valueName = "Control 0";
+	valueList[0].expectedValue = ControlValue::output;
+	valueList[0].actualValue = test.GetControlAtIndex(0).GetControlDirection();
+
+	valueList[1].valueName = "Control 1";
+	valueList[1].expectedValue = ControlValue::input;
+	valueList[1].actualValue = test.GetControlAtIndex(1).GetControlDirection();
+
+	CheckResults(TestName, valueList, 2);
+}
 
 void TestConstructor()
 {
@@ -102,6 +123,7 @@ int main(void)
 	cout << "Test Beginning" << endl;
 
 	TestConstructor();
+	TestAddClientControl();
 	TestGetClientString();
 
 	return 0;
