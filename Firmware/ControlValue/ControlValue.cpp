@@ -65,11 +65,6 @@ std::string ControlValue::GetControlString()
 	return ctrlString;
 }
 
-std::string GetStrInRange(std::string controlString, int index1, int index2)
-{
-
-}
-
 void ControlValue::SetControlFromString(std::string controlString)
 {
 	enum parseState {parseDirection, parseType, parseName, parseLowHighVal};
@@ -112,7 +107,7 @@ void ControlValue::SetControlFromString(std::string controlString)
 			}
 		}
 	}
-	
+
 	controlName = NameStr;
 	controlDirection = (ControlDirectionType) std::atoi(DirectionStr.c_str());
 	type = (ControlType) std::atoi(TypeStr.c_str());
