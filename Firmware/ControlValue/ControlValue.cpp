@@ -21,7 +21,7 @@ ControlValue::ControlValue()
 
 }
 
-#ifdef TESTING
+#ifdef ONPC
 ControlValue::ControlValue(std::string name, ControlDirectionType direction, ControlType cType)
 	: controlName(name)
 	, controlDirection(direction)
@@ -57,7 +57,7 @@ ControlValue::~ControlValue()
 
 }
 
-#ifdef TESTING
+#ifdef ONPC
 
 std::string ControlValue::GetControlString()
 {

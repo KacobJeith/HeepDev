@@ -1,6 +1,6 @@
-#define TESTING
+#include "../Utilities/GlobalDefines.h"
 
-#ifdef TESTING
+#ifdef ONPC
 #include <string>
 #endif
 
@@ -10,7 +10,7 @@ public:
 	enum ControlType {OnOff = 0, Range = 1};
 
 	ControlValue();
-#ifdef TESTING
+#ifdef ONPC
 	ControlValue(std::string name, ControlDirectionType direction, ControlType cType);
 	ControlValue(std::string controlValString);
 #else
@@ -20,7 +20,7 @@ public:
 	~ControlValue();	
 
 	// Getters
-#ifdef TESTING
+#ifdef ONPC
 	std::string 	GetControlName() 		{return controlName; };
 	std::string 	GetControlString();
 	void			SetControlFromString(std::string controlString);
@@ -43,7 +43,7 @@ private:
 	int lowValue;
 	int curCtrlValue;
 
-#ifdef TESTING
+#ifdef ONPC
 	std::string controlName;
 #else 
 	String controlName
