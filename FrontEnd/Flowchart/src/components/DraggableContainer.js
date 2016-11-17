@@ -181,14 +181,14 @@ class DraggableContainer extends React.Component {
 
 		const styles = {
 			flowchart: {
-				height: 1000,
-				width: 1000,
+				height: 3000,
+				width: 3000,
 				position: 'relative'
 			},
 			vertexSVGSpace: {
 				position: 'absolute',
-				width: 1000,
-				height: 1000,
+				width: 3000,
+				height: 3000,
 				viewBox: '0 0 1000 1000'
 			}
 		}
