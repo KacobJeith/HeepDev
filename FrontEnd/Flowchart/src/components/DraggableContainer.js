@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import ClientGraphic from './ClientGraphic';
+import Vertex from './Vertex';
 
 class DraggableContainer extends React.Component {
 	constructor(props) {
@@ -169,6 +170,13 @@ class DraggableContainer extends React.Component {
 	    });
 	}
 
+	removeVertex(vertex) {
+		var vertexName = this.nameVertex(vertex.sourceID, vertex.outputName, vertex.destinationID, vertex.inputName);
+		var newVertexList = this.state.vertexPaths;
+		delete newVertexList[vertexName];
+		this.setState({vertexPaths: newVertexList});
+	}
+
 	render() {
 
 		const styles = {
@@ -181,8 +189,7 @@ class DraggableContainer extends React.Component {
 				position: 'absolute',
 				width: 3000,
 				height: 3000,
-				viewBox: '0 0 1000 1000',
-				pointerEvents: 'none'
+				viewBox: '0 0 1000 1000'
 			}
 		}
 
@@ -204,12 +211,8 @@ class DraggableContainer extends React.Component {
 			},
 			vertexSVG: {
 				key: [],
-				strokeWidth: 2,
-				stroke: "black",
-				x1:0,
-				x2:0,
-				y1:0,
-				y2:0
+				vertex:[],
+				removeVertex: (vertex) => this.removeVertex(vertex),
 			}
 		}
 
@@ -241,12 +244,9 @@ class DraggableContainer extends React.Component {
 		for(var thisVertex in this.state.vertexPaths){
 
 			inputs.vertexSVG['key'] = thisVertex;
-			inputs.vertexSVG['x1'] = this.state.vertexPaths[thisVertex]['x1'];
-			inputs.vertexSVG['x2'] = this.state.vertexPaths[thisVertex]['x2'];
-			inputs.vertexSVG['y1'] = this.state.vertexPaths[thisVertex]['y1'];
-			inputs.vertexSVG['y2'] = this.state.vertexPaths[thisVertex]['y2'];
+			inputs.vertexSVG['vertex'] = this.state.vertexPaths[thisVertex]
 
-			vertexDrawings.push(<line {...inputs.vertexSVG}/>);
+			vertexDrawings.push(<Vertex {...inputs.vertexSVG}/>);
 		}
 
 	return (

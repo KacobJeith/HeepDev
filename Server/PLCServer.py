@@ -203,6 +203,17 @@ class ServerConnection:
 
 		return 'Client not found'
 
+	def DeleteVertexFromFrontEnd(self, commandStr) :
+		delVertexInfo = commandStr.split(',')
+
+		for x in range(0, len(self.clientList)) :
+			if self.clientList[x].ClientID == int(delVertexInfo[0]) :
+				print self.clientList[x].RemoveVertex(int(delVertexInfo[1]), delVertexInfo[2], delVertexInfo[3])
+				self.WriteClientListJSON()
+				return 'Vertex Deleted'
+
+		return 'Client not found'
+
 	def GetIPFromClientID(self, clientID) :
 		for x in range(0,len(self.clientList)) :
 			if self.clientList[x].ClientID == int(clientID) :
@@ -212,11 +223,8 @@ class ServerConnection:
 
 	def SetPositionFromFrontEnd(self, commandStr) :
 		newPosition = commandStr.split(',')
-		print newPosition
-		print self.clientList[0]
 
 		for x in range(0, len(self.clientList)) :
-			print self.clientList[x].ClientID
 			if str(self.clientList[x].ClientID) == newPosition[0] :
 				self.clientList[x].Position = {'top': float(newPosition[1]), 'left': float(newPosition[2])}
 				self.WriteClientListJSON()
@@ -239,6 +247,7 @@ class ServerConnection:
 		SetVertexString = 'SetVertex'
 		SetCommandString = 'SetCommand'
 		SetPositionString = 'SetPosition'
+		DeleteVertexString = 'DeleteVertex'
 
 		print command
 
@@ -250,6 +259,8 @@ class ServerConnection:
 			return self.SetCommandFromFrontEnd(commandDataSplit[1])
 		elif commandDataSplit[0] == SetPositionString :
 			return self.SetPositionFromFrontEnd(commandDataSplit[1])
+		elif commandDataSplit[0] == DeleteVertexString :
+			return self.DeleteVertexFromFrontEnd(commandDataSplit[1])
 
 		return 'Failed to Find Command'
 
