@@ -2,6 +2,7 @@ import React from 'react';
 import $ from 'jquery';
 import ClientInputList from './ClientInput';
 import ClientOutputList from './ClientOutput';
+import ControlPopup from './ControlPopup';
 
 
 class ClientGraphic extends React.Component {
@@ -11,6 +12,7 @@ class ClientGraphic extends React.Component {
 			radius: 5,
 			top: this.props.top,
 			left: this.props.left,
+			displayControl: false
 		}
 
 		this.inputs = [];
@@ -20,6 +22,9 @@ class ClientGraphic extends React.Component {
 							  left: 0};
 		this.lastPosition =  {top:  0,
 							  left: 0};
+
+		this.controlPosition = {top: 0, 
+								left: 0};
 
 		this.fillInputs();
 		this.fillOutputs();
@@ -79,7 +84,7 @@ class ClientGraphic extends React.Component {
 	  	this.lastPosition['left'] = event.screenX;
 	  	this.lastPosition['top'] = event.screenY;
 	  	console.log(event.screenX);
-	  	console.log(event.clientX);
+	  	console.log(event.screenY);
 		
 	}
 
@@ -192,7 +197,11 @@ class ClientGraphic extends React.Component {
 				client: this.props.client,
 				top: this.state.top,
 				left: this.state.left,
-				selectInput: this.props.selectInput
+				selectInput: this.props.selectInput,
+				displayControl: (event) => {this.controlPosition = {top: event.pageY - this.state.top - 50,
+																	left: event.pageX - this.state.left - 30};
+											this.setState({displayControl: true})
+											},
 			},
 			clientOutput: {
 				containerWidth: styles.clientContainer['width'],
@@ -216,6 +225,10 @@ class ClientGraphic extends React.Component {
 				rx: "15",
 				ry: "15",
 				fill: "black",
+			},
+			controlPopup: {
+				top: this.controlPosition['top'],
+				left: this.controlPosition['left']
 			}
 		}
 
@@ -230,6 +243,7 @@ class ClientGraphic extends React.Component {
 						</svg>
 						<ClientInputList {...inputs.clientInput}/>
 						<ClientOutputList {...inputs.clientOutput}/>
+						{this.state.displayControl ? <ControlPopup {...inputs.controlPopup}/> : null}
 					</div>
 					
 					

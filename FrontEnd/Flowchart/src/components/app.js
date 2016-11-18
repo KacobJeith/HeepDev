@@ -50,7 +50,8 @@ class App extends React.Component {
           backgroundColor: "#43464c", 
           height: 40,
           width: "100%",
-          color: "#e1e3e8"
+          color: "#e1e3e8",
+          textIndent: 10
         },
         sidebarOpen: {
           position: "absolute",
