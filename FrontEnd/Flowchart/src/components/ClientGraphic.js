@@ -31,6 +31,10 @@ class ClientGraphic extends React.Component {
 		var clientTop = thisEl[0]["top"];
 		var clientLeft = thisEl[0]["left"];
 
+		if (this.props.sidebarVisible){
+			clientLeft = clientLeft - 250;
+		}
+
 		this.setState({top: clientTop});
 	 	this.setState({left: clientLeft});
 
@@ -74,8 +78,8 @@ class ClientGraphic extends React.Component {
 
 	  	this.lastPosition['left'] = event.screenX;
 	  	this.lastPosition['top'] = event.screenY;
-
-	  	event.dataTransfer.setDragImage(this.refs.client, -99999,-99999)
+	  	console.log(event.screenX);
+	  	console.log(event.clientX);
 		
 	}
 
@@ -96,6 +100,7 @@ class ClientGraphic extends React.Component {
 					   		top: this.state.top};
 
 		this.sendPositionToServer(newPosition);
+ 		
 	}
 
 	calculateDragOffset(event) {
