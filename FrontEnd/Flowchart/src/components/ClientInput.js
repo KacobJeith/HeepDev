@@ -83,7 +83,7 @@ class ClientInput extends React.Component {
 				fill: this.state.textHighlight ? "blue" : "black",
 				onMouseEnter: () => this.setState({textHighlight: true}),
 				onMouseLeave: () => this.setState({textHighlight: false}),
-				onClick: (event) => {console.log("click"); this.props.displayControl(event);},
+				onClick: (event) => {this.props.displayControl(event, this.props.input);},
 			}
 		}
 

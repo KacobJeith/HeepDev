@@ -15,6 +15,8 @@ class ClientGraphic extends React.Component {
 			displayControl: false
 		}
 
+		this.activeInput = [];
+
 		this.inputs = [];
 		this.outputs = [];
 
@@ -198,10 +200,11 @@ class ClientGraphic extends React.Component {
 				top: this.state.top,
 				left: this.state.left,
 				selectInput: this.props.selectInput,
-				displayControl: (event) => {this.controlPosition = {top: event.pageY - this.state.top - 50,
+				displayControl: (event, activeInput) => {this.controlPosition = {top: event.pageY - this.state.top - 50,
 																	left: event.pageX - this.state.left - 30};
-											this.setState({displayControl: true})
-											},
+														this.setState({displayControl: true});
+														this.activeInput = activeInput;
+														},
 			},
 			clientOutput: {
 				containerWidth: styles.clientContainer['width'],
@@ -228,7 +231,8 @@ class ClientGraphic extends React.Component {
 			},
 			controlPopup: {
 				top: this.controlPosition['top'],
-				left: this.controlPosition['left']
+				left: this.controlPosition['left'],
+				activeInput: this.activeInput,
 			}
 		}
 

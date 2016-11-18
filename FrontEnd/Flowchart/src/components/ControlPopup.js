@@ -5,7 +5,34 @@ import Icon from '../assets/icons';
 import {ICONS} from '../assets/iconConstants';
 
 class ControlPopup extends React.Component {
+	
+	sendCommand() {
+	    const ControlValue = this.state.newValue;
+	    let commandQueueString = [];
+	    for (var i = 0; i < this.props.thisCommand['DestIP'].length; i++){
+	    	commandQueueString.push(this.props.thisCommand['DestIP'][i] 	+ ':' + 
+	    							this.props.thisCommand['DestControl'][i] + ',' + 
+    								ControlValue + '\n');
+
+	    }
+	    
+	    const messagePacket = {command: commandQueueString};
+	    $.ajax({
+	      url: '/api/commands',
+	      type: 'POST',
+	      data: messagePacket,
+	      success: (data) => {
+	        console.log("Commands Send Successfully");
+	      },
+	      error: function(xhr, status, err) {
+	        console.error('/api/commands', status, err.toString());
+	        console.log('Hitting Commands sendDataToServer error')
+	      }
+	    });
+	}
+
 	render() {
+		console.log(this.props.activeInput);
 
 		var styles = {
 			svg: {
