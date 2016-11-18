@@ -5,16 +5,29 @@ import Icon from '../assets/icons';
 import {ICONS} from '../assets/iconConstants';
 
 class ControlPopup extends React.Component {
+	constructor() {
+		super();
+		this.controlValue = 0;
+	}
 	
 	sendCommand() {
-	    const ControlValue = this.state.newValue;
-	    let commandQueueString = [];
-	    for (var i = 0; i < this.props.thisCommand['DestIP'].length; i++){
-	    	commandQueueString.push(this.props.thisCommand['DestIP'][i] 	+ ':' + 
-	    							this.props.thisCommand['DestControl'][i] + ',' + 
-    								ControlValue + '\n');
 
+	    let commandQueueString = [];
+
+	    if(this.controlValue == 0){
+	    	this.controlValue = 1;
 	    }
+	    else {
+	    	this.controlValue = 0;
+	    }
+
+	    //SetCommand:destID,controlName,controlValue
+	    
+    	commandQueueString.push('SetCommand'+ ':' + 
+    							this.props.ClientID + ',' +
+    							this.props.activeInput['ControlName'] + ',' +
+								this.controlValue + ',' + '\n');
+
 	    
 	    const messagePacket = {command: commandQueueString};
 	    $.ajax({
@@ -22,7 +35,8 @@ class ControlPopup extends React.Component {
 	      type: 'POST',
 	      data: messagePacket,
 	      success: (data) => {
-	        console.log("Commands Send Successfully");
+	        console.log("Commands Sent Successfully");
+	        console.log(this.controlValue);
 	      },
 	      error: function(xhr, status, err) {
 	        console.error('/api/commands', status, err.toString());
@@ -32,7 +46,7 @@ class ControlPopup extends React.Component {
 	}
 
 	render() {
-		console.log(this.props.activeInput);
+		console.log(this.props.ClientID);
 
 		var styles = {
 			svg: {
@@ -68,6 +82,9 @@ class ControlPopup extends React.Component {
 			},
 			div: {
 				style: styles.div
+			},
+			button: {
+				onClick: () => this.sendCommand(),
 			}
 
 		};
@@ -76,9 +93,11 @@ class ControlPopup extends React.Component {
 					<svg {...inputs.svg}>
 						<rect {...inputs.rect}/>
 					</svg>
-					<Icon icon={ICONS.POWER} 
-	                	  color={"#e1e3e8"} 
-	                	  size={60}/>
+					<button {...inputs.button}>
+						<Icon icon={ICONS.POWER} 
+		                	  color={"#e1e3e8"} 
+		                	  size={60}/>
+                	</button>
             	</div>
 	}
 

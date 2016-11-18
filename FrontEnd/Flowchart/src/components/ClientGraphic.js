@@ -233,6 +233,7 @@ class ClientGraphic extends React.Component {
 				top: this.controlPosition['top'],
 				left: this.controlPosition['left'],
 				activeInput: this.activeInput,
+				ClientID: this.props.client['ClientID'],
 			}
 		}
 
