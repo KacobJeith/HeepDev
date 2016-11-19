@@ -18,6 +18,30 @@ public:
 #endif
 	~Vertex();
 
+#ifdef ONPC
+	std::string GetInputName()			{return inputName; };
+	std::string GetOutputName()			{return outputName; };
+	std::string GetDestinationIP()		{return destinationIP; };
+
+	void	SetInputName(std::string inputStr)		{inputName = inputStr; };
+	void 	SetOutputName(std::string outputStr)	{outputName = outputStr; };	
+	void 	SetDestinationIP(std::string destIP)	{destinationIP = destIP; };
+#else
+	String 		GetInputName()			{return inputName; };
+	String 		GetOutputName()			{return outputName; };
+	String 		GetDestinationIP()		{return destinationIP; };
+
+	void	SetInputName(String inputStr)		{inputName = inputStr; };
+	void 	SetOutputName(String outputStr)	{outputName = outputStr; };	
+	void 	SetDestinationIP(String destIP)	{destinationIP = destIP; };
+#endif
+
+	int GetDestinationID() 				{return destinationID; };
+	int GetSourceID()					{return sourceID; };
+
+	void SetDestinationID(int destID) 	{destinationID = destID; };
+	void SetSourceID(int srcID)			{sourceID = srcID; };
+
 private:
 #ifdef ONPC
 	std::string inputName;
