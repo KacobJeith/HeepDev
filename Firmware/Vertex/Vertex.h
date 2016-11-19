@@ -32,8 +32,8 @@ public:
 	String 		GetDestinationIP()		{return destinationIP; };
 
 	void	SetInputName(String inputStr)		{inputName = inputStr; };
-	void 	SetOutputName(String outputStr)	{outputName = outputStr; };	
-	void 	SetDestinationIP(String destIP)	{destinationIP = destIP; };
+	void 	SetOutputName(String outputStr)		{outputName = outputStr; };	
+	void 	SetDestinationIP(String destIP)		{destinationIP = destIP; };
 #endif
 
 	int GetDestinationID() 				{return destinationID; };
