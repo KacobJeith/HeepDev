@@ -44,9 +44,38 @@ void CheckResults(std::string testName, ExpectedValue valueList [], int numberOf
 	OnSuccess(testName);
 }
 
+void TestConstructor()
+{
+	std::string TestName = "Vertex Constructor Test";
+
+	Vertex vert("input", "output", "myIP", 12, 34);
+
+	// std::string expectedName = "Test";
+	// std::string actualName = test.GetControlName();
+	// int isValueCorrect = 0;
+	// if(actualName == expectedName)
+	// 	isValueCorrect = 1;
+
+	// ExpectedValue valueList [3];
+	// valueList[0].valueName = "Control Direction";
+	// valueList[0].expectedValue = 1;
+	// valueList[0].actualValue = test.GetControlDirection();
+
+	// valueList[1].valueName = "Control Type";
+	// valueList[1].expectedValue = 1;
+	// valueList[1].actualValue = test.GetControlType();
+
+	// valueList[2].valueName = "Control Name";
+	// valueList[2].expectedValue = 1;
+	// valueList[2].actualValue = isValueCorrect;
+
+	// CheckResults(TestName, valueList, 3);
+}
+
 int main(void)
 {
 	cout << "Test Beginning" << endl;
+	TestConstructor();
 
 	return 0;
 }

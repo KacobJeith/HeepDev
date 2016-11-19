@@ -26,6 +26,28 @@ Vertex::Vertex()
 
 }
 
+#ifdef ONPC
+Vertex::Vertex(std::string inputStr, std::string outputStr, std::string destIP, int destID, int srcID)
+	: inputName(inputStr)
+	, outputName(outputStr)
+	, destinationIP(destIP)
+	, destinationID(destID)
+	, sourceID(srcID)
+{
+
+}
+#else
+Vertex::Vertex(String inputStr, String outputStr, String destIP, int destID, int srcID)
+	: inputName(inputStr)
+	, outputName(outputStr)
+	, destinationIP(destIP)
+	, destinationID(destID)
+	, sourceID(srcID)
+{
+
+}
+#endif
+
 Vertex::~Vertex()
 {
 
