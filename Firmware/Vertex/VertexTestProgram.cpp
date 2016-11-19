@@ -44,6 +44,25 @@ void CheckResults(std::string testName, ExpectedValue valueList [], int numberOf
 	OnSuccess(testName);
 }
 
+void TestVertexListSize()
+{
+	std::string TestName = "Vertex List Size Test";
+
+	Vertex vert("input", "output", "myIP", 12, 34);
+	Vertex vert2("dlfkj", "fork", "myArp", 22, 224);
+
+	VertexList theList;
+	theList.AddVertex(vert);
+	theList.AddVertex(vert2);
+
+	ExpectedValue valueList [1];
+	valueList[0].valueName = "List Size";
+	valueList[0].expectedValue = 1;
+	valueList[0].actualValue = theList.GetSize();
+
+	CheckResults(TestName, valueList, 1);
+}
+
 void TestConstructor()
 {
 	std::string TestName = "Vertex Constructor Test";
@@ -96,6 +115,7 @@ int main(void)
 {
 	cout << "Test Beginning" << endl;
 	TestConstructor();
+	TestVertexListSize();
 
 	return 0;
 }
