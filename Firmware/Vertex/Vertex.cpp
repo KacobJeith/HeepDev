@@ -11,6 +11,19 @@ VertexList::~VertexList()
 
 }
 
+void VertexList::AddVertex(Vertex vert)
+{
+	if(size == 0)
+	{
+		head = InitializeVertexList(vert);
+		size++;
+	}
+	else
+	{
+		AddVertexToList(head, vert);
+	}
+}
+
 void VertexList::AddVertexToList(VertexNode* head, Vertex vert)
 {
 	VertexNode* newNode;
