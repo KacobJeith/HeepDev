@@ -50,26 +50,46 @@ void TestConstructor()
 
 	Vertex vert("input", "output", "myIP", 12, 34);
 
-	// std::string expectedName = "Test";
-	// std::string actualName = test.GetControlName();
-	// int isValueCorrect = 0;
-	// if(actualName == expectedName)
-	// 	isValueCorrect = 1;
+	 std::string expectedInput = "input";
+	 std::string actualInput = vert.GetInputName();
+	 int isInputNameCorrect = 0;
+	 if(expectedInput == actualInput)
+	 	isInputNameCorrect = 1;
 
-	// ExpectedValue valueList [3];
-	// valueList[0].valueName = "Control Direction";
-	// valueList[0].expectedValue = 1;
-	// valueList[0].actualValue = test.GetControlDirection();
+	 std::string expectedOutput = "output";
+	 std::string actualOutput = vert.GetOutputName();
+	 int isOutputNameCorrect = 0;
+	 if(expectedOutput == actualOutput)
+	 	isOutputNameCorrect = 1;
 
-	// valueList[1].valueName = "Control Type";
-	// valueList[1].expectedValue = 1;
-	// valueList[1].actualValue = test.GetControlType();
+	 std::string expectedIP = "myIP";
+	 std::string actualIP = vert.GetDestinationIP();
+	 int isIPCorrect = 0;
+	 if(expectedIP == actualIP)
+	 	isIPCorrect = 1;
 
-	// valueList[2].valueName = "Control Name";
-	// valueList[2].expectedValue = 1;
-	// valueList[2].actualValue = isValueCorrect;
+	ExpectedValue valueList [5];
+	valueList[0].valueName = "Input Name";
+	valueList[0].expectedValue = 1;
+	valueList[0].actualValue = isInputNameCorrect;
 
-	// CheckResults(TestName, valueList, 3);
+	valueList[1].valueName = "Output Name";
+	valueList[1].expectedValue = 1;
+	valueList[1].actualValue = isOutputNameCorrect;
+
+	valueList[2].valueName = "Destination IP";
+	valueList[2].expectedValue = 1;
+	valueList[2].actualValue = isIPCorrect;
+
+	valueList[3].valueName = "Destination ID";
+	valueList[3].expectedValue = 12;
+	valueList[3].actualValue = vert.GetDestinationID();
+
+	valueList[4].valueName = "Source ID";
+	valueList[4].expectedValue = 34;
+	valueList[4].actualValue = vert.GetSourceID();
+
+	CheckResults(TestName, valueList, 5);
 }
 
 int main(void)
