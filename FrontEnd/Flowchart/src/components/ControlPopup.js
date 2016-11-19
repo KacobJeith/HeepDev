@@ -26,7 +26,7 @@ class ControlPopup extends React.Component {
     	commandQueueString.push('SetCommand'+ ':' + 
     							this.props.ClientID + ',' +
     							this.props.activeInput['ControlName'] + ',' +
-								this.controlValue + ',' + '\n');
+								this.controlValue + '\n');
 
 	    
 	    const messagePacket = {command: commandQueueString};
@@ -85,6 +85,11 @@ class ControlPopup extends React.Component {
 			},
 			button: {
 				onClick: () => this.sendCommand(),
+			},
+			icon: {
+				icon: ICONS.POWER,
+		        color: "#e1e3e8",
+		        size: 70
 			}
 
 		};
@@ -93,11 +98,9 @@ class ControlPopup extends React.Component {
 					<svg {...inputs.svg}>
 						<rect {...inputs.rect}/>
 					</svg>
-					<button {...inputs.button}>
-						<Icon icon={ICONS.POWER} 
-		                	  color={"#e1e3e8"} 
-		                	  size={60}/>
-                	</button>
+					<div {...inputs.button}>
+						<Icon  {...inputs.icon}/>
+                	</div>
             	</div>
 	}
 

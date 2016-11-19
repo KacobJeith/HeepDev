@@ -7,10 +7,10 @@ const Icon = props => {
     svg: {
       margin: 'auto',
       position: 'absolute',
-      left: '34%',
-      top: '33%',
-      width: '33%',
-      height: '33%',
+      left: '30%',
+      top: '30%',
+      width: '40%',
+      height: '40%',
       fill: props.color,
     },
     path: {

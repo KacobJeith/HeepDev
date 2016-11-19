@@ -147,6 +147,19 @@ class ClientGraphic extends React.Component {
 	    });
 	}
 
+	handlePopupClick(event, activeInput) {
+		this.controlPosition = {top: event.pageY - this.state.top - 50,
+								left: event.pageX - this.state.left - 30};
+		if (activeInput == this.activeInput && this.state.displayControl){
+			this.setState({displayControl: false});
+		}
+		else {
+			this.setState({displayControl: true});
+			this.activeInput = activeInput;
+		}
+														
+	}
+
 	render() {
 
 		const styles = {
@@ -200,11 +213,7 @@ class ClientGraphic extends React.Component {
 				top: this.state.top,
 				left: this.state.left,
 				selectInput: this.props.selectInput,
-				displayControl: (event, activeInput) => {this.controlPosition = {top: event.pageY - this.state.top - 50,
-																	left: event.pageX - this.state.left - 30};
-														this.setState({displayControl: true});
-														this.activeInput = activeInput;
-														},
+				displayControl: (event, activeInput) => this.handlePopupClick(event, activeInput),
 			},
 			clientOutput: {
 				containerWidth: styles.clientContainer['width'],
