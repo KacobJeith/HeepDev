@@ -1,8 +1,21 @@
+#include "../Utilities/globalDefines.h"
+
+#ifdef ONPC
+#include <string>
+#endif
+
 class Vertex {
 public:
 
 	Vertex();
-	~Vertex();	
+	~Vertex();
+
+private:
+	std::string inputName;
+	std::string outputName;
+	int destinationID;
+	std::string destinationIP;
+	int sourceID;
 };
 
 struct VertexNode{
