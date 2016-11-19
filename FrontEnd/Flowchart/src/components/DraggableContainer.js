@@ -29,7 +29,7 @@ class DraggableContainer extends React.Component {
 
 	componentDidMount(){
 
-		setTimeout(this.fillVertexesFromClientlist.bind(this), 1);
+		setTimeout(this.fillVertexesFromClientlist.bind(this), 1000);
 
 	}
 
