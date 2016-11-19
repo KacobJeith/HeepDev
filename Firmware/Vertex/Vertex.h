@@ -61,5 +61,16 @@ struct VertexNode{
 	Vertex controlData;
 };
 
-void AddVertexToList(VertexNode* head, Vertex vert);
-VertexNode* InitializeVertexList(Vertex vert);
+class VertexList{
+public:
+	VertexList();
+	~VertexList();
+
+	void AddVertexToList(VertexNode* head, Vertex vert);
+	VertexNode* InitializeVertexList(Vertex vert);
+
+	int GetSize() {return size; };
+
+private:
+	int size;
+};

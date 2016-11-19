@@ -1,6 +1,17 @@
 #include "Vertex.h"
 
-void AddVertexToList(VertexNode* head, Vertex vert)
+VertexList::VertexList()
+	: size(0)
+{
+
+}
+
+VertexList::~VertexList()
+{
+
+}
+
+void VertexList::AddVertexToList(VertexNode* head, Vertex vert)
 {
 	VertexNode* newNode;
     
@@ -14,7 +25,7 @@ void AddVertexToList(VertexNode* head, Vertex vert)
     tracker->next = newNode;
 }
 
-VertexNode* InitializeVertexList(Vertex vert)
+VertexNode* VertexList::InitializeVertexList(Vertex vert)
 {
     VertexNode* head = new VertexNode();
     head->controlData = vert;
