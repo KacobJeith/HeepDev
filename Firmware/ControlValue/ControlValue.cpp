@@ -109,10 +109,10 @@ void ControlValue::SetControlFromString(std::string controlString)
 	}
 
 	controlName = NameStr;
-	controlDirection = (ControlDirectionType) std::atoi(DirectionStr.c_str());
-	type = (ControlType) std::atoi(TypeStr.c_str());
-	lowValue = std::atoi(LowValStr.c_str());
-	highValue = std::atoi(HighValStr.c_str());
+	controlDirection = (ControlDirectionType) std::stoi(DirectionStr.c_str());
+	type = (ControlType) std::stoi(TypeStr.c_str());
+	lowValue = std::stoi(LowValStr.c_str());
+	highValue = std::stoi(HighValStr.c_str());
 }
 
 #else
