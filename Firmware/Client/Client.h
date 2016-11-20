@@ -1,5 +1,6 @@
 #include "../Utilities/GlobalDefines.h"
 #include "../ControlValue/ControlValue.h"
+#include "../Vertex/Vertex.h"
 
 #ifdef ONPC
 #include <string>
@@ -18,10 +19,12 @@ public:
 
 	// Setters
 	void 			AddControlToClient(ControlValue ctrlVal) {controlValueList.AddControlValToList(ctrlVal);};
+	void			AddVertexToClient(Vertex vert)	{vertList.AddVertex(vert); };
 
 	// Getters
 	int 			GetClientID() 					{return clientID; };
 	ControlValue 	GetControlAtIndex(int index) 	{return controlValueList.GetControlAtIndex(index); };
+	Vertex 			GetVertexAtIndex(int index)		{return vertList.GetVertexAt(index); };
 
 #ifdef ONPC
 	std::string GetClientName() {return clientName; };
@@ -35,6 +38,7 @@ private:
 	int clientID;
 	int clientType;
 	ControlValList controlValueList;
+	VertexList vertList;
 
 #ifdef ONPC
 	std::string clientName;

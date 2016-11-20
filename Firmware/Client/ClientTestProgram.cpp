@@ -69,6 +69,27 @@ void TestGetClientString()
 	CheckResults(TestName, valueList, 1);
 }
 
+void TestAddVertex()
+{
+	std::string TestName = "Add Vertex to Client";
+
+	Client test(132, "TestClient", 2);
+	test.AddVertexToClient(Vertex("input", "output", "myIP", 12, 34));
+	test.AddVertexToClient(Vertex("in", "out", "myIP", 23, 34));
+
+	ExpectedValue valueList [2];
+
+	valueList[0].valueName = "Vertex 0";
+	valueList[0].expectedValue = 12;
+	valueList[0].actualValue = test.GetVertexAtIndex(0).GetDestinationID();
+
+	valueList[1].valueName = "Vertex 1";
+	valueList[1].expectedValue = 23;
+	valueList[1].actualValue = test.GetVertexAtIndex(1).GetDestinationID();
+
+	CheckResults(TestName, valueList, 2);
+}
+
 void TestAddClientControl()
 {
 	std::string TestName = "Add Client Control";
@@ -125,6 +146,7 @@ int main(void)
 	TestConstructor();
 	TestAddClientControl();
 	TestGetClientString();
+	TestAddVertex();
 
 	return 0;
 }
