@@ -67,12 +67,14 @@ public:
 	~VertexList();
 
 	void AddVertex(Vertex vert);
+	Vertex GetVertexAt(int index);
 
 	int GetSize() {return size; };
 
 private:
 	int size;
 	VertexNode* head;
+
 
 	void AddVertexToList(VertexNode* head, Vertex vert);
 	VertexNode* InitializeVertexList(Vertex vert);

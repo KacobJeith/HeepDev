@@ -11,6 +11,21 @@ VertexList::~VertexList()
 
 }
 
+Vertex VertexList::GetVertexAt(int index)
+{
+	if(size != 0)
+	{
+		VertexNode* tracker = head;
+		for(int i = 0; i < index; i++)
+		{
+			tracker = head->next;
+		}
+		return tracker->controlData;
+	}
+
+	return Vertex();
+}
+
 void VertexList::AddVertex(Vertex vert)
 {
 	if(size == 0)
