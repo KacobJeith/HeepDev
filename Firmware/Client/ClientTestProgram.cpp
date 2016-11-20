@@ -64,7 +64,7 @@ void TestOutputDataConstructor()
 		stringCorrect2 = 1;
 	}
 
-	ExpectedValue valueList [2];
+	ExpectedValue valueList [5];
 
 	valueList[0].valueName = "Input Name";
 	valueList[0].expectedValue = 1;
@@ -74,7 +74,19 @@ void TestOutputDataConstructor()
 	valueList[1].expectedValue = 1;
 	valueList[1].actualValue = stringCorrect2;
 
-	CheckResults(TestName, valueList, 2);
+	valueList[2].valueName = "Destination ID";
+	valueList[2].expectedValue = 123;
+	valueList[2].actualValue = test.GetDestinationID();
+
+	valueList[3].valueName = "Source ID";
+	valueList[3].expectedValue = 55;
+	valueList[3].actualValue = test.GetSourceID();
+
+	valueList[4].valueName = "Value";
+	valueList[4].expectedValue = 20;
+	valueList[4].actualValue = test.GetValue();
+
+	CheckResults(TestName, valueList, 5);
 }
 
 void TestGetClientString()
