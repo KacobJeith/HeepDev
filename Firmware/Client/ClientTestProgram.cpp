@@ -52,12 +52,14 @@ void TestQueueOutput()
 
 	Vertex vert("input", "output", "myIP", 12, 132);
 	Vertex vert2("fail", "output", "myIP", 14, 132);
+	Vertex vert3("fork", "output", "anIP", 232, 132);
 	test.AddVertexToClient(vert);
 	test.AddVertexToClient(vert2);
+	test.AddVertexToClient(vert3);
 
 	OutputDataList outList = test.QueueOutput("output", 42);
 
-	ExpectedValue valueList [2];
+	ExpectedValue valueList [3];
 	valueList[0].valueName = "Output Dest ID 1";
 	valueList[0].expectedValue = 12;
 	valueList[0].actualValue = outList.GetOutputAt(0).GetDestinationID();
@@ -66,7 +68,11 @@ void TestQueueOutput()
 	valueList[1].expectedValue = 14;
 	valueList[1].actualValue = outList.GetOutputAt(1).GetDestinationID();
 
-	CheckResults(TestName, valueList, 2);
+	valueList[2].valueName = "Output Dest ID 3";
+	valueList[2].expectedValue = 232;
+	valueList[2].actualValue = outList.GetOutputAt(2).GetDestinationID();
+
+	CheckResults(TestName, valueList, 3);
 }
 
 void TestOutputDataList()
