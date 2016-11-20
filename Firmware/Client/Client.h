@@ -6,6 +6,40 @@
 #include <string>
 #endif
 
+class OutputData{
+public:
+#ifdef ONPC
+	OutputData(std::string inName, int destID, std::string destIP, int srcID, int val);
+
+	std::string GetInputName()		{return inputName; };
+	std::string GetDestinationIP()	{return destinationIP; };
+#else 
+	OutputData(String inName, int destID, String destIP, int srcID, int val);
+
+	String GetInputName() 		{return inputName; };
+	String GetDestinationIP()	{return destinationIP; };
+#endif
+
+	~OutputData();
+
+	int GetDestinationID()	{return destinationID; };
+	int GetSourceID()		{return sourceID; };
+	int GetValue()			{return value; };
+
+private:
+
+#ifdef ONPC
+	std::string inputName;
+	std::string destinationIP;
+#else
+	String inputName;
+	String destinationIP;
+#endif
+	int destinationID;
+	int sourceID;
+	int value;
+};
+
 class Client {
 public:
 	Client();

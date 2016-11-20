@@ -1,5 +1,26 @@
 #include "Client.h"
 
+#ifdef ONPC
+OutputData::OutputData(std::string inName, int destID, std::string destIP, int srcID, int val)
+	: inputName(inName)
+	, destinationID(destID)
+	, destinationIP(destIP)
+	, sourceID(srcID)
+	, value(val)
+{}
+#else
+OutputData::OutputData(String inName, int destID, String destIP, int srcID, int val)
+	: inputName(inName)
+	, destinationID(destID)
+	, destinationIP(destIP)
+	, sourceID(srcID)
+	, value(val)
+{}
+#endif
+
+OutputData::~OutputData()
+{}
+
 Client::Client()
 	: controlValueList(0)
 {
