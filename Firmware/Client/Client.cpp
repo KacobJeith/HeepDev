@@ -39,7 +39,7 @@ OutputData OutputDataList::GetOutputAt(int index)
 		OutputDataNode* tracker = head;
 		for(int i = 0; i < index; i++)
 		{
-			tracker = head->next;
+			tracker = tracker->next;
 		}
 		return tracker->outData;
 	}
