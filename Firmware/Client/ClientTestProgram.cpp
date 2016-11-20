@@ -44,6 +44,31 @@ void CheckResults(std::string testName, ExpectedValue valueList [], int numberOf
 	OnSuccess(testName);
 }
 
+void TestOutputDataList()
+{
+	std::string TestName = "Test Output Data List";
+
+	OutputDataList dataList;
+	dataList.AddOutput(OutputData("TestInput", 123, "myIP", 55, 20));
+	dataList.AddOutput(OutputData("INPUT", 444, "theIP", 55, 32));
+	//dataList.AddOutput(OutputData("IN", 523, "anIP", 55, 52));
+
+	ExpectedValue valueList [3];
+	valueList[0].valueName = "Output Dest ID 1";
+	valueList[0].expectedValue = 123;
+	valueList[0].actualValue = dataList.GetOutputAt(0).GetDestinationID();
+
+	valueList[1].valueName = "Output Dest ID 2";
+	valueList[1].expectedValue = 444;
+	valueList[1].actualValue = dataList.GetOutputAt(1).GetDestinationID();
+
+	// valueList[2].valueName = "Output Dest ID 3";
+	// valueList[2].expectedValue = 523;
+	// valueList[2].actualValue = dataList.GetOutputAt(2).GetDestinationID();
+
+	CheckResults(TestName, valueList, 2);
+}
+
 void TestOutputDataConstructor()
 {
 	std::string TestName = "Test Output Data Constructor";
@@ -193,6 +218,7 @@ int main(void)
 	TestGetClientString();
 	TestAddVertex();
 	TestOutputDataConstructor();
+	TestOutputDataList();
 
 	return 0;
 }
