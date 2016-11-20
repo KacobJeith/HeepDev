@@ -36,6 +36,7 @@ void VertexList::AddVertex(Vertex vert)
 	else
 	{
 		AddVertexToList(head, vert);
+		size++;
 	}
 }
 

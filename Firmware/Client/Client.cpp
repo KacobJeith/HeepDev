@@ -57,6 +57,7 @@ void OutputDataList::AddOutput(OutputData outData)
 	else
 	{
 		AddOutputToList(head, outData);
+		size++;
 	}
 }
 
@@ -161,7 +162,7 @@ OutputDataList Client::QueueOutput(String outputName, int value)
 		Vertex curVert = vertList.GetVertexAt(i);
 		if(curVert.GetOutputName() == outputName)
 		{
-			outList.AddOutput(OutputData(curVert.GetInputName(), curVert.GetDestinationID(), curVert.GetDestinationIP(), curVert.GetSourceID(), value));
+			outList.AddOutput(OutputData(curVert.GetInputName(), curVert.GetDestinationID(), curVert.GetDestinationIP(), clientID, value));
 		}
 	}
 
