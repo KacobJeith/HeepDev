@@ -18,7 +18,7 @@ Vertex VertexList::GetVertexAt(int index)
 		VertexNode* tracker = head;
 		for(int i = 0; i < index; i++)
 		{
-			tracker = head->next;
+			tracker = tracker->next;
 		}
 		return tracker->controlData;
 	}

@@ -50,15 +50,18 @@ void TestVertexListGetByIndex()
 
 	Vertex vert("input", "output", "myIP", 12, 34);
 	Vertex vert2("dlfkj", "fork", "myArp", 22, 224);
+	Vertex vert3("Forage", "Flaunt", "MyArgh", 32, 123);
 
 	VertexList theList;
 	theList.AddVertex(vert);
 	theList.AddVertex(vert2);
+	theList.AddVertex(vert3);
 
 	Vertex receivedVert = theList.GetVertexAt(0);
 	Vertex receivedVert2 = theList.GetVertexAt(1);
+	Vertex receivedVert3 = theList.GetVertexAt(2);
 
-	ExpectedValue valueList [2];
+	ExpectedValue valueList [3];
 	valueList[0].valueName = "vert1 sourceID";
 	valueList[0].expectedValue = 34;
 	valueList[0].actualValue = receivedVert.GetSourceID();
@@ -67,7 +70,11 @@ void TestVertexListGetByIndex()
 	valueList[1].expectedValue = 224;
 	valueList[1].actualValue = receivedVert2.GetSourceID();
 
-	CheckResults(TestName, valueList, 2);
+	valueList[2].valueName = "vert3 sourceID";
+	valueList[2].expectedValue = 123;
+	valueList[2].actualValue = receivedVert3.GetSourceID();
+
+	CheckResults(TestName, valueList, 3);
 }
 
 void TestVertexListSize()
