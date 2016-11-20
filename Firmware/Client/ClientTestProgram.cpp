@@ -141,7 +141,7 @@ void TestConstructor()
 
 int main(void)
 {
-	cout << "Test Beginning" << endl;
+	cout << "Client Test Beginning" << endl;
 
 	TestConstructor();
 	TestAddClientControl();

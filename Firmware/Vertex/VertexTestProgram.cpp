@@ -187,7 +187,7 @@ void TestConstructor()
 
 int main(void)
 {
-	cout << "Test Beginning" << endl;
+	cout << "Vertex Test Beginning" << endl;
 	TestConstructor();
 	TestVertexListSize();
 	TestVertexListGetByIndex();
