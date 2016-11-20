@@ -44,6 +44,31 @@ void CheckResults(std::string testName, ExpectedValue valueList [], int numberOf
 	OnSuccess(testName);
 }
 
+void TestQueueOutput()
+{
+	std::string TestName = "Test Queue Output";
+
+	Client test(132, "TestClient", 2);
+
+	Vertex vert("input", "output", "myIP", 12, 132);
+	Vertex vert2("fail", "output", "myIP", 14, 132);
+	test.AddVertexToClient(vert);
+	test.AddVertexToClient(vert2);
+
+	OutputDataList outList = test.QueueOutput("output", 42);
+
+	ExpectedValue valueList [2];
+	valueList[0].valueName = "Output Dest ID 1";
+	valueList[0].expectedValue = 12;
+	valueList[0].actualValue = outList.GetOutputAt(0).GetDestinationID();
+
+	valueList[1].valueName = "Output Dest ID 2";
+	valueList[1].expectedValue = 14;
+	valueList[1].actualValue = outList.GetOutputAt(1).GetDestinationID();
+
+	CheckResults(TestName, valueList, 2);
+}
+
 void TestOutputDataList()
 {
 	std::string TestName = "Test Output Data List";
@@ -219,6 +244,7 @@ int main(void)
 	TestAddVertex();
 	TestOutputDataConstructor();
 	TestOutputDataList();
+	TestQueueOutput();
 
 	return 0;
 }
