@@ -21,6 +21,66 @@ OutputData::OutputData(String inName, int destID, String destIP, int srcID, int 
 OutputData::~OutputData()
 {}
 
+OutputDataList::OutputDataList()
+	: size(0)
+{
+
+}
+
+OutputDataList::~OutputDataList()
+{
+
+}
+
+OutputData OutputDataList::GetOutputAt(int index)
+{
+	if(size != 0)
+	{
+		OutputDataNode* tracker = head;
+		for(int i = 0; i < index; i++)
+		{
+			tracker = head->next;
+		}
+		return tracker->outData;
+	}
+
+	return OutputData();
+}
+
+void OutputDataList::AddOutput(OutputData outData)
+{
+	if(size == 0)
+	{
+		head = InitializeOutputList(outData);
+		size++;
+	}
+	else
+	{
+		AddOutputToList(head, outData);
+	}
+}
+
+void OutputDataList::AddOutputToList(OutputDataNode* head, OutputData outData)
+{
+	OutputDataNode* newNode;
+    
+    newNode = new OutputDataNode();
+   
+    newNode->outData = outData;
+    
+    OutputDataNode* tracker = head;
+    while(tracker->next){tracker = tracker->next;}
+    
+    tracker->next = newNode;
+}
+
+OutputDataNode* OutputDataList::InitializeOutputList(OutputData outData)
+{
+    OutputDataNode* head = new OutputDataNode();
+    head->outData = outData;
+    return head;
+}
+
 Client::Client()
 	: controlValueList(0)
 {

@@ -8,6 +8,7 @@
 
 class OutputData{
 public:
+	OutputData() {};
 #ifdef ONPC
 	OutputData(std::string inName, int destID, std::string destIP, int srcID, int val);
 
@@ -38,6 +39,29 @@ private:
 	int destinationID;
 	int sourceID;
 	int value;
+};
+
+struct OutputDataNode{
+	OutputDataNode* next;
+	OutputData outData;
+};
+
+class OutputDataList{
+public:
+	OutputDataList();
+	~OutputDataList();
+
+	void AddOutput(OutputData vert);
+	OutputData GetOutputAt(int index);
+
+	int GetSize() {return size; };
+
+private:
+	int size;
+	OutputDataNode* head;
+
+	void AddOutputToList(OutputDataNode* head, OutputData vert);
+	OutputDataNode* InitializeOutputList(OutputData vert);
 };
 
 class Client {
