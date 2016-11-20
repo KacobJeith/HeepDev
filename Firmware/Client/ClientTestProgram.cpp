@@ -44,6 +44,39 @@ void CheckResults(std::string testName, ExpectedValue valueList [], int numberOf
 	OnSuccess(testName);
 }
 
+void TestOutputDataConstructor()
+{
+	std::string TestName = "Test Output Data Constructor";
+
+	OutputData test("TestInput", 123, "myIP", 55, 20);
+
+	std::string correctString = "TestInput";
+	int stringCorrect = 0;
+	if(correctString == test.GetInputName())
+	{
+		stringCorrect = 1;
+	}
+
+	std::string correctString2 = "myIP";
+	int stringCorrect2 = 0;
+	if(correctString2 == test.GetDestinationIP())
+	{
+		stringCorrect2 = 1;
+	}
+
+	ExpectedValue valueList [2];
+
+	valueList[0].valueName = "Input Name";
+	valueList[0].expectedValue = 1;
+	valueList[0].actualValue = stringCorrect;
+
+	valueList[1].valueName = "Destination IP";
+	valueList[1].expectedValue = 1;
+	valueList[1].actualValue = stringCorrect2;
+
+	CheckResults(TestName, valueList, 2);
+}
+
 void TestGetClientString()
 {
 	std::string TestName = "GetClientString";
@@ -147,6 +180,7 @@ int main(void)
 	TestAddClientControl();
 	TestGetClientString();
 	TestAddVertex();
+	TestOutputDataConstructor();
 
 	return 0;
 }
