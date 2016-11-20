@@ -90,7 +90,7 @@ void TestVertexListSize()
 
 	ExpectedValue valueList [1];
 	valueList[0].valueName = "List Size";
-	valueList[0].expectedValue = 1;
+	valueList[0].expectedValue = 2;
 	valueList[0].actualValue = theList.GetSize();
 
 	CheckResults(TestName, valueList, 1);
