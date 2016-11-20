@@ -44,6 +44,32 @@ void CheckResults(std::string testName, ExpectedValue valueList [], int numberOf
 	OnSuccess(testName);
 }
 
+void TestVertexListGetByIndex()
+{
+	std::string TestName = "Vertex List Get By Index Test";
+
+	Vertex vert("input", "output", "myIP", 12, 34);
+	Vertex vert2("dlfkj", "fork", "myArp", 22, 224);
+
+	VertexList theList;
+	theList.AddVertex(vert);
+	theList.AddVertex(vert2);
+
+	Vertex receivedVert = theList.GetVertexAt(0);
+	Vertex receivedVert2 = theList.GetVertexAt(1);
+
+	ExpectedValue valueList [2];
+	valueList[0].valueName = "vert1 sourceID";
+	valueList[0].expectedValue = 34;
+	valueList[0].actualValue = receivedVert.GetSourceID();
+
+	valueList[1].valueName = "vert2 sourceID";
+	valueList[1].expectedValue = 224;
+	valueList[1].actualValue = receivedVert2.GetSourceID();
+
+	CheckResults(TestName, valueList, 2);
+}
+
 void TestVertexListSize()
 {
 	std::string TestName = "Vertex List Size Test";
@@ -116,6 +142,7 @@ int main(void)
 	cout << "Test Beginning" << endl;
 	TestConstructor();
 	TestVertexListSize();
+	TestVertexListGetByIndex();
 
 	return 0;
 }
