@@ -128,11 +128,44 @@ std::string Client::GetClientString()
 	return retString;
 }
 
+OutputDataList Client::QueueOutput(std::string outputName, int value)
+{
+	OutputDataList outList;
+
+	for(int i = 0; i < vertList.GetSize(); i++)
+	{
+		Vertex curVert = vertList.GetVertexAt(i);
+		if(curVert.GetOutputName() == outputName)
+		{
+			outList.AddOutput(OutputData(curVert.GetInputName(), curVert.GetDestinationID(), curVert.GetDestinationIP(), curVert.GetSourceID(), value));
+		}
+	}
+
+	return outList;
+}
+
 #else
 
 String Client::GetClientString()
 {
 	return "Test";
+}
+
+
+OutputDataList Client::QueueOutput(String outputName, int value)
+{
+	OutputDataList outList;
+
+	for(int i = 0; i < vertList.GetSize(); i++)
+	{
+		Vertex curVert = vertList.GetVertexAt(i);
+		if(curVert.GetOutputName() == outputName)
+		{
+			outList.AddOutput(OutputData(curVert.GetInputName(), curVert.GetDestinationID(), curVert.GetDestinationIP(), curVert.GetSourceID(), value));
+		}
+	}
+
+	return outList;
 }
 
 #endif

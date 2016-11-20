@@ -87,9 +87,13 @@ public:
 #ifdef ONPC
 	std::string GetClientName() {return clientName; };
 	std::string GetClientString();
+
+	OutputDataList	QueueOutput(std::string outputName, int value);
 #else
 	String 		GetClientName() {return clientName; };
 	String 		GetClientString();
+
+	OutputDataList	QueueOutput(String outputName, int value);
 #endif
 
 private:
