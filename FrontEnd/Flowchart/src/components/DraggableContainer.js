@@ -23,14 +23,10 @@ class DraggableContainer extends React.Component {
 			outputPosition: {top: 0,
 							 left: 0}
 		}
-
-
 	}
 
 	componentDidMount(){
-
 		setTimeout(this.fillVertexesFromClientlist.bind(this), 1000);
-
 	}
 
 	fillVertexesFromClientlist() {
@@ -202,6 +198,7 @@ class DraggableContainer extends React.Component {
 				client: [],
 				top: 0,
 				left: 0,
+				sidebarVisible: this.props.sidebarVisible,
 				selectInput: (inputName, destinationIP, destinationID, position) => this.selectInputandSend(inputName, destinationIP, destinationID, position),
 				selectOutput: (outputName, sourceID, position) => this.selectOutput(outputName, sourceID, position),
 				updateVertexPositionsByOffset: (clientID, dragOffset) => this.updateVertexPositionsByOffset(clientID, dragOffset),

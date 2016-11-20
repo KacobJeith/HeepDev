@@ -5,8 +5,13 @@ const Icon = props => {
   
   const styles = {
     svg: {
-      display: 'inline-block',
-      verticalAlign: 'middle',
+      margin: 'auto',
+      position: 'absolute',
+      left: '30%',
+      top: '30%',
+      width: '40%',
+      height: '40%',
+      fill: props.color,
     },
     path: {
       fill: props.color,

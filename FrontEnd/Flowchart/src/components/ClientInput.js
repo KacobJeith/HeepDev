@@ -22,7 +22,8 @@ class ClientInputList extends React.Component {
 				selectInput: this.props.selectInput,
 				top: this.props.top,
 				left: this.props.left,
-				controlY: 0
+				controlY: 0,
+				displayControl: this.props.displayControl,
 			},
 			inputSVG: {
 				style: styles.inputSVG
@@ -54,7 +55,8 @@ class ClientInput extends React.Component {
 	constructor() {
 		super();
 		this.state = {
-			radius: 6
+			radius: 6,
+			textHighlight: false
 		}
 	}
 
@@ -77,7 +79,11 @@ class ClientInput extends React.Component {
 			text: {
 				x: 20,
 				y: String(this.props.controlY + 3) + '%',
-				fontSize: 10
+				fontSize: 10,
+				fill: this.state.textHighlight ? "blue" : "black",
+				onMouseEnter: () => this.setState({textHighlight: true}),
+				onMouseLeave: () => this.setState({textHighlight: false}),
+				onClick: (event) => {this.props.displayControl(event, this.props.input);},
 			}
 		}
 

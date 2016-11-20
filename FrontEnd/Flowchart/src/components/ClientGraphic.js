@@ -2,6 +2,7 @@ import React from 'react';
 import $ from 'jquery';
 import ClientInputList from './ClientInput';
 import ClientOutputList from './ClientOutput';
+import ControlPopup from './ControlPopup';
 
 
 class ClientGraphic extends React.Component {
@@ -11,7 +12,10 @@ class ClientGraphic extends React.Component {
 			radius: 5,
 			top: this.props.top,
 			left: this.props.left,
+			displayControl: false
 		}
+
+		this.activeInput = [];
 
 		this.inputs = [];
 		this.outputs = [];
@@ -20,6 +24,9 @@ class ClientGraphic extends React.Component {
 							  left: 0};
 		this.lastPosition =  {top:  0,
 							  left: 0};
+
+		this.controlPosition = {top: 0, 
+								left: 0};
 
 		this.fillInputs();
 		this.fillOutputs();
@@ -30,6 +37,10 @@ class ClientGraphic extends React.Component {
 		var thisEl = this.refs.client.getClientRects();
 		var clientTop = thisEl[0]["top"];
 		var clientLeft = thisEl[0]["left"];
+
+		if (this.props.sidebarVisible){
+			clientLeft = clientLeft - 250;
+		}
 
 		this.setState({top: clientTop});
 	 	this.setState({left: clientLeft});
@@ -74,8 +85,7 @@ class ClientGraphic extends React.Component {
 
 	  	this.lastPosition['left'] = event.screenX;
 	  	this.lastPosition['top'] = event.screenY;
-
-	  	event.dataTransfer.setDragImage(this.refs.client, -99999,-99999)
+	  	event.dataTransfer.setDragImage(this.refs.client, -99999,-99999);
 		
 	}
 
@@ -96,6 +106,7 @@ class ClientGraphic extends React.Component {
 					   		top: this.state.top};
 
 		this.sendPositionToServer(newPosition);
+ 		
 	}
 
 	calculateDragOffset(event) {
@@ -133,6 +144,19 @@ class ClientGraphic extends React.Component {
 	        console.log('Hitting sendVertexToServer error');
 	      }
 	    });
+	}
+
+	handlePopupClick(event, activeInput) {
+		this.controlPosition = {top: event.pageY - this.state.top - 50,
+								left: event.pageX - this.state.left - 30};
+		if (activeInput == this.activeInput && this.state.displayControl){
+			this.setState({displayControl: false});
+		}
+		else {
+			this.setState({displayControl: true});
+			this.activeInput = activeInput;
+		}
+														
 	}
 
 	render() {
@@ -187,7 +211,8 @@ class ClientGraphic extends React.Component {
 				client: this.props.client,
 				top: this.state.top,
 				left: this.state.left,
-				selectInput: this.props.selectInput
+				selectInput: this.props.selectInput,
+				displayControl: (event, activeInput) => this.handlePopupClick(event, activeInput),
 			},
 			clientOutput: {
 				containerWidth: styles.clientContainer['width'],
@@ -211,6 +236,12 @@ class ClientGraphic extends React.Component {
 				rx: "15",
 				ry: "15",
 				fill: "black",
+			},
+			controlPopup: {
+				top: this.controlPosition['top'],
+				left: this.controlPosition['left'],
+				activeInput: this.activeInput,
+				ClientID: this.props.client['ClientID'],
 			}
 		}
 
@@ -225,6 +256,7 @@ class ClientGraphic extends React.Component {
 						</svg>
 						<ClientInputList {...inputs.clientInput}/>
 						<ClientOutputList {...inputs.clientOutput}/>
+						{this.state.displayControl ? <ControlPopup {...inputs.controlPopup}/> : null}
 					</div>
 					
 					
