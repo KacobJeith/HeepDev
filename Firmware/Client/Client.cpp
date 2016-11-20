@@ -1,5 +1,87 @@
 #include "Client.h"
 
+#ifdef ONPC
+OutputData::OutputData(std::string inName, int destID, std::string destIP, int srcID, int val)
+	: inputName(inName)
+	, destinationID(destID)
+	, destinationIP(destIP)
+	, sourceID(srcID)
+	, value(val)
+{}
+#else
+OutputData::OutputData(String inName, int destID, String destIP, int srcID, int val)
+	: inputName(inName)
+	, destinationID(destID)
+	, destinationIP(destIP)
+	, sourceID(srcID)
+	, value(val)
+{}
+#endif
+
+OutputData::~OutputData()
+{}
+
+OutputDataList::OutputDataList()
+	: size(0)
+{
+
+}
+
+OutputDataList::~OutputDataList()
+{
+
+}
+
+OutputData OutputDataList::GetOutputAt(int index)
+{
+	if(size != 0)
+	{
+		OutputDataNode* tracker = head;
+		for(int i = 0; i < index; i++)
+		{
+			tracker = tracker->next;
+		}
+		return tracker->outData;
+	}
+
+	return OutputData();
+}
+
+void OutputDataList::AddOutput(OutputData outData)
+{
+	if(size == 0)
+	{
+		head = InitializeOutputList(outData);
+		size++;
+	}
+	else
+	{
+		AddOutputToList(head, outData);
+		size++;
+	}
+}
+
+void OutputDataList::AddOutputToList(OutputDataNode* head, OutputData outData)
+{
+	OutputDataNode* newNode;
+    
+    newNode = new OutputDataNode();
+   
+    newNode->outData = outData;
+    
+    OutputDataNode* tracker = head;
+    while(tracker->next){tracker = tracker->next;}
+    
+    tracker->next = newNode;
+}
+
+OutputDataNode* OutputDataList::InitializeOutputList(OutputData outData)
+{
+    OutputDataNode* head = new OutputDataNode();
+    head->outData = outData;
+    return head;
+}
+
 Client::Client()
 	: controlValueList(0)
 {
@@ -47,11 +129,44 @@ std::string Client::GetClientString()
 	return retString;
 }
 
+OutputDataList Client::QueueOutput(std::string outputName, int value)
+{
+	OutputDataList outList;
+
+	for(int i = 0; i < vertList.GetSize(); i++)
+	{
+		Vertex curVert = vertList.GetVertexAt(i);
+		if(curVert.GetOutputName() == outputName)
+		{
+			outList.AddOutput(OutputData(curVert.GetInputName(), curVert.GetDestinationID(), curVert.GetDestinationIP(), curVert.GetSourceID(), value));
+		}
+	}
+
+	return outList;
+}
+
 #else
 
 String Client::GetClientString()
 {
 	return "Test";
+}
+
+
+OutputDataList Client::QueueOutput(String outputName, int value)
+{
+	OutputDataList outList;
+
+	for(int i = 0; i < vertList.GetSize(); i++)
+	{
+		Vertex curVert = vertList.GetVertexAt(i);
+		if(curVert.GetOutputName() == outputName)
+		{
+			outList.AddOutput(OutputData(curVert.GetInputName(), curVert.GetDestinationID(), curVert.GetDestinationIP(), clientID, value));
+		}
+	}
+
+	return outList;
 }
 
 #endif

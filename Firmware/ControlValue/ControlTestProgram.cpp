@@ -151,7 +151,7 @@ void TestConstructor()
 
 int main(void)
 {
-	cout << "Test Beginning" << endl;
+	cout << "Control Test Beginning" << endl;
 
 	TestConstructor();
 	TestAddControlToList();
