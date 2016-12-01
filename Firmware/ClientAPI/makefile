@@ -1,0 +1,2 @@
+instrMake: ClientConnectionTest.cpp ClientConnection.cpp ../Client/Client.cpp ../ControlValue/ControlValue.cpp ../Vertex/Vertex.cpp
+	g++ ClientConnectionTest.cpp ClientConnection.cpp ../Client/Client.cpp ../ControlValue/ControlValue.cpp ../Vertex/Vertex.cpp -m64 -std=c++11 -o ClientConnTest.app
