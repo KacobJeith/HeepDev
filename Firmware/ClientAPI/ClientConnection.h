@@ -15,11 +15,14 @@ public:
 	void GetQueuedCommandsFromServer();
 	void SendClientVertexDataToServer();
 	void GetVerticesFromServer();
+	void FindPLCServer();
 
 #ifdef ONPC
 	void EchoDataFromServer(std::string data);
+	std::string SendDataToServer(std::string data);
 #else
 	void EchoDataFromServer(String data);
+	String SendDataToServer(String data);
 #endif
 
 private:
