@@ -64,7 +64,7 @@ std::string ClientConnection::SendDataToServer(std::string data)
 #else
 void ClientConnection::EchoDataFromServer(String data)
 {
-
+	SendDataToServer(EchoStr + data);
 }
 
 String ClientConnection::SendDataToServer(String data)
