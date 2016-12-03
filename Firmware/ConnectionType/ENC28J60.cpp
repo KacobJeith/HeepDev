@@ -20,6 +20,9 @@ void ENC28J60Connection::Connect()
 
 	for(int i = 1; i < 255; i++)
 	{
+
+		Serial.println(i);
+		
 		if(FoundServer)
 			break;
 
@@ -62,7 +65,9 @@ searchClose:
 
 PLCString ENC28J60Connection::SendDataToServer(PLCString data)
 {
-	if (client.connect(IPAddress(serverIP[0], serverIP[1], serverIP[2], i),TCP_PORT))
+	long next = 200;
+
+	if (client.connect(serverIP,TCP_PORT))
 	{
       	client.println(data.GetString());
       	next = millis() + 200;
@@ -80,12 +85,6 @@ PLCString ENC28J60Connection::SendDataToServer(PLCString data)
           	String retStr(msg);
           	Serial.println(msg);
 	          
-	       	if(msg[0] == 'Y' && msg[1] == 'e' && msg[2] == 's')
-	     	{
-	         	serverIP = IPAddress(serverIP[0], serverIP[1], serverIP[2], i);
-	        	FoundServer = true;
-	        }
-
 	    	free(msg);
 	    }
 Close:
