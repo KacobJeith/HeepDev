@@ -1,10 +1,10 @@
 #include "ConnectionInterface.h"
 
-class ENC28J60Connection
+class SimulationConnection
 {
 public:
-	ENC28J60Connection();
-	virtual ~ENC28J60Connection();
+	SimulationConnection();
+	virtual ~SimulationConnection();
 
 	virtual void Connect();
 
