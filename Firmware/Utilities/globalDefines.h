@@ -1,1 +1,5 @@
-#define ONPC
+//#define ONPC
+
+#ifndef ONPC
+#include "Arduino.h"
+#endif

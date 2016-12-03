@@ -8,7 +8,7 @@ public:
 
 	virtual void Connect();
 
-	virtual PLCString SendDataToServer(PLCString data)
+	virtual PLCString SendDataToServer(PLCString data);
 
 private:
 	int TCP_PORT;
