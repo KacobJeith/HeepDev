@@ -2,6 +2,8 @@
 
 #ifdef ONPC
 #include <string>
+#else
+#include <WString.h>
 #endif
 
 class ControlValue {
@@ -46,7 +48,7 @@ private:
 #ifdef ONPC
 	std::string controlName;
 #else 
-	String controlName
+	String controlName;
 #endif
 
 };

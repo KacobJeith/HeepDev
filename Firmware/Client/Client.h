@@ -71,7 +71,7 @@ public:
 #ifdef ONPC
 	Client(int ID, std::string name, int numControls);
 #else
-	Client(int ID, String name, int numControls)
+	Client(int ID, String name, int numControls);
 #endif
 	~Client();	
 

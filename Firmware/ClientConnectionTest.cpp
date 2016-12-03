@@ -1,7 +1,8 @@
-#include <iostream>
 #include "ClientConnection.h"
+#include "Utilities/globalDefines.h"
 #include "ConnectionType/SimulationConn.h"
 
+#ifdef ONPC
 using namespace std;
 
 void TestClientLoad()
@@ -20,3 +21,4 @@ int main(void)
 
 	return 0;
 }
+#endif
