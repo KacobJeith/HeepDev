@@ -17,8 +17,9 @@
 	String IsPLCServerStr = "IsPLCServer:";
 #endif
 
-ClientConnection::ClientConnection(Client myClient)
+ClientConnection::ClientConnection(Client myClient, ConnectionInterface* myInterface)
 	: clientData(myClient)
+	, interface(myInterface)
 {
 }
 

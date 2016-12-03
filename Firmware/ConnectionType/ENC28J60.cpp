@@ -28,7 +28,7 @@ void ENC28J60Connection::Connect()
 			if(FoundServer)
 				break;
 
-			if (client.connect(IPAddress(serverIP[0], serverIP[1], serverIP[2], i),5000))
+			if (client.connect(IPAddress(serverIP[0], serverIP[1], serverIP[2], i),TCP_PORT))
     		{
 	          	String newConnectString = "IsPLCServer:";
 	          	client.println(newConnectString);
@@ -62,7 +62,7 @@ searchClose:
 
 PLCString ENC28J60Connection::SendDataToServer(PLCString data)
 {
-	if (client.connect(IPAddress(serverIP[0], serverIP[1], serverIP[2], i),5000))
+	if (client.connect(IPAddress(serverIP[0], serverIP[1], serverIP[2], i),TCP_PORT))
 	{
       	client.println(data.GetString());
       	next = millis() + 200;

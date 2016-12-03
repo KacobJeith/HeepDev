@@ -1,5 +1,6 @@
 #include "../Client/Client.h"
 #include "../Utilities/globalDefines.h"
+#include "../ConnectionType/ConnectionInterface.h"
 
 #ifdef ONPC
 	#include <string>
@@ -8,7 +9,7 @@
 
 class ClientConnection{
 public:
-	ClientConnection(Client myClient);
+	ClientConnection(Client myClient, ConnectionInterface* myInterface);
 	~ClientConnection();
 
 	void SendClientDataToServer();
@@ -27,4 +28,5 @@ public:
 
 private:
 	Client clientData;
+	ConnectionInterface* interface;
 };

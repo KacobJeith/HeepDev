@@ -1,3 +1,6 @@
+#ifndef PLCSTRING_DEF
+#define PLCSTRING_DEF
+
 #include "../Utilities/globalDefines.h"
 
 #ifdef ONPC
@@ -32,3 +35,6 @@ private:
 	String _string;
 #endif
 };
+
+
+#endif
