@@ -10,6 +10,7 @@ ENC28J60Connection::~ENC28J60Connection()
 
 void ENC28J60Connection::Connect()
 {
+	EthernetClient client;
 	long next = 200;
 	boolean FoundServer = false;
 	uint8_t mac[6] = {0x00,0x01,0x02,0x03,0x04,0x05};
