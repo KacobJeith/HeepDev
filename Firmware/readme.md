@@ -8,3 +8,5 @@
 |   SO   |       12        |
 |   SCK  |       13        |
 |   SS   |       10        |
+
+For https://github.com/ntruchsess/arduino_uip
