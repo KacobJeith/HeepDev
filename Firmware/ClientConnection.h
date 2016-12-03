@@ -12,6 +12,7 @@ public:
 	ClientConnection(Client myClient, ConnectionInterface* myInterface);
 	~ClientConnection();
 
+	void ConnectToNetwork();
 	void SendClientDataToServer();
 	void GetQueuedCommandsFromServer();
 	void SendClientVertexDataToServer();

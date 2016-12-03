@@ -3,6 +3,7 @@
 #include "ConnectionType/SimulationConn.h"
 
 #ifdef ONPC
+#include <iostream>
 using namespace std;
 
 void TestClientLoad()

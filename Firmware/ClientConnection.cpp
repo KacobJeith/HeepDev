@@ -27,6 +27,11 @@ ClientConnection::~ClientConnection()
 {
 }
 
+void ClientConnection::ConnectToNetwork()
+{
+	interface->Connect();
+}
+
 void ClientConnection::FindPLCServer()
 {
 	SendDataToServer(IsPLCServerStr);
