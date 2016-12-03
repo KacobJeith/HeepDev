@@ -17,7 +17,7 @@
 	String IsPLCServerStr = "IsPLCServer:";
 #endif
 
-ClientConnection::ClientConnection(Client myClient, ConnectionInterface* myInterface)
+ClientConnection::ClientConnection(Client* myClient, ConnectionInterface* myInterface)
 	: clientData(myClient)
 	, interface(myInterface)
 {
@@ -39,7 +39,7 @@ void ClientConnection::FindPLCServer()
 
 void ClientConnection::SendClientDataToServer()
 {
-	SendDataToServer(NewConnectStr + clientData.GetClientString());
+	SendDataToServer(NewConnectStr + clientData->GetClientString());
 }
 
 void ClientConnection::GetQueuedCommandsFromServer()
@@ -54,7 +54,7 @@ void ClientConnection::SendClientVertexDataToServer()
 
 void ClientConnection::GetVerticesFromServer()
 {
-	clientData.AddVerticesFromString(SendDataToServer(GetClientVerticesStr));
+	clientData->AddVerticesFromString(SendDataToServer(GetClientVerticesStr));
 }
 
 #ifdef ONPC

@@ -9,7 +9,7 @@
 
 class ClientConnection{
 public:
-	ClientConnection(Client myClient, ConnectionInterface* myInterface);
+	ClientConnection(Client* myClient, ConnectionInterface* myInterface);
 	~ClientConnection();
 
 	void ConnectToNetwork();
@@ -28,6 +28,6 @@ public:
 #endif
 
 private:
-	Client clientData;
+	Client* clientData;
 	ConnectionInterface* interface;
 };

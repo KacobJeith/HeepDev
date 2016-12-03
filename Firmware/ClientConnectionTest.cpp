@@ -9,10 +9,12 @@ using namespace std;
 void TestClientLoad()
 {
 	SimulationConnection* simConn = new SimulationConnection();
-	Client forge(1232, "Crack", 3);
+	Client* forge = new Client(1232, "Crack", 3);
+	forge->AddControlToClient(ControlValue("Test Output", ControlValue::output, ControlValue::Range));
+	cout << forge->GetClientString() << endl;
+
 	ClientConnection conn(forge, simConn);
 	conn.GetVerticesFromServer();
-	cout << "Asshole" << endl;
 }
 
 int main(void)
