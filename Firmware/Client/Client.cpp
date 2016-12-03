@@ -169,7 +169,14 @@ void Client::AddVerticesFromString(std::string vertexString)
 
 String Client::GetClientString()
 {
-	return "Test";
+	String retString = String(clientID) + "," + clientIP + "," + String(clientType) + "," + clientName;
+
+	for(int i = 0; i < controlValueList.GetMaxElementIndex(); i++)
+	{
+		retString += "," + controlValueList.GetControlAtIndex(i).GetControlString();
+	}
+
+	return retString;
 }
 
 

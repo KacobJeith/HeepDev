@@ -119,7 +119,8 @@ void ControlValue::SetControlFromString(std::string controlString)
 
 String ControlValue::GetControlString()
 {
-	return "Test";
+	String ctrlString = String(controlDirection) + "," + String(type) + "," + controlName + "," + String(lowValue) + "," + String(highValue);
+	return ctrlString;
 }
 
 void SetControlFromString(String controlString)
