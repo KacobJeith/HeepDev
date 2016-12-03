@@ -1,6 +1,6 @@
 #include "ConnectionInterface.h"
 
-class ENC28J60Connection
+class ENC28J60Connection : public ConnectionInterface
 {
 public:
 	ENC28J60Connection();

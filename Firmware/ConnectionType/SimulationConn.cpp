@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "SimulationConn.h"
 
 SimulationConnection::SimulationConnection()
@@ -8,4 +10,12 @@ SimulationConnection::~SimulationConnection()
 {}
 
 void SimulationConnection::Connect()
-{}
+{
+	PLCString theString("Test");
+	std::cout << theString.GetString() << std::endl;
+}
+
+PLCString SimulationConnection::SendDataToServer(PLCString data)
+{
+	return data;
+}
