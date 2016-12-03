@@ -85,11 +85,15 @@ public:
 	Vertex 			GetVertexAtIndex(int index)		{return vertList.GetVertexAt(index); };
 
 #ifdef ONPC
+	void AddVerticesFromString(std::string vertexString);
+
 	std::string GetClientName() {return clientName; };
 	std::string GetClientString();
 
 	OutputDataList	QueueOutput(std::string outputName, int value);
 #else
+	void AddVerticesFromString(String vertexString);
+
 	String 		GetClientName() {return clientName; };
 	String 		GetClientString();
 

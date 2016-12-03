@@ -7,6 +7,8 @@ void TestClientLoad()
 {
 	Client forge(1232, "Crack", 3);
 	ClientConnection conn(forge);
+	conn.GetVerticesFromServer();
+	cout << "Asshole" << endl;
 }
 
 int main(void)

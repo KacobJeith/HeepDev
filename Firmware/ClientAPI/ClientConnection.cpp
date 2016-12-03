@@ -48,7 +48,7 @@ void ClientConnection::SendClientVertexDataToServer()
 
 void ClientConnection::GetVerticesFromServer()
 {
-	SendDataToServer(GetClientVerticesStr);
+	clientData.AddVerticesFromString(SendDataToServer(GetClientVerticesStr));
 }
 
 #ifdef ONPC
@@ -59,7 +59,7 @@ void ClientConnection::EchoDataFromServer(std::string data)
 
 std::string ClientConnection::SendDataToServer(std::string data)
 {
-	return "Test";
+	return "input,output,myIP,12,34;Clinput,Cloutput,my2IP,142,324;dgda,asfg,sdfa,5123,31234;";
 }
 #else
 void ClientConnection::EchoDataFromServer(String data)

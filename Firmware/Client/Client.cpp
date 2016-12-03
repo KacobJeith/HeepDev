@@ -1,6 +1,7 @@
 #include "Client.h"
 
 #ifdef ONPC
+#include <iostream>
 OutputData::OutputData(std::string inName, int destID, std::string destIP, int srcID, int val)
 	: inputName(inName)
 	, destinationID(destID)
@@ -145,6 +146,25 @@ OutputDataList Client::QueueOutput(std::string outputName, int value)
 	return outList;
 }
 
+void Client::AddVerticesFromString(std::string vertexString)
+{
+	int lastIndex = 0;
+	for(int i = 0; i<vertexString.size(); i++)
+	{
+		char curChar = vertexString[i];
+		
+		if(curChar == ';')
+		{
+			std::string singleVertex = vertexString.substr(lastIndex, i - lastIndex);
+			// Vertex myVert(singleVertex);
+			// AddVertexToClient(myVert);
+			std::cout << singleVertex << std::endl;
+
+			lastIndex = i+1;
+		}
+	}
+}
+
 #else
 
 String Client::GetClientString()
@@ -167,6 +187,11 @@ OutputDataList Client::QueueOutput(String outputName, int value)
 	}
 
 	return outList;
+}
+
+void Client::AddVerticesFromString(String vertexString)
+{
+	
 }
 
 #endif
