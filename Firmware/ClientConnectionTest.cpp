@@ -1,6 +1,6 @@
 #include <iostream>
 #include "ClientConnection.h"
-#include "../ConnectionType/SimulationConn.h"
+#include "ConnectionType/SimulationConn.h"
 
 using namespace std;
 

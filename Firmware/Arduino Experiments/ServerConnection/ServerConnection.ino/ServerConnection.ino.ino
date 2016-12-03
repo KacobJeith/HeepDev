@@ -50,7 +50,7 @@ void setup() {
 
   boolean FoundServer = 0;
 
-  for(int i = 140; i < 255; i++)
+  for(int i = 1; i < 255; i++)
   {
     if(FoundServer)
       break;

@@ -1,6 +1,6 @@
-#include "../Client/Client.h"
-#include "../Utilities/globalDefines.h"
-#include "../ConnectionType/ConnectionInterface.h"
+#include "Client/Client.h"
+#include "Utilities/globalDefines.h"
+#include "ConnectionType/ConnectionInterface.h"
 
 #ifdef ONPC
 	#include <string>
