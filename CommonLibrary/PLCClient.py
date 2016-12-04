@@ -2,6 +2,7 @@ import json
 from ControlValue import ControlValue
 from Vertex import Vertex
 from OutputData import OutputData
+from SVGParser import SVGParser
 
 class PLCClient:
 
@@ -120,6 +121,11 @@ class PLCClient:
 			control = ControlValue()
 			it = control.SetControlFromSplitString(splitString, it)
 			self.ControlList.append(control)
+
+	def SetClientIconFromString(self, iconString) :
+		parser = SVGParser()
+		parser.feed(iconString)
+		self.ClientIcon = parser.icon
 
 	def GetVerticesString(self) :
 		retStr = ""
