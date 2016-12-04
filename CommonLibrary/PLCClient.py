@@ -10,6 +10,7 @@ class PLCClient:
 		self.ClientType = 1
 		self.IPAddress = 'none'
 		self.ClientName = 'none'
+		self.ClientIcon = {}
 		self.Position = {'top': 0, 'left': 0}
 		self.ControlList = []
 		self.ControlQueue = []
@@ -142,6 +143,7 @@ class PLCClient:
 		self.ClientType = self.ClientType
 		self.IPAddress = self.IPAddress
 		self.ClientName = self.ClientName
+		self.ClientIcon = self.ClientIcon
 		self.ControlList = self.ControlList
 		self.ClientID = self.ClientID
 		self.Position = self.Position
