@@ -112,6 +112,7 @@ Client::Client(int ID, char* name, int numControls)
 	ClearString(clientName, OUT_DATA_CONTROL_NAME_LENGTH);
 	CopyStringToBuffer(clientName, name);
 	ClearString(clientIP, CLIENT_IP_NAME_LENGTH);
+	CopyStringToBuffer(clientIP, "None");
 }
 
 #endif
@@ -174,14 +175,24 @@ void Client::AddVerticesFromString(std::string vertexString)
 
 char* Client::GetClientString()
 {
-	// String retString = String(clientID) + "," + clientIP + "," + String(clientType) + "," + clientName;
+	ClearString(clientStringBuf, CLIENT_OUT_STRING_BUFFER_LEN);
+	int stringTracker = 0;
 
-	// for(int i = 0; i < controlValueList.GetMaxElementIndex(); i++)
-	// {
-	// 	retString += "," + controlValueList.GetControlAtIndex(i).GetControlString();
-	// }
+	WriteIntToString(clientID, clientStringBuf, stringTracker);
+	clientStringBuf[stringTracker] = ','; stringTracker++;
+	CopyStringToBufferAtPos(clientStringBuf, clientIP, stringTracker);
+	clientStringBuf[stringTracker] = ','; stringTracker++;
+	WriteIntToString(clientType, clientStringBuf, stringTracker);
+	clientStringBuf[stringTracker] = ','; stringTracker++;
+	CopyStringToBufferAtPos(clientStringBuf, clientName, stringTracker);
 
-	return "Test";
+	for(int i = 0; i < controlValueList.GetMaxElementIndex(); i++)
+	{
+		clientStringBuf[stringTracker] = ','; stringTracker++;
+		CopyStringToBufferAtPos(clientStringBuf, controlValueList.GetControlAtIndex(i).GetControlString(), stringTracker);
+	}
+
+	return clientStringBuf;
 }
 
 

@@ -112,6 +112,7 @@ private:
 #else
 	char clientName [CLIENT_NAME_BUFFER_LEN];
 	char clientIP [CLIENT_IP_NAME_LENGTH];
+	char clientStringBuf [CLIENT_OUT_STRING_BUFFER_LEN];
 #endif
 
 };
