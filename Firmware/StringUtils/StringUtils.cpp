@@ -31,7 +31,7 @@ void CopyStringToBuffer(char* dest, char* src)
 	}
 }
 
-void WriteIntToString(int number, char* dest, int startPoint)
+void WriteIntToString(int number, char* dest, int &startPoint)
 {
 	int numDigits = 1;
 	int counter = 10;

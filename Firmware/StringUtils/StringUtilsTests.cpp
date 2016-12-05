@@ -11,7 +11,9 @@ int main(void)
 	ClearString(testSet, 10);
 	testSet[0] = 'G';
 
-	WriteIntToString(100, testSet, 1);
+	int counter = 1;
+	WriteIntToString(1234567, testSet, counter);
 	cout << "<" << testSet << ">" << endl;
+	cout << counter << endl;
 	return 0;
 }
