@@ -11,7 +11,8 @@ class PLCClient:
 		self.ClientType = 1
 		self.IPAddress = 'none'
 		self.ClientName = 'none'
-		self.ClientIcon = {}
+		self.IconCustom = 0
+		self.IconName = 'none'
 		self.Position = {'top': 0, 'left': 0}
 		self.ControlList = []
 		self.ControlQueue = []
@@ -122,11 +123,6 @@ class PLCClient:
 			it = control.SetControlFromSplitString(splitString, it)
 			self.ControlList.append(control)
 
-	def SetClientIconFromString(self, iconString) :
-		parser = SVGParser()
-		parser.feed(iconString)
-		self.ClientIcon = parser.icon
-
 	def GetVerticesString(self) :
 		retStr = ""
 
@@ -149,7 +145,8 @@ class PLCClient:
 		self.ClientType = self.ClientType
 		self.IPAddress = self.IPAddress
 		self.ClientName = self.ClientName
-		self.ClientIcon = self.ClientIcon
+		self.IconCustom = self.IconCustom
+		self.IconName = self.IconName
 		self.ControlList = self.ControlList
 		self.ClientID = self.ClientID
 		self.Position = self.Position

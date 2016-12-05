@@ -68,6 +68,3 @@ bbbClient.fromDict(allExistingClients[1])
 print CheckEquality(aaaClient.ControlList[0].ControlName, tt.ControlList[0].ControlName, 'FromJSONControlTest')
 print CheckEquality(bbbClient.VertexList[0].outputName, bbbClient.VertexList[0].outputName, 'FromJSONVertexTest')
 print CheckEquality(bbbClient.VertexList[1].outputName, bbbClient.VertexList[1].outputName, 'FromJSONVertexTest')
-
-aaaClient.SetClientIconFromString("""<svg id="TestAttribute">""")
-print CheckEquality(aaaClient.ClientIcon,{'svg':{'id':'TestAttribute'}}, 'SetClientIconFromStringTest')
