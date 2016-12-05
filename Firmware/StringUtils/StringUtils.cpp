@@ -30,3 +30,25 @@ void CopyStringToBuffer(char* dest, char* src)
 		dest[i] = src[i];
 	}
 }
+
+void WriteIntToString(int number, char* dest, int startPoint)
+{
+	int numDigits = 1;
+	int counter = 10;
+	while(number >= counter)
+	{
+		counter *= 10;
+		numDigits++;
+	}
+
+	int moduloNum = 1;
+	for(int i = 0; i < numDigits; i++)
+		moduloNum *= 10;
+
+	for(int i = 0; i < numDigits; i++)
+	{
+		dest[startPoint] = ( (number%moduloNum) / (moduloNum/10) ) + '0';
+		startPoint++;
+		moduloNum = moduloNum/10;
+	}
+}
