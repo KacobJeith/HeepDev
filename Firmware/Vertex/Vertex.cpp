@@ -1,4 +1,5 @@
 #include "Vertex.h"
+#include "../StringUtils/StringUtils.h"
 
 VertexList::VertexList()
 	: size(0)
@@ -127,15 +128,36 @@ Vertex::Vertex(std::string VertexString)
 	sourceID = std::stoi(sourceIDStr.c_str());
 }
 #else
-Vertex::Vertex(String inputStr, String outputStr, String destIP, int destID, int srcID)
-	: inputName(inputStr)
-	, outputName(outputStr)
-	, destinationIP(destIP)
-	, destinationID(destID)
+Vertex::Vertex(char* inputStr, char* outputStr, char* destIP, int destID, int srcID)
+	: destinationID(destID)
 	, sourceID(srcID)
 {
 
 }
+
+Vertex::Vertex(char* VertexString)
+{
+	
+}
+
+void Vertex::SetInputName(char* inputStr)
+{
+	ClearString(inputName, VERTEX_CONTROL_NAME_LENGTH);
+	CopyStringToBuffer(inputName, inputStr);
+}
+
+void Vertex::SetOutputName(char* outputStr)
+{
+	ClearString(outputName, VERTEX_CONTROL_NAME_LENGTH);
+	CopyStringToBuffer(outputName, outputStr);
+}
+
+void Vertex::SetDestinationIP(char* destIP)
+{
+	ClearString(destinationIP, VERTEX_IP_NAME_LENGTH);
+	CopyStringToBuffer(destinationIP, destIP);
+}
+
 #endif
 
 Vertex::~Vertex()
