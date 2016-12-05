@@ -10,7 +10,8 @@ void TestClientLoad()
 {
 	SimulationConnection* simConn = new SimulationConnection();
 	Client* forge = new Client(1232, "Crack", 3);
-	forge->AddControlToClient(ControlValue("Test Output", ControlValue::output, ControlValue::Range));
+	ControlValue* ctrlVal = new ControlValue("Test Output", ControlValue::output, ControlValue::Range);
+	forge->AddControlToClient(ctrlVal);
 	cout << forge->GetClientString() << endl;
 
 	ClientConnection conn(forge, simConn);

@@ -99,8 +99,8 @@ Client::Client(int ID, std::string name, int numControls)
 	, clientName(name)
 	, clientType(0)
 	, clientIP("None")
-	, controlValueList(numControls)
 {
+	controlValueList = new ControlValList(numControls);
 }
 
 #else
@@ -129,9 +129,9 @@ std::string Client::GetClientString()
 {
 	std::string retString = std::to_string(clientID) + "," + clientIP + "," + std::to_string(clientType) + "," + clientName;
 
-	for(int i = 0; i < controlValueList.GetMaxElementIndex(); i++)
+	for(int i = 0; i < controlValueList->GetMaxElementIndex(); i++)
 	{
-		retString += "," + controlValueList.GetControlAtIndex(i).GetControlString();
+		retString += "," + controlValueList->GetControlAtIndex(i)->GetControlString();
 	}
 
 	return retString;

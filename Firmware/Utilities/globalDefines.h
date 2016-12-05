@@ -1,4 +1,4 @@
-// #define ONPC
+#define ONPC
 #define PC_ARDUINO_TEST
 
 #ifndef ONPC
