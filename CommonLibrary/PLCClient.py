@@ -2,7 +2,6 @@ import json
 from ControlValue import ControlValue
 from Vertex import Vertex
 from OutputData import OutputData
-from SVGParser import SVGParser
 
 class PLCClient:
 
