@@ -37,18 +37,51 @@ ControlValue::ControlValue(std::string controlValString)
 }
 
 #else
-ControlValue::ControlValue(String name, ControlDirectionType direction, ControlType cType)
-	: controlName(name)
-	, controlDirection(direction)
+
+void ClearString(char* curString, int bufferLen)
+{
+	for(int i = 0; i < bufferLen; i++)
+	{
+		curString[i] = '\0';
+	}
+}
+
+int GetStringLength(char* str)
+{
+	int counter = 0;
+	while(1)
+	{
+		if(str[counter] == '\0')
+			break;
+		counter++;
+	}
+
+	return counter;
+}
+
+void CopyStringToBuffer(char* dest, char* src)
+{
+	int strSize = GetStringLength(src);
+
+	for(int i = 0; i < strSize; i++)
+	{
+		dest[i] = src[i];
+	}
+}
+
+ControlValue::ControlValue(char* name, ControlDirectionType direction, ControlType cType)
+	: controlDirection(direction)
 	, type(cType)
 	, highValue(10)
 	, lowValue(0)
 {
+	ClearString(controlName, CONTROL_VAL_NAME_BUFFER_LEN);
+	CopyStringToBuffer(controlName, name);
 }
 
-ControlValue::ControlValue(String controlValString)
+ControlValue::ControlValue(char* controlValString)
 {
-	SetControlFromString(controlValString);
+	//SetControlFromString(controlValString);
 }
 #endif
 
@@ -117,13 +150,13 @@ void ControlValue::SetControlFromString(std::string controlString)
 
 #else
 
-String ControlValue::GetControlString()
+char* ControlValue::GetControlString()
 {
-	String ctrlString = String(controlDirection) + "," + String(type) + "," + controlName + "," + String(lowValue) + "," + String(highValue);
-	return ctrlString;
+	//String ctrlString = String(controlDirection) + "," + String(type) + "," + controlName + "," + String(lowValue) + "," + String(highValue);
+	return "Test";
 }
 
-void SetControlFromString(String controlString)
+void SetControlFromString(char* controlString)
 {
 
 }

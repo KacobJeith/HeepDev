@@ -2,8 +2,6 @@
 
 #ifdef ONPC
 #include <string>
-#else
-#include <WString.h>
 #endif
 
 class ControlValue {
@@ -16,8 +14,8 @@ public:
 	ControlValue(std::string name, ControlDirectionType direction, ControlType cType);
 	ControlValue(std::string controlValString);
 #else
-	ControlValue(String name, ControlDirectionType direction, ControlType cType);
-	ControlValue(String controlValString);
+	ControlValue(char* name, ControlDirectionType direction, ControlType cType);
+	ControlValue(char* controlValString);
 #endif
 	~ControlValue();	
 
@@ -27,9 +25,9 @@ public:
 	std::string 	GetControlString();
 	void			SetControlFromString(std::string controlString);
 #else
-	String 			GetControlName() 		{return controlName; };
-	String 			GetControlString();
-	void			SetControlFromString(String controlString);
+	char* 			GetControlName() 		{return controlName; };
+	char* 			GetControlString();
+	void			SetControlFromString(char* controlString);
 #endif
 
 	int 	GetControlDirection() 	{return controlDirection; };
@@ -45,10 +43,12 @@ private:
 	int lowValue;
 	int curCtrlValue;
 
+	
+
 #ifdef ONPC
 	std::string controlName;
-#else 
-	String controlName;
+#else
+	char controlName [CONTROL_VAL_NAME_BUFFER_LEN];
 #endif
 
 };

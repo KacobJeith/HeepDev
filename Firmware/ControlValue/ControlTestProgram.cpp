@@ -74,7 +74,7 @@ void TestSetFromControlString()
 
 void TestGetControlString()
 {
-	std::string TestName = "Control Value Constructor Test";
+	std::string TestName = "Get Control String Test";
 
 	ControlValue test("Test", ControlValue::output, ControlValue::Range);
 
