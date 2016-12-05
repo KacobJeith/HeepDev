@@ -1,2 +1,2 @@
-instrMake: ClientTestProgram.cpp Client.cpp ../ControlValue/ControlValue.cpp ../Vertex/Vertex.cpp
-	g++ ClientTestProgram.cpp Client.cpp ../ControlValue/ControlValue.cpp ../Vertex/Vertex.cpp -m64 -std=c++11 -o ClientTest.app
+instrMake: ClientTestProgram.cpp Client.cpp ../ControlValue/ControlValue.cpp ../Vertex/Vertex.cpp ../StringUtils/StringUtils.cpp
+	g++ ClientTestProgram.cpp Client.cpp ../ControlValue/ControlValue.cpp ../Vertex/Vertex.cpp ../StringUtils/StringUtils.cpp -m64 -std=c++11 -o ClientTest.app

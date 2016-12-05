@@ -132,12 +132,14 @@ Vertex::Vertex(char* inputStr, char* outputStr, char* destIP, int destID, int sr
 	: destinationID(destID)
 	, sourceID(srcID)
 {
-
+	SetInputName(inputStr);
+	SetOutputName(outputStr);
+	SetDestinationIP(destIP);
 }
 
 Vertex::Vertex(char* VertexString)
 {
-	
+
 }
 
 void Vertex::SetInputName(char* inputStr)
