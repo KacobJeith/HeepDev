@@ -103,7 +103,7 @@ class PLCClient:
 		return retString
 
 	def GetClientString(self):
-		myString = str(self.ClientID) + ',' + self.IPAddress + ',' + str(self.ClientType) + ',' + self.ClientName
+		myString = str(self.ClientID) + ',' + self.IPAddress + ',' + str(self.ClientType) + ',' + self.ClientName + ',' + str(self.IconCustom) + ',' + self.IconName
 		for x in range(0, len(self.ControlList)) :
 			myString = myString + ',' + self.ControlList[x].GetControlValueString()
 		return myString
@@ -115,8 +115,10 @@ class PLCClient:
 		self.IPAddress = splitString[1]
 		self.ClientType = int(splitString[2])
 		self.ClientName = splitString[3]
+		self.IconCustom = int(splitString[4])
+		self.IconName = splitString[5]
 
-		it = 4
+		it = 6
 		while it < len(splitString) :
 			control = ControlValue()
 			it = control.SetControlFromSplitString(splitString, it)
