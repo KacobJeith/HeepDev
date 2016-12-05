@@ -1,4 +1,5 @@
 #include "Client.h"
+#include "../StringUtils/StringUtils.h"
 
 #ifdef ONPC
 #include <iostream>
@@ -10,13 +11,17 @@ OutputData::OutputData(std::string inName, int destID, std::string destIP, int s
 	, value(val)
 {}
 #else
-OutputData::OutputData(String inName, int destID, String destIP, int srcID, int val)
-	: inputName(inName)
-	, destinationID(destID)
-	, destinationIP(destIP)
+OutputData::OutputData(char* inName, int destID, char* destIP, int srcID, int val)
+	: destinationID(destID)
 	, sourceID(srcID)
 	, value(val)
-{}
+{
+	ClearString(inputName, OUT_DATA_CONTROL_NAME_LENGTH);
+	CopyStringToBuffer(inputName, inName);
+
+	ClearString(destinationIP, OUT_DATA_IP_NAME_LENGTH);
+	CopyStringToBuffer(destinationIP, destIP);
+}
 #endif
 
 OutputData::~OutputData()
@@ -86,7 +91,6 @@ OutputDataNode* OutputDataList::InitializeOutputList(OutputData outData)
 Client::Client()
 	: controlValueList(0)
 {
-
 }
 
 #ifdef ONPC
@@ -100,13 +104,14 @@ Client::Client(int ID, std::string name, int numControls)
 }
 
 #else
-Client::Client(int ID, String name, int numControls)
+Client::Client(int ID, char* name, int numControls)
 	: clientID(ID)
-	, clientName(name)
 	, clientType(0)
-	, clientIP("None")
 	, controlValueList(numControls)
 {
+	ClearString(clientName, OUT_DATA_CONTROL_NAME_LENGTH);
+	CopyStringToBuffer(clientName, name);
+	ClearString(clientIP, CLIENT_IP_NAME_LENGTH);
 }
 
 #endif
@@ -167,20 +172,20 @@ void Client::AddVerticesFromString(std::string vertexString)
 
 #else
 
-String Client::GetClientString()
+char* Client::GetClientString()
 {
-	String retString = String(clientID) + "," + clientIP + "," + String(clientType) + "," + clientName;
+	// String retString = String(clientID) + "," + clientIP + "," + String(clientType) + "," + clientName;
 
-	for(int i = 0; i < controlValueList.GetMaxElementIndex(); i++)
-	{
-		retString += "," + controlValueList.GetControlAtIndex(i).GetControlString();
-	}
+	// for(int i = 0; i < controlValueList.GetMaxElementIndex(); i++)
+	// {
+	// 	retString += "," + controlValueList.GetControlAtIndex(i).GetControlString();
+	// }
 
-	return retString;
+	return "Test";
 }
 
 
-OutputDataList Client::QueueOutput(String outputName, int value)
+OutputDataList Client::QueueOutput(char* outputName, int value)
 {
 	OutputDataList outList;
 
@@ -196,7 +201,7 @@ OutputDataList Client::QueueOutput(String outputName, int value)
 	return outList;
 }
 
-void Client::AddVerticesFromString(String vertexString)
+void Client::AddVerticesFromString(char* vertexString)
 {
 	
 }

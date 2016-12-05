@@ -15,10 +15,10 @@ public:
 	std::string GetInputName()		{return inputName; };
 	std::string GetDestinationIP()	{return destinationIP; };
 #else 
-	OutputData(String inName, int destID, String destIP, int srcID, int val);
+	OutputData(char* inName, int destID, char* destIP, int srcID, int val);
 
-	String GetInputName() 		{return inputName; };
-	String GetDestinationIP()	{return destinationIP; };
+	char* GetInputName() 		{return inputName; };
+	char* GetDestinationIP()	{return destinationIP; };
 #endif
 
 	~OutputData();
@@ -33,8 +33,8 @@ private:
 	std::string inputName;
 	std::string destinationIP;
 #else
-	String inputName;
-	String destinationIP;
+	char inputName [OUT_DATA_CONTROL_NAME_LENGTH];
+	char destinationIP [OUT_DATA_IP_NAME_LENGTH];
 #endif
 	int destinationID;
 	int sourceID;
@@ -71,7 +71,7 @@ public:
 #ifdef ONPC
 	Client(int ID, std::string name, int numControls);
 #else
-	Client(int ID, String name, int numControls);
+	Client(int ID, char* name, int numControls);
 #endif
 	~Client();	
 
@@ -92,12 +92,12 @@ public:
 
 	OutputDataList	QueueOutput(std::string outputName, int value);
 #else
-	void AddVerticesFromString(String vertexString);
+	void AddVerticesFromString(char* vertexString);
 
-	String 		GetClientName() {return clientName; };
-	String 		GetClientString();
+	char* 		GetClientName() {return clientName; };
+	char* 		GetClientString();
 
-	OutputDataList	QueueOutput(String outputName, int value);
+	OutputDataList	QueueOutput(char* outputName, int value);
 #endif
 
 private:
@@ -110,8 +110,8 @@ private:
 	std::string clientName;
 	std::string clientIP;
 #else
-	String clientName;
-	String clientIP;
+	char clientName [CLIENT_NAME_BUFFER_LEN];
+	char clientIP [CLIENT_IP_NAME_LENGTH];
 #endif
 
 };
