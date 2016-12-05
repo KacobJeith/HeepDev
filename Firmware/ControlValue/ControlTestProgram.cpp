@@ -99,8 +99,8 @@ void TestAddControlToList()
 {
 	std::string TestName = "Add Control To List Test";
 
-	ControlValue test1("ONE", ControlValue::input, ControlValue::Range);
-	ControlValue test2("TWO", ControlValue::output, ControlValue::Range);
+	ControlValue* test1 = new ControlValue("ONE", ControlValue::input, ControlValue::Range);
+	ControlValue* test2 = new ControlValue("TWO", ControlValue::output, ControlValue::Range);
 
 	ControlValList valList(2);
 	valList.AddControlValToList(test1);
@@ -109,11 +109,11 @@ void TestAddControlToList()
 	ExpectedValue valueList [2];
 	valueList[0].valueName = "Control Direction One";
 	valueList[0].expectedValue = ControlValue::input;
-	valueList[0].actualValue = valList.GetControlAtIndex(0).GetControlDirection();
+	valueList[0].actualValue = valList.GetControlAtIndex(0)->GetControlDirection();
 
 	valueList[1].valueName = "Control Direction Two";
 	valueList[1].expectedValue = ControlValue::output;
-	valueList[1].actualValue = valList.GetControlAtIndex(1).GetControlDirection();
+	valueList[1].actualValue = valList.GetControlAtIndex(1)->GetControlDirection();
 
 	CheckResults(TestName, valueList, 2);
 }

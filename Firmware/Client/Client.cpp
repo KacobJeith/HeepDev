@@ -107,8 +107,9 @@ Client::Client(int ID, std::string name, int numControls)
 Client::Client(int ID, char* name, int numControls)
 	: clientID(ID)
 	, clientType(0)
-	, controlValueList(numControls)
 {
+	controlValueList = new ControlValList(numControls);
+
 	ClearString(clientName, OUT_DATA_CONTROL_NAME_LENGTH);
 	CopyStringToBuffer(clientName, name);
 	ClearString(clientIP, CLIENT_IP_NAME_LENGTH);
@@ -186,10 +187,10 @@ char* Client::GetClientString()
 	clientStringBuf[stringTracker] = ','; stringTracker++;
 	CopyStringToBufferAtPos(clientStringBuf, clientName, stringTracker);
 
-	for(int i = 0; i < controlValueList.GetMaxElementIndex(); i++)
+	for(int i = 0; i < controlValueList->GetMaxElementIndex(); i++)
 	{
 		clientStringBuf[stringTracker] = ','; stringTracker++;
-		CopyStringToBufferAtPos(clientStringBuf, controlValueList.GetControlAtIndex(i).GetControlString(), stringTracker);
+		CopyStringToBufferAtPos(clientStringBuf, controlValueList->GetControlAtIndex(i)->GetControlString(), stringTracker);
 	}
 
 	return clientStringBuf;

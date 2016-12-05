@@ -76,12 +76,12 @@ public:
 	~Client();	
 
 	// Setters
-	void 			AddControlToClient(ControlValue ctrlVal) {controlValueList.AddControlValToList(ctrlVal);};
+	void 			AddControlToClient(ControlValue* ctrlVal) {controlValueList->AddControlValToList(ctrlVal);};
 	void			AddVertexToClient(Vertex vert)	{vertList.AddVertex(vert); };
 
 	// Getters
 	int 			GetClientID() 					{return clientID; };
-	ControlValue 	GetControlAtIndex(int index) 	{return controlValueList.GetControlAtIndex(index); };
+	ControlValue* 	GetControlAtIndex(int index) 	{return controlValueList->GetControlAtIndex(index); };
 	Vertex 			GetVertexAtIndex(int index)		{return vertList.GetVertexAt(index); };
 
 #ifdef ONPC
@@ -103,7 +103,7 @@ public:
 private:
 	int clientID;
 	int clientType;
-	ControlValList controlValueList;
+	ControlValList* controlValueList;
 	VertexList vertList;
 
 #ifdef ONPC

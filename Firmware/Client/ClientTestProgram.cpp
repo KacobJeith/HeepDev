@@ -156,9 +156,11 @@ void TestGetClientString()
 	std::string TestName = "GetClientString";
 
 	Client test(132, "TestClient", 2);
+	ControlValue* ctrl1 = new ControlValue("Test Output", ControlValue::output, ControlValue::Range);
+	ControlValue* ctrl2 = new ControlValue("Test Input", ControlValue::input, ControlValue::Range);
 
-	test.AddControlToClient(ControlValue("Test Output", ControlValue::output, ControlValue::Range));
-	test.AddControlToClient(ControlValue("Test Input", ControlValue::input, ControlValue::Range));
+	test.AddControlToClient(ctrl1);
+	test.AddControlToClient(ctrl2);
 
 	std::string correctString = "132,None,0,TestClient,1,1,Test Output,0,10,0,1,Test Input,0,10";
 	int stringCorrect = 0;
@@ -203,18 +205,21 @@ void TestAddClientControl()
 
 	Client test(132, "TestClient", 2);
 
-	test.AddControlToClient(ControlValue("Test Output", ControlValue::output, ControlValue::Range));
-	test.AddControlToClient(ControlValue("Test Input", ControlValue::input, ControlValue::Range));
+	ControlValue* ctrl1 = new ControlValue("Test Output", ControlValue::output, ControlValue::Range);
+	ControlValue* ctrl2 = new ControlValue("Test Input", ControlValue::input, ControlValue::Range);
+
+	test.AddControlToClient(ctrl1);
+	test.AddControlToClient(ctrl2);
 
 	ExpectedValue valueList [2];
 
 	valueList[0].valueName = "Control 0";
 	valueList[0].expectedValue = ControlValue::output;
-	valueList[0].actualValue = test.GetControlAtIndex(0).GetControlDirection();
+	valueList[0].actualValue = test.GetControlAtIndex(0)->GetControlDirection();
 
 	valueList[1].valueName = "Control 1";
 	valueList[1].expectedValue = ControlValue::input;
-	valueList[1].actualValue = test.GetControlAtIndex(1).GetControlDirection();
+	valueList[1].actualValue = test.GetControlAtIndex(1)->GetControlDirection();
 
 	CheckResults(TestName, valueList, 2);
 }

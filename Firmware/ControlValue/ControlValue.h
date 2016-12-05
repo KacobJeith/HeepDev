@@ -59,11 +59,11 @@ public:
 	ControlValList(int numElements);
 	~ControlValList();
 
-	void AddControlValToList(ControlValue ctrlVal);
-	ControlValue GetControlAtIndex(int index) {return ctrlValArray[index];};
+	void AddControlValToList(ControlValue* ctrlVal);
+	ControlValue* GetControlAtIndex(int index) {return ctrlValArray[index];};
 	int GetMaxElementIndex() {return currentMaxElement; };
 
 private:
-	ControlValue *ctrlValArray;
+	ControlValue **ctrlValArray;
 	int currentMaxElement;
 };

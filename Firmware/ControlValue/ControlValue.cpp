@@ -4,14 +4,14 @@
 ControlValList::ControlValList(int numElements)
 	: currentMaxElement(0)
 {
-	ctrlValArray = new ControlValue[numElements];
+	ctrlValArray = new ControlValue*[numElements];
 }
 
 ControlValList::~ControlValList()
 {
 }
 
-void ControlValList::AddControlValToList(ControlValue ctrlVal)
+void ControlValList::AddControlValToList(ControlValue* ctrlVal)
 {
 	ctrlValArray[currentMaxElement] = ctrlVal;
 	currentMaxElement++;
