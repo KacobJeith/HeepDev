@@ -127,18 +127,18 @@ char* ControlValue::GetControlString()
 	ClearString(controlString, CONTROL_OUT_STRING_BUFFER_LEN);
 
 	int stringTracker = 0;
-	controlString[stringTracker] = controlDirection + '0';
-	stringTracker++;
-
-	int digitsToWrite = (type/10) + 1;
-	// for(int i = 0; i < digitsToWrite; i++)
-	// {
-	// 	controlString[stringTracker] = 
-	// }
-
+	WriteIntToString(controlDirection, controlString, stringTracker);
+	controlString[stringTracker] = ','; stringTracker++;
+	WriteIntToString(type, controlString, stringTracker);
+	controlString[stringTracker] = ','; stringTracker++;
+	CopyStringToBufferAtPos(controlString, controlName, stringTracker);
+	controlString[stringTracker] = ','; stringTracker++;
+	WriteIntToString(lowValue, controlString, stringTracker);
+	controlString[stringTracker] = ','; stringTracker++;
+	WriteIntToString(highValue, controlString, stringTracker);
 
 	//String ctrlString = String(controlDirection) + "," + String(type) + "," + controlName + "," + String(lowValue) + "," + String(highValue);
-	return "Test";
+	return controlString;
 }
 
 void SetControlFromString(char* controlString)

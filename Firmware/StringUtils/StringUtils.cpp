@@ -52,3 +52,14 @@ void WriteIntToString(int number, char* dest, int &startPoint)
 		moduloNum = moduloNum/10;
 	}
 }
+
+void CopyStringToBufferAtPos(char* dest, char* src, int &startPoint)
+{
+	int stringLen = GetStringLength(src);
+
+	for(int i = 0; i < stringLen; i++)
+	{
+		dest[startPoint] = src[i];
+		startPoint++;
+	}
+}
