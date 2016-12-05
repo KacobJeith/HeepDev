@@ -49,6 +49,7 @@ private:
 	std::string controlName;
 #else
 	char controlName [CONTROL_VAL_NAME_BUFFER_LEN];
+	char controlString [CONTROL_OUT_STRING_BUFFER_LEN];
 #endif
 
 };

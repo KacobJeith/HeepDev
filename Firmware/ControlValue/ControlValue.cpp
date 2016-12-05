@@ -1,4 +1,5 @@
 #include "ControlValue.h"
+#include "../StringUtils/StringUtils.h"
 
 ControlValList::ControlValList(int numElements)
 	: currentMaxElement(0)
@@ -38,36 +39,7 @@ ControlValue::ControlValue(std::string controlValString)
 
 #else
 
-void ClearString(char* curString, int bufferLen)
-{
-	for(int i = 0; i < bufferLen; i++)
-	{
-		curString[i] = '\0';
-	}
-}
 
-int GetStringLength(char* str)
-{
-	int counter = 0;
-	while(1)
-	{
-		if(str[counter] == '\0')
-			break;
-		counter++;
-	}
-
-	return counter;
-}
-
-void CopyStringToBuffer(char* dest, char* src)
-{
-	int strSize = GetStringLength(src);
-
-	for(int i = 0; i < strSize; i++)
-	{
-		dest[i] = src[i];
-	}
-}
 
 ControlValue::ControlValue(char* name, ControlDirectionType direction, ControlType cType)
 	: controlDirection(direction)
@@ -152,6 +124,19 @@ void ControlValue::SetControlFromString(std::string controlString)
 
 char* ControlValue::GetControlString()
 {
+	ClearString(controlString, CONTROL_OUT_STRING_BUFFER_LEN);
+
+	int stringTracker = 0;
+	controlString[stringTracker] = controlDirection + '0';
+	stringTracker++;
+
+	int digitsToWrite = (type/10) + 1;
+	// for(int i = 0; i < digitsToWrite; i++)
+	// {
+	// 	controlString[stringTracker] = 
+	// }
+
+
 	//String ctrlString = String(controlDirection) + "," + String(type) + "," + controlName + "," + String(lowValue) + "," + String(highValue);
 	return "Test";
 }
