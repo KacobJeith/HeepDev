@@ -13,9 +13,9 @@ onRaspPi = 0
 def SetupClientConnection() :
 	client = ClientConnection()
 	ButtonClient = PLCClient()
-	ButtonClient.ClientName = 'Js Butt'
+	ButtonClient.ClientName = 'Button'
 	ButtonClient.ClientID = 001
-
+	ButtonClient.IconName = 'power-button'
 	outControl = ControlValue()
 	outControl.ControlName = 'ButtonOut'
 	outControl.ControlDirection = outControl.Output
