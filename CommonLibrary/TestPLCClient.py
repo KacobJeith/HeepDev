@@ -11,7 +11,6 @@ def CheckEquality(first, second, testName) :
 # Create Controls and PLC Client
 otherClient = PLCClient()
 otherClient.ClientName = 'Sloppy'
-otherClient.IconName = 'light-bulb'
 Control1 = ControlValue()
 Control1.ControlName = 'Forge'
 Control2 = ControlValue()
