@@ -15,10 +15,10 @@ public:
 	std::string GetInputName()		{return inputName; };
 	std::string GetDestinationIP()	{return destinationIP; };
 #else 
-	OutputData(String inName, int destID, String destIP, int srcID, int val);
+	OutputData(char* inName, int destID, char* destIP, int srcID, int val);
 
-	String GetInputName() 		{return inputName; };
-	String GetDestinationIP()	{return destinationIP; };
+	char* GetInputName() 		{return inputName; };
+	char* GetDestinationIP()	{return destinationIP; };
 #endif
 
 	~OutputData();
@@ -33,8 +33,8 @@ private:
 	std::string inputName;
 	std::string destinationIP;
 #else
-	String inputName;
-	String destinationIP;
+	char inputName [OUT_DATA_CONTROL_NAME_LENGTH];
+	char destinationIP [OUT_DATA_IP_NAME_LENGTH];
 #endif
 	int destinationID;
 	int sourceID;
@@ -71,43 +71,48 @@ public:
 #ifdef ONPC
 	Client(int ID, std::string name, int numControls);
 #else
-	Client(int ID, String name, int numControls)
+	Client(int ID, char* name, int numControls);
 #endif
 	~Client();	
 
 	// Setters
-	void 			AddControlToClient(ControlValue ctrlVal) {controlValueList.AddControlValToList(ctrlVal);};
+	void 			AddControlToClient(ControlValue* ctrlVal) {controlValueList->AddControlValToList(ctrlVal);};
 	void			AddVertexToClient(Vertex vert)	{vertList.AddVertex(vert); };
 
 	// Getters
 	int 			GetClientID() 					{return clientID; };
-	ControlValue 	GetControlAtIndex(int index) 	{return controlValueList.GetControlAtIndex(index); };
+	ControlValue* 	GetControlAtIndex(int index) 	{return controlValueList->GetControlAtIndex(index); };
 	Vertex 			GetVertexAtIndex(int index)		{return vertList.GetVertexAt(index); };
 
 #ifdef ONPC
+	void AddVerticesFromString(std::string vertexString);
+
 	std::string GetClientName() {return clientName; };
 	std::string GetClientString();
 
 	OutputDataList	QueueOutput(std::string outputName, int value);
 #else
-	String 		GetClientName() {return clientName; };
-	String 		GetClientString();
+	void AddVerticesFromString(char* vertexString);
 
-	OutputDataList	QueueOutput(String outputName, int value);
+	char* 		GetClientName() {return clientName; };
+	char* 		GetClientString();
+
+	OutputDataList	QueueOutput(char* outputName, int value);
 #endif
 
 private:
 	int clientID;
 	int clientType;
-	ControlValList controlValueList;
+	ControlValList* controlValueList;
 	VertexList vertList;
 
 #ifdef ONPC
 	std::string clientName;
 	std::string clientIP;
 #else
-	String clientName;
-	String clientIP;
+	char clientName [CLIENT_NAME_BUFFER_LEN];
+	char clientIP [CLIENT_IP_NAME_LENGTH];
+	char clientStringBuf [CLIENT_OUT_STRING_BUFFER_LEN];
 #endif
 
 };

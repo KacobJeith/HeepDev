@@ -1,6 +1,8 @@
 #include "Client.h"
+#include "../StringUtils/StringUtils.h"
 
 #ifdef ONPC
+#include <iostream>
 OutputData::OutputData(std::string inName, int destID, std::string destIP, int srcID, int val)
 	: inputName(inName)
 	, destinationID(destID)
@@ -9,13 +11,17 @@ OutputData::OutputData(std::string inName, int destID, std::string destIP, int s
 	, value(val)
 {}
 #else
-OutputData::OutputData(String inName, int destID, String destIP, int srcID, int val)
-	: inputName(inName)
-	, destinationID(destID)
-	, destinationIP(destIP)
+OutputData::OutputData(char* inName, int destID, char* destIP, int srcID, int val)
+	: destinationID(destID)
 	, sourceID(srcID)
 	, value(val)
-{}
+{
+	ClearString(inputName, OUT_DATA_CONTROL_NAME_LENGTH);
+	CopyStringToBuffer(inputName, inName);
+
+	ClearString(destinationIP, OUT_DATA_IP_NAME_LENGTH);
+	CopyStringToBuffer(destinationIP, destIP);
+}
 #endif
 
 OutputData::~OutputData()
@@ -85,7 +91,6 @@ OutputDataNode* OutputDataList::InitializeOutputList(OutputData outData)
 Client::Client()
 	: controlValueList(0)
 {
-
 }
 
 #ifdef ONPC
@@ -94,18 +99,21 @@ Client::Client(int ID, std::string name, int numControls)
 	, clientName(name)
 	, clientType(0)
 	, clientIP("None")
-	, controlValueList(numControls)
 {
+	controlValueList = new ControlValList(numControls);
 }
 
 #else
-Client::Client(int ID, String name, int numControls)
+Client::Client(int ID, char* name, int numControls)
 	: clientID(ID)
-	, clientName(name)
 	, clientType(0)
-	, clientIP("None")
-	, controlValueList(numControls)
 {
+	controlValueList = new ControlValList(numControls);
+
+	ClearString(clientName, OUT_DATA_CONTROL_NAME_LENGTH);
+	CopyStringToBuffer(clientName, name);
+	ClearString(clientIP, CLIENT_IP_NAME_LENGTH);
+	CopyStringToBuffer(clientIP, "None");
 }
 
 #endif
@@ -121,9 +129,9 @@ std::string Client::GetClientString()
 {
 	std::string retString = std::to_string(clientID) + "," + clientIP + "," + std::to_string(clientType) + "," + clientName;
 
-	for(int i = 0; i < controlValueList.GetMaxElementIndex(); i++)
+	for(int i = 0; i < controlValueList->GetMaxElementIndex(); i++)
 	{
-		retString += "," + controlValueList.GetControlAtIndex(i).GetControlString();
+		retString += "," + controlValueList->GetControlAtIndex(i)->GetControlString();
 	}
 
 	return retString;
@@ -145,15 +153,51 @@ OutputDataList Client::QueueOutput(std::string outputName, int value)
 	return outList;
 }
 
+void Client::AddVerticesFromString(std::string vertexString)
+{
+	int lastIndex = 0;
+	for(int i = 0; i<vertexString.size(); i++)
+	{
+		char curChar = vertexString[i];
+		
+		if(curChar == ';')
+		{
+			std::string singleVertex = vertexString.substr(lastIndex, i - lastIndex);
+			// Vertex myVert(singleVertex);
+			// AddVertexToClient(myVert);
+			std::cout << singleVertex << std::endl;
+
+			lastIndex = i+1;
+		}
+	}
+}
+
 #else
 
-String Client::GetClientString()
+char* Client::GetClientString()
 {
-	return "Test";
+	ClearString(clientStringBuf, CLIENT_OUT_STRING_BUFFER_LEN);
+	int stringTracker = 0;
+
+	WriteIntToString(clientID, clientStringBuf, stringTracker);
+	clientStringBuf[stringTracker] = ','; stringTracker++;
+	CopyStringToBufferAtPos(clientStringBuf, clientIP, stringTracker);
+	clientStringBuf[stringTracker] = ','; stringTracker++;
+	WriteIntToString(clientType, clientStringBuf, stringTracker);
+	clientStringBuf[stringTracker] = ','; stringTracker++;
+	CopyStringToBufferAtPos(clientStringBuf, clientName, stringTracker);
+
+	for(int i = 0; i < controlValueList->GetMaxElementIndex(); i++)
+	{
+		clientStringBuf[stringTracker] = ','; stringTracker++;
+		CopyStringToBufferAtPos(clientStringBuf, controlValueList->GetControlAtIndex(i)->GetControlString(), stringTracker);
+	}
+
+	return clientStringBuf;
 }
 
 
-OutputDataList Client::QueueOutput(String outputName, int value)
+OutputDataList Client::QueueOutput(char* outputName, int value)
 {
 	OutputDataList outList;
 
@@ -167,6 +211,11 @@ OutputDataList Client::QueueOutput(String outputName, int value)
 	}
 
 	return outList;
+}
+
+void Client::AddVerticesFromString(char* vertexString)
+{
+	
 }
 
 #endif

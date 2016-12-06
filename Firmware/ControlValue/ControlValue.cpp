@@ -1,16 +1,17 @@
 #include "ControlValue.h"
+#include "../StringUtils/StringUtils.h"
 
 ControlValList::ControlValList(int numElements)
 	: currentMaxElement(0)
 {
-	ctrlValArray = new ControlValue[numElements];
+	ctrlValArray = new ControlValue*[numElements];
 }
 
 ControlValList::~ControlValList()
 {
 }
 
-void ControlValList::AddControlValToList(ControlValue ctrlVal)
+void ControlValList::AddControlValToList(ControlValue* ctrlVal)
 {
 	ctrlValArray[currentMaxElement] = ctrlVal;
 	currentMaxElement++;
@@ -37,18 +38,22 @@ ControlValue::ControlValue(std::string controlValString)
 }
 
 #else
-ControlValue::ControlValue(String name, ControlDirectionType direction, ControlType cType)
-	: controlName(name)
-	, controlDirection(direction)
+
+
+
+ControlValue::ControlValue(char* name, ControlDirectionType direction, ControlType cType)
+	: controlDirection(direction)
 	, type(cType)
 	, highValue(10)
 	, lowValue(0)
 {
+	ClearString(controlName, CONTROL_VAL_NAME_BUFFER_LEN);
+	CopyStringToBuffer(controlName, name);
 }
 
-ControlValue::ControlValue(String controlValString)
+ControlValue::ControlValue(char* controlValString)
 {
-	SetControlFromString(controlValString);
+	//SetControlFromString(controlValString);
 }
 #endif
 
@@ -117,12 +122,26 @@ void ControlValue::SetControlFromString(std::string controlString)
 
 #else
 
-String ControlValue::GetControlString()
+char* ControlValue::GetControlString()
 {
-	return "Test";
+	ClearString(controlString, CONTROL_OUT_STRING_BUFFER_LEN);
+
+	int stringTracker = 0;
+	WriteIntToString(controlDirection, controlString, stringTracker);
+	controlString[stringTracker] = ','; stringTracker++;
+	WriteIntToString(type, controlString, stringTracker);
+	controlString[stringTracker] = ','; stringTracker++;
+	CopyStringToBufferAtPos(controlString, controlName, stringTracker);
+	controlString[stringTracker] = ','; stringTracker++;
+	WriteIntToString(lowValue, controlString, stringTracker);
+	controlString[stringTracker] = ','; stringTracker++;
+	WriteIntToString(highValue, controlString, stringTracker);
+
+	//String ctrlString = String(controlDirection) + "," + String(type) + "," + controlName + "," + String(lowValue) + "," + String(highValue);
+	return controlString;
 }
 
-void SetControlFromString(String controlString)
+void SetControlFromString(char* controlString)
 {
 
 }

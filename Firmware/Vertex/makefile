@@ -1,2 +1,2 @@
-instrMake: VertexTestProgram.cpp Vertex.cpp
-	g++ VertexTestProgram.cpp Vertex.cpp -o VertexTest.app
+instrMake: VertexTestProgram.cpp Vertex.cpp ../StringUtils/StringUtils.cpp
+	g++ VertexTestProgram.cpp Vertex.cpp ../StringUtils/StringUtils.cpp -o VertexTest.app

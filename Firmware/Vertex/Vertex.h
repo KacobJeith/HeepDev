@@ -12,8 +12,8 @@ public:
 	Vertex(std::string inputStr, std::string outputStr, std::string destIP, int destID, int srcID);
 	Vertex(std::string VertexString);
 #else
-	Vertex(String inputStr, String outputStr, String destIP, int destID, int srcID);
-	Vertex(String VertexString);
+	Vertex(char* inputStr, char* outputStr, char* destIP, int destID, int srcID);
+	Vertex(char* VertexString);
 
 #endif
 	~Vertex();
@@ -27,13 +27,13 @@ public:
 	void 	SetOutputName(std::string outputStr)	{outputName = outputStr; };	
 	void 	SetDestinationIP(std::string destIP)	{destinationIP = destIP; };
 #else
-	String 		GetInputName()			{return inputName; };
-	String 		GetOutputName()			{return outputName; };
-	String 		GetDestinationIP()		{return destinationIP; };
+	char* 	GetInputName()			{return inputName; };
+	char* 	GetOutputName()			{return outputName; };
+	char* 	GetDestinationIP()		{return destinationIP; };
 
-	void	SetInputName(String inputStr)		{inputName = inputStr; };
-	void 	SetOutputName(String outputStr)		{outputName = outputStr; };	
-	void 	SetDestinationIP(String destIP)		{destinationIP = destIP; };
+	void	SetInputName(char* inputStr);
+	void 	SetOutputName(char* outputStr);
+	void 	SetDestinationIP(char* destIP);
 #endif
 
 	int GetDestinationID() 				{return destinationID; };
@@ -48,9 +48,9 @@ private:
 	std::string outputName;
 	std::string destinationIP;
 #else
-	String inputName;
-	String outputName;
-	String destinationIP;
+	char inputName [VERTEX_CONTROL_NAME_LENGTH];
+	char outputName [VERTEX_CONTROL_NAME_LENGTH];
+	char destinationIP [VERTEX_IP_NAME_LENGTH];
 #endif
 	int destinationID;
 	int sourceID;
