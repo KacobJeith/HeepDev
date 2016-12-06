@@ -13,6 +13,7 @@ def SetupClientConnection() :
 	CuckooClient = PLCClient()
 	CuckooClient.ClientName = 'CuckooConductor'
 	CuckooClient.ClientID = 1175278
+	CuckooClient.IconName = 'cuckoo-clock'
 
 	tock = ControlValue()
 	tock.ControlName = 'Tock'

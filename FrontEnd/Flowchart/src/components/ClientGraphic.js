@@ -12,7 +12,8 @@ class ClientGraphic extends React.Component {
 			radius: 5,
 			top: this.props.top,
 			left: this.props.left,
-			displayControl: false
+			displayControl: false,
+			icon: 'none'
 		}
 
 		this.activeInput = [];
@@ -61,6 +62,18 @@ class ClientGraphic extends React.Component {
 										   left: clientLeft + 10};
 		};
 
+		this.setIconPath();
+
+	}
+
+	setIconPath() {
+		var subdirectory = 'default';
+		if (this.props.client['IconCustom'] == 1 ){
+			subdirectory = String(this.props.client['ClientID']);
+		}
+
+		this.setState({icon: '/static/assets/' + subdirectory + '/' + this.props.client['IconName'] + '.svg'});
+		
 	}
 
 	fillInputs() {
@@ -112,7 +125,6 @@ class ClientGraphic extends React.Component {
 	calculateDragOffset(event) {
 		// The final drag event is always 0, whichthrows off tracking unless you catch and ignore it
 		if (event.screenX == 0 && event.screenY == 0){
-			console.log('skipping drag event');
 			return;
 		}
 
@@ -184,11 +196,17 @@ class ClientGraphic extends React.Component {
 			},
 			text: {
 				textAlign: 'center',
-				cursor: '-webkit-grab'
+				cursor: '-webkit-grab',
+				marginBottom: 10
 			},
 			svg: {
 				display: 'block',
 				margin: 'auto'
+			},
+			icon: {
+				height: 80,
+				display: 'block',
+				margin: 'auto',
 			}
 		}
 
@@ -242,18 +260,19 @@ class ClientGraphic extends React.Component {
 				left: this.controlPosition['left'],
 				activeInput: this.activeInput,
 				ClientID: this.props.client['ClientID'],
+			},
+			icon: {
+				src: this.state.icon,
+				style: styles.icon
 			}
 		}
-
 
 		return (<div {...inputs.clientContainer} ref="client"> 
 					<p {...inputs.text}>
 						{this.props.client['ClientName']}
 					</p>
 					<div {...inputs.svgContainer}>
-						<svg {...inputs.svg}>
-							  <rect {...inputs.rect}/>
-						</svg>
+					<img {...inputs.icon}/>
 						<ClientInputList {...inputs.clientInput}/>
 						<ClientOutputList {...inputs.clientOutput}/>
 						{this.state.displayControl ? <ControlPopup {...inputs.controlPopup}/> : null}

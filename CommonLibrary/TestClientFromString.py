@@ -11,6 +11,7 @@ def CheckEquality(first, second, testName) :
 # Generate Clients that will be turned into JSON
 tt = PLCClient()
 tt.ClientName = 'Floppy'
+tt.IconName = 'light-bulb'
 tt.ControlList.append(ControlValue())
 
 otherClient = PLCClient()
@@ -65,7 +66,7 @@ bbbClient = PLCClient()
 bbbClient.fromDict(allExistingClients[1])
 
 
+print CheckEquality(aaaClient.IconName, tt.IconName, 'SettingIconTest')
 print CheckEquality(aaaClient.ControlList[0].ControlName, tt.ControlList[0].ControlName, 'FromJSONControlTest')
 print CheckEquality(bbbClient.VertexList[0].outputName, bbbClient.VertexList[0].outputName, 'FromJSONVertexTest')
 print CheckEquality(bbbClient.VertexList[1].outputName, bbbClient.VertexList[1].outputName, 'FromJSONVertexTest')
-

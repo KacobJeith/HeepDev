@@ -10,6 +10,8 @@ class PLCClient:
 		self.ClientType = 1
 		self.IPAddress = 'none'
 		self.ClientName = 'none'
+		self.IconCustom = 0
+		self.IconName = 'none'
 		self.Position = {'top': 0, 'left': 0}
 		self.ControlList = []
 		self.ControlQueue = []
@@ -101,7 +103,7 @@ class PLCClient:
 		return retString
 
 	def GetClientString(self):
-		myString = str(self.ClientID) + ',' + self.IPAddress + ',' + str(self.ClientType) + ',' + self.ClientName
+		myString = str(self.ClientID) + ',' + self.IPAddress + ',' + str(self.ClientType) + ',' + self.ClientName + ',' + str(self.IconCustom) + ',' + self.IconName
 		for x in range(0, len(self.ControlList)) :
 			myString = myString + ',' + self.ControlList[x].GetControlValueString()
 		return myString
@@ -113,8 +115,10 @@ class PLCClient:
 		self.IPAddress = splitString[1]
 		self.ClientType = int(splitString[2])
 		self.ClientName = splitString[3]
+		self.IconCustom = int(splitString[4])
+		self.IconName = splitString[5]
 
-		it = 4
+		it = 6
 		while it < len(splitString) :
 			control = ControlValue()
 			it = control.SetControlFromSplitString(splitString, it)
@@ -142,6 +146,8 @@ class PLCClient:
 		self.ClientType = self.ClientType
 		self.IPAddress = self.IPAddress
 		self.ClientName = self.ClientName
+		self.IconCustom = self.IconCustom
+		self.IconName = self.IconName
 		self.ControlList = self.ControlList
 		self.ClientID = self.ClientID
 		self.Position = self.Position

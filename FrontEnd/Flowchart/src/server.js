@@ -12,6 +12,8 @@ var cmd_fd = fs.openSync(COMMAND_FILE,'r');
 app.set('port', (process.env.PORT || 3001));
 
 app.use('/', express.static(__dirname));
+app.use('/static', express.static(path.join(__dirname, '../../../Server')))
+console.log(path.join(__dirname, '../../../Server'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
