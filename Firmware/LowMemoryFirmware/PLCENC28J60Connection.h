@@ -77,12 +77,7 @@ char* SendDataToPLCServer()
       	{
           	char* msg = (char*)malloc(size);
           	size = client.read(msg,size);
-          
-	       	if(msg[0] == 'Y' && msg[1] == 'e' && msg[2] == 's')
-	     	{
-	         	serverIP = IPAddress(serverIP[0], serverIP[1], serverIP[2], i);
-	        	FoundServer = true;
-	      	}
+          	Serial.println(msg);
 	     	free(msg);
       	}
 searchClose:
