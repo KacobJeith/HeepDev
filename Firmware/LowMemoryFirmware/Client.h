@@ -6,10 +6,12 @@
 char clientName [CLIENT_NAME_MEMORY_SIZE];
 int clientID;
 char clientType;
-char numControlsAdded = 0;
 
-ControlValue controlList [NUMBER_OF_CONTROLS];
-Vertex vertexList [ALLOWED_VERTICES];
+char numControlsAdded;
+char numVerticesAdded;
+
+ControlValue* controlList [NUMBER_OF_CONTROLS];
+Vertex* vertexList [ALLOWED_VERTICES];
 
 char clientString [CLIENT_STRING_MEMORY_SIZE];
 
@@ -20,4 +22,24 @@ void CreateClientFromParams(char* name, int ID, char type)
 
 	clientID = ID;
 	clientType = type;
+
+	numControlsAdded = 0;
+	numVerticesAdded = 0;
+}
+
+char* GetClientName()
+{
+	return clientName;
+}
+
+void AddControlToList(ControlValue* myCtrl)
+{
+	controlList[numControlsAdded] = myCtrl;
+	numControlsAdded++;
+}
+
+void AddVertex(Vertex* myVertex)
+{
+	vertexList[numVerticesAdded] = myVertex;
+	numVerticesAdded++;
 }
