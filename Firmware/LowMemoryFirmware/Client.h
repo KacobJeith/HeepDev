@@ -6,6 +6,8 @@
 char clientName [CLIENT_NAME_MEMORY_SIZE];
 int clientID;
 char clientType;
+char numControlsAdded = 0;
+
 ControlValue controlList [NUMBER_OF_CONTROLS];
 Vertex vertexList [ALLOWED_VERTICES];
 
