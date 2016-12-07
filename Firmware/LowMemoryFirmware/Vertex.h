@@ -8,3 +8,19 @@ struct Vertex
 	int destinationID;
 	//int sourceID; // THIS IS JUST THE client ID in client.h
 };
+
+Vertex* CreateVertex(char* inputName, char* outputName, char destLastOctet, int destinationID)
+{
+	Vertex* newVertex = new Vertex();
+
+	ClearString(newVertex->inputName, CONTROL_NAME_MEMORY_SIZE);
+	CopyStringToBuffer(newVertex->inputName, inputName);
+
+	ClearString(newVertex->outputName, CONTROL_NAME_MEMORY_SIZE);
+	CopyStringToBuffer(newVertex->outputName, outputName);
+	
+	newVertex->destLastOctet = destLastOctet;
+	newVertex->destinationID = destinationID;
+
+	return newVertex;
+}
