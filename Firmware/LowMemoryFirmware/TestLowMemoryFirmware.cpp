@@ -18,5 +18,7 @@ int main(void)
 
 	cout << (int)controlList[0]->highLim << endl;
 
+	cout << GetClientString() << endl;
+
 	return 0;
 }
