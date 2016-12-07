@@ -20,7 +20,7 @@ class ClientInputList extends React.Component {
 				selectInput: this.props.selectInput,
 				top: this.props.top,
 				left: this.props.left,
-				controlY: -30,
+				controlY: 0,
 				displayControl: this.props.displayControl,
 			},
 			inputSVG: {
