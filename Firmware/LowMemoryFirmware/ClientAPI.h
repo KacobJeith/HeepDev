@@ -1,6 +1,7 @@
 #include "Client.h"
 
 char PLCOutputBuffer [PLC_OUTPUT_BUFFER_SIZE];
+char PLCInputBuffer [PLC_INPUT_BUFFER_SIZE];
 
 char NewConnectCommand [] = "NewConnect:";
 char IsPLCServerCommand [] = "IsPLCServer:";
