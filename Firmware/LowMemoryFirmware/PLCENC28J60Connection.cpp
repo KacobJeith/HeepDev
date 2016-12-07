@@ -1,4 +1,4 @@
-#include "ENC28J60.h"
+#include "PLCENC28J60Connection.h"
 #include <UIPEthernet.h>
 
 EthernetClient client;
