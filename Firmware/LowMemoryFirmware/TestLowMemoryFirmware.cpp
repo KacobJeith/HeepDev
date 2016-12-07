@@ -13,9 +13,7 @@ int main(void)
 
 	cout << GetClientName() << endl;
 
-	theControl = new ControlValue();
-	theControl->type = 2;
-	theControl->highLim = 20;
+	theControl = CreateControl("TestCtrl", 0, 1, 10, 11);
 	AddControlToList(theControl);
 
 	cout << (int)controlList[0]->highLim << endl;

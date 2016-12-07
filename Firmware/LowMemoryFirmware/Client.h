@@ -10,6 +10,10 @@ char clientType;
 char numControlsAdded;
 char numVerticesAdded;
 
+char gateWayOctet1;
+char gateWayOctet2;
+char gateWayOctet3;
+
 ControlValue* controlList [NUMBER_OF_CONTROLS];
 Vertex* vertexList [ALLOWED_VERTICES];
 
@@ -43,3 +47,4 @@ void AddVertex(Vertex* myVertex)
 	vertexList[numVerticesAdded] = myVertex;
 	numVerticesAdded++;
 }
+
