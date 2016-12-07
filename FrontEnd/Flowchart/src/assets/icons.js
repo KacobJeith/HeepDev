@@ -10,7 +10,7 @@ const Icon = props => {
       left: '30%',
       top: '30%',
       width: '40%',
-      height: '40%',
+      height: '100%',
       fill: props.color,
     },
     path: {

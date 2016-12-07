@@ -19,7 +19,7 @@ class ClientGraphic extends React.Component {
 
 		this.inputs = [];
 		this.outputs = [];
-		this.cardWorkspace = 50;
+		this.cardWorkspace = 55;
 
 		this.runningOffset = {top:  0,
 							  left: 0};
@@ -62,7 +62,7 @@ class ClientGraphic extends React.Component {
 										   left: clientLeft + 10};
 		};
 
-		this.cardWorkspace = 25 + Math.max.apply(null,[this.outputs.length,this.inputs.length])*50;
+		this.cardWorkspace = 25 + Math.max.apply(null,[this.outputs.length,this.inputs.length])*55;
 
 		this.setIconPath();
 
@@ -183,8 +183,8 @@ class ClientGraphic extends React.Component {
 				borderRadius: 5,
 				padding: 3,
 				borderWidth: 2,
-				width: 200,
-				height: 25 + this.cardWorkspace,
+				width: 230,
+				height: this.cardWorkspace,
 				position: 'absolute',
 				top: this.state.top,
 				left: this.state.left,
@@ -200,23 +200,24 @@ class ClientGraphic extends React.Component {
 				position: 'relative',
 				display: 'inline-flex',
 				alignItems: 'center',
-				width: 230,
+				width: 248,
+				height: this.cardWorkspace - 25,
 				left: -13,
 			},
 			inputContainer:{
 				display:'inline-block',
-				width: 59,
-				height: this.cardWorkspace,
+				width: 79,
+				height: this.cardWorkspace - 25,
 			},
 			iconContainer: {
 				display: 'table-cell',
 				width: 100,
-				height: (this.cardWorkspace - 10)*0.85,
+				height: (this.cardWorkspace - 25)*0.85,
 				textAlign: 'center',
 				verticalAlign: 'center'
 			},
 			icon: {
-				height: (this.cardWorkspace - 10)*0.85,
+				height: (this.cardWorkspace - 25)*0.85,
 				position: 'block',
 				marginLeft: 'auto',
 				marginRight: 'auto',
@@ -224,8 +225,8 @@ class ClientGraphic extends React.Component {
 			},
 			outputContainer:{
 				display: 'inline-block',
-				height: this.cardWorkspace,
-				width: 59,
+				height: this.cardWorkspace - 25,
+				width: 79,
 			}
 		}
 

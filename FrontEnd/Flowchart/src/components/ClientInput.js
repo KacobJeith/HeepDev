@@ -8,7 +8,7 @@ class ClientInputList extends React.Component {
 		var styles = {
 			inputSVG: {
 				left: 0,
-				top: 0
+				top: 0,
 			}
 		}
 
@@ -29,7 +29,7 @@ class ClientInputList extends React.Component {
 		};
 
 		
-		var controlY = 50;
+		var controlY = 55;
 
 		let allClientInputs = this.props.inputs.map((thisInput,index) => {
 			
@@ -60,9 +60,9 @@ class ClientInput extends React.Component {
 
 		const styles = {
 			all: {
-				width: 59,
+				width: 79,
 				top: 0,
-				height: 50,
+				height: 55,
 				position: 'relative',
 				display: 'inline-flex'
 			},
@@ -74,20 +74,24 @@ class ClientInput extends React.Component {
 			},
 			background:{
 				backgroundColor: '#43464c',
-				height: 50,
-				width: 48,
+				height: 55,
+				width: 69,
 				display: 'inline-block'
 			},
 			controlTitle: {
 				display: 'inline-block',
-				height: 10,
+				height: 15,
+				width: 69,
 				textAlign: 'center',
-				textSize: 10,
+				fontSize: 12,
 			},
 			controlContainer: {
-				display: 'inline-block',
-				height: 40,
+				height: 35,
+				width: 69,
 				textAlign: 'center',
+				display: 'inline-flex',
+				alignItems: 'center',
+
 			}
 		};
 
@@ -138,12 +142,12 @@ class ClientInput extends React.Component {
 						</svg>
 					</div>
 					<div {...inputs.background}>
-						<p {...inputs.controlTitle}>
+						<text {...inputs.controlTitle}>
 								{this.props.input['ControlName']}
-						</p>
-						<svg {...inputs.controlContainer}>
+						</text>
+						<div {...inputs.controlContainer}>
 							<OnOffController {...inputs.controller}/>
-						</svg>
+						</div>
 					</div>
 				</div>
 		);
