@@ -184,31 +184,48 @@ class ClientGraphic extends React.Component {
 				padding: 3,
 				borderWidth: 2,
 				width: 200,
-				height: 15 + this.cardWorkspace,
-				display: 'inline-block',
+				height: 25 + this.cardWorkspace,
 				position: 'absolute',
 				top: this.state.top,
 				left: this.state.left,
 				color: 'black'
 			},
-			svgContainer: {
-				display: 'absolute',
-				margin: 'auto'
-			},
-			text: {
+			name: {
 				textAlign: 'center',
 				cursor: '-webkit-grab',
 				marginBottom: 10,
 				height: 15,
 			},
-			svg: {
-				display: 'block',
-				margin: 'auto'
+			controlsContainer: {
+				position: 'relative',
+				display: 'inline-flex',
+				alignItems: 'center',
+				width: 230,
+				left: -13,
+			},
+			inputContainer:{
+				display:'inline-block',
+				width: 59,
+				height: this.cardWorkspace,
+			},
+			iconContainer: {
+				display: 'table-cell',
+				width: 100,
+				height: (this.cardWorkspace - 10)*0.85,
+				textAlign: 'center',
+				verticalAlign: 'center'
 			},
 			icon: {
 				height: (this.cardWorkspace - 10)*0.85,
-				display: 'block',
-				margin: 'auto',
+				position: 'block',
+				marginLeft: 'auto',
+				marginRight: 'auto',
+				verticalAlign: 'center'
+			},
+			outputContainer:{
+				display: 'inline-block',
+				height: this.cardWorkspace,
+				width: 59,
 			}
 		}
 
@@ -220,11 +237,14 @@ class ClientGraphic extends React.Component {
 				onDrag : (event) => {this.onDrag(event);},
 				onDragEnd: (event) => {this.calculateDragPosition(event);},
 			},
-			svgContainer: {
-				style: styles.svgContainer
+			name: {
+				style: styles.name
 			},
-			text: {
-				style: styles.text
+			controlsContainer: {
+				style: styles.controlsContainer
+			},
+			inputContainer: {
+				style: styles.inputContainer
 			},
 			clientInput:{
 				inputs: this.inputs,
@@ -234,6 +254,16 @@ class ClientGraphic extends React.Component {
 				selectInput: this.props.selectInput,
 				displayControl: (event, activeInput) => this.handlePopupClick(event, activeInput),
 			},
+			iconContainer: {
+				style: styles.iconContainer
+			},
+			icon: {
+				src: this.state.icon,
+				style: styles.icon
+			},
+			outputContainer: {
+				style: styles.outputContainer
+			},
 			clientOutput: {
 				containerWidth: styles.clientContainer['width'],
 				outputs: this.outputs,
@@ -241,42 +271,23 @@ class ClientGraphic extends React.Component {
 				selectOutput: this.props.selectOutput,
 				top: this.state.top,
 				left: this.state.left,
-			},
-			svg: {
-				width: "100",
-				height: "100",
-				viewBox: "0 0 120 120",
-				style: styles.svg
-			},
-			rect: {
-				x: "10",
-				y: "10",
-				width: "100",
-				height: "100",
-				rx: "15",
-				ry: "15",
-				fill: "black",
-			},
-			controlPopup: {
-				top: this.controlPosition['top'],
-				left: this.controlPosition['left'],
-				activeInput: this.activeInput,
-				ClientID: this.props.client['ClientID'],
-			},
-			icon: {
-				src: this.state.icon,
-				style: styles.icon
 			}
 		}
 
 		return (<div {...inputs.clientContainer} ref="client"> 
-					<p {...inputs.text}>
+					<p {...inputs.name}>
 						{this.props.client['ClientName']}
 					</p>
-					<div {...inputs.svgContainer}>
-						<ClientInputList {...inputs.clientInput}/>
-						<ClientOutputList {...inputs.clientOutput}/>
-						<img {...inputs.icon}/>
+					<div {...inputs.controlsContainer}>
+						<div {...inputs.inputContainer}>
+							<ClientInputList {...inputs.clientInput}/>
+						</div>
+						<div {...inputs.iconContainer}>
+							<img {...inputs.icon}/>
+						</div>
+						<div {...inputs.outputContainer}>
+							<ClientOutputList {...inputs.clientOutput}/>
+						</div>
 					</div>
 					
 					

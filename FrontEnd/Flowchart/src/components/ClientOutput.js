@@ -6,11 +6,7 @@ class ClientOutputList extends React.Component {
 
 		var styles = {
 			outputSVG: {
-				position: 'absolute',
-				height: '100%',
-				width: 100,
-				right: -11,
-				top: 15 + 10,
+				width: 59
 			}
 		};
 
