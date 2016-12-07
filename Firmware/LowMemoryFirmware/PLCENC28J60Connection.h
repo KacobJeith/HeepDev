@@ -58,4 +58,35 @@ searchClose:
 	}
 }
 
-//char* SendDataToPLCServer(char* data);
+// Sends whatever is in the output buffer to the server
+char* SendDataToPLCServer()
+{
+	long next = 200;
+
+	if (client.connect(serverIP,TCP_PORT))
+	{
+      	client.println(PLCOutputBuffer);
+      	next = millis() + 200;
+      	while(client.available()==0)
+        {
+          	if (next - millis() < 0)
+           	goto searchClose;
+        }
+      	int size;
+      	while((size = client.available()) > 0)
+      	{
+          	char* msg = (char*)malloc(size);
+          	size = client.read(msg,size);
+          
+	       	if(msg[0] == 'Y' && msg[1] == 'e' && msg[2] == 's')
+	     	{
+	         	serverIP = IPAddress(serverIP[0], serverIP[1], serverIP[2], i);
+	        	FoundServer = true;
+	      	}
+	     	free(msg);
+      	}
+searchClose:
+      client.stop();
+    }
+
+}
