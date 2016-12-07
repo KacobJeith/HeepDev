@@ -24,6 +24,7 @@ int main(void)
 
 	cout << GetClientString() << endl;
 
+	cout << GetIsPLCServerCommand() << endl;
 	cout << GetNewConnectCommand() << endl;
 
 	return 0;

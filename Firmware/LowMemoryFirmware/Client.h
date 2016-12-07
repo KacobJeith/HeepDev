@@ -1,4 +1,3 @@
-#include "../StringUtils/StringUtils.h"
 #include "GlobalPreprocessor.h"
 #include "ControlValue.h"
 #include "Vertex.h"

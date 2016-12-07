@@ -1,5 +1,5 @@
 #include "GlobalPreprocessor.h"
-#include "../StringUtils/StringUtils.h"
+#include "StringUtils.h"
 
 struct ControlValue
 {
