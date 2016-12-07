@@ -48,3 +48,32 @@ void AddVertex(Vertex* myVertex)
 	numVerticesAdded++;
 }
 
+char* GetClientString()
+{
+	int stringTracker = 0;
+	ClearString(clientString, CLIENT_STRING_MEMORY_SIZE);
+
+	WriteIntToString(clientID, clientString, stringTracker);
+	clientString[stringTracker] = ','; stringTracker++;
+	clientString[stringTracker] = '0'; stringTracker++;
+	clientString[stringTracker] = ','; stringTracker++;
+	WriteIntToString(clientType, clientString, stringTracker);
+	clientString[stringTracker] = ','; stringTracker++;
+	CopyStringToBufferAtPos(clientString, clientName, stringTracker);
+
+	for(int i = 0; i < numControlsAdded; i++)
+	{
+		clientString[stringTracker] = ','; stringTracker++;
+		WriteIntToString(controlList[i]->direction, clientString, stringTracker);
+		clientString[stringTracker] = ','; stringTracker++;
+		WriteIntToString(controlList[i]->type, clientString, stringTracker);
+		clientString[stringTracker] = ','; stringTracker++;
+		CopyStringToBufferAtPos(clientString, controlList[i]->controlName, stringTracker);
+		clientString[stringTracker] = ','; stringTracker++;
+		WriteIntToString(controlList[i]->lowLim, clientString, stringTracker);
+		clientString[stringTracker] = ','; stringTracker++;
+		WriteIntToString(controlList[i]->highLim, clientString, stringTracker);
+	}
+
+	return clientString;
+}
