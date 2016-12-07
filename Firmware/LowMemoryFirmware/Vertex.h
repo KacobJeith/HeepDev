@@ -7,6 +7,10 @@ struct Vertex
 	char destLastOctet;
 	int destinationID;
 	//int sourceID; // THIS IS JUST THE client ID in client.h
+
+	// Memory efficient implementation of Output List
+	char shouldOutput;
+	char value;
 };
 
 Vertex* CreateVertex(char* inputName, char* outputName, char destLastOctet, int destinationID)
