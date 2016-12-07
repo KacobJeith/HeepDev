@@ -1,3 +1,6 @@
+#ifndef VERTEX_DEF
+#define VERTEX_DEF
+
 #include "GlobalPreprocessor.h"
 
 struct Vertex
@@ -28,3 +31,5 @@ Vertex* CreateVertex(char* inputName, char* outputName, char destLastOctet, int 
 
 	return newVertex;
 }
+
+#endif

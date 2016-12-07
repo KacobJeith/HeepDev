@@ -1,3 +1,6 @@
+#ifndef CLIENT_DEF
+#define CLIENT_DEF
+
 #include "GlobalPreprocessor.h"
 #include "ControlValue.h"
 #include "Vertex.h"
@@ -76,3 +79,5 @@ char* GetClientString()
 
 	return clientString;
 }
+
+#endif

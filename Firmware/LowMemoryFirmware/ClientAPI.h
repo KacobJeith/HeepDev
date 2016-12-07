@@ -1,3 +1,6 @@
+#ifndef CLIENT_API_DEF
+#define CLIENT_API_DEF
+
 #include "Client.h"
 
 char PLCOutputBuffer [PLC_OUTPUT_BUFFER_SIZE];
@@ -23,3 +26,5 @@ char* GetNewConnectCommand()
 	CopyStringToBufferAtPos(PLCOutputBuffer, GetClientString(), stringTracker);
 	return PLCOutputBuffer;
 }
+
+#endif

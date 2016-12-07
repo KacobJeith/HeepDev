@@ -1,3 +1,6 @@
+#ifndef CONTROL_VAL_DEF
+#define CONTROL_VAL_DEF
+
 #include "GlobalPreprocessor.h"
 #include "StringUtils.h"
 
@@ -26,3 +29,5 @@ ControlValue* CreateControl(char* ctrlName, char direction, char type, char high
 
 	return newCtrl;
 }
+
+#endif
