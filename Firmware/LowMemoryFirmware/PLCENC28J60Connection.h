@@ -41,15 +41,15 @@ void ConnectToPLCServer()
 	          	{
 	              	char* msg = (char*)malloc(size);
 	              	size = client.read(msg,size);
-	              	String retStr(msg);
-	              	Serial.println(msg);
 	              
-	           	if(msg[0] == 'Y' && msg[1] == 'e' && msg[2] == 's')
-	         	{
-	             	serverIP = IPAddress(serverIP[0], serverIP[1], serverIP[2], i);
-	            	FoundServer = true;
-	          	}
-	         	free(msg);
+		           	if(msg[0] == 'Y' && msg[1] == 'e' && msg[2] == 's')
+		         	{
+		             	serverIP = IPAddress(serverIP[0], serverIP[1], serverIP[2], i);
+		             	Serial.print("Found server at: ");
+		         		Serial.println(serverIP);
+		            	FoundServer = true;
+		          	}
+		         	free(msg);
 	          }
 searchClose:
 	          client.stop();
