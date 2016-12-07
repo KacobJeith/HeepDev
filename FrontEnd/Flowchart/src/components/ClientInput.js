@@ -52,7 +52,7 @@ class ClientInput extends React.Component {
 		super();
 		this.state = {
 			radius: 6,
-			textHighlight: false
+			controlHighlight: 'white',
 		}
 	}
 
@@ -73,7 +73,7 @@ class ClientInput extends React.Component {
 				display: 'inline-block'
 			},
 			background:{
-				backgroundColor: '#43464c',
+				backgroundColor: this.state.controlHighlight,
 				height: 55,
 				width: 69,
 				display: 'inline-block'
@@ -104,6 +104,8 @@ class ClientInput extends React.Component {
 			},
 			background:{
 				style: styles.background,
+				onMouseEnter: () => this.setState({controlHighlight: '#e0e0e0'}),
+				onMouseLeave: () => this.setState({controlHighlight: 'white'}),
 			},
 			controlTitle:{
 				style: styles.controlTitle,
