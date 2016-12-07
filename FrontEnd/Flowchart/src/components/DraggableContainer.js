@@ -180,7 +180,7 @@ class DraggableContainer extends React.Component {
 				height: 3000,
 				width: 3000,
 				position: 'relative',
-				backgroundColor: '#808080'
+				backgroundColor: '#e7e7e7'
 			},
 			vertexSVGSpace: {
 				position: 'absolute',

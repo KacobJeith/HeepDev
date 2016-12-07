@@ -104,7 +104,7 @@ class ClientInput extends React.Component {
 			},
 			background:{
 				style: styles.background,
-				onMouseEnter: () => this.setState({controlHighlight: '#e0e0e0'}),
+				onMouseEnter: () => this.setState({controlHighlight: '#e7e7e7'}),
 				onMouseLeave: () => this.setState({controlHighlight: 'white'}),
 			},
 			controlTitle:{

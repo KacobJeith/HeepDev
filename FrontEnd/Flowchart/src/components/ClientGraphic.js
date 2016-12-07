@@ -62,7 +62,7 @@ class ClientGraphic extends React.Component {
 										   left: clientLeft + 10};
 		};
 
-		this.cardWorkspace = 25 + Math.max.apply(null,[this.outputs.length,this.inputs.length])*55;
+		this.cardWorkspace = 50 + Math.max.apply(null,[this.outputs.length,this.inputs.length])*55;
 
 		this.setIconPath();
 
@@ -200,7 +200,7 @@ class ClientGraphic extends React.Component {
 				position: 'relative',
 				display: 'inline-flex',
 				alignItems: 'center',
-				width: 248,
+				width: 258,
 				height: this.cardWorkspace - 25,
 				left: -13,
 			},
@@ -278,6 +278,7 @@ class ClientGraphic extends React.Component {
 		return (<div {...inputs.clientContainer} ref="client"> 
 					<p {...inputs.name}>
 						{this.props.client['ClientName']}
+					<hr></hr>
 					</p>
 					<div {...inputs.controlsContainer}>
 						<div {...inputs.inputContainer}>
