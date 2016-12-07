@@ -6,7 +6,7 @@ const Icon = props => {
   const styles = {
     svg: {
       margin: 'auto',
-      position: 'absolute',
+      position: 'block',
       left: '30%',
       top: '30%',
       width: '40%',

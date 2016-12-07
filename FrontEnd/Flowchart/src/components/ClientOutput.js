@@ -10,7 +10,7 @@ class ClientOutputList extends React.Component {
 				height: '100%',
 				width: 100,
 				right: -11,
-				top: 0,
+				top: 15 + 10,
 			}
 		};
 
@@ -22,7 +22,7 @@ class ClientOutputList extends React.Component {
 				left: this.props.left,
 				client: this.props.client,
 				selectOutput: this.props.selectOutput,
-				controlY: 0
+				controlY: -30
 			},
 			outputSVG: {
 				style: styles.outputSVG,
@@ -30,7 +30,7 @@ class ClientOutputList extends React.Component {
 		};
 
 
-		var controlY = 100/(this.props.outputs.length + 1);
+		var controlY = 50;
 
 		let allClientOutputs = this.props.outputs.map((thisOutput,index) => {
 
@@ -61,18 +61,18 @@ class ClientOutput extends React.Component {
 			circle: {
 				onClick: () => this.props.selectOutput(this.props.output['ControlName'],
 														this.props.client['ClientID'],
-														{top: this.props.top + (126*this.props.controlY/100) + 12,
+														{top:this.props.top + this.props.controlY,
 										 				left: this.props.left + 219.33 }),
 				onMouseEnter: () => this.setState({radius: 9}),
 				onMouseLeave: () => this.setState({radius: 6}),
 				cx: "90%",
-				cy: String(this.props.controlY ) + '%',
+				cy:this.props.controlY,
 				r: this.state.radius,
 				fill: "red",
 			},
 			text: {
 				x: '33%',
-				y: String(this.props.controlY + 3) + '%',
+				y: this.props.controlY + 4,
 				fontSize: 10,
 			}
 		}

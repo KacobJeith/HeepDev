@@ -2,7 +2,6 @@ import React from 'react';
 import $ from 'jquery';
 import ClientInputList from './ClientInput';
 import ClientOutputList from './ClientOutput';
-import ControlPopup from './ControlPopup';
 
 
 class ClientGraphic extends React.Component {
@@ -20,6 +19,7 @@ class ClientGraphic extends React.Component {
 
 		this.inputs = [];
 		this.outputs = [];
+		this.cardWorkspace = 50;
 
 		this.runningOffset = {top:  0,
 							  left: 0};
@@ -50,7 +50,7 @@ class ClientGraphic extends React.Component {
 	 	var controlOutY = 100/(this.outputs.length + 1);
 
 		for (var i=0; i < this.outputs.length; i++){
-	 		this.outputs[i]['position'] = {top: clientTop + (126*(i+1)*controlOutY/100) + 12,
+	 		this.outputs[i]['position'] = {top: clientTop + 25 + 25 + i*50, //(126*(i+1)*controlOutY/100) + 12,
 	 										left: clientLeft + 219.33};
 		}
 
@@ -58,9 +58,11 @@ class ClientGraphic extends React.Component {
 		var allInputPositions = [];
 		var controlInY = 100/(this.inputs.length + 1);
 		for (var i=0; i < this.inputs.length; i++){
-			this.inputs[i]['position'] = {top: clientTop + (126*(i+1)*controlInY/100) + 12,
+			this.inputs[i]['position'] = {top: clientTop + 25 + 25 + i*50, //+ (126*(i+1)*controlInY/100) + 12,
 										   left: clientLeft + 10};
 		};
+
+		this.cardWorkspace = 25 + Math.max.apply(null,[this.outputs.length,this.inputs.length])*50;
 
 		this.setIconPath();
 
@@ -172,7 +174,6 @@ class ClientGraphic extends React.Component {
 	}
 
 	render() {
-
 		const styles = {
 			clientContainer: {
 				backgroundColor: 'white',
@@ -183,7 +184,7 @@ class ClientGraphic extends React.Component {
 				padding: 3,
 				borderWidth: 2,
 				width: 200,
-				height: 120,
+				height: 15 + this.cardWorkspace,
 				display: 'inline-block',
 				position: 'absolute',
 				top: this.state.top,
@@ -197,14 +198,15 @@ class ClientGraphic extends React.Component {
 			text: {
 				textAlign: 'center',
 				cursor: '-webkit-grab',
-				marginBottom: 10
+				marginBottom: 10,
+				height: 15,
 			},
 			svg: {
 				display: 'block',
 				margin: 'auto'
 			},
 			icon: {
-				height: 80,
+				height: (this.cardWorkspace - 10)*0.85,
 				display: 'block',
 				margin: 'auto',
 			}
@@ -272,10 +274,9 @@ class ClientGraphic extends React.Component {
 						{this.props.client['ClientName']}
 					</p>
 					<div {...inputs.svgContainer}>
-					<img {...inputs.icon}/>
 						<ClientInputList {...inputs.clientInput}/>
 						<ClientOutputList {...inputs.clientOutput}/>
-						{this.state.displayControl ? <ControlPopup {...inputs.controlPopup}/> : null}
+						<img {...inputs.icon}/>
 					</div>
 					
 					
