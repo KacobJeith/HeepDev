@@ -7,8 +7,7 @@ int main(void)
 {
 	cout << "Begin Tests" << endl;
 
-	ClearString(clientName, CLIENT_NAME_MEMORY_SIZE);
-	CopyStringToBuffer(clientName, "Hello");
+	CreateClientFromParams("Test", 1234, 1);
 
 	cout << clientName << endl;
 
