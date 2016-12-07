@@ -62,7 +62,7 @@ char* SendDataToPLCServer(char* data)
 
 	if (client.connect(serverIP,TCP_PORT))
 	{
-      	client.println(data.GetString());
+      	client.println(data);
       	next = millis() + 200;
       	while(client.available()==0)
         {
