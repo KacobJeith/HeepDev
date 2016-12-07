@@ -8,6 +8,8 @@
 char clientName [CLIENT_NAME_MEMORY_SIZE];
 int clientID;
 char clientType;
+char isIconCustom;
+char clientIconName [CLIENT_ICON_NAME_LENGTH];
 
 char numControlsAdded;
 char numVerticesAdded;
@@ -25,6 +27,10 @@ void CreateClientFromParams(char* name, int ID, char type)
 {
 	ClearString(clientName, CLIENT_NAME_MEMORY_SIZE);
 	CopyStringToBuffer(clientName, name);
+
+	ClearString(clientIconName, CLIENT_ICON_NAME_LENGTH);
+	CopyStringToBuffer(clientIconName, "None");
+	isIconCustom = 0;
 
 	clientID = ID;
 	clientType = type;
@@ -62,6 +68,10 @@ char* GetClientString()
 	WriteIntToString(clientType, clientString, stringTracker);
 	clientString[stringTracker] = ','; stringTracker++;
 	CopyStringToBufferAtPos(clientString, clientName, stringTracker);
+	clientString[stringTracker] = ','; stringTracker++;
+	WriteIntToString(isIconCustom, clientString, stringTracker);
+	clientString[stringTracker] = ','; stringTracker++;
+	CopyStringToBufferAtPos(clientString, clientIconName, stringTracker);
 
 	for(int i = 0; i < numControlsAdded; i++)
 	{
