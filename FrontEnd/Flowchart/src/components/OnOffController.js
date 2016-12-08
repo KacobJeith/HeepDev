@@ -36,7 +36,6 @@ class OnOffController extends React.Component {
 	      data: messagePacket,
 	      success: (data) => {
 	        console.log("Commands Sent Successfully");
-	        console.log(this.controlValue);
 	      },
 	      error: function(xhr, status, err) {
 	        console.error('/api/commands', status, err.toString());
@@ -46,7 +45,6 @@ class OnOffController extends React.Component {
 	}
 
 	render() {
-		console.log(this.props.ClientID);
 
 		var styles = {
 			button: {
