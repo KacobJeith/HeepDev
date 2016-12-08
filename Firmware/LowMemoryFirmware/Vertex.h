@@ -50,7 +50,7 @@ Vertex* CreateVertexFromString(char* vertexString)
 	{
 		if(vertexString[stringTracker] == ',')
 		{
-			if(curState = parseInputName)
+			if(curState == parseInputName)
 			{
 				
 			}
