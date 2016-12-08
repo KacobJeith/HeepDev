@@ -47,18 +47,15 @@ class ClientGraphic extends React.Component {
 	 	this.setState({left: clientLeft});
 
 	 	//output position
-	 	var controlOutY = 100/(this.outputs.length + 1);
-
 		for (var i=0; i < this.outputs.length; i++){
-	 		this.outputs[i]['position'] = {top: clientTop + 25 + 25 + i*55, //(126*(i+1)*controlOutY/100) + 12,
+	 		this.outputs[i]['position'] = {top: clientTop + 45 + 25/2 + i*55, //(126*(i+1)*controlOutY/100) + 12,
 	 										left: clientLeft + 250};
 		}
 
 		//input position
 		var allInputPositions = [];
-		var controlInY = 100/(this.inputs.length + 1);
 		for (var i=0; i < this.inputs.length; i++){
-			this.inputs[i]['position'] = {top: clientTop + 25 + 25 + i*55, //+ (126*(i+1)*controlInY/100) + 12,
+			this.inputs[i]['position'] = {top: clientTop + 45 + 25/2 + i*55, //+ (126*(i+1)*controlInY/100) + 12,
 										   left: clientLeft + 10};
 		};
 
@@ -160,19 +157,6 @@ class ClientGraphic extends React.Component {
 	    });
 	}
 
-	handlePopupClick(event, activeInput) {
-		this.controlPosition = {top: event.pageY - this.state.top - 50,
-								left: event.pageX - this.state.left - 30};
-		if (activeInput == this.activeInput && this.state.displayControl){
-			this.setState({displayControl: false});
-		}
-		else {
-			this.setState({displayControl: true});
-			this.activeInput = activeInput;
-		}
-														
-	}
-
 	render() {
 		const styles = {
 			clientContainer: {
@@ -193,7 +177,7 @@ class ClientGraphic extends React.Component {
 			name: {
 				textAlign: 'center',
 				cursor: '-webkit-grab',
-				marginBottom: 10,
+				marginBottom: 5,
 				height: 15,
 			},
 			controlsContainer: {
@@ -201,13 +185,13 @@ class ClientGraphic extends React.Component {
 				display: 'inline-flex',
 				alignItems: 'center',
 				width: 258,
-				height: this.cardWorkspace - 25,
+				height: this.cardWorkspace - 20,
 				left: -13,
 			},
 			inputContainer:{
 				display:'inline-block',
 				width: 79,
-				height: this.cardWorkspace - 25,
+				height: this.cardWorkspace - 45,
 			},
 			iconContainer: {
 				display: 'table-cell',
@@ -226,11 +210,11 @@ class ClientGraphic extends React.Component {
 			},
 			outputContainer:{
 				display: 'inline-block',
-				height: this.cardWorkspace - 25,
+				height: this.cardWorkspace - 45,
 				width: 79,
 			}
 		}
-		
+
 		const inputs = {
 			clientContainer: {
 				style: styles.clientContainer,
@@ -280,6 +264,7 @@ class ClientGraphic extends React.Component {
 					<p {...inputs.name}>
 						{this.props.client['ClientName']}
 					</p>
+					<hr/>
 					<div {...inputs.controlsContainer}>
 						<div {...inputs.inputContainer}>
 							<ClientInputList {...inputs.clientInput}/>
