@@ -218,6 +218,7 @@ class ClientGraphic extends React.Component {
 			},
 			icon: {
 				height: (this.cardWorkspace - 25)*0.85,
+				width: 100,
 				position: 'block',
 				marginLeft: 'auto',
 				marginRight: 'auto',
@@ -229,7 +230,7 @@ class ClientGraphic extends React.Component {
 				width: 79,
 			}
 		}
-
+		
 		const inputs = {
 			clientContainer: {
 				style: styles.clientContainer,
