@@ -7,7 +7,7 @@ struct Vertex
 {
 	char inputName [CONTROL_NAME_MEMORY_SIZE];
 	char outputName [CONTROL_NAME_MEMORY_SIZE];
-	char destLastOctet;
+	char destIP [IP_ADDRESS_LENGTH];
 	int destinationID;
 	//int sourceID; // THIS IS JUST THE client ID in client.h
 
@@ -16,7 +16,7 @@ struct Vertex
 	char value;
 };
 
-Vertex* CreateVertex(char* inputName, char* outputName, char destLastOctet, int destinationID)
+Vertex* CreateVertex(char* inputName, char* outputName, char* destIP, int destinationID)
 {
 	Vertex* newVertex = new Vertex();
 
@@ -26,7 +26,9 @@ Vertex* CreateVertex(char* inputName, char* outputName, char destLastOctet, int 
 	ClearString(newVertex->outputName, CONTROL_NAME_MEMORY_SIZE);
 	CopyStringToBuffer(newVertex->outputName, outputName);
 	
-	newVertex->destLastOctet = destLastOctet;
+	ClearString(newVertex->destIP, IP_ADDRESS_LENGTH);
+	CopyStringToBuffer(newVertex->destIP, destIP);
+
 	newVertex->destinationID = destinationID;
 
 	return newVertex;
@@ -34,12 +36,13 @@ Vertex* CreateVertex(char* inputName, char* outputName, char destLastOctet, int 
 
 Vertex* CreateVertexFromString(char* vertexString)
 {
+	Vertex* newVertex = new Vertex();
 
 	enum ParseStates {parseInputName
 					, parseOutputName
 					, parseDestIP
 					, parseDestID
-					, parseSrcID     };
+					};
 
 	ParseStates curState = parseInputName;
 
@@ -52,11 +55,36 @@ Vertex* CreateVertexFromString(char* vertexString)
 		{
 			if(curState == parseInputName)
 			{
-				
+				ClearString(newVertex->inputName, CONTROL_NAME_MEMORY_SIZE);
+				CopySubstringToBuffer(newVertex->inputName, vertexString, 0, stringTracker);
+				lastCommaPos = stringTracker;
+				curState = parseOutputName;
 			}
+			else if(curState == parseOutputName)
+			{
+				ClearString(newVertex->outputName, CONTROL_NAME_MEMORY_SIZE);
+				CopySubstringToBuffer(newVertex->outputName, vertexString, lastCommaPos+1, stringTracker);
+				lastCommaPos = stringTracker;
+				curState = parseDestIP;
+			}
+			else if(curState == parseDestIP)
+			{
+				ClearString(newVertex->destIP, IP_ADDRESS_LENGTH);
+				CopySubstringToBuffer(newVertex->destIP, vertexString, lastCommaPos+1, stringTracker);
+				lastCommaPos = stringTracker;
+				curState = parseDestID;
+			}
+			else if(curState == parseDestID)
+			{
+				newVertex->destinationID = ParseIntFromSubString(vertexString, lastCommaPos+1, stringTracker);
+				break;
+			}
+			// We don't need to parse the src ID
 		}
 		stringTracker++;
 	}
+
+	return newVertex;
 }
 
 #endif
