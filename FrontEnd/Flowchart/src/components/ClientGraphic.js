@@ -50,15 +50,15 @@ class ClientGraphic extends React.Component {
 	 	var controlOutY = 100/(this.outputs.length + 1);
 
 		for (var i=0; i < this.outputs.length; i++){
-	 		this.outputs[i]['position'] = {top: clientTop + 25 + 25 + i*50, //(126*(i+1)*controlOutY/100) + 12,
-	 										left: clientLeft + 219.33};
+	 		this.outputs[i]['position'] = {top: clientTop + 25 + 25 + i*55, //(126*(i+1)*controlOutY/100) + 12,
+	 										left: clientLeft + 250};
 		}
 
 		//input position
 		var allInputPositions = [];
 		var controlInY = 100/(this.inputs.length + 1);
 		for (var i=0; i < this.inputs.length; i++){
-			this.inputs[i]['position'] = {top: clientTop + 25 + 25 + i*50, //+ (126*(i+1)*controlInY/100) + 12,
+			this.inputs[i]['position'] = {top: clientTop + 25 + 25 + i*55, //+ (126*(i+1)*controlInY/100) + 12,
 										   left: clientLeft + 10};
 		};
 

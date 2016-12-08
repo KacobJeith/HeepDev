@@ -25,7 +25,7 @@ class OnOffController extends React.Component {
 	    
     	commandQueueString.push('SetCommand'+ ':' + 
     							this.props.ClientID + ',' +
-    							this.props.activeInput['ControlName'] + ',' +
+    							this.props.ControlName + ',' +
 								this.controlValue + '\n');
 
 	    

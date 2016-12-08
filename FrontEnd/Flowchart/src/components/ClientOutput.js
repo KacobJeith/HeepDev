@@ -20,7 +20,7 @@ class ClientOutputList extends React.Component {
 				left: this.props.left,
 				client: this.props.client,
 				selectOutput: this.props.selectOutput,
-				controlY: -30
+				controlY: 0
 			},
 			outputSVG: {
 				style: styles.outputSVG,
@@ -28,7 +28,7 @@ class ClientOutputList extends React.Component {
 		};
 
 
-		var controlY = 50;
+		var controlY = 55;
 
 		let allClientOutputs = this.props.outputs.map((thisOutput,index) => {
 
@@ -69,7 +69,7 @@ class ClientOutput extends React.Component {
 				top: 0,
 				height: 20,
 				display: 'inline-block',
-				marginLeft: 2
+				marginLeft: 1
 			},
 			background:{
 				backgroundColor: this.state.controlHighlight,
@@ -119,11 +119,10 @@ class ClientOutput extends React.Component {
 				top: 0
 			},
 			circle: {
-				onClick: (event) => {this.props.selectInput(this.props.output['ControlName'],
-										this.props.client['IPAddress'],
+				onClick: (event) => {this.props.selectOutput(this.props.output['ControlName'],
 										this.props.client['ClientID'],
-										{top: this.props.top + this.props.controlY,
-										 left: this.props.left + 10 });},									  
+										{top: this.props.top + this.props.controlY - 5,
+										 left: this.props.left + 250});},									  
 				onMouseEnter: () => this.setState({radius: 9}),
 				onMouseLeave: () => this.setState({radius: 6}),
 				cx: 0,
@@ -133,7 +132,8 @@ class ClientOutput extends React.Component {
 			},
 			controller:{
 				ClientID: this.props.client['ClientID'],
-    			activeInput: this.props.output
+				ControlDirection: this.props.output['ControlDirection'],
+    			ControlName: this.props.output['ControlName']
 			}
 		}
 
