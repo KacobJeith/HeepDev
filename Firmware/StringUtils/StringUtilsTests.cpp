@@ -15,5 +15,9 @@ int main(void)
 	WriteIntToString(1234567, testSet, counter);
 	cout << "<" << testSet << ">" << endl;
 	cout << counter << endl;
+
+	int crod = ParseIntFromSubString(",,123", 2, 5);
+	cout << crod << endl;
+
 	return 0;
 }

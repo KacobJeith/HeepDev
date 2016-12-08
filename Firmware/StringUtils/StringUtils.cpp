@@ -63,3 +63,21 @@ void CopyStringToBufferAtPos(char* dest, char* src, int &startPoint)
 		startPoint++;
 	}
 }
+
+int ParseIntFromSubString(char* str, int start, int end)
+{
+	int retVal = 0;
+	int numDigits = end - start - 1;
+	int multiplier = 1;
+
+	for(int i = 0; i < numDigits; i++)
+		multiplier *= 10;
+
+	for(int i = start; i < end; i++)
+	{
+		retVal += multiplier * (str[i] - '0');
+		multiplier = multiplier / 10;
+	}
+
+	return retVal;
+}
