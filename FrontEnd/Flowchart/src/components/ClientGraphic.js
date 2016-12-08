@@ -278,7 +278,6 @@ class ClientGraphic extends React.Component {
 		return (<div {...inputs.clientContainer} ref="client"> 
 					<p {...inputs.name}>
 						{this.props.client['ClientName']}
-					<hr></hr>
 					</p>
 					<div {...inputs.controlsContainer}>
 						<div {...inputs.inputContainer}>

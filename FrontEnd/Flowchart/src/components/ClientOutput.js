@@ -113,10 +113,8 @@ class ClientOutput extends React.Component {
 				style: styles.controlContainer,
 			},
 			circleContainer: {
-				position: 'absolute',
 				height: 20,
 				width: 9,
-				top: 0
 			},
 			circle: {
 				onClick: (event) => {this.props.selectOutput(this.props.output['ControlName'],

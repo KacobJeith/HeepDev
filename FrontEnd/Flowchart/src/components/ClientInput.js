@@ -115,8 +115,7 @@ class ClientInput extends React.Component {
 			},
 			circleContainer: {
 				height: 20,
-				width: 9,
-				top: 0
+				width: 9
 			},
 			circle: {
 				onClick: (event) => {this.props.selectInput(this.props.input['ControlName'],
