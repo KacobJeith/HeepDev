@@ -6,11 +6,11 @@ const Icon = props => {
   const styles = {
     svg: {
       margin: 'auto',
-      position: 'absolute',
+      position: 'block',
       left: '30%',
       top: '30%',
       width: '40%',
-      height: '40%',
+      height: '100%',
       fill: props.color,
     },
     path: {

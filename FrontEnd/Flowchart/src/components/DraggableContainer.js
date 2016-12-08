@@ -179,7 +179,8 @@ class DraggableContainer extends React.Component {
 			flowchart: {
 				height: 3000,
 				width: 3000,
-				position: 'relative'
+				position: 'relative',
+				backgroundColor: '#e7e7e7'
 			},
 			vertexSVGSpace: {
 				position: 'absolute',
