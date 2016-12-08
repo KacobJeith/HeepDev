@@ -32,4 +32,31 @@ Vertex* CreateVertex(char* inputName, char* outputName, char destLastOctet, int 
 	return newVertex;
 }
 
+Vertex* CreateVertexFromString(char* vertexString)
+{
+
+	enum ParseStates {parseInputName
+					, parseOutputName
+					, parseDestIP
+					, parseDestID
+					, parseSrcID     };
+
+	ParseStates curState = parseInputName;
+
+	char stringTracker = 0;
+	char lastCommaPos = 0;
+
+	while(1)
+	{
+		if(vertexString[stringTracker] == ',')
+		{
+			if(curState = parseInputName)
+			{
+				
+			}
+		}
+		stringTracker++;
+	}
+}
+
 #endif
