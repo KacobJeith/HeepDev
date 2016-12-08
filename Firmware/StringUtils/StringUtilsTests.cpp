@@ -16,8 +16,15 @@ int main(void)
 	cout << "<" << testSet << ">" << endl;
 	cout << counter << endl;
 
-	int crod = ParseIntFromSubString(",,123", 2, 5);
+	char intString [] = ",,123";
+	int crod = ParseIntFromSubString(intString, 2, 5);
 	cout << crod << endl;
+
+	char newTest[10];
+	char testStr [] = "ABCDEFGHIJKLMNOP";
+	ClearString(newTest, 10);
+	CopySubstringToBuffer(newTest, testStr, 2, 6);
+	cout << newTest << endl;
 
 	return 0;
 }

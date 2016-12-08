@@ -81,3 +81,11 @@ int ParseIntFromSubString(char* str, int start, int end)
 
 	return retVal;
 }
+
+void CopySubstringToBuffer(char* dest, char* src, int start, int end)
+{
+	for(int i = start; i < end; i++)
+	{
+		dest[i-start] = src[i];
+	}
+}
