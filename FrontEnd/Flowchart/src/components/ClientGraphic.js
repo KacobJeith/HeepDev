@@ -97,7 +97,6 @@ class ClientGraphic extends React.Component {
 	  	this.lastPosition['left'] = event.screenX;
 	  	this.lastPosition['top'] = event.screenY;
 	  	event.dataTransfer.setDragImage(this.refs.client, -99999,-99999);
-		
 	}
 
 	onDrag(event) {
@@ -167,6 +166,7 @@ class ClientGraphic extends React.Component {
 				padding: 3,
 				borderWidth: 2,
 				width: 230,
+				cursor: '-webkit-grab',
 				height: this.cardWorkspace,
 				position: 'absolute',
 				top: this.state.top,
@@ -175,7 +175,6 @@ class ClientGraphic extends React.Component {
 			},
 			name: {
 				textAlign: 'center',
-				cursor: '-webkit-grab',
 				marginBottom: 5,
 				height: 15,
 			},
@@ -189,6 +188,7 @@ class ClientGraphic extends React.Component {
 			},
 			inputContainer:{
 				display:'inline-block',
+				cursor: 'default',
 				width: 79,
 				height: this.cardWorkspace - 45,
 			},
@@ -209,6 +209,7 @@ class ClientGraphic extends React.Component {
 			},
 			outputContainer:{
 				display: 'inline-block',
+				cursor: 'default',
 				height: this.cardWorkspace - 45,
 				width: 79,
 			}
@@ -217,6 +218,10 @@ class ClientGraphic extends React.Component {
 		const inputs = {
 			clientContainer: {
 				style: styles.clientContainer,
+				draggable: true,
+				onDragStart : (event) => {this.onDragStart(event)},
+				onDrag : (event) => {this.onDrag(event);},
+				onDragEnd: (event) => {this.calculateDragPosition(event);},
 			},
 			name: {
 				style: styles.name,
@@ -229,7 +234,8 @@ class ClientGraphic extends React.Component {
 				style: styles.controlsContainer
 			},
 			inputContainer: {
-				style: styles.inputContainer
+				style: styles.inputContainer,
+				draggable: false,
 			},
 			clientInput:{
 				inputs: this.inputs,
@@ -246,6 +252,7 @@ class ClientGraphic extends React.Component {
 				style: styles.icon
 			},
 			outputContainer: {
+				draggable: false,
 				style: styles.outputContainer
 			},
 			clientOutput: {
