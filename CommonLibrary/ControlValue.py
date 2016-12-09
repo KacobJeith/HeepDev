@@ -20,6 +20,10 @@ class ControlValue:
 		return
  
 	def GetControlValueString(self):
+		if self.ControlValueType == self.OnOff :
+			self.HighValue = 1
+			self.LowValue = 0;
+
 		myString = str(self.ControlDirection) + ',' + str(self.ControlValueType) + ',' + self.ControlName + ',' + str(self.LowValue) + ',' + str(self.HighValue)
 		return myString
 
