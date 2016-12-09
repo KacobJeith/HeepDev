@@ -24,10 +24,11 @@ char* GetNewConnectCommand()
 	int stringTracker = 0;
 	CopyStringToBufferAtPos(PLCOutputBuffer, NewConnectCommand, stringTracker);
 	CopyStringToBufferAtPos(PLCOutputBuffer, GetClientString(), stringTracker);
+
 	return PLCOutputBuffer;
 }
 
-char* GetClientVertex()
+char* GetClientVertexCommand()
 {
 	char GetVertexCommand [] = "GetClientVertices:";
 
@@ -37,6 +38,17 @@ char* GetClientVertex()
 	WriteIntToString(clientID, PLCOutputBuffer, stringTracker);
 
 	return PLCOutputBuffer;
+}
+
+void SendNewConnect()
+{
+	SendDataToPLCServer(GetNewConnectCommand(), PLCInputBuffer);
+}
+
+void SendGetClientVertices()
+{
+	SendDataToPLCServer(GetClientVertexCommand(), PLCInputBuffer);
+	AddVerticesFromString(PLCInputBuffer);
 }
 
 void SendOutput(char* outputName, char value)

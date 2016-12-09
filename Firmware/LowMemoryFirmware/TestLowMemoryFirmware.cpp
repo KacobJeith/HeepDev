@@ -56,7 +56,7 @@ int main(void)
 		}
 	}
 
-	cout << GetClientVertex() << endl;
+	cout << GetClientVertexCommand() << endl;
 
 	return 0;
 }

@@ -3,12 +3,12 @@ void ConnectToPLCServer()
 
 }
 
-char* SendDataToPLCServer(char* data)
+void SendDataToPLCServer(char* outputBuffer, char* inputBuffer)
 {	
-	return data;
+
 }
 
-char* SendDataToPLCServerAtIP(char* data, char* IP)
+void SendDataToPLCServerAtIP(char* outputBuffer, char* inputBuffer)
 {
-	return data;
+
 }
