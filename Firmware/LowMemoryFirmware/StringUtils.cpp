@@ -89,3 +89,18 @@ void CopySubstringToBuffer(char* dest, char* src, int start, int end)
 		dest[i-start] = src[i];
 	}
 }
+
+int CheckStringEquality(char* str1, char* str2)
+{
+	int strSize = GetStringLength(str1);
+	if(GetStringLength(str2) != strSize)
+		return 0;
+
+	for(int i = 0; i < strSize; i++)
+	{
+		if(str1[i] != str2[i])
+			return 0;
+	}
+
+	return 1;
+}

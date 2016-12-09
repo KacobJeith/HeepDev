@@ -72,6 +72,14 @@ void AddVerticesFromString(char* vertexString)
 	}
 }
 
+void SendClientOutput(char* outputName, char value)
+{
+	for(int i = 0; i < numVerticesAdded; i++)
+	{
+		
+	}
+}
+
 char* GetClientString()
 {
 	int stringTracker = 0;

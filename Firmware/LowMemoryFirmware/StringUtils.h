@@ -5,3 +5,4 @@ void WriteIntToString(int number, char* dest, int &startPoint);
 void CopyStringToBufferAtPos(char* dest, char* src, int &startPoint);
 int ParseIntFromSubString(char* str, int start, int end);
 void CopySubstringToBuffer(char* dest, char* src, int start, int end);
+int CheckStringEquality(char* str1, char* str2);

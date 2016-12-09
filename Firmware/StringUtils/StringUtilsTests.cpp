@@ -26,5 +26,7 @@ int main(void)
 	CopySubstringToBuffer(newTest, testStr, 2, 6);
 	cout << newTest << endl;
 
+	cout << CheckStringEquality("Cork", "CoRk") << endl;
+
 	return 0;
 }
