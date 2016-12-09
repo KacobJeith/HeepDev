@@ -18,6 +18,7 @@ def SetupClientConnection() :
 	tock = ControlValue()
 	tock.ControlName = 'Tock'
 	tock.ControlDirection = tock.Output
+	tock.ControlValueType = tock.OnOff
 	CuckooClient.ControlList.append(tock)
 	
 	client.SetClientData(CuckooClient)
