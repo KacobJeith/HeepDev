@@ -34,7 +34,7 @@ int main(void)
 	cout << GetNewConnectCommand() << endl;
 
 	ClearString(PLCInputBuffer, PLC_INPUT_BUFFER_SIZE);
-	CopyStringToBuffer(PLCInputBuffer, "input,TestCtrl,myIP,12,34;Input2,TestCtrl2,anIP,14,34;");
+	CopyStringToBuffer(PLCInputBuffer, "input,TestCtrl,myIP,12,34;Input2,TestCtrl,anIP,14,34;");
 	cout << PLCInputBuffer << endl;
 	AddVerticesFromString(PLCInputBuffer);
 	cout << vertexList[0]->inputName << endl;
@@ -46,7 +46,7 @@ int main(void)
 	cout << vertexList[1]->destIP << endl;
 	cout << vertexList[1]->destinationID << endl;
 
-	QueueClientOutput("TestCtrl", 2);
+	SendOutput("TestCtrl", 2);
 	for(int i = 0; i < numVerticesAdded; i++)
 	{
 		if(vertexList[i]->shouldOutput)
@@ -55,6 +55,8 @@ int main(void)
 			cout << (int)vertexList[i]->value << endl;
 		}
 	}
+
+	cout << GetClientVertex() << endl;
 
 	return 0;
 }

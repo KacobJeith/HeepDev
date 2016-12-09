@@ -26,6 +26,18 @@ char* GetNewConnectCommand()
 	return PLCOutputBuffer;
 }
 
+char* GetClientVertex()
+{
+	char GetVertexCommand [] = "GetClientVertices:";
+
+	ClearString(PLCOutputBuffer, PLC_OUTPUT_BUFFER_SIZE);
+	int stringTracker = 0;
+	CopyStringToBufferAtPos(PLCOutputBuffer, GetVertexCommand, stringTracker);
+	WriteIntToString(clientID, PLCOutputBuffer, stringTracker);
+
+	return PLCOutputBuffer;
+}
+
 void SendOutput(char* outputName, char value)
 {
 	QueueClientOutput(outputName, value);
