@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import OnOffController from './OnOffController';
+import RangeController from './RangeController';
 
 class ClientInputList extends React.Component {
 	render() {
@@ -133,7 +134,8 @@ class ClientInput extends React.Component {
 			controller:{
 				ClientID: this.props.client['ClientID'],
 				ControlDirection: this.props.input['ControlDirection'],
-    			ControlName: this.props.input['ControlName']
+    			ControlName: this.props.input['ControlName'],
+    			ControlValue: this.props.input['CurCtrlValue']
 			}
 		}
 
@@ -148,7 +150,7 @@ class ClientInput extends React.Component {
 								{this.props.input['ControlName']}
 						</text>
 						<div {...inputs.controlContainer}>
-							<OnOffController {...inputs.controller}/>
+							<RangeController {...inputs.controller}/>
 						</div>
 					</div>
 				</div>

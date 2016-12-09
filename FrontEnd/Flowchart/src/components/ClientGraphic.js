@@ -11,7 +11,6 @@ class ClientGraphic extends React.Component {
 			radius: 5,
 			top: this.props.top,
 			left: this.props.left,
-			displayControl: false,
 			icon: 'none'
 		}
 
@@ -218,13 +217,13 @@ class ClientGraphic extends React.Component {
 		const inputs = {
 			clientContainer: {
 				style: styles.clientContainer,
+			},
+			name: {
+				style: styles.name,
 				draggable: true,
 				onDragStart : (event) => {this.onDragStart(event)},
 				onDrag : (event) => {this.onDrag(event);},
 				onDragEnd: (event) => {this.calculateDragPosition(event);},
-			},
-			name: {
-				style: styles.name
 			},
 			controlsContainer: {
 				style: styles.controlsContainer
@@ -238,7 +237,6 @@ class ClientGraphic extends React.Component {
 				top: this.state.top,
 				left: this.state.left,
 				selectInput: this.props.selectInput,
-				displayControl: (event, activeInput) => this.handlePopupClick(event, activeInput),
 			},
 			iconContainer: {
 				style: styles.iconContainer
