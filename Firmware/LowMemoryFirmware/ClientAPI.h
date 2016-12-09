@@ -26,16 +26,26 @@ char* GetNewConnectCommand()
 	return PLCOutputBuffer;
 }
 
-char* SendOutput(char* outputName, char value)
+void SendOutput(char* outputName, char value)
 {
 	QueueClientOutput(outputName, value);
 
+	char InterruptCommand [] = "SetVal:";
+
 	for(int i = 0; i < numVerticesAdded; i++)
 	{
-		// SEND THE DATA to vertex IP
-	}
+		if(vertexList[i]->shouldOutput)
+		{
+			int stringTracker = 0;
+			ClearString(PLCOutputBuffer, PLC_OUTPUT_BUFFER_SIZE);
+			CopyStringToBufferAtPos(PLCOutputBuffer, InterruptCommand, stringTracker);
+			CopyStringToBufferAtPos(PLCOutputBuffer, vertexList[i]->inputName, stringTracker);
+			PLCOutputBuffer[stringTracker] = ','; stringTracker++;
+			WriteIntToString(vertexList[i]->value, PLCOutputBuffer, stringTracker);
 
-	return PLCOutputBuffer;
+			// SEND TO IP in VERTEX
+		}
+	}
 }
 
 #endif
