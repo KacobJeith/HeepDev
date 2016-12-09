@@ -138,6 +138,14 @@ class ClientInput extends React.Component {
 			}
 		}
 
+		var controller = [];
+		if (this.props.input['ControlValueType'] == 0){
+			controller.push(<OnOffController {...inputs.controller}/>);
+		}
+		else if (this.props.input['ControlValueType'] == 1){
+			controller.push(<RangeController {...inputs.controller}/>);
+		}
+
 		return (<div {...inputs.all}>
 					<div {...inputs.left}>
 						<svg {...inputs.circleContainer} ref="input">
@@ -149,7 +157,7 @@ class ClientInput extends React.Component {
 								{this.props.input['ControlName']}
 						</text>
 						<div {...inputs.controlContainer}>
-							<RangeController {...inputs.controller}/>
+							{controller}
 						</div>
 					</div>
 				</div>
