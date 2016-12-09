@@ -83,7 +83,8 @@ class ClientInput extends React.Component {
 				display: 'inline-block',
 				height: 15,
 				width: 69,
-				textAlign: 'center',
+				textAlign: 'left',
+				textIndent: 5,
 				fontSize: 12,
 			},
 			controlContainer: {

@@ -6,7 +6,7 @@ class RangeController extends React.Component {
 		super(props);
 		this.state = {
 			x: 5 + (64-5)*(this.props.control['CurCtrlValue']/(this.props.control['HighValue']-this.props.control['LowValue'])),
-			radius: 3
+			radius: 7
 		}
 
 		this.dragging = 0;
@@ -117,7 +117,7 @@ class RangeController extends React.Component {
 				verticalAlign: 'center',
 				marginLeft: 'auto',
 				marginRight: 'auto',
-				height: 30
+				height: 35
 			}
 		};
 
@@ -132,33 +132,43 @@ class RangeController extends React.Component {
 			rangeContainer: {
 				width: 69,
 				height: 30,
-				viewBox: '0 0 69 30'
+				viewBox: '0 0 80 35'
 			},
 			unselected:{
 				strokeWidth: 1,
 				stroke: 'grey',
 				x1: 5,
 				x2: 64,
-				y1: 20,
-				y2: 20,
+				y1: 11,
+				y2: 11,
 			},
 			selected:{
 				strokeWidth: 2,
 				stroke: 'black',
 				x1: 5,
 				x2: this.state.x,
-				y1: 20,
-				y2: 20,
+				y1: 11,
+				y2: 11,
 			},
 			dragDot: {		
-				onMouseEnter : () => this.setState({radius: 3.5}),
-				onMouseLeave : () => this.setState({radius: 3}),
+				onMouseEnter : () => this.setState({radius: 7.5}),
+				onMouseLeave : () => this.setState({radius: 7}),
 				onMouseDown : (event) => {this.onMouseDown(event);},
 				onMouseUp : (event) => {this.dragging = 0;},
 				cx: this.state.x,
-				cy: 20,
+				cy: 11,
 				r: this.state.radius,
 				fill: "black"
+			},
+			text: {
+				x: this.state.x,
+				y: 14,
+				fontFamily: "Verdana",
+				fontSize: 8.5,
+				fill: '#e1e3e8',
+				textAnchor: 'middle',
+				pointerEvents: 'none'
+
 			}
 		};
 
@@ -167,6 +177,7 @@ class RangeController extends React.Component {
 						<line {...inputs.unselected}/>
 						<line {...inputs.selected}/>
 						<circle {...inputs.dragDot} ref='dragDot'/>
+						<text {...inputs.text}> {this.lastSentControlValue} </text>
 					</svg>
 				</div>
             	

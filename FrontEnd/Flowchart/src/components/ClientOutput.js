@@ -80,9 +80,10 @@ class ClientOutput extends React.Component {
 			controlTitle: {
 				display: 'inline-block',
 				height: 15,
-				width: 67,
-				textAlign: 'center',
+				width: 62,
 				fontSize: 12,
+				textAlign: 'right',
+				textIndent: 5,
 			},
 			controlContainer: {
 				height: 35,
