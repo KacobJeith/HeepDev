@@ -2,7 +2,6 @@ import React from 'react';
 import $ from 'jquery';
 import ClientInputList from './ClientInput';
 import ClientOutputList from './ClientOutput';
-import ControlPopup from './ControlPopup';
 
 
 class ClientGraphic extends React.Component {
@@ -20,6 +19,7 @@ class ClientGraphic extends React.Component {
 
 		this.inputs = [];
 		this.outputs = [];
+		this.cardWorkspace = 55;
 
 		this.runningOffset = {top:  0,
 							  left: 0};
@@ -47,20 +47,19 @@ class ClientGraphic extends React.Component {
 	 	this.setState({left: clientLeft});
 
 	 	//output position
-	 	var controlOutY = 100/(this.outputs.length + 1);
-
 		for (var i=0; i < this.outputs.length; i++){
-	 		this.outputs[i]['position'] = {top: clientTop + (126*(i+1)*controlOutY/100) + 12,
-	 										left: clientLeft + 219.33};
+	 		this.outputs[i]['position'] = {top: clientTop + 45 + 1.5 + 25/2 + i*55, //(126*(i+1)*controlOutY/100) + 12,
+	 										left: clientLeft + 250};
 		}
 
 		//input position
 		var allInputPositions = [];
-		var controlInY = 100/(this.inputs.length + 1);
 		for (var i=0; i < this.inputs.length; i++){
-			this.inputs[i]['position'] = {top: clientTop + (126*(i+1)*controlInY/100) + 12,
+			this.inputs[i]['position'] = {top: clientTop + 45 + 1.5 + 25/2 + i*55, //+ (126*(i+1)*controlInY/100) + 12,
 										   left: clientLeft + 10};
 		};
+
+		this.cardWorkspace = 50 + Math.max.apply(null,[this.outputs.length,this.inputs.length])*55;
 
 		this.setIconPath();
 
@@ -158,21 +157,7 @@ class ClientGraphic extends React.Component {
 	    });
 	}
 
-	handlePopupClick(event, activeInput) {
-		this.controlPosition = {top: event.pageY - this.state.top - 50,
-								left: event.pageX - this.state.left - 30};
-		if (activeInput == this.activeInput && this.state.displayControl){
-			this.setState({displayControl: false});
-		}
-		else {
-			this.setState({displayControl: true});
-			this.activeInput = activeInput;
-		}
-														
-	}
-
 	render() {
-
 		const styles = {
 			clientContainer: {
 				backgroundColor: 'white',
@@ -182,31 +167,51 @@ class ClientGraphic extends React.Component {
 				borderRadius: 5,
 				padding: 3,
 				borderWidth: 2,
-				width: 200,
-				height: 120,
-				display: 'inline-block',
+				width: 230,
+				height: this.cardWorkspace,
 				position: 'absolute',
 				top: this.state.top,
 				left: this.state.left,
 				color: 'black'
 			},
-			svgContainer: {
-				display: 'absolute',
-				margin: 'auto'
-			},
-			text: {
+			name: {
 				textAlign: 'center',
 				cursor: '-webkit-grab',
-				marginBottom: 10
+				marginBottom: 5,
+				height: 15,
 			},
-			svg: {
-				display: 'block',
-				margin: 'auto'
+			controlsContainer: {
+				position: 'relative',
+				display: 'inline-flex',
+				alignItems: 'center',
+				width: 258,
+				height: this.cardWorkspace - 20,
+				left: -13,
+			},
+			inputContainer:{
+				display:'inline-block',
+				width: 79,
+				height: this.cardWorkspace - 45,
+			},
+			iconContainer: {
+				display: 'table-cell',
+				width: 100,
+				height: (this.cardWorkspace - 25)*0.85,
+				textAlign: 'center',
+				verticalAlign: 'center'
 			},
 			icon: {
-				height: 80,
-				display: 'block',
-				margin: 'auto',
+				height: (this.cardWorkspace - 25)*0.85,
+				width: 100,
+				position: 'block',
+				marginLeft: 'auto',
+				marginRight: 'auto',
+				verticalAlign: 'center'
+			},
+			outputContainer:{
+				display: 'inline-block',
+				height: this.cardWorkspace - 45,
+				width: 79,
 			}
 		}
 
@@ -218,11 +223,14 @@ class ClientGraphic extends React.Component {
 				onDrag : (event) => {this.onDrag(event);},
 				onDragEnd: (event) => {this.calculateDragPosition(event);},
 			},
-			svgContainer: {
-				style: styles.svgContainer
+			name: {
+				style: styles.name
 			},
-			text: {
-				style: styles.text
+			controlsContainer: {
+				style: styles.controlsContainer
+			},
+			inputContainer: {
+				style: styles.inputContainer
 			},
 			clientInput:{
 				inputs: this.inputs,
@@ -232,6 +240,16 @@ class ClientGraphic extends React.Component {
 				selectInput: this.props.selectInput,
 				displayControl: (event, activeInput) => this.handlePopupClick(event, activeInput),
 			},
+			iconContainer: {
+				style: styles.iconContainer
+			},
+			icon: {
+				src: this.state.icon,
+				style: styles.icon
+			},
+			outputContainer: {
+				style: styles.outputContainer
+			},
 			clientOutput: {
 				containerWidth: styles.clientContainer['width'],
 				outputs: this.outputs,
@@ -239,43 +257,24 @@ class ClientGraphic extends React.Component {
 				selectOutput: this.props.selectOutput,
 				top: this.state.top,
 				left: this.state.left,
-			},
-			svg: {
-				width: "100",
-				height: "100",
-				viewBox: "0 0 120 120",
-				style: styles.svg
-			},
-			rect: {
-				x: "10",
-				y: "10",
-				width: "100",
-				height: "100",
-				rx: "15",
-				ry: "15",
-				fill: "black",
-			},
-			controlPopup: {
-				top: this.controlPosition['top'],
-				left: this.controlPosition['left'],
-				activeInput: this.activeInput,
-				ClientID: this.props.client['ClientID'],
-			},
-			icon: {
-				src: this.state.icon,
-				style: styles.icon
 			}
 		}
 
 		return (<div {...inputs.clientContainer} ref="client"> 
-					<p {...inputs.text}>
+					<p {...inputs.name}>
 						{this.props.client['ClientName']}
 					</p>
-					<div {...inputs.svgContainer}>
-					<img {...inputs.icon}/>
-						<ClientInputList {...inputs.clientInput}/>
-						<ClientOutputList {...inputs.clientOutput}/>
-						{this.state.displayControl ? <ControlPopup {...inputs.controlPopup}/> : null}
+					<hr/>
+					<div {...inputs.controlsContainer}>
+						<div {...inputs.inputContainer}>
+							<ClientInputList {...inputs.clientInput}/>
+						</div>
+						<div {...inputs.iconContainer}>
+							<img {...inputs.icon}/>
+						</div>
+						<div {...inputs.outputContainer}>
+							<ClientOutputList {...inputs.clientOutput}/>
+						</div>
 					</div>
 					
 					

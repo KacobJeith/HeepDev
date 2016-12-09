@@ -4,7 +4,7 @@ import $ from 'jquery';
 import Icon from '../assets/icons';
 import {ICONS} from '../assets/iconConstants';
 
-class ControlPopup extends React.Component {
+class OnOffController extends React.Component {
 	constructor() {
 		super();
 		this.controlValue = 0;
@@ -25,7 +25,7 @@ class ControlPopup extends React.Component {
 	    
     	commandQueueString.push('SetCommand'+ ':' + 
     							this.props.ClientID + ',' +
-    							this.props.activeInput['ControlName'] + ',' +
+    							this.props.ControlName + ',' +
 								this.controlValue + '\n');
 
 	    
@@ -36,7 +36,6 @@ class ControlPopup extends React.Component {
 	      data: messagePacket,
 	      success: (data) => {
 	        console.log("Commands Sent Successfully");
-	        console.log(this.controlValue);
 	      },
 	      error: function(xhr, status, err) {
 	        console.error('/api/commands', status, err.toString());
@@ -46,65 +45,37 @@ class ControlPopup extends React.Component {
 	}
 
 	render() {
-		console.log(this.props.ClientID);
 
 		var styles = {
-			svg: {
-				width: '100%',
-				height: '100%',
-				viewBox: "0 0 100 100",
-			},
-			rect: {
-				color: "#40528a",
-				opacity: 0.75,
-				position: "fixed",
-				width: 80,
-				height: 80,
-				left: 0,
-				top: 0,
-			},
-			div: {
-				position: 'absolute',
-				margin: 'auto',
-				top: this.props.top - 80,
-				left: this.props.left - 80,
-				width: 80,
-				height: 80,
+			button: {
+				display: 'block',
+				verticalAlign: 'center',
+				marginLeft: 'auto',
+				marginRight: 'auto',
+				height: 30
 			}
 		};
 
 		var inputs = {
-			svg: {
-				style: styles.svg,
-			},
-			rect: {
-				style: styles.rect,
-			},
-			div: {
-				style: styles.div
-			},
 			button: {
 				onClick: () => this.sendCommand(),
+				style: styles.button
 			},
 			icon: {
 				icon: ICONS.POWER,
-		        color: "#e1e3e8",
-		        size: 70
+		        color: "#43464c",
+		        size: 30
 			}
 
 		};
 
-		return  <div {...inputs.div}> 
-					<svg {...inputs.svg}>
-						<rect {...inputs.rect}/>
-					</svg>
-					<div {...inputs.button}>
-						<Icon  {...inputs.icon}/>
-                	</div>
-            	</div>
+		return  <div {...inputs.button}>
+					<Icon  {...inputs.icon}/>
+				</div>
+            	
 	}
 
 
 }
 
-export default ControlPopup;
+export default OnOffController;
