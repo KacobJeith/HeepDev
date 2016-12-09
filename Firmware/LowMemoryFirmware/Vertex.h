@@ -84,6 +84,9 @@ Vertex* CreateVertexFromString(char* vertexString, int startPoint)
 		stringTracker++;
 	}
 
+	newVertex->shouldOutput = 0;
+	newVertex->value = 0;
+
 	return newVertex;
 }
 

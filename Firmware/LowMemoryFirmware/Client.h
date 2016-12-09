@@ -72,11 +72,15 @@ void AddVerticesFromString(char* vertexString)
 	}
 }
 
-void SendClientOutput(char* outputName, char value)
+void QueueClientOutput(char* outputName, char value)
 {
 	for(int i = 0; i < numVerticesAdded; i++)
 	{
-		
+		if(CheckStringEquality(outputName, vertexList[i]->outputName))
+		{
+			vertexList[i]->shouldOutput = 1;
+			vertexList[i]->value = value;
+		}
 	}
 }
 
