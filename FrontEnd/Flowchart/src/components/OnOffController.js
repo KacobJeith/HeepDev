@@ -5,8 +5,8 @@ import Icon from '../assets/icons';
 import {ICONS} from '../assets/iconConstants';
 
 class OnOffController extends React.Component {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 		this.controlValue = this.props.control['CurCtrlValue'];
 	}
 	
@@ -35,6 +35,7 @@ class OnOffController extends React.Component {
 	      type: 'POST',
 	      data: messagePacket,
 	      success: (data) => {
+	        console.log(commandQueueString);
 	        console.log("Commands Sent Successfully");
 	      },
 	      error: function(xhr, status, err) {
