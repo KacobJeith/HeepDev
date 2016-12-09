@@ -42,12 +42,14 @@ char* GetClientVertexCommand()
 
 void SendNewConnect()
 {
-	SendDataToPLCServer(GetNewConnectCommand(), PLCInputBuffer);
+	GetNewConnectCommand();
+	SendDataToPLCServer(PLCOutputBuffer, PLCInputBuffer);
 }
 
 void SendGetClientVertices()
 {
-	SendDataToPLCServer(GetClientVertexCommand(), PLCInputBuffer);
+	GetClientVertexCommand();
+	SendDataToPLCServer(PLCOutputBuffer, PLCInputBuffer);
 	AddVerticesFromString(PLCInputBuffer);
 }
 
