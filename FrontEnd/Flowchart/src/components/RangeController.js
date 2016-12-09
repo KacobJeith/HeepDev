@@ -130,9 +130,9 @@ class RangeController extends React.Component {
 				onWheel : (event) => this.onWheel(event),
 			},
 			rangeContainer: {
-				width: 69,
+				width: 75,
 				height: 30,
-				viewBox: '0 0 80 35'
+				viewBox: '0 0 75 35'
 			},
 			unselected:{
 				strokeWidth: 1,
