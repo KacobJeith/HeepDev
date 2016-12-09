@@ -6,11 +6,9 @@
 char PLCOutputBuffer [PLC_OUTPUT_BUFFER_SIZE];
 char PLCInputBuffer [PLC_INPUT_BUFFER_SIZE];
 
-char NewConnectCommand [] = "NewConnect:";
-char IsPLCServerCommand [] = "IsPLCServer:";
-
 char* GetIsPLCServerCommand()
 {
+	char IsPLCServerCommand [] = "IsPLCServer:";
 	ClearString(PLCOutputBuffer, PLC_OUTPUT_BUFFER_SIZE);
 	CopyStringToBuffer(PLCOutputBuffer, IsPLCServerCommand);
 
@@ -19,6 +17,7 @@ char* GetIsPLCServerCommand()
 
 char* GetNewConnectCommand()
 {
+	char NewConnectCommand [] = "NewConnect:";
 	ClearString(PLCOutputBuffer, PLC_OUTPUT_BUFFER_SIZE);
 
 	int stringTracker = 0;
