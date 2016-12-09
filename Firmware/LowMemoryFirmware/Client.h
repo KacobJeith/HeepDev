@@ -19,6 +19,7 @@ char gateWayOctet2;
 char gateWayOctet3;
 
 ControlValue* controlList [NUMBER_OF_CONTROLS];
+
 Vertex* vertexList [ALLOWED_VERTICES];
 
 char clientString [CLIENT_STRING_MEMORY_SIZE];
@@ -54,6 +55,21 @@ void AddVertex(Vertex* myVertex)
 {
 	vertexList[numVerticesAdded] = myVertex;
 	numVerticesAdded++;
+}
+
+void AddVerticesFromString(char* vertexString)
+{
+	int parseLength = GetStringLength(vertexString);
+	int lastSemiColon = -1;
+
+	for(int i = 0; i < parseLength; i++)
+	{
+		if(vertexString[i] == ';')
+		{
+			AddVertex(CreateVertexFromString(vertexString, lastSemiColon+1));
+			lastSemiColon = i;
+		}
+	}
 }
 
 char* GetClientString()

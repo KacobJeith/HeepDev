@@ -34,7 +34,7 @@ Vertex* CreateVertex(char* inputName, char* outputName, char* destIP, int destin
 	return newVertex;
 }
 
-Vertex* CreateVertexFromString(char* vertexString)
+Vertex* CreateVertexFromString(char* vertexString, int startPoint)
 {
 	Vertex* newVertex = new Vertex();
 
@@ -46,7 +46,7 @@ Vertex* CreateVertexFromString(char* vertexString)
 
 	ParseStates curState = parseInputName;
 
-	char stringTracker = 0;
+	char stringTracker = startPoint;
 	char lastCommaPos = 0;
 
 	while(1)
@@ -56,7 +56,7 @@ Vertex* CreateVertexFromString(char* vertexString)
 			if(curState == parseInputName)
 			{
 				ClearString(newVertex->inputName, CONTROL_NAME_MEMORY_SIZE);
-				CopySubstringToBuffer(newVertex->inputName, vertexString, 0, stringTracker);
+				CopySubstringToBuffer(newVertex->inputName, vertexString, startPoint, stringTracker);
 				lastCommaPos = stringTracker;
 				curState = parseOutputName;
 			}

@@ -34,13 +34,17 @@ int main(void)
 	cout << GetNewConnectCommand() << endl;
 
 	ClearString(PLCInputBuffer, PLC_INPUT_BUFFER_SIZE);
-	CopyStringToBuffer(PLCInputBuffer, "input,output,myIP,12,34");
+	CopyStringToBuffer(PLCInputBuffer, "input,output,myIP,12,34;Input2,output2,anIP,14,34;");
 	cout << PLCInputBuffer << endl;
-	vertex1 = CreateVertexFromString(PLCInputBuffer);
-	cout << vertex1->inputName << endl;
-	cout << vertex1->outputName << endl;
-	cout << vertex1->destIP << endl;
-	cout << vertex1->destinationID << endl;
+	AddVerticesFromString(PLCInputBuffer);
+	cout << vertexList[0]->inputName << endl;
+	cout << vertexList[0]->outputName << endl;
+	cout << vertexList[0]->destIP << endl;
+	cout << vertexList[0]->destinationID << endl;
+	cout << vertexList[1]->inputName << endl;
+	cout << vertexList[1]->outputName << endl;
+	cout << vertexList[1]->destIP << endl;
+	cout << vertexList[1]->destinationID << endl;
 
 	return 0;
 }
