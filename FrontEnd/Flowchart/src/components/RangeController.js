@@ -2,10 +2,14 @@ import React from 'react';
 import $ from 'jquery';
 
 class RangeController extends React.Component {
+
 	constructor(props) {
 		super(props);
+		this.displayMin = 7;
+		this.displayMax = 60;
+
 		this.state = {
-			x: 5 + (64-5)*(this.props.control['CurCtrlValue']/(this.props.control['HighValue']-this.props.control['LowValue'])),
+			x: this.displayMin + (this.displayMax-this.displayMin)*(this.props.control['CurCtrlValue']/(this.props.control['HighValue']-this.props.control['LowValue'])),
 			radius: 7
 		}
 
@@ -54,7 +58,7 @@ class RangeController extends React.Component {
 	}
 
 	calcNewControlValue() {
-		this.newControlValue = Math.round((this.state['x'] - 5)/(64-5)*(this.props.control['HighValue']-this.props.control['LowValue']) + this.props.control['LowValue']);
+		this.newControlValue = Math.round((this.state['x'] - this.displayMin)/(this.displayMax-this.displayMin)*(this.props.control['HighValue']-this.props.control['LowValue']) + this.props.control['LowValue']);
 	}
 
 	onMouseDown(event) {
@@ -72,11 +76,11 @@ class RangeController extends React.Component {
 
 		this.runningOffset['left'] = event.screenX - this.lastPosition['left']  ;
 		var setPosition = this.state['x'] + this.runningOffset.left;
-		if (setPosition < 5){
-			setPosition = 5;
+		if (setPosition < this.displayMin){
+			setPosition = this.displayMin;
 		}
-		else if (setPosition > 64){
-			setPosition = 64;
+		else if (setPosition > this.displayMax){
+			setPosition = this.displayMax;
 		}
 
 		this.lastPosition['left'] = event.screenX;
@@ -89,18 +93,18 @@ class RangeController extends React.Component {
 		event.preventDefault(); 
 
 		if (event.deltaY < 0){
-			var newVal = this.state.x + 5
+			var newVal = this.state.x + this.displayMin
 
-			if (newVal > 64){
-				newVal = 64;
+			if (newVal > this.displayMax){
+				newVal = this.displayMax;
 			}
 
 			this.setState({x: newVal });
 		}
 		else {
-			var newVal = this.state.x - 5;
-			if (newVal < 5){
-				newVal = 5;
+			var newVal = this.state.x - this.displayMin;
+			if (newVal < this.displayMin){
+				newVal = this.displayMin;
 			}
 			this.setState({x: newVal});
 		} 
@@ -115,7 +119,6 @@ class RangeController extends React.Component {
 				display: 'block',
 				draggable: false,
 				verticalAlign: 'center',
-				marginLeft: 'auto',
 				marginRight: 'auto',
 				height: 35
 			}
@@ -130,22 +133,22 @@ class RangeController extends React.Component {
 				onWheel : (event) => this.onWheel(event),
 			},
 			rangeContainer: {
-				width: 67,
+				width: 68,
 				height: 35,
-				viewBox: '0 0 67 35'
+				viewBox: '0 0 68 35'
 			},
 			unselected:{
 				strokeWidth: 1,
 				stroke: 'grey',
-				x1: 5,
-				x2: 64,
+				x1: this.displayMin,
+				x2: this.displayMax,
 				y1: 11,
 				y2: 11,
 			},
 			selected:{
 				strokeWidth: 2,
 				stroke: 'black',
-				x1: 5,
+				x1: this.displayMin,
 				x2: this.state.x,
 				y1: 11,
 				y2: 11,
