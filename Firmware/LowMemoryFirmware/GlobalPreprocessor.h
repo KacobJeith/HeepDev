@@ -9,3 +9,5 @@
 
 #define PLC_OUTPUT_BUFFER_SIZE 200
 #define PLC_INPUT_BUFFER_SIZE 200
+
+//#define ENC

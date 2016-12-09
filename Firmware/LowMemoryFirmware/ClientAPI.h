@@ -2,7 +2,12 @@
 #define CLIENT_API_DEF
 
 #include "Client.h"
+
+#ifdef ENC
+#include "PLCENC28J60Connection.h"
+#else
 #include "SimulationConnection.h"
+#endif
 
 char PLCOutputBuffer [PLC_OUTPUT_BUFFER_SIZE];
 char PLCInputBuffer [PLC_INPUT_BUFFER_SIZE];
