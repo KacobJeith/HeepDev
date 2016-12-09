@@ -68,7 +68,7 @@ void SendOutput(char* outputName, char value)
 			PLCOutputBuffer[stringTracker] = ','; stringTracker++;
 			WriteIntToString(vertexList[i]->value, PLCOutputBuffer, stringTracker);
 
-			// SEND TO IP in VERTEX
+			SendDataToPLCClient(PLCOutputBuffer, PLCInputBuffer, vertexList[i]->destIP);
 		}
 	}
 }
