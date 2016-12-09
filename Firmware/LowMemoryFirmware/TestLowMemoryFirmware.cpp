@@ -7,6 +7,7 @@ using namespace std;
 
 ControlValue* theControl;
 ControlValue* theControl2;
+Vertex* vertex1;
 
 int main(void)
 {
@@ -31,6 +32,15 @@ int main(void)
 
 	cout << GetIsPLCServerCommand() << endl;
 	cout << GetNewConnectCommand() << endl;
+
+	ClearString(PLCInputBuffer, PLC_INPUT_BUFFER_SIZE);
+	CopyStringToBuffer(PLCInputBuffer, "input,output,myIP,12,34");
+	cout << PLCInputBuffer << endl;
+	vertex1 = CreateVertexFromString(PLCInputBuffer);
+	cout << vertex1->inputName << endl;
+	cout << vertex1->outputName << endl;
+	cout << vertex1->destIP << endl;
+	cout << vertex1->destinationID << endl;
 
 	return 0;
 }
