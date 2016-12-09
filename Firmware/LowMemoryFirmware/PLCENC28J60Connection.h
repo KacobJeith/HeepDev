@@ -1,4 +1,3 @@
-#include "ClientAPI.h"
 #include <UIPEthernet.h>
 
 int TCP_PORT = 5000;
@@ -59,13 +58,13 @@ searchClose:
 }
 
 // Sends whatever is in the output buffer to the server
-char* SendDataToPLCServer()
+char* SendDataToPLCServer(char* data)
 {
 	long next = 200;
 
 	if (client.connect(serverIP,TCP_PORT))
 	{
-      	client.println(PLCOutputBuffer);
+      	client.println(data);
       	next = millis() + 200;
       	while(client.available()==0)
         {

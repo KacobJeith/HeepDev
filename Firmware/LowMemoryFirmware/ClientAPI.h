@@ -2,6 +2,7 @@
 #define CLIENT_API_DEF
 
 #include "Client.h"
+#include "SimulationConnection.h"
 
 char PLCOutputBuffer [PLC_OUTPUT_BUFFER_SIZE];
 char PLCInputBuffer [PLC_INPUT_BUFFER_SIZE];
