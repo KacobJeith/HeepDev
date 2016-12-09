@@ -26,4 +26,14 @@ char* GetNewConnectCommand()
 	return PLCOutputBuffer;
 }
 
+char* SendOutput(char* outputName, char value)
+{
+	QueueClientOutput(outputName, value);
+
+	for(int i = 0; i < numVerticesAdded; i++)
+	{
+		// SEND THE DATA to vertex IP
+	}
+}
+
 #endif
