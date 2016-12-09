@@ -7,7 +7,7 @@ import {ICONS} from '../assets/iconConstants';
 class OnOffController extends React.Component {
 	constructor() {
 		super();
-		this.controlValue = 0;
+		this.controlValue = this.props.control['CurCtrlValue'];
 	}
 	
 	sendCommand() {
