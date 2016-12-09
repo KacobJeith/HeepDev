@@ -130,6 +130,7 @@ class ClientOutput extends React.Component {
 				fill: "red"
 			},
 			controller:{
+				key: this.props.client['ClientID'],
 				ClientID: this.props.client['ClientID'],
 				control: this.props.output
 			}

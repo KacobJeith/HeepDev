@@ -133,6 +133,7 @@ class ClientInput extends React.Component {
 				fill: "green"
 			},
 			controller:{
+				key: this.props.client['ClientID'],
 				ClientID: this.props.client['ClientID'],
 				control: this.props.input
 			}
