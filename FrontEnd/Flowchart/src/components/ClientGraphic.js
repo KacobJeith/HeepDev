@@ -218,10 +218,6 @@ class ClientGraphic extends React.Component {
 		const inputs = {
 			clientContainer: {
 				style: styles.clientContainer,
-				draggable: true,
-				onDragStart : (event) => {this.onDragStart(event)},
-				onDrag : (event) => {this.onDrag(event);},
-				onDragEnd: (event) => {this.calculateDragPosition(event);},
 			},
 			name: {
 				style: styles.name,
@@ -245,11 +241,15 @@ class ClientGraphic extends React.Component {
 				selectInput: this.props.selectInput,
 			},
 			iconContainer: {
-				style: styles.iconContainer
+				style: styles.iconContainer,
+				draggable: true,
+				onDragStart : (event) => {this.onDragStart(event)},
+				onDrag : (event) => {this.onDrag(event);},
+				onDragEnd: (event) => {this.calculateDragPosition(event);},
 			},
 			icon: {
 				src: this.state.icon,
-				style: styles.icon
+				style: styles.icon,
 			},
 			outputContainer: {
 				draggable: false,

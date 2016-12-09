@@ -133,9 +133,7 @@ class ClientInput extends React.Component {
 			},
 			controller:{
 				ClientID: this.props.client['ClientID'],
-				ControlDirection: this.props.input['ControlDirection'],
-    			ControlName: this.props.input['ControlName'],
-    			ControlValue: this.props.input['CurCtrlValue']
+				control: this.props.input
 			}
 		}
 

@@ -130,8 +130,7 @@ class ClientOutput extends React.Component {
 			},
 			controller:{
 				ClientID: this.props.client['ClientID'],
-				ControlDirection: this.props.output['ControlDirection'],
-    			ControlName: this.props.output['ControlName']
+				control: this.props.input
 			}
 		}
 
