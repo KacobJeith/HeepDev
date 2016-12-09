@@ -34,6 +34,8 @@ char* SendOutput(char* outputName, char value)
 	{
 		// SEND THE DATA to vertex IP
 	}
+
+	return PLCOutputBuffer;
 }
 
 #endif
