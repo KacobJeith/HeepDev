@@ -5,28 +5,31 @@ import Icon from '../assets/icons';
 import {ICONS} from '../assets/iconConstants';
 
 class OnOffController extends React.Component {
-	constructor() {
-		super();
-		this.controlValue = 0;
+	constructor(props) {
+		super(props);
+		this.state = {
+			controlValue: this.props.control['CurCtrlValue']
+		}
 	}
 	
 	sendCommand() {
 
 	    let commandQueueString = [];
-
-	    if(this.controlValue == 0){
-	    	this.controlValue = 1;
+	    var newControlValue = 0;
+	    if(this.state.controlValue == 0){
+	    	var newControlValue = 1;
+	    	this.setState({controlValue: newControlValue});
 	    }
 	    else {
-	    	this.controlValue = 0;
+	    	this.setState({controlValue: newControlValue});
 	    }
 
 	    //SetCommand:destID,controlName,controlValue
 	    
     	commandQueueString.push('SetCommand'+ ':' + 
     							this.props.ClientID + ',' +
-    							this.props.ControlName + ',' +
-								this.controlValue + '\n');
+    							this.props.control['ControlName'] + ',' +
+								newControlValue + '\n');
 
 	    
 	    const messagePacket = {command: commandQueueString};
@@ -35,6 +38,7 @@ class OnOffController extends React.Component {
 	      type: 'POST',
 	      data: messagePacket,
 	      success: (data) => {
+	        console.log(commandQueueString);
 	        console.log("Commands Sent Successfully");
 	      },
 	      error: function(xhr, status, err) {
@@ -42,6 +46,8 @@ class OnOffController extends React.Component {
 	        console.log('Hitting Commands sendDataToServer error')
 	      }
 	    });
+
+
 	}
 
 	render() {
@@ -63,7 +69,7 @@ class OnOffController extends React.Component {
 			},
 			icon: {
 				icon: ICONS.POWER,
-		        color: "#43464c",
+		        color: this.state.controlValue == 0 ?  "#43464c" : "gold" ,
 		        size: 30
 			}
 

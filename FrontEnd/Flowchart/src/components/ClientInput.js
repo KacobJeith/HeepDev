@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import OnOffController from './OnOffController';
+import RangeController from './RangeController';
 
 class ClientInputList extends React.Component {
 	render() {
@@ -82,7 +83,8 @@ class ClientInput extends React.Component {
 				display: 'inline-block',
 				height: 15,
 				width: 69,
-				textAlign: 'center',
+				textAlign: 'left',
+				textIndent: 7,
 				fontSize: 12,
 			},
 			controlContainer: {
@@ -131,10 +133,18 @@ class ClientInput extends React.Component {
 				fill: "green"
 			},
 			controller:{
+				key: this.props.client['ClientID'],
 				ClientID: this.props.client['ClientID'],
-				ControlDirection: this.props.input['ControlDirection'],
-    			ControlName: this.props.input['ControlName']
+				control: this.props.input
 			}
+		}
+
+		var controller = [];
+		if (this.props.input['ControlValueType'] == 0){
+			controller.push(<OnOffController {...inputs.controller}/>);
+		}
+		else if (this.props.input['ControlValueType'] == 1){
+			controller.push(<RangeController {...inputs.controller}/>);
 		}
 
 		return (<div {...inputs.all}>
@@ -148,7 +158,7 @@ class ClientInput extends React.Component {
 								{this.props.input['ControlName']}
 						</text>
 						<div {...inputs.controlContainer}>
-							<OnOffController {...inputs.controller}/>
+							{controller}
 						</div>
 					</div>
 				</div>

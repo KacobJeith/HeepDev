@@ -1,6 +1,7 @@
 import React from 'react';
 import $ from 'jquery';
 import OnOffController from './OnOffController';
+import RangeController from './RangeController';
 
 class ClientOutputList extends React.Component {
 	
@@ -80,9 +81,9 @@ class ClientOutput extends React.Component {
 			controlTitle: {
 				display: 'inline-block',
 				height: 15,
-				width: 67,
-				textAlign: 'center',
+				width: 60,
 				fontSize: 12,
+				textAlign: 'right',
 			},
 			controlContainer: {
 				height: 35,
@@ -129,10 +130,18 @@ class ClientOutput extends React.Component {
 				fill: "red"
 			},
 			controller:{
+				key: this.props.client['ClientID'],
 				ClientID: this.props.client['ClientID'],
-				ControlDirection: this.props.output['ControlDirection'],
-    			ControlName: this.props.output['ControlName']
+				control: this.props.output
 			}
+		}
+
+		var controller = [];
+		if (this.props.output['ControlValueType'] == 0){
+			controller.push(<OnOffController {...inputs.controller}/>);
+		}
+		else if (this.props.output['ControlValueType'] == 1){
+			controller.push(<RangeController {...inputs.controller}/>);
 		}
 
 		return (<div {...inputs.all}>
@@ -141,7 +150,7 @@ class ClientOutput extends React.Component {
 								{this.props.output['ControlName']}
 						</text>
 						<div {...inputs.controlContainer}>
-							<OnOffController {...inputs.controller}/>
+							{controller}
 						</div>
 					</div>
 					<div {...inputs.vertexKnob}>

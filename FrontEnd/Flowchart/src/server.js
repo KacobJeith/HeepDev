@@ -51,8 +51,20 @@ app.post('/api/commands', function(req, res) {
     if (err) {
       console.error(err);
       res.end("AJAX FAILED :(");
-      process.exit(1);
+      console.log("re-trying");
+      //Server attempts to re-send a command after 200ms if the file is busy
+      setTimeout(function(err, data) {
+          fs.appendFile(COMMAND_FILE, command, function(err, data) {
+            if (err) {
+              console.error(err);
+              res.end("AJAX FAILED :(");
+            }
+            console.log(command);
+            fs.close(cmd_fd);
+          });}
+          , 200);
     }
+
     console.log(command);
     fs.close(cmd_fd);
   });
