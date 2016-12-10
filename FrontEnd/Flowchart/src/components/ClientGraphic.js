@@ -1,7 +1,5 @@
 import React from 'react';
 import $ from 'jquery';
-import ClientInputList from './ClientInput';
-import ClientOutputList from './ClientOutput';
 import ControlList from './ClientControls';
 
 
