@@ -6,13 +6,6 @@ import RangeController from './RangeController';
 
 class ControlList extends React.Component {
 	render() {
-		var styles = {
-			controlsContainer: {
-				left: 0,
-				top: 0,
-			}
-		}
-
 		let inputs = {
 			eachControl: {
 				key: [],
@@ -22,10 +15,7 @@ class ControlList extends React.Component {
 				top: this.props.top,
 				left: this.props.left,
 				controlY: 0,			
-			},
-			controlsContainer: {
-				style: styles.controlsContainer
-			},
+			}
 		};
 
 		
@@ -40,7 +30,7 @@ class ControlList extends React.Component {
 			return <EachControl {...inputs.eachControl}/>
 			});
 
-		return (<div {...inputs.controlsContainer}>
+		return (<div>
 					{allClientControls}
 				</div>
 				);
