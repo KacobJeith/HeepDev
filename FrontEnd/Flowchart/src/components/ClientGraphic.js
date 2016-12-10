@@ -234,13 +234,6 @@ class ClientGraphic extends React.Component {
 				style: styles.inputContainer,
 				draggable: false,
 			},
-			clientInput:{
-				inputs: this.inputs,
-				client: this.props.client,
-				top: this.state.top,
-				left: this.state.left,
-				selectInput: this.props.selectInput,
-			},
 			iconContainer: {
 				style: styles.iconContainer,
 				draggable: true,
@@ -255,13 +248,6 @@ class ClientGraphic extends React.Component {
 			outputContainer: {
 				draggable: false,
 				style: styles.outputContainer
-			},
-			clientOutput: {
-				outputs: this.outputs,
-				client: this.props.client,
-				selectOutput: this.props.selectOutput,
-				top: this.state.top,
-				left: this.state.left,
 			},
 			controlListInputs: {
 				controlList: this.inputs,
