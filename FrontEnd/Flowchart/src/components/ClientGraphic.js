@@ -2,6 +2,7 @@ import React from 'react';
 import $ from 'jquery';
 import ClientInputList from './ClientInput';
 import ClientOutputList from './ClientOutput';
+import ControlList from './ClientControls';
 
 
 class ClientGraphic extends React.Component {
@@ -256,12 +257,25 @@ class ClientGraphic extends React.Component {
 				style: styles.outputContainer
 			},
 			clientOutput: {
-				containerWidth: styles.clientContainer['width'],
 				outputs: this.outputs,
 				client: this.props.client,
 				selectOutput: this.props.selectOutput,
 				top: this.state.top,
 				left: this.state.left,
+			},
+			controlListInputs: {
+				controlList: this.inputs,
+				client: this.props.client,
+				select: this.props.selectInput,
+				top: this.state.top,
+				left: this.state.left, 
+			},
+			controlListOutputs: {
+				controlList: this.outputs,
+				client: this.props.client,
+				select: this.props.selectOutput,
+				top: this.state.top,
+				left: this.state.left, 
 			}
 		}
 
@@ -272,13 +286,13 @@ class ClientGraphic extends React.Component {
 					<hr/>
 					<div {...inputs.controlsContainer}>
 						<div {...inputs.inputContainer}>
-							<ClientInputList {...inputs.clientInput}/>
+							<ControlList {...inputs.controlListInputs}/>
 						</div>
 						<div {...inputs.iconContainer}>
 							<img {...inputs.icon}/>
 						</div>
 						<div {...inputs.outputContainer}>
-							<ClientOutputList {...inputs.clientOutput}/>
+							<ControlList {...inputs.controlListOutputs}/>
 						</div>
 					</div>
 					
