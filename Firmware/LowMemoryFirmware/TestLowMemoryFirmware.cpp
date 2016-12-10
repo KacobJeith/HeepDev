@@ -58,5 +58,8 @@ int main(void)
 
 	cout << GetClientVertexCommand() << endl;
 
+	char fakeIP [] = "192.158.1.22";
+	SendDataToPLCClient(PLCOutputBuffer, PLCInputBuffer, fakeIP);
+
 	return 0;
 }
