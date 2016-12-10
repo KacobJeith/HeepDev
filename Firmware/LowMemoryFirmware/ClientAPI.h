@@ -76,6 +76,7 @@ void SendOutput(char* outputName, char value)
 			WriteIntToString(vertexList[i]->value, PLCOutputBuffer, stringTracker);
 
 			SendDataToPLCClient(PLCOutputBuffer, PLCInputBuffer, vertexList[i]->destIP);
+			vertexList[i]->shouldOutput = 0;
 		}
 	}
 }
