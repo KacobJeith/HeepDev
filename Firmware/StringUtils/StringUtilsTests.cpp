@@ -15,5 +15,18 @@ int main(void)
 	WriteIntToString(1234567, testSet, counter);
 	cout << "<" << testSet << ">" << endl;
 	cout << counter << endl;
+
+	char intString [] = ",,123";
+	int crod = ParseIntFromSubString(intString, 2, 5);
+	cout << crod << endl;
+
+	char newTest[10];
+	char testStr [] = "ABCDEFGHIJKLMNOP";
+	ClearString(newTest, 10);
+	CopySubstringToBuffer(newTest, testStr, 2, 6);
+	cout << newTest << endl;
+
+	cout << CheckStringEquality("Cork", "CoRk") << endl;
+
 	return 0;
 }
