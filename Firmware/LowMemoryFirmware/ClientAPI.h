@@ -53,6 +53,7 @@ void SendNewConnect()
 
 void SendGetClientVertices()
 {
+	ClearString(PLCInputBuffer, PLC_INPUT_BUFFER_SIZE);
 	GetClientVertexCommand();
 	SendDataToPLCServer(PLCOutputBuffer, PLCInputBuffer);
 	AddVerticesFromString(PLCInputBuffer);
@@ -79,6 +80,55 @@ void SendOutput(char* outputName, char value)
 			vertexList[i]->shouldOutput = 0;
 		}
 	}
+}
+
+void CheckInterrupts()
+{
+	ClearString(PLCInputBuffer, PLC_INPUT_BUFFER_SIZE);
+	CheckServerForInputs(PLCInputBuffer);
+
+	int buffSize = GetStringLength(PLCInputBuffer);
+
+	if(buffSize > 0)
+	{
+
+		char tempControlName [CONTROL_NAME_MEMORY_SIZE];
+		ClearString(tempControlName, CONTROL_NAME_MEMORY_SIZE);
+
+		enum InterruptStates {findColon, findName, findValue};
+
+		InterruptStates curState = findColon;
+		
+		int colonLocation = 0;
+		int commaLocation = 0;
+		for(int i = 0; i < buffSize; i++)
+		{
+			if(PLCInputBuffer[i] == ':' && curState == findColon)
+			{
+				colonLocation = i;
+				curState = findName;
+			}
+			else if(PLCInputBuffer[i] == ',' && curState == findName)
+			{
+				commaLocation = i;
+				curState = findValue;
+				CopySubstringToBuffer(tempControlName, PLCInputBuffer, colonLocation+1, i);
+				break;
+			}
+		}
+
+		int ctrlVal = ParseIntFromSubString(PLCInputBuffer, commaLocation+1, buffSize);
+
+		for(int i = 0; i < numControlsAdded; i++)
+		{
+			if(CheckStringEquality(tempControlName, controlList[i]->controlName))
+			{
+				controlList[i]->curVal = ctrlVal;
+			}
+		}
+
+	}
+	
 }
 
 #endif

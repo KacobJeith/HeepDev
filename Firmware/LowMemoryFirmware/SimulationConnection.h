@@ -52,3 +52,12 @@ void SendDataToPLCClient(char* outputBuffer, char* inputBuffer, char* destIP)
 	octetFour = ParseIntFromSubString(destIP, lastDot+1, length);
 
 }
+
+void CreateInterruptServer()
+{
+}
+
+void CheckServerForInputs(char* inputBuffer)
+{
+
+}

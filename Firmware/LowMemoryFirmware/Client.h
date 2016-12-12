@@ -51,23 +51,25 @@ void AddControlToList(ControlValue* myCtrl)
 	numControlsAdded++;
 }
 
-void AddVertex(Vertex* myVertex)
+void AddVertex(Vertex* myVertex, int vertexNum)
 {
-	vertexList[numVerticesAdded] = myVertex;
-	numVerticesAdded++;
+	vertexList[vertexNum] = myVertex;
+	numVerticesAdded = vertexNum+1;
 }
 
 void AddVerticesFromString(char* vertexString)
 {
 	int parseLength = GetStringLength(vertexString);
 	int lastSemiColon = -1;
+	int vertexNum = 0;
 
 	for(int i = 0; i < parseLength; i++)
 	{
 		if(vertexString[i] == ';')
 		{
-			AddVertex(CreateVertexFromString(vertexString, lastSemiColon+1));
+			AddVertex(CreateVertexFromString(vertexString, lastSemiColon+1), vertexNum);
 			lastSemiColon = i;
+			vertexNum++;
 		}
 	}
 }

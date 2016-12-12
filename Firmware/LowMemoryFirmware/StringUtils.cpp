@@ -13,7 +13,7 @@ int GetStringLength(char* str)
 	int counter = 0;
 	while(1)
 	{
-		if(str[counter] == '\0')
+		if(str[counter] == '\0' || str[counter] == '\r' || str[counter] == '\n')
 			break;
 		counter++;
 	}
