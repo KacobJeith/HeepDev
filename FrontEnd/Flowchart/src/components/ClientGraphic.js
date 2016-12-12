@@ -1,7 +1,6 @@
 import React from 'react';
 import $ from 'jquery';
-import ClientInputList from './ClientInput';
-import ClientOutputList from './ClientOutput';
+import ControlList from './ClientControls';
 
 
 class ClientGraphic extends React.Component {
@@ -233,13 +232,6 @@ class ClientGraphic extends React.Component {
 				style: styles.inputContainer,
 				draggable: false,
 			},
-			clientInput:{
-				inputs: this.inputs,
-				client: this.props.client,
-				top: this.state.top,
-				left: this.state.left,
-				selectInput: this.props.selectInput,
-			},
 			iconContainer: {
 				style: styles.iconContainer,
 				draggable: true,
@@ -255,13 +247,19 @@ class ClientGraphic extends React.Component {
 				draggable: false,
 				style: styles.outputContainer
 			},
-			clientOutput: {
-				containerWidth: styles.clientContainer['width'],
-				outputs: this.outputs,
+			controlListInputs: {
+				controlList: this.inputs,
 				client: this.props.client,
-				selectOutput: this.props.selectOutput,
+				select: this.props.selectInput,
 				top: this.state.top,
-				left: this.state.left,
+				left: this.state.left, 
+			},
+			controlListOutputs: {
+				controlList: this.outputs,
+				client: this.props.client,
+				select: this.props.selectOutput,
+				top: this.state.top,
+				left: this.state.left, 
 			}
 		}
 
@@ -272,13 +270,13 @@ class ClientGraphic extends React.Component {
 					<hr/>
 					<div {...inputs.controlsContainer}>
 						<div {...inputs.inputContainer}>
-							<ClientInputList {...inputs.clientInput}/>
+							<ControlList {...inputs.controlListInputs}/>
 						</div>
 						<div {...inputs.iconContainer}>
 							<img {...inputs.icon}/>
 						</div>
 						<div {...inputs.outputContainer}>
-							<ClientOutputList {...inputs.clientOutput}/>
+							<ControlList {...inputs.controlListOutputs}/>
 						</div>
 					</div>
 					
