@@ -120,6 +120,7 @@ class ServerConnection:
 
 	def GetClientVertices(self, commandData) :
 		myClientID = int(commandData)
+		print 'Retrieving vertices for ' + str(myClientID)
 		for x in range(0, len(self.clientList)) :
 			if self.clientList[x].ClientID == myClientID :
 				return self.clientList[x].GetVerticesString()
@@ -175,6 +176,7 @@ class ServerConnection:
 			sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 			sock.settimeout(0.5)
 			sock.connect((IP, self.TCP_PORT))
+			print 'I CONNECTED'
 			sock.send(data)
 			data = sock.recv(self.size)
 		except :
@@ -300,6 +302,8 @@ class ServerConnection:
 			data = client.recv(self.size)
 
 			returnData = self.ParseClientInput(data, address)
+
+			print 'Going to send ' + returnData
 
 			if data:
 				client.send(returnData)
