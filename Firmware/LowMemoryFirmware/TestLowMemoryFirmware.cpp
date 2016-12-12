@@ -161,6 +161,115 @@ void TestIsPLCServerCommand()
 	CheckResults(TestName, valueList, 1);
 }
 
+void TestGetNewConnectCommand()
+{
+	std::string TestName = "Test Get New Connect Cmd";
+
+	char myTest [] = "Test";
+	CreateClientFromParams(myTest, 1234, 1);
+
+	std::string ActualString = GetNewConnectCommand();
+	std::string ExpectedString = "NewConnect:1234,0,1,Test,0,None";
+
+	int stringCorrect = 0;
+	if(ActualString == ExpectedString)
+		stringCorrect = 1;
+
+	ExpectedValue valueList [1];
+	valueList[0].valueName = "New Connect Cmd";
+	valueList[0].expectedValue = 1;
+	valueList[0].actualValue = stringCorrect;
+
+
+	CheckResults(TestName, valueList, 1);
+
+}
+
+void TestOutputQueue()
+{
+	std::string TestName = "Test Output Queue";
+
+	ControlValue* theControl;
+	ControlValue* theControl2;
+	Vertex* vertex1;
+
+	char myTest [] = "Test";
+	CreateClientFromParams(myTest, 1234, 1);
+
+	char testCtrl1 [] = "TestCtrl";
+	theControl = CreateControl(testCtrl1, 0, 1, 10, 11);
+	AddControlToList(theControl);
+
+	char testCtrl2 [] = "TestCtrl2";
+	theControl2 = CreateControl(testCtrl2, 0, 1, 15, 8);
+	AddControlToList(theControl2);
+
+	char vertexString [] = "input,TestCtrl,myIP,12,34;Input2,TestCtrl2,anIP,14,34;";
+	ClearString(PLCInputBuffer, PLC_INPUT_BUFFER_SIZE);
+	CopyStringToBuffer(PLCInputBuffer, vertexString);
+	AddVerticesFromString(PLCInputBuffer);
+
+	int numShouldOutput = 0;
+	std::string inputName;
+	int actualValue = 0;
+
+	QueueClientOutput(testCtrl2, 2);
+
+	for(int i = 0; i < numVerticesAdded; i++)
+	{
+		if(vertexList[i]->shouldOutput)
+		{
+			numShouldOutput++;
+			inputName = vertexList[i]->inputName;
+			actualValue = (int)vertexList[i]->value;
+		}
+	}
+
+	std::string expectedInputName = "Input2";
+	int nameCorrect = 0;
+	if(inputName == expectedInputName)
+		nameCorrect = 1;
+
+	ExpectedValue valueList [3];
+	valueList[0].valueName = "Input Name";
+	valueList[0].expectedValue = 1;
+	valueList[0].actualValue = nameCorrect;
+
+	valueList[1].valueName = "Num Should Output";
+	valueList[1].expectedValue = 1;
+	valueList[1].actualValue = numShouldOutput;
+
+	valueList[2].valueName = "Value in Vertex";
+	valueList[2].expectedValue = 2;
+	valueList[2].actualValue = actualValue;
+
+
+	CheckResults(TestName, valueList, 3);
+}
+
+void TestGetClientVerticesCmd()
+{
+	std::string TestName = "Test Get Client Vertices Cmd";
+
+	char myTest [] = "Test";
+	CreateClientFromParams(myTest, 1234, 1);
+
+	std::string ActualString = GetClientVertexCommand();
+	std::string ExpectedString = "GetClientVertices:1234";
+
+	int stringCorrect = 0;
+	if(ActualString == ExpectedString)
+		stringCorrect = 1;
+
+	ExpectedValue valueList [1];
+	valueList[0].valueName = "Get Client Vertices";
+	valueList[0].expectedValue = 1;
+	valueList[0].actualValue = stringCorrect;
+
+
+	CheckResults(TestName, valueList, 1);
+}
+
 ControlValue* theControl;
 ControlValue* theControl2;
 Vertex* vertex1;
@@ -172,25 +281,9 @@ int main(void)
 	TestSetFromControlString();
 	TestGetClientString();
 	TestIsPLCServerCommand();
-
-	cout << GetNewConnectCommand() << endl;
-
-	SendOutput("TestCtrl2", 2);
-	for(int i = 0; i < numVerticesAdded; i++)
-	{
-		if(vertexList[i]->shouldOutput)
-		{
-			cout << vertexList[i]->inputName << endl;
-			cout << (int)vertexList[i]->value << endl;
-		}
-	}
-
-	cout << GetClientVertexCommand() << endl;
-
-	char fakeIP [] = "192.158.1.22";
-	SendDataToPLCClient(PLCOutputBuffer, PLCInputBuffer, fakeIP);
-
-	cout << "Done" << endl;
+	TestGetNewConnectCommand();
+	TestOutputQueue();
+	TestGetClientVerticesCmd();
 
 	return 0;
 }
