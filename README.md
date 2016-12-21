@@ -1,5 +1,5 @@
 # PLC is the future. 
-We are going to revolutionize the way devices interact and teh way devices are designed by using existing infrastructures.
+We are going to revolutionize the way devices interact and the way devices are designed by using existing infrastructures.
 
 ## Dependencies
 * Python 2.7.12
