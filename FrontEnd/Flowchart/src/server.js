@@ -78,26 +78,3 @@ app.listen(app.get('port'), function() {
   console.log('Server started: http://localhost:' + app.get('port') + '/');
 });
 
-
-
-var webpack = require('webpack');
-var WebpackDevServer = require('webpack-dev-server');
-
-var webpackDevConfig = require('./webpack.config.development');
-console.log(webpackDevConfig);
-
-new WebpackDevServer(webpack(webpackDevConfig), {
-  quiet: false,
-  stats: { colors: true },
-  historyApiFallback: true,
-  headers: {
-    'Access-Control-Allow-Origin': 'http://localhost:3001',
-    'Access-Control-Allow-Headers': 'X-Requested-With'
-  }
-}).listen(3000, '0.0.0.0', function (err) {
-  if (err) {
-    console.log(err);
-  }
-
-  console.log('webpack dev server listening on localhost:3000');
-});
