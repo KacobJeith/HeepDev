@@ -27,7 +27,6 @@ class RangeController extends React.Component {
 	sendCommand() {
 		this.calcNewControlValue();
 	    var commandQueueString = [];
-	    
 	    if (this.lastSentControlValue == this.newControlValue){
 	    	return
 	    }
@@ -62,19 +61,18 @@ class RangeController extends React.Component {
 	}
 
 	onMouseDown(event) {
-		console.log('starting drag');
 		this.dragging = 1;
 		this.lastPosition['left'] = event.screenX;
-		
 	}
 
 	onMouseMove(event) {
 		// The final drag event is always 0, whichthrows off tracking unless you catch and ignore it
-		if ((event.screenX == 0 && event.screenY == 0) || !this.dragging){
+		this.runningOffset['left'] = event.screenX - this.lastPosition['left'];
+
+		if ((event.screenX == 0 && event.screenY == 0) || !this.dragging || this.runningOffset['left'] == 0){
 			return;
 		}
 
-		this.runningOffset['left'] = event.screenX - this.lastPosition['left']  ;
 		var setPosition = this.state['x'] + this.runningOffset.left;
 		if (setPosition < this.displayMin){
 			setPosition = this.displayMin;
@@ -84,8 +82,7 @@ class RangeController extends React.Component {
 		}
 
 		this.lastPosition['left'] = event.screenX;
-		this.setState( {x: setPosition});
-		
+		this.setState({x: setPosition});
 		this.sendCommand();
 	}
 
@@ -127,10 +124,12 @@ class RangeController extends React.Component {
 		var inputs = {
 			button: {
 				style: styles.button,
-				onMouseUp : (event) => {this.dragging = 0;},
-				onMouseLeave : (event) => {this.dragging = 0;},
+				onMouseUp : (event) => {this.dragging = 0},
+				onMouseLeave : (event) => {this.dragging = 0},
 				onMouseMove : (event) => {this.onMouseMove(event)},
 				onWheel : (event) => this.onWheel(event),
+				onTouchMove : (event) => {this.onMouseMove(event.nativeEvent.changedTouches[0])},
+				onTouchEnd: (event) => {this.dragging = 0},
 			},
 			rangeContainer: {
 				width: 68,
@@ -158,6 +157,9 @@ class RangeController extends React.Component {
 				onMouseLeave : () => this.setState({radius: 7}),
 				onMouseDown : (event) => {this.onMouseDown(event);},
 				onMouseUp : (event) => {this.dragging = 0;},
+				onTouchStart: (event) => {event.preventDefault(); this.onMouseDown(event.nativeEvent.changedTouches[0])},
+				onTouchMove : (event) => {this.onMouseMove(event.nativeEvent.changedTouches[0])},
+				onTouchEnd: (event) => {this.dragging = 0},
 				cx: this.state.x,
 				cy: 11,
 				r: this.state.radius,
