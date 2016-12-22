@@ -19,10 +19,10 @@ Object.assign(env, {
 module.exports = {
   target: 'web',
 
-  entry: ['./lib/components/app.js'],
+  entry: ['src/components/app.js'],
 
   output: {
-    path: path.resolve(__dirname, "js"),
+    path: path.resolve(__dirname, "src/dist"),
     publicPath: '/dist/',
     filename: 'bundle.js',
   },
