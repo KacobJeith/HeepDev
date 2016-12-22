@@ -47,7 +47,7 @@ class Vertex extends React.Component {
 				y2:this.props.vertex['y2'],
 				onMouseEnter: () => this.setState({'color': 'red', 'strokeWidth': 4}),
 				onMouseLeave: () => this.setState({'color': 'black', 'strokeWidth': 3}),
-				onDoubleClick: () => this.sendDeleteVertexToServer(),
+				onClick: () => this.sendDeleteVertexToServer(),
 			}
 		}
 		
