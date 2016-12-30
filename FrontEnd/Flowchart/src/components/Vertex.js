@@ -41,15 +41,26 @@ class Vertex extends React.Component {
 			vertex: {
 				strokeWidth: this.state.strokeWidth,
 				stroke: this.state.color,
-				x1:this.props.vertex['x1'],
-				x2:this.props.vertex['x2'],
-				y1:this.props.vertex['y1'],
-				y2:this.props.vertex['y2'],
+				fill: 'transparent',
+				d: "M".concat(	String(this.props.vertex['x1']), 
+								" ", 
+								String(this.props.vertex['y1']), 
+								" Q ", 
+								String(Math.round(this.props.vertex['x1'] + 30)),
+								" ",
+								String(Math.round(this.props.vertex['y1'])),
+								", ",
+								String(Math.round(this.props.vertex['x1'] + (this.props.vertex['x2'] - this.props.vertex['x1'])/2)),
+								" ", 
+								String(Math.round(this.props.vertex['y1'] + (this.props.vertex['y2'] - this.props.vertex['y1'])/2)),
+								" T ", 
+								String(this.props.vertex['x2']), 
+								" ", 
+								String(this.props.vertex['y2'])),
 				onMouseEnter: () => this.setState({'color': 'red', 'strokeWidth': 4}),
 				onMouseLeave: () => this.setState({'color': 'black', 'strokeWidth': 3}),
-				onDoubleClick: () => this.sendDeleteVertexToServer(),
+				onClick: () => this.sendDeleteVertexToServer(),
 			}
-		}
 		
 
 		return <line {...inputs.vertex}/>;
