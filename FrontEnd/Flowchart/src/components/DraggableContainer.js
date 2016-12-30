@@ -177,10 +177,11 @@ class DraggableContainer extends React.Component {
 
 		const styles = {
 			flowchart: {
-				height: 3000,
-				width: 3000,
+				height: '100%',
+				width: '100%',
 				position: 'relative',
-				backgroundColor: '#e7e7e7'
+				backgroundColor: '#e7e7e7',
+				overflow: 'auto'
 			},
 			vertexSVGSpace: {
 				position: 'absolute',
@@ -247,8 +248,7 @@ class DraggableContainer extends React.Component {
 			vertexDrawings.push(<Vertex {...inputs.vertexSVG}/>);
 		}
 
-	return (
-			<div {...inputs.flowchart} ref="flowchart"> 
+	return (<div {...inputs.flowchart} ref="flowchart"> 
 				
 				<svg {...inputs.vertexSVGSpace}>
 					{vertexDrawings}
