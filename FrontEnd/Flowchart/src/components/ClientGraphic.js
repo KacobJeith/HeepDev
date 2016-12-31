@@ -192,18 +192,20 @@ class ClientGraphic extends React.Component {
 				height: this.cardWorkspace - 45,
 			},
 			iconContainer: {
-				display: 'table-cell',
+				display: 'inline-flex',
 				width: 100,
 				height: (this.cardWorkspace - 25)*0.85,
 				textAlign: 'center',
 				verticalAlign: 'center'
 			},
 			icon: {
-				height: (this.cardWorkspace - 25)*0.85,
-				width: 100,
+				maxHeight: (this.cardWorkspace - 25)*0.85,
+				maxWidth: 100,
 				position: 'block',
 				marginLeft: 'auto',
 				marginRight: 'auto',
+				marginTop: 'auto',
+				marginBottom: 'auto',
 				verticalAlign: 'center'
 			},
 			outputContainer:{
