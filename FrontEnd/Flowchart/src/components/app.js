@@ -13,6 +13,7 @@ class App extends React.Component {
     }
 
     this.loadClientsFromServer = this.loadClientsFromServer.bind(this);
+    this.url = window.location.protocol.concat('//', window.location.hostname,':3001');
   }
 
   // ClientList AJAX
@@ -34,7 +35,7 @@ class App extends React.Component {
   }
 
   componentDidMount(){
-    this.loadClientsFromServer('/api/clients');
+    this.loadClientsFromServer(this.url.concat('/api/clients'));
     this.loadClientsFromServer.bind(this);
   }
 
@@ -95,9 +96,10 @@ class App extends React.Component {
         style: this.state.sidebarVisible ? styles.sidebarOpen : styles.sidebarClosed
       },
       flowchart: {
-          hideSourceOnDrag: true,
-          sidebarVisible: this.state.sidebarVisible,
-          clientList: this.state.clientList,
+        url: this.url,
+        hideSourceOnDrag: true,
+        sidebarVisible: this.state.sidebarVisible,
+        clientList: this.state.clientList,
       },
       footer : {
         style: styles.footer,

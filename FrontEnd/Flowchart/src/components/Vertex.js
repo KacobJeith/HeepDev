@@ -10,7 +10,7 @@ class Vertex extends React.Component {
 		}
 	}
 	
-	sendDeleteVertexToServer() {
+	sendDeleteVertexToServer(url) {
 
 		const message = 'DeleteVertex' + ':' + 
 						this.props.vertex.sourceID + ',' +
@@ -21,7 +21,7 @@ class Vertex extends React.Component {
     	const messagePacket = {command: message};
 
 		$.ajax({
-	      url: '/api/commands',
+	      url: url,
 	      type: 'POST',
 	      data: messagePacket,
 	      success: (data) => {
@@ -29,7 +29,7 @@ class Vertex extends React.Component {
 	      	this.props.removeVertex(this.props.vertex);
 	      },
 	      error: function(xhr, status, err) {
-	        console.error('/api/commands', status, err.toString());
+	        console.error(url, status, err.toString());
 	        console.log('Hitting sendDeleteVertexToServer error');
 	      }
 	    });
@@ -59,7 +59,7 @@ class Vertex extends React.Component {
 								String(this.props.vertex['y2'])),
 				onMouseEnter: () => this.setState({'color': 'red', 'strokeWidth': 4}),
 				onMouseLeave: () => this.setState({'color': 'black', 'strokeWidth': 3}),
-				onClick: () => this.sendDeleteVertexToServer(),
+				onClick: () => this.sendDeleteVertexToServer(this.props.url.concat('/api/commands')),
 			}
 		}
 		
