@@ -91,7 +91,7 @@ class RangeController extends React.Component {
 
 	onWheel(event) {
 		event.preventDefault(); 
-
+		
 		if (event.deltaY < 0){
 			var newVal = this.state.x + this.displayMin
 
@@ -109,7 +109,7 @@ class RangeController extends React.Component {
 			this.setState({x: newVal});
 		} 
 
-		this.sendCommand();
+		this.sendCommand(this.props.url.concat('/api/commands'));
 	}
 
 	render() {
