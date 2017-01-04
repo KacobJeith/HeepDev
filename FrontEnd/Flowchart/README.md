@@ -1,7 +1,16 @@
 # Setup
-1. In the command prompt in the PLC/FrontEnd directory, run `>>npm install`
+1. In the command prompt in the PLC/Flowchart/FrontEnd directory, run `>>npm install`
 2. run `>>npm run bs`
 3. Open up `localhost:3001` in your browser to view the PLC Dashboard
+
+To open the page from another computer, enter '[IP_ADDRESS]:3001' from within the browser on a second computer or tablet
+
+If you would like to take advantage of hot-reloading for expedited development, then:
+1. In the command prompt in the PLC/Flowchart/FrontEnd directory, run `>>npm install`
+2. run `>>npm run bs` 
+3. run `>>npm run dev`
+4. open up `localhost:8080\src` in your browser to view the PLC Dashboard
+5. Anytime you save changes to the source code, the changes should immediately display on port 8080!
 
 # Usage
 To create a new Client Vertex:

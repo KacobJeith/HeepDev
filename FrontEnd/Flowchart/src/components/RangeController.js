@@ -24,9 +24,10 @@ class RangeController extends React.Component {
 		this.newControlValue = this.props.control['CurCtrlValue'];
 	}
 	
-	sendCommand() {
+	sendCommand(url) {
 		this.calcNewControlValue();
 	    var commandQueueString = [];
+	    
 	    if (this.lastSentControlValue == this.newControlValue){
 	    	return
 	    }
@@ -42,7 +43,7 @@ class RangeController extends React.Component {
 
 	    const messagePacket = {command: commandQueueString};
 	    $.ajax({
-	      url: '/api/commands',
+	      url: url,
 	      type: 'POST',
 	      data: messagePacket,
 	      success: (data) => {
@@ -50,7 +51,7 @@ class RangeController extends React.Component {
 	        this.lastSentControlValue = this.newControlValue;
 	      },
 	      error: function(xhr, status, err) {
-	        console.error('/api/commands', status, err.toString());
+	        console.error(url, status, err.toString());
 	        console.log('Hitting Commands sendDataToServer error')
 	      }
 	    });
@@ -61,18 +62,19 @@ class RangeController extends React.Component {
 	}
 
 	onMouseDown(event) {
+		console.log('starting drag');
 		this.dragging = 1;
 		this.lastPosition['left'] = event.screenX;
+		
 	}
 
 	onMouseMove(event) {
 		// The final drag event is always 0, whichthrows off tracking unless you catch and ignore it
-		this.runningOffset['left'] = event.screenX - this.lastPosition['left'];
-
-		if ((event.screenX == 0 && event.screenY == 0) || !this.dragging || this.runningOffset['left'] == 0){
+		if ((event.screenX == 0 && event.screenY == 0) || !this.dragging){
 			return;
 		}
 
+		this.runningOffset['left'] = event.screenX - this.lastPosition['left']  ;
 		var setPosition = this.state['x'] + this.runningOffset.left;
 		if (setPosition < this.displayMin){
 			setPosition = this.displayMin;
@@ -82,13 +84,14 @@ class RangeController extends React.Component {
 		}
 
 		this.lastPosition['left'] = event.screenX;
-		this.setState({x: setPosition});
-		this.sendCommand();
+		this.setState( {x: setPosition});
+		
+		this.sendCommand(this.props.url.concat('/api/commands'));
 	}
 
 	onWheel(event) {
 		event.preventDefault(); 
-
+		
 		if (event.deltaY < 0){
 			var newVal = this.state.x + this.displayMin
 
@@ -106,7 +109,7 @@ class RangeController extends React.Component {
 			this.setState({x: newVal});
 		} 
 
-		this.sendCommand();
+		this.sendCommand(this.props.url.concat('/api/commands'));
 	}
 
 	render() {
@@ -124,12 +127,10 @@ class RangeController extends React.Component {
 		var inputs = {
 			button: {
 				style: styles.button,
-				onMouseUp : (event) => {this.dragging = 0},
-				onMouseLeave : (event) => {this.dragging = 0},
+				onMouseUp : (event) => {this.dragging = 0;},
+				onMouseLeave : (event) => {this.dragging = 0;},
 				onMouseMove : (event) => {this.onMouseMove(event)},
 				onWheel : (event) => this.onWheel(event),
-				onTouchMove : (event) => {this.onMouseMove(event.nativeEvent.changedTouches[0])},
-				onTouchEnd: (event) => {this.dragging = 0},
 			},
 			rangeContainer: {
 				width: 68,
@@ -157,9 +158,6 @@ class RangeController extends React.Component {
 				onMouseLeave : () => this.setState({radius: 7}),
 				onMouseDown : (event) => {this.onMouseDown(event);},
 				onMouseUp : (event) => {this.dragging = 0;},
-				onTouchStart: (event) => {event.preventDefault(); this.onMouseDown(event.nativeEvent.changedTouches[0])},
-				onTouchMove : (event) => {this.onMouseMove(event.nativeEvent.changedTouches[0])},
-				onTouchEnd: (event) => {this.dragging = 0},
 				cx: this.state.x,
 				cy: 11,
 				r: this.state.radius,

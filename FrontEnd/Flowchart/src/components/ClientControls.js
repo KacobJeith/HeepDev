@@ -6,6 +6,7 @@ class ControlList extends React.Component {
 	render() {
 		let inputs = {
 			eachControl: {
+				url: this.props.url,
 				key: [],
 				control:[],
 				client: this.props.client,
@@ -139,6 +140,7 @@ class EachControl extends React.Component {
 				fill: this.direction == 0 ? "green" : 'red'
 			},
 			controller:{
+				url: this.props.url,
 				key: this.props.client['ClientID'],
 				ClientID: this.props.client['ClientID'],
 				control: this.props.control

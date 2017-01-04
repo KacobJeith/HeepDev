@@ -13,6 +13,7 @@ class App extends React.Component {
     }
 
     this.loadClientsFromServer = this.loadClientsFromServer.bind(this);
+    this.url = window.location.protocol.concat('//', window.location.hostname,':3001');
   }
 
   // ClientList AJAX
@@ -34,7 +35,7 @@ class App extends React.Component {
   }
 
   componentDidMount(){
-    this.loadClientsFromServer('/api/clients');
+    this.loadClientsFromServer(this.url.concat('/api/clients'));
     this.loadClientsFromServer.bind(this);
   }
 
@@ -58,13 +59,17 @@ class App extends React.Component {
           top: 40,
           left: 250,
           transition: "left .3s ease-in-out",
-          overflow: "auto"
+          overflow: "auto",
+          height: "100%",
+          width: "100%",
         },
         sidebarClosed: {
           position: "absolute",
           top: 40,
           transition: "left .3s ease-in-out",
           left: 0,
+          height: "100%",
+          width: "100%",
           overflow: "auto"
         },
         footer : {
@@ -91,9 +96,10 @@ class App extends React.Component {
         style: this.state.sidebarVisible ? styles.sidebarOpen : styles.sidebarClosed
       },
       flowchart: {
-          hideSourceOnDrag: true,
-          sidebarVisible: this.state.sidebarVisible,
-          clientList: this.state.clientList,
+        url: this.url,
+        hideSourceOnDrag: true,
+        sidebarVisible: this.state.sidebarVisible,
+        clientList: this.state.clientList,
       },
       footer : {
         style: styles.footer,
@@ -101,12 +107,12 @@ class App extends React.Component {
     }
 
     return (<div>
-            <h1 {...inputs.header}> Client Dashboard <hr></hr></h1>
-            <Sidebar {...inputs.sidebar} />
-            <div {...inputs.flowchartContainer}>
-              <DraggableContainer {...inputs.flowchart}/>
-            </div>
-            <footer {...inputs.footer}> <hr></hr> &copy; 2016 Jacob Dylan. </footer>
+              <h1 {...inputs.header}> Client Dashboard <hr></hr></h1>
+              <Sidebar {...inputs.sidebar} />
+              <div {...inputs.flowchartContainer}>
+                <DraggableContainer {...inputs.flowchart}/>
+              </div>
+              <footer {...inputs.footer}> <hr></hr> &copy; 2016 Jacob Dylan. </footer>
             </div>
     );
   }
