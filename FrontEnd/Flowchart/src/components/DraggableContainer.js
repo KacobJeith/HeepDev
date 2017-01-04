@@ -95,7 +95,7 @@ class DraggableContainer extends React.Component {
 
 	selectInputandSend(inputName, destinationIP, destinationID, position) {
 		this.selectInput(inputName, destinationIP, destinationID, position);
-		this.sendVertexToServer();
+		this.sendVertexToServer(this.props.url.concat('/api/commands'));
 	}
 
 	nameVertex(sourceID, outputName, destinationID, inputName) {
@@ -142,7 +142,7 @@ class DraggableContainer extends React.Component {
 		this.setState({vertexPaths: currentVertexPaths});
 	}
 
-	sendVertexToServer() {
+	sendVertexToServer(url) {
 
 		const message = 'SetVertex' + ':' + 
 						this.vertex.inputName + ',' + 
@@ -154,13 +154,13 @@ class DraggableContainer extends React.Component {
     	const messagePacket = {command: message};
 
 		$.ajax({
-	      url: '/api/commands',
+	      url: url,
 	      type: 'POST',
 	      data: messagePacket,
 	      success: (data) => {
 	      },
 	      error: function(xhr, status, err) {
-	        console.error('/api/commands', status, err.toString());
+	        console.error(url, status, err.toString());
 	        console.log('Hitting sendVertexToServer error');
 	      }
 	    });
@@ -177,10 +177,11 @@ class DraggableContainer extends React.Component {
 
 		const styles = {
 			flowchart: {
-				height: 3000,
-				width: 3000,
+				height: '100%',
+				width: '100%',
 				position: 'relative',
-				backgroundColor: '#e7e7e7'
+				backgroundColor: '#e7e7e7',
+				overflow: 'auto'
 			},
 			vertexSVGSpace: {
 				position: 'absolute',
@@ -199,6 +200,7 @@ class DraggableContainer extends React.Component {
 				client: [],
 				top: 0,
 				left: 0,
+				url:this.props.url,
 				sidebarVisible: this.props.sidebarVisible,
 				selectInput: (inputName, destinationIP, destinationID, position) => this.selectInputandSend(inputName, destinationIP, destinationID, position),
 				selectOutput: (outputName, sourceID, position) => this.selectOutput(outputName, sourceID, position),
@@ -208,6 +210,7 @@ class DraggableContainer extends React.Component {
 				style: styles.vertexSVGSpace
 			},
 			vertexSVG: {
+				url: this.props.url,
 				key: [],
 				vertex:[],
 				removeVertex: (vertex) => this.removeVertex(vertex),
@@ -247,8 +250,7 @@ class DraggableContainer extends React.Component {
 			vertexDrawings.push(<Vertex {...inputs.vertexSVG}/>);
 		}
 
-	return (
-			<div {...inputs.flowchart} ref="flowchart"> 
+	return (<div {...inputs.flowchart} ref="flowchart"> 
 				
 				<svg {...inputs.vertexSVGSpace}>
 					{vertexDrawings}

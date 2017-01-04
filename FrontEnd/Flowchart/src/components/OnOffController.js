@@ -12,7 +12,7 @@ class OnOffController extends React.Component {
 		}
 	}
 	
-	sendCommand() {
+	sendCommand(url) {
 
 	    let commandQueueString = [];
 	    var newControlValue = 0;
@@ -34,7 +34,7 @@ class OnOffController extends React.Component {
 	    
 	    const messagePacket = {command: commandQueueString};
 	    $.ajax({
-	      url: '/api/commands',
+	      url: url,
 	      type: 'POST',
 	      data: messagePacket,
 	      success: (data) => {
@@ -42,7 +42,7 @@ class OnOffController extends React.Component {
 	        console.log("Commands Sent Successfully");
 	      },
 	      error: function(xhr, status, err) {
-	        console.error('/api/commands', status, err.toString());
+	        console.error(url, status, err.toString());
 	        console.log('Hitting Commands sendDataToServer error')
 	      }
 	    });
@@ -64,7 +64,7 @@ class OnOffController extends React.Component {
 
 		var inputs = {
 			button: {
-				onClick: () => this.sendCommand(),
+				onClick: () => this.sendCommand(this.props.url.concat('/api/commands')),
 				style: styles.button
 			},
 			icon: {

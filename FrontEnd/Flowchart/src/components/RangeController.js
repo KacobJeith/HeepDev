@@ -24,7 +24,7 @@ class RangeController extends React.Component {
 		this.newControlValue = this.props.control['CurCtrlValue'];
 	}
 	
-	sendCommand() {
+	sendCommand(url) {
 		this.calcNewControlValue();
 	    var commandQueueString = [];
 	    
@@ -43,7 +43,7 @@ class RangeController extends React.Component {
 
 	    const messagePacket = {command: commandQueueString};
 	    $.ajax({
-	      url: '/api/commands',
+	      url: url,
 	      type: 'POST',
 	      data: messagePacket,
 	      success: (data) => {
@@ -51,7 +51,7 @@ class RangeController extends React.Component {
 	        this.lastSentControlValue = this.newControlValue;
 	      },
 	      error: function(xhr, status, err) {
-	        console.error('/api/commands', status, err.toString());
+	        console.error(url, status, err.toString());
 	        console.log('Hitting Commands sendDataToServer error')
 	      }
 	    });
@@ -86,12 +86,12 @@ class RangeController extends React.Component {
 		this.lastPosition['left'] = event.screenX;
 		this.setState( {x: setPosition});
 		
-		this.sendCommand();
+		this.sendCommand(this.props.url.concat('/api/commands'));
 	}
 
 	onWheel(event) {
 		event.preventDefault(); 
-
+		
 		if (event.deltaY < 0){
 			var newVal = this.state.x + this.displayMin
 
@@ -109,7 +109,7 @@ class RangeController extends React.Component {
 			this.setState({x: newVal});
 		} 
 
-		this.sendCommand();
+		this.sendCommand(this.props.url.concat('/api/commands'));
 	}
 
 	render() {

@@ -69,7 +69,7 @@ class ClientGraphic extends React.Component {
 			subdirectory = String(this.props.client['ClientID']);
 		}
 
-		this.setState({icon: '/static/assets/' + subdirectory + '/' + this.props.client['IconName'] + '.svg'});
+		this.setState({icon: this.props.url.concat('/static/assets/') + subdirectory + '/' + this.props.client['IconName'] + '.svg'});
 		
 	}
 
@@ -114,7 +114,7 @@ class ClientGraphic extends React.Component {
 		var newPosition = {left: this.state.left,
 					   		top: this.state.top};
 
-		this.sendPositionToServer(newPosition);
+		this.sendPositionToServer(newPosition, this.props.url.concat('/api/commands'));
  		
 	}
 
@@ -132,7 +132,7 @@ class ClientGraphic extends React.Component {
 
 	}
 
-	sendPositionToServer(newPosition) {
+	sendPositionToServer(newPosition, url) {
 
 		const message = 'SetPosition' + ':' + 
 						this.props.client['ClientID'] + ',' +
@@ -142,13 +142,13 @@ class ClientGraphic extends React.Component {
     	const messagePacket = {command: message};
 
 		$.ajax({
-	      url: '/api/commands',
+	      url: url,
 	      type: 'POST',
 	      data: messagePacket,
 	      success: (data) => {
 	      },
 	      error: function(xhr, status, err) {
-	        console.error('/api/commands', status, err.toString());
+	        console.error(url, status, err.toString());
 	        console.log('Hitting sendVertexToServer error');
 	      }
 	    });
@@ -192,18 +192,20 @@ class ClientGraphic extends React.Component {
 				height: this.cardWorkspace - 45,
 			},
 			iconContainer: {
-				display: 'table-cell',
+				display: 'inline-flex',
 				width: 100,
 				height: (this.cardWorkspace - 25)*0.85,
 				textAlign: 'center',
 				verticalAlign: 'center'
 			},
 			icon: {
-				height: (this.cardWorkspace - 25)*0.85,
-				width: 100,
+				maxHeight: (this.cardWorkspace - 25)*0.85,
+				maxWidth: 100,
 				position: 'block',
 				marginLeft: 'auto',
 				marginRight: 'auto',
+				marginTop: 'auto',
+				marginBottom: 'auto',
 				verticalAlign: 'center'
 			},
 			outputContainer:{
@@ -248,6 +250,7 @@ class ClientGraphic extends React.Component {
 				style: styles.outputContainer
 			},
 			controlListInputs: {
+				url: this.props.url,
 				controlList: this.inputs,
 				client: this.props.client,
 				select: this.props.selectInput,
@@ -255,6 +258,7 @@ class ClientGraphic extends React.Component {
 				left: this.state.left, 
 			},
 			controlListOutputs: {
+				url: this.props.url,
 				controlList: this.outputs,
 				client: this.props.client,
 				select: this.props.selectOutput,
