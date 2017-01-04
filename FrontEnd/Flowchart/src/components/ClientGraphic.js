@@ -98,6 +98,14 @@ class ClientGraphic extends React.Component {
 	  	event.dataTransfer.setDragImage(this.refs.client, -99999,-99999);
 	}
 
+	onTouchStart(event) {
+
+		event.preventDefault();
+		this.lastPosition['left'] = event.nativeEvent.changedTouches[0].screenX;
+	  	this.lastPosition['top'] = event.nativeEvent.changedTouches[0].screenY;
+
+	}
+
 	onDrag(event) {
 
 		this.calculateDragOffset(event);
@@ -106,7 +114,6 @@ class ClientGraphic extends React.Component {
 		
 		this.setState(newPosition);
 		this.props.updateVertexPositionsByOffset(this.props.client['ClientID'], this.runningOffset);
-		
 	}
 
 	calculateDragPosition(event) {
@@ -146,6 +153,7 @@ class ClientGraphic extends React.Component {
 	      type: 'POST',
 	      data: messagePacket,
 	      success: (data) => {
+	      	
 	      },
 	      error: function(xhr, status, err) {
 	        console.error(url, status, err.toString());
@@ -224,8 +232,12 @@ class ClientGraphic extends React.Component {
 				style: styles.name,
 				draggable: true,
 				onDragStart : (event) => {this.onDragStart(event)},
-				onDrag : (event) => {this.onDrag(event);},
-				onDragEnd: (event) => {this.calculateDragPosition(event);},
+				onDrag : (event) => {this.onDrag(event)},
+				onDragEnd: (event) => {this.calculateDragPosition(event)},
+				onTouchStart: (event) => {this.onTouchStart(event)},
+				onTouchMove : (event) => {this.onDrag(event.nativeEvent.changedTouches[0])},
+				onTouchEnd: (event) => {this.calculateDragPosition(event)},
+
 			},
 			controlsContainer: {
 				style: styles.controlsContainer
@@ -238,8 +250,11 @@ class ClientGraphic extends React.Component {
 				style: styles.iconContainer,
 				draggable: true,
 				onDragStart : (event) => {this.onDragStart(event)},
-				onDrag : (event) => {this.onDrag(event);},
-				onDragEnd: (event) => {this.calculateDragPosition(event);},
+				onDrag : (event) => {this.onDrag(event)},
+				onDragEnd: (event) => {this.calculateDragPosition(event)},
+				onTouchStart: (event) => {this.onTouchStart(event)},
+				onTouchMove : (event) => {this.onDrag(event.nativeEvent.changedTouches[0])},
+				onTouchEnd: (event) => {this.calculateDragPosition(event)},
 			},
 			icon: {
 				src: this.state.icon,

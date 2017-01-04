@@ -16,7 +16,6 @@ def SetupClientConnection() :
 	EggControlz = ControlValue()
 	EggControlz.ControlValueType = EggControlz.Range
 	EggControlz.ControlName = 'Yolk'
-	EggControlz.ControlValueType = EggControlz.OnOff
 	EggClient.ControlList.append(EggControlz)
 	client.SetClientData(EggClient)
 	return client
