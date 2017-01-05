@@ -11,7 +11,6 @@ class ClientGraphic extends React.Component {
 			radius: 5,
 			top: this.props.top,
 			left: this.props.left,
-			icon: 'none'
 		}
 
 		this.activeInput = [];
