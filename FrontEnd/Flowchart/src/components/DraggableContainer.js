@@ -194,9 +194,11 @@ class DraggableContainer extends React.Component {
 
 		for (var thisVertex in this.state.vertexPaths){
 			if (this.state.vertexPaths[thisVertex]['sourceID'] == clientID) {
-				this.updateCurCtrlValue(this.state.vertexPaths[thisVertex]['destinationID'], 
+				if (this.state.vertexPaths[thisVertex]['outputName'] == controlName){
+					this.updateCurCtrlValue(this.state.vertexPaths[thisVertex]['destinationID'], 
 										this.state.vertexPaths[thisVertex]['inputName'],
 										newVal);
+				}
 			}
 		}
 
