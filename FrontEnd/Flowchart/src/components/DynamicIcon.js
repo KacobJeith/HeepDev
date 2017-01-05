@@ -6,11 +6,10 @@ class DynamicIcon extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			icon: 'none',
-
+			icon: 'none'
 		}
 
-		this.icon = {__html: ''};
+		this.icon = '';
 		this.grabSVGIcon();
 	}
 
@@ -27,6 +26,7 @@ class DynamicIcon extends React.Component {
 			var parsed = $(svg);
 			this.icon = parsed[parsed.length-1];
 			this.setDimensions();
+			this.updateColor();
 		}, 'text');
 	}
 
@@ -36,13 +36,14 @@ class DynamicIcon extends React.Component {
 	}
 
 	updateColor() {
-		if(this.icon.find('#LEDState').length > 0) {
-			var test = this.icon.find('#LEDState')[0].setAttribute('style','fill:#bbbbbb');
+		
+		if($(this.icon).find('#LEDState').length > 0) {
+			var edit = $(this.icon).find('#LEDState')[0];
+			edit.setAttribute('opacity', this.props.client['ControlList'][0]['CurCtrlValue']);
 		}
 	}
 
 	render() {
-
 
 		var inputs = {
 			icon: {
