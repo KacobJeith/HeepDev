@@ -141,7 +141,7 @@ class EachControl extends React.Component {
 				fill: this.direction == 0 ? "green" : 'red'
 			},
 			controller:{
-				action: this.direction == 0 ? () => {} : this.props.updateAllConnectedClients,
+				updateAllConnectedClients: this.props.updateAllConnectedClients,
 				url: this.props.url,
 				key: this.props.client['ClientID'],
 				ClientID: this.props.client['ClientID'],

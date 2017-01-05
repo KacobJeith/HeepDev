@@ -5,28 +5,15 @@ import Icon from '../assets/icons';
 import {ICONS} from '../assets/iconConstants';
 
 class OnOffController extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			controlValue: this.props.control['CurCtrlValue']
-		}
-	}
-	
 	sendCommand(url) {
 
-	    let commandQueueString = [];
+	    var commandQueueString = [];
 	    var newControlValue = 0;
-	    if(this.state.controlValue == 0){
+	    if(this.props.control['CurCtrlValue'] == 0){
 	    	var newControlValue = 1;
-	    	this.setState({controlValue: newControlValue});
-	    }
-	    else {
-	    	this.setState({controlValue: newControlValue});
 	    }
 
-	    this.props.action(this.props.ClientID, this.props.control['ControlName'], newControlValue);
-
-	    //SetCommand:destID,controlName,controlValue
+	    this.props.updateAllConnectedClients(this.props.ClientID, this.props.control['ControlName'], newControlValue);
 	    
     	commandQueueString.push('SetCommand'+ ':' + 
     							this.props.ClientID + ',' +
@@ -34,7 +21,7 @@ class OnOffController extends React.Component {
 								newControlValue + '\n');
 
 	    
-	    const messagePacket = {command: commandQueueString};
+	    var messagePacket = {command: commandQueueString};
 	    $.ajax({
 	      url: url,
 	      type: 'POST',
