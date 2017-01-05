@@ -177,15 +177,26 @@ class DraggableContainer extends React.Component {
 		this.updateCurCtrlValue(clientID, controlName, newVal);
 		console.log(clientID, controlName, newVal);
 
-		for(var clientIndex in this.props.clientList) {
-			if(this.props.clientList[clientIndex]['ClientID'] == clientID){
-				for (var vertexIndex in this.props.clientList[clientIndex]['VertexList']){
-					if (this.props.clientList[clientIndex]['VertexList'][vertexIndex]['outputName'] == controlName){
-						this.updateCurCtrlValue(this.props.clientList[clientIndex]['VertexList'][vertexIndex]['destinationID'], 
-											this.props.clientList[clientIndex]['VertexList'][vertexIndex]['inputName'],
-											newVal);
-					}					
-				}
+		console.log(this.state.vertexPaths);
+
+		// This method doesn't consider recently edited vertex paths
+		// for(var clientIndex in this.props.clientList) {
+		// 	if(this.props.clientList[clientIndex]['ClientID'] == clientID){
+		// 		for (var vertexIndex in this.props.clientList[clientIndex]['VertexList']){
+		// 			if (this.props.clientList[clientIndex]['VertexList'][vertexIndex]['outputName'] == controlName){
+		// 				this.updateCurCtrlValue(this.props.clientList[clientIndex]['VertexList'][vertexIndex]['destinationID'], 
+		// 									this.props.clientList[clientIndex]['VertexList'][vertexIndex]['inputName'],
+		// 									newVal);
+		// 			}					
+		// 		}
+		// 	}
+		// }
+
+		for (var thisVertex in this.state.vertexPaths){
+			if (this.state.vertexPaths[thisVertex]['sourceID'] == clientID) {
+				this.updateCurCtrlValue(this.state.vertexPaths[thisVertex]['destinationID'], 
+										this.state.vertexPaths[thisVertex]['inputName'],
+										newVal);
 			}
 		}
 
