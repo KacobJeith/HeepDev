@@ -39,11 +39,12 @@ class DynamicIcon extends React.Component {
 		
 		if($(this.icon).find('#LEDState').length > 0) {
 			var edit = $(this.icon).find('#LEDState')[0];
-			edit.setAttribute('opacity', this.props.client['ControlList'][0]['CurCtrlValue']);
+			edit.setAttribute('opacity', this.props.client['ControlList'][0]['CurCtrlValue'] / this.props.client['ControlList'][0]['HighValue']);
 		}
 	}
 
 	render() {
+
 
 		this.updateColor();
 

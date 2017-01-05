@@ -9,7 +9,7 @@ class RangeController extends React.Component {
 		this.displayMax = 60;
 
 		this.state = {
-			x: this.displayMin + (this.displayMax-this.displayMin)*(this.props.control['CurCtrlValue']/(this.props.control['HighValue']-this.props.control['LowValue'])),
+			x: this.convertCtrlVal(),
 			radius: 7
 		}
 
@@ -23,40 +23,58 @@ class RangeController extends React.Component {
 		this.lastSentControlValue = this.props.control['CurCtrlValue'];
 		this.newControlValue = this.props.control['CurCtrlValue'];
 	}
+
+	componentWillReceiveProps(nextProps) {
+		if (this.props.control['CurCtrlValue'] != this.lastSentControlValue) {
+
+			console.log(this.props.control['ControlName']);
+			console.log('props: ', this.props.control['CurCtrlValue']);
+			console.log('last: ', this.lastSentControlValue);
+
+			this.setState({x: this.convertCtrlVal()});
+			this.sendCommand(this.props.url.concat('/api/commands'), this.props.control['CurCtrlValue']);
+		}
+	}
+
+	convertCtrlVal() {
+		return this.displayMin + (this.displayMax-this.displayMin)*(this.props.control['CurCtrlValue']/(this.props.control['HighValue']-this.props.control['LowValue']))
+
+	}
 	
-	sendCommand(url) {
-		this.calcNewControlValue();
+	sendCommand(url, newVal) {
 	    var commandQueueString = [];
-	    if (this.lastSentControlValue == this.newControlValue){
+	    if (this.lastSentControlValue == newVal){
 	    	return
 	    }
 
-	    //SetCommand:destID,controlName,controlValue
-	    
+	    this.lastSentControlValue = newVal;
+
     	commandQueueString.push('SetCommand'+ ':' + 
     							this.props.ClientID + ',' +
     							this.props.control['ControlName'] + ',' +
-								this.newControlValue + '\n');
+								newVal + '\n');
 
 	    console.log(commandQueueString);
+
 
 	    const messagePacket = {command: commandQueueString};
 	    $.ajax({
 	      url: url,
 	      type: 'POST',
 	      data: messagePacket,
-	      success: (data) => {
-	        this.lastSentControlValue = this.newControlValue;
-	      },
+	      success: (data) => {},
 	      error: function(xhr, status, err) {
 	        console.error(url, status, err.toString());
 	        console.log('Hitting Commands sendDataToServer error')
 	      }
 	    });
+
+	    this.props.updateAllConnectedClients(this.props.ClientID, this.props.control['ControlName'], newVal);
+	    
 	}
 
-	calcNewControlValue() {
-		this.newControlValue = Math.round((this.state['x'] - this.displayMin)/(this.displayMax-this.displayMin)*(this.props.control['HighValue']-this.props.control['LowValue']) + this.props.control['LowValue']);
+	calcNewControlValue() {//15
+		return Math.round((this.state['x'] - this.displayMin)/(this.displayMax-this.displayMin)*(this.props.control['HighValue']-this.props.control['LowValue']) + this.props.control['LowValue']);
 	}
 
 	onMouseDown(event) {
@@ -82,7 +100,7 @@ class RangeController extends React.Component {
 
 		this.lastPosition['left'] = event.screenX;
 		this.setState({x: setPosition});
-		this.sendCommand(this.props.url.concat('/api/commands'));
+		this.sendCommand(this.props.url.concat('/api/commands'), this.calcNewControlValue());
 	}
 
 	onWheel(event) {
@@ -105,7 +123,7 @@ class RangeController extends React.Component {
 			this.setState({x: newVal});
 		} 
 
-		this.sendCommand(this.props.url.concat('/api/commands'));
+		this.sendCommand(this.props.url.concat('/api/commands'), this.calcNewControlValue());
 	}
 
 	render() {
@@ -181,7 +199,7 @@ class RangeController extends React.Component {
 						<line {...inputs.unselected}/>
 						<line {...inputs.selected}/>
 						<circle {...inputs.dragDot} ref='dragDot'/>
-						<text {...inputs.text}> {this.lastSentControlValue} </text>
+						<text {...inputs.text}> {this.props.control['CurCtrlValue']} </text>
 					</svg>
 				</div>
             	

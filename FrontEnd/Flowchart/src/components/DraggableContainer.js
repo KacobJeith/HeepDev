@@ -175,6 +175,7 @@ class DraggableContainer extends React.Component {
 
 	updateAllConnectedClients(clientID, controlName, newVal) {
 		this.updateCurCtrlValue(clientID, controlName, newVal);
+		console.log(clientID, controlName, newVal);
 
 		for(var clientIndex in this.props.clientList) {
 			if(this.props.clientList[clientIndex]['ClientID'] == clientID){
