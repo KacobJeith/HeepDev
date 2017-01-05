@@ -173,27 +173,32 @@ class DraggableContainer extends React.Component {
 		this.setState({vertexPaths: newVertexList});
 	}
 
-	updateAllConnectedClients(clientID, newVal) {
-		console.log("got here!");
+	updateAllConnectedClients(clientID, controlName, newVal) {
+		console.log(newVal)
+		this.updateCurCtrlValue(clientID, controlName, newVal);
 
 		for(var clientIndex in this.props.clientList) {
 			if(this.props.clientList[clientIndex]['ClientID'] == clientID){
 				for (var vertexIndex in this.props.clientList[clientIndex]['VertexList']){
-					this.updateCurCtrlValue(this.props.clientList[clientIndex]['VertexList'][vertexIndex]['destinationID'], 
+					if (this.props.clientList[clientIndex]['VertexList'][vertexIndex]['outputName'] == controlName){
+						this.updateCurCtrlValue(this.props.clientList[clientIndex]['VertexList'][vertexIndex]['destinationID'], 
 											this.props.clientList[clientIndex]['VertexList'][vertexIndex]['inputName'],
 											newVal);
+					}					
 				}
 			}
 		}
+
+		//This needs to be removed, as it is bad practice -- it is time to start using Redux
+		this.forceUpdate();
 	}
 
-	updateCurCtrlValue(destinationID, inputName, newVal){
+	updateCurCtrlValue(destinationID, controlName, newVal){
 		for(var clientIndex in this.props.clientList) {
 			if(this.props.clientList[clientIndex]['ClientID'] == destinationID){
 				for (var controlIndex in this.props.clientList[clientIndex]['ControlList']){
-					if (this.props.clientList[clientIndex]['ControlList'][controlIndex]['ControlName'] == inputName){
+					if (this.props.clientList[clientIndex]['ControlList'][controlIndex]['ControlName'] == controlName){
 						this.props.clientList[clientIndex]['ControlList'][controlIndex]['CurCtrlValue'] = newVal;
-						console.log('updated: ', destinationID, inputName, newVal);
 					}
 				}
 			}
@@ -234,7 +239,7 @@ class DraggableContainer extends React.Component {
 				selectInput: (inputName, destinationIP, destinationID, position) => this.selectInputandSend(inputName, destinationIP, destinationID, position),
 				selectOutput: (outputName, sourceID, position) => this.selectOutput(outputName, sourceID, position),
 				updateVertexPositionsByOffset: (clientID, dragOffset) => this.updateVertexPositionsByOffset(clientID, dragOffset),
-				updateAllConnectedClients: (clientID, newVal) => this.updateAllConnectedClients(clientID, newVal),
+				updateAllConnectedClients: (clientID, controlName, newVal) => this.updateAllConnectedClients(clientID, controlName, newVal),
 			},
 			vertexSVGSpace:{
 				style: styles.vertexSVGSpace

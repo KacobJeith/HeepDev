@@ -24,7 +24,7 @@ class OnOffController extends React.Component {
 	    	this.setState({controlValue: newControlValue});
 	    }
 
-	    this.props.action(this.props.ClientID, newControlValue);
+	    this.props.action(this.props.ClientID, this.props.control['ControlName'], newControlValue);
 
 	    //SetCommand:destID,controlName,controlValue
 	    
@@ -53,7 +53,6 @@ class OnOffController extends React.Component {
 	}
 
 	render() {
-
 		var styles = {
 			button: {
 				display: 'block',
@@ -71,7 +70,7 @@ class OnOffController extends React.Component {
 			},
 			icon: {
 				icon: ICONS.POWER,
-		        color: this.state['controlValue'] == 0 ?  "#43464c" : "gold" ,
+		        color: this.props.control['CurCtrlValue'] == 0 ?  "#43464c" : "gold" ,
 		        size: 30
 			}
 
