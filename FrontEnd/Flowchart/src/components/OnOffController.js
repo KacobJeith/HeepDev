@@ -24,6 +24,8 @@ class OnOffController extends React.Component {
 	    	this.setState({controlValue: newControlValue});
 	    }
 
+	    this.props.action(this.props.ClientID, newControlValue);
+
 	    //SetCommand:destID,controlName,controlValue
 	    
     	commandQueueString.push('SetCommand'+ ':' + 
@@ -64,12 +66,12 @@ class OnOffController extends React.Component {
 
 		var inputs = {
 			button: {
-				onClick: () => this.sendCommand(this.props.url.concat('/api/commands')),
+				onClick: () => {this.sendCommand(this.props.url.concat('/api/commands'))},
 				style: styles.button
 			},
 			icon: {
 				icon: ICONS.POWER,
-		        color: this.state.controlValue == 0 ?  "#43464c" : "gold" ,
+		        color: this.state['controlValue'] == 0 ?  "#43464c" : "gold" ,
 		        size: 30
 			}
 

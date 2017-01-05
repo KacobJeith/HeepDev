@@ -45,6 +45,8 @@ class DynamicIcon extends React.Component {
 
 	render() {
 
+		this.updateColor();
+
 		var inputs = {
 			icon: {
 				dangerouslySetInnerHTML: {__html: $(this.icon).prop('outerHTML')},

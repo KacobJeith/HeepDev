@@ -250,6 +250,7 @@ class ClientGraphic extends React.Component {
 				controlList: this.inputs,
 				client: this.props.client,
 				select: this.props.selectInput,
+				updateAllConnectedClients: this.props.updateAllConnectedClients,
 				top: this.state.top,
 				left: this.state.left, 
 			},
@@ -258,6 +259,7 @@ class ClientGraphic extends React.Component {
 				controlList: this.outputs,
 				client: this.props.client,
 				select: this.props.selectOutput,
+				updateAllConnectedClients: this.props.updateAllConnectedClients,
 				top: this.state.top,
 				left: this.state.left, 
 			}

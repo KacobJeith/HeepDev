@@ -173,6 +173,10 @@ class DraggableContainer extends React.Component {
 		this.setState({vertexPaths: newVertexList});
 	}
 
+	updateAllConnectedClients(clientID, newVal) {
+		console.log("got here!");
+	}
+
 	render() {
 
 		const styles = {
@@ -205,6 +209,7 @@ class DraggableContainer extends React.Component {
 				selectInput: (inputName, destinationIP, destinationID, position) => this.selectInputandSend(inputName, destinationIP, destinationID, position),
 				selectOutput: (outputName, sourceID, position) => this.selectOutput(outputName, sourceID, position),
 				updateVertexPositionsByOffset: (clientID, dragOffset) => this.updateVertexPositionsByOffset(clientID, dragOffset),
+				updateAllConnectedClients: (clientID, newVal) => this.updateAllConnectedClients(clientID, newVal),
 			},
 			vertexSVGSpace:{
 				style: styles.vertexSVGSpace
