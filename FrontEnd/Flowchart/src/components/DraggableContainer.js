@@ -175,9 +175,6 @@ class DraggableContainer extends React.Component {
 
 	updateAllConnectedClients(clientID, controlName, newVal) {
 		this.updateCurCtrlValue(clientID, controlName, newVal);
-		console.log(clientID, controlName, newVal);
-
-		console.log(this.state.vertexPaths);
 
 		// This method doesn't consider recently edited vertex paths
 		// for(var clientIndex in this.props.clientList) {

@@ -5,21 +5,32 @@ import Icon from '../assets/icons';
 import {ICONS} from '../assets/iconConstants';
 
 class OnOffController extends React.Component {
-	sendCommand(url) {
+	constructor(props){
+		super(props);
+		this.lastSentControlValue = this.props.control['CurCtrlValue'];
+	}
+
+	componentWillReceiveProps(nextProps) {
+
+		if (this.props.control['CurCtrlValue'] != this.lastSentControlValue){
+			
+			this.sendCommand(this.props.url.concat('/api/commands'), this.props.control['CurCtrlValue']);
+		}
+
+	}
+
+	sendCommand(url, newVal) {
 
 	    var commandQueueString = [];
-	    var newControlValue = 0;
-	    if(this.props.control['CurCtrlValue'] == 0){
-	    	var newControlValue = 1;
-	    }
 
-	    this.props.updateAllConnectedClients(this.props.ClientID, this.props.control['ControlName'], newControlValue);
+	    this.lastSentControlValue = newVal;
 	    
     	commandQueueString.push('SetCommand'+ ':' + 
     							this.props.ClientID + ',' +
     							this.props.control['ControlName'] + ',' +
-								newControlValue + '\n');
+								newVal + '\n');
 
+	    console.log(commandQueueString);
 	    
 	    var messagePacket = {command: commandQueueString};
 	    $.ajax({
@@ -27,7 +38,6 @@ class OnOffController extends React.Component {
 	      type: 'POST',
 	      data: messagePacket,
 	      success: (data) => {
-	        console.log(commandQueueString);
 	      },
 	      error: function(xhr, status, err) {
 	        console.error(url, status, err.toString());
@@ -35,7 +45,8 @@ class OnOffController extends React.Component {
 	      }
 	    });
 
-
+	    this.props.updateAllConnectedClients(this.props.ClientID, this.props.control['ControlName'], newVal);
+	    
 	}
 
 	render() {
@@ -51,7 +62,7 @@ class OnOffController extends React.Component {
 
 		var inputs = {
 			button: {
-				onClick: () => {this.sendCommand(this.props.url.concat('/api/commands'))},
+				onClick: () => {this.sendCommand(this.props.url.concat('/api/commands'), 1 - this.props.control['CurCtrlValue'])},
 				style: styles.button
 			},
 			icon: {

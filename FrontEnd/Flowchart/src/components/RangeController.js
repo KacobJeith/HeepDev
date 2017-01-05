@@ -27,10 +27,6 @@ class RangeController extends React.Component {
 	componentWillReceiveProps(nextProps) {
 		if (this.props.control['CurCtrlValue'] != this.lastSentControlValue) {
 
-			console.log(this.props.control['ControlName']);
-			console.log('props: ', this.props.control['CurCtrlValue']);
-			console.log('last: ', this.lastSentControlValue);
-
 			this.setState({x: this.convertCtrlVal()});
 			this.sendCommand(this.props.url.concat('/api/commands'), this.props.control['CurCtrlValue']);
 		}
