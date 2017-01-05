@@ -41,7 +41,6 @@ class OnOffController extends React.Component {
 	      data: messagePacket,
 	      success: (data) => {
 	        console.log(commandQueueString);
-	        console.log("Commands Sent Successfully");
 	      },
 	      error: function(xhr, status, err) {
 	        console.error(url, status, err.toString());

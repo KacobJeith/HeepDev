@@ -46,7 +46,6 @@ class RangeController extends React.Component {
 	      type: 'POST',
 	      data: messagePacket,
 	      success: (data) => {
-	        console.log("Commands Sent Successfully");
 	        this.lastSentControlValue = this.newControlValue;
 	      },
 	      error: function(xhr, status, err) {
