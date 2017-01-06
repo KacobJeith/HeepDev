@@ -25,25 +25,30 @@ class OnOffController extends React.Component {
 
 	    this.lastSentControlValue = newVal;
 	    
-    	commandQueueString.push('SetCommand'+ ':' + 
-    							this.props.ClientID + ',' +
-    							this.props.control['ControlName'] + ',' +
-								newVal + '\n');
+	    if( this.props.control['ControlDirection'] == 0){
+	    	
+	    	commandQueueString.push('SetCommand'+ ':' + 
+	    							this.props.ClientID + ',' +
+	    							this.props.control['ControlName'] + ',' +
+									newVal + '\n');
 
-	    console.log(commandQueueString);
-	    
-	    var messagePacket = {command: commandQueueString};
-	    $.ajax({
-	      url: url,
-	      type: 'POST',
-	      data: messagePacket,
-	      success: (data) => {
-	      },
-	      error: function(xhr, status, err) {
-	        console.error(url, status, err.toString());
-	        console.log('Hitting Commands sendDataToServer error')
-	      }
-	    });
+		    console.log(commandQueueString);
+		    
+		    var messagePacket = {command: commandQueueString};
+		    $.ajax({
+		      url: url,
+		      type: 'POST',
+		      data: messagePacket,
+		      success: (data) => {
+		      },
+		      error: function(xhr, status, err) {
+		        console.error(url, status, err.toString());
+		        console.log('Hitting Commands sendDataToServer error')
+		      }
+		    });
+
+	    }
+
 
 	    this.props.updateAllConnectedClients(this.props.ClientID, this.props.control['ControlName'], newVal);
 	    
