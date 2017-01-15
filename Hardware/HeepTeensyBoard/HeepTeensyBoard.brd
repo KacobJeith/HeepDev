@@ -146,6 +146,8 @@
 <wire x1="61" y1="0" x2="61" y2="54" width="0" layer="20"/>
 <wire x1="61" y1="54" x2="0" y2="54" width="0" layer="20"/>
 <wire x1="0" y1="54" x2="0" y2="0" width="0" layer="20"/>
+<text x="52" y="2" size="2.1844" layer="21" rot="R90">HEEP I/O</text>
+<text x="55" y="2" size="1.778" layer="21" rot="R90">Teensy Ethernet Board</text>
 </plain>
 <libraries>
 <library name="SparkFun-Capacitors">
