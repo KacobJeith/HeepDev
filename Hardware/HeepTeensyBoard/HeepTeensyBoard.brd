@@ -1023,6 +1023,13 @@ Please make sure your boards conform to these design rules.</description>
 <wire x1="31.7" y1="21.8" x2="29.2" y2="19.3" width="0.3048" layer="16"/>
 <via x="29.2" y="19.3" extent="1-16" drill="0.6" shape="square"/>
 <wire x1="29.2" y1="19.3" x2="29" y2="19.3" width="0.3048" layer="1"/>
+<polygon width="0.4064" layer="16">
+<vertex x="-15" y="59"/>
+<vertex x="74" y="59"/>
+<vertex x="74" y="8"/>
+<vertex x="74" y="-4"/>
+<vertex x="-15" y="-4"/>
+</polygon>
 <wire x1="43.43" y1="29.655" x2="43.43" y2="33.465" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="LEDA">
