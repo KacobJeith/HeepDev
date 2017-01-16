@@ -7312,6 +7312,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <text x="78.74" y="7.62" size="2.54" layer="97">Right Side</text>
 <text x="175.26" y="111.76" size="2.54" layer="97">Power LED</text>
 <text x="162.56" y="45.72" size="2.54" layer="97">Power Inputs</text>
+<text x="149.86" y="-33.02" size="5.08" layer="97">AC Inputs</text>
 </plain>
 <instances>
 <instance part="U$1" gate="G$1" x="109.22" y="63.5"/>
