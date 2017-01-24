@@ -1,6 +1,7 @@
 import React from 'react';
 import $ from 'jquery';
 import ControlList from './ClientControls';
+import DynamicIcon from './DynamicIcon';
 
 
 class ClientGraphic extends React.Component {
@@ -10,7 +11,6 @@ class ClientGraphic extends React.Component {
 			radius: 5,
 			top: this.props.top,
 			left: this.props.left,
-			icon: 'none'
 		}
 
 		this.activeInput = [];
@@ -59,18 +59,7 @@ class ClientGraphic extends React.Component {
 
 		this.cardWorkspace = 50 + Math.max.apply(null,[this.outputs.length,this.inputs.length])*55;
 
-		this.setIconPath();
 
-	}
-
-	setIconPath() {
-		var subdirectory = 'default';
-		if (this.props.client['IconCustom'] == 1 ){
-			subdirectory = String(this.props.client['ClientID']);
-		}
-
-		this.setState({icon: this.props.url.concat('/static/assets/') + subdirectory + '/' + this.props.client['IconName'] + '.svg'});
-		
 	}
 
 	fillInputs() {
@@ -206,16 +195,6 @@ class ClientGraphic extends React.Component {
 				textAlign: 'center',
 				verticalAlign: 'center'
 			},
-			icon: {
-				maxHeight: (this.cardWorkspace - 25)*0.85,
-				maxWidth: 100,
-				position: 'block',
-				marginLeft: 'auto',
-				marginRight: 'auto',
-				marginTop: 'auto',
-				marginBottom: 'auto',
-				verticalAlign: 'center'
-			},
 			outputContainer:{
 				display: 'inline-block',
 				cursor: 'default',
@@ -257,8 +236,10 @@ class ClientGraphic extends React.Component {
 				onTouchEnd: (event) => {this.calculateDragPosition(event)},
 			},
 			icon: {
-				src: this.state.icon,
-				style: styles.icon,
+				url: this.props.url,
+				client: this.props.client,
+				width: styles.iconContainer.width,
+				height: styles.iconContainer.height,
 			},
 			outputContainer: {
 				draggable: false,
@@ -269,6 +250,7 @@ class ClientGraphic extends React.Component {
 				controlList: this.inputs,
 				client: this.props.client,
 				select: this.props.selectInput,
+				updateAllConnectedClients: this.props.updateAllConnectedClients,
 				top: this.state.top,
 				left: this.state.left, 
 			},
@@ -277,6 +259,7 @@ class ClientGraphic extends React.Component {
 				controlList: this.outputs,
 				client: this.props.client,
 				select: this.props.selectOutput,
+				updateAllConnectedClients: this.props.updateAllConnectedClients,
 				top: this.state.top,
 				left: this.state.left, 
 			}
@@ -292,7 +275,7 @@ class ClientGraphic extends React.Component {
 							<ControlList {...inputs.controlListInputs}/>
 						</div>
 						<div {...inputs.iconContainer}>
-							<img {...inputs.icon}/>
+							<DynamicIcon {...inputs.icon}/>
 						</div>
 						<div {...inputs.outputContainer}>
 							<ControlList {...inputs.controlListOutputs}/>

@@ -11,6 +11,7 @@ class ControlList extends React.Component {
 				control:[],
 				client: this.props.client,
 				select: this.props.select,
+				updateAllConnectedClients: this.props.updateAllConnectedClients,
 				top: this.props.top,
 				left: this.props.left,
 				controlY: 0,			
@@ -140,6 +141,7 @@ class EachControl extends React.Component {
 				fill: this.direction == 0 ? "green" : 'red'
 			},
 			controller:{
+				updateAllConnectedClients: this.props.updateAllConnectedClients,
 				url: this.props.url,
 				key: this.props.client['ClientID'],
 				ClientID: this.props.client['ClientID'],

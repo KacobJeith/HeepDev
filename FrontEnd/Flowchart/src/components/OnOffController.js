@@ -5,53 +5,56 @@ import Icon from '../assets/icons';
 import {ICONS} from '../assets/iconConstants';
 
 class OnOffController extends React.Component {
-	constructor(props) {
+	constructor(props){
 		super(props);
-		this.state = {
-			controlValue: this.props.control['CurCtrlValue']
-		}
+		this.lastSentControlValue = this.props.control['CurCtrlValue'];
 	}
-	
-	sendCommand(url) {
 
-	    let commandQueueString = [];
-	    var newControlValue = 0;
-	    if(this.state.controlValue == 0){
-	    	var newControlValue = 1;
-	    	this.setState({controlValue: newControlValue});
-	    }
-	    else {
-	    	this.setState({controlValue: newControlValue});
-	    }
+	componentWillReceiveProps(nextProps) {
 
-	    //SetCommand:destID,controlName,controlValue
+		if (this.props.control['CurCtrlValue'] != this.lastSentControlValue){
+			
+			this.sendCommand(this.props.url.concat('/api/commands'), this.props.control['CurCtrlValue']);
+		}
+
+	}
+
+	sendCommand(url, newVal) {
+
+	    var commandQueueString = [];
+
+	    this.lastSentControlValue = newVal;
 	    
-    	commandQueueString.push('SetCommand'+ ':' + 
-    							this.props.ClientID + ',' +
-    							this.props.control['ControlName'] + ',' +
-								newControlValue + '\n');
+	    if( this.props.control['ControlDirection'] == 0){
+	    	
+	    	commandQueueString.push('SetCommand'+ ':' + 
+	    							this.props.ClientID + ',' +
+	    							this.props.control['ControlName'] + ',' +
+									newVal + '\n');
 
+		    console.log(commandQueueString);
+		    
+		    var messagePacket = {command: commandQueueString};
+		    $.ajax({
+		      url: url,
+		      type: 'POST',
+		      data: messagePacket,
+		      success: (data) => {
+		      },
+		      error: function(xhr, status, err) {
+		        console.error(url, status, err.toString());
+		        console.log('Hitting Commands sendDataToServer error')
+		      }
+		    });
+
+	    }
+
+
+	    this.props.updateAllConnectedClients(this.props.ClientID, this.props.control['ControlName'], newVal);
 	    
-	    const messagePacket = {command: commandQueueString};
-	    $.ajax({
-	      url: url,
-	      type: 'POST',
-	      data: messagePacket,
-	      success: (data) => {
-	        console.log(commandQueueString);
-	        console.log("Commands Sent Successfully");
-	      },
-	      error: function(xhr, status, err) {
-	        console.error(url, status, err.toString());
-	        console.log('Hitting Commands sendDataToServer error')
-	      }
-	    });
-
-
 	}
 
 	render() {
-
 		var styles = {
 			button: {
 				display: 'block',
@@ -64,12 +67,12 @@ class OnOffController extends React.Component {
 
 		var inputs = {
 			button: {
-				onClick: () => this.sendCommand(this.props.url.concat('/api/commands')),
+				onClick: () => {this.sendCommand(this.props.url.concat('/api/commands'), 1 - this.props.control['CurCtrlValue'])},
 				style: styles.button
 			},
 			icon: {
 				icon: ICONS.POWER,
-		        color: this.state.controlValue == 0 ?  "#43464c" : "gold" ,
+		        color: this.props.control['CurCtrlValue'] == 0 ?  "#43464c" : "gold" ,
 		        size: 30
 			}
 
