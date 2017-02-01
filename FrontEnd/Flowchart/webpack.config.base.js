@@ -19,7 +19,7 @@ Object.assign(env, {
 module.exports = {
   target: 'web',
 
-  entry: ['src/components/app.js'],
+  entry: ['src/index.js'],
 
   output: {
     path: path.resolve(__dirname, "src/dist"),

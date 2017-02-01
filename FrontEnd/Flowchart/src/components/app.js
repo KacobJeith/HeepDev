@@ -1,10 +1,9 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import DraggableContainer from './DraggableContainer';
 import Sidebar from './Sidebar';
 
-class App extends React.Component {
+export default class App extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -118,7 +117,3 @@ class App extends React.Component {
   }
 }
 
-ReactDOM.render(
-  <App/>,
-  document.getElementById('root')
-);
