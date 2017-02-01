@@ -245,7 +245,6 @@ class DraggableContainer extends React.Component {
 				top: 0,
 				left: 0,
 				url:this.props.url,
-				sidebarVisible: this.props.sidebarVisible,
 				selectInput: (inputName, destinationIP, destinationID, position) => this.selectInputandSend(inputName, destinationIP, destinationID, position),
 				selectOutput: (outputName, sourceID, position) => this.selectOutput(outputName, sourceID, position),
 				updateVertexPositionsByOffset: (clientID, dragOffset) => this.updateVertexPositionsByOffset(clientID, dragOffset),

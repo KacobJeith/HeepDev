@@ -1,15 +1,42 @@
+import 'babel-polyfill'
 import React from 'react'
 import { render } from 'react-dom'
-import { createStore } from 'redux'
 import { Provider } from 'react-redux'
-import App from './components/App'
-import reducer from './reducers/reducers'
+import { createStore } from 'redux'
+import heepApp from './reducers/reducers'
+import App from './containers/AppContainer'
+import $ from 'jquery'
 
-const store = createStore(reducer)
+var initialState = {
+  clientList: []
+};
 
-render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.getElementById('root')
-)
+function loadClientsFromServer(url) {
+      $.ajax({
+      url: url,
+      cache: false,
+      success: (data) => {
+        initialState = {clientList: data};
+
+        
+		const store = createStore(heepApp, initialState);
+		console.log(store.getState());
+
+		render(
+		  <Provider store={store}>
+		    <App/>
+		  </Provider>,
+		  document.getElementById('root')
+		)
+
+      },
+      error: function(xhr, status, err) {
+        console.error(url, status, err.toString());
+      }
+    });
+
+  }
+
+loadClientsFromServer(window.location.protocol.concat('//', window.location.hostname,':3001').concat('/api/clients'))
+
+

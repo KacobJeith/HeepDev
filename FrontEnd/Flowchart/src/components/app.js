@@ -4,46 +4,6 @@ import DraggableContainer from './DraggableContainer';
 import Sidebar from './Sidebar';
 
 export default class App extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      clientList: [],
-      sidebarVisible: false,
-    }
-
-    this.loadClientsFromServer = this.loadClientsFromServer.bind(this);
-    this.url = window.location.protocol.concat('//', window.location.hostname,':3001');
-  }
-
-  // ClientList AJAX
-  loadClientsFromServer(url) {
-      $.ajax({
-      url: url,
-      cache: false,
-      success: (data) => {
-        this.setState({clientList: data});
-
-        console.log(this.state.clientList);
-
-      },
-      error: function(xhr, status, err) {
-        console.error(url, status, err.toString());
-      }
-    });
-
-  }
-
-  componentDidMount(){
-    this.loadClientsFromServer(this.url.concat('/api/clients'));
-    this.loadClientsFromServer.bind(this);
-  }
-
-  closeSidebar() {
-    if(this.state.sidebarVisible == true){
-      this.setState({sidebarVisible: false});
-    }
-  }
-
   render() {
     const styles = {
         header: {
@@ -53,16 +13,7 @@ export default class App extends React.Component {
           color: "#e1e3e8",
           textIndent: 10
         },
-        sidebarOpen: {
-          position: "absolute",
-          top: 40,
-          left: 250,
-          transition: "left .3s ease-in-out",
-          overflow: "auto",
-          height: "100%",
-          width: "100%",
-        },
-        sidebarClosed: {
+        flowchartContainer: {
           position: "absolute",
           top: 40,
           transition: "left .3s ease-in-out",
@@ -87,18 +38,13 @@ export default class App extends React.Component {
         style: styles.header,
         key: "Header"
       },
-      sidebar: {
-        sidebarVisible: this.state.sidebarVisible,
-        closeSidebar: () => this.closeSidebar()
-      },
       flowchartContainer: {
-        style: this.state.sidebarVisible ? styles.sidebarOpen : styles.sidebarClosed
+        style: styles.flowchartContainer
       },
       flowchart: {
-        url: this.url,
+        url: window.location.protocol.concat('//', window.location.hostname,':3001'),
         hideSourceOnDrag: true,
-        sidebarVisible: this.state.sidebarVisible,
-        clientList: this.state.clientList,
+        clientList: this.props.clientList,
       },
       footer : {
         style: styles.footer,
@@ -107,7 +53,6 @@ export default class App extends React.Component {
 
     return (<div>
               <h1 {...inputs.header}> Client Dashboard <hr></hr></h1>
-              <Sidebar {...inputs.sidebar} />
               <div {...inputs.flowchartContainer}>
                 <DraggableContainer {...inputs.flowchart}/>
               </div>

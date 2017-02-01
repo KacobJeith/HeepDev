@@ -37,10 +37,6 @@ class ClientGraphic extends React.Component {
 		var clientTop = thisEl[0]["top"];
 		var clientLeft = thisEl[0]["left"];
 
-		if (this.props.sidebarVisible){
-			clientLeft = clientLeft - 250;
-		}
-
 		this.setState({top: clientTop});
 	 	this.setState({left: clientLeft});
 
