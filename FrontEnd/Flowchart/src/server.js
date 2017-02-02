@@ -1,10 +1,4 @@
 import fs from 'fs';
-import React from 'react';
-import { createStore } from 'redux';
-import heepApp from './reducers/reducers';
-import { renderToString } from 'react-dom/server';
-import { Provider } from 'react-redux';
-import App from './components/App';
 import path from 'path';
 import express from 'express';
 import bodyParser from 'body-parser';
@@ -45,63 +39,6 @@ app.get('/api/clients', (req, res) => {
 
   });
 });
-
-// //y time the server side receives a request
-// app.use(handleInitialRender)
-
-
-// function handleInitialRender(req, res) {
-//   console.log('entering handleReceiver');
-//   fs.readFile(CLIENT_FILE, (err, data) => {
-//     if (err) {
-//       console.error(err);
-//       process.exit(1);
-//     }
-//     else {
-//       console.log('handling initial server side render...');
-//       // Compile an initial state
-//       const preloadedState = {clientList: JSON.parse(data) }
-//       console.log(preloadedState)
-
-//       // Create a new Redux store instance
-//       const store = createStore(heepApp, preloadedState);
-
-//       // Render the component to a string
-//       const html = renderToString(
-//         <Provider store={store}>
-//           <App clientList={preloadedState.clientList}/>
-//         </Provider>
-//       )
-
-//       // Grab the initial state from our Redux store
-//       const finalState = store.getState()
-
-//       // Send the rendered page back to the client
-//       res.send(renderFullPage(html, finalState))
-//     }
-//   })
-// }
-
-// function renderFullPage(html, preloadedState) {
-//   return `
-//     <!doctype html>
-//     <html>
-//       <style> *{margin: 0px;  padding: 0px; } </style>
-//       <head>
-//         <title>Redux Universal Example</title>
-//       </head>
-//       <body>
-//         <div id="root">${html}</div>
-//         <script>
-//           window.__PRELOADED_STATE__ = ${JSON.stringify(preloadedState).replace(/</g, '\\x3c')}
-//         </script>
-//         <script type="text/javascript" src="./dist/bundle.js"></script>
-//       </body>
-//     </html>
-//     `
-// }
-
-
 
 app.post('/api/commands', (req, res) => {
   const command = req.body["command"];
