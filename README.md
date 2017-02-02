@@ -17,3 +17,7 @@ We are going to revolutionize the way devices interact and the way devices are d
 ### Software Design for Sending
 
 ![alt text](Architecture Drawings/HeepBackendSending.png "Sending")
+
+### Software Design for Receiving
+
+![alt text](Architecture Drawings/HeepBackEndReceiving.png "Sending")
