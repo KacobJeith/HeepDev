@@ -16,4 +16,4 @@ We are going to revolutionize the way devices interact and the way devices are d
 
 ### Software Design for Sending
 
-![alt text](Architecture Drawings/CockcroftWaltonCircuit.png "Sending")
+![alt text](Architecture Drawings/HeepBackendSending.png "Sending")
