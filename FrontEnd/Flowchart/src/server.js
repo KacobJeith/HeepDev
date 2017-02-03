@@ -30,7 +30,17 @@ app.get('/api/clients', (req, res) => {
   fs.readFile(CLIENT_FILE, (err, data) => {
     if (err) {
       console.error(err);
-      process.exit(1);
+      console.log('clientList.json not present, creating now');
+      var emptyjson = "[]";
+      fs.writeFile(CLIENT_FILE, emptyjson, (err) => {
+        if(err) {
+          return console.log(err);
+        }
+
+        console.log('generated empty clientList.json');
+      })
+
+      res.json(JSON.parse(emptyjson));
     }
     else {
       console.log(JSON.parse(data));
