@@ -1,7 +1,6 @@
 import React from 'react';
 import $ from 'jquery';
 import DraggableContainer from './DraggableContainer';
-import Sidebar from './Sidebar';
 
 export default class App extends React.Component {
   render() {
