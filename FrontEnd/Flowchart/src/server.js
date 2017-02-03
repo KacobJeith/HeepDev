@@ -3,6 +3,7 @@ import path from 'path';
 import express from 'express';
 import bodyParser from 'body-parser';
 
+
 var app = express();
 var CLIENT_FILE = path.join(__dirname, '../../../Server/clientList.json');
 var COMMAND_FILE = path.join(__dirname, '../../../Server/CommandQueue.tmp');
@@ -67,7 +68,12 @@ app.post('/api/commands', (req, res) => {
 });
 
 
-app.listen(app.get('port'), () => {
-  console.log('Server started: http://localhost:' + app.get('port') + '/');
+
+app.listen(app.get('port'), (error) => {
+  if (error) {
+    console.error(error)
+  } else {
+    console.log('Server started: http://localhost:' + app.get('port') + '/');
+  }
 });
 

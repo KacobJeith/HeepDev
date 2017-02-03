@@ -2,9 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import ClientGraphic from './ClientGraphic';
-import Vertex from './Vertex';
+import Vertex from '../containers/VertexContainer';
 
-class DraggableContainer extends React.Component {
+class Flowchart extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -53,7 +53,7 @@ class DraggableContainer extends React.Component {
 		}
 
 		console.log(this.state.vertexPaths);
-		this.forceUpdate();
+		this.props.addVertex(this.state.vertexPaths);
 	}
 
 	findControlPosition(sourceID,controlName){
@@ -176,19 +176,6 @@ class DraggableContainer extends React.Component {
 	updateAllConnectedClients(clientID, controlName, newVal) {
 		this.updateCurCtrlValue(clientID, controlName, newVal);
 
-		// This method doesn't consider recently edited vertex paths
-		// for(var clientIndex in this.props.clientList) {
-		// 	if(this.props.clientList[clientIndex]['ClientID'] == clientID){
-		// 		for (var vertexIndex in this.props.clientList[clientIndex]['VertexList']){
-		// 			if (this.props.clientList[clientIndex]['VertexList'][vertexIndex]['outputName'] == controlName){
-		// 				this.updateCurCtrlValue(this.props.clientList[clientIndex]['VertexList'][vertexIndex]['destinationID'], 
-		// 									this.props.clientList[clientIndex]['VertexList'][vertexIndex]['inputName'],
-		// 									newVal);
-		// 			}					
-		// 		}
-		// 	}
-		// }
-
 		for (var thisVertex in this.state.vertexPaths){
 			if (this.state.vertexPaths[thisVertex]['sourceID'] == clientID) {
 				if (this.state.vertexPaths[thisVertex]['outputName'] == controlName){
@@ -245,7 +232,6 @@ class DraggableContainer extends React.Component {
 				top: 0,
 				left: 0,
 				url:this.props.url,
-				sidebarVisible: this.props.sidebarVisible,
 				selectInput: (inputName, destinationIP, destinationID, position) => this.selectInputandSend(inputName, destinationIP, destinationID, position),
 				selectOutput: (outputName, sourceID, position) => this.selectOutput(outputName, sourceID, position),
 				updateVertexPositionsByOffset: (clientID, dragOffset) => this.updateVertexPositionsByOffset(clientID, dragOffset),
@@ -264,7 +250,6 @@ class DraggableContainer extends React.Component {
 
 		let clientNodes = [];
 		var unsetYPosition = 0;
-
 		for( var client in this.props.clientList){
 			inputs.clientGraphic['key'] = this.props.clientList[client]['ClientID'];
 			inputs.clientGraphic['client'] = this.props.clientList[client];
@@ -307,4 +292,4 @@ class DraggableContainer extends React.Component {
 	}
 }
 
-export default DraggableContainer;
+export default Flowchart;
