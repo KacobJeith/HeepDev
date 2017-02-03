@@ -53,6 +53,29 @@ app.get('/api/clients', (req, res) => {
 app.post('/api/commands', (req, res) => {
   const command = req.body["command"];
 
+  fs.readFile(COMMAND_FILE,  (err) => {
+    if (err) {
+      console.error(err);
+      console.log('CommandQueue.tmp not present, creating now');
+      fs.writeFile(COMMAND_FILE, '', (err) => {
+        if(err) {
+          return console.log(err);
+        }
+        else {
+          writeCommand(command)
+        }
+        console.log('generated empty CommandQueue.tmp');
+      });
+    }
+    else {
+      writeCommand(command);
+    }
+
+  })
+  res.end("AJAX WORKED?!");
+});
+
+var writeCommand = (command) => {
   fs.appendFile(COMMAND_FILE, command, (err, data) => {
     if (err) {
       console.error(err);
@@ -73,10 +96,7 @@ app.post('/api/commands', (req, res) => {
 
     console.log(command);
   });
-
-  res.end("AJAX WORKED?!");
-});
-
+}
 
 
 app.listen(app.get('port'), (error) => {
