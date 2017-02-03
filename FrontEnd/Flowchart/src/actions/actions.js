@@ -1,16 +1,31 @@
-export const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER';
-
-export const VisibilityFilters = {
-  SHOW_ALL: 'SHOW_ALL',
-  SHOW_NONE: 'SHOW_NONE'
-}
-
-/* 
-	ACTIONS
-	*/
-
-
-export const setVisibilityFilter = (filter) => ({
-  type: SET_VISIBILITY_FILTER,
-  filter
+//Client
+export const positionClient = (clientID, newPosition) => ({
+  type: 'POSITION_CLIENT',
+  clientID,
+  newPosition
 })
+
+//URL
+export const storeURL = (url) => ({
+  type: 'STORE_URL',
+  url
+})
+
+
+//Vertex
+export const addVertex = (vertex) => ({
+  type: 'ADD_VERTEX',
+  vertex
+})
+
+export const deleteVertex = (vertex) => ({
+  type: 'DELETE_VERTEX',
+  vertex
+})
+
+export const positionVertex = (vertex, newPosition) => ({
+  type: 'POSITION_VERTEX',
+  vertex,
+  newPosition
+})
+

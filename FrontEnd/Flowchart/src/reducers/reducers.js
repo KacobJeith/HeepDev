@@ -1,25 +1,57 @@
 import { combineReducers } from 'redux'
-import { SET_VISIBILITY_FILTER, VisibilityFilters } from '../actions/actions'
+import 'babel-polyfill'
+import * as actions from '../actions/actions'
 
 const initialState = {
-  visibilityFilter: VisibilityFilters.SHOW_ALL,
-  vertexPaths: [],
-  clientList: []
+  vertexList: [],
+  clientList: [],
+  url: ''
 }
 
 function clientList(state = initialState, action) {
   switch (action.type) {
-    case SET_VISIBILITY_FILTER:
-      return Object.assign({}, state, {
-        visibilityFilter: action.filter
-      })
+    case 'POSITION_CLIENT':
+      return {
+        ...state,
+        clientList: action.clientList
+      }
+    default:
+      return state
+  }
+}
+
+function url(state = initialState, action) {
+  switch (action.type) {
+    case 'STORE_URL':      
+      return (action.url)
+    default:
+      return state
+  }
+}
+
+function vertexList(state = initialState, action) {
+  switch (action.type) {
+    case 'DELETE_VERTEX':
+      return {
+        ...state,
+        vertexList: state.vertexList.pop()
+      }
+    case 'ADD_VERTEX':
+      return {
+        ...state,
+        vertexList: state.vertexList.push(action.vertex)
+      }
     default:
       return state
   }
 }
 
 const heepApp = combineReducers({
-	clientList
+	clientList,
+  vertexList,
+  url
 })
 
 export default heepApp
+
+

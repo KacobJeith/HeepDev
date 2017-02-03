@@ -1,6 +1,6 @@
 import React from 'react';
 import $ from 'jquery';
-import DraggableContainer from './DraggableContainer';
+import Flowchart from '../containers/FlowchartContainer';
 
 export default class App extends React.Component {
   render() {
@@ -40,20 +40,17 @@ export default class App extends React.Component {
       flowchartContainer: {
         style: styles.flowchartContainer
       },
-      flowchart: {
-        url: window.location.protocol.concat('//', window.location.hostname,':3001'),
-        hideSourceOnDrag: true,
-        clientList: this.props.clientList,
-      },
       footer : {
         style: styles.footer,
       }
     }
+    console.log(this.props)
+    this.props.storeURL(window.location.protocol.concat('//', window.location.hostname,':3001'));
 
     return (<div>
               <h1 {...inputs.header}> Client Dashboard <hr></hr></h1>
               <div {...inputs.flowchartContainer}>
-                <DraggableContainer {...inputs.flowchart}/>
+                <Flowchart />
               </div>
               <footer {...inputs.footer}> <hr></hr> &copy; 2016 Jacob Dylan. </footer>
             </div>

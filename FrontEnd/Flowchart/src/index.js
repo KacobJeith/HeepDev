@@ -8,7 +8,9 @@ import App from './containers/AppContainer'
 import $ from 'jquery'
 
 var initialState = {
-  clientList: []
+  clientList: [],
+  vertexList: [],
+  url: ''
 };
 
 function loadClientsFromServer(url) {
@@ -16,7 +18,8 @@ function loadClientsFromServer(url) {
       url: url,
       cache: false,
       success: (data) => {
-        initialState = {clientList: data};
+        initialState = {...initialState,
+                        clientList: data};
 
         
 		const store = createStore(heepApp, initialState);
