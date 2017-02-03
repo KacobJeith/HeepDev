@@ -30,7 +30,6 @@ class Vertex extends React.Component {
 	      },
 	      error: function(xhr, status, err) {
 	        console.error(url, status, err.toString());
-	        console.log('Hitting sendDeleteVertexToServer error');
 	      }
 	    });
 	}
