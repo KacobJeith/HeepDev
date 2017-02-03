@@ -54,7 +54,6 @@ class Flowchart extends React.Component {
 
 		console.log(this.state.vertexPaths);
 		this.props.addVertex(this.state.vertexPaths);
-		this.forceUpdate();
 	}
 
 	findControlPosition(sourceID,controlName){
