@@ -1,33 +1,6 @@
 import React from 'react';
 import $ from 'jquery';
 
-class VertexList extends React.Component {
-	render() {
-		let inputs = {
-			eachVertex: {
-				url: this.props.url,
-				key: [],
-				vertex: []
-			}
-		};
-
-		let allVertexes = this.props.vertexList.map((thisVertex,index) => {
-			
-			inputs.eachVertex['key'] = index;
-			inputs.eachVertex['vertex'] = thisVertex;
-			
-			return <Vertex {...inputs.eachVertex}/>
-			});
-
-		return (<g>
-					{allVertexes}
-				</g>
-				);
-	}
-}
-
-
-
 class Vertex extends React.Component {
 	constructor() {
 		super();
@@ -95,4 +68,4 @@ class Vertex extends React.Component {
 	}
 }
 
-export default VertexList;
+export default Vertex;

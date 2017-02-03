@@ -31,16 +31,9 @@ function url(state = initialState, action) {
 
 function vertexList(state = initialState, action) {
   switch (action.type) {
-    case 'DELETE_VERTEX':
-      return {
-        ...state,
-        vertexList: state.vertexList.pop()
-      }
     case 'ADD_VERTEX':
-      return {
-        ...state,
-        vertexList: state.vertexList.push(action.vertex)
-      }
+      console.log(action)
+      return (action.vertex)
     default:
       return state
   }
