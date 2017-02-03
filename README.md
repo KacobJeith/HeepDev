@@ -12,3 +12,12 @@ We are going to revolutionize the way devices interact and the way devices are d
 4. On the Client System, go into Chome, and enter your IP address, on port `<IP_ADDRESS:8001>`
 5. Click `Test Server`, and a list of all devices on your network will appear
 
+## Heep General Architecture
+
+### Software Design for Sending
+
+![alt text](Architecture Drawings/HeepBackendSending.png "Sending")
+
+### Software Design for Receiving
+
+![alt text](Architecture Drawings/HeepBackendReceiving.png "Sending")
