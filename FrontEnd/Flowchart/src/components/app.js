@@ -44,7 +44,7 @@ export default class App extends React.Component {
         style: styles.footer,
       }
     }
-    console.log(this.props)
+    
     this.props.storeURL(window.location.protocol.concat('//', window.location.hostname,':3001'));
 
     return (<div>

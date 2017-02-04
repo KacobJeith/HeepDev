@@ -7,9 +7,10 @@ import heepApp from './reducers/reducers'
 import App from './containers/AppContainer'
 import $ from 'jquery'
 
+
 var initialState = {
-  clientList: [],
-  vertexList: [],
+  clientList: {},
+  vertexList: {},
   url: ''
 };
 
@@ -18,19 +19,7 @@ function loadClientsFromServer(url) {
       url: url,
       cache: false,
       success: (data) => {
-        initialState = {...initialState,
-                        clientList: data};
-
-        
-		const store = createStore(heepApp, initialState);
-		console.log(store.getState());
-
-		render(
-		  <Provider store={store}>
-		    <App/>
-		  </Provider>,
-		  document.getElementById('root')
-		)
+        prepareInitialState(data);
 
       },
       error: function(xhr, status, err) {
@@ -38,7 +27,27 @@ function loadClientsFromServer(url) {
       }
     });
 
-  }
+}
+
+var prepareInitialState = (data) => {
+
+  initialState = {...initialState,
+                  clientList: data};
+
+  // add all the vertexes
+
+  const store = createStore(heepApp, initialState);
+  console.log(initialState);
+
+  render(
+    <Provider store={store}>
+      <App/>
+    </Provider>,
+    document.getElementById('root')
+  )
+
+}
+
 
 loadClientsFromServer(window.location.protocol.concat('//', window.location.hostname,':3001').concat('/api/clients'))
 

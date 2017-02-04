@@ -1,6 +1,7 @@
 import React from 'react';
 import $ from 'jquery';
 
+
 class Vertex extends React.Component {
 	constructor() {
 		super();
@@ -36,6 +37,9 @@ class Vertex extends React.Component {
 
 
 	render() {
+		console.log('each vertex');
+		console.log(this.props)
+
 		var inputs = {
 			vertex: {
 				strokeWidth: this.state.strokeWidth,

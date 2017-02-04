@@ -32,7 +32,6 @@ class Flowchart extends React.Component {
 	fillVertexesFromClientlist() {
 		
 		console.log("building vertexes on initial load");
-		console.log(this.props.clientList);
 
 		for(var clientIndex in this.props.clientList) { //loop through client array
 			
@@ -52,7 +51,7 @@ class Flowchart extends React.Component {
 			}
 		}
 
-		console.log(this.state.vertexPaths);
+		
 		this.props.addVertex(this.state.vertexPaths);
 	}
 
@@ -117,6 +116,7 @@ class Flowchart extends React.Component {
 							};
 
 		this.setState({vertexPaths: vertexObject});
+
 	}
 
 	updateVertexPositionsByOffset(clientID, dragOffset) {
@@ -275,7 +275,7 @@ class Flowchart extends React.Component {
 		for(var thisVertex in this.state.vertexPaths){
 
 			inputs.vertexSVG['key'] = thisVertex;
-			inputs.vertexSVG['vertex'] = this.state.vertexPaths[thisVertex]
+			//inputs.vertexSVG['vertex'] = this.state.vertexPaths[thisVertex]
 
 			vertexDrawings.push(<Vertex {...inputs.vertexSVG}/>);
 		}
@@ -283,7 +283,7 @@ class Flowchart extends React.Component {
 	return (<div {...inputs.flowchart} ref="flowchart"> 
 				
 				<svg {...inputs.vertexSVGSpace}>
-					{vertexDrawings}
+					<Vertex />
 				</svg>
 				{clientNodes}
 			</div>
