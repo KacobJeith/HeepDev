@@ -51,7 +51,7 @@ class Flowchart extends React.Component {
 			}
 		}
 
-		
+		console.log('Paths: ', this.state.vertexPaths);
 		this.props.addVertex(this.state.vertexPaths);
 	}
 
@@ -261,7 +261,7 @@ class Flowchart extends React.Component {
 		}
 
 		var clients = [];
-	    console.log('app: ', this.props.clientArray);
+	    console.log('Flowchart: ', this.props.clientArray);
 
 	    for (var i = 0; i < this.props.clientArray.length; i++) {
 	      var thisClient = this.props.clientArray[i];

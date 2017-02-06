@@ -6,6 +6,7 @@ const initialState = {
   clients: {},
   positions: {},
   vertexList: {},
+  controls: {},
   url: ''
 }
 
@@ -24,6 +25,7 @@ function url(state = initialState, action) {
       return state
   }
 }
+
 
 function vertexList(state = initialState, action) {
   switch (action.type) {
@@ -48,10 +50,18 @@ function positions(state = initialState, action) {
   }
 }
 
+function controls(state = initialState, action) {
+  switch (action.type) {
+    default:
+      return state
+  }
+}
+
 const heepApp = combineReducers({
 	clients,
   vertexList,
   positions,
+  controls,
   url
 })
 
