@@ -1,6 +1,6 @@
 import React from 'react';
 import $ from 'jquery';
-import ControlList from './ClientControls';
+import ControlList from './Controls';
 import DynamicIcon from './DynamicIcon';
 
 
@@ -135,6 +135,7 @@ class Client extends React.Component {
 	}
 
 	render() {
+
 		const styles = {
 			clientContainer: {
 				backgroundColor: 'white',

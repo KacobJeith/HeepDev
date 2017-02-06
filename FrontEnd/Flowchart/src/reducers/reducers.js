@@ -43,7 +43,7 @@ function positions(state = initialState, action) {
   switch (action.type) {
     case 'POSITION_CLIENT':
       return {...state,
-              [action.clientID]: {top: action.newPosition['top'] + state[action.clientID]['top'], left: action.newPosition['left'] + state[action.clientID]['left']}
+              [action.clientID]: {client: {top: action.newPosition['top'] + state[action.clientID]['client']['top'], left: action.newPosition['left'] + state[action.clientID]['client']['left']}}
             }
     default:
       return state
@@ -56,6 +56,7 @@ function controls(state = initialState, action) {
       return state
   }
 }
+
 
 const heepApp = combineReducers({
 	clients,
