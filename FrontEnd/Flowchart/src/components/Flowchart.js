@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
-import ClientGraphic from './ClientGraphic';
+import Client from '../containers/ClientContainer';
 import Vertex from '../containers/VertexContainer';
 
 class Flowchart extends React.Component {
@@ -115,8 +115,13 @@ class Flowchart extends React.Component {
 								y2: this.vertex.inputPosition['top']
 							};
 
-		this.setState({vertexPaths: vertexObject});
+		var positionObj = {x1: this.vertex.outputPosition['left'],
+							x2: this.vertex.inputPosition['left'],
+							y1: this.vertex.outputPosition['top'],
+							y2: this.vertex.inputPosition['top']}
 
+		this.setState({vertexPaths: vertexObject});
+		//this.props.positionVertex(vertexName, positionObj);
 	}
 
 	updateVertexPositionsByOffset(clientID, dragOffset) {
@@ -129,15 +134,33 @@ class Flowchart extends React.Component {
 				currentVertexPaths[thisVertex]['x2'] = currentVertexPaths[thisVertex]['x2'] + dragOffset['left'];
 				currentVertexPaths[thisVertex]['y2'] = currentVertexPaths[thisVertex]['y2'] + dragOffset['top'];
 
+
+				var positionObj = {x1: currentVertexPaths[thisVertex]['x1'],
+									x2: currentVertexPaths[thisVertex]['x2'],
+									y1: currentVertexPaths[thisVertex]['y1'],
+									y2: currentVertexPaths[thisVertex]['y2']}
+
+
+				//this.props.positionVertex(thisVertex,positionObj);
+
 			}
 			else if(this.state.vertexPaths[thisVertex]['sourceID'] == clientID){ //check if output id matches
 				
 				currentVertexPaths[thisVertex]['x1'] = currentVertexPaths[thisVertex]['x1'] + dragOffset['left'];
 				currentVertexPaths[thisVertex]['y1'] = currentVertexPaths[thisVertex]['y1'] + dragOffset['top'];
+
+				var positionObj = {x1: currentVertexPaths[thisVertex]['x1'],
+									x2: currentVertexPaths[thisVertex]['x2'],
+									y1: currentVertexPaths[thisVertex]['y1'],
+									y2: currentVertexPaths[thisVertex]['y2']}
+
+
+				//this.props.positionVertex(thisVertex,positionObj);
 				
 			}
 
 		}
+
 
 		this.setState({vertexPaths: currentVertexPaths});
 	}
@@ -226,17 +249,6 @@ class Flowchart extends React.Component {
 			flowchart: {
 				style: styles.flowchart
 			},
-			clientGraphic: {
-				key: [],
-				client: [],
-				top: 0,
-				left: 0,
-				url:this.props.url,
-				selectInput: (inputName, destinationIP, destinationID, position) => this.selectInputandSend(inputName, destinationIP, destinationID, position),
-				selectOutput: (outputName, sourceID, position) => this.selectOutput(outputName, sourceID, position),
-				updateVertexPositionsByOffset: (clientID, dragOffset) => this.updateVertexPositionsByOffset(clientID, dragOffset),
-				updateAllConnectedClients: (clientID, controlName, newVal) => this.updateAllConnectedClients(clientID, controlName, newVal),
-			},
 			vertexSVGSpace:{
 				style: styles.vertexSVGSpace
 			},
@@ -248,44 +260,20 @@ class Flowchart extends React.Component {
 			}
 		}
 
-		let clientNodes = [];
-		var unsetYPosition = 0;
-		for( var client in this.props.clientList){
-			inputs.clientGraphic['key'] = this.props.clientList[client]['ClientID'];
-			inputs.clientGraphic['client'] = this.props.clientList[client];
-			inputs.clientGraphic['top'] = this.props.clientList[client]['Position']['top'] - 40;
-			inputs.clientGraphic['left'] = this.props.clientList[client]['Position']['left'] - 10;
+		var clients = [];
+	    console.log('app: ', this.props.clientArray);
 
-			if (inputs.clientGraphic['top'] == 0){
-
-				inputs.clientGraphic['top'] == unsetYPosition;
-
-				clientNodes.push(<ClientGraphic {...inputs.clientGraphic}/>);
-
-				unsetYPosition += 150;
-			}
-			else{
-
-				clientNodes.push(<ClientGraphic {...inputs.clientGraphic}/>);
-			}
-			
-		};
-
-		var vertexDrawings = [];
-		for(var thisVertex in this.state.vertexPaths){
-
-			inputs.vertexSVG['key'] = thisVertex;
-			//inputs.vertexSVG['vertex'] = this.state.vertexPaths[thisVertex]
-
-			vertexDrawings.push(<Vertex {...inputs.vertexSVG}/>);
-		}
+	    for (var i = 0; i < this.props.clientArray.length; i++) {
+	      var thisClient = this.props.clientArray[i];
+	      clients.push(<Client key={thisClient} ClientID={thisClient}/>);
+	    }
 
 	return (<div {...inputs.flowchart} ref="flowchart"> 
 				
 				<svg {...inputs.vertexSVGSpace}>
 					<Vertex />
 				</svg>
-				{clientNodes}
+				{clients}
 			</div>
 		);
 

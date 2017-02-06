@@ -2,7 +2,7 @@ import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import Vertex from '../components/Vertex'
-import * as Actions  from '../actions/actions'
+import {deleteVertex}  from '../actions/actions'
 
 class VertexList extends React.Component{
 	render() {
@@ -27,7 +27,7 @@ const mapStateToProps = (state) => ({
 })
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(Actions, dispatch)
+  return bindActionCreators({deleteVertex}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(VertexList)

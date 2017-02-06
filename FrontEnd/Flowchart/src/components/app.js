@@ -7,6 +7,7 @@ export default class App extends React.Component {
     const styles = {
         header: {
           backgroundColor: "#43464c", 
+          position: 'fixed',
           height: 40,
           width: "100%",
           color: "#e1e3e8",

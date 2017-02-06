@@ -3,18 +3,14 @@ import 'babel-polyfill'
 import * as actions from '../actions/actions'
 
 const initialState = {
-  vertexList: [],
-  clientList: [],
+  clients: {},
+  positions: {},
+  vertexList: {},
   url: ''
 }
 
-function clientList(state = initialState, action) {
+function clients(state = initialState, action) {
   switch (action.type) {
-    case 'POSITION_CLIENT':
-      return {
-        ...state,
-        clientList: action.clientList
-      }
     default:
       return state
   }
@@ -32,16 +28,30 @@ function url(state = initialState, action) {
 function vertexList(state = initialState, action) {
   switch (action.type) {
     case 'ADD_VERTEX':
-      console.log(action)
       return (action.vertex)
+    case 'POSITION_VERTEX':
+      console.log(action)
+      return state
+    default:
+      return state
+  }
+}
+
+function positions(state = initialState, action) {
+  switch (action.type) {
+    case 'POSITION_CLIENT':
+      return {...state,
+              [action.clientID]: {top: action.newPosition['top'] + state[action.clientID]['top'], left: action.newPosition['left'] + state[action.clientID]['left']}
+            }
     default:
       return state
   }
 }
 
 const heepApp = combineReducers({
-	clientList,
+	clients,
   vertexList,
+  positions,
   url
 })
 

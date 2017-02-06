@@ -9,7 +9,8 @@ import $ from 'jquery'
 
 
 var initialState = {
-  clientList: {},
+  clients: {},
+  positions: {},
   vertexList: {},
   url: ''
 };
@@ -31,13 +32,18 @@ function loadClientsFromServer(url) {
 
 var prepareInitialState = (data) => {
 
-  initialState = {...initialState,
-                  clientList: data};
-
-  // add all the vertexes
+  console.log(data)
+  initialState.clients.clientArray = [];
+  for (var index = 0; index < data.length;  index++){
+    var id = data[index].ClientID;
+    initialState.clients.clientArray.push(id);
+    initialState.clients[id] = data[index];
+    initialState.positions[id] = data[index].Position;
+  }
+  
+  console.log(initialState);
 
   const store = createStore(heepApp, initialState);
-  console.log(initialState);
 
   render(
     <Provider store={store}>

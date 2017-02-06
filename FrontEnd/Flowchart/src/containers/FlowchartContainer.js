@@ -4,7 +4,7 @@ import Flowchart from '../components/Flowchart'
 import * as Actions from '../actions/actions'
 
 const mapStateToProps = (state) => ({
-  clientList: state.clientList,
+  clientArray: state.clients.clientArray,
   vertexPaths: state.vertexList,
   url: state.url
 })

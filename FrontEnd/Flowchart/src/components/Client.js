@@ -4,16 +4,9 @@ import ControlList from './ClientControls';
 import DynamicIcon from './DynamicIcon';
 
 
-class ClientGraphic extends React.Component {
+class Client extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			radius: 5,
-			top: this.props.top,
-			left: this.props.left,
-		}
-
-		this.activeInput = [];
 
 		this.inputs = [];
 		this.outputs = [];
@@ -23,9 +16,6 @@ class ClientGraphic extends React.Component {
 							  left: 0};
 		this.lastPosition =  {top:  0,
 							  left: 0};
-
-		this.controlPosition = {top: 0, 
-								left: 0};
 
 		this.fillInputs();
 		this.fillOutputs();
@@ -59,6 +49,7 @@ class ClientGraphic extends React.Component {
 	}
 
 	fillInputs() {
+		console.log('fill inputs:', this.props);
 
 		for(let i = 0; i < this.props.client['ControlList'].length; i++){
 			if (!this.props.client['ControlList'][i]['ControlDirection']){
@@ -78,49 +69,45 @@ class ClientGraphic extends React.Component {
 
 	onDragStart(event) {
 
-	  	this.lastPosition['left'] = event.screenX;
-	  	this.lastPosition['top'] = event.screenY;
-	  	event.dataTransfer.setDragImage(this.refs.client, -99999,-99999);
+	  	this.lastPosition['left'] = event.pageX;
+	  	this.lastPosition['top'] = event.pageY;
+	  	event.dataTransfer.setDragImage(this.refs.client, 99999,99999);
 	}
 
 	onTouchStart(event) {
 
 		event.preventDefault();
-		this.lastPosition['left'] = event.nativeEvent.changedTouches[0].screenX;
-	  	this.lastPosition['top'] = event.nativeEvent.changedTouches[0].screenY;
+		this.lastPosition['left'] = event.nativeEvent.changedTouches[0].pageX;
+	  	this.lastPosition['top'] = event.nativeEvent.changedTouches[0].pageY;
 
 	}
 
 	onDrag(event) {
-
 		this.calculateDragOffset(event);
-		var newPosition = {left: this.state['left'] + this.runningOffset.left,
-					   		top: this.state['top'] + this.runningOffset.top};
-		
-		this.setState(newPosition);
-		this.props.updateVertexPositionsByOffset(this.props.client['ClientID'], this.runningOffset);
+		this.props.positionClient(this.props.client.ClientID, this.runningOffset);
+		//this.props.updateVertexPositionsByOffset(this.props.client['ClientID'], this.runningOffset);
 	}
 
 	calculateDragPosition(event) {
 		
-		var newPosition = {left: this.state.left,
-					   		top: this.state.top};
+		var newPosition = {left: this.props.position.left,
+					   		top: this.props.position.top};
 
-		this.sendPositionToServer(newPosition, this.props.url.concat('/api/commands'));
+		//this.sendPositionToServer(newPosition, this.props.url.concat('/api/commands'));
  		
 	}
 
 	calculateDragOffset(event) {
 		// The final drag event is always 0, whichthrows off tracking unless you catch and ignore it
-		if (event.screenX == 0 && event.screenY == 0){
+		if (event.clientX == 0 && event.clientY == 0){
 			return;
 		}
 
-		this.runningOffset['left'] = event.screenX - this.lastPosition['left']  ;
-		this.lastPosition['left'] = event.screenX;
+		this.runningOffset['left'] = event.pageX - this.lastPosition['left']  ;
+		this.lastPosition['left'] = event.pageX;
 
-		this.runningOffset['top'] = event.screenY - this.lastPosition['top']  ;
-		this.lastPosition['top'] = event.screenY;
+		this.runningOffset['top'] = event.pageY - this.lastPosition['top']  ;
+		this.lastPosition['top'] = event.pageY;
 
 	}
 
@@ -161,8 +148,8 @@ class ClientGraphic extends React.Component {
 				cursor: '-webkit-grab',
 				height: this.cardWorkspace,
 				position: 'absolute',
-				top: this.state.top,
-				left: this.state.left,
+				top: this.props.position.top,
+				left: this.props.position.left,
 				color: 'black'
 			},
 			name: {
@@ -247,8 +234,8 @@ class ClientGraphic extends React.Component {
 				client: this.props.client,
 				select: this.props.selectInput,
 				updateAllConnectedClients: this.props.updateAllConnectedClients,
-				top: this.state.top,
-				left: this.state.left, 
+				top: this.props.position.top,
+				left: this.props.position.left, 
 			},
 			controlListOutputs: {
 				url: this.props.url,
@@ -256,8 +243,8 @@ class ClientGraphic extends React.Component {
 				client: this.props.client,
 				select: this.props.selectOutput,
 				updateAllConnectedClients: this.props.updateAllConnectedClients,
-				top: this.state.top,
-				left: this.state.left, 
+				top: this.props.position.top,
+				left: this.props.position.left, 
 			}
 		}
 
@@ -284,4 +271,4 @@ class ClientGraphic extends React.Component {
 	}
 }
 
-export default ClientGraphic;
+export default Client;

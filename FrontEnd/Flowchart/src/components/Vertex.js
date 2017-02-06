@@ -37,8 +37,8 @@ class Vertex extends React.Component {
 
 
 	render() {
-		console.log('each vertex');
-		console.log(this.props)
+
+		console.log(this.props.vertex)
 
 		var inputs = {
 			vertex: {
