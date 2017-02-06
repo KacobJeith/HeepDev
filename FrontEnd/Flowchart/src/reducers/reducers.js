@@ -32,7 +32,6 @@ function vertexList(state = initialState, action) {
     case 'ADD_VERTEX':
       return (action.vertex)
     case 'POSITION_VERTEX':
-      console.log(action)
       return state
     default:
       return state
@@ -42,8 +41,15 @@ function vertexList(state = initialState, action) {
 function positions(state = initialState, action) {
   switch (action.type) {
     case 'POSITION_CLIENT':
+      var keys = state[action.clientID];
+      var newState = {};
+      for (var id in state[action.clientID]){
+        newState[id] = {top: action.newPosition['top'] + state[action.clientID][id]['top'], 
+                        left: action.newPosition['left'] + state[action.clientID][id]['left']}
+      }
+
       return {...state,
-              [action.clientID]: {client: {top: action.newPosition['top'] + state[action.clientID]['client']['top'], left: action.newPosition['left'] + state[action.clientID]['client']['left']}}
+              [action.clientID]: newState
             }
     default:
       return state

@@ -38,28 +38,26 @@ class Vertex extends React.Component {
 
 	render() {
 
-		console.log(this.props.vertex)
-
 		var inputs = {
 			vertex: {
 				strokeWidth: this.state.strokeWidth,
 				stroke: this.state.color,
 				fill: 'transparent',
-				d: "M".concat(	String(this.props.vertex['x1']), 
+				d: "M".concat(	String(this.props.inputPosition['left']), 
 								" ", 
-								String(this.props.vertex['y1']), 
+								String(this.props.inputPosition['top']), 
 								" Q ", 
-								String(Math.round(this.props.vertex['x1'] + 30)),
+								String(Math.round(this.props.inputPosition['left'] + 30)),
 								" ",
-								String(Math.round(this.props.vertex['y1'])),
+								String(Math.round(this.props.inputPosition['top'])),
 								", ",
-								String(Math.round(this.props.vertex['x1'] + (this.props.vertex['x2'] - this.props.vertex['x1'])/2)),
+								String(Math.round(this.props.inputPosition['left'] + (this.props.outputPosition['left'] - this.props.inputPosition['left'])/2)),
 								" ", 
-								String(Math.round(this.props.vertex['y1'] + (this.props.vertex['y2'] - this.props.vertex['y1'])/2)),
+								String(Math.round(this.props.inputPosition['top'] + (this.props.outputPosition['top'] - this.props.inputPosition['top'])/2)),
 								" T ", 
-								String(this.props.vertex['x2']), 
+								String(this.props.outputPosition['left']), 
 								" ", 
-								String(this.props.vertex['y2'])),
+								String(this.props.outputPosition['top'])),
 				onMouseEnter: () => this.setState({'color': 'red', 'strokeWidth': 4}),
 				onMouseLeave: () => this.setState({'color': 'black', 'strokeWidth': 3}),
 				onClick: () => this.sendDeleteVertexToServer(this.props.url.concat('/api/commands')),

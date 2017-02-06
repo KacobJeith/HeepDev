@@ -52,7 +52,7 @@ class Flowchart extends React.Component {
 		}
 
 		console.log('Paths: ', this.state.vertexPaths);
-		this.props.addVertex(this.state.vertexPaths);
+		//this.props.addVertex(this.state.vertexPaths);
 	}
 
 	findControlPosition(sourceID,controlName){
@@ -268,10 +268,15 @@ class Flowchart extends React.Component {
 	      clients.push(<Client key={thisClient} ClientID={thisClient}/>);
 	    }
 
+	    var vertexes = [];
+	    for (var i = 0; i < this.props.numVertexes; i++) {
+	      vertexes.push(<Vertex key={i} vertexID={i}/>);
+	    }
+
 	return (<div {...inputs.flowchart} ref="flowchart"> 
 				
 				<svg {...inputs.vertexSVGSpace}>
-					<Vertex />
+					{vertexes}
 				</svg>
 				{clients}
 			</div>

@@ -62,14 +62,14 @@ var prepareInitialState = (data) => {
 
         newClientControls['inputs'][controlName] = data[index].ControlList[controlIndex];
         newClientControls['inputs']['controlsArray'].push(controlName)
-        initialState.positions[id][controlName] = {top: initialState.positions[id]['client']['top'] + 45 + 1.5 + 25/2 + 55*newClientControls['inputs']['controlsArray'].length, 
+        initialState.positions[id][controlName] = {top: initialState.positions[id]['client']['top'] + 45 + 1.5 + 25/2 + 55*(newClientControls['inputs']['controlsArray'].length - 1), 
                                                   left: initialState.positions[id]['client']['left'] + 10};
       }
       else {
 
         newClientControls['outputs'][controlName] = data[index].ControlList[controlIndex];
         newClientControls['outputs']['controlsArray'].push(controlName);
-        initialState.positions[id][controlName] = {top: initialState.positions[id]['client']['top'] + 45 + 1.5 + 25/2 + 55*newClientControls['outputs']['controlsArray'].length, 
+        initialState.positions[id][controlName] = {top: initialState.positions[id]['client']['top'] + 45 + 1.5 + 25/2 + 55*(newClientControls['outputs']['controlsArray'].length - 1), 
                                                   left: initialState.positions[id]['client']['left'] + 250};
       }
       initialState.controls[id] = newClientControls;
