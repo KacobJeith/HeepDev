@@ -16,18 +16,15 @@ export default class Control extends React.Component {
 	}
 
 	selectInputVertex(event) {
-		this.props.select(this.props.control['ControlName'],
-						  this.props.client['IPAddress'],
-						  this.props.client['ClientID'],
-						  {top: this.props.top + this.props.controlY + 4,
-						   left: this.props.left + this.leftIndent });
+		this.props.addVertex(this.props.clientID,
+							 this.props.control['ControlName'],
+							 this.props.ip);
 	}
 
 	selectOutputVertex(event) {
-		this.props.select(this.props.control['ControlName'],
-						  this.props.client['ClientID'],
-						  {top: this.props.top + this.props.controlY + 4,
-						   left: this.props.left + this.leftIndent });
+		console.log(this.props)
+		this.props.selectOutput(this.props.clientID,
+								this.props.control['ControlName']);
 	}
 
 	render() {

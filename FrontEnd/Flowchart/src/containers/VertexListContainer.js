@@ -21,8 +21,12 @@ class VertexList extends React.Component {
 		}
 
 		var vertexes = [];
+		console.log('List: ', this.props.vertexList)
 	    for (var i in this.props.vertexList) {
-	      vertexes.push(<Vertex key={i} vertexID={i}/>);
+	    	if (i != 'selectedOutput'){
+	    		console.log(i);
+	      		vertexes.push(<Vertex key={i} vertexID={i}/>);
+	    	}
 	    }
 
 	    return <svg {...inputs.vertexSVGSpace}> {vertexes} </svg>

@@ -31,8 +31,15 @@ function url(state = initialState, action) {
 
 function vertexList(state = initialState, action) {
   switch (action.type) {
+    case 'SELECT_OUTPUT':
+      return Immutable.Map(state).set('selectedOutput', {sourceID: action.sourceID, outputName: action.outputName}).toJS();
     case 'ADD_VERTEX':
-      return (action.vertex)
+      return Immutable.Map(state).set(state.selectedOutput.sourceID + '.' + state.selectedOutput.outputName + '->' + action.destinationID + '.' + action.inputName, 
+                                      {sourceID: state.selectedOutput.sourceID,
+                                       outputName: state.selectedOutput.outputName,
+                                       destinationID: action.destinationID, 
+                                       inputName: action.inputName,
+                                       destinationIP: action.IPAddress}).toJS();
     case 'DELETE_VERTEX':
       var newMap = Immutable.Map(state).delete(action.vertexID).toJS();
       console.log(Object.keys(newMap));

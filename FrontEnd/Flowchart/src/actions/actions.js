@@ -22,13 +22,21 @@ export const storeURL = (url) => ({
 
 
 //Vertex
-export const addVertex = (vertex) => ({
+export const addVertex = (destinationID, inputName, IPAddress) => ({
   type: 'ADD_VERTEX',
-  vertex
+  destinationID, 
+  inputName,
+  IPAddress
 })
 
 export const deleteVertex = (vertexID) => ({
   type: 'DELETE_VERTEX',
   vertexID
+})
+
+export const selectOutput = (sourceID, outputName) => ({
+  type: 'SELECT_OUTPUT',
+  sourceID, 
+  outputName
 })
 
