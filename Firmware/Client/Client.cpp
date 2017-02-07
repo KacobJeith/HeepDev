@@ -98,7 +98,7 @@ Client::Client(int ID, std::string name, int numControls)
 	: clientID(ID)
 	, clientName(name)
 	, clientType(0)
-	, clientIP("None")
+	, clientIP("none")
 {
 	controlValueList = new ControlValList(numControls);
 }
@@ -113,7 +113,7 @@ Client::Client(int ID, char* name, int numControls)
 	ClearString(clientName, OUT_DATA_CONTROL_NAME_LENGTH);
 	CopyStringToBuffer(clientName, name);
 	ClearString(clientIP, CLIENT_IP_NAME_LENGTH);
-	CopyStringToBuffer(clientIP, "None");
+	CopyStringToBuffer(clientIP, "none");
 }
 
 #endif
