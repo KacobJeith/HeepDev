@@ -107,7 +107,7 @@ export default class Control extends React.Component {
 			},
 			controller:{
 				key: 0,
-				updateAllConnectedClients: this.props.updateAllConnectedClients,
+				updateControlValue: this.props.updateControlValue,
 				url: this.props.url,
 				ClientID: this.props.clientID,
 				control: this.props.control

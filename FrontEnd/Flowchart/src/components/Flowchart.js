@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import Client from '../containers/ClientContainer';
-import Vertex from '../containers/VertexContainer';
+import VertexList from '../containers/VertexListContainer';
 
 class Flowchart extends React.Component {
 	
@@ -70,12 +70,6 @@ class Flowchart extends React.Component {
 				position: 'relative',
 				backgroundColor: '#e7e7e7',
 				overflow: 'auto'
-			},
-			vertexSVGSpace: {
-				position: 'absolute',
-				width: 3000,
-				height: 3000,
-				viewBox: '0 0 1000 1000'
 			}
 		}
 
@@ -95,23 +89,14 @@ class Flowchart extends React.Component {
 		}
 
 		var clients = [];
-	    console.log('Flowchart: ', this.props.clientArray);
 
 	    for (var i = 0; i < this.props.clientArray.length; i++) {
 	      var thisClient = this.props.clientArray[i];
 	      clients.push(<Client key={thisClient} ClientID={thisClient}/>);
 	    }
 
-	    var vertexes = [];
-	    for (var i = 0; i < this.props.numVertexes; i++) {
-	      vertexes.push(<Vertex key={i} vertexID={i}/>);
-	    }
-
 	return (<div {...inputs.flowchart} ref="flowchart"> 
-				
-				<svg {...inputs.vertexSVGSpace}>
-					{vertexes}
-				</svg>
+				<VertexList /> 
 				{clients}
 			</div>
 		);

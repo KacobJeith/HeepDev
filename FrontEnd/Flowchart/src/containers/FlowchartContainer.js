@@ -1,11 +1,12 @@
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import Flowchart from '../components/Flowchart'
+import 'babel-polyfill'
 import * as Actions from '../actions/actions'
 
 const mapStateToProps = (state) => ({
   clientArray: state.clients.clientArray,
-  numVertexes: state.vertexList.length,
+  vertexList: state.vertexList.List,
   url: state.url
 })
 

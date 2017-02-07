@@ -1,4 +1,5 @@
 import 'babel-polyfill'
+import Immutable from 'immutable'
 import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
@@ -12,7 +13,8 @@ var initialState = {
   clients: {},
   positions: {},
   controls: {},
-  vertexList: [],
+  controlStructure: {},
+  vertexList: {},
   url: ''
 };
 
@@ -31,15 +33,20 @@ function loadClientsFromServer(url) {
 
 }
 
-function nameVertex(sourceID, outputName, destinationID, inputName) {
-    return sourceID + '.' + outputName + '->' + destinationID + '.' + inputName;
+function nameVertex(vertex) {
+    return vertex['sourceID'] + '.' + vertex['outputName'] + '->' + vertex['destinationID'] + '.' + vertex['inputName'];
   }
+
+function nameControl(clientID, controlName) {
+  return clientID +  '.' + controlName;
+}
 
 var prepareInitialState = (data) => {
 
   console.log('Original clientList.json: ', data);
 
   initialState.clients.clientArray = [];
+  
   // Loop through the Clients
   for (var index = 0; index < data.length;  index++){
     var id = data[index].ClientID;
@@ -55,34 +62,39 @@ var prepareInitialState = (data) => {
     // Loop through the Controls
     for (var controlIndex = 0; controlIndex < data[index].ControlList.length;  controlIndex++){
       var newClientControls = {...controlsTemplate};
+      var controlKey = nameControl(data[index]['ClientID'], data[index].ControlList[controlIndex]['ControlName']);
       var controlName = data[index].ControlList[controlIndex]['ControlName'];
+      initialState.controls[controlKey] =  data[index].ControlList[controlIndex];
 
       // Handle Control Inputs and Outputs
       if (data[index].ControlList[controlIndex]['ControlDirection'] == 0){
 
-        newClientControls['inputs'][controlName] = data[index].ControlList[controlIndex];
-        newClientControls['inputs']['controlsArray'].push(controlName)
+        //newClientControls['inputs'][controlName] = data[index].ControlList[controlIndex];
+        newClientControls['inputs']['controlsArray'].push(controlKey)
         initialState.positions[id][controlName] = {top: initialState.positions[id]['client']['top'] + 45 + 1.5 + 25/2 + 55*(newClientControls['inputs']['controlsArray'].length - 1), 
                                                   left: initialState.positions[id]['client']['left'] + 10};
       }
       else {
 
-        newClientControls['outputs'][controlName] = data[index].ControlList[controlIndex];
-        newClientControls['outputs']['controlsArray'].push(controlName);
+        //newClientControls['outputs'][controlName] = data[index].ControlList[controlIndex];
+        newClientControls['outputs']['controlsArray'].push(controlKey);
         initialState.positions[id][controlName] = {top: initialState.positions[id]['client']['top'] + 45 + 1.5 + 25/2 + 55*(newClientControls['outputs']['controlsArray'].length - 1), 
                                                   left: initialState.positions[id]['client']['left'] + 250};
       }
-      initialState.controls[id] = newClientControls;
+      initialState.controlStructure[id] = newClientControls;
     }
 
     // Loop through the Vertexes and populate the Vertex Lists
+    var vertexName = '';
     for (var vertexIndex = 0; vertexIndex < data[index].VertexList.length;  vertexIndex++){
-      initialState.vertexList.push(data[index].VertexList[vertexIndex]);
+      vertexName = nameVertex(data[index].VertexList[vertexIndex])
+      initialState.vertexList[vertexName] = data[index].VertexList[vertexIndex];
     }
 
   }
   
   console.log('Initial Store: ', initialState);
+  var immutableMap = Immutable.Map(initialState);
 
   const store = createStore(heepApp, initialState);
 

@@ -38,15 +38,6 @@ class Client extends React.Component {
 		//this.props.updateVertexPositionsByOffset(this.props.client['ClientID'], this.runningOffset);
 	}
 
-	calculateDragPosition(event) {
-		
-		var newPosition = {left: this.props.position.left,
-					   		top: this.props.position.top};
-
-		//this.sendPositionToServer(newPosition, this.props.url.concat('/api/commands'));
- 		
-	}
-
 	calculateDragOffset(event) {
 		// The final drag event is always 0, whichthrows off tracking unless you catch and ignore it
 		if (event.clientX == 0 && event.clientY == 0){
@@ -61,24 +52,24 @@ class Client extends React.Component {
 
 	}
 
-	sendPositionToServer(newPosition, url) {
+	sendPositionToServer(url) {
 
 		const message = 'SetPosition' + ':' + 
 						this.props.client['ClientID'] + ',' +
-						newPosition['top'] + ',' + 
-						newPosition['left'] + '\n';
+						this.props.position.top + ',' + 
+						this.props.position.left + '\n';
 
     	const messagePacket = {command: message};
 
 		$.ajax({
-	      url: url,
+	      url: this.props.url.concat('/api/commands'),
 	      type: 'POST',
 	      data: messagePacket,
 	      success: (data) => {
-	      	
+	      	console.log(message);
 	      },
 	      error: function(xhr, status, err) {
-	        console.error(url, status, err.toString());
+	        console.error(this.props.url.concat('/api/commands'), status, err.toString());
 	        console.log('Hitting sendVertexToServer error');
 	      }
 	    });
@@ -146,10 +137,10 @@ class Client extends React.Component {
 				draggable: true,
 				onDragStart : (event) => {this.onDragStart(event)},
 				onDrag : (event) => {this.onDrag(event)},
-				onDragEnd: (event) => {this.calculateDragPosition(event)},
+				onDragEnd: (event) => {this.sendPositionToServer()},
 				onTouchStart: (event) => {this.onTouchStart(event)},
 				onTouchMove : (event) => {this.onDrag(event.nativeEvent.changedTouches[0])},
-				onTouchEnd: (event) => {this.calculateDragPosition(event)},
+				onTouchEnd: (event) => {this.sendPositionToServer()},
 
 			},
 			controlsContainer: {
@@ -164,10 +155,10 @@ class Client extends React.Component {
 				draggable: true,
 				onDragStart : (event) => {this.onDragStart(event)},
 				onDrag : (event) => {this.onDrag(event)},
-				onDragEnd: (event) => {this.calculateDragPosition(event)},
+				onDragEnd: (event) => {this.sendPositionToServer()},
 				onTouchStart: (event) => {this.onTouchStart(event)},
 				onTouchMove : (event) => {this.onDrag(event.nativeEvent.changedTouches[0])},
-				onTouchEnd: (event) => {this.calculateDragPosition(event)},
+				onTouchEnd: (event) => {this.sendPositionToServer()},
 			},
 			icon: {
 				url: this.props.url,

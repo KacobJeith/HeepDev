@@ -6,9 +6,10 @@ export const positionClient = (clientID, newPosition) => ({
 })
 
 //Control
-export const updateControlValue = (clientID, controlID, newVal) => ({
+export const updateControlValue = (clientID, direction, controlID, newVal) => ({
   type: 'UPDATE_CONTROL_VALUE',
   clientID, 
+  direction,
   controlID, 
   newVal
 })
