@@ -49,7 +49,6 @@ class OnOffController extends React.Component {
 
 	    }
 
-
 	    this.props.updateAllConnectedClients(this.props.ClientID, this.props.control['ControlName'], newVal);
 	    
 	}

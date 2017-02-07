@@ -1,6 +1,6 @@
 import React from 'react';
 import $ from 'jquery';
-import ControlList from './Controls';
+import Control from '../containers/ControlContainer';
 import DynamicIcon from './DynamicIcon';
 
 
@@ -8,63 +8,13 @@ class Client extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.inputs = [];
-		this.outputs = [];
-		this.cardWorkspace = 55;
+		this.cardWorkspace = 50 + Math.max.apply(null,[this.props.controlOutputs.length,this.props.controlInputs.length])*55;
 
 		this.runningOffset = {top:  0,
 							  left: 0};
 		this.lastPosition =  {top:  0,
 							  left: 0};
 
-		this.fillInputs();
-		this.fillOutputs();
-
-	}
-
-	componentDidMount() {
-		var thisEl = this.refs.client.getClientRects();
-		var clientTop = thisEl[0]["top"];
-		var clientLeft = thisEl[0]["left"];
-
-		this.setState({top: clientTop});
-	 	this.setState({left: clientLeft});
-
-	 	//output position
-		for (var i=0; i < this.outputs.length; i++){
-	 		this.outputs[i]['position'] = {top: clientTop + 45 + 1.5 + 25/2 + i*55, //(126*(i+1)*controlOutY/100) + 12,
-	 										left: clientLeft + 250};
-		}
-
-		//input position
-		var allInputPositions = [];
-		for (var i=0; i < this.inputs.length; i++){
-			this.inputs[i]['position'] = {top: clientTop + 45 + 1.5 + 25/2 + i*55, //+ (126*(i+1)*controlInY/100) + 12,
-										   left: clientLeft + 10};
-		};
-
-		this.cardWorkspace = 50 + Math.max.apply(null,[this.outputs.length,this.inputs.length])*55;
-
-
-	}
-
-	fillInputs() {
-		console.log('fill inputs:', this.props);
-
-		for(let i = 0; i < this.props.client['ControlList'].length; i++){
-			if (!this.props.client['ControlList'][i]['ControlDirection']){
-				this.inputs.push(this.props.client['ControlList'][i]);
-			}
-		}
-	}
-
-	fillOutputs() {
-
-		for(let i = 0; i < this.props.client['ControlList'].length; i++){
-			if (this.props.client['ControlList'][i]['ControlDirection']){
-				this.outputs.push(this.props.client['ControlList'][i]);
-			}
-		}
 	}
 
 	onDragStart(event) {
@@ -228,26 +178,18 @@ class Client extends React.Component {
 			outputContainer: {
 				draggable: false,
 				style: styles.outputContainer
-			},
-			controlListInputs: {
-				url: this.props.url,
-				controlList: this.inputs,
-				client: this.props.client,
-				select: this.props.selectInput,
-				updateAllConnectedClients: this.props.updateAllConnectedClients,
-				top: this.props.position.top,
-				left: this.props.position.left, 
-			},
-			controlListOutputs: {
-				url: this.props.url,
-				controlList: this.outputs,
-				client: this.props.client,
-				select: this.props.selectOutput,
-				updateAllConnectedClients: this.props.updateAllConnectedClients,
-				top: this.props.position.top,
-				left: this.props.position.left, 
 			}
 		}
+
+		var controlInputs = [];
+	    for (var i = 0; i < this.props.controlInputs.length; i++) {
+	      controlInputs.push(<Control key={i} clientID={this.props.client['ClientID']} direction={'inputs'} controlID={this.props.controlInputs[i]}/>);
+	    }
+
+	    var controlOutputs = [];
+	    for (var i = 0; i < this.props.controlOutputs.length; i++) {
+	      controlOutputs.push(<Control key={i} clientID={this.props.client['ClientID']} direction={'outputs'} controlID={this.props.controlOutputs[i]}/>);
+	    }
 
 		return (<div {...inputs.clientContainer} ref="client"> 
 					<p {...inputs.name}>
@@ -256,13 +198,13 @@ class Client extends React.Component {
 					<hr/>
 					<div {...inputs.controlsContainer}>
 						<div {...inputs.inputContainer}>
-							<ControlList {...inputs.controlListInputs}/>
+							{controlInputs}
 						</div>
 						<div {...inputs.iconContainer}>
 							<DynamicIcon {...inputs.icon}/>
 						</div>
 						<div {...inputs.outputContainer}>
-							<ControlList {...inputs.controlListOutputs}/>
+							{controlOutputs}
 						</div>
 					</div>
 					

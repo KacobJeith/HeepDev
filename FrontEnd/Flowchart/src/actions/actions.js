@@ -5,6 +5,14 @@ export const positionClient = (clientID, newPosition) => ({
   newPosition
 })
 
+//Control
+export const updateControlValue = (clientID, controlID, newVal) => ({
+  type: 'UPDATE_CONTROL_VALUE',
+  clientID, 
+  controlID, 
+  newVal
+})
+
 //URL
 export const storeURL = (url) => ({
   type: 'STORE_URL',
@@ -18,14 +26,8 @@ export const addVertex = (vertex) => ({
   vertex
 })
 
-export const deleteVertex = (vertex) => ({
+export const deleteVertex = (vertexID) => ({
   type: 'DELETE_VERTEX',
-  vertex
-})
-
-export const positionVertex = (vertex, newPosition) => ({
-  type: 'POSITION_VERTEX',
-  vertex,
-  newPosition
+  vertexID
 })
 

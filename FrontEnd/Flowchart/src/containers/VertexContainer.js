@@ -6,6 +6,8 @@ import {deleteVertex}  from '../actions/actions'
 
 const mapStateToProps = (state, ownProps) => ({
   vertex: state.vertexList[ownProps.vertexID],
+  url: state.url,
+  id: ownProps.vertexID,
   inputPosition: state.positions[ state.vertexList[ownProps.vertexID]['sourceID'] ][ state.vertexList[ownProps.vertexID]['outputName'] ],
   outputPosition: state.positions[ state.vertexList[ownProps.vertexID]['destinationID'] ][ state.vertexList[ownProps.vertexID]['inputName'] ],
 

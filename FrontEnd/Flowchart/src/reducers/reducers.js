@@ -31,8 +31,8 @@ function vertexList(state = initialState, action) {
   switch (action.type) {
     case 'ADD_VERTEX':
       return (action.vertex)
-    case 'POSITION_VERTEX':
-      return state
+    case 'DELETE_VERTEX':
+      return [...state.slice(0, action.vertexID), ...state.slice(action.vertexID+1)]
     default:
       return state
   }

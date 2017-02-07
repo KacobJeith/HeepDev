@@ -2,42 +2,7 @@ import React from 'react';
 import OnOffController from './OnOffController';
 import RangeController from './RangeController';
 
-class ControlList extends React.Component {
-	render() {
-		let inputs = {
-			eachControl: {
-				url: this.props.url,
-				key: [],
-				control:[],
-				client: this.props.client,
-				select: this.props.select,
-				updateAllConnectedClients: this.props.updateAllConnectedClients,
-				top: this.props.top,
-				left: this.props.left,
-				controlY: 0,			
-			}
-		};
-
-		
-		var controlY = 55;
-
-		let allClientControls = this.props.controlList.map((thisControl,index) => {
-			
-			inputs.eachControl['key'] = thisControl['ControlName'];
-			inputs.eachControl['control'] = thisControl;
-			inputs.eachControl['controlY'] = inputs.eachControl['controlY'] + controlY;
-			
-			return <EachControl {...inputs.eachControl}/>
-			});
-
-		return (<div>
-					{allClientControls}
-				</div>
-				);
-	}
-}
-
-class EachControl extends React.Component {
+export default class Control extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -141,10 +106,10 @@ class EachControl extends React.Component {
 				fill: this.direction == 0 ? "green" : 'red'
 			},
 			controller:{
+				key: 0,
 				updateAllConnectedClients: this.props.updateAllConnectedClients,
 				url: this.props.url,
-				key: this.props.client['ClientID'],
-				ClientID: this.props.client['ClientID'],
+				ClientID: this.props.clientID,
 				control: this.props.control
 			}
 		}
@@ -152,9 +117,11 @@ class EachControl extends React.Component {
 		var controller = [];
 		if (this.props.control['ControlValueType'] == 0){
 			controller.push(<OnOffController {...inputs.controller}/>);
+			inputs.controller.key++;
 		}
 		else if (this.props.control['ControlValueType'] == 1){
 			controller.push(<RangeController {...inputs.controller}/>);
+			inputs.controller.key++;
 		}
 
 		return (<div {...inputs.all}>
@@ -182,5 +149,3 @@ class EachControl extends React.Component {
 		);
 	}
 }
-
-export default ControlList;
