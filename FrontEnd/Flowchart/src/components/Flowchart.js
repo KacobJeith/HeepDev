@@ -29,14 +29,7 @@ class Flowchart extends React.Component {
 	      }
 	    });
 	}
-
-	removeVertex(vertex) {
-		var vertexName = this.nameVertex(vertex.sourceID, vertex.outputName, vertex.destinationID, vertex.inputName);
-		var newVertexList = this.state.vertexPaths;
-		delete newVertexList[vertexName];
-		this.setState({vertexPaths: newVertexList});
-	}
-
+	
 	updateAllConnectedClients(clientID, controlName, newVal) {
 		this.updateCurCtrlValue(clientID, controlName, newVal);
 
