@@ -1,6 +1,6 @@
 import React from 'react';
-import OnOffController from './OnOffController';
-import RangeController from './RangeController';
+import OnOffContainer from '../containers/OnOffContainer';
+import RangeContainer from '../containers/RangeContainer';
 
 export default class Control extends React.Component {
 	constructor(props) {
@@ -22,7 +22,6 @@ export default class Control extends React.Component {
 	}
 
 	selectOutputVertex(event) {
-		console.log(this.props)
 		this.props.selectOutput(this.props.clientID,
 								this.props.control['ControlName']);
 	}
@@ -107,17 +106,19 @@ export default class Control extends React.Component {
 				updateControlValue: this.props.updateControlValue,
 				url: this.props.url,
 				ClientID: this.props.clientID,
-				control: this.props.control
+				controlID: this.props.control['ControlName']
 			}
 		}
 
 		var controller = [];
 		if (this.props.control['ControlValueType'] == 0){
-			controller.push(<OnOffController {...inputs.controller}/>);
+			controller.push(<OnOffContainer {...inputs.controller}/>);
 			inputs.controller.key++;
 		}
 		else if (this.props.control['ControlValueType'] == 1){
-			controller.push(<RangeController {...inputs.controller}/>);
+			console.log(inputs.controller.controlID)
+			console.log(this.props.control['CurCtrlValue'])
+			controller.push(<RangeContainer {...inputs.controller}/>);
 			inputs.controller.key++;
 		}
 
