@@ -33,7 +33,6 @@ class RangeController extends React.Component {
 	}
 
 	convertCtrlVal() {
-		console.log(this.props)
 		return this.displayMin + (this.displayMax-this.displayMin)*(this.props.control['CurCtrlValue']/(this.props.control['HighValue']-this.props.control['LowValue']))
 
 	}

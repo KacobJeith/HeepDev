@@ -116,8 +116,6 @@ export default class Control extends React.Component {
 			inputs.controller.key++;
 		}
 		else if (this.props.control['ControlValueType'] == 1){
-			console.log(inputs.controller.controlID)
-			console.log(this.props.control['CurCtrlValue'])
 			controller.push(<RangeContainer {...inputs.controller}/>);
 			inputs.controller.key++;
 		}

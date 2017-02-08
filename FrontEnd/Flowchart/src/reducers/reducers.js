@@ -44,8 +44,6 @@ function vertexList(state = initialState, action) {
       var newMap = Immutable.Map(state).delete(action.vertexID).toJS();
       console.log(Object.keys(newMap));
       return Immutable.Map(state).delete(action.vertexID).toJS();
-    case 'UPDATE_CONTROL_VALUE':
-      return state
     default:
       return state
   }
@@ -70,12 +68,14 @@ function positions(state = initialState, action) {
 
 function controls(state = initialState, action) {
   switch (action.type) {
+    case 'SELECT_OUTPUT':
+      return Immutable.Map(state).set('selectedOutput', {sourceID: action.sourceID, outputName: action.outputName}).toJS();
     case 'UPDATE_CONTROL_VALUE':
       var direction = action.direction == 0 ? 'inputs' : 'outputs'; 
       var a = {...state};
       console.log(a);
       a[action.clientID + '.' + action.controlID]['CurCtrlValue'] = action.newVal;
-      return {...state, a}
+      return {...state}
     default:
       return state
   }
