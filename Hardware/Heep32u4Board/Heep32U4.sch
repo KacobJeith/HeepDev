@@ -2963,6 +2963,11 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <part name="GND3" library="SparkFun-PowerSymbols" deviceset="GND" device=""/>
 <part name="C3" library="SparkFun-Passives" deviceset="CAP" device="0603-CAP" value="1uF"/>
 <part name="GND4" library="SparkFun-PowerSymbols" deviceset="GND" device=""/>
+<part name="C4" library="SparkFun-Passives" deviceset="CAP" device="0603-CAP" value="10uF"/>
+<part name="GND5" library="SparkFun-PowerSymbols" deviceset="GND" device=""/>
+<part name="C5" library="SparkFun-Passives" deviceset="CAP" device="0603-CAP" value="10uF"/>
+<part name="C6" library="SparkFun-Passives" deviceset="CAP" device="0603-CAP" value="0.1uF"/>
+<part name="GND6" library="SparkFun-PowerSymbols" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -2979,7 +2984,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <instance part="J2" gate="G$1" x="93.98" y="127"/>
 <instance part="R1" gate="G$1" x="15.24" y="88.9"/>
 <instance part="R2" gate="G$1" x="15.24" y="81.28"/>
-<instance part="SUPPLY1" gate="G$1" x="17.78" y="99.06"/>
+<instance part="SUPPLY1" gate="G$1" x="5.08" y="116.84"/>
 <instance part="GND1" gate="1" x="-7.62" y="76.2"/>
 <instance part="SUPPLY2" gate="G$1" x="63.5" y="86.36"/>
 <instance part="S1" gate="1" x="45.72" y="124.46" rot="R180"/>
@@ -2994,16 +2999,25 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <instance part="GND3" gate="1" x="71.12" y="-2.54"/>
 <instance part="C3" gate="G$1" x="55.88" y="50.8" rot="R90"/>
 <instance part="GND4" gate="1" x="45.72" y="50.8" rot="R270"/>
+<instance part="C4" gate="G$1" x="12.7" y="109.22"/>
+<instance part="GND5" gate="1" x="12.7" y="101.6"/>
+<instance part="C5" gate="G$1" x="55.88" y="68.58"/>
+<instance part="C6" gate="G$1" x="45.72" y="68.58"/>
+<instance part="GND6" gate="1" x="50.8" y="58.42"/>
 </instances>
 <busses>
 </busses>
 <nets>
 <net name="V_USB" class="0">
 <segment>
-<wire x1="17.78" y1="96.52" x2="17.78" y2="99.06" width="0.1524" layer="91"/>
+<wire x1="5.08" y1="96.52" x2="5.08" y2="114.3" width="0.1524" layer="91"/>
 <pinref part="SUPPLY1" gate="G$1" pin="V_USB"/>
 <pinref part="J1" gate="G$1" pin="VBUS"/>
-<wire x1="-10.16" y1="96.52" x2="17.78" y2="96.52" width="0.1524" layer="91"/>
+<wire x1="5.08" y1="114.3" x2="5.08" y2="116.84" width="0.1524" layer="91"/>
+<wire x1="-10.16" y1="96.52" x2="5.08" y2="96.52" width="0.1524" layer="91"/>
+<pinref part="C4" gate="G$1" pin="1"/>
+<wire x1="5.08" y1="114.3" x2="12.7" y2="114.3" width="0.1524" layer="91"/>
+<junction x="5.08" y="114.3"/>
 </segment>
 <segment>
 <pinref part="U$1" gate="G$1" pin="VBUS"/>
@@ -3104,6 +3118,21 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <pinref part="GND4" gate="1" pin="GND"/>
 <wire x1="50.8" y1="50.8" x2="48.26" y2="50.8" width="0.1524" layer="91"/>
 </segment>
+<segment>
+<pinref part="C4" gate="G$1" pin="2"/>
+<pinref part="GND5" gate="1" pin="GND"/>
+<wire x1="12.7" y1="106.68" x2="12.7" y2="104.14" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="C6" gate="G$1" pin="2"/>
+<wire x1="45.72" y1="66.04" x2="45.72" y2="60.96" width="0.1524" layer="91"/>
+<pinref part="C5" gate="G$1" pin="2"/>
+<wire x1="45.72" y1="60.96" x2="50.8" y2="60.96" width="0.1524" layer="91"/>
+<wire x1="50.8" y1="60.96" x2="55.88" y2="60.96" width="0.1524" layer="91"/>
+<wire x1="55.88" y1="60.96" x2="55.88" y2="66.04" width="0.1524" layer="91"/>
+<pinref part="GND6" gate="1" pin="GND"/>
+<junction x="50.8" y="60.96"/>
+</segment>
 </net>
 <net name="5V" class="0">
 <segment>
@@ -3133,6 +3162,11 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <wire x1="63.5" y1="73.66" x2="63.5" y2="76.2" width="0.1524" layer="91"/>
 <junction x="63.5" y="73.66"/>
 <pinref part="SUPPLY6" gate="G$1" pin="5V"/>
+<pinref part="C5" gate="G$1" pin="1"/>
+<wire x1="63.5" y1="73.66" x2="55.88" y2="73.66" width="0.1524" layer="91"/>
+<pinref part="C6" gate="G$1" pin="1"/>
+<wire x1="55.88" y1="73.66" x2="45.72" y2="73.66" width="0.1524" layer="91"/>
+<junction x="55.88" y="73.66"/>
 </segment>
 </net>
 <net name="VOUT" class="0">
