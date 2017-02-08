@@ -2961,16 +2961,19 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <part name="C2" library="SparkFun-Passives" deviceset="CAP" device="0603-CAP" value="22pF"/>
 <part name="GND2" library="SparkFun-PowerSymbols" deviceset="GND" device=""/>
 <part name="GND3" library="SparkFun-PowerSymbols" deviceset="GND" device=""/>
+<part name="C3" library="SparkFun-Passives" deviceset="CAP" device="0603-CAP" value="1uF"/>
+<part name="GND4" library="SparkFun-PowerSymbols" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
 <plain>
 <text x="-20.32" y="109.22" size="2.54" layer="97">USB Input</text>
 <text x="22.86" y="139.7" size="2.54" layer="97">Primary Power Switch</text>
+<text x="81.28" y="101.6" size="2.54" layer="97">ATMega 32U4 Subsystem</text>
 </plain>
 <instances>
 <instance part="U$1" gate="G$1" x="106.68" y="43.18"/>
-<instance part="U1" gate="G$1" x="-7.62" y="33.02"/>
+<instance part="U1" gate="G$1" x="-38.1" y="20.32"/>
 <instance part="J1" gate="G$1" x="-15.24" y="91.44" rot="MR0"/>
 <instance part="Y1" gate="G$1" x="66.04" y="35.56" rot="R90"/>
 <instance part="J2" gate="G$1" x="93.98" y="127"/>
@@ -2989,6 +2992,8 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <instance part="C2" gate="G$1" x="58.42" y="30.48" rot="R90"/>
 <instance part="GND2" gate="1" x="48.26" y="25.4"/>
 <instance part="GND3" gate="1" x="71.12" y="-2.54"/>
+<instance part="C3" gate="G$1" x="55.88" y="50.8" rot="R90"/>
+<instance part="GND4" gate="1" x="45.72" y="50.8" rot="R270"/>
 </instances>
 <busses>
 </busses>
@@ -3040,7 +3045,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <segment>
 <pinref part="U$1" gate="G$1" pin="D-"/>
 <wire x1="83.82" y1="58.42" x2="63.5" y2="58.42" width="0.1524" layer="91"/>
-<label x="63.5" y="58.42" size="2.54" layer="95"/>
+<label x="63.5" y="58.42" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="RD+" class="0">
@@ -3052,7 +3057,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <segment>
 <pinref part="U$1" gate="G$1" pin="D+"/>
 <wire x1="83.82" y1="55.88" x2="63.5" y2="55.88" width="0.1524" layer="91"/>
-<label x="63.5" y="55.88" size="2.54" layer="95"/>
+<label x="63.5" y="55.88" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="GND" class="0">
@@ -3093,6 +3098,11 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <wire x1="71.12" y1="25.4" x2="71.12" y2="20.32" width="0.1524" layer="91"/>
 <junction x="71.12" y="20.32"/>
 <pinref part="GND3" gate="1" pin="GND"/>
+</segment>
+<segment>
+<pinref part="C3" gate="G$1" pin="1"/>
+<pinref part="GND4" gate="1" pin="GND"/>
+<wire x1="50.8" y1="50.8" x2="48.26" y2="50.8" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="5V" class="0">
@@ -3161,6 +3171,13 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <pinref part="C2" gate="G$1" pin="2"/>
 <wire x1="66.04" y1="30.48" x2="60.96" y2="30.48" width="0.1524" layer="91"/>
 <junction x="66.04" y="30.48"/>
+</segment>
+</net>
+<net name="N$1" class="0">
+<segment>
+<pinref part="U$1" gate="G$1" pin="UCAP"/>
+<pinref part="C3" gate="G$1" pin="2"/>
+<wire x1="83.82" y1="50.8" x2="58.42" y2="50.8" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
