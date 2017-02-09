@@ -27,7 +27,7 @@ class Vertex extends React.Component {
 	      data: messagePacket,
 	      success: (data) => {
 	      	console.log('Vertex Deleted');
-	      	this.props.deleteVertex(this.props.vertexID);
+	      	this.props.deleteVertex(this.props.vertexID, this.props.vertex);
 	      },
 	      error: function(xhr, status, err) {
 	        console.error(url, status, err.toString());

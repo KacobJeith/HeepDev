@@ -37,9 +37,10 @@ export const addVertex = (destinationID, inputName, IPAddress) => ({
   IPAddress
 })
 
-export const deleteVertex = (vertexID) => ({
+export const deleteVertex = (vertexID, vertex) => ({
   type: 'DELETE_VERTEX',
-  vertexID
+  vertexID,
+  vertex
 })
 
 export const selectOutput = (sourceID, outputName) => ({

@@ -88,10 +88,18 @@ function controls(state = initialState, action) {
       var newState = Immutable.Map(state).toJS();
       var sourceID = newState.selectedOutput.sourceID;
       var outputName = newState.selectedOutput.outputName;
-
       newState[sourceID +'.'+ outputName]['connectedControls'].push(action.destinationID +'.'+ action.inputName)
-      console.log('new: ', newState[sourceID +'.'+ outputName]['connectedControls']);
+      return newState
+    case 'DELETE_VERTEX':
 
+      var newState = Immutable.Map(state).toJS();
+      var sourceID = action.vertex.sourceID;
+      var outputName = action.vertex.outputName;
+
+      var index = newState[sourceID +'.'+ outputName]['connectedControls'].indexOf(action.vertex.destinationID +'.'+ action.vertex.inputName)
+      if ( index != -1) {
+        newState[sourceID +'.'+ outputName]['connectedControls'].splice(index, 1);
+      }
       return newState
     default:
       return state
