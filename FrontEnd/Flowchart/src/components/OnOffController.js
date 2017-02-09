@@ -7,16 +7,7 @@ import {ICONS} from '../assets/iconConstants';
 class OnOffController extends React.Component {
 	constructor(props){
 		super(props);
-		this.lastSentControlValue = this.props.control['CurCtrlValue'];
-	}
-
-	componentWillReceiveProps(nextProps) {
-
-		if (this.props.control['CurCtrlValue'] != this.lastSentControlValue){
-			
-			this.sendCommand(this.props.url.concat('/api/commands'), this.props.control['CurCtrlValue']);
-		}
-
+		this.lastSentControlValue = this.props.value;
 	}
 
 	sendCommand(url, newVal) {
@@ -24,33 +15,49 @@ class OnOffController extends React.Component {
 	    var commandQueueString = [];
 
 	    this.lastSentControlValue = newVal;
-	    
-	    if( this.props.control['ControlDirection'] == 0){
-	    	
-	    	commandQueueString.push('SetCommand'+ ':' + 
+
+	    commandQueueString.push('SetCommand'+ ':' + 
 	    							this.props.ClientID + ',' +
 	    							this.props.control['ControlName'] + ',' +
 									newVal + '\n');
 
-		    console.log(commandQueueString);
-		    
-		    var messagePacket = {command: commandQueueString};
-		    $.ajax({
-		      url: url,
-		      type: 'POST',
-		      data: messagePacket,
-		      success: (data) => {
-		      },
-		      error: function(xhr, status, err) {
-		        console.error(url, status, err.toString());
-		        console.log('Hitting Commands sendDataToServer error')
-		      }
-		    });
+	    for (var i = 0; i < this.props.control.connectedControls.length; i++){
+	    	var thisStr = this.props.control.connectedControls[i];
+	    	var thisClientID = thisStr.split('.')[0];
+	    	var thisControlID = thisStr.split('.')[1]
+	    	var newCommandString = 'SetCommand'+ ':' + 
+	    							thisClientID + ',' +
+	    							thisControlID + ',' +
+									newVal + '\n';
 
+	    	this.props.updateControlValue(thisClientID, thisControlID, newVal);
+
+	    	commandQueueString.push(newCommandString);
+			console.log(newCommandString)
 	    }
 
+	    this.props.updateControlValue(this.props.ClientID, this.props.control['ControlName'], newVal);
 
-	    this.props.updateAllConnectedClients(this.props.ClientID, this.props.control['ControlName'], newVal);
+	    	
+	    console.log(commandQueueString);
+	    
+	    var messagePacket = {command: commandQueueString.join('')};
+	    $.ajax({
+	      url: url,
+	      type: 'POST',
+	      data: messagePacket,
+	      success: (data) => {
+	      },
+	      error: function(xhr, status, err) {
+	        console.error(url, status, err.toString());
+	        console.log('Hitting Commands sendDataToServer error')
+	      }
+	    });
+
+	    for (var i = 0; i < this.props.control.connectedControls.length; i++){
+	    }
+
+	    
 	    
 	}
 
@@ -67,12 +74,12 @@ class OnOffController extends React.Component {
 
 		var inputs = {
 			button: {
-				onClick: () => {this.sendCommand(this.props.url.concat('/api/commands'), 1 - this.props.control['CurCtrlValue'])},
+				onClick: () => {this.sendCommand(this.props.url.concat('/api/commands'), 1 - this.props.value)},
 				style: styles.button
 			},
 			icon: {
 				icon: ICONS.POWER,
-		        color: this.props.control['CurCtrlValue'] == 0 ?  "#43464c" : "gold" ,
+		        color: this.props.value == 0 ?  "#43464c" : "gold" ,
 		        size: 30
 			}
 

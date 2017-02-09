@@ -28,7 +28,7 @@ class RangeController extends React.Component {
 		if (this.props.control['CurCtrlValue'] != this.lastSentControlValue) {
 
 			this.setState({x: this.convertCtrlVal()});
-			this.sendCommand(this.props.url.concat('/api/commands'), this.props.control['CurCtrlValue']);
+			
 		}
 	}
 
@@ -38,34 +38,48 @@ class RangeController extends React.Component {
 	}
 	
 	sendCommand(url, newVal) {
+
 	    var commandQueueString = [];
-	    if (this.lastSentControlValue == newVal){
-	    	return
-	    }
 
 	    this.lastSentControlValue = newVal;
 
-    	commandQueueString.push('SetCommand'+ ':' + 
-    							this.props.ClientID + ',' +
-    							this.props.control['ControlName'] + ',' +
-								newVal + '\n');
+	    commandQueueString.push('SetCommand'+ ':' + 
+	    							this.props.ClientID + ',' +
+	    							this.props.control['ControlName'] + ',' +
+									newVal + '\n');
 
+	    for (var i = 0; i < this.props.control.connectedControls.length; i++){
+	    	var thisStr = this.props.control.connectedControls[i];
+	    	var thisClientID = thisStr.split('.')[0];
+	    	var thisControlID = thisStr.split('.')[1]
+	    	var newCommandString = 'SetCommand'+ ':' + 
+	    							thisClientID + ',' +
+	    							thisControlID + ',' +
+									newVal + '\n';
+
+	    	this.props.updateControlValue(thisClientID, thisControlID, newVal);
+
+	    	commandQueueString.push(newCommandString);
+			console.log(newCommandString)
+	    }
+
+	    this.props.updateControlValue(this.props.ClientID, this.props.control['ControlName'], newVal);
+
+	    	
 	    console.log(commandQueueString);
-
-
-	    const messagePacket = {command: commandQueueString};
+	    
+	    var messagePacket = {command: commandQueueString.join('')};
 	    $.ajax({
 	      url: url,
 	      type: 'POST',
 	      data: messagePacket,
-	      success: (data) => {},
+	      success: (data) => {
+	      },
 	      error: function(xhr, status, err) {
 	        console.error(url, status, err.toString());
 	        console.log('Hitting Commands sendDataToServer error')
 	      }
 	    });
-
-	    this.props.updateAllConnectedClients(this.props.ClientID, this.props.control['ControlName'], newVal);
 	    
 	}
 
