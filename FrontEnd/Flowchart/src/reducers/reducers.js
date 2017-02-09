@@ -9,6 +9,7 @@ const initialState = Immutable.Map({
   vertexList: {},
   controlStructure: {},
   controls: {},
+  icons: {},
   url: ''
 })
 
@@ -23,6 +24,16 @@ function url(state = initialState, action) {
   switch (action.type) {
     case 'STORE_URL':      
       return (action.url)
+    default:
+      return state
+  }
+}
+
+function icons(state = initialState, action) {
+  switch (action.type) {
+    case 'ADD_ICON':
+      console.log('Adding: ', action.icon);
+      return Immutable.Map(state).set(action.clientID, action.icon).toJS();
     default:
       return state
   }
@@ -73,7 +84,6 @@ function controls(state = initialState, action) {
     case 'UPDATE_CONTROL_VALUE':
       var direction = action.direction == 0 ? 'inputs' : 'outputs'; 
       var a = {...state};
-      console.log(a);
       a[action.clientID + '.' + action.controlID]['CurCtrlValue'] = action.newVal;
       return {...state}
     default:
@@ -94,6 +104,7 @@ const heepApp = combineReducers({
   vertexList,
   positions,
   controls,
+  icons,
   controlStructure,
   url
 })

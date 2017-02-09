@@ -1,7 +1,7 @@
 import React from 'react';
 import $ from 'jquery';
 import Control from '../containers/ControlContainer';
-import DynamicIcon from './DynamicIcon';
+import DynamicIcon from '../containers/IconContainer';
 
 
 class Client extends React.Component {
@@ -161,8 +161,8 @@ class Client extends React.Component {
 				onTouchEnd: (event) => {this.sendPositionToServer()},
 			},
 			icon: {
-				url: this.props.url,
-				client: this.props.client,
+				clientID: this.props.client['ClientID'],
+				controlID: this.props.controlInputs.length == 0 ? this.props.controlOutputs[0] : this.props.controlInputs[0] ,
 				width: styles.iconContainer.width,
 				height: styles.iconContainer.height,
 			},
@@ -174,12 +174,12 @@ class Client extends React.Component {
 
 		var controlInputs = [];
 	    for (var i = 0; i < this.props.controlInputs.length; i++) {
-	      controlInputs.push(<Control key={i} clientID={this.props.client['ClientID']} direction={'inputs'} controlID={this.props.controlInputs[i]}/>);
+	      controlInputs.push(<Control key={i} clientID={this.props.client['ClientID']} controlID={this.props.controlInputs[i]}/>);
 	    }
 
 	    var controlOutputs = [];
 	    for (var i = 0; i < this.props.controlOutputs.length; i++) {
-	      controlOutputs.push(<Control key={i} clientID={this.props.client['ClientID']} direction={'outputs'} controlID={this.props.controlOutputs[i]}/>);
+	      controlOutputs.push(<Control key={i} clientID={this.props.client['ClientID']} controlID={this.props.controlOutputs[i]}/>);
 	    }
 
 		return (<div {...inputs.clientContainer} ref="client"> 

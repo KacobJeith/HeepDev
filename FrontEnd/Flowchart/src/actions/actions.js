@@ -1,8 +1,17 @@
+import $ from 'jquery'
+
 //Client
 export const positionClient = (clientID, newPosition) => ({
   type: 'POSITION_CLIENT',
   clientID,
   newPosition
+})
+
+//Icons
+export const addIcon = (clientID, icon) => ({
+  type: 'ADD_ICON',
+  clientID,
+  icon
 })
 
 //Control
