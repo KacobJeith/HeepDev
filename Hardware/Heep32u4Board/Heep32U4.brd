@@ -146,6 +146,21 @@
 <wire x1="65" y1="0" x2="65" y2="45" width="0" layer="20"/>
 <wire x1="65" y1="45" x2="0" y2="45" width="0" layer="20"/>
 <wire x1="0" y1="45" x2="0" y2="0" width="0" layer="20"/>
+<text x="60.2" y="34.4" size="6.4516" layer="22" rot="MR0">HEEP I/O</text>
+<text x="61.5" y="5.9" size="6.4516" layer="22" rot="MR0">HEEP I/O</text>
+<text x="12.7" y="3.9" size="2.54" layer="21">+</text>
+<text x="15.7" y="3.9" size="2.54" layer="21">-</text>
+<text x="2.4" y="13.9" size="1.4224" layer="21">USB</text>
+<text x="9" y="13.9" size="1.4224" layer="21">Vin</text>
+<text x="29.8" y="43.7" size="1.4224" layer="21" rot="R270">Reset</text>
+<text x="22.6" y="36" size="1.4224" layer="21">Reset</text>
+<text x="60.9" y="19.1" size="1.4224" layer="21">Test</text>
+<text x="61" y="17.4" size="1.4224" layer="21">Port</text>
+<text x="58.9" y="15.2" size="1.016" layer="21">Gnd</text>
+<text x="59.1" y="13.5" size="1.016" layer="21">3.3V</text>
+<text x="58.8" y="9.4" size="1.016" layer="21">Vout</text>
+<text x="57.9" y="7.6" size="0.8128" layer="21">V_USB</text>
+<text x="62" y="2.9" size="1.016" layer="21">Vin</text>
 </plain>
 <libraries>
 <library name="SparkFun-Passives">
