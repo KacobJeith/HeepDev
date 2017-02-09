@@ -84,6 +84,15 @@ function controls(state = initialState, action) {
       var a = {...state};
       a[action.clientID + '.' + action.controlID]['CurCtrlValue'] = action.newVal;
       return {...state}
+    case 'ADD_VERTEX':
+      var newState = Immutable.Map(state).toJS();
+      var sourceID = newState.selectedOutput.sourceID;
+      var outputName = newState.selectedOutput.outputName;
+
+      newState[sourceID +'.'+ outputName]['connectedControls'].push(action.destinationID +'.'+ action.inputName)
+      console.log('new: ', newState[sourceID +'.'+ outputName]['connectedControls']);
+
+      return newState
     default:
       return state
   }
