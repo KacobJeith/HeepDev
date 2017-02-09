@@ -382,12 +382,5 @@ UsedLibrary="/Users/dylan/Documents/EagleLibraries/SparkFunEagleGitRepo/SparkFun
 UsedLibrary="/Users/dylan/Documents/EagleLibraries/SparkFunEagleGitRepo/SparkFun-Eagle-Libraries/User-Submitted.lbr"
 UsedLibrary="/Users/dylan/Documents/EagleLibraries/SparkFunEagleGitRepo/SparkFun-Eagle-Libraries/LilyPad-Wearables.lbr"
 
-[Win_1]
-Type="Control Panel"
-Loc="0 -22 599 377"
-State=2
-Number=0
-
 [Desktop]
 Screen="1440 900"
-Window="Win_1"
