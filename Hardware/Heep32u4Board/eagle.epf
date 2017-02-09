@@ -380,6 +380,7 @@ UsedLibrary="/Users/dylan/Documents/EagleLibraries/SparkFunEagleGitRepo/SparkFun
 UsedLibrary="/Users/dylan/Documents/EagleLibraries/SparkFunEagleGitRepo/SparkFun-Eagle-Libraries/SparkFun-Sensors.lbr"
 UsedLibrary="/Users/dylan/Documents/EagleLibraries/SparkFunEagleGitRepo/SparkFun-Eagle-Libraries/SparkFun-Switches.lbr"
 UsedLibrary="/Users/dylan/Documents/EagleLibraries/SparkFunEagleGitRepo/SparkFun-Eagle-Libraries/User-Submitted.lbr"
+UsedLibrary="/Users/dylan/Documents/EagleLibraries/SparkFunEagleGitRepo/SparkFun-Eagle-Libraries/LilyPad-Wearables.lbr"
 
 [Win_1]
 Type="Control Panel"
