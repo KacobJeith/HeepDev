@@ -10,46 +10,54 @@ class OnOffController extends React.Component {
 		this.lastSentControlValue = this.props.value;
 	}
 
-	componentWillReceiveProps(nextProps) {
-
-		if (this.props.control['CurCtrlValue'] != this.lastSentControlValue){
-			
-			this.sendCommand(this.props.url.concat('/api/commands'), this.props.value);
-		}
-
-	}
-
 	sendCommand(url, newVal) {
 
 	    var commandQueueString = [];
 
 	    this.lastSentControlValue = newVal;
-	    
-	    if( this.props.control['ControlDirection'] == 0){
-	    	
-	    	commandQueueString.push('SetCommand'+ ':' + 
+
+	    commandQueueString.push('SetCommand'+ ':' + 
 	    							this.props.ClientID + ',' +
 	    							this.props.control['ControlName'] + ',' +
 									newVal + '\n');
 
-		    console.log(commandQueueString);
-		    
-		    var messagePacket = {command: commandQueueString};
-		    $.ajax({
-		      url: url,
-		      type: 'POST',
-		      data: messagePacket,
-		      success: (data) => {
-		      },
-		      error: function(xhr, status, err) {
-		        console.error(url, status, err.toString());
-		        console.log('Hitting Commands sendDataToServer error')
-		      }
-		    });
+	    for (var i = 0; i < this.props.control.connectedControls.length; i++){
+	    	var thisStr = this.props.control.connectedControls[i];
+	    	var thisClientID = thisStr.split('.')[0];
+	    	var thisControlID = thisStr.split('.')[1]
+	    	var newCommandString = 'SetCommand'+ ':' + 
+	    							thisClientID + ',' +
+	    							thisControlID + ',' +
+									newVal + '\n';
 
+	    	this.props.updateControlValue(thisClientID, thisControlID, newVal);
+
+	    	commandQueueString.push(newCommandString);
+			console.log(newCommandString)
 	    }
 
-	    this.props.updateControlValue(this.props.ClientID, this.props.control['ControlDirection'], this.props.control['ControlName'], newVal);
+	    this.props.updateControlValue(this.props.ClientID, this.props.control['ControlName'], newVal);
+
+	    	
+	    console.log(commandQueueString);
+	    
+	    var messagePacket = {command: commandQueueString.join('')};
+	    $.ajax({
+	      url: url,
+	      type: 'POST',
+	      data: messagePacket,
+	      success: (data) => {
+	      },
+	      error: function(xhr, status, err) {
+	        console.error(url, status, err.toString());
+	        console.log('Hitting Commands sendDataToServer error')
+	      }
+	    });
+
+	    for (var i = 0; i < this.props.control.connectedControls.length; i++){
+	    }
+
+	    
 	    
 	}
 

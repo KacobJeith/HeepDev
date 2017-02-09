@@ -14,8 +14,7 @@ import $ from 'jquery'
 var initialState = {
   clients: {},
   positions: {},
-  controls: {},
-  controlStructure: {},
+  controls: {controlStructure:{}},
   vertexList: {},
   icons: {},
   url: window.location.protocol.concat('//', window.location.hostname,':3001')
@@ -111,7 +110,7 @@ var prepareInitialState = (data) => {
       var newClientControls = {...controlsTemplate};
       var controlKey = nameControl(data[index]['ClientID'], data[index].ControlList[controlIndex]['ControlName']);
       var controlName = data[index].ControlList[controlIndex]['ControlName'];
-      initialState.controls[controlKey] =  data[index].ControlList[controlIndex];
+      initialState.controls[controlKey] =  {...data[index].ControlList[controlIndex], connectedControls: []};
 
       // Handle Control Inputs and Outputs
       if (data[index].ControlList[controlIndex]['ControlDirection'] == 0){
@@ -128,7 +127,8 @@ var prepareInitialState = (data) => {
         initialState.positions[id][controlName] = {top: initialState.positions[id]['client']['top'] + 45 + 1.5 + 25/2 + 55*(newClientControls['outputs']['controlsArray'].length - 1), 
                                                   left: initialState.positions[id]['client']['left'] + 250};
       }
-      initialState.controlStructure[id] = newClientControls;
+
+      initialState.controls.controlStructure[id] = newClientControls;
     }
 
     // Loop through the Vertexes and populate the Vertex Lists
@@ -136,6 +136,13 @@ var prepareInitialState = (data) => {
     for (var vertexIndex = 0; vertexIndex < data[index].VertexList.length;  vertexIndex++){
       vertexName = nameVertex(data[index].VertexList[vertexIndex])
       initialState.vertexList[vertexName] = data[index].VertexList[vertexIndex];
+
+      var sourceID = data[index].VertexList[vertexIndex]['sourceID'];
+      var outputName = data[index].VertexList[vertexIndex]['outputName'];
+      initialState.controls[nameControl(sourceID, outputName)]['connectedControls'].push(
+        nameControl(data[index].VertexList[vertexIndex]['destinationID'], data[index].VertexList[vertexIndex]['inputName'])
+        );
+
     }
   }
 

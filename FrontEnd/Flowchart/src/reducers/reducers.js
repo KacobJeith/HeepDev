@@ -7,7 +7,6 @@ const initialState = Immutable.Map({
   clients: {},
   positions: {},
   vertexList: {},
-  controlStructure: {},
   controls: {},
   icons: {},
   url: ''
@@ -82,17 +81,9 @@ function controls(state = initialState, action) {
     case 'SELECT_OUTPUT':
       return Immutable.Map(state).set('selectedOutput', {sourceID: action.sourceID, outputName: action.outputName}).toJS();
     case 'UPDATE_CONTROL_VALUE':
-      var direction = action.direction == 0 ? 'inputs' : 'outputs'; 
       var a = {...state};
       a[action.clientID + '.' + action.controlID]['CurCtrlValue'] = action.newVal;
       return {...state}
-    default:
-      return state
-  }
-}
-
-function controlStructure(state = initialState, action) {
-  switch (action.type) {
     default:
       return state
   }
@@ -105,7 +96,6 @@ const heepApp = combineReducers({
   positions,
   controls,
   icons,
-  controlStructure,
   url
 })
 

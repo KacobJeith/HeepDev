@@ -15,10 +15,9 @@ export const addIcon = (clientID, icon) => ({
 })
 
 //Control
-export const updateControlValue = (clientID, direction, controlID, newVal) => ({
+export const updateControlValue = (clientID, controlID, newVal) => ({
   type: 'UPDATE_CONTROL_VALUE',
   clientID, 
-  direction,
   controlID, 
   newVal
 })

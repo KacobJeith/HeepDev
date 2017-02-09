@@ -7,8 +7,8 @@ import React from 'react'
 const mapStateToProps = (state, ownProps) => ({
   client: state.clients[ownProps.ClientID],
   position: state.positions[ownProps.ClientID]['client'],
-  controlInputs: state.controlStructure[ownProps.ClientID]['inputs']['controlsArray'],
-  controlOutputs: state.controlStructure[ownProps.ClientID]['outputs']['controlsArray'],  
+  controlInputs: state.controls.controlStructure[ownProps.ClientID]['inputs']['controlsArray'],
+  controlOutputs: state.controls.controlStructure[ownProps.ClientID]['outputs']['controlsArray'],  
   url: state.url
 })
 
