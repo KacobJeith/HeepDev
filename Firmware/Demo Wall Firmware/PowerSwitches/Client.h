@@ -30,7 +30,7 @@ void CreateClientFromParams(char* name, int ID, char type)
 	CopyStringToBuffer(clientName, name);
 
 	ClearString(clientIconName, CLIENT_ICON_NAME_LENGTH);
-	CopyStringToBuffer(clientIconName, "None");
+	CopyStringToBuffer(clientIconName, "none");
 	isIconCustom = 0;
 
 	clientID = ID;
