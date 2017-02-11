@@ -1,4 +1,4 @@
-# ATMega32u4 Board
+# Heep Teensy Relay Board
 
 ### Description
 
