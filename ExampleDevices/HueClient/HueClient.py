@@ -7,19 +7,19 @@ from ClientConnection import ClientConnection
 import time
 import requests
 
-def TurnHue1LightOn :
+def TurnHue1LightOn() :
 	payload = "{\"on\" : true}"
 	r=requests.put("http://10.0.0.186/api/5Fi4nBQQNpI7Bw449Yd1-Aj3QwsrQpLGpeJkVNtI/lights/1/state", data=payload)
 
-def TurnHue1LightOff :
+def TurnHue1LightOff() :
 	payload = "{\"on\" : false}"
 	r=requests.put("http://10.0.0.186/api/5Fi4nBQQNpI7Bw449Yd1-Aj3QwsrQpLGpeJkVNtI/lights/1/state", data=payload)
 
-def TurnHue2LightOn :
+def TurnHue2LightOn() :
 	payload = "{\"on\" : true}"
 	r=requests.put("http://10.0.0.186/api/5Fi4nBQQNpI7Bw449Yd1-Aj3QwsrQpLGpeJkVNtI/lights/2/state", data=payload)
 
-def TurnHue2LightOff :
+def TurnHue2LightOff() :
 	payload = "{\"on\" : false}"
 	r=requests.put("http://10.0.0.186/api/5Fi4nBQQNpI7Bw449Yd1-Aj3QwsrQpLGpeJkVNtI/lights/2/state", data=payload)
 
@@ -33,7 +33,7 @@ def ToggleLight1(lightOn) :
 		light1PrevState = lightOn
 		if lightOn : 
 			TurnHue1LightOn()
-		else
+		else :
 			TurnHue1LightOff()
 
 def ToggleLight2(lightOn) :
@@ -43,7 +43,7 @@ def ToggleLight2(lightOn) :
 		light2PrevState = lightOn
 		if lightOn : 
 			TurnHue2LightOn()
-		else
+		else :
 			TurnHue2LightOff()
 
 def SetupClientConnection() :
