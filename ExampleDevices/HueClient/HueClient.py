@@ -55,12 +55,12 @@ def SetupClientConnection() :
 
 	Hue1OnOff = ControlValue()
 	Hue1OnOff.ControlName = 'HueLight1'
-	Hue1OnOff.ControlValueType = OnOffControls.OnOff
+	Hue1OnOff.ControlValueType = Hue1OnOff.OnOff
 	BlinkyLEDClient.ControlList.append(Hue1OnOff)
 
 	Hue2OnOff = ControlValue()
 	Hue2OnOff.ControlName = 'HueLight2'
-	Hue2OnOff.ControlValueType = OnOffControls.OnOff
+	Hue2OnOff.ControlValueType = Hue2OnOff.OnOff
 	BlinkyLEDClient.ControlList.append(Hue2OnOff)
 
 	client.SetClientData(BlinkyLEDClient)
