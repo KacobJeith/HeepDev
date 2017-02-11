@@ -4,7 +4,7 @@ Welcome to Heep hardware. This part of the Repo contains the Eagle Schematic and
 
 ## Manufacturing Files
 
-### Seeed Design Files
+### [Seeed Design Files](Seed Design Files/)
 
 This section contains the CAM and DRC scripts required to prepare a circuit board under Seeed Studio's Fusion PCB Service. 
 
