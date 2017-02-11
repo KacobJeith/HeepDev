@@ -10,4 +10,4 @@ This is an improvement on the earlier Teensy Board with Relays. It rearranges th
 
 ### Layout
 
-![alt text](HeepTeensyBoardWithRelaysRev2Layout.png "Layout")
+![alt text](HeepTeensyBoardWIthRelaysRev2Layout.png "Layout")
