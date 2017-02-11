@@ -10,4 +10,4 @@ This circuit board is designed to communicate with a Heep system without the nee
 
 ### Layout
 
-![alt text](Heep32u4Layout.png "Layout")
+![alt text](Heep32U4Layout.png "Layout")
