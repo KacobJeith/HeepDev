@@ -29,6 +29,8 @@ light2PrevState = 0;
 def ToggleLight1(lightOn) :
 	print "Light 1 is ", lightOn
 
+	global light1PrevState
+
 	if lightOn != light1PrevState :
 		light1PrevState = lightOn
 		if lightOn : 
@@ -38,6 +40,8 @@ def ToggleLight1(lightOn) :
 
 def ToggleLight2(lightOn) :
 	print "Light 2 is ", lightOn
+
+	global light2PrevState
 
 	if lightOn != light2PrevState :
 		light2PrevState = lightOn
@@ -70,6 +74,9 @@ def SetupClientConnection() :
 client = SetupClientConnection()
 client.Connect()
 client.SendClientDataToServer()
+
+light1PrevState = 0;
+light2PrevState = 0;
 
 counter = 0
 client.StartInterruptServerThread()
