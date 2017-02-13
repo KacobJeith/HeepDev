@@ -1,7 +1,9 @@
 import { combineReducers } from 'redux'
 import Immutable from 'immutable'
 import 'babel-polyfill'
+import $ from 'jquery'
 import * as actions from '../actions/actions'
+import sendVertexToServer from './async'
 
 const initialState = Immutable.Map({
   clients: {},
@@ -38,12 +40,17 @@ function icons(state = initialState, action) {
   }
 }
 
-
 function vertexList(state = initialState, action) {
   switch (action.type) {
     case 'SELECT_OUTPUT':
       return Immutable.Map(state).set('selectedOutput', {sourceID: action.sourceID, outputName: action.outputName}).toJS();
     case 'ADD_VERTEX':
+      var vertex = {...state.selectedOutput, inputName: action.inputName,
+                                             destinationIP: action.IPAddress,
+                                             destinationID: action.destinationID};
+
+      sendVertexToServer(action.url.concat('/api/commands'), vertex);
+
       return Immutable.Map(state).set(state.selectedOutput.sourceID + '.' + state.selectedOutput.outputName + '->' + action.destinationID + '.' + action.inputName, 
                                       {sourceID: state.selectedOutput.sourceID,
                                        outputName: state.selectedOutput.outputName,
