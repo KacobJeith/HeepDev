@@ -30,11 +30,12 @@ export const storeURL = (url) => ({
 
 
 //Vertex
-export const addVertex = (destinationID, inputName, IPAddress) => ({
+export const addVertex = (destinationID, inputName, IPAddress, url) => ({
   type: 'ADD_VERTEX',
   destinationID, 
   inputName,
-  IPAddress
+  IPAddress, 
+  url
 })
 
 export const deleteVertex = (vertexID, vertex) => ({
