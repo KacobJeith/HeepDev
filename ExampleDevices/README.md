@@ -17,7 +17,7 @@ This the first Heep device ever created. Blinky receives a binary input and send
 	* Direction: Input
 	* Type: OnOff
 
-
+--------
 
 
 
@@ -36,7 +36,7 @@ This is the second Heep device ever created. Button sends a single binary output
 	* Direction: Output
 	* Type: OnOff
 
-
+--------
 
 
 ## CuckooClock
@@ -54,7 +54,7 @@ Cuckoo Clock is a simple device that has a binary output that changes state ever
 	* Direction: Output
 	* Type: OnOff
 
-
+--------
 
 
 ## Egg
@@ -71,6 +71,10 @@ Egg is a servo controller that receives a single binary input to change the swin
 * Yolk
 	* Direction: Input
 	* Type: OnOff
+
+
+--------
+
 
 ## HueClient
 
