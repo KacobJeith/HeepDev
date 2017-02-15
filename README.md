@@ -19,7 +19,7 @@ Code written for this repository should aim to be testable, elegant, easy to und
 ## Running the Heep Server
 1. Clone the repo
 2. Open a terminal and navigate to the FrontEnd/FlowChart directory
-3. Type 'npm install' to install all front end dependencies.
+3. Type `npm install` to install all front end dependencies.
 4. Type "npm run bs" to build and start the FlowChart
 5. Open a terminal and navigate to the Server directory
 6. Type "python TestPLCServer.py" to start the server that will listen to devices on the network.
