@@ -7,9 +7,9 @@ A Heep client is a named collection of inputs and outputs that communicate with 
 * **ControlValueList**: The control value list contains the list of inputs and outputs that the client will use to communicate with its internal programming
 * **VertexList**: The vertex list contains a list of interconnections that describe how control values on one client will communicate with control values on another client.
 
-# PLC Client API
+# Heep Client API
 
-This documents describes the client API functions for the PLC clients. These commands will be used by the server and other clients to request information from the clients.
+This documents describes the client API functions for the Heep clients. These commands will be used by the server and other clients to request information from the clients.
 
 ## Current State
 
