@@ -32,6 +32,13 @@ Code written for this repository should aim to be testable, elegant, easy to und
 4. Type `Python device-name.py` in the terminal to start the client
 5. The client should show up on the heep server front end
 
+## What is a Heep Client
+
+A Heep client is a named collection of inputs and outputs that communicate with other Heep clients over a line called a "Vertex." Every client contains these components.
+
+* *Name*: The client's name is the word that humans use to identify the client
+* *ID*: The ID is a unique number that is used by Heep to identify a client regardless of IP Address or MAC Address
+
 ## Heep General Architecture
 
 ### Software Design for Sending
