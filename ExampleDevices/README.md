@@ -9,8 +9,8 @@ This the first Heep device ever created. Blinky receives a binary input and send
 ### Controls
 
 * LEDState
-* Direction: Input
-* Type: OnOff
+	* Direction: Input
+	* Type: OnOff
 
 ## Button
 
