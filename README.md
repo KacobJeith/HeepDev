@@ -1,16 +1,36 @@
-# PLC is the future. 
-We are going to revolutionize the way devices interact and the way devices are designed by using existing infrastructures.
+# Heep is Easier to Build, Install, and Use
+
+This repository contains Circuit Board Eagle CAD Files, Server Code, OS Dependent Client Code, and Client Firmware for Heep devices.
+
+Code written for this repository should aim to be testable, elegant, easy to understand, and robust.
 
 ## Dependencies
-* Python 2.7.12
-* Node.js
 
-## Running this code
-1. Clone this repo onto multiple machines
-2. On the Server System, enter the /PLC/PLCServer directory and type `>>python TestServer.py`
-3. On the Client System, enter the /PLC/PLCFrontEnd directory and type `>> node server.js` 
-4. On the Client System, go into Chome, and enter your IP address, on port `<IP_ADDRESS:8001>`
-5. Click `Test Server`, and a list of all devices on your network will appear
+* Heep Server
+	* Python 2.7
+* Python Clients
+	* Python 2.7
+* Firmware Clients
+	* Modified UIP_Ethernet Library found in Firmware/ArduinoLibrary
+	* Teensyduino
+* Front End
+	* Node.js
+
+## Running the Heep Server
+1. Clone the repo
+2. Open a terminal and navigate to the FrontEnd/FlowChart directory
+3. Type `npm install` to install all front end dependencies
+4. Type `npm run bs` to build and start the FlowChart
+5. Open a terminal and navigate to the Server directory
+6. Type `python TestPLCServer.py` to start the server that will listen to devices on the network
+7. Connect Devices and view the front end by opening a web browser and going to your-IP:3001
+
+## Running a Heep Client
+1. Clone the repo
+2. Open a terminal and navigate to a client in the ExampleDevices directory
+3. Find the name of the .py file in the example device folder you chose
+4. Type `Python device-name.py` in the terminal to start the client
+5. The client should show up on the heep server front end
 
 ## Heep General Architecture
 
