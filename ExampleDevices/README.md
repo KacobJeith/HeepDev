@@ -6,6 +6,11 @@ The examples found in this folder are written in Python and intended to be run o
 
 This the first Heep device ever created. Blinky receives a binary input and sends a signal to pin 17 on a Raspberry Pi. When not used on a Raspberry Pi, Blinky will just report the state of an imaginary light.
 
+### Device Info
+
+* Name: BlinkyLED
+* ID: 444
+
 ### Controls
 
 * LEDState
@@ -15,6 +20,17 @@ This the first Heep device ever created. Blinky receives a binary input and send
 ## Button
 
 This is the second Heep device ever created. Button sends a single binary output. When used on a Raspberry Pi, button looks for pin 12 as an input
+
+### Device Info
+
+* Name: Button
+* ID: 001
+
+### Controls
+
+* ButtonOut
+	* Direction: Output
+	* Type: OnOff
 
 ## CuckooClock
 
