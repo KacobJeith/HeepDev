@@ -16,12 +16,14 @@ Code written for this repository should aim to be testable, elegant, easy to und
 * Front End
 	* Node.js
 
-## Running this code
-1. Clone this repo onto multiple machines
-2. On the Server System, enter the /PLC/PLCServer directory and type `>>python TestServer.py`
-3. On the Client System, enter the /PLC/PLCFrontEnd directory and type `>> node server.js` 
-4. On the Client System, go into Chome, and enter your IP address, on port `<IP_ADDRESS:8001>`
-5. Click `Test Server`, and a list of all devices on your network will appear
+## Running the Heep Server
+1. Clone the repo
+2. Open a terminal and navigate to the FrontEnd/FlowChart directory
+3. Type "npm install" to install all front end dependencies.
+4. Type "npm run bs" to build and start the FlowChart
+5. Open a terminal and navigate to the Server directory
+6. Type "python TestPLCServer.py" to start the server that will listen to devices on the network.
+7. Connect Devices and view the front end by opening a web browser and going to <your IP>:3001
 
 ## Heep General Architecture
 
