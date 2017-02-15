@@ -1,9 +1,20 @@
-# PLC is the future. 
-We are going to revolutionize the way devices interact and the way devices are designed by using existing infrastructures.
+# Heep is Easier to Build, Install, and Use
+
+This repository contains Circuit Board Eagle CAD Files, Server Code, OS Dependent Client Code, and Client Firmware for Heep devices.
+
+Code written for this repository should aim to be testable, elegant, easy to understand, and robust.
 
 ## Dependencies
-* Python 2.7.12
-* Node.js
+
+* Heep Server
+	* Python 2.7
+* Python Clients
+	* Python 2.7
+* Firmware Clients
+	* Modified UIP_Ethernet Library found in Firmware/ArduinoLibrary
+	* Teensyduino
+* Front End
+	* Node.js
 
 ## Running this code
 1. Clone this repo onto multiple machines
