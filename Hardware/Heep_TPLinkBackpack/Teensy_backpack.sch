@@ -6020,8 +6020,6 @@ Allows current flow when high potential at base.</description>
 <part name="C5" library="SparkFun-Capacitors" deviceset="CAP" device="0603-CAP" value="0.1uF"/>
 <part name="C6" library="SparkFun-Capacitors" deviceset="CAP" device="0603-CAP" value="0.1uF"/>
 <part name="C7" library="SparkFun-Capacitors" deviceset="CAP" device="0603-CAP" value="0.1uF"/>
-<part name="C8" library="SparkFun-Capacitors" deviceset="CAP" device="0603-CAP" value="0.1uF"/>
-<part name="C9" library="SparkFun-Capacitors" deviceset="CAP" device="0603-CAP" value="0.1uF"/>
 <part name="GND7" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="GND8" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="R7" library="SparkFun-Passives" deviceset="RESISTOR" device="0603-RES" value="2k @ 1% Tolerance"/>
@@ -6079,8 +6077,6 @@ Allows current flow when high potential at base.</description>
 <instance part="C5" gate="G$1" x="-58.42" y="43.18"/>
 <instance part="C6" gate="G$1" x="-48.26" y="43.18"/>
 <instance part="C7" gate="G$1" x="-38.1" y="43.18"/>
-<instance part="C8" gate="G$1" x="-27.94" y="43.18"/>
-<instance part="C9" gate="G$1" x="-17.78" y="43.18"/>
 <instance part="GND7" gate="1" x="-88.9" y="40.64"/>
 <instance part="GND8" gate="1" x="-38.1" y="27.94"/>
 <instance part="R7" gate="G$1" x="2.54" y="119.38"/>
@@ -6135,15 +6131,8 @@ Allows current flow when high potential at base.</description>
 <segment>
 <pinref part="C5" gate="G$1" pin="2"/>
 <wire x1="-58.42" y1="40.64" x2="-58.42" y2="30.48" width="0.1524" layer="91"/>
-<pinref part="C9" gate="G$1" pin="2"/>
 <wire x1="-58.42" y1="30.48" x2="-48.26" y2="30.48" width="0.1524" layer="91"/>
 <wire x1="-48.26" y1="30.48" x2="-38.1" y2="30.48" width="0.1524" layer="91"/>
-<wire x1="-38.1" y1="30.48" x2="-27.94" y2="30.48" width="0.1524" layer="91"/>
-<wire x1="-27.94" y1="30.48" x2="-17.78" y2="30.48" width="0.1524" layer="91"/>
-<wire x1="-17.78" y1="30.48" x2="-17.78" y2="40.64" width="0.1524" layer="91"/>
-<pinref part="C8" gate="G$1" pin="2"/>
-<wire x1="-27.94" y1="40.64" x2="-27.94" y2="30.48" width="0.1524" layer="91"/>
-<junction x="-27.94" y="30.48"/>
 <pinref part="C7" gate="G$1" pin="2"/>
 <wire x1="-38.1" y1="40.64" x2="-38.1" y2="30.48" width="0.1524" layer="91"/>
 <junction x="-38.1" y="30.48"/>
@@ -6356,14 +6345,6 @@ Allows current flow when high potential at base.</description>
 <junction x="-48.26" y="58.42"/>
 <pinref part="C7" gate="G$1" pin="1"/>
 <wire x1="-38.1" y1="48.26" x2="-38.1" y2="58.42" width="0.1524" layer="91"/>
-<pinref part="C8" gate="G$1" pin="1"/>
-<wire x1="-27.94" y1="48.26" x2="-27.94" y2="58.42" width="0.1524" layer="91"/>
-<wire x1="-27.94" y1="58.42" x2="-33.02" y2="58.42" width="0.1524" layer="91"/>
-<junction x="-33.02" y="58.42"/>
-<pinref part="C9" gate="G$1" pin="1"/>
-<wire x1="-17.78" y1="48.26" x2="-17.78" y2="58.42" width="0.1524" layer="91"/>
-<wire x1="-17.78" y1="58.42" x2="-27.94" y2="58.42" width="0.1524" layer="91"/>
-<junction x="-27.94" y="58.42"/>
 </segment>
 <segment>
 <pinref part="L1" gate="G$1" pin="1"/>
