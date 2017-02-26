@@ -184,6 +184,7 @@ class ClientConnection:
 
 	def StartInterruptServerThread(self) :
 		t = Thread( target = self.StartInterruptServer, args=() )
+		t.setDaemon(True)
 		t.start()
 
 	def GetClientList(self) :
