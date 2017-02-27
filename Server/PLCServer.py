@@ -282,6 +282,7 @@ class ServerConnection:
 	def StartQueueCommandLoop(self) :
 		try:
 			t = Thread( target = self.QueueCurrentCommands, args=() )
+			t.setDaemon(True)
 			t.start()
 		except:
 			print ('Failed to schedule search thread')
@@ -289,22 +290,27 @@ class ServerConnection:
 
 	def ListenToNetwork(self) :
 
-		self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		self.sock.bind((self.host, self.TCP_PORT))
-		self.sock.listen(self.backlog)
+		try:
+			self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+			self.sock.bind((self.host, self.TCP_PORT))
+			self.sock.listen(self.backlog)
 
-		self.StartQueueCommandLoop()
+			self.StartQueueCommandLoop()
 
-		while 1:
+			while 1:
 
-			client, address = self.sock.accept()
+				client, address = self.sock.accept()
 
-			data = client.recv(self.size)
+				data = client.recv(self.size)
 
-			returnData = self.ParseClientInput(data, address)
+				returnData = self.ParseClientInput(data, address)
 
-			print 'Going to send ' + returnData
+				print 'Going to send ' + returnData
 
-			if data:
-				client.send(returnData)
-			client.close()
+				if data:
+					client.send(returnData)
+				client.close()
+
+		except:
+			print ""
+			print "Exited Server: ", sys.exc_info()[0]
