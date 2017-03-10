@@ -191,6 +191,12 @@
 <wire x1="38.6" y1="58.2" x2="38.6" y2="69.9" width="1.016" layer="20"/>
 <wire x1="38.6" y1="69.9" x2="39.8" y2="71.1" width="1.016" layer="20"/>
 <wire x1="39.8" y1="71.1" x2="43.6" y2="71.1" width="1.016" layer="20"/>
+<text x="7.8" y="62.8" size="1.778" layer="21">C</text>
+<text x="36" y="62.7" size="1.778" layer="21">C</text>
+<text x="12.2" y="79.2" size="1.778" layer="21">NC</text>
+<text x="40.6" y="79.3" size="1.778" layer="21">NC</text>
+<text x="30.2" y="79.4" size="1.778" layer="21">NO</text>
+<text x="1.9" y="79.3" size="1.778" layer="21">NO</text>
 </plain>
 <libraries>
 <library name="SparkFun-Connectors">
