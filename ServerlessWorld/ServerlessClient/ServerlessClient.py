@@ -15,6 +15,9 @@ class ServerlessClientConnection :
 	def __init__(self):
 		return
 
+	def SetClientData(self, clientData) :
+		self.clientData = clientData
+
 	def ParseReceivedData(self, data) :
 		isHeepDeviceString = 'IsHeepDevice'
 
