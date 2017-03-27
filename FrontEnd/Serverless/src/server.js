@@ -1,18 +1,15 @@
-import fs from 'fs';
-import path from 'path';
-import express from 'express';
-import bodyParser from 'body-parser';
-
+import fs from 'fs'
+import path from 'path'
+import net from 'net'
+import express from 'express'
+import bodyParser from 'body-parser'
 
 var app = express();
-var CLIENT_FILE = path.join(__dirname, '../../../Server/clientList.json');
-var COMMAND_FILE = path.join(__dirname, '../../../Server/CommandQueue.tmp');
-var cmd_fd = fs.openSync(COMMAND_FILE,'r');
 
 app.set('port', (process.env.PORT || 3001));
 
 //CORS middleware
-var allowCrossDomain = function(req, res, next) {
+var allowCrossDomain = (req, res, next) => {
     res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
@@ -21,83 +18,21 @@ var allowCrossDomain = function(req, res, next) {
 
 app.use(allowCrossDomain);
 app.use('/', express.static(__dirname));
-app.use('/static', express.static(path.join(__dirname, '../../../Server')))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 
 app.get('/api/clients', (req, res) => {
-  fs.readFile(CLIENT_FILE, (err, data) => {
-    if (err) {
-      console.error(err);
-      console.log('clientList.json not present, creating now');
-      var emptyjson = "[]";
-      fs.writeFile(CLIENT_FILE, emptyjson, (err) => {
-        if(err) {
-          return console.log(err);
-        }
-
-        console.log('generated empty clientList.json');
-      })
-
-      res.json(JSON.parse(emptyjson));
-    }
-    else {
-      console.log(JSON.parse(data));
-      res.json(JSON.parse(data));
-    }
-
-  });
+  console.log('trying connection');
+  ConnectToHeepDevice('192.168.1.149', 5000);
+  console.log('past connection');
 });
 
 app.post('/api/commands', (req, res) => {
   const command = req.body["command"];
 
-  fs.readFile(COMMAND_FILE,  (err) => {
-    if (err) {
-      console.error(err);
-      console.log('CommandQueue.tmp not present, creating now');
-      fs.writeFile(COMMAND_FILE, '', (err) => {
-        if(err) {
-          return console.log(err);
-        }
-        else {
-          writeCommand(command)
-        }
-        console.log('generated empty CommandQueue.tmp');
-      });
-    }
-    else {
-      writeCommand(command);
-    }
-
-  })
-  res.end("AJAX WORKED?!");
+  res.end("Command sent");
 });
-
-var writeCommand = (command) => {
-  fs.appendFile(COMMAND_FILE, command, (err, data) => {
-    if (err) {
-      console.error(err);
-      res.end("AJAX FAILED :(");
-      console.log("re-trying");
-      
-      //Server attempts to re-send a command after 200ms if the file is busy
-      setTimeout((err, data) => {
-          fs.appendFile(COMMAND_FILE, command, (err, data) => {
-            if (err) {
-              console.error(err);
-              res.end("AJAX FAILED :(");
-            }
-
-          });}
-          , 200);
-    }
-
-    console.log(command);
-  });
-}
-
 
 app.listen(app.get('port'), (error) => {
   if (error) {
@@ -107,3 +42,71 @@ app.listen(app.get('port'), (error) => {
   }
 });
 
+var ConnectToHeepDevice = (IPAddress, port) => {
+  var sock = new net.Socket();
+  sock.connect({host: IPAddress, port: port}, () => {
+    console.log('Connected to Server!');
+    sock.write('IsHeepDevice:');
+  });
+
+  sock.on('data', (data) => {
+    console.log(data.toString());
+    SetClientFromString(data.toString());
+    sock.end();
+  });
+
+  sock.on('end', () => {
+    console.log('disconnected from server');
+  });
+}
+
+var SetClientFromString = (clientString) => {
+
+    var splitString = clientString.split(',');
+
+    var thisClient = {
+      ClientID: parseInt(splitString[0]),
+      IPAddress: splitString[1],
+      ClientType: parseInt(splitString[2]),
+      ClientName: splitString[3],
+      IconCustom: parseInt(splitString[4]),
+      IconName: splitString[5],
+      ControlList: []
+    }
+    
+
+    var it = 6
+    while (it < splitString.length){
+      var control = ControlValue();
+      var newData = SetControlFromSplitString(splitString, it, control);
+      thisClient.ControlList.push(newData.thisControl);
+      it = newData.it;
+    }
+
+    console.log(thisClient);
+
+    return thisClient
+}
+
+var SetControlFromSplitString = (splitString, startIndex, control) => {
+    control.ControlDirection = parseInt(splitString[startIndex]);
+    control.ControlValueType = parseInt(splitString[startIndex+1]);
+    var startIndex = startIndex+1;
+
+    //May need to be modified in the future for string inputs
+    control.ControlName = splitString[startIndex + 1];
+    control.LowValue = parseInt(splitString[startIndex + 2]);
+    control.HighValue = parseInt(splitString[startIndex + 3]);
+    return {it: startIndex + 4, thisControl: control}
+}
+
+var ControlValue = () => {
+  return {
+    ControlValueType: 1,
+    ControlDirection: 1,
+    HighValue: 10,
+    LowValue: 0,
+    CurCtrlValue: 0,
+    ControlName: 'None'
+  }
+}
