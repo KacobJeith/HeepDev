@@ -1,10 +1,15 @@
 import socket
 
+import sys
+sys.path.insert(0, '../../CommonLibrary')
+from ControlValue import ControlValue
+from PLCClient import PLCClient
+from OutputData import OutputData
+
 class ServerlessClientConnection :
 
 	sock = socket.socket()
 	TCP_PORT = 5000
-	BUFFER_SIZE = 1500
 
 	def __init__(self):
 		return
@@ -23,5 +28,5 @@ class ServerlessClientConnection :
 			data = client.recv(size)
 
 			print data
-			
+
 			client.close()
