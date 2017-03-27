@@ -10,6 +10,7 @@ class ServerlessClientConnection :
 
 	sock = socket.socket()
 	TCP_PORT = 5000
+	clientData = PLCClient()
 
 	def __init__(self):
 		return
@@ -21,7 +22,7 @@ class ServerlessClientConnection :
 		print commandDataSplit
 
 		if commandDataSplit[0] == isHeepDeviceString :
-			return 'Yes'
+			return self.clientData.GetClientString()
 
 		return 'null'
 
