@@ -1,16 +1,16 @@
 {
-  "name": "plc-clients",
+  "name": "serverless-frontend",
   "version": "0.0.0",
   "private": true,
   "license": "see LICENSE file",
-  "description": "Code to Display the active/present PLC-Clients",
-  "author": "jacobkeith",
+  "description": "Code to Display the active/present Heep Devices",
+  "author": "kacobjeith",
   "bugs": {
-    "url": "https://github.com/dfashbaugh/PLC/issues"
+    "url": "https://github.com/HeepIO/HeepDev/issues"
   },
-  "homepage": "https://github.com/dfashbaugh/PLC",
+  "homepage": "https://github.com/HeepIO/HeepDev",
   "engines": {
-    "node": "0.12.x"
+    "node": "7.7.4"
   },
   "scripts": {
     "start": "babel-node src/server.js",
@@ -54,9 +54,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/dfashbaugh/PLC.git"
+    "url": "https://github.com/HeepIO/HeepDev.git"
   },
   "keywords": [
-    "PLC"
+    "PLC",
+    "IoT",
+    "Smarthome",
+    "Flowchart",
+    "Visual Programming"
   ]
 }
