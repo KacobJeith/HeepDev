@@ -14,6 +14,17 @@ class ServerlessClientConnection :
 	def __init__(self):
 		return
 
+	def ParseReceivedData(self, data) :
+		isHeepDeviceString = 'IsHeepDevice'
+
+		commandDataSplit = data.split(':')
+		print commandDataSplit
+
+		if commandDataSplit[0] == isHeepDeviceString :
+			return 'Yes'
+
+		return 'null'
+
 	def StartHeepClientServer(self) :
 		host = ''
 		backlog = 5
@@ -27,6 +38,10 @@ class ServerlessClientConnection :
 			client, address = sock.accept()
 			data = client.recv(size)
 
-			print data
+			returnData = self.ParseReceivedData(data)
+
+			if returnData:
+				client.send(returnData)
+				print returnData
 
 			client.close()
