@@ -16,7 +16,11 @@ class PLCClient:
 		self.ControlList = []
 		self.ControlQueue = []
 		self.VertexList = []
+		self.IsServerless = 0
 		return
+
+	def SetServerless(self, isServerless) :
+		self.IsServerless = isServerless
 
  	def AddVertexByString(self, vertexStr) :
  		newVertex = Vertex()
