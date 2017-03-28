@@ -24,10 +24,15 @@ var counter = 0;
 //var thisIcon = '';
 
 function loadClientsFromServer(url) {
+  console.log('requesting data')
+
       $.ajax({
       url: url,
       cache: false,
       success: (data) => {
+
+        console.log('Got the data!');
+        console.log(data);
 
         for (var client in initialState.clients){
           if (client != 'clientArray'){
