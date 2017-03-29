@@ -14,8 +14,6 @@ var masterState = {
   url: ''
 };
 
-var allClients = [];
-
 app.set('port', (process.env.PORT || 3001));
 
 //CORS middleware
@@ -57,7 +55,6 @@ app.listen(app.get('port'), (error) => {
 });
 
 var ConnectToHeepDevice = (IPAddress, port) => {
-  // Need to figure out how to get newClient out of the data socket function
   var sock = new net.Socket();
   sock.connect({host: IPAddress, port: port}, () => {
     console.log('Connected to Server!');
@@ -66,8 +63,9 @@ var ConnectToHeepDevice = (IPAddress, port) => {
 
   sock.on('data', (data) => {
     console.log(data.toString());
-    var newClient = SetClientFromString(data.toString());
-    allClients.push(newClient);
+
+    AddClientToMasterState(data.toString());
+
     sock.end();
   });
 
@@ -78,42 +76,21 @@ var ConnectToHeepDevice = (IPAddress, port) => {
 
 }
 
-var SetClientFromString = (clientString) => {
+var AddClientToMasterState = (clientString) => {
 
     var splitString = clientString.split(',');
 
-    var thisClient = {
-      ClientID: parseInt(splitString[0]),
-      IPAddress: splitString[1],
-      ClientType: parseInt(splitString[2]),
-      ClientName: splitString[3],
-      IconCustom: parseInt(splitString[4]),
-      IconName: splitString[5],
-      ControlList: [],
-      Position: {left: 0, top: 0},
-      VertexList: []
-    }
-
-    SetMasterStateClientFromString(splitString);
-    
+    SetClientFromString(splitString);
 
     var it = 6
     while (it < splitString.length){
-      var control = ControlValue();
-      var newData = SetControlFromSplitString(splitString, it, control);
-      var it_ = SetMasterStateControlFromSplitString(splitString, it)
-      thisClient.ControlList.push(newData.thisControl);
-      it = newData.it;
+      var it = SetControlFromSplitString(splitString, it)
     }
-
-    console.log(thisClient);
-
-    return thisClient
 }
 
-var SetMasterStateClientFromString = (splitString) => {
-   var ID = getClientID(splitString);
-   masterState.clients[ID] = {
+var SetClientFromString = (splitString) => {
+   var clientID = getClientID(splitString);
+   masterState.clients[clientID] = {
       ClientID: parseInt(splitString[0]),
       IPAddress: splitString[1],
       ClientType: parseInt(splitString[2]),
@@ -125,24 +102,11 @@ var SetMasterStateClientFromString = (splitString) => {
       VertexList: []
     }
 
-    masterState.clients.clientArray.push(ID);
+    masterState.clients.clientArray.push(clientID);
 
 }
 
-var SetControlFromSplitString = (splitString, startIndex, control) => {
-    control.ControlDirection = parseInt(splitString[startIndex]);
-    control.ControlValueType = parseInt(splitString[startIndex+1]);
-    var startIndex = startIndex+1;
-
-    //May need to be modified in the future for string inputs
-    control.ControlName = splitString[startIndex + 1];
-    control.LowValue = parseInt(splitString[startIndex + 2]);
-    control.HighValue = parseInt(splitString[startIndex + 3]);
-    return {it: startIndex + 4, thisControl: control}
-}
-
-
-var SetMasterStateControlFromSplitString = (splitString, startIndex) => {
+var SetControlFromSplitString = (splitString, startIndex) => {
 
   var controlName = splitString[startIndex + 2];
   var ControlDirection = parseInt(splitString[startIndex]);
@@ -175,20 +139,6 @@ var SetPositionFromSplitString = (splitString, startIndex, controlName) => {
 
 }
 
-var getControlPosition = () => {
-
-}
-
-var ControlValue = () => {
-  return {
-    ControlValueType: 1,
-    ControlDirection: 1,
-    HighValue: 10,
-    LowValue: 0,
-    CurCtrlValue: 0,
-    ControlName: 'None'
-  }
-}
 
 var ControlStructureTemplate = () => {
   return {
