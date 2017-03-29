@@ -81,6 +81,7 @@ var AddClientToMasterState = (clientString) => {
     var splitString = clientString.split(',');
 
     SetClientFromString(splitString);
+    SetClientIconFromString(splitString);
 
     var it = 6
     while (it < splitString.length){
@@ -104,6 +105,19 @@ var SetClientFromString = (splitString) => {
 
     masterState.clients.clientArray.push(clientID);
 
+}
+
+var SetClientIconFromString = (splitString) => {
+  var clientIconName = getClientIcon(splitString);
+  var filepath = path.join(__dirname, './assets/', clientIconName + '.svg');
+
+   fs.readFile(filepath, (err, data) => {
+    if (err) {
+      console.error('SVG failed');
+   } else {
+    masterState.icons[getClientID(splitString)] = data.toString();
+   }
+ });
 }
 
 var SetControlFromSplitString = (splitString, startIndex) => {
@@ -139,7 +153,6 @@ var SetPositionFromSplitString = (splitString, startIndex, controlName) => {
 
 }
 
-
 var ControlStructureTemplate = () => {
   return {
     inputs: {controlsArray: []},
@@ -170,4 +183,8 @@ var nameControl = (splitString, startIndex) => {
 
 var getClientID = (splitString) => {
   return splitString[0];
+}
+
+var getClientIcon = (splitString) => {
+  return splitString[5];
 }
