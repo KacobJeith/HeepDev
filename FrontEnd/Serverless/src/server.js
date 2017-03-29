@@ -200,3 +200,10 @@ function nameControl(splitString, startIndex) {
 function getClientID(splitString){
   return splitString[0];
 }
+
+var ControlStructureTemplate = () => {
+  return {
+    inputs: {controlsArray: []},
+    outputs: {controlsArray: []}
+  }
+}
