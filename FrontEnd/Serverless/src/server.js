@@ -5,6 +5,15 @@ import express from 'express'
 import bodyParser from 'body-parser'
 
 var app = express();
+var masterState = {
+  clients: {clientArray: []},
+  positions: {},
+  controls: {controlStructure:{}},
+  vertexList: {},
+  icons: {},
+  url: ''
+};
+
 var allClients = [];
 
 app.set('port', (process.env.PORT || 3001));
@@ -63,17 +72,9 @@ var ConnectToHeepDevice = (IPAddress, port) => {
   });
 
   sock.on('end', () => {
-    console.log('exiting: ', allClients);
+    console.log(masterState);
     console.log('disconnected from server');
   });
-
-  // while (1) {
-  //   if (isNotEmpty(newClient) > 0){
-  //     console.log('returning:', newClient);
-  //     return newClient
-  //   }
-  // }
-
 
 }
 
@@ -92,12 +93,15 @@ var SetClientFromString = (clientString) => {
       Position: {left: 0, top: 0},
       VertexList: []
     }
+
+    SetMasterStateClientFromString(splitString);
     
 
     var it = 6
     while (it < splitString.length){
       var control = ControlValue();
       var newData = SetControlFromSplitString(splitString, it, control);
+      var it_ = SetMasterStateControlFromSplitString(splitString, it)
       thisClient.ControlList.push(newData.thisControl);
       it = newData.it;
     }
@@ -105,6 +109,24 @@ var SetClientFromString = (clientString) => {
     //console.log(thisClient);
 
     return thisClient
+}
+
+var SetMasterStateClientFromString = (splitString) => {
+   var ID = getClientID(splitString);
+   masterState.clients[ID] = {
+      ClientID: parseInt(splitString[0]),
+      IPAddress: splitString[1],
+      ClientType: parseInt(splitString[2]),
+      ClientName: splitString[3],
+      IconCustom: parseInt(splitString[4]),
+      IconName: splitString[5],
+      ControlList: [],
+      Position: {left: 0, top: 0},
+      VertexList: []
+    }
+
+    masterState.clients.clientArray.push(ID);
+
 }
 
 var SetControlFromSplitString = (splitString, startIndex, control) => {
@@ -119,6 +141,43 @@ var SetControlFromSplitString = (splitString, startIndex, control) => {
     return {it: startIndex + 4, thisControl: control}
 }
 
+
+var SetMasterStateControlFromSplitString = (splitString, startIndex) => {
+
+  var controlName = splitString[startIndex + 2];
+  var ControlDirection = parseInt(splitString[startIndex]);
+  var controlID = nameControl(splitString, startIndex);
+
+  masterState.controls[controlID] = {
+    ControlDirection: ControlDirection,
+    ControlValueType: parseInt(splitString[startIndex+1]),
+    ControlName: controlName,
+    LowValue: parseInt(splitString[startIndex + 3]),
+    HighValue: parseInt(splitString[startIndex + 4]),
+    CurCtrlValue: 0
+  }
+
+  SetMasterStatePositionFromSplitString(splitString, startIndex, controlName, ControlDirection);
+
+  return startIndex + 6
+}
+
+var SetMasterStatePositionFromSplitString = (splitString, startIndex, controlName) => {
+  
+  var newPosition = {
+    client: {top: 0, left: 0}
+  }
+
+  newPosition[controlName] = {top: 59, left: 10};
+
+  masterState.positions[getClientID(splitString)] = newPosition;
+
+}
+
+var getControlPosition = () => {
+
+}
+
 var ControlValue = () => {
   return {
     ControlValueType: 1,
@@ -130,7 +189,14 @@ var ControlValue = () => {
   }
 }
 
-var isNotEmpty = (obj) => {
-    //console.log('Check obj: ', obj);
-    return Object.keys(obj).length;
+function nameVertex(vertex) {
+    return vertex['sourceID'] + '.' + vertex['outputName'] + '->' + vertex['destinationID'] + '.' + vertex['inputName'];
+  }
+
+function nameControl(splitString, startIndex) {
+  return getClientID(splitString) +  '.' + splitString[startIndex + 2];
+}
+
+function getClientID(splitString){
+  return splitString[0];
 }

@@ -42,6 +42,7 @@ function loadClientsFromServer(url) {
 
 
         prepareInitialState(data);
+        console.log(initialState);
 
       },
       error: function(xhr, status, err) {
