@@ -189,15 +189,15 @@ var ControlValue = () => {
   }
 }
 
-function nameVertex(vertex) {
+var nameVertex = (vertex) => {
     return vertex['sourceID'] + '.' + vertex['outputName'] + '->' + vertex['destinationID'] + '.' + vertex['inputName'];
   }
 
-function nameControl(splitString, startIndex) {
+var nameControl = (splitString, startIndex) => {
   return getClientID(splitString) +  '.' + splitString[startIndex + 2];
 }
 
-function getClientID(splitString){
+var getClientID = (splitString) => {
   return splitString[0];
 }
 
