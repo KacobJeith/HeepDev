@@ -41,8 +41,10 @@ function loadClientsFromServer(url) {
         }
 
 
-        prepareInitialState(data);
-        console.log(initialState);
+        //prepareInitialState(data);
+        data.url = window.location.protocol.concat('//', window.location.hostname,':3001');
+        initialState = data;
+        grabClientIcons();
 
       },
       error: function(xhr, status, err) {
@@ -92,6 +94,16 @@ function grabSVGIcon(client, iconName) {
       }
     );
 }
+
+var grabClientIcons = () => {
+  console.log('grabbing clients');
+  for (var client in initialState.clients){
+    if (client != 'clientArray'){
+      grabSVGIcon(client, initialState.clients[client]['IconName']);
+    }
+  }
+}
+
 
 var prepareInitialState = (data) => {
 
@@ -157,6 +169,7 @@ var prepareInitialState = (data) => {
       grabSVGIcon(client, initialState.clients[client]['IconName']);
     }
   }
+  
 }
 
 

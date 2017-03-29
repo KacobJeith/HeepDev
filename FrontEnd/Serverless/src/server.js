@@ -37,7 +37,7 @@ app.get('/api/clients', (req, res) => {
   console.log('trying connection');
   ConnectToHeepDevice('127.0.0.1', 5000);
   setTimeout(()=>{
-        res.json(allClients);
+        res.json(masterState);
   },500);
 
 });
@@ -106,7 +106,7 @@ var SetClientFromString = (clientString) => {
       it = newData.it;
     }
 
-    //console.log(thisClient);
+    console.log(thisClient);
 
     return thisClient
 }
@@ -157,12 +157,13 @@ var SetMasterStateControlFromSplitString = (splitString, startIndex) => {
     CurCtrlValue: 0
   }
 
-  SetMasterStatePositionFromSplitString(splitString, startIndex, controlName, ControlDirection);
+  SetPositionFromSplitString(splitString, startIndex, controlName, ControlDirection);
+  SetControlStructure(splitString, controlID);
 
   return startIndex + 6
 }
 
-var SetMasterStatePositionFromSplitString = (splitString, startIndex, controlName) => {
+var SetPositionFromSplitString = (splitString, startIndex, controlName) => {
   
   var newPosition = {
     client: {top: 0, left: 0}
@@ -189,6 +190,26 @@ var ControlValue = () => {
   }
 }
 
+var ControlStructureTemplate = () => {
+  return {
+    inputs: {controlsArray: []},
+    outputs: {controlsArray: []}
+  }
+}
+
+var SetControlStructure = (splitString, controlID) => {
+  var controlStruct = ControlStructureTemplate();
+
+  if ( masterState.controls[controlID]['ControlDirection']){
+    controlStruct.outputs.controlsArray.push(controlID);
+  } else {
+    controlStruct.inputs.controlsArray.push(controlID);
+  }
+
+  masterState.controls.controlStructure[getClientID(splitString)] = controlStruct;
+
+}
+
 var nameVertex = (vertex) => {
     return vertex['sourceID'] + '.' + vertex['outputName'] + '->' + vertex['destinationID'] + '.' + vertex['inputName'];
   }
@@ -199,11 +220,4 @@ var nameControl = (splitString, startIndex) => {
 
 var getClientID = (splitString) => {
   return splitString[0];
-}
-
-var ControlStructureTemplate = () => {
-  return {
-    inputs: {controlsArray: []},
-    outputs: {controlsArray: []}
-  }
 }
