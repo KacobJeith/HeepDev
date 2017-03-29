@@ -5,7 +5,14 @@ import express from 'express'
 import bodyParser from 'body-parser'
 
 var app = express();
-var allClients = [];
+var masterState = {
+  clients: {clientArray: []},
+  positions: {},
+  controls: {controlStructure:{}},
+  vertexList: {},
+  icons: {},
+  url: ''
+};
 
 app.set('port', (process.env.PORT || 3001));
 
@@ -28,7 +35,7 @@ app.get('/api/clients', (req, res) => {
   console.log('trying connection');
   ConnectToHeepDevice('127.0.0.1', 5000);
   setTimeout(()=>{
-        res.json(allClients);
+    res.json(masterState);
   },500);
 
 });
@@ -48,40 +55,41 @@ app.listen(app.get('port'), (error) => {
 });
 
 var ConnectToHeepDevice = (IPAddress, port) => {
-  // Need to figure out how to get newClient out of the data socket function
   var sock = new net.Socket();
   sock.connect({host: IPAddress, port: port}, () => {
-    console.log('Connected to Server!');
+    console.log('Trying to a Heep Device at: ', IPAddress + ':' + port.toString());
     sock.write('IsHeepDevice:');
   });
 
   sock.on('data', (data) => {
     console.log(data.toString());
-    var newClient = SetClientFromString(data.toString());
-    allClients.push(newClient);
+
+    AddClientToMasterState(data.toString());
+
     sock.end();
   });
 
   sock.on('end', () => {
-    console.log('exiting: ', allClients);
     console.log('disconnected from server');
   });
-
-  // while (1) {
-  //   if (isNotEmpty(newClient) > 0){
-  //     console.log('returning:', newClient);
-  //     return newClient
-  //   }
-  // }
-
-
 }
 
-var SetClientFromString = (clientString) => {
+var AddClientToMasterState = (clientString) => {
 
     var splitString = clientString.split(',');
 
-    var thisClient = {
+    SetClientFromString(splitString);
+    SetClientIconFromString(splitString);
+
+    var it = 6
+    while (it < splitString.length){
+      var it = SetControlFromSplitString(splitString, it)
+    }
+}
+
+var SetClientFromString = (splitString) => {
+   var clientID = getClientID(splitString);
+   masterState.clients[clientID] = {
       ClientID: parseInt(splitString[0]),
       IPAddress: splitString[1],
       ClientType: parseInt(splitString[2]),
@@ -92,45 +100,89 @@ var SetClientFromString = (clientString) => {
       Position: {left: 0, top: 0},
       VertexList: []
     }
-    
 
-    var it = 6
-    while (it < splitString.length){
-      var control = ControlValue();
-      var newData = SetControlFromSplitString(splitString, it, control);
-      thisClient.ControlList.push(newData.thisControl);
-      it = newData.it;
-    }
+    masterState.clients.clientArray.push(clientID);
 
-    //console.log(thisClient);
-
-    return thisClient
 }
 
-var SetControlFromSplitString = (splitString, startIndex, control) => {
-    control.ControlDirection = parseInt(splitString[startIndex]);
-    control.ControlValueType = parseInt(splitString[startIndex+1]);
-    var startIndex = startIndex+1;
+var SetClientIconFromString = (splitString) => {
+  var clientIconName = getClientIcon(splitString);
+  var filepath = path.join(__dirname, './assets/', clientIconName + '.svg');
 
-    //May need to be modified in the future for string inputs
-    control.ControlName = splitString[startIndex + 1];
-    control.LowValue = parseInt(splitString[startIndex + 2]);
-    control.HighValue = parseInt(splitString[startIndex + 3]);
-    return {it: startIndex + 4, thisControl: control}
+   fs.readFile(filepath, (err, data) => {
+    if (err) {
+      console.error('SVG failed');
+   } else {
+    masterState.icons[getClientID(splitString)] = data.toString();
+   }
+ });
 }
 
-var ControlValue = () => {
+var SetControlFromSplitString = (splitString, startIndex) => {
+
+  var controlName = splitString[startIndex + 2];
+  var ControlDirection = parseInt(splitString[startIndex]);
+  var controlID = nameControl(splitString, startIndex);
+
+  masterState.controls[controlID] = {
+    ControlDirection: ControlDirection,
+    ControlValueType: parseInt(splitString[startIndex+1]),
+    ControlName: controlName,
+    LowValue: parseInt(splitString[startIndex + 3]),
+    HighValue: parseInt(splitString[startIndex + 4]),
+    CurCtrlValue: 0
+  }
+
+  SetPositionFromSplitString(splitString, startIndex, controlName, ControlDirection);
+  SetControlStructure(splitString, controlID);
+
+  return startIndex + 6
+}
+
+var SetPositionFromSplitString = (splitString, startIndex, controlName) => {
+  
+  var newPosition = {
+    client: {top: 0, left: 0}
+  }
+
+  newPosition[controlName] = {top: 59, left: 10};
+
+  masterState.positions[getClientID(splitString)] = newPosition;
+
+}
+
+var ControlStructureTemplate = () => {
   return {
-    ControlValueType: 1,
-    ControlDirection: 1,
-    HighValue: 10,
-    LowValue: 0,
-    CurCtrlValue: 0,
-    ControlName: 'None'
+    inputs: {controlsArray: []},
+    outputs: {controlsArray: []}
   }
 }
 
-var isNotEmpty = (obj) => {
-    //console.log('Check obj: ', obj);
-    return Object.keys(obj).length;
+var SetControlStructure = (splitString, controlID) => {
+  var controlStruct = ControlStructureTemplate();
+
+  if ( masterState.controls[controlID]['ControlDirection']){
+    controlStruct.outputs.controlsArray.push(controlID);
+  } else {
+    controlStruct.inputs.controlsArray.push(controlID);
+  }
+
+  masterState.controls.controlStructure[getClientID(splitString)] = controlStruct;
+
+}
+
+var nameVertex = (vertex) => {
+    return vertex['sourceID'] + '.' + vertex['outputName'] + '->' + vertex['destinationID'] + '.' + vertex['inputName'];
+  }
+
+var nameControl = (splitString, startIndex) => {
+  return getClientID(splitString) +  '.' + splitString[startIndex + 2];
+}
+
+var getClientID = (splitString) => {
+  return splitString[0];
+}
+
+var getClientIcon = (splitString) => {
+  return splitString[5];
 }
