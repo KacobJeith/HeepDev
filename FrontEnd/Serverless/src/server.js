@@ -35,7 +35,7 @@ app.get('/api/clients', (req, res) => {
   console.log('trying connection');
   ConnectToHeepDevice('127.0.0.1', 5000);
   setTimeout(()=>{
-        res.json(masterState);
+    res.json(masterState);
   },500);
 
 });
@@ -57,7 +57,7 @@ app.listen(app.get('port'), (error) => {
 var ConnectToHeepDevice = (IPAddress, port) => {
   var sock = new net.Socket();
   sock.connect({host: IPAddress, port: port}, () => {
-    console.log('Connected to Server!');
+    console.log('Trying to a Heep Device at: ', IPAddress + ':' + port.toString());
     sock.write('IsHeepDevice:');
   });
 
@@ -70,10 +70,8 @@ var ConnectToHeepDevice = (IPAddress, port) => {
   });
 
   sock.on('end', () => {
-    console.log(masterState);
     console.log('disconnected from server');
   });
-
 }
 
 var AddClientToMasterState = (clientString) => {
