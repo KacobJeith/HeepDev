@@ -34,6 +34,7 @@ var findGateway = () => {
         var activeAddress = networkInterfaces[interfaces][i].address;
         var address = activeAddress.split('.');
         var myIp = address.pop();
+        console.log('Searching on gateway: ', address);
         return address
       }
     }
@@ -41,8 +42,7 @@ var findGateway = () => {
 }
 
 var joinAddress = (gateway, ip) => {
-  gateway.push(ip.toString());
-  return gateway.join('.')
+  return gateway.join('.') + '.' + ip.toString()
 }
 
 app.use(allowCrossDomain);
@@ -53,8 +53,11 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 
 app.get('/api/clients', (req, res) => {
+  var gateway = findGateway();
   for (var i = 1; i < 255; i++){
-    ConnectToHeepDevice(joinAddress(findGateway(),i), 5000);
+    var address = joinAddress(gateway,i)
+
+    ConnectToHeepDevice(address, 5000);
   }
   
   setTimeout(()=>{
@@ -80,8 +83,6 @@ app.listen(app.get('port'), (error) => {
 var ConnectToHeepDevice = (IPAddress, port) => {
   var sock = new net.Socket();
   sock.connect({host: IPAddress, port: port}, () => {
-    
-    console.log('Trying to a Heep Device at: ', IPAddress + ':' + port.toString());
     sock.write('IsHeepDevice:');
   });
 

@@ -36,6 +36,6 @@ function loadClientsFromServer(url) {
     });
 }
 
-loadClientsFromServer(window.location.protocol.concat('//', window.location.hostname,':3001').concat('/api/clients'))
+loadClientsFromServer(window.location.protocol.concat('//', window.location.hostname,':3001').concat('/api/clients'));
 
 
