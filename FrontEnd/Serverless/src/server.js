@@ -3,6 +3,7 @@ import path from 'path'
 import net from 'net'
 import express from 'express'
 import bodyParser from 'body-parser'
+import os from 'os' 
 
 var app = express();
 var masterState = {
@@ -24,6 +25,26 @@ var allowCrossDomain = (req, res, next) => {
     next();
 }
 
+var findGateway = () => {
+  var networkInterfaces = os.networkInterfaces( );
+
+  for (var interfaces in networkInterfaces) {
+    for (var i = 0; i < networkInterfaces[interfaces].length; i++ ) {
+      if (networkInterfaces[interfaces][i].netmask == '255.255.255.0'){
+        var activeAddress = networkInterfaces[interfaces][i].address;
+        var address = activeAddress.split('.');
+        var myIp = address.pop();
+        console.log('Searching on gateway: ', address);
+        return address
+      }
+    }
+  }
+}
+
+var joinAddress = (gateway, ip) => {
+  return gateway.join('.') + '.' + ip.toString()
+}
+
 app.use(allowCrossDomain);
 app.use('/', express.static(__dirname));
 app.use('/static', express.static(path.join(__dirname, '../../../Server')))
@@ -32,11 +53,16 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 
 app.get('/api/clients', (req, res) => {
-  console.log('trying connection');
-  ConnectToHeepDevice('127.0.0.1', 5000);
+  var gateway = findGateway();
+  for (var i = 1; i < 255; i++){
+    var address = joinAddress(gateway,i)
+
+    ConnectToHeepDevice(address, 5000);
+  }
+  
   setTimeout(()=>{
     res.json(masterState);
-  },500);
+  },1000);
 
 });
 
@@ -57,11 +83,11 @@ app.listen(app.get('port'), (error) => {
 var ConnectToHeepDevice = (IPAddress, port) => {
   var sock = new net.Socket();
   sock.connect({host: IPAddress, port: port}, () => {
-    console.log('Trying to a Heep Device at: ', IPAddress + ':' + port.toString());
     sock.write('IsHeepDevice:');
   });
 
   sock.on('data', (data) => {
+    console.log('Heep Device found at address: ', IPAddress);
     console.log(data.toString());
 
     AddClientToMasterState(data.toString());
@@ -71,6 +97,10 @@ var ConnectToHeepDevice = (IPAddress, port) => {
 
   sock.on('end', () => {
     console.log('disconnected from server');
+  });
+
+  sock.on('error', () => {
+    //console.log('No Heep Device at address: ', IPAddress);
   });
 }
 
@@ -89,19 +119,24 @@ var AddClientToMasterState = (clientString) => {
 
 var SetClientFromString = (splitString) => {
    var clientID = getClientID(splitString);
-   masterState.clients[clientID] = {
-      ClientID: parseInt(splitString[0]),
-      IPAddress: splitString[1],
-      ClientType: parseInt(splitString[2]),
-      ClientName: splitString[3],
-      IconCustom: parseInt(splitString[4]),
-      IconName: splitString[5],
-      ControlList: [],
-      Position: {left: 0, top: 0},
-      VertexList: []
-    }
 
+  if( masterState.clients.clientArray.indexOf(clientID) == -1){
     masterState.clients.clientArray.push(clientID);
+  }
+
+  masterState.clients[clientID] = {
+    ClientID: parseInt(splitString[0]),
+    IPAddress: splitString[1],
+    ClientType: parseInt(splitString[2]),
+    ClientName: splitString[3],
+    IconCustom: parseInt(splitString[4]),
+    IconName: splitString[5],
+    ControlList: [],
+    Position: {left: 0, top: 0},
+    VertexList: []
+  }
+
+
 
 }
 
