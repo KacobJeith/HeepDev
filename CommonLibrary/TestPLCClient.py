@@ -97,7 +97,11 @@ print CheckEquality( deletionClient.GetVerticesString(), '', 'Remove Only Vertex
 
 # Memory Funcionality
 ClientMemory = ClientMemory()
-print ClientMemory.GetNecessaryBytes(65536)
+print CheckEquality( ClientMemory.GetNecessaryBytes(255), 1, 'Client Memory Get Bytes 1')
+print CheckEquality( ClientMemory.GetNecessaryBytes(256), 2, 'Client Memory Get Bytes 2')
+print CheckEquality( ClientMemory.GetNecessaryBytes(65535), 2, 'Client Memory Get Bytes 3')
+print CheckEquality( ClientMemory.GetNecessaryBytes(65536), 3, 'Client Memory Get Bytes 4')
+print CheckEquality( ClientMemory.GetNecessaryBytes(4), 1, 'Client Memory Get Bytes 5')
 
 
 
