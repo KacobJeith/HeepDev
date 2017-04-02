@@ -103,4 +103,6 @@ print CheckEquality( ClientMemory.GetNecessaryBytes(65535), 2, 'Client Memory Ge
 print CheckEquality( ClientMemory.GetNecessaryBytes(65536), 3, 'Client Memory Get Bytes 4')
 print CheckEquality( ClientMemory.GetNecessaryBytes(4), 1, 'Client Memory Get Bytes 5')
 
+print CheckEquality( ClientMemory.GetByteArrayFromValue(256), [chr(0x01), chr(0x00)], 'Client Memory Get Byte Array From Value 1')
+print CheckEquality( ClientMemory.GetByteArrayFromValue(255), [chr(0xff)], 'Client Memory Get Byte Array From Value 2')
 
