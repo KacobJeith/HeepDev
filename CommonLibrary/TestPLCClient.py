@@ -104,6 +104,3 @@ print CheckEquality( ClientMemory.GetNecessaryBytes(65536), 3, 'Client Memory Ge
 print CheckEquality( ClientMemory.GetNecessaryBytes(4), 1, 'Client Memory Get Bytes 5')
 
 
-
-
-
