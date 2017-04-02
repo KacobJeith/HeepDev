@@ -13,6 +13,7 @@ OnOffControls = ControlValue()
 OnOffControls.ControlValueType = OnOffControls.OnOff
 OnOffControls.ControlName = 'Party' 
 functionalClient.ControlList.append(OnOffControls)
+functionalClient.SetServerless(1)
 
 client = ServerlessClientConnection()
 

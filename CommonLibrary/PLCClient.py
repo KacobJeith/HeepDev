@@ -2,6 +2,7 @@ import json
 from ControlValue import ControlValue
 from Vertex import Vertex
 from OutputData import OutputData
+from ClientMemory import ClientMemory
 
 class PLCClient:
 
@@ -17,6 +18,9 @@ class PLCClient:
 		self.ControlQueue = []
 		self.VertexList = []
 		self.IsServerless = 0
+		self.ClientMemory = ClientMemory()
+		self.ClientMemory.SetClientX(100)
+		self.ClientMemory.SetClientY(100)
 		return
 
 	def SetServerless(self, isServerless) :
@@ -110,6 +114,10 @@ class PLCClient:
 		myString = str(self.ClientID) + ',' + self.IPAddress + ',' + str(self.ClientType) + ',' + self.ClientName + ',' + str(self.IconCustom) + ',' + self.IconName
 		for x in range(0, len(self.ControlList)) :
 			myString = myString + ',' + self.ControlList[x].GetControlValueString()
+
+		if self.IsServerless :
+			myString = myString + ',' + self.ClientMemory.GetMemoryString()
+
 		return myString
 
 	def SetClientFromString(self, clientString) :
