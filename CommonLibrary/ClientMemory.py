@@ -13,7 +13,7 @@ class ClientMemory:
 
 	def SetClientX(self, xValue) :
 		self.miscMemory.append(self.XPositionOpCode)
-		self.miscMemory.append(chr(0x02))
+		self.miscMemory.append(chr(self.GetNecessaryBytes(xValue)))
 		xValHigh = xValue >> 8
 		xValLow = xValue%255
 		self.miscMemory.append(chr(xValHigh))
@@ -21,11 +21,19 @@ class ClientMemory:
 
 	def SetClientY(self, yValue) :
 		self.miscMemory.append(self.YPositionOpcode)
-		self.miscMemory.append(chr(0x02))
+		self.miscMemory.append(chr(self.GetNecessaryBytes(yValue)))
 		yValHigh = yValue >> 8
 		yValLow = yValue%255
 		self.miscMemory.append(chr(yValHigh))
 		self.miscMemory.append(chr(yValLow))
+
+	def GetByteArrayFromValue(self, value, numBytes) :
+		byteArray = []
+		for x in range(0, numBytes) :
+			byteArray.insert(0, chr(value%256))
+			value = value/256
+
+		return byteArray
 
 	def GetNecessaryBytes(self, value) :
 		numBytes = 1
