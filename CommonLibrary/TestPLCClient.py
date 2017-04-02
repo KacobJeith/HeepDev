@@ -2,6 +2,7 @@ from PLCClient import PLCClient
 from ControlValue import ControlValue
 from OutputData import OutputData
 from Vertex import Vertex
+from ClientMemory import ClientMemory
 
 def CheckEquality(first, second, testName) :
 	if first == second :
@@ -94,6 +95,9 @@ print CheckEquality( deletionClient.GetVerticesString(), 'canti,lever,10.10.10.1
 deletionClient.RemoveVertex(98587649, 'lever', 'canti')
 print CheckEquality( deletionClient.GetVerticesString(), '', 'Remove Only Vertex')
 
+# Memory Funcionality
+ClientMemory = ClientMemory()
+print ClientMemory.GetNecessaryBytes(65536)
 
 
 
