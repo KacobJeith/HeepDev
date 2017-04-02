@@ -2,6 +2,9 @@
 
 class ClientMemory:
 
+	# Currently this version must be updated manually
+	Version = 1
+
 	XPositionOpCode = chr(0x01)
 	YPositionOpcode = chr(0x02)
 
@@ -46,7 +49,7 @@ class ClientMemory:
 		return numBytes
 
 	def GetMemoryString(self) :
-		myString = 'M'
+		myString = 'V' + str(self.Version) + ',M'
 
 		for x in range(0, len(self.miscMemory)) :
 			myString = myString + str(self.miscMemory[x])
