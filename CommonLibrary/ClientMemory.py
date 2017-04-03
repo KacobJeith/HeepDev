@@ -2,6 +2,8 @@
 
 class ClientMemory:
 
+	ClientMemoryFileName = 'ClientMemory.dat'
+
 	# Currently this version must be updated manually
 	Version = 1
 
@@ -14,6 +16,11 @@ class ClientMemory:
 		self.miscMemory = []
 		return
 
+
+	def WriteClientMemoryToFile(self) :
+		writeFile = open(self.ClientMemoryFileName, 'w')
+		writeFile.write(self.GetMemoryString())
+		writeFile.close()
 
 	def SetClientX(self, xValue, clientID) :
 		self.miscMemory.append(self.XPositionOpCode)

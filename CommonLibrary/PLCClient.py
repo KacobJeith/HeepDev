@@ -29,6 +29,9 @@ class PLCClient:
 		self.ClientName = clientName
 		self.ClientMemory.SetClientName(self.ClientName, self.ClientID)
 
+	def DumpClientMemory(self) :
+		self.ClientMemory.WriteClientMemoryToFile()
+
 	def SetServerless(self, isServerless) :
 		self.IsServerless = isServerless
 
