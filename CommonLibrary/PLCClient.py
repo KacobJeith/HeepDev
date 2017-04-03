@@ -139,7 +139,7 @@ class PLCClient:
 		self.IconCustom = int(splitString[4])
 		self.IconName = splitString[5]
 
-		it = 6
+		it = 7
 		while it < len(splitString) :
 			control = ControlValue()
 			it = control.SetControlFromSplitString(splitString, it)
