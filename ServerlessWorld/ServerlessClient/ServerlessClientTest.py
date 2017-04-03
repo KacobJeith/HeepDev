@@ -11,7 +11,7 @@ functionalClient.ClientID = 666
 functionalClient.SetClientName("This Guy")
 OnOffControls = ControlValue()
 OnOffControls.ControlValueType = OnOffControls.OnOff
-OnOffControls.ControlName = 'Party' 
+OnOffControls.ControlName = 'PartyPooper' 
 functionalClient.ControlList.append(OnOffControls)
 functionalClient.SetServerless(1)
 functionalClient.SetClientFrontEndXY(100, 287)
