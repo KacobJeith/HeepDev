@@ -25,6 +25,10 @@ class PLCClient:
 		self.ClientMemory.SetClientX(clientX, self.ClientID)
 		self.ClientMemory.SetClientY(clientY, self.ClientID)
 
+	def SetClientName(self, clientName) :
+		self.ClientName = clientName
+		self.ClientMemory.SetClientName(self.ClientName, self.ClientID)
+
 	def SetServerless(self, isServerless) :
 		self.IsServerless = isServerless
 

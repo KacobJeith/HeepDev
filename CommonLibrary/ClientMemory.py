@@ -7,6 +7,7 @@ class ClientMemory:
 
 	XPositionOpCode = chr(0x01)
 	YPositionOpcode = chr(0x02)
+	ClientNameOpCode = chr(0x06)
 
 	def __init__(self):
 		self.totalMemory = 1024 #In Bytes
@@ -24,6 +25,13 @@ class ClientMemory:
 		self.AppendClientIDToMemory(clientID)
 		self.AppendByteArrayToMemory(self.GetConstantSizeByteArrayFromValue(yValue, 2))
 
+	def SetClientName(self, clientName, clientID) :
+		self.miscMemory.append(self.ClientNameOpCode)
+		self.AppendClientIDToMemory(clientID)
+		self.miscMemory.append(chr(len(clientName)))
+		self.AppendStringToMemory(clientName)
+
+
 	# Always add 4 bytes for client ID to memory
 	def AppendClientIDToMemory(self, clientID) :
 		clientIDByteArray = self.GetByteArrayFromValue(clientID)
@@ -32,6 +40,10 @@ class ClientMemory:
 			self.miscMemory.append(chr(0x00))
 
 		self.AppendByteArrayToMemory(clientIDByteArray)
+
+	def AppendStringToMemory(self, theString) :
+		for x in range(0, len(theString)) :
+			self.miscMemory.append(theString[x])
 
 	def AppendByteArrayToMemory(self, byteArray) :
 		for x in range(0, len(byteArray)) :
