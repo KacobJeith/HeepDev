@@ -2,6 +2,7 @@ from PLCClient import PLCClient
 from ControlValue import ControlValue
 from OutputData import OutputData
 from Vertex import Vertex
+from ClientMemory import ClientMemory
 
 def CheckEquality(first, second, testName) :
 	if first == second :
@@ -94,9 +95,18 @@ print CheckEquality( deletionClient.GetVerticesString(), 'canti,lever,10.10.10.1
 deletionClient.RemoveVertex(98587649, 'lever', 'canti')
 print CheckEquality( deletionClient.GetVerticesString(), '', 'Remove Only Vertex')
 
+# Memory Funcionality
+ClientMemory = ClientMemory()
+print CheckEquality( ClientMemory.GetNecessaryBytes(255), 1, 'Client Memory Get Bytes 1')
+print CheckEquality( ClientMemory.GetNecessaryBytes(256), 2, 'Client Memory Get Bytes 2')
+print CheckEquality( ClientMemory.GetNecessaryBytes(65535), 2, 'Client Memory Get Bytes 3')
+print CheckEquality( ClientMemory.GetNecessaryBytes(65536), 3, 'Client Memory Get Bytes 4')
+print CheckEquality( ClientMemory.GetNecessaryBytes(4), 1, 'Client Memory Get Bytes 5')
 
+print CheckEquality( ClientMemory.GetByteArrayFromValue(256), [chr(0x01), chr(0x00)], 'Client Memory Get Byte Array From Value 1')
+print CheckEquality( ClientMemory.GetByteArrayFromValue(255), [chr(0xff)], 'Client Memory Get Byte Array From Value 2')
+print CheckEquality( ClientMemory.GetByteArrayFromValue(65536), [chr(0x01), chr(0x00), chr(0x00)], 'Client Memory Get Byte Array From Value 3')
 
-
-
-
+print CheckEquality( ClientMemory.GetConstantSizeByteArrayFromValue(1, 2), [chr(0x00), chr(0x01)], 'Get Constant Size Byte Array from Value 1') 
+print CheckEquality( ClientMemory.GetConstantSizeByteArrayFromValue(300, 2), [chr(0x01), chr(0x2C)], 'Get Constant Size Byte Array from Value 2') 
 
