@@ -107,5 +107,6 @@ print CheckEquality( ClientMemory.GetByteArrayFromValue(256), [chr(0x01), chr(0x
 print CheckEquality( ClientMemory.GetByteArrayFromValue(255), [chr(0xff)], 'Client Memory Get Byte Array From Value 2')
 print CheckEquality( ClientMemory.GetByteArrayFromValue(65536), [chr(0x01), chr(0x00), chr(0x00)], 'Client Memory Get Byte Array From Value 3')
 
-
+print CheckEquality( ClientMemory.GetConstantSizeByteArrayFromValue(1, 2), [chr(0x00), chr(0x01)], 'Get Constant Size Byte Array from Value 1') 
+print CheckEquality( ClientMemory.GetConstantSizeByteArrayFromValue(300, 2), [chr(0x01), chr(0x2C)], 'Get Constant Size Byte Array from Value 2') 
 

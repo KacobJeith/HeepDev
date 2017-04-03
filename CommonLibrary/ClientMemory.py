@@ -17,14 +17,12 @@ class ClientMemory:
 	def SetClientX(self, xValue, clientID) :
 		self.miscMemory.append(self.XPositionOpCode)
 		self.AppendClientIDToMemory(clientID)
-		self.miscMemory.append(chr(self.GetNecessaryBytes(xValue)))
-		self.AppendByteArrayToMemory(self.GetByteArrayFromValue(xValue))
+		self.AppendByteArrayToMemory(self.GetConstantSizeByteArrayFromValue(xValue, 2))
 
 	def SetClientY(self, yValue, clientID) :
 		self.miscMemory.append(self.YPositionOpcode)
 		self.AppendClientIDToMemory(clientID)
-		self.miscMemory.append(chr(self.GetNecessaryBytes(yValue)))
-		self.AppendByteArrayToMemory(self.GetByteArrayFromValue(yValue))
+		self.AppendByteArrayToMemory(self.GetConstantSizeByteArrayFromValue(yValue, 2))
 
 	# Always add 4 bytes for client ID to memory
 	def AppendClientIDToMemory(self, clientID) :
@@ -38,6 +36,20 @@ class ClientMemory:
 	def AppendByteArrayToMemory(self, byteArray) :
 		for x in range(0, len(byteArray)) :
 			self.miscMemory.append(byteArray[x])
+
+	def GetConstantSizeByteArrayFromValue(self, value, size) :
+		byteArray = []
+
+		numBytes = self.GetNecessaryBytes(value)
+
+		byteArray = self.GetByteArrayFromValue(value)
+
+		for x in range(0, size-numBytes) :
+			byteArray.insert(0, chr(0x00))
+
+		return byteArray
+
+
 
 	def GetByteArrayFromValue(self, value) :
 		byteArray = []
