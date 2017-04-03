@@ -139,11 +139,14 @@ class PLCClient:
 		self.IconCustom = int(splitString[4])
 		self.IconName = splitString[5]
 
+		numControls = splitString[6] #Not currently used in the python code
+
 		it = 7
 		while it < len(splitString) :
 			control = ControlValue()
 			it = control.SetControlFromSplitString(splitString, it)
 			self.ControlList.append(control)
+
 
 	def GetVerticesString(self) :
 		retStr = ""
