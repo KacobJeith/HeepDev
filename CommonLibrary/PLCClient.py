@@ -19,9 +19,11 @@ class PLCClient:
 		self.VertexList = []
 		self.IsServerless = 0
 		self.ClientMemory = ClientMemory()
-		self.ClientMemory.SetClientX(100)
-		self.ClientMemory.SetClientY(100)
 		return
+
+	def SetClientFrontEndXY(self, clientX, clientY) :
+		self.ClientMemory.SetClientX(clientX, self.ClientID)
+		self.ClientMemory.SetClientY(clientY, self.ClientID)
 
 	def SetServerless(self, isServerless) :
 		self.IsServerless = isServerless
