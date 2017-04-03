@@ -118,6 +118,9 @@ class PLCClient:
 
 	def GetClientString(self):
 		myString = str(self.ClientID) + ',' + self.IPAddress + ',' + str(self.ClientType) + ',' + self.ClientName + ',' + str(self.IconCustom) + ',' + self.IconName
+		
+		myString = myString + ',' + str(len(self.ControlList))
+
 		for x in range(0, len(self.ControlList)) :
 			myString = myString + ',' + self.ControlList[x].GetControlValueString()
 
@@ -136,11 +139,14 @@ class PLCClient:
 		self.IconCustom = int(splitString[4])
 		self.IconName = splitString[5]
 
-		it = 6
+		numControls = splitString[6] #Not currently used in the python code
+
+		it = 7
 		while it < len(splitString) :
 			control = ControlValue()
 			it = control.SetControlFromSplitString(splitString, it)
 			self.ControlList.append(control)
+
 
 	def GetVerticesString(self) :
 		retStr = ""
