@@ -118,6 +118,9 @@ class PLCClient:
 
 	def GetClientString(self):
 		myString = str(self.ClientID) + ',' + self.IPAddress + ',' + str(self.ClientType) + ',' + self.ClientName + ',' + str(self.IconCustom) + ',' + self.IconName
+		
+		myString = myString + ',' + str(len(self.ControlList))
+
 		for x in range(0, len(self.ControlList)) :
 			myString = myString + ',' + self.ControlList[x].GetControlValueString()
 
