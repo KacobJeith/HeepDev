@@ -38,6 +38,64 @@ class ClientMemory:
 		self.miscMemory.append(chr(len(clientName)))
 		self.AppendStringToMemory(clientName)
 
+	def ReadXOpcode(self, counter) :
+		counter = counter+1
+
+		id1 = ord(self.miscMemory[counter]) << 24
+		id2 = ord(self.miscMemory[counter+1]) << 16
+		id3 = ord(self.miscMemory[counter+2]) << 8
+		id4 = ord(self.miscMemory[counter+3]) 
+
+		clientID = id1 + id2 + id3 + id4
+		print clientID
+
+		counter = counter + 4
+
+		xVal1 = ord(self.miscMemory[counter]) << 8
+		xVal2 = ord(self.miscMemory[counter+1]) 
+		xValue = xVal1 + xVal2
+		counter = counter + 2
+		print xValue
+
+		return counter
+
+	def ReadYOpcode(self, counter) :
+		counter = counter+1
+
+		id1 = ord(self.miscMemory[counter]) << 24
+		id2 = ord(self.miscMemory[counter+1]) << 16
+		id3 = ord(self.miscMemory[counter+2]) << 8
+		id4 = ord(self.miscMemory[counter+3]) 
+
+		clientID = id1 + id2 + id3 + id4
+		print clientID
+
+		counter = counter + 4
+
+		yVal1 = ord(self.miscMemory[counter]) << 8
+		yVal2 = ord(self.miscMemory[counter+1]) 
+		yValue = yVal1 + yVal2
+		counter = counter + 2
+		print yValue
+
+		return counter
+
+	def ReadClientNameOpCode(self, counter) :
+		return counter
+
+	def ReadOpCode(self, counter) :
+		if self.miscMemory[counter] == self.XPositionOpCode :
+			counter = self.ReadXOpcode(counter)
+		elif self.miscMemory[counter] == self.YPositionOpcode :
+			counter = self.ReadYOpcode(counter)
+
+		return counter
+
+	def GetClientX(self, clientID) :
+		counter = 0
+		while counter < len(self.miscMemory) :
+			counter = self.ReadOpCode(counter)
+
 
 	# Always add 4 bytes for client ID to memory
 	def AppendClientIDToMemory(self, clientID) :
