@@ -76,6 +76,10 @@ app.listen(app.get('port'), (error) => {
   }
 });
 
+var SendCommandToHeepDevice = () => {
+
+}
+
 var SearchForHeepDevices = () => {
   var gateway = findGateway();
 
@@ -94,13 +98,14 @@ var ConnectToHeepDevice = (IPAddress, port) => {
   });
 
   sock.on('data', (data) => {
-    console.log('Heep Device found at address: ', IPAddress);
+    console.log('Device found at address: ', IPAddress + ':' + port.toString());
     console.log(data.toString());
     var splitString = data.toString().split(',');
-    if (splitString[0] != NaN) {
-      AddClientToMasterState(splitString, IPAddress);
-    } else {
+
+    if (isNaN(parseInt(splitString[0]))) {
       console.log('Found an imposter HeepDevice!');
+    } else {
+      AddClientToMasterState(splitString, IPAddress)
     }
 
     mostRecentSearch[IPAddress] = true;
@@ -108,12 +113,9 @@ var ConnectToHeepDevice = (IPAddress, port) => {
     sock.end();
   });
 
-  sock.on('end', () => {
-    console.log('disconnected from server');
-  });
+  sock.on('end', () => {});
 
   sock.on('error', () => {
-    //console.log('nothing from', IPAddress);
     mostRecentSearch[IPAddress] = false;
   });
 }
