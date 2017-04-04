@@ -51,6 +51,19 @@ class ClientMemory:
 
 		return (clientID, counter)
 
+	def GetNumberFromMemory(self, counter, numBytes) :
+
+		retVal = 0
+
+		byteCounter = numBytes - 1
+		for x in range(0, numBytes) :
+			curVal = ord(self.miscMemory[counter]) << (8*byteCounter)
+			byteCounter -= 1
+			retVal += curVal
+			counter += 1
+
+		return (retVal, counter)
+
 	def ReadXOpcode(self, counter) :
 		counter = counter+1
 
@@ -59,10 +72,10 @@ class ClientMemory:
 		clientID = clientIDAndCounter[0]
 		print clientID
 
-		xVal1 = ord(self.miscMemory[counter]) << 8
-		xVal2 = ord(self.miscMemory[counter+1]) 
-		xValue = xVal1 + xVal2
-		counter = counter + 2
+		valueAndCounter = self.GetNumberFromMemory(counter, 2)
+		xValue = valueAndCounter[0]
+		counter = valueAndCounter[1]
+
 		print xValue
 
 		return counter
@@ -75,10 +88,9 @@ class ClientMemory:
 		clientID = clientIDAndCounter[0]
 		print clientID
 
-		yVal1 = ord(self.miscMemory[counter]) << 8
-		yVal2 = ord(self.miscMemory[counter+1]) 
-		yValue = yVal1 + yVal2
-		counter = counter + 2
+		valueAndCounter = self.GetNumberFromMemory(counter, 2)
+		yValue = valueAndCounter[0]
+		counter = valueAndCounter[1]
 		print yValue
 
 		return counter
@@ -91,7 +103,7 @@ class ClientMemory:
 		counter = clientIDAndCounter[1]
 		clientID = clientIDAndCounter[0]
 		print clientID
-		
+
 		byteLength = ord(self.miscMemory[counter])
 		print byteLength
 
