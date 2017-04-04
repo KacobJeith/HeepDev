@@ -22,6 +22,7 @@ function loadClientsFromServer(url) {
 
       var immutableMap = Immutable.Map(data);
       const store = createStore(heepApp, data, applyMiddleware(thunk));
+      console.log(data);
 
       render(
         <Provider store={store}>

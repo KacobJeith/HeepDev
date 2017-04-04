@@ -15,6 +15,10 @@ var masterState = {
   url: ''
 };
 
+
+var searchComplete = false;
+var mostRecentSearch = {};
+
 app.set('port', (process.env.PORT || 3001));
 
 //CORS middleware
@@ -53,18 +57,10 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 
 app.get('/api/clients', (req, res) => {
-  var gateway = findGateway();
-  for (var i = 1; i < 255; i++){
-    var address = joinAddress(gateway,i)
-
-    ConnectToHeepDevice(address, 5000);
-  }
-  
-  setTimeout(()=>{
-    res.json(masterState);
-  },1000);
-
+  SearchForHeepDevices();
+  res.json(masterState);  
 });
+
 
 app.post('/api/commands', (req, res) => {
   const command = req.body["command"];
@@ -80,7 +76,18 @@ app.listen(app.get('port'), (error) => {
   }
 });
 
+var SearchForHeepDevices = () => {
+  var gateway = findGateway();
+
+  for (var i = 1; i <= 255; i++){
+    var address = joinAddress(gateway,i)
+
+    ConnectToHeepDevice(address, 5000);
+  }
+}
+
 var ConnectToHeepDevice = (IPAddress, port) => {
+
   var sock = new net.Socket();
   sock.connect({host: IPAddress, port: port}, () => {
     sock.write('IsHeepDevice:');
@@ -92,6 +99,8 @@ var ConnectToHeepDevice = (IPAddress, port) => {
 
     AddClientToMasterState(data.toString());
 
+    mostRecentSearch[IPAddress] = true;
+    
     sock.end();
   });
 
@@ -100,7 +109,8 @@ var ConnectToHeepDevice = (IPAddress, port) => {
   });
 
   sock.on('error', () => {
-    //console.log('No Heep Device at address: ', IPAddress);
+    //console.log('nothing from', IPAddress);
+    mostRecentSearch[IPAddress] = false;
   });
 }
 
@@ -111,10 +121,25 @@ var AddClientToMasterState = (clientString) => {
     SetClientFromString(splitString);
     SetClientIconFromString(splitString);
 
-    var it = 6
-    while (it < splitString.length){
-      var it = SetControlFromSplitString(splitString, it)
+    var numControls = parseInt(splitString[6]);
+    var it = 7;
+    for (var i = 0; i < numControls; i++) {
+
+      it = SetControlFromSplitString(splitString, it)
     }
+}
+
+var CheckForMiscMem = (splitString, it) => {
+
+  if (it > splitString.length) {
+    return false;
+  }
+  
+  if (splitString[it] != 0 ){
+    return false;
+  } else {
+    return true;
+  }
 }
 
 var SetClientFromString = (splitString) => {
@@ -135,9 +160,6 @@ var SetClientFromString = (splitString) => {
     Position: {left: 0, top: 0},
     VertexList: []
   }
-
-
-
 }
 
 var SetClientIconFromString = (splitString) => {
@@ -208,7 +230,7 @@ var SetControlStructure = (splitString, controlID) => {
 
 var nameVertex = (vertex) => {
     return vertex['sourceID'] + '.' + vertex['outputName'] + '->' + vertex['destinationID'] + '.' + vertex['inputName'];
-  }
+}
 
 var nameControl = (splitString, startIndex) => {
   return getClientID(splitString) +  '.' + splitString[startIndex + 2];
@@ -221,3 +243,5 @@ var getClientID = (splitString) => {
 var getClientIcon = (splitString) => {
   return splitString[5];
 }
+
+SearchForHeepDevices();

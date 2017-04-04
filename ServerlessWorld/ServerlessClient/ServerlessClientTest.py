@@ -7,16 +7,16 @@ from PLCClient import PLCClient
 from Vertex import Vertex
 
 functionalClient = PLCClient()
-functionalClient.ClientID = 666
-functionalClient.SetClientName("This Guy")
+functionalClient.ClientID = 3498751234
+functionalClient.SetClientName("That Guy")
 OnOffControls = ControlValue()
 OnOffControls.ControlValueType = OnOffControls.OnOff
-OnOffControls.ControlName = 'PartyPooper' 
+OnOffControls.ControlName = 'Poop Her Party' 
 functionalClient.ControlList.append(OnOffControls)
 
 AnotherControl = ControlValue()
 AnotherControl.ControlValueType = AnotherControl.OnOff
-AnotherControl.ControlName = 'Dr Pepper'
+AnotherControl.ControlName = 'Sprite'
 functionalClient.ControlList.append(AnotherControl)
 
 functionalClient.SetServerless(1)
