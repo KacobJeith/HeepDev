@@ -81,13 +81,40 @@ class ClientMemory:
 		return counter
 
 	def ReadClientNameOpCode(self, counter) :
-		return counter
+
+		counter = counter+1
+
+		id1 = ord(self.miscMemory[counter]) << 24
+		id2 = ord(self.miscMemory[counter+1]) << 16
+		id3 = ord(self.miscMemory[counter+2]) << 8
+		id4 = ord(self.miscMemory[counter+3]) 
+
+		clientID = id1 + id2 + id3 + id4
+		print clientID
+
+		counter = counter + 4
+		byteLength = ord(self.miscMemory[counter])
+		print byteLength
+
+		counter = counter + 1
+		clientName = ""
+		for x in range(0, byteLength) :
+			clientName += self.miscMemory[counter]
+			counter = counter + 1
+
+		print clientName
+
+		counter = counter + 1
+
+		return counter 
 
 	def ReadOpCode(self, counter) :
 		if self.miscMemory[counter] == self.XPositionOpCode :
 			counter = self.ReadXOpcode(counter)
 		elif self.miscMemory[counter] == self.YPositionOpcode :
 			counter = self.ReadYOpcode(counter)
+		elif self.miscMemory[counter] == self.ClientNameOpCode :
+			counter = self.ReadClientNameOpCode(counter)
 
 		return counter
 

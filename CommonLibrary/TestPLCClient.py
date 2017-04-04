@@ -112,5 +112,6 @@ print CheckEquality( ClientMemory.GetConstantSizeByteArrayFromValue(300, 2), [ch
 
 ClientMemory.SetClientX(1523, 251232)
 ClientMemory.SetClientY(5135, 15123)
+ClientMemory.SetClientName('Jacob', 12422)
 ClientMemory.GetMemoryString()
 ClientMemory.GetClientX(251232)
