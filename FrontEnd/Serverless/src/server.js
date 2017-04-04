@@ -96,8 +96,12 @@ var ConnectToHeepDevice = (IPAddress, port) => {
   sock.on('data', (data) => {
     console.log('Heep Device found at address: ', IPAddress);
     console.log(data.toString());
-
-    AddClientToMasterState(data.toString());
+    var splitString = data.toString().split(',');
+    if (splitString[0] != NaN) {
+      AddClientToMasterState(splitString, IPAddress);
+    } else {
+      console.log('Found an imposter HeepDevice!');
+    }
 
     mostRecentSearch[IPAddress] = true;
     
@@ -114,18 +118,16 @@ var ConnectToHeepDevice = (IPAddress, port) => {
   });
 }
 
-var AddClientToMasterState = (clientString) => {
+var AddClientToMasterState = (splitString, IPAddress) => {
 
-    var splitString = clientString.split(',');
-
-    SetClientFromString(splitString);
+    SetClientFromString(splitString, IPAddress);
     SetClientIconFromString(splitString);
 
     var numControls = parseInt(splitString[6]);
     masterState.controls.controlStructure[getClientID(splitString)] = ControlStructureTemplate();
     var it = 7;
     for (var i = 0; i < numControls; i++) {
-      
+
       it = SetControlFromSplitString(splitString, it)
     }
 
@@ -133,7 +135,7 @@ var AddClientToMasterState = (clientString) => {
   
 }
 
-var SetClientFromString = (splitString) => {
+var SetClientFromString = (splitString, IPAddress) => {
    var clientID = getClientID(splitString);
 
   if( masterState.clients.clientArray.indexOf(clientID) == -1){
@@ -142,7 +144,7 @@ var SetClientFromString = (splitString) => {
 
   masterState.clients[clientID] = {
     ClientID: parseInt(splitString[0]),
-    IPAddress: splitString[1],
+    IPAddress: IPAddress,
     ClientType: parseInt(splitString[2]),
     ClientName: splitString[3],
     IconCustom: parseInt(splitString[4]),
@@ -230,7 +232,7 @@ var setInputControlPosition = (clientID, index) => {
     left: startingPosition['left'] + 10
   }
   
-return position;
+  return position;
 }
 
 var setOutputControlPosition = (clientID, index) => {
