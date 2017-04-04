@@ -40,16 +40,9 @@ class ClientMemory:
 
 	def GetClientIDFromMemory(self, counter) :
 
-		id1 = ord(self.miscMemory[counter]) << 24
-		id2 = ord(self.miscMemory[counter+1]) << 16
-		id3 = ord(self.miscMemory[counter+2]) << 8
-		id4 = ord(self.miscMemory[counter+3]) 
+		clientIDAndCounter = self.GetNumberFromMemory(counter, 4)
 
-		clientID = id1 + id2 + id3 + id4
-
-		counter = counter + 4
-
-		return (clientID, counter)
+		return clientIDAndCounter
 
 	def GetNumberFromMemory(self, counter, numBytes) :
 
