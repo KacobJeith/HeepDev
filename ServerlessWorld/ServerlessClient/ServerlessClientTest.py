@@ -26,6 +26,18 @@ Output1.ControlDirection = 1
 Output1.ControlName = 'DMD'
 functionalClient.ControlList.append(Output1)
 
+Output2 = ControlValue()
+Output2.ControlValueType = Output2.Range
+Output2.ControlDirection = 1
+Output2.ControlName = 'Surge'
+functionalClient.ControlList.append(Output2)
+
+Output3 = ControlValue()
+Output3.ControlValueType = Output3.Range
+Output3.ControlDirection = 1
+Output3.ControlName = 'Pepsi'
+functionalClient.ControlList.append(Output3)
+
 functionalClient.SetServerless(1)
 functionalClient.SetClientFrontEndXY(100, 287)
 

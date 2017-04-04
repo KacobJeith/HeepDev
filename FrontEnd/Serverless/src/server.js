@@ -192,7 +192,8 @@ var SetControlFromSplitString = (splitString, startIndex) => {
     ControlName: controlName,
     LowValue: parseInt(splitString[startIndex + 3]),
     HighValue: parseInt(splitString[startIndex + 4]),
-    CurCtrlValue: 0
+    CurCtrlValue: 0,
+    connectedControls: []
   }
 
   SetControlStructure(splitString, controlID);
