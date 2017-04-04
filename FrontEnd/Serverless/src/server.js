@@ -15,6 +15,10 @@ var masterState = {
   url: ''
 };
 
+
+var searchComplete = false;
+var mostRecentSearch = {};
+
 app.set('port', (process.env.PORT || 3001));
 
 //CORS middleware
@@ -53,18 +57,10 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 
 app.get('/api/clients', (req, res) => {
-  var gateway = findGateway();
-  for (var i = 1; i < 255; i++){
-    var address = joinAddress(gateway,i)
-
-    ConnectToHeepDevice(address, 5000);
-  }
-  
-  setTimeout(()=>{
-    res.json(masterState);
-  },1000);
-
+  SearchForHeepDevices();
+  res.json(masterState);  
 });
+
 
 app.post('/api/commands', (req, res) => {
   const command = req.body["command"];
@@ -80,44 +76,68 @@ app.listen(app.get('port'), (error) => {
   }
 });
 
+var SendCommandToHeepDevice = () => {
+
+}
+
+var SearchForHeepDevices = () => {
+  var gateway = findGateway();
+
+  for (var i = 1; i <= 255; i++){
+    var address = joinAddress(gateway,i)
+
+    ConnectToHeepDevice(address, 5000);
+  }
+}
+
 var ConnectToHeepDevice = (IPAddress, port) => {
+
   var sock = new net.Socket();
   sock.connect({host: IPAddress, port: port}, () => {
     sock.write('IsHeepDevice:');
   });
 
   sock.on('data', (data) => {
-    console.log('Heep Device found at address: ', IPAddress);
+    console.log('Device found at address: ', IPAddress + ':' + port.toString());
     console.log(data.toString());
+    var splitString = data.toString().split(',');
 
-    AddClientToMasterState(data.toString());
+    if (isNaN(parseInt(splitString[0]))) {
+      console.log('Found an imposter HeepDevice!');
+    } else {
+      AddClientToMasterState(splitString, IPAddress)
+    }
 
+    mostRecentSearch[IPAddress] = true;
+    
     sock.end();
   });
 
-  sock.on('end', () => {
-    console.log('disconnected from server');
-  });
+  sock.on('end', () => {});
 
   sock.on('error', () => {
-    //console.log('No Heep Device at address: ', IPAddress);
+    mostRecentSearch[IPAddress] = false;
   });
 }
 
-var AddClientToMasterState = (clientString) => {
+var AddClientToMasterState = (splitString, IPAddress) => {
 
-    var splitString = clientString.split(',');
-
-    SetClientFromString(splitString);
+    SetClientFromString(splitString, IPAddress);
     SetClientIconFromString(splitString);
 
-    var it = 6
-    while (it < splitString.length){
-      var it = SetControlFromSplitString(splitString, it)
+    var numControls = parseInt(splitString[6]);
+    masterState.controls.controlStructure[getClientID(splitString)] = ControlStructureTemplate();
+    var it = 7;
+    for (var i = 0; i < numControls; i++) {
+
+      it = SetControlFromSplitString(splitString, it)
     }
+
+    SetControlPositions(splitString);
+  
 }
 
-var SetClientFromString = (splitString) => {
+var SetClientFromString = (splitString, IPAddress) => {
    var clientID = getClientID(splitString);
 
   if( masterState.clients.clientArray.indexOf(clientID) == -1){
@@ -126,7 +146,7 @@ var SetClientFromString = (splitString) => {
 
   masterState.clients[clientID] = {
     ClientID: parseInt(splitString[0]),
-    IPAddress: splitString[1],
+    IPAddress: IPAddress,
     ClientType: parseInt(splitString[2]),
     ClientName: splitString[3],
     IconCustom: parseInt(splitString[4]),
@@ -136,8 +156,7 @@ var SetClientFromString = (splitString) => {
     VertexList: []
   }
 
-
-
+  SetClientPosition(splitString);
 }
 
 var SetClientIconFromString = (splitString) => {
@@ -153,8 +172,18 @@ var SetClientIconFromString = (splitString) => {
  });
 }
 
-var SetControlFromSplitString = (splitString, startIndex) => {
+var SetClientPosition = (splitString) => {
+  
+  var newPosition = {
+    client: {top: 0, left: 0}
+  }
 
+  masterState.positions[getClientID(splitString)] = newPosition;
+
+}
+
+var SetControlFromSplitString = (splitString, startIndex) => {
+  
   var controlName = splitString[startIndex + 2];
   var ControlDirection = parseInt(splitString[startIndex]);
   var controlID = nameControl(splitString, startIndex);
@@ -165,25 +194,58 @@ var SetControlFromSplitString = (splitString, startIndex) => {
     ControlName: controlName,
     LowValue: parseInt(splitString[startIndex + 3]),
     HighValue: parseInt(splitString[startIndex + 4]),
-    CurCtrlValue: 0
+    CurCtrlValue: 0,
+    connectedControls: []
   }
 
-  SetPositionFromSplitString(splitString, startIndex, controlName, ControlDirection);
   SetControlStructure(splitString, controlID);
 
-  return startIndex + 6
+  return startIndex + 5
 }
 
-var SetPositionFromSplitString = (splitString, startIndex, controlName) => {
+var SetControlPositions = (splitString) => {
+
   
-  var newPosition = {
-    client: {top: 0, left: 0}
+  var clientID = getClientID(splitString);
+  var newPosition = masterState.positions[clientID];
+
+  var inputs = masterState.controls.controlStructure[clientID]['inputs']['controlsArray'];
+
+  for (var i = 0; i < inputs.length; i++){
+    var thisControl = masterState.controls[inputs[i]].ControlName;
+    newPosition[thisControl] = setInputControlPosition(clientID, i);
   }
 
-  newPosition[controlName] = {top: 59, left: 10};
 
-  masterState.positions[getClientID(splitString)] = newPosition;
+  var outputs = masterState.controls.controlStructure[clientID]['outputs']['controlsArray'];
 
+  for (var i = 0; i < outputs.length; i++){
+    var thisControl = masterState.controls[outputs[i]].ControlName;
+    newPosition[thisControl] = setOutputControlPosition(clientID, i);
+  }
+
+  masterState.positions[clientID] = newPosition;
+
+}
+
+var setInputControlPosition = (clientID, index) => {
+  var startingPosition = masterState.positions[clientID]['client'];
+  var position = {
+    top: startingPosition['top'] + 45 + 1.5 + 25/2 + 55*index, 
+    left: startingPosition['left'] + 10
+  }
+  
+  return position;
+}
+
+var setOutputControlPosition = (clientID, index) => {
+  var startingPosition = masterState.positions[clientID]['client'];
+  var position = {
+    top: startingPosition['top'] + 45 + 1.5 + 25/2 + 55*index, 
+    left: startingPosition['left'] + 10
+  }
+
+  return position;
 }
 
 var ControlStructureTemplate = () => {
@@ -194,24 +256,25 @@ var ControlStructureTemplate = () => {
 }
 
 var SetControlStructure = (splitString, controlID) => {
-  var controlStruct = ControlStructureTemplate();
 
   if ( masterState.controls[controlID]['ControlDirection']){
-    controlStruct.outputs.controlsArray.push(controlID);
+    masterState.controls.controlStructure[getClientID(splitString)].outputs.controlsArray.push(controlID);
   } else {
-    controlStruct.inputs.controlsArray.push(controlID);
+    masterState.controls.controlStructure[getClientID(splitString)].inputs.controlsArray.push(controlID);
   }
-
-  masterState.controls.controlStructure[getClientID(splitString)] = controlStruct;
 
 }
 
 var nameVertex = (vertex) => {
     return vertex['sourceID'] + '.' + vertex['outputName'] + '->' + vertex['destinationID'] + '.' + vertex['inputName'];
-  }
+}
 
 var nameControl = (splitString, startIndex) => {
   return getClientID(splitString) +  '.' + splitString[startIndex + 2];
+}
+
+var nameControlFromObject = (clientID, controlName) => {
+  return clientID +  '.' + controlName;
 }
 
 var getClientID = (splitString) => {
@@ -221,3 +284,5 @@ var getClientID = (splitString) => {
 var getClientIcon = (splitString) => {
   return splitString[5];
 }
+
+SearchForHeepDevices();
