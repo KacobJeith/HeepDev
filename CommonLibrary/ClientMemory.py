@@ -38,8 +38,7 @@ class ClientMemory:
 		self.miscMemory.append(chr(len(clientName)))
 		self.AppendStringToMemory(clientName)
 
-	def ReadXOpcode(self, counter) :
-		counter = counter+1
+	def GetClientIDFromMemory(self, counter) :
 
 		id1 = ord(self.miscMemory[counter]) << 24
 		id2 = ord(self.miscMemory[counter+1]) << 16
@@ -47,9 +46,18 @@ class ClientMemory:
 		id4 = ord(self.miscMemory[counter+3]) 
 
 		clientID = id1 + id2 + id3 + id4
-		print clientID
 
 		counter = counter + 4
+
+		return (clientID, counter)
+
+	def ReadXOpcode(self, counter) :
+		counter = counter+1
+
+		clientIDAndCounter = self.GetClientIDFromMemory(counter)
+		counter = clientIDAndCounter[1]
+		clientID = clientIDAndCounter[0]
+		print clientID
 
 		xVal1 = ord(self.miscMemory[counter]) << 8
 		xVal2 = ord(self.miscMemory[counter+1]) 
@@ -62,15 +70,10 @@ class ClientMemory:
 	def ReadYOpcode(self, counter) :
 		counter = counter+1
 
-		id1 = ord(self.miscMemory[counter]) << 24
-		id2 = ord(self.miscMemory[counter+1]) << 16
-		id3 = ord(self.miscMemory[counter+2]) << 8
-		id4 = ord(self.miscMemory[counter+3]) 
-
-		clientID = id1 + id2 + id3 + id4
+		clientIDAndCounter = self.GetClientIDFromMemory(counter)
+		counter = clientIDAndCounter[1]
+		clientID = clientIDAndCounter[0]
 		print clientID
-
-		counter = counter + 4
 
 		yVal1 = ord(self.miscMemory[counter]) << 8
 		yVal2 = ord(self.miscMemory[counter+1]) 
@@ -84,15 +87,11 @@ class ClientMemory:
 
 		counter = counter+1
 
-		id1 = ord(self.miscMemory[counter]) << 24
-		id2 = ord(self.miscMemory[counter+1]) << 16
-		id3 = ord(self.miscMemory[counter+2]) << 8
-		id4 = ord(self.miscMemory[counter+3]) 
-
-		clientID = id1 + id2 + id3 + id4
+		clientIDAndCounter = self.GetClientIDFromMemory(counter)
+		counter = clientIDAndCounter[1]
+		clientID = clientIDAndCounter[0]
 		print clientID
-
-		counter = counter + 4
+		
 		byteLength = ord(self.miscMemory[counter])
 		print byteLength
 
