@@ -8,7 +8,7 @@ from Vertex import Vertex
 
 functionalClient = PLCClient()
 functionalClient.ClientID = 3498751234
-functionalClient.SetClientName("Sunest")
+functionalClient.SetClientName("switchock")
 OnOffControls = ControlValue()
 OnOffControls.ControlValueType = OnOffControls.OnOff
 OnOffControls.ControlName = 'DrPepper' 

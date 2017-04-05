@@ -113,6 +113,7 @@ var AddClientToMasterState = (splitString, IPAddress) => {
 
 var SetClientFromString = (splitString, IPAddress) => {
    var clientID = getClientID(splitString);
+   var clientName = getClientName(splitString);
 
   if( masterState.clients.clientArray.indexOf(clientID) == -1){
     masterState.clients.clientArray.push(clientID);
@@ -122,7 +123,7 @@ var SetClientFromString = (splitString, IPAddress) => {
     ClientID: parseInt(splitString[0]),
     IPAddress: IPAddress,
     ClientType: parseInt(splitString[2]),
-    ClientName: splitString[3],
+    ClientName: clientName,
     IconCustom: parseInt(splitString[4]),
     IconName: splitString[5],
     ControlList: [],
@@ -135,16 +136,68 @@ var SetClientFromString = (splitString, IPAddress) => {
 
 var SetClientIconFromString = (splitString) => {
   var clientIconName = getClientIcon(splitString);
-  var filepath = path.join(__dirname, '../assets/', clientIconName + '.svg');
 
-   fs.readFile(filepath, (err, data) => {
-    if (err) {
-      console.error('SVG failed');
-   } else {
-    masterState.icons[getClientID(splitString)] = data.toString();
-   }
- });
+  if (clientIconName == 'none') {
+    var suggestedIcon = suggestIconForClient(splitString);
+    console.log('Suggesting a default icon: ', suggestedIcon);
+    clientIconName = suggestedIcon;
+  }
+
+  var filepath = path.join(__dirname, '../assets/', clientIconName + '.svg');
+    fs.readFile(filepath, (err, data) => {
+      if (err) {
+        console.error('SVG failed');
+      } else {
+      masterState.icons[getClientID(splitString)] = data.toString();
+      }
+  })
 }
+
+var suggestIconForClient = (splitString) => {
+  var suggestedIcon = 'none';
+
+  var clientName = getClientName(splitString);
+  var defaultIcons = getDefaultIcons();
+  var keywordReference = generateIconKeywords(defaultIcons);
+
+  for (var keyword in keywordReference) {
+    if (clientName.search(keyword) > -1){
+      suggestedIcon = keywordReference[keyword];
+    }
+  }
+
+  return suggestedIcon
+}
+
+
+var generateIconKeywords = (names) => {
+  var keywords = {};
+
+  for (var i = 0; i < names.length; i++){
+    var words = names[i].split('-');
+    for (var thisWord = 0; thisWord < words.length; thisWord++){
+      keywords[words[thisWord]] = names[i];
+    }
+  }
+
+  return keywords
+}
+
+var getDefaultIcons = () => {
+  var files = fs.readdirSync('./src/assets/');
+  var svgs = [];
+
+  for (var i = 0; i < files.length; i++){
+    var splitFilename = files[i].split('.');
+    if (splitFilename[1] == 'svg'){
+      svgs.push(splitFilename[0]);
+    }
+  }
+
+  return svgs
+}
+
+
 
 var SetClientPosition = (splitString) => {
   
@@ -257,4 +310,8 @@ var getClientID = (splitString) => {
 
 var getClientIcon = (splitString) => {
   return splitString[5];
+}
+
+var getClientName = (splitString) => {
+  return splitString[3];
 }
