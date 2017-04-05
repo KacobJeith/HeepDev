@@ -24,7 +24,7 @@ class ClientMemory:
 	def SetClientXY(self, xValue, yValue, clientID) :
 		self.miscMemory.append(self.XYPositionOpCode)
 		self.AppendClientIDToMemory(clientID)
-		self.miscMemory.append(chr(0x04)) # Always 4 bytes total in XY info
+		self.miscMemory.append(chr(0x04)) # 4 bytes total in XY info
 		self.AppendByteArrayToMemory(self.GetConstantSizeByteArrayFromValue(xValue, 2))
 		self.AppendByteArrayToMemory(self.GetConstantSizeByteArrayFromValue(yValue, 2))
 
