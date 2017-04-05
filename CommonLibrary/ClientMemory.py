@@ -40,6 +40,14 @@ class ClientMemory:
 
 		return clientIDAndCounter
 
+	def SkipOpCode(self, counter) :
+		counter += 5 # This skips the Client ID and lands on the bytes to skip
+
+		bytesToSkip = ord(self.miscMemory[counter])
+		counter += bytesToSkip + 1
+
+		return counter
+
 	def GetNumberFromMemory(self, counter, numBytes) :
 
 		retVal = 0
@@ -111,7 +119,10 @@ class ClientMemory:
 	def GetClientXY(self, clientID) :
 		counter = 0
 		while counter < len(self.miscMemory) :
-			counter = self.ReadOpCode(counter)
+			if self.miscMemory[counter] == self.XYPositionOpCode :
+				counter = self.ReadXYOpcode(counter)
+			else :
+				counter = self.SkipOpCode(counter)
 
 
 	# Always add 4 bytes for client ID to memory
