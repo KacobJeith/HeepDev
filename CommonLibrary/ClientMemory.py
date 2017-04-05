@@ -98,6 +98,11 @@ class ClientMemory:
 		return (counter, clientID, clientName) 
 
 	def GetClientXY(self, clientID) :
+		clientInfo = self.GetClientXYInfo(clientID)
+
+		return (clientInfo[2], clientInfo[3])
+
+	def GetClientXYInfo(self, clientID) :
 		counter = 0
 		while counter < len(self.miscMemory) :
 			if self.miscMemory[counter] == self.XYPositionOpCode :
@@ -106,14 +111,18 @@ class ClientMemory:
 				capturedClient = capturedXY[1]
 				
 				if capturedClient == clientID :
-					return (capturedXY[2], capturedXY[3])
+					return capturedXY
 
 			else :
 				counter = self.SkipOpCode(counter)
 
-		return (-1, -1)
+		return (0, 0, -1, -1)
 
 	def GetClientName(self, clientID) :
+		clientNameInfo = self.GetClientNameInfo(clientID)
+		return clientNameInfo[2]
+
+	def GetClientNameInfo(self, clientID) :
 		counter = 0
 		while counter < len(self.miscMemory) :
 			if self.miscMemory[counter] == self.ClientNameOpCode :
@@ -121,12 +130,12 @@ class ClientMemory:
 				counter = capturedName[0]
 
 				if capturedName[1] == clientID :
-					return capturedName[2]
+					return capturedName
 
 			else :
 				counter = self.SkipOpCode(counter)
 
-		return 'None'
+		return (0, 0, 'None')
 
 
 	# Always add 4 bytes for client ID to memory
