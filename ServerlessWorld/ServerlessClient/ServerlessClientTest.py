@@ -41,6 +41,8 @@ functionalClient.ControlList.append(Output3)
 functionalClient.SetServerless(1)
 functionalClient.SetClientFrontEndXY(100, 287)
 
+functionalClient.DumpClientMemory()
+
 client = ServerlessClientConnection()
 
 client.SetClientData(functionalClient)

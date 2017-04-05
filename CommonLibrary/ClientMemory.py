@@ -2,6 +2,8 @@
 
 class ClientMemory:
 
+	ClientMemoryFileName = 'ClientMemory.dat'
+
 	# Currently this version must be updated manually
 	Version = 1
 
@@ -14,6 +16,11 @@ class ClientMemory:
 		self.miscMemory = []
 		return
 
+
+	def WriteClientMemoryToFile(self) :
+		writeFile = open(self.ClientMemoryFileName, 'w')
+		writeFile.write(self.GetMemoryString())
+		writeFile.close()
 
 	def SetClientX(self, xValue, clientID) :
 		self.miscMemory.append(self.XPositionOpCode)
@@ -30,6 +37,95 @@ class ClientMemory:
 		self.AppendClientIDToMemory(clientID)
 		self.miscMemory.append(chr(len(clientName)))
 		self.AppendStringToMemory(clientName)
+
+	def GetClientIDFromMemory(self, counter) :
+
+		clientIDAndCounter = self.GetNumberFromMemory(counter, 4)
+
+		return clientIDAndCounter
+
+	def GetNumberFromMemory(self, counter, numBytes) :
+
+		retVal = 0
+
+		byteCounter = numBytes - 1
+		for x in range(0, numBytes) :
+			curVal = ord(self.miscMemory[counter]) << (8*byteCounter)
+			byteCounter -= 1
+			retVal += curVal
+			counter += 1
+
+		return (retVal, counter)
+
+	def ReadXOpcode(self, counter) :
+		counter = counter+1
+
+		clientIDAndCounter = self.GetClientIDFromMemory(counter)
+		counter = clientIDAndCounter[1]
+		clientID = clientIDAndCounter[0]
+		print clientID
+
+		valueAndCounter = self.GetNumberFromMemory(counter, 2)
+		xValue = valueAndCounter[0]
+		counter = valueAndCounter[1]
+
+		print xValue
+
+		return counter
+
+	def ReadYOpcode(self, counter) :
+		counter = counter+1
+
+		clientIDAndCounter = self.GetClientIDFromMemory(counter)
+		counter = clientIDAndCounter[1]
+		clientID = clientIDAndCounter[0]
+		print clientID
+
+		valueAndCounter = self.GetNumberFromMemory(counter, 2)
+		yValue = valueAndCounter[0]
+		counter = valueAndCounter[1]
+		print yValue
+
+		return counter
+
+	def ReadClientNameOpCode(self, counter) :
+
+		counter = counter+1
+
+		clientIDAndCounter = self.GetClientIDFromMemory(counter)
+		counter = clientIDAndCounter[1]
+		clientID = clientIDAndCounter[0]
+		print clientID
+
+		byteLength = ord(self.miscMemory[counter])
+		print byteLength
+
+		counter = counter + 1
+		clientName = ""
+		for x in range(0, byteLength) :
+			clientName += self.miscMemory[counter]
+			counter = counter + 1
+
+		print clientName
+
+		counter = counter + 1
+
+		return counter 
+
+	def ReadOpCode(self, counter) :
+		if self.miscMemory[counter] == self.XPositionOpCode :
+			counter = self.ReadXOpcode(counter)
+		elif self.miscMemory[counter] == self.YPositionOpcode :
+			counter = self.ReadYOpcode(counter)
+		elif self.miscMemory[counter] == self.ClientNameOpCode :
+			counter = self.ReadClientNameOpCode(counter)
+
+		return counter
+
+	def GetClientX(self, clientID) :
+		counter = 0
+		while counter < len(self.miscMemory) :
+			counter = self.ReadOpCode(counter)
 
 
 	# Always add 4 bytes for client ID to memory
