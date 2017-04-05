@@ -22,8 +22,14 @@ class ServerlessClientConnection :
 		self.clientData.UpdateControlsByString(data)
 		return 'Value Set' + ': ' + data
 
+	def SetClientXYPosFromInterrupt(self, data) :
+		commandArgs = data.split(',')
+		self.clientData.SetClientFrontEndXY(int(commandArgs[0]), int(commandArgs[1]))
+		return 'Set Client XY'
+
 	def ParseReceivedData(self, data) :
 		isHeepDeviceString = 'IsHeepDevice'
+		setClientXYString = 'SetXY'
 		SetValString = 'SetVal'
 
 		commandDataSplit = data.split(':')
@@ -33,7 +39,9 @@ class ServerlessClientConnection :
 			return self.clientData.GetClientString()
 		elif commandDataSplit[0] == SetValString :
 			return self.SetCommandValueFromInterrupt(commandDataSplit[1])
-
+		elif commandDataSplit[0] == setClientXYString :
+			return self.SetClientXYPosFromInterrupt(commandDataSplit[1])
+			
 		return 'null'
 
 	def StartHeepClientServer(self) :
