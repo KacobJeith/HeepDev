@@ -22,8 +22,7 @@ class PLCClient:
 		return
 
 	def SetClientFrontEndXY(self, clientX, clientY) :
-		self.ClientMemory.SetClientX(clientX, self.ClientID)
-		self.ClientMemory.SetClientY(clientY, self.ClientID)
+		self.ClientMemory.SetClientXY(clientX, clientY, self.ClientID)
 
 	def SetClientName(self, clientName) :
 		self.ClientName = clientName

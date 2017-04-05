@@ -7,8 +7,7 @@ class ClientMemory:
 	# Currently this version must be updated manually
 	Version = 1
 
-	XPositionOpCode = chr(0x01)
-	YPositionOpcode = chr(0x02)
+	XYPositionOpCode = chr(0x01)
 	ClientNameOpCode = chr(0x06)
 
 	def __init__(self):
@@ -22,14 +21,11 @@ class ClientMemory:
 		writeFile.write(self.GetMemoryString())
 		writeFile.close()
 
-	def SetClientX(self, xValue, clientID) :
-		self.miscMemory.append(self.XPositionOpCode)
+	def SetClientXY(self, xValue, yValue, clientID) :
+		self.miscMemory.append(self.XYPositionOpCode)
 		self.AppendClientIDToMemory(clientID)
+		self.miscMemory.append(chr(0x04)) # Always 4 bytes total in XY info
 		self.AppendByteArrayToMemory(self.GetConstantSizeByteArrayFromValue(xValue, 2))
-
-	def SetClientY(self, yValue, clientID) :
-		self.miscMemory.append(self.YPositionOpcode)
-		self.AppendClientIDToMemory(clientID)
 		self.AppendByteArrayToMemory(self.GetConstantSizeByteArrayFromValue(yValue, 2))
 
 	def SetClientName(self, clientName, clientID) :
@@ -57,7 +53,7 @@ class ClientMemory:
 
 		return (retVal, counter)
 
-	def ReadXOpcode(self, counter) :
+	def ReadXYOpcode(self, counter) :
 		counter = counter+1
 
 		clientIDAndCounter = self.GetClientIDFromMemory(counter)
@@ -65,25 +61,17 @@ class ClientMemory:
 		clientID = clientIDAndCounter[0]
 		print clientID
 
+		counter +=1
 		valueAndCounter = self.GetNumberFromMemory(counter, 2)
 		xValue = valueAndCounter[0]
 		counter = valueAndCounter[1]
 
 		print xValue
 
-		return counter
-
-	def ReadYOpcode(self, counter) :
-		counter = counter+1
-
-		clientIDAndCounter = self.GetClientIDFromMemory(counter)
-		counter = clientIDAndCounter[1]
-		clientID = clientIDAndCounter[0]
-		print clientID
-
 		valueAndCounter = self.GetNumberFromMemory(counter, 2)
 		yValue = valueAndCounter[0]
 		counter = valueAndCounter[1]
+
 		print yValue
 
 		return counter
@@ -113,16 +101,14 @@ class ClientMemory:
 		return counter 
 
 	def ReadOpCode(self, counter) :
-		if self.miscMemory[counter] == self.XPositionOpCode :
-			counter = self.ReadXOpcode(counter)
-		elif self.miscMemory[counter] == self.YPositionOpcode :
-			counter = self.ReadYOpcode(counter)
+		if self.miscMemory[counter] == self.XYPositionOpCode :
+			counter = self.ReadXYOpcode(counter)
 		elif self.miscMemory[counter] == self.ClientNameOpCode :
 			counter = self.ReadClientNameOpCode(counter)
 
 		return counter
 
-	def GetClientX(self, clientID) :
+	def GetClientXY(self, clientID) :
 		counter = 0
 		while counter < len(self.miscMemory) :
 			counter = self.ReadOpCode(counter)
