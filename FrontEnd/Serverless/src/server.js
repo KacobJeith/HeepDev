@@ -28,7 +28,8 @@ app.get('/api/clients', (req, res) => {
 
 app.post('/api/commands', (req, res) => {
   const command = req.body["command"];
-  console.log(command);
+  var stripFirst = command.split(':');
+  heepConnect.SendCommandToHeepDevice(stripFirst[1]);
   res.end("Command sent");
 });
 

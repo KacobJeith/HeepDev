@@ -33,12 +33,13 @@ export var GetCurrentMasterState = () => {
 export var SendCommandToHeepDevice = (message) => {
   //SetVal:ControlName,Value
   var command = message.split(',');
-  var clientID = command[0];
+  var clientID = command[0].toString();
   var sendMessage = 'SetVal:' + command[1] + ',' + command[2];
-  var IPAddress = masterState[clientID].IPAddress;
 
+  var IPAddress = masterState.clients[clientID].IPAddress;
+  console.log(sendMessage)
   ConnectToHeepDevice(IPAddress, 5000, sendMessage);
-  
+
 }
 
 
@@ -77,9 +78,7 @@ var ConnectToHeepDevice = (IPAddress, port, message) => {
     console.log(data.toString());
     var splitString = data.toString().split(',');
 
-    if (isNaN(parseInt(splitString[0]))) {
-      console.log('Found an imposter HeepDevice!');
-    } else {
+    if (isNaN(parseInt(splitString[0])) == false) {
       AddClientToMasterState(splitString, IPAddress)
     }
 
