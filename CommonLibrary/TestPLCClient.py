@@ -119,9 +119,8 @@ print CheckEquality( ClientMemory.GetClientName(6666), 'None', 'Get Client Name 
 print CheckEquality( ClientMemory.GetClientName(1613), 'Fox', 'Get Client Name From Memory 2')
 print CheckEquality( ClientMemory.GetClientName(12422), 'Fortune', 'Get Client Name From Memory 3')
 
-ClientMemory.GetMemoryString()
-print ClientMemory.GetClientXY(6666)
-print ClientMemory.GetClientName(6666)
-ClientMemory.SetClientXY(5132, 614, 6666)
-ClientMemory.GetMemoryString()
-print ClientMemory.GetClientXY(6666)
+ClientMemory.SetClientXY(9182, 50230, 6666)
+ClientMemory.SetClientName('Fencing', 1324)
+print CheckEquality( ClientMemory.GetClientXY(6666), (9182, 50230), 'Update Client XY From Memory 1')
+print CheckEquality( ClientMemory.GetClientName(1324), 'Fencing', 'Get Client Name From Memory 3')
+
