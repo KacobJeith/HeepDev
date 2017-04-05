@@ -22,13 +22,26 @@ export var SearchForHeepDevices = () => {
   for (var i = 1; i <= 255; i++){
     var address = joinAddress(gateway,i)
 
-    ConnectToHeepDevice(address, 5000);
+    ConnectToHeepDevice(address, 5000, 'IsHeepDevice:');
   }
 }
 
 export var GetCurrentMasterState = () => {
   return masterState
 }
+
+export var SendCommandToHeepDevice = (message) => {
+  //SetVal:ControlName,Value
+  var command = message.split(',');
+  var clientID = command[0];
+  var sendMessage = 'SetVal:' + command[1] + ',' + command[2];
+  var IPAddress = masterState[clientID].IPAddress;
+
+  ConnectToHeepDevice(IPAddress, 5000, sendMessage);
+  
+}
+
+
 
 var findGateway = () => {
   var networkInterfaces = os.networkInterfaces( );
@@ -51,17 +64,12 @@ var joinAddress = (gateway, ip) => {
 }
 
 
-var SendCommandToHeepDevice = () => {
 
-}
-
-
-
-var ConnectToHeepDevice = (IPAddress, port) => {
+var ConnectToHeepDevice = (IPAddress, port, message) => {
 
   var sock = new net.Socket();
   sock.connect({host: IPAddress, port: port}, () => {
-    sock.write('IsHeepDevice:');
+    sock.write(message);
   });
 
   sock.on('data', (data) => {

@@ -28,7 +28,7 @@ app.get('/api/clients', (req, res) => {
 
 app.post('/api/commands', (req, res) => {
   const command = req.body["command"];
-
+  console.log(command);
   res.end("Command sent");
 });
 
