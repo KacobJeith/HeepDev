@@ -18,14 +18,21 @@ class ServerlessClientConnection :
 	def SetClientData(self, clientData) :
 		self.clientData = clientData
 
+	def SetCommandValueFromInterrupt(self, data) :
+		self.clientData.UpdateControlsByString(data)
+		return 'Value Set' + ': ' + data
+
 	def ParseReceivedData(self, data) :
 		isHeepDeviceString = 'IsHeepDevice'
+		SetValString = 'SetVal'
 
 		commandDataSplit = data.split(':')
 		print commandDataSplit
 
 		if commandDataSplit[0] == isHeepDeviceString :
 			return self.clientData.GetClientString()
+		elif commandDataSplit[0] == SetValString :
+			return self.SetCommandValueFromInterrupt(commandDataSplit[1])
 
 		return 'null'
 
