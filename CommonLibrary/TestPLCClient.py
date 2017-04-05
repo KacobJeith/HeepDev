@@ -110,7 +110,17 @@ print CheckEquality( ClientMemory.GetByteArrayFromValue(65536), [chr(0x01), chr(
 print CheckEquality( ClientMemory.GetConstantSizeByteArrayFromValue(1, 2), [chr(0x00), chr(0x01)], 'Get Constant Size Byte Array from Value 1') 
 print CheckEquality( ClientMemory.GetConstantSizeByteArrayFromValue(300, 2), [chr(0x01), chr(0x2C)], 'Get Constant Size Byte Array from Value 2') 
 
+ClientMemory.SetClientName('Fox', 1613)
+ClientMemory.SetClientName('Fortune', 12422)
 ClientMemory.SetClientXY(1234, 5678, 6666)
-ClientMemory.SetClientName('Crab rangoon fixture that I plug my won ton into when I enjoy egg foo young', 12422)
-ClientMemory.GetMemoryString()
-ClientMemory.GetClientXY(251232)
+print CheckEquality( ClientMemory.GetClientXY(6666), (1234, 5678), 'Get Client XY From Memory 1')
+print CheckEquality( ClientMemory.GetClientXY(1252), (-1, -1), 'Get Client XY Failure From Memory 2')
+print CheckEquality( ClientMemory.GetClientName(6666), 'None', 'Get Client Name From Memory 1')
+print CheckEquality( ClientMemory.GetClientName(1613), 'Fox', 'Get Client Name From Memory 2')
+print CheckEquality( ClientMemory.GetClientName(12422), 'Fortune', 'Get Client Name From Memory 3')
+
+ClientMemory.SetClientXY(9182, 50230, 6666)
+ClientMemory.SetClientName('Fencing', 1324)
+print CheckEquality( ClientMemory.GetClientXY(6666), (9182, 50230), 'Update Client XY From Memory 1')
+print CheckEquality( ClientMemory.GetClientName(1324), 'Fencing', 'Get Client Name From Memory 3')
+

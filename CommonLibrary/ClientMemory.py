@@ -21,12 +21,31 @@ class ClientMemory:
 		writeFile.write(self.GetMemoryString())
 		writeFile.close()
 
-	def SetClientXY(self, xValue, yValue, clientID) :
+	def AppendClientXYToMemory(self, xValue, yValue, clientID) :
 		self.miscMemory.append(self.XYPositionOpCode)
 		self.AppendClientIDToMemory(clientID)
 		self.miscMemory.append(chr(0x04)) # 4 bytes total in XY info
 		self.AppendByteArrayToMemory(self.GetConstantSizeByteArrayFromValue(xValue, 2))
 		self.AppendByteArrayToMemory(self.GetConstantSizeByteArrayFromValue(yValue, 2))
+
+	def OverwriteClientXYInMemory(self, xValue, yValue, counter) :
+		xByteArray = self.GetConstantSizeByteArrayFromValue(xValue, 2)
+		yByteArray = self.GetConstantSizeByteArrayFromValue(yValue, 2)
+		
+		self.miscMemory[counter - 1] = yByteArray[1]
+		self.miscMemory[counter - 2] = yByteArray[0]
+		self.miscMemory[counter - 3] = xByteArray[1]
+		self.miscMemory[counter - 4] = xByteArray[0]
+
+	def SetClientXY(self, xValue, yValue, clientID) :
+
+		clientXYInfo = self.GetClientXYInfo(clientID)
+
+		if clientXYInfo[2] == -1 and clientXYInfo[3] == -1 :
+			self.AppendClientXYToMemory(xValue, yValue, clientID)
+		else :
+			counter = clientXYInfo[0]
+			self.OverwriteClientXYInMemory(xValue, yValue, counter)
 
 	def SetClientName(self, clientName, clientID) :
 		self.miscMemory.append(self.ClientNameOpCode)
@@ -39,6 +58,14 @@ class ClientMemory:
 		clientIDAndCounter = self.GetNumberFromMemory(counter, 4)
 
 		return clientIDAndCounter
+
+	def SkipOpCode(self, counter) :
+		counter += 5 # This skips the Client ID and lands on the bytes to skip
+
+		bytesToSkip = ord(self.miscMemory[counter])
+		counter += bytesToSkip + 1
+
+		return counter
 
 	def GetNumberFromMemory(self, counter, numBytes) :
 
@@ -59,22 +86,17 @@ class ClientMemory:
 		clientIDAndCounter = self.GetClientIDFromMemory(counter)
 		counter = clientIDAndCounter[1]
 		clientID = clientIDAndCounter[0]
-		print clientID
 
 		counter +=1
 		valueAndCounter = self.GetNumberFromMemory(counter, 2)
 		xValue = valueAndCounter[0]
 		counter = valueAndCounter[1]
 
-		print xValue
-
 		valueAndCounter = self.GetNumberFromMemory(counter, 2)
 		yValue = valueAndCounter[0]
 		counter = valueAndCounter[1]
 
-		print yValue
-
-		return counter
+		return (counter, clientID, xValue, yValue)
 
 	def ReadClientNameOpCode(self, counter) :
 
@@ -83,10 +105,8 @@ class ClientMemory:
 		clientIDAndCounter = self.GetClientIDFromMemory(counter)
 		counter = clientIDAndCounter[1]
 		clientID = clientIDAndCounter[0]
-		print clientID
 
 		byteLength = ord(self.miscMemory[counter])
-		print byteLength
 
 		counter = counter + 1
 		clientName = ""
@@ -94,24 +114,47 @@ class ClientMemory:
 			clientName += self.miscMemory[counter]
 			counter = counter + 1
 
-		print clientName
-
-		counter = counter + 1
-
-		return counter 
-
-	def ReadOpCode(self, counter) :
-		if self.miscMemory[counter] == self.XYPositionOpCode :
-			counter = self.ReadXYOpcode(counter)
-		elif self.miscMemory[counter] == self.ClientNameOpCode :
-			counter = self.ReadClientNameOpCode(counter)
-
-		return counter
+		return (counter, clientID, clientName) 
 
 	def GetClientXY(self, clientID) :
+		clientInfo = self.GetClientXYInfo(clientID)
+
+		return (clientInfo[2], clientInfo[3])
+
+	def GetClientXYInfo(self, clientID) :
 		counter = 0
 		while counter < len(self.miscMemory) :
-			counter = self.ReadOpCode(counter)
+			if self.miscMemory[counter] == self.XYPositionOpCode :
+				capturedXY = self.ReadXYOpcode(counter)
+				counter = capturedXY[0]
+				capturedClient = capturedXY[1]
+				
+				if capturedClient == clientID :
+					return capturedXY
+
+			else :
+				counter = self.SkipOpCode(counter)
+
+		return (0, 0, -1, -1)
+
+	def GetClientName(self, clientID) :
+		clientNameInfo = self.GetClientNameInfo(clientID)
+		return clientNameInfo[2]
+
+	def GetClientNameInfo(self, clientID) :
+		counter = 0
+		while counter < len(self.miscMemory) :
+			if self.miscMemory[counter] == self.ClientNameOpCode :
+				capturedName = self.ReadClientNameOpCode(counter)
+				counter = capturedName[0]
+
+				if capturedName[1] == clientID :
+					return capturedName
+
+			else :
+				counter = self.SkipOpCode(counter)
+
+		return (0, 0, 'None')
 
 
 	# Always add 4 bytes for client ID to memory
