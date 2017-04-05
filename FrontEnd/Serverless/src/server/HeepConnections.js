@@ -161,7 +161,8 @@ var suggestIconForClient = (splitString) => {
   var keywordReference = generateIconKeywords(defaultIcons);
 
   for (var keyword in keywordReference) {
-    if (clientName.search(keyword) > -1){
+    var lowercaseName = clientName.toLowerCase();
+    if (lowercaseName.search(keyword) > -1){
       suggestedIcon = keywordReference[keyword];
     }
   }
@@ -176,7 +177,8 @@ var generateIconKeywords = (names) => {
   for (var i = 0; i < names.length; i++){
     var words = names[i].split('-');
     for (var thisWord = 0; thisWord < words.length; thisWord++){
-      keywords[words[thisWord]] = names[i];
+      var keyword = words[thisWord]
+      keywords[keyword.toLowerCase()] = names[i];
     }
   }
 
