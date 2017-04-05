@@ -113,6 +113,12 @@ print CheckEquality( ClientMemory.GetConstantSizeByteArrayFromValue(300, 2), [ch
 ClientMemory.SetClientName('Fox', 1613)
 ClientMemory.SetClientName('Fortune', 12422)
 ClientMemory.SetClientXY(1234, 5678, 6666)
+print CheckEquality( ClientMemory.GetClientXY(6666), (1234, 5678), 'Get Client XY From Memory 1')
+print CheckEquality( ClientMemory.GetClientXY(1252), (-1, -1), 'Get Client XY Failure From Memory 2')
+print CheckEquality( ClientMemory.GetClientName(6666), 'None', 'Get Client Name From Memory 1')
+print CheckEquality( ClientMemory.GetClientName(1613), 'Fox', 'Get Client Name From Memory 2')
+print CheckEquality( ClientMemory.GetClientName(12422), 'Fortune', 'Get Client Name From Memory 3')
+
 ClientMemory.GetMemoryString()
 print ClientMemory.GetClientXY(6666)
 print ClientMemory.GetClientName(6666)
