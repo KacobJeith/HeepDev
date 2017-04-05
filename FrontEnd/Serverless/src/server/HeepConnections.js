@@ -30,19 +30,17 @@ export var GetCurrentMasterState = () => {
   return masterState
 }
 
-export var SendCommandToHeepDevice = (message) => {
+export var SendCommandToHeepDevice = (commandID, message) => {
   //SetVal:ControlName,Value
+  //SetXY:X,Y
   var command = message.split(',');
-  var clientID = command[0].toString();
-  var sendMessage = 'SetVal:' + command[1] + ',' + command[2];
+  var clientID = command.shift();
+  var sendMessage = commandID + ':' + command.join(',');
 
   var IPAddress = masterState.clients[clientID].IPAddress;
   console.log(sendMessage)
   ConnectToHeepDevice(IPAddress, 5000, sendMessage);
-
 }
-
-
 
 var findGateway = () => {
   var networkInterfaces = os.networkInterfaces( );

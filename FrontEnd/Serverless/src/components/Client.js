@@ -56,8 +56,8 @@ class Client extends React.Component {
 
 		const message = 'SetPosition' + ':' + 
 						this.props.client['ClientID'] + ',' +
-						this.props.position.top + ',' + 
-						this.props.position.left + '\n';
+						this.props.position.left + ',' + 
+						this.props.position.top + '\n';
 
     	const messagePacket = {command: message};
 
