@@ -62,8 +62,6 @@ var joinAddress = (gateway, ip) => {
   return gateway.join('.') + '.' + ip.toString()
 }
 
-
-
 var ConnectToHeepDevice = (IPAddress, port, message) => {
 
   var sock = new net.Socket();
@@ -99,15 +97,39 @@ var AddClientToMasterState = (splitString, IPAddress) => {
 
     var numControls = parseInt(splitString[6]);
     masterState.controls.controlStructure[getClientID(splitString)] = ControlStructureTemplate();
+    
     var it = 7;
     for (var i = 0; i < numControls; i++) {
-
       it = SetControlFromSplitString(splitString, it)
     }
 
-    SetControlPositions(splitString);
-  
+    ExtractMiscMemory(splitString);
+    
 }
+
+var ExtractMiscMemory = (splitString) => {
+  SetControlPositions(splitString);
+
+    var remainingData = splitString.slice(it);
+    var version = remainingData[0];
+    var miscMemory = remainingData[1];
+
+    if (VerifyMiscMemory(miscMemory)){
+      MemoryCrawl(miscMemory);
+    } else {
+      console.error('Miscellaneous Memory could not be understood.')
+    }
+}
+
+var MemoryCrawl = (miscMemory) => {
+
+}
+
+
+var VerifyMiscMemory = (memoryDump) => {
+  return memoryDump[0].charCodeAt() == 77
+}
+
 
 var SetClientFromString = (splitString, IPAddress) => {
    var clientID = getClientID(splitString);
@@ -196,8 +218,6 @@ var getDefaultIcons = () => {
 
   return svgs
 }
-
-
 
 var SetClientPosition = (splitString) => {
   
