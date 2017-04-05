@@ -103,11 +103,11 @@ var AddClientToMasterState = (splitString, IPAddress) => {
       it = SetControlFromSplitString(splitString, it)
     }
 
-    ExtractMiscMemory(splitString);
+    ExtractMiscMemory(splitString, it);
     
 }
 
-var ExtractMiscMemory = (splitString) => {
+var ExtractMiscMemory = (splitString, it) => {
   SetControlPositions(splitString);
 
     var remainingData = splitString.slice(it);
@@ -122,6 +122,12 @@ var ExtractMiscMemory = (splitString) => {
 }
 
 var MemoryCrawl = (miscMemory) => {
+  var it = 1;
+  console.log('memoryarraylength: ', miscMemory.length)
+
+  while (it < miscMemory.length) {
+
+  }
 
 }
 
