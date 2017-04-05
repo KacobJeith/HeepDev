@@ -104,23 +104,21 @@ class ClientMemory:
 
 		print clientName
 
-		counter = counter + 1
-
 		return counter 
-
-	def ReadOpCode(self, counter) :
-		if self.miscMemory[counter] == self.XYPositionOpCode :
-			counter = self.ReadXYOpcode(counter)
-		elif self.miscMemory[counter] == self.ClientNameOpCode :
-			counter = self.ReadClientNameOpCode(counter)
-
-		return counter
 
 	def GetClientXY(self, clientID) :
 		counter = 0
 		while counter < len(self.miscMemory) :
 			if self.miscMemory[counter] == self.XYPositionOpCode :
 				counter = self.ReadXYOpcode(counter)
+			else :
+				counter = self.SkipOpCode(counter)
+
+	def GetClientName(self, clientID) :
+		counter = 0
+		while counter < len(self.miscMemory) :
+			if self.miscMemory[counter] == self.ClientNameOpCode :
+				counter = self.ReadClientNameOpCode(counter)
 			else :
 				counter = self.SkipOpCode(counter)
 

@@ -110,8 +110,9 @@ print CheckEquality( ClientMemory.GetByteArrayFromValue(65536), [chr(0x01), chr(
 print CheckEquality( ClientMemory.GetConstantSizeByteArrayFromValue(1, 2), [chr(0x00), chr(0x01)], 'Get Constant Size Byte Array from Value 1') 
 print CheckEquality( ClientMemory.GetConstantSizeByteArrayFromValue(300, 2), [chr(0x01), chr(0x2C)], 'Get Constant Size Byte Array from Value 2') 
 
-ClientMemory.SetClientName('Fortune', 12422)
 ClientMemory.SetClientName('Fox', 1613)
+ClientMemory.SetClientName('Fortune', 12422)
 ClientMemory.SetClientXY(1234, 5678, 6666)
 ClientMemory.GetMemoryString()
 ClientMemory.GetClientXY(251232)
+ClientMemory.GetClientName(1252)
