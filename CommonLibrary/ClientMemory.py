@@ -21,24 +21,31 @@ class ClientMemory:
 		writeFile.write(self.GetMemoryString())
 		writeFile.close()
 
+	def AppendClientXYToMemory(self, xValue, yValue, clientID) :
+		self.miscMemory.append(self.XYPositionOpCode)
+		self.AppendClientIDToMemory(clientID)
+		self.miscMemory.append(chr(0x04)) # 4 bytes total in XY info
+		self.AppendByteArrayToMemory(self.GetConstantSizeByteArrayFromValue(xValue, 2))
+		self.AppendByteArrayToMemory(self.GetConstantSizeByteArrayFromValue(yValue, 2))
+
+	def OverwriteClientXYInMemory(self, xValue, yValue, counter) :
+		xByteArray = self.GetConstantSizeByteArrayFromValue(xValue, 2)
+		yByteArray = self.GetConstantSizeByteArrayFromValue(yValue, 2)
+		
+		self.miscMemory[counter - 1] = yByteArray[1]
+		self.miscMemory[counter - 2] = yByteArray[0]
+		self.miscMemory[counter - 3] = xByteArray[1]
+		self.miscMemory[counter - 4] = xByteArray[0]
+
 	def SetClientXY(self, xValue, yValue, clientID) :
 
 		clientXYInfo = self.GetClientXYInfo(clientID)
 
 		if clientXYInfo[2] == -1 and clientXYInfo[3] == -1 :
-			self.miscMemory.append(self.XYPositionOpCode)
-			self.AppendClientIDToMemory(clientID)
-			self.miscMemory.append(chr(0x04)) # 4 bytes total in XY info
-			self.AppendByteArrayToMemory(self.GetConstantSizeByteArrayFromValue(xValue, 2))
-			self.AppendByteArrayToMemory(self.GetConstantSizeByteArrayFromValue(yValue, 2))
+			self.AppendClientXYToMemory(xValue, yValue, clientID)
 		else :
-			xByteArray = self.GetConstantSizeByteArrayFromValue(xValue, 2)
-			yByteArray = self.GetConstantSizeByteArrayFromValue(yValue, 2)
 			counter = clientXYInfo[0]
-			self.miscMemory[counter - 1] = yByteArray[1]
-			self.miscMemory[counter - 2] = yByteArray[0]
-			self.miscMemory[counter - 3] = xByteArray[1]
-			self.miscMemory[counter - 4] = xByteArray[0]
+			self.OverwriteClientXYInMemory(xValue, yValue, counter)
 
 	def SetClientName(self, clientName, clientID) :
 		self.miscMemory.append(self.ClientNameOpCode)
