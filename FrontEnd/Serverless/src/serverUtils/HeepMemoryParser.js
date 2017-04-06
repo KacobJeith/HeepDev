@@ -19,9 +19,15 @@ var MemoryCrawler = (buffer) => {
 }
 
 var ReadOPCode = (buffer, it) => {
-  var thisBlock = [it, null];
+  var thisBlock = {};
+  thisBlock.clientID = ReadClientID(buffer, it);
+  thisBlock.bytes = ReadSizeOfPacket(buffer, it);
+
+
   if (buffer[it] == 1){
     // Client Data
+    thisBlock.op = buffer[it];
+    thisBlock.version = ReadFirmwareVersion(buffer, it);
 
   } else if (buffer[it] == 2) {
     // Controls
@@ -50,22 +56,37 @@ var ReadOPCode = (buffer, it) => {
 }
 
 var ReadClientID = (buffer, it) => {
+  // it is the counter at the OP Code
+
   var clientID = (buffer[it + 1] << 24) + 
                  (buffer[it + 2] << 16) +
                  (buffer[it + 3] <<  8) + 
                  (buffer[it + 4]);
 
-  return [it, clientID]
+  return clientID
+}
+
+var ReadSizeOfPacket = (buffer, it) => {
+  return buffer[it + 5]
+}
+
+var CalculateSizeOfOPCodeBlock = (bytes) => {
+  // total size of block depends on size of bytes, clientID, OPcode, 
+  // and number of bytes spent communicating the size in bytes 
+  // Since ff -> ff ff -> ff ff ff ff, this might not be straightforward
+  return bytes + 5
+}
+
+var ReadFirmwareVersion = (buffer, it) => {
+  return buffer[it + 6]
 }
 
 var ReadXYPosition = (buffer, it) => {
-  var clientName = ReadClientID(buffer, it);
 
-  return it + 8
+  return 
 }
 
 var ReadClientName = (buffer, it) => {
-  var clientName = ReadClientID(buffer, it);
 
   return it + 5
 }
