@@ -16,6 +16,8 @@ export var MemoryCrawler = (buffer) => {
     it = nextBlock[0];
     data.push(nextBlock[1]);
   }
+  console.log(data)
+  return data
 }
 
 var ReadOPCode = (buffer, it) => {
@@ -89,7 +91,7 @@ var CalculateNextIterator = (indicator, bytes) => {
 }
 
 var ReadFirmwareVersion = (buffer, it) => { // OP 1
-  return buffer[it] 
+  return buffer[it + 1] 
 }
 
 var ReadControl = (buffer, it) => { // OP 2
@@ -107,13 +109,4 @@ var ReadControl = (buffer, it) => { // OP 2
   return thisControl
 }
 
-var ReadXYPosition = (buffer, it) => {
-
-  return 
-}
-
-var ReadClientName = (buffer, it) => {
-
-  return it + 5
-}
 
