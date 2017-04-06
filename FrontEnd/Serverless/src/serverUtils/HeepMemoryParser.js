@@ -3,6 +3,7 @@ export var MemoryCrawler = (buffer) => {
   var data = [];
 
   while (it < buffer.length) {
+    console.log('it: ', it)
     var nextBlock = ReadOPCode(buffer, it);
 
     if (it == nextBlock[0]){
@@ -15,49 +16,55 @@ export var MemoryCrawler = (buffer) => {
     it = nextBlock[0];
     data.push(nextBlock[1]);
   }
-
 }
 
 var ReadOPCode = (buffer, it) => {
+  var packetBytes = ReadSizeOfPacket(buffer, it);
+  var byteIndicatorBytes = packetBytes[1];
+
   var thisBlock = {
     op: buffer[it],
     clientID: ReadClientID(buffer, it),
-    packetBytes: ReadSizeOfPacket(buffer, it)
+    packetBytes: packetBytes[0]
   };
 
+
   console.log('Encountered OP: ', buffer[it]);
+
+  it += 5;
 
   if (buffer[it] == 1){
     // Client Data
     thisBlock.version = ReadFirmwareVersion(buffer, it);
 
-  } else if (buffer[it] == 2) {
+  } else if (thisBlock.op == 2) {
     // Controls
+    thisBlock.control = ReadControl(buffer, it);
 
-  } else if (buffer[it] == 3) {
+  } else if (thisBlock.op == 3) {
     // Vertex
 
-  } else if (buffer[it] == 4) {
+  } else if (thisBlock.op == 4) {
     // Icon ID
 
-  } else if (buffer[it] == 5) {
+  } else if (thisBlock.op == 5) {
     //Custom Icon Drawing
 
-  } else if (buffer[it] == 6) {
+  } else if (thisBlock.op == 6) {
     //Client Name
 
-  } else if (buffer[it] == 7) {
+  } else if (thisBlock.op == 7) {
     //FrontEnd Position
 
-  } else if (buffer[it] == 8) {
+  } else if (thisBlock.op == 8) {
     //ClientIP
 
   } else {
     return {null}
   }
 
-
-  return thisBlock
+  it += CalculateNextIterator(byteIndicatorBytes, thisBlock.packetBytes);
+  return [it, thisBlock]
 }
 
 var ReadClientID = (buffer, it) => {
@@ -73,18 +80,31 @@ var ReadClientID = (buffer, it) => {
 
 var ReadSizeOfPacket = (buffer, it) => {
   // Need to implement expansion logic for values > 255
-  return buffer[it + 5]
+  // Currently assume < 255
+  return [buffer[it + 5], 1]
 }
 
-var CalculateSizeOfOPCodeBlock = (bytes) => {
-  // total size of block depends on size of bytes, clientID, OPcode, 
-  // and number of bytes spent communicating the size in bytes 
-  // Since ff -> ff ff -> ff ff ff ff, there is a little bit of play here
-  return bytes + 5
+var CalculateNextIterator = (indicator, bytes) => {
+  return bytes + indicator
 }
 
-var ReadFirmwareVersion = (buffer, it) => {
-  return buffer[it + 6] 
+var ReadFirmwareVersion = (buffer, it) => { // OP 1
+  return buffer[it] 
+}
+
+var ReadControl = (buffer, it) => { // OP 2
+
+  var thisControl = {
+    ControlID: buffer[it + 1],
+    ControlValueType: buffer[it + 2],
+    ControlDirection: buffer[it + 3],
+    LowValue: buffer[it + 4],
+    HighValue: buffer[it + 5],
+    CurCtrlValue: buffer[it + 6],
+    ControlName: buffer.slice(it + 7, it + buffer[it] + 1).toString('ascii')
+  }
+
+  return thisControl
 }
 
 var ReadXYPosition = (buffer, it) => {
