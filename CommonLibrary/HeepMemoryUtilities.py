@@ -1,3 +1,5 @@
+from ControlValue import ControlValue
+
 class HeepMemoryUtilities:
 
 	OpCodeVersion = 1
@@ -38,6 +40,12 @@ class HeepMemoryUtilities:
 
 		return byteArray
 
+	def AppendStringToByteArray(self, byteArray, theString) :
+		for x in range(0, len(theString)) :
+			byteArray.append(theString[x])
+
+		return byteArray
+
 	def AppendClientDataToByteArray(self, byteArray, clientID) :
 
 		byteArray.append(self.ClientDataOpCode)
@@ -49,3 +57,29 @@ class HeepMemoryUtilities:
 			byteArray.append(versionByteArray[x])
 
 		return byteArray
+
+	def GetBytesPerArgumentForControlType(self, controlType) :
+		if controlType == 0 or controlType == 1 :
+			return 1
+
+	def AppendControlDataToByteArray(self, byteArray, clientID, control) :
+		byteArray.append(self.ControlDataOpCode)
+		byteArray = self.AppendClientIDToByteArray(byteArray, clientID)
+
+		bytesPerArgument = self.GetBytesPerArgumentForControlType(control.ControlValueType)
+
+		numBytes = 3 + 3*bytesPerArgument + len(control.ControlName)
+
+		byteArray.append(chr(numBytes))
+		byteArray.append(chr(control.ControlID))
+		byteArray.append(chr(control.ControlValueType))
+		byteArray.append(chr(control.ControlDirection))
+
+		byteArray.append(chr(control.LowValue))
+		byteArray.append(chr(control.HighValue))
+		byteArray.append(chr(control.CurCtrlValue))
+
+		byteArray = self.AppendStringToByteArray(byteArray, control.ControlName)
+
+		return byteArray
+

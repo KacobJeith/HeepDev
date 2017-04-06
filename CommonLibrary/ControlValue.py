@@ -15,6 +15,7 @@ class ControlValue:
 	LowValue = 0
 	CurCtrlValue = 0
 	ControlName = 'None'
+	ControlID = 0
 
 	def __init__(self):
 		return
