@@ -1,68 +1,72 @@
+var MemoryCrawler = (buffer) => {
+  var it = 0;
+  var data = [];
 
+  while (it < buffer.length) {
+    var nextBlock = ReadOPCode(buffer, it);
 
-export var ExtractMiscMemory = (splitString, it) => {
-
-    var remainingData = splitString.slice(it);
-    var version = remainingData[0];
-    var miscMemory = remainingData[1];
-
-    if (VerifyMiscMemory(miscMemory)){
-      MemoryCrawl(miscMemory);
+    if (it == nextBlock[0]){
+      console.log('Encountered an un-implemented OP Code');
+      break
     } else {
-      console.error('Miscellaneous Memory could not be understood.')
+      console.log('nextBlock: ', nextBlock);
     }
-}
 
-var MemoryCrawl = (miscMemory) => {
-  var it = 1;
-  console.log('memoryarraylength: ', miscMemory.length)
-  for (var i = 0 ; i < miscMemory.length; i++){
-    console.log('read: ', miscMemory[i].charCodeAt());
-  }
-
-  while (it < miscMemory.length) {
-    if (miscMemory[it].charCodeAt() == 1){ 
-      //console.log("OP CODE: 1, IT: ", it)
-      it = ReadXYPosition(miscMemory, it);
-    } 
-    else if (miscMemory[it].charCodeAt() == 6) {
-      //console.log("OP CODE: 6, IT: ", it)
-      it = ReadClientName(miscMemory, it);
-    }
-    else {
-      //console.log('Read OP Code: ', miscMemory[it].charCodeAt());
-      //it = ReadMiscellaneousClientID(miscMemory, it);
-      it = it + 1;
-    }
+    it = nextBlock[0];
+    data.push(nextBlock[1]);
   }
 
 }
 
-var ReadXYPosition = (miscMemory, it) => {
-  var clientName = ReadMiscellaneousClientID(miscMemory, it);
+var ReadOPCode = (buffer, it) => {
+  var thisBlock = [it, null];
+  if (buffer[it] == 1){
+    // Client Data
+
+  } else if (buffer[it] == 2) {
+    // Controls
+
+  } else if (buffer[it] == 3) {
+    // Vertex
+
+  } else if (buffer[it] == 4) {
+    // Icon ID
+
+  } else if (buffer[it] == 5) {
+    //Custom Icon Drawing
+
+  } else if (buffer[it] == 6) {
+    //Client Name
+
+  } else if (buffer[it] == 7) {
+    //FrontEnd Position
+
+  } else if (buffer[it] == 8) {
+    //ClientIP
+
+  } 
+
+  return thisBlock
+}
+
+var ReadClientID = (buffer, it) => {
+  var clientID = (buffer[it + 1] << 24) + 
+                 (buffer[it + 2] << 16) +
+                 (buffer[it + 3] <<  8) + 
+                 (buffer[it + 4]);
+
+  return [it, clientID]
+}
+
+var ReadXYPosition = (buffer, it) => {
+  var clientName = ReadClientID(buffer, it);
 
   return it + 8
 }
 
-var ReadClientName = (miscMemory, it) => {
-  var clientName = ReadMiscellaneousClientID(miscMemory, it);
+var ReadClientName = (buffer, it) => {
+  var clientName = ReadClientID(buffer, it);
 
   return it + 5
-}
-
-var ReadMiscellaneousClientID = (miscMemory, it) => {
-  var clientIDmiscMemory = (miscMemory[it + 1].charCodeAt() << 24) + 
-                           (miscMemory[it + 2].charCodeAt() << 16) +
-                           (miscMemory[it + 3].charCodeAt() << 8) + 
-                           (miscMemory[it + 3].charCodeAt());
-
-  console.log('FINAL: ', clientIDmiscMemory);
-
-  return clientIDmiscMemory
-}
-
-
-var VerifyMiscMemory = (memoryDump) => {
-  return memoryDump[0].charCodeAt() == 77
 }
 

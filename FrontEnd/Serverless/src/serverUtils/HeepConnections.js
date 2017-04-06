@@ -105,7 +105,7 @@ var AddClientToMasterState = (splitString, IPAddress, rawData) => {
     }
     SetControlPositions(splitString);
 
-    heepParser.ExtractMiscMemory(splitString, it);
+    heepParser.ExtractMiscMemory(splitString, it, rawData);
     
 }
 var SetClientFromString = (splitString, IPAddress) => {
