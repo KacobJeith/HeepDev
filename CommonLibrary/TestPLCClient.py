@@ -3,6 +3,7 @@ from ControlValue import ControlValue
 from OutputData import OutputData
 from Vertex import Vertex
 from ClientMemory import ClientMemory
+from HeepMemoryUtilities import HeepMemoryUtilities
 
 def CheckEquality(first, second, testName) :
 	if first == second :
@@ -123,4 +124,11 @@ ClientMemory.SetClientXY(9182, 50230, 6666)
 ClientMemory.SetClientName('Fencing', 1324)
 print CheckEquality( ClientMemory.GetClientXY(6666), (9182, 50230), 'Update Client XY From Memory 1')
 print CheckEquality( ClientMemory.GetClientName(1324), 'Fencing', 'Get Client Name From Memory 3')
+
+
+HeepMemoryUtilities = HeepMemoryUtilities()
+byteArray = []
+HeepMemoryUtilities.AppendClientDataToByteArray(byteArray, 2038912)
+print CheckEquality( HeepMemoryUtilities.GetClientFirmware(byteArray, 2038912), 1, 'Get Client Firmware Version')
+
 

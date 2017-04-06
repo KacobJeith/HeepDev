@@ -49,3 +49,132 @@ class HeepMemoryUtilities:
 			byteArray.append(versionByteArray[x])
 
 		return byteArray
+
+
+
+	def SkipOpCode(self, byteArray, counter) :
+		counter += 5 # This skips the Client ID and lands on the bytes to skip
+
+		bytesToSkip = ord(byteArray[counter])
+		counter += bytesToSkip + 1
+
+		return counter
+
+
+	def GetClientIDFromMemory(self, byteArray, counter) :
+
+		clientIDAndCounter = self.GetNumberFromMemory(byteArray, counter, 4)
+
+		return clientIDAndCounter
+
+
+	def GetNumberFromMemory(self, byteArray, counter, numBytes) :
+
+		retVal = 0
+
+		byteCounter = numBytes - 1
+		for x in range(0, numBytes) :
+			curVal = ord(byteArray[counter]) << (8*byteCounter)
+			byteCounter -= 1
+			retVal += curVal
+			counter += 1
+
+		return (retVal, counter)
+
+
+	def ReadClientDataOpCode(self, byteArray, counter) :
+		counter = counter+1
+
+		clientIDAndCounter = self.GetClientIDFromMemory(byteArray, counter)
+		counter = clientIDAndCounter[1]
+		clientID = clientIDAndCounter[0]
+
+		counter +=1
+		valueAndCounter = self.GetNumberFromMemory(byteArray, counter, 1)
+		firmwareValue = valueAndCounter[0]
+		counter = valueAndCounter[1]
+
+		return (counter, clientID, firmwareValue)
+
+
+	def GetClientFirmware(self, byteArray, clientID) :
+		clientInfo = self.GetClientFirmwareInfo(byteArray, clientID)
+
+		return (clientInfo[2])
+
+
+	def GetClientFirmwareInfo(self, byteArray, clientID) :
+		counter = 0
+		while counter < len(byteArray) :
+			if byteArray[counter] == self.ClientDataOpCode :
+				capturedFirmware = self.ReadClientDataOpCode(byteArray, counter)
+				counter = capturedFirmware[0]
+				capturedClient = capturedFirmware[1]
+				
+				if capturedClient == clientID :
+					return capturedFirmware
+
+			else :
+				counter = self.SkipOpCode(byteArray, counter)
+
+		return (0, 0, -1)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
