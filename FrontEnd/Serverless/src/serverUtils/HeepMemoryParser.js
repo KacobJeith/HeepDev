@@ -1,4 +1,4 @@
-var MemoryCrawler = (buffer) => {
+export var MemoryCrawler = (buffer) => {
   var it = 0;
   var data = [];
 
@@ -19,14 +19,16 @@ var MemoryCrawler = (buffer) => {
 }
 
 var ReadOPCode = (buffer, it) => {
-  var thisBlock = {};
-  thisBlock.clientID = ReadClientID(buffer, it);
-  thisBlock.bytes = ReadSizeOfPacket(buffer, it);
+  var thisBlock = {
+    op: buffer[it],
+    clientID: ReadClientID(buffer, it),
+    packetBytes: ReadSizeOfPacket(buffer, it)
+  };
 
+  console.log('Encountered OP: ', buffer[it]);
 
   if (buffer[it] == 1){
     // Client Data
-    thisBlock.op = buffer[it];
     thisBlock.version = ReadFirmwareVersion(buffer, it);
 
   } else if (buffer[it] == 2) {
@@ -50,7 +52,10 @@ var ReadOPCode = (buffer, it) => {
   } else if (buffer[it] == 8) {
     //ClientIP
 
-  } 
+  } else {
+    return {null}
+  }
+
 
   return thisBlock
 }
@@ -58,27 +63,30 @@ var ReadOPCode = (buffer, it) => {
 var ReadClientID = (buffer, it) => {
   // it is the counter at the OP Code
 
-  var clientID = (buffer[it + 1] << 24) + 
-                 (buffer[it + 2] << 16) +
-                 (buffer[it + 3] <<  8) + 
-                 (buffer[it + 4]);
+  var clientID_1 = (buffer[it + 1] << 24) >>> 0;
+  var clientID_2 = (buffer[it + 2] << 16) >>> 0;
+  var clientID_3 = (buffer[it + 3] << 8) >>> 0;
+  var clientID_4 = (buffer[it + 4]);
+
+  var clientID = clientID_1 + clientID_2 + clientID_3 + clientID_4;
 
   return clientID
 }
 
 var ReadSizeOfPacket = (buffer, it) => {
+  // Need to implement expansion logic for values > 255
   return buffer[it + 5]
 }
 
 var CalculateSizeOfOPCodeBlock = (bytes) => {
   // total size of block depends on size of bytes, clientID, OPcode, 
   // and number of bytes spent communicating the size in bytes 
-  // Since ff -> ff ff -> ff ff ff ff, this might not be straightforward
+  // Since ff -> ff ff -> ff ff ff ff, there is a little bit of play here
   return bytes + 5
 }
 
 var ReadFirmwareVersion = (buffer, it) => {
-  return buffer[it + 6]
+  return buffer[it + 6] 
 }
 
 var ReadXYPosition = (buffer, it) => {

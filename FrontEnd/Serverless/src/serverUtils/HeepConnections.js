@@ -73,14 +73,15 @@ var ConnectToHeepDevice = (IPAddress, port, message) => {
   sock.on('data', (data) => {
     console.log('Device found at address: ', IPAddress + ':' + port.toString());
     console.log(data.toString());
-    var splitString = data.toString('ascii').split(',');
+    console.log(data);
+    //var splitString = data.toString('ascii');
 
-    if (isNaN(parseInt(splitString[0])) == false) {
-      AddClientToMasterState(splitString, IPAddress, data)
-    }
+    // if (isNaN(parseInt(splitString[0])) == false) {
+    //   AddClientToMasterState(splitString, IPAddress, data)
+    // }
 
     mostRecentSearch[IPAddress] = true;
-    
+    heepParser.MemoryCrawler(data);
     sock.end();
   });
 
@@ -108,6 +109,7 @@ var AddClientToMasterState = (splitString, IPAddress, rawData) => {
     heepParser.ExtractMiscMemory(splitString, it, rawData);
     
 }
+
 var SetClientFromString = (splitString, IPAddress) => {
    var clientID = getClientID(splitString);
    var clientName = getClientName(splitString);
