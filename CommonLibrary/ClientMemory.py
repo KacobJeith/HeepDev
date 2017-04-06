@@ -7,8 +7,8 @@ class ClientMemory:
 	# Currently this version must be updated manually
 	Version = 1
 
-	XYPositionOpCode = chr(0x01)
 	ClientNameOpCode = chr(0x06)
+	XYPositionOpCode = chr(0x07)
 
 	def __init__(self):
 		self.totalMemory = 1024 #In Bytes

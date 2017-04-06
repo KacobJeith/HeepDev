@@ -3,6 +3,7 @@ from ControlValue import ControlValue
 from Vertex import Vertex
 from OutputData import OutputData
 from ClientMemory import ClientMemory
+from HeepMemoryUtilities import HeepMemoryUtilities
 
 class PLCClient:
 
@@ -19,6 +20,7 @@ class PLCClient:
 		self.VertexList = []
 		self.IsServerless = 0
 		self.ClientMemory = ClientMemory()
+		self.MemoryUtilities = HeepMemoryUtilities()
 		return
 
 	def SetClientFrontEndXY(self, clientX, clientY) :
@@ -116,9 +118,13 @@ class PLCClient:
 			retString = retString + self.ControlQueue[x][0] + ',' + str(self.ControlQueue[x][1]) +';'
 
 		self.ControlQueue = []
-		return retString
+		return retString	
 
 	def GetClientString(self):
+		
+		byteArray = []
+		byteArray = self.MemoryUtilities.AppendClientDataToByteArray(byteArray, self.ClientID)
+
 		myString = str(self.ClientID) + ',' + self.IPAddress + ',' + str(self.ClientType) + ',' + self.ClientName + ',' + str(self.IconCustom) + ',' + self.IconName
 		
 		myString = myString + ',' + str(len(self.ControlList))
