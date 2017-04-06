@@ -1,5 +1,14 @@
 from ControlValue import ControlValue
 
+class MemoryData:
+
+	counter = 0
+	clientID = 0
+	data = 0
+
+	def __init__(self):
+		return
+
 class HeepMemoryUtilities:
 
 	OpCodeVersion = 1
@@ -126,6 +135,82 @@ class HeepMemoryUtilities:
 		return (0, 0, -1)
 
 
+
+	def ReadControlDataOpCode(self, byteArray, counter) :
+		counter = counter+1
+
+		clientIDAndCounter = self.GetClientIDFromMemory(byteArray, counter)
+		counter = clientIDAndCounter[1]
+		clientID = clientIDAndCounter[0]
+
+		numBytes = ord( byteArray[counter] )
+		counter +=1
+
+		ControlID = ord( byteArray[counter] )
+		counter +=1
+
+		ControlType = ord( byteArray[counter] )
+		counter +=1
+
+		ControlDirection = ord( byteArray[counter] )
+		counter +=1
+
+		LowValue = ord( byteArray[counter] )
+		counter +=1
+
+		HighValue = ord( byteArray[counter] )
+		counter +=1
+
+		CurCtrlValue = ord( byteArray[counter] )
+		counter +=1
+
+		ControlName = ""
+
+		for x in range(0, numBytes - 6) :
+		    ControlName += byteArray[counter]
+		    counter = counter + 1
+
+		DylansFukboi = ControlValue()
+		DylansFukboi.ControlName = ControlName
+		DylansFukboi.ControlValueType = ControlType
+		DylansFukboi.ControlID = ControlID
+		DylansFukboi.ControlDirection = ControlDirection
+		DylansFukboi.HighValue = HighValue
+		DylansFukboi.LowValue = LowValue
+		DylansFukboi.CurCtrlValue = CurCtrlValue
+
+		RetData = MemoryData()
+		RetData.counter = counter
+		RetData.clientID = clientID
+		RetData.data = DylansFukboi
+
+		return RetData
+
+
+	def GetClientControlValue(self, byteArray, clientID) :
+		clientInfo = self.GetClientControlValueInfo(byteArray, clientID)
+		return clientInfo.data
+
+
+	def GetClientControlValueInfo(self, byteArray, clientID) :
+		counter = 0
+		while counter < len(byteArray) :
+			if byteArray[counter] == self.ControlDataOpCode :
+				capturedControlValue = self.ReadControlDataOpCode(byteArray, counter)
+				counter = capturedControlValue.counter
+				capturedClient = capturedControlValue.clientID
+				
+				if capturedClient == clientID :
+					return capturedControlValue
+
+			else :
+				counter = self.SkipOpCode(byteArray, counter)
+
+		return MemoryData()
+
+
+
+
 	def GetBytesPerArgumentForControlType(self, controlType) :
 		if controlType == 0 or controlType == 1 :
 			return 1
@@ -158,4 +243,3 @@ class HeepMemoryUtilities:
 			myString = myString + str(byteArray[x])
 
 		return myString
-		

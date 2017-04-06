@@ -8,7 +8,7 @@ from HeepMemoryUtilities import HeepMemoryUtilities
 def CheckEquality(first, second, testName) :
 	if first == second :
 		return testName + ': Success'
-	return testName + ': Failed******'
+	return testName + ': Failed****** ' + str(first) + ' != ' + str(second)
 
 # Create Controls and PLC Client
 otherClient = PLCClient()
@@ -130,5 +130,8 @@ HeepMemoryUtilities = HeepMemoryUtilities()
 byteArray = []
 HeepMemoryUtilities.AppendClientDataToByteArray(byteArray, 2038912)
 print CheckEquality( HeepMemoryUtilities.GetClientFirmware(byteArray, 2038912), 1, 'Get Client Firmware Version')
+
+byteArray = HeepMemoryUtilities.AppendControlDataToByteArray(byteArray, 2038912, Control1)
+print CheckEquality( HeepMemoryUtilities.GetClientControlValue(byteArray, 2038912).ControlID, Control1.ControlID, 'Get Client Control Value')
 
 
