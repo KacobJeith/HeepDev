@@ -63,12 +63,10 @@ var ReadOPCode = (buffer, it) => {
 var ReadClientID = (buffer, it) => {
   // it is the counter at the OP Code
 
-  var clientID_1 = (buffer[it + 1] << 24) >>> 0;
-  var clientID_2 = (buffer[it + 2] << 16) >>> 0;
-  var clientID_3 = (buffer[it + 3] << 8) >>> 0;
-  var clientID_4 = (buffer[it + 4]);
-
-  var clientID = clientID_1 + clientID_2 + clientID_3 + clientID_4;
+  var clientID =  ((buffer[it + 1] << 24) >>> 0) + 
+                  ((buffer[it + 2] << 16) >>> 0) +
+                  ((buffer[it + 3] <<  8) >>> 0) + 
+                  ( buffer[it + 4]);
 
   return clientID
 }
