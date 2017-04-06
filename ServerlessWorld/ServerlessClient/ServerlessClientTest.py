@@ -12,11 +12,13 @@ functionalClient.SetClientName("SWItCHLET")
 OnOffControls = ControlValue()
 OnOffControls.ControlValueType = OnOffControls.OnOff
 OnOffControls.ControlName = 'DrPepper' 
+OnOffControls.ControlID = 2
 functionalClient.ControlList.append(OnOffControls)
 
 AnotherControl = ControlValue()
 AnotherControl.ControlValueType = AnotherControl.OnOff
 AnotherControl.ControlName = 'Sprite'
+AnotherControl.ControlID = 1
 functionalClient.ControlList.append(AnotherControl)
 
 
@@ -24,24 +26,14 @@ Output1 = ControlValue()
 Output1.ControlValueType = Output1.Range
 Output1.ControlDirection = 1
 Output1.ControlName = 'DMD'
+Output1.ControlID = 0
 functionalClient.ControlList.append(Output1)
 
-Output2 = ControlValue()
-Output2.ControlValueType = Output2.Range
-Output2.ControlDirection = 1
-Output2.ControlName = 'Surge'
-functionalClient.ControlList.append(Output2)
 
-Output3 = ControlValue()
-Output3.ControlValueType = Output3.Range
-Output3.ControlDirection = 1
-Output3.ControlName = 'Pepsi'
-functionalClient.ControlList.append(Output3)
+# functionalClient.SetServerless(1)
+# functionalClient.SetClientFrontEndXY(100, 287)
 
-functionalClient.SetServerless(1)
-functionalClient.SetClientFrontEndXY(100, 287)
-
-functionalClient.DumpClientMemory()
+# functionalClient.DumpClientMemory()
 
 client = ServerlessClientConnection()
 

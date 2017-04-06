@@ -136,7 +136,7 @@ class PLCClient:
 		if self.IsServerless :
 			myString = myString + ',' + self.ClientMemory.GetMemoryString()
 
-		return myString
+		return self.MemoryUtilities.GetStringFromByteArray(byteArray)
 
 	def SetClientFromString(self, clientString) :
 		self.ControlList = []
