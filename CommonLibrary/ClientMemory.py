@@ -62,58 +62,6 @@ class ClientMemory:
 		clientNameInfo = self.MemoryUtilities.GetClientNameInfo(self.miscMemory, clientID)
 		return clientNameInfo[2]
 
-
-	# Always add 4 bytes for client ID to memory
-	def AppendClientIDToMemory(self, clientID) :
-		clientIDByteArray = self.GetByteArrayFromValue(clientID)
-
-		for x in range(len(clientIDByteArray), 4) :
-			self.miscMemory.append(chr(0x00))
-
-		self.AppendByteArrayToMemory(clientIDByteArray)
-
-	def AppendStringToMemory(self, theString) :
-		for x in range(0, len(theString)) :
-			self.miscMemory.append(theString[x])
-
-	def AppendByteArrayToMemory(self, byteArray) :
-		for x in range(0, len(byteArray)) :
-			self.miscMemory.append(byteArray[x])
-
-	def GetConstantSizeByteArrayFromValue(self, value, size) :
-		byteArray = []
-
-		numBytes = self.GetNecessaryBytes(value)
-
-		byteArray = self.GetByteArrayFromValue(value)
-
-		for x in range(0, size-numBytes) :
-			byteArray.insert(0, chr(0x00))
-
-		return byteArray
-
-
-
-	def GetByteArrayFromValue(self, value) :
-		byteArray = []
-		numBytes = self.GetNecessaryBytes(value)
-		for x in range(0, numBytes) :
-			byteArray.insert(0, chr(value%256))
-			value = value/256
-
-		return byteArray
-
-	def GetNecessaryBytes(self, value) :
-		numBytes = 1
-
-		value = value / 256
-
-		while value > 0 :
-			numBytes += 1
-			value = value / 256
-
-		return numBytes
-
 	def GetMemoryString(self) :
 		myString = ""
 
