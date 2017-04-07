@@ -69,6 +69,15 @@ class HeepMemoryUtilities:
 
 		return byteArray
 
+	def AppendClientXYToByteArray(self, byteArray, xValue, yValue, clientID) :
+		byteArray.append(self.XYPositionOpCode)
+		byteArray = self.AppendClientIDToByteArray(byteArray, clientID)
+		byteArray.append(chr(0x04)) # 4 bytes total in XY info
+		self.AppendByteArrayToByteArray(byteArray, self.GetConstantSizeByteArrayFromValue(xValue, 2))
+		self.AppendByteArrayToByteArray(byteArray, self.GetConstantSizeByteArrayFromValue(yValue, 2))
+
+		return byteArray
+
 	def SkipOpCode(self, byteArray, counter) :
 		counter += 5 # This skips the Client ID and lands on the bytes to skip
 
