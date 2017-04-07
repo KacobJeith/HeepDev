@@ -14,7 +14,7 @@ export var SetClientIconFromString = (clientName, clientIconName) => {
       if (err) {
         console.error('SVG failed');
       } else {
-       return data.toString();
+        return data.toString();
       }
   })
 }

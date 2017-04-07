@@ -137,9 +137,12 @@ var AddClient = (heepChunk, IPAddress) => {
     VertexList: []
   }
 
+  if( masterState.clients.clientArray.indexOf(clientID) == -1){
+    masterState.clients.clientArray.push(clientID);
+  }
+
   SetClientPosition(clientID);
   masterState.icons[clientID] = heepIconUtils.SetClientIconFromString(clientName, iconName);
-
   masterState.controls.controlStructure[clientID] = ControlStructureTemplate();
 }
 
@@ -149,47 +152,6 @@ var AddControl = (heepChunk) => {
   masterState.controls[tempCtrlName] = heepChunk.control;
   masterState.controls[tempCtrlName].connectedControls = [];
   
-}
-
-var AddClientToMasterState = (splitString, IPAddress, rawData) => {
-
-    SetClientFromString(splitString, IPAddress);
-    heepIconUtils.SetClientIconFromString(splitString);
-
-    var numControls = parseInt(splitString[6]);
-    masterState.controls.controlStructure[getClientID(splitString)] = ControlStructureTemplate();
-    
-    var it = 7;
-    for (var i = 0; i < numControls; i++) {
-      it = SetControlFromSplitString(splitString, it)
-    }
-    SetControlPositions(splitString);
-
-    heepParser.ExtractMiscMemory(splitString, it, rawData);
-    
-}
-
-var SetClientFromString = (splitString, IPAddress) => {
-   var clientID = getClientID(splitString);
-   var clientName = getClientName(splitString);
-
-  if( masterState.clients.clientArray.indexOf(clientID) == -1){
-    masterState.clients.clientArray.push(clientID);
-  }
-
-  masterState.clients[clientID] = {
-    ClientID: parseInt(splitString[0]),
-    IPAddress: IPAddress,
-    ClientType: parseInt(splitString[2]),
-    ClientName: clientName,
-    IconCustom: parseInt(splitString[4]),
-    IconName: splitString[5],
-    ControlList: [],
-    Position: {left: 0, top: 0},
-    VertexList: []
-  }
-
-  SetClientPosition(clientID);
 }
 
 var SetClientPosition = (clientID) => {
