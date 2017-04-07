@@ -332,19 +332,19 @@ class HeepMemoryUtilities:
 		    ControlName += byteArray[counter]
 		    counter = counter + 1
 
-		DylansFukboi = ControlValue()
-		DylansFukboi.ControlName = ControlName
-		DylansFukboi.ControlValueType = ControlType
-		DylansFukboi.ControlID = ControlID
-		DylansFukboi.ControlDirection = ControlDirection
-		DylansFukboi.HighValue = HighValue
-		DylansFukboi.LowValue = LowValue
-		DylansFukboi.CurCtrlValue = CurCtrlValue
+		NewControlVal = ControlValue()
+		NewControlVal.ControlName = ControlName
+		NewControlVal.ControlValueType = ControlType
+		NewControlVal.ControlID = ControlID
+		NewControlVal.ControlDirection = ControlDirection
+		NewControlVal.HighValue = HighValue
+		NewControlVal.LowValue = LowValue
+		NewControlVal.CurCtrlValue = CurCtrlValue
 
 		RetData = MemoryData()
 		RetData.counter = counter
 		RetData.clientID = clientID
-		RetData.data = DylansFukboi
+		RetData.data = NewControlVal
 
 		return RetData
 
