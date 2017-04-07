@@ -4,9 +4,6 @@ import App from '../components/app'
 import * as Actions from '../actions/actions'
 
 const mapStateToProps = (state) => ({
-  clientList: state.clientList,
-  vertexPaths: state.vertexList,
-  url: state.url
 })
 
 function mapDispatchToProps(dispatch) {

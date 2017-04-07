@@ -136,7 +136,7 @@ var AddClient = (heepChunk, IPAddress) => {
   }
 
   SetClientPosition(clientID);
-  masterState.controls.controlStructure[clientID] = ControlStructureTemplate();
+  masterState.controls.controlStructure[clientID] = {inputs: [], outputs: []};
   masterState.icons = heepIconUtils.GetIconContent();
 }
 
@@ -185,22 +185,15 @@ var SetOutputControlPosition = (clientID, index) => {
   return position;
 }
 
-var ControlStructureTemplate = () => {
-  return {
-    inputs: {controlsArray: []},
-    outputs: {controlsArray: []}
-  }
-}
-
 var SetControlStructure = (clientID, controlID) => {
 
-  if ( masterState.controls[controlID]['ControlDirection']){
-    var inputs = masterState.controls.controlStructure[clientID].outputs.controlsArray;
+  if ( masterState.controls[controlID]['ControlDirection'] == 0){
+    var inputs = masterState.controls.controlStructure[clientID].inputs;
     inputs.push(controlID);
     return inputs.length
 
   } else {
-    var outputs = masterState.controls.controlStructure[clientID].inputs.controlsArray
+    var outputs = masterState.controls.controlStructure[clientID].outputs;
     outputs.push(controlID);
     return outputs.length
 
