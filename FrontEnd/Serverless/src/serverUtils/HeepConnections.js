@@ -165,26 +165,26 @@ var SetClientPosition = (clientID) => {
 
 }
 
-var SetControlFromSplitString = (splitString, startIndex) => {
+// var SetControlFromSplitString = (splitString, startIndex) => {
   
-  var controlName = splitString[startIndex + 2];
-  var ControlDirection = parseInt(splitString[startIndex]);
-  var controlID = nameControl(splitString, startIndex);
+//   var controlName = splitString[startIndex + 2];
+//   var ControlDirection = parseInt(splitString[startIndex]);
+//   var controlID = nameControl(splitString, startIndex);
 
-  masterState.controls[controlID] = {
-    ControlDirection: ControlDirection,
-    ControlValueType: parseInt(splitString[startIndex+1]),
-    ControlName: controlName,
-    LowValue: parseInt(splitString[startIndex + 3]),
-    HighValue: parseInt(splitString[startIndex + 4]),
-    CurCtrlValue: 0,
-    connectedControls: []
-  }
+//   masterState.controls[controlID] = {
+//     ControlDirection: ControlDirection,
+//     ControlValueType: parseInt(splitString[startIndex+1]),
+//     ControlName: controlName,
+//     LowValue: parseInt(splitString[startIndex + 3]),
+//     HighValue: parseInt(splitString[startIndex + 4]),
+//     CurCtrlValue: 0,
+//     connectedControls: []
+//   }
 
-  SetControlStructure(splitString, controlID);
+//   SetControlStructure(splitString, controlID);
 
-  return startIndex + 5
-}
+//   return startIndex + 5
+// }
 
 var SetControlPositions = (splitString) => {
 
@@ -262,22 +262,6 @@ var nameVertex = (vertex) => {
     return vertex['sourceID'] + '.' + vertex['outputName'] + '->' + vertex['destinationID'] + '.' + vertex['inputName'];
 }
 
-var nameControl = (splitString, startIndex) => {
-  return getClientID(splitString) +  '.' + splitString[startIndex + 2];
-}
-
 var nameControlFromObject = (clientID, controlName) => {
   return clientID +  '.' + controlName;
-}
-
-var getClientID = (splitString) => {
-  return splitString[0];
-}
-
-var getClientIcon = (splitString) => {
-  return splitString[5];
-}
-
-var getClientName = (splitString) => {
-  return splitString[3];
 }
