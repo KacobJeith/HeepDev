@@ -1,7 +1,9 @@
 import fs from 'fs'
 import path from 'path'
 
-export var SetClientIconFromString = (clientName, clientIconName) => {
+var iconContent = {};
+
+export var SetClientIconFromString = (clientID, clientName, clientIconName) => {
 
   if (clientIconName == 'none') {
     var suggestedIcon = suggestIconForClient(clientName);
@@ -10,13 +12,18 @@ export var SetClientIconFromString = (clientName, clientIconName) => {
   }
 
   var filepath = path.join(__dirname, '../assets/', clientIconName + '.svg');
-    fs.readFile(filepath, (err, data) => {
-      if (err) {
-        console.error('SVG failed');
-      } else {
-        return data.toString();
-      }
+  fs.readFile(filepath, (err, data) => {
+    if (err) {
+      console.error('SVG failed');
+    } else {
+      iconContent[clientID] = data.toString();
+    }
   })
+
+}
+
+export var GetIconContent = () => {
+  return iconContent
 }
 
 var suggestIconForClient = (clientName) => {

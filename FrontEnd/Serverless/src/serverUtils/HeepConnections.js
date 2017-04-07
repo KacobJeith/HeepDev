@@ -125,6 +125,7 @@ var AddClient = (heepChunk, IPAddress) => {
   var clientID = heepChunk.clientID;
   var clientName = 'unset';
   var iconName = 'none';
+  heepIconUtils.SetClientIconFromString(clientID, clientName, iconName);
 
   masterState.clients[clientID] = {
     ClientID: clientID,
@@ -142,8 +143,8 @@ var AddClient = (heepChunk, IPAddress) => {
   }
 
   SetClientPosition(clientID);
-  masterState.icons[clientID] = heepIconUtils.SetClientIconFromString(clientName, iconName);
   masterState.controls.controlStructure[clientID] = ControlStructureTemplate();
+  masterState.icons = heepIconUtils.GetIconContent();
 }
 
 var AddControl = (heepChunk) => {
@@ -151,7 +152,7 @@ var AddControl = (heepChunk) => {
   var tempCtrlName = nameControlFromObject(heepChunk.clientID, heepChunk.control.ControlName) 
   masterState.controls[tempCtrlName] = heepChunk.control;
   masterState.controls[tempCtrlName].connectedControls = [];
-  
+  SetControlStructureNew(heepChunk.clientID, tempCtrlName)
 }
 
 var SetClientPosition = (clientID) => {
