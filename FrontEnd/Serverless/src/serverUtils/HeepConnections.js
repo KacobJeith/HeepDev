@@ -117,8 +117,6 @@ var AddMemoryChunksToMasterState = (heepChunks, IPAddress) => {
       
     }
   }
-
-  console.log(masterState)
 }
 
 var AddClient = (heepChunk, IPAddress) => {
@@ -152,7 +150,14 @@ var AddControl = (heepChunk) => {
   var tempCtrlName = nameControlFromObject(heepChunk.clientID, heepChunk.control.ControlName) 
   masterState.controls[tempCtrlName] = heepChunk.control;
   masterState.controls[tempCtrlName].connectedControls = [];
-  SetControlStructureNew(heepChunk.clientID, tempCtrlName)
+  var currentIndex = SetControlStructure(heepChunk.clientID, tempCtrlName)
+
+  if (heepChunk.control.ControlDirection == 0) {
+    masterState.positions[heepChunk.clientID][tempCtrlName] = setInputControlPosition(heepChunk.clientID, currentIndex);
+  } else {
+    masterState.positions[heepChunk.clientID][tempCtrlName] = setOutputControlPosition(heepChunk.clientID, currentIndex);
+
+  }
 }
 
 var SetClientPosition = (clientID) => {
@@ -162,57 +167,11 @@ var SetClientPosition = (clientID) => {
   }
 
   masterState.positions[clientID] = newPosition;
-
-}
-
-// var SetControlFromSplitString = (splitString, startIndex) => {
-  
-//   var controlName = splitString[startIndex + 2];
-//   var ControlDirection = parseInt(splitString[startIndex]);
-//   var controlID = nameControl(splitString, startIndex);
-
-//   masterState.controls[controlID] = {
-//     ControlDirection: ControlDirection,
-//     ControlValueType: parseInt(splitString[startIndex+1]),
-//     ControlName: controlName,
-//     LowValue: parseInt(splitString[startIndex + 3]),
-//     HighValue: parseInt(splitString[startIndex + 4]),
-//     CurCtrlValue: 0,
-//     connectedControls: []
-//   }
-
-//   SetControlStructure(splitString, controlID);
-
-//   return startIndex + 5
-// }
-
-var SetControlPositions = (splitString) => {
-
-  
-  var clientID = getClientID(splitString);
-  var newPosition = masterState.positions[clientID];
-
-  var inputs = masterState.controls.controlStructure[clientID]['inputs']['controlsArray'];
-
-  for (var i = 0; i < inputs.length; i++){
-    var thisControl = masterState.controls[inputs[i]].ControlName;
-    newPosition[thisControl] = setInputControlPosition(clientID, i);
-  }
-
-
-  var outputs = masterState.controls.controlStructure[clientID]['outputs']['controlsArray'];
-
-  for (var i = 0; i < outputs.length; i++){
-    var thisControl = masterState.controls[outputs[i]].ControlName;
-    newPosition[thisControl] = setOutputControlPosition(clientID, i);
-  }
-
-  masterState.positions[clientID] = newPosition;
-
 }
 
 var setInputControlPosition = (clientID, index) => {
   var startingPosition = masterState.positions[clientID]['client'];
+
   var position = {
     top: startingPosition['top'] + 45 + 1.5 + 25/2 + 55*index, 
     left: startingPosition['left'] + 10
@@ -225,7 +184,7 @@ var setOutputControlPosition = (clientID, index) => {
   var startingPosition = masterState.positions[clientID]['client'];
   var position = {
     top: startingPosition['top'] + 45 + 1.5 + 25/2 + 55*index, 
-    left: startingPosition['left'] + 10
+    left: startingPosition['left'] + 250
   }
 
   return position;
@@ -238,22 +197,18 @@ var ControlStructureTemplate = () => {
   }
 }
 
-var SetControlStructure = (splitString, controlID) => {
+var SetControlStructure = (clientID, controlID) => {
 
   if ( masterState.controls[controlID]['ControlDirection']){
-    masterState.controls.controlStructure[getClientID(splitString)].outputs.controlsArray.push(controlID);
+    var inputs = masterState.controls.controlStructure[clientID].outputs.controlsArray;
+    inputs.push(controlID);
+    return inputs.length
+
   } else {
-    masterState.controls.controlStructure[getClientID(splitString)].inputs.controlsArray.push(controlID);
-  }
+    var outputs = masterState.controls.controlStructure[clientID].inputs.controlsArray
+    outputs.push(controlID);
+    return outputs.length
 
-}
-
-var SetControlStructureNew = (clientID, controlID) => {
-
-  if ( masterState.controls[controlID]['ControlDirection']){
-    masterState.controls.controlStructure[clientID].outputs.controlsArray.push(controlID);
-  } else {
-    masterState.controls.controlStructure[clientID].inputs.controlsArray.push(controlID);
   }
 
 }

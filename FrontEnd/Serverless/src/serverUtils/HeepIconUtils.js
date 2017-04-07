@@ -61,8 +61,6 @@ var getDefaultIcons = () => {
   var files = fs.readdirSync('./src/assets/');
   var svgs = [];
 
-  console.log(files)
-
   for (var i = 0; i < files.length; i++){
     var splitFilename = files[i].split('.');
     if (splitFilename[1] == 'svg'){
