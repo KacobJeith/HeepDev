@@ -13,7 +13,7 @@
     "node": "7.7.4"
   },
   "scripts": {
-    "test": "mocha-webpack --webpack-config webpack.config-test.js \"src/**/*.test.js\"",
+    "tests": "mocha-webpack --webpack-config webpack.config-test.js \"src/**/*.test.js\"",
     "build": "webpack", 
     "dev": "webpack-dev-server --progress --inline --hot && npm run bs",
     "start": "babel-node src/server.js",

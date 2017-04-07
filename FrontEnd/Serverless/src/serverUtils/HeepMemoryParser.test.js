@@ -27,9 +27,7 @@ describe('HeepMemoryParser', () => {
 				    ControlName: 'DMD'
 				  }
 			}];
-
-			//console.log(parser.MemoryCrawler(buffer))
-
+			
 		  	assert.equal(JSON.stringify(expectedResult), JSON.stringify(parser.MemoryCrawler(buffer)));
 		});
 	});
@@ -50,7 +48,7 @@ describe('HeepMemoryParser', () => {
 		var buffer = Buffer.from([0x03, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x44, 0x4D, 0x44]);
 
 		var control = parser.ReadControl(buffer);
-		console.log(control.ControlName)
+		
 		it('Returns correct ControlID', () => {
 		  	assert.equal(2, control.ControlID);
 		});

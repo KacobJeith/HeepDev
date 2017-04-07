@@ -29,6 +29,19 @@ export var GetCurrentMasterState = () => {
   return masterState
 }
 
+export var ResetMasterState = () => {
+  masterState = {
+    clients: {clientArray: []},
+    positions: {},
+    controls: {controlStructure:{}},
+    vertexList: {},
+    icons: {},
+    url: ''
+  };
+
+  return masterState
+}
+
 export var SendCommandToHeepDevice = (commandID, message) => {
   //SetVal:ControlName,Value
   //SetXY:X,Y
@@ -41,7 +54,7 @@ export var SendCommandToHeepDevice = (commandID, message) => {
   ConnectToHeepDevice(IPAddress, 5000, sendMessage);
 }
 
-var findGateway = () => {
+export var findGateway = () => {
   var networkInterfaces = os.networkInterfaces( );
 
   for (var interfaces in networkInterfaces) {
@@ -72,15 +85,10 @@ var ConnectToHeepDevice = (IPAddress, port, message) => {
     console.log('Device found at address: ', IPAddress + ':' + port.toString());
     console.log(data.toString());
     console.log(data);
-    //var splitString = data.toString('ascii');
-
-    // if (isNaN(parseInt(splitString[0])) == false) {
-    //   AddClientToMasterState(splitString, IPAddress, data)
-    // }
 
     mostRecentSearch[IPAddress] = true;
     var HeepChunks = heepParser.MemoryCrawler(data);
-    //console.log(HeepChunks);
+
     if (HeepChunks != false){
       AddMemoryChunksToMasterState(HeepChunks, IPAddress)
     }
