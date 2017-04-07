@@ -21,13 +21,7 @@ class ClientMemory:
 		self.miscMemory = self.MemoryUtilities.AppendClientXYToByteArray(self.miscMemory, xValue, yValue, clientID)
 
 	def OverwriteClientXYInMemory(self, xValue, yValue, counter) :
-		xByteArray = self.GetConstantSizeByteArrayFromValue(xValue, 2)
-		yByteArray = self.GetConstantSizeByteArrayFromValue(yValue, 2)
-		
-		self.miscMemory[counter - 1] = yByteArray[1]
-		self.miscMemory[counter - 2] = yByteArray[0]
-		self.miscMemory[counter - 3] = xByteArray[1]
-		self.miscMemory[counter - 4] = xByteArray[0]
+		self.miscMemory = self.MemoryUtilities.OverwriteClientXYInByteArray(self.miscMemory, xValue, yValue, counter)
 
 	def SetClientXY(self, xValue, yValue, clientID) :
 
@@ -201,7 +195,7 @@ class ClientMemory:
 		return numBytes
 
 	def GetMemoryString(self) :
-		myString = 'V' + str(self.Version) + ',M'
+		myString = ""
 
 		for x in range(0, len(self.miscMemory)) :
 			myString = myString + str(self.miscMemory[x])

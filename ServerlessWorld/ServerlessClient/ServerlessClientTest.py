@@ -30,8 +30,8 @@ Output1.ControlID = 0
 functionalClient.ControlList.append(Output1)
 
 
-# functionalClient.SetServerless(1)
-# functionalClient.SetClientFrontEndXY(100, 287)
+functionalClient.SetServerless(1)
+functionalClient.SetClientFrontEndXY(100, 287)
 
 # functionalClient.DumpClientMemory()
 

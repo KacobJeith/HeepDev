@@ -78,6 +78,17 @@ class HeepMemoryUtilities:
 
 		return byteArray
 
+	def OverwriteClientXYInByteArray(self, byteArray, xValue, yValue, counter) :
+		xByteArray = self.GetConstantSizeByteArrayFromValue(xValue, 2)
+		yByteArray = self.GetConstantSizeByteArrayFromValue(yValue, 2)
+		
+		byteArray[counter - 1] = yByteArray[1]
+		byteArray[counter - 2] = yByteArray[0]
+		byteArray[counter - 3] = xByteArray[1]
+		byteArray[counter - 4] = xByteArray[0]
+
+		return byteArray
+
 	def SkipOpCode(self, byteArray, counter) :
 		counter += 5 # This skips the Client ID and lands on the bytes to skip
 
