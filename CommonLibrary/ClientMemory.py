@@ -21,10 +21,7 @@ class ClientMemory:
 		self.miscMemory = self.MemoryUtilities.SetClientXY(self.miscMemory, xValue, yValue, clientID)
 
 	def SetClientName(self, clientName, clientID) :
-		self.miscMemory.append(self.MemoryUtilities.ClientNameOpCode)
-		self.AppendClientIDToMemory(clientID)
-		self.miscMemory.append(chr(len(clientName)))
-		self.AppendStringToMemory(clientName)
+		self.miscMemory = self.MemoryUtilities.SetClientName(self.miscMemory, clientName, clientID)
 
 	def GetClientIDFromMemory(self, counter) :
 

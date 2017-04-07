@@ -135,6 +135,14 @@ class HeepMemoryUtilities:
 
 		return byteArray
 
+	def SetClientName(self, byteArray, clientName, clientID) :
+		byteArray.append(self.ClientNameOpCode)
+		byteArray = self.AppendClientIDToByteArray(byteArray, clientID)
+		byteArray.append(chr(len(clientName)))
+		byteArray = self.AppendStringToByteArray(byteArray, clientName)
+
+		return byteArray
+
 	def SkipOpCode(self, byteArray, counter) :
 		counter += 5 # This skips the Client ID and lands on the bytes to skip
 
