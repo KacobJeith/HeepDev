@@ -117,24 +117,18 @@ var AddMemoryChunksToMasterState = (heepChunks, IPAddress) => {
       
     }
   }
-
-  console.log(masterState)
 }
 
 var AddClient = (heepChunk, IPAddress) => {
   var clientID = heepChunk.clientID;
   var clientName = 'unset';
   var iconName = 'none';
+  heepIconUtils.SetClientIconFromString(clientID, clientName, iconName);
 
   masterState.clients[clientID] = {
     ClientID: clientID,
     IPAddress: IPAddress,
-    ClientName: clientName,
-    IconCustom: 0,
-    IconName: iconName,
-    ControlList: [],
-    Position: {left: 0, top: 0},
-    VertexList: []
+    ClientName: clientName
   }
 
   if( masterState.clients.clientArray.indexOf(clientID) == -1){
@@ -142,8 +136,8 @@ var AddClient = (heepChunk, IPAddress) => {
   }
 
   SetClientPosition(clientID);
-  masterState.icons[clientID] = heepIconUtils.SetClientIconFromString(clientName, iconName);
-  masterState.controls.controlStructure[clientID] = ControlStructureTemplate();
+  masterState.controls.controlStructure[clientID] = {inputs: [], outputs: []};
+  masterState.icons = heepIconUtils.GetIconContent();
 }
 
 var AddControl = (heepChunk) => {
@@ -151,7 +145,14 @@ var AddControl = (heepChunk) => {
   var tempCtrlName = nameControlFromObject(heepChunk.clientID, heepChunk.control.ControlName) 
   masterState.controls[tempCtrlName] = heepChunk.control;
   masterState.controls[tempCtrlName].connectedControls = [];
-  
+  var currentIndex = SetControlStructure(heepChunk.clientID, tempCtrlName)
+
+  if (heepChunk.control.ControlDirection == 0) {
+    masterState.positions[heepChunk.clientID][tempCtrlName] = SetInputControlPosition(heepChunk.clientID, currentIndex);
+  } else {
+    masterState.positions[heepChunk.clientID][tempCtrlName] = SetOutputControlPosition(heepChunk.clientID, currentIndex);
+
+  }
 }
 
 var SetClientPosition = (clientID) => {
@@ -161,57 +162,11 @@ var SetClientPosition = (clientID) => {
   }
 
   masterState.positions[clientID] = newPosition;
-
 }
 
-var SetControlFromSplitString = (splitString, startIndex) => {
-  
-  var controlName = splitString[startIndex + 2];
-  var ControlDirection = parseInt(splitString[startIndex]);
-  var controlID = nameControl(splitString, startIndex);
-
-  masterState.controls[controlID] = {
-    ControlDirection: ControlDirection,
-    ControlValueType: parseInt(splitString[startIndex+1]),
-    ControlName: controlName,
-    LowValue: parseInt(splitString[startIndex + 3]),
-    HighValue: parseInt(splitString[startIndex + 4]),
-    CurCtrlValue: 0,
-    connectedControls: []
-  }
-
-  SetControlStructure(splitString, controlID);
-
-  return startIndex + 5
-}
-
-var SetControlPositions = (splitString) => {
-
-  
-  var clientID = getClientID(splitString);
-  var newPosition = masterState.positions[clientID];
-
-  var inputs = masterState.controls.controlStructure[clientID]['inputs']['controlsArray'];
-
-  for (var i = 0; i < inputs.length; i++){
-    var thisControl = masterState.controls[inputs[i]].ControlName;
-    newPosition[thisControl] = setInputControlPosition(clientID, i);
-  }
-
-
-  var outputs = masterState.controls.controlStructure[clientID]['outputs']['controlsArray'];
-
-  for (var i = 0; i < outputs.length; i++){
-    var thisControl = masterState.controls[outputs[i]].ControlName;
-    newPosition[thisControl] = setOutputControlPosition(clientID, i);
-  }
-
-  masterState.positions[clientID] = newPosition;
-
-}
-
-var setInputControlPosition = (clientID, index) => {
+var SetInputControlPosition = (clientID, index) => {
   var startingPosition = masterState.positions[clientID]['client'];
+
   var position = {
     top: startingPosition['top'] + 45 + 1.5 + 25/2 + 55*index, 
     left: startingPosition['left'] + 10
@@ -220,39 +175,28 @@ var setInputControlPosition = (clientID, index) => {
   return position;
 }
 
-var setOutputControlPosition = (clientID, index) => {
+var SetOutputControlPosition = (clientID, index) => {
   var startingPosition = masterState.positions[clientID]['client'];
   var position = {
     top: startingPosition['top'] + 45 + 1.5 + 25/2 + 55*index, 
-    left: startingPosition['left'] + 10
+    left: startingPosition['left'] + 250
   }
 
   return position;
 }
 
-var ControlStructureTemplate = () => {
-  return {
-    inputs: {controlsArray: []},
-    outputs: {controlsArray: []}
-  }
-}
+var SetControlStructure = (clientID, controlID) => {
 
-var SetControlStructure = (splitString, controlID) => {
+  if ( masterState.controls[controlID]['ControlDirection'] == 0){
+    var inputs = masterState.controls.controlStructure[clientID].inputs;
+    inputs.push(controlID);
+    return inputs.length
 
-  if ( masterState.controls[controlID]['ControlDirection']){
-    masterState.controls.controlStructure[getClientID(splitString)].outputs.controlsArray.push(controlID);
   } else {
-    masterState.controls.controlStructure[getClientID(splitString)].inputs.controlsArray.push(controlID);
-  }
+    var outputs = masterState.controls.controlStructure[clientID].outputs;
+    outputs.push(controlID);
+    return outputs.length
 
-}
-
-var SetControlStructureNew = (clientID, controlID) => {
-
-  if ( masterState.controls[controlID]['ControlDirection']){
-    masterState.controls.controlStructure[clientID].outputs.controlsArray.push(controlID);
-  } else {
-    masterState.controls.controlStructure[clientID].inputs.controlsArray.push(controlID);
   }
 
 }
@@ -261,22 +205,6 @@ var nameVertex = (vertex) => {
     return vertex['sourceID'] + '.' + vertex['outputName'] + '->' + vertex['destinationID'] + '.' + vertex['inputName'];
 }
 
-var nameControl = (splitString, startIndex) => {
-  return getClientID(splitString) +  '.' + splitString[startIndex + 2];
-}
-
 var nameControlFromObject = (clientID, controlName) => {
   return clientID +  '.' + controlName;
-}
-
-var getClientID = (splitString) => {
-  return splitString[0];
-}
-
-var getClientIcon = (splitString) => {
-  return splitString[5];
-}
-
-var getClientName = (splitString) => {
-  return splitString[3];
 }

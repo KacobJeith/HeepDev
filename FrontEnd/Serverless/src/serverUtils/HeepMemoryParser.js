@@ -3,7 +3,7 @@ export var MemoryCrawler = (buffer) => {
   var data = [];
 
   while (it < buffer.length) {
-    var nextBlock = ReadOPCode(buffer, it);
+    var nextBlock = GetNextBlock(buffer, it);
 
     if (nextBlock == false){
       console.log('Encountered an un-implemented OP Code');
@@ -18,7 +18,7 @@ export var MemoryCrawler = (buffer) => {
   return data
 }
 
-var ReadOPCode = (buffer, it) => {
+var GetNextBlock = (buffer, it) => {
   var packetBytes = ReadSizeOfPacket(buffer, it);
   var byteIndicatorBytes = packetBytes[1];
 
@@ -32,14 +32,15 @@ var ReadOPCode = (buffer, it) => {
   console.log('Encountered OP: ', buffer[it]);
 
   it += 5;
+  var thisBlockData = buffer.slice(it, it + buffer[it] + 1);
 
   if (buffer[it] == 0x01){
     // Client Data
-    thisBlock.version = ReadFirmwareVersion(buffer, it);
+    thisBlock.version = ReadFirmwareVersion(thisBlockData);
 
   } else if (thisBlock.op == 0x02) {
     // Controls
-    thisBlock.control = ReadControl(buffer, it);
+    thisBlock.control = ReadControl(thisBlockData);
 
   } else if (thisBlock.op == 0x03) {
     // Vertex
@@ -88,20 +89,21 @@ var CalculateNextIterator = (indicator, bytes) => {
   return bytes + indicator
 }
 
-var ReadFirmwareVersion = (buffer, it) => { // OP 1
-  return buffer[it + 1] 
+var ReadFirmwareVersion = (thisBlockData) => { // OP 1
+  return thisBlockData[1] 
 }
 
-var ReadControl = (buffer, it) => { // OP 2
+var ReadControl = (thisBlockData) => { // OP 2
+  console.log(thisBlockData)
 
   var thisControl = {
-    ControlID: buffer[it + 1],
-    ControlValueType: buffer[it + 2],
-    ControlDirection: buffer[it + 3],
-    LowValue: buffer[it + 4],
-    HighValue: buffer[it + 5],
-    CurCtrlValue: buffer[it + 6],
-    ControlName: buffer.slice(it + 7, it + buffer[it] + 1).toString('ascii')
+    ControlID: thisBlockData[1],
+    ControlValueType: thisBlockData[2],
+    ControlDirection: thisBlockData[3],
+    LowValue: thisBlockData[4],
+    HighValue: thisBlockData[5],
+    CurCtrlValue: thisBlockData[6],
+    ControlName: thisBlockData.slice(7).toString('ascii')
   }
 
   return thisControl
