@@ -32,12 +32,5 @@ class ClientMemory:
 		return clientNameInfo[2]
 
 	def GetMemoryString(self) :
-		myString = ""
-
-		for x in range(0, len(self.miscMemory)) :
-			myString = myString + str(self.miscMemory[x])
-
 		print self.miscMemory
-		print myString
-
-		return myString
+		return self.MemoryUtilities.GetStringFromByteArray(self.miscMemory)

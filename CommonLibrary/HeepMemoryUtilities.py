@@ -20,6 +20,9 @@ class HeepMemoryUtilities:
 	def __init__(self):
 		return
 
+	###########################################################
+	########### UTILITY FUNCTIONS #############################
+	###########################################################
 	def GetByteArrayFromValue(self, value) :
 		byteArray = []
 		numBytes = self.GetNecessaryBytes(value)
@@ -56,6 +59,80 @@ class HeepMemoryUtilities:
 			byteArray.append(theString[x])
 
 		return byteArray
+
+	def SkipOpCode(self, byteArray, counter) :
+		counter += 5 # This skips the Client ID and lands on the bytes to skip
+
+		bytesToSkip = ord(byteArray[counter])
+		counter += bytesToSkip + 1
+
+		return counter
+
+	def GetClientIDFromMemory(self, byteArray, counter) :
+
+		clientIDAndCounter = self.GetNumberFromMemory(byteArray, counter, 4)
+
+		return clientIDAndCounter
+
+
+	def GetNumberFromMemory(self, byteArray, counter, numBytes) :
+
+		retVal = 0
+
+		byteCounter = numBytes - 1
+		for x in range(0, numBytes) :
+			curVal = ord(byteArray[counter]) << (8*byteCounter)
+			byteCounter -= 1
+			retVal += curVal
+			counter += 1
+
+		return (retVal, counter)
+
+	def GetClientIDFromMemory(self, byteArray, counter) :
+
+		clientIDAndCounter = self.GetNumberFromMemory(byteArray, counter, 4)
+
+		return clientIDAndCounter
+
+
+	def GetNumberFromMemory(self, byteArray, counter, numBytes) :
+
+		retVal = 0
+
+		byteCounter = numBytes - 1
+		for x in range(0, numBytes) :
+			curVal = ord(byteArray[counter]) << (8*byteCounter)
+			byteCounter -= 1
+			retVal += curVal
+			counter += 1
+
+		return (retVal, counter)
+
+
+	def GetConstantSizeByteArrayFromValue(self, value, size) :
+		byteArray = []
+
+		numBytes = self.GetNecessaryBytes(value)
+
+		byteArray = self.GetByteArrayFromValue(value)
+
+		for x in range(0, size-numBytes) :
+			byteArray.insert(0, chr(0x00))
+
+		return byteArray
+
+	def GetStringFromByteArray(self, byteArray) :
+		myString = ""
+
+		for x in range(0, len(byteArray)) :
+			myString = myString + str(byteArray[x])
+
+		return myString
+
+
+	##############################################################
+	##################Op Code Functions###########################
+	##############################################################
 
 	def AppendClientDataToByteArray(self, byteArray, clientID) :
 
@@ -176,34 +253,10 @@ class HeepMemoryUtilities:
 
 		return (0, 0, 'None')
 
-	def SkipOpCode(self, byteArray, counter) :
-		counter += 5 # This skips the Client ID and lands on the bytes to skip
-
-		bytesToSkip = ord(byteArray[counter])
-		counter += bytesToSkip + 1
-
-		return counter
+	
 
 
-	def GetClientIDFromMemory(self, byteArray, counter) :
 
-		clientIDAndCounter = self.GetNumberFromMemory(byteArray, counter, 4)
-
-		return clientIDAndCounter
-
-
-	def GetNumberFromMemory(self, byteArray, counter, numBytes) :
-
-		retVal = 0
-
-		byteCounter = numBytes - 1
-		for x in range(0, numBytes) :
-			curVal = ord(byteArray[counter]) << (8*byteCounter)
-			byteCounter -= 1
-			retVal += curVal
-			counter += 1
-
-		return (retVal, counter)
 
 
 	def ReadClientDataOpCode(self, byteArray, counter) :
@@ -347,23 +400,3 @@ class HeepMemoryUtilities:
 		byteArray = self.AppendStringToByteArray(byteArray, control.ControlName)
 
 		return byteArray
-
-	def GetConstantSizeByteArrayFromValue(self, value, size) :
-		byteArray = []
-
-		numBytes = self.GetNecessaryBytes(value)
-
-		byteArray = self.GetByteArrayFromValue(value)
-
-		for x in range(0, size-numBytes) :
-			byteArray.insert(0, chr(0x00))
-
-		return byteArray
-
-	def GetStringFromByteArray(self, byteArray) :
-		myString = ""
-
-		for x in range(0, len(byteArray)) :
-			myString = myString + str(byteArray[x])
-
-		return myString
