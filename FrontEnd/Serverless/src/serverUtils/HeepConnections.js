@@ -128,12 +128,7 @@ var AddClient = (heepChunk, IPAddress) => {
   masterState.clients[clientID] = {
     ClientID: clientID,
     IPAddress: IPAddress,
-    ClientName: clientName,
-    IconCustom: 0,
-    IconName: iconName,
-    ControlList: [],
-    Position: {left: 0, top: 0},
-    VertexList: []
+    ClientName: clientName
   }
 
   if( masterState.clients.clientArray.indexOf(clientID) == -1){
@@ -153,9 +148,9 @@ var AddControl = (heepChunk) => {
   var currentIndex = SetControlStructure(heepChunk.clientID, tempCtrlName)
 
   if (heepChunk.control.ControlDirection == 0) {
-    masterState.positions[heepChunk.clientID][tempCtrlName] = setInputControlPosition(heepChunk.clientID, currentIndex);
+    masterState.positions[heepChunk.clientID][tempCtrlName] = SetInputControlPosition(heepChunk.clientID, currentIndex);
   } else {
-    masterState.positions[heepChunk.clientID][tempCtrlName] = setOutputControlPosition(heepChunk.clientID, currentIndex);
+    masterState.positions[heepChunk.clientID][tempCtrlName] = SetOutputControlPosition(heepChunk.clientID, currentIndex);
 
   }
 }
@@ -169,7 +164,7 @@ var SetClientPosition = (clientID) => {
   masterState.positions[clientID] = newPosition;
 }
 
-var setInputControlPosition = (clientID, index) => {
+var SetInputControlPosition = (clientID, index) => {
   var startingPosition = masterState.positions[clientID]['client'];
 
   var position = {
@@ -180,7 +175,7 @@ var setInputControlPosition = (clientID, index) => {
   return position;
 }
 
-var setOutputControlPosition = (clientID, index) => {
+var SetOutputControlPosition = (clientID, index) => {
   var startingPosition = masterState.positions[clientID]['client'];
   var position = {
     top: startingPosition['top'] + 45 + 1.5 + 25/2 + 55*index, 
