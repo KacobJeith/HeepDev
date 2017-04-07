@@ -1,9 +1,7 @@
 import net from 'net'
 import os from 'os' 
-import fs from 'fs'
-import path from 'path'
 import * as heepParser from './HeepMemoryParser'
-
+import * as heepIconUtils from './HeepIconUtils'
 
 var masterState = {
   clients: {clientArray: []},
@@ -81,7 +79,11 @@ var ConnectToHeepDevice = (IPAddress, port, message) => {
     // }
 
     mostRecentSearch[IPAddress] = true;
-    heepParser.MemoryCrawler(data);
+    var HeepChunks = heepParser.MemoryCrawler(data);
+    //console.log(HeepChunks);
+    if (HeepChunks != false){
+      AddMemoryChunksToMasterState(HeepChunks, IPAddress)
+    }
     sock.end();
   });
 
@@ -92,10 +94,67 @@ var ConnectToHeepDevice = (IPAddress, port, message) => {
   });
 }
 
+var AddMemoryChunksToMasterState = (heepChunks, IPAddress) => {
+  console.log(heepChunks)
+  for (var i = 0; i < heepChunks.length; i++) {
+    if (heepChunks[i].op == 1){
+      AddClient(heepChunks[i], IPAddress);
+
+    } else if (heepChunks[i].op == 2){
+      AddControl(heepChunks[i]);
+
+    } else if (heepChunks[i].op == 3){
+      
+    } else if (heepChunks[i].op == 4){
+      
+    } else if (heepChunks[i].op == 5){
+      
+    } else if (heepChunks[i].op == 6){
+      
+    } else if (heepChunks[i].op == 7){
+      
+    } else if (heepChunks[i].op == 8){
+      
+    }
+  }
+
+  console.log(masterState)
+}
+
+var AddClient = (heepChunk, IPAddress) => {
+  var clientID = heepChunk.clientID;
+  var clientName = 'unset';
+  var iconName = 'none';
+
+  masterState.clients[clientID] = {
+    ClientID: clientID,
+    IPAddress: IPAddress,
+    ClientName: clientName,
+    IconCustom: 0,
+    IconName: iconName,
+    ControlList: [],
+    Position: {left: 0, top: 0},
+    VertexList: []
+  }
+
+  SetClientPosition(clientID);
+  masterState.icons[clientID] = heepIconUtils.SetClientIconFromString(clientName, iconName);
+
+  masterState.controls.controlStructure[clientID] = ControlStructureTemplate();
+}
+
+var AddControl = (heepChunk) => {
+  // Transition this to use new ControlID throughout frontend 
+  var tempCtrlName = nameControlFromObject(heepChunk.clientID, heepChunk.control.ControlName) 
+  masterState.controls[tempCtrlName] = heepChunk.control;
+  masterState.controls[tempCtrlName].connectedControls = [];
+  
+}
+
 var AddClientToMasterState = (splitString, IPAddress, rawData) => {
 
     SetClientFromString(splitString, IPAddress);
-    SetClientIconFromString(splitString);
+    heepIconUtils.SetClientIconFromString(splitString);
 
     var numControls = parseInt(splitString[6]);
     masterState.controls.controlStructure[getClientID(splitString)] = ControlStructureTemplate();
@@ -130,81 +189,16 @@ var SetClientFromString = (splitString, IPAddress) => {
     VertexList: []
   }
 
-  SetClientPosition(splitString);
+  SetClientPosition(clientID);
 }
 
-var SetClientIconFromString = (splitString) => {
-  var clientIconName = getClientIcon(splitString);
-
-  if (clientIconName == 'none') {
-    var suggestedIcon = suggestIconForClient(splitString);
-    console.log('Suggesting a default icon: ', suggestedIcon);
-    clientIconName = suggestedIcon;
-  }
-
-  var filepath = path.join(__dirname, '../assets/', clientIconName + '.svg');
-    fs.readFile(filepath, (err, data) => {
-      if (err) {
-        console.error('SVG failed');
-      } else {
-      masterState.icons[getClientID(splitString)] = data.toString();
-      }
-  })
-}
-
-var suggestIconForClient = (splitString) => {
-  var suggestedIcon = 'none';
-
-  var clientName = getClientName(splitString);
-  var defaultIcons = getDefaultIcons();
-  var keywordReference = generateIconKeywords(defaultIcons);
-
-  for (var keyword in keywordReference) {
-    var lowercaseName = clientName.toLowerCase();
-    if (lowercaseName.search(keyword) > -1){
-      suggestedIcon = keywordReference[keyword];
-    }
-  }
-
-  return suggestedIcon
-}
-
-
-var generateIconKeywords = (names) => {
-  var keywords = {};
-
-  for (var i = 0; i < names.length; i++){
-    var words = names[i].split('-');
-    for (var thisWord = 0; thisWord < words.length; thisWord++){
-      var keyword = words[thisWord]
-      keywords[keyword.toLowerCase()] = names[i];
-    }
-  }
-
-  return keywords
-}
-
-var getDefaultIcons = () => {
-  var files = fs.readdirSync('./src/assets/');
-  var svgs = [];
-
-  for (var i = 0; i < files.length; i++){
-    var splitFilename = files[i].split('.');
-    if (splitFilename[1] == 'svg'){
-      svgs.push(splitFilename[0]);
-    }
-  }
-
-  return svgs
-}
-
-var SetClientPosition = (splitString) => {
+var SetClientPosition = (clientID) => {
   
   var newPosition = {
     client: {top: 0, left: 0}
   }
 
-  masterState.positions[getClientID(splitString)] = newPosition;
+  masterState.positions[clientID] = newPosition;
 
 }
 
@@ -287,6 +281,16 @@ var SetControlStructure = (splitString, controlID) => {
     masterState.controls.controlStructure[getClientID(splitString)].outputs.controlsArray.push(controlID);
   } else {
     masterState.controls.controlStructure[getClientID(splitString)].inputs.controlsArray.push(controlID);
+  }
+
+}
+
+var SetControlStructureNew = (clientID, controlID) => {
+
+  if ( masterState.controls[controlID]['ControlDirection']){
+    masterState.controls.controlStructure[clientID].outputs.controlsArray.push(controlID);
+  } else {
+    masterState.controls.controlStructure[clientID].inputs.controlsArray.push(controlID);
   }
 
 }

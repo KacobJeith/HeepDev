@@ -3,20 +3,18 @@ export var MemoryCrawler = (buffer) => {
   var data = [];
 
   while (it < buffer.length) {
-    console.log('it: ', it)
     var nextBlock = ReadOPCode(buffer, it);
 
-    if (it == nextBlock[0]){
+    if (nextBlock == false){
       console.log('Encountered an un-implemented OP Code');
-      break
+      return false
     } else {
-      console.log('nextBlock: ', nextBlock);
+      //console.log('nextBlock: ', nextBlock);
     }
 
     it = nextBlock[0];
     data.push(nextBlock[1]);
   }
-  console.log(data)
   return data
 }
 
@@ -62,7 +60,7 @@ var ReadOPCode = (buffer, it) => {
     //ClientIP
 
   } else {
-    return {null}
+    return false
   }
 
   it += CalculateNextIterator(byteIndicatorBytes, thisBlock.packetBytes);
