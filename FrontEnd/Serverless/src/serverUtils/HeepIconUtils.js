@@ -57,7 +57,7 @@ var generateIconKeywords = (names) => {
   return keywords
 }
 
-var getDefaultIcons = () => {
+export var getDefaultIcons = () => {
   var files = fs.readdirSync('./src/assets/');
   var svgs = [];
 
