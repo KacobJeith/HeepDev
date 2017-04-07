@@ -8,6 +8,7 @@ from Vertex import Vertex
 
 functionalClient = PLCClient()
 functionalClient.ClientID = 3498751234
+functionalClient.SetClientFrontEndXY(100, 287)
 functionalClient.SetClientName("SWItCHLET")
 OnOffControls = ControlValue()
 OnOffControls.ControlValueType = OnOffControls.OnOff
@@ -39,7 +40,6 @@ Output3.ControlName = 'Pepsi'
 functionalClient.ControlList.append(Output3)
 
 functionalClient.SetServerless(1)
-functionalClient.SetClientFrontEndXY(100, 287)
 
 functionalClient.DumpClientMemory()
 
