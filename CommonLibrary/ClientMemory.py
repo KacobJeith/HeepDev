@@ -1,20 +1,16 @@
+from HeepMemoryUtilities import HeepMemoryUtilities
+
 # This is simulated client memory
 
 class ClientMemory:
 
+	MemoryUtilities = HeepMemoryUtilities()
 	ClientMemoryFileName = 'ClientMemory.dat'
-
-	# Currently this version must be updated manually
-	Version = 1
-
-	ClientNameOpCode = chr(0x06)
-	XYPositionOpCode = chr(0x07)
 
 	def __init__(self):
 		self.totalMemory = 1024 #In Bytes
 		self.miscMemory = []
 		return
-
 
 	def WriteClientMemoryToFile(self) :
 		writeFile = open(self.ClientMemoryFileName, 'w')
@@ -22,7 +18,7 @@ class ClientMemory:
 		writeFile.close()
 
 	def AppendClientXYToMemory(self, xValue, yValue, clientID) :
-		self.miscMemory.append(self.XYPositionOpCode)
+		self.miscMemory.append(self.MemoryUtilities.XYPositionOpCode)
 		self.AppendClientIDToMemory(clientID)
 		self.miscMemory.append(chr(0x04)) # 4 bytes total in XY info
 		self.AppendByteArrayToMemory(self.GetConstantSizeByteArrayFromValue(xValue, 2))
@@ -48,7 +44,7 @@ class ClientMemory:
 			self.OverwriteClientXYInMemory(xValue, yValue, counter)
 
 	def SetClientName(self, clientName, clientID) :
-		self.miscMemory.append(self.ClientNameOpCode)
+		self.miscMemory.append(self.MemoryUtilities.ClientNameOpCode)
 		self.AppendClientIDToMemory(clientID)
 		self.miscMemory.append(chr(len(clientName)))
 		self.AppendStringToMemory(clientName)
@@ -124,7 +120,7 @@ class ClientMemory:
 	def GetClientXYInfo(self, clientID) :
 		counter = 0
 		while counter < len(self.miscMemory) :
-			if self.miscMemory[counter] == self.XYPositionOpCode :
+			if self.miscMemory[counter] == self.MemoryUtilities.XYPositionOpCode :
 				capturedXY = self.ReadXYOpcode(counter)
 				counter = capturedXY[0]
 				capturedClient = capturedXY[1]
@@ -144,7 +140,7 @@ class ClientMemory:
 	def GetClientNameInfo(self, clientID) :
 		counter = 0
 		while counter < len(self.miscMemory) :
-			if self.miscMemory[counter] == self.ClientNameOpCode :
+			if self.miscMemory[counter] == self.MemoryUtilities.ClientNameOpCode :
 				capturedName = self.ReadClientNameOpCode(counter)
 				counter = capturedName[0]
 

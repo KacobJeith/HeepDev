@@ -14,6 +14,8 @@ class HeepMemoryUtilities:
 	OpCodeVersion = 1
 	ClientDataOpCode = chr(0x01)
 	ControlDataOpCode = chr(0x02)
+	ClientNameOpCode = chr(0x06)
+	XYPositionOpCode = chr(0x07)
 
 	def __init__(self):
 		return
@@ -208,8 +210,11 @@ class HeepMemoryUtilities:
 
 		return MemoryData()
 
+	def AppendByteArrayToByteArray(self, byteArray, byteArrayToBeAppended) :
+		for x in range(0, len(byteArrayToBeAppended)) :
+			byteArray.append(byteArrayToBeAppended[x])
 
-
+		return byteArray
 
 	def GetBytesPerArgumentForControlType(self, controlType) :
 		if controlType == 0 or controlType == 1 :
@@ -233,6 +238,18 @@ class HeepMemoryUtilities:
 		byteArray.append(chr(control.CurCtrlValue))
 
 		byteArray = self.AppendStringToByteArray(byteArray, control.ControlName)
+
+		return byteArray
+
+	def GetConstantSizeByteArrayFromValue(self, value, size) :
+		byteArray = []
+
+		numBytes = self.GetNecessaryBytes(value)
+
+		byteArray = self.GetByteArrayFromValue(value)
+
+		for x in range(0, size-numBytes) :
+			byteArray.insert(0, chr(0x00))
 
 		return byteArray
 
