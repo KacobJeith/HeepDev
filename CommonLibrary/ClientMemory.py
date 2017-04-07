@@ -25,13 +25,7 @@ class ClientMemory:
 
 	def SetClientXY(self, xValue, yValue, clientID) :
 
-		clientXYInfo = self.GetClientXYInfo(clientID)
-
-		if clientXYInfo[2] == -1 and clientXYInfo[3] == -1 :
-			self.AppendClientXYToMemory(xValue, yValue, clientID)
-		else :
-			counter = clientXYInfo[0]
-			self.OverwriteClientXYInMemory(xValue, yValue, counter)
+		self.miscMemory = self.MemoryUtilities.SetClientXY(self.miscMemory, xValue, yValue, clientID)
 
 	def SetClientName(self, clientName, clientID) :
 		self.miscMemory.append(self.MemoryUtilities.ClientNameOpCode)
@@ -66,24 +60,6 @@ class ClientMemory:
 
 		return (retVal, counter)
 
-	def ReadXYOpcode(self, counter) :
-		counter = counter+1
-
-		clientIDAndCounter = self.GetClientIDFromMemory(counter)
-		counter = clientIDAndCounter[1]
-		clientID = clientIDAndCounter[0]
-
-		counter +=1
-		valueAndCounter = self.GetNumberFromMemory(counter, 2)
-		xValue = valueAndCounter[0]
-		counter = valueAndCounter[1]
-
-		valueAndCounter = self.GetNumberFromMemory(counter, 2)
-		yValue = valueAndCounter[0]
-		counter = valueAndCounter[1]
-
-		return (counter, clientID, xValue, yValue)
-
 	def ReadClientNameOpCode(self, counter) :
 
 		counter = counter+1
@@ -108,20 +84,7 @@ class ClientMemory:
 		return (clientInfo[2], clientInfo[3])
 
 	def GetClientXYInfo(self, clientID) :
-		counter = 0
-		while counter < len(self.miscMemory) :
-			if self.miscMemory[counter] == self.MemoryUtilities.XYPositionOpCode :
-				capturedXY = self.ReadXYOpcode(counter)
-				counter = capturedXY[0]
-				capturedClient = capturedXY[1]
-				
-				if capturedClient == clientID :
-					return capturedXY
-
-			else :
-				counter = self.SkipOpCode(counter)
-
-		return (0, 0, -1, -1)
+		return self.MemoryUtilities.GetClientXYInfo(self.miscMemory, clientID)
 
 	def GetClientName(self, clientID) :
 		clientNameInfo = self.GetClientNameInfo(clientID)

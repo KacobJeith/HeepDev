@@ -89,6 +89,52 @@ class HeepMemoryUtilities:
 
 		return byteArray
 
+	def ReadXYOpcode(self, byteArray, counter) :
+		counter = counter+1
+
+		clientIDAndCounter = self.GetClientIDFromMemory(byteArray, counter)
+		counter = clientIDAndCounter[1]
+		clientID = clientIDAndCounter[0]
+
+		counter +=1
+		valueAndCounter = self.GetNumberFromMemory(byteArray, counter, 2)
+		xValue = valueAndCounter[0]
+		counter = valueAndCounter[1]
+
+		valueAndCounter = self.GetNumberFromMemory(byteArray, counter, 2)
+		yValue = valueAndCounter[0]
+		counter = valueAndCounter[1]
+
+		return (counter, clientID, xValue, yValue)
+
+	def GetClientXYInfo(self, ByteArray, clientID) :
+		counter = 0
+		while counter < len(ByteArray) :
+			if ByteArray[counter] == self.XYPositionOpCode :
+				capturedXY = self.ReadXYOpcode(ByteArray, counter)
+				counter = capturedXY[0]
+				capturedClient = capturedXY[1]
+				
+				if capturedClient == clientID :
+					return capturedXY
+
+			else :
+				counter = self.SkipOpCode(ByteArray,counter)
+
+		return (0, 0, -1, -1)
+
+	def SetClientXY(self, byteArray, xValue, yValue, clientID) :
+
+		clientXYInfo = self.GetClientXYInfo(byteArray, clientID)
+
+		if clientXYInfo[2] == -1 and clientXYInfo[3] == -1 :
+			self.AppendClientXYToByteArray(byteArray, xValue, yValue, clientID)
+		else :
+			counter = clientXYInfo[0]
+			self.OverwriteClientXYInByteArray(byteArray, xValue, yValue, counter)
+
+		return byteArray
+
 	def SkipOpCode(self, byteArray, counter) :
 		counter += 5 # This skips the Client ID and lands on the bytes to skip
 
