@@ -17,14 +17,7 @@ class ClientMemory:
 		writeFile.write(self.GetMemoryString())
 		writeFile.close()
 
-	def AppendClientXYToMemory(self, xValue, yValue, clientID) :
-		self.miscMemory = self.MemoryUtilities.AppendClientXYToByteArray(self.miscMemory, xValue, yValue, clientID)
-
-	def OverwriteClientXYInMemory(self, xValue, yValue, counter) :
-		self.miscMemory = self.MemoryUtilities.OverwriteClientXYInByteArray(self.miscMemory, xValue, yValue, counter)
-
 	def SetClientXY(self, xValue, yValue, clientID) :
-
 		self.miscMemory = self.MemoryUtilities.SetClientXY(self.miscMemory, xValue, yValue, clientID)
 
 	def SetClientName(self, clientName, clientID) :
@@ -79,12 +72,9 @@ class ClientMemory:
 		return (counter, clientID, clientName) 
 
 	def GetClientXY(self, clientID) :
-		clientInfo = self.GetClientXYInfo(clientID)
+		clientInfo = self.MemoryUtilities.GetClientXYInfo(self.miscMemory, clientID)
 
 		return (clientInfo[2], clientInfo[3])
-
-	def GetClientXYInfo(self, clientID) :
-		return self.MemoryUtilities.GetClientXYInfo(self.miscMemory, clientID)
 
 	def GetClientName(self, clientID) :
 		clientNameInfo = self.GetClientNameInfo(clientID)
