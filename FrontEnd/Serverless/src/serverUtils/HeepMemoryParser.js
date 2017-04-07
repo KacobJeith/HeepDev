@@ -89,7 +89,7 @@ var CalculateNextIterator = (indicator, bytes) => {
   return bytes + indicator
 }
 
-var ReadFirmwareVersion = (thisBlockData) => { // OP 1
+export var ReadFirmwareVersion = (thisBlockData) => { // OP 1
   return thisBlockData[1] 
 }
 
