@@ -143,6 +143,39 @@ class HeepMemoryUtilities:
 
 		return byteArray
 
+	def ReadClientNameOpCode(self, byteArray, counter) :
+
+		counter = counter+1
+
+		clientIDAndCounter = self.GetClientIDFromMemory(byteArray, counter)
+		counter = clientIDAndCounter[1]
+		clientID = clientIDAndCounter[0]
+
+		byteLength = ord(byteArray[counter])
+
+		counter = counter + 1
+		clientName = ""
+		for x in range(0, byteLength) :
+			clientName += byteArray[counter]
+			counter = counter + 1
+
+		return (counter, clientID, clientName) 
+
+	def GetClientNameInfo(self, byteArray, clientID) :
+		counter = 0
+		while counter < len(byteArray) :
+			if byteArray[counter] == self.ClientNameOpCode :
+				capturedName = self.ReadClientNameOpCode(byteArray, counter)
+				counter = capturedName[0]
+
+				if capturedName[1] == clientID :
+					return capturedName
+
+			else :
+				counter = self.SkipOpCode(byteArray, counter)
+
+		return (0, 0, 'None')
+
 	def SkipOpCode(self, byteArray, counter) :
 		counter += 5 # This skips the Client ID and lands on the bytes to skip
 

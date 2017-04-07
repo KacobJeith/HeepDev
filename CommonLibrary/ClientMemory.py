@@ -51,22 +51,7 @@ class ClientMemory:
 		return (retVal, counter)
 
 	def ReadClientNameOpCode(self, counter) :
-
-		counter = counter+1
-
-		clientIDAndCounter = self.GetClientIDFromMemory(counter)
-		counter = clientIDAndCounter[1]
-		clientID = clientIDAndCounter[0]
-
-		byteLength = ord(self.miscMemory[counter])
-
-		counter = counter + 1
-		clientName = ""
-		for x in range(0, byteLength) :
-			clientName += self.miscMemory[counter]
-			counter = counter + 1
-
-		return (counter, clientID, clientName) 
+		return self.MemoryUtilities.ReadClientNameOpCode(self.miscMemory, counter)
 
 	def GetClientXY(self, clientID) :
 		clientInfo = self.MemoryUtilities.GetClientXYInfo(self.miscMemory, clientID)
@@ -74,23 +59,8 @@ class ClientMemory:
 		return (clientInfo[2], clientInfo[3])
 
 	def GetClientName(self, clientID) :
-		clientNameInfo = self.GetClientNameInfo(clientID)
+		clientNameInfo = self.MemoryUtilities.GetClientNameInfo(self.miscMemory, clientID)
 		return clientNameInfo[2]
-
-	def GetClientNameInfo(self, clientID) :
-		counter = 0
-		while counter < len(self.miscMemory) :
-			if self.miscMemory[counter] == self.MemoryUtilities.ClientNameOpCode :
-				capturedName = self.ReadClientNameOpCode(counter)
-				counter = capturedName[0]
-
-				if capturedName[1] == clientID :
-					return capturedName
-
-			else :
-				counter = self.SkipOpCode(counter)
-
-		return (0, 0, 'None')
 
 
 	# Always add 4 bytes for client ID to memory
