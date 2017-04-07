@@ -33,30 +33,30 @@ var ReadOPCode = (buffer, it) => {
 
   it += 5;
 
-  if (buffer[it] == 1){
+  if (buffer[it] == 0x01){
     // Client Data
     thisBlock.version = ReadFirmwareVersion(buffer, it);
 
-  } else if (thisBlock.op == 2) {
+  } else if (thisBlock.op == 0x02) {
     // Controls
     thisBlock.control = ReadControl(buffer, it);
 
-  } else if (thisBlock.op == 3) {
+  } else if (thisBlock.op == 0x03) {
     // Vertex
 
-  } else if (thisBlock.op == 4) {
+  } else if (thisBlock.op == 0x04) {
     // Icon ID
 
-  } else if (thisBlock.op == 5) {
+  } else if (thisBlock.op == 0x05) {
     //Custom Icon Drawing
 
-  } else if (thisBlock.op == 6) {
+  } else if (thisBlock.op == 0x06) {
     //Client Name
 
-  } else if (thisBlock.op == 7) {
+  } else if (thisBlock.op == 0x07) {
     //FrontEnd Position
 
-  } else if (thisBlock.op == 8) {
+  } else if (thisBlock.op == 0x08) {
     //ClientIP
 
   } else {
