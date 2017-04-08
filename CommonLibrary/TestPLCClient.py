@@ -48,11 +48,12 @@ print CheckEquality(otherClient.ClientID, newClient.ClientID, 'Transfer client i
 
 newClient = PLCClient()
 myVertex = Vertex()
-myVertex.inputName = 'Chad'
-myVertex.outputName = 'Steve'
+myVertex.inputID = 1
+myVertex.outputID = 2
 myVertex.destinationID = 123456
 myVertex.sourceID = 666
 myVertex.destinationIP = 'myIP'
+myVertex.vertexID = 0
 newClient.AddVertex(myVertex)
 
 outputQueue = newClient.QueueOutput('Steve', 20)
@@ -60,11 +61,12 @@ outputQueue = newClient.QueueOutput('Steve', 20)
 print CheckEquality( len(outputQueue), 1, 'Output Queue Size')
 
 myVertex = Vertex()
-myVertex.inputName = 'Rick'
-myVertex.outputName = 'Steve'
+myVertex.inputID = 1
+myVertex.outputID = 3
 myVertex.destinationID = 123223456
 myVertex.sourceID = 666
 myVertex.destinationIP = 'myIP'
+myVertex.vertexID = 1
 newClient.AddVertex(myVertex)
 
 outputQueue = newClient.QueueOutput('Steve', 20)

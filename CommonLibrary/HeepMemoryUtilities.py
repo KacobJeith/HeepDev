@@ -1,4 +1,5 @@
 from ControlValue import ControlValue
+from Vertex import Vertex
 
 class MemoryData:
 
@@ -14,6 +15,7 @@ class HeepMemoryUtilities:
 	OpCodeVersion = 1
 	ClientDataOpCode = chr(0x01)
 	ControlDataOpCode = chr(0x02)
+	VertexOpCode = chr(0x03)
 	ClientNameOpCode = chr(0x06)
 	XYPositionOpCode = chr(0x07)
 
@@ -133,6 +135,25 @@ class HeepMemoryUtilities:
 	##############################################################
 	##################Op Code Functions###########################
 	##############################################################
+
+	def AppendVertexDataToByteArray(self, byteArray, vertex) :
+
+		byteArray.append(self.VertexOpCode)
+		byteArray = self.AppendClientIDToByteArray(byteArray, vertex.sourceID)
+		byteArray.append(chr(11))
+		byteArray = self.AppendClientIDToByteArray(byteArray, vertex.destinationID)
+		byteArray.append(chr(vertex.inputID))
+		byteArray.append(chr(vertex.outputID))
+		byteArray.append(chr(vertex.vertexID))
+		splitIP = vertex.destinationIP.split('.')
+		IPOct1 = int(splitIP[3])
+		IPOct2 = int(splitIP[2])
+		IPOct3 = int(splitIP[1])
+		IPOct4 = int(splitIP[0])
+		byteArray.append(chr(IPOct1))
+		byteArray.append(chr(IPOct2))
+		byteArray.append(chr(IPOct3))
+		byteArray.append(chr(IPOct4))
 
 	def AppendClientDataToByteArray(self, byteArray, clientID) :
 
