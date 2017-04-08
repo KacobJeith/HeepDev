@@ -7,7 +7,7 @@ class OutputData:
 	value = 0
 
 	def __init__(self, _inputID, _destID, _destIP, _sourceID, _value):
-		self.inputID = inputID
+		self.inputID = _inputID
 		self.destinationID = _destID
 		self.destinationIP = _destIP
 		self.sourceID = _sourceID

@@ -44,24 +44,24 @@ class PLCClient:
  	def AddVertex(self, vertex) :
  		self.VertexList.append(vertex)
 
- 	def RemoveVertex(self, destID, outputName, inputName) :
+ 	def RemoveVertex(self, destID, outputID, inputID) :
 
  		for x in range(0, len(self.VertexList)) :
  			if (destID 		== self.VertexList[x].destinationID 	and 
- 				outputName 	== self.VertexList[x].outputName 		and  
- 				inputName 	== self.VertexList[x].inputName			) :
+ 				outputID 	== self.VertexList[x].outputID 			and  
+ 				inputID 	== self.VertexList[x].inputID			) :
 
  				self.VertexList.remove(self.VertexList[x])
  				return self.GetVerticesString()
 
 		return self.GetVerticesString()
 
- 	def QueueOutput(self, outName, value) :
+ 	def QueueOutput(self, outID, value) :
  		outputCommandQueue = []
 
  		for x in range(0, len(self.VertexList)) :
- 			if outName == self.VertexList[x].outputName :
- 				myOutput = OutputData(self.VertexList[x].inputName, self.VertexList[x].destinationID, self.VertexList[x].destinationIP, self.VertexList[x].sourceID, value)
+ 			if outID == self.VertexList[x].outputID :
+ 				myOutput = OutputData(self.VertexList[x].inputID, self.VertexList[x].destinationID, self.VertexList[x].destinationIP, self.VertexList[x].sourceID, value)
  				outputCommandQueue.append(myOutput)
 
  		return outputCommandQueue

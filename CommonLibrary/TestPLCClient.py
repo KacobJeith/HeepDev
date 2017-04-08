@@ -8,7 +8,7 @@ from HeepMemoryUtilities import HeepMemoryUtilities
 def CheckEquality(first, second, testName) :
 	if first == second :
 		return testName + ': Success'
-	return testName + ': Failed****** ' + str(first) + ' != ' + str(second)
+	return testName + ': Failed******   Received: ' + str(first) + ' ****  Expected:' + str(second)
 
 # Create Controls and PLC Client
 otherClient = PLCClient()
@@ -56,25 +56,25 @@ myVertex.destinationIP = 'myIP'
 myVertex.vertexID = 0
 newClient.AddVertex(myVertex)
 
-outputQueue = newClient.QueueOutput('Steve', 20)
+outputQueue = newClient.QueueOutput(2, 20)
 
 print CheckEquality( len(outputQueue), 1, 'Output Queue Size')
 
 myVertex = Vertex()
-myVertex.inputID = 1
-myVertex.outputID = 3
+myVertex.inputID = 2
+myVertex.outputID = 2
 myVertex.destinationID = 123223456
 myVertex.sourceID = 666
 myVertex.destinationIP = 'myIP'
 myVertex.vertexID = 1
 newClient.AddVertex(myVertex)
 
-outputQueue = newClient.QueueOutput('Steve', 20)
+outputQueue = newClient.QueueOutput(2, 20)
 
 print CheckEquality( len(outputQueue), 2, 'Output Queue Size Two Items')
-print CheckEquality( outputQueue[0].inputName, 'Chad', 'Output Queue input name 1')
-print CheckEquality( outputQueue[1].inputName, 'Rick', 'Output Queue input name 2')
-print CheckEquality( newClient.GetVerticesString(), 'Chad,Steve,myIP,123456,666;Rick,Steve,myIP,123223456,666;', 'Get Vertex String')
+print CheckEquality( outputQueue[0].inputID, 1, 'Output Queue input name 1')
+print CheckEquality( outputQueue[1].inputID, 2, 'Output Queue input name 2')
+print CheckEquality( newClient.GetVerticesString(), '1,2,myIP,123456,666,0;2,2,myIP,123223456,666,1;', 'Get Vertex String')
 
 VertexStr = newClient.GetVerticesString()
 vertClient = PLCClient()
@@ -84,18 +84,19 @@ print CheckEquality( newClient.GetVerticesString(), vertClient.GetVerticesString
 # Vertex Deletion
 deletionClient = newClient
 myVertex = Vertex()
-myVertex.inputName = 'canti'
-myVertex.outputName = 'lever'
+myVertex.inputID = 1
+myVertex.outputID = 2
 myVertex.destinationID = 98587649
 myVertex.sourceID = 987123
 myVertex.destinationIP = '10.10.10.10'
+myVertex.vertexID = 2
 deletionClient.AddVertex(myVertex)
 
-deletionClient.RemoveVertex(123223456, 'Steve', 'Rick')
-print CheckEquality( deletionClient.GetVerticesString(), 'Chad,Steve,myIP,123456,666;canti,lever,10.10.10.10,98587649,987123;', 'Remove Middle Vertex')
-deletionClient.RemoveVertex(123456, 'Steve', 'Chad')
-print CheckEquality( deletionClient.GetVerticesString(), 'canti,lever,10.10.10.10,98587649,987123;', 'Remove First Vertex')
-deletionClient.RemoveVertex(98587649, 'lever', 'canti')
+deletionClient.RemoveVertex(123223456, 2, 2)
+print CheckEquality( deletionClient.GetVerticesString(), '1,2,myIP,123456,666,0;1,2,10.10.10.10,98587649,987123,2;', 'Remove Middle Vertex')
+deletionClient.RemoveVertex(123456, 2, 1)
+print CheckEquality( deletionClient.GetVerticesString(), '1,2,10.10.10.10,98587649,987123,2;', 'Remove First Vertex')
+deletionClient.RemoveVertex(98587649, 2, 1)
 print CheckEquality( deletionClient.GetVerticesString(), '', 'Remove Only Vertex')
 
 # Memory Funcionality
