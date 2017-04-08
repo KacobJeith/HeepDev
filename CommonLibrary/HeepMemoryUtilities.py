@@ -155,6 +155,8 @@ class HeepMemoryUtilities:
 		byteArray.append(chr(IPOct3))
 		byteArray.append(chr(IPOct4))
 
+		return byteArray
+
 	def AppendClientDataToByteArray(self, byteArray, clientID) :
 
 		byteArray.append(self.ClientDataOpCode)
