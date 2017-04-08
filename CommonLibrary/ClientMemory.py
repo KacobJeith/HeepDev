@@ -31,6 +31,9 @@ class ClientMemory:
 		clientNameInfo = self.MemoryUtilities.GetClientNameInfo(self.miscMemory, clientID)
 		return clientNameInfo[2]
 
+	def SetVertex(self, vertex) :
+		self.miscMemory = self.MemoryUtilities.AppendVertexDataToByteArray(self.miscMemory, vertex)
+
 	def GetMemoryString(self) :
 		print self.miscMemory
 		return self.MemoryUtilities.GetStringFromByteArray(self.miscMemory)
