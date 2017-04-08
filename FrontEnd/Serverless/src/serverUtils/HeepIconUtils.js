@@ -26,7 +26,7 @@ export var GetIconContent = () => {
   return iconContent
 }
 
-var suggestIconForClient = (clientName) => {
+export var suggestIconForClient = (clientName) => {
   var suggestedIcon = 'none';
 
   var defaultIcons = getDefaultIcons();
@@ -43,7 +43,7 @@ var suggestIconForClient = (clientName) => {
 }
 
 
-var generateIconKeywords = (names) => {
+export var generateIconKeywords = (names) => {
   var keywords = {};
 
   for (var i = 0; i < names.length; i++){
@@ -57,7 +57,7 @@ var generateIconKeywords = (names) => {
   return keywords
 }
 
-var getDefaultIcons = () => {
+export var getDefaultIcons = () => {
   var files = fs.readdirSync('./src/assets/');
   var svgs = [];
 

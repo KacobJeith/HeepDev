@@ -13,9 +13,13 @@
     "node": "7.7.4"
   },
   "scripts": {
+    "tests": "mocha-webpack --webpack-config webpack.config-test.js \"src/**/*.test.js\"",
+    "build": "webpack", 
+    "dev": "webpack-dev-server --progress --inline --hot && npm run bs",
     "start": "babel-node src/server.js",
+    "tbs": "npm run test && npm run bs",
     "bs": "webpack && npm run start",
-    "dev": "webpack-dev-server --progress --inline --hot && npm run bs"
+    "ts": "npm run test && npm run start"
   },
   "dependencies": {
     "babel-plugin-transform-object-rest-spread": "^6.22.0",
@@ -43,6 +47,8 @@
     "babel-preset-react": "^6.16.0",
     "babel-preset-stage-2": "^6.17.0",
     "css-loader": "^0.25.0",
+    "mocha": "^3.2.0",
+    "mocha-webpack": "^0.7.0",
     "node-sass": "^4.5.0",
     "react-hot-loader": "^3.0.0-beta.6",
     "sass-loader": "^4.0.2",
@@ -50,7 +56,8 @@
     "webpack": "^1.13.2",
     "webpack-dev-middleware": "^1.8.4",
     "webpack-dev-server": "^1.16.2",
-    "webpack-hot-middleware": "^2.13.0"
+    "webpack-hot-middleware": "^2.13.0",
+    "webpack-node-externals": "^1.5.4"
   },
   "repository": {
     "type": "git",

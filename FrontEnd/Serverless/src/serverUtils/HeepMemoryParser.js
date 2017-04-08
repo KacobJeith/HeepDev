@@ -68,7 +68,7 @@ var GetNextBlock = (buffer, it) => {
   return [it, thisBlock]
 }
 
-var ReadClientID = (buffer, it) => {
+export var ReadClientID = (buffer, it) => {
   // it is the counter at the OP Code
 
   var clientID =  ((buffer[it + 1] << 24) >>> 0) + 
@@ -89,12 +89,11 @@ var CalculateNextIterator = (indicator, bytes) => {
   return bytes + indicator
 }
 
-var ReadFirmwareVersion = (thisBlockData) => { // OP 1
+export var ReadFirmwareVersion = (thisBlockData) => { // OP 1
   return thisBlockData[1] 
 }
 
-var ReadControl = (thisBlockData) => { // OP 2
-  console.log(thisBlockData)
+export var ReadControl = (thisBlockData) => { // OP 2
 
   var thisControl = {
     ControlID: thisBlockData[1],
