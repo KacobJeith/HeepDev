@@ -138,3 +138,9 @@ print CheckEquality( HeepMemoryUtilities.GetClientControlValue(byteArray, 203891
 
 byteArray = HeepMemoryUtilities.AppendVertexDataToByteArray(byteArray, myVertex)
 print CheckEquality(HeepMemoryUtilities.GetVertexFromByteArray(byteArray, 987123).destinationID, 98587649, 'Get Vertex Opcode')
+
+byteArray = []
+for x in range(0, 100) :
+	byteArray = HeepMemoryUtilities.AppendControlDataToByteArray(byteArray, x*5, Control1)
+byteArray = HeepMemoryUtilities.AppendVertexDataToByteArray(byteArray, myVertex)
+print CheckEquality(HeepMemoryUtilities.GetVertexFromByteArray(byteArray, 987123).destinationID, 98587649, 'Get Vertex Opcode after Much Data Added')
