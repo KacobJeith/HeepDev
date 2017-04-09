@@ -136,7 +136,5 @@ print CheckEquality( HeepMemoryUtilities.GetClientFirmware(byteArray, 2038912), 
 byteArray = HeepMemoryUtilities.AppendControlDataToByteArray(byteArray, 2038912, Control1)
 print CheckEquality( HeepMemoryUtilities.GetClientControlValue(byteArray, 2038912).ControlID, Control1.ControlID, 'Get Client Control Value')
 
-print byteArray
 byteArray = HeepMemoryUtilities.AppendVertexDataToByteArray(byteArray, myVertex)
-vertex = HeepMemoryUtilities.GetVertexFromByteArray(byteArray, 987123)
-print byteArray
+print CheckEquality(HeepMemoryUtilities.GetVertexFromByteArray(byteArray, 987123).destinationID, 98587649, 'Get Vertex Opcode')
