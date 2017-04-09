@@ -157,6 +157,76 @@ class HeepMemoryUtilities:
 
 		return byteArray
 
+	def ReadVertexOpCode(self, byteArray, counter) :
+		counter = counter+1
+
+		clientIDAndCounter = self.GetClientIDFromMemory(byteArray, counter)
+		counter = clientIDAndCounter[1]
+		sourceID = clientIDAndCounter[0]
+
+		numBytes = ord( byteArray[counter] )
+		counter +=1
+
+		clientIDAndCounter = self.GetClientIDFromMemory(byteArray, counter)
+		counter = clientIDAndCounter[1]
+		destinationID = clientIDAndCounter[0]
+
+		inputID = ord( byteArray[counter] )
+		counter +=1
+
+		outputID = ord( byteArray[counter] )
+		counter +=1
+
+		vertexID = ord( byteArray[counter] )
+		counter +=1
+
+		IPOct1 = ord( byteArray[counter] )
+		counter +=1
+
+		IPOct2 = ord( byteArray[counter] )
+		counter +=1
+
+		IPOct3 = ord( byteArray[counter] )
+		counter +=1
+
+		IPOct4 = ord( byteArray[counter] )
+		counter +=1
+
+		NewVertex = Vertex()
+		NewVertex.inputID = inputID
+		NewVertex.sourceID = sourceID
+		NewVertex.outputID = outputID
+		NewVertex.destinationID = destinationID
+		NewVertex.vertexID = vertexID
+		NewVertex.destinationIP = str(IPOct1) + '.' + str(IPOct2) + '.' + str(IPOct3) + '.' + str(IPOct4)
+
+		RetData = MemoryData()
+		RetData.counter = counter
+		RetData.clientID = sourceID
+		RetData.data = NewVertex
+
+		return RetData
+
+	def GetVertexInfoFromByteArray(self, byteArray, clientID) :
+		counter = 0
+		while counter < len(byteArray) :
+			if byteArray[counter] == self.VertexOpCode :
+				capturedVertex = self.ReadVertexOpCode(byteArray, counter)
+				counter = capturedVertex.counter
+				capturedClient = capturedVertex.clientID
+				
+				if capturedClient == clientID :
+					return capturedVertex
+
+			else :
+				counter = self.SkipOpCode(byteArray, counter)
+
+		return MemoryData()
+
+	def GetVertexFromByteArray(self, byteArray, clientID) :
+		vertexInfo = self.GetVertexInfoFromByteArray(byteArray, clientID)
+		return vertexInfo.data
+
 	def AppendClientDataToByteArray(self, byteArray, clientID) :
 
 		byteArray.append(self.ClientDataOpCode)
