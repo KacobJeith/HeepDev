@@ -39,10 +39,11 @@ class PLCClient:
  	def AddVertexByString(self, vertexStr) :
  		newVertex = Vertex()
  		newVertex.SetVertexFromString(vertexStr)
- 		self.VertexList.append(newVertex)
+ 		self.AddVertex(vertex)
 
  	def AddVertex(self, vertex) :
  		self.VertexList.append(vertex)
+ 		self.ClientMemory.SetVertex(vertex)
 
  	def RemoveVertex(self, destID, outputID, inputID) :
 
