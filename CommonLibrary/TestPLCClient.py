@@ -174,7 +174,7 @@ otherClient.SetClientFrontEndXY(10322, 1032)
 otherClient.SetServerless(1)
 myString = otherClient.GetClientString()
 
-print HeepMemoryUtilities.ConvertStringToByteArray(myString)
+print CheckEquality(HeepMemoryUtilities.ConvertStringToByteArray(myString), otherClient.GetClientByteArray(), "Get Client String OpCodes")
 
 
 

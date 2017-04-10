@@ -123,23 +123,30 @@ class PLCClient:
 
 	def GetClientString(self):
 		
-		byteArray = []
-		byteArray = self.MemoryUtilities.AppendClientDataToByteArray(byteArray, self.ClientID)
-
 		myString = str(self.ClientID) + ',' + self.IPAddress + ',' + str(self.ClientType) + ',' + self.ClientName + ',' + str(self.IconCustom) + ',' + self.IconName
 		
 		myString = myString + ',' + str(len(self.ControlList))
 
 		for x in range(0, len(self.ControlList)) :
 			myString = myString + ',' + self.ControlList[x].GetControlValueString()
-			byteArray = self.MemoryUtilities.AppendControlDataToByteArray(byteArray, self.ClientID, self.ControlList[x])
 
 		if self.IsServerless :
-			byteArray = self.MemoryUtilities.AppendByteArrayToByteArray(byteArray, self.ClientMemory.miscMemory)
-			print byteArray
+			byteArray = self.GetClientByteArray()
 			return self.MemoryUtilities.GetStringFromByteArray(byteArray)
 		
 		return myString
+
+	def GetClientByteArray(self) :
+		byteArray = []
+		byteArray = self.MemoryUtilities.AppendClientDataToByteArray(byteArray, self.ClientID)
+
+		for x in range(0, len(self.ControlList)) :
+			byteArray = self.MemoryUtilities.AppendControlDataToByteArray(byteArray, self.ClientID, self.ControlList[x])
+
+		
+		byteArray = self.MemoryUtilities.AppendByteArrayToByteArray(byteArray, self.ClientMemory.miscMemory)
+		return byteArray
+
 
 	def SetClientFromString(self, clientString) :
 		self.ControlList = []
