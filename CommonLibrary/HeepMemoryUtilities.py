@@ -160,37 +160,20 @@ class HeepMemoryUtilities:
 	def ReadVertexOpCode(self, byteArray, counter) :
 		counter = counter+1
 
-		clientIDAndCounter = self.GetClientIDFromMemory(byteArray, counter)
-		counter = clientIDAndCounter[1]
-		sourceID = clientIDAndCounter[0]
+		(sourceID, counter) = self.GetClientIDFromMemory(byteArray, counter)
 
-		numBytes = ord( byteArray[counter] )
-		counter +=1
+		(numBytes, counter) = self.GetNumberFromMemory(byteArray, counter, 1)
 
-		clientIDAndCounter = self.GetClientIDFromMemory(byteArray, counter)
-		counter = clientIDAndCounter[1]
-		destinationID = clientIDAndCounter[0]
+		(destinationID, counter) = self.GetClientIDFromMemory(byteArray, counter)
 
-		inputID = ord( byteArray[counter] )
-		counter +=1
+		(inputID, counter) = self.GetNumberFromMemory(byteArray, counter, 1)
+		(outputID, counter) = self.GetNumberFromMemory(byteArray, counter, 1)
+		(vertexID,counter) = self.GetNumberFromMemory(byteArray, counter, 1)
 
-		outputID = ord( byteArray[counter] )
-		counter +=1
-
-		vertexID = ord( byteArray[counter] )
-		counter +=1
-
-		IPOct1 = ord( byteArray[counter] )
-		counter +=1
-
-		IPOct2 = ord( byteArray[counter] )
-		counter +=1
-
-		IPOct3 = ord( byteArray[counter] )
-		counter +=1
-
-		IPOct4 = ord( byteArray[counter] )
-		counter +=1
+		(IPOct1,counter) = self.GetNumberFromMemory(byteArray, counter, 1)
+		(IPOct2,counter) = self.GetNumberFromMemory(byteArray, counter, 1)
+		(IPOct3,counter) = self.GetNumberFromMemory(byteArray, counter, 1)
+		(IPOct4,counter) = self.GetNumberFromMemory(byteArray, counter, 1)
 
 		NewVertex = Vertex()
 		NewVertex.inputID = inputID
