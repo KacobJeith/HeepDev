@@ -151,10 +151,10 @@ class HeepMemoryUtilities:
 		IPOct2 = int(splitIP[2])
 		IPOct3 = int(splitIP[1])
 		IPOct4 = int(splitIP[0])
-		byteArray.append(chr(IPOct1))
-		byteArray.append(chr(IPOct2))
-		byteArray.append(chr(IPOct3))
 		byteArray.append(chr(IPOct4))
+		byteArray.append(chr(IPOct3))
+		byteArray.append(chr(IPOct2))
+		byteArray.append(chr(IPOct1))
 
 		return byteArray
 
@@ -222,10 +222,10 @@ class HeepMemoryUtilities:
 		IPOct3 = int(splitIP[1])
 		IPOct4 = int(splitIP[0])
 
-		byteArray.append(chr(IPOct1))
-		byteArray.append(chr(IPOct2))
-		byteArray.append(chr(IPOct3))
 		byteArray.append(chr(IPOct4))
+		byteArray.append(chr(IPOct3))
+		byteArray.append(chr(IPOct2))
+		byteArray.append(chr(IPOct1))
 
 		return byteArray
 
