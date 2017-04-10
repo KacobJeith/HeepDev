@@ -570,10 +570,17 @@ class HeepMemoryUtilities:
 
 	def GetClientControlValue(self, byteArray, clientID) :
 		clientInfo = self.GetClientControlValueInfo(byteArray, clientID)
-		return clientInfo.data
+
+		controlList = []
+		for x in range(0, len(clientInfo)) :
+			controlList.append(clientInfo[x].data)
+
+		return controlList
 
 
 	def GetClientControlValueInfo(self, byteArray, clientID) :
+		controlValuesFound = []
+
 		counter = 0
 		while counter < len(byteArray) :
 			if byteArray[counter] == self.ControlDataOpCode :
@@ -582,12 +589,12 @@ class HeepMemoryUtilities:
 				capturedClient = capturedControlValue.clientID
 				
 				if capturedClient == clientID :
-					return capturedControlValue
+					controlValuesFound.append(capturedControlValue)
 
 			else :
 				counter = self.SkipOpCode(byteArray, counter)
 
-		return MemoryData()
+		return controlValuesFound
 
 	def AppendByteArrayToByteArray(self, byteArray, byteArrayToBeAppended) :
 		for x in range(0, len(byteArrayToBeAppended)) :
