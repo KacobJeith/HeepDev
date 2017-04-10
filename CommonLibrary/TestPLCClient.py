@@ -12,6 +12,7 @@ def CheckEquality(first, second, testName) :
 
 # Create Controls and PLC Client
 otherClient = PLCClient()
+otherClient.ClientID = 1523
 otherClient.ClientName = 'Sloppy'
 Control1 = ControlValue()
 Control1.ControlName = 'Forge'
@@ -42,9 +43,10 @@ print CheckEquality(otherClient.ControlList[1].CurCtrlValue, 20, 'UpdateControls
 # Transfer client information via serialization
 controlStr = otherClient.GetClientString()
 newClient = PLCClient()
+newClient.ClientID = 1523
 newClient.SetClientFromString(controlStr)
 
-print CheckEquality(otherClient.ClientID, newClient.ClientID, 'Transfer client information')
+print CheckEquality(len(newClient.ControlList), len(otherClient.ControlList), 'Transfer client information')
 
 newClient = PLCClient()
 myVertex = Vertex()

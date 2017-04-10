@@ -123,19 +123,9 @@ class PLCClient:
 
 	def GetClientString(self):
 		
-		myString = str(self.ClientID) + ',' + self.IPAddress + ',' + str(self.ClientType) + ',' + self.ClientName + ',' + str(self.IconCustom) + ',' + self.IconName
+		byteArray = self.GetClientByteArray()
+		return self.MemoryUtilities.GetStringFromByteArray(byteArray)
 		
-		myString = myString + ',' + str(len(self.ControlList))
-
-		for x in range(0, len(self.ControlList)) :
-			myString = myString + ',' + self.ControlList[x].GetControlValueString()
-
-		if self.IsServerless :
-			byteArray = self.GetClientByteArray()
-			return self.MemoryUtilities.GetStringFromByteArray(byteArray)
-		
-		return myString
-
 	def GetClientByteArray(self) :
 		byteArray = []
 		byteArray = self.MemoryUtilities.AppendClientDataToByteArray(byteArray, self.ClientID)
@@ -149,22 +139,26 @@ class PLCClient:
 
 
 	def SetClientFromString(self, clientString) :
-		self.ControlList = []
-		splitString = clientString.split(',')
-		self.ClientID = int(splitString[0])
-		self.IPAddress = splitString[1]
-		self.ClientType = int(splitString[2])
-		self.ClientName = splitString[3]
-		self.IconCustom = int(splitString[4])
-		self.IconName = splitString[5]
 
-		numControls = splitString[6] #Not currently used in the python code
+		byteArray = self.MemoryUtilities.ConvertStringToByteArray(clientString)
+		self.ControlList = self.MemoryUtilities.GetClientControlValue(byteArray, self.ClientID)
 
-		it = 7
-		while it < len(splitString) :
-			control = ControlValue()
-			it = control.SetControlFromSplitString(splitString, it)
-			self.ControlList.append(control)
+		# self.ControlList = []
+		# splitString = clientString.split(',')
+		# self.ClientID = int(splitString[0])
+		# self.IPAddress = splitString[1]
+		# self.ClientType = int(splitString[2])
+		# self.ClientName = splitString[3]
+		# self.IconCustom = int(splitString[4])
+		# self.IconName = splitString[5]
+
+		# numControls = splitString[6] #Not currently used in the python code
+
+		# it = 7
+		# while it < len(splitString) :
+		# 	control = ControlValue()
+		# 	it = control.SetControlFromSplitString(splitString, it)
+		# 	self.ControlList.append(control)
 
 
 	def GetVerticesString(self) :
