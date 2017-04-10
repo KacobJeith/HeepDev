@@ -147,6 +147,12 @@ print CheckEquality(HeepMemoryUtilities.GetIPAddressFromByteArray(byteArray, 123
 byteArray = HeepMemoryUtilities.AppendIconIDToByteArray(byteArray, 512413, 131)
 print CheckEquality(HeepMemoryUtilities.GetIconIDFromByteArray(byteArray, 512413), 131, "Get Icon ID From Byte Array")
 
+fakeIconData = []
+for x in range(0,132) :
+	fakeIconData.append(chr(x))
+byteArray = HeepMemoryUtilities.AppendIconDataToByteArray(byteArray, 15132, fakeIconData)
+print CheckEquality(HeepMemoryUtilities.GetIconDataFromByteArray(byteArray, 15132), fakeIconData, "Get Icon Data from Byte array")
+
 for x in range(0, 100) :
 	byteArray = HeepMemoryUtilities.AppendControlDataToByteArray(byteArray, x*5, Control1)
 byteArray = HeepMemoryUtilities.AppendVertexDataToByteArray(byteArray, myVertex)

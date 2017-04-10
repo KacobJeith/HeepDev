@@ -17,6 +17,7 @@ class HeepMemoryUtilities:
 	ControlDataOpCode = chr(0x02)
 	VertexOpCode = chr(0x03)
 	IconIDOpCode = chr(0x04)
+	IconDataOpCode = chr(0x05)
 	ClientNameOpCode = chr(0x06)
 	XYPositionOpCode = chr(0x07)
 	IPAddressOPCode = chr(0x08)
@@ -312,6 +313,52 @@ class HeepMemoryUtilities:
 		IconIDInfo = self.GetIconIDInfoFromByteArray(byteArray, clientID)
 		return IconIDInfo.data
 
+	def AppendIconDataToByteArray(self, byteArray, clientID, IconData) :
+		byteArray.append(self.IconDataOpCode)
+		byteArray = self.AppendClientIDToByteArray(byteArray, clientID)
+		byteArray.append(chr(len(IconData))) # Expect Icon Data in byte array form
+		byteArray = self.AppendByteArrayToByteArray(byteArray, IconData) # Expect Icon Data in byte array form
+
+		return byteArray
+
+	def ReadIconDataOpCode(self, byteArray, counter) :
+		counter += 1
+
+		(clientID, counter) = self.GetClientIDFromMemory(byteArray, counter)
+		(numBytes, counter) = self.GetNumberFromMemory(byteArray, counter, 1)	
+
+		iconData = []
+		for x in range(0, numBytes) :
+			(curData, counter) = self.GetNumberFromMemory(byteArray, counter, 1)
+			iconData.append(chr(curData))
+
+		RetData = MemoryData()
+		RetData.counter = counter
+		RetData.clientID = clientID
+		RetData.data = iconData
+
+		return RetData
+
+	def GetIconDataInfoFromByteArray(self, byteArray, clientID) :
+		counter = 0
+		while counter < len(byteArray) :
+			if byteArray[counter] == self.IconDataOpCode :
+				capturedIconData = self.ReadIconDataOpCode(byteArray, counter)
+				counter = capturedIconData.counter
+				capturedClient = capturedIconData.clientID
+				
+				if capturedClient == clientID :
+					return capturedIconData
+
+			else :
+				counter = self.SkipOpCode(byteArray, counter)
+
+		return MemoryData()
+
+	def GetIconDataFromByteArray(self, byteArray, clientID) :
+		IconDataInfo = self.GetIconDataInfoFromByteArray(byteArray, clientID)
+		return IconDataInfo.data
+
 	def AppendClientDataToByteArray(self, byteArray, clientID) :
 
 		byteArray.append(self.ClientDataOpCode)
@@ -328,8 +375,8 @@ class HeepMemoryUtilities:
 		byteArray.append(self.XYPositionOpCode)
 		byteArray = self.AppendClientIDToByteArray(byteArray, clientID)
 		byteArray.append(chr(0x04)) # 4 bytes total in XY info
-		self.AppendByteArrayToByteArray(byteArray, self.GetConstantSizeByteArrayFromValue(xValue, 2))
-		self.AppendByteArrayToByteArray(byteArray, self.GetConstantSizeByteArrayFromValue(yValue, 2))
+		byteArray = self.AppendByteArrayToByteArray(byteArray, self.GetConstantSizeByteArrayFromValue(xValue, 2))
+		byteArray = self.AppendByteArrayToByteArray(byteArray, self.GetConstantSizeByteArrayFromValue(yValue, 2))
 
 		return byteArray
 
