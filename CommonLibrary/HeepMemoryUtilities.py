@@ -430,10 +430,10 @@ class HeepMemoryUtilities:
 		clientXYInfo = self.GetClientXYInfo(byteArray, clientID)
 
 		if clientXYInfo[2] == -1 and clientXYInfo[3] == -1 :
-			self.AppendClientXYToByteArray(byteArray, xValue, yValue, clientID)
+			byteArray = self.AppendClientXYToByteArray(byteArray, xValue, yValue, clientID)
 		else :
 			counter = clientXYInfo[0]
-			self.OverwriteClientXYInByteArray(byteArray, xValue, yValue, counter)
+			byteArray = self.OverwriteClientXYInByteArray(byteArray, xValue, yValue, counter)
 
 		return byteArray
 
