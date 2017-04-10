@@ -56,6 +56,7 @@ var GetNextBlock = (buffer, it) => {
 
   } else if (thisBlock.op == 0x07) {
     //FrontEnd Position
+    thisBlock.position = ReadPosition(thisBlockData);
 
   } else if (thisBlock.op == 0x08) {
     //ClientIP
@@ -107,5 +108,17 @@ export var ReadControl = (thisBlockData) => { // OP 2
 
   return thisControl
 }
+
+ export var ReadPosition = (thisBlockData) => {
+  var thisPosition = {
+    left: 0,
+    top: 0
+  }
+
+  thisPosition.left = ((thisBlockData[1] << 8) >>> 0) + thisBlockData[2];
+  thisPosition.top = ((thisBlockData[3] << 8) >>> 0) + thisBlockData[4];
+
+  return thisPosition
+ }
 
 
