@@ -140,6 +140,19 @@ byteArray = HeepMemoryUtilities.AppendVertexDataToByteArray(byteArray, myVertex)
 print CheckEquality(HeepMemoryUtilities.GetVertexFromByteArray(byteArray, 987123).destinationID, 98587649, 'Get Vertex Opcode')
 
 byteArray = []
+
+byteArray = HeepMemoryUtilities.AppendIPAddressToByteArray(byteArray, 1236123, "192.168.1.1")
+print CheckEquality(HeepMemoryUtilities.GetIPAddressFromByteArray(byteArray, 1236123), "192.168.1.1", "Get IP From Memory")
+
+byteArray = HeepMemoryUtilities.AppendIconIDToByteArray(byteArray, 512413, 131)
+print CheckEquality(HeepMemoryUtilities.GetIconIDFromByteArray(byteArray, 512413), 131, "Get Icon ID From Byte Array")
+
+fakeIconData = []
+for x in range(0,132) :
+	fakeIconData.append(chr(x))
+byteArray = HeepMemoryUtilities.AppendIconDataToByteArray(byteArray, 15132, fakeIconData)
+print CheckEquality(HeepMemoryUtilities.GetIconDataFromByteArray(byteArray, 15132), fakeIconData, "Get Icon Data from Byte array")
+
 for x in range(0, 100) :
 	byteArray = HeepMemoryUtilities.AppendControlDataToByteArray(byteArray, x*5, Control1)
 byteArray = HeepMemoryUtilities.AppendVertexDataToByteArray(byteArray, myVertex)
