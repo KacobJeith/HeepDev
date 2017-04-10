@@ -157,3 +157,25 @@ for x in range(0, 100) :
 	byteArray = HeepMemoryUtilities.AppendControlDataToByteArray(byteArray, x*5, Control1)
 byteArray = HeepMemoryUtilities.AppendVertexDataToByteArray(byteArray, myVertex)
 print CheckEquality(HeepMemoryUtilities.GetVertexFromByteArray(byteArray, 987123).destinationID, 98587649, 'Get Vertex Opcode after Much Data Added')
+
+# OpCode Client Integration
+otherClient = PLCClient()
+otherClient.ClientID = 12332
+otherClient.ClientName = 'Sloppy'
+Control1 = ControlValue()
+Control1.ControlName = 'Forge'
+Control2 = ControlValue()
+Control2.ControlName = 'Fast'
+otherClient.ControlList.append(Control1)
+otherClient.ControlList.append(Control2)
+otherClient.AddVertex(myVertex)
+otherClient.SetClientFrontEndXY(10322, 1032)
+
+otherClient.SetServerless(1)
+print otherClient.GetClientString()
+
+
+
+
+
+

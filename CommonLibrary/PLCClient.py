@@ -135,10 +135,11 @@ class PLCClient:
 			byteArray = self.MemoryUtilities.AppendControlDataToByteArray(byteArray, self.ClientID, self.ControlList[x])
 
 		if self.IsServerless :
-			myString = myString + ',' + self.ClientMemory.GetMemoryString()
-
+			print byteArray
+			print self.ClientMemory.miscMemory
+			return self.MemoryUtilities.GetStringFromByteArray(byteArray) + self.ClientMemory.GetMemoryString()
+		
 		return myString
-		#return self.MemoryUtilities.GetStringFromByteArray(byteArray)
 
 	def SetClientFromString(self, clientString) :
 		self.ControlList = []
