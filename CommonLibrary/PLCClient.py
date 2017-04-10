@@ -135,9 +135,9 @@ class PLCClient:
 			byteArray = self.MemoryUtilities.AppendControlDataToByteArray(byteArray, self.ClientID, self.ControlList[x])
 
 		if self.IsServerless :
+			byteArray = self.MemoryUtilities.AppendByteArrayToByteArray(byteArray, self.ClientMemory.miscMemory)
 			print byteArray
-			print self.ClientMemory.miscMemory
-			return self.MemoryUtilities.GetStringFromByteArray(byteArray) + self.ClientMemory.GetMemoryString()
+			return self.MemoryUtilities.GetStringFromByteArray(byteArray)
 		
 		return myString
 

@@ -172,8 +172,9 @@ otherClient.AddVertex(myVertex)
 otherClient.SetClientFrontEndXY(10322, 1032)
 
 otherClient.SetServerless(1)
-print otherClient.GetClientString()
+myString = otherClient.GetClientString()
 
+print HeepMemoryUtilities.ConvertStringToByteArray(myString)
 
 
 

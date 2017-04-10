@@ -28,6 +28,13 @@ class HeepMemoryUtilities:
 	###########################################################
 	########### UTILITY FUNCTIONS #############################
 	###########################################################
+	def ConvertStringToByteArray(self, string) :
+		byteArray = []
+		for x in range(0, len(string)) :
+			byteArray.append(string[x])
+
+		return byteArray
+
 	def GetByteArrayFromValue(self, value) :
 		byteArray = []
 		numBytes = self.GetNecessaryBytes(value)
