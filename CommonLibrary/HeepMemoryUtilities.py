@@ -377,30 +377,17 @@ class HeepMemoryUtilities:
 	def ReadControlDataOpCode(self, byteArray, counter) :
 		counter = counter+1
 
-		clientIDAndCounter = self.GetClientIDFromMemory(byteArray, counter)
-		counter = clientIDAndCounter[1]
-		clientID = clientIDAndCounter[0]
+		(clientID, counter) = self.GetClientIDFromMemory(byteArray, counter)
 
-		numBytes = ord( byteArray[counter] )
-		counter +=1
+		(numBytes,counter) = self.GetNumberFromMemory(byteArray, counter, 1)
 
-		ControlID = ord( byteArray[counter] )
-		counter +=1
+		(ControlID,counter) = self.GetNumberFromMemory(byteArray, counter, 1)
+		(ControlType,counter) = self.GetNumberFromMemory(byteArray, counter, 1)
+		(ControlDirection,counter) = self.GetNumberFromMemory(byteArray, counter, 1)
 
-		ControlType = ord( byteArray[counter] )
-		counter +=1
-
-		ControlDirection = ord( byteArray[counter] )
-		counter +=1
-
-		LowValue = ord( byteArray[counter] )
-		counter +=1
-
-		HighValue = ord( byteArray[counter] )
-		counter +=1
-
-		CurCtrlValue = ord( byteArray[counter] )
-		counter +=1
+		(LowValue,counter) = self.GetNumberFromMemory(byteArray, counter, 1)
+		(HighValue,counter) = self.GetNumberFromMemory(byteArray, counter, 1)
+		(CurCtrlValue,counter) = self.GetNumberFromMemory(byteArray, counter, 1)
 
 		ControlName = ""
 
