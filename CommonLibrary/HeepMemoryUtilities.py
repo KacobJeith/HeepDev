@@ -232,7 +232,7 @@ class HeepMemoryUtilities:
 	def ReadIPAddressOPCode(self, byteArray, counter) :
 		counter = counter+1
 		(clientID, counter) = self.GetClientIDFromMemory(byteArray, counter)
-		(numBytes, counter) = self.GetNumberFromMemory(byteArray, counter)
+		(numBytes, counter) = self.GetNumberFromMemory(byteArray, counter, 1)
 
 		(IPOct1,counter) = self.GetNumberFromMemory(byteArray, counter, 1)
 		(IPOct2,counter) = self.GetNumberFromMemory(byteArray, counter, 1)
@@ -253,7 +253,7 @@ class HeepMemoryUtilities:
 		counter = 0
 		while counter < len(byteArray) :
 			if byteArray[counter] == self.IPAddressOPCode :
-				capturedIP = self.ReadIPAddressOpCode(byteArray, counter)
+				capturedIP = self.ReadIPAddressOPCode(byteArray, counter)
 				counter = capturedIP.counter
 				capturedClient = capturedIP.clientID
 				
@@ -265,6 +265,9 @@ class HeepMemoryUtilities:
 
 		return MemoryData()
 
+	def GetIPAddressFromByteArray(self, byteArray, clientID) :
+		IPInfo = self.GetIPAddressInfoFromByteArray(byteArray, clientID)
+		return IPInfo.data
 
 	def AppendClientDataToByteArray(self, byteArray, clientID) :
 
