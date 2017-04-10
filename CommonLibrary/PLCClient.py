@@ -41,6 +41,9 @@ class PLCClient:
  		newVertex.SetVertexFromString(vertexStr)
  		self.AddVertex(vertex)
 
+ 	def SetIconInformation(self, iconID, iconData) :
+ 		self.ClientMemory.SetIconIDAndData(iconID, iconData, self.ClientID)
+
  	def AddVertex(self, vertex) :
  		self.VertexList.append(vertex)
  		self.ClientMemory.SetVertex(vertex)
@@ -159,7 +162,6 @@ class PLCClient:
 		# 	control = ControlValue()
 		# 	it = control.SetControlFromSplitString(splitString, it)
 		# 	self.ControlList.append(control)
-
 
 	def GetVerticesString(self) :
 		retStr = ""

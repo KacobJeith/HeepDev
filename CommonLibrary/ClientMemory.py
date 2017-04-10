@@ -23,6 +23,16 @@ class ClientMemory:
 	def SetClientName(self, clientName, clientID) :
 		self.miscMemory = self.MemoryUtilities.SetClientName(self.miscMemory, clientName, clientID)
 
+	def SetIconIDAndData(self, iconID, iconData, clientID) :
+		self.miscMemory = self.MemoryUtilities.AppendIconIDToByteArray(self.miscMemory, clientID, iconID)
+		self.miscMemory = self.MemoryUtilities.AppendIconDataToByteArray(self.miscMemory, clientID, iconData)
+
+	def GetIconIDAndData(self, clientID) :
+		iconID = self.MemoryUtilities.GetIconIDFromByteArray(self.miscMemory, clientID)
+		iconData = self.MemoryUtilities.GetIconDataFromByteArray(self.miscMemory, clientID)
+
+		return (iconID, iconData)
+
 	def GetClientXY(self, clientID) :
 		clientInfo = self.MemoryUtilities.GetClientXYInfo(self.miscMemory, clientID)
 		return (clientInfo[2], clientInfo[3])

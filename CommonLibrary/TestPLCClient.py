@@ -176,6 +176,7 @@ otherClient.ControlList.append(Control2)
 otherClient.AddVertex(myVertex)
 otherClient.SetClientFrontEndXY(10322, 1032)
 
+otherClient.SetIconInformation(1, [chr(3), chr(4), chr(12), chr(41)]) 
 otherClient.SetServerless(1)
 myString = otherClient.GetClientString()
 
