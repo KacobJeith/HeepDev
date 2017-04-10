@@ -12,6 +12,7 @@ def CheckEquality(first, second, testName) :
 
 # Create Controls and PLC Client
 otherClient = PLCClient()
+otherClient.ClientID = 1523
 otherClient.ClientName = 'Sloppy'
 Control1 = ControlValue()
 Control1.ControlName = 'Forge'
@@ -42,9 +43,10 @@ print CheckEquality(otherClient.ControlList[1].CurCtrlValue, 20, 'UpdateControls
 # Transfer client information via serialization
 controlStr = otherClient.GetClientString()
 newClient = PLCClient()
+newClient.ClientID = 1523
 newClient.SetClientFromString(controlStr)
 
-print CheckEquality(otherClient.ClientID, newClient.ClientID, 'Transfer client information')
+print CheckEquality(len(newClient.ControlList), len(otherClient.ControlList), 'Transfer client information')
 
 newClient = PLCClient()
 myVertex = Vertex()
@@ -134,7 +136,10 @@ HeepMemoryUtilities.AppendClientDataToByteArray(byteArray, 2038912)
 print CheckEquality( HeepMemoryUtilities.GetClientFirmware(byteArray, 2038912), 1, 'Get Client Firmware Version')
 
 byteArray = HeepMemoryUtilities.AppendControlDataToByteArray(byteArray, 2038912, Control1)
-print CheckEquality( HeepMemoryUtilities.GetClientControlValue(byteArray, 2038912).ControlID, Control1.ControlID, 'Get Client Control Value')
+print CheckEquality( HeepMemoryUtilities.GetClientControlValue(byteArray, 2038912)[0].ControlID, Control1.ControlID, 'Get Client Control Value 1')
+byteArray = HeepMemoryUtilities.AppendControlDataToByteArray(byteArray, 2038912, Control2)
+print CheckEquality( len(HeepMemoryUtilities.GetClientControlValue(byteArray, 2038912)), 2, 'Get Client Control Value 2')
+print CheckEquality( len(HeepMemoryUtilities.GetClientControlValue(byteArray, 322)), 0, 'Get Client Control Value 3')
 
 byteArray = HeepMemoryUtilities.AppendVertexDataToByteArray(byteArray, myVertex)
 print CheckEquality(HeepMemoryUtilities.GetVertexFromByteArray(byteArray, 987123).destinationID, 98587649, 'Get Vertex Opcode')
@@ -157,3 +162,27 @@ for x in range(0, 100) :
 	byteArray = HeepMemoryUtilities.AppendControlDataToByteArray(byteArray, x*5, Control1)
 byteArray = HeepMemoryUtilities.AppendVertexDataToByteArray(byteArray, myVertex)
 print CheckEquality(HeepMemoryUtilities.GetVertexFromByteArray(byteArray, 987123).destinationID, 98587649, 'Get Vertex Opcode after Much Data Added')
+
+# OpCode Client Integration
+otherClient = PLCClient()
+otherClient.ClientID = 12332
+otherClient.ClientName = 'Sloppy'
+Control1 = ControlValue()
+Control1.ControlName = 'Forge'
+Control2 = ControlValue()
+Control2.ControlName = 'Fast'
+otherClient.ControlList.append(Control1)
+otherClient.ControlList.append(Control2)
+otherClient.AddVertex(myVertex)
+otherClient.SetClientFrontEndXY(10322, 1032)
+
+otherClient.SetIconInformation(1, [chr(3), chr(4), chr(12), chr(41)]) 
+otherClient.SetServerless(1)
+myString = otherClient.GetClientString()
+
+print CheckEquality(HeepMemoryUtilities.ConvertStringToByteArray(myString), otherClient.GetClientByteArray(), "Get Client String OpCodes")
+
+
+
+
+
