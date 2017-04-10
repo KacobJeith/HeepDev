@@ -144,6 +144,9 @@ byteArray = []
 byteArray = HeepMemoryUtilities.AppendIPAddressToByteArray(byteArray, 1236123, "192.168.1.1")
 print CheckEquality(HeepMemoryUtilities.GetIPAddressFromByteArray(byteArray, 1236123), "192.168.1.1", "Get IP From Memory")
 
+byteArray = HeepMemoryUtilities.AppendIconIDToByteArray(byteArray, 512413, 131)
+print CheckEquality(HeepMemoryUtilities.GetIconIDFromByteArray(byteArray, 512413), 131, "Get Icon ID From Byte Array")
+
 for x in range(0, 100) :
 	byteArray = HeepMemoryUtilities.AppendControlDataToByteArray(byteArray, x*5, Control1)
 byteArray = HeepMemoryUtilities.AppendVertexDataToByteArray(byteArray, myVertex)
