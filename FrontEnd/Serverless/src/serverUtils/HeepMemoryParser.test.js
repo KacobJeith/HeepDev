@@ -87,4 +87,12 @@ describe('HeepMemoryParser', () => {
 		});
 	});
 
+	describe('ReadIconID', () => {
+		it('Should Return an icon name when passed a single byte', () => {
+			var buffer = Buffer.from([0x01, 0x01]);
+		  	assert.equal('light-bulb', parser.ReadIconID(buffer));
+		});
+	});
+
+
 });

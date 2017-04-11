@@ -34,7 +34,7 @@ var GetNextBlock = (buffer, it) => {
   it += 5;
   var thisBlockData = buffer.slice(it, it + buffer[it] + 1);
 
-  if (buffer[it] == 0x01){
+  if (thisBlock.op == 0x01){
     // Client Data
     thisBlock.version = ReadFirmwareVersion(thisBlockData);
 
@@ -47,6 +47,7 @@ var GetNextBlock = (buffer, it) => {
 
   } else if (thisBlock.op == 0x04) {
     // Icon ID
+    thisBlock.iconName = ReadIconID(thisBlockData);
 
   } else if (thisBlock.op == 0x05) {
     //Custom Icon Drawing
@@ -124,6 +125,23 @@ export var ReadControl = (thisBlockData) => { // OP 2
 
  export var ReadClientName = (thisBlockData) => {
   return thisBlockData.slice(1).toString('ascii')
+ }
+
+ export var ReadIconID = (thisBlockData) => {
+  var iconName = 'none';
+  if (thisBlockData[1] == 1){
+    iconName = 'light-bulb';
+  } else if (thisBlockData[1] == 2) {
+    iconName = 'switch';
+  } else if (thisBlockData[1] == 3) {
+    iconName = 'outlet';
+  } else if (thisBlockData[1] == 4) {
+    iconName = 'power-button';
+  } else if (thisBlockData[1] == 5) {
+    iconName = 'cuckoo-clock';
+  }
+
+  return iconName;
  }
 
 
