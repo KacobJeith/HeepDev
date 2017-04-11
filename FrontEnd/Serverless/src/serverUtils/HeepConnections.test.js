@@ -31,4 +31,13 @@ describe('HeepConnections.js', () => {
 		});
 	});
 
+	describe('GetNecessaryBytes', () => {
+		it('Returns corrent value from 1 byte input', () => {
+			assert.equal(1, connect.GetNecessaryBytes(200));
+		});
+		it('Returns corrent value from multiple byte input', () => {
+			assert.equal(2, connect.GetNecessaryBytes(1241));
+		})
+	});
+
 });

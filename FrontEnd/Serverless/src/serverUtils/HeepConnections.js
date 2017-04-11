@@ -55,9 +55,44 @@ export var SendPositionToHeepDevice = (commandID, message) => {
 
 }
 
-export var SendValueToHeepDevice = (commandID, message) => {
-  SendCommandToHeepDevice(commandID, message);
+export var SendValueToHeepDevice = (clientID, newValue) => {
+  var IPAddress = masterState.clients[clientID].IPAddress;
+  var clientIDBuffer = ConvertClientIDtoHexArray(clientID);
+  var message = Buffer.from([0x0A])
+  ConnectToHeepDevice(IPAddress, 5000, message)
 }
+
+var ConvertClientIDtoByteArray = (clientID) => {
+
+  return 
+}
+
+export var GetByteArrayFromValue = (value) => {
+  byteArray = [];
+  numBytes = GetNecessaryBytes(value);
+
+  for (var i = 0; i < numBytes; i++){ 
+    var hexVal = value%256;
+    byteArray.push(hexVal.toString(16));
+    value = value/256;
+  }
+  console.log(byteArray);
+  return byteArray
+}
+
+export var GetNecessaryBytes = (value) => {
+  var numBytes = 1;
+  value = value >> 8;
+
+  while (value > 0) {
+    numBytes += 1;
+    value = value >> 8;
+  }
+
+  return numBytes
+}
+    
+    
 
 var SplitClientFromCommand = (message) => {
   var splitMessage =  message.split(',');
