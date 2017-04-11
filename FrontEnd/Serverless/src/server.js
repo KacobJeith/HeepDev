@@ -31,9 +31,9 @@ app.post('/api/commands', (req, res) => {
   var stripFirst = command.split(':');
 
   if (stripFirst[0] == 'SetCommand'){
-    heepConnect.SendCommandToHeepDevice('SetVal', stripFirst[1]);
+    heepConnect.SendValueToHeepDevice('SetVal', stripFirst[1]);
   } else if (stripFirst[0] == 'SetPosition'){
-    heepConnect.SendCommandToHeepDevice('SetXY', stripFirst[1]);
+    heepConnect.SendPositionToHeepDevice('SetXY', stripFirst[1]);
   }
   res.end("Command sent");
 });

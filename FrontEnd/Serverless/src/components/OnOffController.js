@@ -19,7 +19,7 @@ class OnOffController extends React.Component {
 	    commandQueueString.push('SetCommand'+ ':' + 
 	    							this.props.ClientID + ',' +
 	    							this.props.control['ControlName'] + ',' +
-									newVal + '\n');
+									newVal);
 
 	    for (var i = 0; i < this.props.control.connectedControls.length; i++){
 	    	var thisStr = this.props.control.connectedControls[i];
@@ -28,7 +28,7 @@ class OnOffController extends React.Component {
 	    	var newCommandString = 'SetCommand'+ ':' + 
 	    							thisClientID + ',' +
 	    							thisControlID + ',' +
-									newVal + '\n';
+									newVal;
 
 	    	this.props.updateControlValue(thisClientID, thisControlID, newVal);
 

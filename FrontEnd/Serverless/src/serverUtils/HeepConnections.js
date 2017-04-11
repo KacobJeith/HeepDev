@@ -42,6 +42,31 @@ export var ResetMasterState = () => {
   return masterState
 }
 
+export var SendPositionToHeepDevice = (commandID, message) => {
+  var split = SplitClientFromCommand(message);
+  console.log(split);
+  var newLeft = split[1];
+ var newTop = split[2];
+
+  var newPosition = {left: parseInt(newLeft), top: parseInt(newTop)};
+  console.log('Position: ', newPosition);
+  SetClientPositionFromBrowser(split[0], newPosition);
+  SendCommandToHeepDevice(commandID, message)
+
+}
+
+export var SendValueToHeepDevice = (commandID, message) => {
+  SendCommandToHeepDevice(commandID, message);
+}
+
+var SplitClientFromCommand = (message) => {
+  var splitMessage =  message.split(',');
+  var clientID = splitMessage[0];
+  var newX = splitMessage[1];
+  var newY = splitMessage[2];
+  return [clientID, newX, newY]
+}
+
 export var SendCommandToHeepDevice = (commandID, message) => {
   //SetVal:ControlName,Value
   //SetXY:X,Y
@@ -198,6 +223,11 @@ var SetNullPosition = (clientID) => {
 var SetClientPosition = (heepChunk) => {
   masterState.positions[heepChunk.clientID].client = heepChunk.position;
   RecalculateControlPositions(heepChunk.clientID);
+}
+
+var SetClientPositionFromBrowser = (clientID, newPosition) => {
+  masterState.positions[clientID].client = newPosition;
+  RecalculateControlPositions(clientID);
 }
 
 var RecalculateControlPositions = (clientID) => {
