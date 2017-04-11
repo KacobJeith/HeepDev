@@ -23,7 +23,9 @@ export default connect(mapStateToProps, mapDispatchToProps)(Vertex)
 var getInputPosition = (state, ownProps) => {
 	var returnPosition = {top: -100, left: -100};
 	try {
-		returnPosition = state.positions[ state.vertexList[ownProps.vertexID]['txClientID'] ][ state.vertexList[ownProps.vertexID]['txClientID'] ];
+		var clientID = state.vertexList[ownProps.vertexID]['txClientID'];
+		var controlID = state.vertexList[ownProps.vertexID]['txControlID'];
+		returnPosition = state.positions[ clientID ][ controlID ];
 	} catch(err){
 		console.log('Found a dangling vertex: ', state.vertexList[ownProps.vertexID]);
 	}
@@ -34,10 +36,12 @@ var getInputPosition = (state, ownProps) => {
 var getOutputPosition = (state, ownProps) => {
 	var returnPosition = {top: -100, left: -100};
 	try {
-		returnPosition = state.positions[ state.vertexList[ownProps.vertexID]['rxClientID'] ][ state.vertexList[ownProps.vertexID]['rxClientID'] ]
+		var clientID = state.vertexList[ownProps.vertexID]['rxClientID'];
+		var controlID = state.vertexList[ownProps.vertexID]['rxControlID'];
+		returnPosition = state.positions[ clientID ][ controlID ];
 	} catch(err){
 		console.log('Found a dangling vertex: ', state.vertexList[ownProps.vertexID]);
 	}
-	
+
 	return returnPosition
 }
