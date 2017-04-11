@@ -94,5 +94,20 @@ describe('HeepMemoryParser', () => {
 		});
 	});
 
+	describe('ReadVertex', () => {
+		it('Should Return a Vertex Object when passed byte Array', () => {
+			// Number of Bytes	Rx Client ID 1 	Rx Client ID 2	Rx Client ID 3	Rx Client ID 4	Tx Control ID	Rx Control ID	Rx IP1	Rx IP2	Rx IP3	Rx IP4
+			var buffer = Buffer.from([0x0A, 0x01, 0x02, 0x03, 0x04, 0x01, 0x02, 0xC0, 0xA8, 0x01, 0xC8])
+			var expectedResult = {
+				rxClientID: 16909060,
+				txControlID: 1,
+				rxControlID: 2, 
+				rxIP: '192.168.1.200'
+			}
+
+			assert.equal(JSON.stringify(expectedResult), JSON.stringify(parser.ReadVertex(bufer)));
+		});
+	});
+
 
 });
