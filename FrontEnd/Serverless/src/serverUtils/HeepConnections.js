@@ -246,7 +246,7 @@ var UpdateControlPosition = (clientID, controlName) => {
   var thisPosition = masterState.positions[clientID][controlName];
   var direction = masterState.controls[controlName].ControlDirection;
 
-  thisPosition.top = clientPosition['top'] + 45 + 1.5 + 25/2 + 55*(thisPosition.index), 
+  thisPosition.top = clientPosition['top'] + 45 + 1.5 + 25/2 + 55*(thisPosition.index - 1), 
   thisPosition.left = direction == 0 ? clientPosition['left'] + 10 : clientPosition['left'] + 250;
   
 }
@@ -255,7 +255,7 @@ var SetControlPosition = (clientID, index, direction) => {
   var clientPosition = masterState.positions[clientID]['client'];
 
   var position = {
-    top: clientPosition['top'] + 45 + 1.5 + 25/2 + 55*index, 
+    top: clientPosition['top'] + 45 + 1.5 + 25/2 + 55*(index - 1), 
     left: direction == 0 ? clientPosition['left'] + 10 : clientPosition['left'] + 250,
     index: index
   }
