@@ -156,12 +156,8 @@ var AddControl = (heepChunk) => {
   masterState.controls[tempCtrlName].connectedControls = [];
   var currentIndex = SetControlStructure(heepChunk.clientID, tempCtrlName)
 
-  if (heepChunk.control.ControlDirection == 0) {
-    masterState.positions[heepChunk.clientID][tempCtrlName] = SetInputControlPosition(heepChunk.clientID, currentIndex);
-  } else {
-    masterState.positions[heepChunk.clientID][tempCtrlName] = SetOutputControlPosition(heepChunk.clientID, currentIndex);
+  masterState.positions[heepChunk.clientID][tempCtrlName] = SetControlPosition(heepChunk.clientID, currentIndex, heepChunk.control.ControlDirection);
 
-  }
 }
 
 var SetNullPosition = (clientID) => {
@@ -175,26 +171,39 @@ var SetNullPosition = (clientID) => {
 
 var SetClientPosition = (heepChunk) => {
   masterState.positions[heepChunk.clientID].client = heepChunk.position;
+  RecalculateControlPositions(heepChunk.clientID);
 }
 
-var SetInputControlPosition = (clientID, index) => {
-  var startingPosition = masterState.positions[clientID]['client'];
+var RecalculateControlPositions = (clientID) => {
+  var startingPositions = masterState.positions[clientID];
+  for (var controlName in startingPositions){
+    if (controlName == 'client'){ 
+      continue 
+    }
+
+    UpdateControlPosition(clientID, controlName);
+  }
+}
+
+var UpdateControlPosition = (clientID, controlName) => {
+  var clientPosition = masterState.positions[clientID].client;
+  var thisPosition = masterState.positions[clientID][controlName];
+  var direction = masterState.controls[controlName].ControlDirection;
+
+  thisPosition.top = clientPosition['top'] + 45 + 1.5 + 25/2 + 55*(thisPosition.index), 
+  thisPosition.left = direction == 0 ? clientPosition['left'] + 10 : clientPosition['left'] + 250;
+  
+}
+
+var SetControlPosition = (clientID, index, direction) => {
+  var clientPosition = masterState.positions[clientID]['client'];
 
   var position = {
-    top: startingPosition['top'] + 45 + 1.5 + 25/2 + 55*index, 
-    left: startingPosition['left'] + 10
+    top: clientPosition['top'] + 45 + 1.5 + 25/2 + 55*index, 
+    left: direction == 0 ? clientPosition['left'] + 10 : clientPosition['left'] + 250,
+    index: index
   }
   
-  return position;
-}
-
-var SetOutputControlPosition = (clientID, index) => {
-  var startingPosition = masterState.positions[clientID]['client'];
-  var position = {
-    top: startingPosition['top'] + 45 + 1.5 + 25/2 + 55*index, 
-    left: startingPosition['left'] + 250
-  }
-
   return position;
 }
 
