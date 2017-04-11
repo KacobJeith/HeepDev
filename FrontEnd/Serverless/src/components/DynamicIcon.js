@@ -9,6 +9,10 @@ class DynamicIcon extends React.Component {
 		var dummydiv = document.createElement('div');
 		dummydiv.innerHTML = this.props.icon;
 
+		if ($(dummydiv).find('svg')[0] == null){
+			dummydiv.innerHTML = this.props.defaultIcon
+		}
+
 		this.icon = $(dummydiv).find('svg')[0];
 		this.setDimensions();
 	}
