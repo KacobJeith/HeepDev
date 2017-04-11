@@ -39,7 +39,7 @@ describe('HeepMemoryParser', () => {
 	});
 	describe('ReadClientID', () => {
 		it('Should Return the correct ID from 4 input bytes', () => {
-			var buffer = Buffer.from([0x01, 0x01, 0x02, 0x03, 0x04]);
+			var buffer = Buffer.from([0x01, 0x02, 0x03, 0x04]);
 			var it = 0;
 		  	assert.equal(16909060, parser.ReadClientID(buffer, it));
 		});
@@ -105,7 +105,7 @@ describe('HeepMemoryParser', () => {
 				rxIP: '192.168.1.200'
 			}
 
-			assert.equal(JSON.stringify(expectedResult), JSON.stringify(parser.ReadVertex(bufer)));
+			assert.equal(JSON.stringify(expectedResult), JSON.stringify(parser.ReadVertex(buffer)));
 		});
 	});
 
