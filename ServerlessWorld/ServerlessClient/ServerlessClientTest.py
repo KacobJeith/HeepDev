@@ -5,6 +5,7 @@ sys.path.insert(0, '../../CommonLibrary')
 from ControlValue import ControlValue
 from PLCClient import PLCClient
 from Vertex import Vertex
+from CommonDataTypes import HeepIPAddress
 
 functionalClient = PLCClient()
 functionalClient.ClientID = 3498751234
@@ -35,7 +36,7 @@ myVertex.inputID = 1
 myVertex.outputID = 2
 myVertex.destinationID = 98587649
 myVertex.sourceID = 987123
-myVertex.destinationIP = '10.10.10.10'
+myVertex.destinationIP = HeepIPAddress(10, 10, 10, 10)
 myVertex.vertexID = 2
 functionalClient.AddVertex(myVertex)
 
