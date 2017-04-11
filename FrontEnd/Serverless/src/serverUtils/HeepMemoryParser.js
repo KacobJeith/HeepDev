@@ -21,10 +21,9 @@ export var MemoryCrawler = (buffer) => {
 var GetNextBlock = (buffer, it) => {
   var packetBytes = ReadSizeOfPacket(buffer, it);
   var byteIndicatorBytes = packetBytes[1];
-
   var thisBlock = {
     op: buffer[it],
-    clientID: ReadClientID(buffer, it),
+    clientID: ReadClientID(buffer.slice(it + 1,it + 5)),
     packetBytes: packetBytes[0]
   };
 
@@ -44,6 +43,8 @@ var GetNextBlock = (buffer, it) => {
 
   } else if (thisBlock.op == 0x03) {
     // Vertex
+    thisBlock.vertex = ReadVertex(thisBlockData);
+    thisBlock.vertex.txClientID = thisBlock.clientID;
 
   } else if (thisBlock.op == 0x04) {
     // Icon ID
@@ -72,13 +73,13 @@ var GetNextBlock = (buffer, it) => {
   return [it, thisBlock]
 }
 
-export var ReadClientID = (buffer, it) => {
+export var ReadClientID = (buffer) => {
   // it is the counter at the OP Code
 
-  var clientID =  ((buffer[it + 1] << 24) >>> 0) + 
-                  ((buffer[it + 2] << 16) >>> 0) +
-                  ((buffer[it + 3] <<  8) >>> 0) + 
-                  ( buffer[it + 4]);
+  var clientID =  ((buffer[0] << 24) >>> 0) + 
+                  ((buffer[1] << 16) >>> 0) +
+                  ((buffer[2] <<  8) >>> 0) + 
+                  ( buffer[3]);
 
   return clientID
 }
@@ -147,6 +148,17 @@ export var ReadControl = (thisBlockData) => { // OP 2
 
  export var ReadIconCustom = (thisBlockData) => {
   return thisBlockData.slice(1).toString('ascii');
+ }
+
+ export var ReadVertex = (thisBlockData) => {
+  var thisVertex = {
+    rxClientID: ReadClientID(thisBlockData.slice(1, 5)),
+    txControlID: thisBlockData[5],
+    rxControlID: thisBlockData[6], 
+    rxIP: thisBlockData.slice(7).join('.')
+  };
+
+  return thisVertex
  }
 
 

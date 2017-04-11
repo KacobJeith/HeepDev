@@ -7,7 +7,7 @@ function sendVertexToServer(url, vertex) {
             vertex.outputName + ',' +
             vertex.destinationIP + ',' + 
             vertex.destinationID + ',' + 
-            vertex.sourceID + '\n';
+            vertex.sourceID;
 
       const messagePacket = {command: message};
 

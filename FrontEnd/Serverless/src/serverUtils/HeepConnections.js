@@ -6,7 +6,7 @@ import * as heepIconUtils from './HeepIconUtils'
 var masterState = {
   clients: {clientArray: []},
   positions: {},
-  controls: {controlStructure:{}},
+  controls: {controlStructure:{}, connections: {}},
   vertexList: {},
   icons: {},
   url: ''
@@ -40,6 +40,31 @@ export var ResetMasterState = () => {
   };
 
   return masterState
+}
+
+export var SendPositionToHeepDevice = (commandID, message) => {
+  var split = SplitClientFromCommand(message);
+  console.log(split);
+  var newLeft = split[1];
+ var newTop = split[2];
+
+  var newPosition = {left: parseInt(newLeft), top: parseInt(newTop)};
+  console.log('Position: ', newPosition);
+  SetClientPositionFromBrowser(split[0], newPosition);
+  SendCommandToHeepDevice(commandID, message)
+
+}
+
+export var SendValueToHeepDevice = (commandID, message) => {
+  SendCommandToHeepDevice(commandID, message);
+}
+
+var SplitClientFromCommand = (message) => {
+  var splitMessage =  message.split(',');
+  var clientID = splitMessage[0];
+  var newX = splitMessage[1];
+  var newY = splitMessage[2];
+  return [clientID, newX, newY]
 }
 
 export var SendCommandToHeepDevice = (commandID, message) => {
@@ -112,6 +137,7 @@ var AddMemoryChunksToMasterState = (heepChunks, IPAddress) => {
       AddControl(heepChunks[i]);
 
     } else if (heepChunks[i].op == 3){
+      AddVertex(heepChunks[i])
       
     } else if (heepChunks[i].op == 4){
       SetIconFromID(heepChunks[i]);
@@ -166,7 +192,7 @@ var SetClientName = (heepChunk) => {
 
 var AddControl = (heepChunk) => {
   // Transition this to use new ControlID throughout frontend 
-  var tempCtrlName = nameControlFromObject(heepChunk.clientID, heepChunk.control.ControlName) 
+  var tempCtrlName = nameControl(heepChunk.clientID, heepChunk.control.ControlID) 
   masterState.controls[tempCtrlName] = heepChunk.control;
   masterState.controls[tempCtrlName].connectedControls = [];
   var currentIndex = SetControlStructure(heepChunk.clientID, tempCtrlName)
@@ -199,6 +225,11 @@ var SetClientPosition = (heepChunk) => {
   RecalculateControlPositions(heepChunk.clientID);
 }
 
+var SetClientPositionFromBrowser = (clientID, newPosition) => {
+  masterState.positions[clientID].client = newPosition;
+  RecalculateControlPositions(clientID);
+}
+
 var RecalculateControlPositions = (clientID) => {
   var startingPositions = masterState.positions[clientID];
   for (var controlName in startingPositions){
@@ -215,7 +246,7 @@ var UpdateControlPosition = (clientID, controlName) => {
   var thisPosition = masterState.positions[clientID][controlName];
   var direction = masterState.controls[controlName].ControlDirection;
 
-  thisPosition.top = clientPosition['top'] + 45 + 1.5 + 25/2 + 55*(thisPosition.index), 
+  thisPosition.top = clientPosition['top'] + 45 + 1.5 + 25/2 + 55*(thisPosition.index - 1), 
   thisPosition.left = direction == 0 ? clientPosition['left'] + 10 : clientPosition['left'] + 250;
   
 }
@@ -224,7 +255,7 @@ var SetControlPosition = (clientID, index, direction) => {
   var clientPosition = masterState.positions[clientID]['client'];
 
   var position = {
-    top: clientPosition['top'] + 45 + 1.5 + 25/2 + 55*index, 
+    top: clientPosition['top'] + 45 + 1.5 + 25/2 + 55*(index - 1), 
     left: direction == 0 ? clientPosition['left'] + 10 : clientPosition['left'] + 250,
     index: index
   }
@@ -249,9 +280,26 @@ var SetControlStructure = (clientID, controlID) => {
 }
 
 var nameVertex = (vertex) => {
-    return vertex['sourceID'] + '.' + vertex['outputName'] + '->' + vertex['destinationID'] + '.' + vertex['inputName'];
+    return vertex['txClientID'] + '.' + vertex['txControlID'] + '->' + vertex['rxClientID'] + '.' + vertex['rxControlID'];
 }
 
-var nameControlFromObject = (clientID, controlName) => {
+var nameControl = (clientID, controlName) => {
   return clientID +  '.' + controlName;
+}
+
+var getTxControlNameFromVertex = (vertex) => {
+  return nameControl(vertex.txClientID, vertex.txControlID)
+}
+
+var getRxControlNameFromVertex = (vertex) => {
+  return nameControl(vertex.rxClientID, vertex.rxControlID)
+}
+
+var AddVertex = (heepChunk) => {
+  var vertexName = nameVertex(heepChunk.vertex);
+  var txControl = getTxControlNameFromVertex(heepChunk.vertex);
+  var rxControl = getRxControlNameFromVertex(heepChunk.vertex);
+  masterState.vertexList[vertexName] = heepChunk.vertex;
+  masterState.controls.connections[txControl] = rxControl;
+
 }
