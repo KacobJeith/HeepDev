@@ -11,14 +11,11 @@ export var SetClientIconFromString = (clientID, clientName, clientIconName) => {
     clientIconName = suggestedIcon;
   }
 
-  var filepath = path.join(__dirname, '../assets/', clientIconName + '.svg');
-  fs.readFile(filepath, (err, data) => {
-    if (err) {
-      console.error('SVG failed');
-    } else {
-      iconContent[clientID] = data.toString();
-    }
-  })
+  if (!(suggestedIcon in iconContent)) {
+    SaveIconFromFile(suggestedIcon);
+  }
+
+  iconContent[clientID] = clientIconName;
 
 }
 
@@ -31,7 +28,7 @@ export var suggestIconForClient = (clientName) => {
 
   var defaultIcons = getDefaultIcons();
   var keywordReference = generateIconKeywords(defaultIcons);
-
+  
   for (var keyword in keywordReference) {
     var lowercaseName = clientName.toLowerCase();
     if (lowercaseName.search(keyword) > -1){
@@ -39,7 +36,22 @@ export var suggestIconForClient = (clientName) => {
     }
   }
 
+  if (!(suggestedIcon in iconContent)) {
+    SaveIconFromFile(suggestedIcon);
+  }
+
   return suggestedIcon
+}
+
+var SaveIconFromFile = (clientIconName) => {
+  var filepath = path.join(__dirname, '../assets/', clientIconName + '.svg');
+  fs.readFile(filepath, (err, data) => {
+    if (err) {
+      console.error('SVG failed');
+    } else {
+      iconContent[clientIconName] = data.toString();
+    }
+  })
 }
 
 
