@@ -19,3 +19,13 @@ class HeepIPAddress:
 		byteArray.append(chr(self.Octet1))
 
 		return byteArray
+
+	def SetIPFromString(self, theString) :
+		splitString = theString.split('.')
+		if len(splitString) != 4 :
+			return
+
+		self.Octet4 = int(splitString[0])
+		self.Octet3 = int(splitString[1])
+		self.Octet2 = int(splitString[2])
+		self.Octet1 = int(splitString[3])

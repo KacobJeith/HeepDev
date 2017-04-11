@@ -155,15 +155,9 @@ class HeepMemoryUtilities:
 		byteArray = self.AppendClientIDToByteArray(byteArray, vertex.destinationID)
 		byteArray.append(chr(vertex.outputID))
 		byteArray.append(chr(vertex.inputID))
-		splitIP = vertex.destinationIP.split('.')
-		IPOct1 = int(splitIP[3])
-		IPOct2 = int(splitIP[2])
-		IPOct3 = int(splitIP[1])
-		IPOct4 = int(splitIP[0])
-		byteArray.append(chr(IPOct4))
-		byteArray.append(chr(IPOct3))
-		byteArray.append(chr(IPOct2))
-		byteArray.append(chr(IPOct1))
+
+		IPBytes = vertex.destinationIP.GetIPAsByteArray()
+		byteArray = self.AppendByteArrayToByteArray(byteArray, IPBytes)
 
 		return byteArray
 
@@ -189,7 +183,7 @@ class HeepMemoryUtilities:
 		NewVertex.sourceID = sourceID
 		NewVertex.outputID = outputID
 		NewVertex.destinationID = destinationID
-		NewVertex.destinationIP = str(IPOct1) + '.' + str(IPOct2) + '.' + str(IPOct3) + '.' + str(IPOct4)
+		NewVertex.destinationIP = HeepIPAddress(IPOct1, IPOct2, IPOct3, IPOct4)
 
 		RetData = MemoryData()
 		RetData.counter = counter

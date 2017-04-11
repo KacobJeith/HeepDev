@@ -55,7 +55,7 @@ myVertex.inputID = 1
 myVertex.outputID = 2
 myVertex.destinationID = 123456
 myVertex.sourceID = 666
-myVertex.destinationIP = '192.142.132.132'
+myVertex.destinationIP = HeepIPAddress(192, 142, 132, 132)
 newClient.AddVertex(myVertex)
 
 outputQueue = newClient.QueueOutput(2, 20)
@@ -67,7 +67,7 @@ myVertex.inputID = 2
 myVertex.outputID = 2
 myVertex.destinationID = 123223456
 myVertex.sourceID = 666
-myVertex.destinationIP = '192.142.132.132'
+myVertex.destinationIP = HeepIPAddress(192, 142, 132, 132)
 newClient.AddVertex(myVertex)
 
 outputQueue = newClient.QueueOutput(2, 20)
@@ -89,7 +89,7 @@ myVertex.inputID = 1
 myVertex.outputID = 2
 myVertex.destinationID = 98587649
 myVertex.sourceID = 987123
-myVertex.destinationIP = '10.10.10.10'
+myVertex.destinationIP = HeepIPAddress(10, 10, 10, 10)
 deletionClient.AddVertex(myVertex)
 
 deletionClient.RemoveVertex(123223456, 2, 2)
