@@ -72,4 +72,27 @@ describe('HeepMemoryParser', () => {
 		});
 
 	});
+	describe('ReadPosition', () => {
+		it('Should Return the correct Position from 4 input bytes', () => {
+			var buffer = Buffer.from([0x04, 0x01, 0x02, 0x03, 0x04]);
+			var expectedResult = {left: 258, top: 772};
+		  	assert.equal(JSON.stringify(expectedResult), JSON.stringify(parser.ReadPosition(buffer)));
+		});
+	});
+
+	describe('ReadClientName', () => {
+		it('Should Return the correct Name', () => {
+			var buffer = Buffer.from([0x04, 0x74, 0x65, 0x73, 0x74]);
+		  	assert.equal('test', parser.ReadClientName(buffer));
+		});
+	});
+
+	describe('ReadIconID', () => {
+		it('Should Return an icon name when passed a single byte', () => {
+			var buffer = Buffer.from([0x01, 0x01]);
+		  	assert.equal('light-bulb', parser.ReadIconID(buffer));
+		});
+	});
+
+
 });

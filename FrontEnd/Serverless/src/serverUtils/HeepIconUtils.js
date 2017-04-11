@@ -4,21 +4,19 @@ import path from 'path'
 var iconContent = {};
 
 export var SetClientIconFromString = (clientID, clientName, clientIconName) => {
+  var suggestedIcon = clientIconName;
 
   if (clientIconName == 'none') {
-    var suggestedIcon = suggestIconForClient(clientName);
+    suggestedIcon = suggestIconForClient(clientName);
     console.log('Suggesting a default icon: ', suggestedIcon);
     clientIconName = suggestedIcon;
   }
 
-  var filepath = path.join(__dirname, '../assets/', clientIconName + '.svg');
-  fs.readFile(filepath, (err, data) => {
-    if (err) {
-      console.error('SVG failed');
-    } else {
-      iconContent[clientID] = data.toString();
-    }
-  })
+  if (!(suggestedIcon in iconContent)) {
+    SaveIconFromFile(suggestedIcon);
+  }
+
+  iconContent[clientID] = clientIconName;
 
 }
 
@@ -39,7 +37,22 @@ export var suggestIconForClient = (clientName) => {
     }
   }
 
+  if (!(suggestedIcon in iconContent)) {
+    SaveIconFromFile(suggestedIcon);
+  }
+
   return suggestedIcon
+}
+
+var SaveIconFromFile = (clientIconName) => {
+  var filepath = path.join(__dirname, '../assets/', clientIconName + '.svg');
+  fs.readFile(filepath, (err, data) => {
+    if (err) {
+      console.error('SVG failed: ', filepath);
+    } else {
+      iconContent[clientIconName] = data.toString();
+    }
+  })
 }
 
 
@@ -69,4 +82,14 @@ export var getDefaultIcons = () => {
   }
 
   return svgs
+}
+
+export var nameCustomIcon = (clientID) => {
+  return clientID.toString() + '.' + 'custom'
+}
+
+export var setCustomIcon = (clientID, data) => {
+  var customName = nameCustomIcon(clientID);
+  iconContent[clientID] = customName;
+  iconContent[customName] = data.toString('ascii');
 }

@@ -34,7 +34,7 @@ var GetNextBlock = (buffer, it) => {
   it += 5;
   var thisBlockData = buffer.slice(it, it + buffer[it] + 1);
 
-  if (buffer[it] == 0x01){
+  if (thisBlock.op == 0x01){
     // Client Data
     thisBlock.version = ReadFirmwareVersion(thisBlockData);
 
@@ -47,15 +47,19 @@ var GetNextBlock = (buffer, it) => {
 
   } else if (thisBlock.op == 0x04) {
     // Icon ID
+    thisBlock.iconName = ReadIconID(thisBlockData);
 
   } else if (thisBlock.op == 0x05) {
     //Custom Icon Drawing
+    thisBlock.iconData = ReadIconCustom(thisBlockData);
 
   } else if (thisBlock.op == 0x06) {
     //Client Name
+    thisBlock.clientName = ReadClientName(thisBlockData);
 
   } else if (thisBlock.op == 0x07) {
     //FrontEnd Position
+    thisBlock.position = ReadPosition(thisBlockData);
 
   } else if (thisBlock.op == 0x08) {
     //ClientIP
@@ -107,5 +111,42 @@ export var ReadControl = (thisBlockData) => { // OP 2
 
   return thisControl
 }
+
+ export var ReadPosition = (thisBlockData) => {
+  var thisPosition = {
+    left: 0,
+    top: 0
+  }
+
+  thisPosition.left = ((thisBlockData[1] << 8) >>> 0) + thisBlockData[2];
+  thisPosition.top = ((thisBlockData[3] << 8) >>> 0) + thisBlockData[4];
+
+  return thisPosition
+ }
+
+ export var ReadClientName = (thisBlockData) => {
+  return thisBlockData.slice(1).toString('ascii')
+ }
+
+ export var ReadIconID = (thisBlockData) => {
+  var iconName = 'none';
+  if (thisBlockData[1] == 1){
+    iconName = 'light-bulb';
+  } else if (thisBlockData[1] == 2) {
+    iconName = 'switch';
+  } else if (thisBlockData[1] == 3) {
+    iconName = 'outlet';
+  } else if (thisBlockData[1] == 4) {
+    iconName = 'power-button';
+  } else if (thisBlockData[1] == 5) {
+    iconName = 'cuckoo-clock';
+  }
+
+  return iconName;
+ }
+
+ export var ReadIconCustom = (thisBlockData) => {
+  return thisBlockData.slice(1).toString('ascii');
+ }
 
 

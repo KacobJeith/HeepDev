@@ -114,12 +114,16 @@ var AddMemoryChunksToMasterState = (heepChunks, IPAddress) => {
     } else if (heepChunks[i].op == 3){
       
     } else if (heepChunks[i].op == 4){
-      
+      SetIconFromID(heepChunks[i]);
+
     } else if (heepChunks[i].op == 5){
+      SetCustomIcon(heepChunks[i]);
       
     } else if (heepChunks[i].op == 6){
-      
+      SetClientName(heepChunks[i])
+
     } else if (heepChunks[i].op == 7){
+      SetClientPosition(heepChunks[i])
       
     } else if (heepChunks[i].op == 8){
       
@@ -143,9 +147,21 @@ var AddClient = (heepChunk, IPAddress) => {
     masterState.clients.clientArray.push(clientID);
   }
 
-  SetClientPosition(clientID);
+  SetNullPosition(clientID);
   masterState.controls.controlStructure[clientID] = {inputs: [], outputs: []};
   masterState.icons = heepIconUtils.GetIconContent();
+}
+
+var SetClientName = (heepChunk) => {
+  masterState.clients[heepChunk.clientID].ClientName = heepChunk.clientName;
+  if ((heepChunk.clientID in masterState.icons)){
+    var currentIcon = masterState.icons[heepChunk.clientID];
+  } 
+  else {
+    var currentIcon = 'none';
+  }
+  heepIconUtils.SetClientIconFromString(heepChunk.clientID, heepChunk.clientName, currentIcon);
+  masterState.icons = heepIconUtils.GetIconContent()
 }
 
 var AddControl = (heepChunk) => {
@@ -155,15 +171,21 @@ var AddControl = (heepChunk) => {
   masterState.controls[tempCtrlName].connectedControls = [];
   var currentIndex = SetControlStructure(heepChunk.clientID, tempCtrlName)
 
-  if (heepChunk.control.ControlDirection == 0) {
-    masterState.positions[heepChunk.clientID][tempCtrlName] = SetInputControlPosition(heepChunk.clientID, currentIndex);
-  } else {
-    masterState.positions[heepChunk.clientID][tempCtrlName] = SetOutputControlPosition(heepChunk.clientID, currentIndex);
+  masterState.positions[heepChunk.clientID][tempCtrlName] = SetControlPosition(heepChunk.clientID, currentIndex, heepChunk.control.ControlDirection);
 
-  }
 }
 
-var SetClientPosition = (clientID) => {
+var SetIconFromID = (heepChunk) => {
+  var clientName = masterState.clients[heepChunk.clientID].ClientName;
+  heepIconUtils.SetClientIconFromString(heepChunk.clientID, clientName, heepChunk.iconName);
+  masterState.icons = heepIconUtils.GetIconContent()
+}
+
+var SetCustomIcon = (heepChunk) => {
+  heepIconUtils.setCustomIcon(heepChunk.clientID, heepChunk.iconData);
+}
+
+var SetNullPosition = (clientID) => {
   
   var newPosition = {
     client: {top: 0, left: 0}
@@ -172,24 +194,41 @@ var SetClientPosition = (clientID) => {
   masterState.positions[clientID] = newPosition;
 }
 
-var SetInputControlPosition = (clientID, index) => {
-  var startingPosition = masterState.positions[clientID]['client'];
-
-  var position = {
-    top: startingPosition['top'] + 45 + 1.5 + 25/2 + 55*index, 
-    left: startingPosition['left'] + 10
-  }
-  
-  return position;
+var SetClientPosition = (heepChunk) => {
+  masterState.positions[heepChunk.clientID].client = heepChunk.position;
+  RecalculateControlPositions(heepChunk.clientID);
 }
 
-var SetOutputControlPosition = (clientID, index) => {
-  var startingPosition = masterState.positions[clientID]['client'];
-  var position = {
-    top: startingPosition['top'] + 45 + 1.5 + 25/2 + 55*index, 
-    left: startingPosition['left'] + 250
-  }
+var RecalculateControlPositions = (clientID) => {
+  var startingPositions = masterState.positions[clientID];
+  for (var controlName in startingPositions){
+    if (controlName == 'client'){ 
+      continue 
+    }
 
+    UpdateControlPosition(clientID, controlName);
+  }
+}
+
+var UpdateControlPosition = (clientID, controlName) => {
+  var clientPosition = masterState.positions[clientID].client;
+  var thisPosition = masterState.positions[clientID][controlName];
+  var direction = masterState.controls[controlName].ControlDirection;
+
+  thisPosition.top = clientPosition['top'] + 45 + 1.5 + 25/2 + 55*(thisPosition.index), 
+  thisPosition.left = direction == 0 ? clientPosition['left'] + 10 : clientPosition['left'] + 250;
+  
+}
+
+var SetControlPosition = (clientID, index, direction) => {
+  var clientPosition = masterState.positions[clientID]['client'];
+
+  var position = {
+    top: clientPosition['top'] + 45 + 1.5 + 25/2 + 55*index, 
+    left: direction == 0 ? clientPosition['left'] + 10 : clientPosition['left'] + 250,
+    index: index
+  }
+  
   return position;
 }
 
