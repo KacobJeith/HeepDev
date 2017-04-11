@@ -175,12 +175,14 @@ otherClient.ControlList.append(Control1)
 otherClient.ControlList.append(Control2)
 otherClient.AddVertex(myVertex)
 otherClient.SetClientFrontEndXY(10322, 1032)
+otherClient.SetIPAddress("192.168.1.1")
 
 otherClient.SetIconInformation(1, [chr(3), chr(4), chr(12), chr(41)]) 
 otherClient.SetServerless(1)
 myString = otherClient.GetClientString()
 
 print CheckEquality(HeepMemoryUtilities.ConvertStringToByteArray(myString), otherClient.GetClientByteArray(), "Get Client String OpCodes")
+print CheckEquality(otherClient.GetIPAddress(), "192.168.1.1", "Get client IP Address")
 
 
 
