@@ -4,9 +4,10 @@ import path from 'path'
 var iconContent = {};
 
 export var SetClientIconFromString = (clientID, clientName, clientIconName) => {
+  var suggestedIcon = clientIconName;
 
   if (clientIconName == 'none') {
-    var suggestedIcon = suggestIconForClient(clientName);
+    suggestedIcon = suggestIconForClient(clientName);
     console.log('Suggesting a default icon: ', suggestedIcon);
     clientIconName = suggestedIcon;
   }
@@ -28,7 +29,7 @@ export var suggestIconForClient = (clientName) => {
 
   var defaultIcons = getDefaultIcons();
   var keywordReference = generateIconKeywords(defaultIcons);
-  
+
   for (var keyword in keywordReference) {
     var lowercaseName = clientName.toLowerCase();
     if (lowercaseName.search(keyword) > -1){
@@ -47,7 +48,7 @@ var SaveIconFromFile = (clientIconName) => {
   var filepath = path.join(__dirname, '../assets/', clientIconName + '.svg');
   fs.readFile(filepath, (err, data) => {
     if (err) {
-      console.error('SVG failed');
+      console.error('SVG failed: ', filepath);
     } else {
       iconContent[clientIconName] = data.toString();
     }
