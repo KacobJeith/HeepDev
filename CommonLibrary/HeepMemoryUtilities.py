@@ -1,5 +1,6 @@
 from ControlValue import ControlValue
 from Vertex import Vertex
+from CommonDataTypes import HeepIPAddress
 
 class MemoryData:
 
@@ -222,16 +223,8 @@ class HeepMemoryUtilities:
 		byteArray = self.AppendClientIDToByteArray(byteArray, clientID)
 		byteArray.append(chr(4))
 
-		splitIP = IPAddress.split('.')
-		IPOct1 = int(splitIP[3])
-		IPOct2 = int(splitIP[2])
-		IPOct3 = int(splitIP[1])
-		IPOct4 = int(splitIP[0])
-
-		byteArray.append(chr(IPOct4))
-		byteArray.append(chr(IPOct3))
-		byteArray.append(chr(IPOct2))
-		byteArray.append(chr(IPOct1))
+		IPArray = IPAddress.GetIPAsByteArray()
+		byteArray = self.AppendByteArrayToByteArray(byteArray, IPArray)
 
 		return byteArray
 
@@ -245,7 +238,7 @@ class HeepMemoryUtilities:
 		(IPOct3,counter) = self.GetNumberFromMemory(byteArray, counter, 1)
 		(IPOct4,counter) = self.GetNumberFromMemory(byteArray, counter, 1)
 
-		IPAddr = str(IPOct1) + '.' + str(IPOct2) + '.' + str(IPOct3) + '.' + str(IPOct4)
+		IPAddr = HeepIPAddress(IPOct1, IPOct2, IPOct3, IPOct4)
 
 		RetData = MemoryData()
 		RetData.counter = counter

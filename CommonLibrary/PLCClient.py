@@ -4,13 +4,14 @@ from Vertex import Vertex
 from OutputData import OutputData
 from ClientMemory import ClientMemory
 from HeepMemoryUtilities import HeepMemoryUtilities
+from CommonDataTypes import HeepIPAddress
 
 class PLCClient:
 
 	def __init__(self):
 		self.ClientID = 12345678910
 		self.ClientType = 1
-		self.IPAddress = 'none'
+		self.IPAddress = HeepIPAddress(0, 0, 0, 0)
 		self.ClientName = 'none'
 		self.IconCustom = 0
 		self.IconName = 'none'

@@ -4,6 +4,7 @@ from OutputData import OutputData
 from Vertex import Vertex
 from ClientMemory import ClientMemory
 from HeepMemoryUtilities import HeepMemoryUtilities
+from CommonDataTypes import HeepIPAddress
 
 def CheckEquality(first, second, testName) :
 	if first == second :
@@ -142,9 +143,9 @@ byteArray = HeepMemoryUtilities.AppendVertexDataToByteArray(byteArray, myVertex)
 print CheckEquality(HeepMemoryUtilities.GetVertexFromByteArray(byteArray, 987123).destinationID, 98587649, 'Get Vertex Opcode')
 
 byteArray = []
-
-byteArray = HeepMemoryUtilities.AppendIPAddressToByteArray(byteArray, 1236123, "192.168.1.1")
-print CheckEquality(HeepMemoryUtilities.GetIPAddressFromByteArray(byteArray, 1236123), "192.168.1.1", "Get IP From Memory")
+myIP = HeepIPAddress(192, 168, 1, 1)
+byteArray = HeepMemoryUtilities.AppendIPAddressToByteArray(byteArray, 1236123, myIP)
+print CheckEquality(HeepMemoryUtilities.GetIPAddressFromByteArray(byteArray, 1236123).GetIPAsString(), "192.168.1.1", "Get IP From Memory")
 
 byteArray = HeepMemoryUtilities.AppendIconIDToByteArray(byteArray, 512413, 131)
 print CheckEquality(HeepMemoryUtilities.GetIconIDFromByteArray(byteArray, 512413), 131, "Get Icon ID From Byte Array")
@@ -172,14 +173,14 @@ otherClient.ControlList.append(Control1)
 otherClient.ControlList.append(Control2)
 otherClient.AddVertex(myVertex)
 otherClient.SetClientFrontEndXY(10322, 1032)
-otherClient.SetIPAddress("192.168.1.1")
+otherClient.SetIPAddress(myIP)
 
 otherClient.SetIconInformation(1, [chr(3), chr(4), chr(12), chr(41)]) 
 otherClient.SetServerless(1)
 myString = otherClient.GetClientString()
 
 print CheckEquality(HeepMemoryUtilities.ConvertStringToByteArray(myString), otherClient.GetClientByteArray(), "Get Client String OpCodes")
-print CheckEquality(otherClient.GetIPAddress(), "192.168.1.1", "Get client IP Address")
+print CheckEquality(otherClient.GetIPAddress().GetIPAsString(), "192.168.1.1", "Get client IP Address")
 
 
 
