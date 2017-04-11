@@ -55,7 +55,6 @@ myVertex.outputID = 2
 myVertex.destinationID = 123456
 myVertex.sourceID = 666
 myVertex.destinationIP = '192.142.132.132'
-myVertex.vertexID = 0
 newClient.AddVertex(myVertex)
 
 outputQueue = newClient.QueueOutput(2, 20)
@@ -68,7 +67,6 @@ myVertex.outputID = 2
 myVertex.destinationID = 123223456
 myVertex.sourceID = 666
 myVertex.destinationIP = '192.142.132.132'
-myVertex.vertexID = 1
 newClient.AddVertex(myVertex)
 
 outputQueue = newClient.QueueOutput(2, 20)
@@ -76,7 +74,7 @@ outputQueue = newClient.QueueOutput(2, 20)
 print CheckEquality( len(outputQueue), 2, 'Output Queue Size Two Items')
 print CheckEquality( outputQueue[0].inputID, 1, 'Output Queue input name 1')
 print CheckEquality( outputQueue[1].inputID, 2, 'Output Queue input name 2')
-print CheckEquality( newClient.GetVerticesString(), '1,2,192.142.132.132,123456,666,0;2,2,192.142.132.132,123223456,666,1;', 'Get Vertex String')
+print CheckEquality( newClient.GetVerticesString(), '1,2,192.142.132.132,123456,666;2,2,192.142.132.132,123223456,666;', 'Get Vertex String')
 
 VertexStr = newClient.GetVerticesString()
 vertClient = PLCClient()
@@ -91,13 +89,12 @@ myVertex.outputID = 2
 myVertex.destinationID = 98587649
 myVertex.sourceID = 987123
 myVertex.destinationIP = '10.10.10.10'
-myVertex.vertexID = 2
 deletionClient.AddVertex(myVertex)
 
 deletionClient.RemoveVertex(123223456, 2, 2)
-print CheckEquality( deletionClient.GetVerticesString(), '1,2,192.142.132.132,123456,666,0;1,2,10.10.10.10,98587649,987123,2;', 'Remove Middle Vertex')
+print CheckEquality( deletionClient.GetVerticesString(), '1,2,192.142.132.132,123456,666;1,2,10.10.10.10,98587649,987123;', 'Remove Middle Vertex')
 deletionClient.RemoveVertex(123456, 2, 1)
-print CheckEquality( deletionClient.GetVerticesString(), '1,2,10.10.10.10,98587649,987123,2;', 'Remove First Vertex')
+print CheckEquality( deletionClient.GetVerticesString(), '1,2,10.10.10.10,98587649,987123;', 'Remove First Vertex')
 deletionClient.RemoveVertex(98587649, 2, 1)
 print CheckEquality( deletionClient.GetVerticesString(), '', 'Remove Only Vertex')
 
