@@ -50,5 +50,5 @@ class ClientMemory:
 	def GetIPAddress(self, clientID) :
 		return self.MemoryUtilities.GetIPAddressFromByteArray(self.miscMemory, clientID)
 
-	def GetMemoryString(self, clientID, ) :
+	def GetMemoryString(self) :
 		return self.MemoryUtilities.GetStringFromByteArray(self.miscMemory)
