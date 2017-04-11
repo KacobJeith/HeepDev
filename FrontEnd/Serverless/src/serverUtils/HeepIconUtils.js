@@ -83,3 +83,13 @@ export var getDefaultIcons = () => {
 
   return svgs
 }
+
+export var nameCustomIcon = (clientID) => {
+  return clientID.toString() + '.' + 'custom'
+}
+
+export var setCustomIcon = (clientID, data) => {
+  var customName = nameCustomIcon(clientID);
+  iconContent[clientID] = customName;
+  iconContent[customName] = data.toString('ascii');
+}

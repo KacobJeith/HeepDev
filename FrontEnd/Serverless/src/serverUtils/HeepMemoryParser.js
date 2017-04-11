@@ -51,6 +51,7 @@ var GetNextBlock = (buffer, it) => {
 
   } else if (thisBlock.op == 0x05) {
     //Custom Icon Drawing
+    thisBlock.iconData = ReadIconCustom(thisBlockData);
 
   } else if (thisBlock.op == 0x06) {
     //Client Name
@@ -142,6 +143,10 @@ export var ReadControl = (thisBlockData) => { // OP 2
   }
 
   return iconName;
+ }
+
+ export var ReadIconCustom = (thisBlockData) => {
+  return thisBlockData.slice(1).toString('ascii');
  }
 
 
