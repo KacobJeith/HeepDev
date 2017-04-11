@@ -120,6 +120,7 @@ var AddMemoryChunksToMasterState = (heepChunks, IPAddress) => {
     } else if (heepChunks[i].op == 6){
       
     } else if (heepChunks[i].op == 7){
+      SetClientPosition(heepChunks[i])
       
     } else if (heepChunks[i].op == 8){
       
@@ -143,7 +144,7 @@ var AddClient = (heepChunk, IPAddress) => {
     masterState.clients.clientArray.push(clientID);
   }
 
-  SetClientPosition(clientID);
+  SetNullPosition(clientID);
   masterState.controls.controlStructure[clientID] = {inputs: [], outputs: []};
   masterState.icons = heepIconUtils.GetIconContent();
 }
@@ -163,13 +164,17 @@ var AddControl = (heepChunk) => {
   }
 }
 
-var SetClientPosition = (clientID) => {
+var SetNullPosition = (clientID) => {
   
   var newPosition = {
     client: {top: 0, left: 0}
   }
 
   masterState.positions[clientID] = newPosition;
+}
+
+var SetClientPosition = (heepChunk) => {
+  masterState.positions[heepChunk.clientID].client = heepChunk.position;
 }
 
 var SetInputControlPosition = (clientID, index) => {
