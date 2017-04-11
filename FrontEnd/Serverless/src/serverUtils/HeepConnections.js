@@ -6,7 +6,7 @@ import * as heepIconUtils from './HeepIconUtils'
 var masterState = {
   clients: {clientArray: []},
   positions: {},
-  controls: {controlStructure:{}},
+  controls: {controlStructure:{}, connections: {}},
   vertexList: {},
   icons: {},
   url: ''
@@ -112,6 +112,7 @@ var AddMemoryChunksToMasterState = (heepChunks, IPAddress) => {
       AddControl(heepChunks[i]);
 
     } else if (heepChunks[i].op == 3){
+      AddVertex(heepChunks[i])
       
     } else if (heepChunks[i].op == 4){
       SetIconFromID(heepChunks[i]);
@@ -166,7 +167,7 @@ var SetClientName = (heepChunk) => {
 
 var AddControl = (heepChunk) => {
   // Transition this to use new ControlID throughout frontend 
-  var tempCtrlName = nameControlFromObject(heepChunk.clientID, heepChunk.control.ControlName) 
+  var tempCtrlName = nameControl(heepChunk.clientID, heepChunk.control.ControlID) 
   masterState.controls[tempCtrlName] = heepChunk.control;
   masterState.controls[tempCtrlName].connectedControls = [];
   var currentIndex = SetControlStructure(heepChunk.clientID, tempCtrlName)
@@ -249,9 +250,26 @@ var SetControlStructure = (clientID, controlID) => {
 }
 
 var nameVertex = (vertex) => {
-    return vertex['sourceID'] + '.' + vertex['outputName'] + '->' + vertex['destinationID'] + '.' + vertex['inputName'];
+    return vertex['txClientID'] + '.' + vertex['txControlID'] + '->' + vertex['rxClientID'] + '.' + vertex['rxControlID'];
 }
 
-var nameControlFromObject = (clientID, controlName) => {
+var nameControl = (clientID, controlName) => {
   return clientID +  '.' + controlName;
+}
+
+var getTxControlNameFromVertex = (vertex) => {
+  return nameControl(vertex.txClientID, vertex.txControlID)
+}
+
+var getRxControlNameFromVertex = (vertex) => {
+  return nameControl(vertex.rxClientID, vertex.rxControlID)
+}
+
+var AddVertex = (heepChunk) => {
+  var vertexName = nameVertex(heepChunk.vertex);
+  var txControl = getTxControlNameFromVertex(heepChunk.vertex);
+  var rxControl = getRxControlNameFromVertex(heepChunk.vertex);
+  masterState.vertexList[vertexName] = heepChunk.vertex;
+  masterState.controls.connections[txControl] = rxControl;
+
 }

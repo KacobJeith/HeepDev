@@ -6,7 +6,6 @@ import * as Actions from '../actions/actions'
 
 const mapStateToProps = (state) => ({
   clientArray: state.clients.clientArray,
-  vertexList: state.vertexList.List,
   url: state.url
 })
 
