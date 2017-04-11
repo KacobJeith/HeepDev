@@ -1,8 +1,10 @@
+from CommonDataTypes import HeepIPAddress
+
 class OutputData:
 
 	inputID = 0
 	destinationID = 0
-	destinationIP = ""
+	destinationIP = HeepIPAddress(0,0,0,0)
 	sourceID = 0
 	value = 0
 

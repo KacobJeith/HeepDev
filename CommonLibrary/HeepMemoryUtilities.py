@@ -1,5 +1,6 @@
 from ControlValue import ControlValue
 from Vertex import Vertex
+from CommonDataTypes import HeepIPAddress
 
 class MemoryData:
 
@@ -150,20 +151,13 @@ class HeepMemoryUtilities:
 
 		byteArray.append(self.VertexOpCode)
 		byteArray = self.AppendClientIDToByteArray(byteArray, vertex.sourceID)
-		byteArray.append(chr(11))
+		byteArray.append(chr(10))
 		byteArray = self.AppendClientIDToByteArray(byteArray, vertex.destinationID)
-		byteArray.append(chr(vertex.inputID))
 		byteArray.append(chr(vertex.outputID))
-		byteArray.append(chr(vertex.vertexID))
-		splitIP = vertex.destinationIP.split('.')
-		IPOct1 = int(splitIP[3])
-		IPOct2 = int(splitIP[2])
-		IPOct3 = int(splitIP[1])
-		IPOct4 = int(splitIP[0])
-		byteArray.append(chr(IPOct4))
-		byteArray.append(chr(IPOct3))
-		byteArray.append(chr(IPOct2))
-		byteArray.append(chr(IPOct1))
+		byteArray.append(chr(vertex.inputID))
+
+		IPBytes = vertex.destinationIP.GetIPAsByteArray()
+		byteArray = self.AppendByteArrayToByteArray(byteArray, IPBytes)
 
 		return byteArray
 
@@ -176,9 +170,8 @@ class HeepMemoryUtilities:
 
 		(destinationID, counter) = self.GetClientIDFromMemory(byteArray, counter)
 
-		(inputID, counter) = self.GetNumberFromMemory(byteArray, counter, 1)
 		(outputID, counter) = self.GetNumberFromMemory(byteArray, counter, 1)
-		(vertexID,counter) = self.GetNumberFromMemory(byteArray, counter, 1)
+		(inputID, counter) = self.GetNumberFromMemory(byteArray, counter, 1)
 
 		(IPOct1,counter) = self.GetNumberFromMemory(byteArray, counter, 1)
 		(IPOct2,counter) = self.GetNumberFromMemory(byteArray, counter, 1)
@@ -190,8 +183,7 @@ class HeepMemoryUtilities:
 		NewVertex.sourceID = sourceID
 		NewVertex.outputID = outputID
 		NewVertex.destinationID = destinationID
-		NewVertex.vertexID = vertexID
-		NewVertex.destinationIP = str(IPOct1) + '.' + str(IPOct2) + '.' + str(IPOct3) + '.' + str(IPOct4)
+		NewVertex.destinationIP = HeepIPAddress(IPOct1, IPOct2, IPOct3, IPOct4)
 
 		RetData = MemoryData()
 		RetData.counter = counter
@@ -225,16 +217,8 @@ class HeepMemoryUtilities:
 		byteArray = self.AppendClientIDToByteArray(byteArray, clientID)
 		byteArray.append(chr(4))
 
-		splitIP = IPAddress.split('.')
-		IPOct1 = int(splitIP[3])
-		IPOct2 = int(splitIP[2])
-		IPOct3 = int(splitIP[1])
-		IPOct4 = int(splitIP[0])
-
-		byteArray.append(chr(IPOct4))
-		byteArray.append(chr(IPOct3))
-		byteArray.append(chr(IPOct2))
-		byteArray.append(chr(IPOct1))
+		IPArray = IPAddress.GetIPAsByteArray()
+		byteArray = self.AppendByteArrayToByteArray(byteArray, IPArray)
 
 		return byteArray
 
@@ -248,7 +232,7 @@ class HeepMemoryUtilities:
 		(IPOct3,counter) = self.GetNumberFromMemory(byteArray, counter, 1)
 		(IPOct4,counter) = self.GetNumberFromMemory(byteArray, counter, 1)
 
-		IPAddr = str(IPOct1) + '.' + str(IPOct2) + '.' + str(IPOct3) + '.' + str(IPOct4)
+		IPAddr = HeepIPAddress(IPOct1, IPOct2, IPOct3, IPOct4)
 
 		RetData = MemoryData()
 		RetData.counter = counter

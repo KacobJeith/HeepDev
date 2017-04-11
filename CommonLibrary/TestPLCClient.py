@@ -4,6 +4,7 @@ from OutputData import OutputData
 from Vertex import Vertex
 from ClientMemory import ClientMemory
 from HeepMemoryUtilities import HeepMemoryUtilities
+from CommonDataTypes import HeepIPAddress
 
 def CheckEquality(first, second, testName) :
 	if first == second :
@@ -54,8 +55,7 @@ myVertex.inputID = 1
 myVertex.outputID = 2
 myVertex.destinationID = 123456
 myVertex.sourceID = 666
-myVertex.destinationIP = '192.142.132.132'
-myVertex.vertexID = 0
+myVertex.destinationIP = HeepIPAddress(192, 142, 132, 132)
 newClient.AddVertex(myVertex)
 
 outputQueue = newClient.QueueOutput(2, 20)
@@ -67,8 +67,7 @@ myVertex.inputID = 2
 myVertex.outputID = 2
 myVertex.destinationID = 123223456
 myVertex.sourceID = 666
-myVertex.destinationIP = '192.142.132.132'
-myVertex.vertexID = 1
+myVertex.destinationIP = HeepIPAddress(192, 142, 132, 132)
 newClient.AddVertex(myVertex)
 
 outputQueue = newClient.QueueOutput(2, 20)
@@ -76,7 +75,7 @@ outputQueue = newClient.QueueOutput(2, 20)
 print CheckEquality( len(outputQueue), 2, 'Output Queue Size Two Items')
 print CheckEquality( outputQueue[0].inputID, 1, 'Output Queue input name 1')
 print CheckEquality( outputQueue[1].inputID, 2, 'Output Queue input name 2')
-print CheckEquality( newClient.GetVerticesString(), '1,2,192.142.132.132,123456,666,0;2,2,192.142.132.132,123223456,666,1;', 'Get Vertex String')
+print CheckEquality( newClient.GetVerticesString(), '1,2,192.142.132.132,123456,666;2,2,192.142.132.132,123223456,666;', 'Get Vertex String')
 
 VertexStr = newClient.GetVerticesString()
 vertClient = PLCClient()
@@ -90,14 +89,13 @@ myVertex.inputID = 1
 myVertex.outputID = 2
 myVertex.destinationID = 98587649
 myVertex.sourceID = 987123
-myVertex.destinationIP = '10.10.10.10'
-myVertex.vertexID = 2
+myVertex.destinationIP = HeepIPAddress(10, 10, 10, 10)
 deletionClient.AddVertex(myVertex)
 
 deletionClient.RemoveVertex(123223456, 2, 2)
-print CheckEquality( deletionClient.GetVerticesString(), '1,2,192.142.132.132,123456,666,0;1,2,10.10.10.10,98587649,987123,2;', 'Remove Middle Vertex')
+print CheckEquality( deletionClient.GetVerticesString(), '1,2,192.142.132.132,123456,666;1,2,10.10.10.10,98587649,987123;', 'Remove Middle Vertex')
 deletionClient.RemoveVertex(123456, 2, 1)
-print CheckEquality( deletionClient.GetVerticesString(), '1,2,10.10.10.10,98587649,987123,2;', 'Remove First Vertex')
+print CheckEquality( deletionClient.GetVerticesString(), '1,2,10.10.10.10,98587649,987123;', 'Remove First Vertex')
 deletionClient.RemoveVertex(98587649, 2, 1)
 print CheckEquality( deletionClient.GetVerticesString(), '', 'Remove Only Vertex')
 
@@ -145,9 +143,9 @@ byteArray = HeepMemoryUtilities.AppendVertexDataToByteArray(byteArray, myVertex)
 print CheckEquality(HeepMemoryUtilities.GetVertexFromByteArray(byteArray, 987123).destinationID, 98587649, 'Get Vertex Opcode')
 
 byteArray = []
-
-byteArray = HeepMemoryUtilities.AppendIPAddressToByteArray(byteArray, 1236123, "192.168.1.1")
-print CheckEquality(HeepMemoryUtilities.GetIPAddressFromByteArray(byteArray, 1236123), "192.168.1.1", "Get IP From Memory")
+myIP = HeepIPAddress(192, 168, 1, 1)
+byteArray = HeepMemoryUtilities.AppendIPAddressToByteArray(byteArray, 1236123, myIP)
+print CheckEquality(HeepMemoryUtilities.GetIPAddressFromByteArray(byteArray, 1236123).GetIPAsString(), "192.168.1.1", "Get IP From Memory")
 
 byteArray = HeepMemoryUtilities.AppendIconIDToByteArray(byteArray, 512413, 131)
 print CheckEquality(HeepMemoryUtilities.GetIconIDFromByteArray(byteArray, 512413), 131, "Get Icon ID From Byte Array")
@@ -175,14 +173,14 @@ otherClient.ControlList.append(Control1)
 otherClient.ControlList.append(Control2)
 otherClient.AddVertex(myVertex)
 otherClient.SetClientFrontEndXY(10322, 1032)
-otherClient.SetIPAddress("192.168.1.1")
+otherClient.SetIPAddress(myIP)
 
 otherClient.SetIconInformation(1, [chr(3), chr(4), chr(12), chr(41)]) 
 otherClient.SetServerless(1)
 myString = otherClient.GetClientString()
 
 print CheckEquality(HeepMemoryUtilities.ConvertStringToByteArray(myString), otherClient.GetClientByteArray(), "Get Client String OpCodes")
-print CheckEquality(otherClient.GetIPAddress(), "192.168.1.1", "Get client IP Address")
+print CheckEquality(otherClient.GetIPAddress().GetIPAsString(), "192.168.1.1", "Get client IP Address")
 
 
 
