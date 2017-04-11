@@ -80,4 +80,11 @@ describe('HeepMemoryParser', () => {
 		});
 	});
 
+	describe('ReadClientName', () => {
+		it('Should Return the correct Name', () => {
+			var buffer = Buffer.from([0x04, 0x74, 0x65, 0x73, 0x74]);
+		  	assert.equal('test', parser.ReadClientName(buffer));
+		});
+	});
+
 });

@@ -53,6 +53,7 @@ var GetNextBlock = (buffer, it) => {
 
   } else if (thisBlock.op == 0x06) {
     //Client Name
+    thisBlock.clientName = ReadClientName(thisBlockData);
 
   } else if (thisBlock.op == 0x07) {
     //FrontEnd Position
@@ -119,6 +120,10 @@ export var ReadControl = (thisBlockData) => { // OP 2
   thisPosition.top = ((thisBlockData[3] << 8) >>> 0) + thisBlockData[4];
 
   return thisPosition
+ }
+
+ export var ReadClientName = (thisBlockData) => {
+  return thisBlockData.slice(1).toString('ascii')
  }
 
 
