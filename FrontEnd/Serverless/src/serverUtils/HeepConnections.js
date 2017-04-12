@@ -46,7 +46,7 @@ export var SendPositionToHeepDevice = (commandID, message) => {
   var split = SplitClientFromCommand(message);
   console.log(split);
   var newLeft = split[1];
- var newTop = split[2];
+  var newTop = split[2];
 
   var newPosition = {left: parseInt(newLeft), top: parseInt(newTop)};
   console.log('Position: ', newPosition);
@@ -55,9 +55,64 @@ export var SendPositionToHeepDevice = (commandID, message) => {
 
 }
 
-export var SendValueToHeepDevice = (commandID, message) => {
-  SendCommandToHeepDevice(commandID, message);
+export var SendValueToHeepDevice = (clientID, controlID, newValue) => {
+  if (CheckIfNewValue(clientID, controlID, newValue)){
+    var IPAddress = masterState.clients[clientID].IPAddress;
+    var controlByteArray = GetByteArrayFromValue(controlID);
+    var valueByteArray = GetByteArrayFromValue(newValue);
+    var numBytes = [controlByteArray.length + valueByteArray.length];
+    var messageBuffer = Buffer.from([0x0A].concat(numBytes, controlByteArray, valueByteArray));
+    console.log('SENDING SETVAL TO HEEP CLIENT ', clientID + ' at ' + IPAddress);
+    console.log('Data Packet: ',  messageBuffer);
+    ConnectToHeepDevice(IPAddress, 5000, messageBuffer)
+  }
 }
+
+var CheckIfNewValue = (clientID, controlID, newValue) => {
+  var thisControl = nameControl(clientID, controlID);
+  if (masterState.controls[thisControl].CurCtrlValue == newValue){
+    return false
+  } else {
+    return true
+  }
+}
+
+export var GetClientIDasByteArray = (value) => {
+  var clientID = GetByteArrayFromValue(value);
+  var backfill = 4 - clientID.length;
+  for (var i = 0; i < backfill; i++){
+    clientID.unshift(0x00);
+  }
+  
+  return clientID
+}
+
+export var GetByteArrayFromValue = (value) => {
+  var byteArray = [];
+  var numBytes = GetNecessaryBytes(value);
+
+  for (var i = 0; i < numBytes; i++){ 
+    var hexVal = value % 256;
+    byteArray.unshift(hexVal);
+    value = value >> 8;
+  }
+
+  return byteArray
+}
+
+export var GetNecessaryBytes = (value) => {
+  var numBytes = 1;
+  value = value >> 8;
+
+  while (value > 0) {
+    numBytes += 1;
+    value = value >> 8;
+  }
+
+  return numBytes
+}
+    
+    
 
 var SplitClientFromCommand = (message) => {
   var splitMessage =  message.split(',');
@@ -75,7 +130,7 @@ export var SendCommandToHeepDevice = (commandID, message) => {
   var sendMessage = commandID + ':' + command.join(',');
 
   var IPAddress = masterState.clients[clientID].IPAddress;
-  console.log(sendMessage)
+  console.log('Connect Message: ', sendMessage)
   ConnectToHeepDevice(IPAddress, 5000, sendMessage);
 }
 
@@ -108,8 +163,8 @@ var ConnectToHeepDevice = (IPAddress, port, message) => {
 
   sock.on('data', (data) => {
     console.log('Device found at address: ', IPAddress + ':' + port.toString());
-    console.log(data.toString());
-    console.log(data);
+    console.log('Stringified Data: ', data.toString());
+    console.log('Raw inbound Data: ', data);
 
     mostRecentSearch[IPAddress] = true;
     var HeepChunks = heepParser.MemoryCrawler(data);

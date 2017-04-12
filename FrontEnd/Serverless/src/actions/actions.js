@@ -15,11 +15,12 @@ export const addIcon = (clientID, icon) => ({
 })
 
 //Control
-export const updateControlValue = (clientID, controlID, newVal) => ({
+export const updateControlValue = (clientID, controlID, newValue, url) => ({
   type: 'UPDATE_CONTROL_VALUE',
   clientID, 
   controlID, 
-  newVal
+  newValue,
+  url
 })
 
 //URL

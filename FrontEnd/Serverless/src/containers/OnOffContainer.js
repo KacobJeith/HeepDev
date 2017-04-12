@@ -5,10 +5,9 @@ import OnOffController from '../components/OnOffController'
 import * as Actions from '../actions/actions'
 
 const mapStateToProps = (state, ownProps) => ({
-  control: state.controls[ownProps.ClientID +'.' + ownProps.controlID],
+  controlID: state.controls[ownProps.thisControl]['ControlID'],
   ClientID: ownProps.ClientID,
-  value: getValue(state, ownProps),
-  ip: state.clients[ownProps.ClientID]['IPAddress'],
+  value: state.controls[ownProps.thisControl]['CurCtrlValue'],
   url: state.url
 })
 
@@ -18,6 +17,3 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(mapStateToProps, mapDispatchToProps)(OnOffController)
 
-var getValue = (state, ownProps) => {
-	return state.controls[ownProps.ClientID + '.' + ownProps.controlID]['CurCtrlValue']
-}

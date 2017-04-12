@@ -10,58 +10,15 @@ class OnOffController extends React.Component {
 		this.lastSentControlValue = this.props.value;
 	}
 
-	sendCommand(url, newVal) {
-
-	    var commandQueueString = [];
-
+	sendCommand() {
+		var newVal = 1 - this.props.value;
 	    this.lastSentControlValue = newVal;
-
-	    commandQueueString.push('SetCommand'+ ':' + 
-	    							this.props.ClientID + ',' +
-	    							this.props.control['ControlName'] + ',' +
-									newVal);
-
-	    for (var i = 0; i < this.props.control.connectedControls.length; i++){
-	    	var thisStr = this.props.control.connectedControls[i];
-	    	var thisClientID = thisStr.split('.')[0];
-	    	var thisControlID = thisStr.split('.')[1]
-	    	var newCommandString = 'SetCommand'+ ':' + 
-	    							thisClientID + ',' +
-	    							thisControlID + ',' +
-									newVal;
-
-	    	this.props.updateControlValue(thisClientID, thisControlID, newVal);
-
-	    	commandQueueString.push(newCommandString);
-			console.log(newCommandString)
-	    }
-
-	    this.props.updateControlValue(this.props.ClientID, this.props.control['ControlName'], newVal);
-
-	    	
-	    console.log(commandQueueString);
-	    
-	    var messagePacket = {command: commandQueueString.join('')};
-	    $.ajax({
-	      url: url,
-	      type: 'POST',
-	      data: messagePacket,
-	      success: (data) => {
-	      },
-	      error: function(xhr, status, err) {
-	        console.error(url, status, err.toString());
-	        console.log('Hitting Commands sendDataToServer error')
-	      }
-	    });
-
-	    for (var i = 0; i < this.props.control.connectedControls.length; i++){
-	    }
-
-	    
+	    this.props.updateControlValue(this.props.ClientID, this.props.controlID, newVal, this.props.url);
 	    
 	}
 
 	render() {
+
 		var styles = {
 			button: {
 				display: 'block',
@@ -74,7 +31,7 @@ class OnOffController extends React.Component {
 
 		var inputs = {
 			button: {
-				onClick: () => {this.sendCommand(this.props.url.concat('/api/commands'), 1 - this.props.value)},
+				onClick: () => {this.sendCommand()},
 				style: styles.button
 			},
 			icon: {

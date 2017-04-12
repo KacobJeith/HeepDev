@@ -1,27 +1,50 @@
 import $ from 'jquery';
 
-function sendVertexToServer(url, vertex) {
+export var sendVertexToServer = (url, vertex) => {
 
-    const message = 'SetVertex' + ':' + 
-            vertex.inputName + ',' + 
-            vertex.outputName + ',' +
-            vertex.destinationIP + ',' + 
-            vertex.destinationID + ',' + 
-            vertex.sourceID;
+  const message = 'SetVertex' + ':' + 
+          vertex.inputName + ',' + 
+          vertex.outputName + ',' +
+          vertex.destinationIP + ',' + 
+          vertex.destinationID + ',' + 
+          vertex.sourceID;
 
-      const messagePacket = {command: message};
+    const messagePacket = {command: message};
 
-    $.ajax({
-        url: url,
-        type: 'POST',
-        data: messagePacket,
-        success: (data) => {
-        },
-        error: function(xhr, status, err) {
-          console.error(url, status, err.toString());
-          console.log('Hitting sendVertexToServer error');
-        }
-      });
+  $.ajax({
+      url: url,
+      type: 'POST',
+      data: messagePacket,
+      success: (data) => {
+      },
+      error: function(xhr, status, err) {
+        console.error(url, status, err.toString());
+        console.log('Hitting sendVertexToServer error');
+      }
+    });
+};
+
+export var sendValueToServer = (clientID, controlID, newValue, url) => {
+
+  var messagePacket = {
+    clientID: clientID, 
+    controlID: controlID, 
+    value: newValue
   };
 
-export default sendVertexToServer;
+  var url = url.concat('/api/setValue');
+    
+  $.ajax({
+    url: url,
+    type: 'POST',
+    data: messagePacket,
+    success: (data) => {
+    },
+    error: function(xhr, status, err) {
+      console.error(url, status, err.toString());
+      console.log('Hitting Commands sendDataToServer error')
+    }
+  });
+};
+
+

@@ -30,11 +30,17 @@ app.post('/api/commands', (req, res) => {
   const command = req.body["command"];
   var stripFirst = command.split(':');
 
-  if (stripFirst[0] == 'SetCommand'){
-    heepConnect.SendValueToHeepDevice('SetVal', stripFirst[1]);
-  } else if (stripFirst[0] == 'SetPosition'){
+  if (stripFirst[0] == 'SetPosition'){
     heepConnect.SendPositionToHeepDevice('SetXY', stripFirst[1]);
   }
+  
+  res.end("Command sent");
+});
+
+app.post('/api/setValue', (req, res) => {
+  
+  heepConnect.SendValueToHeepDevice(req.body.clientID, req.body.controlID, req.body.value);
+  
   res.end("Command sent");
 });
 
