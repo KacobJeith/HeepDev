@@ -61,8 +61,8 @@ export var SendValueToHeepDevice = (clientID, controlID, newValue) => {
   var valueByteArray = GetByteArrayFromValue(newValue);
   var numBytes = [controlByteArray.length + valueByteArray.length];
   var messageBuffer = Buffer.from([0x0A].concat(numBytes, controlByteArray, valueByteArray));
-  console.log('SENDING SETVAL TO: ', clientID + ': ' + newValue);
-  console.log('Buffer: ', messageBuffer);
+  console.log('SENDING SETVAL TO HEEP CLIENT ', clientID + ' at ' + IPAddress);
+  console.log('Data Packet: ',  messageBuffer);
   ConnectToHeepDevice(IPAddress, 5000, messageBuffer)
 }
 
@@ -119,7 +119,7 @@ export var SendCommandToHeepDevice = (commandID, message) => {
   var sendMessage = commandID + ':' + command.join(',');
 
   var IPAddress = masterState.clients[clientID].IPAddress;
-  console.log(sendMessage)
+  console.log('Connect Message: ', sendMessage)
   ConnectToHeepDevice(IPAddress, 5000, sendMessage);
 }
 
@@ -152,8 +152,8 @@ var ConnectToHeepDevice = (IPAddress, port, message) => {
 
   sock.on('data', (data) => {
     console.log('Device found at address: ', IPAddress + ':' + port.toString());
-    console.log(data.toString());
-    console.log(data);
+    console.log('Stringified Data: ', data.toString());
+    console.log('Raw inbound Data: ', data);
 
     mostRecentSearch[IPAddress] = true;
     var HeepChunks = heepParser.MemoryCrawler(data);

@@ -5,10 +5,9 @@ import RangeController from '../components/RangeController'
 import * as Actions from '../actions/actions'
 
 const mapStateToProps = (state, ownProps) => ({
-  control: state.controls[ownProps.controlID],
-  controlID: ownProps.controlID,
+  control: state.controls[ownProps.thisControl],
+  controlID: state.controls[ownProps.thisControl]['ControlID'],
   ClientID: ownProps.ClientID,
-  value: state.controls[ownProps.controlID]['CurCtrlValue'],
   url: state.url
 })
 
