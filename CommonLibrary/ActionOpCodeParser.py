@@ -11,7 +11,9 @@ class ActionOpCodeParser:
 		counter = 1
 		(numBytes,counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
 		(controlID, counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
-		(data, counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, numBytes)
+		(data, counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, numBytes-1)
+
+		return HeepClient.UpdateControlsByID(controlID, data) 
 
 		print numBytes
 		print controlID
@@ -22,6 +24,6 @@ class ActionOpCodeParser:
 		AOpCode = byteArray[0]
 
 		if AOpCode == self.SetValueOpCode :
-			self.ExecuteSetValue(byteArray, HeepClient)
+			return self.ExecuteSetValue(byteArray, HeepClient)
 
-		return
+		return 1 # No Opcode found

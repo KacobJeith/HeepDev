@@ -168,8 +168,10 @@ otherClient.ClientID = 12332
 otherClient.ClientName = 'Sloppy'
 Control1 = ControlValue()
 Control1.ControlName = 'Forge'
+Control1.ControlID = 0
 Control2 = ControlValue()
 Control2.ControlName = 'Fast'
+Control2.ControlID = 1
 otherClient.ControlList.append(Control1)
 otherClient.ControlList.append(Control2)
 otherClient.AddVertex(myVertex)
@@ -186,7 +188,9 @@ print CheckEquality(otherClient.GetIPAddress().GetIPAsString(), "192.168.1.1", "
 
 # Action Op Codes
 actionParser = ActionOpCodeParser()
-myArray = [chr(0x0A), chr(0x02), chr(0x04), chr(0x0f), chr(0x01)]
-actionParser.GetActionOpCodeFromByteArray(myArray, otherClient)
+print otherClient.ControlList[1].CurCtrlValue
+myArray = [chr(0x0A), chr(0x03), chr(0x01), chr(0x0f), chr(0x01)]
+print actionParser.GetActionOpCodeFromByteArray(myArray, otherClient)
+print otherClient.ControlList[1].CurCtrlValue
 
 
