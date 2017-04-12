@@ -5,6 +5,7 @@ sys.path.insert(0, '../../CommonLibrary')
 from ControlValue import ControlValue
 from PLCClient import PLCClient
 from OutputData import OutputData
+from ActionOpCodeParser import ActionOpCodeParser
 
 class ServerlessClientConnection :
 
@@ -28,6 +29,17 @@ class ServerlessClientConnection :
 		return 'Set Client XY'
 
 	def ParseReceivedData(self, data) :
+
+		retVal = ActionOpCodeParser().GetActionOpCodeFromByteArray(data, self.clientData)
+		if retVal == 2 :
+			print "Not an opcode!"
+		elif retVal == 1 :
+			print "Failed to execute opcode!"
+			return
+		elif retVal == 0 :
+			print "Op Code Successful"
+			return
+
 		isHeepDeviceString = 'IsHeepDevice'
 		setClientXYString = 'SetXY'
 		SetValString = 'SetVal'

@@ -5,6 +5,7 @@ from Vertex import Vertex
 from ClientMemory import ClientMemory
 from HeepMemoryUtilities import HeepMemoryUtilities
 from CommonDataTypes import HeepIPAddress
+from ActionOpCodeParser import ActionOpCodeParser
 
 def CheckEquality(first, second, testName) :
 	if first == second :
@@ -167,8 +168,10 @@ otherClient.ClientID = 12332
 otherClient.ClientName = 'Sloppy'
 Control1 = ControlValue()
 Control1.ControlName = 'Forge'
+Control1.ControlID = 0
 Control2 = ControlValue()
 Control2.ControlName = 'Fast'
+Control2.ControlID = 1
 otherClient.ControlList.append(Control1)
 otherClient.ControlList.append(Control2)
 otherClient.AddVertex(myVertex)
@@ -183,6 +186,13 @@ print CheckEquality(HeepMemoryUtilities.ConvertStringToByteArray(myString), othe
 print CheckEquality(otherClient.GetIPAddress().GetIPAsString(), "192.168.1.1", "Get client IP Address")
 
 
-
+# Action Op Codes
+actionParser = ActionOpCodeParser()
+myArray = [chr(0x0A), chr(0x03), chr(0x01), chr(0x0f), chr(0x01)]
+print CheckEquality(actionParser.GetActionOpCodeFromByteArray(myArray, otherClient), 0, 'Action Op Code Accepted By Parser')
+myArray = [chr(0x0A), chr(0x03), chr(0x02), chr(0x0f), chr(0x01)]
+print CheckEquality(actionParser.GetActionOpCodeFromByteArray(myArray, otherClient), 1, 'Action Op Code Control Not Found')
+myArray = [chr(0x51), chr(0x03), chr(0x02), chr(0x0f), chr(0x01)]
+print CheckEquality(actionParser.GetActionOpCodeFromByteArray(myArray, otherClient), 2, 'Action Op Code Not Found')
 
 

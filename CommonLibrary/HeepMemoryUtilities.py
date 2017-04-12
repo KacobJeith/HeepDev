@@ -1,6 +1,7 @@
 from ControlValue import ControlValue
 from Vertex import Vertex
 from CommonDataTypes import HeepIPAddress
+from HeepOpCodeUtilities import HeepOpCodeUtilities
 
 class MemoryData:
 
@@ -22,6 +23,8 @@ class HeepMemoryUtilities:
 	ClientNameOpCode = chr(0x06)
 	XYPositionOpCode = chr(0x07)
 	IPAddressOPCode = chr(0x08)
+
+	OpCodeUtilities = HeepOpCodeUtilities()
 
 	def __init__(self):
 		return
@@ -56,6 +59,9 @@ class HeepMemoryUtilities:
 
 		return numBytes
 
+	def GetNumberFromMemory(self, byteArray, counter, numBytes) :
+		return self.OpCodeUtilities.GetNumberFromMemory(byteArray, counter, numBytes)
+
 	def AppendClientIDToByteArray(self, byteArray, clientID) :
 		clientIDByteArray = self.GetByteArrayFromValue(clientID)
 
@@ -88,38 +94,11 @@ class HeepMemoryUtilities:
 		return clientIDAndCounter
 
 
-	def GetNumberFromMemory(self, byteArray, counter, numBytes) :
-
-		retVal = 0
-
-		byteCounter = numBytes - 1
-		for x in range(0, numBytes) :
-			curVal = ord(byteArray[counter]) << (8*byteCounter)
-			byteCounter -= 1
-			retVal += curVal
-			counter += 1
-
-		return (retVal, counter)
-
 	def GetClientIDFromMemory(self, byteArray, counter) :
 
 		clientIDAndCounter = self.GetNumberFromMemory(byteArray, counter, 4)
 
 		return clientIDAndCounter
-
-
-	def GetNumberFromMemory(self, byteArray, counter, numBytes) :
-
-		retVal = 0
-
-		byteCounter = numBytes - 1
-		for x in range(0, numBytes) :
-			curVal = ord(byteArray[counter]) << (8*byteCounter)
-			byteCounter -= 1
-			retVal += curVal
-			counter += 1
-
-		return (retVal, counter)
 
 
 	def GetConstantSizeByteArrayFromValue(self, value, size) :

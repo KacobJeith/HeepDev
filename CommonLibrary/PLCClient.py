@@ -112,6 +112,14 @@ class PLCClient:
 
 		return
 
+	def UpdateControlsByID(self, controlID, Data) :
+		for x in range(0, len(self.ControlList)) :
+			if self.ControlList[x].ControlID == controlID :
+				self.ControlList[x].CurCtrlValue = Data
+				return 0 # Return 0 for success
+
+		return 1 # Meantime return 1 for not found or error
+
 	def UpdatePositionByString(self, positionString) :
 		updatedPosition = positionString.split(',')
 		self.UpdatePositionByName( float(updatedPosition[1]), float(updatedPosition[2]))
