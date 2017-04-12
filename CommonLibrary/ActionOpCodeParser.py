@@ -15,11 +15,9 @@ class ActionOpCodeParser:
 
 		return HeepClient.UpdateControlsByID(controlID, data) 
 
-		print numBytes
-		print controlID
-		print data
-
 	def GetActionOpCodeFromByteArray(self, byteArray, HeepClient) :
+
+		print self.PrintDataAsByteArray(byteArray)
 
 		AOpCode = byteArray[0]
 
@@ -27,3 +25,10 @@ class ActionOpCodeParser:
 			return self.ExecuteSetValue(byteArray, HeepClient)
 
 		return 2 # No Opcode found
+
+	def PrintDataAsByteArray(self, byteArray) :
+		myArr = []
+		for x in range(0, len(byteArray)) :
+			myArr.append(byteArray[x])
+
+		print myArr
