@@ -26,4 +26,4 @@ class ActionOpCodeParser:
 		if AOpCode == self.SetValueOpCode :
 			return self.ExecuteSetValue(byteArray, HeepClient)
 
-		return 1 # No Opcode found
+		return 2 # No Opcode found
