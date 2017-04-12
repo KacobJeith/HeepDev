@@ -55,11 +55,13 @@ export var SendPositionToHeepDevice = (commandID, message) => {
 
 }
 
-export var SendValueToHeepDevice = (clientID, newValue) => {
+export var SendValueToHeepDevice = (clientID, controlID, newValue) => {
   var IPAddress = masterState.clients[clientID].IPAddress;
-  var clientIDBuffer = ConvertClientIDtoHexArray(clientID);
-  var message = Buffer.from([0x0A])
-  ConnectToHeepDevice(IPAddress, 5000, message)
+  var controlID = GetByteArrayFromValue(controlID);
+  var valueArray = GetByteArrayFromValue(newValue);
+  var numBytes = controlID.length + valueArray.length;
+  var messageBuffer = Buffer.from(numBytes.concat(controlID, valueArray));
+  ConnectToHeepDevice(IPAddress, 5000, messageBuffer)
 }
 
 export var GetClientIDasByteArray = (value) => {

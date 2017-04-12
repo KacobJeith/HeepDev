@@ -39,7 +39,7 @@ app.post('/api/commands', (req, res) => {
 
 app.post('/api/setValue', (req, res) => {
   
-  heepConnect.SendValueToHeepDevice(req.body.clientID, req.body.value);
+  heepConnect.SendValueToHeepDevice(req.body.clientID, req.body.controlID, req.body.value);
   
   res.end("Command sent");
 });

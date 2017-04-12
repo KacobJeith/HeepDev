@@ -3,7 +3,7 @@ import Immutable from 'immutable'
 import 'babel-polyfill'
 import $ from 'jquery'
 import * as actions from '../actions/actions'
-import sendVertexToServer from './async'
+import * as async from './async'
 
 const initialState = Immutable.Map({
   clients: {},
@@ -49,7 +49,7 @@ function vertexList(state = initialState, action) {
                                              destinationIP: action.IPAddress,
                                              destinationID: action.destinationID};
 
-      sendVertexToServer(action.url.concat('/api/commands'), vertex);
+      async.sendVertexToServer(action.url.concat('/api/commands'), vertex);
 
       return Immutable.Map(state).set(state.selectedOutput.sourceID + '.' + state.selectedOutput.outputName + '->' + action.destinationID + '.' + action.inputName, 
                                       {sourceID: state.selectedOutput.sourceID,

@@ -63,7 +63,7 @@ class RangeController extends React.Component {
 			console.log(newCommandString)
 	    }
 
-	    this.props.updateControlValue(this.props.ClientID, this.props.control['ControlName'], newVal);
+	    this.props.updateControlValue(this.props.ClientID, this.props.control['ControlID'], newVal);
 
 	    	
 	    console.log(commandQueueString);
