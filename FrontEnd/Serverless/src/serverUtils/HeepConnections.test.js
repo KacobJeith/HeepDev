@@ -41,9 +41,28 @@ describe('HeepConnections.js', () => {
 	});
 
 	describe('GetByteArrayFromValue', () => {
-		it('Returns correct byte array from input value', () => {
+		it('Returns correct byte array from large input value', () => {
 			var expectedResponse = Buffer.from([0x01, 0x02, 0x03, 0x04]);
 			assert.deepEqual(expectedResponse, connect.GetByteArrayFromValue(16909060))
+		})
+		it('Returns correct byte array from small input value', () => {
+			var expectedResponse = Buffer.from([0x01, 0x1F]);
+			assert.deepEqual(expectedResponse, connect.GetByteArrayFromValue(287))
+		})
+	})
+
+	describe('GetClientIDasBuffer', () => {
+		it('Allocates 4 bytes for every value', () => {
+			var response = connect.GetClientIDasByteArray(1);
+			assert.equal(4, response.length);
+		})
+		it('Returns correctly for 4byte response', () => {
+			var expectedResponse = [0x01, 0x02, 0x03, 0x04];
+			assert.deepEqual(expectedResponse, connect.GetClientIDasByteArray(16909060));
+		})
+		it('Returns correctly for 1byte response', () => {
+			var expectedResponse = [0x00, 0x00, 0x00, 0x01];
+			assert.deepEqual(expectedResponse, connect.GetClientIDasByteArray(1));
 		})
 	})
 

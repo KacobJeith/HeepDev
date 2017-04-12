@@ -46,7 +46,7 @@ export var SendPositionToHeepDevice = (commandID, message) => {
   var split = SplitClientFromCommand(message);
   console.log(split);
   var newLeft = split[1];
- var newTop = split[2];
+  var newTop = split[2];
 
   var newPosition = {left: parseInt(newLeft), top: parseInt(newTop)};
   console.log('Position: ', newPosition);
@@ -62,9 +62,14 @@ export var SendValueToHeepDevice = (clientID, newValue) => {
   ConnectToHeepDevice(IPAddress, 5000, message)
 }
 
-var ConvertClientIDtoByteArray = (clientID) => {
-
-  return 
+export var GetClientIDasByteArray = (value) => {
+  var clientID = GetByteArrayFromValue(value);
+  var backfill = 4 - clientID.length;
+  for (var i = 0; i < backfill; i++){
+    clientID.unshift(0x00);
+  }
+  
+  return clientID
 }
 
 export var GetByteArrayFromValue = (value) => {
@@ -73,11 +78,11 @@ export var GetByteArrayFromValue = (value) => {
 
   for (var i = 0; i < numBytes; i++){ 
     var hexVal = value % 256;
-    byteArray.unshift(hexVal.toString(16));
+    byteArray.unshift(hexVal);
     value = value >> 8;
   }
 
-  return Buffer.from(byteArray)
+  return byteArray
 }
 
 export var GetNecessaryBytes = (value) => {
