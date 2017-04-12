@@ -68,16 +68,16 @@ var ConvertClientIDtoByteArray = (clientID) => {
 }
 
 export var GetByteArrayFromValue = (value) => {
-  byteArray = [];
-  numBytes = GetNecessaryBytes(value);
+  var byteArray = [];
+  var numBytes = GetNecessaryBytes(value);
 
   for (var i = 0; i < numBytes; i++){ 
-    var hexVal = value%256;
-    byteArray.push(hexVal.toString(16));
-    value = value/256;
+    var hexVal = value % 256;
+    byteArray.unshift(hexVal.toString(16));
+    value = value >> 8;
   }
-  console.log(byteArray);
-  return byteArray
+
+  return Buffer.from(byteArray)
 }
 
 export var GetNecessaryBytes = (value) => {

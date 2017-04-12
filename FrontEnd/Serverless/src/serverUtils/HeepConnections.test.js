@@ -13,14 +13,14 @@ var emptyState = {
 describe('HeepConnections.js', () => {
 	describe('ResetMasterState', () => {
 		it('Returns an empty masterState', () => {
-		  	assert.equal(JSON.stringify(emptyState), JSON.stringify(connect.ResetMasterState()));
+		  	assert.deepEqual(emptyState, connect.ResetMasterState());
 		});
 	});
 
 	describe('GetMasterState', () => {
 		it('Returns masterState', () => {
 			connect.ResetMasterState();
-		  	assert.equal(JSON.stringify(emptyState), JSON.stringify(connect.GetCurrentMasterState()));
+		  	assert.deepEqual(emptyState, connect.GetCurrentMasterState());
 		});
 	});
 
@@ -39,5 +39,12 @@ describe('HeepConnections.js', () => {
 			assert.equal(2, connect.GetNecessaryBytes(1241));
 		})
 	});
+
+	describe('GetByteArrayFromValue', () => {
+		it('Returns correct byte array from input value', () => {
+			var expectedResponse = Buffer.from([0x01, 0x02, 0x03, 0x04]);
+			assert.deepEqual(expectedResponse, connect.GetByteArrayFromValue(16909060))
+		})
+	})
 
 });
