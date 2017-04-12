@@ -56,14 +56,25 @@ export var SendPositionToHeepDevice = (commandID, message) => {
 }
 
 export var SendValueToHeepDevice = (clientID, controlID, newValue) => {
-  var IPAddress = masterState.clients[clientID].IPAddress;
-  var controlByteArray = GetByteArrayFromValue(controlID);
-  var valueByteArray = GetByteArrayFromValue(newValue);
-  var numBytes = [controlByteArray.length + valueByteArray.length];
-  var messageBuffer = Buffer.from([0x0A].concat(numBytes, controlByteArray, valueByteArray));
-  console.log('SENDING SETVAL TO HEEP CLIENT ', clientID + ' at ' + IPAddress);
-  console.log('Data Packet: ',  messageBuffer);
-  ConnectToHeepDevice(IPAddress, 5000, messageBuffer)
+  if (CheckIfNewValue(clientID, controlID, newValue)){
+    var IPAddress = masterState.clients[clientID].IPAddress;
+    var controlByteArray = GetByteArrayFromValue(controlID);
+    var valueByteArray = GetByteArrayFromValue(newValue);
+    var numBytes = [controlByteArray.length + valueByteArray.length];
+    var messageBuffer = Buffer.from([0x0A].concat(numBytes, controlByteArray, valueByteArray));
+    console.log('SENDING SETVAL TO HEEP CLIENT ', clientID + ' at ' + IPAddress);
+    console.log('Data Packet: ',  messageBuffer);
+    ConnectToHeepDevice(IPAddress, 5000, messageBuffer)
+  }
+}
+
+var CheckIfNewValue = (clientID, controlID, newValue) => {
+  var thisControl = nameControl(clientID, controlID);
+  if (masterState.controls[thisControl].CurCtrlValue == newValue){
+    return false
+  } else {
+    return true
+  }
 }
 
 export var GetClientIDasByteArray = (value) => {
