@@ -37,54 +37,15 @@ class RangeController extends React.Component {
 
 	}
 	
-	sendCommand(url, newVal) {
-
-	    var commandQueueString = [];
-
-	    this.lastSentControlValue = newVal;
-
-	    commandQueueString.push('SetCommand'+ ':' + 
-	    							this.props.ClientID + ',' +
-	    							this.props.control['ControlName'] + ',' +
-									newVal);
-
-	    for (var i = 0; i < this.props.control.connectedControls.length; i++){
-	    	var thisStr = this.props.control.connectedControls[i];
-	    	var thisClientID = thisStr.split('.')[0];
-	    	var thisControlID = thisStr.split('.')[1]
-	    	var newCommandString = 'SetCommand'+ ':' + 
-	    							thisClientID + ',' +
-	    							thisControlID + ',' +
-									newVal;
-
-	    	this.props.updateControlValue(thisClientID, thisControlID, newVal);
-
-	    	commandQueueString.push(newCommandString);
-			console.log(newCommandString)
-	    }
-
+	sendCommand() {
+	    var newVal = this.calcNewControlValue();
 	    this.props.updateControlValue(this.props.ClientID, this.props.control['ControlID'], newVal);
-
-	    	
-	    console.log(commandQueueString);
-	    
-	    var messagePacket = {command: commandQueueString.join('')};
-	    $.ajax({
-	      url: url,
-	      type: 'POST',
-	      data: messagePacket,
-	      success: (data) => {
-	      },
-	      error: function(xhr, status, err) {
-	        console.error(url, status, err.toString());
-	        console.log('Hitting Commands sendDataToServer error')
-	      }
-	    });
-	    
 	}
 
 	calcNewControlValue() {//15
-		return Math.round((this.state['x'] - this.displayMin)/(this.displayMax-this.displayMin)*(this.props.control['HighValue']-this.props.control['LowValue']) + this.props.control['LowValue']);
+		var newVal = Math.round((this.state['x'] - this.displayMin)/(this.displayMax-this.displayMin)*(this.props.control['HighValue']-this.props.control['LowValue']) + this.props.control['LowValue']);
+		this.lastSentControlValue = newVal;
+		return newVal
 	}
 
 	onMouseDown(event) {
@@ -110,7 +71,7 @@ class RangeController extends React.Component {
 
 		this.lastPosition['left'] = event.screenX;
 		this.setState({x: setPosition});
-		this.sendCommand(this.props.url.concat('/api/commands'), this.calcNewControlValue());
+		this.sendCommand();
 	}
 
 	onWheel(event) {
@@ -133,7 +94,7 @@ class RangeController extends React.Component {
 			this.setState({x: newVal});
 		} 
 
-		this.sendCommand(this.props.url.concat('/api/commands'), this.calcNewControlValue());
+		this.sendCommand();
 	}
 
 	render() {
