@@ -190,5 +190,9 @@ print CheckEquality(otherClient.GetIPAddress().GetIPAsString(), "192.168.1.1", "
 actionParser = ActionOpCodeParser()
 myArray = [chr(0x0A), chr(0x03), chr(0x01), chr(0x0f), chr(0x01)]
 print CheckEquality(actionParser.GetActionOpCodeFromByteArray(myArray, otherClient), 0, 'Action Op Code Accepted By Parser')
+myArray = [chr(0x0A), chr(0x03), chr(0x02), chr(0x0f), chr(0x01)]
+print CheckEquality(actionParser.GetActionOpCodeFromByteArray(myArray, otherClient), 1, 'Action Op Code Control Not Found')
+myArray = [chr(0x51), chr(0x03), chr(0x02), chr(0x0f), chr(0x01)]
+print CheckEquality(actionParser.GetActionOpCodeFromByteArray(myArray, otherClient), 2, 'Action Op Code Not Found')
 
 
