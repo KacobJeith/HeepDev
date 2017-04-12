@@ -12,16 +12,18 @@ var masterState = {
   url: ''
 };
 
+var heepPort = 5000;
 var searchComplete = false;
 var mostRecentSearch = {};
 
 export var SearchForHeepDevices = () => {
   var gateway = findGateway();
+  var searchBuffer = Buffer.from([0x09, 0x00])
 
   for (var i = 1; i <= 255; i++){
     var address = joinAddress(gateway,i)
 
-    ConnectToHeepDevice(address, 5000, 'IsHeepDevice:');
+    ConnectToHeepDevice(address, heepPort, searchBuffer);
   }
 }
 
@@ -64,7 +66,7 @@ export var SendValueToHeepDevice = (clientID, controlID, newValue) => {
     var messageBuffer = Buffer.from([0x0A].concat(numBytes, controlByteArray, valueByteArray));
     console.log('SENDING SETVAL TO HEEP CLIENT ', clientID + ' at ' + IPAddress);
     console.log('Data Packet: ',  messageBuffer);
-    ConnectToHeepDevice(IPAddress, 5000, messageBuffer)
+    ConnectToHeepDevice(IPAddress, heepPort, messageBuffer)
   }
 }
 
@@ -131,7 +133,7 @@ export var SendCommandToHeepDevice = (commandID, message) => {
 
   var IPAddress = masterState.clients[clientID].IPAddress;
   console.log('Connect Message: ', sendMessage)
-  ConnectToHeepDevice(IPAddress, 5000, sendMessage);
+  ConnectToHeepDevice(IPAddress, heepPort, sendMessage);
 }
 
 export var findGateway = () => {
