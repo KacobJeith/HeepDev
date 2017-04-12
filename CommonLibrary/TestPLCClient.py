@@ -5,6 +5,7 @@ from Vertex import Vertex
 from ClientMemory import ClientMemory
 from HeepMemoryUtilities import HeepMemoryUtilities
 from CommonDataTypes import HeepIPAddress
+from ActionOpCodeParser import ActionOpCodeParser
 
 def CheckEquality(first, second, testName) :
 	if first == second :
@@ -183,6 +184,9 @@ print CheckEquality(HeepMemoryUtilities.ConvertStringToByteArray(myString), othe
 print CheckEquality(otherClient.GetIPAddress().GetIPAsString(), "192.168.1.1", "Get client IP Address")
 
 
-
+# Action Op Codes
+actionParser = ActionOpCodeParser()
+myArray = [chr(0x0A), chr(0x02), chr(0x04), chr(0x0f), chr(0x01)]
+actionParser.GetActionOpCodeFromByteArray(myArray, otherClient)
 
 
