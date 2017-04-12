@@ -17,7 +17,7 @@ class ActionOpCodeParser:
 
 	def GetActionOpCodeFromByteArray(self, byteArray, HeepClient) :
 
-		print self.PrintDataAsByteArray(byteArray)
+		self.PrintDataAsByteArray(byteArray)
 
 		AOpCode = byteArray[0]
 

@@ -188,9 +188,7 @@ print CheckEquality(otherClient.GetIPAddress().GetIPAsString(), "192.168.1.1", "
 
 # Action Op Codes
 actionParser = ActionOpCodeParser()
-print otherClient.ControlList[1].CurCtrlValue
 myArray = [chr(0x0A), chr(0x03), chr(0x01), chr(0x0f), chr(0x01)]
-print actionParser.GetActionOpCodeFromByteArray(myArray, otherClient)
-print otherClient.ControlList[1].CurCtrlValue
+print CheckEquality(actionParser.GetActionOpCodeFromByteArray(myArray, otherClient), 0, 'Action Op Code Accepted By Parser')
 
 
