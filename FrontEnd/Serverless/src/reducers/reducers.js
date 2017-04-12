@@ -89,7 +89,9 @@ function controls(state = initialState, action) {
       return Immutable.Map(state).set('selectedOutput', {sourceID: action.sourceID, outputName: action.outputName}).toJS();
     case 'UPDATE_CONTROL_VALUE':
       var a = {...state};
-      a[action.clientID + '.' + action.controlID]['CurCtrlValue'] = action.newVal;
+      var identifier = action.clientID + '.' + action.controlID;
+      a[identifier]['CurCtrlValue'] = action.newValue;
+      async.sendValueToServer(action.clientID, action.controlID, action.newValue, action.url);
       return {...state}
     case 'ADD_VERTEX':
       var newState = Immutable.Map(state).toJS();

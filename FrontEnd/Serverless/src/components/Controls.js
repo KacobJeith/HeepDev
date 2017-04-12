@@ -107,7 +107,8 @@ export default class Control extends React.Component {
 				updateControlValue: this.props.updateControlValue,
 				url: this.props.url,
 				ClientID: this.props.clientID,
-				controlID: this.props.control['ControlID']
+				controlID: this.props.controlID,
+				thisControl: this.props.controlID
 			}
 		}
 

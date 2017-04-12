@@ -5,10 +5,10 @@ import RangeController from '../components/RangeController'
 import * as Actions from '../actions/actions'
 
 const mapStateToProps = (state, ownProps) => ({
-  control: state.controls[ownProps.ClientID + '.' + ownProps.controlID],
+  control: state.controls[ownProps.controlID],
+  controlID: ownProps.controlID,
   ClientID: ownProps.ClientID,
-  value: getValue(state, ownProps),
-  ip: state.clients[ownProps.ClientID]['IPAddress'],
+  value: state.controls[ownProps.controlID]['CurCtrlValue'],
   url: state.url
 })
 
@@ -18,7 +18,3 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(mapStateToProps, mapDispatchToProps)(RangeController)
 
-
-var getValue = (state, ownProps) => {
-	return state.controls[ownProps.ClientID + '.' + ownProps.controlID]['CurCtrlValue']
-}

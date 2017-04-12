@@ -24,25 +24,27 @@ export var sendVertexToServer = (url, vertex) => {
     });
 };
 
-export var sendValueToServer = (clientID, controlID, newValue) => {
+export var sendValueToServer = (clientID, controlID, newValue, url) => {
 
   var messagePacket = {
     clientID: clientID, 
     controlID: controlID, 
-    newValue: newValue};
+    value: newValue
+  };
 
-  var url = '/api/setValue';
-    $.ajax({
-      url: url,
-      type: 'POST',
-      data: messagePacket,
-      success: (data) => {
-      },
-      error: function(xhr, status, err) {
-        console.error(url, status, err.toString());
-        console.log('Hitting Commands sendDataToServer error')
-      }
-    });
+  var url = url.concat('/api/setValue');
+    
+  $.ajax({
+    url: url,
+    type: 'POST',
+    data: messagePacket,
+    success: (data) => {
+    },
+    error: function(xhr, status, err) {
+      console.error(url, status, err.toString());
+      console.log('Hitting Commands sendDataToServer error')
+    }
+  });
 };
 
 
