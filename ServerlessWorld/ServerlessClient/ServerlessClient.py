@@ -31,14 +31,7 @@ class ServerlessClientConnection :
 	def ParseReceivedData(self, data) :
 
 		retVal = ActionOpCodeParser().GetActionOpCodeFromByteArray(data, self.clientData)
-		if retVal == 2 :
-			print "Not an opcode!"
-		elif retVal == 1 :
-			print "Failed to execute opcode!"
-			return
-		elif retVal == 0 :
-			print "Op Code Successful"
-			return
+		return retVal
 
 		isHeepDeviceString = 'IsHeepDevice'
 		setClientXYString = 'SetXY'
@@ -70,6 +63,8 @@ class ServerlessClientConnection :
 			data = client.recv(size)
 
 			returnData = self.ParseReceivedData(data)
+
+			print returnData
 
 			if returnData:
 				client.send(returnData)

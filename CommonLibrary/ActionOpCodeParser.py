@@ -25,16 +25,16 @@ class ActionOpCodeParser:
 
 	def GetActionOpCodeFromByteArray(self, byteArray, HeepClient) :
 
-		#self.PrintDataAsByteArray(byteArray)
+		self.PrintDataAsByteArray(byteArray)
 
 		AOpCode = byteArray[0]
 
 		if AOpCode == self.IsHeepDeviceOpCode :
 			return self.ExecuteIsHeepDevice(byteArray, HeepClient)
 		elif AOpCode == self.SetValueOpCode :
-			return self.ExecuteSetValue(byteArray, HeepClient)
+			return str(self.ExecuteSetValue(byteArray, HeepClient))
 
-		return 2 # No Opcode found
+		return str(2) # No Opcode found
 
 	def PrintDataAsByteArray(self, byteArray) :
 		myArr = []
