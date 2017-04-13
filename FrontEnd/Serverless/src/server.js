@@ -25,23 +25,18 @@ app.get('/api/clients', (req, res) => {
   res.json(heepConnect.GetCurrentMasterState());  
 });
 
-
-app.post('/api/commands', (req, res) => {
-  const command = req.body["command"];
-  var stripFirst = command.split(':');
-
-  if (stripFirst[0] == 'SetPosition'){
-    heepConnect.SendPositionToHeepDevice('SetXY', stripFirst[1]);
-  }
-  
-  res.end("Command sent");
-});
-
 app.post('/api/setValue', (req, res) => {
   
   heepConnect.SendValueToHeepDevice(req.body.clientID, req.body.controlID, req.body.value);
   
-  res.end("Command sent");
+  res.end("Value sent to Heep Client");
+});
+
+app.post('/api/setPosition', (req, res) => {
+  
+  heepConnect.SendPositionToHeepDevice(req.body.clientID, req.body.position);
+  
+  res.end("Client Position has been updated");
 });
 
 app.listen(app.get('port'), (error) => {
