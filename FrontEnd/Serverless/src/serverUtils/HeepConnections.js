@@ -44,16 +44,20 @@ export var ResetMasterState = () => {
   return masterState
 }
 
-export var SendPositionToHeepDevice = (commandID, message) => {
-  var split = SplitClientFromCommand(message);
-  console.log(split);
-  var newLeft = split[1];
-  var newTop = split[2];
+export var SendPositionToHeepDevice = (clientID, position) => {
 
-  var newPosition = {left: parseInt(newLeft), top: parseInt(newTop)};
-  console.log('Position: ', newPosition);
-  SetClientPositionFromBrowser(split[0], newPosition);
-  SendCommandToHeepDevice(commandID, message)
+  SetClientPositionFromBrowser(clientID, position);
+
+  var IPAddress = masterState.clients[clientID].IPAddress;
+  var xPosition = GetValueAsFixedSizeByteArray(position.left, 2);
+  var yPosition = GetValueAsFixedSizeByteArray(position.top, 2);
+  var packet = xPosition.concat(yPosition);
+  var numBytes = [packet.length];
+
+  var messageBuffer = Buffer.from([0x0B].concat(numBytes, packet));
+  console.log('Sending COP 0x0B to Heep Device' + clientID.toString() + ' at IP: ' + IPAddress);
+  console.log('Data: ', messageBuffer);
+  ConnectToHeepDevice(IPAddress, heepPort, messageBuffer)
 
 }
 
@@ -81,13 +85,18 @@ var CheckIfNewValueAndSet = (clientID, controlID, newValue) => {
 }
 
 export var GetClientIDasByteArray = (value) => {
-  var clientID = GetByteArrayFromValue(value);
-  var backfill = 4 - clientID.length;
+  var clientID = GetValueAsFixedSizeByteArray(value, 4);
+  return clientID
+}
+
+export var GetValueAsFixedSizeByteArray = (value, size) => {
+  var valueBytes = GetByteArrayFromValue(value);
+  var backfill = size - valueBytes.length;
   for (var i = 0; i < backfill; i++){
-    clientID.unshift(0x00);
+    valueBytes.unshift(0x00);
   }
   
-  return clientID
+  return valueBytes
 }
 
 export var GetByteArrayFromValue = (value) => {
@@ -113,28 +122,6 @@ export var GetNecessaryBytes = (value) => {
   }
 
   return numBytes
-}
-    
-    
-
-var SplitClientFromCommand = (message) => {
-  var splitMessage =  message.split(',');
-  var clientID = splitMessage[0];
-  var newX = splitMessage[1];
-  var newY = splitMessage[2];
-  return [clientID, newX, newY]
-}
-
-export var SendCommandToHeepDevice = (commandID, message) => {
-  //SetVal:ControlName,Value
-  //SetXY:X,Y
-  var command = message.split(',');
-  var clientID = command.shift();
-  var sendMessage = commandID + ':' + command.join(',');
-
-  var IPAddress = masterState.clients[clientID].IPAddress;
-  console.log('Connect Message: ', sendMessage)
-  ConnectToHeepDevice(IPAddress, heepPort, sendMessage);
 }
 
 export var findGateway = () => {
@@ -303,7 +290,12 @@ var SetClientPosition = (heepChunk) => {
   RecalculateControlPositions(heepChunk.clientID);
 }
 
-var SetClientPositionFromBrowser = (clientID, newPosition) => {
+var SetClientPositionFromBrowser = (clientID, position) => {
+  var newPosition = {
+    top: parseInt(position.top),
+    left: parseInt(position.left)
+  }
+
   masterState.positions[clientID].client = newPosition;
   RecalculateControlPositions(clientID);
 }

@@ -1,5 +1,4 @@
 import React from 'react';
-import $ from 'jquery';
 import Flowchart from '../containers/FlowchartContainer';
 
 export default class App extends React.Component {

@@ -11,17 +11,7 @@ export var sendVertexToServer = (url, vertex) => {
 
     const messagePacket = {command: message};
 
-  $.ajax({
-      url: url,
-      type: 'POST',
-      data: messagePacket,
-      success: (data) => {
-      },
-      error: function(xhr, status, err) {
-        console.error(url, status, err.toString());
-        console.log('Hitting sendVertexToServer error');
-      }
-    });
+  performAJAX(url, messagePacket);
 };
 
 export var sendValueToServer = (clientID, controlID, newValue, url) => {
@@ -33,7 +23,26 @@ export var sendValueToServer = (clientID, controlID, newValue, url) => {
   };
 
   var url = url.concat('/api/setValue');
-    
+  
+  performAJAX(url, messagePacket);
+  
+};
+
+export var sendPositionToServer = (clientID, position, url) => {
+
+  var messagePacket = {
+    clientID: clientID, 
+    position: position
+  };
+
+  var url = url.concat('/api/setPosition');
+  
+  performAJAX(url, messagePacket);
+  
+};
+
+
+export var performAJAX = (url, messagePacket ) => {
   $.ajax({
     url: url,
     type: 'POST',
@@ -45,6 +54,8 @@ export var sendValueToServer = (clientID, controlID, newValue, url) => {
       console.log('Hitting Commands sendDataToServer error')
     }
   });
-};
+}
+
+
 
 

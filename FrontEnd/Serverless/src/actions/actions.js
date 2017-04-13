@@ -1,10 +1,15 @@
-import $ from 'jquery'
-
 //Client
 export const positionClient = (clientID, newPosition) => ({
   type: 'POSITION_CLIENT',
   clientID,
   newPosition
+})
+
+export const sendPositionToServer = (clientID, newPosition, url) => ({
+  type: 'POSITION_CLIENT_SEND',
+  clientID,
+  newPosition,
+  url
 })
 
 //Icons
