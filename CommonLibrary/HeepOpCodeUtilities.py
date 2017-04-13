@@ -70,5 +70,9 @@ class HeepOpCodeUtilities:
 
 		return byteArray
 
+	def GetClientIDFromMemory(self, byteArray, counter) :
 
+		clientIDAndCounter = self.GetNumberFromMemory(byteArray, counter, 4)
+
+		return clientIDAndCounter
 
