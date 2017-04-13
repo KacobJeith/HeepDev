@@ -3,6 +3,52 @@ import * as parser from './HeepMemoryParser';
 
 
 describe('HeepMemoryParser', () => {
+	describe('ReadHeepResponse', () => {
+		it('Should Read an empty success ROP', () => {
+			var buffer = Buffer.from([0x10, 0x01, 0x02, 0x03, 0x04, 0x00]);
+			var expectedResult = {
+				op: 16, 
+				clientID: 16909060, 
+				packetBytes: 0,
+				success: true,
+				message: ''
+			}
+			assert.deepEqual(expectedResult, parser.ReadHeepResponse(buffer))
+		})
+		it('Should Read a success ROP with a message', () => {
+			var buffer = Buffer.from([0x10, 0x01, 0x02, 0x03, 0x04, 0x04, 0x48, 0x45, 0x45, 0x50]);
+			var expectedResult = {
+				op: 16, 
+				clientID: 16909060, 
+				packetBytes: 4,
+				success: true,
+				message: 'HEEP'
+			}
+			assert.deepEqual(expectedResult, parser.ReadHeepResponse(buffer))
+		})
+		it('Should Read an error ROP with a message', () => {
+			var buffer = Buffer.from([0x11, 0x01, 0x02, 0x03, 0x04, 0x04, 0x48, 0x45, 0x45, 0x50]);
+			var expectedResult = {
+				op: 17, 
+				clientID: 16909060, 
+				packetBytes: 4,
+				success: false,
+				message: 'HEEP'
+			}
+			assert.deepEqual(expectedResult, parser.ReadHeepResponse(buffer))
+		})
+		it('Should Read an empty error ROP', () => {
+			var buffer = Buffer.from([0x11, 0x01, 0x02, 0x03, 0x04, 0x00]);
+			var expectedResult = {
+				op: 17, 
+				clientID: 16909060, 
+				packetBytes: 0,
+				success: false,
+				message: ''
+			}
+			assert.deepEqual(expectedResult, parser.ReadHeepResponse(buffer))
+		})
+	})
 	describe('MemoryCrawler', () => {
 		it('Should return array of Heep objects', () => {
 			var buffer = Buffer.from([0x01, 0x01, 0x02, 0x03, 0x04, 0x01, 0x01, 0x02, 0x01, 0x02, 0x03, 0x04, 0x09, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x44, 0x4D, 0x44]);
@@ -28,7 +74,33 @@ describe('HeepMemoryParser', () => {
 				  }
 			}];
 			
-		  	assert.equal(JSON.stringify(expectedResult), JSON.stringify(parser.MemoryCrawler(buffer)));
+		  	assert.deepEqual(expectedResult, parser.MemoryCrawler(buffer));
+		});
+		it('Should return array of Heep objects', () => {
+			var buffer = Buffer.from([0x01, 0x01, 0x02, 0x03, 0x04, 0x01, 0x01, 0x02, 0x01, 0x02, 0x03, 0x04, 0x09, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x44, 0x4D, 0x44]);
+			var expectedResult = [
+			{
+				op: 1,
+			    clientID: 16909060,
+			    packetBytes: 1,
+			    version: 1
+			}, 
+			{
+				op: 2,
+			    clientID: 16909060,
+			    packetBytes: 9,
+			    control: {
+				    ControlID: 2,
+				    ControlValueType: 3,
+				    ControlDirection: 4,
+				    HighValue: 6,
+				    LowValue: 5,
+				    CurCtrlValue: 7,
+				    ControlName: 'DMD'
+				  }
+			}];
+			
+		  	assert.deepEqual(expectedResult, parser.MemoryCrawler(buffer));
 		});
 	});
 	describe('ReadFirmwareVersion', () => {
@@ -76,7 +148,7 @@ describe('HeepMemoryParser', () => {
 		it('Should Return the correct Position from 4 input bytes', () => {
 			var buffer = Buffer.from([0x04, 0x01, 0x02, 0x03, 0x04]);
 			var expectedResult = {left: 258, top: 772};
-		  	assert.equal(JSON.stringify(expectedResult), JSON.stringify(parser.ReadPosition(buffer)));
+		  	assert.deepEqual(expectedResult, parser.ReadPosition(buffer));
 		});
 	});
 
@@ -105,7 +177,7 @@ describe('HeepMemoryParser', () => {
 				rxIP: '192.168.1.200'
 			}
 
-			assert.equal(JSON.stringify(expectedResult), JSON.stringify(parser.ReadVertex(buffer)));
+			assert.deepEqual(expectedResult, parser.ReadVertex(buffer));
 		});
 	});
 
