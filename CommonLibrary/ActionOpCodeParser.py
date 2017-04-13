@@ -1,4 +1,5 @@
 from HeepOpCodeUtilities import HeepOpCodeUtilities
+from Vertex import Vertex
 
 class ResponseOpCodeParser:
 
@@ -41,7 +42,7 @@ class ActionOpCodeParser:
 	IsHeepDeviceOpCode = chr(0x09)
 	SetValueOpCode = chr(0x0A)
 	SetPositionOpCode = chr(0x0B)
-	VertexSetOpCode = chr(0x0C)
+	SetVertexOpCode = chr(0x0C)
 
 	def __init__(self) :
 		return
@@ -79,7 +80,29 @@ class ActionOpCodeParser:
 		return ResponseOpCodeParser().GetSuccessROPBuffer(HeepClient, "XY Position Set to (" + str(xValue) + ',' + str(yValue) + ')')
 
 	def ExecuteAddVertex(self, byteArray, HeepClient) :
-		return
+		counter = 1
+		(numBytes,counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
+		(TxID, counter) = HeepOpCodeUtilities().GetClientIDFromMemory(byteArray, counter)
+		(RxID, counter) = HeepOpCodeUtilities().GetClientIDFromMemory(byteArray, counter)
+		(TxControl, counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
+		(RxControl, counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
+
+		(IPOct1,counter) = self.GetNumberFromMemory(byteArray, counter, 1)
+		(IPOct2,counter) = self.GetNumberFromMemory(byteArray, counter, 1)
+		(IPOct3,counter) = self.GetNumberFromMemory(byteArray, counter, 1)
+		(IPOct4,counter) = self.GetNumberFromMemory(byteArray, counter, 1)
+		destinationIP = HeepIPAddress(IPOct1, IPOct2, IPOct3, IPOct4)
+
+		NewVertex = Vertex()
+		NewVertex.sourceID = TxID
+		NewVertex.outputID = TxControl
+		NewVertex.destinationID = RxID
+		NewVertex.inputID = RxControl
+		NewVertex.destinationIP = destinationIP
+
+		HeepClient.AddVertex(NewVertex)
+
+		return ResponseOpCodeParser().GetSuccessROPBuffer(HeepClient, "Vertex Set")
 
 	def GetActionOpCodeFromByteArray(self, byteArray, HeepClient) :
 
@@ -93,6 +116,8 @@ class ActionOpCodeParser:
 			return self.ExecuteSetValue(byteArray, HeepClient)
 		elif AOpCode == self.SetPositionOpCode :
 			return self.ExecuteSetPosition(byteArray, HeepClient)
+		elif AOpCode == self.SetVertexOpCode :
+			return self.ExecuteAddVertex(byteArray, HeepClient)
 
 		return ResponseOpCodeParser().GetErrorROPBuffer(HeepClient, "HAPI COP Not Found") # No Opcode found
 
