@@ -2,10 +2,18 @@ from HeepOpCodeUtilities import HeepOpCodeUtilities
 
 class ActionOpCodeParser:
 
+	IsHeepDeviceOpCode = chr(0x09)
 	SetValueOpCode = chr(0x0A)
+
 
 	def __init__(self) :
 		return
+
+	def ExecuteIsHeepDevice(self, byteArray, HeepClient) :
+		counter = 1
+		(numBytes,counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1) # Always 0 with IsHeepDevice COP
+
+		return HeepClient.GetClientString()
 
 	def ExecuteSetValue(self, byteArray, HeepClient) :
 		counter = 1
@@ -21,7 +29,9 @@ class ActionOpCodeParser:
 
 		AOpCode = byteArray[0]
 
-		if AOpCode == self.SetValueOpCode :
+		if AOpCode == self.IsHeepDeviceOpCode :
+			return self.ExecuteIsHeepDevice(byteArray, HeepClient)
+		elif AOpCode == self.SetValueOpCode :
 			return self.ExecuteSetValue(byteArray, HeepClient)
 
 		return 2 # No Opcode found

@@ -188,11 +188,13 @@ print CheckEquality(otherClient.GetIPAddress().GetIPAsString(), "192.168.1.1", "
 
 # Action Op Codes
 actionParser = ActionOpCodeParser()
-myArray = [chr(0x0A), chr(0x03), chr(0x01), chr(0x0f), chr(0x01)]
+myArray = [chr(0x0A), chr(0x02), chr(0x01), chr(0x0f)]
 print CheckEquality(actionParser.GetActionOpCodeFromByteArray(myArray, otherClient), 0, 'Action Op Code Accepted By Parser')
-myArray = [chr(0x0A), chr(0x03), chr(0x02), chr(0x0f), chr(0x01)]
+myArray = [chr(0x0A), chr(0x02), chr(0x02), chr(0x0f)]
 print CheckEquality(actionParser.GetActionOpCodeFromByteArray(myArray, otherClient), 1, 'Action Op Code Control Not Found')
-myArray = [chr(0x51), chr(0x03), chr(0x02), chr(0x0f), chr(0x01)]
+myArray = [chr(0x51), chr(0x02), chr(0x02), chr(0x0f)]
 print CheckEquality(actionParser.GetActionOpCodeFromByteArray(myArray, otherClient), 2, 'Action Op Code Not Found')
+myArray = [chr(0x09), chr(0x00)]
+print CheckEquality(actionParser.GetActionOpCodeFromByteArray(myArray, otherClient), otherClient.GetClientString(), 'Action Op Code : Is Heep Device')
 
 
