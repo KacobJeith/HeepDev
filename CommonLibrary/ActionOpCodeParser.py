@@ -40,6 +40,7 @@ class ActionOpCodeParser:
 
 	IsHeepDeviceOpCode = chr(0x09)
 	SetValueOpCode = chr(0x0A)
+	SetPositionOpCode = chr(0x0B)
 
 	def __init__(self) :
 		return
@@ -67,6 +68,16 @@ class ActionOpCodeParser:
 		else :
 			return ResponseOpCodeParser().GetErrorROPBuffer(HeepClient, "Control Not Found")
 
+	def ExecuteSetPosition(self, byteArray, HeepClient) :
+		counter = 1
+		(numBytes,counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
+		(xValue, counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 2)
+		(yValue, counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 2)
+		HeepClient.SetClientFrontEndXY(xValue, yValue)
+
+		return ResponseOpCodeParser().GetSuccessROPBuffer(HeepClient, "XY Position Set")
+
+
 	def GetActionOpCodeFromByteArray(self, byteArray, HeepClient) :
 
 		#self.PrintDataAsByteArray(byteArray)
@@ -76,7 +87,9 @@ class ActionOpCodeParser:
 		if AOpCode == self.IsHeepDeviceOpCode :
 			return self.ExecuteIsHeepDevice(byteArray, HeepClient)
 		elif AOpCode == self.SetValueOpCode :
-			return str(self.ExecuteSetValue(byteArray, HeepClient))
+			return self.ExecuteSetValue(byteArray, HeepClient)
+		elif AOpCode == self.SetPositionOpCode :
+			return self.ExecuteSetPosition(byteArray, HeepClient)
 
 		return ResponseOpCodeParser().GetErrorROPBuffer(HeepClient, "HAPI COP Not Found") # No Opcode found
 
