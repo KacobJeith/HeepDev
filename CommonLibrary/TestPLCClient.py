@@ -218,3 +218,5 @@ SuccessString = HeepOpCodeUtilities().GetStringFromByteArray(SuccessArray)
 print CheckEquality(actionParser.GetActionOpCodeFromByteArray(myArray, otherClient),SuccessString, 'Action Op Code: Set XY 1')
 print CheckEquality(otherClient.GetFrontEndXY(), (257,528), 'Action Op Code: Set XY 2')
 
+myArray = [chr(0x0C), chr(0x04), chr(0x01), chr(0x01), chr(0x02), chr(0x10), chr(0x02), chr(0x05), chr(0x50), chr(0x02), chr(0x02), chr(0x01), chr(192), chr(168), chr(0x01), chr(0x01)]
+print actionParser.GetActionOpCodeFromByteArray(myArray, otherClient)

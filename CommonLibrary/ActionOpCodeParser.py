@@ -1,5 +1,6 @@
 from HeepOpCodeUtilities import HeepOpCodeUtilities
 from Vertex import Vertex
+from CommonDataTypes import HeepIPAddress
 
 class ResponseOpCodeParser:
 
@@ -87,10 +88,10 @@ class ActionOpCodeParser:
 		(TxControl, counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
 		(RxControl, counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
 
-		(IPOct1,counter) = self.GetNumberFromMemory(byteArray, counter, 1)
-		(IPOct2,counter) = self.GetNumberFromMemory(byteArray, counter, 1)
-		(IPOct3,counter) = self.GetNumberFromMemory(byteArray, counter, 1)
-		(IPOct4,counter) = self.GetNumberFromMemory(byteArray, counter, 1)
+		(IPOct1,counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
+		(IPOct2,counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
+		(IPOct3,counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
+		(IPOct4,counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
 		destinationIP = HeepIPAddress(IPOct1, IPOct2, IPOct3, IPOct4)
 
 		NewVertex = Vertex()
