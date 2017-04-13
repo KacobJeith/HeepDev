@@ -164,16 +164,8 @@ var ConnectToHeepDevice = (IPAddress, port, message) => {
   });
 
   sock.on('data', (data) => {
-    console.log('Device found at address: ', IPAddress + ':' + port.toString());
-    console.log('Stringified Data: ', data.toString());
-    console.log('Raw inbound Data: ', data);
+    ConsumeHeepResponse(data, IPAddress, port);
 
-    mostRecentSearch[IPAddress] = true;
-    var HeepChunks = heepParser.MemoryCrawler(data);
-
-    if (HeepChunks != false){
-      AddMemoryChunksToMasterState(HeepChunks, IPAddress)
-    }
     sock.end();
   });
 
@@ -182,6 +174,33 @@ var ConnectToHeepDevice = (IPAddress, port, message) => {
   sock.on('error', () => {
     mostRecentSearch[IPAddress] = false;
   });
+}
+
+var ConsumeHeepResponse = (data, IPAddress, port) => {
+  console.log('Device found at address: ', IPAddress + ':' + port.toString());
+  console.log('Stringified Data: ', data.toString());
+  console.log('Raw inbound Data: ', data);
+
+  mostRecentSearch[IPAddress] = true;
+  var HeepResponse = heepParser.ReadHeepResponse(data);
+
+  if (HeepResponse != false){
+    if (HeepResponse.op == 0x0F) {
+      //Memory Dump
+      AddMemoryChunksToMasterState(HeepResponse.memory, IPAddress);
+
+    } else if ( HeepResponse.op == 0x10) {
+      //Success
+
+    } else if (HeepResponse.op == 0x11){
+      //Error 
+
+    } else {
+      console.error('Did not receive a known Response Code from Heep Device');
+    }
+  } else {
+    console.error('Heep Response Invalid');
+  }
 }
 
 var AddMemoryChunksToMasterState = (heepChunks, IPAddress) => {

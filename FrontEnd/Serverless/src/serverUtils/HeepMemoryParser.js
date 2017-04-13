@@ -1,6 +1,38 @@
+export var ReadHeepResponse = (buffer) => {
+  var it = 0;
+  var packetBytes = ReadSizeOfPacket(buffer, it);
+  var byteIndicatorBytes = packetBytes[1];
+
+  var thisResponse = {
+    op: buffer[0],
+    clientID: ReadClientID(buffer.slice(it + 1,it + 5)),
+    packetBytes: packetBytes[0]
+  };
+
+  var dataPacket = buffer.slice(5 + byteIndicatorBytes);
+
+  if (buffer[0] == 0x0F) {
+    //Memory Dump
+    thisResponse.memory = MemoryCrawler(dataPacket)
+
+  } else if (buffer[0] == 0x10) {
+    //Success, with optional text
+
+  } else if (buffer[0] == 0x11){
+    //Error, with optional text
+
+  } else {
+    return false
+  }
+
+  return thisResponse
+}
+
+
 export var MemoryCrawler = (buffer) => {
   var it = 0;
   var data = [];
+  console.log('CRAWLING: ', buffer)
 
   while (it < buffer.length) {
     var nextBlock = GetNextBlock(buffer, it);
@@ -63,7 +95,7 @@ var GetNextBlock = (buffer, it) => {
     thisBlock.position = ReadPosition(thisBlockData);
 
   } else if (thisBlock.op == 0x08) {
-    //ClientIP
+    //ClientIP 
 
   } else {
     return false
