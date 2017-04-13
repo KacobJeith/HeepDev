@@ -32,52 +32,9 @@ class HeepMemoryUtilities:
 	###########################################################
 	########### UTILITY FUNCTIONS #############################
 	###########################################################
-	def ConvertStringToByteArray(self, string) :
-		byteArray = []
-		for x in range(0, len(string)) :
-			byteArray.append(string[x])
-
-		return byteArray
-
-	def GetByteArrayFromValue(self, value) :
-		byteArray = []
-		numBytes = self.GetNecessaryBytes(value)
-		for x in range(0, numBytes) :
-			byteArray.insert(0, chr(value%256))
-			value = value/256
-
-		return byteArray
-
-	def GetNecessaryBytes(self, value) :
-		numBytes = 1
-
-		value = value / 256
-
-		while value > 0 :
-			numBytes += 1
-			value = value / 256
-
-		return numBytes
 
 	def GetNumberFromMemory(self, byteArray, counter, numBytes) :
 		return self.OpCodeUtilities.GetNumberFromMemory(byteArray, counter, numBytes)
-
-	def AppendClientIDToByteArray(self, byteArray, clientID) :
-		clientIDByteArray = self.GetByteArrayFromValue(clientID)
-
-		for x in range(len(clientIDByteArray), 4) :
-			byteArray.append(chr(0x00))
-
-		for x in range(0, len(clientIDByteArray)) :
-			byteArray.append(clientIDByteArray[x])
-
-		return byteArray
-
-	def AppendStringToByteArray(self, byteArray, theString) :
-		for x in range(0, len(theString)) :
-			byteArray.append(theString[x])
-
-		return byteArray
 
 	def SkipOpCode(self, byteArray, counter) :
 		counter += 5 # This skips the Client ID and lands on the bytes to skip
@@ -104,22 +61,14 @@ class HeepMemoryUtilities:
 	def GetConstantSizeByteArrayFromValue(self, value, size) :
 		byteArray = []
 
-		numBytes = self.GetNecessaryBytes(value)
+		numBytes = HeepOpCodeUtilities().GetNecessaryBytes(value)
 
-		byteArray = self.GetByteArrayFromValue(value)
+		byteArray = HeepOpCodeUtilities().GetByteArrayFromValue(value)
 
 		for x in range(0, size-numBytes) :
 			byteArray.insert(0, chr(0x00))
 
 		return byteArray
-
-	def GetStringFromByteArray(self, byteArray) :
-		myString = ""
-
-		for x in range(0, len(byteArray)) :
-			myString = myString + str(byteArray[x])
-
-		return myString
 
 
 	##############################################################
@@ -129,9 +78,9 @@ class HeepMemoryUtilities:
 	def AppendVertexDataToByteArray(self, byteArray, vertex) :
 
 		byteArray.append(self.VertexOpCode)
-		byteArray = self.AppendClientIDToByteArray(byteArray, vertex.sourceID)
+		byteArray = HeepOpCodeUtilities().AppendClientIDToByteArray(byteArray, vertex.sourceID)
 		byteArray.append(chr(10))
-		byteArray = self.AppendClientIDToByteArray(byteArray, vertex.destinationID)
+		byteArray = HeepOpCodeUtilities().AppendClientIDToByteArray(byteArray, vertex.destinationID)
 		byteArray.append(chr(vertex.outputID))
 		byteArray.append(chr(vertex.inputID))
 
@@ -193,7 +142,7 @@ class HeepMemoryUtilities:
 
 	def AppendIPAddressToByteArray(self, byteArray, clientID, IPAddress) :
 		byteArray.append(self.IPAddressOPCode)
-		byteArray = self.AppendClientIDToByteArray(byteArray, clientID)
+		byteArray = HeepOpCodeUtilities().AppendClientIDToByteArray(byteArray, clientID)
 		byteArray.append(chr(4))
 
 		IPArray = IPAddress.GetIPAsByteArray()
@@ -243,7 +192,7 @@ class HeepMemoryUtilities:
 
 	def AppendIconIDToByteArray(self, byteArray, clientID, IconID) :
 		byteArray.append(self.IconIDOpCode)
-		byteArray = self.AppendClientIDToByteArray(byteArray, clientID)
+		byteArray = HeepOpCodeUtilities().AppendClientIDToByteArray(byteArray, clientID)
 		byteArray.append(chr(1))
 		byteArray.append(chr(IconID))
 
@@ -285,7 +234,7 @@ class HeepMemoryUtilities:
 
 	def AppendIconDataToByteArray(self, byteArray, clientID, IconData) :
 		byteArray.append(self.IconDataOpCode)
-		byteArray = self.AppendClientIDToByteArray(byteArray, clientID)
+		byteArray = HeepOpCodeUtilities().AppendClientIDToByteArray(byteArray, clientID)
 		byteArray.append(chr(len(IconData))) # Expect Icon Data in byte array form
 		byteArray = self.AppendByteArrayToByteArray(byteArray, IconData) # Expect Icon Data in byte array form
 
@@ -332,8 +281,8 @@ class HeepMemoryUtilities:
 	def AppendClientDataToByteArray(self, byteArray, clientID) :
 
 		byteArray.append(self.ClientDataOpCode)
-		byteArray = self.AppendClientIDToByteArray(byteArray, clientID)
-		versionByteArray = self.GetByteArrayFromValue(self.OpCodeVersion)
+		byteArray = HeepOpCodeUtilities().AppendClientIDToByteArray(byteArray, clientID)
+		versionByteArray = HeepOpCodeUtilities().GetByteArrayFromValue(self.OpCodeVersion)
 		byteArray.append(chr(len(versionByteArray)))
 
 		for x in range(0, len(versionByteArray)) :
@@ -343,7 +292,7 @@ class HeepMemoryUtilities:
 
 	def AppendClientXYToByteArray(self, byteArray, xValue, yValue, clientID) :
 		byteArray.append(self.XYPositionOpCode)
-		byteArray = self.AppendClientIDToByteArray(byteArray, clientID)
+		byteArray = HeepOpCodeUtilities().AppendClientIDToByteArray(byteArray, clientID)
 		byteArray.append(chr(0x04)) # 4 bytes total in XY info
 		byteArray = self.AppendByteArrayToByteArray(byteArray, self.GetConstantSizeByteArrayFromValue(xValue, 2))
 		byteArray = self.AppendByteArrayToByteArray(byteArray, self.GetConstantSizeByteArrayFromValue(yValue, 2))
@@ -409,9 +358,9 @@ class HeepMemoryUtilities:
 
 	def SetClientName(self, byteArray, clientName, clientID) :
 		byteArray.append(self.ClientNameOpCode)
-		byteArray = self.AppendClientIDToByteArray(byteArray, clientID)
+		byteArray = HeepOpCodeUtilities().AppendClientIDToByteArray(byteArray, clientID)
 		byteArray.append(chr(len(clientName)))
-		byteArray = self.AppendStringToByteArray(byteArray, clientName)
+		byteArray = HeepOpCodeUtilities().AppendStringToByteArray(byteArray, clientName)
 
 		return byteArray
 
@@ -571,7 +520,7 @@ class HeepMemoryUtilities:
 
 	def AppendControlDataToByteArray(self, byteArray, clientID, control) :
 		byteArray.append(self.ControlDataOpCode)
-		byteArray = self.AppendClientIDToByteArray(byteArray, clientID)
+		byteArray = HeepOpCodeUtilities().AppendClientIDToByteArray(byteArray, clientID)
 
 		bytesPerArgument = self.GetBytesPerArgumentForControlType(control.ControlValueType)
 
@@ -586,6 +535,6 @@ class HeepMemoryUtilities:
 		byteArray.append(chr(control.HighValue))
 		byteArray.append(chr(control.CurCtrlValue))
 
-		byteArray = self.AppendStringToByteArray(byteArray, control.ControlName)
+		byteArray = HeepOpCodeUtilities().AppendStringToByteArray(byteArray, control.ControlName)
 
 		return byteArray

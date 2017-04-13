@@ -6,6 +6,7 @@ from ClientMemory import ClientMemory
 from HeepMemoryUtilities import HeepMemoryUtilities
 from CommonDataTypes import HeepIPAddress
 from ActionOpCodeParser import ActionOpCodeParser
+from HeepOpCodeUtilities import HeepOpCodeUtilities
 
 def CheckEquality(first, second, testName) :
 	if first == second :
@@ -104,15 +105,15 @@ print CheckEquality( deletionClient.GetVerticesString(), '', 'Remove Only Vertex
 ClientMemory = ClientMemory()
 HeepMemoryUtilities = HeepMemoryUtilities()
 byteArray = []
-print CheckEquality( HeepMemoryUtilities.GetNecessaryBytes(255), 1, 'Client Memory Get Bytes 1')
-print CheckEquality( HeepMemoryUtilities.GetNecessaryBytes(256), 2, 'Client Memory Get Bytes 2')
-print CheckEquality( HeepMemoryUtilities.GetNecessaryBytes(65535), 2, 'Client Memory Get Bytes 3')
-print CheckEquality( HeepMemoryUtilities.GetNecessaryBytes(65536), 3, 'Client Memory Get Bytes 4')
-print CheckEquality( HeepMemoryUtilities.GetNecessaryBytes(4), 1, 'Client Memory Get Bytes 5')
+print CheckEquality( HeepOpCodeUtilities().GetNecessaryBytes(255), 1, 'Client Memory Get Bytes 1')
+print CheckEquality( HeepOpCodeUtilities().GetNecessaryBytes(256), 2, 'Client Memory Get Bytes 2')
+print CheckEquality( HeepOpCodeUtilities().GetNecessaryBytes(65535), 2, 'Client Memory Get Bytes 3')
+print CheckEquality( HeepOpCodeUtilities().GetNecessaryBytes(65536), 3, 'Client Memory Get Bytes 4')
+print CheckEquality( HeepOpCodeUtilities().GetNecessaryBytes(4), 1, 'Client Memory Get Bytes 5')
 
-print CheckEquality( HeepMemoryUtilities.GetByteArrayFromValue(256), [chr(0x01), chr(0x00)], 'Client Memory Get Byte Array From Value 1')
-print CheckEquality( HeepMemoryUtilities.GetByteArrayFromValue(255), [chr(0xff)], 'Client Memory Get Byte Array From Value 2')
-print CheckEquality( HeepMemoryUtilities.GetByteArrayFromValue(65536), [chr(0x01), chr(0x00), chr(0x00)], 'Client Memory Get Byte Array From Value 3')
+print CheckEquality( HeepOpCodeUtilities().GetByteArrayFromValue(256), [chr(0x01), chr(0x00)], 'Client Memory Get Byte Array From Value 1')
+print CheckEquality( HeepOpCodeUtilities().GetByteArrayFromValue(255), [chr(0xff)], 'Client Memory Get Byte Array From Value 2')
+print CheckEquality( HeepOpCodeUtilities().GetByteArrayFromValue(65536), [chr(0x01), chr(0x00), chr(0x00)], 'Client Memory Get Byte Array From Value 3')
 
 print CheckEquality( HeepMemoryUtilities.GetConstantSizeByteArrayFromValue(1, 2), [chr(0x00), chr(0x01)], 'Get Constant Size Byte Array from Value 1') 
 print CheckEquality( HeepMemoryUtilities.GetConstantSizeByteArrayFromValue(300, 2), [chr(0x01), chr(0x2C)], 'Get Constant Size Byte Array from Value 2') 
@@ -182,17 +183,32 @@ otherClient.SetIconInformation(1, [chr(3), chr(4), chr(12), chr(41)])
 otherClient.SetServerless(1)
 myString = otherClient.GetClientString()
 
-print CheckEquality(HeepMemoryUtilities.ConvertStringToByteArray(myString), otherClient.GetClientByteArray(), "Get Client String OpCodes")
+print CheckEquality(HeepOpCodeUtilities().ConvertStringToByteArray(myString), otherClient.GetClientByteArray(), "Get Client String OpCodes")
 print CheckEquality(otherClient.GetIPAddress().GetIPAsString(), "192.168.1.1", "Get client IP Address")
 
 
 # Action Op Codes
 actionParser = ActionOpCodeParser()
-myArray = [chr(0x0A), chr(0x03), chr(0x01), chr(0x0f), chr(0x01)]
-print CheckEquality(actionParser.GetActionOpCodeFromByteArray(myArray, otherClient), 0, 'Action Op Code Accepted By Parser')
-myArray = [chr(0x0A), chr(0x03), chr(0x02), chr(0x0f), chr(0x01)]
-print CheckEquality(actionParser.GetActionOpCodeFromByteArray(myArray, otherClient), 1, 'Action Op Code Control Not Found')
-myArray = [chr(0x51), chr(0x03), chr(0x02), chr(0x0f), chr(0x01)]
-print CheckEquality(actionParser.GetActionOpCodeFromByteArray(myArray, otherClient), 2, 'Action Op Code Not Found')
+myArray = [chr(0x0A), chr(0x02), chr(0x01), chr(0x0f)]
+SuccessArray = [chr(0x10), chr(0x00), chr(0x00), chr(0x30), chr(0x2c), chr(len("Value Set"))]
+SuccessArray = HeepOpCodeUtilities().AppendStringToByteArray(SuccessArray, "Value Set")
+SuccessString = HeepOpCodeUtilities().GetStringFromByteArray(SuccessArray)
+print CheckEquality(actionParser.GetActionOpCodeFromByteArray(myArray, otherClient),SuccessString, 'Action Op Code Accepted By Parser')
+
+myArray = [chr(0x0A), chr(0x02), chr(0x02), chr(0x0f)]
+ErrorArray = [chr(0x11), chr(0x00), chr(0x00), chr(0x30), chr(0x2c), chr(len("Control Not Found"))]
+ErrorArray = HeepOpCodeUtilities().AppendStringToByteArray(ErrorArray, "Control Not Found")
+ErrorString = HeepOpCodeUtilities().GetStringFromByteArray(ErrorArray)
+print CheckEquality(actionParser.GetActionOpCodeFromByteArray(myArray, otherClient), ErrorString, 'Action Op Code Control Not Found')
+
+myArray = [chr(0x51), chr(0x02), chr(0x02), chr(0x0f)]
+ErrorArray = [chr(0x11), chr(0x00), chr(0x00), chr(0x30), chr(0x2c), chr(len("HAPI COP Not Found"))]
+ErrorArray = HeepOpCodeUtilities().AppendStringToByteArray(ErrorArray, "HAPI COP Not Found")
+ErrorString = HeepOpCodeUtilities().GetStringFromByteArray(ErrorArray)
+print CheckEquality(actionParser.GetActionOpCodeFromByteArray(myArray, otherClient), ErrorString, 'Action Op Code Not Found')
+
+myArray = [chr(0x09), chr(0x00)]
+begginingROPString = HeepOpCodeUtilities().GetStringFromByteArray([chr(0x0F), chr(0x00), chr(0x00), chr(0x30), chr(0x2c), chr(len(otherClient.GetClientString()))])
+print CheckEquality(actionParser.GetActionOpCodeFromByteArray(myArray, otherClient), begginingROPString+otherClient.GetClientString(), 'Action Op Code : Is Heep Device')
 
 

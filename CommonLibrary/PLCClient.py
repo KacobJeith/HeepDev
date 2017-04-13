@@ -5,6 +5,7 @@ from OutputData import OutputData
 from ClientMemory import ClientMemory
 from HeepMemoryUtilities import HeepMemoryUtilities
 from CommonDataTypes import HeepIPAddress
+from HeepOpCodeUtilities import HeepOpCodeUtilities
 
 class PLCClient:
 
@@ -142,7 +143,7 @@ class PLCClient:
 	def GetClientString(self):
 		
 		byteArray = self.GetClientByteArray()
-		return self.MemoryUtilities.GetStringFromByteArray(byteArray)
+		return HeepOpCodeUtilities().GetStringFromByteArray(byteArray)
 		
 	def GetClientByteArray(self) :
 		byteArray = []
@@ -158,7 +159,7 @@ class PLCClient:
 
 	def SetClientFromString(self, clientString) :
 
-		byteArray = self.MemoryUtilities.ConvertStringToByteArray(clientString)
+		byteArray = HeepOpCodeUtilities().ConvertStringToByteArray(clientString)
 		self.ControlList = self.MemoryUtilities.GetClientControlValue(byteArray, self.ClientID)
 
 		# self.ControlList = []

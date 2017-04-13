@@ -8,10 +8,19 @@ def SendDataToIP(IP, port, data) :
 		data = sock.recv(1024)
 		return data
 
-myArray = [chr(0x0A), chr(0x02), chr(0x01), chr(0x01)]
+def PrintDataAsByteArray(byteArray) :
+	myArr = []
+	for x in range(0, len(byteArray)) :
+		myArr.append(byteArray[x])
+
+	print myArr
+
+myArray = [chr(0x0A), chr(0x02), chr(0x05), chr(0x01)]
 
 myString = ""
 for x in range(0, len(myArray)) :
 	myString += myArray[x]
 
-print SendDataToIP("192.168.1.101", 5000, myString)
+data = SendDataToIP("192.168.1.101", 5000, myString)
+
+PrintDataAsByteArray(data)
