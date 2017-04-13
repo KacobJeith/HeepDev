@@ -74,10 +74,14 @@ function positions(state = initialState, action) {
         newState[id] = {top: action.newPosition['top'] + state[action.clientID][id]['top'], 
                         left: action.newPosition['left'] + state[action.clientID][id]['left']}
       }
-
       return {...state,
               [action.clientID]: newState
             }
+    case 'POSITION_CLIENT_SEND':
+      var positionToSend = state[action.clientID].client;
+      async.sendPositionToServer(action.clientID, positionToSend, action.url);
+      return state
+
     default:
       return state
   }

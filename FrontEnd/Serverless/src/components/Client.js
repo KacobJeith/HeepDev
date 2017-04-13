@@ -1,5 +1,4 @@
 import React from 'react';
-import $ from 'jquery';
 import Control from '../containers/ControlContainer';
 import DynamicIcon from '../containers/IconContainer';
 
@@ -52,27 +51,9 @@ class Client extends React.Component {
 
 	}
 
-	sendPositionToServer(url) {
+	sendPositionToServer() {
 
-		const message = 'SetPosition' + ':' + 
-						this.props.client['ClientID'] + ',' +
-						this.props.position.left + ',' + 
-						this.props.position.top;
-
-    	const messagePacket = {command: message};
-
-		$.ajax({
-	      url: this.props.url.concat('/api/commands'),
-	      type: 'POST',
-	      data: messagePacket,
-	      success: (data) => {
-	      	console.log(message);
-	      },
-	      error: function(xhr, status, err) {
-	        console.error(this.props.url.concat('/api/commands'), status, err.toString());
-	        console.log('Hitting sendVertexToServer error');
-	      }
-	    });
+		this.props.sendPositionToServer(this.props.client.ClientID, this.lastPosition, this.props.url);
 	}
 
 	render() {

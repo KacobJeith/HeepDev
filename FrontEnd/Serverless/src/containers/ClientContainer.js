@@ -1,7 +1,7 @@
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import Client from '../components/Client'
-import {positionClient} from '../actions/actions'
+import * as Actions from '../actions/actions'
 import React from 'react'
 
 const mapStateToProps = (state, ownProps) => ({
@@ -13,7 +13,7 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({positionClient}, dispatch)
+  return bindActionCreators(Actions, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Client);
