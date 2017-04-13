@@ -78,7 +78,7 @@ class ActionOpCodeParser:
 		elif AOpCode == self.SetValueOpCode :
 			return str(self.ExecuteSetValue(byteArray, HeepClient))
 
-		return str(2) # No Opcode found
+		return ResponseOpCodeParser().GetErrorROPBuffer(HeepClient, "HAPI COP Not Found") # No Opcode found
 
 	def PrintDataAsByteArray(self, byteArray) :
 		myArr = []
