@@ -15,7 +15,7 @@ def PrintDataAsByteArray(byteArray) :
 
 	print myArr
 
-myArray = [chr(0x0A), chr(0x02), chr(0x01), chr(0x01)]
+myArray = [chr(0x0A), chr(0x02), chr(0x05), chr(0x01)]
 
 myString = ""
 for x in range(0, len(myArray)) :

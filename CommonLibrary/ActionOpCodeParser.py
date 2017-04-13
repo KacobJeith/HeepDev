@@ -26,6 +26,15 @@ class ResponseOpCodeParser:
 
 		return HeepOpCodeUtilities().GetStringFromByteArray(byteArray)
 
+	def GetErrorROPBuffer(self, HeepClient, Message) :
+		byteArray = []
+		byteArray.append(self.ErrorOpCode)
+		byteArray = HeepOpCodeUtilities().AppendClientIDToByteArray(byteArray, HeepClient.ClientID)
+		byteArray.append(chr(len(Message)))
+		byteArray = HeepOpCodeUtilities().AppendStringToByteArray(byteArray, Message)
+
+		return HeepOpCodeUtilities().GetStringFromByteArray(byteArray)
+
 
 class ActionOpCodeParser:
 
@@ -55,8 +64,8 @@ class ActionOpCodeParser:
 
 		if successCode == 0 : 
 			return ResponseOpCodeParser().GetSuccessROPBuffer(HeepClient, "Value Set")
-
-		return 
+		else :
+			return ResponseOpCodeParser().GetErrorROPBuffer(HeepClient, "Control Not Found")
 
 	def GetActionOpCodeFromByteArray(self, byteArray, HeepClient) :
 
