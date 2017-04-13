@@ -10,7 +10,8 @@ class Vertex extends React.Component {
 	}
 
 	sendDeleteVertexToServer(url) {
-		//this.props.sendDeleteVertexToServer(url, this.props.id)
+		console.log('vertex', this.props.vertex)
+		this.props.deleteVertex(this.props.url, this.props.id, this.props.vertex)
 	}
 
 	render() {

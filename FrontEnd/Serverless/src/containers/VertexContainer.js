@@ -8,6 +8,7 @@ const mapStateToProps = (state, ownProps) => (
 {
   url: state.url,
   id: ownProps.vertexID,
+  vertex: state.vertexList[ownProps.vertexID],
   inputPosition: getInputPosition(state, ownProps),
   outputPosition: getOutputPosition(state, ownProps),
 

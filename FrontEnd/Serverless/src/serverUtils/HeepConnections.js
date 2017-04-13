@@ -95,6 +95,27 @@ export var SendVertexToHeepDevices = (vertex) => {
   ConnectToHeepDevice(IPAddress, heepPort, messageBuffer)
 }
 
+export var SendDeleteVertexToHeepDevices = (vertex) => {
+  console.log('SENDING TO HEEP HERE: ', vertex)
+
+  var txClientID = GetClientIDasByteArray(vertex.txClientID);
+  var txControlID = GetValueAsFixedSizeByteArray(vertex.txControlID, 1);
+  var rxClientID = GetClientIDasByteArray(vertex.rxClientID);
+  var rxControlID = GetValueAsFixedSizeByteArray(vertex.rxControlID, 1);
+  var rxIP = ConvertIPAddressToByteArray(vertex.rxIP);
+  var packet = txClientID.concat(rxClientID, txControlID, rxControlID, rxIP);
+  var numBytes = [packet.length];
+
+  var messageBuffer = Buffer.from([0x0D].concat(numBytes, packet));
+
+  var IPAddress = masterState.clients[vertex.txClientID].IPAddress;
+  console.log('SENDING VERTEX TO HEEP CLIENT ', vertex.sourceID + ' at ' + IPAddress);
+  console.log('Data Packet: ',  messageBuffer);
+
+
+  ConnectToHeepDevice(IPAddress, heepPort, messageBuffer)
+}
+
 var ConvertIPAddressToByteArray = (stringIP) => {
   var split = stringIP.split('.');
   var byteArray = [];

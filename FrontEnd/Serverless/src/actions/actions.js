@@ -44,7 +44,7 @@ export const addVertex = (rxClientID, rxControlID, rxIP, url) => ({
   url
 })
 
-export const deleteVertex = (url, vertexID) => ({
+export const deleteVertex = (url, vertexID, vertex) => ({
   type: 'DELETE_VERTEX',
   url,
   vertexID,

@@ -60,10 +60,8 @@ function vertexList(state = initialState, action) {
                                        rxControlID: action.rxControlID,
                                        rxIP: action.rxIP}).toJS();
     case 'DELETE_VERTEX':
-      var newMap = Immutable.Map(state).delete(action.vertexID).toJS();
-      console.log(Object.keys(newMap));
 
-      async.sendDeleteVertexToServer(action.url, action.vertexID, action.vertex);
+      async.sendDeleteVertexToServer(action.url, action.vertex);
 
       return Immutable.Map(state).delete(action.vertexID).toJS();
     default:
@@ -95,9 +93,9 @@ function positions(state = initialState, action) {
 function controls(state = initialState, action) {
   switch (action.type) {
     case 'SELECT_OUTPUT':
-      return Immutable.Map(state).set('selectedOutput', {rxControlID: action.rxControlID, txControlID: action.txControlID}).toJS();
+      return Immutable.Map(state).set('selectedOutput', {txClientID: action.txClientID, txControlID: action.txControlID}).toJS();
     case 'UPDATE_CONTROL_VALUE':
-      console.log(state)
+
       var a = {...state};
       var identifier = action.clientID + '.' + action.controlID;
       a[identifier]['CurCtrlValue'] = action.newValue;
@@ -109,13 +107,15 @@ function controls(state = initialState, action) {
       var txName = newState.selectedOutput.txClientID + '.' + newState.selectedOutput.txControlID;
       var rxName = action.rxClientID +'.'+ action.rxControlID;
 
-      newState.connections[txName].push(rxName)
+      var theseConnections = newState.connections[txName].push(rxName);
+
       return newState
     case 'DELETE_VERTEX':
 
       var newState = Immutable.Map(state).toJS();
+      
       var txName = action.vertex.txClientID +'.'+ action.vertex.txControlID;
-      var rxName = action.vertex.rxControlID +'.'+ action.vertex.rxControlID;
+      var rxName = action.vertex.rxClientID +'.'+ action.vertex.rxControlID;
 
       var index = newState.connections[txName].indexOf(rxName)
       if ( index != -1) {
