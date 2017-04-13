@@ -83,12 +83,7 @@ class HeepMemoryUtilities:
 		return byteArray
 
 	def GetStringFromByteArray(self, byteArray) :
-		myString = ""
-
-		for x in range(0, len(byteArray)) :
-			myString = myString + str(byteArray[x])
-
-		return myString
+		return HeepOpCodeUtilities().GetStringFromByteArray(byteArray)
 
 
 	##############################################################

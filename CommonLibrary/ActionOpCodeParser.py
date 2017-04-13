@@ -8,7 +8,12 @@ class ResponseOpCodeParser:
 		return
 
 	def GetMemDumpROPBuffer(self, HeepClient, byteLength) :
-		return self.MemoryDumpOpCode
+		byteArray = []
+		byteArray.append(self.MemoryDumpOpCode)
+		byteArray = HeepOpCodeUtilities().AppendClientIDToByteArray(byteArray, HeepClient.ClientID)
+		byteArray.append(chr(byteLength))
+
+		return HeepOpCodeUtilities().GetStringFromByteArray(byteArray)
 
 class ActionOpCodeParser:
 
