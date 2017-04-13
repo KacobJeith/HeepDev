@@ -10,10 +10,12 @@ class Vertex extends React.Component {
 	}
 
 	sendDeleteVertexToServer(url) {
-		this.props.sendDeleteVertexToServer(url, this.props.id)
+		//this.props.sendDeleteVertexToServer(url, this.props.id)
 	}
 
 	render() {
+
+		console.log('trying to draw: ', this.props.id)
 
 		var inputs = {
 			vertex: {
@@ -37,7 +39,7 @@ class Vertex extends React.Component {
 								String(this.props.outputPosition['top'])),
 				onMouseEnter: () => this.setState({'color': 'red', 'strokeWidth': 4}),
 				onMouseLeave: () => this.setState({'color': 'black', 'strokeWidth': 3}),
-				onClick: () => this.sendDeleteVertexToServer(this.props.url.concat('/api/commands')),
+				onClick: () => this.sendDeleteVertexToServer(),
 			}
 		}
 		

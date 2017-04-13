@@ -77,10 +77,10 @@ export var SendValueToHeepDevice = (clientID, controlID, newValue) => {
 export var SendVertexToHeepDevices = (vertex) => {
   console.log('SENDING TO HEEP HERE: ', vertex)
 
-  var txClientID = GetClientIDasByteArray(vertex.sourceID);
-  var txControlID = GetValueAsFixedSizeByteArray(vertex.outputID, 1);
-  var rxClientID = GetClientIDasByteArray(vertex.destinationID);
-  var rxControlID = GetValueAsFixedSizeByteArray(vertex.inputID, 1);
+  var txClientID = GetClientIDasByteArray(vertex.txClientID);
+  var txControlID = GetValueAsFixedSizeByteArray(vertex.txControlID, 1);
+  var rxClientID = GetClientIDasByteArray(vertex.rxClientID);
+  var rxControlID = GetValueAsFixedSizeByteArray(vertex.rxControlID, 1);
   var rxIP = ConvertIPAddressToByteArray(vertex.destinationIP);
   var packet = txClientID.concat(rxClientID, txControlID, rxControlID, rxIP);
   var numBytes = [packet.length];
@@ -290,11 +290,10 @@ var AddControl = (heepChunk) => {
   // Transition this to use new ControlID throughout frontend 
   var tempCtrlName = nameControl(heepChunk.clientID, heepChunk.control.ControlID) 
   masterState.controls[tempCtrlName] = heepChunk.control;
-  masterState.controls[tempCtrlName].connectedControls = [];
   var currentIndex = SetControlStructure(heepChunk.clientID, tempCtrlName)
 
   masterState.positions[heepChunk.clientID][tempCtrlName] = SetControlPosition(heepChunk.clientID, currentIndex, heepChunk.control.ControlDirection);
-
+  masterState.controls.connections[tempCtrlName] = [];
 }
 
 var SetIconFromID = (heepChunk) => {
@@ -401,6 +400,6 @@ var AddVertex = (heepChunk) => {
   var txControl = getTxControlNameFromVertex(heepChunk.vertex);
   var rxControl = getRxControlNameFromVertex(heepChunk.vertex);
   masterState.vertexList[vertexName] = heepChunk.vertex;
-  masterState.controls.connections[txControl] = [rxControl];
+  masterState.controls.connections[txControl].push(rxControl);
 
 }

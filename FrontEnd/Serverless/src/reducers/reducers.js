@@ -43,22 +43,22 @@ function icons(state = initialState, action) {
 function vertexList(state = initialState, action) {
   switch (action.type) {
     case 'SELECT_OUTPUT':
-      console.log('SELECTED OUTPUT: ', action.outputID);
-      return Immutable.Map(state).set('selectedOutput', {sourceID: action.sourceID, outputID: action.outputID}).toJS();
+
+      return Immutable.Map(state).set('selectedOutput', {txClientID: action.txClientID, txControlID: action.txControlID}).toJS();
     case 'ADD_VERTEX':
-      console.log('SELECTED INPUT: ', action.inputID);
-      var vertex = {...state.selectedOutput, inputID: action.inputID,
-                                             destinationIP: action.IPAddress,
-                                             destinationID: action.destinationID};
+
+      var vertex = {...state.selectedOutput, rxControlID: action.rxControlID,
+                                             rxIP: action.rxIP,
+                                             rxClientID: action.rxClientID};
       console.log('ThisVertex: ', vertex)
       async.sendVertexToServer(action.url, vertex);
 
-      return Immutable.Map(state).set(state.selectedOutput.sourceID + '.' + state.selectedOutput.outputID + '->' + action.destinationID + '.' + action.inputID, 
-                                      {sourceID: state.selectedOutput.sourceID,
-                                       outputID: state.selectedOutput.outputID,
-                                       destinationID: action.destinationID, 
-                                       inputID: action.inputID,
-                                       destinationIP: action.IPAddress}).toJS();
+      return Immutable.Map(state).set(state.selectedOutput.txClientID + '.' + state.selectedOutput.txControlID + '->' + action.rxClientID + '.' + action.rxControlID, 
+                                      {txClientID: state.selectedOutput.txClientID,
+                                       txControlID: state.selectedOutput.txControlID,
+                                       rxClientID: action.rxClientID, 
+                                       rxControlID: action.rxControlID,
+                                       rxIP: action.rxIP}).toJS();
     case 'DELETE_VERTEX':
       var newMap = Immutable.Map(state).delete(action.vertexID).toJS();
       console.log(Object.keys(newMap));
@@ -95,30 +95,32 @@ function positions(state = initialState, action) {
 function controls(state = initialState, action) {
   switch (action.type) {
     case 'SELECT_OUTPUT':
-      return Immutable.Map(state).set('selectedOutput', {sourceID: action.sourceID, outputName: action.outputName}).toJS();
+      return Immutable.Map(state).set('selectedOutput', {rxControlID: action.rxControlID, txControlID: action.txControlID}).toJS();
     case 'UPDATE_CONTROL_VALUE':
+      console.log(state)
       var a = {...state};
       var identifier = action.clientID + '.' + action.controlID;
       a[identifier]['CurCtrlValue'] = action.newValue;
       async.sendValueToServer(action.clientID, action.controlID, action.newValue, action.url);
+
       return {...state}
     case 'ADD_VERTEX':
       var newState = Immutable.Map(state).toJS();
-      // var txName = newState.selectedOutput.sourceID + '.' + newState.selectedOutput.outputName;
-      // var rxName = action.destinationID +'.'+ action.inputName;
+      var txName = newState.selectedOutput.txClientID + '.' + newState.selectedOutput.txControlID;
+      var rxName = action.rxClientID +'.'+ action.rxControlID;
 
-      // newState.connections[txName].push(rxName)
+      newState.connections[txName].push(rxName)
       return newState
     case 'DELETE_VERTEX':
 
       var newState = Immutable.Map(state).toJS();
-      // var txName = action.vertex.sourceID +'.'+ action.vertex.outputName;
-      // var rxName = action.vertex.destinationID +'.'+ action.vertex.inputName;
+      var txName = action.vertex.txClientID +'.'+ action.vertex.txControlID;
+      var rxName = action.vertex.rxControlID +'.'+ action.vertex.rxControlID;
 
-      // var index = newState.connections.indexOf(txName)
-      // if ( index != -1) {
-      //   newState.connections[txName].splice(index, 1);
-      // }
+      var index = newState.connections[txName].indexOf(rxName)
+      if ( index != -1) {
+        newState.connections[txName].splice(index, 1);
+      }
 
       return newState
     default:

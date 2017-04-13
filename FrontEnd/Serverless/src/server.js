@@ -33,6 +33,7 @@ app.post('/api/setValue', (req, res) => {
 });
 
 app.post('/api/setVertex', (req, res) => {
+  console.log(req.body.vertex)
   
   heepConnect.SendVertexToHeepDevices(req.body.vertex);
   

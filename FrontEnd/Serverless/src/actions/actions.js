@@ -36,11 +36,11 @@ export const storeURL = (url) => ({
 
 
 //Vertex
-export const addVertex = (destinationID, inputID, IPAddress, url) => ({
+export const addVertex = (rxClientID, rxControlID, IPAddress, url) => ({
   type: 'ADD_VERTEX',
-  destinationID, 
-  inputID,
-  IPAddress, 
+  rxClientID, 
+  rxControlID,
+  rxIP, 
   url
 })
 
@@ -51,9 +51,9 @@ export const deleteVertex = (url, vertexID) => ({
   vertex
 })
 
-export const selectOutput = (sourceID, outputID) => ({
+export const selectOutput = (txClientID, txControlID) => ({
   type: 'SELECT_OUTPUT',
-  sourceID, 
-  outputID
+  txClientID, 
+  txControlID
 })
 

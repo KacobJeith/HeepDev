@@ -2,7 +2,7 @@ import $ from 'jquery';
 
 export var sendVertexToServer = (url, vertex) => {
   var url = url.concat('/api/setVertex');
-  
+  console.log('VERTEX: ', vertex)
   const messagePacket = {vertex: vertex};
 
   performAJAX(url, messagePacket);
