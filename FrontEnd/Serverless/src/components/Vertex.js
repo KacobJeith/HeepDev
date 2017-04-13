@@ -15,8 +15,6 @@ class Vertex extends React.Component {
 
 	render() {
 
-		console.log('trying to draw: ', this.props.id)
-
 		var inputs = {
 			vertex: {
 				strokeWidth: this.state.strokeWidth,

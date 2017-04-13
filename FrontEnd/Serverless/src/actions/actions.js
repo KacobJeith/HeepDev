@@ -36,7 +36,7 @@ export const storeURL = (url) => ({
 
 
 //Vertex
-export const addVertex = (rxClientID, rxControlID, IPAddress, url) => ({
+export const addVertex = (rxClientID, rxControlID, rxIP, url) => ({
   type: 'ADD_VERTEX',
   rxClientID, 
   rxControlID,
