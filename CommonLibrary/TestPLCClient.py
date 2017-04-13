@@ -6,6 +6,7 @@ from ClientMemory import ClientMemory
 from HeepMemoryUtilities import HeepMemoryUtilities
 from CommonDataTypes import HeepIPAddress
 from ActionOpCodeParser import ActionOpCodeParser
+from HeepOpCodeUtilities import HeepOpCodeUtilities
 
 def CheckEquality(first, second, testName) :
 	if first == second :
@@ -104,15 +105,15 @@ print CheckEquality( deletionClient.GetVerticesString(), '', 'Remove Only Vertex
 ClientMemory = ClientMemory()
 HeepMemoryUtilities = HeepMemoryUtilities()
 byteArray = []
-print CheckEquality( HeepMemoryUtilities.GetNecessaryBytes(255), 1, 'Client Memory Get Bytes 1')
-print CheckEquality( HeepMemoryUtilities.GetNecessaryBytes(256), 2, 'Client Memory Get Bytes 2')
-print CheckEquality( HeepMemoryUtilities.GetNecessaryBytes(65535), 2, 'Client Memory Get Bytes 3')
-print CheckEquality( HeepMemoryUtilities.GetNecessaryBytes(65536), 3, 'Client Memory Get Bytes 4')
-print CheckEquality( HeepMemoryUtilities.GetNecessaryBytes(4), 1, 'Client Memory Get Bytes 5')
+print CheckEquality( HeepOpCodeUtilities().GetNecessaryBytes(255), 1, 'Client Memory Get Bytes 1')
+print CheckEquality( HeepOpCodeUtilities().GetNecessaryBytes(256), 2, 'Client Memory Get Bytes 2')
+print CheckEquality( HeepOpCodeUtilities().GetNecessaryBytes(65535), 2, 'Client Memory Get Bytes 3')
+print CheckEquality( HeepOpCodeUtilities().GetNecessaryBytes(65536), 3, 'Client Memory Get Bytes 4')
+print CheckEquality( HeepOpCodeUtilities().GetNecessaryBytes(4), 1, 'Client Memory Get Bytes 5')
 
-print CheckEquality( HeepMemoryUtilities.GetByteArrayFromValue(256), [chr(0x01), chr(0x00)], 'Client Memory Get Byte Array From Value 1')
-print CheckEquality( HeepMemoryUtilities.GetByteArrayFromValue(255), [chr(0xff)], 'Client Memory Get Byte Array From Value 2')
-print CheckEquality( HeepMemoryUtilities.GetByteArrayFromValue(65536), [chr(0x01), chr(0x00), chr(0x00)], 'Client Memory Get Byte Array From Value 3')
+print CheckEquality( HeepOpCodeUtilities().GetByteArrayFromValue(256), [chr(0x01), chr(0x00)], 'Client Memory Get Byte Array From Value 1')
+print CheckEquality( HeepOpCodeUtilities().GetByteArrayFromValue(255), [chr(0xff)], 'Client Memory Get Byte Array From Value 2')
+print CheckEquality( HeepOpCodeUtilities().GetByteArrayFromValue(65536), [chr(0x01), chr(0x00), chr(0x00)], 'Client Memory Get Byte Array From Value 3')
 
 print CheckEquality( HeepMemoryUtilities.GetConstantSizeByteArrayFromValue(1, 2), [chr(0x00), chr(0x01)], 'Get Constant Size Byte Array from Value 1') 
 print CheckEquality( HeepMemoryUtilities.GetConstantSizeByteArrayFromValue(300, 2), [chr(0x01), chr(0x2C)], 'Get Constant Size Byte Array from Value 2') 
