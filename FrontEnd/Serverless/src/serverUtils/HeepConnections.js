@@ -12,16 +12,18 @@ var masterState = {
   url: ''
 };
 
+var heepPort = 5000;
 var searchComplete = false;
 var mostRecentSearch = {};
 
 export var SearchForHeepDevices = () => {
   var gateway = findGateway();
+  var searchBuffer = Buffer.from([0x09, 0x00])
 
   for (var i = 1; i <= 255; i++){
     var address = joinAddress(gateway,i)
 
-    ConnectToHeepDevice(address, 5000, 'IsHeepDevice:');
+    ConnectToHeepDevice(address, heepPort, searchBuffer);
   }
 }
 
@@ -64,7 +66,7 @@ export var SendValueToHeepDevice = (clientID, controlID, newValue) => {
     var messageBuffer = Buffer.from([0x0A].concat(numBytes, controlByteArray, valueByteArray));
     console.log('SENDING SETVAL TO HEEP CLIENT ', clientID + ' at ' + IPAddress);
     console.log('Data Packet: ',  messageBuffer);
-    ConnectToHeepDevice(IPAddress, 5000, messageBuffer)
+    ConnectToHeepDevice(IPAddress, heepPort, messageBuffer)
   }
 }
 
@@ -131,7 +133,7 @@ export var SendCommandToHeepDevice = (commandID, message) => {
 
   var IPAddress = masterState.clients[clientID].IPAddress;
   console.log('Connect Message: ', sendMessage)
-  ConnectToHeepDevice(IPAddress, 5000, sendMessage);
+  ConnectToHeepDevice(IPAddress, heepPort, sendMessage);
 }
 
 export var findGateway = () => {
@@ -162,16 +164,8 @@ var ConnectToHeepDevice = (IPAddress, port, message) => {
   });
 
   sock.on('data', (data) => {
-    console.log('Device found at address: ', IPAddress + ':' + port.toString());
-    console.log('Stringified Data: ', data.toString());
-    console.log('Raw inbound Data: ', data);
+    ConsumeHeepResponse(data, IPAddress, port);
 
-    mostRecentSearch[IPAddress] = true;
-    var HeepChunks = heepParser.MemoryCrawler(data);
-
-    if (HeepChunks != false){
-      AddMemoryChunksToMasterState(HeepChunks, IPAddress)
-    }
     sock.end();
   });
 
@@ -180,6 +174,34 @@ var ConnectToHeepDevice = (IPAddress, port, message) => {
   sock.on('error', () => {
     mostRecentSearch[IPAddress] = false;
   });
+}
+
+var ConsumeHeepResponse = (data, IPAddress, port) => {
+  console.log('Device found at address: ', IPAddress + ':' + port.toString());
+  console.log('Stringified Data: ', data.toString());
+  console.log('Raw inbound Data: ', data);
+
+  mostRecentSearch[IPAddress] = true;
+  var HeepResponse = heepParser.ReadHeepResponse(data);
+
+  if (HeepResponse != false){
+    if (HeepResponse.op == 0x0F) {
+      //Memory Dump
+      AddMemoryChunksToMasterState(HeepResponse.memory, IPAddress);
+
+    } else if ( HeepResponse.op == 0x10) {
+      //Success
+      console.log('Heep Device SUCCESS with a HAPI message: ', HeepResponse.message);
+
+    } else if (HeepResponse.op == 0x11){
+      //Error 
+      console.log('Heep Device ERROR with an unHAPI message: ', HeepResponse.message);
+    } else {
+      console.error('Did not receive a known Response Code from Heep Device');
+    }
+  } else {
+    console.error('Heep Response Invalid');
+  }
 }
 
 var AddMemoryChunksToMasterState = (heepChunks, IPAddress) => {
