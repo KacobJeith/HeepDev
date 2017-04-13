@@ -159,7 +159,7 @@ class PLCClient:
 
 	def SetClientFromString(self, clientString) :
 
-		byteArray = self.MemoryUtilities.ConvertStringToByteArray(clientString)
+		byteArray = HeepOpCodeUtilities().ConvertStringToByteArray(clientString)
 		self.ControlList = self.MemoryUtilities.GetClientControlValue(byteArray, self.ClientID)
 
 		# self.ControlList = []

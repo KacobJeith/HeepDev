@@ -183,18 +183,30 @@ otherClient.SetIconInformation(1, [chr(3), chr(4), chr(12), chr(41)])
 otherClient.SetServerless(1)
 myString = otherClient.GetClientString()
 
-print CheckEquality(HeepMemoryUtilities.ConvertStringToByteArray(myString), otherClient.GetClientByteArray(), "Get Client String OpCodes")
+print CheckEquality(HeepOpCodeUtilities().ConvertStringToByteArray(myString), otherClient.GetClientByteArray(), "Get Client String OpCodes")
 print CheckEquality(otherClient.GetIPAddress().GetIPAsString(), "192.168.1.1", "Get client IP Address")
 
 
 # Action Op Codes
 actionParser = ActionOpCodeParser()
 myArray = [chr(0x0A), chr(0x02), chr(0x01), chr(0x0f)]
-print CheckEquality(actionParser.GetActionOpCodeFromByteArray(myArray, otherClient),'0', 'Action Op Code Accepted By Parser')
+SuccessArray = [chr(0x10), chr(0x00), chr(0x00), chr(0x30), chr(0x2c), chr(len("Value Set"))]
+SuccessArray = HeepOpCodeUtilities().AppendStringToByteArray(SuccessArray, "Value Set")
+SuccessString = HeepOpCodeUtilities().GetStringFromByteArray(SuccessArray)
+print CheckEquality(actionParser.GetActionOpCodeFromByteArray(myArray, otherClient),SuccessString, 'Action Op Code Accepted By Parser')
+
 myArray = [chr(0x0A), chr(0x02), chr(0x02), chr(0x0f)]
-print CheckEquality(actionParser.GetActionOpCodeFromByteArray(myArray, otherClient), '1', 'Action Op Code Control Not Found')
+ErrorArray = [chr(0x11), chr(0x00), chr(0x00), chr(0x30), chr(0x2c), chr(len("Control Not Found"))]
+ErrorArray = HeepOpCodeUtilities().AppendStringToByteArray(ErrorArray, "Control Not Found")
+ErrorString = HeepOpCodeUtilities().GetStringFromByteArray(ErrorArray)
+print CheckEquality(actionParser.GetActionOpCodeFromByteArray(myArray, otherClient), ErrorString, 'Action Op Code Control Not Found')
+
 myArray = [chr(0x51), chr(0x02), chr(0x02), chr(0x0f)]
-print CheckEquality(actionParser.GetActionOpCodeFromByteArray(myArray, otherClient), '2', 'Action Op Code Not Found')
+ErrorArray = [chr(0x11), chr(0x00), chr(0x00), chr(0x30), chr(0x2c), chr(len("HAPI COP Not Found"))]
+ErrorArray = HeepOpCodeUtilities().AppendStringToByteArray(ErrorArray, "HAPI COP Not Found")
+ErrorString = HeepOpCodeUtilities().GetStringFromByteArray(ErrorArray)
+print CheckEquality(actionParser.GetActionOpCodeFromByteArray(myArray, otherClient), ErrorString, 'Action Op Code Not Found')
+
 myArray = [chr(0x09), chr(0x00)]
 begginingROPString = HeepOpCodeUtilities().GetStringFromByteArray([chr(0x0F), chr(0x00), chr(0x00), chr(0x30), chr(0x2c), chr(len(otherClient.GetClientString()))])
 print CheckEquality(actionParser.GetActionOpCodeFromByteArray(myArray, otherClient), begginingROPString+otherClient.GetClientString(), 'Action Op Code : Is Heep Device')
