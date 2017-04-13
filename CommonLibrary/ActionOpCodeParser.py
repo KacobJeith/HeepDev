@@ -1,10 +1,19 @@
 from HeepOpCodeUtilities import HeepOpCodeUtilities
 
+class ResponseOpCodeParser:
+
+	MemoryDumpOpCode = chr(0x0F)
+
+	def __init__(self) :
+		return
+
+	def GetMemDumpROPBuffer(self, HeepClient, byteLength) :
+		return self.MemoryDumpOpCode
+
 class ActionOpCodeParser:
 
 	IsHeepDeviceOpCode = chr(0x09)
 	SetValueOpCode = chr(0x0A)
-
 
 	def __init__(self) :
 		return
@@ -13,7 +22,11 @@ class ActionOpCodeParser:
 		counter = 1
 		(numBytes,counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1) # Always 0 with IsHeepDevice COP
 
-		return HeepClient.GetClientString()
+		clientMemoryDump = HeepClient.GetClientString()
+
+		MemDumpROP = ResponseOpCodeParser().GetMemDumpROPBuffer(HeepClient, len(clientMemoryDump))
+
+		return  MemDumpROP + clientMemoryDump
 
 	def ExecuteSetValue(self, byteArray, HeepClient) :
 		counter = 1
