@@ -58,7 +58,7 @@ export var SendPositionToHeepDevice = (commandID, message) => {
 }
 
 export var SendValueToHeepDevice = (clientID, controlID, newValue) => {
-  if (CheckIfNewValue(clientID, controlID, newValue)){
+  if (CheckIfNewValueAndSet(clientID, controlID, newValue)){
     var IPAddress = masterState.clients[clientID].IPAddress;
     var controlByteArray = GetByteArrayFromValue(controlID);
     var valueByteArray = GetByteArrayFromValue(newValue);
@@ -70,11 +70,12 @@ export var SendValueToHeepDevice = (clientID, controlID, newValue) => {
   }
 }
 
-var CheckIfNewValue = (clientID, controlID, newValue) => {
+var CheckIfNewValueAndSet = (clientID, controlID, newValue) => {
   var thisControl = nameControl(clientID, controlID);
   if (masterState.controls[thisControl].CurCtrlValue == newValue){
     return false
   } else {
+    masterState.controls[thisControl].CurCtrlValue = newValue;
     return true
   }
 }
