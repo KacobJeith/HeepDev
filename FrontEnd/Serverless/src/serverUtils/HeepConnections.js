@@ -74,6 +74,37 @@ export var SendValueToHeepDevice = (clientID, controlID, newValue) => {
   }
 }
 
+export var SendVertexToHeepDevices = (vertex) => {
+  console.log('SENDING TO HEEP HERE: ', vertex)
+
+  var txClientID = GetClientIDasByteArray(vertex.sourceID);
+  var txControlID = GetValueAsFixedSizeByteArray(vertex.outputID, 1);
+  var rxClientID = GetClientIDasByteArray(vertex.destinationID);
+  var rxControlID = GetValueAsFixedSizeByteArray(vertex.inputID, 1);
+  var rxIP = ConvertIPAddressToByteArray(vertex.destinationIP);
+  var packet = txClientID.concat(rxClientID, txControlID, rxControlID, rxIP);
+  var numBytes = [packet.length];
+
+  var messageBuffer = Buffer.from([0x0C].concat(numBytes, packet));
+
+  var IPAddress = masterState.clients[vertex.sourceID].IPAddress;
+  console.log('SENDING SETVAL TO HEEP CLIENT ', vertex.sourceID + ' at ' + IPAddress);
+  console.log('Data Packet: ',  messageBuffer);
+
+
+  ConnectToHeepDevice(IPAddress, heepPort, messageBuffer)
+}
+
+var ConvertIPAddressToByteArray = (stringIP) => {
+  var split = stringIP.split('.');
+  var byteArray = [];
+  for (var i = 0; i < split.length; i++){
+    byteArray.push(parseInt(split[i]));
+  }
+
+  return byteArray
+}
+
 var CheckIfNewValueAndSet = (clientID, controlID, newValue) => {
   var thisControl = nameControl(clientID, controlID);
   if (masterState.controls[thisControl].CurCtrlValue == newValue){
@@ -370,6 +401,6 @@ var AddVertex = (heepChunk) => {
   var txControl = getTxControlNameFromVertex(heepChunk.vertex);
   var rxControl = getRxControlNameFromVertex(heepChunk.vertex);
   masterState.vertexList[vertexName] = heepChunk.vertex;
-  masterState.controls.connections[txControl] = rxControl;
+  masterState.controls.connections[txControl] = [rxControl];
 
 }

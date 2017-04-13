@@ -43,26 +43,28 @@ function icons(state = initialState, action) {
 function vertexList(state = initialState, action) {
   switch (action.type) {
     case 'SELECT_OUTPUT':
-      return Immutable.Map(state).set('selectedOutput', {sourceID: action.sourceID, outputName: action.outputName}).toJS();
+      console.log('SELECTED OUTPUT: ', action.outputID);
+      return Immutable.Map(state).set('selectedOutput', {sourceID: action.sourceID, outputID: action.outputID}).toJS();
     case 'ADD_VERTEX':
-      var vertex = {...state.selectedOutput, inputName: action.inputName,
+      console.log('SELECTED INPUT: ', action.inputID);
+      var vertex = {...state.selectedOutput, inputID: action.inputID,
                                              destinationIP: action.IPAddress,
                                              destinationID: action.destinationID};
-
+      console.log('ThisVertex: ', vertex)
       async.sendVertexToServer(action.url, vertex);
 
-      return Immutable.Map(state).set(state.selectedOutput.sourceID + '.' + state.selectedOutput.outputName + '->' + action.destinationID + '.' + action.inputName, 
+      return Immutable.Map(state).set(state.selectedOutput.sourceID + '.' + state.selectedOutput.outputID + '->' + action.destinationID + '.' + action.inputID, 
                                       {sourceID: state.selectedOutput.sourceID,
-                                       outputName: state.selectedOutput.outputName,
+                                       outputID: state.selectedOutput.outputID,
                                        destinationID: action.destinationID, 
-                                       inputName: action.inputName,
+                                       inputID: action.inputID,
                                        destinationIP: action.IPAddress}).toJS();
     case 'DELETE_VERTEX':
       var newMap = Immutable.Map(state).delete(action.vertexID).toJS();
       console.log(Object.keys(newMap));
 
-      async.sendDeleteVertexToServer(action.url, action.vertexID);
-      
+      async.sendDeleteVertexToServer(action.url, action.vertexID, action.vertex);
+
       return Immutable.Map(state).delete(action.vertexID).toJS();
     default:
       return state
@@ -102,20 +104,22 @@ function controls(state = initialState, action) {
       return {...state}
     case 'ADD_VERTEX':
       var newState = Immutable.Map(state).toJS();
-      var sourceID = newState.selectedOutput.sourceID;
-      var outputName = newState.selectedOutput.outputName;
-      newState[sourceID +'.'+ outputName]['connectedControls'].push(action.destinationID +'.'+ action.inputName)
+      // var txName = newState.selectedOutput.sourceID + '.' + newState.selectedOutput.outputName;
+      // var rxName = action.destinationID +'.'+ action.inputName;
+
+      // newState.connections[txName].push(rxName)
       return newState
     case 'DELETE_VERTEX':
 
       var newState = Immutable.Map(state).toJS();
-      var sourceID = action.vertex.sourceID;
-      var outputName = action.vertex.outputName;
+      // var txName = action.vertex.sourceID +'.'+ action.vertex.outputName;
+      // var rxName = action.vertex.destinationID +'.'+ action.vertex.inputName;
 
-      var index = newState[sourceID +'.'+ outputName]['connectedControls'].indexOf(action.vertex.destinationID +'.'+ action.vertex.inputName)
-      if ( index != -1) {
-        newState[sourceID +'.'+ outputName]['connectedControls'].splice(index, 1);
-      }
+      // var index = newState.connections.indexOf(txName)
+      // if ( index != -1) {
+      //   newState.connections[txName].splice(index, 1);
+      // }
+
       return newState
     default:
       return state
