@@ -17,6 +17,16 @@ class ResponseOpCodeParser:
 
 		return HeepOpCodeUtilities().GetStringFromByteArray(byteArray)
 
+	def GetSuccessROPBuffer(self, HeepClient, Message) :
+		byteArray = []
+		byteArray.append(self.SuccessOpCode)
+		byteArray = HeepOpCodeUtilities().AppendClientIDToByteArray(byteArray, HeepClient.ClientID)
+		byteArray.append(chr(len(Message)))
+		byteArray = HeepOpCodeUtilities().AppendStringToByteArray(byteArray, Message)
+
+		return HeepOpCodeUtilities().GetStringFromByteArray(byteArray)
+
+
 class ActionOpCodeParser:
 
 	IsHeepDeviceOpCode = chr(0x09)
@@ -41,7 +51,12 @@ class ActionOpCodeParser:
 		(controlID, counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
 		(data, counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, numBytes-1)
 
-		return HeepClient.UpdateControlsByID(controlID, data) 
+		successCode = HeepClient.UpdateControlsByID(controlID, data) 
+
+		if successCode == 0 : 
+			return ResponseOpCodeParser().GetSuccessROPBuffer(HeepClient, "Value Set")
+
+		return 
 
 	def GetActionOpCodeFromByteArray(self, byteArray, HeepClient) :
 

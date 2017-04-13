@@ -32,21 +32,9 @@ class HeepMemoryUtilities:
 	###########################################################
 	########### UTILITY FUNCTIONS #############################
 	###########################################################
-	def ConvertStringToByteArray(self, string) :
-		byteArray = []
-		for x in range(0, len(string)) :
-			byteArray.append(string[x])
-
-		return byteArray
 
 	def GetNumberFromMemory(self, byteArray, counter, numBytes) :
 		return self.OpCodeUtilities.GetNumberFromMemory(byteArray, counter, numBytes)
-
-	def AppendStringToByteArray(self, byteArray, theString) :
-		for x in range(0, len(theString)) :
-			byteArray.append(theString[x])
-
-		return byteArray
 
 	def SkipOpCode(self, byteArray, counter) :
 		counter += 5 # This skips the Client ID and lands on the bytes to skip
@@ -372,7 +360,7 @@ class HeepMemoryUtilities:
 		byteArray.append(self.ClientNameOpCode)
 		byteArray = HeepOpCodeUtilities().AppendClientIDToByteArray(byteArray, clientID)
 		byteArray.append(chr(len(clientName)))
-		byteArray = self.AppendStringToByteArray(byteArray, clientName)
+		byteArray = HeepOpCodeUtilities().AppendStringToByteArray(byteArray, clientName)
 
 		return byteArray
 
@@ -547,6 +535,6 @@ class HeepMemoryUtilities:
 		byteArray.append(chr(control.HighValue))
 		byteArray.append(chr(control.CurCtrlValue))
 
-		byteArray = self.AppendStringToByteArray(byteArray, control.ControlName)
+		byteArray = HeepOpCodeUtilities().AppendStringToByteArray(byteArray, control.ControlName)
 
 		return byteArray

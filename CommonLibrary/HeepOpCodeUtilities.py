@@ -57,5 +57,18 @@ class HeepOpCodeUtilities:
 
 		return myString
 
+	def ConvertStringToByteArray(self, string) :
+		byteArray = []
+		for x in range(0, len(string)) :
+			byteArray.append(string[x])
+
+		return byteArray
+
+	def AppendStringToByteArray(self, byteArray, theString) :
+		for x in range(0, len(theString)) :
+			byteArray.append(theString[x])
+
+		return byteArray
+
 
 
