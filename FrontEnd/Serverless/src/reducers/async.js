@@ -1,7 +1,7 @@
 import $ from 'jquery';
 
 export var sendVertexToServer = (url, vertex) => {
-
+  var url = url.concat('/api/setVertex');
   const message = 'SetVertex' + ':' + 
           vertex.inputName + ',' + 
           vertex.outputName + ',' +
@@ -40,6 +40,12 @@ export var sendPositionToServer = (clientID, position, url) => {
   performAJAX(url, messagePacket);
   
 };
+
+export var sendDeleteVertexToServer = (url, vertexID) => {
+
+  console.log('DELETE');
+  
+}
 
 
 export var performAJAX = (url, messagePacket ) => {

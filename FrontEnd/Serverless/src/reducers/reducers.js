@@ -49,7 +49,7 @@ function vertexList(state = initialState, action) {
                                              destinationIP: action.IPAddress,
                                              destinationID: action.destinationID};
 
-      async.sendVertexToServer(action.url.concat('/api/commands'), vertex);
+      async.sendVertexToServer(action.url, vertex);
 
       return Immutable.Map(state).set(state.selectedOutput.sourceID + '.' + state.selectedOutput.outputName + '->' + action.destinationID + '.' + action.inputName, 
                                       {sourceID: state.selectedOutput.sourceID,
@@ -60,6 +60,9 @@ function vertexList(state = initialState, action) {
     case 'DELETE_VERTEX':
       var newMap = Immutable.Map(state).delete(action.vertexID).toJS();
       console.log(Object.keys(newMap));
+
+      async.sendDeleteVertexToServer(action.url, action.vertexID);
+      
       return Immutable.Map(state).delete(action.vertexID).toJS();
     default:
       return state

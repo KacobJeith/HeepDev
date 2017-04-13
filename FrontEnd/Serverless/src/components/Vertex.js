@@ -1,6 +1,4 @@
 import React from 'react';
-import $ from 'jquery';
-
 
 class Vertex extends React.Component {
 	constructor() {
@@ -10,31 +8,10 @@ class Vertex extends React.Component {
 			strokeWidth: 3
 		}
 	}
-	
+
 	sendDeleteVertexToServer(url) {
-
-		const message = 'DeleteVertex' + ':' + 
-						this.props.vertex.sourceID + ',' +
-						this.props.vertex.destinationID + ',' + 
-						this.props.vertex.outputName + ',' +
-						this.props.vertex.inputName + ',\n';
-
-    	const messagePacket = {command: message};
-
-		$.ajax({
-	      url: url,
-	      type: 'POST',
-	      data: messagePacket,
-	      success: (data) => {
-	      	console.log('Vertex Deleted');
-	      	this.props.deleteVertex(this.props.vertexID, this.props.vertex);
-	      },
-	      error: function(xhr, status, err) {
-	        console.error(url, status, err.toString());
-	      }
-	    });
+		this.props.sendDeleteVertexToServer(url, this.props.id)
 	}
-
 
 	render() {
 

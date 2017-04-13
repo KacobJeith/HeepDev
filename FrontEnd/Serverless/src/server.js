@@ -32,6 +32,13 @@ app.post('/api/setValue', (req, res) => {
   res.end("Value sent to Heep Client");
 });
 
+app.post('/api/setVertex', (req, res) => {
+  
+  //heepConnect.SendVertexToHeepDevices(req.body.vertex);
+  
+  res.end("Sending Vertex to Heep Devices");
+});
+
 app.post('/api/setPosition', (req, res) => {
   
   heepConnect.SendPositionToHeepDevice(req.body.clientID, req.body.position);
