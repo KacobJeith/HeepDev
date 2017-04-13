@@ -82,9 +82,6 @@ class HeepMemoryUtilities:
 
 		return byteArray
 
-	def GetStringFromByteArray(self, byteArray) :
-		return HeepOpCodeUtilities().GetStringFromByteArray(byteArray)
-
 
 	##############################################################
 	##################Op Code Functions###########################

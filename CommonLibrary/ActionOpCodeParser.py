@@ -3,6 +3,8 @@ from HeepOpCodeUtilities import HeepOpCodeUtilities
 class ResponseOpCodeParser:
 
 	MemoryDumpOpCode = chr(0x0F)
+	SuccessOpCode = chr(0x10)
+	ErrorOpCode = chr(0x11)
 
 	def __init__(self) :
 		return
