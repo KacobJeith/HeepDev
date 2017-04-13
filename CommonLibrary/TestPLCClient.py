@@ -196,6 +196,7 @@ print CheckEquality(actionParser.GetActionOpCodeFromByteArray(myArray, otherClie
 myArray = [chr(0x51), chr(0x02), chr(0x02), chr(0x0f)]
 print CheckEquality(actionParser.GetActionOpCodeFromByteArray(myArray, otherClient), '2', 'Action Op Code Not Found')
 myArray = [chr(0x09), chr(0x00)]
-print CheckEquality(actionParser.GetActionOpCodeFromByteArray(myArray, otherClient), otherClient.GetClientString(), 'Action Op Code : Is Heep Device')
+begginingROPString = HeepOpCodeUtilities().GetStringFromByteArray([chr(0x0F), chr(0x00), chr(0x00), chr(0x30), chr(0x2c), chr(len(otherClient.GetClientString()))])
+print CheckEquality(actionParser.GetActionOpCodeFromByteArray(myArray, otherClient), begginingROPString+otherClient.GetClientString(), 'Action Op Code : Is Heep Device')
 
 
