@@ -212,8 +212,8 @@ begginingROPString = HeepOpCodeUtilities().GetStringFromByteArray([chr(0x0F), ch
 print CheckEquality(actionParser.GetActionOpCodeFromByteArray(myArray, otherClient), begginingROPString+otherClient.GetClientString(), 'Action Op Code: Is Heep Device')
 
 myArray = [chr(0x0B), chr(0x04), chr(0x01), chr(0x01), chr(0x02), chr(0x10)]
-SuccessArray = [chr(0x10), chr(0x00), chr(0x00), chr(0x30), chr(0x2c), chr(len("XY Position Set"))]
-SuccessArray = HeepOpCodeUtilities().AppendStringToByteArray(SuccessArray, "XY Position Set")
+SuccessArray = [chr(0x10), chr(0x00), chr(0x00), chr(0x30), chr(0x2c), chr(len("XY Position Set to (257,528)"))]
+SuccessArray = HeepOpCodeUtilities().AppendStringToByteArray(SuccessArray, "XY Position Set to (257,528)")
 SuccessString = HeepOpCodeUtilities().GetStringFromByteArray(SuccessArray)
 print CheckEquality(actionParser.GetActionOpCodeFromByteArray(myArray, otherClient),SuccessString, 'Action Op Code: Set XY 1')
 print CheckEquality(otherClient.GetFrontEndXY(), (257,528), 'Action Op Code: Set XY 2')

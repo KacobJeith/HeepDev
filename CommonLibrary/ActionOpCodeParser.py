@@ -41,6 +41,7 @@ class ActionOpCodeParser:
 	IsHeepDeviceOpCode = chr(0x09)
 	SetValueOpCode = chr(0x0A)
 	SetPositionOpCode = chr(0x0B)
+	VertexSetOpCode = chr(0x0C)
 
 	def __init__(self) :
 		return
@@ -75,8 +76,10 @@ class ActionOpCodeParser:
 		(yValue, counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 2)
 		HeepClient.SetClientFrontEndXY(xValue, yValue)
 
-		return ResponseOpCodeParser().GetSuccessROPBuffer(HeepClient, "XY Position Set")
+		return ResponseOpCodeParser().GetSuccessROPBuffer(HeepClient, "XY Position Set to (" + str(xValue) + ',' + str(yValue) + ')')
 
+	def ExecuteAddVertex(self, byteArray, HeepClient) :
+		return
 
 	def GetActionOpCodeFromByteArray(self, byteArray, HeepClient) :
 
