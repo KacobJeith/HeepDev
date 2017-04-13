@@ -191,10 +191,11 @@ var ConsumeHeepResponse = (data, IPAddress, port) => {
 
     } else if ( HeepResponse.op == 0x10) {
       //Success
+      console.log('Heep Device SUCCESS with a HAPI message: ', HeepResponse.message);
 
     } else if (HeepResponse.op == 0x11){
       //Error 
-
+      console.log('Heep Device ERROR with a HAPI message: ', HeepResponse.message);
     } else {
       console.error('Did not receive a known Response Code from Heep Device');
     }

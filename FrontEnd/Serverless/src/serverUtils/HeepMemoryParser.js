@@ -17,15 +17,23 @@ export var ReadHeepResponse = (buffer) => {
 
   } else if (buffer[0] == 0x10) {
     //Success, with optional text
+    thisResponse.success = true;
+    thisResponse.message = ReadAsText(dataPacket);
 
   } else if (buffer[0] == 0x11){
     //Error, with optional text
+    thisResponse.success = false;
+    thisResponse.message = ReadAsText(dataPacket);
 
   } else {
     return false
   }
 
   return thisResponse
+}
+
+export var ReadAsText = (buffer) => {
+  return buffer.toString()
 }
 
 
