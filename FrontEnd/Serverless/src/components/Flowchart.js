@@ -1,5 +1,5 @@
 import React from 'react'
-import Client from '../containers/ClientContainer'
+import Client from './Client'
 import VertexList from '../containers/VertexListContainer'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
