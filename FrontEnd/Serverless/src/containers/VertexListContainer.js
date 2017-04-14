@@ -19,7 +19,6 @@ class VertexList extends React.Component {
 				style: styles.vertexSVGSpace
 			}
 		}
-		console.log('Logging Vertexes: ', this.props.vertexList);
 
 		var vertexes = [];
 	    for (var i in this.props.vertexList) {
