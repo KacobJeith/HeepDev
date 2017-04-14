@@ -1,5 +1,5 @@
 import assert from 'assert'
-import * as utils from './generalUtils'
+import * as utils from './general'
 
 describe('generalUtils', () => {
 	describe('nameVertex', () => {
