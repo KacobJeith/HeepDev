@@ -78,6 +78,7 @@ export var SendVertexToHeepDevices = (vertex) => {
   console.log('Received the following vertex to send to HeepDevice: ', vertex)
 
   var IPAddress = masterState.clients[vertex.txClientID].IPAddress;
+  AddVertex(vertex);
   var messageBuffer = PrepVertexForCOP(vertex, 0x0C);
 
   console.log('Connecting to Device ', vertex.txClientID + ' at IPAddress: ' + IPAddress);
@@ -91,6 +92,7 @@ export var SendDeleteVertexToHeepDevices = (vertex) => {
 
   var IPAddress = masterState.clients[vertex.txClientID].IPAddress;
   var messageBuffer = PrepVertexForCOP(vertex, 0x0D);
+  DeleteVertex(vertex);
 
   console.log('Connecting to Device ', vertex.txClientID + ' at IPAddress: ' + IPAddress);
   console.log('Data Packet: ',  messageBuffer);
@@ -416,10 +418,19 @@ var AddVertex = (vertex) => {
   var txControl = getTxControlNameFromVertex(vertex);
   var rxControl = getRxControlNameFromVertex(vertex);
   masterState.vertexList[vertexName] = vertex;
-  var theseConnections = masterState.controls.connections[txControl];
-  theseConnections.push(rxControl);
+  masterState.controls.connections[txControl].push(rxControl);
 
-  masterState.controls.connections[txControl] = theseConnections;
+}
+
+var DeleteVertex = (vertex) => {
+  delete masterState.vertexList[nameVertex(vertex)];
+
+  var txControl = getTxControlNameFromVertex(vertex);
+  var rxControl = getRxControlNameFromVertex(vertex);
+  var index = masterState.controls.connections[txControl].indexOf(rxControl)
+  if ( index != -1) {
+    masterState.controls.connections[txControl].splice(index, 1);
+  }
 
 }
 
