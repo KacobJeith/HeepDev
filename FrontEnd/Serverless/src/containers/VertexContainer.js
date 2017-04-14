@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import Vertex from '../components/Vertex'
 import {deleteVertex}  from '../actions/actions'
-import * as utils from '../utilities/general'
+import * as generalUtils from '../utilities/generalUtilities'
 
 const mapStateToProps = (state, ownProps) => (
 {
@@ -24,7 +24,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(Vertex)
 var getInputPosition = (state, ownProps) => {
 	var returnPosition = false;
 	try {
-		var txControlName = utils.getTxControlNameFromVertex(state.vertexList[ownProps.vertexID])
+		var txControlName = generalUtils.getTxControlNameFromVertex(state.vertexList[ownProps.vertexID])
 		var clientID = state.vertexList[ownProps.vertexID].txClientID;
 		returnPosition = state.positions[ clientID ][ txControlName ];
 	} catch(err){
@@ -37,7 +37,7 @@ var getInputPosition = (state, ownProps) => {
 var getOutputPosition = (state, ownProps) => {
 	var returnPosition = false;
 	try {
-		var RxControlName = utils.getRxControlNameFromVertex(state.vertexList[ownProps.vertexID]);
+		var RxControlName = generalUtils.getRxControlNameFromVertex(state.vertexList[ownProps.vertexID]);
 		var clientID = state.vertexList[ownProps.vertexID].rxClientID
 		returnPosition = state.positions[ clientID ][ RxControlName ];
 	} catch(err){
