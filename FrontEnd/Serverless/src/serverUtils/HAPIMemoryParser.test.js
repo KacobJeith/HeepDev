@@ -1,5 +1,5 @@
 import assert from 'assert';
-import * as parser from './HeepMemoryParser';
+import * as parser from './HAPIMemoryParser';
 
 
 describe('HeepMemoryParser', () => {

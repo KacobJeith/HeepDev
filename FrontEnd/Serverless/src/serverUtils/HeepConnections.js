@@ -1,6 +1,6 @@
 import net from 'net'
 import os from 'os' 
-import * as heepParser from './HeepMemoryParser'
+import * as HAPIParser from './HAPIMemoryParser'
 import * as iconUtils from './IconUtilities'
 import * as generalUtils from '../utilities/general'
 import * as byteUtils from './ByteUtilities'
@@ -166,7 +166,7 @@ var ConsumeHeepResponse = (data, IPAddress, port) => {
   console.log('Raw inbound Data: ', data);
 
   mostRecentSearch[IPAddress] = true;
-  var HeepResponse = heepParser.ReadHeepResponse(data);
+  var HeepResponse = HAPIParser.ReadHeepResponse(data);
 
   if (HeepResponse != false){
     if (HeepResponse.op == 0x0F) {
