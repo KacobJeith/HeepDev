@@ -2,6 +2,7 @@ import net from 'net'
 import os from 'os' 
 import * as heepParser from './HeepMemoryParser'
 import * as heepIconUtils from './HeepIconUtils'
+import * as generalUtils from '../utilities/generalUtils'
 
 var masterState = {
   clients: {clientArray: []},
@@ -21,7 +22,7 @@ export var SearchForHeepDevices = () => {
   var searchBuffer = Buffer.from([0x09, 0x00])
 
   for (var i = 1; i <= 255; i++){
-    var address = joinAddress(gateway,i)
+    var address = generalUtils.joinAddress(gateway,i)
 
     ConnectToHeepDevice(address, heepPort, searchBuffer);
   }
@@ -123,7 +124,7 @@ var ConvertIPAddressToByteArray = (stringIP) => {
 }
 
 var CheckIfNewValueAndSet = (clientID, controlID, newValue) => {
-  var thisControl = nameControl(clientID, controlID);
+  var thisControl = generalUtils.nameControl(clientID, controlID);
   if (masterState.controls[thisControl].CurCtrlValue == newValue){
     return false
   } else {
@@ -186,10 +187,6 @@ export var findGateway = () => {
       }
     }
   }
-}
-
-var joinAddress = (gateway, ip) => {
-  return gateway.join('.') + '.' + ip.toString()
 }
 
 var ConnectToHeepDevice = (IPAddress, port, message) => {
@@ -305,7 +302,7 @@ var SetClientName = (heepChunk) => {
 
 var AddControl = (heepChunk) => {
   // Transition this to use new ControlID throughout frontend 
-  var tempCtrlName = nameControl(heepChunk.clientID, heepChunk.control.ControlID) 
+  var tempCtrlName = generalUtils.nameControl(heepChunk.clientID, heepChunk.control.ControlID) 
   masterState.controls[tempCtrlName] = heepChunk.control;
   masterState.controls[tempCtrlName].clientID = heepChunk.clientID;
   var currentIndex = SetControlStructure(heepChunk.clientID, tempCtrlName)
@@ -397,36 +394,20 @@ var SetControlStructure = (clientID, controlID) => {
 
 }
 
-var nameVertex = (vertex) => {
-    return vertex['txClientID'] + '.' + vertex['txControlID'] + '->' + vertex['rxClientID'] + '.' + vertex['rxControlID'];
-}
-
-var nameControl = (clientID, controlName) => {
-  return clientID +  '.' + controlName;
-}
-
-var getTxControlNameFromVertex = (vertex) => {
-  return nameControl(vertex.txClientID, vertex.txControlID)
-}
-
-var getRxControlNameFromVertex = (vertex) => {
-  return nameControl(vertex.rxClientID, vertex.rxControlID)
-}
-
 var AddVertex = (vertex) => {
-  var vertexName = nameVertex(vertex);
-  var txControl = getTxControlNameFromVertex(vertex);
-  var rxControl = getRxControlNameFromVertex(vertex);
+  var vertexName = generalUtils.nameVertex(vertex);
+  var txControl = generalUtils.getTxControlNameFromVertex(vertex);
+  var rxControl = generalUtils.getRxControlNameFromVertex(vertex);
   masterState.vertexList[vertexName] = vertex;
   masterState.controls.connections[txControl].push(rxControl);
 
 }
 
 var DeleteVertex = (vertex) => {
-  delete masterState.vertexList[nameVertex(vertex)];
+  delete masterState.vertexList[generalUtils.nameVertex(vertex)];
 
-  var txControl = getTxControlNameFromVertex(vertex);
-  var rxControl = getRxControlNameFromVertex(vertex);
+  var txControl = generalUtils.getTxControlNameFromVertex(vertex);
+  var rxControl = generalUtils.getRxControlNameFromVertex(vertex);
   var index = masterState.controls.connections[txControl].indexOf(rxControl)
   if ( index != -1) {
     masterState.controls.connections[txControl].splice(index, 1);
