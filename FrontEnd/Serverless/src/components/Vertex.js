@@ -1,7 +1,7 @@
 import React from 'react'
-import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import {deleteVertex}  from '../redux/actions'
+import { bindActionCreators } from 'redux'
+import * as Actions from '../redux/actions'
 import * as generalUtils from '../utilities/generalUtilities'
 
 var mapStateToProps = (state, ownProps) => (
@@ -10,8 +10,7 @@ var mapStateToProps = (state, ownProps) => (
   id: ownProps.vertexID,
   vertex: state.vertexList[ownProps.vertexID],
   inputPosition: getInputPosition(state, ownProps),
-  outputPosition: getOutputPosition(state, ownProps),
-
+  outputPosition: getOutputPosition(state, ownProps)
 })
 
 class Vertex extends React.Component {
@@ -93,7 +92,7 @@ var getOutputPosition = (state, ownProps) => {
 
 
 var mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({deleteVertex}, dispatch)
+  return bindActionCreators(Actions, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Vertex)

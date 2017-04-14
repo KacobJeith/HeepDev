@@ -1,6 +1,6 @@
 import React from 'react'
-import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import * as Actions from '../redux/actions'
 import Icon from '../assets/icons'
 import {ICONS} from '../assets/iconConstants'
@@ -11,10 +11,6 @@ const mapStateToProps = (state, ownProps) => ({
   value: state.controls[ownProps.thisControl]['CurCtrlValue'],
   url: state.url
 })
-
-var mapDispatchToProps = (dispatch) => {
-  return bindActionCreators(Actions, dispatch)
-}
 
 
 class OnOffController extends React.Component {
@@ -61,5 +57,10 @@ class OnOffController extends React.Component {
             	
 	}
 }
+
+var mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(Actions, dispatch)
+}
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(OnOffController)

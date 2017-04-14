@@ -1,6 +1,6 @@
 import React from 'react'
-import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import * as Actions from '../redux/actions'
 import OnOffContainer from './OnOffController'
 import RangeContainer from './RangeController'
@@ -13,10 +13,6 @@ var mapStateToProps = (state, ownProps) => ({
   ip: state.clients[ownProps.clientID]['IPAddress'],
   url: state.url
 })
-
-var mapDispatchToProps = (dispatch) => {
-  return bindActionCreators(Actions, dispatch)
-}
 
 
 class Control extends React.Component {
@@ -163,6 +159,10 @@ class Control extends React.Component {
 				</div>
 		);
 	}
+}
+
+var mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(Actions, dispatch)
 }
 
 

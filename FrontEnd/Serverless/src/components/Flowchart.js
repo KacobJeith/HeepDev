@@ -1,8 +1,8 @@
 import React from 'react'
-import Client from './Client'
-import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import * as Actions from '../redux/actions'
+import Client from './Client'
 import Vertex from './Vertex'
 
 var mapStateToProps = (state) => ({
@@ -11,9 +11,6 @@ var mapStateToProps = (state) => ({
   url: state.url
 })
 
-var mapDispatchToProps = (dispatch) => {
-  return bindActionCreators(Actions, dispatch)
-}
 
 class Flowchart extends React.Component {
 
@@ -76,5 +73,8 @@ class Flowchart extends React.Component {
 	}
 }
 
+var mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(Actions, dispatch)
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Flowchart)

@@ -1,15 +1,11 @@
 import React from 'react'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as Actions from '../redux/actions'
 import Flowchart from './Flowchart'
 
 var mapStateToProps = (state) => ({
 })
-
-var mapDispatchToProps = (dispatch) => {
-  return bindActionCreators(Actions, dispatch)
-}
 
 class App extends React.Component {
   render() {
@@ -68,5 +64,8 @@ class App extends React.Component {
   }
 }
 
+var mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(Actions, dispatch)
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

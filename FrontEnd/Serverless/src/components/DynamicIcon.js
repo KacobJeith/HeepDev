@@ -1,6 +1,6 @@
 import React from 'react'
-import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import * as Actions from '../redux/actions'
 import $ from 'jquery'
 
@@ -14,10 +14,6 @@ var mapStateToProps = (state, ownProps) => ({
   width: ownProps.width,
   url: state.url
 })
-
-var mapDispatchToProps = (dispatch) => {
-  return bindActionCreators(Actions, dispatch)
-}
 
 
 class DynamicIcon extends React.Component {
@@ -69,8 +65,10 @@ class DynamicIcon extends React.Component {
 			<div {...inputs.icon}/>
 		);
 	}
+}
 
-
+var mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(Actions, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(DynamicIcon);
