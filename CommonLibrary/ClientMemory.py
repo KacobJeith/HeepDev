@@ -44,6 +44,10 @@ class ClientMemory:
 	def SetVertex(self, vertex) :
 		self.miscMemory = self.MemoryUtilities.AppendVertexDataToByteArray(self.miscMemory, vertex)
 
+	def DeleteVertex(self, vertex) :
+		
+		self.miscMemory = self.MemoryUtilities.DeleteVertexFromByteArray(self.miscMemory, vertex)
+
 	def SetIPAddress(self, clientID, IPAddress) :
 		self.miscMemory = self.MemoryUtilities.AppendIPAddressToByteArray(self.miscMemory, clientID, IPAddress)
 

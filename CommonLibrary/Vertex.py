@@ -26,6 +26,15 @@ class Vertex:
 		self.destinationID = int(splitString[3])
 		self.sourceID = int(splitString[4])
 
+	def IsVertexEqual(self, vertex) :
+		if vertex.inputID == self.inputID :
+			if vertex.sourceID == self.sourceID :
+				if vertex.outputID == self.outputID :
+					if vertex.destinationID == self.destinationID :
+						return 1
+
+		return 0
+
 	def PrepareForJSON(self) :
 		self.inputID = self.inputID
 		self.outputID = self.outputID

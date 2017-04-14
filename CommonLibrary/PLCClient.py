@@ -53,6 +53,14 @@ class PLCClient:
  		self.VertexList.append(vertex)
  		self.ClientMemory.SetVertex(vertex)
 
+ 	def DeleteVertex(self, vertex) :
+ 		for x in range(0, len(self.VertexList)) :
+ 			if vertex.IsVertexEqual(self.VertexList[x]) :
+ 				self.VertexList.remove(self.VertexList[x])
+ 				break
+
+ 		self.ClientMemory.DeleteVertex(vertex)
+
  	def SetIPAddress(self, IPAddress) :
  		self.ClientMemory.SetIPAddress(self.ClientID, IPAddress)
 
