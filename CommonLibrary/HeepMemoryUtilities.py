@@ -136,7 +136,6 @@ class HeepMemoryUtilities:
 		while counter < len(byteArray) :
 			if byteArray[counter] == self.VertexOpCode :
 				capturedVertex = self.ReadVertexOpCode(byteArray, counter)
-				
 				if vertex.IsVertexEqual(capturedVertex.data) :
 					return self.DeleteOpCode(byteArray, counter)
 

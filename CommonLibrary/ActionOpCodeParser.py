@@ -106,35 +106,8 @@ class ActionOpCodeParser:
 
 		return ResponseOpCodeParser().GetSuccessROPBuffer(HeepClient, "Vertex Set")
 
-	def ExecuteAddVertex(self, byteArray, HeepClient) :
-		counter = 1
-		(numBytes,counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
-		(TxID, counter) = HeepOpCodeUtilities().GetClientIDFromMemory(byteArray, counter)
-		(RxID, counter) = HeepOpCodeUtilities().GetClientIDFromMemory(byteArray, counter)
-		(TxControl, counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
-		(RxControl, counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
-
-		(IPOct1,counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
-		(IPOct2,counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
-		(IPOct3,counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
-		(IPOct4,counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
-		destinationIP = HeepIPAddress(IPOct1, IPOct2, IPOct3, IPOct4)
-
-		NewVertex = Vertex()
-		NewVertex.sourceID = TxID
-		NewVertex.outputID = TxControl
-		NewVertex.destinationID = RxID
-		NewVertex.inputID = RxControl
-		NewVertex.destinationIP = destinationIP
-
-		HeepClient.AddVertex(NewVertex)
-
-		return ResponseOpCodeParser().GetSuccessROPBuffer(HeepClient, "Vertex Set")
-
 	def ExecuteDeleteVertex(self, byteArray, HeepClient) :
 		counter = 1
-		(numBytes,counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
-
 		(numBytes,counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
 		(TxID, counter) = HeepOpCodeUtilities().GetClientIDFromMemory(byteArray, counter)
 		(RxID, counter) = HeepOpCodeUtilities().GetClientIDFromMemory(byteArray, counter)
@@ -158,8 +131,6 @@ class ActionOpCodeParser:
 
 		return ResponseOpCodeParser().GetSuccessROPBuffer(HeepClient, "Vertex Deleted")
 
-
-
 	def GetActionOpCodeFromByteArray(self, byteArray, HeepClient) :
 
 		#self.PrintDataAsByteArray(byteArray)
@@ -174,6 +145,8 @@ class ActionOpCodeParser:
 			return self.ExecuteSetPosition(byteArray, HeepClient)
 		elif AOpCode == self.SetVertexOpCode :
 			return self.ExecuteAddVertex(byteArray, HeepClient)
+		elif AOpCode == self.DeleteVertexOpCode :
+			return self.ExecuteDeleteVertex(byteArray, HeepClient)
 
 		return ResponseOpCodeParser().GetErrorROPBuffer(HeepClient, "HAPI COP Not Found") # No Opcode found
 
