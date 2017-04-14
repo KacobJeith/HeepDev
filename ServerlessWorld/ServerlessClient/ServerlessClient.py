@@ -69,5 +69,6 @@ class ServerlessClientConnection :
 			if returnData:
 				client.send(returnData)
 				print returnData
+				print self.clientData.ClientMemory.miscMemory
 
 			client.close()

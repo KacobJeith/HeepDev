@@ -144,7 +144,7 @@ class HeepMemoryUtilities:
 			else :
 				counter = self.SkipOpCode(byteArray, counter)
 
-		return ByteArray
+		return byteArray
 
 	def AppendIPAddressToByteArray(self, byteArray, clientID, IPAddress) :
 		byteArray.append(self.IPAddressOPCode)
