@@ -105,15 +105,15 @@ print CheckEquality( deletionDevice.GetVerticesString(), '', 'Remove Only Vertex
 DeviceMemory = DeviceMemory()
 MemoryUtilities = MemoryUtilities()
 byteArray = []
-print CheckEquality( OpCodeUtilities().GetNecessaryBytes(255), 1, 'Client Memory Get Bytes 1')
-print CheckEquality( OpCodeUtilities().GetNecessaryBytes(256), 2, 'Client Memory Get Bytes 2')
-print CheckEquality( OpCodeUtilities().GetNecessaryBytes(65535), 2, 'Client Memory Get Bytes 3')
-print CheckEquality( OpCodeUtilities().GetNecessaryBytes(65536), 3, 'Client Memory Get Bytes 4')
-print CheckEquality( OpCodeUtilities().GetNecessaryBytes(4), 1, 'Client Memory Get Bytes 5')
+print CheckEquality( OpCodeUtilities().GetNecessaryBytes(255), 1, 'Device Memory Get Bytes 1')
+print CheckEquality( OpCodeUtilities().GetNecessaryBytes(256), 2, 'Device Memory Get Bytes 2')
+print CheckEquality( OpCodeUtilities().GetNecessaryBytes(65535), 2, 'Device Memory Get Bytes 3')
+print CheckEquality( OpCodeUtilities().GetNecessaryBytes(65536), 3, 'Device Memory Get Bytes 4')
+print CheckEquality( OpCodeUtilities().GetNecessaryBytes(4), 1, 'Device Memory Get Bytes 5')
 
-print CheckEquality( OpCodeUtilities().GetByteArrayFromValue(256), [chr(0x01), chr(0x00)], 'Client Memory Get Byte Array From Value 1')
-print CheckEquality( OpCodeUtilities().GetByteArrayFromValue(255), [chr(0xff)], 'Client Memory Get Byte Array From Value 2')
-print CheckEquality( OpCodeUtilities().GetByteArrayFromValue(65536), [chr(0x01), chr(0x00), chr(0x00)], 'Client Memory Get Byte Array From Value 3')
+print CheckEquality( OpCodeUtilities().GetByteArrayFromValue(256), [chr(0x01), chr(0x00)], 'Device Memory Get Byte Array From Value 1')
+print CheckEquality( OpCodeUtilities().GetByteArrayFromValue(255), [chr(0xff)], 'Device Memory Get Byte Array From Value 2')
+print CheckEquality( OpCodeUtilities().GetByteArrayFromValue(65536), [chr(0x01), chr(0x00), chr(0x00)], 'Device Memory Get Byte Array From Value 3')
 
 print CheckEquality( MemoryUtilities.GetConstantSizeByteArrayFromValue(1, 2), [chr(0x00), chr(0x01)], 'Get Constant Size Byte Array from Value 1') 
 print CheckEquality( MemoryUtilities.GetConstantSizeByteArrayFromValue(300, 2), [chr(0x01), chr(0x2C)], 'Get Constant Size Byte Array from Value 2') 
@@ -121,25 +121,25 @@ print CheckEquality( MemoryUtilities.GetConstantSizeByteArrayFromValue(300, 2), 
 DeviceMemory.SetDeviceName('Fox', 1613)
 DeviceMemory.SetDeviceName('Fortune', 12422)
 DeviceMemory.SetDeviceXY(1234, 5678, 6666)
-print CheckEquality( DeviceMemory.GetDeviceXY(6666), (1234, 5678), 'Get Client XY From Memory 1')
-print CheckEquality( DeviceMemory.GetDeviceXY(1252), (-1, -1), 'Get Client XY Failure From Memory 2')
-print CheckEquality( DeviceMemory.GetDeviceName(6666), 'None', 'Get Client Name From Memory 1')
-print CheckEquality( DeviceMemory.GetDeviceName(1613), 'Fox', 'Get Client Name From Memory 2')
-print CheckEquality( DeviceMemory.GetDeviceName(12422), 'Fortune', 'Get Client Name From Memory 3')
+print CheckEquality( DeviceMemory.GetDeviceXY(6666), (1234, 5678), 'Get Device XY From Memory 1')
+print CheckEquality( DeviceMemory.GetDeviceXY(1252), (-1, -1), 'Get Device XY Failure From Memory 2')
+print CheckEquality( DeviceMemory.GetDeviceName(6666), 'None', 'Get Device Name From Memory 1')
+print CheckEquality( DeviceMemory.GetDeviceName(1613), 'Fox', 'Get Device Name From Memory 2')
+print CheckEquality( DeviceMemory.GetDeviceName(12422), 'Fortune', 'Get Device Name From Memory 3')
 
 DeviceMemory.SetDeviceXY(9182, 50230, 6666)
 DeviceMemory.SetDeviceName('Fencing', 1324)
-print CheckEquality( DeviceMemory.GetDeviceXY(6666), (9182, 50230), 'Update Client XY From Memory 1')
-print CheckEquality( DeviceMemory.GetDeviceName(1324), 'Fencing', 'Get Client Name From Memory 3')
+print CheckEquality( DeviceMemory.GetDeviceXY(6666), (9182, 50230), 'Update Device XY From Memory 1')
+print CheckEquality( DeviceMemory.GetDeviceName(1324), 'Fencing', 'Get Device Name From Memory 3')
 
 MemoryUtilities.AppendDeviceDataToByteArray(byteArray, 2038912)
-print CheckEquality( MemoryUtilities.GetDeviceFirmware(byteArray, 2038912), 1, 'Get Client Firmware Version')
+print CheckEquality( MemoryUtilities.GetDeviceFirmware(byteArray, 2038912), 1, 'Get Device Firmware Version')
 
 byteArray = MemoryUtilities.AppendControlDataToByteArray(byteArray, 2038912, Control1)
-print CheckEquality( MemoryUtilities.GetDeviceControlValue(byteArray, 2038912)[0].ControlID, Control1.ControlID, 'Get Client Control Value 1')
+print CheckEquality( MemoryUtilities.GetDeviceControlValue(byteArray, 2038912)[0].ControlID, Control1.ControlID, 'Get Device Control Value 1')
 byteArray = MemoryUtilities.AppendControlDataToByteArray(byteArray, 2038912, Control2)
-print CheckEquality( len(MemoryUtilities.GetDeviceControlValue(byteArray, 2038912)), 2, 'Get Client Control Value 2')
-print CheckEquality( len(MemoryUtilities.GetDeviceControlValue(byteArray, 322)), 0, 'Get Client Control Value 3')
+print CheckEquality( len(MemoryUtilities.GetDeviceControlValue(byteArray, 2038912)), 2, 'Get Device Control Value 2')
+print CheckEquality( len(MemoryUtilities.GetDeviceControlValue(byteArray, 322)), 0, 'Get Device Control Value 3')
 
 byteArray = MemoryUtilities.AppendVertexDataToByteArray(byteArray, myVertex)
 print CheckEquality(MemoryUtilities.GetVertexFromByteArray(byteArray, 987123).destinationID, 98587649, 'Get Vertex Opcode')
@@ -163,7 +163,7 @@ for x in range(0, 100) :
 byteArray = MemoryUtilities.AppendVertexDataToByteArray(byteArray, myVertex)
 print CheckEquality(MemoryUtilities.GetVertexFromByteArray(byteArray, 987123).destinationID, 98587649, 'Get Vertex Opcode after Much Data Added')
 
-# OpCode Client Integration
+# OpCode Device Integration
 otherDevice = Device()
 otherDevice.DeviceID = 12332
 otherDevice.DeviceName = 'Sloppy'
@@ -182,8 +182,8 @@ otherDevice.SetIPAddress(myIP)
 otherDevice.SetIconInformation(1, [chr(3), chr(4), chr(12), chr(41)]) 
 myString = otherDevice.GetDeviceString()
 
-print CheckEquality(OpCodeUtilities().ConvertStringToByteArray(myString), otherDevice.GetDeviceByteArray(), "Get Client String OpCodes")
-print CheckEquality(otherDevice.GetIPAddress().GetIPAsString(), "192.168.1.1", "Get client IP Address")
+print CheckEquality(OpCodeUtilities().ConvertStringToByteArray(myString), otherDevice.GetDeviceByteArray(), "Get Device String OpCodes")
+print CheckEquality(otherDevice.GetIPAddress().GetIPAsString(), "192.168.1.1", "Get Device IP Address")
 
 
 # Action Op Codes
