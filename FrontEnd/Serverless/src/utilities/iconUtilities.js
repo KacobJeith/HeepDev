@@ -3,20 +3,20 @@ import path from 'path'
 
 var iconContent = {};
 
-export var SetClientIconFromString = (clientID, clientName, clientIconName) => {
-  var suggestedIcon = clientIconName;
+export var SetDeviceIconFromString = (deviceID, deviceName, deviceIconName) => {
+  var suggestedIcon = deviceIconName;
 
-  if (clientIconName == 'none') {
-    suggestedIcon = suggestIconForClient(clientName);
+  if (deviceIconName == 'none') {
+    suggestedIcon = suggestIconForDevice(deviceName);
     console.log('Suggesting a default icon: ', suggestedIcon);
-    clientIconName = suggestedIcon;
+    deviceIconName = suggestedIcon;
   }
 
   if (!(suggestedIcon in iconContent)) {
     SaveIconFromFile(suggestedIcon);
   }
 
-  iconContent[clientID] = clientIconName;
+  iconContent[deviceID] = deviceIconName;
 
 }
 
@@ -24,14 +24,14 @@ export var GetIconContent = () => {
   return iconContent
 }
 
-export var suggestIconForClient = (clientName) => {
+export var suggestIconForDevice = (deviceName) => {
   var suggestedIcon = 'none';
 
   var defaultIcons = getDefaultIcons();
   var keywordReference = generateIconKeywords(defaultIcons);
 
   for (var keyword in keywordReference) {
-    var lowercaseName = clientName.toLowerCase();
+    var lowercaseName = deviceName.toLowerCase();
     if (lowercaseName.search(keyword) > -1){
       suggestedIcon = keywordReference[keyword];
     }
@@ -44,13 +44,13 @@ export var suggestIconForClient = (clientName) => {
   return suggestedIcon
 }
 
-var SaveIconFromFile = (clientIconName) => {
-  var filepath = path.join(__dirname, '../assets/', clientIconName + '.svg');
+var SaveIconFromFile = (deviceIconName) => {
+  var filepath = path.join(__dirname, '../assets/', deviceIconName + '.svg');
   fs.readFile(filepath, (err, data) => {
     if (err) {
       console.error('SVG failed: ', filepath);
     } else {
-      iconContent[clientIconName] = data.toString();
+      iconContent[deviceIconName] = data.toString();
     }
   })
 }
@@ -84,12 +84,12 @@ export var getDefaultIcons = () => {
   return svgs
 }
 
-export var nameCustomIcon = (clientID) => {
-  return clientID.toString() + '.' + 'custom'
+export var nameCustomIcon = (deviceID) => {
+  return deviceID.toString() + '.' + 'custom'
 }
 
-export var setCustomIcon = (clientID, data) => {
-  var customName = nameCustomIcon(clientID);
-  iconContent[clientID] = customName;
+export var setCustomIcon = (deviceID, data) => {
+  var customName = nameCustomIcon(deviceID);
+  iconContent[deviceID] = customName;
   iconContent[customName] = data.toString('ascii');
 }

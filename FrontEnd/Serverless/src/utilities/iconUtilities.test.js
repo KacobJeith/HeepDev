@@ -33,12 +33,12 @@ describe('HeepIconUtils', () => {
 		})
 	})
 
-	describe('suggestIconForClient', () => {
+	describe('suggestIconForDevice', () => {
 		it('Suggests a new icon', () => {
-			assert.equal('light-bulb', iconUtils.suggestIconForClient('Bulby'))
+			assert.equal('light-bulb', iconUtils.suggestIconForDevice('Bulby'))
 		})
 		it('Suggests none when no match', () => {
-			assert.equal('none', iconUtils.suggestIconForClient('asdfawverve'))
+			assert.equal('none', iconUtils.suggestIconForDevice('asdfawverve'))
 		})
 	})
 });
