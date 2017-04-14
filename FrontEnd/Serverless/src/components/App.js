@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as Actions from '../redux/actions'
-import Flowchart from '../containers/FlowchartContainer'
+import Flowchart from './Flowchart'
 
 var mapStateToProps = (state) => ({
 })
