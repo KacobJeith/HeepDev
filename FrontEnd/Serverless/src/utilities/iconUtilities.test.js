@@ -1,5 +1,5 @@
 import assert from 'assert';
-import * as iconUtils from './IconUtilities';
+import * as iconUtils from './iconUtilities';
 
 
 describe('HeepIconUtils', () => {

@@ -1,5 +1,5 @@
 import assert from 'assert'
-import * as utils from './general'
+import * as generalUtils from './generalUtilities'
 
 describe('generalUtils', () => {
 	describe('nameVertex', () => {
@@ -12,12 +12,12 @@ describe('generalUtils', () => {
 			    rxIP: '10.0.0.1'
 			  };
 
-			assert.equal('1.3->2.4', utils.nameVertex(vertex));
+			assert.equal('1.3->2.4', generalUtils.nameVertex(vertex));
 		})
 	})
 	describe('nameControl', () => {
 		it('Names a Control', () => {
-			assert.equal('1234.5', utils.nameControl(1234, 5));
+			assert.equal('1234.5', generalUtils.nameControl(1234, 5));
 		})
 	})
 
@@ -31,7 +31,7 @@ describe('generalUtils', () => {
 			    rxIP: '10.0.0.1'
 			  };
 
-			assert.equal('1.3', utils.getTxControlNameFromVertex(vertex));
+			assert.equal('1.3', generalUtils.getTxControlNameFromVertex(vertex));
 		})
 	})
 
@@ -45,13 +45,13 @@ describe('generalUtils', () => {
 			    rxIP: '10.0.0.1'
 			  };
 
-			assert.equal('2.4', utils.getRxControlNameFromVertex(vertex));
+			assert.equal('2.4', generalUtils.getRxControlNameFromVertex(vertex));
 		})
 	})
 
 	describe('joinAddress', () => {
 		it('Joins an array that represents an IP address', () => {
-			assert.equal('192.168.1.1', utils.joinAddress([192, 168, 1], 1));
+			assert.equal('192.168.1.1', generalUtils.joinAddress([192, 168, 1], 1));
 		})
 	})
 
