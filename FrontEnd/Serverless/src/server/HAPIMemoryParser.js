@@ -5,7 +5,7 @@ export var ReadHeepResponse = (buffer) => {
 
   var thisResponse = {
     op: buffer[0],
-    clientID: ReadClientID(buffer.slice(it + 1,it + 5)),
+    deviceID: ReadDeviceID(buffer.slice(it + 1,it + 5)),
     packetBytes: packetBytes[0]
   };
 
@@ -63,7 +63,7 @@ var GetNextBlock = (buffer, it) => {
   var byteIndicatorBytes = packetBytes[1];
   var thisBlock = {
     op: buffer[it],
-    clientID: ReadClientID(buffer.slice(it + 1,it + 5)),
+    deviceID: ReadDeviceID(buffer.slice(it + 1,it + 5)),
     packetBytes: packetBytes[0]
   };
 
@@ -74,7 +74,7 @@ var GetNextBlock = (buffer, it) => {
   var thisBlockData = buffer.slice(it, it + buffer[it] + 1);
 
   if (thisBlock.op == 0x01){
-    // Client Data
+    // Device Data
     thisBlock.version = ReadFirmwareVersion(thisBlockData);
 
   } else if (thisBlock.op == 0x02) {
@@ -84,7 +84,7 @@ var GetNextBlock = (buffer, it) => {
   } else if (thisBlock.op == 0x03) {
     // Vertex
     thisBlock.vertex = ReadVertex(thisBlockData);
-    thisBlock.vertex.txClientID = thisBlock.clientID;
+    thisBlock.vertex.txDeviceID = thisBlock.deviceID;
 
   } else if (thisBlock.op == 0x04) {
     // Icon ID
@@ -95,15 +95,15 @@ var GetNextBlock = (buffer, it) => {
     thisBlock.iconData = ReadIconCustom(thisBlockData);
 
   } else if (thisBlock.op == 0x06) {
-    //Client Name
-    thisBlock.clientName = ReadClientName(thisBlockData);
+    //Device Name
+    thisBlock.deviceName = ReadDeviceName(thisBlockData);
 
   } else if (thisBlock.op == 0x07) {
     //FrontEnd Position
     thisBlock.position = ReadPosition(thisBlockData);
 
   } else if (thisBlock.op == 0x08) {
-    //ClientIP 
+    //DeviceIP 
 
   } else if (thisBlock.op == 0x12) {
     //Fragment 
@@ -116,15 +116,15 @@ var GetNextBlock = (buffer, it) => {
   return [it, thisBlock]
 }
 
-export var ReadClientID = (buffer) => {
+export var ReadDeviceID = (buffer) => {
   // it is the counter at the OP Code
 
-  var clientID =  ((buffer[0] << 24) >>> 0) + 
+  var deviceID =  ((buffer[0] << 24) >>> 0) + 
                   ((buffer[1] << 16) >>> 0) +
                   ((buffer[2] <<  8) >>> 0) + 
                   ( buffer[3]);
 
-  return clientID
+  return deviceID
 }
 
 var ReadSizeOfPacket = (buffer, it) => {
@@ -168,7 +168,7 @@ export var ReadControl = (thisBlockData) => { // OP 2
   return thisPosition
  }
 
- export var ReadClientName = (thisBlockData) => {
+ export var ReadDeviceName = (thisBlockData) => {
   return thisBlockData.slice(1).toString('ascii')
  }
 
@@ -195,7 +195,7 @@ export var ReadControl = (thisBlockData) => { // OP 2
 
  export var ReadVertex = (thisBlockData) => {
   var thisVertex = {
-    rxClientID: ReadClientID(thisBlockData.slice(1, 5)),
+    rxDeviceID: ReadDeviceID(thisBlockData.slice(1, 5)),
     txControlID: thisBlockData[5],
     rxControlID: thisBlockData[6], 
     rxIP: thisBlockData.slice(7).join('.')
