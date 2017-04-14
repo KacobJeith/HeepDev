@@ -3,6 +3,7 @@ import os from 'os'
 import * as heepParser from './HeepMemoryParser'
 import * as heepIconUtils from './HeepIconUtils'
 import * as generalUtils from '../utilities/generalUtils'
+import * as byteUtils from './ByteUtilities'
 
 var masterState = {
   clients: {clientArray: []},
@@ -50,8 +51,8 @@ export var SendPositionToHeepDevice = (clientID, position) => {
   SetClientPositionFromBrowser(clientID, position);
 
   var IPAddress = masterState.clients[clientID].IPAddress;
-  var xPosition = GetValueAsFixedSizeByteArray(position.left, 2);
-  var yPosition = GetValueAsFixedSizeByteArray(position.top, 2);
+  var xPosition = byteUtils.GetValueAsFixedSizeByteArray(position.left, 2);
+  var yPosition = byteUtils.GetValueAsFixedSizeByteArray(position.top, 2);
   var packet = xPosition.concat(yPosition);
   var numBytes = [packet.length];
 
@@ -102,25 +103,15 @@ export var SendDeleteVertexToHeepDevices = (vertex) => {
 }
 
 export var PrepVertexForCOP = (vertex, COP) => {
-  var txClientID = GetClientIDasByteArray(vertex.txClientID);
-  var txControlID = GetValueAsFixedSizeByteArray(vertex.txControlID, 1);
-  var rxClientID = GetClientIDasByteArray(vertex.rxClientID);
-  var rxControlID = GetValueAsFixedSizeByteArray(vertex.rxControlID, 1);
-  var rxIP = ConvertIPAddressToByteArray(vertex.rxIP);
+  var txClientID = byteUtils.GetClientIDasByteArray(vertex.txClientID);
+  var txControlID = byteUtils.GetValueAsFixedSizeByteArray(vertex.txControlID, 1);
+  var rxClientID = byteUtils.GetClientIDasByteArray(vertex.rxClientID);
+  var rxControlID = byteUtils.GetValueAsFixedSizeByteArray(vertex.rxControlID, 1);
+  var rxIP = byteUtils.ConvertIPAddressToByteArray(vertex.rxIP);
   var packet = txClientID.concat(rxClientID, txControlID, rxControlID, rxIP);
   var numBytes = [packet.length];
 
   return Buffer.from([COP].concat(numBytes, packet));
-}
-
-var ConvertIPAddressToByteArray = (stringIP) => {
-  var split = stringIP.split('.');
-  var byteArray = [];
-  for (var i = 0; i < split.length; i++){
-    byteArray.push(parseInt(split[i]));
-  }
-
-  return byteArray
 }
 
 var CheckIfNewValueAndSet = (clientID, controlID, newValue) => {
@@ -131,46 +122,6 @@ var CheckIfNewValueAndSet = (clientID, controlID, newValue) => {
     masterState.controls[thisControl].CurCtrlValue = newValue;
     return true
   }
-}
-
-export var GetClientIDasByteArray = (value) => {
-  var clientID = GetValueAsFixedSizeByteArray(value, 4);
-  return clientID
-}
-
-export var GetValueAsFixedSizeByteArray = (value, size) => {
-  var valueBytes = GetByteArrayFromValue(value);
-  var backfill = size - valueBytes.length;
-  for (var i = 0; i < backfill; i++){
-    valueBytes.unshift(0x00);
-  }
-  
-  return valueBytes
-}
-
-export var GetByteArrayFromValue = (value) => {
-  var byteArray = [];
-  var numBytes = GetNecessaryBytes(value);
-
-  for (var i = 0; i < numBytes; i++){ 
-    var hexVal = value % 256;
-    byteArray.unshift(hexVal);
-    value = value >> 8;
-  }
-
-  return byteArray
-}
-
-export var GetNecessaryBytes = (value) => {
-  var numBytes = 1;
-  value = value >> 8;
-
-  while (value > 0) {
-    numBytes += 1;
-    value = value >> 8;
-  }
-
-  return numBytes
 }
 
 export var findGateway = () => {
