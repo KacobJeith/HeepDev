@@ -1,4 +1,4 @@
-from HeepOpCodeUtilities import HeepOpCodeUtilities
+from OpCodeUtilities import OpCodeUtilities
 from Vertex import Vertex
 from CommonDataTypes import HeepIPAddress
 
@@ -11,31 +11,31 @@ class ResponseOpCodeParser:
 	def __init__(self) :
 		return
 
-	def GetMemDumpROPBuffer(self, HeepClient, byteLength) :
+	def GetMemDumpROPBuffer(self, HeepDevice, byteLength) :
 		byteArray = []
 		byteArray.append(self.MemoryDumpOpCode)
-		byteArray = HeepOpCodeUtilities().AppendClientIDToByteArray(byteArray, HeepClient.ClientID)
+		byteArray = OpCodeUtilities().AppendDeviceIDToByteArray(byteArray, HeepDevice.DeviceID)
 		byteArray.append(chr(byteLength))
 
-		return HeepOpCodeUtilities().GetStringFromByteArray(byteArray)
+		return OpCodeUtilities().GetStringFromByteArray(byteArray)
 
-	def GetSuccessROPBuffer(self, HeepClient, Message) :
+	def GetSuccessROPBuffer(self, HeepDevice, Message) :
 		byteArray = []
 		byteArray.append(self.SuccessOpCode)
-		byteArray = HeepOpCodeUtilities().AppendClientIDToByteArray(byteArray, HeepClient.ClientID)
+		byteArray = OpCodeUtilities().AppendDeviceIDToByteArray(byteArray, HeepDevice.DeviceID)
 		byteArray.append(chr(len(Message)))
-		byteArray = HeepOpCodeUtilities().AppendStringToByteArray(byteArray, Message)
+		byteArray = OpCodeUtilities().AppendStringToByteArray(byteArray, Message)
 
-		return HeepOpCodeUtilities().GetStringFromByteArray(byteArray)
+		return OpCodeUtilities().GetStringFromByteArray(byteArray)
 
-	def GetErrorROPBuffer(self, HeepClient, Message) :
+	def GetErrorROPBuffer(self, HeepDevice, Message) :
 		byteArray = []
 		byteArray.append(self.ErrorOpCode)
-		byteArray = HeepOpCodeUtilities().AppendClientIDToByteArray(byteArray, HeepClient.ClientID)
+		byteArray = OpCodeUtilities().AppendDeviceIDToByteArray(byteArray, HeepDevice.DeviceID)
 		byteArray.append(chr(len(Message)))
-		byteArray = HeepOpCodeUtilities().AppendStringToByteArray(byteArray, Message)
+		byteArray = OpCodeUtilities().AppendStringToByteArray(byteArray, Message)
 
-		return HeepOpCodeUtilities().GetStringFromByteArray(byteArray)
+		return OpCodeUtilities().GetStringFromByteArray(byteArray)
 
 
 class ActionOpCodeParser:
@@ -49,50 +49,50 @@ class ActionOpCodeParser:
 	def __init__(self) :
 		return
 
-	def ExecuteIsHeepDevice(self, byteArray, HeepClient) :
+	def ExecuteIsHeepDevice(self, byteArray, HeepDevice) :
 		counter = 1
-		(numBytes,counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1) # Always 0 with IsHeepDevice COP
+		(numBytes,counter) = OpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1) # Always 0 with IsHeepDevice COP
 
-		clientMemoryDump = HeepClient.GetClientString()
+		clientMemoryDump = HeepDevice.GetDeviceString()
 
-		MemDumpROP = ResponseOpCodeParser().GetMemDumpROPBuffer(HeepClient, len(clientMemoryDump))
+		MemDumpROP = ResponseOpCodeParser().GetMemDumpROPBuffer(HeepDevice, len(clientMemoryDump))
 
 		return  MemDumpROP + clientMemoryDump
 
-	def ExecuteSetValue(self, byteArray, HeepClient) :
+	def ExecuteSetValue(self, byteArray, HeepDevice) :
 		counter = 1
-		(numBytes,counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
-		(controlID, counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
-		(data, counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, numBytes-1)
+		(numBytes,counter) = OpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
+		(controlID, counter) = OpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
+		(data, counter) = OpCodeUtilities().GetNumberFromMemory(byteArray, counter, numBytes-1)
 
-		successCode = HeepClient.UpdateControlsByID(controlID, data) 
+		successCode = HeepDevice.UpdateControlsByID(controlID, data) 
 
 		if successCode == 0 : 
-			return ResponseOpCodeParser().GetSuccessROPBuffer(HeepClient, "Value Set")
+			return ResponseOpCodeParser().GetSuccessROPBuffer(HeepDevice, "Value Set")
 		else :
-			return ResponseOpCodeParser().GetErrorROPBuffer(HeepClient, "Control Not Found")
+			return ResponseOpCodeParser().GetErrorROPBuffer(HeepDevice, "Control Not Found")
 
-	def ExecuteSetPosition(self, byteArray, HeepClient) :
+	def ExecuteSetPosition(self, byteArray, HeepDevice) :
 		counter = 1
-		(numBytes,counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
-		(xValue, counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 2)
-		(yValue, counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 2)
-		HeepClient.SetClientFrontEndXY(xValue, yValue)
+		(numBytes,counter) = OpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
+		(xValue, counter) = OpCodeUtilities().GetNumberFromMemory(byteArray, counter, 2)
+		(yValue, counter) = OpCodeUtilities().GetNumberFromMemory(byteArray, counter, 2)
+		HeepDevice.SetFrontEndXY(xValue, yValue)
 
-		return ResponseOpCodeParser().GetSuccessROPBuffer(HeepClient, "XY Position Set to (" + str(xValue) + ',' + str(yValue) + ')')
+		return ResponseOpCodeParser().GetSuccessROPBuffer(HeepDevice, "XY Position Set to (" + str(xValue) + ',' + str(yValue) + ')')
 
-	def ExecuteAddVertex(self, byteArray, HeepClient) :
+	def ExecuteAddVertex(self, byteArray, HeepDevice) :
 		counter = 1
-		(numBytes,counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
-		(TxID, counter) = HeepOpCodeUtilities().GetClientIDFromMemory(byteArray, counter)
-		(RxID, counter) = HeepOpCodeUtilities().GetClientIDFromMemory(byteArray, counter)
-		(TxControl, counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
-		(RxControl, counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
+		(numBytes,counter) = OpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
+		(TxID, counter) = OpCodeUtilities().GetDeviceIDFromMemory(byteArray, counter)
+		(RxID, counter) = OpCodeUtilities().GetDeviceIDFromMemory(byteArray, counter)
+		(TxControl, counter) = OpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
+		(RxControl, counter) = OpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
 
-		(IPOct1,counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
-		(IPOct2,counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
-		(IPOct3,counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
-		(IPOct4,counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
+		(IPOct1,counter) = OpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
+		(IPOct2,counter) = OpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
+		(IPOct3,counter) = OpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
+		(IPOct4,counter) = OpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
 		destinationIP = HeepIPAddress(IPOct1, IPOct2, IPOct3, IPOct4)
 
 		NewVertex = Vertex()
@@ -102,22 +102,22 @@ class ActionOpCodeParser:
 		NewVertex.inputID = RxControl
 		NewVertex.destinationIP = destinationIP
 
-		HeepClient.AddVertex(NewVertex)
+		HeepDevice.AddVertex(NewVertex)
 
-		return ResponseOpCodeParser().GetSuccessROPBuffer(HeepClient, "Vertex Set")
+		return ResponseOpCodeParser().GetSuccessROPBuffer(HeepDevice, "Vertex Set")
 
-	def ExecuteDeleteVertex(self, byteArray, HeepClient) :
+	def ExecuteDeleteVertex(self, byteArray, HeepDevice) :
 		counter = 1
-		(numBytes,counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
-		(TxID, counter) = HeepOpCodeUtilities().GetClientIDFromMemory(byteArray, counter)
-		(RxID, counter) = HeepOpCodeUtilities().GetClientIDFromMemory(byteArray, counter)
-		(TxControl, counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
-		(RxControl, counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
+		(numBytes,counter) = OpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
+		(TxID, counter) = OpCodeUtilities().GetDeviceIDFromMemory(byteArray, counter)
+		(RxID, counter) = OpCodeUtilities().GetDeviceIDFromMemory(byteArray, counter)
+		(TxControl, counter) = OpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
+		(RxControl, counter) = OpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
 
-		(IPOct1,counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
-		(IPOct2,counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
-		(IPOct3,counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
-		(IPOct4,counter) = HeepOpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
+		(IPOct1,counter) = OpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
+		(IPOct2,counter) = OpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
+		(IPOct3,counter) = OpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
+		(IPOct4,counter) = OpCodeUtilities().GetNumberFromMemory(byteArray, counter, 1)
 		destinationIP = HeepIPAddress(IPOct1, IPOct2, IPOct3, IPOct4)
 
 		NewVertex = Vertex()
@@ -127,28 +127,28 @@ class ActionOpCodeParser:
 		NewVertex.inputID = RxControl
 		NewVertex.destinationIP = destinationIP
 
-		HeepClient.DeleteVertex(NewVertex)
+		HeepDevice.DeleteVertex(NewVertex)
 
-		return ResponseOpCodeParser().GetSuccessROPBuffer(HeepClient, "Vertex Deleted")
+		return ResponseOpCodeParser().GetSuccessROPBuffer(HeepDevice, "Vertex Deleted")
 
-	def GetActionOpCodeFromByteArray(self, byteArray, HeepClient) :
+	def GetActionOpCodeFromByteArray(self, byteArray, HeepDevice) :
 
 		#self.PrintDataAsByteArray(byteArray)
 
 		AOpCode = byteArray[0]
 
 		if AOpCode == self.IsHeepDeviceOpCode :
-			return self.ExecuteIsHeepDevice(byteArray, HeepClient)
+			return self.ExecuteIsHeepDevice(byteArray, HeepDevice)
 		elif AOpCode == self.SetValueOpCode :
-			return self.ExecuteSetValue(byteArray, HeepClient)
+			return self.ExecuteSetValue(byteArray, HeepDevice)
 		elif AOpCode == self.SetPositionOpCode :
-			return self.ExecuteSetPosition(byteArray, HeepClient)
+			return self.ExecuteSetPosition(byteArray, HeepDevice)
 		elif AOpCode == self.SetVertexOpCode :
-			return self.ExecuteAddVertex(byteArray, HeepClient)
+			return self.ExecuteAddVertex(byteArray, HeepDevice)
 		elif AOpCode == self.DeleteVertexOpCode :
-			return self.ExecuteDeleteVertex(byteArray, HeepClient)
+			return self.ExecuteDeleteVertex(byteArray, HeepDevice)
 
-		return ResponseOpCodeParser().GetErrorROPBuffer(HeepClient, "HAPI COP Not Found") # No Opcode found
+		return ResponseOpCodeParser().GetErrorROPBuffer(HeepDevice, "HAPI COP Not Found") # No Opcode found
 
 	def PrintDataAsByteArray(self, byteArray) :
 		myArr = []
