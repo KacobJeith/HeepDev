@@ -18,14 +18,14 @@ class OpCodeUtilities:
 
 		return (retVal, counter)
 
-	def AppendClientIDToByteArray(self, byteArray, clientID) :
-		clientIDByteArray = self.GetByteArrayFromValue(clientID)
+	def AppendDeviceIDToByteArray(self, byteArray, deviceID) :
+		deviceIDByteArray = self.GetByteArrayFromValue(deviceID)
 
-		for x in range(len(clientIDByteArray), 4) :
+		for x in range(len(deviceIDByteArray), 4) :
 			byteArray.append(chr(0x00))
 
-		for x in range(0, len(clientIDByteArray)) :
-			byteArray.append(clientIDByteArray[x])
+		for x in range(0, len(deviceIDByteArray)) :
+			byteArray.append(deviceIDByteArray[x])
 
 		return byteArray
 
@@ -70,9 +70,9 @@ class OpCodeUtilities:
 
 		return byteArray
 
-	def GetClientIDFromMemory(self, byteArray, counter) :
+	def GetDeviceIDFromMemory(self, byteArray, counter) :
 
-		clientIDAndCounter = self.GetNumberFromMemory(byteArray, counter, 4)
+		deviceIDAndCounter = self.GetNumberFromMemory(byteArray, counter, 4)
 
-		return clientIDAndCounter
+		return deviceIDAndCounter
 
