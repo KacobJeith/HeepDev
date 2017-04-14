@@ -248,7 +248,7 @@ var AddMemoryChunksToMasterState = (heepChunks, IPAddress) => {
       AddControl(heepChunks[i]);
 
     } else if (heepChunks[i].op == 3){
-      AddVertex(heepChunks[i])
+      AddVertex(heepChunks[i].vertex)
       
     } else if (heepChunks[i].op == 4){
       SetIconFromID(heepChunks[i]);
@@ -411,14 +411,16 @@ var getRxControlNameFromVertex = (vertex) => {
   return nameControl(vertex.rxClientID, vertex.rxControlID)
 }
 
-var AddVertex = (heepChunk) => {
-  var vertexName = nameVertex(heepChunk.vertex);
-  var txControl = getTxControlNameFromVertex(heepChunk.vertex);
-  var rxControl = getRxControlNameFromVertex(heepChunk.vertex);
-  masterState.vertexList[vertexName] = heepChunk.vertex;
+var AddVertex = (vertex) => {
+  var vertexName = nameVertex(vertex);
+  var txControl = getTxControlNameFromVertex(vertex);
+  var rxControl = getRxControlNameFromVertex(vertex);
+  masterState.vertexList[vertexName] = vertex;
   var theseConnections = masterState.controls.connections[txControl];
   theseConnections.push(rxControl);
 
   masterState.controls.connections[txControl] = theseConnections;
 
 }
+
+

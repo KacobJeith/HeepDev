@@ -105,6 +105,9 @@ var GetNextBlock = (buffer, it) => {
   } else if (thisBlock.op == 0x08) {
     //ClientIP 
 
+  } else if (thisBlock.op == 0x12) {
+    //Fragment 
+
   } else {
     return false
   }
