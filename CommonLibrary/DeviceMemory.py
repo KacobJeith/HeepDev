@@ -4,41 +4,41 @@ from MemoryUtilities import MemoryUtilities
 
 class DeviceMemory:
 
-	ClientMemoryFileName = 'ClientMemory.dat'
+	DeviceMemoryFileName = 'DeviceMemory.dat'
 
 	def __init__(self):
 		self.totalMemory = 1024 #In Bytes
 		self.miscMemory = []
 		return
 
-	def WriteClientMemoryToFile(self) :
-		writeFile = open(self.ClientMemoryFileName, 'w')
+	def WriteDeviceMemoryToFile(self) :
+		writeFile = open(self.DeviceMemoryFileName, 'w')
 		writeFile.write(self.GetMemoryString())
 		writeFile.close()
 
-	def SetClientXY(self, xValue, yValue, clientID) :
-		self.miscMemory = MemoryUtilities().SetClientXY(self.miscMemory, xValue, yValue, clientID)
+	def SetDeviceXY(self, xValue, yValue, deviceID) :
+		self.miscMemory = MemoryUtilities().SetDeviceXY(self.miscMemory, xValue, yValue, deviceID)
 
-	def SetClientName(self, clientName, clientID) :
-		self.miscMemory = MemoryUtilities().SetClientName(self.miscMemory, clientName, clientID)
+	def SetDeviceName(self, deviceName, deviceID) :
+		self.miscMemory = MemoryUtilities().SetClientName(self.miscMemory, deviceName, deviceID)
 
-	def SetIconIDAndData(self, iconID, iconData, clientID) :
-		self.miscMemory = MemoryUtilities().AppendIconIDToByteArray(self.miscMemory, clientID, iconID)
-		self.miscMemory = MemoryUtilities().AppendIconDataToByteArray(self.miscMemory, clientID, iconData)
+	def SetIconIDAndData(self, iconID, iconData, deviceID) :
+		self.miscMemory = MemoryUtilities().AppendIconIDToByteArray(self.miscMemory, deviceID, iconID)
+		self.miscMemory = MemoryUtilities().AppendIconDataToByteArray(self.miscMemory, deviceID, iconData)
 
-	def GetIconIDAndData(self, clientID) :
-		iconID = MemoryUtilities().GetIconIDFromByteArray(self.miscMemory, clientID)
-		iconData = sMemoryUtilities().GetIconDataFromByteArray(self.miscMemory, clientID)
+	def GetIconIDAndData(self, deviceID) :
+		iconID = MemoryUtilities().GetIconIDFromByteArray(self.miscMemory, deviceID)
+		iconData = sMemoryUtilities().GetIconDataFromByteArray(self.miscMemory, deviceID)
 
 		return (iconID, iconData)
 
-	def GetClientXY(self, clientID) :
-		clientInfo = MemoryUtilities().GetClientXYInfo(self.miscMemory, clientID)
-		return (clientInfo[2], clientInfo[3])
+	def GetDeviceXY(self, deviceID) :
+		deviceInfo = MemoryUtilities().GetDeviceXYInfo(self.miscMemory, deviceID)
+		return (deviceInfo[2], deviceInfo[3])
 
-	def GetClientName(self, clientID) :
-		clientNameInfo = MemoryUtilities().GetClientNameInfo(self.miscMemory, clientID)
-		return clientNameInfo[2]
+	def GetDeviceName(self, deviceID) :
+		deviceNameInfo = MemoryUtilities().GetClientNameInfo(self.miscMemory, deviceID)
+		return deviceNameInfo[2]
 
 	def SetVertex(self, vertex) :
 		self.miscMemory = MemoryUtilities().AppendVertexDataToByteArray(self.miscMemory, vertex)
@@ -47,11 +47,11 @@ class DeviceMemory:
 		
 		self.miscMemory = MemoryUtilities().DeleteVertexFromByteArray(self.miscMemory, vertex)
 
-	def SetIPAddress(self, clientID, IPAddress) :
-		self.miscMemory = MemoryUtilities().AppendIPAddressToByteArray(self.miscMemory, clientID, IPAddress)
+	def SetIPAddress(self, deviceID, IPAddress) :
+		self.miscMemory = MemoryUtilities().AppendIPAddressToByteArray(self.miscMemory, deviceID, IPAddress)
 
-	def GetIPAddress(self, clientID) :
-		return MemoryUtilities().GetIPAddressFromByteArray(self.miscMemory, clientID)
+	def GetIPAddress(self, deviceID) :
+		return MemoryUtilities().GetIPAddressFromByteArray(self.miscMemory, deviceID)
 
 	def GetMemoryString(self) :
 		return MemoryUtilities().GetStringFromByteArray(self.miscMemory)
