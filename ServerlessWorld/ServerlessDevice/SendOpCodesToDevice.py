@@ -21,6 +21,6 @@ myString = ""
 for x in range(0, len(myArray)) :
 	myString += myArray[x]
 
-data = SendDataToIP("10.135.1.119", 5000, myString)
+data = SendDataToIP("192.168.1.151", 5000, myString)
 
 PrintDataAsByteArray(data)
