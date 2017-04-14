@@ -1,27 +1,27 @@
-//Client
-export const positionClient = (clientID, newPosition) => ({
-  type: 'POSITION_CLIENT',
-  clientID,
+//Device
+export const positionDevice = (deviceID, newPosition) => ({
+  type: 'POSITION_DEVICE',
+  deviceID,
   newPosition
 })
 
-export const sendPositionToServer = (clientID, newPosition) => ({
-  type: 'POSITION_CLIENT_SEND',
-  clientID,
+export const sendPositionToServer = (deviceID, newPosition) => ({
+  type: 'POSITION_DEVICE_SEND',
+  deviceID,
   newPosition
 })
 
 //Icons
-export const addIcon = (clientID, icon) => ({
+export const addIcon = (deviceID, icon) => ({
   type: 'ADD_ICON',
-  clientID,
+  deviceID,
   icon
 })
 
 //Control
-export const updateControlValue = (clientID, controlID, newValue) => ({
+export const updateControlValue = (deviceID, controlID, newValue) => ({
   type: 'UPDATE_CONTROL_VALUE',
-  clientID, 
+  deviceID, 
   controlID, 
   newValue
 })
@@ -34,9 +34,9 @@ export const storeURL = (url) => ({
 
 
 //Vertex
-export const addVertex = (rxClientID, rxControlID, rxIP) => ({
+export const addVertex = (rxDeviceID, rxControlID, rxIP) => ({
   type: 'ADD_VERTEX',
-  rxClientID, 
+  rxDeviceID, 
   rxControlID,
   rxIP
 })
@@ -47,9 +47,9 @@ export const deleteVertex = (vertexID, vertex) => ({
   vertex
 })
 
-export const selectOutput = (txClientID, txControlID) => ({
+export const selectOutput = (txDeviceID, txControlID) => ({
   type: 'SELECT_OUTPUT',
-  txClientID, 
+  txDeviceID, 
   txControlID
 })
 

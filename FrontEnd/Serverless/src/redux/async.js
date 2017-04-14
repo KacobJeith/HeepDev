@@ -14,10 +14,10 @@ export var sendVertexToServer = (vertex) => {
   performAJAX(url, messagePacket);
 };
 
-export var sendValueToServer = (clientID, controlID, newValue) => {
+export var sendValueToServer = (deviceID, controlID, newValue) => {
 
   var messagePacket = {
-    clientID: clientID, 
+    deviceID: deviceID, 
     controlID: controlID, 
     value: newValue
   };
@@ -28,10 +28,10 @@ export var sendValueToServer = (clientID, controlID, newValue) => {
   
 };
 
-export var sendPositionToServer = (clientID, position) => {
+export var sendPositionToServer = (deviceID, position) => {
 
   var messagePacket = {
-    clientID: clientID, 
+    deviceID: deviceID, 
     position: position
   };
 
