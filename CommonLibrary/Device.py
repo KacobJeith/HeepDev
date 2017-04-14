@@ -10,9 +10,9 @@ from OpCodeUtilities import OpCodeUtilities
 class Device:
 
 	def __init__(self):
-		self.ClientID = 12345678910
+		self.DeviceID = 12345678910
 		self.IPAddress = HeepIPAddress(0, 0, 0, 0)
-		self.ClientName = 'none'
+		self.DeviceName = 'none'
 		self.IconCustom = 0
 		self.IconName = 'none'
 		self.ControlList = []
@@ -21,18 +21,18 @@ class Device:
 		self.DeviceMemory = DeviceMemory()
 		return
 
-	def SetClientFrontEndXY(self, clientX, clientY) :
-		self.DeviceMemory.SetClientXY(clientX, clientY, self.ClientID)
+	def SetFrontEndXY(self, deviceX, deviceY) :
+		self.DeviceMemory.SetDeviceXY(deviceX, deviceY, self.DeviceID)
 
 	def GetFrontEndXY(self) :
-		return self.DeviceMemory.GetClientXY(self.ClientID)
+		return self.DeviceMemory.GetDeviceXY(self.DeviceID)
 
-	def SetClientName(self, clientName) :
-		self.ClientName = clientName
-		self.DeviceMemory.SetClientName(self.ClientName, self.ClientID)
+	def SetDeviceName(self, DeviceName) :
+		self.DeviceName = DeviceName
+		self.DeviceMemory.SetDeviceName(self.DeviceName, self.DeviceID)
 
-	def DumpClientMemory(self) :
-		self.DeviceMemory.WriteClientMemoryToFile()
+	def DumpDeviceMemory(self) :
+		self.DeviceMemory.WriteDeviceMemoryToFile()
 
  	def AddVertexByString(self, vertexStr) :
  		newVertex = Vertex()
@@ -40,7 +40,7 @@ class Device:
  		self.AddVertex(vertex)
 
  	def SetIconInformation(self, iconID, iconData) :
- 		self.DeviceMemory.SetIconIDAndData(iconID, iconData, self.ClientID)
+ 		self.DeviceMemory.SetIconIDAndData(iconID, iconData, self.DeviceID)
 
  	def AddVertex(self, vertex) :
  		self.VertexList.append(vertex)
@@ -55,10 +55,10 @@ class Device:
  		self.DeviceMemory.DeleteVertex(vertex)
 
  	def SetIPAddress(self, IPAddress) :
- 		self.DeviceMemory.SetIPAddress(self.ClientID, IPAddress)
+ 		self.DeviceMemory.SetIPAddress(self.DeviceID, IPAddress)
 
  	def GetIPAddress(self) :
- 		return self.DeviceMemory.GetIPAddress(self.ClientID)
+ 		return self.DeviceMemory.GetIPAddress(self.DeviceID)
 
  	def RemoveVertex(self, destID, outputID, inputID) :
 
@@ -144,27 +144,27 @@ class Device:
 		self.ControlQueue = []
 		return retString	
 
-	def GetClientString(self):
+	def GetDeviceString(self):
 		
-		byteArray = self.GetClientByteArray()
+		byteArray = self.GetDeviceByteArray()
 		return OpCodeUtilities().GetStringFromByteArray(byteArray)
 		
-	def GetClientByteArray(self) :
+	def GetDeviceByteArray(self) :
 		byteArray = []
-		byteArray = MemoryUtilities().AppendClientDataToByteArray(byteArray, self.ClientID)
+		byteArray = MemoryUtilities().AppendDeviceDataToByteArray(byteArray, self.DeviceID)
 
 		for x in range(0, len(self.ControlList)) :
-			byteArray = MemoryUtilities().AppendControlDataToByteArray(byteArray, self.ClientID, self.ControlList[x])
+			byteArray = MemoryUtilities().AppendControlDataToByteArray(byteArray, self.DeviceID, self.ControlList[x])
 
 		
 		byteArray = MemoryUtilities().AppendByteArrayToByteArray(byteArray, self.DeviceMemory.miscMemory)
 		return byteArray
 
 
-	def SetClientFromString(self, clientString) :
+	def SetDeviceFromString(self, deviceString) :
 
-		byteArray = OpCodeUtilities().ConvertStringToByteArray(clientString)
-		self.ControlList = MemoryUtilities().GetClientControlValue(byteArray, self.ClientID)
+		byteArray = OpCodeUtilities().ConvertStringToByteArray(deviceString)
+		self.ControlList = MemoryUtilities().GetDeviceControlValue(byteArray, self.DeviceID)
 
 	def GetVerticesString(self) :
 		retStr = ""
