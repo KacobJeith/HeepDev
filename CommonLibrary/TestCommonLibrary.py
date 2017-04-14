@@ -180,7 +180,6 @@ otherClient.SetClientFrontEndXY(10322, 1032)
 otherClient.SetIPAddress(myIP)
 
 otherClient.SetIconInformation(1, [chr(3), chr(4), chr(12), chr(41)]) 
-otherClient.SetServerless(1)
 myString = otherClient.GetClientString()
 
 print CheckEquality(HeepOpCodeUtilities().ConvertStringToByteArray(myString), otherClient.GetClientByteArray(), "Get Client String OpCodes")

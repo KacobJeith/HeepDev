@@ -19,7 +19,6 @@ class Device:
 		self.ControlList = []
 		self.ControlQueue = []
 		self.VertexList = []
-		self.IsServerless = 0
 		self.DeviceMemory = DeviceMemory()
 		return
 
@@ -35,9 +34,6 @@ class Device:
 
 	def DumpClientMemory(self) :
 		self.DeviceMemory.WriteClientMemoryToFile()
-
-	def SetServerless(self, isServerless) :
-		self.IsServerless = isServerless
 
  	def AddVertexByString(self, vertexStr) :
  		newVertex = Vertex()
