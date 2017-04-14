@@ -8,10 +8,10 @@ from Vertex import Vertex
 from CommonDataTypes import HeepIPAddress
 
 functionalDevice = Device()
-functionalDevice.ClientID = 5678
-functionalDevice.SetClientFrontEndXY(100, 287)
+functionalDevice.DeviceID = 5678
+functionalDevice.SetFrontEndXY(100, 287)
 functionalDevice.SetIconInformation(1, [chr(3), chr(4), chr(12), chr(41)]) 
-functionalDevice.SetClientName("JERCERB")
+functionalDevice.SetDeviceName("JERCERB")
 OnOffControls = ControlValue()
 OnOffControls.ControlValueType = OnOffControls.OnOff
 OnOffControls.ControlDirection = 1
@@ -34,6 +34,6 @@ functionalDevice.ControlList.append(Output1)
 
 device = ServerlessDeviceConnection()
 
-device.SetClientData(functionalDevice)
+device.SetDeviceData(functionalDevice)
 
-device.StartHeepClientServer()
+device.StartHeepDeviceServer()

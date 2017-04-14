@@ -11,45 +11,20 @@ class ServerlessDeviceConnection :
 
 	sock = socket.socket()
 	TCP_PORT = 5000
-	clientData = Device()
+	deviceData = Device()
 
 	def __init__(self):
 		return
 
-	def SetClientData(self, clientData) :
-		self.clientData = clientData
-
-	def SetCommandValueFromInterrupt(self, data) :
-		self.clientData.UpdateControlsByString(data)
-		return 'Value Set' + ': ' + data
-
-	def SetClientXYPosFromInterrupt(self, data) :
-		commandArgs = data.split(',')
-		self.clientData.SetClientFrontEndXY(int(commandArgs[0]), int(commandArgs[1]))
-		return 'Set Client XY'
+	def SetDeviceData(self, deviceData) :
+		self.deviceData = deviceData
 
 	def ParseReceivedData(self, data) :
 
-		retVal = ActionOpCodeParser().GetActionOpCodeFromByteArray(data, self.clientData)
+		retVal = ActionOpCodeParser().GetActionOpCodeFromByteArray(data, self.deviceData)
 		return retVal
 
-		isHeepDeviceString = 'IsHeepDevice'
-		setClientXYString = 'SetXY'
-		SetValString = 'SetVal'
-
-		commandDataSplit = data.split(':')
-		print commandDataSplit
-
-		if commandDataSplit[0] == isHeepDeviceString :
-			return self.clientData.GetClientString()
-		elif commandDataSplit[0] == SetValString :
-			return self.SetCommandValueFromInterrupt(commandDataSplit[1])
-		elif commandDataSplit[0] == setClientXYString :
-			return self.SetClientXYPosFromInterrupt(commandDataSplit[1])
-			
-		return 'null'
-
-	def StartHeepClientServer(self) :
+	def StartHeepDeviceServer(self) :
 		host = ''
 		backlog = 5
 		size = 1024
@@ -69,6 +44,6 @@ class ServerlessDeviceConnection :
 			if returnData:
 				client.send(returnData)
 				print returnData
-				print self.clientData.DeviceMemory.miscMemory
+				print self.deviceData.DeviceMemory.miscMemory
 
 			client.close()
