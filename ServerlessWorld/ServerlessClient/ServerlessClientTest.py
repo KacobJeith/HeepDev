@@ -9,7 +9,7 @@ from CommonDataTypes import HeepIPAddress
 
 functionalClient = PLCClient()
 functionalClient.ClientID = 5678
-functionalClient.SetClientFrontEndXY(100, 287)
+functionalClient.SetClientFrontEndXY(400, 287)
 functionalClient.SetIconInformation(1, [chr(3), chr(4), chr(12), chr(41)]) 
 functionalClient.SetClientName("JERCERB")
 OnOffControls = ControlValue()

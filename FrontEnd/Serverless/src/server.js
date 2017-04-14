@@ -27,7 +27,7 @@ app.get('/api/findDevices', (req, res) => {
 
 app.post('/api/setValue', (req, res) => {
   
-  heepConnect.SendValueToHeepDevice(req.body.clientID, req.body.controlID, req.body.value);
+  heepConnect.SendValueToHeepDevice(req.body.deviceID, req.body.controlID, req.body.value);
   
   res.end("Value sent to Heep Device");
 });
@@ -50,7 +50,7 @@ app.post('/api/deleteVertex', (req, res) => {
 
 app.post('/api/setPosition', (req, res) => {
   
-  heepConnect.SendPositionToHeepDevice(req.body.clientID, req.body.position);
+  heepConnect.SendPositionToHeepDevice(req.body.deviceID, req.body.position);
   
   res.end("Device Position has been updated");
 });

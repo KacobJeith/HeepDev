@@ -30,6 +30,7 @@ class Device extends React.Component {
 
 	  	this.lastPosition['left'] = event.pageX;
 	  	this.lastPosition['top'] = event.pageY;
+	  	console.log('X: ', event.pageX)
 	  	event.dataTransfer.setDragImage(this.refs.device, 99999,99999);
 	}
 
@@ -63,7 +64,7 @@ class Device extends React.Component {
 
 	sendPositionToServer() {
 
-		this.props.sendPositionToServer(this.props.device.DeviceID, this.lastPosition);
+		this.props.sendPositionToServer(this.props.device.DeviceID);
 	}
 
 	render() {
