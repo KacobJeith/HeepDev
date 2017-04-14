@@ -52,7 +52,7 @@ app.post('/api/setPosition', (req, res) => {
   
   heepConnect.SendPositionToHeepDevice(req.body.clientID, req.body.position);
   
-  res.end("Client Position has been updated");
+  res.end("Device Position has been updated");
 });
 
 app.listen(app.get('port'), (error) => {

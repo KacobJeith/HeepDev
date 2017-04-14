@@ -9,9 +9,9 @@ export var ConvertIPAddressToByteArray = (stringIP) => {
   return byteArray
 }
 
-export var GetClientIDAsByteArray = (value) => {
-  var clientID = GetValueAsFixedSizeByteArray(value, 4);
-  return clientID
+export var GetDeviceIDAsByteArray = (value) => {
+  var deviceID = GetValueAsFixedSizeByteArray(value, 4);
+  return deviceID
 }
 
 export var GetValueAsFixedSizeByteArray = (value, size) => {
