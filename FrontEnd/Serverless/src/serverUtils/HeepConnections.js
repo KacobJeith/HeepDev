@@ -2,7 +2,7 @@ import net from 'net'
 import os from 'os' 
 import * as heepParser from './HeepMemoryParser'
 import * as heepIconUtils from './IconUtilities'
-import * as generalUtils from '../utilities/generalUtils'
+import * as generalUtils from '../utilities/general'
 import * as byteUtils from './ByteUtilities'
 
 var masterState = {
