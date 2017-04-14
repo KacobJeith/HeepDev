@@ -1,7 +1,7 @@
 import net from 'net'
 import os from 'os' 
 import * as heepParser from './HeepMemoryParser'
-import * as heepIconUtils from './HeepIconUtils'
+import * as heepIconUtils from './IconUtilities'
 import * as generalUtils from '../utilities/generalUtils'
 import * as byteUtils from './ByteUtilities'
 
