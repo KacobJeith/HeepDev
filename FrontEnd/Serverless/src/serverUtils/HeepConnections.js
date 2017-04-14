@@ -103,9 +103,9 @@ export var SendDeleteVertexToHeepDevices = (vertex) => {
 }
 
 export var PrepVertexForCOP = (vertex, COP) => {
-  var txClientID = byteUtils.GetClientIDasByteArray(vertex.txClientID);
+  var txClientID = byteUtils.GetClientIDAsByteArray(vertex.txClientID);
   var txControlID = byteUtils.GetValueAsFixedSizeByteArray(vertex.txControlID, 1);
-  var rxClientID = byteUtils.GetClientIDasByteArray(vertex.rxClientID);
+  var rxClientID = byteUtils.GetClientIDAsByteArray(vertex.rxClientID);
   var rxControlID = byteUtils.GetValueAsFixedSizeByteArray(vertex.rxControlID, 1);
   var rxIP = byteUtils.ConvertIPAddressToByteArray(vertex.rxIP);
   var packet = txClientID.concat(rxClientID, txControlID, rxControlID, rxIP);

@@ -9,7 +9,7 @@ export var ConvertIPAddressToByteArray = (stringIP) => {
   return byteArray
 }
 
-export var GetClientIDasByteArray = (value) => {
+export var GetClientIDAsByteArray = (value) => {
   var clientID = GetValueAsFixedSizeByteArray(value, 4);
   return clientID
 }

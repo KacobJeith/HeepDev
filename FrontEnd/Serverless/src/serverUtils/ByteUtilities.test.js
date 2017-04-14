@@ -23,18 +23,18 @@ describe('ByteUtilities', () => {
 		})
 	})
 
-	describe('GetClientIDasByteArray', () => {
+	describe('GetClientIDAsByteArray', () => {
 		it('Allocates 4 bytes for every value', () => {
-			var response = utils.GetClientIDasByteArray(1);
+			var response = utils.GetClientIDAsByteArray(1);
 			assert.equal(4, response.length);
 		})
 		it('Returns correctly for 4byte response', () => {
 			var expectedResponse = [0x01, 0x02, 0x03, 0x04];
-			assert.deepEqual(expectedResponse, utils.GetClientIDasByteArray(16909060));
+			assert.deepEqual(expectedResponse, utils.GetClientIDAsByteArray(16909060));
 		})
 		it('Returns correctly for 1byte response', () => {
 			var expectedResponse = [0x00, 0x00, 0x00, 0x01];
-			assert.deepEqual(expectedResponse, utils.GetClientIDasByteArray(1));
+			assert.deepEqual(expectedResponse, utils.GetClientIDAsByteArray(1));
 		})
 	})
 
