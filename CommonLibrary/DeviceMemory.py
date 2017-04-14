@@ -1,6 +1,6 @@
 from MemoryUtilities import MemoryUtilities
 
-# This is simulated client memory
+# This is simulated Device memory
 
 class DeviceMemory:
 
@@ -20,7 +20,7 @@ class DeviceMemory:
 		self.miscMemory = MemoryUtilities().SetDeviceXY(self.miscMemory, xValue, yValue, deviceID)
 
 	def SetDeviceName(self, deviceName, deviceID) :
-		self.miscMemory = MemoryUtilities().SetClientName(self.miscMemory, deviceName, deviceID)
+		self.miscMemory = MemoryUtilities().SetDeviceName(self.miscMemory, deviceName, deviceID)
 
 	def SetIconIDAndData(self, iconID, iconData, deviceID) :
 		self.miscMemory = MemoryUtilities().AppendIconIDToByteArray(self.miscMemory, deviceID, iconID)
@@ -37,7 +37,7 @@ class DeviceMemory:
 		return (deviceInfo[2], deviceInfo[3])
 
 	def GetDeviceName(self, deviceID) :
-		deviceNameInfo = MemoryUtilities().GetClientNameInfo(self.miscMemory, deviceID)
+		deviceNameInfo = MemoryUtilities().GetDeviceNameInfo(self.miscMemory, deviceID)
 		return deviceNameInfo[2]
 
 	def SetVertex(self, vertex) :

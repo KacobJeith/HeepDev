@@ -103,7 +103,7 @@ class MemoryUtilities:
 
 		RetData = MemoryData()
 		RetData.counter = counter
-		RetData.clientID = sourceID
+		RetData.deviceID = sourceID
 		RetData.data = NewVertex
 
 		return RetData
@@ -159,7 +159,7 @@ class MemoryUtilities:
 
 	def ReadIPAddressOPCode(self, byteArray, counter) :
 		counter = counter+1
-		(clientID, counter) = OpCodeUtilities().GetDeviceIDFromMemory(byteArray, counter)
+		(deviceID, counter) = OpCodeUtilities().GetDeviceIDFromMemory(byteArray, counter)
 		(numBytes, counter) = self.GetNumberFromMemory(byteArray, counter, 1)
 
 		(IPOct1,counter) = self.GetNumberFromMemory(byteArray, counter, 1)
@@ -171,7 +171,7 @@ class MemoryUtilities:
 
 		RetData = MemoryData()
 		RetData.counter = counter
-		RetData.clientID = clientID
+		RetData.deviceID = deviceID
 		RetData.data = IPAddr
 
 		return RetData
