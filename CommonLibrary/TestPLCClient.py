@@ -225,3 +225,10 @@ print CheckEquality(otherClient.VertexList[1].outputID, 2, 'Set Vertex COP 2')
 print CheckEquality(otherClient.VertexList[1].inputID, 1, 'Set Vertex COP 3')
 print CheckEquality(otherClient.VertexList[1].sourceID, 16843280, 'Set Vertex COP 4')
 print CheckEquality(otherClient.VertexList[1].destinationID, 33902594, 'Set Vertex COP 5')
+
+print CheckEquality(len(otherClient.VertexList), 2, 'Vertex List Length Before Deletion')
+myArray = [chr(0x0D), chr(0x04), chr(0x01), chr(0x01), chr(0x02), chr(0x10), chr(0x02), chr(0x05), chr(0x50), chr(0x02), chr(0x02), chr(0x01), chr(192), chr(168), chr(0x01), chr(0x01)]
+actionParser.GetActionOpCodeFromByteArray(myArray, otherClient)
+print CheckEquality(len(otherClient.VertexList), 2, 'Vertex List Length After Deletion')
+
+

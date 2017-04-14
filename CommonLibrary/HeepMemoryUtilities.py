@@ -23,6 +23,7 @@ class HeepMemoryUtilities:
 	ClientNameOpCode = chr(0x06)
 	XYPositionOpCode = chr(0x07)
 	IPAddressOPCode = chr(0x08)
+	FragmentOpCode = chr(0x12)
 
 	OpCodeUtilities = HeepOpCodeUtilities()
 
@@ -125,6 +126,26 @@ class HeepMemoryUtilities:
 	def GetVertexFromByteArray(self, byteArray, clientID) :
 		vertexInfo = self.GetVertexInfoFromByteArray(byteArray, clientID)
 		return vertexInfo.data
+
+	def DeleteOpCode(self, byteArray, counter) :
+		byteArray[counter] = self.FragmentOpCode
+		return byteArray
+
+	def DeleteVertexFromByteArray(self, byteArray, vertex) :
+		counter = 0
+		while counter < len(byteArray) :
+			if byteArray[counter] == self.VertexOpCode :
+				capturedVertex = self.ReadVertexOpCode(byteArray, counter)
+				
+				if vertex.IsVertexEqual(capturedVertex.data) :
+					return self.DeleteOpCode(byteArray, counter)
+
+				counter = capturedVertex.counter
+
+			else :
+				counter = self.SkipOpCode(byteArray, counter)
+
+		return ByteArray
 
 	def AppendIPAddressToByteArray(self, byteArray, clientID, IPAddress) :
 		byteArray.append(self.IPAddressOPCode)
