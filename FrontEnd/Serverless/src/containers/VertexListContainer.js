@@ -2,7 +2,7 @@ import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import Vertex from './VertexContainer'
-import {deleteVertex}  from '../actions/actions'
+import {deleteVertex}  from '../redux/actions'
 
 class VertexList extends React.Component {
 	render() {

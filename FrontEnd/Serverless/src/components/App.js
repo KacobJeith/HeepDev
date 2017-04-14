@@ -1,7 +1,17 @@
-import React from 'react';
-import Flowchart from '../containers/FlowchartContainer';
+import React from 'react'
+import {connect} from 'react-redux'
+import { bindActionCreators } from 'redux'
+import * as Actions from '../redux/actions'
+import Flowchart from '../containers/FlowchartContainer'
 
-export default class App extends React.Component {
+var mapStateToProps = (state) => ({
+})
+
+var mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(Actions, dispatch)
+}
+
+class App extends React.Component {
   render() {
     const styles = {
         header: {
@@ -58,3 +68,5 @@ export default class App extends React.Component {
   }
 }
 
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)

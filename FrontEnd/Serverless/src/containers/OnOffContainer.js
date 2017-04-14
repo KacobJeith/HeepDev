@@ -2,7 +2,7 @@ import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import OnOffController from '../components/OnOffController'
-import * as Actions from '../actions/actions'
+import * as Actions from '../redux/actions'
 
 const mapStateToProps = (state, ownProps) => ({
   controlID: state.controls[ownProps.thisControl]['ControlID'],

@@ -1,7 +1,7 @@
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import Client from '../components/Client'
-import * as Actions from '../actions/actions'
+import * as Actions from '../redux/actions'
 import React from 'react'
 
 const mapStateToProps = (state, ownProps) => ({

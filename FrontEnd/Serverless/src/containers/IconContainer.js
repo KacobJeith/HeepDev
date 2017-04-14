@@ -2,7 +2,7 @@ import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import DynamicIcon from '../components/DynamicIcon'
-import * as Actions from '../actions/actions'
+import * as Actions from '../redux/actions'
 
 const mapStateToProps = (state, ownProps) => ({
   ClientID: ownProps.ClientID,

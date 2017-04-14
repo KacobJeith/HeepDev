@@ -2,7 +2,7 @@ import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import Vertex from '../components/Vertex'
-import {deleteVertex}  from '../actions/actions'
+import {deleteVertex}  from '../redux/actions'
 import * as generalUtils from '../utilities/generalUtilities'
 
 const mapStateToProps = (state, ownProps) => (

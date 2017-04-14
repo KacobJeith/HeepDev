@@ -2,7 +2,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import Flowchart from '../components/Flowchart'
 import 'babel-polyfill'
-import * as Actions from '../actions/actions'
+import * as Actions from '../redux/actions'
 
 const mapStateToProps = (state) => ({
   clientArray: state.clients.clientArray,

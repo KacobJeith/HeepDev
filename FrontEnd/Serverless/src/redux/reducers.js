@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux'
 import Immutable from 'immutable'
 import 'babel-polyfill'
-import * as actions from '../actions/actions'
+import * as actions from './actions'
 import * as async from './async'
-import * as utils from '../utilities/general'
+import * as utils from '../utilities/generalUtilities'
 
 const initialState = Immutable.Map({
   clients: {},

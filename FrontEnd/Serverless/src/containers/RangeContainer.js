@@ -2,7 +2,7 @@ import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import RangeController from '../components/RangeController'
-import * as Actions from '../actions/actions'
+import * as Actions from '../redux/actions'
 
 const mapStateToProps = (state, ownProps) => ({
   control: state.controls[ownProps.thisControl],
