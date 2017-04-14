@@ -1,16 +1,16 @@
 import assert from 'assert';
-import * as utils from './IconUtilities';
+import * as iconUtils from './IconUtilities';
 
 
 describe('HeepIconUtils', () => {
 	
 	describe('getDefaultIcons', () => {
 		it('Returns an array', () => {
-		  	assert.equal(true, Array.isArray(utils.getDefaultIcons()));
+		  	assert.equal(true, Array.isArray(iconUtils.getDefaultIcons()));
 		});
 
 		it('Return array contains strings', () => {
-			var result = utils.getDefaultIcons()
+			var result = iconUtils.getDefaultIcons()
 		  	assert.equal("string", typeof result[0]);
 		});
 	});
@@ -19,26 +19,26 @@ describe('HeepIconUtils', () => {
 		it('Returns with one input', () => {
 			var expectedResult = {light: 'light'};
 			var input = ['light'];
-			assert.equal(JSON.stringify(expectedResult), JSON.stringify(utils.generateIconKeywords(input)))
+			assert.equal(JSON.stringify(expectedResult), JSON.stringify(iconUtils.generateIconKeywords(input)))
 		})
 		it('Returns with two inputs', () => {
 			var expectedResult = {light: 'light', bulb: 'bulb'};
 			var input = ['light', 'bulb'];
-			assert.equal(JSON.stringify(expectedResult), JSON.stringify(utils.generateIconKeywords(input)))
+			assert.equal(JSON.stringify(expectedResult), JSON.stringify(iconUtils.generateIconKeywords(input)))
 		})
 		it('Returns with dashed inputs', () => {
 			var expectedResult = {light: 'light-bulb', bulb: 'light-bulb'};
 			var input = ['light-bulb'];
-			assert.equal(JSON.stringify(expectedResult), JSON.stringify(utils.generateIconKeywords(input)))
+			assert.equal(JSON.stringify(expectedResult), JSON.stringify(iconUtils.generateIconKeywords(input)))
 		})
 	})
 
 	describe('suggestIconForClient', () => {
 		it('Suggests a new icon', () => {
-			assert.equal('light-bulb', utils.suggestIconForClient('Bulby'))
+			assert.equal('light-bulb', iconUtils.suggestIconForClient('Bulby'))
 		})
 		it('Suggests none when no match', () => {
-			assert.equal('none', utils.suggestIconForClient('asdfawverve'))
+			assert.equal('none', iconUtils.suggestIconForClient('asdfawverve'))
 		})
 	})
 });
