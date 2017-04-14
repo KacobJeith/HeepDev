@@ -2,7 +2,7 @@ import assert from 'assert';
 import * as connect from './HeepConnections';
 
 var emptyState = {
-    clients: {clientArray: []},
+    devices: {deviceArray: []},
     positions: {},
     controls: {controlStructure:{}},
     vertexList: {},
