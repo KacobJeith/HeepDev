@@ -8,6 +8,7 @@ const mapStateToProps = (state, ownProps) => ({
   control: state.controls[ownProps.controlID],
   clientID: ownProps.clientID,
   controlID: ownProps.controlID,
+  value: state.controls[ownProps.controlID]['CurCtrlValue'],
   ip: state.clients[ownProps.clientID]['IPAddress'],
   url: state.url
 })

@@ -17,14 +17,14 @@ export default class Control extends React.Component {
 
 	selectInputVertex(event) {
 		this.props.addVertex(this.props.clientID,
-							 this.props.control['ControlName'],
+							 this.props.control['ControlID'],
 							 this.props.ip, 
 							 this.props.url);
 	}
 
 	selectOutputVertex(event) {
 		this.props.selectOutput(this.props.clientID,
-								this.props.control['ControlName']);
+								this.props.control['ControlID']);
 	}
 
 	render() {
