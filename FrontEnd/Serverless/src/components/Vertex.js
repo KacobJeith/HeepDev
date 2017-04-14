@@ -16,6 +16,10 @@ class Vertex extends React.Component {
 
 	render() {
 
+		if (this.props.inputPosition == false || this.props.outputPosition == false) {
+			return <g/>
+		}
+
 		var inputs = {
 			vertex: {
 				strokeWidth: this.state.strokeWidth,

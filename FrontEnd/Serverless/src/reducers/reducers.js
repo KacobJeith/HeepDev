@@ -3,6 +3,7 @@ import Immutable from 'immutable'
 import 'babel-polyfill'
 import * as actions from '../actions/actions'
 import * as async from './async'
+import * as utils from '../utilities/general'
 
 const initialState = Immutable.Map({
   clients: {},
@@ -52,12 +53,15 @@ function vertexList(state = initialState, action) {
       
       async.sendVertexToServer(action.url, vertex);
 
-      return Immutable.Map(state).set(state.selectedOutput.txClientID + '.' + state.selectedOutput.txControlID + '->' + action.rxClientID + '.' + action.rxControlID, 
-                                      {txClientID: state.selectedOutput.txClientID,
-                                       txControlID: state.selectedOutput.txControlID,
-                                       rxClientID: action.rxClientID, 
-                                       rxControlID: action.rxControlID,
-                                       rxIP: action.rxIP}).toJS();
+      var newVertex = {txClientID: state.selectedOutput.txClientID,
+                       txControlID: state.selectedOutput.txControlID,
+                       rxClientID: action.rxClientID, 
+                       rxControlID: action.rxControlID,
+                       rxIP: action.rxIP}
+
+      var newVertexName = utils.nameVertex(newVertex);
+
+      return Immutable.Map(state).set(newVertexName, newVertex).toJS();
     case 'DELETE_VERTEX':
 
       async.sendDeleteVertexToServer(action.url, action.vertex);
@@ -96,7 +100,7 @@ function controls(state = initialState, action) {
     case 'UPDATE_CONTROL_VALUE':
 
       var newState = Immutable.Map(state).toJS();
-      var identifier = action.clientID + '.' + action.controlID;
+      var identifier = utils.nameControl(action.clientID, action.controlID);
       newState[identifier]['CurCtrlValue'] = action.newValue;
       async.sendValueToServer(action.clientID, action.controlID, action.newValue, action.url);
 
@@ -110,8 +114,8 @@ function controls(state = initialState, action) {
       return newState
     case 'ADD_VERTEX':
       var newState = Immutable.Map(state).toJS();
-      var txName = newState.selectedOutput.txClientID + '.' + newState.selectedOutput.txControlID;
-      var rxName = action.rxClientID +'.'+ action.rxControlID;
+      var txName = utils.nameControl(newState.selectedOutput.txClientID, newState.selectedOutput.txControlID);
+      var rxName = utils.nameControl(action.rxClientID, action.rxControlID);
 
       var theseConnections = newState.connections[txName].push(rxName);
 
@@ -120,8 +124,8 @@ function controls(state = initialState, action) {
 
       var newState = Immutable.Map(state).toJS();
 
-      var txName = action.vertex.txClientID +'.'+ action.vertex.txControlID;
-      var rxName = action.vertex.rxClientID +'.'+ action.vertex.rxControlID;
+      var txName = utils.getTxControlNameFromVertex(action.vertex);
+      var rxName = utils.getRxControlNameFromVertex(action.vertex);
 
       var index = newState.connections[txName].indexOf(rxName)
       if ( index != -1) {

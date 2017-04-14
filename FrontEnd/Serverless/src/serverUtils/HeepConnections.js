@@ -1,7 +1,9 @@
 import net from 'net'
 import os from 'os' 
-import * as heepParser from './HeepMemoryParser'
-import * as heepIconUtils from './HeepIconUtils'
+import * as HAPIParser from './HAPIMemoryParser'
+import * as iconUtils from './IconUtilities'
+import * as generalUtils from '../utilities/general'
+import * as byteUtils from './ByteUtilities'
 
 var masterState = {
   clients: {clientArray: []},
@@ -21,7 +23,7 @@ export var SearchForHeepDevices = () => {
   var searchBuffer = Buffer.from([0x09, 0x00])
 
   for (var i = 1; i <= 255; i++){
-    var address = joinAddress(gateway,i)
+    var address = generalUtils.joinAddress(gateway,i)
 
     ConnectToHeepDevice(address, heepPort, searchBuffer);
   }
@@ -49,8 +51,8 @@ export var SendPositionToHeepDevice = (clientID, position) => {
   SetClientPositionFromBrowser(clientID, position);
 
   var IPAddress = masterState.clients[clientID].IPAddress;
-  var xPosition = GetValueAsFixedSizeByteArray(position.left, 2);
-  var yPosition = GetValueAsFixedSizeByteArray(position.top, 2);
+  var xPosition = byteUtils.GetValueAsFixedSizeByteArray(position.left, 2);
+  var yPosition = byteUtils.GetValueAsFixedSizeByteArray(position.top, 2);
   var packet = xPosition.concat(yPosition);
   var numBytes = [packet.length];
 
@@ -64,8 +66,8 @@ export var SendPositionToHeepDevice = (clientID, position) => {
 export var SendValueToHeepDevice = (clientID, controlID, newValue) => {
   if (CheckIfNewValueAndSet(clientID, controlID, newValue)){
     var IPAddress = masterState.clients[clientID].IPAddress;
-    var controlByteArray = GetByteArrayFromValue(controlID);
-    var valueByteArray = GetByteArrayFromValue(newValue);
+    var controlByteArray = byteUtils.GetByteArrayFromValue(controlID);
+    var valueByteArray = byteUtils.GetByteArrayFromValue(newValue);
     var numBytes = [controlByteArray.length + valueByteArray.length];
     var messageBuffer = Buffer.from([0x0A].concat(numBytes, controlByteArray, valueByteArray));
     console.log('Connecting to Device ', clientID + ' at IPAddress: ' + IPAddress);
@@ -101,75 +103,25 @@ export var SendDeleteVertexToHeepDevices = (vertex) => {
 }
 
 export var PrepVertexForCOP = (vertex, COP) => {
-  var txClientID = GetClientIDasByteArray(vertex.txClientID);
-  var txControlID = GetValueAsFixedSizeByteArray(vertex.txControlID, 1);
-  var rxClientID = GetClientIDasByteArray(vertex.rxClientID);
-  var rxControlID = GetValueAsFixedSizeByteArray(vertex.rxControlID, 1);
-  var rxIP = ConvertIPAddressToByteArray(vertex.rxIP);
+  var txClientID = byteUtils.GetClientIDAsByteArray(vertex.txClientID);
+  var txControlID = byteUtils.GetValueAsFixedSizeByteArray(vertex.txControlID, 1);
+  var rxClientID = byteUtils.GetClientIDAsByteArray(vertex.rxClientID);
+  var rxControlID = byteUtils.GetValueAsFixedSizeByteArray(vertex.rxControlID, 1);
+  var rxIP = byteUtils.ConvertIPAddressToByteArray(vertex.rxIP);
   var packet = txClientID.concat(rxClientID, txControlID, rxControlID, rxIP);
   var numBytes = [packet.length];
 
   return Buffer.from([COP].concat(numBytes, packet));
 }
 
-var ConvertIPAddressToByteArray = (stringIP) => {
-  var split = stringIP.split('.');
-  var byteArray = [];
-  for (var i = 0; i < split.length; i++){
-    byteArray.push(parseInt(split[i]));
-  }
-
-  return byteArray
-}
-
 var CheckIfNewValueAndSet = (clientID, controlID, newValue) => {
-  var thisControl = nameControl(clientID, controlID);
+  var thisControl = generalUtils.nameControl(clientID, controlID);
   if (masterState.controls[thisControl].CurCtrlValue == newValue){
     return false
   } else {
     masterState.controls[thisControl].CurCtrlValue = newValue;
     return true
   }
-}
-
-export var GetClientIDasByteArray = (value) => {
-  var clientID = GetValueAsFixedSizeByteArray(value, 4);
-  return clientID
-}
-
-export var GetValueAsFixedSizeByteArray = (value, size) => {
-  var valueBytes = GetByteArrayFromValue(value);
-  var backfill = size - valueBytes.length;
-  for (var i = 0; i < backfill; i++){
-    valueBytes.unshift(0x00);
-  }
-  
-  return valueBytes
-}
-
-export var GetByteArrayFromValue = (value) => {
-  var byteArray = [];
-  var numBytes = GetNecessaryBytes(value);
-
-  for (var i = 0; i < numBytes; i++){ 
-    var hexVal = value % 256;
-    byteArray.unshift(hexVal);
-    value = value >> 8;
-  }
-
-  return byteArray
-}
-
-export var GetNecessaryBytes = (value) => {
-  var numBytes = 1;
-  value = value >> 8;
-
-  while (value > 0) {
-    numBytes += 1;
-    value = value >> 8;
-  }
-
-  return numBytes
 }
 
 export var findGateway = () => {
@@ -186,10 +138,6 @@ export var findGateway = () => {
       }
     }
   }
-}
-
-var joinAddress = (gateway, ip) => {
-  return gateway.join('.') + '.' + ip.toString()
 }
 
 var ConnectToHeepDevice = (IPAddress, port, message) => {
@@ -218,7 +166,7 @@ var ConsumeHeepResponse = (data, IPAddress, port) => {
   console.log('Raw inbound Data: ', data);
 
   mostRecentSearch[IPAddress] = true;
-  var HeepResponse = heepParser.ReadHeepResponse(data);
+  var HeepResponse = HAPIParser.ReadHeepResponse(data);
 
   if (HeepResponse != false){
     if (HeepResponse.op == 0x0F) {
@@ -274,7 +222,7 @@ var AddClient = (heepChunk, IPAddress) => {
   var clientID = heepChunk.clientID;
   var clientName = 'unset';
   var iconName = 'none';
-  heepIconUtils.SetClientIconFromString(clientID, clientName, iconName);
+  iconUtils.SetClientIconFromString(clientID, clientName, iconName);
 
   masterState.clients[clientID] = {
     ClientID: clientID,
@@ -288,7 +236,7 @@ var AddClient = (heepChunk, IPAddress) => {
 
   SetNullPosition(clientID);
   masterState.controls.controlStructure[clientID] = {inputs: [], outputs: []};
-  masterState.icons = heepIconUtils.GetIconContent();
+  masterState.icons = iconUtils.GetIconContent();
 }
 
 var SetClientName = (heepChunk) => {
@@ -299,13 +247,13 @@ var SetClientName = (heepChunk) => {
   else {
     var currentIcon = 'none';
   }
-  heepIconUtils.SetClientIconFromString(heepChunk.clientID, heepChunk.clientName, currentIcon);
-  masterState.icons = heepIconUtils.GetIconContent()
+  iconUtils.SetClientIconFromString(heepChunk.clientID, heepChunk.clientName, currentIcon);
+  masterState.icons = iconUtils.GetIconContent()
 }
 
 var AddControl = (heepChunk) => {
   // Transition this to use new ControlID throughout frontend 
-  var tempCtrlName = nameControl(heepChunk.clientID, heepChunk.control.ControlID) 
+  var tempCtrlName = generalUtils.nameControl(heepChunk.clientID, heepChunk.control.ControlID) 
   masterState.controls[tempCtrlName] = heepChunk.control;
   masterState.controls[tempCtrlName].clientID = heepChunk.clientID;
   var currentIndex = SetControlStructure(heepChunk.clientID, tempCtrlName)
@@ -316,12 +264,12 @@ var AddControl = (heepChunk) => {
 
 var SetIconFromID = (heepChunk) => {
   var clientName = masterState.clients[heepChunk.clientID].ClientName;
-  heepIconUtils.SetClientIconFromString(heepChunk.clientID, clientName, heepChunk.iconName);
-  masterState.icons = heepIconUtils.GetIconContent()
+  iconUtils.SetClientIconFromString(heepChunk.clientID, clientName, heepChunk.iconName);
+  masterState.icons = iconUtils.GetIconContent()
 }
 
 var SetCustomIcon = (heepChunk) => {
-  heepIconUtils.setCustomIcon(heepChunk.clientID, heepChunk.iconData);
+  iconUtils.setCustomIcon(heepChunk.clientID, heepChunk.iconData);
 }
 
 var SetNullPosition = (clientID) => {
@@ -397,36 +345,20 @@ var SetControlStructure = (clientID, controlID) => {
 
 }
 
-var nameVertex = (vertex) => {
-    return vertex['txClientID'] + '.' + vertex['txControlID'] + '->' + vertex['rxClientID'] + '.' + vertex['rxControlID'];
-}
-
-var nameControl = (clientID, controlName) => {
-  return clientID +  '.' + controlName;
-}
-
-var getTxControlNameFromVertex = (vertex) => {
-  return nameControl(vertex.txClientID, vertex.txControlID)
-}
-
-var getRxControlNameFromVertex = (vertex) => {
-  return nameControl(vertex.rxClientID, vertex.rxControlID)
-}
-
 var AddVertex = (vertex) => {
-  var vertexName = nameVertex(vertex);
-  var txControl = getTxControlNameFromVertex(vertex);
-  var rxControl = getRxControlNameFromVertex(vertex);
+  var vertexName = generalUtils.nameVertex(vertex);
+  var txControl = generalUtils.getTxControlNameFromVertex(vertex);
+  var rxControl = generalUtils.getRxControlNameFromVertex(vertex);
   masterState.vertexList[vertexName] = vertex;
   masterState.controls.connections[txControl].push(rxControl);
 
 }
 
 var DeleteVertex = (vertex) => {
-  delete masterState.vertexList[nameVertex(vertex)];
+  delete masterState.vertexList[generalUtils.nameVertex(vertex)];
 
-  var txControl = getTxControlNameFromVertex(vertex);
-  var rxControl = getRxControlNameFromVertex(vertex);
+  var txControl = generalUtils.getTxControlNameFromVertex(vertex);
+  var rxControl = generalUtils.getRxControlNameFromVertex(vertex);
   var index = masterState.controls.connections[txControl].indexOf(rxControl)
   if ( index != -1) {
     masterState.controls.connections[txControl].splice(index, 1);
