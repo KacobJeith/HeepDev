@@ -11,7 +11,6 @@ class Device:
 
 	def __init__(self):
 		self.ClientID = 12345678910
-		self.ClientType = 1
 		self.IPAddress = HeepIPAddress(0, 0, 0, 0)
 		self.ClientName = 'none'
 		self.IconCustom = 0
