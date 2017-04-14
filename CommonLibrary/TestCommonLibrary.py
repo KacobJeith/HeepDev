@@ -1,4 +1,4 @@
-from PLCClient import PLCClient
+from Device import Device
 from ControlValue import ControlValue
 from OutputData import OutputData
 from Vertex import Vertex
@@ -13,8 +13,8 @@ def CheckEquality(first, second, testName) :
 		return testName + ': Success'
 	return testName + ': Failed******   Received: ' + str(first) + ' ****  Expected:' + str(second)
 
-# Create Controls and PLC Client
-otherClient = PLCClient()
+# Create Controls and Devices
+otherClient = Device()
 otherClient.ClientID = 1523
 otherClient.ClientName = 'Sloppy'
 Control1 = ControlValue()
@@ -45,13 +45,13 @@ print CheckEquality(otherClient.ControlList[1].CurCtrlValue, 20, 'UpdateControls
 
 # Transfer client information via serialization
 controlStr = otherClient.GetClientString()
-newClient = PLCClient()
+newClient = Device()
 newClient.ClientID = 1523
 newClient.SetClientFromString(controlStr)
 
 print CheckEquality(len(newClient.ControlList), len(otherClient.ControlList), 'Transfer client information')
 
-newClient = PLCClient()
+newClient = Device()
 myVertex = Vertex()
 myVertex.inputID = 1
 myVertex.outputID = 2
@@ -80,7 +80,7 @@ print CheckEquality( outputQueue[1].inputID, 2, 'Output Queue input name 2')
 print CheckEquality( newClient.GetVerticesString(), '1,2,192.142.132.132,123456,666;2,2,192.142.132.132,123223456,666;', 'Get Vertex String')
 
 VertexStr = newClient.GetVerticesString()
-vertClient = PLCClient()
+vertClient = Device()
 vertClient.SetVerticesFromString(newClient.GetVerticesString())
 print CheckEquality( newClient.GetVerticesString(), vertClient.GetVerticesString(), 'Vertex client setup')
 
@@ -164,7 +164,7 @@ byteArray = HeepMemoryUtilities.AppendVertexDataToByteArray(byteArray, myVertex)
 print CheckEquality(HeepMemoryUtilities.GetVertexFromByteArray(byteArray, 987123).destinationID, 98587649, 'Get Vertex Opcode after Much Data Added')
 
 # OpCode Client Integration
-otherClient = PLCClient()
+otherClient = Device()
 otherClient.ClientID = 12332
 otherClient.ClientName = 'Sloppy'
 Control1 = ControlValue()

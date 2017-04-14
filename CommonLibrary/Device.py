@@ -7,7 +7,7 @@ from HeepMemoryUtilities import HeepMemoryUtilities
 from CommonDataTypes import HeepIPAddress
 from HeepOpCodeUtilities import HeepOpCodeUtilities
 
-class PLCClient:
+class Device:
 
 	def __init__(self):
 		self.ClientID = 12345678910
