@@ -2,8 +2,8 @@ import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as Actions from '../redux/actions'
-import OnOffContainer from './OnOffController';
-import RangeContainer from '../containers/RangeContainer';
+import OnOffContainer from './OnOffController'
+import RangeContainer from './RangeController'
 
 var mapStateToProps = (state, ownProps) => ({
   control: state.controls[ownProps.controlID],
