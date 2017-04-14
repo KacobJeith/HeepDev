@@ -15,7 +15,6 @@ export var getRxControlNameFromVertex = (vertex) => {
   return nameControl(vertex.rxClientID, vertex.rxControlID)
 }
 
-
 export var joinAddress = (gateway, ip) => {
   return gateway.join('.') + '.' + ip.toString()
 }
