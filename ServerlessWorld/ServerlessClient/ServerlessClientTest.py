@@ -3,11 +3,11 @@ from ServerlessClient import ServerlessClientConnection
 import sys
 sys.path.insert(0, '../../CommonLibrary')
 from ControlValue import ControlValue
-from PLCClient import PLCClient
+from Device import Device
 from Vertex import Vertex
 from CommonDataTypes import HeepIPAddress
 
-functionalClient = PLCClient()
+functionalClient = Device()
 functionalClient.ClientID = 5678
 functionalClient.SetClientFrontEndXY(100, 287)
 functionalClient.SetIconInformation(1, [chr(3), chr(4), chr(12), chr(41)]) 

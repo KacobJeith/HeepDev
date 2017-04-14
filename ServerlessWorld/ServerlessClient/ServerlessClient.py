@@ -3,7 +3,7 @@ import socket
 import sys
 sys.path.insert(0, '../../CommonLibrary')
 from ControlValue import ControlValue
-from PLCClient import PLCClient
+from Device import Device
 from OutputData import OutputData
 from ActionOpCodeParser import ActionOpCodeParser
 
@@ -11,7 +11,7 @@ class ServerlessClientConnection :
 
 	sock = socket.socket()
 	TCP_PORT = 5000
-	clientData = PLCClient()
+	clientData = Device()
 
 	def __init__(self):
 		return
@@ -69,6 +69,6 @@ class ServerlessClientConnection :
 			if returnData:
 				client.send(returnData)
 				print returnData
-				print self.clientData.ClientMemory.miscMemory
+				print self.clientData.DeviceMemory.miscMemory
 
 			client.close()
