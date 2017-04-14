@@ -20,7 +20,7 @@ app.use('/', express.static(__dirname));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-app.get('/api/clients', (req, res) => {
+app.get('/api/findDevices', (req, res) => {
   heepConnect.SearchForHeepDevices(); 
   res.json(heepConnect.GetCurrentMasterState());  
 });
@@ -29,7 +29,7 @@ app.post('/api/setValue', (req, res) => {
   
   heepConnect.SendValueToHeepDevice(req.body.clientID, req.body.controlID, req.body.value);
   
-  res.end("Value sent to Heep Client");
+  res.end("Value sent to Heep Device");
 });
 
 app.post('/api/setVertex', (req, res) => {

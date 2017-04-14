@@ -10,7 +10,7 @@ import thunk from 'redux-thunk'
 import $ from 'jquery'
 
 
-function loadClientsFromServer(url) {
+var loadDevicesFromServer = (url) => {
 
   $.ajax({
     url: url,
@@ -30,12 +30,12 @@ function loadClientsFromServer(url) {
         document.getElementById('root')
       )
     },
-    error: function(xhr, status, err) {
+    error: (xhr, status, err) => {
       console.error(url, status, err.toString());
       }
     });
 }
 
-loadClientsFromServer(window.location.protocol.concat('//', window.location.hostname,':3001').concat('/api/clients'));
+loadDevicesFromServer(window.location.protocol.concat('//', window.location.hostname,':3001').concat('/api/findDevices'));
 
 
