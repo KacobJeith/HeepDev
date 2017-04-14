@@ -7,6 +7,7 @@ import * as Actions from '../actions/actions'
 const mapStateToProps = (state, ownProps) => ({
   control: state.controls[ownProps.thisControl],
   controlID: state.controls[ownProps.thisControl]['ControlID'],
+  value: state.controls[ownProps.thisControl]['CurCtrlValue'],
   ClientID: ownProps.ClientID,
   url: state.url
 })

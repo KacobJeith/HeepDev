@@ -55,8 +55,8 @@ export var SendPositionToHeepDevice = (clientID, position) => {
   var numBytes = [packet.length];
 
   var messageBuffer = Buffer.from([0x0B].concat(numBytes, packet));
-  console.log('Sending COP 0x0B to Heep Device' + clientID.toString() + ' at IP: ' + IPAddress);
-  console.log('Data: ', messageBuffer);
+  console.log('Connecting to Device ', clientID + ' at IPAddress: ' + IPAddress);
+  console.log('Data packet: ', messageBuffer);
   ConnectToHeepDevice(IPAddress, heepPort, messageBuffer)
 
 }
@@ -68,36 +68,37 @@ export var SendValueToHeepDevice = (clientID, controlID, newValue) => {
     var valueByteArray = GetByteArrayFromValue(newValue);
     var numBytes = [controlByteArray.length + valueByteArray.length];
     var messageBuffer = Buffer.from([0x0A].concat(numBytes, controlByteArray, valueByteArray));
-    console.log('SENDING SETVAL TO HEEP CLIENT ', clientID + ' at ' + IPAddress);
+    console.log('Connecting to Device ', clientID + ' at IPAddress: ' + IPAddress);
     console.log('Data Packet: ',  messageBuffer);
     ConnectToHeepDevice(IPAddress, heepPort, messageBuffer)
   }
 }
 
 export var SendVertexToHeepDevices = (vertex) => {
-  console.log('SENDING TO HEEP HERE: ', vertex)
-
-  var txClientID = GetClientIDasByteArray(vertex.txClientID);
-  var txControlID = GetValueAsFixedSizeByteArray(vertex.txControlID, 1);
-  var rxClientID = GetClientIDasByteArray(vertex.rxClientID);
-  var rxControlID = GetValueAsFixedSizeByteArray(vertex.rxControlID, 1);
-  var rxIP = ConvertIPAddressToByteArray(vertex.rxIP);
-  var packet = txClientID.concat(rxClientID, txControlID, rxControlID, rxIP);
-  var numBytes = [packet.length];
-
-  var messageBuffer = Buffer.from([0x0C].concat(numBytes, packet));
+  console.log('Received the following vertex to send to HeepDevice: ', vertex)
 
   var IPAddress = masterState.clients[vertex.txClientID].IPAddress;
-  console.log('SENDING VERTEX TO HEEP CLIENT ', vertex.sourceID + ' at ' + IPAddress);
-  console.log('Data Packet: ',  messageBuffer);
+  var messageBuffer = PrepVertexForCOP(vertex, 0x0C);
 
+  console.log('Connecting to Device ', vertex.txClientID + ' at IPAddress: ' + IPAddress);
+  console.log('Data Packet: ',  messageBuffer);
 
   ConnectToHeepDevice(IPAddress, heepPort, messageBuffer)
 }
 
 export var SendDeleteVertexToHeepDevices = (vertex) => {
-  console.log('SENDING TO HEEP HERE: ', vertex)
+  console.log('Received the following vertex to delete from HeepDevice: ', vertex)
 
+  var IPAddress = masterState.clients[vertex.txClientID].IPAddress;
+  var messageBuffer = PrepVertexForCOP(vertex, 0x0D);
+
+  console.log('Connecting to Device ', vertex.txClientID + ' at IPAddress: ' + IPAddress);
+  console.log('Data Packet: ',  messageBuffer);
+
+  ConnectToHeepDevice(IPAddress, heepPort, messageBuffer)
+}
+
+export var PrepVertexForCOP = (vertex, COP) => {
   var txClientID = GetClientIDasByteArray(vertex.txClientID);
   var txControlID = GetValueAsFixedSizeByteArray(vertex.txControlID, 1);
   var rxClientID = GetClientIDasByteArray(vertex.rxClientID);
@@ -106,14 +107,7 @@ export var SendDeleteVertexToHeepDevices = (vertex) => {
   var packet = txClientID.concat(rxClientID, txControlID, rxControlID, rxIP);
   var numBytes = [packet.length];
 
-  var messageBuffer = Buffer.from([0x0D].concat(numBytes, packet));
-
-  var IPAddress = masterState.clients[vertex.txClientID].IPAddress;
-  console.log('SENDING VERTEX TO HEEP CLIENT ', vertex.sourceID + ' at ' + IPAddress);
-  console.log('Data Packet: ',  messageBuffer);
-
-
-  ConnectToHeepDevice(IPAddress, heepPort, messageBuffer)
+  return Buffer.from([COP].concat(numBytes, packet));
 }
 
 var ConvertIPAddressToByteArray = (stringIP) => {
@@ -311,6 +305,7 @@ var AddControl = (heepChunk) => {
   // Transition this to use new ControlID throughout frontend 
   var tempCtrlName = nameControl(heepChunk.clientID, heepChunk.control.ControlID) 
   masterState.controls[tempCtrlName] = heepChunk.control;
+  masterState.controls[tempCtrlName].clientID = heepChunk.clientID;
   var currentIndex = SetControlStructure(heepChunk.clientID, tempCtrlName)
 
   masterState.positions[heepChunk.clientID][tempCtrlName] = SetControlPosition(heepChunk.clientID, currentIndex, heepChunk.control.ControlDirection);

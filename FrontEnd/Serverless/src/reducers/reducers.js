@@ -1,7 +1,6 @@
 import { combineReducers } from 'redux'
 import Immutable from 'immutable'
 import 'babel-polyfill'
-import $ from 'jquery'
 import * as actions from '../actions/actions'
 import * as async from './async'
 
@@ -50,7 +49,7 @@ function vertexList(state = initialState, action) {
       var vertex = {...state.selectedOutput, rxControlID: action.rxControlID,
                                              rxIP: action.rxIP,
                                              rxClientID: action.rxClientID};
-      console.log('ThisVertex: ', vertex)
+      
       async.sendVertexToServer(action.url, vertex);
 
       return Immutable.Map(state).set(state.selectedOutput.txClientID + '.' + state.selectedOutput.txControlID + '->' + action.rxClientID + '.' + action.rxControlID, 
@@ -96,12 +95,19 @@ function controls(state = initialState, action) {
       return Immutable.Map(state).set('selectedOutput', {txClientID: action.txClientID, txControlID: action.txControlID}).toJS();
     case 'UPDATE_CONTROL_VALUE':
 
-      var a = {...state};
+      var newState = Immutable.Map(state).toJS();
       var identifier = action.clientID + '.' + action.controlID;
-      a[identifier]['CurCtrlValue'] = action.newValue;
+      newState[identifier]['CurCtrlValue'] = action.newValue;
       async.sendValueToServer(action.clientID, action.controlID, action.newValue, action.url);
 
-      return {...state}
+      var connectedControl = '';
+      for (var i = 0; i < newState.connections[identifier].length; i++){
+        connectedControl = newState.connections[identifier][i];
+        newState[connectedControl]['CurCtrlValue'] = action.newValue;
+        async.sendValueToServer(newState[connectedControl].clientID, newState[connectedControl].ControlID, action.newValue, action.url);
+      }
+
+      return newState
     case 'ADD_VERTEX':
       var newState = Immutable.Map(state).toJS();
       var txName = newState.selectedOutput.txClientID + '.' + newState.selectedOutput.txControlID;
@@ -113,7 +119,7 @@ function controls(state = initialState, action) {
     case 'DELETE_VERTEX':
 
       var newState = Immutable.Map(state).toJS();
-      
+
       var txName = action.vertex.txClientID +'.'+ action.vertex.txControlID;
       var rxName = action.vertex.rxClientID +'.'+ action.vertex.rxControlID;
 
