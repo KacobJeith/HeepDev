@@ -1,9 +1,9 @@
 import net from 'net'
 import os from 'os' 
 import * as HAPIParser from './HAPIMemoryParser'
-import * as iconUtils from './IconUtilities'
-import * as generalUtils from '../utilities/general'
-import * as byteUtils from './ByteUtilities'
+import * as iconUtils from '../utilities/iconUtilities'
+import * as generalUtils from '../utilities/generalUtilities'
+import * as byteUtils from '../utilities/byteUtilities'
 
 var masterState = {
   clients: {clientArray: []},

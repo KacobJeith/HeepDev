@@ -1,6 +1,6 @@
 import express from 'express'
 import bodyParser from 'body-parser'
-import * as heepConnect from './serverUtils/HeepConnections'
+import * as heepConnect from './server/HeepConnections'
 
 var app = express();
 

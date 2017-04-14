@@ -1,5 +1,20 @@
-import React from 'react';
-import $ from 'jquery';
+import React from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import * as Actions from '../redux/actions'
+import $ from 'jquery'
+
+var mapStateToProps = (state, ownProps) => ({
+  ClientID: ownProps.ClientID,
+  value: state.controls[ownProps.controlID]['CurCtrlValue'],
+  highValue: state.controls[ownProps.controlID]['HighValue'],
+  icon: state.icons[state.icons[ownProps.clientID]],
+  defaultIcon: state.icons['none'],
+  height: ownProps.height,
+  width: ownProps.width,
+  url: state.url
+})
+
 
 class DynamicIcon extends React.Component {
 
@@ -50,8 +65,10 @@ class DynamicIcon extends React.Component {
 			<div {...inputs.icon}/>
 		);
 	}
-
-
 }
 
-export default DynamicIcon;
+var mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(Actions, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(DynamicIcon);

@@ -1,8 +1,21 @@
-import React from 'react';
-import OnOffContainer from '../containers/OnOffContainer';
-import RangeContainer from '../containers/RangeContainer';
+import React from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import * as Actions from '../redux/actions'
+import OnOffContainer from './OnOffController'
+import RangeContainer from './RangeController'
 
-export default class Control extends React.Component {
+var mapStateToProps = (state, ownProps) => ({
+  control: state.controls[ownProps.controlID],
+  clientID: ownProps.clientID,
+  controlID: ownProps.controlID,
+  value: state.controls[ownProps.controlID]['CurCtrlValue'],
+  ip: state.clients[ownProps.clientID]['IPAddress'],
+  url: state.url
+})
+
+
+class Control extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -147,3 +160,10 @@ export default class Control extends React.Component {
 		);
 	}
 }
+
+var mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(Actions, dispatch)
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Control)

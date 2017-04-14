@@ -1,4 +1,16 @@
-import React from 'react';
+import React from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import * as Actions from '../redux/actions'
+
+var mapStateToProps = (state, ownProps) => ({
+  control: state.controls[ownProps.thisControl],
+  controlID: state.controls[ownProps.thisControl]['ControlID'],
+  value: state.controls[ownProps.thisControl]['CurCtrlValue'],
+  ClientID: ownProps.ClientID,
+  url: state.url
+})
+
 
 class RangeController extends React.Component {
 
@@ -174,8 +186,10 @@ class RangeController extends React.Component {
 				</div>
             	
 	}
-
-
 }
 
-export default RangeController;
+var mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(Actions, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(RangeController)

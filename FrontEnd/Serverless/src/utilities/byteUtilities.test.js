@@ -1,5 +1,5 @@
 import assert from 'assert'
-import * as byteUtils from './ByteUtilities'
+import * as byteUtils from './byteUtilities'
 
 describe('ByteUtilities', () => {
 

@@ -1,6 +1,17 @@
-import React from 'react';
-import Control from '../containers/ControlContainer';
-import DynamicIcon from '../containers/IconContainer';
+import React from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import * as Actions from '../redux/actions'
+import Control from './Controls';
+import DynamicIcon from './DynamicIcon';
+
+var mapStateToProps = (state, ownProps) => ({
+  client: state.clients[ownProps.ClientID],
+  position: state.positions[ownProps.ClientID]['client'],
+  controlInputs: state.controls.controlStructure[ownProps.ClientID]['inputs'],
+  controlOutputs: state.controls.controlStructure[ownProps.ClientID]['outputs'],  
+  url: state.url
+})
 
 
 class Client extends React.Component {
@@ -186,4 +197,8 @@ class Client extends React.Component {
 	}
 }
 
-export default Client;
+var mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(Actions, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Client);

@@ -4,10 +4,9 @@ import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware } from 'redux'
-import heepApp from './reducers/reducers'
-import App from './containers/AppContainer'
-import * as Actions from './actions/actions'
-import thunk from 'redux-thunk';
+import heepApp from './redux/reducers'
+import App from './components/App'
+import thunk from 'redux-thunk'
 import $ from 'jquery'
 
 

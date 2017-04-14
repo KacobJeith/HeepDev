@@ -1,6 +1,16 @@
-import React from 'react';
-import Client from '../containers/ClientContainer';
-import VertexList from '../containers/VertexListContainer';
+import React from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import * as Actions from '../redux/actions'
+import Client from './Client'
+import Vertex from './Vertex'
+
+var mapStateToProps = (state) => ({
+  clientArray: state.clients.clientArray,
+  vertexList: Object.keys(state.vertexList),
+  url: state.url
+})
+
 
 class Flowchart extends React.Component {
 
@@ -13,6 +23,12 @@ class Flowchart extends React.Component {
 				position: 'relative',
 				backgroundColor: '#e7e7e7',
 				overflow: 'auto'
+			},
+			vertexSVGSpace: {
+				position: 'absolute',
+				width: 3000,
+				height: 3000,
+				viewBox: '0 0 1000 1000'
 			}
 		}
 
@@ -37,8 +53,19 @@ class Flowchart extends React.Component {
 	      clients.push(<Client key={thisClient} ClientID={thisClient}/>);
 	    }
 
+	    var vertexes = [];
+	    for (var i = 0; i < this.props.vertexList.length; i++) {
+	    	if (this.props.vertexList[i] != 'selectedOutput'){
+	    		var thisVertex = this.props.vertexList[i];
+	      		vertexes.push(<Vertex key={thisVertex} vertexID={thisVertex}/>);
+	    	}
+	    }
+
+
 	return (<div {...inputs.flowchart} ref="flowchart"> 
-				<VertexList /> 
+				<svg {...inputs.vertexSVGSpace}>
+					{vertexes} 
+				</svg>
 				{clients}
 			</div>
 		);
@@ -46,4 +73,8 @@ class Flowchart extends React.Component {
 	}
 }
 
-export default Flowchart;
+var mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(Actions, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Flowchart)
