@@ -1,4 +1,4 @@
-class HeepOpCodeUtilities:
+class OpCodeUtilities:
 
 	OpCodeVersion = 1
 

@@ -2,10 +2,10 @@ import json
 from ControlValue import ControlValue
 from Vertex import Vertex
 from OutputData import OutputData
-from ClientMemory import ClientMemory
-from HeepMemoryUtilities import HeepMemoryUtilities
+from DeviceMemory import DeviceMemory
+from MemoryUtilities import MemoryUtilities
 from CommonDataTypes import HeepIPAddress
-from HeepOpCodeUtilities import HeepOpCodeUtilities
+from OpCodeUtilities import OpCodeUtilities
 
 class Device:
 
@@ -21,22 +21,21 @@ class Device:
 		self.ControlQueue = []
 		self.VertexList = []
 		self.IsServerless = 0
-		self.ClientMemory = ClientMemory()
-		self.MemoryUtilities = HeepMemoryUtilities()
+		self.DeviceMemory = DeviceMemory()
 		return
 
 	def SetClientFrontEndXY(self, clientX, clientY) :
-		self.ClientMemory.SetClientXY(clientX, clientY, self.ClientID)
+		self.DeviceMemory.SetClientXY(clientX, clientY, self.ClientID)
 
 	def GetFrontEndXY(self) :
-		return self.ClientMemory.GetClientXY(self.ClientID)
+		return self.DeviceMemory.GetClientXY(self.ClientID)
 
 	def SetClientName(self, clientName) :
 		self.ClientName = clientName
-		self.ClientMemory.SetClientName(self.ClientName, self.ClientID)
+		self.DeviceMemory.SetClientName(self.ClientName, self.ClientID)
 
 	def DumpClientMemory(self) :
-		self.ClientMemory.WriteClientMemoryToFile()
+		self.DeviceMemory.WriteClientMemoryToFile()
 
 	def SetServerless(self, isServerless) :
 		self.IsServerless = isServerless
@@ -47,11 +46,11 @@ class Device:
  		self.AddVertex(vertex)
 
  	def SetIconInformation(self, iconID, iconData) :
- 		self.ClientMemory.SetIconIDAndData(iconID, iconData, self.ClientID)
+ 		self.DeviceMemory.SetIconIDAndData(iconID, iconData, self.ClientID)
 
  	def AddVertex(self, vertex) :
  		self.VertexList.append(vertex)
- 		self.ClientMemory.SetVertex(vertex)
+ 		self.DeviceMemory.SetVertex(vertex)
 
  	def DeleteVertex(self, vertex) :
  		for x in range(0, len(self.VertexList)) :
@@ -59,13 +58,13 @@ class Device:
  				self.VertexList.remove(self.VertexList[x])
  				break
 
- 		self.ClientMemory.DeleteVertex(vertex)
+ 		self.DeviceMemory.DeleteVertex(vertex)
 
  	def SetIPAddress(self, IPAddress) :
- 		self.ClientMemory.SetIPAddress(self.ClientID, IPAddress)
+ 		self.DeviceMemory.SetIPAddress(self.ClientID, IPAddress)
 
  	def GetIPAddress(self) :
- 		return self.ClientMemory.GetIPAddress(self.ClientID)
+ 		return self.DeviceMemory.GetIPAddress(self.ClientID)
 
  	def RemoveVertex(self, destID, outputID, inputID) :
 
@@ -154,24 +153,24 @@ class Device:
 	def GetClientString(self):
 		
 		byteArray = self.GetClientByteArray()
-		return HeepOpCodeUtilities().GetStringFromByteArray(byteArray)
+		return OpCodeUtilities().GetStringFromByteArray(byteArray)
 		
 	def GetClientByteArray(self) :
 		byteArray = []
-		byteArray = self.MemoryUtilities.AppendClientDataToByteArray(byteArray, self.ClientID)
+		byteArray = MemoryUtilities().AppendClientDataToByteArray(byteArray, self.ClientID)
 
 		for x in range(0, len(self.ControlList)) :
-			byteArray = self.MemoryUtilities.AppendControlDataToByteArray(byteArray, self.ClientID, self.ControlList[x])
+			byteArray = MemoryUtilities().AppendControlDataToByteArray(byteArray, self.ClientID, self.ControlList[x])
 
 		
-		byteArray = self.MemoryUtilities.AppendByteArrayToByteArray(byteArray, self.ClientMemory.miscMemory)
+		byteArray = MemoryUtilities().AppendByteArrayToByteArray(byteArray, self.DeviceMemory.miscMemory)
 		return byteArray
 
 
 	def SetClientFromString(self, clientString) :
 
-		byteArray = HeepOpCodeUtilities().ConvertStringToByteArray(clientString)
-		self.ControlList = self.MemoryUtilities.GetClientControlValue(byteArray, self.ClientID)
+		byteArray = OpCodeUtilities().ConvertStringToByteArray(clientString)
+		self.ControlList = MemoryUtilities().GetClientControlValue(byteArray, self.ClientID)
 
 		# self.ControlList = []
 		# splitString = clientString.split(',')
