@@ -6,14 +6,14 @@ import Control from './Controls';
 import DynamicIcon from './DynamicIcon';
 
 var mapStateToProps = (state, ownProps) => ({
-  client: state.clients[ownProps.ClientID],
-  position: state.positions[ownProps.ClientID]['client'],
-  controlInputs: state.controls.controlStructure[ownProps.ClientID]['inputs'],
-  controlOutputs: state.controls.controlStructure[ownProps.ClientID]['outputs']
+  device: state.devices[ownProps.DeviceID],
+  position: state.positions[ownProps.DeviceID]['device'],
+  controlInputs: state.controls.controlStructure[ownProps.DeviceID]['inputs'],
+  controlOutputs: state.controls.controlStructure[ownProps.DeviceID]['outputs']
 })
 
 
-class Client extends React.Component {
+class Device extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -30,7 +30,7 @@ class Client extends React.Component {
 
 	  	this.lastPosition['left'] = event.pageX;
 	  	this.lastPosition['top'] = event.pageY;
-	  	event.dataTransfer.setDragImage(this.refs.client, 99999,99999);
+	  	event.dataTransfer.setDragImage(this.refs.device, 99999,99999);
 	}
 
 	onTouchStart(event) {
@@ -43,13 +43,13 @@ class Client extends React.Component {
 
 	onDrag(event) {
 		this.calculateDragOffset(event);
-		this.props.positionClient(this.props.client.ClientID, this.runningOffset);
-		//this.props.updateVertexPositionsByOffset(this.props.client['ClientID'], this.runningOffset);
+		this.props.positionDevice(this.props.device.DeviceID, this.runningOffset);
+		//this.props.updateVertexPositionsByOffset(this.props.device['DeviceID'], this.runningOffset);
 	}
 
 	calculateDragOffset(event) {
 		// The final drag event is always 0, whichthrows off tracking unless you catch and ignore it
-		if (event.clientX == 0 && event.clientY == 0){
+		if (event.deviceX == 0 && event.deviceY == 0){
 			return;
 		}
 
@@ -63,13 +63,13 @@ class Client extends React.Component {
 
 	sendPositionToServer() {
 
-		this.props.sendPositionToServer(this.props.client.ClientID, this.lastPosition);
+		this.props.sendPositionToServer(this.props.device.DeviceID, this.lastPosition);
 	}
 
 	render() {
 
 		const styles = {
-			clientContainer: {
+			deviceContainer: {
 				backgroundColor: 'white',
 				margin: 10,
 				borderWidth: 2,
@@ -120,8 +120,8 @@ class Client extends React.Component {
 		}
 
 		const inputs = {
-			clientContainer: {
-				style: styles.clientContainer,
+			deviceContainer: {
+				style: styles.deviceContainer,
 			},
 			name: {
 				style: styles.name,
@@ -152,7 +152,7 @@ class Client extends React.Component {
 				onTouchEnd: (event) => {this.sendPositionToServer()},
 			},
 			icon: {
-				clientID: this.props.client['ClientID'],
+				deviceID: this.props.device['DeviceID'],
 				controlID: this.props.controlInputs.length == 0 ? this.props.controlOutputs[0] : this.props.controlInputs[0] ,
 				width: styles.iconContainer.width,
 				height: styles.iconContainer.height,
@@ -165,17 +165,17 @@ class Client extends React.Component {
 
 		var controlInputs = [];
 	    for (var i = 0; i < this.props.controlInputs.length; i++) {
-	      controlInputs.push(<Control key={i} clientID={this.props.client['ClientID']} controlID={this.props.controlInputs[i]}/>);
+	      controlInputs.push(<Control key={i} deviceID={this.props.device['DeviceID']} controlID={this.props.controlInputs[i]}/>);
 	    }
 
 	    var controlOutputs = [];
 	    for (var i = 0; i < this.props.controlOutputs.length; i++) {
-	      controlOutputs.push(<Control key={i} clientID={this.props.client['ClientID']} controlID={this.props.controlOutputs[i]}/>);
+	      controlOutputs.push(<Control key={i} deviceID={this.props.device['DeviceID']} controlID={this.props.controlOutputs[i]}/>);
 	    }
 
-		return (<div {...inputs.clientContainer} ref="client"> 
+		return (<div {...inputs.deviceContainer} ref="device"> 
 					<p {...inputs.name}>
-						{this.props.client['ClientName']}
+						{this.props.device['DeviceName']}
 					</p>
 					<hr/>
 					<div {...inputs.controlsContainer}>
@@ -200,4 +200,4 @@ var mapDispatchToProps = (dispatch) => {
   return bindActionCreators(Actions, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Client);
+export default connect(mapStateToProps, mapDispatchToProps)(Device);

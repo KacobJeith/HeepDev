@@ -7,7 +7,7 @@ import {ICONS} from '../assets/iconConstants'
 
 const mapStateToProps = (state, ownProps) => ({
   controlID: state.controls[ownProps.thisControl]['ControlID'],
-  ClientID: ownProps.ClientID,
+  DeviceID: ownProps.DeviceID,
   value: state.controls[ownProps.thisControl]['CurCtrlValue']
 })
 
@@ -21,7 +21,7 @@ class OnOffController extends React.Component {
 	sendCommand() {
 		var newVal = 1 - this.props.value;
 	    this.lastSentControlValue = newVal;
-	    this.props.updateControlValue(this.props.ClientID, this.props.controlID, newVal);
+	    this.props.updateControlValue(this.props.DeviceID, this.props.controlID, newVal);
 	    
 	}
 

@@ -7,7 +7,7 @@ import $ from 'jquery'
 var mapStateToProps = (state, ownProps) => ({
   value: state.controls[ownProps.controlID]['CurCtrlValue'],
   highValue: state.controls[ownProps.controlID]['HighValue'],
-  icon: state.icons[state.icons[ownProps.clientID]],
+  icon: state.icons[state.icons[ownProps.deviceID]],
   defaultIcon: state.icons['none'],
   height: ownProps.height,
   width: ownProps.width
