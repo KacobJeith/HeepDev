@@ -6,7 +6,6 @@ import * as generalUtils from '../utilities/generalUtilities'
 
 var mapStateToProps = (state, ownProps) => (
 {
-  url: state.url,
   id: ownProps.vertexID,
   vertex: state.vertexList[ownProps.vertexID],
   inputPosition: getInputPosition(state, ownProps),
@@ -22,9 +21,9 @@ class Vertex extends React.Component {
 		}
 	}
 
-	sendDeleteVertexToServer(url) {
+	sendDeleteVertexToServer() {
 		
-		this.props.deleteVertex(this.props.url, this.props.id, this.props.vertex)
+		this.props.deleteVertex(this.props.id, this.props.vertex)
 	}
 
 	render() {

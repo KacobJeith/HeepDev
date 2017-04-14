@@ -7,8 +7,7 @@ import Vertex from './Vertex'
 
 var mapStateToProps = (state) => ({
   clientArray: state.clients.clientArray,
-  vertexList: Object.keys(state.vertexList),
-  url: state.url
+  vertexList: Object.keys(state.vertexList)
 })
 
 
@@ -40,7 +39,6 @@ class Flowchart extends React.Component {
 				style: styles.vertexSVGSpace
 			},
 			vertexSVG: {
-				url: this.props.url,
 				key: [],
 				vertex:[]
 			}
