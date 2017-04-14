@@ -66,8 +66,8 @@ export var SendPositionToHeepDevice = (clientID, position) => {
 export var SendValueToHeepDevice = (clientID, controlID, newValue) => {
   if (CheckIfNewValueAndSet(clientID, controlID, newValue)){
     var IPAddress = masterState.clients[clientID].IPAddress;
-    var controlByteArray = GetByteArrayFromValue(controlID);
-    var valueByteArray = GetByteArrayFromValue(newValue);
+    var controlByteArray = byteUtils.GetByteArrayFromValue(controlID);
+    var valueByteArray = byteUtils.GetByteArrayFromValue(newValue);
     var numBytes = [controlByteArray.length + valueByteArray.length];
     var messageBuffer = Buffer.from([0x0A].concat(numBytes, controlByteArray, valueByteArray));
     console.log('Connecting to Device ', clientID + ' at IPAddress: ' + IPAddress);
