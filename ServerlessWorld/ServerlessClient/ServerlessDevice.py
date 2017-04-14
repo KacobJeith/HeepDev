@@ -7,7 +7,7 @@ from Device import Device
 from OutputData import OutputData
 from ActionOpCodeParser import ActionOpCodeParser
 
-class ServerlessClientConnection :
+class ServerlessDeviceConnection :
 
 	sock = socket.socket()
 	TCP_PORT = 5000

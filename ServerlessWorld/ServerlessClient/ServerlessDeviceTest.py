@@ -1,4 +1,4 @@
-from ServerlessClient import ServerlessClientConnection
+from ServerlessDevice import ServerlessDeviceConnection
 
 import sys
 sys.path.insert(0, '../../CommonLibrary')
