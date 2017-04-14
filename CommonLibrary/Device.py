@@ -15,7 +15,6 @@ class Device:
 		self.ClientName = 'none'
 		self.IconCustom = 0
 		self.IconName = 'none'
-		self.Position = {'top': 0, 'left': 0}
 		self.ControlList = []
 		self.ControlQueue = []
 		self.VertexList = []
@@ -166,23 +165,6 @@ class Device:
 
 		byteArray = OpCodeUtilities().ConvertStringToByteArray(clientString)
 		self.ControlList = MemoryUtilities().GetClientControlValue(byteArray, self.ClientID)
-
-		# self.ControlList = []
-		# splitString = clientString.split(',')
-		# self.ClientID = int(splitString[0])
-		# self.IPAddress = splitString[1]
-		# self.ClientType = int(splitString[2])
-		# self.ClientName = splitString[3]
-		# self.IconCustom = int(splitString[4])
-		# self.IconName = splitString[5]
-
-		# numControls = splitString[6] #Not currently used in the python code
-
-		# it = 7
-		# while it < len(splitString) :
-		# 	control = ControlValue()
-		# 	it = control.SetControlFromSplitString(splitString, it)
-		# 	self.ControlList.append(control)
 
 	def GetVerticesString(self) :
 		retStr = ""
