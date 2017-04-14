@@ -1,7 +1,7 @@
 import net from 'net'
 import os from 'os' 
 import * as heepParser from './HeepMemoryParser'
-import * as heepIconUtils from './IconUtilities'
+import * as iconUtils from './IconUtilities'
 import * as generalUtils from '../utilities/general'
 import * as byteUtils from './ByteUtilities'
 
@@ -222,7 +222,7 @@ var AddClient = (heepChunk, IPAddress) => {
   var clientID = heepChunk.clientID;
   var clientName = 'unset';
   var iconName = 'none';
-  heepIconUtils.SetClientIconFromString(clientID, clientName, iconName);
+  iconUtils.SetClientIconFromString(clientID, clientName, iconName);
 
   masterState.clients[clientID] = {
     ClientID: clientID,
@@ -236,7 +236,7 @@ var AddClient = (heepChunk, IPAddress) => {
 
   SetNullPosition(clientID);
   masterState.controls.controlStructure[clientID] = {inputs: [], outputs: []};
-  masterState.icons = heepIconUtils.GetIconContent();
+  masterState.icons = iconUtils.GetIconContent();
 }
 
 var SetClientName = (heepChunk) => {
@@ -247,8 +247,8 @@ var SetClientName = (heepChunk) => {
   else {
     var currentIcon = 'none';
   }
-  heepIconUtils.SetClientIconFromString(heepChunk.clientID, heepChunk.clientName, currentIcon);
-  masterState.icons = heepIconUtils.GetIconContent()
+  iconUtils.SetClientIconFromString(heepChunk.clientID, heepChunk.clientName, currentIcon);
+  masterState.icons = iconUtils.GetIconContent()
 }
 
 var AddControl = (heepChunk) => {
@@ -264,12 +264,12 @@ var AddControl = (heepChunk) => {
 
 var SetIconFromID = (heepChunk) => {
   var clientName = masterState.clients[heepChunk.clientID].ClientName;
-  heepIconUtils.SetClientIconFromString(heepChunk.clientID, clientName, heepChunk.iconName);
-  masterState.icons = heepIconUtils.GetIconContent()
+  iconUtils.SetClientIconFromString(heepChunk.clientID, clientName, heepChunk.iconName);
+  masterState.icons = iconUtils.GetIconContent()
 }
 
 var SetCustomIcon = (heepChunk) => {
-  heepIconUtils.setCustomIcon(heepChunk.clientID, heepChunk.iconData);
+  iconUtils.setCustomIcon(heepChunk.clientID, heepChunk.iconData);
 }
 
 var SetNullPosition = (clientID) => {
