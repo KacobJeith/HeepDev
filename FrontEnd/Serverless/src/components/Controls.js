@@ -10,8 +10,7 @@ var mapStateToProps = (state, ownProps) => ({
   clientID: ownProps.clientID,
   controlID: ownProps.controlID,
   value: state.controls[ownProps.controlID]['CurCtrlValue'],
-  ip: state.clients[ownProps.clientID]['IPAddress'],
-  url: state.url
+  ip: state.clients[ownProps.clientID]['IPAddress']
 })
 
 
@@ -31,8 +30,7 @@ class Control extends React.Component {
 	selectInputVertex(event) {
 		this.props.addVertex(this.props.clientID,
 							 this.props.control['ControlID'],
-							 this.props.ip, 
-							 this.props.url);
+							 this.props.ip);
 	}
 
 	selectOutputVertex(event) {
@@ -118,7 +116,6 @@ class Control extends React.Component {
 			controller:{
 				key: 0,
 				updateControlValue: this.props.updateControlValue,
-				url: this.props.url,
 				ClientID: this.props.clientID,
 				controlID: this.props.controlID,
 				thisControl: this.props.controlID

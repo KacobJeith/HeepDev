@@ -1,14 +1,20 @@
 import $ from 'jquery';
 
-export var sendVertexToServer = (url, vertex) => {
-  var url = url.concat('/api/setVertex');
+var urlPrefix = '';
+
+export var saveURL = (url) => {
+  urlPrefix = url;
+}
+
+export var sendVertexToServer = (vertex) => {
+  var url = urlPrefix.concat('/api/setVertex');
 
   const messagePacket = {vertex: vertex};
 
   performAJAX(url, messagePacket);
 };
 
-export var sendValueToServer = (clientID, controlID, newValue, url) => {
+export var sendValueToServer = (clientID, controlID, newValue) => {
 
   var messagePacket = {
     clientID: clientID, 
@@ -16,28 +22,28 @@ export var sendValueToServer = (clientID, controlID, newValue, url) => {
     value: newValue
   };
 
-  var url = url.concat('/api/setValue');
+  var url = urlPrefix.concat('/api/setValue');
   
   performAJAX(url, messagePacket);
   
 };
 
-export var sendPositionToServer = (clientID, position, url) => {
+export var sendPositionToServer = (clientID, position) => {
 
   var messagePacket = {
     clientID: clientID, 
     position: position
   };
 
-  var url = url.concat('/api/setPosition');
+  var url = urlPrefix.concat('/api/setPosition');
   
   performAJAX(url, messagePacket);
   
 };
 
-export var sendDeleteVertexToServer = (url, vertex) => {
+export var sendDeleteVertexToServer = (vertex) => {
 
-  var url = url.concat('/api/deleteVertex');
+  var url = urlPrefix.concat('/api/deleteVertex');
   
   const messagePacket = {vertex: vertex};
 

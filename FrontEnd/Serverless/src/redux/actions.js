@@ -5,11 +5,10 @@ export const positionClient = (clientID, newPosition) => ({
   newPosition
 })
 
-export const sendPositionToServer = (clientID, newPosition, url) => ({
+export const sendPositionToServer = (clientID, newPosition) => ({
   type: 'POSITION_CLIENT_SEND',
   clientID,
-  newPosition,
-  url
+  newPosition
 })
 
 //Icons
@@ -20,12 +19,11 @@ export const addIcon = (clientID, icon) => ({
 })
 
 //Control
-export const updateControlValue = (clientID, controlID, newValue, url) => ({
+export const updateControlValue = (clientID, controlID, newValue) => ({
   type: 'UPDATE_CONTROL_VALUE',
   clientID, 
   controlID, 
-  newValue,
-  url
+  newValue
 })
 
 //URL
@@ -36,17 +34,15 @@ export const storeURL = (url) => ({
 
 
 //Vertex
-export const addVertex = (rxClientID, rxControlID, rxIP, url) => ({
+export const addVertex = (rxClientID, rxControlID, rxIP) => ({
   type: 'ADD_VERTEX',
   rxClientID, 
   rxControlID,
-  rxIP, 
-  url
+  rxIP
 })
 
-export const deleteVertex = (url, vertexID, vertex) => ({
+export const deleteVertex = (vertexID, vertex) => ({
   type: 'DELETE_VERTEX',
-  url,
   vertexID,
   vertex
 })

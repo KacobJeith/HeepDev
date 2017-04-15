@@ -23,7 +23,8 @@ function clients(state = initialState, action) {
 
 function url(state = initialState, action) {
   switch (action.type) {
-    case 'STORE_URL':      
+    case 'STORE_URL':  
+      async.saveURL(action.url);    
       return (action.url)
     default:
       return state
@@ -51,7 +52,7 @@ function vertexList(state = initialState, action) {
                                              rxIP: action.rxIP,
                                              rxClientID: action.rxClientID};
       
-      async.sendVertexToServer(action.url, vertex);
+      async.sendVertexToServer(vertex);
 
       var newVertex = {txClientID: state.selectedOutput.txClientID,
                        txControlID: state.selectedOutput.txControlID,
@@ -64,7 +65,7 @@ function vertexList(state = initialState, action) {
       return Immutable.Map(state).set(newVertexName, newVertex).toJS();
     case 'DELETE_VERTEX':
 
-      async.sendDeleteVertexToServer(action.url, action.vertex);
+      async.sendDeleteVertexToServer(action.vertex);
 
       return Immutable.Map(state).delete(action.vertexID).toJS();
     default:
@@ -85,7 +86,7 @@ function positions(state = initialState, action) {
             }
     case 'POSITION_CLIENT_SEND':
       var positionToSend = state[action.clientID].client;
-      async.sendPositionToServer(action.clientID, positionToSend, action.url);
+      async.sendPositionToServer(action.clientID, positionToSend);
       return state
 
     default:
@@ -102,13 +103,13 @@ function controls(state = initialState, action) {
       var newState = Immutable.Map(state).toJS();
       var identifier = utils.nameControl(action.clientID, action.controlID);
       newState[identifier]['CurCtrlValue'] = action.newValue;
-      async.sendValueToServer(action.clientID, action.controlID, action.newValue, action.url);
+      async.sendValueToServer(action.clientID, action.controlID, action.newValue);
 
       var connectedControl = '';
       for (var i = 0; i < newState.connections[identifier].length; i++){
         connectedControl = newState.connections[identifier][i];
         newState[connectedControl]['CurCtrlValue'] = action.newValue;
-        async.sendValueToServer(newState[connectedControl].clientID, newState[connectedControl].ControlID, action.newValue, action.url);
+        async.sendValueToServer(newState[connectedControl].clientID, newState[connectedControl].ControlID, action.newValue);
       }
 
       return newState

@@ -9,8 +9,7 @@ var mapStateToProps = (state, ownProps) => ({
   client: state.clients[ownProps.ClientID],
   position: state.positions[ownProps.ClientID]['client'],
   controlInputs: state.controls.controlStructure[ownProps.ClientID]['inputs'],
-  controlOutputs: state.controls.controlStructure[ownProps.ClientID]['outputs'],  
-  url: state.url
+  controlOutputs: state.controls.controlStructure[ownProps.ClientID]['outputs']
 })
 
 
@@ -64,7 +63,7 @@ class Client extends React.Component {
 
 	sendPositionToServer() {
 
-		this.props.sendPositionToServer(this.props.client.ClientID, this.lastPosition, this.props.url);
+		this.props.sendPositionToServer(this.props.client.ClientID, this.lastPosition);
 	}
 
 	render() {
