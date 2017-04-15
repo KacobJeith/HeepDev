@@ -76,15 +76,17 @@ function vertexList(state = initialState, action) {
 function positions(state = initialState, action) {
   switch (action.type) {
     case 'POSITION_DEVICE':
-      var newState = {};
+      var newState = Immutable.Map(state).toJS();
       for (var id in state[action.deviceID]){
-        newState[id] = {top: action.newPosition['top'] + state[action.deviceID][id]['top'], 
-                        left: action.newPosition['left'] + state[action.deviceID][id]['left']}
+        newState[action.deviceID][id] = {
+          top: action.newPosition['top'] + state[action.deviceID][id]['top'], 
+          left: action.newPosition['left'] + state[action.deviceID][id]['left']
+        }
       }
-      return {...state,
-              [action.deviceID]: newState
-            }
+
+      return newState
     case 'POSITION_DEVICE_SEND':
+    
       var positionToSend = state[action.deviceID].device;
       async.sendPositionToServer(action.deviceID, positionToSend);
       return state

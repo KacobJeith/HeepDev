@@ -30,7 +30,6 @@ class Device extends React.Component {
 
 	  	this.lastPosition['left'] = event.pageX;
 	  	this.lastPosition['top'] = event.pageY;
-	  	console.log('X: ', event.pageX)
 	  	event.dataTransfer.setDragImage(this.refs.device, 99999,99999);
 	}
 
@@ -45,12 +44,11 @@ class Device extends React.Component {
 	onDrag(event) {
 		this.calculateDragOffset(event);
 		this.props.positionDevice(this.props.device.DeviceID, this.runningOffset);
-		//this.props.updateVertexPositionsByOffset(this.props.device['DeviceID'], this.runningOffset);
 	}
 
 	calculateDragOffset(event) {
-		// The final drag event is always 0, whichthrows off tracking unless you catch and ignore it
-		if (event.deviceX == 0 && event.deviceY == 0){
+		// The final drag event is always 0, which throws off tracking unless you catch and ignore it
+		if (event.clientX == 0 && event.clientY == 0){
 			return;
 		}
 
