@@ -54,11 +54,11 @@ class App extends React.Component {
     this.props.storeURL(window.location.protocol.concat('//', window.location.hostname,':3001'));
 
     return (<div>
-              <h1 {...inputs.header}> Device Dashboard <hr></hr></h1>
+              <h1 {...inputs.header}> Heep Device Portal <hr></hr></h1>
               <div {...inputs.flowchartContainer}>
                 <Flowchart />
               </div>
-              <footer {...inputs.footer}> <hr></hr> &copy; 2017 Jacob Dylan James. </footer>
+              <footer {...inputs.footer}> <hr></hr> &copy; 2017 Heep </footer>
             </div>
     );
   }
