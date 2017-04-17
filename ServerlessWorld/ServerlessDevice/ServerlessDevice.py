@@ -13,6 +13,7 @@ class ServerlessDeviceConnection :
 
 	sock = socket.socket()
 	TCP_PORT = 5000
+	BUFFER_SIZE = 1500
 	deviceData = Device()
 
 	def __init__(self):
@@ -21,8 +22,7 @@ class ServerlessDeviceConnection :
 	def SendDataToClient(self, data, IP) :
 		try :
 			self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-			self.sock.settimeout(2)
-			self.sock.connect((IP, self.TCP_PORT))
+			self.sock.connect((IP.GetIPAsString(), self.TCP_PORT))
 			self.sock.send(data)
 			data = self.sock.recv(self.BUFFER_SIZE)
 			return data
