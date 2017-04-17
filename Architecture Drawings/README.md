@@ -19,4 +19,4 @@ This directory contains records of Heep architecture evolution.
 
 ### PLC Architecture
 
-![PLC Architecture](./PLC Architecture.pdf)
+[PLC Architecture](./PLC Architecture.pdf)
