@@ -6,7 +6,7 @@ import * as async from './async'
 import * as utils from '../utilities/generalUtilities'
 
 const initialState = Immutable.Map({
-  clients: {},
+  devices: {},
   positions: {},
   vertexList: {},
   controls: {},
@@ -14,7 +14,7 @@ const initialState = Immutable.Map({
   url: ''
 })
 
-function clients(state = initialState, action) {
+function devices(state = initialState, action) {
   switch (action.type) {
     default:
       return state
@@ -35,7 +35,7 @@ function icons(state = initialState, action) {
   switch (action.type) {
     case 'ADD_ICON':
       console.log('Adding: ', action.icon);
-      return Immutable.Map(state).set(action.clientID, action.icon).toJS();
+      return Immutable.Map(state).set(action.deviceID, action.icon).toJS();
     default:
       return state
   }
@@ -45,18 +45,18 @@ function vertexList(state = initialState, action) {
   switch (action.type) {
     case 'SELECT_OUTPUT':
 
-      return Immutable.Map(state).set('selectedOutput', {txClientID: action.txClientID, txControlID: action.txControlID}).toJS();
+      return Immutable.Map(state).set('selectedOutput', {txDeviceID: action.txDeviceID, txControlID: action.txControlID}).toJS();
     case 'ADD_VERTEX':
 
       var vertex = {...state.selectedOutput, rxControlID: action.rxControlID,
                                              rxIP: action.rxIP,
-                                             rxClientID: action.rxClientID};
+                                             rxDeviceID: action.rxDeviceID};
       
       async.sendVertexToServer(vertex);
 
-      var newVertex = {txClientID: state.selectedOutput.txClientID,
+      var newVertex = {txDeviceID: state.selectedOutput.txDeviceID,
                        txControlID: state.selectedOutput.txControlID,
-                       rxClientID: action.rxClientID, 
+                       rxDeviceID: action.rxDeviceID, 
                        rxControlID: action.rxControlID,
                        rxIP: action.rxIP}
 
@@ -75,18 +75,20 @@ function vertexList(state = initialState, action) {
 
 function positions(state = initialState, action) {
   switch (action.type) {
-    case 'POSITION_CLIENT':
-      var newState = {};
-      for (var id in state[action.clientID]){
-        newState[id] = {top: action.newPosition['top'] + state[action.clientID][id]['top'], 
-                        left: action.newPosition['left'] + state[action.clientID][id]['left']}
+    case 'POSITION_DEVICE':
+      var newState = Immutable.Map(state).toJS();
+      for (var id in state[action.deviceID]){
+        newState[action.deviceID][id] = {
+          top: action.newPosition['top'] + state[action.deviceID][id]['top'], 
+          left: action.newPosition['left'] + state[action.deviceID][id]['left']
+        }
       }
-      return {...state,
-              [action.clientID]: newState
-            }
-    case 'POSITION_CLIENT_SEND':
-      var positionToSend = state[action.clientID].client;
-      async.sendPositionToServer(action.clientID, positionToSend);
+
+      return newState
+    case 'POSITION_DEVICE_SEND':
+    
+      var positionToSend = state[action.deviceID].device;
+      async.sendPositionToServer(action.deviceID, positionToSend);
       return state
 
     default:
@@ -97,26 +99,26 @@ function positions(state = initialState, action) {
 function controls(state = initialState, action) {
   switch (action.type) {
     case 'SELECT_OUTPUT':
-      return Immutable.Map(state).set('selectedOutput', {txClientID: action.txClientID, txControlID: action.txControlID}).toJS();
+      return Immutable.Map(state).set('selectedOutput', {txDeviceID: action.txDeviceID, txControlID: action.txControlID}).toJS();
     case 'UPDATE_CONTROL_VALUE':
 
       var newState = Immutable.Map(state).toJS();
-      var identifier = utils.nameControl(action.clientID, action.controlID);
+      var identifier = utils.nameControl(action.deviceID, action.controlID);
       newState[identifier]['CurCtrlValue'] = action.newValue;
-      async.sendValueToServer(action.clientID, action.controlID, action.newValue);
+      async.sendValueToServer(action.deviceID, action.controlID, action.newValue);
 
       var connectedControl = '';
       for (var i = 0; i < newState.connections[identifier].length; i++){
         connectedControl = newState.connections[identifier][i];
         newState[connectedControl]['CurCtrlValue'] = action.newValue;
-        async.sendValueToServer(newState[connectedControl].clientID, newState[connectedControl].ControlID, action.newValue);
+        async.sendValueToServer(newState[connectedControl].deviceID, newState[connectedControl].ControlID, action.newValue);
       }
 
       return newState
     case 'ADD_VERTEX':
       var newState = Immutable.Map(state).toJS();
-      var txName = utils.nameControl(newState.selectedOutput.txClientID, newState.selectedOutput.txControlID);
-      var rxName = utils.nameControl(action.rxClientID, action.rxControlID);
+      var txName = utils.nameControl(newState.selectedOutput.txDeviceID, newState.selectedOutput.txControlID);
+      var rxName = utils.nameControl(action.rxDeviceID, action.rxControlID);
 
       var theseConnections = newState.connections[txName].push(rxName);
 
@@ -141,7 +143,7 @@ function controls(state = initialState, action) {
 
 
 const heepApp = combineReducers({
-	clients,
+	devices,
   vertexList,
   positions,
   controls,

@@ -1,18 +1,18 @@
 
 export var nameVertex = (vertex) => {
-    return vertex['txClientID'] + '.' + vertex['txControlID'] + '->' + vertex['rxClientID'] + '.' + vertex['rxControlID'];
+    return vertex['txDeviceID'] + '.' + vertex['txControlID'] + '->' + vertex['rxDeviceID'] + '.' + vertex['rxControlID'];
 }
 
-export var nameControl = (clientID, controlName) => {
-  return clientID +  '.' + controlName;
+export var nameControl = (DeviceID, controlName) => {
+  return DeviceID +  '.' + controlName;
 }
 
 export var getTxControlNameFromVertex = (vertex) => {
-  return nameControl(vertex.txClientID, vertex.txControlID)
+  return nameControl(vertex.txDeviceID, vertex.txControlID)
 }
 
 export var getRxControlNameFromVertex = (vertex) => {
-  return nameControl(vertex.rxClientID, vertex.rxControlID)
+  return nameControl(vertex.rxDeviceID, vertex.rxControlID)
 }
 
 export var joinAddress = (gateway, ip) => {

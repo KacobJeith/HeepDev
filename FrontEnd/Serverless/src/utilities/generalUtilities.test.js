@@ -5,8 +5,8 @@ describe('generalUtils', () => {
 	describe('nameVertex', () => {
 		it('Names a Vertex with numeric IDs', () => {
 			var vertex = {
-			    txClientID: 1, 
-			    rxClientID: 2,
+			    txDeviceID: 1, 
+			    rxDeviceID: 2,
 			    txControlID: 3,
 			    rxControlID: 4, 
 			    rxIP: '10.0.0.1'
@@ -24,8 +24,8 @@ describe('generalUtils', () => {
 	describe('getTxControlNameFromVertex', () => {
 		it('Pulls Tx out of a vertex Object', () => {
 			var vertex = {
-			    txClientID: 1, 
-			    rxClientID: 2,
+			    txDeviceID: 1, 
+			    rxDeviceID: 2,
 			    txControlID: 3,
 			    rxControlID: 4, 
 			    rxIP: '10.0.0.1'
@@ -38,8 +38,8 @@ describe('generalUtils', () => {
 	describe('getRxControlNameFromVertex', () => {
 		it('Pulls Rx out of a vertex Object', () => {
 			var vertex = {
-			    txClientID: 1, 
-			    rxClientID: 2,
+			    txDeviceID: 1, 
+			    rxDeviceID: 2,
 			    txControlID: 3,
 			    rxControlID: 4, 
 			    rxIP: '10.0.0.1'

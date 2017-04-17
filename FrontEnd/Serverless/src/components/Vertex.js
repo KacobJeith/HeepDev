@@ -67,8 +67,8 @@ var getInputPosition = (state, ownProps) => {
 	var returnPosition = false;
 	try {
 		var txControlName = generalUtils.getTxControlNameFromVertex(state.vertexList[ownProps.vertexID])
-		var clientID = state.vertexList[ownProps.vertexID].txClientID;
-		returnPosition = state.positions[ clientID ][ txControlName ];
+		var deviceID = state.vertexList[ownProps.vertexID].txDeviceID;
+		returnPosition = state.positions[ deviceID ][ txControlName ];
 	} catch(err){
 		//console.log('Found a dangling vertex: ', state.vertexList[ownProps.vertexID]);
 	}
@@ -80,8 +80,8 @@ var getOutputPosition = (state, ownProps) => {
 	var returnPosition = false;
 	try {
 		var RxControlName = generalUtils.getRxControlNameFromVertex(state.vertexList[ownProps.vertexID]);
-		var clientID = state.vertexList[ownProps.vertexID].rxClientID
-		returnPosition = state.positions[ clientID ][ RxControlName ];
+		var deviceID = state.vertexList[ownProps.vertexID].rxDeviceID
+		returnPosition = state.positions[ deviceID ][ RxControlName ];
 	} catch(err){
 		//console.log('Found a dangling vertex: ', state.vertexList[ownProps.vertexID]);
 	}

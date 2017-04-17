@@ -2,11 +2,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as Actions from '../redux/actions'
-import Client from './Client'
+import Device from './Device'
 import Vertex from './Vertex'
 
 var mapStateToProps = (state) => ({
-  clientArray: state.clients.clientArray,
+  deviceArray: state.devices.deviceArray,
   vertexList: Object.keys(state.vertexList)
 })
 
@@ -44,11 +44,11 @@ class Flowchart extends React.Component {
 			}
 		}
 
-		var clients = [];
+		var devices = [];
 
-	    for (var i = 0; i < this.props.clientArray.length; i++) {
-	      var thisClient = this.props.clientArray[i];
-	      clients.push(<Client key={thisClient} ClientID={thisClient}/>);
+	    for (var i = 0; i < this.props.deviceArray.length; i++) {
+	      var thisDevice = this.props.deviceArray[i];
+	      devices.push(<Device key={thisDevice} DeviceID={thisDevice}/>);
 	    }
 
 	    var vertexes = [];
@@ -64,7 +64,7 @@ class Flowchart extends React.Component {
 				<svg {...inputs.vertexSVGSpace}>
 					{vertexes} 
 				</svg>
-				{clients}
+				{devices}
 			</div>
 		);
 

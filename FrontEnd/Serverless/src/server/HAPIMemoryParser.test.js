@@ -8,7 +8,7 @@ describe('HeepMemoryParser', () => {
 			var buffer = Buffer.from([0x10, 0x01, 0x02, 0x03, 0x04, 0x00]);
 			var expectedResult = {
 				op: 16, 
-				clientID: 16909060, 
+				deviceID: 16909060, 
 				packetBytes: 0,
 				success: true,
 				message: ''
@@ -19,7 +19,7 @@ describe('HeepMemoryParser', () => {
 			var buffer = Buffer.from([0x10, 0x01, 0x02, 0x03, 0x04, 0x04, 0x48, 0x45, 0x45, 0x50]);
 			var expectedResult = {
 				op: 16, 
-				clientID: 16909060, 
+				deviceID: 16909060, 
 				packetBytes: 4,
 				success: true,
 				message: 'HEEP'
@@ -30,7 +30,7 @@ describe('HeepMemoryParser', () => {
 			var buffer = Buffer.from([0x11, 0x01, 0x02, 0x03, 0x04, 0x04, 0x48, 0x45, 0x45, 0x50]);
 			var expectedResult = {
 				op: 17, 
-				clientID: 16909060, 
+				deviceID: 16909060, 
 				packetBytes: 4,
 				success: false,
 				message: 'HEEP'
@@ -41,7 +41,7 @@ describe('HeepMemoryParser', () => {
 			var buffer = Buffer.from([0x11, 0x01, 0x02, 0x03, 0x04, 0x00]);
 			var expectedResult = {
 				op: 17, 
-				clientID: 16909060, 
+				deviceID: 16909060, 
 				packetBytes: 0,
 				success: false,
 				message: ''
@@ -55,13 +55,13 @@ describe('HeepMemoryParser', () => {
 			var expectedResult = [
 			{
 				op: 1,
-			    clientID: 16909060,
+			    deviceID: 16909060,
 			    packetBytes: 1,
 			    version: 1
 			}, 
 			{
 				op: 2,
-			    clientID: 16909060,
+			    deviceID: 16909060,
 			    packetBytes: 9,
 			    control: {
 				    ControlID: 2,
@@ -81,13 +81,13 @@ describe('HeepMemoryParser', () => {
 			var expectedResult = [
 			{
 				op: 1,
-			    clientID: 16909060,
+			    deviceID: 16909060,
 			    packetBytes: 1,
 			    version: 1
 			}, 
 			{
 				op: 2,
-			    clientID: 16909060,
+			    deviceID: 16909060,
 			    packetBytes: 9,
 			    control: {
 				    ControlID: 2,
@@ -109,11 +109,11 @@ describe('HeepMemoryParser', () => {
 		  	assert.equal(2, parser.ReadFirmwareVersion(buffer));
 		});
 	});
-	describe('ReadClientID', () => {
+	describe('ReadDeviceID', () => {
 		it('Should Return the correct ID from 4 input bytes', () => {
 			var buffer = Buffer.from([0x01, 0x02, 0x03, 0x04]);
 			var it = 0;
-		  	assert.equal(16909060, parser.ReadClientID(buffer, it));
+		  	assert.equal(16909060, parser.ReadDeviceID(buffer, it));
 		});
 	});
 	describe('ReadControl', () => {
@@ -152,10 +152,10 @@ describe('HeepMemoryParser', () => {
 		});
 	});
 
-	describe('ReadClientName', () => {
+	describe('ReadDeviceName', () => {
 		it('Should Return the correct Name', () => {
 			var buffer = Buffer.from([0x04, 0x74, 0x65, 0x73, 0x74]);
-		  	assert.equal('test', parser.ReadClientName(buffer));
+		  	assert.equal('test', parser.ReadDeviceName(buffer));
 		});
 	});
 
@@ -168,10 +168,10 @@ describe('HeepMemoryParser', () => {
 
 	describe('ReadVertex', () => {
 		it('Should Return a Vertex Object when passed byte Array', () => {
-			// Number of Bytes	Rx Client ID 1 	Rx Client ID 2	Rx Client ID 3	Rx Client ID 4	Tx Control ID	Rx Control ID	Rx IP1	Rx IP2	Rx IP3	Rx IP4
+			// Number of Bytes	Rx Device ID 1 	Rx Device ID 2	Rx Device ID 3	Rx Device ID 4	Tx Control ID	Rx Control ID	Rx IP1	Rx IP2	Rx IP3	Rx IP4
 			var buffer = Buffer.from([0x0A, 0x01, 0x02, 0x03, 0x04, 0x01, 0x02, 0xC0, 0xA8, 0x01, 0xC8])
 			var expectedResult = {
-				rxClientID: 16909060,
+				rxDeviceID: 16909060,
 				txControlID: 1,
 				rxControlID: 2, 
 				rxIP: '192.168.1.200'

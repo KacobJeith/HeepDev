@@ -7,10 +7,10 @@ import RangeContainer from './RangeController'
 
 var mapStateToProps = (state, ownProps) => ({
   control: state.controls[ownProps.controlID],
-  clientID: ownProps.clientID,
+  deviceID: ownProps.deviceID,
   controlID: ownProps.controlID,
   value: state.controls[ownProps.controlID]['CurCtrlValue'],
-  ip: state.clients[ownProps.clientID]['IPAddress']
+  ip: state.devices[ownProps.deviceID]['IPAddress']
 })
 
 
@@ -28,13 +28,13 @@ class Control extends React.Component {
 	}
 
 	selectInputVertex(event) {
-		this.props.addVertex(this.props.clientID,
+		this.props.addVertex(this.props.deviceID,
 							 this.props.control['ControlID'],
 							 this.props.ip);
 	}
 
 	selectOutputVertex(event) {
-		this.props.selectOutput(this.props.clientID,
+		this.props.selectOutput(this.props.deviceID,
 								this.props.control['ControlID']);
 	}
 
@@ -116,7 +116,7 @@ class Control extends React.Component {
 			controller:{
 				key: 0,
 				updateControlValue: this.props.updateControlValue,
-				ClientID: this.props.clientID,
+				DeviceID: this.props.deviceID,
 				controlID: this.props.controlID,
 				thisControl: this.props.controlID
 			}

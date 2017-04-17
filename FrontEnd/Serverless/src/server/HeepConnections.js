@@ -6,7 +6,7 @@ import * as generalUtils from '../utilities/generalUtilities'
 import * as byteUtils from '../utilities/byteUtilities'
 
 var masterState = {
-  clients: {clientArray: []},
+  devices: {deviceArray: []},
   positions: {},
   controls: {controlStructure:{}, connections: {}},
   vertexList: {},
@@ -35,7 +35,7 @@ export var GetCurrentMasterState = () => {
 
 export var ResetMasterState = () => {
   masterState = {
-    clients: {clientArray: []},
+    devices: {deviceArray: []},
     positions: {},
     controls: {controlStructure:{}},
     vertexList: {},
@@ -46,31 +46,31 @@ export var ResetMasterState = () => {
   return masterState
 }
 
-export var SendPositionToHeepDevice = (clientID, position) => {
+export var SendPositionToHeepDevice = (deviceID, position) => {
 
-  SetClientPositionFromBrowser(clientID, position);
+  SetDevicePositionFromBrowser(deviceID, position);
 
-  var IPAddress = masterState.clients[clientID].IPAddress;
+  var IPAddress = masterState.devices[deviceID].IPAddress;
   var xPosition = byteUtils.GetValueAsFixedSizeByteArray(position.left, 2);
   var yPosition = byteUtils.GetValueAsFixedSizeByteArray(position.top, 2);
   var packet = xPosition.concat(yPosition);
   var numBytes = [packet.length];
 
   var messageBuffer = Buffer.from([0x0B].concat(numBytes, packet));
-  console.log('Connecting to Device ', clientID + ' at IPAddress: ' + IPAddress);
+  console.log('Connecting to Device ', deviceID + ' at IPAddress: ' + IPAddress);
   console.log('Data packet: ', messageBuffer);
   ConnectToHeepDevice(IPAddress, heepPort, messageBuffer)
 
 }
 
-export var SendValueToHeepDevice = (clientID, controlID, newValue) => {
-  if (CheckIfNewValueAndSet(clientID, controlID, newValue)){
-    var IPAddress = masterState.clients[clientID].IPAddress;
+export var SendValueToHeepDevice = (deviceID, controlID, newValue) => {
+  if (CheckIfNewValueAndSet(deviceID, controlID, newValue)){
+    var IPAddress = masterState.devices[deviceID].IPAddress;
     var controlByteArray = byteUtils.GetByteArrayFromValue(controlID);
     var valueByteArray = byteUtils.GetByteArrayFromValue(newValue);
     var numBytes = [controlByteArray.length + valueByteArray.length];
     var messageBuffer = Buffer.from([0x0A].concat(numBytes, controlByteArray, valueByteArray));
-    console.log('Connecting to Device ', clientID + ' at IPAddress: ' + IPAddress);
+    console.log('Connecting to Device ', deviceID + ' at IPAddress: ' + IPAddress);
     console.log('Data Packet: ',  messageBuffer);
     ConnectToHeepDevice(IPAddress, heepPort, messageBuffer)
   }
@@ -79,11 +79,11 @@ export var SendValueToHeepDevice = (clientID, controlID, newValue) => {
 export var SendVertexToHeepDevices = (vertex) => {
   console.log('Received the following vertex to send to HeepDevice: ', vertex)
 
-  var IPAddress = masterState.clients[vertex.txClientID].IPAddress;
+  var IPAddress = masterState.devices[vertex.txDeviceID].IPAddress;
   AddVertex(vertex);
   var messageBuffer = PrepVertexForCOP(vertex, 0x0C);
 
-  console.log('Connecting to Device ', vertex.txClientID + ' at IPAddress: ' + IPAddress);
+  console.log('Connecting to Device ', vertex.txDeviceID + ' at IPAddress: ' + IPAddress);
   console.log('Data Packet: ',  messageBuffer);
 
   ConnectToHeepDevice(IPAddress, heepPort, messageBuffer)
@@ -92,30 +92,30 @@ export var SendVertexToHeepDevices = (vertex) => {
 export var SendDeleteVertexToHeepDevices = (vertex) => {
   console.log('Received the following vertex to delete from HeepDevice: ', vertex)
 
-  var IPAddress = masterState.clients[vertex.txClientID].IPAddress;
+  var IPAddress = masterState.devices[vertex.txDeviceID].IPAddress;
   var messageBuffer = PrepVertexForCOP(vertex, 0x0D);
   DeleteVertex(vertex);
 
-  console.log('Connecting to Device ', vertex.txClientID + ' at IPAddress: ' + IPAddress);
+  console.log('Connecting to Device ', vertex.txDeviceID + ' at IPAddress: ' + IPAddress);
   console.log('Data Packet: ',  messageBuffer);
 
   ConnectToHeepDevice(IPAddress, heepPort, messageBuffer)
 }
 
 export var PrepVertexForCOP = (vertex, COP) => {
-  var txClientID = byteUtils.GetClientIDAsByteArray(vertex.txClientID);
+  var txDeviceID = byteUtils.GetDeviceIDAsByteArray(vertex.txDeviceID);
   var txControlID = byteUtils.GetValueAsFixedSizeByteArray(vertex.txControlID, 1);
-  var rxClientID = byteUtils.GetClientIDAsByteArray(vertex.rxClientID);
+  var rxDeviceID = byteUtils.GetDeviceIDAsByteArray(vertex.rxDeviceID);
   var rxControlID = byteUtils.GetValueAsFixedSizeByteArray(vertex.rxControlID, 1);
   var rxIP = byteUtils.ConvertIPAddressToByteArray(vertex.rxIP);
-  var packet = txClientID.concat(rxClientID, txControlID, rxControlID, rxIP);
+  var packet = txDeviceID.concat(rxDeviceID, txControlID, rxControlID, rxIP);
   var numBytes = [packet.length];
 
   return Buffer.from([COP].concat(numBytes, packet));
 }
 
-var CheckIfNewValueAndSet = (clientID, controlID, newValue) => {
-  var thisControl = generalUtils.nameControl(clientID, controlID);
+var CheckIfNewValueAndSet = (deviceID, controlID, newValue) => {
+  var thisControl = generalUtils.nameControl(deviceID, controlID);
   if (masterState.controls[thisControl].CurCtrlValue == newValue){
     return false
   } else {
@@ -192,7 +192,7 @@ var AddMemoryChunksToMasterState = (heepChunks, IPAddress) => {
   console.log(heepChunks)
   for (var i = 0; i < heepChunks.length; i++) {
     if (heepChunks[i].op == 1){
-      AddClient(heepChunks[i], IPAddress);
+      AddDevice(heepChunks[i], IPAddress);
 
     } else if (heepChunks[i].op == 2){
       AddControl(heepChunks[i]);
@@ -207,10 +207,10 @@ var AddMemoryChunksToMasterState = (heepChunks, IPAddress) => {
       SetCustomIcon(heepChunks[i]);
       
     } else if (heepChunks[i].op == 6){
-      SetClientName(heepChunks[i])
+      SetDeviceName(heepChunks[i])
 
     } else if (heepChunks[i].op == 7){
-      SetClientPosition(heepChunks[i])
+      SetDevicePosition(heepChunks[i])
       
     } else if (heepChunks[i].op == 8){
       
@@ -218,126 +218,126 @@ var AddMemoryChunksToMasterState = (heepChunks, IPAddress) => {
   }
 }
 
-var AddClient = (heepChunk, IPAddress) => {
-  var clientID = heepChunk.clientID;
-  var clientName = 'unset';
+var AddDevice = (heepChunk, IPAddress) => {
+  var deviceID = heepChunk.deviceID;
+  var deviceName = 'unset';
   var iconName = 'none';
-  iconUtils.SetClientIconFromString(clientID, clientName, iconName);
+  iconUtils.SetDeviceIconFromString(deviceID, deviceName, iconName);
 
-  masterState.clients[clientID] = {
-    ClientID: clientID,
+  masterState.devices[deviceID] = {
+    DeviceID: deviceID,
     IPAddress: IPAddress,
-    ClientName: clientName
+    DeviceName: deviceName
   }
 
-  if( masterState.clients.clientArray.indexOf(clientID) == -1){
-    masterState.clients.clientArray.push(clientID);
+  if( masterState.devices.deviceArray.indexOf(deviceID) == -1){
+    masterState.devices.deviceArray.push(deviceID);
   }
 
-  SetNullPosition(clientID);
-  masterState.controls.controlStructure[clientID] = {inputs: [], outputs: []};
+  SetNullPosition(deviceID);
+  masterState.controls.controlStructure[deviceID] = {inputs: [], outputs: []};
   masterState.icons = iconUtils.GetIconContent();
 }
 
-var SetClientName = (heepChunk) => {
-  masterState.clients[heepChunk.clientID].ClientName = heepChunk.clientName;
-  if ((heepChunk.clientID in masterState.icons)){
-    var currentIcon = masterState.icons[heepChunk.clientID];
+var SetDeviceName = (heepChunk) => {
+  masterState.devices[heepChunk.deviceID].DeviceName = heepChunk.deviceName;
+  if ((heepChunk.deviceID in masterState.icons)){
+    var currentIcon = masterState.icons[heepChunk.deviceID];
   } 
   else {
     var currentIcon = 'none';
   }
-  iconUtils.SetClientIconFromString(heepChunk.clientID, heepChunk.clientName, currentIcon);
+  iconUtils.SetDeviceIconFromString(heepChunk.deviceID, heepChunk.deviceName, currentIcon);
   masterState.icons = iconUtils.GetIconContent()
 }
 
 var AddControl = (heepChunk) => {
   // Transition this to use new ControlID throughout frontend 
-  var tempCtrlName = generalUtils.nameControl(heepChunk.clientID, heepChunk.control.ControlID) 
+  var tempCtrlName = generalUtils.nameControl(heepChunk.deviceID, heepChunk.control.ControlID) 
   masterState.controls[tempCtrlName] = heepChunk.control;
-  masterState.controls[tempCtrlName].clientID = heepChunk.clientID;
-  var currentIndex = SetControlStructure(heepChunk.clientID, tempCtrlName)
+  masterState.controls[tempCtrlName].deviceID = heepChunk.deviceID;
+  var currentIndex = SetControlStructure(heepChunk.deviceID, tempCtrlName)
 
-  masterState.positions[heepChunk.clientID][tempCtrlName] = SetControlPosition(heepChunk.clientID, currentIndex, heepChunk.control.ControlDirection);
+  masterState.positions[heepChunk.deviceID][tempCtrlName] = SetControlPosition(heepChunk.deviceID, currentIndex, heepChunk.control.ControlDirection);
   masterState.controls.connections[tempCtrlName] = [];
 }
 
 var SetIconFromID = (heepChunk) => {
-  var clientName = masterState.clients[heepChunk.clientID].ClientName;
-  iconUtils.SetClientIconFromString(heepChunk.clientID, clientName, heepChunk.iconName);
+  var deviceName = masterState.devices[heepChunk.deviceID].deviceName;
+  iconUtils.SetDeviceIconFromString(heepChunk.deviceID, deviceName, heepChunk.iconName);
   masterState.icons = iconUtils.GetIconContent()
 }
 
 var SetCustomIcon = (heepChunk) => {
-  iconUtils.setCustomIcon(heepChunk.clientID, heepChunk.iconData);
+  iconUtils.setCustomIcon(heepChunk.deviceID, heepChunk.iconData);
 }
 
-var SetNullPosition = (clientID) => {
+var SetNullPosition = (deviceID) => {
   
   var newPosition = {
-    client: {top: 0, left: 0}
+    device: {top: 0, left: 0}
   }
 
-  masterState.positions[clientID] = newPosition;
+  masterState.positions[deviceID] = newPosition;
 }
 
-var SetClientPosition = (heepChunk) => {
-  masterState.positions[heepChunk.clientID].client = heepChunk.position;
-  RecalculateControlPositions(heepChunk.clientID);
+var SetDevicePosition = (heepChunk) => {
+  masterState.positions[heepChunk.deviceID].device = heepChunk.position;
+  RecalculateControlPositions(heepChunk.deviceID);
 }
 
-var SetClientPositionFromBrowser = (clientID, position) => {
+var SetDevicePositionFromBrowser = (deviceID, position) => {
   var newPosition = {
     top: parseInt(position.top),
     left: parseInt(position.left)
   }
 
-  masterState.positions[clientID].client = newPosition;
-  RecalculateControlPositions(clientID);
+  masterState.positions[deviceID].device = newPosition;
+  RecalculateControlPositions(deviceID);
 }
 
-var RecalculateControlPositions = (clientID) => {
-  var startingPositions = masterState.positions[clientID];
+var RecalculateControlPositions = (deviceID) => {
+  var startingPositions = masterState.positions[deviceID];
   for (var controlName in startingPositions){
-    if (controlName == 'client'){ 
+    if (controlName == 'device'){ 
       continue 
     }
 
-    UpdateControlPosition(clientID, controlName);
+    UpdateControlPosition(deviceID, controlName);
   }
 }
 
-var UpdateControlPosition = (clientID, controlName) => {
-  var clientPosition = masterState.positions[clientID].client;
-  var thisPosition = masterState.positions[clientID][controlName];
+var UpdateControlPosition = (deviceID, controlName) => {
+  var devicePosition = masterState.positions[deviceID].device;
+  var thisPosition = masterState.positions[deviceID][controlName];
   var direction = masterState.controls[controlName].ControlDirection;
 
-  thisPosition.top = clientPosition['top'] + 45 + 1.5 + 25/2 + 55*(thisPosition.index - 1), 
-  thisPosition.left = direction == 0 ? clientPosition['left'] + 10 : clientPosition['left'] + 250;
+  thisPosition.top = devicePosition['top'] + 45 + 1.5 + 25/2 + 55*(thisPosition.index - 1), 
+  thisPosition.left = direction == 0 ? devicePosition['left'] + 10 : devicePosition['left'] + 250;
   
 }
 
-var SetControlPosition = (clientID, index, direction) => {
-  var clientPosition = masterState.positions[clientID]['client'];
+var SetControlPosition = (deviceID, index, direction) => {
+  var devicePosition = masterState.positions[deviceID]['device'];
 
   var position = {
-    top: clientPosition['top'] + 45 + 1.5 + 25/2 + 55*(index - 1), 
-    left: direction == 0 ? clientPosition['left'] + 10 : clientPosition['left'] + 250,
+    top: devicePosition['top'] + 45 + 1.5 + 25/2 + 55*(index - 1), 
+    left: direction == 0 ? devicePosition['left'] + 10 : devicePosition['left'] + 250,
     index: index
   }
   
   return position;
 }
 
-var SetControlStructure = (clientID, controlID) => {
+var SetControlStructure = (deviceID, controlID) => {
 
   if ( masterState.controls[controlID]['ControlDirection'] == 0){
-    var inputs = masterState.controls.controlStructure[clientID].inputs;
+    var inputs = masterState.controls.controlStructure[deviceID].inputs;
     inputs.push(controlID);
     return inputs.length
 
   } else {
-    var outputs = masterState.controls.controlStructure[clientID].outputs;
+    var outputs = masterState.controls.controlStructure[deviceID].outputs;
     outputs.push(controlID);
     return outputs.length
 

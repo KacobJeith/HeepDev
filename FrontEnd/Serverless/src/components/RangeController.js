@@ -7,7 +7,7 @@ var mapStateToProps = (state, ownProps) => ({
   control: state.controls[ownProps.thisControl],
   controlID: state.controls[ownProps.thisControl]['ControlID'],
   value: state.controls[ownProps.thisControl]['CurCtrlValue'],
-  ClientID: ownProps.ClientID
+  DeviceID: ownProps.DeviceID
 })
 
 
@@ -49,7 +49,7 @@ class RangeController extends React.Component {
 	
 	sendCommand() {
 	    var newVal = this.calcNewControlValue();
-	    this.props.updateControlValue(this.props.ClientID, this.props.controlID, newVal);
+	    this.props.updateControlValue(this.props.DeviceID, this.props.controlID, newVal);
 	}
 
 	calcNewControlValue() {//15
