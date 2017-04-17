@@ -1,4 +1,5 @@
 import socket
+from threading import Thread
 
 import sys
 sys.path.insert(0, '../../CommonLibrary')
@@ -47,6 +48,11 @@ class ServerlessDeviceConnection :
 	def ParseReceivedData(self, data) :
 		retVal = ActionOpCodeParser().GetActionOpCodeFromByteArray(data, self.deviceData)
 		return retVal
+
+	def StartHeepDeviceServerThread(self) :
+		t = Thread( target = self.StartHeepDeviceServer, args=() )
+		t.setDaemon(True)
+		t.start()
 
 	def StartHeepDeviceServer(self) :
 		host = ''

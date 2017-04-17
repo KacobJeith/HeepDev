@@ -37,7 +37,7 @@ def SetupDeviceConnection() :
 
 # Setup Client Connection
 Device = SetupDeviceConnection()
-Device.StartHeepDeviceServer()
+Device.StartHeepDeviceServerThread()
 print 'Waiting for changes'
 while 1 :
 	ToggleLight(Device.deviceData.ControlList[0].CurCtrlValue)
