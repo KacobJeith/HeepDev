@@ -11,8 +11,8 @@ onRaspPi = 0
 def SetupDeviceConnection() :
 	deviceConnection = ServerlessDeviceConnection()
 	ButtonDevice = Device()
+	ButtonDevice.DeviceID = 1241230
 	ButtonDevice.SetDeviceName('Button')
-	ButtonDevice.DeviceID = 001
 	outControl = ControlValue()
 	outControl.ControlName = 'ButtonOut'
 	outControl.ControlDirection = outControl.Output

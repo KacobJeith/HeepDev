@@ -25,8 +25,8 @@ def ToggleLight(lightOn) :
 def SetupDeviceConnection() :
 	deviceConnection = ServerlessDeviceConnection()
 	BlinkyLEDDevice = Device()
-	BlinkyLEDDevice.SetDeviceName('BlinkyLED')
 	BlinkyLEDDevice.DeviceID = 444
+	BlinkyLEDDevice.SetDeviceName('BlinkyLED')
 	OnOffControls = ControlValue()
 	OnOffControls.ControlName = 'LEDState'
 	OnOffControls.ControlValueType = OnOffControls.OnOff
