@@ -1,45 +1,35 @@
 import sys
 sys.path.insert(0, '../../CommonLibrary')
-sys.path.insert(0, '../../Client')
+sys.path.insert(0, '../../ServerlessWorld/ServerlessDevice')
 from ControlValue import ControlValue
-from PLCClient import PLCClient
-from ClientConnection import ClientConnection
-from Vertex import Vertex
+from Device import Device
+from ServerlessDevice import ServerlessDeviceConnection
 import time
-from threading import Thread
 
 onRaspPi = 0
 
-def SetupClientConnection() :
-	client = ClientConnection()
-	ButtonClient = PLCClient()
-	ButtonClient.ClientName = 'Button'
-	ButtonClient.ClientID = 001
-	ButtonClient.IconName = 'power-button'
+def SetupDeviceConnection() :
+	deviceConnection = ServerlessDeviceConnection()
+	ButtonDevice = Device()
+	ButtonDevice.DeviceName = 'Button'
+	ButtonDevice.DeviceID = 001
 	outControl = ControlValue()
 	outControl.ControlName = 'ButtonOut'
 	outControl.ControlDirection = outControl.Output
 	outControl.ControlValueType = outControl.OnOff
-	ButtonClient.ControlList.append(outControl)
-	
-	# myVertex = Vertex()
-	# myVertex.inputName = 'LEDState'
-	# myVertex.outputName = outControl.ControlName
-	# myVertex.destinationID = 123456
-	# myVertex.sourceID = 666
-	# myVertex.destinationIP = '192.168.0.105'
-	# ButtonClient.AddVertex(myVertex)
+	outControl.ControlID = 0
+	ButtonDevice.ControlList.append(outControl)
 
-	client.SetClientData(ButtonClient)
-	return client
+	deviceConnection.SetDeviceData(ButtonDevice)
+	return deviceConnection
 
 def CheckButtonPress () :
 	return buttonPressed
 
 # Setup Client Connection
-client = SetupClientConnection()
-client.Connect()
-client.SendClientDataToServer()
+device = SetupDeviceConnection()
+device.StartHeepDeviceServerThread()
+
 lightState = 1
 buttonPressed = 0
 
@@ -63,9 +53,8 @@ while 1 :
 			buttonPressed = 1
 
 	if buttonPressed == 1 :
-		client.clientData.SetVerticesFromString(client.GetVerticesFromServer())
 		buttonPressed = 0
-		client.SendOutput('ButtonOut', lightState)
+		device.SendOutput(0, lightState)
 		if lightState == 1 : 
 			lightState = 0
 		else :

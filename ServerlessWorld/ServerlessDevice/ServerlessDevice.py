@@ -36,7 +36,7 @@ class ServerlessDeviceConnection :
 		return self.SendDataToClient(clientInterruptCommand, outData.destinationIP)
 
 	def SendOutput(self, outputID, value) :
-		outputList = self.clientData.QueueOutput(outputID, value)
+		outputList = self.deviceData.QueueOutput(outputID, value)
 		print len(outputList)
 
 		for x in range(0, len(outputList)) :
