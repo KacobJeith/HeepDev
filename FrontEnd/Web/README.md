@@ -4,7 +4,7 @@ This repository is a NodeJS Web Application that allows users to visualize onlin
 ## Setup
 1. In the command prompt in the HeepDev/Frontend/Web directory, run `>>npm install`
 2. run `>>npm run bs`
-3. Open up `localhost:3001` in your browser to view the PLC Dashboard
+3. Open up `localhost:3001` in your browser to view the Heep Device Dashboard
 
 To open the page from another computer, enter '[IP_ADDRESS]:3001' from within the browser on a second computer or tablet'
 
