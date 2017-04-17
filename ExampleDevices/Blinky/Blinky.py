@@ -1,9 +1,9 @@
 import sys
 sys.path.insert(0, '../../CommonLibrary')
-sys.path.insert(0, '../../Client')
+sys.path.insert(0, '../../ServerlessWorld/ServerlessDevice')
 from ControlValue import ControlValue
-from PLCClient import PLCClient
-from ClientConnection import ClientConnection
+from Device import Device
+from ServerlessDevice import ServerlessDeviceConnection
 import time
 
 onRaspPi = 0
@@ -22,27 +22,22 @@ def ToggleLight(lightOn) :
 	else :
 		print "Light is ", lightOn
 
-def SetupClientConnection() :
-	client = ClientConnection()
-	BlinkyLEDClient = PLCClient()
-	BlinkyLEDClient.ClientName = 'BlinkyLED'
-	BlinkyLEDClient.ClientID = 444
-	BlinkyLEDClient.IconName = 'light-bulb'
+def SetupDeviceConnection() :
+	deviceConnection = ServerlessDeviceConnection()
+	BlinkyLEDDevice = Device()
+	BlinkyLEDDevice.DeviceName = 'BlinkyLED'
+	BlinkyLEDDevice.DeviceID = 444
 	OnOffControls = ControlValue()
-	OnOffControls.ControlValueType = OnOffControls.Range
 	OnOffControls.ControlName = 'LEDState'
 	OnOffControls.ControlValueType = OnOffControls.OnOff
-	BlinkyLEDClient.ControlList.append(OnOffControls)
-	client.SetClientData(BlinkyLEDClient)
-	return client
+	OnOffControls.ControlID = 0
+	BlinkyLEDDevice.ControlList.append(OnOffControls)
+	deviceConnection.SetDeviceData(BlinkyLEDDevice)
+	return deviceConnection
 
 # Setup Client Connection
-client = SetupClientConnection()
-client.Connect()
-client.SendClientDataToServer()
-
-counter = 0
-client.StartInterruptServerThread()
+Device = SetupDeviceConnection()
+Device.StartHeepDeviceServer()
 print 'Waiting for changes'
 while 1 :
-	ToggleLight(client.clientData.ControlList[0].CurCtrlValue)
+	ToggleLight(Device.deviceData.ControlList[0].CurCtrlValue)
