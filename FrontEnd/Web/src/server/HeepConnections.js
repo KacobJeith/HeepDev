@@ -191,30 +191,35 @@ var ConsumeHeepResponse = (data, IPAddress, port) => {
 var AddMemoryChunksToMasterState = (heepChunks, IPAddress) => {
   console.log(heepChunks)
   for (var i = 0; i < heepChunks.length; i++) {
-    if (heepChunks[i].op == 1){
-      AddDevice(heepChunks[i], IPAddress);
+    try {
+      if (heepChunks[i].op == 1){
+        AddDevice(heepChunks[i], IPAddress);
 
-    } else if (heepChunks[i].op == 2){
-      AddControl(heepChunks[i]);
+      } else if (heepChunks[i].op == 2){
+        AddControl(heepChunks[i]);
 
-    } else if (heepChunks[i].op == 3){
-      AddVertex(heepChunks[i].vertex)
-      
-    } else if (heepChunks[i].op == 4){
-      SetIconFromID(heepChunks[i]);
+      } else if (heepChunks[i].op == 3){
+        AddVertex(heepChunks[i].vertex)
+        
+      } else if (heepChunks[i].op == 4){
+        SetIconFromID(heepChunks[i]);
 
-    } else if (heepChunks[i].op == 5){
-      SetCustomIcon(heepChunks[i]);
-      
-    } else if (heepChunks[i].op == 6){
-      SetDeviceName(heepChunks[i])
+      } else if (heepChunks[i].op == 5){
+        SetCustomIcon(heepChunks[i]);
+        
+      } else if (heepChunks[i].op == 6){
+        SetDeviceName(heepChunks[i])
 
-    } else if (heepChunks[i].op == 7){
-      SetDevicePosition(heepChunks[i])
-      
-    } else if (heepChunks[i].op == 8){
-      
+      } else if (heepChunks[i].op == 7){
+        SetDevicePosition(heepChunks[i])
+        
+      } else if (heepChunks[i].op == 8){
+        
+      }
+    } catch (err) {
+      console.log(err.toString());
     }
+    
   }
 }
 

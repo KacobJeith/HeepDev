@@ -43,6 +43,8 @@ This is the second Heep device ever created. Button sends a single binary output
 
 Cuckoo Clock is a simple device that has a binary output that changes state every second. This can be used to flash lights, make nutcrackers chomp, etc...
 
+***** This device has not yet been implemented in ServerlessWorld
+
 ### Device Info
 
 * Name: CuckooConductor
@@ -60,6 +62,9 @@ Cuckoo Clock is a simple device that has a binary output that changes state ever
 ## Egg
 
 Egg is a servo controller that receives a single binary input to change the swing of a servo. Egg controls the Heep nutcracker robots
+
+
+***** This device has not yet been implemented in ServerlessWorld
 
 ### Device Info
 
@@ -79,6 +84,9 @@ Egg is a servo controller that receives a single binary input to change the swin
 ## HueClient
 
 This is a quick wrapper for controlling 2 hue light bulbs. This is currently specifically for Dylan's house, but can be easily modified.
+
+
+***** This device has not yet been implemented in ServerlessWorld
 
 ### Device Info
 
