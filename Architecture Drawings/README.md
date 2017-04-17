@@ -15,8 +15,3 @@ This directory contains records of Heep architecture evolution.
 
 ![Server Backend Sending!](./HeepBackendSending.png)
 
---------
-
-### PLC Architecture
-
-[PLC Architecture](./PLC Architecture.pdf)
