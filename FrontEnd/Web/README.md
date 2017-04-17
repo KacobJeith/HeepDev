@@ -50,13 +50,18 @@ If you would like to take advantage of hot-reloading for expedited development, 
 5. Anytime you save changes to the source code, the changes should immediately display on port 8080!
 
 ### Usage
-#### Create a new Heep Device Vertex:
-1. Define the output control by clicking on the red dot next to the desired output
-2. Define the input control by clicking on the green dot next to the desired input
-
 #### Position Devices:
 1. Drag the card from the icon or title bar
 2. The position should be persistent across browsers/devices
 
-#### Send A Control Value: 
+#### Send a Control Value: 
 1. Use either the slider or the on/off button to send values to that control on the device
+
+#### Create a new Heep Device Vertex:
+1. Define the output control by clicking on the red dot next to the desired output
+2. Define the input control by clicking on the green dot next to the desired input
+3. If adding multiple vertex that originate from the same output, you only need to click that output once
+
+#### Delete Heep Vertex:
+1. Hover over the vertex line until it becomes red
+2. Click - the vertex has now been unprogrammed. 
