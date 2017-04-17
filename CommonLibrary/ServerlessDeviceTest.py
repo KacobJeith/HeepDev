@@ -1,7 +1,6 @@
 from ServerlessDevice import ServerlessDeviceConnection
 
 import sys
-sys.path.insert(0, '../../CommonLibrary')
 from ControlValue import ControlValue
 from Device import Device
 from Vertex import Vertex
