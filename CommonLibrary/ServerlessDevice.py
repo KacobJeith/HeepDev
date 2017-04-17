@@ -2,7 +2,6 @@ import socket
 from threading import Thread
 
 import sys
-sys.path.insert(0, '../../CommonLibrary')
 from ControlValue import ControlValue
 from Device import Device
 from OutputData import OutputData

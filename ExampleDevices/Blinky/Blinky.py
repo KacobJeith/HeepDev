@@ -1,6 +1,5 @@
 import sys
 sys.path.insert(0, '../../CommonLibrary')
-sys.path.insert(0, '../../ServerlessWorld/ServerlessDevice')
 from ControlValue import ControlValue
 from Device import Device
 from ServerlessDevice import ServerlessDeviceConnection
