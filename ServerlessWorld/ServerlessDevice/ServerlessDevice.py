@@ -40,7 +40,7 @@ class ServerlessDeviceConnection :
 		print len(outputList)
 
 		for x in range(0, len(outputList)) :
-			self.SendDataDirectlyToClientIP(outputList[x])
+			print self.SendDataDirectlyToClientIP(outputList[x])
 
 	def SetDeviceData(self, deviceData) :
 		self.deviceData = deviceData
