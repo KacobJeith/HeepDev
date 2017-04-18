@@ -1,5 +1,5 @@
 #include <iostream>
-#include "DeviceMemory.h"
+#include "Device.h"
 
 #define MEMORY_SIZE 1024
 
