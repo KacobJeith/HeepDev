@@ -57,7 +57,8 @@ int main(void)
 	GetDeviceIDOctets(0x00030201, oc4, oc3, oc2, oc1);
 	cout << (int)oc4 << " " << (int)oc3 << " " << (int)oc2 << " " << (int)oc1 << endl;
 
-	SetDeviceNameInMemory("Hello", 5, 0x05040601);
+	//SetDeviceNameInMemory("Hello", 5, 0x05040601);
+	SetDeviceIDAndName(0x06040601, "Test");
 	SetIconIDInMemory(10, 0x01020304);
 	SetIconDataInMemory("abcdefghijklmnopqrstuvwxyz", 25, 0x09010503);
 	SetXYInMemory(257, 257, 0x03050105);
