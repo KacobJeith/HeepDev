@@ -29,10 +29,16 @@ int curFilledMemory = 0; // Indicate the curent filled memory.
 						 // Also serve as a place holder to 
 						 // show the back of allocated memory
 
+unsigned long AddCharToBuffer(unsigned char* buffer, unsigned long startPoint, unsigned char value)
+{
+	buffer[startPoint] = value;
+	startPoint++;
+	return startPoint;
+}
+
 void AddNewCharToMemory(unsigned char newMem)
 {
-	deviceMemory[curFilledMemory] = newMem;
-	curFilledMemory++;
+	curFilledMemory = AddCharToBuffer(deviceMemory, curFilledMemory, newMem);
 }
 
 void GetDeviceIDOctets(unsigned long deviceID, unsigned char &octet4, unsigned char &octet3, unsigned char &octet2, unsigned char &octet1)
@@ -52,7 +58,7 @@ void AddNumberToMemoryWithSpecifiedBytes(unsigned int number, int numBytes)
 	}
 }
 
-void AddDeviceIDToMemory(unsigned long deviceID)
+unsigned long AddDeviceIDToBuffer(unsigned char* buffer, unsigned long startPoint, unsigned long deviceID)
 {
 	unsigned char DeviceID4 = 0;
 	unsigned char DeviceID3 = 0;
@@ -60,10 +66,17 @@ void AddDeviceIDToMemory(unsigned long deviceID)
 	unsigned char DeviceID1 = 0;
 	GetDeviceIDOctets(deviceID, DeviceID4, DeviceID3, DeviceID2, DeviceID1);
 
-	AddNewCharToMemory(DeviceID4);
-	AddNewCharToMemory(DeviceID3);
-	AddNewCharToMemory(DeviceID2);
-	AddNewCharToMemory(DeviceID1);
+	startPoint = AddCharToBuffer(buffer, startPoint, DeviceID4);
+	startPoint = AddCharToBuffer(buffer, startPoint, DeviceID3);
+	startPoint = AddCharToBuffer(buffer, startPoint, DeviceID2);
+	startPoint = AddCharToBuffer(buffer, startPoint, DeviceID1);
+
+	return startPoint;
+}
+
+void AddDeviceIDToMemory(unsigned long deviceID)
+{
+	curFilledMemory = AddDeviceIDToBuffer(deviceMemory, curFilledMemory, deviceID);
 }
 
 void AddIPToMemory(HeepIPAddress theIP)
