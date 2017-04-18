@@ -66,6 +66,14 @@ void AddDeviceIDToMemory(unsigned long deviceID)
 	AddNewCharToMemory(DeviceID1);
 }
 
+void AddIPToMemory(HeepIPAddress theIP)
+{
+	AddNewCharToMemory(theIP.Octet4);
+	AddNewCharToMemory(theIP.Octet3);
+	AddNewCharToMemory(theIP.Octet2);
+	AddNewCharToMemory(theIP.Octet1);
+}
+
 void SetDeviceNameInMemory(char* deviceName, int numCharacters, unsigned long deviceID)
 {
 	AddNewCharToMemory(DeviceNameOpCode);
@@ -112,13 +120,16 @@ void SetIPInMemory(HeepIPAddress theIP, unsigned long deviceID)
 	AddNewCharToMemory(DeviceIPOpCode);
 	AddDeviceIDToMemory(deviceID);
 	AddNewCharToMemory((char)4);
-	AddNewCharToMemory(theIP.Octet4);
-	AddNewCharToMemory(theIP.Octet3);
-	AddNewCharToMemory(theIP.Octet2);
-	AddNewCharToMemory(theIP.Octet1);
+	AddIPToMemory(theIP);
 }
 
 void SetVertexInMemory(Vertex theVertex)
 {
-	
+	AddNewCharToMemory(VertexOpCode);
+	AddDeviceIDToMemory(theVertex.txID);
+	AddNewCharToMemory((char)10);
+	AddDeviceIDToMemory(theVertex.rxID);
+	AddNewCharToMemory(theVertex.txControlID);
+	AddNewCharToMemory(theVertex.rxControlID);
+	AddIPToMemory(theVertex.rxIPAddress);
 }
