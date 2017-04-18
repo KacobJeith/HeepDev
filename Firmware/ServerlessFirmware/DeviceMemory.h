@@ -118,3 +118,7 @@ void SetIPInMemory(HeepIPAddress theIP, unsigned long deviceID)
 	AddNewCharToMemory(theIP.Octet1);
 }
 
+void SetVertexInMemory(Vertex theVertex)
+{
+	
+}
