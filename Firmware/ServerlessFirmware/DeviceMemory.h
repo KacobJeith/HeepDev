@@ -1,4 +1,5 @@
 #include "globalDefines.h"
+#include "DeviceMemory.h"
 
 // OPCodes
 const char ClientDataOpCode = 0x01;
