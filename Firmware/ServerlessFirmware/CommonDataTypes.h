@@ -16,3 +16,14 @@ struct Vertex
 
 	HeepIPAddress rxIPAddress;
 };
+
+struct Control
+{
+	unsigned char controlID;
+	unsigned char controlDirection;
+	unsigned char controlType;
+	unsigned char highValue;
+	unsigned char lowValue;
+	unsigned char curValue;
+	char* controlName;
+};
