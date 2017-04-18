@@ -1,0 +1,3 @@
+#define MAX_MEMORY 1024
+#define NUM_VERTICES 100
+#define NUM_CONTROLS 100
