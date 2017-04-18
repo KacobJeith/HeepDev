@@ -4,7 +4,13 @@ unsigned long deviceID;
 unsigned int firmwareVersion = FIRMWARE_VERSION;
 
 Control controlList [NUM_CONTROLS];
-unsigned char numberOfControls;
+unsigned char numberOfControls = 0;
+
+void AddControl(Control myControl)
+{
+	controlList[numberOfControls] = myControl;
+	numberOfControls++;
+}
 
 void SetDeviceIDAndName(unsigned long newDeviceID, char* deviceName)
 {
