@@ -72,6 +72,8 @@ void SetIconIDInMemory(char iconID, unsigned long deviceID)
 {
 	AddNewCharToMemory(IconIDOpCode);
 	AddDeviceIDToMemory(deviceID);
+	AddNewCharToMemory(1);
+	AddNewCharToMemory(iconID);
 }
 
 
