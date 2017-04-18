@@ -40,6 +40,9 @@ int Add4ThingsToMemory(int thing1,int thing2,int thing3, int thing4)
 	return pointer;
 }
 
+
+
+
 int main(void)
 {
 	AddThingToMemory(4);
@@ -69,6 +72,16 @@ int main(void)
 	myIP.Octet2 = 1;
 	myIP.Octet1 = 100;
 	SetIPInMemory(myIP, 0x01020304);
+
+	Control theControl;
+	theControl.controlName = "Test Control";
+	theControl.controlID = 0;
+	theControl.controlDirection = 1;
+	theControl.controlType = 1;
+	theControl.highValue= 100;
+	theControl.lowValue = 0;
+	theControl.curValue = 50;
+	AddControl(theControl);
 
 	Vertex theVertex;
 	theVertex.rxID = 0x01020304;
