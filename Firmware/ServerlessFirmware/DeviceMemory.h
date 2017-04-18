@@ -9,7 +9,7 @@ const char IconIDOpCode = 0x04;
 const char CustomIconDrawingOpCode = 0x05;
 const char DeviceNameOpCode = 0x06;
 const char FrontEndPositionOpCode = 0x07;
-const char ClientIPOpCode = 0x08;
+const char DeviceIPOpCode = 0x08;
 
 const char IsHeepDeviceOpCode = 0x09;
 const char SetValueOpCode = 0x0A;
@@ -106,3 +106,15 @@ void SetXYInMemory(int x, int y, unsigned long deviceID)
 	AddNumberToMemoryWithSpecifiedBytes(x, 2);
 	AddNumberToMemoryWithSpecifiedBytes(y, 2);
 }
+
+void SetIPInMemory(HeepIPAddress theIP, unsigned long deviceID)
+{
+	AddNewCharToMemory(DeviceIPOpCode);
+	AddDeviceIDToMemory(deviceID);
+	AddNewCharToMemory((char)4);
+	AddNewCharToMemory(theIP.Octet4);
+	AddNewCharToMemory(theIP.Octet3);
+	AddNewCharToMemory(theIP.Octet2);
+	AddNewCharToMemory(theIP.Octet1);
+}
+
