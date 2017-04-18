@@ -62,9 +62,16 @@ int main(void)
 	SetIconDataInMemory("abcdefghijklmnopqrstuvwxyz", 25, 0x09010503);
 	SetXYInMemory(257, 257, 0x03050105);
 
+	HeepIPAddress myIP;
+	myIP.Octet4 = (char)192;
+	myIP.Octet3 = (char)158;
+	myIP.Octet2 = 1;
+	myIP.Octet1 = 100;
+	SetIPInMemory(myIP, 0x01020304);
+
 	for(int i = 0; i < curFilledMemory; i++)
 	{
-		cout << (int)deviceMemory[i] << " ";
+		cout << (unsigned int)deviceMemory[i] << " ";
 	}
 
 	cout << endl;
