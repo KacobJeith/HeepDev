@@ -84,7 +84,14 @@ int main(void)
 		cout << (unsigned short)deviceMemory[i] << " ";
 	}
 
-	cout << endl;
+	cout << endl << endl;
+
+	FillOutputBufferWithMemoryDump();
+	cout << "OUTPUT" << endl;
+	for(int i = 0; i < outputBufferLastByte; i++)
+	{
+		cout << (unsigned short)outputBuffer[i] << " ";
+	}
 
 	return 0;
 }
