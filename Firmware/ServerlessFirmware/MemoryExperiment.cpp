@@ -69,6 +69,14 @@ int main(void)
 	myIP.Octet1 = 100;
 	SetIPInMemory(myIP, 0x01020304);
 
+	Vertex theVertex;
+	theVertex.rxID = 0x01020304;
+	theVertex.txID = 0x04030201;
+	theVertex.rxControlID = 0x05;
+	theVertex.txControlID = 0x02;
+	theVertex.rxIPAddress = myIP;
+	SetVertexInMemory(theVertex);
+
 	std::cout << std::showbase << std::hex;
 	for(int i = 0; i < curFilledMemory; i++)
 	{
