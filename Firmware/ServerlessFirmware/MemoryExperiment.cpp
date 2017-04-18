@@ -50,10 +50,10 @@ int main(void)
 
 	cout << (int)miscMemory[pointer] << endl;
 
-	char oc4 = 0;
-	char oc3 = 0;
-	char oc2 = 0;
-	char oc1 = 0;
+	unsigned char oc4 = 0;
+	unsigned char oc3 = 0;
+	unsigned char oc2 = 0;
+	unsigned char oc1 = 0;
 	GetDeviceIDOctets(0x00030201, oc4, oc3, oc2, oc1);
 	cout << (int)oc4 << " " << (int)oc3 << " " << (int)oc2 << " " << (int)oc1 << endl;
 
@@ -63,15 +63,16 @@ int main(void)
 	SetXYInMemory(257, 257, 0x03050105);
 
 	HeepIPAddress myIP;
-	myIP.Octet4 = (char)192;
-	myIP.Octet3 = (char)158;
+	myIP.Octet4 = 192;
+	myIP.Octet3 = 100;
 	myIP.Octet2 = 1;
 	myIP.Octet1 = 100;
 	SetIPInMemory(myIP, 0x01020304);
 
+	std::cout << std::showbase << std::hex;
 	for(int i = 0; i < curFilledMemory; i++)
 	{
-		cout << (unsigned int)deviceMemory[i] << " ";
+		cout << (unsigned short)deviceMemory[i] << " ";
 	}
 
 	cout << endl;

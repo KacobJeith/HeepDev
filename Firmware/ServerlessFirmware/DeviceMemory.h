@@ -2,40 +2,40 @@
 #include "CommonDataTypes.h"
 
 // OPCodes
-const char ClientDataOpCode = 0x01;
-const char ControlOpCode = 0x02;
-const char VertexOpCode = 0x03;
-const char IconIDOpCode = 0x04;
-const char CustomIconDrawingOpCode = 0x05;
-const char DeviceNameOpCode = 0x06;
-const char FrontEndPositionOpCode = 0x07;
-const char DeviceIPOpCode = 0x08;
+const unsigned char ClientDataOpCode = 0x01;
+const unsigned char ControlOpCode = 0x02;
+const unsigned char VertexOpCode = 0x03;
+const unsigned char IconIDOpCode = 0x04;
+const unsigned char CustomIconDrawingOpCode = 0x05;
+const unsigned char DeviceNameOpCode = 0x06;
+const unsigned char FrontEndPositionOpCode = 0x07;
+const unsigned char DeviceIPOpCode = 0x08;
 
-const char IsHeepDeviceOpCode = 0x09;
-const char SetValueOpCode = 0x0A;
-const char SetPositionOpCode = 0x0B;
-const char SetVertexOpCode = 0x0C;
-const char DeleteVertexOpCode = 0x0D;
-const char EchoOpCode = 0x0E;
+const unsigned char IsHeepDeviceOpCode = 0x09;
+const unsigned char SetValueOpCode = 0x0A;
+const unsigned char SetPositionOpCode = 0x0B;
+const unsigned char SetVertexOpCode = 0x0C;
+const unsigned char DeleteVertexOpCode = 0x0D;
+const unsigned char EchoOpCode = 0x0E;
 
-const char MemoryDumpOpCode = 0x0F;
-const char SuccessOpCode = 0x10;
-const char ErrorOpCode = 0x11;
+const unsigned char MemoryDumpOpCode = 0x0F;
+const unsigned char SuccessOpCode = 0x10;
+const unsigned char ErrorOpCode = 0x11;
 
-const char FragmentOpCode = 0x12;
+const unsigned char FragmentOpCode = 0x12;
 
-char deviceMemory [MAX_MEMORY];
+unsigned char deviceMemory [MAX_MEMORY];
 int curFilledMemory = 0; // Indicate the curent filled memory. 
 						 // Also serve as a place holder to 
 						 // show the back of allocated memory
 
-void AddNewCharToMemory(char newMem)
+void AddNewCharToMemory(unsigned char newMem)
 {
 	deviceMemory[curFilledMemory] = newMem;
 	curFilledMemory++;
 }
 
-void GetDeviceIDOctets(unsigned long deviceID, char &octet4, char &octet3, char &octet2, char &octet1)
+void GetDeviceIDOctets(unsigned long deviceID, unsigned char &octet4, unsigned char &octet3, unsigned char &octet2, unsigned char &octet1)
 {
 	octet1 = deviceID%256;
 	octet2 = (deviceID >> 8)%256;
@@ -54,10 +54,10 @@ void AddNumberToMemoryWithSpecifiedBytes(unsigned int number, int numBytes)
 
 void AddDeviceIDToMemory(unsigned long deviceID)
 {
-	char DeviceID4 = 0;
-	char DeviceID3 = 0;
-	char DeviceID2 = 0;
-	char DeviceID1 = 0;
+	unsigned char DeviceID4 = 0;
+	unsigned char DeviceID3 = 0;
+	unsigned char DeviceID2 = 0;
+	unsigned char DeviceID1 = 0;
 	GetDeviceIDOctets(deviceID, DeviceID4, DeviceID3, DeviceID2, DeviceID1);
 
 	AddNewCharToMemory(DeviceID4);
