@@ -28,6 +28,12 @@ int curFilledMemory = 0; // Indicate the curent filled memory.
 						 // Also serve as a place holder to 
 						 // show the back of allocated memory
 
+void AddNewCharToMemory(char newMem)
+{
+	deviceMemory[curFilledMemory] = newMem;
+	curFilledMemory++;
+}
+
 void GetDeviceIDOctets(unsigned long deviceID, char &octet4, char &octet3, char &octet2, char &octet1)
 {
 	octet1 = deviceID%256;
@@ -36,13 +42,7 @@ void GetDeviceIDOctets(unsigned long deviceID, char &octet4, char &octet3, char 
 	octet4 = (deviceID >> 24)%256;
 }
 
-void AddNewCharToMemory(char newMem)
-{
-	deviceMemory[curFilledMemory] = newMem;
-	curFilledMemory++;
-}
-
-void SetDeviceNameInMemory(char* deviceName, int numCharacters, unsigned long deviceID)
+void AddDeviceIDToMemory(unsigned long deviceID)
 {
 	char DeviceID4 = 0;
 	char DeviceID3 = 0;
@@ -50,11 +50,16 @@ void SetDeviceNameInMemory(char* deviceName, int numCharacters, unsigned long de
 	char DeviceID1 = 0;
 	GetDeviceIDOctets(deviceID, DeviceID4, DeviceID3, DeviceID2, DeviceID1);
 
-	AddNewCharToMemory(DeviceNameOpCode);
 	AddNewCharToMemory(DeviceID4);
 	AddNewCharToMemory(DeviceID3);
 	AddNewCharToMemory(DeviceID2);
 	AddNewCharToMemory(DeviceID1);
+}
+
+void SetDeviceNameInMemory(char* deviceName, int numCharacters, unsigned long deviceID)
+{
+	AddNewCharToMemory(DeviceNameOpCode);
+	AddDeviceIDToMemory(deviceID);
 	AddNewCharToMemory((char)numCharacters);
 
 	for(int i = 0; i < numCharacters; i++)
@@ -63,5 +68,10 @@ void SetDeviceNameInMemory(char* deviceName, int numCharacters, unsigned long de
 	}
 }
 
+void SetIconIDInMemory(char iconID, unsigned long deviceID)
+{
+	AddNewCharToMemory(IconIDOpCode);
+	AddDeviceIDToMemory(deviceID);
+}
 
 
