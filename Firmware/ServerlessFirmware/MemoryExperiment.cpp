@@ -59,6 +59,7 @@ int main(void)
 
 	SetDeviceNameInMemory("Hello", 5, 0x05040601);
 	SetIconIDInMemory(10, 0x01020304);
+	SetIconDataInMemory("abcdefghijklmnopqrstuvwxyz", 25, 0x09010503);
 
 	for(int i = 0; i < curFilledMemory; i++)
 	{

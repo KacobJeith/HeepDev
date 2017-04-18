@@ -76,4 +76,15 @@ void SetIconIDInMemory(char iconID, unsigned long deviceID)
 	AddNewCharToMemory(iconID);
 }
 
+void SetIconDataInMemory(char* iconData, int numCharacters, unsigned long deviceID)
+{
+	AddNewCharToMemory(CustomIconDrawingOpCode);
+	AddDeviceIDToMemory(deviceID);
+	AddNewCharToMemory((char)numCharacters);
+
+	for(int i = 0; i < numCharacters; i++)
+	{
+		AddNewCharToMemory(iconData[i]);
+	}
+}
 
