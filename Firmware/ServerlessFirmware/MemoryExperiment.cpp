@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Device.h"
+#include "ActionAndResponseOpCodes.h"
 
 #define MEMORY_SIZE 1024
 
