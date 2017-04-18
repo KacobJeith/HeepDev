@@ -7,7 +7,7 @@ const char VertexOpCode = 0x03;
 const char IconIDOpCode = 0x04;
 const char CustomIconDrawingOpCode = 0x05;
 const char DeviceNameOpCode = 0x06;
-const char FrontEndPositionOpCOde = 0x07;
+const char FrontEndPositionOpCode = 0x07;
 const char ClientIPOpCode = 0x08;
 
 const char IsHeepDeviceOpCode = 0x09;
@@ -40,6 +40,15 @@ void GetDeviceIDOctets(unsigned long deviceID, char &octet4, char &octet3, char 
 	octet2 = (deviceID >> 8)%256;
 	octet3 = (deviceID >> 16)%256;
 	octet4 = (deviceID >> 24)%256;
+}
+
+void AddNumberToMemoryWithSpecifiedBytes(unsigned int number, int numBytes)
+{
+	for(int i = 0; i < numBytes; i++)
+	{
+		char numToAdd = (number >> 8*( (numBytes-1) - i))%256;
+		AddNewCharToMemory(numToAdd);
+	}
 }
 
 void AddDeviceIDToMemory(unsigned long deviceID)
@@ -88,3 +97,11 @@ void SetIconDataInMemory(char* iconData, int numCharacters, unsigned long device
 	}
 }
 
+void SetXYInMemory(int x, int y, unsigned long deviceID)
+{
+	AddNewCharToMemory(FrontEndPositionOpCode);
+	AddDeviceIDToMemory(deviceID);
+	AddNewCharToMemory((char)4);
+	AddNumberToMemoryWithSpecifiedBytes(x, 2);
+	AddNumberToMemoryWithSpecifiedBytes(y, 2);
+}
