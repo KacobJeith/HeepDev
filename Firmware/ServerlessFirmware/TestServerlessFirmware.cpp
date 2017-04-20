@@ -433,6 +433,62 @@ void TestSetXYOpCode()
 	CheckResults(TestName, valueList, 10);
 }
 
+void TestSetIPOpCode()
+{
+	std::string TestName = "Set IP OpCode";
+
+	ClearDeviceMemory();
+	HeepIPAddress myIP;
+	myIP.Octet4 = 192;
+	myIP.Octet3 = 168;
+	myIP.Octet2 = 1;
+	myIP.Octet1 = 100;
+	SetIPInMemory(myIP, 0x01020304);
+
+	ExpectedValue valueList [10];
+	valueList[0].valueName = "IP OpCode";
+	valueList[0].expectedValue = DeviceIPOpCode;
+	valueList[0].actualValue = deviceMemory[0];
+
+	valueList[1].valueName = "Device ID 1";
+	valueList[1].expectedValue = 1;
+	valueList[1].actualValue = deviceMemory[1];
+
+	valueList[2].valueName = "Device ID 2";
+	valueList[2].expectedValue = 2;
+	valueList[2].actualValue = deviceMemory[2];
+
+	valueList[3].valueName = "Device ID 3";
+	valueList[3].expectedValue = 3;
+	valueList[3].actualValue = deviceMemory[3];
+
+	valueList[4].valueName = "Device ID 4";
+	valueList[4].expectedValue = 4;
+	valueList[4].actualValue = deviceMemory[4];
+
+	valueList[5].valueName = "Num Bytes";
+	valueList[5].expectedValue = 4;
+	valueList[5].actualValue = deviceMemory[5];
+
+	valueList[6].valueName = "Octet 4";
+	valueList[6].expectedValue = 192;
+	valueList[6].actualValue = deviceMemory[6];
+
+	valueList[7].valueName = "Octet 3";
+	valueList[7].expectedValue = 168;
+	valueList[7].actualValue = deviceMemory[7];
+
+	valueList[8].valueName = "Octet 2";
+	valueList[8].expectedValue = 1;
+	valueList[8].actualValue = deviceMemory[8];
+
+	valueList[9].valueName = "Octet 1";
+	valueList[9].expectedValue = 100;
+	valueList[9].actualValue = deviceMemory[9];
+
+	CheckResults(TestName, valueList, 10);
+}
+
 int main(void) 
 {
 	cout << "Begin Tests" << endl;
@@ -448,6 +504,7 @@ int main(void)
 	TestIconIDOpCode();
 	TestIconDataOpCode();
 	TestSetXYOpCode();
+	TestSetIPOpCode();
 
 	return 0;
 }
