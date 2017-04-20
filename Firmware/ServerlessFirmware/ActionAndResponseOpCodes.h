@@ -3,6 +3,9 @@
 unsigned char outputBuffer [OUTPUT_BUFFER_SIZE];
 unsigned long outputBufferLastByte = 0;
 
+unsigned char inputBuffer [INPUT_BUFFER_SIZE];
+unsigned long inputBufferLastByte = 0;
+
 void AddNewCharToOutputBuffer(unsigned char newMem)
 {
 	outputBufferLastByte = AddCharToBuffer(outputBuffer, outputBufferLastByte, newMem);
@@ -96,7 +99,7 @@ void FillOutputBufferWithSuccess(char* message, int stringLength)
 	}
 }
 
-void FIllOutputBufferWithError(char* message, int stringLength)
+void FillOutputBufferWithError(char* message, int stringLength)
 {
 	AddNewCharToOutputBuffer(ErrorOpCode);
 	AddDeviceIDToOutputBuffer(deviceID);
@@ -108,5 +111,21 @@ void FIllOutputBufferWithError(char* message, int stringLength)
 	for(int i = 0; i < totalMemory; i++)
 	{
 		AddNewCharToOutputBuffer(message[i]);
+	}
+}
+
+void ExecuteMemoryDumpOpCode()
+{
+	unsigned long counter = 1;
+
+	FillOutputBufferWithMemoryDump();
+}
+
+void ExecuteControlOpCodes()
+{
+	unsigned char ControlOpCode = inputBuffer[0];
+	if(ControlOpCode == MemoryDumpOpCode)
+	{
+		ExecuteMemoryDumpOpCode();
 	}
 }
