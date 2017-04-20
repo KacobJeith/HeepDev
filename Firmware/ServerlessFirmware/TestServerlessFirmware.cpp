@@ -199,6 +199,38 @@ void TestAddDeviceIDToBuffer()
 	CheckResults(TestName, valueList, 4);
 }
 
+void TestAddIPToDeviceMemory()
+{
+	std::string TestName = "Add Device IP to Memory";
+
+	ClearDeviceMemory();
+	HeepIPAddress myIP;
+	myIP.Octet4 = 192;
+	myIP.Octet3 = 100;
+	myIP.Octet2 = 1;
+	myIP.Octet1 = 100;
+	AddIPToMemory(myIP);
+
+	ExpectedValue valueList [4];
+	valueList[0].valueName = "Octet 4";
+	valueList[0].expectedValue = 192;
+	valueList[0].actualValue = deviceMemory[0];
+
+	valueList[1].valueName = "Octet 3";
+	valueList[1].expectedValue = 100;
+	valueList[1].actualValue = deviceMemory[1];
+
+	valueList[2].valueName = "Octet 2";
+	valueList[2].expectedValue =1;
+	valueList[2].actualValue = deviceMemory[2];
+
+	valueList[3].valueName = "Octet 1";
+	valueList[3].expectedValue = 100;
+	valueList[3].actualValue = deviceMemory[3];
+
+	CheckResults(TestName, valueList, 4);
+}
+
 int main(void) 
 {
 	cout << "Begin Tests" << endl;
@@ -209,6 +241,7 @@ int main(void)
 	TestClearDeviceMemory();
 	TestAddDeviceIDToMemory();
 	TestAddDeviceIDToBuffer();
+	TestAddIPToDeviceMemory();
 
 	return 0;
 }
