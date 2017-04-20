@@ -87,7 +87,7 @@ void TestAddCharToDeviceMemory()
 
 void TestGetDeviceIDOctets()
 {
-	std::string TestName = "Add Char to Device Memory";
+	std::string TestName = "Get Device Octets";
 
 	unsigned long ID = 0x01020304;
 	unsigned char octet1 = 0;
@@ -117,6 +117,58 @@ void TestGetDeviceIDOctets()
 	CheckResults(TestName, valueList, 4);
 }
 
+void TestClearDeviceMemory()
+{
+	std::string TestName = "Clear Device Memory";
+
+	ClearDeviceMemory();
+
+	AddNewCharToMemory('d');
+	AddNewCharToMemory('3');
+
+	ExpectedValue valueList [2];
+	valueList[0].valueName = "Memory Size Before Clear";
+	valueList[0].expectedValue = 2;
+	valueList[0].actualValue = curFilledMemory;
+
+	ClearDeviceMemory();
+
+	valueList[1].valueName = "Memory Size After Clear";
+	valueList[1].expectedValue = 0;
+	valueList[1].actualValue = curFilledMemory;
+
+	CheckResults(TestName, valueList, 2);
+}
+
+void TestAddDeviceIDToMemory()
+{
+	std::string TestName = "Add Device ID to Device Memory";
+
+	unsigned long ID = 0x09080706;
+
+	ClearDeviceMemory();
+	AddDeviceIDToMemory(ID);
+
+	ExpectedValue valueList [4];
+	valueList[0].valueName = "Octet 4";
+	valueList[0].expectedValue = 9;
+	valueList[0].actualValue = deviceMemory[0];
+
+	valueList[1].valueName = "Octet 3";
+	valueList[1].expectedValue = 8;
+	valueList[1].actualValue = deviceMemory[1];
+
+	valueList[2].valueName = "Octet 2";
+	valueList[2].expectedValue =7;
+	valueList[2].actualValue = deviceMemory[2];
+
+	valueList[3].valueName = "Octet 1";
+	valueList[3].expectedValue = 6;
+	valueList[3].actualValue = deviceMemory[3];
+
+	CheckResults(TestName, valueList, 4);
+}
+
 int main(void) 
 {
 	cout << "Begin Tests" << endl;
@@ -124,6 +176,8 @@ int main(void)
 	TestAddCharToBuffer();
 	TestAddCharToDeviceMemory();
 	TestGetDeviceIDOctets();
+	TestClearDeviceMemory();
+	TestAddDeviceIDToMemory();
 
 	return 0;
 }
