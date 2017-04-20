@@ -489,6 +489,92 @@ void TestSetIPOpCode()
 	CheckResults(TestName, valueList, 10);
 }
 
+void TestSetVertexOpCode()
+{
+	std::string TestName = "Set Vertex OpCode";
+
+	ClearDeviceMemory();
+	Vertex myVertex;
+	HeepIPAddress myIP;
+	myIP.Octet4 = 192;
+	myIP.Octet3 = 168;
+	myIP.Octet2 = 1;
+	myIP.Octet1 = 100;
+	myVertex.rxIPAddress = myIP;
+	myVertex.txID = 0x01020304;
+	myVertex.rxID = 0x09080706;
+	myVertex.txControlID = 0x01;
+	myVertex.rxControlID = 0x02;
+	SetVertexInMemory(myVertex);
+
+	ExpectedValue valueList [16];
+	valueList[0].valueName = "Vertex OpCode";
+	valueList[0].expectedValue = VertexOpCode;
+	valueList[0].actualValue = deviceMemory[0];
+
+	valueList[1].valueName = "Tx Device ID 1";
+	valueList[1].expectedValue = 1;
+	valueList[1].actualValue = deviceMemory[1];
+
+	valueList[2].valueName = "Tx Device ID 2";
+	valueList[2].expectedValue = 2;
+	valueList[2].actualValue = deviceMemory[2];
+
+	valueList[3].valueName = "Tx Device ID 3";
+	valueList[3].expectedValue = 3;
+	valueList[3].actualValue = deviceMemory[3];
+
+	valueList[4].valueName = "Tx Device ID 4";
+	valueList[4].expectedValue = 4;
+	valueList[4].actualValue = deviceMemory[4];
+
+	valueList[5].valueName = "Num Bytes";
+	valueList[5].expectedValue = 10;
+	valueList[5].actualValue = deviceMemory[5];
+
+	valueList[6].valueName = "Rx Device ID 1";
+	valueList[6].expectedValue = 9;
+	valueList[6].actualValue = deviceMemory[6];
+
+	valueList[7].valueName = "Rx Device ID 2";
+	valueList[7].expectedValue = 8;
+	valueList[7].actualValue = deviceMemory[7];
+
+	valueList[8].valueName = "Rx Device ID 3";
+	valueList[8].expectedValue = 7;
+	valueList[8].actualValue = deviceMemory[8];
+
+	valueList[9].valueName = "Rx Device ID 4";
+	valueList[9].expectedValue = 6;
+	valueList[9].actualValue = deviceMemory[9];
+
+	valueList[10].valueName = "Tx Control ID";
+	valueList[10].expectedValue = 1;
+	valueList[10].actualValue = deviceMemory[10];
+
+	valueList[11].valueName = "Rx Control ID";
+	valueList[11].expectedValue = 2;
+	valueList[11].actualValue = deviceMemory[11];
+
+	valueList[12].valueName = "IP Octet 4";
+	valueList[12].expectedValue = 192;
+	valueList[12].actualValue = deviceMemory[12];
+
+	valueList[13].valueName = "IP Octet 3";
+	valueList[13].expectedValue = 168;
+	valueList[13].actualValue = deviceMemory[13];
+
+	valueList[14].valueName = "IP Octet 2";
+	valueList[14].expectedValue = 1;
+	valueList[14].actualValue = deviceMemory[14];
+
+	valueList[15].valueName = "IP Octet 1";
+	valueList[15].expectedValue = 100;
+	valueList[15].actualValue = deviceMemory[15];
+
+	CheckResults(TestName, valueList, 16);
+}
+
 int main(void) 
 {
 	cout << "Begin Tests" << endl;
@@ -505,6 +591,7 @@ int main(void)
 	TestIconDataOpCode();
 	TestSetXYOpCode();
 	TestSetIPOpCode();
+	TestSetVertexOpCode();
 
 	return 0;
 }
