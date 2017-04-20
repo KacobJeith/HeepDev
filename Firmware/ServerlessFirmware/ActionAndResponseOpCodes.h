@@ -96,3 +96,18 @@ void FillOutputBufferWithSuccess(char* message, int stringLength)
 		AddNewCharToOutputBuffer(message[i]);
 	}
 }
+
+void FIllOutputBufferWithError(char* message, int stringLength)
+{
+	AddNewCharToOutputBuffer(ErrorOpCode);
+	AddDeviceIDToBuffer(deviceID);
+
+	unsigned long totalMemory = strlen(message);
+
+	AddNewCharToOutputBuffer(totalMemory);
+
+	for(int i = 0; i < totalMemory; i++)
+	{
+		AddNewCharToOutputBuffer(message[i]);
+	}
+}
