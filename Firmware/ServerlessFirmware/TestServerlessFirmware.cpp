@@ -66,11 +66,31 @@ void TestAddCharToBuffer()
 	CheckResults(TestName, valueList, 2);
 }
 
+void TestAddCharToDeviceMemory()
+{
+	std::string TestName = "Add Char to Device Memory";
+
+	AddNewCharToMemory('3');
+	AddNewCharToMemory('6');
+
+	ExpectedValue valueList [2];
+	valueList[0].valueName = "Buffered Char 1";
+	valueList[0].expectedValue = '3';
+	valueList[0].actualValue = deviceMemory[0];
+
+	valueList[1].valueName = "Buffered Char 2";
+	valueList[1].expectedValue = '6';
+	valueList[1].actualValue = deviceMemory[1];
+
+	CheckResults(TestName, valueList, 2);
+}
+
 int main(void) 
 {
 	cout << "Begin Tests" << endl;
 
 	TestAddCharToBuffer();
+	TestAddCharToDeviceMemory();
 
 	return 0;
 }
