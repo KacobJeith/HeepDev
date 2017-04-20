@@ -29,6 +29,11 @@ int curFilledMemory = 0; // Indicate the curent filled memory.
 						 // Also serve as a place holder to 
 						 // show the back of allocated memory
 
+void ClearDeviceMemory()
+{
+	curFilledMemory = 0;
+}
+
 unsigned long AddCharToBuffer(unsigned char* buffer, unsigned long startPoint, unsigned char value)
 {
 	buffer[startPoint] = value;

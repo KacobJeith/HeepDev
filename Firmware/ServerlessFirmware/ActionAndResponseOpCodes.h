@@ -74,7 +74,6 @@ void FillOutputBufferWithMemoryDump()
 
 	FillOutputBufferWithControlData();
 
-
 	// Add Dynamic Memory
 	for(int i = 0; i<curFilledMemory; i++)
 	{
