@@ -99,7 +99,7 @@ void FillOutputBufferWithSuccess(char* message, int stringLength)
 void FIllOutputBufferWithError(char* message, int stringLength)
 {
 	AddNewCharToOutputBuffer(ErrorOpCode);
-	AddDeviceIDToBuffer(deviceID);
+	AddDeviceIDToOutputBuffer(deviceID);
 
 	unsigned long totalMemory = strlen(message);
 
