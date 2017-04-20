@@ -1,3 +1,6 @@
+#ifndef UNIT_TEST_SYSTEM_H
+#define UNIT_TEST_SYSTEM_H
+
 #include <iostream>
 
 using namespace std;
@@ -43,3 +46,6 @@ void CheckResults(std::string testName, ExpectedValue valueList [], int numberOf
 
 	OnSuccess(testName);
 }
+
+
+#endif
