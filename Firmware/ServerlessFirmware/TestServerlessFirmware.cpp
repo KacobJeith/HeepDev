@@ -295,7 +295,7 @@ void TestIconIDOpCode()
 	SetIconIDInMemory(4, 0x01020304);
 
 	ExpectedValue valueList [7];
-	valueList[0].valueName = "Device Name OpCode";
+	valueList[0].valueName = "Icon ID OpCode";
 	valueList[0].expectedValue = IconIDOpCode;
 	valueList[0].actualValue = deviceMemory[0];
 
@@ -335,7 +335,7 @@ void TestIconDataOpCode()
 	SetIconDataInMemory(deviceName, strlen(deviceName), 0x01020304);
 
 	ExpectedValue valueList [11];
-	valueList[0].valueName = "Device Name OpCode";
+	valueList[0].valueName = "Icon Data OpCode";
 	valueList[0].expectedValue = CustomIconDrawingOpCode;
 	valueList[0].actualValue = deviceMemory[0];
 
@@ -382,6 +382,57 @@ void TestIconDataOpCode()
 	CheckResults(TestName, valueList, 11);
 }
 
+void TestSetXYOpCode()
+{
+	std::string TestName = "Front End XY Op Code";
+
+	ClearDeviceMemory();
+	SetXYInMemory(312, 513, 0x01020304);
+
+	ExpectedValue valueList [10];
+	valueList[0].valueName = "Front End XY OpCode";
+	valueList[0].expectedValue = FrontEndPositionOpCode;
+	valueList[0].actualValue = deviceMemory[0];
+
+	valueList[1].valueName = "Device ID 1";
+	valueList[1].expectedValue = 1;
+	valueList[1].actualValue = deviceMemory[1];
+
+	valueList[2].valueName = "Device ID 2";
+	valueList[2].expectedValue = 2;
+	valueList[2].actualValue = deviceMemory[2];
+
+	valueList[3].valueName = "Device ID 3";
+	valueList[3].expectedValue = 3;
+	valueList[3].actualValue = deviceMemory[3];
+
+	valueList[4].valueName = "Device ID 4";
+	valueList[4].expectedValue = 4;
+	valueList[4].actualValue = deviceMemory[4];
+
+	valueList[5].valueName = "Num Bytes";
+	valueList[5].expectedValue = 4;
+	valueList[5].actualValue = deviceMemory[5];
+
+	valueList[6].valueName = "X High Byte";
+	valueList[6].expectedValue = 312 >> 8;
+	valueList[6].actualValue = deviceMemory[6];
+
+	valueList[7].valueName = "X Low Byte";
+	valueList[7].expectedValue = 312%256;
+	valueList[7].actualValue = deviceMemory[7];
+
+	valueList[8].valueName = "Y High Byte";
+	valueList[8].expectedValue = 513 >> 8;
+	valueList[8].actualValue = deviceMemory[8];
+
+	valueList[9].valueName = "Y Low Byte";
+	valueList[9].expectedValue = 513%256;
+	valueList[9].actualValue = deviceMemory[9];
+
+	CheckResults(TestName, valueList, 10);
+}
+
 int main(void) 
 {
 	cout << "Begin Tests" << endl;
@@ -396,6 +447,7 @@ int main(void)
 	TestDeviceNameOpCode();
 	TestIconIDOpCode();
 	TestIconDataOpCode();
+	TestSetXYOpCode();
 
 	return 0;
 }
