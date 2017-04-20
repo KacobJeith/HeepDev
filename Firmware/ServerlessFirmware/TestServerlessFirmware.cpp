@@ -287,6 +287,101 @@ void TestDeviceNameOpCode()
 	CheckResults(TestName, valueList, 11);
 }
 
+void TestIconIDOpCode()
+{
+	std::string TestName = "Icon ID Op Code";
+
+	ClearDeviceMemory();
+	SetIconIDInMemory(4, 0x01020304);
+
+	ExpectedValue valueList [7];
+	valueList[0].valueName = "Device Name OpCode";
+	valueList[0].expectedValue = IconIDOpCode;
+	valueList[0].actualValue = deviceMemory[0];
+
+	valueList[1].valueName = "Device ID 1";
+	valueList[1].expectedValue = 1;
+	valueList[1].actualValue = deviceMemory[1];
+
+	valueList[2].valueName = "Device ID 2";
+	valueList[2].expectedValue = 2;
+	valueList[2].actualValue = deviceMemory[2];
+
+	valueList[3].valueName = "Device ID 3";
+	valueList[3].expectedValue = 3;
+	valueList[3].actualValue = deviceMemory[3];
+
+	valueList[4].valueName = "Device ID 4";
+	valueList[4].expectedValue = 4;
+	valueList[4].actualValue = deviceMemory[4];
+
+	valueList[5].valueName = "Num Bytes";
+	valueList[5].expectedValue = 1;
+	valueList[5].actualValue = deviceMemory[5];
+
+	valueList[6].valueName = "Letter One";
+	valueList[6].expectedValue = 4;
+	valueList[6].actualValue = deviceMemory[6];
+
+	CheckResults(TestName, valueList, 7);
+}
+
+void TestIconDataOpCode()
+{
+	std::string TestName = "Icon Data Op Code";
+
+	ClearDeviceMemory();
+	char* deviceName = "Jacob";
+	SetIconDataInMemory(deviceName, strlen(deviceName), 0x01020304);
+
+	ExpectedValue valueList [11];
+	valueList[0].valueName = "Device Name OpCode";
+	valueList[0].expectedValue = CustomIconDrawingOpCode;
+	valueList[0].actualValue = deviceMemory[0];
+
+	valueList[1].valueName = "Device ID 1";
+	valueList[1].expectedValue = 1;
+	valueList[1].actualValue = deviceMemory[1];
+
+	valueList[2].valueName = "Device ID 2";
+	valueList[2].expectedValue = 2;
+	valueList[2].actualValue = deviceMemory[2];
+
+	valueList[3].valueName = "Device ID 3";
+	valueList[3].expectedValue = 3;
+	valueList[3].actualValue = deviceMemory[3];
+
+	valueList[4].valueName = "Device ID 4";
+	valueList[4].expectedValue = 4;
+	valueList[4].actualValue = deviceMemory[4];
+
+	valueList[5].valueName = "Num Bytes";
+	valueList[5].expectedValue = 5;
+	valueList[5].actualValue = deviceMemory[5];
+
+	valueList[6].valueName = "Letter One";
+	valueList[6].expectedValue = 'J';
+	valueList[6].actualValue = deviceMemory[6];
+
+	valueList[7].valueName = "Letter Two";
+	valueList[7].expectedValue = 'a';
+	valueList[7].actualValue = deviceMemory[7];
+
+	valueList[8].valueName = "Letter Three";
+	valueList[8].expectedValue = 'c';
+	valueList[8].actualValue = deviceMemory[8];
+
+	valueList[9].valueName = "Letter Four";
+	valueList[9].expectedValue = 'o';
+	valueList[9].actualValue = deviceMemory[9];
+
+	valueList[10].valueName = "Letter Five";
+	valueList[10].expectedValue = 'b';
+	valueList[10].actualValue = deviceMemory[10];
+
+	CheckResults(TestName, valueList, 11);
+}
+
 int main(void) 
 {
 	cout << "Begin Tests" << endl;
@@ -299,6 +394,8 @@ int main(void)
 	TestAddDeviceIDToBuffer();
 	TestAddIPToDeviceMemory();
 	TestDeviceNameOpCode();
+	TestIconIDOpCode();
+	TestIconDataOpCode();
 
 	return 0;
 }
