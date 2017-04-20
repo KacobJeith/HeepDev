@@ -9,6 +9,16 @@ unsigned long outputBufferLastByte = 0;
 unsigned char inputBuffer [INPUT_BUFFER_SIZE];
 unsigned long inputBufferLastByte = 0;
 
+void ClearOutputBuffer()
+{
+	outputBufferLastByte = 0;
+}
+
+void ClearInputBuffer()
+{
+	inputBufferLastByte = 0;
+}
+
 void AddNewCharToOutputBuffer(unsigned char newMem)
 {
 	outputBufferLastByte = AddCharToBuffer(outputBuffer, outputBufferLastByte, newMem);
