@@ -1,3 +1,6 @@
+#ifndef ACTION_RESPONSE_OP_CODES_H
+#define ACTION_RESPONSE_OP_CODES_H
+
 #include "Device.h"
 
 unsigned char outputBuffer [OUTPUT_BUFFER_SIZE];
@@ -129,3 +132,5 @@ void ExecuteControlOpCodes()
 		ExecuteMemoryDumpOpCode();
 	}
 }
+
+#endif
