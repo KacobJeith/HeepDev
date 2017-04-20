@@ -169,6 +169,36 @@ void TestAddDeviceIDToMemory()
 	CheckResults(TestName, valueList, 4);
 }
 
+void TestAddDeviceIDToBuffer()
+{
+	std::string TestName = "Add Device ID to Buffer";
+
+	unsigned long ID = 0x09080706;
+
+	unsigned char buffer[5];
+	int tracker = 0;
+	tracker = AddDeviceIDToBuffer(buffer, tracker, ID);
+
+	ExpectedValue valueList [4];
+	valueList[0].valueName = "Octet 4";
+	valueList[0].expectedValue = 9;
+	valueList[0].actualValue = buffer[0];
+
+	valueList[1].valueName = "Octet 3";
+	valueList[1].expectedValue = 8;
+	valueList[1].actualValue = buffer[1];
+
+	valueList[2].valueName = "Octet 2";
+	valueList[2].expectedValue =7;
+	valueList[2].actualValue = buffer[2];
+
+	valueList[3].valueName = "Octet 1";
+	valueList[3].expectedValue = 6;
+	valueList[3].actualValue = buffer[3];
+
+	CheckResults(TestName, valueList, 4);
+}
+
 int main(void) 
 {
 	cout << "Begin Tests" << endl;
@@ -178,6 +208,7 @@ int main(void)
 	TestGetDeviceIDOctets();
 	TestClearDeviceMemory();
 	TestAddDeviceIDToMemory();
+	TestAddDeviceIDToBuffer();
 
 	return 0;
 }
