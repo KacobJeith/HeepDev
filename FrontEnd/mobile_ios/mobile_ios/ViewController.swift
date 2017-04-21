@@ -35,9 +35,19 @@ class ViewController: UIViewController {
         switch client.connect(timeout:1){
             case .success:
                 print("success")
-                switch client.send(string: "IsHeepDevice:") {
+                var bufferarray = [UInt8]()
+                bufferarray.append(0x09)
+                bufferarray.append(0x00)
+                
+                
+                switch client.send(data: bufferarray) {
                     case .success:
-                        print("GotData")
+                        guard let data = client.read(1024*10) else { return }
+                        print(data)
+                        if let response = String(bytes:data, encoding: .utf8) {
+                            print(response)
+                        }
+                    
                     case .failure(let error):
                         print(error)
                 }
