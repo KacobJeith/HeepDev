@@ -15,12 +15,29 @@ def PrintDataAsByteArray(byteArray) :
 
 	print myArr
 
-myArray = [chr(0x0A), chr(0x02), chr(0x00), chr(0x00)]
+def GetIsDeviceArray() :
+	myArray = [chr(0x09), chr(0x04), chr(0x01), chr(0x00), chr(0x02), chr(0x20)]
+	return myArray
+
+def GetSetXYPositionArray() :
+	myArray = [chr(0x0B), chr(0x04), chr(0x01), chr(0x00), chr(0x02), chr(0x20)]
+	return myArray
+
+def GetSetValueArray() :
+	myArray = [chr(0x0A), chr(0x02), chr(0x00), chr(0x02)]
+	return myArray
+
+def GetSetVertexArray() :
+	myArray = [chr(0x0C), chr(0x02), chr(0x01), chr(0x03), chr(0x02), chr(0x0A), chr(0x02), chr(0x05), chr(0x01), chr(0x03), chr(0x01), chr(0x02), chr(0x04), chr(0x01), chr(0x03), chr(0xF0)]
+	return myArray
+
+
+myArray = GetIsDeviceArray()
 
 myString = ""
 for x in range(0, len(myArray)) :
 	myString += myArray[x]
 
-data = SendDataToIP("192.168.1.101", 5000, myString)
+data = SendDataToIP("192.168.1.169", 5000, myString)
 
 PrintDataAsByteArray(data)
