@@ -1,4 +1,5 @@
 #include <UIPEthernet.h>
+#include "ActionAndResponseOpCodes.h"
 
 int TCP_PORT = 5000;
 EthernetServer server = EthernetServer(TCP_PORT);
@@ -8,7 +9,8 @@ void CreateInterruptServer()
 {
 	uint8_t mac[6] = {0x00,0x01,0x02,0x03,0x04,0x08};
   	Ethernet.begin(mac);
-	serverIP = Ethernet.gatewayIP();
+	IPAddress serverIP = Ethernet.gatewayIP();
+	Serial.println(serverIP);
 
 	server.begin();
 }
@@ -27,8 +29,14 @@ void CheckServerForInputs(char* inputBuffer)
 	      	inputBuffer[i] = msg[i];
 	      }
 	      free(msg);
+
+	      ExecuteControlOpCodes();
 	  	}
-		  client.println("DATA from Server!");
-		  client.stop();
+
+	  	for(int i = 0; i < outputBufferLastByte; i++)
+	  	{
+	  		client.print(outputBuffer[i]);
+	  	}
+		client.stop();
     }
 }
