@@ -591,6 +591,47 @@ void TestSkipOpCode()
 	CheckResults(TestName, valueList, 3);
 }
 
+void TestUpdateXYPosition()
+{
+	std::string TestName = "Test Update XY Position";
+
+	ClearDeviceMemory();
+	UpdateXYInMemory(312, 513, 0x01020304);
+
+	int x = 0; int y = 0; unsigned long deviceID = 0x01020304; unsigned int xyMemPosition = 0; 
+	int retVal = GetXYFromMemory(x, y, deviceID, xyMemPosition);
+
+	ExpectedValue valueList [6];
+	valueList[0].valueName = "X Position";
+	valueList[0].expectedValue = 312;
+	valueList[0].actualValue = x;
+
+	valueList[1].valueName = "Y Position";
+	valueList[1].expectedValue = 513;
+	valueList[1].actualValue = y;
+
+	valueList[2].valueName = "Success Return";
+	valueList[2].expectedValue = 0;
+	valueList[2].actualValue = retVal;
+
+	UpdateXYInMemory(16235, 256, 0x01020304);
+	retVal = GetXYFromMemory(x, y, deviceID, xyMemPosition);
+
+	valueList[3].valueName = "X Position";
+	valueList[3].expectedValue = 16235;
+	valueList[3].actualValue = x;
+
+	valueList[4].valueName = "Y Position";
+	valueList[4].expectedValue = 256;
+	valueList[4].actualValue = y;
+
+	valueList[5].valueName = "Success Return";
+	valueList[5].expectedValue = 0;
+	valueList[5].actualValue = retVal;
+
+	CheckResults(TestName, valueList, 6);
+}
+
 void TestDynamicMemory()
 {
 	TestAddCharToBuffer();
@@ -608,4 +649,5 @@ void TestDynamicMemory()
 	TestSetVertexOpCode();
 	TestGetXYFromMemory();
 	TestSkipOpCode();
+	TestUpdateXYPosition();
 }

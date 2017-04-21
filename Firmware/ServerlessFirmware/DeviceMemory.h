@@ -205,10 +205,10 @@ void UpdateXYInMemory(int x, int y, unsigned long deviceID)
 
 	if(success == 0)
 	{
-		deviceMemory[XYMemPosition + 6] = (curX >> 8)%256;
-		deviceMemory[XYMemPosition + 7] = curX%256
-		deviceMemory[XYMemPosition + 8] = (curY >> 8)%256;
-		deviceMemory[XYMemPosition + 9] - (curY%256;)
+		deviceMemory[XYMemPosition + 6] = (x >> 8)%256;
+		deviceMemory[XYMemPosition + 7] = (x%256);
+		deviceMemory[XYMemPosition + 8] = (y >> 8)%256;
+		deviceMemory[XYMemPosition + 9] = (y%256);
 	}
 	else
 	{
