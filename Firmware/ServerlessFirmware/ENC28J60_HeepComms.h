@@ -30,13 +30,22 @@ void CheckServerForInputs()
 	      }
 	      free(msg);
 
+	      Serial.println("I SAW SOMETHING");
 	      ExecuteControlOpCodes();
 	  	}
 
+	  	// Must be a string. So I used a char
+	  	char* outputData = (char*)malloc(outputBufferLastByte);
+
 	  	for(int i = 0; i < outputBufferLastByte; i++)
 	  	{
-	  		client.print(outputBuffer[i]);
+	  		outputData[i] = outputBuffer[i];
 	  	}
+
+	  	Serial.print("OUTPUT: ");
+	  	Serial.println(outputData);
+
+	  	client.print(outputData);
 		client.stop();
     }
 }
