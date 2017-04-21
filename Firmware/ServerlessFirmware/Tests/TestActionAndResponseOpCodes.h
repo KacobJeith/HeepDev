@@ -92,9 +92,29 @@ void TestHeepDeviceCOP()
 	CheckResults(TestName, valueList, 5);
 }
 
+void TestNumberFromBuffer()
+{
+	std::string TestName = "Get Number from Buffer";
+
+	unsigned char myBuffer [4];
+	myBuffer[0] = 0x01;
+	myBuffer[1] = 0xFF;
+
+	unsigned int counter = 0;
+	unsigned int retVal = GetNumberFromBuffer(myBuffer, counter, 2);
+
+	ExpectedValue valueList[1];
+	valueList[0].valueName = "Returned Number";
+	valueList[0].expectedValue = 511;
+	valueList[0].actualValue = retVal;
+
+	CheckResults(TestName, valueList, 1);
+}
+
 void TestActionAndResponseOpCodes()
 {
 	TestClearOutputBufferAndAddChar();
 	TestMemoryDumpROP();
 	TestHeepDeviceCOP();
+	TestNumberFromBuffer();
 }
