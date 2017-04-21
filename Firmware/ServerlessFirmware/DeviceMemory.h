@@ -36,8 +36,9 @@ unsigned long GetNumberFromBuffer(unsigned char* buffer, unsigned int &counter, 
 
 	for(int i = 0; i < numBytes; i++)
 	{
-		int curNum = buffer[counter+i];
+		int curNum = buffer[counter];
 		number += curNum << (8 * (numBytes-i-1));
+		counter++;
 	}
 
 	return number;
@@ -169,7 +170,7 @@ unsigned int GetXYFromMemory(int &x, int &y, unsigned long deviceID, unsigned in
 		if(deviceMemory[counter] == FrontEndPositionOpCode)
 		{
 			XYMemPosition = counter;
-			
+
 			unsigned long tempDeviceID = 0;
 			counter = ParseXYOpCode(x, y, tempDeviceID, counter);
 

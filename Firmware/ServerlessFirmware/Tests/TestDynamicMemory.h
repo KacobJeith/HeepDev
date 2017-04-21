@@ -531,6 +531,32 @@ void TestSetVertexOpCode()
 	CheckResults(TestName, valueList, 16);
 }
 
+void TestGetXYFromMemory()
+{
+	std::string TestName = "Get Front End XY";
+
+	ClearDeviceMemory();
+	SetXYInMemory(312, 513, 0x01020304);
+
+	int x = 0; int y = 0; unsigned long deviceID = 0x01020304; unsigned int xyMemPosition = 0; 
+	int retVal = GetXYFromMemory(x, y, deviceID, xyMemPosition);
+
+	ExpectedValue valueList [3];
+	valueList[0].valueName = "X Position";
+	valueList[0].expectedValue = 312;
+	valueList[0].actualValue = x;
+
+	valueList[1].valueName = "Y Position";
+	valueList[1].expectedValue = 513;
+	valueList[1].actualValue = y;
+
+	valueList[2].valueName = "Success Return";
+	valueList[2].expectedValue = 0;
+	valueList[2].actualValue = retVal;
+
+	CheckResults(TestName, valueList, 3);
+}
+
 void TestDynamicMemory()
 {
 	TestAddCharToBuffer();
@@ -546,4 +572,5 @@ void TestDynamicMemory()
 	TestSetXYOpCode();
 	TestSetIPOpCode();
 	TestSetVertexOpCode();
+	TestGetXYFromMemory();
 }
