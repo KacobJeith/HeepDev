@@ -129,8 +129,6 @@ void FillOutputBufferWithError(char* message, int stringLength)
 
 void ExecuteMemoryDumpOpCode()
 {
-	unsigned long counter = 1;
-
 	FillOutputBufferWithMemoryDump();
 }
 
