@@ -17,6 +17,12 @@ struct Vertex
 	HeepIPAddress rxIPAddress;
 };
 
+struct VertexPointer
+{
+	unsigned int vertexAddress;
+	unsigned char SendOutput;
+};
+
 struct Control
 {
 	unsigned char controlID;
