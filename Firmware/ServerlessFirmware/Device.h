@@ -33,3 +33,16 @@ int SetControlValueByID(unsigned char controlID, unsigned int value)
 
 	return 1;
 }	
+
+int GetControlValueByID(unsigned controlID)
+{
+	for(int i = 0; i < numberOfControls; i++)
+	{
+		if(controlList[i].controlID == controlID)
+		{
+			return controlList[i].curValue;
+		}
+	}
+
+	return 0;
+}
