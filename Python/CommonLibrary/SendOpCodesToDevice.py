@@ -15,7 +15,15 @@ def PrintDataAsByteArray(byteArray) :
 
 	print myArr
 
-myArray = [chr(0x09), chr(0x02), chr(0x00), chr(0x00)]
+def GetIsDeviceArray() :
+	myArray = [chr(0x09), chr(0x04), chr(0x01), chr(0x00), chr(0x02), chr(0x20)]
+	return myArray
+
+def GetSetXYPositionArray() :
+	myArray = [chr(0x0B), chr(0x04), chr(0x01), chr(0x00), chr(0x02), chr(0x20)]
+	return myArray
+
+myArray = GetIsDeviceArray()
 
 myString = ""
 for x in range(0, len(myArray)) :
