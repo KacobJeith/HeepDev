@@ -557,6 +557,40 @@ void TestGetXYFromMemory()
 	CheckResults(TestName, valueList, 3);
 }
 
+void TestSkipOpCode()
+{
+	std::string TestName = "Skip Op Code";
+
+	ClearDeviceMemory();
+	HeepIPAddress myIP;
+	myIP.Octet4 = 192;
+	myIP.Octet3 = 168;
+	myIP.Octet2 = 1;
+	myIP.Octet1 = 100;
+	SetIPInMemory(myIP, 0x01020304);
+	char* deviceName = "Jacob";
+	SetDeviceNameInMemory(deviceName, strlen(deviceName), 0x01020304);
+	SetXYInMemory(312, 513, 0x01020304);
+
+	int x = 0; int y = 0; unsigned long deviceID = 0x01020304; unsigned int xyMemPosition = 0; 
+	int retVal = GetXYFromMemory(x, y, deviceID, xyMemPosition);
+
+	ExpectedValue valueList [3];
+	valueList[0].valueName = "X Position";
+	valueList[0].expectedValue = 312;
+	valueList[0].actualValue = x;
+
+	valueList[1].valueName = "Y Position";
+	valueList[1].expectedValue = 513;
+	valueList[1].actualValue = y;
+
+	valueList[2].valueName = "Success Return";
+	valueList[2].expectedValue = 0;
+	valueList[2].actualValue = retVal;
+
+	CheckResults(TestName, valueList, 3);
+}
+
 void TestDynamicMemory()
 {
 	TestAddCharToBuffer();
@@ -573,4 +607,5 @@ void TestDynamicMemory()
 	TestSetIPOpCode();
 	TestSetVertexOpCode();
 	TestGetXYFromMemory();
+	TestSkipOpCode();
 }
