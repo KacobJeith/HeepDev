@@ -33,4 +33,12 @@ class mobile_iosTests: XCTestCase {
         }
     }
     
+    //MARK: Device Class Tests
+    //Confirm that the Device initializer returns a Device Object when passed valid parameters. 
+    
+    func testDeviceInitializationSucceeds() {
+        let basicDevice = Device.init(name: "Blinky", photo: nil)
+        XCTAssertNotNil(basicDevice)
+    }
+    
 }
