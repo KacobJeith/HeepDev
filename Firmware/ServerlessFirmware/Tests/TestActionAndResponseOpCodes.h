@@ -229,6 +229,74 @@ void TestSetPositionOpCode()
 	CheckResults(TestName, valueList, 4);
 }
 
+void TestSetVertxCOP()
+{
+	std::string TestName = "Test Set Vertex COP";
+
+	ClearDeviceMemory();
+	ClearInputBuffer();
+
+	inputBuffer[0] = 0x0C;
+	inputBuffer[1] = 0x04;
+
+	inputBuffer[2] = 0xF1;
+	inputBuffer[3] = 0x02;
+	inputBuffer[4] = 0xB2;
+	inputBuffer[5] = 0x3C;
+
+	inputBuffer[6] = 0x1A;
+	inputBuffer[7] = 0x2D;
+	inputBuffer[8] = 0x40;
+	inputBuffer[9] = 0x02;
+
+	inputBuffer[10] = 0x01;
+	inputBuffer[11] = 0x02;
+
+	inputBuffer[12] = 0xC0;
+	inputBuffer[13] = 0xD0;
+	inputBuffer[14] = 0x20;
+	inputBuffer[15] = 0x02;
+	ExecuteControlOpCodes();
+
+	Vertex newVertex;
+	int success = GetVertexAtPonter(0, newVertex);
+
+	ExpectedValue valueList [8];
+	valueList[0].valueName = "TXID";
+	valueList[0].expectedValue = 0xF102B23C;
+	valueList[0].actualValue = newVertex.txID;
+
+	valueList[1].valueName = "RXID";
+	valueList[1].expectedValue = 0x1A2D4002;
+	valueList[1].actualValue = newVertex.rxID;
+
+	valueList[2].valueName = "TX Control ID";
+	valueList[2].expectedValue = 0x01;
+	valueList[2].actualValue = newVertex.txControlID;
+
+	valueList[3].valueName = "RX Control ID";
+	valueList[3].expectedValue = 0x02;
+	valueList[3].actualValue = newVertex.rxControlID;
+
+	valueList[4].valueName = "IP 4";
+	valueList[4].expectedValue = 0xC0;
+	valueList[4].actualValue = newVertex.rxIPAddress.Octet4;
+
+	valueList[5].valueName = "IP 3";
+	valueList[5].expectedValue = 0xD0;
+	valueList[5].actualValue = newVertex.rxIPAddress.Octet3;
+
+	valueList[6].valueName = "IP 2";
+	valueList[6].expectedValue = 0x20;
+	valueList[6].actualValue = newVertex.rxIPAddress.Octet2;
+
+	valueList[7].valueName = "IP 1";
+	valueList[7].expectedValue = 0x02;
+	valueList[7].actualValue = newVertex.rxIPAddress.Octet1;
+
+	CheckResults(TestName, valueList, 8);
+}
+
 void TestActionAndResponseOpCodes()
 {
 	TestClearOutputBufferAndAddChar();
@@ -238,4 +306,5 @@ void TestActionAndResponseOpCodes()
 	TestSetValSuccess();
 	TestSetValFailure();
 	TestSetPositionOpCode();
+	TestSetVertxCOP();
 }
