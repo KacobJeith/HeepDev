@@ -224,6 +224,26 @@ void SetIPInMemory(HeepIPAddress theIP, unsigned long deviceID)
 	AddIPToMemory(theIP);
 }
 
+int GetVertexAtPonter(unsigned long pointer, Vertex &returnedVertex)
+{
+	if(deviceMemory[pointer] != VertexOpCode)
+		return 1;
+
+	unsigned int counter = pointer + 1;
+
+	returnedVertex.txID = GetNumberFromBuffer(deviceMemory, counter, 4);
+	int numBytes = GetNumberFromBuffer(deviceMemory, counter, 1);
+	returnedVertex.rxID = GetNumberFromBuffer(deviceMemory, counter, 4);
+	returnedVertex.txControlID = GetNumberFromBuffer(deviceMemory, counter, 1);
+	returnedVertex.rxControlID = GetNumberFromBuffer(deviceMemory, counter, 1);
+	returnedVertex.rxIPAddress.Octet4 = GetNumberFromBuffer(deviceMemory, counter, 1);
+	returnedVertex.rxIPAddress.Octet3 = GetNumberFromBuffer(deviceMemory, counter, 1);
+	returnedVertex.rxIPAddress.Octet2 = GetNumberFromBuffer(deviceMemory, counter, 1);
+	returnedVertex.rxIPAddress.Octet1 = GetNumberFromBuffer(deviceMemory, counter, 1);
+
+	return 0;
+}
+
 int SetVertexInMemory(Vertex theVertex)
 {
 	int beginningOfMemory = curFilledMemory;
