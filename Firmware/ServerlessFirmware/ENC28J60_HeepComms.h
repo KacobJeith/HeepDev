@@ -47,5 +47,7 @@ void CheckServerForInputs()
 
 	  	client.print(outputData);
 		client.stop();
+
+		free(outputData);
     }
 }
