@@ -6,7 +6,7 @@ unsigned int firmwareVersion = FIRMWARE_VERSION;
 Control controlList [NUM_CONTROLS];
 unsigned int numberOfControls = 0;
 
-VertexPointer vertexPointerList[NUM_VERTICES];
+unsigned int vertexPointerList[NUM_VERTICES];
 unsigned int numberOfVertices = 0;
 
 void ClearControls()
@@ -19,14 +19,6 @@ void ClearVertices()
 	numberOfVertices = 0;
 }
 
-void ClearOutputList()
-{
-	for(int i = 0; i < numberOfVertices; i++)
-	{
-		vertexPointerList[i].SendOutput = 0;
-	}
-}
-
 void AddControl(Control myControl)
 {
 	controlList[numberOfControls] = myControl;
@@ -36,7 +28,7 @@ void AddControl(Control myControl)
 void AddVertex(Vertex myVertex)
 {
 	unsigned int pointerToVertex = SetVertexInMemory(myVertex);
-	vertexPointerList[numberOfVertices].vertexAddress = pointerToVertex;
+	vertexPointerList[numberOfVertices] = pointerToVertex;
 	numberOfVertices++;
 }
 
