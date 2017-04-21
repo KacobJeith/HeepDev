@@ -199,7 +199,7 @@ void ExecuteSetVertexOpCode()
 void ExecuteControlOpCodes()
 {
 	unsigned char ControlOpCode = inputBuffer[0];
-	if(ControlOpCode == MemoryDumpOpCode)
+	if(ControlOpCode == IsHeepDeviceOpCode)
 	{
 		ExecuteMemoryDumpOpCode();
 	}

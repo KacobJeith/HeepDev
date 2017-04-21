@@ -15,7 +15,7 @@ void CreateInterruptServer()
 	server.begin();
 }
 
-void CheckServerForInputs(char* inputBuffer)
+void CheckServerForInputs()
 {
 	if (EthernetClient client = server.available())
     {
