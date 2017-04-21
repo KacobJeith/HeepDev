@@ -52,6 +52,15 @@ unsigned long CalculateCoreMemorySize()
 	return coreMemorySize + CalculateControlDataSize();
 }
 
+void FillOutputBufferWithSetValCOP(unsigned char controlID, unsigned char value)
+{
+	ClearOutputBuffer();
+	AddNewCharToOutputBuffer(SetValueOpCode);
+	AddNewCharToOutputBuffer(2);
+	AddNewCharToOutputBuffer(controlID);
+	AddNewCharToOutputBuffer(value);
+}
+
 void FillOutputBufferWithControlData()
 {
 	for(int i = 0; i < numberOfControls; i++)

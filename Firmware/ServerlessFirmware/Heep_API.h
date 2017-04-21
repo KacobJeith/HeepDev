@@ -12,7 +12,7 @@ void SendOutputByID(unsigned char controlID, unsigned int value)
 
 		if(newVertex.txID == deviceID && newVertex.txControlID == controlID)
 		{
-			// Fill Output Buffer
+			FillOutputBufferWithSetValCOP(controlID, value);
 			SendOutputBufferToIP(newVertex.rxIPAddress);
 		}
 	}
