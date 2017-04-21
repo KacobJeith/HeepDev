@@ -197,6 +197,25 @@ void SetXYInMemory(int x, int y, unsigned long deviceID)
 	AddNumberToMemoryWithSpecifiedBytes(y, 2);
 }
 
+void UpdateXYInMemory(int x, int y, unsigned long deviceID)
+{
+	int curX = 0; int curY = 0; 
+	unsigned int XYMemPosition = 0;
+	unsigned int success = GetXYFromMemory(curX, curY, deviceID, XYMemPosition);
+
+	if(success == 0)
+	{
+		deviceMemory[XYMemPosition + 6] = (curX >> 8)%256;
+		deviceMemory[XYMemPosition + 7] = curX%256
+		deviceMemory[XYMemPosition + 8] = (curY >> 8)%256;
+		deviceMemory[XYMemPosition + 9] - (curY%256;)
+	}
+	else
+	{
+		SetXYInMemory(x, y, deviceID);
+	}
+}
+
 void SetIPInMemory(HeepIPAddress theIP, unsigned long deviceID)
 {
 	AddNewCharToMemory(DeviceIPOpCode);
