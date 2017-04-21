@@ -154,6 +154,20 @@ void ExecuteSetValOpCode()
 	}
 }
 
+void ExecuteSetPositionOpCode()
+{
+	unsigned int counter = 1;
+	unsigned char numBytes = inputBuffer[counter++];
+	unsigned int xValue = GetNumberFromBuffer(inputBuffer, counter, 2);
+	unsigned int yValue = GetNumberFromBuffer(inputBuffer, counter, 2);
+
+	UpdateXYInMemory(xValue, yValue, deviceID);
+
+	ClearOutputBuffer();
+	char SuccessMessage [] = "Value Set";
+	FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
+}
+
 void ExecuteControlOpCodes()
 {
 	unsigned char ControlOpCode = inputBuffer[0];
@@ -164,6 +178,10 @@ void ExecuteControlOpCodes()
 	else if(ControlOpCode == SetValueOpCode)
 	{
 		ExecuteSetValOpCode();
+	}
+	else if(ControlOpCode == SetPositionOpCode)
+	{
+		ExecuteSetPositionOpCode();
 	}
 }
 
