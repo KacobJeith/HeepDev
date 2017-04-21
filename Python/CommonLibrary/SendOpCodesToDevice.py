@@ -23,7 +23,11 @@ def GetSetXYPositionArray() :
 	myArray = [chr(0x0B), chr(0x04), chr(0x01), chr(0x00), chr(0x02), chr(0x20)]
 	return myArray
 
-myArray = GetIsDeviceArray()
+def GetSetValueArray() :
+	myArray = [chr(0x0A), chr(0x02), chr(0x00), chr(0x02)]
+	return myArray
+
+myArray = GetSetValueArray()
 
 myString = ""
 for x in range(0, len(myArray)) :
