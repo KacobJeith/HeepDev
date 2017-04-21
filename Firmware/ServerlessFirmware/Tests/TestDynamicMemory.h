@@ -531,6 +531,63 @@ void TestSetVertexOpCode()
 	CheckResults(TestName, valueList, 16);
 }
 
+void TestGetVertex()
+{
+	std::string TestName = "Get Vertex From Memory";
+
+	ClearDeviceMemory();
+	Vertex myVertex;
+	HeepIPAddress myIP;
+	myIP.Octet4 = 192;
+	myIP.Octet3 = 168;
+	myIP.Octet2 = 1;
+	myIP.Octet1 = 100;
+	myVertex.rxIPAddress = myIP;
+	myVertex.txID = 0x01020304;
+	myVertex.rxID = 0x09080706;
+	myVertex.txControlID = 0x01;
+	myVertex.rxControlID = 0x02;
+	SetVertexInMemory(myVertex);
+
+	Vertex newVertex;
+	int success = GetVertexAtPonter(0, newVertex);
+
+	ExpectedValue valueList [8];
+	valueList[0].valueName = "TXID";
+	valueList[0].expectedValue = myVertex.txID;
+	valueList[0].actualValue = newVertex.txID;
+
+	valueList[1].valueName = "RXID";
+	valueList[1].expectedValue = myVertex.rxID;
+	valueList[1].actualValue = newVertex.rxID;
+
+	valueList[2].valueName = "TX Control ID";
+	valueList[2].expectedValue = myVertex.txControlID;
+	valueList[2].actualValue = newVertex.txControlID;
+
+	valueList[3].valueName = "RX Control ID";
+	valueList[3].expectedValue = myVertex.rxControlID;
+	valueList[3].actualValue = newVertex.rxControlID;
+
+	valueList[4].valueName = "IP 4";
+	valueList[4].expectedValue = myVertex.rxIPAddress.Octet4;
+	valueList[4].actualValue = newVertex.rxIPAddress.Octet4;
+
+	valueList[5].valueName = "IP 3";
+	valueList[5].expectedValue = myVertex.rxIPAddress.Octet3;
+	valueList[5].actualValue = newVertex.rxIPAddress.Octet3;
+
+	valueList[6].valueName = "IP 2";
+	valueList[6].expectedValue = myVertex.rxIPAddress.Octet2;
+	valueList[6].actualValue = newVertex.rxIPAddress.Octet2;
+
+	valueList[7].valueName = "IP 1";
+	valueList[7].expectedValue = myVertex.rxIPAddress.Octet1;
+	valueList[7].actualValue = newVertex.rxIPAddress.Octet1;
+
+	CheckResults(TestName, valueList, 8);
+}
+
 void TestGetXYFromMemory()
 {
 	std::string TestName = "Get Front End XY";
@@ -650,4 +707,5 @@ void TestDynamicMemory()
 	TestGetXYFromMemory();
 	TestSkipOpCode();
 	TestUpdateXYPosition();
+	TestGetVertex();
 }
