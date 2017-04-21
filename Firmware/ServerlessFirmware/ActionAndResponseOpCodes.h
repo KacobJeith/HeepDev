@@ -150,7 +150,21 @@ void ExecuteSetValOpCode()
 	unsigned int counter = 1;
 	unsigned char numBytes = inputBuffer[counter++];
 	unsigned char controlID = inputBuffer[counter++];
+	unsigned int value = GetNumberFromBuffer(inputBuffer, counter, numBytes - 1);
 
+	int success = SetControlValueByID(controlID, value);
+
+	ClearOutputBuffer();
+	if(success == 0)
+	{
+		char SuccessMessage [] = "Value Set";
+		FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
+	}
+	else 
+	{
+		char ErrorMessage [] = "Failed to Set";
+		FillOutputBufferWithError(ErrorMessage, strlen(ErrorMessage));
+	}
 }
 
 void ExecuteControlOpCodes()

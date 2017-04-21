@@ -19,3 +19,17 @@ void SetDeviceIDAndName(unsigned long newDeviceID, char* deviceName)
 	int deviceNameLength = strlen(deviceName);
 	SetDeviceNameInMemory(deviceName, deviceNameLength, newDeviceID);
 }
+
+int SetControlValueByID(unsigned char controlID, unsigned int value)
+{
+	for(int i = 0; i < numberOfControls; i++)
+	{
+		if(controlList[i].controlID == controlID)
+		{
+			controlList[i].curValue = value;
+			return 0;
+		}
+	}
+
+	return 1;
+}	
