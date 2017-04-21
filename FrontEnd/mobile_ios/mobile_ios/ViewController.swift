@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftSocket
 
 class ViewController: UIViewController {
 
@@ -22,6 +23,7 @@ class ViewController: UIViewController {
     
     @IBAction func searchForHeepDevices() {
         // Insert TCP Search Here
+        print("Searching...")
     }
 
 
