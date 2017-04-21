@@ -181,6 +181,54 @@ void TestSetValFailure()
 	CheckResults(TestName, valueList, 2);
 }
 
+void TestSetPositionOpCode()
+{
+	std::string TestName = "Test Set Position COP";
+
+	ClearControls();
+	SetDeviceIDAndName(0x06040601, "Test");
+
+	ClearInputBuffer();
+	inputBuffer[0] = 0x0B;
+	inputBuffer[1] = 0x04;
+	inputBuffer[2] = 0x01;
+	inputBuffer[3] = 0x01;
+	inputBuffer[4] = 0x10;
+	inputBuffer[5] = 0x10;
+	ExecuteControlOpCodes();
+	int x = 0; int y = 0; unsigned long deviceID = 0x06040601; unsigned int xyMemPosition = 0; 
+	GetXYFromMemory(x, y, deviceID, xyMemPosition);
+
+	ExpectedValue valueList[4];
+	valueList[0].valueName = "x";
+	valueList[0].expectedValue = 0x0101;
+	valueList[0].actualValue = x;
+
+	valueList[1].valueName = "y";
+	valueList[1].expectedValue = 0x1010;
+	valueList[1].actualValue = y;
+
+	ClearInputBuffer();
+	inputBuffer[0] = 0x0B;
+	inputBuffer[1] = 0x04;
+	inputBuffer[2] = 0xF1;
+	inputBuffer[3] = 0x02;
+	inputBuffer[4] = 0xB2;
+	inputBuffer[5] = 0x3C;
+	ExecuteControlOpCodes();
+	GetXYFromMemory(x, y, deviceID, xyMemPosition);
+
+	valueList[2].valueName = "x";
+	valueList[2].expectedValue = 0xF102;
+	valueList[2].actualValue = x;
+
+	valueList[3].valueName = "y";
+	valueList[3].expectedValue = 0xB23C;
+	valueList[3].actualValue = y;
+
+	CheckResults(TestName, valueList, 4);
+}
+
 void TestActionAndResponseOpCodes()
 {
 	TestClearOutputBufferAndAddChar();
@@ -189,4 +237,5 @@ void TestActionAndResponseOpCodes()
 	TestNumberFromBuffer();
 	TestSetValSuccess();
 	TestSetValFailure();
+	TestSetPositionOpCode();
 }
