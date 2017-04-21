@@ -9,8 +9,8 @@ void CreateInterruptServer()
 {
 	uint8_t mac[6] = {0x00,0x01,0x02,0x03,0x04,0x08};
   	Ethernet.begin(mac);
-	IPAddress serverIP = Ethernet.gatewayIP();
-	Serial.println(serverIP);
+	IPAddress localIP = Ethernet.localIP();
+	Serial.println(localIP);
 
 	server.begin();
 }
