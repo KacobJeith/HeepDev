@@ -68,7 +68,7 @@ void SendOutputBufferToIP(HeepIPAddress destIP)
 
 	if (client.connect(clientIP,TCP_PORT))
 	{
-      	client.print(outputBuffer);
+      	client.print(outputData);
       	next = millis() + 200;
       	while(client.available()==0)
         {
