@@ -51,3 +51,53 @@ void CheckServerForInputs()
 		free(outputData);
     }
 }
+
+void SendOutputBufferToIP(HeepIPAddress destIP)
+{
+	IPAddress clientIP(destIP.Octet4, destIP.Octet3, destIP.Octet2, destIP.Octet1);
+
+	long next = 200;
+
+	Serial.println(clientIP);
+
+	char* outputData = (char*)malloc(outputBufferLastByte);
+	for(int i = 0; i < outputBufferLastByte; i++)
+  	{
+  		outputData[i] = outputBuffer[i];
+  	}
+
+	if (client.connect(clientIP,TCP_PORT))
+	{
+      	client.print(outputBuffer);
+      	next = millis() + 200;
+      	while(client.available()==0)
+        {
+        	long curTimeSigned = millis();
+          	if (next - curTimeSigned < 0)
+          	{
+          		Serial.println("PastTimeout");
+          		goto pastTimeout;
+          	}
+           
+        }
+
+      	int size;
+      	while((size = client.available()) > 0)
+      	{
+      		Serial.println("Client Available is big");
+          	uint8_t* msg = (uint8_t*)malloc(size);
+          	size = client.read(msg,size);
+
+          	for(int i = 0; i < size; i++)
+          	{
+          		inputBuffer[i] = msg[i];
+          	}
+
+	     	free(msg);
+      	}
+pastTimeout:
+      client.stop();
+    }
+
+    free(outputData);
+}
