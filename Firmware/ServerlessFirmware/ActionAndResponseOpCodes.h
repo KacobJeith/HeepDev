@@ -75,6 +75,8 @@ void FillOutputBufferWithControlData()
 
 void FillOutputBufferWithMemoryDump()
 {
+	ClearOutputBuffer();
+	
 	AddNewCharToOutputBuffer(MemoryDumpOpCode);
 	AddDeviceIDToOutputBuffer(deviceID);
 
@@ -99,6 +101,8 @@ void FillOutputBufferWithMemoryDump()
 
 void FillOutputBufferWithSuccess(char* message, int stringLength)
 {
+	ClearOutputBuffer();
+
 	AddNewCharToOutputBuffer(SuccessOpCode);
 	AddDeviceIDToOutputBuffer(deviceID);
 
@@ -114,6 +118,8 @@ void FillOutputBufferWithSuccess(char* message, int stringLength)
 
 void FillOutputBufferWithError(char* message, int stringLength)
 {
+	ClearOutputBuffer();
+
 	AddNewCharToOutputBuffer(ErrorOpCode);
 	AddDeviceIDToOutputBuffer(deviceID);
 
@@ -141,7 +147,6 @@ void ExecuteSetValOpCode()
 
 	int success = SetControlValueByID(controlID, value);
 
-	ClearOutputBuffer();
 	if(success == 0)
 	{
 		char SuccessMessage [] = "Value Set";
@@ -163,7 +168,6 @@ void ExecuteSetPositionOpCode()
 
 	UpdateXYInMemory(xValue, yValue, deviceID);
 
-	ClearOutputBuffer();
 	char SuccessMessage [] = "Value Set";
 	FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
 }
