@@ -35,6 +35,12 @@ class ViewController: UIViewController {
         switch client.connect(timeout:1){
             case .success:
                 print("success")
+                switch client.send(string: "IsHeepDevice:") {
+                    case .success:
+                        print("GotData")
+                    case .failure(let error):
+                        print(error)
+                }
             case .failure(let error):
                 print(error)
         }
