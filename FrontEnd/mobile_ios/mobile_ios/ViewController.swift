@@ -24,6 +24,21 @@ class ViewController: UIViewController {
     @IBAction func searchForHeepDevices() {
         // Insert TCP Search Here
         print("Searching...")
+        testSocket()
+        
+        
+    }
+    
+    private func testSocket() {
+        let client = TCPClient(address:"192.168.0.104", port:5000)
+        
+        switch client.connect(timeout:1){
+            case .success:
+                print("success")
+            case .failure(let error):
+                print(error)
+        }
+        
     }
 
 
