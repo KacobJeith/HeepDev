@@ -188,6 +188,12 @@ void ExecuteSetVertexOpCode()
 	myVertex.rxControlID = rxControl;
 	myVertex.txControlID = txControl;
 	myVertex.rxIPAddress = vertexIP;
+
+	AddVertex(myVertex);
+
+	ClearOutputBuffer();
+	char SuccessMessage [] = "Vertex Set";
+	FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
 }
 
 void ExecuteControlOpCodes()

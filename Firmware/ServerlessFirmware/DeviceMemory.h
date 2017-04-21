@@ -25,7 +25,7 @@ const unsigned char ErrorOpCode = 0x11;
 const unsigned char FragmentOpCode = 0x12;
 
 unsigned char deviceMemory [MAX_MEMORY];
-int curFilledMemory = 0; // Indicate the curent filled memory. 
+unsigned int curFilledMemory = 0; // Indicate the curent filled memory. 
 						 // Also serve as a place holder to 
 						 // show the back of allocated memory
 
@@ -224,8 +224,10 @@ void SetIPInMemory(HeepIPAddress theIP, unsigned long deviceID)
 	AddIPToMemory(theIP);
 }
 
-void SetVertexInMemory(Vertex theVertex)
+int SetVertexInMemory(Vertex theVertex)
 {
+	int beginningOfMemory = curFilledMemory;
+
 	AddNewCharToMemory(VertexOpCode);
 	AddDeviceIDToMemory(theVertex.txID);
 	AddNewCharToMemory((char)10);
@@ -233,4 +235,6 @@ void SetVertexInMemory(Vertex theVertex)
 	AddNewCharToMemory(theVertex.txControlID);
 	AddNewCharToMemory(theVertex.rxControlID);
 	AddIPToMemory(theVertex.rxIPAddress);
+
+	return beginningOfMemory;
 }

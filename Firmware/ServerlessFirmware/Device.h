@@ -4,17 +4,32 @@ unsigned long deviceID;
 unsigned int firmwareVersion = FIRMWARE_VERSION;
 
 Control controlList [NUM_CONTROLS];
-unsigned long numberOfControls = 0;
+unsigned int numberOfControls = 0;
+
+unsigned int vertexPointerList[NUM_VERTICES];
+unsigned int numberOfVertices = 0;
 
 void ClearControls()
 {
 	numberOfControls = 0;
 }
 
+void ClearVertices()
+{
+	numberOfVertices = 0;
+}
+
 void AddControl(Control myControl)
 {
 	controlList[numberOfControls] = myControl;
 	numberOfControls++;
+}
+
+void AddVertex(Vertex myVertex)
+{
+	unsigned int pointerToVertex = SetVertexInMemory(myVertex);
+	vertexPointerList[numberOfVertices] = pointerToVertex;
+	numberOfVertices++;
 }
 
 void SetDeviceIDAndName(unsigned long newDeviceID, char* deviceName)
