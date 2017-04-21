@@ -127,19 +127,6 @@ void FillOutputBufferWithError(char* message, int stringLength)
 	}
 }
 
-unsigned int GetNumberFromBuffer(unsigned char* buffer, unsigned int &counter, unsigned char numBytes)
-{
-	unsigned int number = 0;
-
-	for(int i = 0; i < numBytes; i++)
-	{
-		int curNum = buffer[counter+i];
-		number += curNum << (8 * (numBytes-i-1));
-	}
-
-	return number;
-}
-
 void ExecuteMemoryDumpOpCode()
 {
 	FillOutputBufferWithMemoryDump();

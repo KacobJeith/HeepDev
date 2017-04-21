@@ -29,6 +29,30 @@ int curFilledMemory = 0; // Indicate the curent filled memory.
 						 // Also serve as a place holder to 
 						 // show the back of allocated memory
 
+
+unsigned long GetNumberFromBuffer(unsigned char* buffer, unsigned int &counter, unsigned char numBytes)
+{
+	unsigned long number = 0;
+
+	for(int i = 0; i < numBytes; i++)
+	{
+		int curNum = buffer[counter+i];
+		number += curNum << (8 * (numBytes-i-1));
+	}
+
+	return number;
+}
+
+unsigned int SkipOpCode(unsigned int counter)
+{
+	counter += 5;
+
+	unsigned int bytesToSkip = deviceMemory[counter];
+	counter += bytesToSkip + 1;
+
+	return counter;
+}
+
 void ClearDeviceMemory()
 {
 	curFilledMemory = 0;
@@ -122,6 +146,45 @@ void SetIconDataInMemory(char* iconData, int numCharacters, unsigned long device
 	{
 		AddNewCharToMemory(iconData[i]);
 	}
+}
+
+unsigned int ParseXYOpCode(int &x, int &y, unsigned long &deviceID, unsigned int counter)
+{
+	counter ++;
+
+	deviceID = GetNumberFromBuffer(deviceMemory, counter, 4);
+	GetNumberFromBuffer(deviceMemory, counter, 1);
+	x = GetNumberFromBuffer(deviceMemory, counter, 2);
+	y = GetNumberFromBuffer(deviceMemory, counter, 2);
+
+	return counter;
+}
+
+unsigned int GetXYFromMemory(int &x, int &y, unsigned long deviceID, unsigned int &XYMemPosition)
+{
+	unsigned int counter = 0;
+
+	while(counter < curFilledMemory)
+	{
+		if(deviceMemory[counter] == FrontEndPositionOpCode)
+		{
+			XYMemPosition = counter;
+			
+			unsigned long tempDeviceID = 0;
+			counter = ParseXYOpCode(x, y, tempDeviceID, counter);
+
+			if(tempDeviceID == deviceID)
+			{
+				return 0;
+			}
+		}
+		else
+		{
+			counter = SkipOpCode(counter);
+		}
+	}
+
+	return 1;
 }
 
 void SetXYInMemory(int x, int y, unsigned long deviceID)
