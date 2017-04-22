@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		101D2F631EA968230074D807 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101D2F621EA968230074D807 /* AppDelegate.swift */; };
-		101D2F651EA968230074D807 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101D2F641EA968230074D807 /* ViewController.swift */; };
 		101D2F681EA968230074D807 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 101D2F661EA968230074D807 /* Main.storyboard */; };
 		101D2F6B1EA968230074D807 /* mobile_ios.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 101D2F691EA968230074D807 /* mobile_ios.xcdatamodeld */; };
 		101D2F701EA968230074D807 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 101D2F6E1EA968230074D807 /* LaunchScreen.storyboard */; };
@@ -47,7 +46,6 @@
 		04FE62370CD9FBCA0A3E91F8 /* Pods-mobile_iosTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mobile_iosTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-mobile_iosTests/Pods-mobile_iosTests.release.xcconfig"; sourceTree = "<group>"; };
 		101D2F5F1EA968230074D807 /* mobile_ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = mobile_ios.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		101D2F621EA968230074D807 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		101D2F641EA968230074D807 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		101D2F671EA968230074D807 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		101D2F6A1EA968230074D807 /* mobile_ios.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = mobile_ios.xcdatamodel; sourceTree = "<group>"; };
 		101D2F6C1EA968230074D807 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = mobile_ios/Assets.xcassets; sourceTree = SOURCE_ROOT; };
@@ -128,7 +126,6 @@
 			isa = PBXGroup;
 			children = (
 				101D2F621EA968230074D807 /* AppDelegate.swift */,
-				101D2F641EA968230074D807 /* ViewController.swift */,
 				EEA944261EAA9EF40022588B /* DeviceTableViewController.swift */,
 				EEA944281EAAA1820022588B /* Device.swift */,
 				EEA944241EAA97BF0022588B /* DeviceTableViewCell.swift */,
@@ -466,7 +463,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				101D2F651EA968230074D807 /* ViewController.swift in Sources */,
 				EEA944271EAA9EF40022588B /* DeviceTableViewController.swift in Sources */,
 				EEA944251EAA97BF0022588B /* DeviceTableViewCell.swift in Sources */,
 				EEA944211EAA7D880022588B /* HAPIMemoryParser.swift in Sources */,
