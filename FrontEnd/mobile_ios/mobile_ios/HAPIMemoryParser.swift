@@ -18,4 +18,8 @@ class HAPIMemoryParser {
         return bufferarray
     }
     
+    public static func ParseMemoryDump(dump: [UInt8]) {
+        
+    }
+    
 }

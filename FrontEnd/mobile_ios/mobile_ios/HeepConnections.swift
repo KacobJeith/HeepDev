@@ -11,7 +11,7 @@ import SwiftSocket
 class HeepConnections {
     public static func testSocket() {
         
-        let client = TCPClient(address:"192.168.0.100", port:5000)
+        let client = TCPClient(address:"192.168.1.181", port:5000)
         
         switch client.connect(timeout:1){
         case .success:
