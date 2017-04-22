@@ -68,6 +68,7 @@ void FillOutputBufferWithControlData()
 		AddNewCharToOutputBuffer(ControlOpCode);
 		AddDeviceIDToOutputBuffer(deviceID);
 		unsigned int byteSize = strlen(controlList[i].controlName) + 6;
+		AddNewCharToOutputBuffer(byteSize);
 		AddNewCharToOutputBuffer(controlList[i].controlID);
 		AddNewCharToOutputBuffer(controlList[i].controlType);
 		AddNewCharToOutputBuffer(controlList[i].controlDirection);
