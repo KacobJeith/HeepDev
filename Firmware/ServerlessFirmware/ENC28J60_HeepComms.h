@@ -30,25 +30,12 @@ void CheckServerForInputs()
 	      }
 	      free(msg);
 
-	      Serial.println("I SAW SOMETHING");
+	      Serial.println("Received Data");
 	      ExecuteControlOpCodes();
 	  	}
 
-	  	// Must be a string. So I used a char
-	  	char* outputData = (char*)malloc(outputBufferLastByte);
-
-	  	for(int i = 0; i < outputBufferLastByte; i++)
-	  	{
-	  		outputData[i] = outputBuffer[i];
-	  	}
-
-	  	Serial.print("OUTPUT: ");
-	  	Serial.println(outputData);
-
-	  	client.print(outputData);
+	  	client.write(outputBuffer, outputBufferLastByte);
 		client.stop();
-
-		free(outputData);
     }
 }
 
@@ -60,15 +47,9 @@ void SendOutputBufferToIP(HeepIPAddress destIP)
 
 	Serial.println(clientIP);
 
-	char* outputData = (char*)malloc(outputBufferLastByte);
-	for(int i = 0; i < outputBufferLastByte; i++)
-  	{
-  		outputData[i] = outputBuffer[i];
-  	}
-
 	if (client.connect(clientIP,TCP_PORT))
 	{
-      	client.print(outputData);
+      	client.write(outputBuffer, outputBufferLastByte);
       	next = millis() + 200;
       	while(client.available()==0)
         {
@@ -84,7 +65,6 @@ void SendOutputBufferToIP(HeepIPAddress destIP)
       	int size;
       	while((size = client.available()) > 0)
       	{
-      		Serial.println("Client Available is big");
           	uint8_t* msg = (uint8_t*)malloc(size);
           	size = client.read(msg,size);
 
@@ -99,5 +79,4 @@ pastTimeout:
       client.stop();
     }
 
-    free(outputData);
 }
