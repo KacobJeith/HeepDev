@@ -22,7 +22,7 @@ class HeepConnections {
                 
             case .success:
                 guard let data = client.read(1024*10) else { return }
-                HAPIMemoryParser.ParseROP(dump: data)
+                _ = HAPIMemoryParser.ParseROP(dump: data)
                 
             case .failure(let error):
                 print(error)

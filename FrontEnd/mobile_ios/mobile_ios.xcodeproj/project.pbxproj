@@ -266,6 +266,7 @@
 					};
 					101D2F751EA968230074D807 = {
 						CreatedOnToolsVersion = 8.3.1;
+						DevelopmentTeam = WKVKE7H364;
 						ProvisioningStyle = Manual;
 						TestTargetID = 101D2F5E1EA968230074D807;
 					};
@@ -629,6 +630,7 @@
 			baseConfigurationReference = 56DF998DD6BBA1F02CEFEE2E /* Pods-mobile_ios.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = WKVKE7H364;
 				INFOPLIST_FILE = mobile_ios/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
@@ -644,6 +646,7 @@
 			baseConfigurationReference = E4A427428745AEB7A4877647 /* Pods-mobile_ios.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = WKVKE7H364;
 				INFOPLIST_FILE = mobile_ios/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
@@ -661,7 +664,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = WKVKE7H364;
 				INFOPLIST_FILE = mobile_iosTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";

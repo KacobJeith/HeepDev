@@ -41,4 +41,18 @@ class mobile_iosTests: XCTestCase {
         XCTAssertNotNil(basicDevice)
     }
     
+    func testROPParser() {
+        XCTAssertEqual(HAPIMemoryParser.ParseROP(dump: [0x0F, 0x13, 0x7F]), 0x0F)
+        
+        XCTAssertEqual(HAPIMemoryParser.ParseROP(dump: [0x10, 0x03, 0x7F]), 0x10)
+        
+        XCTAssertEqual(HAPIMemoryParser.ParseROP(dump: [0xCF, 0x03, 0x7F]), 0xFF)
+        
+    }
+    
+    func testDeviceIDParsing() {
+        let testByteArray : [UInt8] =  [0x01, 0x02, 0x03, 0x04]
+        XCTAssertEqual(HAPIMemoryParser.ParseClientID(dump: testByteArray, index: 0), 16909060)
+    }
+    
 }
