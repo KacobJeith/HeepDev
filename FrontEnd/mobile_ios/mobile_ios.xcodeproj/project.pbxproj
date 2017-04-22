@@ -17,6 +17,7 @@
 		70DC641C8DFD5145B3E2F178 /* Pods_mobile_iosUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9455865AC2AC2771C588F666 /* Pods_mobile_iosUITests.framework */; };
 		AFBAEC1B382B06E54E70DAC7 /* Pods_mobile_iosTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 629528E8C86E48C60E29C454 /* Pods_mobile_iosTests.framework */; };
 		D7A8C048C69A2C379A20948F /* Pods_mobile_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 321E9915FF90A4E39B163211 /* Pods_mobile_ios.framework */; };
+		EE00EB341EABAAB2003F3D5E /* DeviceControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE00EB331EABAAB2003F3D5E /* DeviceControl.swift */; };
 		EEA944211EAA7D880022588B /* HAPIMemoryParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEA944201EAA7D880022588B /* HAPIMemoryParser.swift */; };
 		EEA944231EAA93950022588B /* HeepConnections.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEA944221EAA93950022588B /* HeepConnections.swift */; };
 		EEA944251EAA97BF0022588B /* DeviceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEA944241EAA97BF0022588B /* DeviceTableViewCell.swift */; };
@@ -65,6 +66,7 @@
 		B7918E77C7C5DB9DEBC8629A /* Pods-mobile_iosUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mobile_iosUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-mobile_iosUITests/Pods-mobile_iosUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		E1962A9C5DE87696544789AE /* Pods-mobile_iosTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mobile_iosTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-mobile_iosTests/Pods-mobile_iosTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E4A427428745AEB7A4877647 /* Pods-mobile_ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mobile_ios.release.xcconfig"; path = "Pods/Target Support Files/Pods-mobile_ios/Pods-mobile_ios.release.xcconfig"; sourceTree = "<group>"; };
+		EE00EB331EABAAB2003F3D5E /* DeviceControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceControl.swift; sourceTree = "<group>"; };
 		EEA944201EAA7D880022588B /* HAPIMemoryParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HAPIMemoryParser.swift; sourceTree = "<group>"; };
 		EEA944221EAA93950022588B /* HeepConnections.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeepConnections.swift; sourceTree = "<group>"; };
 		EEA944241EAA97BF0022588B /* DeviceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceTableViewCell.swift; sourceTree = "<group>"; };
@@ -128,6 +130,7 @@
 				101D2F621EA968230074D807 /* AppDelegate.swift */,
 				EEA944261EAA9EF40022588B /* DeviceTableViewController.swift */,
 				EEA944281EAAA1820022588B /* Device.swift */,
+				EE00EB331EABAAB2003F3D5E /* DeviceControl.swift */,
 				EEA944241EAA97BF0022588B /* DeviceTableViewCell.swift */,
 				EEA944221EAA93950022588B /* HeepConnections.swift */,
 				EEA944201EAA7D880022588B /* HAPIMemoryParser.swift */,
@@ -470,6 +473,7 @@
 				EEA944231EAA93950022588B /* HeepConnections.swift in Sources */,
 				101D2F631EA968230074D807 /* AppDelegate.swift in Sources */,
 				EEA944291EAAA1820022588B /* Device.swift in Sources */,
+				EE00EB341EABAAB2003F3D5E /* DeviceControl.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

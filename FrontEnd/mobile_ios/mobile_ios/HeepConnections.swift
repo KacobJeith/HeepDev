@@ -19,12 +19,10 @@ class HeepConnections {
             let bufferarray = HAPIMemoryParser.BuildIsHeepDeviceCOP()
             
             switch client.send(data: bufferarray) {
+                
             case .success:
                 guard let data = client.read(1024*10) else { return }
-                print(data)
-                if let response = String(bytes:data, encoding: .utf8) {
-                    print(response)
-                }
+                HAPIMemoryParser.ParseROP(dump: data)
                 
             case .failure(let error):
                 print(error)
@@ -32,7 +30,5 @@ class HeepConnections {
         case .failure(let error):
             print(error)
         }
-            
-        
     }
 }
