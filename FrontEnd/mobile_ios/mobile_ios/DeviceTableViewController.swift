@@ -9,6 +9,7 @@
 import UIKit
 
 var devices = [Device]()
+var lastCount = 0
 
 
 class DeviceTableViewController: UITableViewController {
@@ -75,19 +76,30 @@ class DeviceTableViewController: UITableViewController {
     @IBAction func searchForHeepDevices() {
         // Insert TCP Search Here
         print("Searching...")
-        let newData = HeepConnections.testSocket()
+        _ = HeepConnections.testSocket()
         //addDevice(device: newDevice)
-        print("In searchForHeepDevices Action")
-        print(devices.count)
         
-        if (newData) {
+        let dispatchTime = DispatchTime.now() + .seconds(2)
+        DispatchQueue.main.asyncAfter(deadline: dispatchTime) {
+            
+            print("In searchForHeepDevices Action")
+            print(devices.count)
+            
+            self.CheckForNewDevicesAndDisplay()
+        }
+        
+
+    }
+    
+    private func CheckForNewDevicesAndDisplay() {
+        if (devices.count != lastCount) {
             tableView.beginUpdates()
             tableView.insertSections(IndexSet(0...(devices.count-1)), with: .automatic)
             //tableView.insertRows(at: [IndexPath(row: 0, section: devices.count-1)], with: .automatic)
             tableView.endUpdates()
+            
+            lastCount = devices.count
         }
-        
-
     }
 
 }

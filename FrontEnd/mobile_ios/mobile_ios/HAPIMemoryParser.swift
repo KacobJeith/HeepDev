@@ -18,13 +18,12 @@ class HAPIMemoryParser {
         return [0x09, 0x00]
     }
     
-    public static func ParseROP(dump: [UInt8]) -> Bool {
-        var newData = false
+    public static func ParseROP(dump: [UInt8])  {
         
         if (dump[0] == 0x0F){
             // Memory Dump
             print("Detected a Memory Dump")
-            newData = ParseMemoryDump(dump: dump)
+            ParseMemoryDump(dump: dump)
             
         }
         else if ( dump[0] == 0x10){
@@ -40,27 +39,23 @@ class HAPIMemoryParser {
 
         }
         
-        return newData
         
     }
     
-    public static func ParseMemoryDump(dump: [UInt8]) -> Bool {
+    public static func ParseMemoryDump(dump: [UInt8]) {
         print(dump)
         
         let header = ParseDeviceID(dump: dump, index: 1)
         
-        if (CheckDevicePositionInArray(deviceID: header.deviceID) != nil) {
-            return false
-        }
+        if (CheckDevicePositionInArray(deviceID: header.deviceID) == nil) {
+            let packet = CalculateNumberOfBytes(dump: dump, index: header.index)
+            var index = packet.index
+            
+            while (index < dump.count) {
+                index = InterpretNextMOP(dump: dump, index: index)
+            }
+        } else { print("This devices has already been detected")}
         
-        let packet = CalculateNumberOfBytes(dump: dump, index: header.index)
-        var index = packet.index
-        
-        while (index < dump.count) {
-            index = InterpretNextMOP(dump: dump, index: index)
-        }
-        
-        return true
     }
     
     private static func InterpretNextMOP(dump: [UInt8], index: Int) -> Int {
@@ -111,7 +106,7 @@ class HAPIMemoryParser {
         
         if (CheckDevicePositionInArray(deviceID: deviceID) == nil) {
             AddNewDevice(deviceID: deviceID)
-        } else { /* No new data found */ }
+        } else { print("This devices has already been detected") }
         
     }
     

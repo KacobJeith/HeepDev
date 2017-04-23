@@ -9,37 +9,46 @@
 import SwiftSocket
 
 class HeepConnections {
-    public static func testSocket() -> Bool {
+    public static func testSocket() {
         
         let gateway = getWiFiGateway()
-        var newData = false
         
-        for ip in 100...105 {
+        for ip in 1...255 {
             let thisAddress = getAddress(gateway: gateway, ip: ip)
-            print(thisAddress)
-            
-            let client = TCPClient(address: thisAddress, port:5000)
-            
-            switch client.connect(timeout:1){
-            case .success:
-                print("success")
-                let bufferarray = HAPIMemoryParser.BuildIsHeepDeviceCOP()
+            DispatchQueue.global().async {
+                ConnectToHeepDevice(ipAddress: thisAddress, printErrors: false)
                 
-                switch client.send(data: bufferarray) {
-                    
-                case .success:
-                    guard let data = client.read(1024*10) else { return false}
-                    newData = HAPIMemoryParser.ParseROP(dump: data)
-                case .failure(let error):
-                    print(error)
-                }
-            case .failure(let error):
-                print(error)
             }
             
         }
+    }
+    
+    private static func ConnectToHeepDevice(ipAddress: String, printErrors: Bool) {
         
-        return newData
+        let client = TCPClient(address: ipAddress, port:5000)
+        
+        switch client.connect(timeout:1){
+        case .success:
+            print("success")
+            let bufferarray = HAPIMemoryParser.BuildIsHeepDeviceCOP()
+            
+            switch client.send(data: bufferarray) {
+                
+            case .success:
+                guard let data = client.read(1024*10) else { return }
+                _ = HAPIMemoryParser.ParseROP(dump: data)
+            case .failure(let error):
+                if (printErrors) {
+                    print(error)
+                }
+            }
+        case .failure(let error):
+            if (printErrors) {
+                print(error)
+            }
+        }
+        
+
     }
     
     // Return IP address of WiFi interface (en0) as a String, or `nil`
