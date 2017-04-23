@@ -75,6 +75,7 @@ class HAPIMemoryParser {
             
         } else if (thisMOP == 0x02) {
             // Control Definition: Control Type is sub OP
+            AddControlToDevice(dump: dump, index: packet.index, deviceID: header.deviceID)
             
         } else if (thisMOP == 0x03) {
             // Vertex Definition
@@ -121,20 +122,51 @@ class HAPIMemoryParser {
     
     private static func AddNewDevice(deviceID: Int) {
         print("Found a new device... adding now")
-        deviceMap[deviceID] = deviceMap.count + 1
+        deviceMap[deviceID] = deviceMap.count
         let newDevice = Device(deviceID: deviceID)
         devices.append(newDevice)
     }
     
     private static func AddControlToDevice(dump: [UInt8], index: Int, deviceID: Int ) {
         print("Adding Control to device: \(deviceID)")
+        let array = Array(dump[(index+6)...(index+11)])
+        
+        
+        var newControl = DeviceControl(deviceID: deviceID,
+                                       controlID: Int(dump[index]),
+                                       controlType: Int(dump[index + 1]),
+                                       controlDirection: Int(dump[index + 2]),
+                                       valueLow: Int(dump[index + 3]),
+                                       valueHigh: Int(dump[index + 4]),
+                                       valueCurrent: Int(dump[index + 5]),
+                                       controlName: "placeholder")
+        
+        if let controlName = String(bytes: array, encoding: .utf8) {
+            newControl = DeviceControl(deviceID: deviceID,
+                                           controlID: Int(dump[index]),
+                                           controlType: Int(dump[index + 1]),
+                                           controlDirection: Int(dump[index + 2]),
+                                           valueLow: Int(dump[index + 3]),
+                                           valueHigh: Int(dump[index + 4]),
+                                           valueCurrent: Int(dump[index + 5]),
+                                           controlName: controlName)
+        } else {}
+        
+        if let thisDeviceIndex = CheckDevicePositionInArray(deviceID: deviceID) {
+            print("Adding Control \(newControl.controlName) to device \(deviceID)")
+            devices[thisDeviceIndex].controlList.append(newControl)
+            
+        } else {
+            print("We haven't seen this device yet...")
+        }
+        //print(devices[thisDeviceIndex!].controlList)
         
     }
     
     private static func CheckDevicePositionInArray(deviceID: Int) -> Int? {
         return deviceMap[deviceID]
-        
     }
+
     
     public static func ParseDeviceID(dump: [UInt8], index: Int) -> (index: Int, deviceID: Int) {
         let id1: Int = Int(dump[index])

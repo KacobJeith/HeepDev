@@ -37,9 +37,9 @@ class DeviceTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //let keys = deviceDictionary.keys
+        let numControls = devices[section].controlList.count
         
-        return 0
+        return numControls
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -50,8 +50,7 @@ class DeviceTableViewController: UITableViewController {
         
         //fetches the appropriate device or the data source layout. 
         //let device = devices[indexPath.row]
-        
-        cell.nameDevice.text = "testy"
+        cell.nameDevice.text = devices[indexPath.section].controlList[indexPath.row].controlName
         cell.deviceIconView.image = UIImage(named: "switch")
 
         return cell
