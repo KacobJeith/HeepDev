@@ -75,7 +75,7 @@ class HAPIMemoryParser {
             
         } else if (thisMOP == 0x02) {
             // Control Definition: Control Type is sub OP
-            AddControlToDevice(dump: dump, index: packet.index, deviceID: header.deviceID)
+            AddControlToDevice(dump: dump, index: packet.index, deviceID: header.deviceID, packetSize: packet.numBytes)
             
         } else if (thisMOP == 0x03) {
             // Vertex Definition
@@ -127,9 +127,9 @@ class HAPIMemoryParser {
         devices.append(newDevice)
     }
     
-    private static func AddControlToDevice(dump: [UInt8], index: Int, deviceID: Int ) {
+    private static func AddControlToDevice(dump: [UInt8], index: Int, deviceID: Int, packetSize: Int ) {
         print("Adding Control to device: \(deviceID)")
-        let array = Array(dump[(index+6)...(index+11)])
+        let array = Array(dump[(index+6)...(index+packetSize)])
         
         
         var newControl = DeviceControl(deviceID: deviceID,
