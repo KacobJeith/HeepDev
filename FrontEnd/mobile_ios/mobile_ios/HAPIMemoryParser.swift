@@ -88,6 +88,7 @@ class HAPIMemoryParser {
             
         } else if (thisMOP == 0x06) {
             // Client Name
+            ParseDeviceName(dump: dump, index: packet.index, packetSize: packet.numBytes, deviceID: header.deviceID)
             
         } else if (thisMOP == 0x07) {
             // Front End Position
@@ -129,29 +130,21 @@ class HAPIMemoryParser {
     
     private static func AddControlToDevice(dump: [UInt8], index: Int, deviceID: Int, packetSize: Int ) {
         print("Adding Control to device: \(deviceID)")
-        let array = Array(dump[(index+6)...(index+packetSize)])
         
+        let controlName = GetStringFromByteArrayIndices(dump: dump, indexStart: index + 6, indexFinish: index + packetSize)
         
-        var newControl = DeviceControl(deviceID: deviceID,
+        let newControl = DeviceControl(deviceID: deviceID,
                                        controlID: Int(dump[index]),
                                        controlType: Int(dump[index + 1]),
                                        controlDirection: Int(dump[index + 2]),
                                        valueLow: Int(dump[index + 3]),
                                        valueHigh: Int(dump[index + 4]),
                                        valueCurrent: Int(dump[index + 5]),
-                                       controlName: "placeholder")
+                                       controlName: controlName)
         
-        if let controlName = String(bytes: array, encoding: .utf8) {
-            newControl = DeviceControl(deviceID: deviceID,
-                                           controlID: Int(dump[index]),
-                                           controlType: Int(dump[index + 1]),
-                                           controlDirection: Int(dump[index + 2]),
-                                           valueLow: Int(dump[index + 3]),
-                                           valueHigh: Int(dump[index + 4]),
-                                           valueCurrent: Int(dump[index + 5]),
-                                           controlName: controlName)
-        } else {}
         
+        
+        // Resolve Addition to device array (masterState)
         if let thisDeviceIndex = CheckDevicePositionInArray(deviceID: deviceID) {
             print("Adding Control \(newControl.controlName) to device \(deviceID)")
             devices[thisDeviceIndex].controlList.append(newControl)
@@ -159,12 +152,35 @@ class HAPIMemoryParser {
         } else {
             print("We haven't seen this device yet...")
         }
-        //print(devices[thisDeviceIndex!].controlList)
         
+    }
+    
+    private static func ParseDeviceName(dump: [UInt8], index: Int, packetSize: Int, deviceID: Int) {
+        let deviceName = GetStringFromByteArrayIndices(dump: dump, indexStart: index, indexFinish: index + packetSize - 1)
+        
+        // Resolve Addition to device array (masterState)
+        if let thisDeviceIndex = CheckDevicePositionInArray(deviceID: deviceID) {
+            print("Adding Device Name \(deviceName) to device \(deviceID)")
+            devices[thisDeviceIndex].name = deviceName
+            
+        } else {
+            print("We haven't seen this device yet...")
+        }
     }
     
     private static func CheckDevicePositionInArray(deviceID: Int) -> Int? {
         return deviceMap[deviceID]
+    }
+    
+    private static func GetStringFromByteArrayIndices(dump: [UInt8], indexStart: Int, indexFinish: Int) -> String {
+        let array = Array(dump[indexStart...indexFinish])
+        
+        if let extractedString = String(bytes: array, encoding: .utf8) {
+            return extractedString
+        } else {
+            return "placeholder"
+        }
+        
     }
 
     

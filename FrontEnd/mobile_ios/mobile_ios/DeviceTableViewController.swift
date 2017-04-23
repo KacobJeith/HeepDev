@@ -33,7 +33,7 @@ class DeviceTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String {
         
-        return String(devices[section].deviceID)
+        return devices[section].name
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
