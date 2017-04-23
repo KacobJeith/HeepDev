@@ -37,16 +37,12 @@ class mobile_iosTests: XCTestCase {
     //Confirm that the Device initializer returns a Device Object when passed valid parameters. 
     
     func testDeviceInitializationSucceeds() {
-        let basicDevice = Device.init(name: "Blinky", photo: nil)
+        let basicDevice = Device.init(deviceID: 1234)
         XCTAssertNotNil(basicDevice)
     }
     
     func testROPParser() {
-        XCTAssertEqual(HAPIMemoryParser.ParseROP(dump: [0x0F, 0x13, 0x7F]), 0x0F)
-        
-        XCTAssertEqual(HAPIMemoryParser.ParseROP(dump: [0x10, 0x03, 0x7F]), 0x10)
-        
-        XCTAssertEqual(HAPIMemoryParser.ParseROP(dump: [0xCF, 0x03, 0x7F]), 0xFF)
+        XCTAssertEqual(HAPIMemoryParser.ParseROP(dump: [0x0F, 0x13, 0x7F]), true)
         
     }
     

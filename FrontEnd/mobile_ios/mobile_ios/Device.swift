@@ -6,24 +6,26 @@
 //  Copyright © 2017 Heep. All rights reserved.
 //
 
-import UIKit
+import Foundation
+import mobile_ios
 
 class Device {
     //MARK: Properties
     
     var name: String
-    var photo: UIImage?
-    
+    var deviceID: Int
+    var version: Int
+    var controlList =  [DeviceControl]()
     
     //MARK: Initialization
-    init?(name: String, photo: UIImage?) {
-        //Initialize Stored Properties
-        if name.isEmpty {
-            return nil
-        }
+    init(deviceID: Int) {
         
-        self.name = name
-        self.photo = photo
+        self.name = ""
+        self.deviceID = deviceID
+        self.version = 1
+        self.controlList = [DeviceControl]()
     }
+    
+    
     
 }

@@ -8,9 +8,11 @@
 
 import UIKit
 
+var devices = [Device]()
+
+
 class DeviceTableViewController: UITableViewController {
     //MARK: Properties
-    var devices = [Device]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,14 +28,19 @@ class DeviceTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return devices.count
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String {
+        
+        return String(devices[section].deviceID)
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        //let keys = deviceDictionary.keys
         
-        return devices.count
+        return 0
     }
-
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellIdentifier = "DeviceTableViewCell"
@@ -42,61 +49,17 @@ class DeviceTableViewController: UITableViewController {
         }
         
         //fetches the appropriate device or the data source layout. 
-        let device = devices[indexPath.row]
+        //let device = devices[indexPath.row]
         
-        cell.nameDevice.text = device.name
-        cell.deviceIconView.image = device.photo
+        cell.nameDevice.text = "testy"
+        cell.deviceIconView.image = UIImage(named: "switch")
 
         return cell
     }
     
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
     
     private func loadSampleDevices() {
+        /*
         let photo1 = UIImage(named: "lightbulb")
         let photo2 = UIImage(named: "switch")
         let photo3 = UIImage(named: "outlet")
@@ -106,15 +69,26 @@ class DeviceTableViewController: UITableViewController {
         guard let device3 = Device(name: "Outlet", photo: photo3) else { fatalError("Unable to instantiate device3")}
         
         devices += [device1, device2, device3]
-        
-        
+        */
     }
+    
     
     @IBAction func searchForHeepDevices() {
         // Insert TCP Search Here
         print("Searching...")
-        HeepConnections.testSocket()
+        let newData = HeepConnections.testSocket()
+        //addDevice(device: newDevice)
+        print("In searchForHeepDevices Action")
+        print(devices.count)
         
+        if (newData) {
+            tableView.beginUpdates()
+            tableView.insertSections(IndexSet(0...(devices.count-1)), with: .automatic)
+            //tableView.insertRows(at: [IndexPath(row: 0, section: devices.count-1)], with: .automatic)
+            tableView.endUpdates()
+        }
+        
+
     }
 
 }

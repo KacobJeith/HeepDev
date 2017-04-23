@@ -9,7 +9,7 @@
 import SwiftSocket
 
 class HeepConnections {
-    public static func testSocket() {
+    public static func testSocket() -> Bool {
         
         let client = TCPClient(address:"192.168.1.181", port:5000)
         
@@ -21,14 +21,15 @@ class HeepConnections {
             switch client.send(data: bufferarray) {
                 
             case .success:
-                guard let data = client.read(1024*10) else { return }
-                _ = HAPIMemoryParser.ParseROP(dump: data)
-                
+                guard let data = client.read(1024*10) else { return false}
+                return HAPIMemoryParser.ParseROP(dump: data)
             case .failure(let error):
                 print(error)
             }
         case .failure(let error):
             print(error)
         }
+        
+        return false
     }
 }

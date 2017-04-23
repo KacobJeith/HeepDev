@@ -13,33 +13,33 @@
         <scene sceneID="TjK-Ck-GW0">
             <objects>
                 <tableViewController id="sfk-fC-FVt" customClass="DeviceTableViewController" customModule="mobile_ios" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="150" sectionHeaderHeight="50" sectionFooterHeight="50" id="61e-ic-Jxf">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="50" sectionHeaderHeight="50" sectionFooterHeight="50" id="61e-ic-Jxf">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="692"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="DeviceTableViewCell" rowHeight="100" id="5eg-Zh-nJn" customClass="DeviceTableViewCell" customModule="mobile_ios" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="50" width="414" height="100"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="DeviceTableViewCell" rowHeight="50" id="5eg-Zh-nJn" customClass="DeviceTableViewCell" customModule="mobile_ios" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="50" width="414" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5eg-Zh-nJn" id="Qk0-Yu-Ih0">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="99"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="lightbulb" translatesAutoresizingMaskIntoConstraints="NO" id="t7O-uu-OHh">
-                                            <rect key="frame" x="0.0" y="0.0" width="99" height="99"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2LM-vN-kbc">
-                                            <rect key="frame" x="107" y="8" width="299" height="21"/>
+                                            <rect key="frame" x="69" y="8" width="337" height="21"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Y5V-6y-427">
+                                            <rect key="frame" x="8" y="0.0" width="53" height="49"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        </imageView>
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="deviceIconView" destination="t7O-uu-OHh" id="OWo-fG-Bja"/>
+                                    <outlet property="deviceIconView" destination="Y5V-6y-427" id="ydm-yd-TJo"/>
                                     <outlet property="nameDevice" destination="2LM-vN-kbc" id="NEB-zw-U2V"/>
                                 </connections>
                             </tableViewCell>
@@ -88,7 +88,4 @@
             <point key="canvasLocation" x="-771.01449275362324" y="1360.5978260869567"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="lightbulb" width="114" height="152"/>
-    </resources>
 </document>
