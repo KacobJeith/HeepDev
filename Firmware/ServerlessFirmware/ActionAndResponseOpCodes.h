@@ -210,6 +210,42 @@ void ExecuteSetVertexOpCode()
 	FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
 }
 
+void ExecuteDeleteVertexOpCode()
+{
+	unsigned int counter = 1;
+
+	unsigned char numBytes = GetNumberFromBuffer(inputBuffer, counter, 1);
+	unsigned long txID = GetNumberFromBuffer(inputBuffer, counter, 4);
+	unsigned long rxID = GetNumberFromBuffer(inputBuffer, counter, 4);
+	unsigned char txControl = GetNumberFromBuffer(inputBuffer, counter, 1);
+	unsigned char rxControl = GetNumberFromBuffer(inputBuffer, counter, 1);
+	HeepIPAddress vertexIP;
+	vertexIP.Octet4 = GetNumberFromBuffer(inputBuffer, counter, 1);
+	vertexIP.Octet3 = GetNumberFromBuffer(inputBuffer, counter, 1);
+	vertexIP.Octet2 = GetNumberFromBuffer(inputBuffer, counter, 1);
+	vertexIP.Octet1 = GetNumberFromBuffer(inputBuffer, counter, 1);
+
+	Vertex myVertex;
+	myVertex.rxID = rxID;
+	myVertex.txID = txID;
+	myVertex.rxControlID = rxControl;
+	myVertex.txControlID = txControl;
+	myVertex.rxIPAddress = vertexIP;
+
+	if(DeleteVertex(myVertex) == 1)
+	{
+		ClearOutputBuffer();
+		char errorMessage [] = "Failed to delete Vertex!";
+		FillOutputBufferWithError(errorMessage, strlen(errorMessage));
+	}
+	else
+	{
+		ClearOutputBuffer();
+		char SuccessMessage [] = "Vertex Deleted!";
+		FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
+	}
+}
+
 void ExecuteControlOpCodes()
 {
 	unsigned char ControlOpCode = inputBuffer[0];
@@ -228,6 +264,10 @@ void ExecuteControlOpCodes()
 	else if(ControlOpCode == SetVertexOpCode)
 	{
 		ExecuteSetVertexOpCode();
+	}
+	else if(ControlOpCode == DeleteVertexOpCode)
+	{
+		ExecuteDeleteVertexOpCode();
 	}
 }
 

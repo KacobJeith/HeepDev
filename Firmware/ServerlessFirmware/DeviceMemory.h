@@ -224,6 +224,11 @@ void SetIPInMemory(HeepIPAddress theIP, unsigned long deviceID)
 	AddIPToMemory(theIP);
 }
 
+void DeleteVertexAtPointer(unsigned long pointer)
+{
+	deviceMemory[pointer] = FragmentOpCode;
+}
+
 int GetVertexAtPonter(unsigned long pointer, Vertex &returnedVertex)
 {
 	if(deviceMemory[pointer] != VertexOpCode)

@@ -25,11 +25,59 @@ void AddControl(Control myControl)
 	numberOfControls++;
 }
 
+unsigned char isVertexEqual(Vertex &vertex1, Vertex &vertex2)
+{
+	unsigned char vertexIsEqual = 1;
+
+	if(vertex1.txID != vertex2.txID)
+		vertexIsEqual = 0;
+
+	if(vertex1.rxID != vertex2.rxID)
+		vertexIsEqual = 0;
+
+	if(vertex1.rxControlID != vertex2.rxControlID)
+		vertexIsEqual = 0;
+
+	if(vertex1.txControlID != vertex2.txControlID)
+		vertexIsEqual = 0;
+
+	return vertexIsEqual;
+}
+
 void AddVertex(Vertex myVertex)
 {
 	unsigned int pointerToVertex = SetVertexInMemory(myVertex);
 	vertexPointerList[numberOfVertices] = pointerToVertex;
 	numberOfVertices++;
+}
+
+void RemoveVertexListEntry(unsigned int pointer)
+{
+	for(int i = pointer; i < numberOfVertices-1; i++)
+	{
+		vertexPointerList[i] = vertexPointerList[i+1];
+	}
+
+	numberOfVertices--;
+}
+
+int DeleteVertex(Vertex myVertex)
+{
+	for(int i = 0; i < numberOfVertices; i++)
+	{
+		Vertex newVertex;
+		if(GetVertexAtPonter(vertexPointerList[i], newVertex) == 0)
+		{
+			if(isVertexEqual(myVertex, newVertex))
+			{
+				DeleteVertexAtPointer(vertexPointerList[i]);
+				RemoveVertexListEntry(i);
+				return 0;
+			}
+		}
+	}
+
+	return 1;
 }
 
 void SetDeviceIDAndName(unsigned long newDeviceID, char* deviceName)
