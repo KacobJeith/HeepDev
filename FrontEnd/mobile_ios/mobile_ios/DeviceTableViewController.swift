@@ -66,9 +66,9 @@ class DeviceTableViewController: UITableViewController {
         let cell = UITableViewCell()
         
         if (devices[indexPath.section].controlList[indexPath.row].controlDirection == 0){
-            cell.backgroundColor = UIColor(white: 0.8, alpha: 1.0)
+            cell.backgroundColor = UIColor(white: 0.85, alpha: 1.0)
         } else {
-            cell.backgroundColor = UIColor(white: 0.6, alpha: 1.0)
+            cell.backgroundColor = UIColor(white: 0.95, alpha: 1.0)
         }
         
         let label = UILabel()

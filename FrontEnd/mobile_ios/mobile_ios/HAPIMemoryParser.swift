@@ -180,10 +180,27 @@ class HAPIMemoryParser {
         if let thisDeviceIndex = CheckDevicePositionInArray(deviceID: deviceID) {
             print("Adding Device Name \(deviceName) to device \(deviceID)")
             devices[thisDeviceIndex].name = deviceName
+            devices[thisDeviceIndex].iconName = SuggestIconFromName(name: deviceName)
             
         } else {
             print("We haven't seen this device yet...")
         }
+    }
+    
+    private static func SuggestIconFromName(name: String) -> String {
+        var suggestion = "switch"
+        
+        if ( name.lowercased().range(of: "outlet") != nil){
+            suggestion = "outlet"
+        }
+        
+        if (name.lowercased().range(of: "light") != nil ||
+            name.lowercased().range(of: "bulb") != nil ||
+            name.lowercased().range(of: "LED") != nil) {
+            suggestion = "lightbulb"
+        } 
+        
+        return suggestion
     }
     
     private static func CheckDevicePositionInArray(deviceID: Int) -> Int? {
