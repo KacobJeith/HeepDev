@@ -19,7 +19,7 @@ class DeviceTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let startFunction = searchForHeepDevices()
+        searchForHeepDevices()
         
     }
     
@@ -114,7 +114,9 @@ class DeviceTableViewController: UITableViewController {
             devices[thisIndexPath.section].controlList[thisIndexPath.row].valueCurrent = 0
         }
         
-        HeepConnections.sendValueToHeepDevice(thisIndexPath: thisIndexPath)
+        DispatchQueue.global().async {
+            HeepConnections.sendValueToHeepDevice(thisIndexPath: thisIndexPath)
+        }
         
     }
     
@@ -123,8 +125,9 @@ class DeviceTableViewController: UITableViewController {
         let thisIndexPath = controlTags[sender.tag]
         
         devices[thisIndexPath.section].controlList[thisIndexPath.row].valueCurrent = Int(round(sender.value))
-        
-        HeepConnections.sendValueToHeepDevice(thisIndexPath: thisIndexPath)
+        DispatchQueue.global().async {
+            HeepConnections.sendValueToHeepDevice(thisIndexPath: thisIndexPath)
+        }
         
     }
     
