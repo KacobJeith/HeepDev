@@ -18,7 +18,7 @@ class HAPIMemoryParser {
         return packageCOP(COP: UInt8(0x09), packet: [UInt8]())
     }
     
-    public static func BuildSetValueCOP(deviceID: Int, controlID: Int, newValue: Int) -> [UInt8] {
+    public static func BuildSetValueCOP(controlID: Int, newValue: Int) -> [UInt8] {
         //let deviceID = GetDeviceIDBytesFromInt(deviceID: deviceID)
         let COP = UInt8(0x0A)
         let packet = [UInt8(controlID), UInt8(newValue)]
@@ -40,12 +40,12 @@ class HAPIMemoryParser {
         return [byte1, byte2, byte3, byte4]
     }
     
-    public static func ParseROP(dump: [UInt8])  {
+    public static func ParseROP(dump: [UInt8], ipAddress: String) {
         
         if (dump[0] == 0x0F){
             // Memory Dump
             print("Detected a Memory Dump")
-            ParseMemoryDump(dump: dump)
+            ParseMemoryDump(dump: dump, ipAddress: ipAddress)
             
         }
         else if ( dump[0] == 0x10){
@@ -64,7 +64,7 @@ class HAPIMemoryParser {
         
     }
     
-    public static func ParseMemoryDump(dump: [UInt8]) {
+    public static func ParseMemoryDump(dump: [UInt8], ipAddress: String) {
         print(dump)
         
         let header = ParseDeviceID(dump: dump, index: 1)
@@ -74,13 +74,13 @@ class HAPIMemoryParser {
             var index = packet.index
             
             while (index < dump.count) {
-                index = InterpretNextMOP(dump: dump, index: index)
+                index = InterpretNextMOP(dump: dump, index: index, ipAddress: ipAddress)
             }
         } else { print("This devices has already been detected")}
         
     }
     
-    private static func InterpretNextMOP(dump: [UInt8], index: Int) -> Int {
+    private static func InterpretNextMOP(dump: [UInt8], index: Int, ipAddress: String) -> Int {
         let thisMOP = dump[index]
         let header = ParseDeviceID(dump: dump, index: index + 1)
         let packet = CalculateNumberOfBytes(dump: dump, index: header.index)
@@ -88,7 +88,7 @@ class HAPIMemoryParser {
         
         if (thisMOP == 0x01) {
             // Device Data: ID & Version
-            ParseDevice(dump: dump, index: packet.index, deviceID: header.deviceID)
+            ParseDevice(dump: dump, index: packet.index, deviceID: header.deviceID, ipAddress: ipAddress)
             
         } else if (thisMOP == 0x02) {
             // Control Definition: Control Type is sub OP
@@ -123,11 +123,11 @@ class HAPIMemoryParser {
         return packet.index + packet.numBytes
     }
     
-    private static func ParseDevice(dump: [UInt8], index: Int, deviceID: Int) {
+    private static func ParseDevice(dump: [UInt8], index: Int, deviceID: Int, ipAddress: String) {
         //let version = dump[index]
         
         if (CheckDevicePositionInArray(deviceID: deviceID) == nil) {
-            AddNewDevice(deviceID: deviceID)
+            AddNewDevice(deviceID: deviceID, ipAddress: ipAddress)
         } else { print("This devices has already been detected") }
         
     }
@@ -138,10 +138,11 @@ class HAPIMemoryParser {
     }
     
     
-    private static func AddNewDevice(deviceID: Int) {
+    private static func AddNewDevice(deviceID: Int, ipAddress: String) {
         print("Found a new device... adding now")
         deviceMap[deviceID] = deviceMap.count
         let newDevice = Device(deviceID: deviceID)
+        newDevice.ipAddress = ipAddress
         devices.append(newDevice)
     }
     

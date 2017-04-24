@@ -25,8 +25,16 @@ class HeepConnections {
         }
     }
     
-    public static func sendValueToHeepDevice(deviceID: Int, controlID: Int, newValue: Int) {
-        //let message =HAPIMemoryParser.BuildSetValueCOP(controlID: <#T##Int#>, newValue: <#T##Int#>)
+    public static func sendValueToHeepDevice(thisIndexPath: IndexPath) {
+        
+        let thisDeviceIP = devices[thisIndexPath.section].ipAddress
+        let thisControl = devices[thisIndexPath.section].controlList[thisIndexPath.row].controlID
+        let newVal = devices[thisIndexPath.section].controlList[thisIndexPath.row].valueCurrent
+        
+        let message = HAPIMemoryParser.BuildSetValueCOP(controlID: thisControl, newValue: newVal)
+        print("Sending: \(message) to Heep Device at to \(thisDeviceIP)")
+        ConnectToHeepDevice(ipAddress: thisDeviceIP, printErrors: false, message: message)
+        
     }
     
     private static func ConnectToHeepDevice(ipAddress: String, printErrors: Bool, message: [UInt8]) {
@@ -41,7 +49,7 @@ class HeepConnections {
                 
             case .success:
                 guard let data = client.read(1024*10) else { return }
-                _ = HAPIMemoryParser.ParseROP(dump: data)
+                HAPIMemoryParser.ParseROP(dump: data, ipAddress: ipAddress)
             case .failure(let error):
                 if (printErrors) {
                     print(error)

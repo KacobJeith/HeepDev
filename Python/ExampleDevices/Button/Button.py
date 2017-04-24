@@ -15,7 +15,7 @@ def SetupDeviceConnection() :
 	outControl = ControlValue()
 	outControl.ControlName = 'Butt'
 	outControl.ControlDirection = outControl.Output
-	outControl.ControlValueType = outControl.OnOff
+	outControl.ControlValueType = outControl.Range
 	outControl.ControlID = 0
 	ButtonDevice.ControlList.append(outControl)
 

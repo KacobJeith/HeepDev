@@ -15,6 +15,7 @@ class Device {
     var deviceID: Int
     var version: Int
     var iconName: String
+    var ipAddress: String
     var controlList =  [DeviceControl]()
     
     //MARK: Initialization
@@ -23,6 +24,7 @@ class Device {
         self.name = ""
         self.deviceID = deviceID
         self.version = 1
+        self.ipAddress = "10.0.0.0"
         self.iconName = "lightbulb"
         self.controlList = [DeviceControl]()
     }
