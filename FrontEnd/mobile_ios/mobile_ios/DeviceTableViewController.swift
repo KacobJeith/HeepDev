@@ -32,10 +32,10 @@ class DeviceTableViewController: UITableViewController {
         return devices.count
     }
     
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String {
+    /*override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String {
         
         return devices[section].name
-    }
+    }*/
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let numControls = devices[section].controlList.count
@@ -44,18 +44,50 @@ class DeviceTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cellIdentifier = "DeviceTableViewCell"
+        /*let cellIdentifier = "DeviceTableViewCell"
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? DeviceTableViewCell else {
             fatalError("The dequeued cell is not an instance of DeviceTableViewCell.")
-        }
+        }*/
+        
+        let cell = UITableViewCell()
+        let label = UILabel()
+        label.text = devices[indexPath.section].controlList[indexPath.row].controlName
+        label.frame = CGRect(x: 45, y: 5, width: tableView.frame.size.width, height: 35)
+        cell.addSubview(label)
+        
         
         //fetches the appropriate device or the data source layout. 
         //let device = devices[indexPath.row]
-        cell.nameDevice.text = devices[indexPath.section].controlList[indexPath.row].controlName
-        cell.deviceIconView.image = UIImage(named: "switch")
+        //cell.nameDevice.text = devices[indexPath.section].controlList[indexPath.row].controlName
+        //cell.deviceIconView.image = UIImage(named: "switch")
 
         return cell
     }
+    
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let view = UIView()
+        view.backgroundColor = UIColor.white
+        
+        let image = UIImage(named: devices[section].iconName)
+        let imageView = UIImageView(image: image)
+        imageView.frame = CGRect(x: 5, y: 5, width: 35, height: 35)
+        imageView.contentMode = .scaleAspectFit
+        view.addSubview(imageView)
+        
+        let label = UILabel()
+        label.text = devices[section].name
+        label.frame = CGRect(x: 45, y: 5, width: tableView.frame.size.width, height: 35)
+        view.addSubview(label)
+        
+        return view
+        
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        
+        return 45
+    }
+    
     
     
     private func loadSampleDevices() {
@@ -89,6 +121,10 @@ class DeviceTableViewController: UITableViewController {
         }
         
 
+    }
+    
+    @IBAction func sendValueToHeepDevice() {
+        print("Send Value")
     }
     
     private func CheckForNewDevicesAndDisplay() {

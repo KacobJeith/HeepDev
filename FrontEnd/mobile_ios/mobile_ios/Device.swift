@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import mobile_ios
 
 class Device {
     //MARK: Properties
@@ -15,6 +14,7 @@ class Device {
     var name: String
     var deviceID: Int
     var version: Int
+    var iconName: String
     var controlList =  [DeviceControl]()
     
     //MARK: Initialization
@@ -23,6 +23,7 @@ class Device {
         self.name = ""
         self.deviceID = deviceID
         self.version = 1
+        self.iconName = "lightbulb"
         self.controlList = [DeviceControl]()
     }
     

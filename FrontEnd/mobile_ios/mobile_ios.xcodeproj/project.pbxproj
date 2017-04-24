@@ -20,7 +20,6 @@
 		EE00EB341EABAAB2003F3D5E /* DeviceControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE00EB331EABAAB2003F3D5E /* DeviceControl.swift */; };
 		EEA944211EAA7D880022588B /* HAPIMemoryParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEA944201EAA7D880022588B /* HAPIMemoryParser.swift */; };
 		EEA944231EAA93950022588B /* HeepConnections.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEA944221EAA93950022588B /* HeepConnections.swift */; };
-		EEA944251EAA97BF0022588B /* DeviceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEA944241EAA97BF0022588B /* DeviceTableViewCell.swift */; };
 		EEA944271EAA9EF40022588B /* DeviceTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEA944261EAA9EF40022588B /* DeviceTableViewController.swift */; };
 		EEA944291EAAA1820022588B /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEA944281EAAA1820022588B /* Device.swift */; };
 		EEA9442A1EAAA8AE0022588B /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEA944281EAAA1820022588B /* Device.swift */; };
@@ -70,7 +69,6 @@
 		EE00EB331EABAAB2003F3D5E /* DeviceControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceControl.swift; sourceTree = "<group>"; };
 		EEA944201EAA7D880022588B /* HAPIMemoryParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HAPIMemoryParser.swift; sourceTree = "<group>"; };
 		EEA944221EAA93950022588B /* HeepConnections.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeepConnections.swift; sourceTree = "<group>"; };
-		EEA944241EAA97BF0022588B /* DeviceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceTableViewCell.swift; sourceTree = "<group>"; };
 		EEA944261EAA9EF40022588B /* DeviceTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceTableViewController.swift; sourceTree = "<group>"; };
 		EEA944281EAAA1820022588B /* Device.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -132,7 +130,6 @@
 				EEA944261EAA9EF40022588B /* DeviceTableViewController.swift */,
 				EEA944281EAAA1820022588B /* Device.swift */,
 				EE00EB331EABAAB2003F3D5E /* DeviceControl.swift */,
-				EEA944241EAA97BF0022588B /* DeviceTableViewCell.swift */,
 				EEA944221EAA93950022588B /* HeepConnections.swift */,
 				EEA944201EAA7D880022588B /* HAPIMemoryParser.swift */,
 				101D2F661EA968230074D807 /* Main.storyboard */,
@@ -470,7 +467,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				EEA944271EAA9EF40022588B /* DeviceTableViewController.swift in Sources */,
-				EEA944251EAA97BF0022588B /* DeviceTableViewCell.swift in Sources */,
 				EEA944211EAA7D880022588B /* HAPIMemoryParser.swift in Sources */,
 				101D2F6B1EA968230074D807 /* mobile_ios.xcdatamodeld in Sources */,
 				EEA944231EAA93950022588B /* HeepConnections.swift in Sources */,
