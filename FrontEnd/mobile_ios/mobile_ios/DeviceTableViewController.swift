@@ -17,8 +17,9 @@ class DeviceTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         loadSampleDevices()
+        sendValueToHeepDevice()
     }
 
     override func didReceiveMemoryWarning() {
@@ -30,38 +31,6 @@ class DeviceTableViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         return devices.count
-    }
-    
-    /*override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String {
-        
-        return devices[section].name
-    }*/
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let numControls = devices[section].controlList.count
-        
-        return numControls
-    }
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        /*let cellIdentifier = "DeviceTableViewCell"
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? DeviceTableViewCell else {
-            fatalError("The dequeued cell is not an instance of DeviceTableViewCell.")
-        }*/
-        
-        let cell = UITableViewCell()
-        let label = UILabel()
-        label.text = devices[indexPath.section].controlList[indexPath.row].controlName
-        label.frame = CGRect(x: 45, y: 5, width: tableView.frame.size.width, height: 35)
-        cell.addSubview(label)
-        
-        
-        //fetches the appropriate device or the data source layout. 
-        //let device = devices[indexPath.row]
-        //cell.nameDevice.text = devices[indexPath.section].controlList[indexPath.row].controlName
-        //cell.deviceIconView.image = UIImage(named: "switch")
-
-        return cell
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -83,6 +52,43 @@ class DeviceTableViewController: UITableViewController {
         
     }
     
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        let numControls = devices[section].controlList.count
+        
+        return numControls
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = UITableViewCell()
+        
+        if (devices[indexPath.section].controlList[indexPath.row].controlDirection == 0){
+            cell.backgroundColor = UIColor(white: 0.8, alpha: 1.0)
+        } else {
+            cell.backgroundColor = UIColor(white: 0.6, alpha: 1.0)
+        }
+        
+        let label = UILabel()
+        label.text = devices[indexPath.section].controlList[indexPath.row].controlName
+        label.frame = CGRect(x: 45, y: 5, width: tableView.frame.size.width, height: 35)
+        cell.addSubview(label)
+        
+        
+        if (devices[indexPath.section].controlList[indexPath.row].controlType == 0){
+            let buttonSwitch = UISwitch()
+            buttonSwitch.frame = CGRect(x: tableView.frame.size.width - 60, y: 5, width: 100, height: 35)
+            cell.addSubview(buttonSwitch)
+        } else {
+            let slider = UISlider()
+            slider.frame = CGRect(x: tableView.frame.size.width - 160, y: 5, width: 150, height: 35)
+            cell.addSubview(slider)
+            
+        }
+        
+        return cell
+    }
+    
+    
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         
         return 45
@@ -91,27 +97,15 @@ class DeviceTableViewController: UITableViewController {
     
     
     private func loadSampleDevices() {
-        /*
-        let photo1 = UIImage(named: "lightbulb")
-        let photo2 = UIImage(named: "switch")
-        let photo3 = UIImage(named: "outlet")
         
-        guard let device1 = Device(name: "Blinky", photo: photo1) else { fatalError("Unable to instantiate device1")}
-        guard let device2 = Device(name: "ButtonSwitch", photo: photo2) else { fatalError("Unable to instantiate device2")}
-        guard let device3 = Device(name: "Outlet", photo: photo3) else { fatalError("Unable to instantiate device3")}
-        
-        devices += [device1, device2, device3]
-        */
     }
     
     
     @IBAction func searchForHeepDevices() {
-        // Insert TCP Search Here
         print("Searching...")
         _ = HeepConnections.testSocket()
-        //addDevice(device: newDevice)
         
-        let dispatchTime = DispatchTime.now() + .seconds(2)
+        let dispatchTime = DispatchTime.now() + .seconds(1)
         DispatchQueue.main.asyncAfter(deadline: dispatchTime) {
             
             print("In searchForHeepDevices Action")
@@ -128,13 +122,15 @@ class DeviceTableViewController: UITableViewController {
     }
     
     private func CheckForNewDevicesAndDisplay() {
-        if (devices.count != lastCount) {
+        if (devices.count != 0 && (devices.count - 1) != lastCount) {
+            let previousCount = lastCount
+            lastCount = devices.count
             tableView.beginUpdates()
-            tableView.insertSections(IndexSet(0...(devices.count-1)), with: .automatic)
+            tableView.insertSections(IndexSet(previousCount...(devices.count-1)), with: .automatic)
             //tableView.insertRows(at: [IndexPath(row: 0, section: devices.count-1)], with: .automatic)
             tableView.endUpdates()
             
-            lastCount = devices.count
+            
         }
     }
 
