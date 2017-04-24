@@ -9,11 +9,13 @@
 import UIKit
 
 var devices = [Device]()
-var lastCount = 0
 
 
 class DeviceTableViewController: UITableViewController {
     //MARK: Properties
+    
+    var controlTags = [IndexPath]()
+    var lastCount = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,7 +23,9 @@ class DeviceTableViewController: UITableViewController {
         loadSampleDevices()
         sendValueToHeepDevice()
     }
-
+    
+    //@IBOutlet var buttonSwitch: UISwitch()
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -52,6 +56,7 @@ class DeviceTableViewController: UITableViewController {
         
     }
     
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let numControls = devices[section].controlList.count
         
@@ -70,22 +75,44 @@ class DeviceTableViewController: UITableViewController {
         
         let label = UILabel()
         label.text = devices[indexPath.section].controlList[indexPath.row].controlName
-        label.frame = CGRect(x: 45, y: 5, width: tableView.frame.size.width, height: 35)
+        label.frame = CGRect(x: 60, y: 5, width: tableView.frame.size.width, height: 35)
         cell.addSubview(label)
         
+        controlTags.append(indexPath)
         
         if (devices[indexPath.section].controlList[indexPath.row].controlType == 0){
             let buttonSwitch = UISwitch()
+            buttonSwitch.tag = controlTags.count - 1
             buttonSwitch.frame = CGRect(x: tableView.frame.size.width - 60, y: 5, width: 100, height: 35)
+            buttonSwitch.addTarget(self, action: #selector(DeviceTableViewController.toggle), for: UIControlEvents.valueChanged)
             cell.addSubview(buttonSwitch)
         } else {
             let slider = UISlider()
+            slider.tag = controlTags.count - 1
             slider.frame = CGRect(x: tableView.frame.size.width - 160, y: 5, width: 150, height: 35)
             cell.addSubview(slider)
             
         }
         
         return cell
+    }
+    
+    func toggle(sender: UISwitch) {
+        
+        let thisIndexPath = controlTags[sender.tag]
+        
+        if (sender.isOn) {
+            devices[thisIndexPath.section].controlList[thisIndexPath.row].valueCurrent = 1
+            
+        } else {
+            devices[thisIndexPath.section].controlList[thisIndexPath.row].valueCurrent = 0
+        }
+        
+        let thisDevice = devices[thisIndexPath.section].name
+        let thisControl = devices[thisIndexPath.section].controlList[thisIndexPath.row].controlName
+        let newVal = devices[thisIndexPath.section].controlList[thisIndexPath.row].valueCurrent
+        print("Sending value \(newVal) to [\(thisDevice)](\(thisControl)>) ")
+        
     }
     
     
