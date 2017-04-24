@@ -15,7 +15,29 @@ class HAPIMemoryParser {
     
     public static func BuildIsHeepDeviceCOP() -> [UInt8] {
         
-        return [0x09, 0x00]
+        return packageCOP(COP: UInt8(0x09), packet: [UInt8]())
+    }
+    
+    public static func BuildSetValueCOP(deviceID: Int, controlID: Int, newValue: Int) -> [UInt8] {
+        //let deviceID = GetDeviceIDBytesFromInt(deviceID: deviceID)
+        let COP = UInt8(0x0A)
+        let packet = [UInt8(controlID), UInt8(newValue)]
+        let entireArray = packageCOP(COP: COP, packet: packet)
+        return entireArray
+    }
+    
+    public static func packageCOP(COP: UInt8, packet: [UInt8]) -> [UInt8] {
+        let numBytes = UInt8(packet.count)
+        return [COP, numBytes] + packet
+    }
+    
+    public static func GetDeviceIDBytesFromInt(deviceID: Int) -> [UInt8] {
+        let byte1 = UInt8(truncatingBitPattern: deviceID)
+        let byte2 = UInt8(truncatingBitPattern: deviceID >> 8)
+        let byte3 = UInt8(truncatingBitPattern: deviceID >> 16)
+        let byte4 = UInt8(truncatingBitPattern: deviceID >> 24)
+        
+        return [byte1, byte2, byte3, byte4]
     }
     
     public static func ParseROP(dump: [UInt8])  {

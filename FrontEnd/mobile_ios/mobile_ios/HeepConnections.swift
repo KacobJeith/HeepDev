@@ -9,30 +9,35 @@
 import SwiftSocket
 
 class HeepConnections {
-    public static func testSocket() {
+    public static func SearchForHeepDeviecs() {
         
         let gateway = getWiFiGateway()
+        let message = HAPIMemoryParser.BuildIsHeepDeviceCOP()
         
         for ip in 1...255 {
             let thisAddress = getAddress(gateway: gateway, ip: ip)
             DispatchQueue.global().async {
-                ConnectToHeepDevice(ipAddress: thisAddress, printErrors: false)
+                
+                ConnectToHeepDevice(ipAddress: thisAddress, printErrors: false, message: message)
                 
             }
             
         }
     }
     
-    private static func ConnectToHeepDevice(ipAddress: String, printErrors: Bool) {
+    public static func sendValueToHeepDevice(deviceID: Int, controlID: Int, newValue: Int) {
+        //let message =HAPIMemoryParser.BuildSetValueCOP(controlID: <#T##Int#>, newValue: <#T##Int#>)
+    }
+    
+    private static func ConnectToHeepDevice(ipAddress: String, printErrors: Bool, message: [UInt8]) {
         
         let client = TCPClient(address: ipAddress, port:5000)
         
         switch client.connect(timeout:1){
         case .success:
             print("success")
-            let bufferarray = HAPIMemoryParser.BuildIsHeepDeviceCOP()
             
-            switch client.send(data: bufferarray) {
+            switch client.send(data: message) {
                 
             case .success:
                 guard let data = client.read(1024*10) else { return }

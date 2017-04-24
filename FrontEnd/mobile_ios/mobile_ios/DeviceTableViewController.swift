@@ -21,10 +21,8 @@ class DeviceTableViewController: UITableViewController {
         super.viewDidLoad()
         
         loadSampleDevices()
-        sendValueToHeepDevice()
     }
     
-    //@IBOutlet var buttonSwitch: UISwitch()
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -130,7 +128,7 @@ class DeviceTableViewController: UITableViewController {
     
     @IBAction func searchForHeepDevices() {
         print("Searching...")
-        _ = HeepConnections.testSocket()
+        HeepConnections.SearchForHeepDeviecs()
         
         let dispatchTime = DispatchTime.now() + .seconds(1)
         DispatchQueue.main.asyncAfter(deadline: dispatchTime) {
@@ -144,17 +142,12 @@ class DeviceTableViewController: UITableViewController {
 
     }
     
-    @IBAction func sendValueToHeepDevice() {
-        print("Send Value")
-    }
-    
     private func CheckForNewDevicesAndDisplay() {
         if (devices.count != 0 && (devices.count - 1) != lastCount) {
             let previousCount = lastCount
             lastCount = devices.count
             tableView.beginUpdates()
             tableView.insertSections(IndexSet(previousCount...(devices.count-1)), with: .automatic)
-            //tableView.insertRows(at: [IndexPath(row: 0, section: devices.count-1)], with: .automatic)
             tableView.endUpdates()
             
             
