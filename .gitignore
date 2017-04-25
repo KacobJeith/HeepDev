@@ -1,14 +1,7 @@
 # Dev Directories
-FrontEnd/lib
-FrontEnd/node_modules
+FrontEnd/Web/node_modules
+FrontEnd/mobile_ios/Pods
 
 # Outputs
-*.tbl
 *.pyc
-*.json
-*.tmp
 *.app
-
-# Exclusion Exceptions
-!FrontEnd/ButtonCity/package.json
-!FrontEnd/Flowchart/package.json
