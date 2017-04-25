@@ -13,12 +13,12 @@ var deviceMap = [Int: Int]()
 class HAPIMemoryParser {
     
     
-    public static func BuildIsHeepDeviceCOP() -> [UInt8] {
+    public func BuildIsHeepDeviceCOP() -> [UInt8] {
         
         return packageCOP(COP: UInt8(0x09), packet: [UInt8]())
     }
     
-    public static func BuildSetValueCOP(controlID: Int, newValue: Int) -> [UInt8] {
+    public func BuildSetValueCOP(controlID: Int, newValue: Int) -> [UInt8] {
         //let deviceID = GetDeviceIDBytesFromInt(deviceID: deviceID)
         let COP = UInt8(0x0A)
         let packet = [UInt8(controlID), UInt8(newValue)]
@@ -26,12 +26,12 @@ class HAPIMemoryParser {
         return entireArray
     }
     
-    public static func packageCOP(COP: UInt8, packet: [UInt8]) -> [UInt8] {
+    public func packageCOP(COP: UInt8, packet: [UInt8]) -> [UInt8] {
         let numBytes = UInt8(packet.count)
         return [COP, numBytes] + packet
     }
     
-    public static func GetDeviceIDBytesFromInt(deviceID: Int) -> [UInt8] {
+    public func GetDeviceIDBytesFromInt(deviceID: Int) -> [UInt8] {
         let byte1 = UInt8(truncatingBitPattern: deviceID)
         let byte2 = UInt8(truncatingBitPattern: deviceID >> 8)
         let byte3 = UInt8(truncatingBitPattern: deviceID >> 16)
@@ -40,7 +40,7 @@ class HAPIMemoryParser {
         return [byte1, byte2, byte3, byte4]
     }
     
-    public static func ParseROP(dump: [UInt8], ipAddress: String) {
+    public func ParseROP(dump: [UInt8], ipAddress: String) {
         
         if (dump[0] == 0x0F){
             // Memory Dump
@@ -64,7 +64,7 @@ class HAPIMemoryParser {
         
     }
     
-    public static func ParseMemoryDump(dump: [UInt8], ipAddress: String) {
+    public func ParseMemoryDump(dump: [UInt8], ipAddress: String) {
         print(dump)
         
         let header = ParseDeviceID(dump: dump, index: 1)
@@ -80,7 +80,7 @@ class HAPIMemoryParser {
         
     }
     
-    private static func InterpretNextMOP(dump: [UInt8], index: Int, ipAddress: String) -> Int {
+    func InterpretNextMOP(dump: [UInt8], index: Int, ipAddress: String) -> Int {
         let thisMOP = dump[index]
         let header = ParseDeviceID(dump: dump, index: index + 1)
         let packet = CalculateNumberOfBytes(dump: dump, index: header.index)
@@ -123,7 +123,7 @@ class HAPIMemoryParser {
         return packet.index + packet.numBytes
     }
     
-    private static func ParseDevice(dump: [UInt8], index: Int, deviceID: Int, ipAddress: String) {
+    func ParseDevice(dump: [UInt8], index: Int, deviceID: Int, ipAddress: String) {
         //let version = dump[index]
         
         if (CheckDevicePositionInArray(deviceID: deviceID) == nil) {
@@ -132,13 +132,13 @@ class HAPIMemoryParser {
         
     }
     
-    private static func CalculateNumberOfBytes(dump: [UInt8], index: Int) -> (numBytes: Int, index: Int) {
+    func CalculateNumberOfBytes(dump: [UInt8], index: Int) -> (numBytes: Int, index: Int) {
         // currently only supporting up to 256 bytes
         return (Int(dump[index]), index + 1)
     }
     
     
-    private static func AddNewDevice(deviceID: Int, ipAddress: String) {
+    func AddNewDevice(deviceID: Int, ipAddress: String) {
         print("Found a new device... adding now")
         deviceMap[deviceID] = deviceMap.count
         let newDevice = Device(deviceID: deviceID)
@@ -146,7 +146,7 @@ class HAPIMemoryParser {
         devices.append(newDevice)
     }
     
-    private static func AddControlToDevice(dump: [UInt8], index: Int, deviceID: Int, packetSize: Int ) {
+    func AddControlToDevice(dump: [UInt8], index: Int, deviceID: Int, packetSize: Int ) {
         print("Adding Control to device: \(deviceID)")
         
         let controlName = GetStringFromByteArrayIndices(dump: dump, indexStart: index + 6, indexFinish: index + packetSize)
@@ -173,7 +173,7 @@ class HAPIMemoryParser {
         
     }
     
-    private static func ParseDeviceName(dump: [UInt8], index: Int, packetSize: Int, deviceID: Int) {
+    func ParseDeviceName(dump: [UInt8], index: Int, packetSize: Int, deviceID: Int) {
         let deviceName = GetStringFromByteArrayIndices(dump: dump, indexStart: index, indexFinish: index + packetSize - 1)
         
         // Resolve Addition to device array (masterState)
@@ -187,7 +187,7 @@ class HAPIMemoryParser {
         }
     }
     
-    private static func SuggestIconFromName(name: String) -> String {
+    func SuggestIconFromName(name: String) -> String {
         var suggestion = "switch"
         
         if ( name.lowercased().range(of: "outlet") != nil){
@@ -203,11 +203,11 @@ class HAPIMemoryParser {
         return suggestion
     }
     
-    private static func CheckDevicePositionInArray(deviceID: Int) -> Int? {
+    func CheckDevicePositionInArray(deviceID: Int) -> Int? {
         return deviceMap[deviceID]
     }
     
-    private static func GetStringFromByteArrayIndices(dump: [UInt8], indexStart: Int, indexFinish: Int) -> String {
+    func GetStringFromByteArrayIndices(dump: [UInt8], indexStart: Int, indexFinish: Int) -> String {
         let array = Array(dump[indexStart...indexFinish])
         
         if let extractedString = String(bytes: array, encoding: .utf8) {
@@ -219,7 +219,7 @@ class HAPIMemoryParser {
     }
 
     
-    public static func ParseDeviceID(dump: [UInt8], index: Int) -> (index: Int, deviceID: Int) {
+    func ParseDeviceID(dump: [UInt8], index: Int) -> (index: Int, deviceID: Int) {
         let id1: Int = Int(dump[index])
         let id2: Int = Int(dump[index+1])
         let id3: Int = Int(dump[index+2])

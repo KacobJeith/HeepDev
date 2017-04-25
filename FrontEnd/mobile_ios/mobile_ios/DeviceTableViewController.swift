@@ -115,7 +115,7 @@ class DeviceTableViewController: UITableViewController {
         }
         
         DispatchQueue.global().async {
-            HeepConnections.sendValueToHeepDevice(thisIndexPath: thisIndexPath)
+            HeepConnections().sendValueToHeepDevice(thisIndexPath: thisIndexPath)
         }
         
     }
@@ -126,7 +126,7 @@ class DeviceTableViewController: UITableViewController {
         
         devices[thisIndexPath.section].controlList[thisIndexPath.row].valueCurrent = Int(round(sender.value))
         DispatchQueue.global().async {
-            HeepConnections.sendValueToHeepDevice(thisIndexPath: thisIndexPath)
+            HeepConnections().sendValueToHeepDevice(thisIndexPath: thisIndexPath)
         }
         
     }
@@ -140,7 +140,7 @@ class DeviceTableViewController: UITableViewController {
     
     @IBAction func searchForHeepDevices() {
         print("Searching...")
-        HeepConnections.SearchForHeepDeviecs()
+        HeepConnections().SearchForHeepDeviecs()
         
         let dispatchTime = DispatchTime.now() + .seconds(2)
         DispatchQueue.main.asyncAfter(deadline: dispatchTime) {
@@ -154,7 +154,7 @@ class DeviceTableViewController: UITableViewController {
 
     }
     
-    private func CheckForNewDevicesAndDisplay() {
+    func CheckForNewDevicesAndDisplay() {
         if (devices.count != 0 && (devices.count - 1) >= lastCount) {
             let previousCount = lastCount
             lastCount = devices.count

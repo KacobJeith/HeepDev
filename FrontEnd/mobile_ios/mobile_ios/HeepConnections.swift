@@ -9,35 +9,36 @@
 import SwiftSocket
 
 class HeepConnections {
-    public static func SearchForHeepDeviecs() {
+    public func SearchForHeepDeviecs() {
         
         let gateway = getWiFiGateway()
-        let message = HAPIMemoryParser.BuildIsHeepDeviceCOP()
+        
+        let message = HAPIMemoryParser().BuildIsHeepDeviceCOP()
         
         for ip in 1...255 {
             let thisAddress = getAddress(gateway: gateway, ip: ip)
             DispatchQueue.global().async {
                 
-                ConnectToHeepDevice(ipAddress: thisAddress, printErrors: false, message: message)
+                self.ConnectToHeepDevice(ipAddress: thisAddress, printErrors: false, message: message)
                 
             }
             
         }
     }
     
-    public static func sendValueToHeepDevice(thisIndexPath: IndexPath) {
+    public func sendValueToHeepDevice(thisIndexPath: IndexPath) {
         
         let thisDeviceIP = devices[thisIndexPath.section].ipAddress
         let thisControl = devices[thisIndexPath.section].controlList[thisIndexPath.row].controlID
         let newVal = devices[thisIndexPath.section].controlList[thisIndexPath.row].valueCurrent
         
-        let message = HAPIMemoryParser.BuildSetValueCOP(controlID: thisControl, newValue: newVal)
+        let message = HAPIMemoryParser().BuildSetValueCOP(controlID: thisControl, newValue: newVal)
         print("Sending: \(message) to Heep Device at to \(thisDeviceIP)")
         ConnectToHeepDevice(ipAddress: thisDeviceIP, printErrors: false, message: message)
         
     }
     
-    private static func ConnectToHeepDevice(ipAddress: String, printErrors: Bool, message: [UInt8]) {
+    func ConnectToHeepDevice(ipAddress: String, printErrors: Bool, message: [UInt8]) {
         
         let client = TCPClient(address: ipAddress, port:5000)
         
@@ -49,7 +50,7 @@ class HeepConnections {
                 
             case .success:
                 guard let data = client.read(1024*10) else { return }
-                HAPIMemoryParser.ParseROP(dump: data, ipAddress: ipAddress)
+                HAPIMemoryParser().ParseROP(dump: data, ipAddress: ipAddress)
             case .failure(let error):
                 if (printErrors) {
                     print(error)
@@ -65,7 +66,7 @@ class HeepConnections {
     }
     
     // Return IP address of WiFi interface (en0) as a String, or `nil`
-    private static func getWiFiGateway() -> String {
+    func getWiFiGateway() -> String {
         var address = "10.0.0.1"
         var gateway = "10.0.0"
         
@@ -104,7 +105,7 @@ class HeepConnections {
         return gateway
     }
     
-    private static func getAddress(gateway: String, ip: Int) -> String {
+    func getAddress(gateway: String, ip: Int) -> String {
         
         return gateway + "." + String(ip)
     }
