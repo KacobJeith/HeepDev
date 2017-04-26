@@ -689,6 +689,44 @@ void TestUpdateXYPosition()
 	CheckResults(TestName, valueList, 6);
 }
 
+void TestDefragmentDeviceMemory()
+{
+	std::string TestName = "Test Defragmented Vertex";
+
+	ClearDeviceMemory();
+
+	Vertex theVertex;
+	theVertex.rxID = 0x01020304;
+	theVertex.txID = 0x05060708;
+	theVertex.rxControlID = 1;
+	theVertex.txControlID = 2;
+	HeepIPAddress theIP;
+	theIP.Octet4 = 192;
+	theIP.Octet3 = 168;
+	theIP.Octet2 = 1;
+	theIP.Octet1 = 150;
+	theVertex.rxIPAddress = theIP;
+
+	SetVertexInMemory(theVertex);
+	ExpectedValue valueList [3];
+	unsigned int beforeDeletionMemory = curFilledMemory;
+	valueList[0].valueName = "Memory Filled Before Deletion";
+	valueList[0].expectedValue = 16;
+	valueList[0].actualValue = beforeDeletionMemory;
+
+	DeleteVertexAtPointer(0);
+	unsigned int afterDeletionMemory = curFilledMemory;
+	valueList[1].valueName = "Memory Filled After Deletion";
+	valueList[1].expectedValue = 16;
+	valueList[1].actualValue = afterDeletionMemory;
+
+	DefragmentMemory();
+	valueList[2].valueName = "Memory Filled after Defragmentation";
+	valueList[2].expectedValue = 0;
+	valueList[2].actualValue = curFilledMemory;
+	CheckResults(TestName, valueList, 3);
+}
+
 void TestDynamicMemory()
 {
 	TestAddCharToBuffer();
@@ -708,4 +746,5 @@ void TestDynamicMemory()
 	TestSkipOpCode();
 	TestUpdateXYPosition();
 	TestGetVertex();
+	TestDefragmentDeviceMemory();
 }

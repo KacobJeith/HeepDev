@@ -274,7 +274,7 @@ unsigned int GetFragmentFromMemory(int &pointerToFragment, int &numFragementByte
 		{
 			pointerToFragment = counter;
 
-			numFragementBytes = 5 + deviceMemory[counter+5];
+			numFragementBytes = 6 + deviceMemory[counter+5];
 
 			return 0;
 		}
@@ -311,5 +311,4 @@ void DefragmentMemory()
 		}
 
 	}while(isFragmentFound == 0);
-
 }
