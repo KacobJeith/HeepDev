@@ -263,3 +263,53 @@ int SetVertexInMemory(Vertex theVertex)
 
 	return beginningOfMemory;
 }
+
+unsigned int GetFragmentFromMemory(int &pointerToFragment, int &numFragementBytes)
+{
+	unsigned int counter = 0;
+
+	while(counter < curFilledMemory)
+	{
+		if(deviceMemory[counter] == FragmentOpCode)
+		{
+			pointerToFragment = counter;
+
+			numFragementBytes = 5 + deviceMemory[counter+5];
+
+			return 0;
+		}
+		else
+		{
+			counter = SkipOpCode(counter);
+		}
+	}
+
+	return 1;
+}
+
+void RemoveUnusedBytesAtPointer(int pointer, int numBytes)
+{
+	for(int i = 0; i < curFilledMemory - numBytes - pointer; i++)
+	{
+		deviceMemory[pointer+i] = deviceMemory[pointer+numBytes+i];
+	}
+
+	curFilledMemory -= numBytes;
+}
+
+void DefragmentMemory()
+{
+	int isFragmentFound = 0;
+	do
+	{
+		int pointerToFragment = 0; int numFragementBytes = 0;
+		isFragmentFound = GetFragmentFromMemory(pointerToFragment, numFragementBytes);
+
+		if(isFragmentFound == 0)
+		{
+			RemoveUnusedBytesAtPointer(pointerToFragment, numFragementBytes);
+		}
+
+	}while(isFragmentFound == 0);
+
+}
