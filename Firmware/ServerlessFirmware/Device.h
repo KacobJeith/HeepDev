@@ -44,11 +44,16 @@ unsigned char isVertexEqual(Vertex &vertex1, Vertex &vertex2)
 	return vertexIsEqual;
 }
 
+void AddVertexPointer(unsigned int pointer)
+{
+	vertexPointerList[numberOfVertices] = pointer;
+	numberOfVertices++;
+}
+
 void AddVertex(Vertex myVertex)
 {
 	unsigned int pointerToVertex = SetVertexInMemory(myVertex);
-	vertexPointerList[numberOfVertices] = pointerToVertex;
-	numberOfVertices++;
+	AddVertexPointer(pointerToVertex);
 }
 
 void RemoveVertexListEntry(unsigned int pointer)
@@ -80,12 +85,26 @@ int DeleteVertex(Vertex myVertex)
 	return 1;
 }
 
-void SetDeviceIDAndName(unsigned long newDeviceID, char* deviceName)
+void FillVertexListFromMemory()
+{
+	unsigned int pointer = 0;
+	unsigned int counter = 0;
+
+	while(GetNextVertexPointer(pointer, counter) == 0)
+	{
+		AddVertexPointer(pointer);
+	}
+}
+
+void SetDeviceID(unsigned long newDeviceID)
 {
 	deviceID = newDeviceID;
+}
 
+void SetDeviceName(char* deviceName)
+{
 	int deviceNameLength = strlen(deviceName);
-	SetDeviceNameInMemory(deviceName, deviceNameLength, newDeviceID);
+	SetDeviceNameInMemory(deviceName, deviceNameLength, deviceID);
 }
 
 int SetControlValueByID(unsigned char controlID, unsigned int value)

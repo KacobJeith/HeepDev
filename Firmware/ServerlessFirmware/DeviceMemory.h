@@ -264,6 +264,26 @@ int SetVertexInMemory(Vertex theVertex)
 	return beginningOfMemory;
 }
 
+int GetNextVertexPointer(unsigned int &pointer,unsigned int &counter)
+{
+	while(counter < curFilledMemory)
+	{
+		if(deviceMemory[counter] == VertexOpCode)
+		{
+			pointer = counter;
+
+			counter = SkipOpCode(counter);
+			return 0;
+		}
+		else
+		{
+			counter = SkipOpCode(counter);
+		}
+	}
+
+	return 1;
+}
+
 unsigned int GetFragmentFromMemory(int &pointerToFragment, int &numFragementBytes)
 {
 	unsigned int counter = 0;
