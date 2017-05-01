@@ -1,5 +1,10 @@
 #include "globalDefines.h"
+
+#ifdef ON_ARDUINO
+#include "Arduino_Timer.h"
+#else
 #include "Simulation_Timer.h"
+#endif
 
 unsigned long lastMillis = 0;
 unsigned char tasks[NUMBER_OF_TASKS];

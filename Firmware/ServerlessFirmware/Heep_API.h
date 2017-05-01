@@ -1,6 +1,12 @@
-#include "Simulation_HeepComms.h"
 #include "Scheduler.h"
+
+#ifdef ON_ARDUINO
+#include "ENC28j60_HeepComms.h"
+#include "Arduino_EEPROM.h"
+#else
+#include "Simulation_HeepComms.h"
 #include "Simulation_NonVolatileMemory.h"
+#endif
 
 void SendOutputByID(unsigned char controlID, unsigned int value)
 {
