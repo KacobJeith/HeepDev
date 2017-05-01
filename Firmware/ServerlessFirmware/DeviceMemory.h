@@ -28,6 +28,7 @@ unsigned char deviceMemory [MAX_MEMORY];
 unsigned int curFilledMemory = 0; // Indicate the curent filled memory. 
 						 // Also serve as a place holder to 
 						 // show the back of allocated memory
+unsigned char memoryChanged = 0;
 
 
 unsigned long GetNumberFromBuffer(unsigned char* buffer, unsigned int &counter, unsigned char numBytes)
@@ -214,6 +215,8 @@ void UpdateXYInMemory(int x, int y, unsigned long deviceID)
 	{
 		SetXYInMemory(x, y, deviceID);
 	}
+
+	memoryChanged = 1;
 }
 
 void SetIPInMemory(HeepIPAddress theIP, unsigned long deviceID)
@@ -227,6 +230,7 @@ void SetIPInMemory(HeepIPAddress theIP, unsigned long deviceID)
 void DeleteVertexAtPointer(unsigned long pointer)
 {
 	deviceMemory[pointer] = FragmentOpCode;
+	memoryChanged = 1;
 }
 
 int GetVertexAtPonter(unsigned long pointer, Vertex &returnedVertex)
@@ -260,6 +264,8 @@ int SetVertexInMemory(Vertex theVertex)
 	AddNewCharToMemory(theVertex.txControlID);
 	AddNewCharToMemory(theVertex.rxControlID);
 	AddIPToMemory(theVertex.rxIPAddress);
+
+	memoryChanged = 1;
 
 	return beginningOfMemory;
 }
@@ -328,6 +334,7 @@ void DefragmentMemory()
 		if(isFragmentFound == 0)
 		{
 			RemoveUnusedBytesAtPointer(pointerToFragment, numFragementBytes);
+			memoryChanged = 1;
 		}
 
 	}while(isFragmentFound == 0);

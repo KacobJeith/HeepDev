@@ -20,24 +20,27 @@ void SendOutputByID(unsigned char controlID, unsigned int value)
 	}
 }
 
-enum Tasks {Defragment = 0, saveMemory = 1, CheckForSave = 2};
+enum Tasks {Defragment = 0, saveMemory = 1};
 void SetupHeepTasks()
 {
 	ScheduleTask(Defragment);
 	ScheduleTask(saveMemory);
-	ScheduleTask(CheckForSave);
 }	
 
-void SaveMemory()
+void CommitMemory()
 {
-
+	if(memoryChanged)
+	{
+		SaveMemory(deviceMemory, curFilledMemory);
+		memoryChanged = 0;
+	}
 }
 
 void PerformHeepTasks()
 {
 	if(IsTaskTime())
 	{
-		Tasks curTask = GetCurrentTask();
+		unsigned char curTask = GetCurrentTask();
 
 		if(curTask == Defragment)
 		{
@@ -45,11 +48,7 @@ void PerformHeepTasks()
 		}
 		else if(curTask == saveMemory)
 		{
-
-		}
-		else if(curTask == CheckForSave)
-		{
-
+			CommitMemory();
 		}
 	}
 }
