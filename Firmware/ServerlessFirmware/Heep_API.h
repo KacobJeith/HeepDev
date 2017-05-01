@@ -1,4 +1,5 @@
-#include "ENC28J60_HeepComms.h"
+#include "Simulation_HeepComms.h"
+#include "Scheduler.h"
 
 void SendOutputByID(unsigned char controlID, unsigned int value)
 {
@@ -16,6 +17,12 @@ void SendOutputByID(unsigned char controlID, unsigned int value)
 			SendOutputBufferToIP(newVertex.rxIPAddress);
 		}
 	}
+}
+
+enum Tasks {Defragment = 0, saveMemory = 1, CheckForSave = 2};
+void SetupHeepTasks()
+{
+
 }
 
 void PerformHeepTasks()
