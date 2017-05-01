@@ -347,6 +347,7 @@ UsedLibrary="/Applications/EAGLE-8.0.1/lbr/xilinx-xc9.lbr"
 UsedLibrary="/Applications/EAGLE-8.0.1/lbr/xilinx-xcv.lbr"
 UsedLibrary="/Applications/EAGLE-8.0.1/lbr/zetex.lbr"
 UsedLibrary="/Applications/EAGLE-8.0.1/lbr/zilog.lbr"
+UsedLibrary="/Users/dylan/Documents/EagleLibraries/SparkFun-Eagle-Libraries-master/SparkFun-Aesthetics.lbr"
 
 [Desktop]
 Screen="640 480"
