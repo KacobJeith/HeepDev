@@ -1,4 +1,5 @@
 #include "globalDefines.h"
+#include "Simulation_Timer.h"
 
 unsigned long lastMillis = 0;
 unsigned char tasks[NUMBER_OF_TASKS];
@@ -19,8 +20,10 @@ void ScheduleTask(int taskID)
 // Perform Round Robin Scheduling
 unsigned char IsTaskTime()
 {
-	if(yes)
+
+	if(GetMillis() - lastMillis > taskInterval)
 	{
+		lastMillis = GetMillis();
 		return 1;
 	}
 	else
