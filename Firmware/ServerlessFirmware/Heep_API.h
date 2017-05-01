@@ -17,3 +17,10 @@ void SendOutputByID(unsigned char controlID, unsigned int value)
 		}
 	}
 }
+
+void PerformHeepTasks()
+{
+	// if Scheduled, defragment!
+	// if Scheduled, check your IP
+	// if Scheduled, check to save
+}
