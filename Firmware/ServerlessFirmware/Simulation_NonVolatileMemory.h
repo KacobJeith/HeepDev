@@ -7,6 +7,6 @@ void ClearMemory()
 {
 }
 
-void ReadMemory(unsigned char* memoryBuffer)
+void ReadMemory(unsigned char* memoryBuffer, unsigned int &bytesRead)
 {
 }

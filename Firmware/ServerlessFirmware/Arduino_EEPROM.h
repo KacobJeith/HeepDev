@@ -19,9 +19,11 @@ void ClearMemory()
   }
 }
 
-void ReadMemory(unsigned char* memoryBuffer)
+
+void ReadMemory(unsigned char* memoryBuffer, unsigned int &bytesRead)
 {
 	int numberBytesToRead = EEPROM.read(0); // Address 0 contains number of bytes
+	bytesRead = numberBytesToRead;
 
 	for(int i = 1; i < numberBytesToRead + 1; i++)
 	{
