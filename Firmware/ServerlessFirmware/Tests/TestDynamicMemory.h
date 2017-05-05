@@ -689,6 +689,224 @@ void TestUpdateXYPosition()
 	CheckResults(TestName, valueList, 6);
 }
 
+void TestDefragmentDeviceMemory()
+{
+	std::string TestName = "Test Defragmented Vertex";
+
+	ClearDeviceMemory();
+
+	Vertex theVertex;
+	theVertex.rxID = 0x01020304;
+	theVertex.txID = 0x05060708;
+	theVertex.rxControlID = 1;
+	theVertex.txControlID = 2;
+	HeepIPAddress theIP;
+	theIP.Octet4 = 192;
+	theIP.Octet3 = 168;
+	theIP.Octet2 = 1;
+	theIP.Octet1 = 150;
+	theVertex.rxIPAddress = theIP;
+
+	SetVertexInMemory(theVertex);
+	ExpectedValue valueList [3];
+	unsigned int beforeDeletionMemory = curFilledMemory;
+	valueList[0].valueName = "Memory Filled Before Deletion";
+	valueList[0].expectedValue = 16;
+	valueList[0].actualValue = beforeDeletionMemory;
+
+	DeleteVertexAtPointer(0);
+	unsigned int afterDeletionMemory = curFilledMemory;
+	valueList[1].valueName = "Memory Filled After Deletion";
+	valueList[1].expectedValue = 16;
+	valueList[1].actualValue = afterDeletionMemory;
+
+	DefragmentMemory();
+	valueList[2].valueName = "Memory Filled after Defragmentation";
+	valueList[2].expectedValue = 0;
+	valueList[2].actualValue = curFilledMemory;
+	CheckResults(TestName, valueList, 3);
+}
+
+void TestDefragmentDeviceMemoryAtEnd()
+{
+	std::string TestName = "Test Defragmented Vertex at End";
+
+	ClearDeviceMemory();
+
+	Vertex theVertex;
+	theVertex.rxID = 0x01020304;
+	theVertex.txID = 0x05060708;
+	theVertex.rxControlID = 1;
+	theVertex.txControlID = 2;
+	HeepIPAddress theIP;
+	theIP.Octet4 = 192;
+	theIP.Octet3 = 168;
+	theIP.Octet2 = 1;
+	theIP.Octet1 = 150;
+	theVertex.rxIPAddress = theIP;
+
+
+	SetDeviceNameInMemory("Crowbar", 7, 0x01020304);
+	SetIPInMemory(theIP, 0x04030210);
+	SetVertexInMemory(theVertex);
+	ExpectedValue valueList [3];
+	unsigned int beforeDeletionMemory = curFilledMemory;
+	valueList[0].valueName = "Memory Filled Before Deletion";
+	valueList[0].expectedValue = 39;
+	valueList[0].actualValue = beforeDeletionMemory;
+
+	DeleteVertexAtPointer(23);
+	unsigned int afterDeletionMemory = curFilledMemory;
+	valueList[1].valueName = "Memory Filled After Deletion";
+	valueList[1].expectedValue = 39;
+	valueList[1].actualValue = afterDeletionMemory;
+
+	DefragmentMemory();
+	valueList[2].valueName = "Memory Filled after Defragmentation";
+	valueList[2].expectedValue = 23;
+	valueList[2].actualValue = curFilledMemory;
+	CheckResults(TestName, valueList, 3);
+}
+
+void TestDefragmentDeviceMemoryDeviceAtFront()
+{
+	std::string TestName = "Test Defragmented Vertex at Front";
+
+	ClearDeviceMemory();
+
+	Vertex theVertex;
+	theVertex.rxID = 0x01020304;
+	theVertex.txID = 0x05060708;
+	theVertex.rxControlID = 1;
+	theVertex.txControlID = 2;
+	HeepIPAddress theIP;
+	theIP.Octet4 = 192;
+	theIP.Octet3 = 168;
+	theIP.Octet2 = 1;
+	theIP.Octet1 = 150;
+	theVertex.rxIPAddress = theIP;
+
+	SetVertexInMemory(theVertex);
+	SetDeviceNameInMemory("Crowbar", 7, 0x01020304);
+	SetIPInMemory(theIP, 0x04030210);
+	ExpectedValue valueList [3];
+	unsigned int beforeDeletionMemory = curFilledMemory;
+	valueList[0].valueName = "Memory Filled Before Deletion";
+	valueList[0].expectedValue = 39;
+	valueList[0].actualValue = beforeDeletionMemory;
+
+	DeleteVertexAtPointer(0);
+	unsigned int afterDeletionMemory = curFilledMemory;
+	valueList[1].valueName = "Memory Filled After Deletion";
+	valueList[1].expectedValue = 39;
+	valueList[1].actualValue = afterDeletionMemory;
+
+	DefragmentMemory();
+	valueList[2].valueName = "Memory Filled after Defragmentation";
+	valueList[2].expectedValue = 23;
+	valueList[2].actualValue = curFilledMemory;
+
+	CheckResults(TestName, valueList, 3);
+}
+
+void TestDefragmentDeviceMemoryInMiddle()
+{
+	std::string TestName = "Test Defragmented Vertex in Middle";
+
+	ClearDeviceMemory();
+
+	Vertex theVertex;
+	theVertex.rxID = 0x01020304;
+	theVertex.txID = 0x05060708;
+	theVertex.rxControlID = 1;
+	theVertex.txControlID = 2;
+	HeepIPAddress theIP;
+	theIP.Octet4 = 192;
+	theIP.Octet3 = 168;
+	theIP.Octet2 = 1;
+	theIP.Octet1 = 150;
+	theVertex.rxIPAddress = theIP;
+
+
+	SetDeviceNameInMemory("Crowbar", 7, 0x01020304);
+	SetVertexInMemory(theVertex);
+	SetIPInMemory(theIP, 0x04030210);
+	ExpectedValue valueList [3];
+	unsigned int beforeDeletionMemory = curFilledMemory;
+	valueList[0].valueName = "Memory Filled Before Deletion";
+	valueList[0].expectedValue = 39;
+	valueList[0].actualValue = beforeDeletionMemory;
+
+	DeleteVertexAtPointer(13);
+	unsigned int afterDeletionMemory = curFilledMemory;
+	valueList[1].valueName = "Memory Filled After Deletion";
+	valueList[1].expectedValue = 39;
+	valueList[1].actualValue = afterDeletionMemory;
+
+	DefragmentMemory();
+	valueList[2].valueName = "Memory Filled after Defragmentation";
+	valueList[2].expectedValue = 23;
+	valueList[2].actualValue = curFilledMemory;
+	CheckResults(TestName, valueList, 3);
+}
+
+void TestBuildVertexListFromPointers()
+{
+	std::string TestName = "Test Build Vertex List";
+
+	ClearDeviceMemory();
+
+	Vertex theVertex;
+	theVertex.rxID = 0x01020304;
+	theVertex.txID = 0x05060708;
+	theVertex.rxControlID = 1;
+	theVertex.txControlID = 2;
+	HeepIPAddress theIP;
+	theIP.Octet4 = 192;
+	theIP.Octet3 = 168;
+	theIP.Octet2 = 1;
+	theIP.Octet1 = 150;
+	theVertex.rxIPAddress = theIP;
+
+	Vertex theVertex2;
+	theVertex2.rxID = 0x01020304;
+	theVertex2.txID = 0x05060708;
+	theVertex2.rxControlID = 1;
+	theVertex2.txControlID = 2;
+	theVertex2.rxIPAddress = theIP;
+
+
+	SetDeviceNameInMemory("Crowbar", 7, 0x01020304);
+	SetVertexInMemory(theVertex);
+	SetIPInMemory(theIP, 0x04030210);
+	SetVertexInMemory(theVertex2);
+
+	FillVertexListFromMemory();
+
+	ExpectedValue valueList [5];
+	valueList[0].valueName = "Num Vertices";
+	valueList[0].expectedValue = 2;
+	valueList[0].actualValue = numberOfVertices;
+
+	valueList[1].valueName = "Vertex 1 Addr";
+	valueList[1].expectedValue = 13;
+	valueList[1].actualValue = vertexPointerList[0];
+
+	valueList[2].valueName = "Vertex 2 Addr";
+	valueList[2].expectedValue = 39;
+	valueList[2].actualValue = vertexPointerList[1];
+
+	valueList[3].valueName = "Vertex 1 OpCode Check";
+	valueList[3].expectedValue = 0x03;
+	valueList[3].actualValue = deviceMemory[vertexPointerList[0]];
+
+	valueList[4].valueName = "Vertex 2 OpCode Check";
+	valueList[4].expectedValue = 0x03;
+	valueList[4].actualValue = deviceMemory[vertexPointerList[1]];
+
+	CheckResults(TestName, valueList, 5);
+}
+
 void TestDynamicMemory()
 {
 	TestAddCharToBuffer();
@@ -708,4 +926,9 @@ void TestDynamicMemory()
 	TestSkipOpCode();
 	TestUpdateXYPosition();
 	TestGetVertex();
+	TestDefragmentDeviceMemory();
+	TestDefragmentDeviceMemoryInMiddle();
+	TestDefragmentDeviceMemoryDeviceAtFront();
+	TestDefragmentDeviceMemoryAtEnd();
+	TestBuildVertexListFromPointers();
 }

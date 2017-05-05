@@ -1,5 +1,6 @@
 #include "TestDynamicMemory.h"
 #include "TestActionAndResponseOpCodes.h"
+#include "TestAPI.h"
 
 int main(void) 
 {
