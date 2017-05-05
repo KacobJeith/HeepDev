@@ -45,7 +45,6 @@ int stateRight = 0;
 
 void loop()
 {
-	CheckServerForInputs();
 	PerformHeepTasks();
 
 	if(digitalRead(rightSwitch) != stateRight)

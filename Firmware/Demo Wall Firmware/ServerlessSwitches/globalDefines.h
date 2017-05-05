@@ -9,4 +9,4 @@
 #define SYSTEM_TASK_INTERVAL 1000 // Time in ms
 #define NUMBER_OF_TASKS 4
 
-#define ON_ARDUINO
+//#define ON_ARDUINO
