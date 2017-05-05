@@ -25,5 +25,6 @@ struct Control
 	unsigned char highValue;
 	unsigned char lowValue;
 	unsigned char curValue;
+	unsigned char controlFlags;
 	char* controlName;
 };
