@@ -107,19 +107,28 @@ void SetDeviceName(char* deviceName)
 	SetDeviceNameInMemory(deviceName, deviceNameLength, deviceID);
 }
 
-int SetControlValueByID(unsigned char controlID, unsigned int value)
+int SetControlValueByID(unsigned char controlID, unsigned int value, unsigned char setFromNetwork = 0)
 {
 	for(int i = 0; i < numberOfControls; i++)
 	{
 		if(controlList[i].controlID == controlID)
 		{
 			controlList[i].curValue = value;
+
+			if(setFromNetwork)
+				controlList[i].controlFlags = 0x01;
+
 			return 0;
 		}
 	}
 
 	return 1;
 }	
+
+int SetControlValueByIDFromNetwork(unsigned char controlID, unsigned int value)
+{
+	return SetControlValueByID(controlID, value, 1);
+}
 
 int GetControlValueByID(unsigned controlID)
 {

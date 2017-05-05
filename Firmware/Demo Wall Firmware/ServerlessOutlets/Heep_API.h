@@ -42,6 +42,19 @@ void CommitMemory()
 	}
 }
 
+// Control Daemon is untimed
+void ControlDaemon()
+{
+	for(int i = 0; i < numberOfControls; i++)
+	{
+		if(controlList[i].controlFlags & 0x01)
+		{
+			SendOutputByID(controlList[i].controlID, controlList[i].curValue);
+			controlList[i].controlFlags ^= 1 << 0; // Toggle Send to 0
+		}
+	}
+}
+
 void PerformHeepTasks()
 {
 	if(IsTaskTime())
@@ -57,4 +70,7 @@ void PerformHeepTasks()
 			CommitMemory();
 		}
 	}
+
+	CheckServerForInputs();
+	ControlDaemon();
 }

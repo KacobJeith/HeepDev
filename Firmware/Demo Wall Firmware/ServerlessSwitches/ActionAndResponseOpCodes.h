@@ -155,7 +155,7 @@ void ExecuteSetValOpCode()
 	unsigned char controlID = inputBuffer[counter++];
 	unsigned int value = GetNumberFromBuffer(inputBuffer, counter, numBytes - 1);
 
-	int success = SetControlValueByID(controlID, value);
+	int success = SetControlValueByIDFromNetwork(controlID, value);
 
 	if(success == 0)
 	{

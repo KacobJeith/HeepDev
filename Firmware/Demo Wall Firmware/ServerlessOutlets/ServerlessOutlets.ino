@@ -42,7 +42,6 @@ void setup()
 
 void loop()
 {
-	CheckServerForInputs();
 	PerformHeepTasks();
 
 	if(controlList[0].curValue == 1)
