@@ -7,7 +7,7 @@ EthernetClient client;
 
 void CreateInterruptServer()
 {
-	uint8_t mac[6] = {0x00,0x01,0x02,0x03,0x04,0x08};
+	uint8_t mac[6] = {0x00,0x01,0x12,0x23,0x94,0x88};
   	Ethernet.begin(mac);
 	IPAddress localIP = Ethernet.localIP();
 	Serial.println(localIP);
