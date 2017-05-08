@@ -80,6 +80,9 @@ void InitializeW5500SS()
 // Source Hardware Address [MAC Address] (SHAR) - 0x0009->0x000E
 #define SHAR0 0x0009
 
+// Source IP Address (SIPR) - 0x000F->0x0012
+#define SIPR 0x000F
+
 void ReadFromW5500(uint16_t addr, uint8_t controlBit, uint8_t* buf, uint16_t len)
 {
     SetW5500SS();
