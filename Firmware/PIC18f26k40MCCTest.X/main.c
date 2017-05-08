@@ -100,7 +100,7 @@ void ReadFromW5500(uint16_t addr, uint8_t controlBit, uint8_t* buf, uint16_t len
     ResetW5500SS();
 }
 
-WriteToW5500(uint16_t addr, uint8_t controlBit, uint8_t* buf, uint16_t len)
+void WriteToW5500(uint16_t addr, uint8_t controlBit, uint8_t* buf, uint16_t len)
 {
     SetW5500SS();
     
@@ -117,6 +117,15 @@ WriteToW5500(uint16_t addr, uint8_t controlBit, uint8_t* buf, uint16_t len)
     ResetW5500SS();
 }
 
+void WriteSubnetMask(uint8_t* buf)
+{
+    WriteToW5500(SUBR0, 0b00000100, buf, 4);
+}
+
+void ReadSubnetMask(uint8_t* buf)
+{
+    ReadFromW5500(SUBR0, 0x00, buf, 4);
+}
 
 void main(void)
 {
@@ -154,15 +163,53 @@ void main(void)
     TRISA = 0x00;
     InitializeW5500SS();
     
+    uint8_t writeSubBuff [4];
+    writeSubBuff[0] = 255;
+    writeSubBuff[1] = 255;
+    writeSubBuff[2] = 14;
+    writeSubBuff[3] = 0;
+    
+    uint8_t readSubBuf [4];
+    uint8_t success = 1;
+    
+    WriteSubnetMask(writeSubBuff);
+    ReadSubnetMask(readSubBuf);
+    
+    if(readSubBuf[0] != writeSubBuff[0])
+    {
+        success = 0;
+    }
+    if(readSubBuf[1] != writeSubBuff[1])
+    {
+        success = 0;
+    }
+    if(readSubBuf[2] != writeSubBuff[2])
+    {
+        success = 0;
+    }
+    if(readSubBuf[3] != writeSubBuff[3])
+    {
+        success = 0;
+    }
+    
+    if(success)
+    {
+        LATAbits.LA0 = 1;
+    }
+    else
+    {
+        LATAbits.LA0 = 0;
+    }
+    
     while (1)
     {
         // Add your application code
-        LATAbits.LA0 = !LATAbits.LA0;
-        SPI1_Exchange8bit(counter);
-        counter++;
+       // LATAbits.LA0 = !LATAbits.LA0;
+        //SPI1_Exchange8bit(counter);
+        //counter++;
         
-        if(counter > 9)
-            counter = 0;
+        //if(counter > 9)
+          //  counter = 0;
         
 //        unsigned long loopValue = 100000;
 //        for(unsigned long i = 0; i < loopValue; i++)
