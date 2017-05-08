@@ -71,6 +71,15 @@ void InitializeW5500SS()
     TRISCbits.TRISC0 = 0;
 }
 
+// Gateway Address (GAR) - 0x0001->0x0004
+#define GAR0 0x0001
+
+// Subnet Mask Address (SUBR) - 0x0005->0x0008
+#define SUBR0 0x0005
+
+// Source Hardware Address [MAC Address] (SHAR) - 0x0009->0x000E
+#define SHAR0 0x0009
+
 void ReadFromW5500(uint16_t addr, uint8_t controlBit, uint8_t* buf, uint16_t len)
 {
     SetW5500SS();
