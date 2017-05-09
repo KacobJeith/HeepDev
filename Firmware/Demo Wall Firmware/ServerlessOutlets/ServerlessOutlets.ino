@@ -1,13 +1,13 @@
 #include "Heep_API.h"
 
-char controlName1 [] = "Relay";
-char deviceName  [] = "Backpack Outlet";
+char controlName1 [] = "Main Light";
+char deviceName  [] = "Living Room Light";
 
 Control theControl1;
 
 int outlet = 23;
 
-//#define CLEAR_MEMORY
+#define CLEAR_MEMORY
 
 void setup()
 {
@@ -25,7 +25,7 @@ void setup()
 	pinMode(outlet, OUTPUT);
 	digitalWrite(outlet, LOW);
 
-	SetDeviceID(0x12345678);
+	SetDeviceID(0x140004);
 	SetDeviceName(deviceName);
 	theControl1.controlName = controlName1;
 	theControl1.controlID = 0;

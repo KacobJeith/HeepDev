@@ -47,7 +47,7 @@ export var MemoryCrawler = (buffer) => {
 
     if (nextBlock == false){
       console.log('Encountered an un-implemented OP Code');
-      return false
+
     } else {
       //console.log('nextBlock: ', nextBlock);
     }
@@ -109,7 +109,7 @@ var GetNextBlock = (buffer, it) => {
     //Fragment 
 
   } else {
-    return false
+    
   }
 
   it += CalculateNextIterator(byteIndicatorBytes, thisBlock.packetBytes);

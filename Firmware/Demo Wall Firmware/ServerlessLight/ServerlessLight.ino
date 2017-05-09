@@ -10,7 +10,7 @@ Control theControl2;
 int rightLight = 17;
 int leftLight = 16;
 
-//#define CLEAR_MEMORY
+#define CLEAR_MEMORY
 
 void setup()
 {
@@ -50,8 +50,10 @@ void setup()
 	theControl2.curValue = 0;
 	AddControl(theControl2);
 
+	Serial.println("Before Server");
 	SetupHeepTasks();
 	CreateInterruptServer();
+	Serial.println("After Server");
 }
 
 void loop()
