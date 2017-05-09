@@ -83,7 +83,7 @@ void FillOutputBufferWithControlData()
 	}
 }
 
-void FillOutputBUfferWithDynamicMemorySize()
+void FillOutputBufferWithDynamicMemorySize()
 {
 	AddNewCharToOutputBuffer(DynamicMemorySizeOpCode);
 	AddDeviceIDToOutputBuffer(deviceID);
@@ -112,7 +112,7 @@ void FillOutputBufferWithMemoryDump()
 	FillOutputBufferWithControlData();
 
 	// Add Dynamic Memory Size
-	FillOutputBUfferWithDynamicMemorySize();
+	FillOutputBufferWithDynamicMemorySize();
 
 	// Add Dynamic Memory
 	for(int i = 0; i<curFilledMemory; i++)
