@@ -129,15 +129,20 @@ export var findGateway = () => {
 
   for (var interfaces in networkInterfaces) {
     for (var i = 0; i < networkInterfaces[interfaces].length; i++ ) {
-      if (networkInterfaces[interfaces][i].netmask == '255.255.255.0'){
+      console.log(networkInterfaces[interfaces][i])
+      if (networkInterfaces[interfaces][i].netmask == '255.255.255.0' ){
         var activeAddress = networkInterfaces[interfaces][i].address;
         var address = activeAddress.split('.');
         var myIp = address.pop();
-        console.log('Searching on gateway: ', address);
-        return address
+        
+        
+        //return address
       }
     }
   }
+  
+  console.log('Searching on gateway: ', address);
+  return address
 }
 
 var ConnectToHeepDevice = (IPAddress, port, message) => {
