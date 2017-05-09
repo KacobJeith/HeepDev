@@ -302,6 +302,64 @@ void TestSetVertxCOP()
 	CheckResults(TestName, valueList, 8);
 }
 
+void TestAddMOPOpCode()
+{
+	std::string TestName = "Test Set MOP COP";
+
+	ClearDeviceMemory();
+	ClearInputBuffer();
+
+	// Add a random clients name
+	inputBuffer[0] = 0x13;
+	inputBuffer[1] = 0x0B;
+
+	inputBuffer[2] = 0x06;
+	inputBuffer[3] = 0x01;
+	inputBuffer[4] = 0x02;
+	inputBuffer[5] = 0x03;
+	inputBuffer[6] = 0x04;
+	inputBuffer[7] = 0x05;
+
+	inputBuffer[8] = 'J';
+	inputBuffer[9] = 'a';
+	inputBuffer[10] = 'm';
+
+	inputBuffer[11] = 'e';
+	inputBuffer[12] = 's';
+
+	unsigned int beforeMemory = curFilledMemory;
+
+	ExecuteControlOpCodes();
+
+	unsigned int afterMemory = curFilledMemory;
+
+	// Traverse the new memory by updating XY twice
+	UpdateXYInMemory(1234, 161, 0x01020304);
+	unsigned int beforeTraversal = curFilledMemory;
+
+	UpdateXYInMemory(2321, 5101, 0x01020304);
+	unsigned int afterTraveresal = curFilledMemory;
+
+	ExpectedValue valueList [4];
+	valueList[0].valueName = "Before Memory Size";
+	valueList[0].expectedValue = 0;
+	valueList[0].actualValue = beforeMemory;
+
+	valueList[1].valueName = "After Memory Size";
+	valueList[1].expectedValue = 11;
+	valueList[1].actualValue = afterMemory;
+
+	valueList[2].valueName = "Before Traversal Memory Size";
+	valueList[2].expectedValue = 21;
+	valueList[2].actualValue = beforeTraversal;
+
+	valueList[3].valueName = "After Traversal Memory Size";
+	valueList[3].expectedValue = 21;
+	valueList[3].actualValue = afterTraveresal;
+
+	CheckResults(TestName, valueList, 4);
+}
+
 void TestActionAndResponseOpCodes()
 {
 	TestClearOutputBufferAndAddChar();
@@ -312,4 +370,5 @@ void TestActionAndResponseOpCodes()
 	TestSetValFailure();
 	TestSetPositionOpCode();
 	TestSetVertxCOP();
+	TestAddMOPOpCode();
 }

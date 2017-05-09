@@ -266,7 +266,7 @@ void ExecuteAddMOPOpCode()
 
 	for(int i = 0; i < numBytes; i++)
 	{
-		AddNewCharToMemory(counter);
+		AddNewCharToMemory(inputBuffer[counter]);
 		counter++;
 	}
 
