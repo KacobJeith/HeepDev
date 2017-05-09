@@ -83,6 +83,14 @@ void FillOutputBufferWithControlData()
 	}
 }
 
+void FillOutputBufferWithDynamicMemorySize()
+{
+	AddNewCharToOutputBuffer(DynamicMemorySizeOpCode);
+	AddDeviceIDToOutputBuffer(deviceID);
+	AddNewCharToOutputBuffer(1);
+	AddNewCharToOutputBuffer(MAX_MEMORY);
+}
+
 void FillOutputBufferWithMemoryDump()
 {
 	ClearOutputBuffer();
@@ -100,7 +108,11 @@ void FillOutputBufferWithMemoryDump()
 	AddNewCharToOutputBuffer(1);
 	AddNewCharToOutputBuffer(firmwareVersion);
 
+	// Add Control Data
 	FillOutputBufferWithControlData();
+
+	// Add Dynamic Memory Size
+	FillOutputBufferWithDynamicMemorySize();
 
 	// Add Dynamic Memory
 	for(int i = 0; i<curFilledMemory; i++)
@@ -246,6 +258,23 @@ void ExecuteDeleteVertexOpCode()
 	}
 }
 
+void ExecuteAddMOPOpCode()
+{
+	unsigned int counter = 1;
+
+	unsigned char numBytes = GetNumberFromBuffer(inputBuffer, counter, 1);
+
+	for(int i = 0; i < numBytes; i++)
+	{
+		AddNewCharToMemory(inputBuffer[counter]);
+		counter++;
+	}
+
+	ClearOutputBuffer();
+	char SuccessMessage [] = "MOP Added!";
+	FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
+}
+
 void ExecuteControlOpCodes()
 {
 	unsigned char ControlOpCode = inputBuffer[0];
@@ -268,6 +297,10 @@ void ExecuteControlOpCodes()
 	else if(ControlOpCode == DeleteVertexOpCode)
 	{
 		ExecuteDeleteVertexOpCode();
+	}
+	else if(ControlOpCode == AddMOPOpCode)
+	{
+		ExecuteAddMOPOpCode();
 	}
 }
 
