@@ -57,6 +57,13 @@ class DeviceTableViewController: UITableViewController {
         label.frame = CGRect(x: 45, y: 5, width: tableView.frame.size.width, height: 35)
         view.addSubview(label)
         
+        let summary = UIButton(type: .detailDisclosure)
+        summary.frame = CGRect(x: tableView.frame.size.width - 60, y: 5, width: 60, height: 40)
+        summary.tag = section
+        summary.addTarget(self, action: #selector(displayDeviceSummary), for: UIControlEvents.primaryActionTriggered)
+        
+        view.addSubview(summary)
+        
         return view
         
     }
@@ -142,6 +149,12 @@ class DeviceTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         
         return 45
+    }
+    
+    func displayDeviceSummary(sender: UIButton) {
+        print("Display device summary for: \(devices[sender.tag].deviceID)")
+        let summaryView = DeviceSummaryViewController(device: devices[sender.tag])
+        navigationController?.pushViewController(summaryView, animated: true)
     }
     
     

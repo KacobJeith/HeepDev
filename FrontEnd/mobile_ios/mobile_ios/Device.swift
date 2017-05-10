@@ -11,12 +11,12 @@ import Foundation
 class Device {
     //MARK: Properties
     
-    var name: String
-    var deviceID: Int
-    var version: Int
-    var iconName: String
-    var ipAddress: String
-    var controlList =  [DeviceControl]()
+    public var name: String
+    public var deviceID: Int
+    public var version: Int
+    public var iconName: String
+    public var ipAddress: String
+    public var controlList =  [DeviceControl]()
     
     //MARK: Initialization
     init(deviceID: Int) {
