@@ -4513,8 +4513,8 @@ This is the "KIT" version, which has limited top masking for improved ease of as
 <part name="C3" library="SparkFun-Passives" deviceset="CAP" device="0603-CAP" value="0.1uF"/>
 <part name="C5" library="SparkFun-Passives" deviceset="CAP" device="0603-CAP" value="10uF"/>
 <part name="GND4" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
-<part name="R2" library="SparkFun-Passives" deviceset="RESISTOR" device="0603-RES"/>
-<part name="R3" library="SparkFun-Passives" deviceset="RESISTOR" device="0603-RES"/>
+<part name="R2" library="SparkFun-Passives" deviceset="RESISTOR" device="0603-RES" value="10k"/>
+<part name="R3" library="SparkFun-Passives" deviceset="RESISTOR" device="0603-RES" value="10k"/>
 <part name="SUPPLY2" library="SparkFun-Aesthetics" deviceset="VCC" device=""/>
 <part name="SUPPLY3" library="SparkFun-Aesthetics" deviceset="VCC" device=""/>
 <part name="SUPPLY4" library="SparkFun-Aesthetics" deviceset="VCC" device=""/>
@@ -4531,7 +4531,7 @@ This is the "KIT" version, which has limited top masking for improved ease of as
 <part name="C13" library="SparkFun-Passives" deviceset="CAP" device="0603-CAP" value="10uF"/>
 <part name="C14" library="SparkFun-Passives" deviceset="CAP" device="0603-CAP" value="100nF"/>
 <part name="SUPPLY5" library="SparkFun-Aesthetics" deviceset="VCC" device=""/>
-<part name="R4" library="SparkFun-Passives" deviceset="RESISTOR" device="0603-RES"/>
+<part name="R4" library="SparkFun-Passives" deviceset="RESISTOR" device="0603-RES" value="10k"/>
 <part name="SUPPLY6" library="SparkFun-Aesthetics" deviceset="VCC" device=""/>
 <part name="GND5" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="U$2" library="SparkFun-Aesthetics" deviceset="VCCA" device=""/>
@@ -4569,6 +4569,7 @@ This is the "KIT" version, which has limited top masking for improved ease of as
 <part name="GND15" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="GND16" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="SUPPLY11" library="SparkFun-Aesthetics" deviceset="VCC" device=""/>
+<part name="GND17" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -4646,6 +4647,7 @@ This is the "KIT" version, which has limited top masking for improved ease of as
 <instance part="GND15" gate="1" x="33.02" y="-25.4"/>
 <instance part="GND16" gate="1" x="81.28" y="-30.48"/>
 <instance part="SUPPLY11" gate="G$1" x="81.28" y="-17.78"/>
+<instance part="GND17" gate="1" x="259.08" y="25.4"/>
 </instances>
 <busses>
 </busses>
@@ -4954,6 +4956,48 @@ This is the "KIT" version, which has limited top masking for improved ease of as
 <wire x1="81.28" y1="-25.4" x2="81.28" y2="-27.94" width="0.1524" layer="91"/>
 <pinref part="GND16" gate="1" pin="GND"/>
 </segment>
+<segment>
+<pinref part="C4" gate="G$1" pin="2"/>
+<wire x1="269.24" y1="27.94" x2="269.24" y2="33.02" width="0.1524" layer="91"/>
+<pinref part="C6" gate="G$1" pin="2"/>
+<wire x1="269.24" y1="27.94" x2="281.94" y2="27.94" width="0.1524" layer="91"/>
+<wire x1="281.94" y1="27.94" x2="281.94" y2="33.02" width="0.1524" layer="91"/>
+<pinref part="C7" gate="G$1" pin="2"/>
+<wire x1="281.94" y1="27.94" x2="292.1" y2="27.94" width="0.1524" layer="91"/>
+<wire x1="292.1" y1="27.94" x2="292.1" y2="33.02" width="0.1524" layer="91"/>
+<junction x="281.94" y="27.94"/>
+<pinref part="C8" gate="G$1" pin="2"/>
+<wire x1="292.1" y1="27.94" x2="302.26" y2="27.94" width="0.1524" layer="91"/>
+<wire x1="302.26" y1="27.94" x2="302.26" y2="33.02" width="0.1524" layer="91"/>
+<junction x="292.1" y="27.94"/>
+<pinref part="C9" gate="G$1" pin="2"/>
+<wire x1="302.26" y1="27.94" x2="312.42" y2="27.94" width="0.1524" layer="91"/>
+<wire x1="312.42" y1="27.94" x2="312.42" y2="33.02" width="0.1524" layer="91"/>
+<junction x="302.26" y="27.94"/>
+<pinref part="C10" gate="G$1" pin="2"/>
+<wire x1="312.42" y1="27.94" x2="322.58" y2="27.94" width="0.1524" layer="91"/>
+<wire x1="322.58" y1="27.94" x2="322.58" y2="33.02" width="0.1524" layer="91"/>
+<junction x="312.42" y="27.94"/>
+<pinref part="C11" gate="G$1" pin="2"/>
+<wire x1="322.58" y1="27.94" x2="332.74" y2="27.94" width="0.1524" layer="91"/>
+<wire x1="332.74" y1="27.94" x2="332.74" y2="33.02" width="0.1524" layer="91"/>
+<junction x="322.58" y="27.94"/>
+<pinref part="C12" gate="G$1" pin="2"/>
+<wire x1="332.74" y1="27.94" x2="342.9" y2="27.94" width="0.1524" layer="91"/>
+<wire x1="342.9" y1="27.94" x2="342.9" y2="33.02" width="0.1524" layer="91"/>
+<junction x="332.74" y="27.94"/>
+<pinref part="C13" gate="G$1" pin="2"/>
+<wire x1="233.68" y1="33.02" x2="233.68" y2="27.94" width="0.1524" layer="91"/>
+<wire x1="233.68" y1="27.94" x2="243.84" y2="27.94" width="0.1524" layer="91"/>
+<junction x="269.24" y="27.94"/>
+<pinref part="C14" gate="G$1" pin="2"/>
+<wire x1="243.84" y1="27.94" x2="259.08" y2="27.94" width="0.1524" layer="91"/>
+<wire x1="259.08" y1="27.94" x2="269.24" y2="27.94" width="0.1524" layer="91"/>
+<wire x1="243.84" y1="33.02" x2="243.84" y2="27.94" width="0.1524" layer="91"/>
+<junction x="243.84" y="27.94"/>
+<pinref part="GND17" gate="1" pin="GND"/>
+<junction x="259.08" y="27.94"/>
+</segment>
 </net>
 <net name="N$1" class="0">
 <segment>
@@ -4996,47 +5040,6 @@ This is the "KIT" version, which has limited top masking for improved ease of as
 <wire x1="236.22" y1="119.38" x2="243.84" y2="119.38" width="0.1524" layer="91"/>
 <wire x1="236.22" y1="121.92" x2="236.22" y2="119.38" width="0.1524" layer="91"/>
 <junction x="236.22" y="119.38"/>
-</segment>
-</net>
-<net name="N$3" class="0">
-<segment>
-<pinref part="C4" gate="G$1" pin="2"/>
-<wire x1="269.24" y1="27.94" x2="269.24" y2="33.02" width="0.1524" layer="91"/>
-<pinref part="C6" gate="G$1" pin="2"/>
-<wire x1="269.24" y1="27.94" x2="281.94" y2="27.94" width="0.1524" layer="91"/>
-<wire x1="281.94" y1="27.94" x2="281.94" y2="33.02" width="0.1524" layer="91"/>
-<pinref part="C7" gate="G$1" pin="2"/>
-<wire x1="281.94" y1="27.94" x2="292.1" y2="27.94" width="0.1524" layer="91"/>
-<wire x1="292.1" y1="27.94" x2="292.1" y2="33.02" width="0.1524" layer="91"/>
-<junction x="281.94" y="27.94"/>
-<pinref part="C8" gate="G$1" pin="2"/>
-<wire x1="292.1" y1="27.94" x2="302.26" y2="27.94" width="0.1524" layer="91"/>
-<wire x1="302.26" y1="27.94" x2="302.26" y2="33.02" width="0.1524" layer="91"/>
-<junction x="292.1" y="27.94"/>
-<pinref part="C9" gate="G$1" pin="2"/>
-<wire x1="302.26" y1="27.94" x2="312.42" y2="27.94" width="0.1524" layer="91"/>
-<wire x1="312.42" y1="27.94" x2="312.42" y2="33.02" width="0.1524" layer="91"/>
-<junction x="302.26" y="27.94"/>
-<pinref part="C10" gate="G$1" pin="2"/>
-<wire x1="312.42" y1="27.94" x2="322.58" y2="27.94" width="0.1524" layer="91"/>
-<wire x1="322.58" y1="27.94" x2="322.58" y2="33.02" width="0.1524" layer="91"/>
-<junction x="312.42" y="27.94"/>
-<pinref part="C11" gate="G$1" pin="2"/>
-<wire x1="322.58" y1="27.94" x2="332.74" y2="27.94" width="0.1524" layer="91"/>
-<wire x1="332.74" y1="27.94" x2="332.74" y2="33.02" width="0.1524" layer="91"/>
-<junction x="322.58" y="27.94"/>
-<pinref part="C12" gate="G$1" pin="2"/>
-<wire x1="332.74" y1="27.94" x2="342.9" y2="27.94" width="0.1524" layer="91"/>
-<wire x1="342.9" y1="27.94" x2="342.9" y2="33.02" width="0.1524" layer="91"/>
-<junction x="332.74" y="27.94"/>
-<pinref part="C13" gate="G$1" pin="2"/>
-<wire x1="233.68" y1="33.02" x2="233.68" y2="27.94" width="0.1524" layer="91"/>
-<wire x1="233.68" y1="27.94" x2="243.84" y2="27.94" width="0.1524" layer="91"/>
-<junction x="269.24" y="27.94"/>
-<pinref part="C14" gate="G$1" pin="2"/>
-<wire x1="243.84" y1="27.94" x2="269.24" y2="27.94" width="0.1524" layer="91"/>
-<wire x1="243.84" y1="33.02" x2="243.84" y2="27.94" width="0.1524" layer="91"/>
-<junction x="243.84" y="27.94"/>
 </segment>
 </net>
 <net name="VCCA" class="0">
