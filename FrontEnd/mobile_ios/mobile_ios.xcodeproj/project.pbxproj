@@ -8,12 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		101D2F631EA968230074D807 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101D2F621EA968230074D807 /* AppDelegate.swift */; };
-		101D2F681EA968230074D807 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 101D2F661EA968230074D807 /* Main.storyboard */; };
 		101D2F6B1EA968230074D807 /* mobile_ios.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 101D2F691EA968230074D807 /* mobile_ios.xcdatamodeld */; };
-		101D2F701EA968230074D807 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 101D2F6E1EA968230074D807 /* LaunchScreen.storyboard */; };
 		101D2F7B1EA968230074D807 /* mobile_iosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101D2F7A1EA968230074D807 /* mobile_iosTests.swift */; };
 		101D2F861EA968230074D807 /* mobile_iosUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101D2F851EA968230074D807 /* mobile_iosUITests.swift */; };
 		101D2F941EA97DD90074D807 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 101D2F6C1EA968230074D807 /* Assets.xcassets */; };
+		103FE2811EC25E3B0033D021 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103FE2801EC25E3B0033D021 /* LoginViewController.swift */; };
 		70DC641C8DFD5145B3E2F178 /* Pods_mobile_iosUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9455865AC2AC2771C588F666 /* Pods_mobile_iosUITests.framework */; };
 		AFBAEC1B382B06E54E70DAC7 /* Pods_mobile_iosTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 629528E8C86E48C60E29C454 /* Pods_mobile_iosTests.framework */; };
 		D7A8C048C69A2C379A20948F /* Pods_mobile_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 321E9915FF90A4E39B163211 /* Pods_mobile_ios.framework */; };
@@ -46,10 +45,8 @@
 		04FE62370CD9FBCA0A3E91F8 /* Pods-mobile_iosTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mobile_iosTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-mobile_iosTests/Pods-mobile_iosTests.release.xcconfig"; sourceTree = "<group>"; };
 		101D2F5F1EA968230074D807 /* mobile_ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = mobile_ios.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		101D2F621EA968230074D807 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		101D2F671EA968230074D807 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		101D2F6A1EA968230074D807 /* mobile_ios.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = mobile_ios.xcdatamodel; sourceTree = "<group>"; };
 		101D2F6C1EA968230074D807 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = mobile_ios/Assets.xcassets; sourceTree = SOURCE_ROOT; };
-		101D2F6F1EA968230074D807 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		101D2F711EA968230074D807 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		101D2F761EA968230074D807 /* mobile_iosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = mobile_iosTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		101D2F7A1EA968230074D807 /* mobile_iosTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mobile_iosTests.swift; sourceTree = "<group>"; };
@@ -57,6 +54,7 @@
 		101D2F811EA968230074D807 /* mobile_iosUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = mobile_iosUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		101D2F851EA968230074D807 /* mobile_iosUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mobile_iosUITests.swift; sourceTree = "<group>"; };
 		101D2F871EA968230074D807 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		103FE2801EC25E3B0033D021 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		1067B93C1EACE35D00E7607E /* BridgingHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BridgingHeader.h; sourceTree = "<group>"; };
 		321E9915FF90A4E39B163211 /* Pods_mobile_ios.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_mobile_ios.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		56DF998DD6BBA1F02CEFEE2E /* Pods-mobile_ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mobile_ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-mobile_ios/Pods-mobile_ios.debug.xcconfig"; sourceTree = "<group>"; };
@@ -128,13 +126,12 @@
 			children = (
 				101D2F621EA968230074D807 /* AppDelegate.swift */,
 				EEA944261EAA9EF40022588B /* DeviceTableViewController.swift */,
+				103FE2801EC25E3B0033D021 /* LoginViewController.swift */,
 				EEA944281EAAA1820022588B /* Device.swift */,
 				EE00EB331EABAAB2003F3D5E /* DeviceControl.swift */,
 				EEA944221EAA93950022588B /* HeepConnections.swift */,
 				EEA944201EAA7D880022588B /* HAPIMemoryParser.swift */,
-				101D2F661EA968230074D807 /* Main.storyboard */,
 				101D2F6C1EA968230074D807 /* Assets.xcassets */,
-				101D2F6E1EA968230074D807 /* LaunchScreen.storyboard */,
 				101D2F711EA968230074D807 /* Info.plist */,
 				1067B93C1EACE35D00E7607E /* BridgingHeader.h */,
 				101D2F691EA968230074D807 /* mobile_ios.xcdatamodeld */,
@@ -301,9 +298,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				101D2F701EA968230074D807 /* LaunchScreen.storyboard in Resources */,
 				101D2F941EA97DD90074D807 /* Assets.xcassets in Resources */,
-				101D2F681EA968230074D807 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -470,6 +465,7 @@
 				EEA944211EAA7D880022588B /* HAPIMemoryParser.swift in Sources */,
 				101D2F6B1EA968230074D807 /* mobile_ios.xcdatamodeld in Sources */,
 				EEA944231EAA93950022588B /* HeepConnections.swift in Sources */,
+				103FE2811EC25E3B0033D021 /* LoginViewController.swift in Sources */,
 				101D2F631EA968230074D807 /* AppDelegate.swift in Sources */,
 				EEA944291EAAA1820022588B /* Device.swift in Sources */,
 				EE00EB341EABAAB2003F3D5E /* DeviceControl.swift in Sources */,
@@ -507,25 +503,6 @@
 			targetProxy = 101D2F821EA968230074D807 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		101D2F661EA968230074D807 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				101D2F671EA968230074D807 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		101D2F6E1EA968230074D807 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				101D2F6F1EA968230074D807 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		101D2F881EA968230074D807 /* Debug */ = {

@@ -7,6 +7,10 @@ target 'mobile_ios' do
 
   # Pods for mobile_ios
   pod 'SwiftSocket'
+  pod 'RealmSwift'
+  pod 'FacebookCore'
+  pod 'FacebookLogin'
+  pod 'FacebookShare'
 
   target 'mobile_iosTests' do
     inherit! :search_paths

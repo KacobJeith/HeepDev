@@ -19,6 +19,13 @@ class DeviceTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.title = "Heep Device List"
+        let toolbarContent = UIBarButtonItem()
+        toolbarContent.title = "Search for Heep Devices"
+        toolbarContent.target = self
+        toolbarContent.action = #selector(searchForHeepDevices)
+        let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        self.toolbarItems = [spacer, toolbarContent, spacer]
         searchForHeepDevices()
         
     }
@@ -142,7 +149,7 @@ class DeviceTableViewController: UITableViewController {
         print("Searching...")
         HeepConnections().SearchForHeepDeviecs()
         
-        let dispatchTime = DispatchTime.now() + .seconds(2)
+        let dispatchTime = DispatchTime.now() + .seconds(1)
         DispatchQueue.main.asyncAfter(deadline: dispatchTime) {
             
             print("In searchForHeepDevices Action")
