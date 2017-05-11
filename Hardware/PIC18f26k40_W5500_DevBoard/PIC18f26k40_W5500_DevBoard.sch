@@ -5238,6 +5238,10 @@ This is the "KIT" version, which has limited top masking for improved ease of as
 <sheet>
 <plain>
 <text x="40.64" y="17.78" size="3.81" layer="97">This is now a PIC18F26k40</text>
+<text x="12.7" y="139.7" size="5.08" layer="97">PIC18F26k40 Subsystem</text>
+<text x="195.58" y="147.32" size="5.08" layer="97">W5500 Subsystem</text>
+<text x="294.64" y="53.34" size="2.54" layer="97">W5500 VCCA Filter</text>
+<text x="248.92" y="-30.48" size="5.08" layer="97">MagJack (Magnetics Inside)</text>
 </plain>
 <instances>
 <instance part="U2" gate="A" x="53.34" y="63.5"/>
