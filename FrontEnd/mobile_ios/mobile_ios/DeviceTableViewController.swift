@@ -22,6 +22,8 @@ class DeviceTableViewController: UITableViewController {
         self.title = "Heep Device List"
         let toolbarContent = UIBarButtonItem()
         toolbarContent.title = "Search for Heep Devices"
+        self.navigationItem.hidesBackButton = true
+        self.navigationController?.isToolbarHidden = false
         toolbarContent.target = self
         toolbarContent.action = #selector(searchForHeepDevices)
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)

@@ -7,6 +7,7 @@
 //
 
 import SwiftSocket
+import SystemConfiguration.CaptiveNetwork
 
 class HeepConnections {
     public func SearchForHeepDeviecs() {
@@ -70,6 +71,8 @@ class HeepConnections {
         var address = "10.0.0.1"
         var gateway = "10.0.0"
         
+        printCurrentWifiInfo()
+        
         // Get list of all interfaces on the local machine:
         var ifaddr : UnsafeMutablePointer<ifaddrs>?
         guard getifaddrs(&ifaddr) == 0 else { return gateway }
@@ -85,6 +88,7 @@ class HeepConnections {
                 
                 // Check interface name:
                 let name = String(cString: interface.ifa_name)
+
                 if  name == "en0" {
                     
                     // Convert interface address to a human readable string:
@@ -99,10 +103,26 @@ class HeepConnections {
         }
         freeifaddrs(ifaddr)
         
+        
         let gatewayArray = address.characters.split(separator: ".").map(String.init)
         gateway = gatewayArray[0...2].joined(separator: ".")
         
         return gateway
+    }
+    
+    func printCurrentWifiInfo() {
+        if let interface = CNCopySupportedInterfaces() {
+            for i in 0..<CFArrayGetCount(interface) {
+                let interfaceName: UnsafeRawPointer = CFArrayGetValueAtIndex(interface, i)
+                let rec = unsafeBitCast(interfaceName, to: AnyObject.self)
+                if let unsafeInterfaceData = CNCopyCurrentNetworkInfo("\(rec)" as CFString), let interfaceData = unsafeInterfaceData as? [String : AnyObject] {
+                    // connected wifi
+                    print("BSSID: \(interfaceData["BSSID"]), SSID: \(interfaceData["SSID"]), SSIDDATA: \(interfaceData["SSIDDATA"])")
+                } else {
+                    // not connected wifi
+                }
+            }
+        }
     }
     
     func getAddress(gateway: String, ip: Int) -> String {

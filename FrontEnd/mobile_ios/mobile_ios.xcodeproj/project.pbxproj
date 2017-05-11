@@ -7,15 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		100821FC1EC49BDF0079E6F5 /* PlacesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100821FB1EC49BDF0079E6F5 /* PlacesView.swift */; };
+		100821FE1EC4AC850079E6F5 /* HAPIKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100821FD1EC4AC850079E6F5 /* HAPIKeys.swift */; };
+		100822001EC4AEC80079E6F5 /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100821FF1EC4AEC80079E6F5 /* Place.swift */; };
 		101D2F631EA968230074D807 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101D2F621EA968230074D807 /* AppDelegate.swift */; };
 		101D2F6B1EA968230074D807 /* mobile_ios.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 101D2F691EA968230074D807 /* mobile_ios.xcdatamodeld */; };
 		101D2F7B1EA968230074D807 /* mobile_iosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101D2F7A1EA968230074D807 /* mobile_iosTests.swift */; };
 		101D2F861EA968230074D807 /* mobile_iosUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101D2F851EA968230074D807 /* mobile_iosUITests.swift */; };
 		101D2F941EA97DD90074D807 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 101D2F6C1EA968230074D807 /* Assets.xcassets */; };
-		103FE2811EC25E3B0033D021 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103FE2801EC25E3B0033D021 /* LoginViewController.swift */; };
 		103FE2851EC373830033D021 /* DeviceSummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103FE2841EC373830033D021 /* DeviceSummaryViewController.swift */; };
 		103FE2861EC373830033D021 /* DeviceSummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103FE2841EC373830033D021 /* DeviceSummaryViewController.swift */; };
 		103FE2871EC373830033D021 /* DeviceSummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103FE2841EC373830033D021 /* DeviceSummaryViewController.swift */; };
+		103FE2891EC3AF5F0033D021 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103FE2881EC3AF5F0033D021 /* User.swift */; };
+		103FE28A1EC3AF5F0033D021 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103FE2881EC3AF5F0033D021 /* User.swift */; };
+		103FE28B1EC3AF5F0033D021 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103FE2881EC3AF5F0033D021 /* User.swift */; };
+		103FE2961EC3B2C60033D021 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103FE2941EC3B2C60033D021 /* LoginViewController.swift */; };
+		103FE2971EC3B2C60033D021 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103FE2941EC3B2C60033D021 /* LoginViewController.swift */; };
+		103FE2981EC3B2C60033D021 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103FE2941EC3B2C60033D021 /* LoginViewController.swift */; };
+		103FE2991EC3B2C60033D021 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 103FE2951EC3B2C60033D021 /* LoginViewController.xib */; };
+		103FE29A1EC3B2C60033D021 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 103FE2951EC3B2C60033D021 /* LoginViewController.xib */; };
+		103FE29B1EC3B2C60033D021 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 103FE2951EC3B2C60033D021 /* LoginViewController.xib */; };
 		70DC641C8DFD5145B3E2F178 /* Pods_mobile_iosUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9455865AC2AC2771C588F666 /* Pods_mobile_iosUITests.framework */; };
 		AFBAEC1B382B06E54E70DAC7 /* Pods_mobile_iosTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 629528E8C86E48C60E29C454 /* Pods_mobile_iosTests.framework */; };
 		D7A8C048C69A2C379A20948F /* Pods_mobile_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 321E9915FF90A4E39B163211 /* Pods_mobile_ios.framework */; };
@@ -46,6 +57,9 @@
 
 /* Begin PBXFileReference section */
 		04FE62370CD9FBCA0A3E91F8 /* Pods-mobile_iosTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mobile_iosTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-mobile_iosTests/Pods-mobile_iosTests.release.xcconfig"; sourceTree = "<group>"; };
+		100821FB1EC49BDF0079E6F5 /* PlacesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacesView.swift; sourceTree = "<group>"; };
+		100821FD1EC4AC850079E6F5 /* HAPIKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HAPIKeys.swift; sourceTree = "<group>"; };
+		100821FF1EC4AEC80079E6F5 /* Place.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
 		101D2F5F1EA968230074D807 /* mobile_ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = mobile_ios.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		101D2F621EA968230074D807 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		101D2F6A1EA968230074D807 /* mobile_ios.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = mobile_ios.xcdatamodel; sourceTree = "<group>"; };
@@ -57,8 +71,10 @@
 		101D2F811EA968230074D807 /* mobile_iosUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = mobile_iosUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		101D2F851EA968230074D807 /* mobile_iosUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mobile_iosUITests.swift; sourceTree = "<group>"; };
 		101D2F871EA968230074D807 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		103FE2801EC25E3B0033D021 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		103FE2841EC373830033D021 /* DeviceSummaryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceSummaryViewController.swift; sourceTree = "<group>"; };
+		103FE2881EC3AF5F0033D021 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		103FE2941EC3B2C60033D021 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		103FE2951EC3B2C60033D021 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
 		1067B93C1EACE35D00E7607E /* BridgingHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BridgingHeader.h; sourceTree = "<group>"; };
 		321E9915FF90A4E39B163211 /* Pods_mobile_ios.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_mobile_ios.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		56DF998DD6BBA1F02CEFEE2E /* Pods-mobile_ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mobile_ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-mobile_ios/Pods-mobile_ios.debug.xcconfig"; sourceTree = "<group>"; };
@@ -129,9 +145,14 @@
 			isa = PBXGroup;
 			children = (
 				101D2F621EA968230074D807 /* AppDelegate.swift */,
-				103FE2801EC25E3B0033D021 /* LoginViewController.swift */,
+				100821FB1EC49BDF0079E6F5 /* PlacesView.swift */,
+				103FE2941EC3B2C60033D021 /* LoginViewController.swift */,
+				103FE2951EC3B2C60033D021 /* LoginViewController.xib */,
 				EEA944261EAA9EF40022588B /* DeviceTableViewController.swift */,
 				103FE2841EC373830033D021 /* DeviceSummaryViewController.swift */,
+				103FE2881EC3AF5F0033D021 /* User.swift */,
+				100821FF1EC4AEC80079E6F5 /* Place.swift */,
+				100821FD1EC4AC850079E6F5 /* HAPIKeys.swift */,
 				EEA944281EAAA1820022588B /* Device.swift */,
 				EE00EB331EABAAB2003F3D5E /* DeviceControl.swift */,
 				EEA944221EAA93950022588B /* HeepConnections.swift */,
@@ -303,6 +324,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				103FE2991EC3B2C60033D021 /* LoginViewController.xib in Resources */,
 				101D2F941EA97DD90074D807 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -311,6 +333,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				103FE29A1EC3B2C60033D021 /* LoginViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -318,6 +341,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				103FE29B1EC3B2C60033D021 /* LoginViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -467,14 +491,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				EEA944271EAA9EF40022588B /* DeviceTableViewController.swift in Sources */,
+				100822001EC4AEC80079E6F5 /* Place.swift in Sources */,
 				EEA944211EAA7D880022588B /* HAPIMemoryParser.swift in Sources */,
 				101D2F6B1EA968230074D807 /* mobile_ios.xcdatamodeld in Sources */,
+				100821FC1EC49BDF0079E6F5 /* PlacesView.swift in Sources */,
 				103FE2851EC373830033D021 /* DeviceSummaryViewController.swift in Sources */,
 				EEA944231EAA93950022588B /* HeepConnections.swift in Sources */,
-				103FE2811EC25E3B0033D021 /* LoginViewController.swift in Sources */,
 				101D2F631EA968230074D807 /* AppDelegate.swift in Sources */,
 				EEA944291EAAA1820022588B /* Device.swift in Sources */,
+				103FE2891EC3AF5F0033D021 /* User.swift in Sources */,
+				103FE2961EC3B2C60033D021 /* LoginViewController.swift in Sources */,
 				EE00EB341EABAAB2003F3D5E /* DeviceControl.swift in Sources */,
+				100821FE1EC4AC850079E6F5 /* HAPIKeys.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -482,8 +510,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				103FE28A1EC3AF5F0033D021 /* User.swift in Sources */,
 				103FE2861EC373830033D021 /* DeviceSummaryViewController.swift in Sources */,
 				101D2F7B1EA968230074D807 /* mobile_iosTests.swift in Sources */,
+				103FE2971EC3B2C60033D021 /* LoginViewController.swift in Sources */,
 				EEA9442A1EAAA8AE0022588B /* Device.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -492,8 +522,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				103FE2981EC3B2C60033D021 /* LoginViewController.swift in Sources */,
 				101D2F861EA968230074D807 /* mobile_iosUITests.swift in Sources */,
 				103FE2871EC373830033D021 /* DeviceSummaryViewController.swift in Sources */,
+				103FE28B1EC3AF5F0033D021 /* User.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
