@@ -27,15 +27,15 @@ class HeepConnections {
         }
     }
     
-    public func sendValueToHeepDevice(thisIndexPath: IndexPath) {
+    public func sendValueToHeepDevice(thisIndexPath: IndexPath, deviceID: Int) {
         
-        let thisDeviceIP = devices[thisIndexPath.section].ipAddress
-        let thisControl = devices[thisIndexPath.section].controlList[thisIndexPath.row].controlID
-        let newVal = devices[thisIndexPath.section].controlList[thisIndexPath.row].valueCurrent
+        let thisDeviceIP = user.devices[deviceID]?.ipAddress
+        let thisControl = user.devices[deviceID]?.controlList[thisIndexPath.row].controlID
+        let newVal = user.devices[deviceID]?.controlList[thisIndexPath.row].valueCurrent
         
-        let message = HAPIMemoryParser().BuildSetValueCOP(controlID: thisControl, newValue: newVal)
-        print("Sending: \(message) to Heep Device at to \(thisDeviceIP)")
-        ConnectToHeepDevice(ipAddress: thisDeviceIP, printErrors: false, message: message)
+        let message = HAPIMemoryParser().BuildSetValueCOP(controlID: thisControl!, newValue: newVal!)
+        print("Sending: \(message) to Heep Device at to \(String(describing: thisDeviceIP))")
+        ConnectToHeepDevice(ipAddress: thisDeviceIP!, printErrors: false, message: message)
         
     }
     
@@ -117,7 +117,7 @@ class HeepConnections {
                 let rec = unsafeBitCast(interfaceName, to: AnyObject.self)
                 if let unsafeInterfaceData = CNCopyCurrentNetworkInfo("\(rec)" as CFString), let interfaceData = unsafeInterfaceData as? [String : AnyObject] {
                     // connected wifi
-                    print("BSSID: \(interfaceData["BSSID"]), SSID: \(interfaceData["SSID"]), SSIDDATA: \(interfaceData["SSIDDATA"])")
+                    print("BSSID: \(String(describing: interfaceData["BSSID"])), SSID: \(String(describing: interfaceData["SSID"])), SSIDDATA: \(String(describing: interfaceData["SSIDDATA"]))")
                 } else {
                     // not connected wifi
                 }

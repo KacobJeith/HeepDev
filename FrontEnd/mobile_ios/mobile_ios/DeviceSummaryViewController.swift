@@ -13,7 +13,7 @@ class DeviceSummaryViewController: UITableViewController {
     var sections: [String]!
     var cells: [[String]]!
     
-    init(device: Device!) {
+    init(device: Device) {
         self.sections = ["Device: " + device.name]
         
         
@@ -93,6 +93,7 @@ class DeviceSummaryViewController: UITableViewController {
         label.text = self.cells[indexPath.section][indexPath.row]
         label.frame = CGRect(x: 60, y: 5, width: tableView.frame.size.width, height: 35)
         cell.addSubview(label)
+        cell.selectionStyle = .none
         
         return cell
     }
