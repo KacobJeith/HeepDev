@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import RealmSwift
 
 
 var user = User()
@@ -26,7 +27,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         navigationController.navigationBar.isTranslucent = false
         navigationController.isToolbarHidden = true
         
-        
+        let realm = try! Realm(configuration: Realm.Configuration(inMemoryIdentifier: "MyInMemoryRealm"))
+        try! realm.write {
+            realm.deleteAll()
+        }
         
         self.window?.rootViewController = navigationController
         self.window?.makeKeyAndVisible()

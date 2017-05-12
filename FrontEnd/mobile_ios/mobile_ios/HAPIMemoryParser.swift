@@ -7,9 +7,11 @@
 //
 
 import UIKit
+import RealmSwift
 
 class HAPIMemoryParser {
     
+    let realm = try! Realm(configuration: Realm.Configuration(inMemoryIdentifier: "MyInMemoryRealm"))
     
     public func BuildIsHeepDeviceCOP() -> [UInt8] {
         
@@ -64,10 +66,11 @@ class HAPIMemoryParser {
     
     public func ParseMemoryDump(dump: [UInt8], ipAddress: String) {
         print(dump)
-        
         let header = ParseDeviceID(dump: dump, index: 1)
+        let thisDevice = realm.object(ofType: Device.self, forPrimaryKey: header.deviceID)
+
         
-        if user.devices[header.deviceID] == nil {
+        if thisDevice == nil {
             let packet = CalculateNumberOfBytes(dump: dump, index: header.index)
             var index = packet.index
             
@@ -128,8 +131,10 @@ class HAPIMemoryParser {
     
     func ParseDevice(dump: [UInt8], index: Int, deviceID: Int, ipAddress: String) {
         //let version = dump[index]
+        let thisDevice = realm.object(ofType: Device.self, forPrimaryKey: deviceID)
         
-        if user.devices[deviceID] == nil {
+        if thisDevice == nil {
+            print("Adding anyways...")
             AddNewDevice(deviceID: deviceID, ipAddress: ipAddress)
         } else { print("This devices has already been detected") }
         
@@ -139,8 +144,12 @@ class HAPIMemoryParser {
         print("Found a new device... adding now")
         let newDevice = Device()
         newDevice.deviceID = deviceID
-        newDevice.setIPAddress(ipAddress: ipAddress)
-        user.devices[deviceID] = newDevice
+        newDevice.ipAddress = ipAddress
+        
+        try! realm.write {
+            
+            realm.add(newDevice)
+        }
     }
     
     func AddControlToDevice(dump: [UInt8], index: Int, deviceID: Int, packetSize: Int ) {
@@ -148,25 +157,23 @@ class HAPIMemoryParser {
         
         let controlName = GetStringFromByteArrayIndices(dump: dump, indexStart: index + 6, indexFinish: index + packetSize)
         
-        let newControl = DeviceControl(deviceID: deviceID,
-                                       controlID: Int(dump[index]),
-                                       controlType: Int(dump[index + 1]),
-                                       controlDirection: Int(dump[index + 2]),
-                                       valueLow: Int(dump[index + 3]),
-                                       valueHigh: Int(dump[index + 4]),
-                                       valueCurrent: Int(dump[index + 5]),
-                                       controlName: controlName)
-        
-        
+        let newControl = DeviceControl()
+        /*if let parentDevice = realm.objects(Device.self).filter("deviceID == '\(deviceID))'").first {
+            newControl.deviceID = parentDevice
+        }*/
+        newControl.deviceID = Int(deviceID)
+        newControl.controlID = Int(dump[index])
+        newControl.controlType = Int(dump[index + 1])
+        newControl.controlDirection = Int(dump[index + 2])
+        newControl.valueLow = Int(dump[index + 3])
+        newControl.valueHigh = Int(dump[index + 4])
+        newControl.valueCurrent = Int(dump[index + 5])
+        newControl.controlName = controlName
         
         // Resolve Addition to device array (masterState)
-        if user.devices[deviceID] != nil {
-            print("Adding Control \(newControl.controlName) to device \(deviceID)")
-            user.devices[deviceID].controlList.append(newControl)
-            
-            
-        } else {
-            print("We haven't seen this device yet... Skipping for now")
+        
+        try! realm.write {
+            realm.add(newControl)
         }
         
     }
@@ -175,14 +182,22 @@ class HAPIMemoryParser {
         let deviceName = GetStringFromByteArrayIndices(dump: dump, indexStart: index, indexFinish: index + packetSize - 1)
         
         // Resolve Addition to device array (masterState)
-        if user.devices[deviceID] != nil {
+        let thisDevice = realm.object(ofType: Device.self, forPrimaryKey: deviceID)
+        if thisDevice != nil {
             print("Adding Device Name \(deviceName) to device \(deviceID)")
-            user.devices[deviceID].setName(name: deviceName)
-            user.devices[deviceID].setIconName(iconName: SuggestIconFromName(name: deviceName))
+            
+            try! realm.write {
+                realm.create(Device.self,
+                             value: ["deviceID": deviceID,
+                                    "name": deviceName,
+                                    "iconName": SuggestIconFromName(name: deviceName)],
+                             update: true)
+            }
             
         } else {
             print("We haven't seen this device yet...")
         }
+        
     }
     
     func SuggestIconFromName(name: String) -> String {

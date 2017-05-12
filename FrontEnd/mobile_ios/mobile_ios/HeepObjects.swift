@@ -49,12 +49,12 @@ class Place: Object {
 
 class Device: Object {
     
-    var name: String = "placeholder"
-    var deviceID: Int = 0
-    var version: Int = 0
-    var iconName: String = "lightbulb"
-    var ipAddress: String = "0.0.0.0"
-    var controlList =  List<DeviceControl>()
+    dynamic var name: String = "placeholder"
+    dynamic var deviceID: Int = 0
+    dynamic var version: Int = 0
+    dynamic var iconName: String = "lightbulb"
+    dynamic var ipAddress: String = "0.0.0.0"
+    let controlList =   List<DeviceControl>() //LinkingObjects(fromType: DeviceControl.self, property: "deviceID")
     
     override static func primaryKey() -> String? {
         return "deviceID"
@@ -76,33 +76,15 @@ class Device: Object {
 
 class DeviceControl: Object {
     
-    var deviceID: Int
-    var controlID: Int
-    var controlType: Int
-    var controlDirection: Int
-    var valueLow: Int
-    var valueHigh: Int
-    var valueCurrent: Int
-    var controlName: String
+    dynamic var deviceID: Int = 0
+    dynamic var controlID: Int = 0
+    dynamic var controlType: Int = 0
+    dynamic var controlDirection: Int = 0
+    dynamic var valueLow: Int = 0
+    dynamic var valueHigh: Int = 100
+    dynamic var valueCurrent: Int = 0
+    dynamic var controlName: String = "Default"
     
-    init(deviceID: Int,
-         controlID: Int,
-         controlType: Int,
-         controlDirection: Int,
-         valueLow: Int,
-         valueHigh: Int,
-         valueCurrent: Int,
-         controlName: String) {
-        
-        self.deviceID = deviceID
-        self.controlID = controlID
-        self.controlType = controlType
-        self.controlDirection = controlDirection
-        self.valueLow = valueLow
-        self.valueHigh = valueHigh
-        self.valueCurrent = valueCurrent
-        self.controlName = controlName
-    }
     
     
 }

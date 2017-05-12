@@ -13,8 +13,10 @@ import RealmSwift
 class DeviceTableViewController: UITableViewController {
     //MARK: Properties
     
+    var notificationToken: NotificationToken!
+    let realm = try! Realm(configuration: Realm.Configuration(inMemoryIdentifier: "MyInMemoryRealm"))
+    
     var controlTags = [IndexPath]()
-    var sections = Array(user.devices.keys)
     var lastCount = 0
 
     override func viewDidLoad() {
@@ -34,35 +36,41 @@ class DeviceTableViewController: UITableViewController {
     }
     
     
+    
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
 
     // MARK: - Table view data source
-
+    
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return user.devices.count
+        let devices = realm.objects(Device.self)
+        return devices.count
+
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView()
         view.backgroundColor = UIColor.white
+        let devices = realm.objects(Device.self)
         
-        let image = UIImage(named: (user.devices[sections[section]]?.iconName)!)
+        let image = UIImage(named: (devices[section].iconName))
         let imageView = UIImageView(image: image)
         imageView.frame = CGRect(x: 5, y: 5, width: 35, height: 35)
         imageView.contentMode = .scaleAspectFit
         view.addSubview(imageView)
         
         let label = UILabel()
-        label.text = user.devices[sections[section]]?.name
+        label.text = devices[section].name
         label.frame = CGRect(x: 45, y: 5, width: tableView.frame.size.width, height: 35)
         view.addSubview(label)
         
         let summary = UIButton(type: .detailDisclosure)
         summary.frame = CGRect(x: tableView.frame.size.width - 60, y: 5, width: 60, height: 40)
-        summary.tag = sections[section]
+        summary.tag = section
         summary.addTarget(self, action: #selector(displayDeviceSummary), for: UIControlEvents.primaryActionTriggered)
         
         view.addSubview(summary)
@@ -73,33 +81,35 @@ class DeviceTableViewController: UITableViewController {
     
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(sections)
-        let numControls = user.devices[sections[section]]?.controlList.count
+        let devices = realm.objects(Device.self)
+        print(devices)
+        print(devices[section].controlList)
+        let numControls = devices[section].controlList.count
         
-        return numControls!
+        return numControls
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+        let devices = realm.objects(Device.self)
         let cell = UITableViewCell()
         
-        if (user.devices[sections[indexPath.section]]?.controlList[indexPath.row].controlDirection == 0){
+        if (devices[indexPath.section].controlList[indexPath.row].controlDirection == 0){
             cell.backgroundColor = UIColor(white: 0.85, alpha: 1.0)
         } else {
             cell.backgroundColor = UIColor(white: 0.95, alpha: 1.0)
         }
         
         let label = UILabel()
-        label.text = user.devices[sections[indexPath.section]]?.controlList[indexPath.row].controlName
+        label.text = devices[indexPath.section].controlList[indexPath.row].controlName
         label.frame = CGRect(x: 60, y: 5, width: tableView.frame.size.width, height: 35)
         cell.addSubview(label)
         
         controlTags.append(indexPath)
         
         
-        if (user.devices[sections[indexPath.section]]?.controlList[indexPath.row].controlType == 0){
+        if (devices[indexPath.section].controlList[indexPath.row].controlType == 0){
             let buttonSwitch = UISwitch()
-            let thisSwitchState = user.devices[sections[indexPath.section]]?.controlList[indexPath.row].valueCurrent == 1
+            let thisSwitchState = devices[indexPath.section].controlList[indexPath.row].valueCurrent == 1
             buttonSwitch.tag = controlTags.count - 1
             buttonSwitch.frame = CGRect(x: tableView.frame.size.width - 60, y: 5, width: 100, height: 35)
             buttonSwitch.setOn(thisSwitchState, animated: true)
@@ -108,9 +118,9 @@ class DeviceTableViewController: UITableViewController {
         } else {
             let slider = UISlider()
             slider.tag = controlTags.count - 1
-            slider.minimumValue = Float((user.devices[sections[indexPath.section]]?.controlList[indexPath.row].valueLow)!)
-            slider.maximumValue = Float((user.devices[sections[indexPath.section]]?.controlList[indexPath.row].valueHigh)!)
-            slider.setValue(Float((user.devices[sections[indexPath.section]]?.controlList[indexPath.row].valueCurrent)!), animated: true)
+            slider.minimumValue = Float(devices[indexPath.section].controlList[indexPath.row].valueLow)
+            slider.maximumValue = Float(devices[indexPath.section].controlList[indexPath.row].valueHigh)
+            slider.setValue(Float(devices[indexPath.section].controlList[indexPath.row].valueCurrent), animated: true)
             slider.frame = CGRect(x: tableView.frame.size.width - 160, y: 5, width: 150, height: 35)
             slider.addTarget(self, action: #selector(DeviceTableViewController.sliderUpdate), for: UIControlEvents.valueChanged)
             
@@ -122,29 +132,29 @@ class DeviceTableViewController: UITableViewController {
     }
     
     func toggle(sender: UISwitch) {
-        
+        let devices = realm.objects(Device.self)
         let thisIndexPath = controlTags[sender.tag]
         
         if (sender.isOn) {
-            user.devices[sections[thisIndexPath.section]]?.controlList[thisIndexPath.row].valueCurrent = 1
+            devices[thisIndexPath.section].controlList[thisIndexPath.row].valueCurrent = 1
             
         } else {
-            user.devices[sections[thisIndexPath.section]]?.controlList[thisIndexPath.row].valueCurrent = 0
+            devices[thisIndexPath.section].controlList[thisIndexPath.row].valueCurrent = 0
         }
         
         DispatchQueue.global().async {
-            HeepConnections().sendValueToHeepDevice(thisIndexPath: thisIndexPath, deviceID: self.sections[thisIndexPath.section])
+            HeepConnections().sendValueToHeepDevice(thisIndexPath: thisIndexPath, deviceID: thisIndexPath.section)
         }
         
     }
     
     func sliderUpdate(sender: UISlider) {
-        
+        let devices = realm.objects(Device.self)
         let thisIndexPath = controlTags[sender.tag]
         
-        user.devices[sections[thisIndexPath.section]]?.controlList[thisIndexPath.row].valueCurrent = Int(round(sender.value))
+        devices[thisIndexPath.section].controlList[thisIndexPath.row].valueCurrent = Int(round(sender.value))
         DispatchQueue.global().async {
-            HeepConnections().sendValueToHeepDevice(thisIndexPath: thisIndexPath, deviceID: self.sections[thisIndexPath.section])
+            HeepConnections().sendValueToHeepDevice(thisIndexPath: thisIndexPath, deviceID: thisIndexPath.section)
         }
         
     }
@@ -156,8 +166,9 @@ class DeviceTableViewController: UITableViewController {
     }
     
     func displayDeviceSummary(sender: UIButton) {
-        print("Display device summary for: \(String(describing: user.devices[sender.tag].deviceID))")
-        let summaryView = DeviceSummaryViewController(device: user.devices[sender.tag])
+        let devices = realm.objects(Device.self)
+        print("Display device summary for: \(String(describing: devices[sender.tag].deviceID))")
+        let summaryView = DeviceSummaryViewController(device: devices[sender.tag])
         navigationController?.pushViewController(summaryView, animated: true)
     }
     
@@ -165,12 +176,10 @@ class DeviceTableViewController: UITableViewController {
     @IBAction func searchForHeepDevices() {
         print("Searching...")
         HeepConnections().SearchForHeepDeviecs()
-        
         let dispatchTime = DispatchTime.now() + .seconds(2)
         DispatchQueue.main.asyncAfter(deadline: dispatchTime) {
             
             print("In searchForHeepDevices Action")
-            print(user.devices.count)
             
             self.CheckForNewDevicesAndDisplay()
         }
@@ -179,14 +188,17 @@ class DeviceTableViewController: UITableViewController {
     }
     
     func CheckForNewDevicesAndDisplay() {
-        if (user.devices.count != 0 && (user.devices.count - 1) >= lastCount) {
+        let devices = realm.objects(Device.self)
+        self.tableView.reloadData()
+        /*if (devices.count != 0 && (devices.count - 1) >= lastCount) {
             let previousCount = lastCount
             lastCount = user.devices.count
-            sections = Array(user.devices.keys)
             tableView.beginUpdates()
             tableView.insertSections(IndexSet(previousCount...(user.devices.count-1)), with: .automatic)
             tableView.endUpdates()
-        }
+        }*/
+        
+        
     }
 
 }
