@@ -24,11 +24,21 @@ class Device {
         self.name = ""
         self.deviceID = deviceID
         self.version = 1
-        self.ipAddress = "10.0.0.0"
+        self.ipAddress = "4.3.3.7"
         self.iconName = "lightbulb"
         self.controlList = [DeviceControl]()
     }
     
+    func setName(name: String) {
+        self.name = name
+    }
     
+    func setIPAddress(ipAddress: String) {
+        self.ipAddress = ipAddress
+    }
+    
+    func setIconName(iconName: String){
+        self.iconName = iconName
+    }
     
 }

@@ -13,10 +13,10 @@ class User {
     var name: String
     var email: String
     var password: String
-    var keys: [UInt8: UInt8]
-    var devices: [UInt8: Device]
+    var keys: [Int: Int]
+    var devices: [Int: Device]
     var places: [String: Place]
-    var rooms: [String: [UInt8]]
+    var rooms: [String: [Int]]
     
     init() {
         self.name = "Guest"

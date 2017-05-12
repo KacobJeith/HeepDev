@@ -9,6 +9,9 @@
 import UIKit
 import CoreData
 
+
+var user = User()
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 

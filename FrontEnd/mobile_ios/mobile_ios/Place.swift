@@ -12,6 +12,7 @@ class Place {
     
     var ssid: String
     var name: String
+    var gateway: String
     var devices: [UInt8]
     var rooms: [String : [UInt8]]
     var groups: [String : [UInt8]]
@@ -19,6 +20,7 @@ class Place {
     init() {
         self.ssid = "placeholder"
         self.name = "unnamed"
+        self.gateway = "0.0.0"
         self.devices = []
         self.rooms = [:]
         self.groups = [:]

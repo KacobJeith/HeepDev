@@ -8,8 +8,6 @@
 
 import UIKit
 
-var deviceMap = [Int: Int]()
-
 class HAPIMemoryParser {
     
     
@@ -69,7 +67,7 @@ class HAPIMemoryParser {
         
         let header = ParseDeviceID(dump: dump, index: 1)
         
-        if (CheckDevicePositionInArray(deviceID: header.deviceID) == nil) {
+        if user.devices[header.deviceID] == nil {
             let packet = CalculateNumberOfBytes(dump: dump, index: header.index)
             var index = packet.index
             
@@ -123,27 +121,25 @@ class HAPIMemoryParser {
         return packet.index + packet.numBytes
     }
     
-    func ParseDevice(dump: [UInt8], index: Int, deviceID: Int, ipAddress: String) {
-        //let version = dump[index]
-        
-        if (CheckDevicePositionInArray(deviceID: deviceID) == nil) {
-            AddNewDevice(deviceID: deviceID, ipAddress: ipAddress)
-        } else { print("This devices has already been detected") }
-        
-    }
-    
     func CalculateNumberOfBytes(dump: [UInt8], index: Int) -> (numBytes: Int, index: Int) {
         // currently only supporting up to 256 bytes
         return (Int(dump[index]), index + 1)
     }
     
+    func ParseDevice(dump: [UInt8], index: Int, deviceID: Int, ipAddress: String) {
+        //let version = dump[index]
+        
+        if user.devices[deviceID] == nil {
+            AddNewDevice(deviceID: deviceID, ipAddress: ipAddress)
+        } else { print("This devices has already been detected") }
+        
+    }
     
     func AddNewDevice(deviceID: Int, ipAddress: String) {
         print("Found a new device... adding now")
-        deviceMap[deviceID] = deviceMap.count
         let newDevice = Device(deviceID: deviceID)
-        newDevice.ipAddress = ipAddress
-        devices.append(newDevice)
+        newDevice.setIPAddress(ipAddress: ipAddress)
+        user.devices[deviceID] = newDevice
     }
     
     func AddControlToDevice(dump: [UInt8], index: Int, deviceID: Int, packetSize: Int ) {
@@ -163,12 +159,12 @@ class HAPIMemoryParser {
         
         
         // Resolve Addition to device array (masterState)
-        if let thisDeviceIndex = CheckDevicePositionInArray(deviceID: deviceID) {
+        if user.devices[deviceID] != nil {
             print("Adding Control \(newControl.controlName) to device \(deviceID)")
-            devices[thisDeviceIndex].controlList.append(newControl)
+            user.devices[deviceID]?.controlList.append(newControl)
             
         } else {
-            print("We haven't seen this device yet...")
+            print("We haven't seen this device yet... Skipping for now")
         }
         
     }
@@ -177,10 +173,10 @@ class HAPIMemoryParser {
         let deviceName = GetStringFromByteArrayIndices(dump: dump, indexStart: index, indexFinish: index + packetSize - 1)
         
         // Resolve Addition to device array (masterState)
-        if let thisDeviceIndex = CheckDevicePositionInArray(deviceID: deviceID) {
+        if user.devices[deviceID] != nil {
             print("Adding Device Name \(deviceName) to device \(deviceID)")
-            devices[thisDeviceIndex].name = deviceName
-            devices[thisDeviceIndex].iconName = SuggestIconFromName(name: deviceName)
+            user.devices[deviceID]?.setName(name: deviceName)
+            user.devices[deviceID]?.setIconName(iconName: SuggestIconFromName(name: deviceName))
             
         } else {
             print("We haven't seen this device yet...")
@@ -201,10 +197,6 @@ class HAPIMemoryParser {
         } 
         
         return suggestion
-    }
-    
-    func CheckDevicePositionInArray(deviceID: Int) -> Int? {
-        return deviceMap[deviceID]
     }
     
     func GetStringFromByteArrayIndices(dump: [UInt8], indexStart: Int, indexFinish: Int) -> String {
@@ -229,9 +221,6 @@ class HAPIMemoryParser {
         
         return (index + 4, deviceID)
     }
-    
-    
-    
     
     
 }

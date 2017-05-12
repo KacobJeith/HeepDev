@@ -18,6 +18,7 @@ class DeviceTableViewController: UITableViewController {
     var lastCount = 0
 
     override func viewDidLoad() {
+        print(user.name)
         super.viewDidLoad()
         self.title = "Heep Device List"
         let toolbarContent = UIBarButtonItem()
