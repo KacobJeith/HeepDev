@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import RealmSwift
 
 
 class DeviceTableViewController: UITableViewController {
@@ -156,8 +156,8 @@ class DeviceTableViewController: UITableViewController {
     }
     
     func displayDeviceSummary(sender: UIButton) {
-        print("Display device summary for: \(String(describing: user.devices[sender.tag]?.deviceID))")
-        let summaryView = DeviceSummaryViewController(device: user.devices[sender.tag]!)
+        print("Display device summary for: \(String(describing: user.devices[sender.tag].deviceID))")
+        let summaryView = DeviceSummaryViewController(device: user.devices[sender.tag])
         navigationController?.pushViewController(summaryView, animated: true)
     }
     

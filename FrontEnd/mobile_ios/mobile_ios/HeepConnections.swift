@@ -29,13 +29,13 @@ class HeepConnections {
     
     public func sendValueToHeepDevice(thisIndexPath: IndexPath, deviceID: Int) {
         
-        let thisDeviceIP = user.devices[deviceID]?.ipAddress
-        let thisControl = user.devices[deviceID]?.controlList[thisIndexPath.row].controlID
-        let newVal = user.devices[deviceID]?.controlList[thisIndexPath.row].valueCurrent
+        let thisDeviceIP = user.devices[deviceID].ipAddress
+        let thisControl = user.devices[deviceID].controlList[thisIndexPath.row].controlID
+        let newVal = user.devices[deviceID].controlList[thisIndexPath.row].valueCurrent
         
-        let message = HAPIMemoryParser().BuildSetValueCOP(controlID: thisControl!, newValue: newVal!)
+        let message = HAPIMemoryParser().BuildSetValueCOP(controlID: thisControl, newValue: newVal)
         print("Sending: \(message) to Heep Device at to \(String(describing: thisDeviceIP))")
-        ConnectToHeepDevice(ipAddress: thisDeviceIP!, printErrors: false, message: message)
+        ConnectToHeepDevice(ipAddress: thisDeviceIP, printErrors: false, message: message)
         
     }
     

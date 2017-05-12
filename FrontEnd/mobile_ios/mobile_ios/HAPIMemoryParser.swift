@@ -137,7 +137,8 @@ class HAPIMemoryParser {
     
     func AddNewDevice(deviceID: Int, ipAddress: String) {
         print("Found a new device... adding now")
-        let newDevice = Device(deviceID: deviceID)
+        let newDevice = Device()
+        newDevice.deviceID = deviceID
         newDevice.setIPAddress(ipAddress: ipAddress)
         user.devices[deviceID] = newDevice
     }
@@ -161,7 +162,8 @@ class HAPIMemoryParser {
         // Resolve Addition to device array (masterState)
         if user.devices[deviceID] != nil {
             print("Adding Control \(newControl.controlName) to device \(deviceID)")
-            user.devices[deviceID]?.controlList.append(newControl)
+            user.devices[deviceID].controlList.append(newControl)
+            
             
         } else {
             print("We haven't seen this device yet... Skipping for now")
@@ -175,8 +177,8 @@ class HAPIMemoryParser {
         // Resolve Addition to device array (masterState)
         if user.devices[deviceID] != nil {
             print("Adding Device Name \(deviceName) to device \(deviceID)")
-            user.devices[deviceID]?.setName(name: deviceName)
-            user.devices[deviceID]?.setIconName(iconName: SuggestIconFromName(name: deviceName))
+            user.devices[deviceID].setName(name: deviceName)
+            user.devices[deviceID].setIconName(iconName: SuggestIconFromName(name: deviceName))
             
         } else {
             print("We haven't seen this device yet...")
