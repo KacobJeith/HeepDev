@@ -169,11 +169,21 @@ class HAPIMemoryParser {
         newControl.valueHigh = Int(dump[index + 4])
         newControl.valueCurrent = Int(dump[index + 5])
         newControl.controlName = controlName
-        
-        // Resolve Addition to device array (masterState)
-        
         try! realm.write {
             realm.add(newControl)
+        }
+        
+        // Resolve Addition to device array (masterState)
+        let updateDevice = Device()
+        let thisDevicesControls = realm.objects(DeviceControl.self).filter("deviceID == %d", deviceID)
+        print(thisDevicesControls)
+        updateDevice.controlList.append(objectsIn: thisDevicesControls)
+        
+        try! realm.write {
+            realm.create(Device.self,
+                         value: ["deviceID": deviceID,
+                                 "controlList": thisDevicesControls],
+                         update: true)
         }
         
     }
