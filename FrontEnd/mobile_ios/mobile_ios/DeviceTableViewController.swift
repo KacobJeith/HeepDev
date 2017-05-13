@@ -133,17 +133,24 @@ class DeviceTableViewController: UITableViewController {
     
     func toggle(sender: UISwitch) {
         let devices = realm.objects(Device.self)
+        
         let thisIndexPath = controlTags[sender.tag]
+        let thisControlUniqueID = devices[thisIndexPath.section].controlList[thisIndexPath.row].uniqueID
+        var newValue = 0
         
         if (sender.isOn) {
-            devices[thisIndexPath.section].controlList[thisIndexPath.row].valueCurrent = 1
-            
-        } else {
-            devices[thisIndexPath.section].controlList[thisIndexPath.row].valueCurrent = 0
+            newValue = 1
+        }
+        
+        try! realm.write {
+            realm.create(DeviceControl.self,
+                        value: ["uniqueID": thisControlUniqueID,
+                                "valueCurrent": newValue],
+                        update: true)
         }
         
         DispatchQueue.global().async {
-            HeepConnections().sendValueToHeepDevice(thisIndexPath: thisIndexPath, deviceID: thisIndexPath.section)
+            HeepConnections().sendValueToHeepDevice(uniqueID: thisControlUniqueID)
         }
         
     }
@@ -151,10 +158,19 @@ class DeviceTableViewController: UITableViewController {
     func sliderUpdate(sender: UISlider) {
         let devices = realm.objects(Device.self)
         let thisIndexPath = controlTags[sender.tag]
+        let thisControlUniqueID = devices[thisIndexPath.section].controlList[thisIndexPath.row].uniqueID
         
-        devices[thisIndexPath.section].controlList[thisIndexPath.row].valueCurrent = Int(round(sender.value))
+        let newValue = Int(round(sender.value))
+        
+        try! realm.write {
+            realm.create(DeviceControl.self,
+                         value: ["uniqueID": thisControlUniqueID,
+                                 "valueCurrent": newValue],
+                         update: true)
+        }
+        
         DispatchQueue.global().async {
-            HeepConnections().sendValueToHeepDevice(thisIndexPath: thisIndexPath, deviceID: thisIndexPath.section)
+            HeepConnections().sendValueToHeepDevice(uniqueID: thisControlUniqueID)
         }
         
     }
@@ -188,7 +204,7 @@ class DeviceTableViewController: UITableViewController {
     }
     
     func CheckForNewDevicesAndDisplay() {
-        let devices = realm.objects(Device.self)
+        //let devices = realm.objects(Device.self)
         self.tableView.reloadData()
         /*if (devices.count != 0 && (devices.count - 1) >= lastCount) {
             let previousCount = lastCount

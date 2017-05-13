@@ -8,6 +8,7 @@
 
 import SwiftSocket
 import SystemConfiguration.CaptiveNetwork
+import RealmSwift
 
 class HeepConnections {
     public func SearchForHeepDeviecs() {
@@ -27,15 +28,17 @@ class HeepConnections {
         }
     }
     
-    public func sendValueToHeepDevice(thisIndexPath: IndexPath, deviceID: Int) {
+    public func sendValueToHeepDevice(uniqueID: String) {
+        let realm = try! Realm(configuration: Realm.Configuration(inMemoryIdentifier: "MyInMemoryRealm"))
+        let activeControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: uniqueID)
+        let thisDevice = realm.object(ofType: Device.self, forPrimaryKey: activeControl?.deviceID)
+        let thisDeviceIP = thisDevice?.ipAddress
+        let thisControl = activeControl?.controlID
+        let newVal = activeControl?.valueCurrent
         
-        let thisDeviceIP = user.devices[deviceID].ipAddress
-        let thisControl = user.devices[deviceID].controlList[thisIndexPath.row].controlID
-        let newVal = user.devices[deviceID].controlList[thisIndexPath.row].valueCurrent
-        
-        let message = HAPIMemoryParser().BuildSetValueCOP(controlID: thisControl, newValue: newVal)
+        let message = HAPIMemoryParser().BuildSetValueCOP(controlID: thisControl!, newValue: newVal!)
         print("Sending: \(message) to Heep Device at to \(String(describing: thisDeviceIP))")
-        ConnectToHeepDevice(ipAddress: thisDeviceIP, printErrors: false, message: message)
+        ConnectToHeepDevice(ipAddress: thisDeviceIP!, printErrors: false, message: message)
         
     }
     

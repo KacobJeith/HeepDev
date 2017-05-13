@@ -60,24 +60,14 @@ class Device: Object {
         return "deviceID"
     }
     
-    func setName(name: String) {
-        self.name = name
-    }
-    
-    func setIPAddress(ipAddress: String) {
-        self.ipAddress = ipAddress
-    }
-    
-    func setIconName(iconName: String){
-        self.iconName = iconName
-    }
     
 }
 
 class DeviceControl: Object {
     
-    dynamic var deviceID: Int = 0
+    dynamic var deviceID: Int = 0//LinkingObjects(fromType: Device.self, property: "deviceID")
     dynamic var controlID: Int = 0
+    dynamic var uniqueID: String = ""
     dynamic var controlType: Int = 0
     dynamic var controlDirection: Int = 0
     dynamic var valueLow: Int = 0
@@ -85,7 +75,9 @@ class DeviceControl: Object {
     dynamic var valueCurrent: Int = 0
     dynamic var controlName: String = "Default"
     
-    
+    override static func primaryKey() -> String? {
+        return "uniqueID"
+    }
     
 }
 

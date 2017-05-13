@@ -161,8 +161,9 @@ class HAPIMemoryParser {
         /*if let parentDevice = realm.objects(Device.self).filter("deviceID == '\(deviceID))'").first {
             newControl.deviceID = parentDevice
         }*/
-        newControl.deviceID = Int(deviceID)
+        newControl.deviceID = deviceID
         newControl.controlID = Int(dump[index])
+        newControl.uniqueID = String(deviceID) + String(dump[index])
         newControl.controlType = Int(dump[index + 1])
         newControl.controlDirection = Int(dump[index + 2])
         newControl.valueLow = Int(dump[index + 3])
@@ -174,10 +175,8 @@ class HAPIMemoryParser {
         }
         
         // Resolve Addition to device array (masterState)
-        let updateDevice = Device()
         let thisDevicesControls = realm.objects(DeviceControl.self).filter("deviceID == %d", deviceID)
         print(thisDevicesControls)
-        updateDevice.controlList.append(objectsIn: thisDevicesControls)
         
         try! realm.write {
             realm.create(Device.self,
