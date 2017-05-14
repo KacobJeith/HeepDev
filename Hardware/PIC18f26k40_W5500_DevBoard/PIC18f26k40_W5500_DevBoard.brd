@@ -141,9 +141,9 @@
 <board>
 <plain>
 <wire x1="0" y1="0" x2="58" y2="0" width="0" layer="20"/>
-<wire x1="58" y1="0" x2="57" y2="65" width="0" layer="20"/>
-<wire x1="57" y1="65" x2="-1" y2="65" width="0" layer="20"/>
-<wire x1="-1" y1="65" x2="0" y2="0" width="0" layer="20"/>
+<wire x1="58" y1="0" x2="57.9" y2="66.1" width="0" layer="20"/>
+<wire x1="57.9" y1="66.1" x2="-0.1" y2="66.1" width="0" layer="20"/>
+<wire x1="-0.1" y1="66.1" x2="0" y2="0" width="0" layer="20"/>
 <text x="23.2" y="51.1" size="1.778" layer="21">PIC18F26k40</text>
 <text x="23.3" y="48.9" size="1.778" layer="21">W5500</text>
 <text x="23.3" y="46.8" size="1.778" layer="21">Dev Board</text>

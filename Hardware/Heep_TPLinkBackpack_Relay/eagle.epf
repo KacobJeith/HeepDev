@@ -350,6 +350,7 @@ UsedLibrary="/Applications/EAGLE-8.0.1/lbr/zilog.lbr"
 UsedLibrary="/Users/dylan/Documents/EagleLibraries/SparkFun-Eagle-Libraries-master/SparkFun-Aesthetics.lbr"
 UsedLibrary="/Users/dylan/Documents/EagleLibraries/SparkFun-Eagle-Libraries-master/SparkFun-Connectors.lbr"
 UsedLibrary="/Users/dylan/Documents/EagleLibraries/Heep/Heep.lbr"
+UsedLibrary="/Users/dylan/Documents/EagleLibraries/SparkFun-Eagle-Libraries-master/SparkFun-Passives.lbr"
 
 [Desktop]
 Screen="640 480"
