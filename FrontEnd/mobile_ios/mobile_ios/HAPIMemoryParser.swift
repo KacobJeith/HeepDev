@@ -11,7 +11,7 @@ import RealmSwift
 
 class HAPIMemoryParser {
     
-    let realm = try! Realm(configuration: Realm.Configuration(inMemoryIdentifier: "MyInMemoryRealm"))
+    let realm = try! Realm(configuration: config)
     
     public func BuildIsHeepDeviceCOP() -> [UInt8] {
         
@@ -145,11 +145,24 @@ class HAPIMemoryParser {
         let newDevice = Device()
         newDevice.deviceID = deviceID
         newDevice.ipAddress = ipAddress
+        newDevice.associatedPlace = currentWifi["bssid"]!
         
         try! realm.write {
             
             realm.add(newDevice)
         }
+        
+        // Add device to the current Place using BSSID of wifi network
+        let devices = realm.objects(Device.self).filter("associatedPlace == %s", currentWifi["bssid"]!)
+        
+        try! realm.write {
+            
+            realm.create(Place.self,
+                         value: ["bssid": currentWifi["bssid"]!,
+                                 "devices": devices],
+                         update: true)
+        }
+        
     }
     
     func AddControlToDevice(dump: [UInt8], index: Int, deviceID: Int, packetSize: Int ) {

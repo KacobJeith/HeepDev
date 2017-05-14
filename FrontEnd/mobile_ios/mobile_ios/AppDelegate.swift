@@ -12,6 +12,8 @@ import RealmSwift
 
 
 var user = User()
+var currentWifi: [String: String] = ["ssid": "none", "bssid": "none"]
+let config = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -26,15 +28,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let navigationController = UINavigationController(rootViewController: mainController)
         navigationController.navigationBar.isTranslucent = false
         navigationController.isToolbarHidden = true
-        
-        let realm = try! Realm(configuration: Realm.Configuration(inMemoryIdentifier: "MyInMemoryRealm"))
-        try! realm.write {
-            realm.deleteAll()
-        }
-        
+               
         self.window?.rootViewController = navigationController
         self.window?.makeKeyAndVisible()
         
+        currentWifiInfo()
         // Override point for customization after application launch.
         return true
     }

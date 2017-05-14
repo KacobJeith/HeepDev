@@ -14,10 +14,21 @@ class DeviceTableViewController: UITableViewController {
     //MARK: Properties
     
     var notificationToken: NotificationToken!
-    let realm = try! Realm(configuration: Realm.Configuration(inMemoryIdentifier: "MyInMemoryRealm"))
     
+    let realm = try! Realm()
+    var activePlace = ""
     var controlTags = [IndexPath]()
     var lastCount = 0
+    
+    init(place: Place) {
+        activePlace = place.bssid
+        
+        super.init(style: UITableViewStyle.plain)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         print(user.name)
@@ -49,7 +60,8 @@ class DeviceTableViewController: UITableViewController {
     
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        let devices = realm.objects(Device.self)
+        let devices = realm.objects(Device.self).filter("associatedPlace == %s", activePlace)
+        
         return devices.count
 
     }
@@ -83,16 +95,17 @@ class DeviceTableViewController: UITableViewController {
     
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let devices = realm.objects(Device.self)
+        let devices = realm.objects(Device.self).filter("associatedPlace == %s", activePlace)
         print(devices)
         print(devices[section].controlList)
         let numControls = devices[section].controlList.count
-        
+        print("CONTROLS" + String(numControls))
         return numControls
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let devices = realm.objects(Device.self)
+        
+        let devices = realm.objects(Device.self).filter("associatedPlace == %s", activePlace)
         let cell = UITableViewCell()
         
         if (devices[indexPath.section].controlList[indexPath.row].controlDirection == 0){
@@ -134,7 +147,7 @@ class DeviceTableViewController: UITableViewController {
     }
     
     func toggle(sender: UISwitch) {
-        let devices = realm.objects(Device.self)
+        let devices = realm.objects(Device.self).filter("associatedPlace == %s", activePlace)
         
         let thisIndexPath = controlTags[sender.tag]
         let thisControlUniqueID = devices[thisIndexPath.section].controlList[thisIndexPath.row].uniqueID
@@ -158,7 +171,7 @@ class DeviceTableViewController: UITableViewController {
     }
     
     func sliderUpdate(sender: UISlider) {
-        let devices = realm.objects(Device.self)
+        let devices = realm.objects(Device.self).filter("associatedPlace == %s", activePlace)
         let thisIndexPath = controlTags[sender.tag]
         let thisControlUniqueID = devices[thisIndexPath.section].controlList[thisIndexPath.row].uniqueID
         
@@ -184,7 +197,7 @@ class DeviceTableViewController: UITableViewController {
     }
     
     func displayDeviceSummary(sender: UIButton) {
-        let devices = realm.objects(Device.self)
+        let devices = realm.objects(Device.self).filter("associatedPlace == %s", activePlace)
         print("Display device summary for: \(String(describing: devices[sender.tag].deviceID))")
         let summaryView = DeviceSummaryViewController(device: devices[sender.tag])
         navigationController?.pushViewController(summaryView, animated: true)

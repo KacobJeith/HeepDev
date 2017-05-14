@@ -7,10 +7,12 @@
 //
 
 import SwiftSocket
-import SystemConfiguration.CaptiveNetwork
 import RealmSwift
 
 class HeepConnections {
+    
+    let realm = try! Realm(configuration: config)
+    
     public func SearchForHeepDeviecs() {
         
         let gateway = getWiFiGateway()
@@ -29,7 +31,6 @@ class HeepConnections {
     }
     
     public func sendValueToHeepDevice(uniqueID: String) {
-        let realm = try! Realm(configuration: Realm.Configuration(inMemoryIdentifier: "MyInMemoryRealm"))
         let activeControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: uniqueID)
         let thisDevice = realm.object(ofType: Device.self, forPrimaryKey: activeControl?.deviceID)
         let thisDeviceIP = thisDevice?.ipAddress
@@ -74,7 +75,6 @@ class HeepConnections {
         var address = "10.0.0.1"
         var gateway = "10.0.0"
         
-        printCurrentWifiInfo()
         
         // Get list of all interfaces on the local machine:
         var ifaddr : UnsafeMutablePointer<ifaddrs>?
@@ -113,26 +113,7 @@ class HeepConnections {
         return gateway
     }
     
-    func printCurrentWifiInfo() -> String {
-        if let interface = CNCopySupportedInterfaces() {
-            for i in 0..<CFArrayGetCount(interface) {
-                let interfaceName: UnsafeRawPointer = CFArrayGetValueAtIndex(interface, i)
-                let rec = unsafeBitCast(interfaceName, to: AnyObject.self)
-                if let unsafeInterfaceData = CNCopyCurrentNetworkInfo("\(rec)" as CFString), let interfaceData = unsafeInterfaceData as? [String : AnyObject] {
-                    // connected wifi
-                    print("BSSID: \(String(describing: interfaceData["BSSID"])), SSID: \(String(describing: interfaceData["SSID"])), SSIDDATA: \(String(describing: interfaceData["SSIDDATA"]))")
-                    
-                    
-                    return interfaceData["SSID"] as! String
-                    
-                } else {
-                    // not connected wifi
-                }
-            }
-        }
-        
-        return "Not Connected"
-    }
+    
     
     func getAddress(gateway: String, ip: Int) -> String {
         

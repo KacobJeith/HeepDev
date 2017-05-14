@@ -37,13 +37,17 @@ class Key: Object {
 
 class Place: Object {
     
-    var ssid: String = "placeholder"
-    var name: String = "unnamed"
-    var gateway: String = "0.0.0"
-    var devices = List<Device>()
+    dynamic var ssid: String = "placeholder"
+    dynamic var bssid: String = "LANMAC"
+    dynamic var name: String = "unnamed"
+    dynamic var gateway: String = "0.0.0"
+    dynamic var x: Int = 100
+    dynamic var y: Int = 100
+    dynamic var radius: Int = 100
+    let devices = List<Device>()
     
     override static func primaryKey() -> String? {
-        return "ssid"
+        return "bssid"
     }
 }
 
@@ -55,6 +59,8 @@ class Device: Object {
     dynamic var iconName: String = "lightbulb"
     dynamic var ipAddress: String = "0.0.0.0"
     let controlList =   List<DeviceControl>() //LinkingObjects(fromType: DeviceControl.self, property: "deviceID")
+    dynamic var associatedPlace: String = "wanderer"
+
     
     override static func primaryKey() -> String? {
         return "deviceID"
