@@ -113,7 +113,7 @@ class HeepConnections {
         return gateway
     }
     
-    func printCurrentWifiInfo() {
+    func printCurrentWifiInfo() -> String {
         if let interface = CNCopySupportedInterfaces() {
             for i in 0..<CFArrayGetCount(interface) {
                 let interfaceName: UnsafeRawPointer = CFArrayGetValueAtIndex(interface, i)
@@ -121,11 +121,17 @@ class HeepConnections {
                 if let unsafeInterfaceData = CNCopyCurrentNetworkInfo("\(rec)" as CFString), let interfaceData = unsafeInterfaceData as? [String : AnyObject] {
                     // connected wifi
                     print("BSSID: \(String(describing: interfaceData["BSSID"])), SSID: \(String(describing: interfaceData["SSID"])), SSIDDATA: \(String(describing: interfaceData["SSIDDATA"]))")
+                    
+                    
+                    return interfaceData["SSID"] as! String
+                    
                 } else {
                     // not connected wifi
                 }
             }
         }
+        
+        return "Not Connected"
     }
     
     func getAddress(gateway: String, ip: Int) -> String {
