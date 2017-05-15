@@ -6493,8 +6493,8 @@ INDUCTOR POWER 3.3UH 4.0A SMD&lt;br&gt;
 <part name="R2" library="SparkFun-Resistors" deviceset="RESISTOR" device="0603" value="51"/>
 <part name="R3" library="SparkFun-Resistors" deviceset="RESISTOR" device="0603" value="51"/>
 <part name="R4" library="SparkFun-Resistors" deviceset="RESISTOR" device="0603" value="51"/>
-<part name="C3" library="SparkFun-Passives" deviceset="CAP" device="0603-CAP" value="10pF"/>
-<part name="C4" library="SparkFun-Passives" deviceset="CAP" device="0603-CAP" value="10pF"/>
+<part name="C3" library="SparkFun-Passives" deviceset="CAP" device="0603-CAP" value="8pF"/>
+<part name="C4" library="SparkFun-Passives" deviceset="CAP" device="0603-CAP" value="8pF"/>
 <part name="SUPPLY1" library="SparkFun-Aesthetics" deviceset="3.3V" device=""/>
 <part name="C5" library="SparkFun-Capacitors" deviceset="CAP" device="0603-CAP" value="0.1uF"/>
 <part name="C6" library="SparkFun-Capacitors" deviceset="CAP" device="0603-CAP" value="0.1uF"/>
