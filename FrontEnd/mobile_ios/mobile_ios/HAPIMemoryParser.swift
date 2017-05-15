@@ -58,6 +58,7 @@ class HAPIMemoryParser {
         else {
             // Unknown ROP
             print("Heep has no idea what this device is saying....sorry!")
+            print(dump[0])
 
         }
         
@@ -189,7 +190,7 @@ class HAPIMemoryParser {
         
         // Resolve Addition to device array (masterState)
         let thisDevicesControls = realm.objects(DeviceControl.self).filter("deviceID == %d", deviceID)
-        print(thisDevicesControls)
+        //print(thisDevicesControls)
         
         try! realm.write {
             realm.create(Device.self,

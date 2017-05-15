@@ -19,10 +19,7 @@ class PlacesView: UIViewController {
         super.viewDidLoad()
         self.title = "My Places"
         self.view.backgroundColor = .white
-        /*try! realm.write {
-            
-            realm.deleteAll()
-        }*/
+        
         
         let toolbarContent = UIBarButtonItem()
         toolbarContent.title = "Delete All"
@@ -50,7 +47,7 @@ class PlacesView: UIViewController {
         let allPlaces = realm.objects(Place.self)
         
         for place in allPlaces {
-            print(place)
+            
             drawPlace(thisX: place.x,
                       thisY: place.y,
                       thisName: place.name,

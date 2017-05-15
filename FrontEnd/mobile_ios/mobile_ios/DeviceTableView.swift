@@ -15,10 +15,12 @@ class DeviceTableViewController: UITableViewController {
     var notificationToken: NotificationToken!
     let devices: Results<Device>
     var controlTags = [IndexPath]()
+    var thisBSSID = ""
     let realm = try! Realm(configuration: config)
     
     init(place: Place) {
         devices = realm.objects(Device.self).filter("associatedPlace = %s", place.bssid)
+        thisBSSID = place.bssid
         super.init(style: UITableViewStyle.plain)
     }
     
@@ -29,14 +31,23 @@ class DeviceTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Heep Device List"
-                
-        let toolbarContent = UIBarButtonItem()
-        toolbarContent.title = "Search for Heep Devices"
+        
+        
+        
         self.navigationController?.isToolbarHidden = false
-        toolbarContent.target = self
-        toolbarContent.action = #selector(searchForHeepDevices)
+        let search = UIBarButtonItem(barButtonSystemItem: .refresh,
+                                             target: self,
+                                             action: #selector(searchForHeepDevices))
+        search.title = "Search"
+        
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        self.toolbarItems = [spacer, toolbarContent, spacer]
+        
+        let edit = UIBarButtonItem(barButtonSystemItem: .edit,
+                                   target: self,
+                                   action: #selector(openVertexView))
+        edit.title = "Edit Vertexes"
+        
+        self.toolbarItems = [spacer, search, spacer, edit]
         
         DispatchQueue.main.async() {
             
@@ -86,7 +97,6 @@ class DeviceTableViewController: UITableViewController {
     
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(devices)
         let numControls = devices[section].controlList.count
         return numControls
     }
@@ -191,8 +201,18 @@ class DeviceTableViewController: UITableViewController {
         navigationController?.pushViewController(summaryView, animated: true)
     }
     
+    func openVertexView() {
+        print("Open edit Vertex View")
+        let editVertexView = VertexView() //devices: devices)
+        let configureThis = realm.object(ofType: Place.self, forPrimaryKey: thisBSSID)
+        editVertexView.devices = (configureThis?.devices)!
+        editVertexView.placeBSSID = thisBSSID
+        navigationController?.pushViewController(editVertexView, animated: true)
+        //self.performSegue(withIdentifier: "segue", sender: self)
+    }
     
-    @IBAction func searchForHeepDevices() {
+    
+    func searchForHeepDevices() {
         print("Searching...")
         HeepConnections().SearchForHeepDeviecs()
         let dispatchTime = DispatchTime.now() + .seconds(2)
