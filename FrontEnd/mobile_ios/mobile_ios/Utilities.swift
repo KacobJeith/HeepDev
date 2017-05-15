@@ -33,7 +33,7 @@ func currentWifiInfo(){
                 let bssid = interfaceData["BSSID"] as! String
                 currentWifi["ssid"] = ssid
                 currentWifi["bssid"] = bssid
-                print(currentWifi["ssid"])
+                print(currentWifi["ssid"]!)
                 
             } else {
                 // not connected wifi

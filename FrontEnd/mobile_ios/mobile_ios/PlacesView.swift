@@ -11,8 +11,8 @@ import RealmSwift
 
 class PlacesView: UIViewController {
     
-    //let realm = try! Realm(configuration: Realm.Configuration(inMemoryIdentifier: "MyInMemoryRealm"))
     let realm = try! Realm(configuration: config)
+    
     var bssids = [String]()
     
     override func viewDidLoad() {
@@ -24,7 +24,6 @@ class PlacesView: UIViewController {
             realm.deleteAll()
         }*/
         addPlaces()
-        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {

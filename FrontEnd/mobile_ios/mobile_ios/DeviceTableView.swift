@@ -9,20 +9,16 @@
 import UIKit
 import RealmSwift
 
-
 class DeviceTableViewController: UITableViewController {
     //MARK: Properties
     
     var notificationToken: NotificationToken!
-    
-    let realm = try! Realm()
-    var activePlace = ""
+    let devices: Results<Device>
     var controlTags = [IndexPath]()
-    var lastCount = 0
+    let realm = try! Realm(configuration: config)
     
     init(place: Place) {
-        activePlace = place.bssid
-        
+        devices = realm.objects(Device.self).filter("associatedPlace = %s", place.bssid)
         super.init(style: UITableViewStyle.plain)
     }
     
@@ -60,7 +56,6 @@ class DeviceTableViewController: UITableViewController {
     
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        let devices = realm.objects(Device.self).filter("associatedPlace == %s", activePlace)
         
         return devices.count
 
@@ -69,7 +64,6 @@ class DeviceTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView()
         view.backgroundColor = UIColor.white
-        let devices = realm.objects(Device.self)
         
         let image = UIImage(named: (devices[section].iconName))
         let imageView = UIImageView(image: image)
@@ -95,7 +89,6 @@ class DeviceTableViewController: UITableViewController {
     
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let devices = realm.objects(Device.self).filter("associatedPlace == %s", activePlace)
         print(devices)
         print(devices[section].controlList)
         let numControls = devices[section].controlList.count
@@ -105,7 +98,6 @@ class DeviceTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let devices = realm.objects(Device.self).filter("associatedPlace == %s", activePlace)
         let cell = UITableViewCell()
         
         if (devices[indexPath.section].controlList[indexPath.row].controlDirection == 0){
@@ -147,8 +139,8 @@ class DeviceTableViewController: UITableViewController {
     }
     
     func toggle(sender: UISwitch) {
-        let devices = realm.objects(Device.self).filter("associatedPlace == %s", activePlace)
         
+        let realm = try! Realm(configuration: config)
         let thisIndexPath = controlTags[sender.tag]
         let thisControlUniqueID = devices[thisIndexPath.section].controlList[thisIndexPath.row].uniqueID
         var newValue = 0
@@ -171,7 +163,8 @@ class DeviceTableViewController: UITableViewController {
     }
     
     func sliderUpdate(sender: UISlider) {
-        let devices = realm.objects(Device.self).filter("associatedPlace == %s", activePlace)
+        
+        let realm = try! Realm(configuration: config)
         let thisIndexPath = controlTags[sender.tag]
         let thisControlUniqueID = devices[thisIndexPath.section].controlList[thisIndexPath.row].uniqueID
         
@@ -197,7 +190,6 @@ class DeviceTableViewController: UITableViewController {
     }
     
     func displayDeviceSummary(sender: UIButton) {
-        let devices = realm.objects(Device.self).filter("associatedPlace == %s", activePlace)
         print("Display device summary for: \(String(describing: devices[sender.tag].deviceID))")
         let summaryView = DeviceSummaryViewController(device: devices[sender.tag])
         navigationController?.pushViewController(summaryView, animated: true)
@@ -219,16 +211,7 @@ class DeviceTableViewController: UITableViewController {
     }
     
     func CheckForNewDevicesAndDisplay() {
-        //let devices = realm.objects(Device.self)
         self.tableView.reloadData()
-        /*if (devices.count != 0 && (devices.count - 1) >= lastCount) {
-            let previousCount = lastCount
-            lastCount = user.devices.count
-            tableView.beginUpdates()
-            tableView.insertSections(IndexSet(previousCount...(user.devices.count-1)), with: .automatic)
-            tableView.endUpdates()
-        }*/
-        
         
     }
 

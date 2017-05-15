@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		100821FC1EC49BDF0079E6F5 /* PlacesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100821FB1EC49BDF0079E6F5 /* PlacesView.swift */; };
-		100821FE1EC4AC850079E6F5 /* HAPIKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100821FD1EC4AC850079E6F5 /* HAPIKeys.swift */; };
 		101D2F631EA968230074D807 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101D2F621EA968230074D807 /* AppDelegate.swift */; };
 		101D2F6B1EA968230074D807 /* mobile_ios.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 101D2F691EA968230074D807 /* mobile_ios.xcdatamodeld */; };
 		101D2F7B1EA968230074D807 /* mobile_iosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101D2F7A1EA968230074D807 /* mobile_iosTests.swift */; };
@@ -55,7 +54,6 @@
 /* Begin PBXFileReference section */
 		04FE62370CD9FBCA0A3E91F8 /* Pods-mobile_iosTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mobile_iosTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-mobile_iosTests/Pods-mobile_iosTests.release.xcconfig"; sourceTree = "<group>"; };
 		100821FB1EC49BDF0079E6F5 /* PlacesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacesView.swift; sourceTree = "<group>"; };
-		100821FD1EC4AC850079E6F5 /* HAPIKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HAPIKeys.swift; sourceTree = "<group>"; };
 		101D2F5F1EA968230074D807 /* mobile_ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = mobile_ios.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		101D2F621EA968230074D807 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		101D2F6A1EA968230074D807 /* mobile_ios.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = mobile_ios.xcdatamodel; sourceTree = "<group>"; };
@@ -146,7 +144,6 @@
 				EEA944261EAA9EF40022588B /* DeviceTableView.swift */,
 				103FE2841EC373830033D021 /* DeviceSummaryView.swift */,
 				103FE2881EC3AF5F0033D021 /* HeepObjects.swift */,
-				100821FD1EC4AC850079E6F5 /* HAPIKeys.swift */,
 				EEA944221EAA93950022588B /* HeepConnections.swift */,
 				EEA944201EAA7D880022588B /* HAPIMemoryParser.swift */,
 				104C18101EC8FA0C000A75D7 /* Utilities.swift */,
@@ -493,7 +490,6 @@
 				101D2F631EA968230074D807 /* AppDelegate.swift in Sources */,
 				103FE2891EC3AF5F0033D021 /* HeepObjects.swift in Sources */,
 				103FE2961EC3B2C60033D021 /* LoginView.swift in Sources */,
-				100821FE1EC4AC850079E6F5 /* HAPIKeys.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
