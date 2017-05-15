@@ -17,6 +17,7 @@ class VertexView: UIViewController, UIImagePickerControllerDelegate, UINavigatio
     var devices = List<Device>()
     var placeBSSID = String()
     var selectedImage = UIImage()
+    var controlIDs = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,19 +76,26 @@ class VertexView: UIViewController, UIImagePickerControllerDelegate, UINavigatio
         
         
         for device in devices {
-            drawDevice(device: device)
+            for control in device.controlList {
+                
+                drawDevice(control: control, iconName: device.iconName)
+            }
         }
         
     }
     
-    func drawDevice(device: Device) {
-        let image = UIImage(named: device.iconName) as UIImage?
-        let deviceSprite = UIButton(frame: CGRect(x: 100, y: 100, width: 60, height: 60))
+    func drawDevice(control: DeviceControl, iconName: String) {
+        controlIDs.append(control.uniqueID)
+        let image = UIImage(named: iconName) as UIImage?
+        let deviceSprite = UIButton(frame: CGRect(x: control.vertexX,
+                                                  y: control.vertexY,
+                                                  width: 60,
+                                                  height: 60))
         deviceSprite.setBackgroundImage(image, for: [])
         deviceSprite.contentMode = .scaleAspectFit
         deviceSprite.layer.cornerRadius = 0.5 * deviceSprite.bounds.size.width
         deviceSprite.clipsToBounds = true
-
+        deviceSprite.tag = controlIDs.count - 1
         
         deviceSprite.addTarget(self,
                              action: #selector(drag),
@@ -142,6 +150,19 @@ class VertexView: UIViewController, UIImagePickerControllerDelegate, UINavigatio
         
         if let center = event.allTouches?.first?.location(in: self.view) {
             control.center = center
+            saveDragPosition(center: center,
+                             uniqueID: controlIDs[(event.allTouches?.first?.view!.tag)!])
+        }
+    }
+    
+    func saveDragPosition(center: CGPoint, uniqueID: String) {
+        let realm = try! Realm(configuration: config)
+        try! realm.write {
+            realm.create(DeviceControl.self,
+                         value: ["uniqueID": uniqueID,
+                                 "vertexX": center.x,
+                                 "vertexY": center.y],
+                         update: true)
         }
     }
     
