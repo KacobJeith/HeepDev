@@ -19,12 +19,6 @@
 		103FE2891EC3AF5F0033D021 /* HeepObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103FE2881EC3AF5F0033D021 /* HeepObjects.swift */; };
 		103FE28A1EC3AF5F0033D021 /* HeepObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103FE2881EC3AF5F0033D021 /* HeepObjects.swift */; };
 		103FE28B1EC3AF5F0033D021 /* HeepObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103FE2881EC3AF5F0033D021 /* HeepObjects.swift */; };
-		103FE2961EC3B2C60033D021 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103FE2941EC3B2C60033D021 /* LoginView.swift */; };
-		103FE2971EC3B2C60033D021 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103FE2941EC3B2C60033D021 /* LoginView.swift */; };
-		103FE2981EC3B2C60033D021 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103FE2941EC3B2C60033D021 /* LoginView.swift */; };
-		103FE2991EC3B2C60033D021 /* LoginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 103FE2951EC3B2C60033D021 /* LoginView.xib */; };
-		103FE29A1EC3B2C60033D021 /* LoginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 103FE2951EC3B2C60033D021 /* LoginView.xib */; };
-		103FE29B1EC3B2C60033D021 /* LoginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 103FE2951EC3B2C60033D021 /* LoginView.xib */; };
 		104C18111EC8FA0C000A75D7 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104C18101EC8FA0C000A75D7 /* Utilities.swift */; };
 		70DC641C8DFD5145B3E2F178 /* Pods_mobile_iosUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9455865AC2AC2771C588F666 /* Pods_mobile_iosUITests.framework */; };
 		AFBAEC1B382B06E54E70DAC7 /* Pods_mobile_iosTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 629528E8C86E48C60E29C454 /* Pods_mobile_iosTests.framework */; };
@@ -67,8 +61,6 @@
 		101D2F871EA968230074D807 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		103FE2841EC373830033D021 /* DeviceSummaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceSummaryView.swift; sourceTree = "<group>"; };
 		103FE2881EC3AF5F0033D021 /* HeepObjects.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeepObjects.swift; sourceTree = "<group>"; };
-		103FE2941EC3B2C60033D021 /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
-		103FE2951EC3B2C60033D021 /* LoginView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginView.xib; sourceTree = "<group>"; };
 		104C18101EC8FA0C000A75D7 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		1067B93C1EACE35D00E7607E /* BridgingHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BridgingHeader.h; sourceTree = "<group>"; };
 		321E9915FF90A4E39B163211 /* Pods_mobile_ios.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_mobile_ios.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -139,8 +131,6 @@
 			children = (
 				101D2F621EA968230074D807 /* AppDelegate.swift */,
 				100821FB1EC49BDF0079E6F5 /* PlacesView.swift */,
-				103FE2941EC3B2C60033D021 /* LoginView.swift */,
-				103FE2951EC3B2C60033D021 /* LoginView.xib */,
 				EEA944261EAA9EF40022588B /* DeviceTableView.swift */,
 				103FE2841EC373830033D021 /* DeviceSummaryView.swift */,
 				103FE2881EC3AF5F0033D021 /* HeepObjects.swift */,
@@ -314,7 +304,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				103FE2991EC3B2C60033D021 /* LoginView.xib in Resources */,
 				101D2F941EA97DD90074D807 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -323,7 +312,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				103FE29A1EC3B2C60033D021 /* LoginView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -331,7 +319,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				103FE29B1EC3B2C60033D021 /* LoginView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -489,7 +476,6 @@
 				EEA944231EAA93950022588B /* HeepConnections.swift in Sources */,
 				101D2F631EA968230074D807 /* AppDelegate.swift in Sources */,
 				103FE2891EC3AF5F0033D021 /* HeepObjects.swift in Sources */,
-				103FE2961EC3B2C60033D021 /* LoginView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -500,7 +486,6 @@
 				103FE28A1EC3AF5F0033D021 /* HeepObjects.swift in Sources */,
 				103FE2861EC373830033D021 /* DeviceSummaryView.swift in Sources */,
 				101D2F7B1EA968230074D807 /* mobile_iosTests.swift in Sources */,
-				103FE2971EC3B2C60033D021 /* LoginView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -508,7 +493,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				103FE2981EC3B2C60033D021 /* LoginView.swift in Sources */,
 				101D2F861EA968230074D807 /* mobile_iosUITests.swift in Sources */,
 				103FE2871EC373830033D021 /* DeviceSummaryView.swift in Sources */,
 				103FE28B1EC3AF5F0033D021 /* HeepObjects.swift in Sources */,
