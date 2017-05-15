@@ -27,13 +27,11 @@ class DeviceTableViewController: UITableViewController {
     }
 
     override func viewDidLoad() {
-        print(user.name)
         super.viewDidLoad()
         self.title = "Heep Device List"
                 
         let toolbarContent = UIBarButtonItem()
         toolbarContent.title = "Search for Heep Devices"
-        //self.navigationItem.hidesBackButton = true
         self.navigationController?.isToolbarHidden = false
         toolbarContent.target = self
         toolbarContent.action = #selector(searchForHeepDevices)
@@ -45,14 +43,10 @@ class DeviceTableViewController: UITableViewController {
     }
     
     
-    
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
-    // MARK: - Table view data source
     
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -90,9 +84,7 @@ class DeviceTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         print(devices)
-        print(devices[section].controlList)
         let numControls = devices[section].controlList.count
-        print("CONTROLS" + String(numControls))
         return numControls
     }
     
@@ -119,7 +111,7 @@ class DeviceTableViewController: UITableViewController {
             let thisSwitchState = devices[indexPath.section].controlList[indexPath.row].valueCurrent == 1
             buttonSwitch.tag = controlTags.count - 1
             buttonSwitch.frame = CGRect(x: tableView.frame.size.width - 60, y: 5, width: 100, height: 35)
-            buttonSwitch.setOn(thisSwitchState, animated: true)
+            buttonSwitch.setOn(thisSwitchState, animated: false)
             buttonSwitch.addTarget(self, action: #selector(DeviceTableViewController.toggle), for: UIControlEvents.valueChanged)
             cell.addSubview(buttonSwitch)
         } else {
@@ -127,7 +119,7 @@ class DeviceTableViewController: UITableViewController {
             slider.tag = controlTags.count - 1
             slider.minimumValue = Float(devices[indexPath.section].controlList[indexPath.row].valueLow)
             slider.maximumValue = Float(devices[indexPath.section].controlList[indexPath.row].valueHigh)
-            slider.setValue(Float(devices[indexPath.section].controlList[indexPath.row].valueCurrent), animated: true)
+            slider.setValue(Float(devices[indexPath.section].controlList[indexPath.row].valueCurrent), animated: false)
             slider.frame = CGRect(x: tableView.frame.size.width - 160, y: 5, width: 150, height: 35)
             slider.addTarget(self, action: #selector(DeviceTableViewController.sliderUpdate), for: UIControlEvents.valueChanged)
             
@@ -201,8 +193,6 @@ class DeviceTableViewController: UITableViewController {
         HeepConnections().SearchForHeepDeviecs()
         let dispatchTime = DispatchTime.now() + .seconds(2)
         DispatchQueue.main.asyncAfter(deadline: dispatchTime) {
-            
-            print("In searchForHeepDevices Action")
             
             self.CheckForNewDevicesAndDisplay()
         }

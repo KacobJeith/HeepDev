@@ -41,8 +41,8 @@ class Place: Object {
     dynamic var bssid: String = "LANMAC"
     dynamic var name: String = "unnamed"
     dynamic var gateway: String = "0.0.0"
-    dynamic var x: Int = 100
-    dynamic var y: Int = 100
+    dynamic var x: CGFloat = 100
+    dynamic var y: CGFloat = 100
     dynamic var radius: Int = 100
     let devices = List<Device>()
     

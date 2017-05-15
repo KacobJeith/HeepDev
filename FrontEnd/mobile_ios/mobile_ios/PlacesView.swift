@@ -23,6 +23,15 @@ class PlacesView: UIViewController {
             
             realm.deleteAll()
         }*/
+        
+        let toolbarContent = UIBarButtonItem()
+        toolbarContent.title = "Delete All"
+        self.navigationController?.isToolbarHidden = false
+        toolbarContent.target = self
+        toolbarContent.action = #selector(deleteAll)
+        let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        self.toolbarItems = [toolbarContent, spacer]
+
         addPlaces()
     }
 
@@ -64,10 +73,11 @@ class PlacesView: UIViewController {
         }
     }
     
-    func drawPlace(thisX: Int, thisY: Int, thisName: String, numDevices: Int, thisBSSID: String) {
+    func drawPlace(thisX: CGFloat, thisY: CGFloat, thisName: String, numDevices: Int, thisBSSID: String) {
         bssids.append(thisBSSID)
+        let diameter = 100 + 10*numDevices
         
-        let button = UIButton(frame: CGRect(x: 100, y: 100, width: 100, height: 100))
+        let button = UIButton(frame: CGRect(x: Int(thisX), y: Int(thisY), width: diameter, height: diameter))
         button.backgroundColor = numDevices == 0 ? .white : getRandomColor()
         button.layer.borderWidth = 1
         button.layer.borderColor = UIColor.black.cgColor
@@ -81,28 +91,77 @@ class PlacesView: UIViewController {
         
         
         button.addTarget(self,
-                         action: #selector(drag(control:event:)),
-                         for: UIControlEvents.touchDragInside)
+                         action: #selector(drag),
+                         for: [UIControlEvents.touchDragInside,
+                               UIControlEvents.touchDragOutside,
+                               UIControlEvents.touchDragExit])
+        /*
         button.addTarget(self,
-                         action: #selector(drag(control:event:)),
-                         for: [UIControlEvents.touchDragExit,
-                               UIControlEvents.touchDragOutside])
+                         action: #selector(dragEnd),
+                         for: UIControlEvents.touchDragOutside)
         
+        button.addTarget(self,
+                         action: #selector(dragEnd),
+                         for: UIControlEvents.touchDragExit)
+        */
         
-        button.addTarget(self, action: #selector(enterPlace), for: .touchDownRepeat)
+        button.addTarget(self,
+                         action: #selector(enterPlace),
+                         for: .touchDownRepeat)
     }
     
     func enterPlace(sender: UIButton) {
         let enterPlace = realm.object(ofType: Place.self, forPrimaryKey: bssids[sender.tag])
         navigationController?.pushViewController(DeviceTableViewController(place: enterPlace!), animated: true)
+        
+        
     }
     
     func drag(control: UIControl, event: UIEvent) {
+
+        
         if let center = event.allTouches?.first?.location(in: self.view) {
             control.center = center
+            let realm = try! Realm(configuration: config)
+            try! realm.write {
+                realm.create(Place.self,
+                             value: ["bssid": bssids[(event.allTouches?.first?.view!.tag)!],
+                                     "x": center.x,
+                                     "y": center.y],
+                             update: true)
+            }
         }
     }
     
+    func dragEnd(control: UIControl, event: UIEvent) {
+        print("ENDING DRAG")
+        if let center = event.allTouches?.first?.location(in: self.view) {
+            control.center = center
+            print(center)
+             let realm = try! Realm(configuration: config)
+             
+             try! realm.write {
+             
+                realm.create(Place.self,
+                          value: ["x", center.x,
+                                  "y", center.y,
+                                  "bssid", bssids[(event.allTouches?.first?.view!.tag)!]],
+                          update: true)
+             }
+            
+        }
+    }
+    
+    func deleteAll() {
+        print("Deleting all Devices")
+        try! realm.write {
+         
+            realm.deleteAll()
+            
+         }
+        
+        self.loadView()
+    }
     
 
 }
