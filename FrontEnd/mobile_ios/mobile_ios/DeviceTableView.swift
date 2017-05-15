@@ -38,7 +38,10 @@ class DeviceTableViewController: UITableViewController {
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         self.toolbarItems = [spacer, toolbarContent, spacer]
         
-        searchForHeepDevices()
+        DispatchQueue.main.async() {
+            
+            self.searchForHeepDevices()
+        }
         
     }
     
