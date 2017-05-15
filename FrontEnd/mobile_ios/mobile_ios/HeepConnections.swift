@@ -38,7 +38,7 @@ class HeepConnections {
         let newVal = activeControl?.valueCurrent
         
         let message = HAPIMemoryParser().BuildSetValueCOP(controlID: thisControl!, newValue: newVal!)
-        print("Sending: \(message) to Heep Device at to \(String(describing: thisDeviceIP))")
+        print("Sending: \(message) to Heep Device at to \(thisDeviceIP!)")
         ConnectToHeepDevice(ipAddress: thisDeviceIP!, printErrors: false, message: message)
         
     }

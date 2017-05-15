@@ -95,15 +95,6 @@ class PlacesView: UIViewController {
                          for: [UIControlEvents.touchDragInside,
                                UIControlEvents.touchDragOutside,
                                UIControlEvents.touchDragExit])
-        /*
-        button.addTarget(self,
-                         action: #selector(dragEnd),
-                         for: UIControlEvents.touchDragOutside)
-        
-        button.addTarget(self,
-                         action: #selector(dragEnd),
-                         for: UIControlEvents.touchDragExit)
-        */
         
         button.addTarget(self,
                          action: #selector(enterPlace),
@@ -133,25 +124,6 @@ class PlacesView: UIViewController {
         }
     }
     
-    func dragEnd(control: UIControl, event: UIEvent) {
-        print("ENDING DRAG")
-        if let center = event.allTouches?.first?.location(in: self.view) {
-            control.center = center
-            print(center)
-             let realm = try! Realm(configuration: config)
-             
-             try! realm.write {
-             
-                realm.create(Place.self,
-                          value: ["x", center.x,
-                                  "y", center.y,
-                                  "bssid", bssids[(event.allTouches?.first?.view!.tag)!]],
-                          update: true)
-             }
-            
-        }
-    }
-    
     func deleteAll() {
         print("Deleting all Devices")
         try! realm.write {
@@ -161,6 +133,7 @@ class PlacesView: UIViewController {
          }
         
         self.loadView()
+        self.viewDidLoad()
     }
     
 

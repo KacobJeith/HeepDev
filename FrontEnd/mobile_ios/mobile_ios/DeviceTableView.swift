@@ -135,6 +135,7 @@ class DeviceTableViewController: UITableViewController {
         let realm = try! Realm(configuration: config)
         let thisIndexPath = controlTags[sender.tag]
         let thisControlUniqueID = devices[thisIndexPath.section].controlList[thisIndexPath.row].uniqueID
+        
         var newValue = 0
         
         if (sender.isOn) {
