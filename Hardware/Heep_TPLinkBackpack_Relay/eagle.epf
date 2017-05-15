@@ -352,5 +352,12 @@ UsedLibrary="/Users/dylan/Documents/EagleLibraries/SparkFun-Eagle-Libraries-mast
 UsedLibrary="/Users/dylan/Documents/EagleLibraries/Heep/Heep.lbr"
 UsedLibrary="/Users/dylan/Documents/EagleLibraries/SparkFun-Eagle-Libraries-master/SparkFun-Passives.lbr"
 
+[Win_1]
+Type="Control Panel"
+Loc="240 164 1439 763"
+State=2
+Number=0
+
 [Desktop]
 Screen="640 480"
+Window="Win_1"
