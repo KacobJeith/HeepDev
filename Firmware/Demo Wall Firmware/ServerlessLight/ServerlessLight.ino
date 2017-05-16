@@ -10,20 +10,12 @@ Control theControl2;
 int rightLight = 17;
 int leftLight = 16;
 
-//#define CLEAR_MEMORY
-
 void setup()
 {
 	Serial.begin(9600);
 	delay(1000);
 	Serial.println("START");
 
-#ifdef CLEAR_MEMORY
-	ClearMemory();
-#else
-	Serial.println("Reading Memory...");
-	ReadMemory(deviceMemory, curFilledMemory);
-#endif
 
 	pinMode(rightLight, OUTPUT);
 	pinMode(leftLight, OUTPUT);
@@ -31,7 +23,7 @@ void setup()
 	digitalWrite(leftLight, LOW);
 
 	SetDeviceID(0x01223215);
-	SetDeviceName(deviceName);
+	SetupHeepDevice(deviceName);
 	theControl1.controlName = controlName1;
 	theControl1.controlID = 0;
 	theControl1.controlDirection = 0;
