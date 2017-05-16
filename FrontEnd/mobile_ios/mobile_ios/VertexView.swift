@@ -19,6 +19,21 @@ class VertexView: UIViewController, UIImagePickerControllerDelegate, UINavigatio
     var selectedImage = UIImage()
     var controlIDs = [String]()
     
+    convenience init(thisPlaceBSSID: String) {
+        self.init(nibName: nil, bundle: nil)
+        let thisPlace = realm.object(ofType: Place.self, forPrimaryKey: thisPlaceBSSID)
+        placeBSSID = thisPlaceBSSID
+        self.devices = (thisPlace?.devices)!
+    }
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.isToolbarHidden = false

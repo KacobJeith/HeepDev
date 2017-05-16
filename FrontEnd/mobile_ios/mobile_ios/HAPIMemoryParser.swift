@@ -143,10 +143,13 @@ class HAPIMemoryParser {
     
     func AddNewDevice(deviceID: Int, ipAddress: String) {
         print("Found a new device... adding now")
+        
+        let currentWifi = currentWifiInfo()
+        
         let newDevice = Device()
         newDevice.deviceID = deviceID
         newDevice.ipAddress = ipAddress
-        newDevice.associatedPlace = currentWifi["bssid"]!
+        newDevice.associatedPlace = currentWifi.bssid
         
         try! realm.write {
             
@@ -154,12 +157,12 @@ class HAPIMemoryParser {
         }
         
         // Add device to the current Place using BSSID of wifi network
-        let devices = realm.objects(Device.self).filter("associatedPlace == %s", currentWifi["bssid"]!)
+        let devices = realm.objects(Device.self).filter("associatedPlace == %s", currentWifi.bssid)
         
         try! realm.write {
             
             realm.create(Place.self,
-                         value: ["bssid": currentWifi["bssid"]!,
+                         value: ["bssid": currentWifi.bssid,
                                  "devices": devices],
                          update: true)
         }
@@ -221,23 +224,7 @@ class HAPIMemoryParser {
             print("We haven't seen this device yet...")
         }
         
-    }
-    
-    func SuggestIconFromName(name: String) -> String {
-        var suggestion = "switch"
-        
-        if ( name.lowercased().range(of: "outlet") != nil){
-            suggestion = "outlet"
-        }
-        
-        if (name.lowercased().range(of: "light") != nil ||
-            name.lowercased().range(of: "bulb") != nil ||
-            name.lowercased().range(of: "LED") != nil) {
-            suggestion = "lightbulb"
-        } 
-        
-        return suggestion
-    }
+    }    
     
     func GetStringFromByteArrayIndices(dump: [UInt8], indexStart: Int, indexFinish: Int) -> String {
         let array = Array(dump[indexStart...indexFinish])

@@ -203,11 +203,12 @@ class DeviceTableViewController: UITableViewController {
     
     func openVertexView() {
         print("Open edit Vertex View")
-        let editVertexView = VertexView() //devices: devices)
-        let configureThis = realm.object(ofType: Place.self, forPrimaryKey: thisBSSID)
-        editVertexView.devices = (configureThis?.devices)!
-        editVertexView.placeBSSID = thisBSSID
-        navigationController?.pushViewController(editVertexView, animated: true)
+        //let editVertexView = VertexView.init(thisPlaceBSSID: thisBSSID)
+        let editRoomView = EditRoomCollection()
+        //let thisPlace = realm.object(ofType: Place.self, forPrimaryKey: thisBSSID)
+        //editVertexView.devices = (configureThis?.devices)!
+        //editVertexView.placeBSSID = thisBSSID
+        navigationController?.pushViewController(editRoomView, animated: true)
         //self.performSegue(withIdentifier: "segue", sender: self)
     }
     

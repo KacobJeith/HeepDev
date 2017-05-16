@@ -10,6 +10,27 @@ import UIKit
 import Foundation
 import SystemConfiguration.CaptiveNetwork
 
+func SuggestIconFromName(name: String) -> String {
+    var suggestion = "switch"
+    
+    if ( name.lowercased().range(of: "outlet") != nil){
+        suggestion = "outlet"
+    }
+    
+    if (name.lowercased().range(of: "light") != nil ||
+        name.lowercased().range(of: "bulb") != nil ||
+        name.lowercased().range(of: "relay") != nil ||
+        name.lowercased().range(of: "dimmer") != nil ||
+        name.lowercased().range(of: "LED") != nil) {
+        suggestion = "lightbulb"
+    }
+    
+    if ( name.lowercased().range(of: "switch") != nil){
+        suggestion = "switch"
+    }
+    
+    return suggestion
+}
 
 func getRandomColor() -> UIColor{
     //Generate between 0 to 1
@@ -20,7 +41,16 @@ func getRandomColor() -> UIColor{
     return UIColor(red:red, green: green, blue: blue, alpha: 1.0)
 }
 
-func currentWifiInfo(){
+func randomNumber<T : SignedInteger>(inRange range: ClosedRange<T> = 1...6) -> T {
+    let length = (range.upperBound - range.lowerBound + 1).toIntMax()
+    let value = arc4random().toIntMax() % length + range.lowerBound.toIntMax()
+    return T(value)
+}
+
+func currentWifiInfo() -> (ssid: String, bssid:  String){
+    var ssid = "none"
+    var bssid = "none"
+    
     if let interface = CNCopySupportedInterfaces() {
         for i in 0..<CFArrayGetCount(interface) {
             let interfaceName: UnsafeRawPointer = CFArrayGetValueAtIndex(interface, i)
@@ -29,18 +59,17 @@ func currentWifiInfo(){
                 // connected wifi
                 print("BSSID: \(String(describing: interfaceData["BSSID"])), SSID: \(String(describing: interfaceData["SSID"])), SSIDDATA: \(String(describing: interfaceData["SSIDDATA"]))")
                 
-                let ssid = interfaceData["SSID"] as! String
-                let bssid = interfaceData["BSSID"] as! String
-                currentWifi["ssid"] = ssid
-                currentWifi["bssid"] = bssid
-                print(currentWifi["ssid"]!)
+                ssid = interfaceData["SSID"] as! String
+                bssid = interfaceData["BSSID"] as! String
+                print(ssid)
                 
             } else {
                 // not connected wifi
             }
         }
+        
     }
     
-    
+    return (ssid: ssid, bssid: bssid)
 }
 

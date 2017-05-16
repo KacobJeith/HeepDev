@@ -12,7 +12,7 @@ import RealmSwift
 
 
 var user = User()
-var currentWifi: [String: String] = ["ssid": "none", "bssid": "none"]
+//var currentWifi: [String: String] = ["ssid": "none", "bssid": "none"]
 let config = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
 
 @UIApplicationMain
@@ -32,7 +32,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window?.rootViewController = navigationController
         self.window?.makeKeyAndVisible()
         
-        currentWifiInfo()
         // Override point for customization after application launch.
         return true
     }

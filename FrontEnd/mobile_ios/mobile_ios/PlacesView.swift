@@ -39,7 +39,8 @@ class PlacesView: UIViewController {
     
 
     func addPlaces() {
-        let thisWifiCheck = realm.objects(Place.self).filter("bssid == %s", currentWifi["bssid"]!)
+        let currentWifi = currentWifiInfo()
+        let thisWifiCheck = realm.objects(Place.self).filter("bssid == %s", currentWifi.bssid)
         if (thisWifiCheck.count == 0) {
             addPlaceToRealm()
         }
@@ -60,9 +61,10 @@ class PlacesView: UIViewController {
     
     func addPlaceToRealm() {
         let newPlace = Place()
-        newPlace.ssid = currentWifi["ssid"]!
-        newPlace.bssid = currentWifi["bssid"]!
-        newPlace.name = currentWifi["ssid"]!
+        let currentWifi = currentWifiInfo()
+        newPlace.ssid = currentWifi.ssid
+        newPlace.bssid = currentWifi.bssid
+        newPlace.name = currentWifi.ssid
         
         try! realm.write {
             

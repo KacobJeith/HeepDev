@@ -43,6 +43,10 @@ class HeepConnections {
         
     }
     
+    func sendVertexToHeepDevice() {
+        
+    }
+    
     func ConnectToHeepDevice(ipAddress: String, printErrors: Bool, message: [UInt8]) {
         
         let client = TCPClient(address: ipAddress, port:5000)
