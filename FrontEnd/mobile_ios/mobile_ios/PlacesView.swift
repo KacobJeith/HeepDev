@@ -74,16 +74,18 @@ class PlacesView: UIViewController {
     
     func drawPlace(thisX: CGFloat, thisY: CGFloat, thisName: String, numDevices: Int, thisBSSID: String) {
         bssids.append(thisBSSID)
-        let diameter = 100 + 10*numDevices
+        let diameter = CGFloat(100 + 10*numDevices)
+        let adjustedX = thisX - diameter/2
+        let adjustedY = thisY - diameter/2
         
-        let button = UIButton(frame: CGRect(x: Int(thisX), y: Int(thisY), width: diameter, height: diameter))
-        button.backgroundColor = numDevices == 0 ? .white : getRandomColor()
+        let button = UIButton(frame: CGRect(x: adjustedX, y: adjustedY, width: diameter, height: diameter))
+        button.backgroundColor = numDevices == 0 ? .lightGray : getRandomColor()
         button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor.black.cgColor
+        button.layer.borderColor = UIColor.white.cgColor
         button.layer.cornerRadius = 0.5 * button.bounds.size.width
         button.clipsToBounds = true
         button.setTitle("  " + thisName + "  ", for: [])
-        button.setTitleColor(UIColor.black, for: UIControlState.normal)
+        button.setTitleColor(UIColor.white, for: UIControlState.normal)
         button.titleLabel?.adjustsFontSizeToFitWidth = true
         button.tag = bssids.count - 1
         self.view.addSubview(button)

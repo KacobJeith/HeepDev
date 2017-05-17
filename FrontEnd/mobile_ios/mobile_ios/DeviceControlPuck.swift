@@ -15,7 +15,7 @@ class DeviceControlPuck: UITableViewCell, UICollectionViewDataSource, UICollecti
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = UICollectionViewScrollDirection.horizontal
         layout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10)
-        layout.itemSize = CGSize(width: 150, height: 100)
+        layout.itemSize = CGSize(width: 80, height: 100)
         
         
         let screenSize = UIScreen.main.bounds
@@ -56,7 +56,7 @@ class DeviceControlPuck: UITableViewCell, UICollectionViewDataSource, UICollecti
         let cell: UICollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath as IndexPath) as UICollectionViewCell
         
         let bigWhiteBox = UIView()
-        bigWhiteBox.frame = CGRect(x: 0, y: 0, width: 150, height: 100)
+        bigWhiteBox.frame = CGRect(x: 0, y: 0, width: 80, height: 100)
         bigWhiteBox.backgroundColor = .white
         
         let iconName = SuggestIconFromName(name: controls[indexPath.row].controlName)
@@ -65,7 +65,7 @@ class DeviceControlPuck: UITableViewCell, UICollectionViewDataSource, UICollecti
         deviceSprite.setBackgroundImage(image, for: [])
         deviceSprite.contentHorizontalAlignment = .center
         deviceSprite.contentMode = .scaleAspectFit
-        deviceSprite.frame = CGRect(x: 50, y: 0, width: 50, height: 70)
+        deviceSprite.frame = CGRect(x: 15, y: 0, width: 50, height: 70)
         deviceSprite.tag = indexPath.row
         
         let title = UILabel(frame: CGRect(x:0, y:70, width: cell.bounds.size.width, height: 20))

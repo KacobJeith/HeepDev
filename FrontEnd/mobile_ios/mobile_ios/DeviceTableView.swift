@@ -49,10 +49,6 @@ class DeviceTableViewController: UITableViewController {
         
         self.toolbarItems = [spacer, search, spacer, edit]
         
-        DispatchQueue.main.async() {
-            
-            self.searchForHeepDevices()
-        }
         
     }
     
@@ -216,7 +212,7 @@ class DeviceTableViewController: UITableViewController {
     func searchForHeepDevices() {
         print("Searching...")
         HeepConnections().SearchForHeepDeviecs()
-        let dispatchTime = DispatchTime.now() + .seconds(0)
+        let dispatchTime = DispatchTime.now() + .seconds(2)
         DispatchQueue.main.asyncAfter(deadline: dispatchTime) {
             
             self.CheckForNewDevicesAndDisplay()
