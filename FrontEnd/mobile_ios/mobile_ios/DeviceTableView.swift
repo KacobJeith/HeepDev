@@ -204,7 +204,7 @@ class DeviceTableViewController: UITableViewController {
     func openVertexView() {
         print("Open edit Vertex View")
         //let editVertexView = VertexView.init(thisPlaceBSSID: thisBSSID)
-        let editRoomView = EditRoomCollection()
+        let editRoomView = EditRoomView(bssid: thisBSSID)
         //let thisPlace = realm.object(ofType: Place.self, forPrimaryKey: thisBSSID)
         //editVertexView.devices = (configureThis?.devices)!
         //editVertexView.placeBSSID = thisBSSID
@@ -216,7 +216,7 @@ class DeviceTableViewController: UITableViewController {
     func searchForHeepDevices() {
         print("Searching...")
         HeepConnections().SearchForHeepDeviecs()
-        let dispatchTime = DispatchTime.now() + .seconds(2)
+        let dispatchTime = DispatchTime.now() + .seconds(0)
         DispatchQueue.main.asyncAfter(deadline: dispatchTime) {
             
             self.CheckForNewDevicesAndDisplay()
