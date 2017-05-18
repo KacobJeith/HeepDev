@@ -16,7 +16,6 @@ class EditRoomView: UITableViewController {
     var roomName: String = ""
     var thisBSSID: String = ""
     var thisGroup: Group
-    var selectedImage: UIImage = UIImage()
     
     init(bssid: String, groupID: Int) {
         devices = Array(realm.objects(Device.self).filter("associatedPlace = %s", bssid))
@@ -48,7 +47,6 @@ class EditRoomView: UITableViewController {
         
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         self.toolbarItems = [spacer, reload, spacer]
-        self.getImage()
     }
     
     
@@ -59,29 +57,26 @@ class EditRoomView: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if (indexPath.row == 0) {
-            let cell = UnassignedControlCollection()
-            cell.thisBSSID = thisBSSID
-            cell.controls = Array(realm.objects(DeviceControl.self).filter("place = %@ AND groupsAssigned = 0", thisBSSID))
-            cell.parentTable = tableView
-            cell.myIndexPath = indexPath
-            cell.thisGroup = thisGroup
+            let cell = UnassignedControlCollection(bssid: thisBSSID,
+                                                   parentTable: tableView,
+                                                   thisGroup: thisGroup,
+                                                   indexPath: indexPath)
             return cell
-        } else if (indexPath.row == 1) {
-            let cell = VertexEditCell()
-            cell.thisBSSID = thisBSSID
-            let updatedGroup = realm.object(ofType: Group.self, forPrimaryKey: thisGroup.id)
-            cell.controls = Array((updatedGroup?.controls)!)
-            cell.editImage = selectedImage
-            return cell
-        } else if (indexPath.row == 2) {
-            let cell = GroupControlEdit()
-            cell.thisBSSID = thisBSSID
-            cell.parentTable = tableView
-            cell.myIndexPath = indexPath
-            let updatedGroup = realm.object(ofType: Group.self, forPrimaryKey: thisGroup.id)
-            cell.controls = Array((updatedGroup?.controls)!)
             
-            cell.thisGroup = thisGroup
+        } else if (indexPath.row == 1) {
+            let cell = VertexEditCell(bssid: thisBSSID,
+                                      parentTable: tableView,
+                                      thisGroup: thisGroup,
+                                      indexPath: indexPath)
+            
+            return cell
+            
+        } else if (indexPath.row == 2) {
+            let cell = GroupControlEdit(bssid: thisBSSID,
+                                        parentTable: tableView,
+                                        thisGroup: thisGroup,
+                                        indexPath: indexPath)
+            
             return cell
         }
         
@@ -114,33 +109,24 @@ extension EditRoomView: UIImagePickerControllerDelegate, UINavigationControllerD
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        selectedImage = info[UIImagePickerControllerOriginalImage] as! UIImage
-        saveImageDocumentDirectory()
+        let selectedImage = info[UIImagePickerControllerOriginalImage] as! UIImage
+        saveImageToGroup(image: selectedImage)
         self.reloadView()
         self.dismiss(animated: true, completion: nil)
     }
     
-    func saveImageDocumentDirectory(){
+    
+    func saveImageToGroup(image: UIImage) {
         print("Saving Image")
-        let fileManager = FileManager.default
-        let paths = (NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString).appendingPathComponent(thisBSSID + ".jpg")
+        let imageData = UIImageJPEGRepresentation(image, 0.5)
         
-        let imageData = UIImageJPEGRepresentation(selectedImage, 0.5)
-        fileManager.createFile(atPath: paths as String, contents: imageData, attributes: nil)
-    }
-    
-    func getImage(){
-        let fileManager = FileManager.default
-        let imagePath = (NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString).appendingPathComponent(thisBSSID + ".jpg")
-        if fileManager.fileExists(atPath: imagePath){
-            selectedImage = UIImage(contentsOfFile: imagePath)!
-            
-            
-        }else{
-            print("No Image")
+        let realm = try! Realm()
+        
+        try! realm.write {
+            thisGroup.imageData = imageData! as NSData
         }
+            
     }
-    
     
 }
 

@@ -3,14 +3,50 @@ import RealmSwift
 
 class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionViewDelegate {
     
+    let realm = try! Realm()
     var collectionView: UICollectionView!
     var devices: [Device] = []
-    var controls: [DeviceControl] = []
+    var controls = List<DeviceControl>()
     var controlDeviceReference: [Device] = []
     var thisBSSID: String = ""
+    var parentTable = UITableView()
     var editImage: UIImage = UIImage()
     var controlIDs = [String]()
+    var myIndexPath = IndexPath()
+    var thisGroup = Group()
+    var notificationToken: NotificationToken? = nil
     
+    convenience init(bssid: String,
+                     parentTable: UITableView,
+                     thisGroup: Group,
+                     indexPath: IndexPath) {
+        self.init()
+        
+        self.thisBSSID = bssid
+        self.parentTable = parentTable
+        self.controls = thisGroup.controls
+        self.myIndexPath = indexPath
+        self.thisGroup = realm.object(ofType: Group.self, forPrimaryKey: thisGroup.id)!
+        
+        notificationToken = thisGroup.addNotificationBlock { changes in
+            /* results available asynchronously here */
+            switch changes {
+            case .change:
+                print("Active Change")
+                parentTable.reloadRows(at: [self.myIndexPath], with: UITableViewRowAnimation.none)
+                break
+            case .error(let error):
+                fatalError("\(error)")
+                break
+            default:
+                print("Eff Swift lol")
+            }
+        }
+    }
+    
+    deinit{
+        notificationToken?.stop()
+    }
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -72,7 +108,7 @@ extension VertexEditCell {
     
     func setContextImage(cell: UICollectionViewCell, indexPath: IndexPath) -> UIImageView {
         let imageView = UIImageView(frame: cell.bounds)
-        imageView.image = editImage
+        imageView.image = UIImage(data: thisGroup.imageData as Data)
         imageView.contentMode = .scaleAspectFit
         imageView.frame = cell.bounds
         imageView.tag = indexPath.row

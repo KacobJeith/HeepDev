@@ -3,12 +3,11 @@ import RealmSwift
 
 class GroupControlEdit: UITableViewCell, UICollectionViewDataSource, UICollectionViewDelegate {
     
-    //let realm = try! Realm(configuration: config)
+    let realm = try! Realm(configuration: config)
     var collectionView: UICollectionView!
-    var controls: [DeviceControl] = []
+    var controls = List<DeviceControl>()
     var thisBSSID = ""
     var thisGroup = Group()
-    var controlIDs = [String]()
     var parentTable = UITableView()
     var myIndexPath = IndexPath()
     var notificationToken: NotificationToken? = nil
@@ -17,15 +16,30 @@ class GroupControlEdit: UITableViewCell, UICollectionViewDataSource, UICollectio
         notificationToken?.stop()
     }
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    convenience init(bssid: String,
+                     parentTable: UITableView,
+                     thisGroup: Group,
+                     indexPath: IndexPath) {
+        self.init()
         
-        let realm = try! Realm(configuration: config)
-        notificationToken = realm.addNotificationBlock { [unowned self] note, realm in
-            print("Detected Changes")/*
-             self.parentTable.reloadRows(at: [self.myIndexPath], with: UITableViewRowAnimation.none)*/
-            self.parentTable.reloadData()
-            
+        self.thisBSSID = bssid
+        self.parentTable = parentTable
+        self.controls = thisGroup.controls
+        self.myIndexPath = indexPath
+        
+        notificationToken = controls.addNotificationBlock { [weak self] (changes: RealmCollectionChange) in
+            /* results available asynchronously here */
+            switch changes {
+            case .update:
+                print("Active Change")
+                parentTable.reloadRows(at: [self!.myIndexPath], with: UITableViewRowAnimation.none)
+                break
+            case .error(let error):
+                fatalError("\(error)")
+                break
+            default:
+                print("Eff Swift lol")
+            }
         }
         
         
@@ -44,6 +58,12 @@ class GroupControlEdit: UITableViewCell, UICollectionViewDataSource, UICollectio
         collectionView.backgroundColor = .white
         
         self.addSubview(collectionView)
+        
+    }
+    
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -87,15 +107,7 @@ class GroupControlEdit: UITableViewCell, UICollectionViewDataSource, UICollectio
 extension GroupControlEdit {
     
     func selectControl(sender: UIButton) {
-        let realm = try! Realm(configuration: config)
-        print(controls[sender.tag].uniqueID)
-        print(realm.object(ofType: DeviceControl.self, forPrimaryKey: controls[sender.tag].uniqueID)!)
-        let addToGroup = realm.object(ofType: Group.self, forPrimaryKey: thisGroup.id)
-        
-        try! realm.write {
-            controls[sender.tag].groupsAssigned += 1
-            addToGroup?.controls.append(controls[sender.tag])
-        }
+        print("Selected \(controls[sender.tag].controlName)")
         
     }
     

@@ -77,19 +77,37 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
         
+        
+        
         let title = UILabel()
-        title.text = thisPlace.groups[indexPath.row].name
-        title.frame = cell.bounds
-        title.backgroundColor = getRandomColor()
+        title.text = thisPlace.groups[indexPath.row].name.uppercased()
+        title.numberOfLines = 0
+        title.sizeToFit()
         title.textColor = .white
+        title.font = UIFont.boldSystemFont(ofSize: 30.0)
         title.textAlignment = .center
         title.tag = indexPath.row
-        title.adjustsFontSizeToFitWidth = true
+        //title.adjustsFontSizeToFitWidth = true
         title.isUserInteractionEnabled = true
+        title.frame = cell.bounds
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(openGroupView))
         tap.numberOfTapsRequired = 1
         title.addGestureRecognizer(tap)
+        
+        let thisImageData = thisPlace.groups[indexPath.row].imageData
+        if (thisImageData == NSData()) {
+            print("empty image")
+            title.backgroundColor = getRandomColor()
+        } else {
+            title.backgroundColor = .clear
+            let image = UIImage(data: thisImageData as Data)
+            let imageView = UIImageView(image: image)
+            imageView.contentMode = .scaleAspectFit
+            imageView.frame = cell.bounds
+            cell.addSubview(imageView)
+        }
+        
         
         cell.addSubview(title)
 

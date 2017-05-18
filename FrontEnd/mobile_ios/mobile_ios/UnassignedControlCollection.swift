@@ -3,29 +3,42 @@ import RealmSwift
 
 class UnassignedControlCollection: UITableViewCell, UICollectionViewDataSource, UICollectionViewDelegate {
     
-    //let realm = try! Realm(configuration: config)
+    let realm = try! Realm(configuration: config)
     var collectionView: UICollectionView!
     var controls: [DeviceControl] = []
+    var parentTable = UITableView()
     var thisBSSID = ""
     var thisGroup = Group()
-    var controlIDs = [String]()
-    var parentTable = UITableView()
     var myIndexPath = IndexPath()
     var notificationToken: NotificationToken? = nil
     
-    deinit{
-        notificationToken?.stop()
-    }
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    convenience init(bssid: String,
+                     parentTable: UITableView,
+                     thisGroup: Group,
+                     indexPath: IndexPath) {
+        self.init()
         
-        let realm = try! Realm(configuration: config)
-        notificationToken = realm.addNotificationBlock { [unowned self] note, realm in
-            print("Detected Changes")/*
-            self.parentTable.reloadRows(at: [self.myIndexPath], with: UITableViewRowAnimation.none)*/
-            self.parentTable.reloadData()
+        
+        self.thisBSSID = bssid
+        self.myIndexPath = indexPath
+        let results = realm.objects(DeviceControl.self).filter("place = %@ AND groupsAssigned = 0", bssid)
+        self.controls = Array(results)
+        self.myIndexPath = indexPath
+        
+        notificationToken = results.addNotificationBlock {  [weak self] (changes: RealmCollectionChange) in
             
+            switch changes {
+            case .update:
+                print("Unassigned Change")
+                parentTable.reloadRows(at: [self!.myIndexPath], with: UITableViewRowAnimation.none)
+                break
+            case .error(let error):
+                fatalError("\(error)")
+                break
+            default:
+                print("Eff Swift lol")
+            }
         }
         
         
@@ -37,13 +50,23 @@ class UnassignedControlCollection: UITableViewCell, UICollectionViewDataSource, 
         let screenSize = UIScreen.main.bounds
         let screenWidth = screenSize.width
         collectionView = UICollectionView(frame: CGRect(x: 0,y: 0,width: screenWidth,height: 100) , collectionViewLayout: layout)
-
+        
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "CollectionViewCell")
         collectionView.backgroundColor = .white
         
         self.addSubview(collectionView)
+        
+    }
+    
+    deinit{
+        notificationToken?.stop()
+    }
+    
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+
     }
     
     required init(coder aDecoder: NSCoder) {
