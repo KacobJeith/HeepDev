@@ -38,7 +38,7 @@ class UnassignedControlCollection: UITableViewCell, UICollectionViewDataSource, 
                 fatalError("\(error)")
                 break
             default:
-                print("Eff Swift lol")
+                print("Unassigned Default")
             }
         }
         

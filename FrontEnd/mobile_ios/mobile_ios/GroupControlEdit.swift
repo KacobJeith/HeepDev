@@ -26,12 +26,13 @@ class GroupControlEdit: UITableViewCell, UICollectionViewDataSource, UICollectio
         self.parentTable = parentTable
         self.controls = thisGroup.controls
         self.myIndexPath = indexPath
+        self.thisGroup = realm.object(ofType: Group.self, forPrimaryKey: thisGroup.id)!
         
         notificationToken = controls.addNotificationBlock { [weak self] (changes: RealmCollectionChange) in
             /* results available asynchronously here */
             switch changes {
             case .update:
-                print("Active Change")
+                print("Active Controls Change")
                 //parentTable.reloadRows(at: [self!.myIndexPath], with: UITableViewRowAnimation.none)
                 parentTable.reloadData()
                 break
@@ -39,7 +40,7 @@ class GroupControlEdit: UITableViewCell, UICollectionViewDataSource, UICollectio
                 fatalError("\(error)")
                 break
             default:
-                print("Eff Swift lol")
+                print("Active Controls Default")
             }
         }
         
@@ -89,12 +90,20 @@ class GroupControlEdit: UITableViewCell, UICollectionViewDataSource, UICollectio
         let basicPuck = createControlPuck(thisControl: controls[indexPath.row],
                                           cellSize: cell.bounds)
         
+        cell.layer.borderWidth = 1
+        cell.layer.borderColor =  UIColor.clear.cgColor
+        
         let bigButton = UIButton()
         bigButton.frame = cell.bounds
         bigButton.backgroundColor = UIColor.clear
         bigButton.tag = indexPath.row
         
         bigButton.addTarget(self,action: #selector(selectControl),for: [UIControlEvents.primaryActionTriggered])
+        
+        if (thisGroup.selectedControl == controls[indexPath.row].uniqueID) {
+            
+            cell.layer.borderColor =  UIColor.blue.cgColor
+        }
         
         
         cell.addSubview(basicPuck)
@@ -109,6 +118,14 @@ extension GroupControlEdit {
     
     func selectControl(sender: UIButton) {
         print("Selected \(controls[sender.tag].controlName)")
+        
+        let realm = try! Realm(configuration: config)
+        
+        try! realm.write {
+            thisGroup.selectedControl = controls[sender.tag].uniqueID
+        }
+        
+        print(thisGroup.selectedControl)
         
     }
     

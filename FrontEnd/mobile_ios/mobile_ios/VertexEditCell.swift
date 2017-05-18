@@ -40,7 +40,7 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
                 fatalError("\(error)")
                 break
             default:
-                print("Eff Swift lol")
+                print("Active Default")
             }
         }
     }
@@ -94,10 +94,12 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         
         let imageView = setContextImage(cell: cell, indexPath: indexPath)
         cell.addSubview(imageView)
-        
+        cell.isUserInteractionEnabled = true
         for eachControl in controls {
             
             let controlSprite = addControlSprite(cell: cell, thisControl: eachControl)
+            controlSprite.layer.borderWidth = 1
+            controlSprite.layer.borderColor = eachControl.uniqueID == thisGroup.selectedControl ? UIColor.blue.cgColor : UIColor.white.cgColor
             cell.addSubview(controlSprite)
         }
         
@@ -124,14 +126,14 @@ extension VertexEditCell {
         
         let iconName = SuggestIconFromName(name: thisControl.controlName)
         let image = UIImage(named: iconName) as UIImage?
-        let controlSprite = UIButton(frame: CGRect(x: thisControl.editX - 30,
-                                                   y: thisControl.editY - 30,
-                                                   width: 60,
-                                                   height: 60))
+        let controlSprite = UIButton()
         
         controlSprite.setBackgroundImage(image, for: [])
         controlSprite.contentMode = .scaleAspectFit
-        controlSprite.layer.cornerRadius = 0.5 * controlSprite.bounds.size.width
+        controlSprite.frame = CGRect(x: thisControl.editX - 30,
+                                     y: thisControl.editY - 30,
+                                     width: 60,
+                                     height: 60)
         controlSprite.clipsToBounds = true
         controlSprite.tag = controlIDs.count - 1
         
@@ -141,26 +143,50 @@ extension VertexEditCell {
                                      UIControlEvents.touchDragOutside,
                                      UIControlEvents.touchDragExit])
         
+        
         return controlSprite
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let saveControl = realm.object(ofType: DeviceControl.self,
+                                       forPrimaryKey: thisGroup.selectedControl)!
+        
+        print("began")
+        //if let center = event.allTouches?.first?.location(in: self.collectionView) {
+            //control.center = center
+            //saveDragPosition(center: center,thisControl: controls[(event.allTouches?.first?.view!.tag)!])
+        //}
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let saveControl = realm.object(ofType: DeviceControl.self,
+                                       forPrimaryKey: thisGroup.selectedControl)!
+        print("Ended")
+        saveDragPosition(center: (touches.first?.location(in: self.collectionView))!,
+                         thisControl: saveControl)
+    }
+    
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let saveControl = realm.object(ofType: DeviceControl.self,
+                                       forPrimaryKey: thisGroup.selectedControl)!
+        print("Cancelled")
+        saveDragPosition(center: (touches.first?.location(in: self.collectionView))!,
+                         thisControl: saveControl)
     }
     
     func drag(control: UIControl, event: UIEvent) {
         
         if let center = event.allTouches?.first?.location(in: self.collectionView) {
             control.center = center
-            //saveDragPosition(center: center,
-            //                 uniqueID: controlIDs[(event.allTouches?.first?.view!.tag)!])
+            //saveDragPosition(center: center,thisControl: controls[(event.allTouches?.first?.view!.tag)!])
         }
     }
     
-    func saveDragPosition(center: CGPoint, uniqueID: String) {
+    func saveDragPosition(center: CGPoint, thisControl: DeviceControl) {
         let realm = try! Realm(configuration: config)
         try! realm.write {
-            realm.create(DeviceControl.self,
-                         value: ["uniqueID": uniqueID,
-                                 "editX": center.x,
-                                 "editY": center.y],
-                         update: true)
+            thisControl.editX = center.x
+            thisControl.editY = center.y
         }
     }
     
