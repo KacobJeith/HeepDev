@@ -39,6 +39,7 @@ class PlacesView: UIViewController {
     
 
     func addPlaces() {
+        
         let currentWifi = currentWifiInfo()
         let thisWifiCheck = realm.objects(Place.self).filter("bssid == %s", currentWifi.bssid)
         if (thisWifiCheck.count == 0) {
@@ -60,8 +61,15 @@ class PlacesView: UIViewController {
     
     
     func addPlaceToRealm() {
-        let newPlace = Place()
         let currentWifi = currentWifiInfo()
+        let allGroups = realm.objects(Group.self)
+        
+        let firstGroupInPlace = Group()
+        firstGroupInPlace.place = currentWifi.bssid
+        firstGroupInPlace.name = "My First Room"
+        firstGroupInPlace.id = allGroups.count
+        
+        let newPlace = Place()
         newPlace.ssid = currentWifi.ssid
         newPlace.bssid = currentWifi.bssid
         newPlace.name = currentWifi.ssid
@@ -69,9 +77,11 @@ class PlacesView: UIViewController {
         try! realm.write {
             
             realm.add(newPlace)
+            realm.add(firstGroupInPlace)
+            newPlace.groups.append(firstGroupInPlace)
         }
     }
-    
+ 
     func drawPlace(thisX: CGFloat, thisY: CGFloat, thisName: String, numDevices: Int, thisBSSID: String) {
         bssids.append(thisBSSID)
         let diameter = CGFloat(100 + 10*numDevices)
@@ -104,7 +114,9 @@ class PlacesView: UIViewController {
     
     func enterPlace(sender: UIButton) {
         let enterPlace = realm.object(ofType: Place.self, forPrimaryKey: bssids[sender.tag])
-        navigationController?.pushViewController(DeviceTableViewController(place: enterPlace!), animated: true)
+        let groupView = GroupCollectionView()
+        groupView.thisPlace = enterPlace!
+        navigationController?.pushViewController(groupView, animated: true)
         
         
     }
@@ -127,6 +139,7 @@ class PlacesView: UIViewController {
     
     func deleteAll() {
         print("Deleting all Devices")
+        let realm = try! Realm(configuration: config)
         try! realm.write {
          
             realm.deleteAll()

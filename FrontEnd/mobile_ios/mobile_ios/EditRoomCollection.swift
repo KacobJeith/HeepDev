@@ -15,13 +15,17 @@ class EditRoomView: UITableViewController {
     let realm = try! Realm(configuration: config)
     var roomName: String = ""
     var thisBSSID: String = ""
+    var thisGroup: Group
     var selectedImage: UIImage = UIImage()
     
     init(bssid: String) {
         devices = Array(realm.objects(Device.self).filter("associatedPlace = %s", bssid))
         let thisPlace = realm.object(ofType: Place.self, forPrimaryKey: bssid)
-        thisBSSID = bssid
+        //print(thisPlace)
+        thisBSSID = (thisPlace?.bssid)!
         roomName = (thisPlace?.name)!
+        thisGroup = realm.object(ofType: Group.self, forPrimaryKey: 0)!
+        print(thisGroup)
         super.init(style: UITableViewStyle.plain)
     }
     
@@ -44,8 +48,7 @@ class EditRoomView: UITableViewController {
         
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         self.toolbarItems = [spacer, reload, spacer]
-        
-        getImage()
+        self.getImage()
     }
     
     
@@ -54,10 +57,17 @@ class EditRoomView: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         if (indexPath.row == 0) {
             let cell = DeviceControlPuck()
-            cell.devices = devices
+            cell.thisBSSID = thisBSSID
+            cell.controls = Array(realm.objects(DeviceControl.self).filter("place = %@", thisBSSID))
+            cell.thisGroup = thisGroup
+            return cell
+        } else if (indexPath.row == 1) {
+            let cell = VertexEditCell()
+            cell.thisBSSID = thisBSSID
+            cell.controls = Array(thisGroup.controls)
+            cell.editImage = selectedImage
             return cell
         }
         
@@ -69,7 +79,9 @@ class EditRoomView: UITableViewController {
         var customHeight = CGFloat(100)
         
         if (indexPath.row == 1) {
-            customHeight = self.view.frame.height - 200
+            
+            let bounds = self.navigationController!.navigationBar.bounds
+            customHeight = self.view.frame.height - 200 - bounds.height
         }
         
         return customHeight
@@ -90,11 +102,12 @@ extension EditRoomView: UIImagePickerControllerDelegate, UINavigationControllerD
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         selectedImage = info[UIImagePickerControllerOriginalImage] as! UIImage
         saveImageDocumentDirectory()
-        
+        self.reloadView()
         self.dismiss(animated: true, completion: nil)
     }
     
     func saveImageDocumentDirectory(){
+        print("Saving Image")
         let fileManager = FileManager.default
         let paths = (NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString).appendingPathComponent(thisBSSID + ".jpg")
         
@@ -106,15 +119,14 @@ extension EditRoomView: UIImagePickerControllerDelegate, UINavigationControllerD
         let fileManager = FileManager.default
         let imagePath = (NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString).appendingPathComponent(thisBSSID + ".jpg")
         if fileManager.fileExists(atPath: imagePath){
-            let imageView = UIImageView(frame: self.view.bounds)
-            imageView.image = UIImage(contentsOfFile: imagePath)
-            imageView.contentMode = .scaleAspectFit
-            self.view.addSubview(imageView)
+            selectedImage = UIImage(contentsOfFile: imagePath)!
+            
             
         }else{
             print("No Image")
         }
     }
+    
     
 }
 

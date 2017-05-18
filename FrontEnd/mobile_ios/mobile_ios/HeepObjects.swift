@@ -45,9 +45,22 @@ class Place: Object {
     dynamic var y: CGFloat = 100
     dynamic var radius: Int = 100
     let devices = List<Device>()
+    let groups = List<Group>()
     
     override static func primaryKey() -> String? {
         return "bssid"
+    }
+}
+
+class Group: Object {
+    let controls = List<DeviceControl>()
+    dynamic var name: String = "Unassigned"
+    dynamic var place: String = "none"
+    dynamic var id: Int = 0
+    dynamic var imageData: NSData = NSData()
+    
+    override static func primaryKey() -> String? {
+        return "id"
     }
 }
 
@@ -79,8 +92,10 @@ class DeviceControl: Object {
     dynamic var valueHigh: Int = 100
     dynamic var valueCurrent: Int = 0
     dynamic var controlName: String = "Default"
-    dynamic var vertexX: CGFloat = 100
-    dynamic var vertexY: CGFloat = 100
+    dynamic var editX: CGFloat = 100
+    dynamic var editY: CGFloat = 100
+    dynamic var place: String = "none"
+    dynamic var groupUnassigned: Int = 1
     
     override static func primaryKey() -> String? {
         return "uniqueID"

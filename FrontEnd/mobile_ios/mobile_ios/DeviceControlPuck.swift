@@ -3,10 +3,11 @@ import RealmSwift
 
 class DeviceControlPuck: UITableViewCell, UICollectionViewDataSource, UICollectionViewDelegate {
     
+    let realm = try! Realm(configuration: config)
     var collectionView: UICollectionView!
-    var devices: [Device] = []
     var controls: [DeviceControl] = []
-    var controlDeviceReference: [Device] = []
+    var thisBSSID = ""
+    var thisGroup = Group()
     var controlIDs = [String]()
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
@@ -16,7 +17,6 @@ class DeviceControlPuck: UITableViewCell, UICollectionViewDataSource, UICollecti
         layout.scrollDirection = UICollectionViewScrollDirection.horizontal
         layout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10)
         layout.itemSize = CGSize(width: 80, height: 100)
-        
         
         let screenSize = UIScreen.main.bounds
         let screenWidth = screenSize.width
@@ -36,17 +36,13 @@ class DeviceControlPuck: UITableViewCell, UICollectionViewDataSource, UICollecti
     
     // MARK: UICollectionViewDataSource
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+        
+
         return 1
     }
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        for eachDevice in devices {
-            for eachControl in eachDevice.controlList {
-                controls.append(eachControl)
-                controlDeviceReference.append(eachDevice)
-            }
-        }
         
         return controls.count
     }
@@ -66,7 +62,7 @@ class DeviceControlPuck: UITableViewCell, UICollectionViewDataSource, UICollecti
         deviceSprite.contentHorizontalAlignment = .center
         deviceSprite.contentMode = .scaleAspectFit
         deviceSprite.frame = CGRect(x: 15, y: 0, width: 50, height: 70)
-        deviceSprite.tag = indexPath.row
+        
         
         let title = UILabel(frame: CGRect(x:0, y:70, width: cell.bounds.size.width, height: 20))
         title.adjustsFontSizeToFitWidth = true
@@ -74,9 +70,18 @@ class DeviceControlPuck: UITableViewCell, UICollectionViewDataSource, UICollecti
         title.textAlignment = .center
         title.adjustsFontSizeToFitWidth = true
         
+        let bigButton = UIButton()
+        bigButton.frame = CGRect(x: 0, y: 0, width: 80, height: 100)
+        bigButton.backgroundColor = UIColor.clear
+        bigButton.tag = indexPath.row
+        
+        bigButton.addTarget(self,action: #selector(selectControl),for: [UIControlEvents.primaryActionTriggered])
+        
+        
         cell.addSubview(bigWhiteBox)
         cell.addSubview(deviceSprite)
         cell.addSubview(title)
+        cell.addSubview(bigButton)
         
         return cell
     }
@@ -85,22 +90,29 @@ class DeviceControlPuck: UITableViewCell, UICollectionViewDataSource, UICollecti
 
 extension DeviceControlPuck {
     
-    func drawDevice(control: DeviceControl, iconName: String, tag: Int) -> UIButton {
-        //controlIDs.append(control.uniqueID)
-        let image = UIImage(named: iconName) as UIImage?
-        let deviceSprite = UIButton()
-        deviceSprite.setBackgroundImage(image, for: [])
-        deviceSprite.contentMode = .scaleAspectFit
-        deviceSprite.contentHorizontalAlignment = .center
-        //deviceSprite.frame = CGRect(x: 0, y: 0, width: cell.bounds.size.width, height: 60)
-        deviceSprite.tag = tag
-        /*
-        deviceSprite.addTarget(self,
-                               action: #selector(drag),
-                               for: [UIControlEvents.touchDragInside,
-                                     UIControlEvents.touchDragOutside,
-                                     UIControlEvents.touchDragExit])*/
+    func selectControl(sender: UIButton) {
+        print(controls[sender.tag])
+        let pushControl = controls[sender.tag]
+        let realm = try! Realm(configuration: config)
+        // existing group controls
+        let groupToAddTo = realm.object(ofType: Group.self, forPrimaryKey: thisGroup.id)
+        //let appendedControls = groupToAddTo?.controls.append(pushControl)
         
-        return deviceSprite
+        
+        try! realm.write {
+            realm.create(DeviceControl.self,
+                         value: ["groupUnassigned", 0,
+                                 "uniqueID", controls[sender.tag].uniqueID],
+                         update: true)
+            
+            //var sendControls = (groupToAddTo?.controls)!
+            
+            if (groupToAddTo?.controls) != nil {
+                print("Appending new control")
+                (groupToAddTo?.controls)!.append(pushControl)
+            }
+        }
+        
     }
+    
 }

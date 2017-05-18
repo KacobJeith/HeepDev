@@ -10,6 +10,8 @@
 		1005B8D91ECA0ABB00414F8E /* VertexView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1005B8D81ECA0ABB00414F8E /* VertexView.swift */; };
 		1005B8DC1ECB47CD00414F8E /* EditRoomCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1005B8DA1ECB47CD00414F8E /* EditRoomCollection.swift */; };
 		1005B8E31ECB7C5B00414F8E /* DeviceControlPuck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1005B8E21ECB7C5B00414F8E /* DeviceControlPuck.swift */; };
+		1005B8E51ECC8C9900414F8E /* VertexEditCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1005B8E41ECC8C9900414F8E /* VertexEditCell.swift */; };
+		1005B8E71ECDB99100414F8E /* GroupCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1005B8E61ECDB99100414F8E /* GroupCollectionView.swift */; };
 		100821FC1EC49BDF0079E6F5 /* PlacesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100821FB1EC49BDF0079E6F5 /* PlacesView.swift */; };
 		101D2F631EA968230074D807 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101D2F621EA968230074D807 /* AppDelegate.swift */; };
 		101D2F6B1EA968230074D807 /* mobile_ios.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 101D2F691EA968230074D807 /* mobile_ios.xcdatamodeld */; };
@@ -53,6 +55,8 @@
 		1005B8D81ECA0ABB00414F8E /* VertexView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VertexView.swift; sourceTree = "<group>"; };
 		1005B8DA1ECB47CD00414F8E /* EditRoomCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditRoomCollection.swift; sourceTree = "<group>"; };
 		1005B8E21ECB7C5B00414F8E /* DeviceControlPuck.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceControlPuck.swift; sourceTree = "<group>"; };
+		1005B8E41ECC8C9900414F8E /* VertexEditCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VertexEditCell.swift; sourceTree = "<group>"; };
+		1005B8E61ECDB99100414F8E /* GroupCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupCollectionView.swift; sourceTree = "<group>"; };
 		100821FB1EC49BDF0079E6F5 /* PlacesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacesView.swift; sourceTree = "<group>"; };
 		101D2F5F1EA968230074D807 /* mobile_ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = mobile_ios.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		101D2F621EA968230074D807 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -139,8 +143,10 @@
 				100821FB1EC49BDF0079E6F5 /* PlacesView.swift */,
 				EEA944261EAA9EF40022588B /* DeviceTableView.swift */,
 				103FE2841EC373830033D021 /* DeviceSummaryView.swift */,
+				1005B8E61ECDB99100414F8E /* GroupCollectionView.swift */,
 				1005B8DA1ECB47CD00414F8E /* EditRoomCollection.swift */,
 				1005B8E21ECB7C5B00414F8E /* DeviceControlPuck.swift */,
+				1005B8E41ECC8C9900414F8E /* VertexEditCell.swift */,
 				1005B8D81ECA0ABB00414F8E /* VertexView.swift */,
 				103FE2881EC3AF5F0033D021 /* HeepObjects.swift */,
 				EEA944221EAA93950022588B /* HeepConnections.swift */,
@@ -476,6 +482,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1005B8E51ECC8C9900414F8E /* VertexEditCell.swift in Sources */,
 				1005B8E31ECB7C5B00414F8E /* DeviceControlPuck.swift in Sources */,
 				EEA944271EAA9EF40022588B /* DeviceTableView.swift in Sources */,
 				EEA944211EAA7D880022588B /* HAPIMemoryParser.swift in Sources */,
@@ -485,6 +492,7 @@
 				1005B8DC1ECB47CD00414F8E /* EditRoomCollection.swift in Sources */,
 				103FE2851EC373830033D021 /* DeviceSummaryView.swift in Sources */,
 				EEA944231EAA93950022588B /* HeepConnections.swift in Sources */,
+				1005B8E71ECDB99100414F8E /* GroupCollectionView.swift in Sources */,
 				101D2F631EA968230074D807 /* AppDelegate.swift in Sources */,
 				1005B8D91ECA0ABB00414F8E /* VertexView.swift in Sources */,
 				103FE2891EC3AF5F0033D021 /* HeepObjects.swift in Sources */,

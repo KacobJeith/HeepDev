@@ -102,8 +102,8 @@ class VertexView: UIViewController, UIImagePickerControllerDelegate, UINavigatio
     func drawDevice(control: DeviceControl, iconName: String) {
         controlIDs.append(control.uniqueID)
         let image = UIImage(named: iconName) as UIImage?
-        let deviceSprite = UIButton(frame: CGRect(x: control.vertexX,
-                                                  y: control.vertexY,
+        let deviceSprite = UIButton(frame: CGRect(x: control.editX,
+                                                  y: control.editY,
                                                   width: 60,
                                                   height: 60))
         deviceSprite.setBackgroundImage(image, for: [])
@@ -175,8 +175,8 @@ class VertexView: UIViewController, UIImagePickerControllerDelegate, UINavigatio
         try! realm.write {
             realm.create(DeviceControl.self,
                          value: ["uniqueID": uniqueID,
-                                 "vertexX": center.x,
-                                 "vertexY": center.y],
+                                 "editX": center.x,
+                                 "editY": center.y],
                          update: true)
         }
     }
