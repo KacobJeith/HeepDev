@@ -31,12 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                
         self.window?.rootViewController = navigationController
         self.window?.makeKeyAndVisible()
-        let realm = try! Realm(configuration: config)
-        try! realm.write {
-            
-            realm.deleteAll()
-            
-        }
+        
         // Override point for customization after application launch.
         return true
     }
