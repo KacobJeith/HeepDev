@@ -26,6 +26,7 @@ const unsigned char FragmentOpCode = 0x12;
 
 const unsigned char AddMOPOpCode = 0x13;
 const unsigned char DynamicMemorySizeOpCode = 0x14;
+const unsigned char DeleteMOPOpCode = 0x15;
 
 unsigned char deviceMemory [MAX_MEMORY];
 unsigned int curFilledMemory = 0; // Indicate the curent filled memory. 
