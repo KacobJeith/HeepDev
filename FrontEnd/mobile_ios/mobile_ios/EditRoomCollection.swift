@@ -125,6 +125,7 @@ extension EditRoomView: UIImagePickerControllerDelegate, UINavigationControllerD
         try! realm.write {
             thisGroup.imageData = imageData! as NSData
         }
+        print(thisGroup.name)
             
     }
     

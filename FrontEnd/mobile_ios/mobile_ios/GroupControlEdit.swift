@@ -32,7 +32,8 @@ class GroupControlEdit: UITableViewCell, UICollectionViewDataSource, UICollectio
             switch changes {
             case .update:
                 print("Active Change")
-                parentTable.reloadRows(at: [self!.myIndexPath], with: UITableViewRowAnimation.none)
+                //parentTable.reloadRows(at: [self!.myIndexPath], with: UITableViewRowAnimation.none)
+                parentTable.reloadData()
                 break
             case .error(let error):
                 fatalError("\(error)")

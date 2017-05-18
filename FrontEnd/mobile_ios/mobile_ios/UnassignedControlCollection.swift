@@ -22,8 +22,9 @@ class UnassignedControlCollection: UITableViewCell, UICollectionViewDataSource, 
         
         self.thisBSSID = bssid
         self.myIndexPath = indexPath
-        let results = realm.objects(DeviceControl.self).filter("place = %@ AND groupsAssigned = 0", bssid)
+        let results = realm.objects(DeviceControl.self).filter("place = %@ AND groupsAssigned = 0", thisBSSID)
         self.controls = Array(results)
+        self.thisGroup = thisGroup
         self.myIndexPath = indexPath
         
         notificationToken = results.addNotificationBlock {  [weak self] (changes: RealmCollectionChange) in
@@ -31,7 +32,7 @@ class UnassignedControlCollection: UITableViewCell, UICollectionViewDataSource, 
             switch changes {
             case .update:
                 print("Unassigned Change")
-                parentTable.reloadRows(at: [self!.myIndexPath], with: UITableViewRowAnimation.none)
+                parentTable.reloadData()
                 break
             case .error(let error):
                 fatalError("\(error)")
@@ -41,6 +42,16 @@ class UnassignedControlCollection: UITableViewCell, UICollectionViewDataSource, 
             }
         }
         
+        
+        
+    }
+    
+    deinit{
+        notificationToken?.stop()
+    }
+    
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = UICollectionViewScrollDirection.horizontal
@@ -57,16 +68,6 @@ class UnassignedControlCollection: UITableViewCell, UICollectionViewDataSource, 
         collectionView.backgroundColor = .white
         
         self.addSubview(collectionView)
-        
-    }
-    
-    deinit{
-        notificationToken?.stop()
-    }
-    
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -88,6 +89,10 @@ class UnassignedControlCollection: UITableViewCell, UICollectionViewDataSource, 
         
         let cell: UICollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath as IndexPath) as UICollectionViewCell
         
+        let bigWhiteBackground = UIView()
+        bigWhiteBackground.backgroundColor = .white
+        bigWhiteBackground.frame = cell.bounds
+        
         let basicPuck = createControlPuck(thisControl: controls[indexPath.row], cellSize: cell.bounds)
         
         let bigButton = UIButton()
@@ -97,7 +102,7 @@ class UnassignedControlCollection: UITableViewCell, UICollectionViewDataSource, 
         
         bigButton.addTarget(self,action: #selector(selectControl),for: [UIControlEvents.primaryActionTriggered])
         
-        
+        cell.addSubview(bigWhiteBackground)
         cell.addSubview(basicPuck)
         cell.addSubview(bigButton)
         
@@ -112,6 +117,8 @@ extension UnassignedControlCollection {
         let realm = try! Realm(configuration: config)
         print(controls[sender.tag].uniqueID)
         print(realm.object(ofType: DeviceControl.self, forPrimaryKey: controls[sender.tag].uniqueID)!)
+        print("Adding to group!")
+        print(self.thisGroup.name)
         let addToGroup = realm.object(ofType: Group.self, forPrimaryKey: thisGroup.id)
         
         try! realm.write {

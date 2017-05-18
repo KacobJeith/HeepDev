@@ -77,7 +77,7 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
         
-        
+        cell.backgroundColor = getRandomColor()
         
         let title = UILabel()
         title.text = thisPlace.groups[indexPath.row].name.uppercased()

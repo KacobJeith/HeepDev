@@ -10,7 +10,6 @@ import UIKit
 import CoreData
 import RealmSwift
 
-
 var user = User()
 //var currentWifi: [String: String] = ["ssid": "none", "bssid": "none"]
 let config = Realm.Configuration(deleteRealmIfMigrationNeeded: true)

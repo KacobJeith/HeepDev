@@ -33,7 +33,8 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
             switch changes {
             case .change:
                 print("Active Change")
-                parentTable.reloadRows(at: [self.myIndexPath], with: UITableViewRowAnimation.none)
+                //parentTable.reloadRows(at: [self.myIndexPath], with: UITableViewRowAnimation.none)
+                parentTable.reloadData()
                 break
             case .error(let error):
                 fatalError("\(error)")
@@ -52,13 +53,16 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsetsMake(20, 20, 20, 20)
-        layout.itemSize = CGSize(width: 400, height: 400)
+        //layout.sectionInset = UIEdgeInsetsMake(20, 20, 20, 20)
         
         
         let screenSize = UIScreen.main.bounds
         let screenWidth = screenSize.width
-        collectionView = UICollectionView(frame: CGRect(x: 0,y: 0,width: screenWidth + 40,height: 440) , collectionViewLayout: layout)
+        layout.itemSize = CGSize(width: screenWidth, height: 440)
+        collectionView = UICollectionView(frame: CGRect(x: 0,y: 0,
+                                                        width: screenWidth,
+                                                        height: 440) ,
+                                          collectionViewLayout: layout)
         
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -110,7 +114,6 @@ extension VertexEditCell {
         let imageView = UIImageView(frame: cell.bounds)
         imageView.image = UIImage(data: thisGroup.imageData as Data)
         imageView.contentMode = .scaleAspectFit
-        imageView.frame = cell.bounds
         imageView.tag = indexPath.row
 
         return imageView
