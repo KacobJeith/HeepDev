@@ -73,6 +73,7 @@ unsigned long AddCharToBuffer(unsigned char* buffer, unsigned long startPoint, u
 void AddNewCharToMemory(unsigned char newMem)
 {
 	curFilledMemory = AddCharToBuffer(deviceMemory, curFilledMemory, newMem);
+	memoryChanged = 1;
 }
 
 void GetDeviceIDOctets(unsigned long deviceID, unsigned char &octet4, unsigned char &octet3, unsigned char &octet2, unsigned char &octet1)
