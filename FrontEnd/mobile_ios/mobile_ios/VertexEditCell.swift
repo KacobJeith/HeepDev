@@ -52,13 +52,15 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         
         let cell: UICollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath as IndexPath) as UICollectionViewCell
         
-        let imageView = UIImageView(frame: cell.bounds)
-        imageView.image = editImage
-        imageView.contentMode = .scaleAspectFit
-        imageView.frame = cell.bounds
-        imageView.tag = indexPath.row
-        
+        let imageView = setContextImage(cell: cell, indexPath: indexPath)
         cell.addSubview(imageView)
+        
+        for eachControl in controls {
+            
+            let controlSprite = addControlSprite(cell: cell, thisControl: eachControl)
+            cell.addSubview(controlSprite)
+        }
+        
         
         return cell
     }
@@ -66,16 +68,51 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
 }
 
 extension VertexEditCell {
-    /*
+     
+    
+    func setContextImage(cell: UICollectionViewCell, indexPath: IndexPath) -> UIImageView {
+        let imageView = UIImageView(frame: cell.bounds)
+        imageView.image = editImage
+        imageView.contentMode = .scaleAspectFit
+        imageView.frame = cell.bounds
+        imageView.tag = indexPath.row
+
+        return imageView
+    }
+    
+    func addControlSprite(cell: UICollectionViewCell, thisControl: DeviceControl) -> UIButton {
+        controlIDs.append(thisControl.uniqueID)
+        
+        let iconName = SuggestIconFromName(name: thisControl.controlName)
+        let image = UIImage(named: iconName) as UIImage?
+        let controlSprite = UIButton(frame: CGRect(x: thisControl.editX - 30,
+                                                   y: thisControl.editY - 30,
+                                                   width: 60,
+                                                   height: 60))
+        
+        controlSprite.setBackgroundImage(image, for: [])
+        controlSprite.contentMode = .scaleAspectFit
+        controlSprite.layer.cornerRadius = 0.5 * controlSprite.bounds.size.width
+        controlSprite.clipsToBounds = true
+        controlSprite.tag = controlIDs.count - 1
+        
+        controlSprite.addTarget(self,
+                               action: #selector(drag),
+                               for: [UIControlEvents.touchDragInside,
+                                     UIControlEvents.touchDragOutside,
+                                     UIControlEvents.touchDragExit])
+        
+        return controlSprite
+    }
+    
     func drag(control: UIControl, event: UIEvent) {
         
-        
-        if let center = event.allTouches?.first?.location(in: self.view) {
+        if let center = event.allTouches?.first?.location(in: self.collectionView) {
             control.center = center
-            saveDragPosition(center: center,
-                             uniqueID: controlIDs[(event.allTouches?.first?.view!.tag)!])
+            //saveDragPosition(center: center,
+            //                 uniqueID: controlIDs[(event.allTouches?.first?.view!.tag)!])
         }
-    }*/
+    }
     
     func saveDragPosition(center: CGPoint, uniqueID: String) {
         let realm = try! Realm(configuration: config)

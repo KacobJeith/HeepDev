@@ -59,22 +59,25 @@ class EditRoomView: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if (indexPath.row == 0) {
-            let cell = DeviceControlPuck()
+            let cell = UnassignedControlCollection()
             cell.thisBSSID = thisBSSID
             cell.controls = Array(realm.objects(DeviceControl.self).filter("place = %@ AND groupsAssigned = 0", thisBSSID))
             cell.parentTable = tableView
+            cell.myIndexPath = indexPath
             cell.thisGroup = thisGroup
             return cell
         } else if (indexPath.row == 1) {
             let cell = VertexEditCell()
             cell.thisBSSID = thisBSSID
-            cell.controls = Array(thisGroup.controls)
+            let updatedGroup = realm.object(ofType: Group.self, forPrimaryKey: thisGroup.id)
+            cell.controls = Array((updatedGroup?.controls)!)
             cell.editImage = selectedImage
             return cell
         } else if (indexPath.row == 2) {
-            let cell = DeviceControlPuck()
+            let cell = GroupControlEdit()
             cell.thisBSSID = thisBSSID
             cell.parentTable = tableView
+            cell.myIndexPath = indexPath
             let updatedGroup = realm.object(ofType: Group.self, forPrimaryKey: thisGroup.id)
             cell.controls = Array((updatedGroup?.controls)!)
             

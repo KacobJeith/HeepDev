@@ -1,7 +1,7 @@
 import UIKit
 import RealmSwift
 
-class DeviceControlPuck: UITableViewCell, UICollectionViewDataSource, UICollectionViewDelegate {
+class GroupControlEdit: UITableViewCell, UICollectionViewDataSource, UICollectionViewDelegate {
     
     //let realm = try! Realm(configuration: config)
     var collectionView: UICollectionView!
@@ -10,6 +10,7 @@ class DeviceControlPuck: UITableViewCell, UICollectionViewDataSource, UICollecti
     var thisGroup = Group()
     var controlIDs = [String]()
     var parentTable = UITableView()
+    var myIndexPath = IndexPath()
     var notificationToken: NotificationToken? = nil
     
     deinit{
@@ -21,11 +22,10 @@ class DeviceControlPuck: UITableViewCell, UICollectionViewDataSource, UICollecti
         
         let realm = try! Realm(configuration: config)
         notificationToken = realm.addNotificationBlock { [unowned self] note, realm in
-            //self.thisPlace = realm.object(ofType: Place.self, forPrimaryKey: self.thisPlace.bssid)!
-            print("Detected Changes")
-            //DispatchQueue.main.async{
+            print("Detected Changes")/*
+             self.parentTable.reloadRows(at: [self.myIndexPath], with: UITableViewRowAnimation.none)*/
             self.parentTable.reloadData()
-            //}
+            
         }
         
         
@@ -37,7 +37,7 @@ class DeviceControlPuck: UITableViewCell, UICollectionViewDataSource, UICollecti
         let screenSize = UIScreen.main.bounds
         let screenWidth = screenSize.width
         collectionView = UICollectionView(frame: CGRect(x: 0,y: 0,width: screenWidth,height: 100) , collectionViewLayout: layout)
-
+        
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "CollectionViewCell")
@@ -52,7 +52,7 @@ class DeviceControlPuck: UITableViewCell, UICollectionViewDataSource, UICollecti
     
     // MARK: UICollectionViewDataSource
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-
+        
         return 1
     }
     
@@ -65,36 +65,18 @@ class DeviceControlPuck: UITableViewCell, UICollectionViewDataSource, UICollecti
         
         let cell: UICollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath as IndexPath) as UICollectionViewCell
         
-        let bigWhiteBox = UIView()
-        bigWhiteBox.frame = CGRect(x: 0, y: 0, width: 80, height: 100)
-        bigWhiteBox.backgroundColor = .white
-        
-        let iconName = SuggestIconFromName(name: controls[indexPath.row].controlName)
-        let image = UIImage(named: iconName) as UIImage?
-        let deviceSprite = UIButton()
-        deviceSprite.setBackgroundImage(image, for: [])
-        deviceSprite.contentHorizontalAlignment = .center
-        deviceSprite.contentMode = .scaleAspectFit
-        deviceSprite.frame = CGRect(x: 15, y: 0, width: 50, height: 70)
-        
-        
-        let title = UILabel(frame: CGRect(x:0, y:70, width: cell.bounds.size.width, height: 20))
-        title.adjustsFontSizeToFitWidth = true
-        title.text = controls[indexPath.row].controlName
-        title.textAlignment = .center
-        title.adjustsFontSizeToFitWidth = true
+        let basicPuck = createControlPuck(thisControl: controls[indexPath.row],
+                                          cellSize: cell.bounds)
         
         let bigButton = UIButton()
-        bigButton.frame = CGRect(x: 0, y: 0, width: 80, height: 100)
+        bigButton.frame = cell.bounds
         bigButton.backgroundColor = UIColor.clear
         bigButton.tag = indexPath.row
         
         bigButton.addTarget(self,action: #selector(selectControl),for: [UIControlEvents.primaryActionTriggered])
         
         
-        cell.addSubview(bigWhiteBox)
-        cell.addSubview(deviceSprite)
-        cell.addSubview(title)
+        cell.addSubview(basicPuck)
         cell.addSubview(bigButton)
         
         return cell
@@ -102,7 +84,7 @@ class DeviceControlPuck: UITableViewCell, UICollectionViewDataSource, UICollecti
     
 }
 
-extension DeviceControlPuck {
+extension GroupControlEdit {
     
     func selectControl(sender: UIButton) {
         let realm = try! Realm(configuration: config)

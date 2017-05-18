@@ -27,7 +27,10 @@ class PlacesView: UIViewController {
         toolbarContent.target = self
         toolbarContent.action = #selector(deleteAll)
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        self.toolbarItems = [toolbarContent, spacer]
+        let reload = UIBarButtonItem(barButtonSystemItem: .refresh,
+                                     target: self,
+                                     action: #selector(reloadView))
+        self.toolbarItems = [toolbarContent, spacer, reload, spacer]
 
         addPlaces()
     }
@@ -151,4 +154,13 @@ class PlacesView: UIViewController {
     }
     
 
+}
+
+extension PlacesView {
+    
+    func reloadView() {
+        
+        self.loadView()
+        self.viewDidLoad()
+    }
 }

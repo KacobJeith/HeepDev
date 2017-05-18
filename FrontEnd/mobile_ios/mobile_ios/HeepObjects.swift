@@ -58,6 +58,7 @@ class Group: Object {
     dynamic var place: String = "none"
     dynamic var id: Int = 0
     dynamic var imageData: NSData = NSData()
+    dynamic var selectedControl: String = "none"
     
     override static func primaryKey() -> String? {
         return "id"
@@ -96,9 +97,25 @@ class DeviceControl: Object {
     dynamic var editY: CGFloat = 100
     dynamic var place: String = "none"
     dynamic var groupsAssigned: Int = 0
+    let vertexList = List<Vertex>()
     
     override static func primaryKey() -> String? {
         return "uniqueID"
+    }
+    
+}
+
+class Vertex: Object {
+    
+    dynamic var tx: Int = 0
+    dynamic var txControl: Int = 0
+    dynamic var rx: Int = 0
+    dynamic var rxControl: Int = 0
+    dynamic var rxIPAddress: String = "0.0.0.0"
+    dynamic var vertexID: Int = 0
+    
+    override static func primaryKey() -> String? {
+        return "vertexID"
     }
     
 }
