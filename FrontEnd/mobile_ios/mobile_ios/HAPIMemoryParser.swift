@@ -179,7 +179,7 @@ class HAPIMemoryParser {
         
         newControl.deviceID = deviceID
         newControl.controlID = Int(dump[index])
-        newControl.uniqueID = String(deviceID) + String(dump[index])
+        newControl.uniqueID = String(deviceID) + "." + String(dump[index])
         newControl.controlType = Int(dump[index + 1])
         newControl.controlDirection = Int(dump[index + 2])
         newControl.valueLow = Int(dump[index + 3])
@@ -187,34 +187,12 @@ class HAPIMemoryParser {
         newControl.valueCurrent = Int(dump[index + 5])
         newControl.controlName = controlName
         newControl.place = currentWifi.bssid
-        newControl.groupUnassigned = 1
+        newControl.groupsAssigned = 0
         
-        /*
-        let predicate = NSPredicate(format: "place = %@ AND forUnassignedControls = true", currentWifi.bssid)
-        let uniqueString = String(deviceID) + String(dump[index])
-        let controlType = Int(dump[index + 1])
-        let controlDirection = Int(dump[index + 2])
-        let valueLow = Int(dump[index + 3])
-        let valueHigh = Int(dump[index + 4])
-        let valueCurrent = Int(dump[index + 5])
-        */
         try! realm.write {
             
             realm.add(newControl)
-            /*
-            realm.create(DeviceControl.self,
-                         value: ["deviceID", deviceID,
-                                 "controlID", Int(dump[index]),
-                                 "uniqueID", uniqueString,
-                                 "controlType", controlType,
-                                 "controlDirection", controlDirection,
-                                 "valueLow", valueLow,
-                                 "valueHigh",valueHigh,
-                                 "ValueCurrent",valueCurrent,
-                                 "controlName",controlName,
-                                 "place", currentWifi.bssid,
-                                 "groupUnassigned", true],
-                         update: true)*/
+            
         }
         
         // Resolve Addition to device array (masterState)

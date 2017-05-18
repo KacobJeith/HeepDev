@@ -3,20 +3,36 @@ import RealmSwift
 
 class DeviceControlPuck: UITableViewCell, UICollectionViewDataSource, UICollectionViewDelegate {
     
-    let realm = try! Realm(configuration: config)
+    //let realm = try! Realm(configuration: config)
     var collectionView: UICollectionView!
     var controls: [DeviceControl] = []
     var thisBSSID = ""
     var thisGroup = Group()
     var controlIDs = [String]()
+    var parentTable = UITableView()
+    var notificationToken: NotificationToken? = nil
+    
+    deinit{
+        notificationToken?.stop()
+    }
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
+        let realm = try! Realm(configuration: config)
+        notificationToken = realm.addNotificationBlock { [unowned self] note, realm in
+            //self.thisPlace = realm.object(ofType: Place.self, forPrimaryKey: self.thisPlace.bssid)!
+            print("Detected Changes")
+            //DispatchQueue.main.async{
+            self.parentTable.reloadData()
+            //}
+        }
+        
+        
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = UICollectionViewScrollDirection.horizontal
         layout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10)
-        layout.itemSize = CGSize(width: 80, height: 100)
+        layout.itemSize = CGSize(width: 80, height: 80)
         
         let screenSize = UIScreen.main.bounds
         let screenWidth = screenSize.width
@@ -36,14 +52,12 @@ class DeviceControlPuck: UITableViewCell, UICollectionViewDataSource, UICollecti
     
     // MARK: UICollectionViewDataSource
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        
 
         return 1
     }
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
         return controls.count
     }
     
@@ -91,26 +105,14 @@ class DeviceControlPuck: UITableViewCell, UICollectionViewDataSource, UICollecti
 extension DeviceControlPuck {
     
     func selectControl(sender: UIButton) {
-        print(controls[sender.tag])
-        let pushControl = controls[sender.tag]
         let realm = try! Realm(configuration: config)
-        // existing group controls
-        let groupToAddTo = realm.object(ofType: Group.self, forPrimaryKey: thisGroup.id)
-        //let appendedControls = groupToAddTo?.controls.append(pushControl)
-        
+        print(controls[sender.tag].uniqueID)
+        print(realm.object(ofType: DeviceControl.self, forPrimaryKey: controls[sender.tag].uniqueID)!)
+        let addToGroup = realm.object(ofType: Group.self, forPrimaryKey: thisGroup.id)
         
         try! realm.write {
-            realm.create(DeviceControl.self,
-                         value: ["groupUnassigned", 0,
-                                 "uniqueID", controls[sender.tag].uniqueID],
-                         update: true)
-            
-            //var sendControls = (groupToAddTo?.controls)!
-            
-            if (groupToAddTo?.controls) != nil {
-                print("Appending new control")
-                (groupToAddTo?.controls)!.append(pushControl)
-            }
+            controls[sender.tag].groupsAssigned += 1
+            addToGroup?.controls.append(controls[sender.tag])
         }
         
     }

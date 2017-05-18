@@ -22,7 +22,7 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         
         let screenSize = UIScreen.main.bounds
         let screenWidth = screenSize.width
-        collectionView = UICollectionView(frame: CGRect(x: 0,y: 0,width: screenWidth,height: 440) , collectionViewLayout: layout)
+        collectionView = UICollectionView(frame: CGRect(x: 0,y: 0,width: screenWidth + 40,height: 440) , collectionViewLayout: layout)
         
         collectionView.delegate = self
         collectionView.dataSource = self

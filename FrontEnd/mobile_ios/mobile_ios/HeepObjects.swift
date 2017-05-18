@@ -83,7 +83,7 @@ class Device: Object {
 
 class DeviceControl: Object {
     
-    dynamic var deviceID: Int = 0//LinkingObjects(fromType: Device.self, property: "deviceID")
+    dynamic var deviceID: Int = 0
     dynamic var controlID: Int = 0
     dynamic var uniqueID: String = ""
     dynamic var controlType: Int = 0
@@ -95,7 +95,7 @@ class DeviceControl: Object {
     dynamic var editX: CGFloat = 100
     dynamic var editY: CGFloat = 100
     dynamic var place: String = "none"
-    dynamic var groupUnassigned: Int = 1
+    dynamic var groupsAssigned: Int = 0
     
     override static func primaryKey() -> String? {
         return "uniqueID"

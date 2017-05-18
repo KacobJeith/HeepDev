@@ -57,10 +57,12 @@ class EditRoomView: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        print(indexPath.row)
         if (indexPath.row == 0) {
             let cell = DeviceControlPuck()
             cell.thisBSSID = thisBSSID
-            cell.controls = Array(realm.objects(DeviceControl.self).filter("place = %@", thisBSSID))
+            cell.controls = Array(realm.objects(DeviceControl.self).filter("place = %@ AND groupsAssigned = 0", thisBSSID))
+            cell.parentTable = tableView
             cell.thisGroup = thisGroup
             return cell
         } else if (indexPath.row == 1) {
@@ -68,6 +70,16 @@ class EditRoomView: UITableViewController {
             cell.thisBSSID = thisBSSID
             cell.controls = Array(thisGroup.controls)
             cell.editImage = selectedImage
+            return cell
+        } else if (indexPath.row == 2) {
+            let cell = DeviceControlPuck()
+            cell.thisBSSID = thisBSSID
+            cell.parentTable = tableView
+            let updatedGroup = realm.object(ofType: Group.self, forPrimaryKey: thisGroup.id)
+            print(Array((updatedGroup?.controls)!))
+            cell.controls = Array((updatedGroup?.controls)!)
+            
+            cell.thisGroup = thisGroup
             return cell
         }
         

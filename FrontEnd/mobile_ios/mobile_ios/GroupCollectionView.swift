@@ -126,6 +126,7 @@ extension GroupCollectionView {
         newGroup.name = "New Room " + String(updatedThisPlace.groups.count)
         newGroup.id = allGroups.count
         
+        
         try! realm.write {
             
             realm.add(newGroup)
