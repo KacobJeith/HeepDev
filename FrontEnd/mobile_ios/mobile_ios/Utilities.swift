@@ -34,9 +34,9 @@ func SuggestIconFromName(name: String) -> String {
 
 func getRandomColor() -> UIColor{
     //Generate between 0 to 1
-    let red:CGFloat = CGFloat(drand48())
-    let green:CGFloat = CGFloat(drand48())
-    let blue:CGFloat = CGFloat(drand48())
+    let red:CGFloat = CGFloat(arc4random_uniform(256))/255
+    let green:CGFloat = CGFloat(arc4random_uniform(256))/255
+    let blue:CGFloat = CGFloat(arc4random_uniform(256))/255
     
     return UIColor(red:red, green: green, blue: blue, alpha: 1.0)
 }

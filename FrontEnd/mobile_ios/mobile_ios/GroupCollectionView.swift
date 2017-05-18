@@ -25,7 +25,7 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
         self.collectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
         self.collectionView?.dataSource = self
         self.collectionView?.delegate = self
-        self.collectionView?.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
+        self.collectionView?.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         self.collectionView?.backgroundColor = UIColor.white
         self.view.addSubview(collectionView!)
         
@@ -46,7 +46,7 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
-        cell.backgroundColor = UIColor.lightGray
+        cell.backgroundColor = getRandomColor()
         let title = UILabel()
         title.text = thisPlace.groups[indexPath.row].name
         title.frame = cell.bounds
