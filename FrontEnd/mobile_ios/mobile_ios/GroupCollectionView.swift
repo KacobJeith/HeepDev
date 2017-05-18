@@ -107,7 +107,7 @@ extension GroupCollectionView {
         print("Open edit Group View")
         print(thisPlace.groups[(recognizer.view?.tag)!].name)
         
-        let editRoomView = EditRoomView(bssid: thisPlace.bssid)
+        let editRoomView = EditRoomView(bssid: thisPlace.bssid, groupID: (recognizer.view?.tag)!)
         navigationController?.pushViewController(editRoomView, animated: true)
     }
     

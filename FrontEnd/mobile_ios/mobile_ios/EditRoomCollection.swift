@@ -18,13 +18,13 @@ class EditRoomView: UITableViewController {
     var thisGroup: Group
     var selectedImage: UIImage = UIImage()
     
-    init(bssid: String) {
+    init(bssid: String, groupID: Int) {
         devices = Array(realm.objects(Device.self).filter("associatedPlace = %s", bssid))
         let thisPlace = realm.object(ofType: Place.self, forPrimaryKey: bssid)
         //print(thisPlace)
         thisBSSID = (thisPlace?.bssid)!
         roomName = (thisPlace?.name)!
-        thisGroup = realm.object(ofType: Group.self, forPrimaryKey: 0)!
+        thisGroup = realm.object(ofType: Group.self, forPrimaryKey: groupID)!
         print(thisGroup)
         super.init(style: UITableViewStyle.plain)
     }
@@ -57,7 +57,7 @@ class EditRoomView: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print(indexPath.row)
+        
         if (indexPath.row == 0) {
             let cell = DeviceControlPuck()
             cell.thisBSSID = thisBSSID
@@ -76,7 +76,6 @@ class EditRoomView: UITableViewController {
             cell.thisBSSID = thisBSSID
             cell.parentTable = tableView
             let updatedGroup = realm.object(ofType: Group.self, forPrimaryKey: thisGroup.id)
-            print(Array((updatedGroup?.controls)!))
             cell.controls = Array((updatedGroup?.controls)!)
             
             cell.thisGroup = thisGroup
