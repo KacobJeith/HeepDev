@@ -92,6 +92,10 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         
         let cell: UICollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath as IndexPath) as UICollectionViewCell
         
+        
+        
+        
+        
         let imageView = setContextImage(cell: cell, indexPath: indexPath)
         cell.addSubview(imageView)
         cell.isUserInteractionEnabled = true
@@ -100,11 +104,34 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
             let controlSprite = addControlSprite(cell: cell, thisControl: eachControl)
             controlSprite.layer.borderWidth = 1
             controlSprite.layer.borderColor = eachControl.uniqueID == thisGroup.selectedControl ? UIColor.blue.cgColor : UIColor.white.cgColor
+            
+            let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
+            
+            self.adjustAnchorPoint(gestureRecognizer: gestureRecognizer)
+            
+            if gestureRecognizer.state == .began || gestureRecognizer.state == .changed {
+                // Get the distance moved since the last call to this method.
+                let translation = gestureRecognizer.translation(in: piece?.superview)
+                
+                // Set the translation point to zero so that the translation distance
+                // is only the change since the last call to this method.
+                piece?.center = CGPoint(x: ((piece?.center.x)! + translation.x),
+                                        y: ((piece?.center.y)! + translation.y))
+                gestureRecognizer.setTranslation(CGPoint.zero, in: piece?.superview)
+            }
+            
+            
+            
             cell.addSubview(controlSprite)
         }
         
         
         return cell
+    }
+    
+    func handlePan(gestureRecognizer: UIPanGestureRecognizer) {
+        
+        print("PANNING")
     }
     
 }
@@ -188,6 +215,10 @@ extension VertexEditCell {
             thisControl.editX = center.x
             thisControl.editY = center.y
         }
+    }
+    
+    func test() {
+        print("DRAGGING")
     }
     
 }

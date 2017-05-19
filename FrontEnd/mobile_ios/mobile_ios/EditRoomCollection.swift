@@ -36,7 +36,7 @@ class EditRoomView: UITableViewController {
         super.viewDidLoad()
         self.title = roomName
         self.navigationController?.isToolbarHidden = false
-        
+        tableView.alwaysBounceVertical = false
         let reload = UIBarButtonItem(barButtonSystemItem: .refresh,
                                      target: self,
                                      action: #selector(reloadView))
