@@ -30,7 +30,7 @@ class HeepConnections {
         }
     }
     
-    public func sendValueToHeepDevice(uniqueID: String) {
+    public func sendValueToHeepDevice(uniqueID: Int) {
         let activeControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: uniqueID)
         let thisDevice = realm.object(ofType: Device.self, forPrimaryKey: activeControl?.deviceID)
         let thisDeviceIP = thisDevice?.ipAddress

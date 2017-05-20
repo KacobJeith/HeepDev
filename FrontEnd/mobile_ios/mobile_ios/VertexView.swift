@@ -17,7 +17,7 @@ class VertexView: UIViewController, UIImagePickerControllerDelegate, UINavigatio
     var devices = List<Device>()
     var placeBSSID = String()
     var selectedImage = UIImage()
-    var controlIDs = [String]()
+    var controlIDs = [Int]()
     
     convenience init(thisPlaceBSSID: String) {
         self.init(nibName: nil, bundle: nil)
@@ -170,7 +170,7 @@ class VertexView: UIViewController, UIImagePickerControllerDelegate, UINavigatio
         }
     }
     
-    func saveDragPosition(center: CGPoint, uniqueID: String) {
+    func saveDragPosition(center: CGPoint, uniqueID: Int) {
         let realm = try! Realm(configuration: config)
         try! realm.write {
             realm.create(DeviceControl.self,

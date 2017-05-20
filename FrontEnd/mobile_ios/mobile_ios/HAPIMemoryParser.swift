@@ -176,10 +176,10 @@ class HAPIMemoryParser {
         
         let newControl = DeviceControl()
         let currentWifi = currentWifiInfo()
-        
+        let uniqueID = generateUniqueControlID(deviceID: deviceID, controlID: dump[index])
         newControl.deviceID = deviceID
         newControl.controlID = Int(dump[index])
-        newControl.uniqueID = String(deviceID) + "." + String(dump[index])
+        newControl.uniqueID = uniqueID
         newControl.controlType = Int(dump[index + 1])
         newControl.controlDirection = Int(dump[index + 2])
         newControl.valueLow = Int(dump[index + 3])
@@ -207,6 +207,11 @@ class HAPIMemoryParser {
         }
         
     }
+    
+    func generateUniqueControlID(deviceID: Int, controlID: UInt8) -> Int {
+        return (deviceID << 8 ) + Int(controlID)
+    }
+    
     
     func ParseDeviceName(dump: [UInt8], index: Int, packetSize: Int, deviceID: Int) {
         let deviceName = GetStringFromByteArrayIndices(dump: dump, indexStart: index, indexFinish: index + packetSize - 1)

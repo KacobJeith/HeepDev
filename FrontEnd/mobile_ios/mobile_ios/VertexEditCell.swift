@@ -11,9 +11,10 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     var thisBSSID: String = ""
     var parentTable = UITableView()
     var editImage: UIImage = UIImage()
-    var controlIDs = [String]()
+    var controlIDs = [Int]()
     var myIndexPath = IndexPath()
     var thisGroup = Group()
+    var controlTags = [Int]()
     var notificationToken: NotificationToken? = nil
     
     convenience init(bssid: String,
@@ -104,35 +105,77 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
             let controlSprite = addControlSprite(cell: cell, thisControl: eachControl)
             controlSprite.layer.borderWidth = 1
             controlSprite.layer.borderColor = eachControl.uniqueID == thisGroup.selectedControl ? UIColor.blue.cgColor : UIColor.white.cgColor
-            
-            let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
-            
-            self.adjustAnchorPoint(gestureRecognizer: gestureRecognizer)
-            
-            if gestureRecognizer.state == .began || gestureRecognizer.state == .changed {
-                // Get the distance moved since the last call to this method.
-                let translation = gestureRecognizer.translation(in: piece?.superview)
-                
-                // Set the translation point to zero so that the translation distance
-                // is only the change since the last call to this method.
-                piece?.center = CGPoint(x: ((piece?.center.x)! + translation.x),
-                                        y: ((piece?.center.y)! + translation.y))
-                gestureRecognizer.setTranslation(CGPoint.zero, in: piece?.superview)
-            }
-            
-            
+            controlSprite.tag = eachControl.uniqueID
             
             cell.addSubview(controlSprite)
         }
         
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
+        let pinch = UIPinchGestureRecognizer(target: self, action: #selector(handlePinch))
+        let rotate = UIRotationGestureRecognizer(target: self, action: #selector(handleRotation))
+        pinch.delegate = self
+        rotate.delegate = self
+        pan.delegate = self
+        cell.addGestureRecognizer(pan)
+        cell.addGestureRecognizer(pinch)
+        cell.addGestureRecognizer(rotate)
         
         return cell
     }
     
+    override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
+                                    shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        
+        return true
+        if (gestureRecognizer is UIPinchGestureRecognizer && otherGestureRecognizer is UIRotationGestureRecognizer) {
+            return true
+        } else if (gestureRecognizer is UIPinchGestureRecognizer && otherGestureRecognizer is UIRotationGestureRecognizer){
+            return true
+        } else if (gestureRecognizer is UIPanGestureRecognizer && otherGestureRecognizer is UIPinchGestureRecognizer){
+            return true
+        } else {
+            return false
+        }
+    }
+    
     func handlePan(gestureRecognizer: UIPanGestureRecognizer) {
         
-        print("PANNING")
+        let translation = gestureRecognizer.translation(in: self)
+        let myView = self.viewWithTag(thisGroup.selectedControl)!
+        myView.center = CGPoint(x: myView.center.x + translation.x,
+                                y: myView.center.y + translation.y)
+        
+        gestureRecognizer.setTranslation(CGPoint(), in: self)
+        
+        if gestureRecognizer.state == UIGestureRecognizerState.ended {
+            saveSelectedSprite()
+        }
     }
+    
+    
+    func handlePinch(gestureRecognizer: UIPinchGestureRecognizer) {
+        let myView = self.viewWithTag(thisGroup.selectedControl)!
+        let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl)!
+        myView.transform = CGAffineTransform(scaleX: thisControl.scale * gestureRecognizer.scale,
+                                             y: thisControl.scale * gestureRecognizer.scale).rotated(by: CGFloat(atan2f(Float(CGFloat(myView.transform.b)),Float(myView.transform.a))))
+
+        if gestureRecognizer.state == UIGestureRecognizerState.ended {
+            saveSelectedSprite()
+        }
+    }
+    
+    func handleRotation(gestureRecognizer: UIRotationGestureRecognizer) {
+        let myView = self.viewWithTag(thisGroup.selectedControl)!
+        
+        myView.transform = myView.transform.rotated(by: gestureRecognizer.rotation * 3)
+        
+        if gestureRecognizer.state == UIGestureRecognizerState.ended {
+            saveSelectedSprite()
+        }
+        
+        gestureRecognizer.rotation = 0
+    }
+    
     
 }
 
@@ -161,64 +204,32 @@ extension VertexEditCell {
                                      y: thisControl.editY - 30,
                                      width: 60,
                                      height: 60)
+        
+        controlSprite.transform = CGAffineTransform(scaleX: thisControl.scale, y: thisControl.scale).rotated(by: thisControl.rotation)
         controlSprite.clipsToBounds = true
         controlSprite.tag = controlIDs.count - 1
-        
-        controlSprite.addTarget(self,
-                               action: #selector(drag),
-                               for: [UIControlEvents.touchDragInside,
-                                     UIControlEvents.touchDragOutside,
-                                     UIControlEvents.touchDragExit])
         
         
         return controlSprite
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let saveControl = realm.object(ofType: DeviceControl.self,
-                                       forPrimaryKey: thisGroup.selectedControl)!
-        
-        print("began")
-        //if let center = event.allTouches?.first?.location(in: self.collectionView) {
-            //control.center = center
-            //saveDragPosition(center: center,thisControl: controls[(event.allTouches?.first?.view!.tag)!])
-        //}
-    }
-    
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let saveControl = realm.object(ofType: DeviceControl.self,
-                                       forPrimaryKey: thisGroup.selectedControl)!
-        print("Ended")
-        saveDragPosition(center: (touches.first?.location(in: self.collectionView))!,
-                         thisControl: saveControl)
-    }
-    
-    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let saveControl = realm.object(ofType: DeviceControl.self,
-                                       forPrimaryKey: thisGroup.selectedControl)!
-        print("Cancelled")
-        saveDragPosition(center: (touches.first?.location(in: self.collectionView))!,
-                         thisControl: saveControl)
-    }
-    
-    func drag(control: UIControl, event: UIEvent) {
-        
-        if let center = event.allTouches?.first?.location(in: self.collectionView) {
-            control.center = center
-            //saveDragPosition(center: center,thisControl: controls[(event.allTouches?.first?.view!.tag)!])
-        }
-    }
-    
-    func saveDragPosition(center: CGPoint, thisControl: DeviceControl) {
+    func saveSelectedSprite() {
         let realm = try! Realm(configuration: config)
+        let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl)!
+        let myView = self.viewWithTag(thisGroup.selectedControl)!
+        
+        let rotation = CGFloat(atan2f(Float(CGFloat(myView.transform.b)),Float(myView.transform.a)))
+        let scale = sqrt(pow(myView.transform.a,2) + pow(myView.transform.b, 2))
+        let editX = myView.frame.origin.x + myView.frame.width/2
+        let editY = myView.frame.origin.y + myView.frame.height/2
+        
         try! realm.write {
-            thisControl.editX = center.x
-            thisControl.editY = center.y
+            thisControl.rotation = rotation
+            thisControl.scale = scale
+            thisControl.editX = editX
+            thisControl.editY = editY
         }
-    }
-    
-    func test() {
-        print("DRAGGING")
+        
     }
     
 }

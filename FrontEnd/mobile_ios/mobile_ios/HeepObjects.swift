@@ -58,7 +58,7 @@ class Group: Object {
     dynamic var place: String = "none"
     dynamic var id: Int = 0
     dynamic var imageData: NSData = NSData()
-    dynamic var selectedControl: String = "none"
+    dynamic var selectedControl: Int = 0
     
     override static func primaryKey() -> String? {
         return "id"
@@ -86,17 +86,19 @@ class DeviceControl: Object {
     
     dynamic var deviceID: Int = 0
     dynamic var controlID: Int = 0
-    dynamic var uniqueID: String = ""
+    dynamic var uniqueID: Int = 0
     dynamic var controlType: Int = 0
     dynamic var controlDirection: Int = 0
     dynamic var valueLow: Int = 0
     dynamic var valueHigh: Int = 100
     dynamic var valueCurrent: Int = 0
     dynamic var controlName: String = "Default"
-    dynamic var editX: CGFloat = 100
-    dynamic var editY: CGFloat = 100
     dynamic var place: String = "none"
     dynamic var groupsAssigned: Int = 0
+    dynamic var editX: CGFloat = 100
+    dynamic var editY: CGFloat = 100
+    dynamic var scale: CGFloat = 1
+    dynamic var rotation: CGFloat = 0
     let vertexList = List<Vertex>()
     
     override static func primaryKey() -> String? {

@@ -23,12 +23,6 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        /*
-        let realm = try! Realm(configuration: config)
-        notificationToken = realm.addNotificationBlock { [unowned self] note, realm in
-            //self.thisPlace = realm.object(ofType: Place.self, forPrimaryKey: self.thisPlace.bssid)!
-            print("Detected Changes")
-        }*/
         
         self.title = thisPlace.name + " Groups"
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
@@ -125,7 +119,8 @@ extension GroupCollectionView {
         print("Open edit Group View")
         print(thisPlace.groups[(recognizer.view?.tag)!].name)
         
-        let editRoomView = EditRoomView(bssid: thisPlace.bssid, groupID: (recognizer.view?.tag)!)
+        let editRoomView = EditRoomView(bssid: thisPlace.bssid,
+                                        groupID: thisPlace.groups[(recognizer.view?.tag)!].id)
         navigationController?.pushViewController(editRoomView, animated: true)
     }
     

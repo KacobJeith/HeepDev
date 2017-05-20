@@ -21,8 +21,8 @@ class EditRoomView: UITableViewController {
         devices = Array(realm.objects(Device.self).filter("associatedPlace = %s", bssid))
         let thisPlace = realm.object(ofType: Place.self, forPrimaryKey: bssid)
         //print(thisPlace)
-        thisBSSID = (thisPlace?.bssid)!
-        roomName = (thisPlace?.name)!
+        self.thisBSSID = (thisPlace?.bssid)!
+        self.roomName = (thisPlace?.name)!
         thisGroup = realm.object(ofType: Group.self, forPrimaryKey: groupID)!
         print(thisGroup)
         super.init(style: UITableViewStyle.plain)
