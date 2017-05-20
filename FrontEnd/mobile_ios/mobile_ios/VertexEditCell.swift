@@ -14,6 +14,7 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     var controlIDs = [Int]()
     var myIndexPath = IndexPath()
     var thisGroup = Group()
+    var contextImage = UIImage()
     var controlTags = [Int]()
     var notificationToken: NotificationToken? = nil
     
@@ -28,6 +29,7 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         self.controls = thisGroup.controls
         self.myIndexPath = indexPath
         self.thisGroup = realm.object(ofType: Group.self, forPrimaryKey: thisGroup.id)!
+        
         
         notificationToken = thisGroup.addNotificationBlock { changes in
             /* results available asynchronously here */
@@ -44,6 +46,43 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
                 print("Active Default")
             }
         }
+        
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = UICollectionViewScrollDirection.horizontal
+        
+        let tryImage = getContextImage()
+        
+        let screenSize = UIScreen.main.bounds
+        let screenWidth = screenSize.width
+        
+        if tryImage == nil {
+            
+            layout.itemSize = CGSize(width: screenWidth, height: 420)
+            
+        } else {
+            
+            let naturalWidth = tryImage?.size.width
+            let naturalHeight = tryImage?.size.height
+            
+            let aspectRatio = naturalWidth! / naturalHeight!
+            print("Aspect Ratio: \(aspectRatio)")
+            
+            layout.itemSize = CGSize(width: 420 * aspectRatio, height: 420)
+        }
+        
+        collectionView = UICollectionView(frame: CGRect(x: 0,y: 0,
+                                                        width: screenWidth,
+                                                        height: 420) ,
+                                          collectionViewLayout: layout)
+        
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "CollectionViewCell")
+        collectionView.backgroundColor = .white
+        collectionView.contentOffset.x = thisGroup.contentOffsetX
+        collectionView.contentOffset.y = thisGroup.contentOffsetY
+        
+        self.addSubview(collectionView)
     }
     
     deinit{
@@ -53,24 +92,6 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        let layout = UICollectionViewFlowLayout()
-        //layout.sectionInset = UIEdgeInsetsMake(20, 20, 20, 20)
-        
-        
-        let screenSize = UIScreen.main.bounds
-        let screenWidth = screenSize.width
-        layout.itemSize = CGSize(width: screenWidth, height: 440)
-        collectionView = UICollectionView(frame: CGRect(x: 0,y: 0,
-                                                        width: screenWidth,
-                                                        height: 440) ,
-                                          collectionViewLayout: layout)
-        
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "CollectionViewCell")
-        collectionView.backgroundColor = .white
-        
-        self.addSubview(collectionView)
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -95,11 +116,11 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         
         
         
-        
-        
         let imageView = setContextImage(cell: cell, indexPath: indexPath)
         cell.addSubview(imageView)
         cell.isUserInteractionEnabled = true
+        
+        
         for eachControl in controls {
             
             let controlSprite = addControlSprite(cell: cell, thisControl: eachControl)
@@ -110,32 +131,45 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
             cell.addSubview(controlSprite)
         }
         
-        let pan = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
-        let pinch = UIPinchGestureRecognizer(target: self, action: #selector(handlePinch))
-        let rotate = UIRotationGestureRecognizer(target: self, action: #selector(handleRotation))
-        pinch.delegate = self
-        rotate.delegate = self
-        pan.delegate = self
-        cell.addGestureRecognizer(pan)
-        cell.addGestureRecognizer(pinch)
-        cell.addGestureRecognizer(rotate)
+        if self.thisGroup.selectedControl != 0 {
+            self.collectionView.isScrollEnabled =  false
+            let pan = UIPanGestureRecognizer(target: self,
+                                             action: #selector(handlePan))
+            let pinch = UIPinchGestureRecognizer(target: self,
+                                                 action: #selector(handlePinch))
+            let rotate = UIRotationGestureRecognizer(target: self,
+                                                     action: #selector(handleRotation))
+            pinch.delegate = self
+            rotate.delegate = self
+            pan.delegate = self
+            cell.addGestureRecognizer(pan)
+            cell.addGestureRecognizer(pinch)
+            cell.addGestureRecognizer(rotate)
+
+        } else {
+            
+            self.collectionView.isScrollEnabled =  true
+        }
         
         return cell
     }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize{
+
+        let naturalWidth = contextImage.size.width
+        let naturalHeight = contextImage.size.height
+        
+        let aspectRatio = naturalWidth / naturalHeight
+        print("Aspect Ratio: \(aspectRatio)")
+        return CGSize(width: aspectRatio * 440, height: 440)
+    }
+    
+    
     
     override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
                                     shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         
         return true
-        if (gestureRecognizer is UIPinchGestureRecognizer && otherGestureRecognizer is UIRotationGestureRecognizer) {
-            return true
-        } else if (gestureRecognizer is UIPinchGestureRecognizer && otherGestureRecognizer is UIRotationGestureRecognizer){
-            return true
-        } else if (gestureRecognizer is UIPanGestureRecognizer && otherGestureRecognizer is UIPinchGestureRecognizer){
-            return true
-        } else {
-            return false
-        }
     }
     
     func handlePan(gestureRecognizer: UIPanGestureRecognizer) {
@@ -176,6 +210,15 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         gestureRecognizer.rotation = 0
     }
     
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        print("End scrollView Dragging")
+        let realm = try! Realm()
+        
+        try! realm.write {
+            thisGroup.contentOffsetX = collectionView.contentOffset.x
+            thisGroup.contentOffsetY = collectionView.contentOffset.y
+        }
+    }
     
 }
 
@@ -183,12 +226,17 @@ extension VertexEditCell {
      
     
     func setContextImage(cell: UICollectionViewCell, indexPath: IndexPath) -> UIImageView {
-        let imageView = UIImageView(frame: cell.bounds)
+        let imageView = UIImageView()
+        imageView.frame = CGRect(x: 0, y: 0, width: cell.bounds.width, height: cell.bounds.height)
         imageView.image = UIImage(data: thisGroup.imageData as Data)
         imageView.contentMode = .scaleAspectFit
         imageView.tag = indexPath.row
-
         return imageView
+    }
+    
+    func getContextImage() -> UIImage? {
+        
+        return UIImage(data: thisGroup.imageData as Data)
     }
     
     func addControlSprite(cell: UICollectionViewCell, thisControl: DeviceControl) -> UIButton {
@@ -215,6 +263,7 @@ extension VertexEditCell {
     
     func saveSelectedSprite() {
         let realm = try! Realm(configuration: config)
+        
         let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl)!
         let myView = self.viewWithTag(thisGroup.selectedControl)!
         
@@ -224,6 +273,7 @@ extension VertexEditCell {
         let editY = myView.frame.origin.y + myView.frame.height/2
         
         try! realm.write {
+            
             thisControl.rotation = rotation
             thisControl.scale = scale
             thisControl.editX = editX

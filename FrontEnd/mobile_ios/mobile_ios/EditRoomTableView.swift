@@ -69,6 +69,14 @@ class EditRoomView: UITableViewController {
                                       thisGroup: thisGroup,
                                       indexPath: indexPath)
             
+            let imageScrollIcon = UIButton()
+            imageScrollIcon.frame = CGRect(x: 5, y: 5, width: 20, height: 20)
+            imageScrollIcon.backgroundColor = .lightGray
+            imageScrollIcon.layer.cornerRadius = 3
+            imageScrollIcon.clipsToBounds = true
+            
+            cell.addSubview(imageScrollIcon)
+            
             return cell
             
         } else if (indexPath.row == 2) {

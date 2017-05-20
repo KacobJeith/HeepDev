@@ -122,7 +122,11 @@ extension GroupControlEdit {
         let realm = try! Realm(configuration: config)
         
         try! realm.write {
-            thisGroup.selectedControl = controls[sender.tag].uniqueID
+            if thisGroup.selectedControl == controls[sender.tag].uniqueID {
+                thisGroup.selectedControl = 0
+            } else {
+                thisGroup.selectedControl = controls[sender.tag].uniqueID
+            }
         }
         
         print(thisGroup.selectedControl)

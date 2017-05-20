@@ -59,6 +59,8 @@ class Group: Object {
     dynamic var id: Int = 0
     dynamic var imageData: NSData = NSData()
     dynamic var selectedControl: Int = 0
+    dynamic var contentOffsetX: CGFloat = 0
+    dynamic var contentOffsetY: CGFloat = 0
     
     override static func primaryKey() -> String? {
         return "id"
