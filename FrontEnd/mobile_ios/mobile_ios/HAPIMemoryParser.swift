@@ -98,6 +98,7 @@ class HAPIMemoryParser {
             
         } else if (thisMOP == 0x03) {
             // Vertex Definition
+            parseVertexMOP(dump: dump, index: packet.index, packetSize: packet.numBytes, deviceID: header.deviceID)
             
         } else if (thisMOP == 0x04) {
             // Icon ID
@@ -208,6 +209,21 @@ class HAPIMemoryParser {
         
     }
     
+    func parseVertexMOP(dump: [UInt8], index: Int, packetSize: Int, deviceID: Int) {
+        print("Reading Vertex from device: \(deviceID)")
+        
+        let txDeviceID = deviceID
+        let rxDeviceID = ParseDeviceIDSimple(dump: dump, index: index)
+        let txControlID = dump[index + 4]
+        let rxControlID = dump[index + 5]
+        let rxIPAddress = readIPAddress(dump: dump, index: index + 6)
+        print(rxIPAddress)
+    }
+    
+    func readIPAddress(dump: [UInt8], index: Int) -> String {
+        return String(Int(dump[index])) + "." + String(Int(dump[index + 1])) + "." + String(Int(dump[index + 2])) + "." + String(Int(dump[index + 3]))
+    }
+    
     func generateUniqueControlID(deviceID: Int, controlID: UInt8) -> Int {
         return (deviceID << 8 ) + Int(controlID)
     }
@@ -258,5 +274,15 @@ class HAPIMemoryParser {
         return (index + 4, deviceID)
     }
     
+    func ParseDeviceIDSimple(dump: [UInt8], index: Int) -> Int {
+        let id1: Int = Int(dump[index])
+        let id2: Int = Int(dump[index+1])
+        let id3: Int = Int(dump[index+2])
+        let id4: Int = Int(dump[index+3])
+        
+        let deviceID = (id1 << 24) + (id2 << 16) + (id3 << 8) + id4
+        
+        return deviceID
+    }
     
 }
