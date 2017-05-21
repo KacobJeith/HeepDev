@@ -218,6 +218,29 @@ class HAPIMemoryParser {
         let rxControlID = dump[index + 5]
         let rxIPAddress = readIPAddress(dump: dump, index: index + 6)
         print(rxIPAddress)
+        
+        let realm = try! Realm(configuration: config)
+        let txControl = realm.object(ofType: DeviceControl.self,
+                                     forPrimaryKey: generateUniqueControlID(deviceID: txDeviceID,
+                                                                            controlID: txControlID))
+        let rxControl = realm.object(ofType: DeviceControl.self,
+                                     forPrimaryKey: generateUniqueControlID(deviceID: rxDeviceID,
+                                                                            controlID: rxControlID))
+        
+        let newVertex = Vertex()
+        newVertex.rx = rxControl!
+        newVertex.tx = txControl!
+        newVertex.vertexID = nameVertex(tx: txControl, rx: rxControl)
+            
+        try! realm.write {
+            realm.add(newVertex, update: true)
+            txControl?.vertexList.append(newVertex)
+        }
+    }
+    
+    func nameVertex(tx: DeviceControl?, rx: DeviceControl?) -> String {
+        
+        return String(describing: (tx?.uniqueID)!) + String(describing: (rx?.uniqueID)!)
     }
     
     func readIPAddress(dump: [UInt8], index: Int) -> String {

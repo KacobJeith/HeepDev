@@ -16,7 +16,6 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     var thisGroup = Group()
     var contextImage = UIImage()
     var controlTags = [Int]()
-    var vertexLayerMap = [Int]()
     var notificationToken: NotificationToken? = nil
     
     convenience init(bssid: String,
@@ -37,7 +36,6 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
             switch changes {
             case .change:
                 print("Active Change")
-                //parentTable.reloadRows(at: [self.myIndexPath], with: UITableViewRowAnimation.none)
                 parentTable.reloadData()
                 break
             case .error(let error):
@@ -66,7 +64,6 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
             let naturalHeight = tryImage?.size.height
             
             let aspectRatio = naturalWidth! / naturalHeight!
-            print("Aspect Ratio: \(aspectRatio)")
             
             layout.itemSize = CGSize(width: 420 * aspectRatio, height: 420)
         }
@@ -115,38 +112,21 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         let cell: UICollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath as IndexPath) as UICollectionViewCell
         
         
-        
         let imageView = setContextImage(cell: cell, indexPath: indexPath)
         cell.addSubview(imageView)
         cell.isUserInteractionEnabled = true
         cell.tag = 1
         
         
-        
-        if controls[0].vertexList.count == 0 {
-            
-            let newVertex = Vertex()
-            newVertex.tx = controls[0]
-            newVertex.rx = controls[1]
-            newVertex.vertexID = String(controls[0].uniqueID) + String(controls[1].uniqueID)
-            
-            let realm = try! Realm()
-            
-            try! realm.write {
-                realm.add(newVertex, update: true)
-                controls[0].vertexList.append(newVertex)
-            }
-            
-            try! realm.write {
-            }
-        }
-        
-        let vertexLayer = drawVertex(vertex: controls[0].vertexList[0])
-        
-        cell.layer.addSublayer(vertexLayer)
-
-        
         for eachControl in controls {
+            
+            for eachVertex in eachControl.vertexList {
+                
+                let vertexLayer = drawVertex(vertex: eachVertex)
+                print("Adding Vertex \(String(describing: eachVertex.rx?.controlName))")
+                cell.layer.addSublayer(vertexLayer)
+            }
+            
             
             let controlSprite = addControlSprite(cell: cell, thisControl: eachControl)
             controlSprite.layer.borderWidth = 1
@@ -154,6 +134,8 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
             controlSprite.tag = eachControl.uniqueID
             
             cell.addSubview(controlSprite)
+            
+            
         }
         
         if self.thisGroup.selectedControl != 0 {
@@ -186,7 +168,7 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         let naturalHeight = contextImage.size.height
         
         let aspectRatio = naturalWidth / naturalHeight
-        print("Aspect Ratio: \(aspectRatio)")
+        
         return CGSize(width: aspectRatio * 440, height: 440)
     }
     
@@ -206,26 +188,24 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         myView.center.y += translation.y
         
         let cellView = self.viewWithTag(1)!
-        //cellView.layer.sublayers?[vertexLayerMap[0]].removeFromSuperlayer()
         
         for sublayer in cellView.layer.sublayers! {
            
             if sublayer.name != nil {
                 if sublayer.name!.range(of: String(thisGroup.selectedControl)) != nil {
-                    print("FOUND!!")
                     sublayer.removeFromSuperlayer()
                 }
             }
             
         }
         
-        //let thisVertex = controls[0].vertexList[0]
+        
         let realm = try! Realm()
         let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl)
         
         for eachControl in thisGroup.controls {
             for eachVertex in eachControl.vertexList {
-                print("Found this Vertex")
+                
                 let index = eachVertex.vertexID.range(of: String(describing: (thisControl?.uniqueID)!))
                 if  index != nil {
                     let calculatedIndex = eachVertex.vertexID.distance(from: eachVertex.vertexID.startIndex,
@@ -237,6 +217,7 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
                                          y: (eachVertex.rx?.editY)!)
                     
                     if calculatedIndex != 0 {
+                        
                         start = CGPoint(x: (eachVertex.tx?.editX)!,
                                             y: (eachVertex.tx?.editY)!)
                         finish = CGPoint(x: myView.center.x,
@@ -250,9 +231,6 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
                 }
             }
         }
-        
-        //let newPath = drawVertex(vertex: )
-        //newPath.name = "vertex"
         
         
         gestureRecognizer.setTranslation(CGPoint(), in: self)
