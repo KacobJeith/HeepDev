@@ -111,12 +111,9 @@ class DeviceControl: Object {
 
 class Vertex: Object {
     
-    dynamic var tx: Int = 0
-    dynamic var txControl: Int = 0
-    dynamic var rx: Int = 0
-    dynamic var rxControl: Int = 0
-    dynamic var rxIPAddress: String = "0.0.0.0"
-    dynamic var vertexID: Int = 0
+    dynamic var tx: DeviceControl?
+    dynamic var rx: DeviceControl? 
+    dynamic var vertexID: String = ""
     
     override static func primaryKey() -> String? {
         return "vertexID"

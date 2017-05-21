@@ -16,6 +16,7 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     var thisGroup = Group()
     var contextImage = UIImage()
     var controlTags = [Int]()
+    var vertexLayerMap = [Int]()
     var notificationToken: NotificationToken? = nil
     
     convenience init(bssid: String,
@@ -98,7 +99,6 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         super.init(coder: aDecoder)!
     }
     
-    
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return 1
     }
@@ -119,7 +119,32 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         let imageView = setContextImage(cell: cell, indexPath: indexPath)
         cell.addSubview(imageView)
         cell.isUserInteractionEnabled = true
+        cell.tag = 1
         
+        
+        
+        if controls[0].vertexList.count == 0 {
+            
+            let newVertex = Vertex()
+            newVertex.tx = controls[0]
+            newVertex.rx = controls[1]
+            newVertex.vertexID = String(controls[0].uniqueID) + String(controls[1].uniqueID)
+            
+            let realm = try! Realm()
+            
+            try! realm.write {
+                realm.add(newVertex, update: true)
+                controls[0].vertexList.append(newVertex)
+            }
+            
+            try! realm.write {
+            }
+        }
+        
+        let vertexLayer = drawVertex(vertex: controls[0].vertexList[0])
+        
+        cell.layer.addSublayer(vertexLayer)
+
         
         for eachControl in controls {
             
@@ -151,6 +176,7 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
             self.collectionView.isScrollEnabled =  true
         }
         
+        
         return cell
     }
     
@@ -176,8 +202,58 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         
         let translation = gestureRecognizer.translation(in: self)
         let myView = self.viewWithTag(thisGroup.selectedControl)!
-        myView.center = CGPoint(x: myView.center.x + translation.x,
-                                y: myView.center.y + translation.y)
+        myView.center.x += translation.x
+        myView.center.y += translation.y
+        
+        let cellView = self.viewWithTag(1)!
+        //cellView.layer.sublayers?[vertexLayerMap[0]].removeFromSuperlayer()
+        
+        for sublayer in cellView.layer.sublayers! {
+           
+            if sublayer.name != nil {
+                if sublayer.name!.range(of: String(thisGroup.selectedControl)) != nil {
+                    print("FOUND!!")
+                    sublayer.removeFromSuperlayer()
+                }
+            }
+            
+        }
+        
+        //let thisVertex = controls[0].vertexList[0]
+        let realm = try! Realm()
+        let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl)
+        
+        for eachControl in thisGroup.controls {
+            for eachVertex in eachControl.vertexList {
+                print("Found this Vertex")
+                let index = eachVertex.vertexID.range(of: String(describing: (thisControl?.uniqueID)!))
+                if  index != nil {
+                    let calculatedIndex = eachVertex.vertexID.distance(from: eachVertex.vertexID.startIndex,
+                                                                       to: (index?.lowerBound)!)
+                    
+                    var start = CGPoint(x: myView.center.x,
+                                        y: myView.center.y)
+                    var finish = CGPoint(x: (eachVertex.rx?.editX)!,
+                                         y: (eachVertex.rx?.editY)!)
+                    
+                    if calculatedIndex != 0 {
+                        start = CGPoint(x: (eachVertex.tx?.editX)!,
+                                            y: (eachVertex.tx?.editY)!)
+                        finish = CGPoint(x: myView.center.x,
+                                             y: myView.center.y)
+                    }
+                    
+                    let newPath = drawManualVertexPath(start: start,
+                                                       finish: finish)
+                    newPath.name = eachVertex.vertexID
+                    cellView.layer.addSublayer(newPath)
+                }
+            }
+        }
+        
+        //let newPath = drawVertex(vertex: )
+        //newPath.name = "vertex"
+        
         
         gestureRecognizer.setTranslation(CGPoint(), in: self)
         
@@ -210,7 +286,8 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         gestureRecognizer.rotation = 0
     }
     
-    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         print("End scrollView Dragging")
         let realm = try! Realm()
         
@@ -220,10 +297,44 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         }
     }
     
+    
+    
 }
 
 extension VertexEditCell {
-     
+    
+    func drawVertex(vertex: Vertex) -> CAShapeLayer {
+        let shapeLayer = CAShapeLayer()
+        let curve = UIBezierPath()
+        let startPoint = CGPoint(x: (vertex.tx?.editX)!, y: (vertex.tx?.editY)!)
+        let finishPoint = CGPoint(x: (vertex.rx?.editX)!, y: (vertex.rx?.editY)!)
+        print("Start: \(startPoint), Finish: \(finishPoint)")
+        curve.move(to: startPoint)
+        curve.addQuadCurve(to: finishPoint, controlPoint: CGPoint(x: (vertex.tx?.editX)!, y: (vertex.rx?.editY)!))
+        shapeLayer.path = curve.cgPath
+        
+        shapeLayer.strokeColor = UIColor.blue.cgColor
+        shapeLayer.fillColor = UIColor.clear.cgColor
+        shapeLayer.lineWidth = 1.0
+        shapeLayer.name = vertex.vertexID
+        
+        return shapeLayer
+    }
+    
+    func drawManualVertexPath(start: CGPoint, finish: CGPoint) -> CAShapeLayer {
+        let shapeLayer = CAShapeLayer()
+        let curve = UIBezierPath()
+        print("Start: \(start), Finish: \(finish)")
+        curve.move(to: start)
+        curve.addQuadCurve(to: finish, controlPoint: CGPoint(x: start.x, y: finish.y))
+        shapeLayer.path = curve.cgPath
+        
+        shapeLayer.strokeColor = UIColor.green.cgColor
+        shapeLayer.fillColor = UIColor.clear.cgColor
+        shapeLayer.lineWidth = 1.0
+        
+        return shapeLayer
+    }
     
     func setContextImage(cell: UICollectionViewCell, indexPath: IndexPath) -> UIImageView {
         let imageView = UIImageView()
