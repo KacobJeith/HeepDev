@@ -8,6 +8,9 @@
 #include "Simulation_NonVolatileMemory.h"
 #endif
 
+// Prototypes
+void CommitMemory();
+
 unsigned char clearMemory = 0;
 void SetupHeepDevice(char* deviceName)
 {
@@ -15,6 +18,7 @@ void SetupHeepDevice(char* deviceName)
 	{
 		ClearMemory();
 		SetDeviceName(deviceName);
+		CommitMemory();
 	}
 	else
 	{
