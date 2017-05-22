@@ -21,6 +21,8 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     var activeVertexStart = CGPoint()
     var activeVertexFinish = CGPoint()
     
+    var vertexDictToDelete = [String : Bool]()
+    
     convenience init(bssid: String,
                      parentTable: UITableView,
                      thisGroup: Group,
@@ -38,14 +40,13 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
             /* results available asynchronously here */
             switch changes {
             case .change:
-                print("Active Change")
+                
                 parentTable.reloadData()
                 break
             case .error(let error):
                 fatalError("\(error)")
                 break
-            default:
-                print("Active Default")
+            default: break 
             }
         }
         
@@ -67,8 +68,13 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
             let naturalHeight = tryImage?.size.height
             
             let aspectRatio = naturalWidth! / naturalHeight!
-            
-            layout.itemSize = CGSize(width: 420 * aspectRatio, height: 420)
+            if aspectRatio < 1 {
+                
+                layout.itemSize = CGSize(width: screenWidth, height: 420)
+            } else {
+                
+                layout.itemSize = CGSize(width: 420 * aspectRatio, height: 420)
+            }
         }
         
         collectionView = UICollectionView(frame: CGRect(x: 0,y: 0,
@@ -156,6 +162,18 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
             cell.addGestureRecognizer(vertexPan)
             
             
+        } else if self.thisGroup.selectedControl == 2 {
+            
+            self.collectionView.isScrollEnabled =  false
+            resetVertexDictToDelete()
+            
+            let deleteVertexPan = UIPanGestureRecognizer(target: self,
+                                                   action: #selector(handleDeleteVertexPan))
+            
+            deleteVertexPan.delegate = self
+            cell.addGestureRecognizer(deleteVertexPan)
+            
+            
         } else {
             self.collectionView.isScrollEnabled =  false
             let pan = UIPanGestureRecognizer(target: self,
@@ -233,6 +251,80 @@ extension VertexEditCell {
         }
         
         
+    }
+    
+    func handleDeleteVertexPan(gesture: UIPanGestureRecognizer) {
+        let cellView = self.viewWithTag(1)!
+        
+        searchSublayersForNameToRemove(view: cellView,
+                                       names: ["circle"])
+        
+        if gesture.state == UIGestureRecognizerState.began {
+            
+            cellView.layer.addSublayer(drawCircle(center: gesture.location(in: cellView),
+                                                  radius: 35,
+                                                  name: "circle"))
+            catchVertexCollisions(cellView: cellView, gesture: gesture)
+            
+        } else if gesture.state == UIGestureRecognizerState.changed {
+            cellView.layer.addSublayer(drawCircle(center: gesture.location(in: cellView),
+                                                  radius: 35,
+                                                  name: "circle"))
+            catchVertexCollisions(cellView: cellView, gesture: gesture)
+            
+        } else if gesture.state == UIGestureRecognizerState.ended {
+            commitDeleteVertex()
+            
+            
+        }
+        
+        
+    }
+    
+    func commitDeleteVertex() {
+        let realm = try! Realm()
+        
+        for vertex in vertexDictToDelete {
+            if vertex.value == true {
+                let thisVertex = realm.object(ofType: Vertex.self, forPrimaryKey: vertex.key)!
+                try! realm.write {
+                    realm.delete(thisVertex)
+                }
+            }
+        }
+    }
+    
+    
+    func catchVertexCollisions(cellView: UIView, gesture: UIPanGestureRecognizer)  {
+        
+        for sublayer in cellView.layer.sublayers! {
+            if sublayer.name != nil {
+                
+                for vertexName in vertexDictToDelete.keys {
+                    
+                    if sublayer.name! == vertexName && vertexDictToDelete[vertexName] != true {
+                        
+                        let position = gesture.location(in: collectionView)
+                        
+                        let check = sublayer.accessibilityPath?.contains(position)
+                        if check != nil {
+                            if check! == true {
+                                
+                                vertexDictToDelete[vertexName] = true
+                                let realm = try! Realm(configuration: config)
+                                let thisVertex = realm.object(ofType: Vertex.self,
+                                                              forPrimaryKey: vertexName)!
+                                
+                                cellView.layer.addSublayer(drawVertex(vertex: thisVertex,
+                                                                      color: UIColor.red.cgColor,
+                                                                      name: "toDelete"))
+                            }
+                        }
+                    }
+                }
+                
+            }
+        }
     }
     
     func findOutputControl(cellView: UIView, gesture: UIPanGestureRecognizer) {
@@ -502,7 +594,7 @@ extension VertexEditCell {
 // Drawing Functions
 extension VertexEditCell {
     
-    func drawVertex(vertex: Vertex) -> CAShapeLayer {
+    func drawVertex(vertex: Vertex, color: CGColor = UIColor.blue.cgColor, name: String? = nil) -> CAShapeLayer {
         let shapeLayer = CAShapeLayer()
         let curve = UIBezierPath()
         let startPoint = CGPoint(x: (vertex.tx?.editX)!, y: (vertex.tx?.editY)!)
@@ -511,11 +603,17 @@ extension VertexEditCell {
         curve.move(to: startPoint)
         curve.addQuadCurve(to: finishPoint, controlPoint: CGPoint(x: (vertex.tx?.editX)!, y: (vertex.rx?.editY)!))
         shapeLayer.path = curve.cgPath
+        shapeLayer.shadowPath = curve.cgPath
         
-        shapeLayer.strokeColor = UIColor.blue.cgColor
+        shapeLayer.strokeColor = color
         shapeLayer.fillColor = UIColor.clear.cgColor
-        shapeLayer.lineWidth = 1.0
-        shapeLayer.name = vertex.vertexID
+        shapeLayer.lineWidth = 5.0
+        if name == nil {
+            shapeLayer.name = vertex.vertexID
+        } else {
+            shapeLayer.name = name
+        }
+        shapeLayer.accessibilityPath = curve
         
         return shapeLayer
     }
@@ -606,6 +704,15 @@ extension VertexEditCell {
             thisControl.editY = editY
         }
         
+    }
+    
+    func resetVertexDictToDelete() {
+        vertexDictToDelete = [:]
+        for control in thisGroup.controls {
+            for vertex in control.vertexList {
+                vertexDictToDelete[vertex.vertexID] = false
+            }
+        }
     }
     
 }

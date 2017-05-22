@@ -32,15 +32,12 @@ class GroupControlEdit: UITableViewCell, UICollectionViewDataSource, UICollectio
             /* results available asynchronously here */
             switch changes {
             case .update:
-                print("Active Controls Change")
-                //parentTable.reloadRows(at: [self!.myIndexPath], with: UITableViewRowAnimation.none)
                 parentTable.reloadData()
                 break
             case .error(let error):
                 fatalError("\(error)")
                 break
-            default:
-                print("Active Controls Default")
+            default: break
             }
         }
         

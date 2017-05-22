@@ -22,10 +22,10 @@ func createControlPuck(thisControl: DeviceControl, cellSize: CGRect) -> UIView {
     deviceSprite.setBackgroundImage(image, for: [])
     deviceSprite.contentHorizontalAlignment = .center
     deviceSprite.contentMode = .scaleAspectFit
-    deviceSprite.frame = CGRect(x: 15, y: 0, width: 50, height: 70)
+    deviceSprite.frame = CGRect(x: 15, y: 0, width: 50, height: 60)
     
     
-    let title = UILabel(frame: CGRect(x:0, y:70, width: cellSize.width, height: 20))
+    let title = UILabel(frame: CGRect(x:0, y:60, width: cellSize.width, height: 20))
     title.adjustsFontSizeToFitWidth = true
     title.text = thisControl.controlName
     title.textAlignment = .center

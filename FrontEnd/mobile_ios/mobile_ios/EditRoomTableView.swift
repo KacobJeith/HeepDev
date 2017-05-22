@@ -147,8 +147,26 @@ extension EditRoomView {
                                     height: 60)
         vertexToggle.layer.cornerRadius = 0.5 * vertexToggle.bounds.size.width
         vertexToggle.clipsToBounds = true
-        vertexToggle.backgroundColor = thisGroup.selectedControl == 1 ? UIColor.blue : UIColor.lightGray
-        vertexToggle.setTitle(thisGroup.selectedControl == 1 ? "Back" : "Edit", for: [])
+        
+        if thisGroup.selectedControl == 0 {
+            
+            vertexToggle.backgroundColor = UIColor.lightGray
+            vertexToggle.setTitle("Add", for: [])
+            
+        } else if thisGroup.selectedControl == 1 {
+            vertexToggle.backgroundColor = UIColor.blue
+            vertexToggle.setTitle("Del", for: [])
+            
+        } else if thisGroup.selectedControl == 2 {
+            vertexToggle.backgroundColor = UIColor.red
+            vertexToggle.setTitle("Back", for: [])
+            
+        } else {
+            vertexToggle.backgroundColor = UIColor.lightGray
+            vertexToggle.setTitle("Add", for: [])
+        }
+        
+        
         vertexToggle.setTitleColor(UIColor.white, for: UIControlState.normal)
         vertexToggle.titleLabel?.adjustsFontSizeToFitWidth = true
         
@@ -160,15 +178,18 @@ extension EditRoomView {
     }
     
     func toggleVertexEditState() {
-        print("Toggline Vertex Edit")
+        print("Toggle Vertex Edit")
         
         let realm = try! Realm(configuration: config)
         
         try! realm.write {
-            if thisGroup.selectedControl != 1 {
-                thisGroup.selectedControl = 1
+            if thisGroup.selectedControl <= 1 {
+                
+                thisGroup.selectedControl += 1
+                
             } else {
                 thisGroup.selectedControl = 0
+                
             }
         }
         

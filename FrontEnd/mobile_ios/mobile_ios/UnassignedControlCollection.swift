@@ -31,14 +31,14 @@ class UnassignedControlCollection: UITableViewCell, UICollectionViewDataSource, 
             
             switch changes {
             case .update:
-                print("Unassigned Change")
+                
                 parentTable.reloadData()
                 break
             case .error(let error):
                 fatalError("\(error)")
                 break
-            default:
-                print("Unassigned Default")
+            default: break
+                
             }
         }
         
