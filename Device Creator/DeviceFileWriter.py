@@ -10,6 +10,7 @@ class DeviceWriter:
 		return deviceInfo.deviceName + '.ino'
 
 	def WriteScriptFile(self, deviceInfo, filePath) :
+		filePath = filePath + deviceInfo.deviceName + '/'
 		fileName = self.GetFileName(deviceInfo)
 
 		pathToFiles = '../Firmware/ServerlessFirmware/'
@@ -17,8 +18,9 @@ class DeviceWriter:
 		f = open('CopyScript.sh', 'w')
 		f.write('#!/bin/bash\n')
 		f.write('echo \"Begin Copy Script\"\n')  
-		f.write('mkdir ' + filePath + fileName + '\n')
-		f.write('cp -r ' + pathToFiles + ' ' + filePath + fileName + '\n')
+		f.write('mkdir ' + filePath + '\n')
+		f.write('cp -r ' + pathToFiles + ' ' + filePath + '\n')
+		f.write('touch ' + filePath + fileName + '\n')
 		f.close()
 
 		subprocess.call("bash CopyScript.sh", shell=True)
