@@ -57,7 +57,7 @@ class DeviceWriter:
 	def WriteSetupFunction(self, fileDescriptor, deviceInfo) :
 		fileDescriptor.write("void setup()\n")
 		fileDescriptor.write("{\n")
-		fileDescriptor.write("	SetupHeepDevice(" + deviceInfo.deviceName + ");\n")
+		fileDescriptor.write("	SetupHeepDevice(deviceName);\n")
 		self.WriteControlDefinitions(fileDescriptor, deviceInfo)
 		fileDescriptor.write("	SetupHeepTasks();\n")
 		fileDescriptor.write("	CreateInterruptServer();\n")
