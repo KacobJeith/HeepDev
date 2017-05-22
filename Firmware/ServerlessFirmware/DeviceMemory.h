@@ -34,6 +34,7 @@ unsigned int curFilledMemory = 0; // Indicate the curent filled memory.
 						 // show the back of allocated memory
 unsigned char memoryChanged = 0;
 
+unsigned char controlRegister = 0;
 
 unsigned long GetNumberFromBuffer(unsigned char* buffer, unsigned int &counter, unsigned char numBytes)
 {
