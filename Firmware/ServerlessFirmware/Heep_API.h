@@ -18,7 +18,7 @@ void SetupHeepDevice(char* deviceName)
 	}
 	else
 	{
-		ReadMemory(deviceMemory, curFilledMemory);
+		ReadMemory(controlRegister, deviceMemory, curFilledMemory);
 	}
 }
 
@@ -51,7 +51,7 @@ void CommitMemory()
 {
 	if(memoryChanged)
 	{
-		SaveMemory(deviceMemory, curFilledMemory);
+		SaveMemory(controlRegister, deviceMemory, curFilledMemory);
 		memoryChanged = 0;
 	}
 }

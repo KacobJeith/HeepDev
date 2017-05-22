@@ -8,7 +8,7 @@ void SaveMemory(unsigned char controlRegister, unsigned char* memoryBuffer, unsi
 
 	for(int i = 2; i < bytesToWrite + 1; i++)
 	{
-		EEPROM.write(i, memoryBuffer[i-1]);
+		EEPROM.write(i, memoryBuffer[i-2]);
 	}
 }
 
@@ -29,6 +29,6 @@ void ReadMemory(unsigned char &controlRegister, unsigned char* memoryBuffer, uns
 
 	for(int i = 2; i < numberBytesToRead + 1; i++)
 	{
-		memoryBuffer[i-1] = EEPROM.read(i);
+		memoryBuffer[i-2] = EEPROM.read(i);
 	}
 }
