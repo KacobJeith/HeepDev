@@ -1,6 +1,7 @@
 CC = g++
 STD = -std=c++11
 LIBS = -lpthread
+DEFINES = -DON_PC
 
 SimpleOutputExample.app : SimpleOutputExample.cpp
-	$(CC) ${STD} $< -o $@ ${LIBS}
+	$(CC) ${DEFINES} ${STD} $< -o $@ ${LIBS}
