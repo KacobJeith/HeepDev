@@ -202,35 +202,180 @@ extension VertexEditCell {
     func handleVertexPan(gesture: UIPanGestureRecognizer) {
         let cellView = self.viewWithTag(1)!
         
-        for sublayer in cellView.layer.sublayers! {
-            
-            if sublayer.name != nil {
-                if sublayer.name!.range(of: "vertex") != nil {
-                    sublayer.removeFromSuperlayer()
-                }
-            }
-            
-        }
+        searchSublayersForNameToRemove(view: cellView,
+                                       names: ["circle", "vertex"])
     
         if gesture.state == UIGestureRecognizerState.began {
             
-            activeVertexStart = gesture.location(in: cellView)
+            cellView.layer.addSublayer(drawCircle(center: gesture.location(in: cellView),
+                                                  radius: 35,
+                                                  name: "circle"))
+            
             
         } else if gesture.state == UIGestureRecognizerState.changed {
             
-            activeVertexFinish = gesture.location(in: cellView)
-            
-            let activeVertex = drawLine(start: activeVertexStart,
-                                          finish: activeVertexFinish)
-            activeVertex.name = "vertex"
-            cellView.layer.addSublayer(activeVertex)
+            if activeVertexStart == CGPoint() {
+                
+                findOutputControl(cellView: cellView, gesture: gesture)
+                
+                
+            } else {
+                
+                findInputControl(cellView: cellView, gesture: gesture)
+                
+            }
             
         } else if gesture.state == UIGestureRecognizerState.ended {
             activeVertexStart = CGPoint()
             activeVertexFinish = CGPoint()
+            
+            searchSublayersForNameToRemove(view: cellView, names: ["finish", "start", "vertex"])
         }
         
         
+    }
+    
+    func findOutputControl(cellView: UIView, gesture: UIPanGestureRecognizer) {
+        
+        cellView.layer.addSublayer(drawCircle(center: gesture.location(in: cellView),
+                                              radius: 35,
+                                              name: "circle"))
+        
+        verifyControlForVertex(cellView: cellView,
+                               gesture: gesture,
+                               direction: 1)
+
+    }
+        
+    func findInputControl(cellView: UIView, gesture: UIPanGestureRecognizer) {
+        
+        
+        
+        if activeVertexFinish == CGPoint() {
+            
+            cellView.layer.addSublayer(drawLine(start: activeVertexStart,
+                                                finish: gesture.location(in: cellView),
+                                                name: "vertex"))
+            
+            verifyControlForVertex(cellView: cellView,
+                                   gesture: gesture,
+                                   direction: 0)
+            
+        } else {
+            
+            cellView.layer.addSublayer(drawLine(start: activeVertexStart,
+                                                finish: activeVertexFinish,
+                                                name: "vertex"))
+            
+            verifyControlForVertex(cellView: cellView,
+                                   gesture: gesture,
+                                   direction: 0,
+                                   replace: true)
+        }
+        
+        
+        
+        
+    }
+    
+    func verifyControlForVertex(cellView: UIView, gesture: UIPanGestureRecognizer, direction: Int, replace: Bool = false) {
+        
+        if let touched = touchingControlSprite(gesture: gesture) {
+            
+            if direction == 0 {
+                
+                if touched.controlDirection == direction {
+                    
+                    let newActiveVertexFinish = CGPoint(x: touched.editX,
+                                                 y: touched.editY)
+                    
+                    if newActiveVertexFinish != activeVertexFinish {
+                        activeVertexFinish = CGPoint(x: touched.editX,
+                                                     y: touched.editY)
+                        
+                        let generator = UIImpactFeedbackGenerator(style: .medium)
+                        generator.impactOccurred()
+                        
+                        if replace {
+                            searchSublayersForNameToRemove(view: cellView, names: ["finish"])
+                        }
+                        
+                        cellView.layer.addSublayer(drawCircle(center: activeVertexFinish,
+                                                              radius: 35,
+                                                              name: "finish"))
+                    }
+                    
+                }
+                
+            } else if direction == 1 {
+                
+                if touched.controlDirection == direction {
+                    activeVertexStart = CGPoint(x: touched.editX,
+                                                y: touched.editY)
+                    
+                    let generator = UIImpactFeedbackGenerator(style: .medium)
+                    generator.impactOccurred()
+                    
+                    cellView.layer.addSublayer(drawCircle(center: activeVertexStart,
+                                                          radius: 35,
+                                                          name: "start"))
+                    
+                }
+            }
+            
+        }
+        
+    }
+    
+    func searchSublayersForNameToRemove(view: UIView, names: [String]) {
+        
+        for sublayer in view.layer.sublayers! {
+            if sublayer.name != nil {
+                for name in names {
+                    removeSublayerWithName(sublayer: sublayer, name: name)
+                }
+                
+            }
+        }
+    }
+    
+    func removeSublayerWithName(sublayer: CALayer, name: String) {
+        if sublayer.name!.range(of: name) != nil {
+            sublayer.removeFromSuperlayer()
+        }
+    }
+    
+    func drawCircle(center: CGPoint, radius: CGFloat, name: String) -> CAShapeLayer {
+        
+        let circlePath = UIBezierPath(arcCenter: center,
+                                      radius: radius,
+                                      startAngle: CGFloat(0),
+                                      endAngle:CGFloat(Double.pi * 2),
+                                      clockwise: true)
+        
+        let shapeLayer = CAShapeLayer()
+        shapeLayer.path = circlePath.cgPath
+        shapeLayer.fillColor = UIColor.red.cgColor
+        shapeLayer.strokeColor = UIColor.red.cgColor
+        shapeLayer.lineWidth = 3.0
+        shapeLayer.opacity = 0.4
+        shapeLayer.name = name
+        
+        return shapeLayer
+    }
+    
+    func touchingControlSprite(gesture: UIPanGestureRecognizer) -> DeviceControl? {
+        
+        for control in thisGroup.controls {
+            
+            let position = gesture.location(in: collectionView)
+            let check = self.viewWithTag(control.uniqueID)!.frame.contains(position)
+            if check {
+                return control
+            }
+        }
+        
+        return nil
     }
 
     
@@ -390,7 +535,7 @@ extension VertexEditCell {
         return shapeLayer
     }
     
-    func drawLine(start: CGPoint, finish: CGPoint) -> CAShapeLayer {
+    func drawLine(start: CGPoint, finish: CGPoint, name: String) -> CAShapeLayer {
         let shapeLayer = CAShapeLayer()
         let curve = UIBezierPath()
         
@@ -401,6 +546,7 @@ extension VertexEditCell {
         shapeLayer.strokeColor = UIColor.red.cgColor
         shapeLayer.fillColor = UIColor.clear.cgColor
         shapeLayer.lineWidth = 1.0
+        shapeLayer.name = name
         
         return shapeLayer
     }
