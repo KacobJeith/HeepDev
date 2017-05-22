@@ -49,7 +49,10 @@ class DeviceWriter:
 									
 
 	def WriteLoopFunction(self, fileDescriptor, deviceInfo) :
-		return
+		fileDescriptor.write("void loop()\n")
+		fileDescriptor.write("{\n")
+		fileDescriptor.write("	PerformHeepTasks();\n")
+		fileDescriptor.write("}\n\n")
 
 	def WriteSetupFunction(self, fileDescriptor, deviceInfo) :
 		fileDescriptor.write("void setup()\n")
