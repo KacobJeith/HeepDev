@@ -56,7 +56,7 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         
         if tryImage == nil {
             
-            layout.itemSize = CGSize(width: screenWidth, height: 420)
+            layout.itemSize = CGSize(width: screenWidth, height: 435)
             
         } else {
             
@@ -70,7 +70,7 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         
         collectionView = UICollectionView(frame: CGRect(x: 0,y: 0,
                                                         width: screenWidth,
-                                                        height: 420) ,
+                                                        height: 435) ,
                                           collectionViewLayout: layout)
         
         collectionView.delegate = self
@@ -123,14 +123,14 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
             for eachVertex in eachControl.vertexList {
                 
                 let vertexLayer = drawVertex(vertex: eachVertex)
-                print("Adding Vertex \(String(describing: eachVertex.rx?.controlName))")
+                //print("Adding Vertex \(String(describing: eachVertex.rx?.controlName))")
                 cell.layer.addSublayer(vertexLayer)
             }
             
             
             let controlSprite = addControlSprite(cell: cell, thisControl: eachControl)
-            controlSprite.layer.borderWidth = 1
-            controlSprite.layer.borderColor = eachControl.uniqueID == thisGroup.selectedControl ? UIColor.blue.cgColor : UIColor.white.cgColor
+            controlSprite.layer.borderWidth = 2
+            controlSprite.layer.borderColor = eachControl.uniqueID == thisGroup.selectedControl ? UIColor.blue.cgColor : UIColor.clear.cgColor
             controlSprite.tag = eachControl.uniqueID
             
             cell.addSubview(controlSprite)
@@ -138,7 +138,17 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
             
         }
         
-        if self.thisGroup.selectedControl != 0 {
+        if self.thisGroup.selectedControl == 0 {
+            
+            self.collectionView.isScrollEnabled = true
+            
+        } else if self.thisGroup.selectedControl == 1 {
+            
+            self.collectionView.isScrollEnabled =  false
+            
+            
+            
+        } else {
             self.collectionView.isScrollEnabled =  false
             let pan = UIPanGestureRecognizer(target: self,
                                              action: #selector(handlePan))
@@ -153,9 +163,6 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
             cell.addGestureRecognizer(pinch)
             cell.addGestureRecognizer(rotate)
 
-        } else {
-            
-            self.collectionView.isScrollEnabled =  true
         }
         
         
@@ -174,6 +181,12 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     
     
     
+    
+}
+
+// Manipulating ControlSprite Position (thisGroup.selectedControl > 1)
+
+extension VertexEditCell {
     override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
                                     shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         
@@ -181,7 +194,7 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     }
     
     func handlePan(gestureRecognizer: UIPanGestureRecognizer) {
-        
+        print("Caught by pan")
         let translation = gestureRecognizer.translation(in: self)
         let myView = self.viewWithTag(thisGroup.selectedControl)!
         myView.center.x += translation.x
@@ -190,7 +203,7 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         let cellView = self.viewWithTag(1)!
         
         for sublayer in cellView.layer.sublayers! {
-           
+            
             if sublayer.name != nil {
                 if sublayer.name!.range(of: String(thisGroup.selectedControl)) != nil {
                     sublayer.removeFromSuperlayer()
@@ -245,7 +258,7 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl)!
         myView.transform = CGAffineTransform(scaleX: thisControl.scale * gestureRecognizer.scale,
                                              y: thisControl.scale * gestureRecognizer.scale).rotated(by: CGFloat(atan2f(Float(CGFloat(myView.transform.b)),Float(myView.transform.a))))
-
+        
         if gestureRecognizer.state == UIGestureRecognizerState.ended {
             saveSelectedSprite()
         }
@@ -262,8 +275,12 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         
         gestureRecognizer.rotation = 0
     }
-    
-    
+
+}
+
+// Scrolling Functions  (thisGroup.selectedControl == 0)
+
+extension VertexEditCell {
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         print("End scrollView Deceleration")
         let realm = try! Realm()
@@ -286,9 +303,10 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         }
         
     }
-    
 }
 
+
+// Drawing Functions
 extension VertexEditCell {
     
     func drawVertex(vertex: Vertex) -> CAShapeLayer {
@@ -351,7 +369,7 @@ extension VertexEditCell {
                                      y: thisControl.editY - 30,
                                      width: 60,
                                      height: 60)
-        
+        controlSprite.isUserInteractionEnabled = false
         controlSprite.transform = CGAffineTransform(scaleX: thisControl.scale, y: thisControl.scale).rotated(by: thisControl.rotation)
         controlSprite.clipsToBounds = true
         controlSprite.tag = controlIDs.count - 1

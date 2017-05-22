@@ -70,6 +70,7 @@ class EditRoomView: UITableViewController {
                                       indexPath: indexPath)
             
             
+            cell.addSubview(drawVertexToggleButton())
             
             return cell
             
@@ -136,6 +137,42 @@ extension EditRoomView: UIImagePickerControllerDelegate, UINavigationControllerD
 
 // Utility functions
 extension EditRoomView {
+    
+    func drawVertexToggleButton() -> UIButton {
+        let vertexToggle = UIButton()
+        let imageSpaceHeight = self.view.frame.height - 200 - self.navigationController!.navigationBar.bounds.height
+        vertexToggle.frame = CGRect(x: self.view.frame.width - 70,
+                                    y: imageSpaceHeight - 70,
+                                    width: 60,
+                                    height: 60)
+        vertexToggle.layer.cornerRadius = 0.5 * vertexToggle.bounds.size.width
+        vertexToggle.clipsToBounds = true
+        vertexToggle.backgroundColor = thisGroup.selectedControl == 1 ? UIColor.blue : UIColor.lightGray
+        vertexToggle.setTitle(thisGroup.selectedControl == 1 ? "Back" : "Edit", for: [])
+        vertexToggle.setTitleColor(UIColor.white, for: UIControlState.normal)
+        vertexToggle.titleLabel?.adjustsFontSizeToFitWidth = true
+        
+        vertexToggle.addTarget(self,
+                               action: #selector(toggleVertexEditState),
+                               for: UIControlEvents.primaryActionTriggered)
+        
+        return vertexToggle
+    }
+    
+    func toggleVertexEditState() {
+        print("Toggline Vertex Edit")
+        
+        let realm = try! Realm(configuration: config)
+        
+        try! realm.write {
+            if thisGroup.selectedControl != 1 {
+                thisGroup.selectedControl = 1
+            } else {
+                thisGroup.selectedControl = 0
+            }
+        }
+        
+    }
     
     func reloadView() {
         
