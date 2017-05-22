@@ -18,6 +18,9 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     var controlTags = [Int]()
     var notificationToken: NotificationToken? = nil
     
+    var activeVertexStart = CGPoint()
+    var activeVertexFinish = CGPoint()
+    
     convenience init(bssid: String,
                      parentTable: UITableView,
                      thisGroup: Group,
@@ -146,6 +149,11 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
             
             self.collectionView.isScrollEnabled =  false
             
+            let vertexPan = UIPanGestureRecognizer(target: self,
+                                                   action: #selector(handleVertexPan))
+            
+            vertexPan.delegate = self
+            cell.addGestureRecognizer(vertexPan)
             
             
         } else {
@@ -179,19 +187,59 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         return CGSize(width: aspectRatio * 440, height: 440)
     }
     
+    override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
+                                    shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        
+        return true
+    }
     
+}
+
+// Editing Vertexes (thisGroup.selectedControl == 1)
+
+extension VertexEditCell {
     
+    func handleVertexPan(gesture: UIPanGestureRecognizer) {
+        let cellView = self.viewWithTag(1)!
+        
+        for sublayer in cellView.layer.sublayers! {
+            
+            if sublayer.name != nil {
+                if sublayer.name!.range(of: "vertex") != nil {
+                    sublayer.removeFromSuperlayer()
+                }
+            }
+            
+        }
+    
+        if gesture.state == UIGestureRecognizerState.began {
+            
+            activeVertexStart = gesture.location(in: cellView)
+            
+        } else if gesture.state == UIGestureRecognizerState.changed {
+            
+            activeVertexFinish = gesture.location(in: cellView)
+            
+            let activeVertex = drawLine(start: activeVertexStart,
+                                          finish: activeVertexFinish)
+            activeVertex.name = "vertex"
+            cellView.layer.addSublayer(activeVertex)
+            
+        } else if gesture.state == UIGestureRecognizerState.ended {
+            activeVertexStart = CGPoint()
+            activeVertexFinish = CGPoint()
+        }
+        
+        
+    }
+
     
 }
 
 // Manipulating ControlSprite Position (thisGroup.selectedControl > 1)
 
 extension VertexEditCell {
-    override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
-                                    shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        
-        return true
-    }
+    
     
     func handlePan(gestureRecognizer: UIPanGestureRecognizer) {
         print("Caught by pan")
@@ -336,6 +384,21 @@ extension VertexEditCell {
         shapeLayer.path = curve.cgPath
         
         shapeLayer.strokeColor = UIColor.green.cgColor
+        shapeLayer.fillColor = UIColor.clear.cgColor
+        shapeLayer.lineWidth = 1.0
+        
+        return shapeLayer
+    }
+    
+    func drawLine(start: CGPoint, finish: CGPoint) -> CAShapeLayer {
+        let shapeLayer = CAShapeLayer()
+        let curve = UIBezierPath()
+        
+        curve.move(to: start)
+        curve.addLine(to: finish)
+        shapeLayer.path = curve.cgPath
+        
+        shapeLayer.strokeColor = UIColor.red.cgColor
         shapeLayer.fillColor = UIColor.clear.cgColor
         shapeLayer.lineWidth = 1.0
         
