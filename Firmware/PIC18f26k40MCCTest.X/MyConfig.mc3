@@ -1003,7 +1003,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.RegisterKey" moduleName="System Module" registerAlias="CONFIG2L"/>
-         <value>227</value>
+         <value>193</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.OptionKey" moduleName="Pin Module" registerAlias="LATB" settingAlias="LATB6" alias="set"/>
@@ -1439,7 +1439,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="System Module" registerAlias="CONFIG2L" settingAlias="PWRTE"/>
-         <value>OFF</value>
+         <value>ON</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.OptionKey" moduleName="System Module" registerAlias="CONFIG1L" settingAlias="FEXTOSC" alias="XT"/>
@@ -3515,7 +3515,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="System Module" registerAlias="CONFIG2L" settingAlias="LPBOREN"/>
-         <value>OFF</value>
+         <value>ON</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.OptionKey" moduleName="Pin Module" registerAlias="TRISC" settingAlias="TRISC4" alias="input"/>
@@ -5272,28 +5272,28 @@
    </tokenMap>
    <generatedFileHashHistoryMap class="java.util.HashMap">
       <entry>
-         <file>mcc_generated_files\mcc.h</file>
-         <hash>5bff957689e85d322cb063ae679a0f1f684fff7d1b3eeae7bfe019b102fcbaf1</hash>
-      </entry>
-      <entry>
-         <file>mcc_generated_files\spi1.h</file>
-         <hash>490de6d2722719728e264c70feb4877ad001a9bb6487ce76c56a15f16cd53a72</hash>
-      </entry>
-      <entry>
-         <file>mcc_generated_files\pin_manager.h</file>
+         <file>mcc_generated_files/pin_manager.h</file>
          <hash>3155408caa3d19eff17f80897d09923ef0a79ca66cc68d923e26c2408766db01</hash>
       </entry>
       <entry>
-         <file>mcc_generated_files\mcc.c</file>
-         <hash>aefd7e2cbc737745c9a732fc9c4e039899a616c05f2427683b8665bf5d87733e</hash>
-      </entry>
-      <entry>
-         <file>mcc_generated_files\spi1.c</file>
+         <file>mcc_generated_files/spi1.c</file>
          <hash>d1d6d62ca67741a52017de83c726bd731ee284743ea1e0a7c213a6dc4d30ba30</hash>
       </entry>
       <entry>
-         <file>mcc_generated_files\pin_manager.c</file>
+         <file>mcc_generated_files/mcc.h</file>
+         <hash>5bff957689e85d322cb063ae679a0f1f684fff7d1b3eeae7bfe019b102fcbaf1</hash>
+      </entry>
+      <entry>
+         <file>mcc_generated_files/mcc.c</file>
+         <hash>8197a141c6658f7b5dfd91217292ff71c06ee90404f6f896fba290841896e02a</hash>
+      </entry>
+      <entry>
+         <file>mcc_generated_files/pin_manager.c</file>
          <hash>5619d6e5295ecdc1d821e7a963894d990f2fa7bf2fdbc895c964fa049a998612</hash>
+      </entry>
+      <entry>
+         <file>mcc_generated_files/spi1.h</file>
+         <hash>490de6d2722719728e264c70feb4877ad001a9bb6487ce76c56a15f16cd53a72</hash>
       </entry>
    </generatedFileHashHistoryMap>
 </config>

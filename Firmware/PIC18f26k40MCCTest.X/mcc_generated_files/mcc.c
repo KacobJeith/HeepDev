@@ -56,8 +56,8 @@
 
 // CONFIG2L
 #pragma config MCLRE = EXTMCLR    // ->If LVP = 0, MCLR pin is MCLR; If LVP = 1, RE3 pin function is MCLR 
-#pragma config PWRTE = OFF    // Power-up Timer Enable bit->Power up timer disabled
-#pragma config LPBOREN = OFF    // ->ULPBOR disabled
+#pragma config PWRTE = ON    // Power-up Timer Enable bit->Power up timer enabled
+#pragma config LPBOREN = ON    // ->ULPBOR enabled
 #pragma config BOREN = SBORDIS    // Brown-out Reset Enable bits->Brown-out Reset enabled , SBOREN bit is ignored
 
 // CONFIG2H
