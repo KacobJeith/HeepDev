@@ -208,8 +208,7 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
                 
                 let index = eachVertex.vertexID.range(of: String(describing: (thisControl?.uniqueID)!))
                 if  index != nil {
-                    let calculatedIndex = eachVertex.vertexID.distance(from: eachVertex.vertexID.startIndex,
-                                                                       to: (index?.lowerBound)!)
+                    let calculatedIndex = eachVertex.vertexID.distance(from: eachVertex.vertexID.startIndex, to: (index?.lowerBound)!)
                     
                     var start = CGPoint(x: myView.center.x,
                                         y: myView.center.y)
@@ -219,13 +218,13 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
                     if calculatedIndex != 0 {
                         
                         start = CGPoint(x: (eachVertex.tx?.editX)!,
-                                            y: (eachVertex.tx?.editY)!)
+                                        y: (eachVertex.tx?.editY)!)
                         finish = CGPoint(x: myView.center.x,
-                                             y: myView.center.y)
+                                         y: myView.center.y)
                     }
                     
-                    let newPath = drawManualVertexPath(start: start,
-                                                       finish: finish)
+                    let newPath = drawVertex(start: start,
+                                             finish: finish)
                     newPath.name = eachVertex.vertexID
                     cellView.layer.addSublayer(newPath)
                 }
@@ -266,7 +265,7 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        print("End scrollView Dragging")
+        print("End scrollView Deceleration")
         let realm = try! Realm()
         
         try! realm.write {
@@ -275,7 +274,18 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         }
     }
     
-    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if !decelerate {
+            print("End scrollView Dragging")
+            let realm = try! Realm()
+            
+            try! realm.write {
+                thisGroup.contentOffsetX = collectionView.contentOffset.x
+                thisGroup.contentOffsetY = collectionView.contentOffset.y
+            }
+        }
+        
+    }
     
 }
 
@@ -286,7 +296,7 @@ extension VertexEditCell {
         let curve = UIBezierPath()
         let startPoint = CGPoint(x: (vertex.tx?.editX)!, y: (vertex.tx?.editY)!)
         let finishPoint = CGPoint(x: (vertex.rx?.editX)!, y: (vertex.rx?.editY)!)
-        print("Start: \(startPoint), Finish: \(finishPoint)")
+        
         curve.move(to: startPoint)
         curve.addQuadCurve(to: finishPoint, controlPoint: CGPoint(x: (vertex.tx?.editX)!, y: (vertex.rx?.editY)!))
         shapeLayer.path = curve.cgPath
@@ -299,10 +309,10 @@ extension VertexEditCell {
         return shapeLayer
     }
     
-    func drawManualVertexPath(start: CGPoint, finish: CGPoint) -> CAShapeLayer {
+    func drawVertex(start: CGPoint, finish: CGPoint) -> CAShapeLayer {
         let shapeLayer = CAShapeLayer()
         let curve = UIBezierPath()
-        print("Start: \(start), Finish: \(finish)")
+        
         curve.move(to: start)
         curve.addQuadCurve(to: finish, controlPoint: CGPoint(x: start.x, y: finish.y))
         shapeLayer.path = curve.cgPath
