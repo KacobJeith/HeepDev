@@ -19,6 +19,7 @@ void SetupHeepDevice(char* deviceName)
 	else
 	{
 		ReadMemory(deviceMemory, curFilledMemory);
+		FillVertexListFromMemory();
 	}
 }
 
