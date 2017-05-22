@@ -4,13 +4,17 @@ class DeviceWriter:
 
 	def __init__(self, deviceInfo, filePath) :
 		self.WriteScriptFile(deviceInfo, filePath)
+		self.WriteArduinoFile(deviceInfo, filePath)
 		return
 
 	def GetFileName(self, deviceInfo) :
 		return deviceInfo.deviceName + '.ino'
 
+	def GetFinalFilePath(self, deviceInfo, filePath) :
+		return filePath + deviceInfo.deviceName + '/'
+
 	def WriteScriptFile(self, deviceInfo, filePath) :
-		filePath = filePath + deviceInfo.deviceName + '/'
+		filePath = self.GetFinalFilePath(deviceInfo, filePath)
 		fileName = self.GetFileName(deviceInfo)
 
 		pathToFiles = '../Firmware/ServerlessFirmware/'
@@ -24,4 +28,10 @@ class DeviceWriter:
 		f.close()
 
 		subprocess.call("bash CopyScript.sh", shell=True)
+		return
+
+	def WriteArduinoFile(self, deviceInfo, filePath) :
+
+
+
 		return
