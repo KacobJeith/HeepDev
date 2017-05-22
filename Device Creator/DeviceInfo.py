@@ -19,7 +19,17 @@ class DeviceInfo:
 		numControlStr = raw_input('Enter number of controls: ')
 		return int(numControlStr)
 
+	def GetOperatingSystem(self) :
+		print "Enter System Type :"
+		print "    lin - Used for linux like operating systems"
+		print "    ard - Arduino firmware"
+		print "    sim - Simulation system"
+		OS = raw_input(': ')
+		return OS
+
+
 	def GetDeviceInfo(self) :
+		self.deviceSystem = self.GetOperatingSystem()
 		self.deviceName = self.GetDeviceName()
 		self.numControls = self.GetNumControls()
 
