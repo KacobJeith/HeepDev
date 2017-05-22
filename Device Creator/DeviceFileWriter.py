@@ -34,7 +34,7 @@ class DeviceWriter:
 		for x in range(0, len(deviceInfo.controlArr) ) :
 			print "Write Control Name " + deviceInfo.controlArr[x].controlName
 			fileDescriptor.write("char controlName" + str(x) + " [] = \"" + deviceInfo.controlArr[x].controlName + "\";\n")
-			fileDescriptor.write("Control control" + str(x) + ";\n")
+			fileDescriptor.write("Control control" + str(x) + ";\n\n")
 
 	def WriteControlDefinitions(self, fileDescriptor, deviceInfo) :
 		for x in range(0, len(deviceInfo.controlArr) ) :
@@ -45,14 +45,20 @@ class DeviceWriter:
 			fileDescriptor.write("	control" + str(x) + ".highValue = " + str(deviceInfo.controlArr[x].highVal) + ";\n")
 			fileDescriptor.write("	control" + str(x) + ".lowValue = " + str(deviceInfo.controlArr[x].lowVal) + ";\n")
 			fileDescriptor.write("	control" + str(x) + ".curValue = " + str(deviceInfo.controlArr[x].curVal) + ";\n")
-			fileDescriptor.write("	AddControl(control" + str(x) + ");\n")
+			fileDescriptor.write("	AddControl(control" + str(x) + ");\n\n")
 									
+
+	def WriteLoopFunction(self, fileDescriptor, deviceInfo) :
+		return
 
 	def WriteSetupFunction(self, fileDescriptor, deviceInfo) :
 		fileDescriptor.write("void setup()\n")
 		fileDescriptor.write("{\n")
 		fileDescriptor.write("	SetupHeepDevice(" + deviceInfo.deviceName + ");\n")
 		self.WriteControlDefinitions(fileDescriptor, deviceInfo)
+		fileDescriptor.write("	SetupHeepTasks();\n")
+		fileDescriptor.write("	CreateInterruptServer();\n")
+		fileDescriptor.write("}\n\n")
 
 	def WriteArduinoFile(self, deviceInfo, filePath) :
 
@@ -64,9 +70,10 @@ class DeviceWriter:
 		print "Begin File Write"
 
 		f.write("#include \"Heep_API.h\"\n")
-		f.write("char deviceName [] = \"" + deviceInfo.deviceName + "\";\n")
+		f.write("char deviceName [] = \"" + deviceInfo.deviceName + "\";\n\n")
 		self.WriteControlNames(f, deviceInfo)
 		self.WriteSetupFunction(f, deviceInfo)
+		self.WriteLoopFunction(f, deviceInfo)
 		f.close()
 
 		return
