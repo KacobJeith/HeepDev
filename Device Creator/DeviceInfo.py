@@ -33,11 +33,11 @@ class DeviceInfo:
 		self.deviceName = self.GetDeviceName()
 		self.numControls = self.GetNumControls()
 
-		controlArr = []
+		self.controlArr = []
 
 		for x in range(0, self.numControls) :
 			newControl = ControlInfo(x)
 			print 'Enter Information for Control ' + str(x)
 			newControl.GetControlInfo()
-			controlArr.append(newControl)
+			self.controlArr.append(newControl)
 

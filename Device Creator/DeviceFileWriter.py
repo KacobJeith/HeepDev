@@ -30,8 +30,25 @@ class DeviceWriter:
 		subprocess.call("bash CopyScript.sh", shell=True)
 		return
 
+	def WriteControlNames(self, fileDescriptor, deviceInfo) :
+		for x in range(0, len(deviceInfo.controlArr) ) :
+			print "Write Control Name " + deviceInfo.controlArr[x].controlName
+			fileDescriptor.write("char controlName" + str(x) + " [] = \"" + deviceInfo.controlArr[x].controlName + "\";\n")
+			fileDescriptor.write("Control control" + str(x) + ";\n")
+
 	def WriteArduinoFile(self, deviceInfo, filePath) :
 
+		fileName = self.GetFileName(deviceInfo)
+		finalFilePath = self.GetFinalFilePath(deviceInfo, filePath)
 
+		f = open(finalFilePath + fileName, 'w')
+		
+		print "Begin File Write"
+
+		f.write("#include \"Heep_API.h\"\n")
+		f.write("char deviceName [] = \"" + deviceInfo.deviceName + "\";\n")
+		self.WriteControlNames(f, deviceInfo)
+
+		f.close()
 
 		return
