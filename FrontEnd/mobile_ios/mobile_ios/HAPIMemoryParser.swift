@@ -238,10 +238,7 @@ class HAPIMemoryParser {
         }
     }
     
-    func nameVertex(tx: DeviceControl?, rx: DeviceControl?) -> String {
-        
-        return String(describing: (tx?.uniqueID)!) + String(describing: (rx?.uniqueID)!)
-    }
+    
     
     func readIPAddress(dump: [UInt8], index: Int) -> String {
         return String(Int(dump[index])) + "." + String(Int(dump[index + 1])) + "." + String(Int(dump[index + 2])) + "." + String(Int(dump[index + 3]))

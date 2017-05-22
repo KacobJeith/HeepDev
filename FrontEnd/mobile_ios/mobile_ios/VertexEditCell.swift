@@ -20,6 +20,7 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     
     var activeVertexStart = CGPoint()
     var activeVertexFinish = CGPoint()
+    var activeVertex = Vertex()
     
     var vertexDictToDelete = [String : Bool]()
     
@@ -225,6 +226,7 @@ extension VertexEditCell {
     
         if gesture.state == UIGestureRecognizerState.began {
             
+            activeVertex = Vertex()
             cellView.layer.addSublayer(drawCircle(center: gesture.location(in: cellView),
                                                   radius: 35,
                                                   name: "circle"))
@@ -244,9 +246,9 @@ extension VertexEditCell {
             }
             
         } else if gesture.state == UIGestureRecognizerState.ended {
+            commitAddVertex()
             activeVertexStart = CGPoint()
             activeVertexFinish = CGPoint()
-            
             searchSublayersForNameToRemove(view: cellView, names: ["finish", "start", "vertex"])
         }
         
@@ -282,7 +284,7 @@ extension VertexEditCell {
     }
     
     func commitDeleteVertex() {
-        let realm = try! Realm()
+        let realm = try! Realm(configuration: config)
         
         for vertex in vertexDictToDelete {
             if vertex.value == true {
@@ -291,6 +293,19 @@ extension VertexEditCell {
                     realm.delete(thisVertex)
                 }
             }
+        }
+    }
+    
+    func commitAddVertex() {
+        print("Adding Vertex!")
+        let realm = try! Realm(configuration: config)
+        
+        let vertexID = nameVertex(tx: activeVertex.tx, rx: activeVertex.rx)
+        activeVertex.vertexID = vertexID
+        
+        try! realm.write {
+            realm.add(activeVertex, update: true)
+            activeVertex.tx?.vertexList.append(activeVertex)
         }
     }
     
@@ -314,6 +329,8 @@ extension VertexEditCell {
                                 let realm = try! Realm(configuration: config)
                                 let thisVertex = realm.object(ofType: Vertex.self,
                                                               forPrimaryKey: vertexName)!
+                                let generator = UIImpactFeedbackGenerator(style: .medium)
+                                generator.impactOccurred()
                                 
                                 cellView.layer.addSublayer(drawVertex(vertex: thisVertex,
                                                                       color: UIColor.red.cgColor,
@@ -388,6 +405,8 @@ extension VertexEditCell {
                         let generator = UIImpactFeedbackGenerator(style: .medium)
                         generator.impactOccurred()
                         
+                        activeVertex.rx = touched
+                        
                         if replace {
                             searchSublayersForNameToRemove(view: cellView, names: ["finish"])
                         }
@@ -404,7 +423,7 @@ extension VertexEditCell {
                 if touched.controlDirection == direction {
                     activeVertexStart = CGPoint(x: touched.editX,
                                                 y: touched.editY)
-                    
+                    activeVertex.tx = touched
                     let generator = UIImpactFeedbackGenerator(style: .medium)
                     generator.impactOccurred()
                     

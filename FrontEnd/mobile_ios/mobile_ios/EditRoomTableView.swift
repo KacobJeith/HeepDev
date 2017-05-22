@@ -151,19 +151,19 @@ extension EditRoomView {
         if thisGroup.selectedControl == 0 {
             
             vertexToggle.backgroundColor = UIColor.lightGray
-            vertexToggle.setTitle("Add", for: [])
+            vertexToggle.setTitle("Edit", for: [])
             
         } else if thisGroup.selectedControl == 1 {
             vertexToggle.backgroundColor = UIColor.blue
-            vertexToggle.setTitle("Del", for: [])
+            vertexToggle.setTitle("Adding", for: [])
             
         } else if thisGroup.selectedControl == 2 {
             vertexToggle.backgroundColor = UIColor.red
-            vertexToggle.setTitle("Back", for: [])
+            vertexToggle.setTitle("Deleting", for: [])
             
         } else {
             vertexToggle.backgroundColor = UIColor.lightGray
-            vertexToggle.setTitle("Add", for: [])
+            vertexToggle.setTitle("Back", for: [])
         }
         
         

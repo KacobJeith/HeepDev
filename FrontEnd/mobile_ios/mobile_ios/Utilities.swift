@@ -73,3 +73,8 @@ func currentWifiInfo() -> (ssid: String, bssid:  String){
     return (ssid: ssid, bssid: bssid)
 }
 
+func nameVertex(tx: DeviceControl?, rx: DeviceControl?) -> String {
+    
+    return String(describing: (tx?.uniqueID)!) + String(describing: (rx?.uniqueID)!)
+}
+
