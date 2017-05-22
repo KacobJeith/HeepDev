@@ -5,6 +5,7 @@ class DeviceWriter:
 	def __init__(self, deviceInfo, filePath) :
 		self.WriteScriptFile(deviceInfo, filePath)
 		self.WriteArduinoFile(deviceInfo, filePath)
+		self.RandomizeDeviceIDAndMAC(deviceInfo, filePath)
 		return
 
 	def GetFileName(self, deviceInfo) :
@@ -80,3 +81,15 @@ class DeviceWriter:
 		f.close()
 
 		return
+
+	def RandomizeDeviceIDAndMAC(self, deviceInfo, filePath) :
+		filePath = self.GetFinalFilePath(deviceInfo, filePath)
+
+		f = open('WriteRandomMACandDevice.sh', 'w')
+		f.write('#!/bin/bash\n')
+		f.write('cd ' + filePath + '\n')  
+		f.write('python CreateUniqueID.py\n')
+		f.close()
+
+		subprocess.call("bash WriteRandomMACandDevice.sh", shell=True)
+		
