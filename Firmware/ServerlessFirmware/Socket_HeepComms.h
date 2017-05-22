@@ -65,7 +65,8 @@ void CreateServer(int portno)
 int TCP_PORT = 5000;
 
 void ServerThread()
-{
+{ 
+    cout << "Begin Server" << endl;
     CreateServer(TCP_PORT);
 }
 

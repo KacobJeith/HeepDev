@@ -1,19 +1,22 @@
 #include "Scheduler.h"
 
-#ifdef ON_ARDUINO
-#include "ENC28j60_HeepComms.h"
-#include "Arduino_EEPROM.h"
-#endif
-
 #ifdef ON_PC
 #include "Socket_HeepComms.h"
 #include "Simulation_NonVolatileMemory.h"
-#endif
 
-#ifdef SIMUlATION
+#else
+
+#ifdef ON_ARDUINO
+#include "ENC28j60_HeepComms.h"
+#include "Arduino_EEPROM.h"
+
+#else
 #include "Simulation_HeepComms.h"
 #include "Simulation_NonVolatileMemory.h"
 #endif
+
+#endif
+
 
 unsigned char clearMemory = 0;
 void SetupHeepDevice(char* deviceName)
