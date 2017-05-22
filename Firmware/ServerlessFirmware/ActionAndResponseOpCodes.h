@@ -258,6 +258,38 @@ void ExecuteDeleteVertexOpCode()
 	}
 }
 
+void ExecuteDeleteMOPOpCode()
+{
+	unsigned int counter = 1;
+
+	unsigned int numBytes = GetNumberFromBuffer(inputBuffer, counter, 1);
+	unsigned int foundCode = 0;
+	unsigned int deviceMemCounter = 0;
+
+	while(deviceMemCounter < curFilledMemory)
+	{
+		for(int i = 0; i < numBytes; i++)
+		{
+			if(deviceMemory[deviceMemCounter+i] != inputBuffer[counter+i])
+			{
+				break;
+			}
+
+			foundCode++;
+		}
+
+		if(foundCode == numBytes)
+		{
+			deviceMemory[deviceMemCounter] = FragmentOpCode;
+			deviceMemory[deviceMemCounter + 5] = numBytes;
+		}
+		foundCode = 0;
+
+		deviceMemCounter = SkipOpCode(deviceMemCounter);
+	}
+	
+}
+
 void ExecuteAddMOPOpCode()
 {
 	unsigned int counter = 1;
@@ -301,6 +333,10 @@ void ExecuteControlOpCodes()
 	else if(ControlOpCode == AddMOPOpCode)
 	{
 		ExecuteAddMOPOpCode();
+	}
+	else if(ControlOpCode == DeleteMOPOpCode)
+	{
+		ExecuteDeleteMOPOpCode();
 	}
 }
 
