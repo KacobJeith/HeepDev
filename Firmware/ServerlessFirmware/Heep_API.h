@@ -3,7 +3,14 @@
 #ifdef ON_ARDUINO
 #include "ENC28j60_HeepComms.h"
 #include "Arduino_EEPROM.h"
-#else
+#endif
+
+#ifdef ON_PC
+#include "Socket_HeepComms.h"
+#include "Simulation_NonVolatileMemory.h"
+#endif
+
+#ifdef SIMUlATION
 #include "Simulation_HeepComms.h"
 #include "Simulation_NonVolatileMemory.h"
 #endif

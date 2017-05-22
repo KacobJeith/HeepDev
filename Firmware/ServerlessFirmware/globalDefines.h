@@ -10,3 +10,8 @@
 #define NUMBER_OF_TASKS 4
 
 //#define ON_ARDUINO
+//#define SIMULATION
+#define ON_PC
+#ifdef ON_PC
+#include <string.h>
+#endif
