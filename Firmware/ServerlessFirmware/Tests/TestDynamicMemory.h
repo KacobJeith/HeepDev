@@ -815,28 +815,20 @@ void TestBuildVertexListFromPointers()
 
 	FillVertexListFromMemory();
 
-	ExpectedValue valueList [5];
+	ExpectedValue valueList [3];
 	valueList[0].valueName = "Num Vertices";
 	valueList[0].expectedValue = 2;
 	valueList[0].actualValue = numberOfVertices;
 
-	valueList[1].valueName = "Vertex 1 Addr";
-	valueList[1].expectedValue = 13;
-	valueList[1].actualValue = vertexPointerList[0];
+	valueList[1].valueName = "Vertex 1 OpCode Check";
+	valueList[1].expectedValue = 0x03;
+	valueList[1].actualValue = deviceMemory[vertexPointerList[0]];
 
-	valueList[2].valueName = "Vertex 2 Addr";
-	valueList[2].expectedValue = 39;
-	valueList[2].actualValue = vertexPointerList[1];
+	valueList[2].valueName = "Vertex 2 OpCode Check";
+	valueList[2].expectedValue = 0x03;
+	valueList[2].actualValue = deviceMemory[vertexPointerList[1]];
 
-	valueList[3].valueName = "Vertex 1 OpCode Check";
-	valueList[3].expectedValue = 0x03;
-	valueList[3].actualValue = deviceMemory[vertexPointerList[0]];
-
-	valueList[4].valueName = "Vertex 2 OpCode Check";
-	valueList[4].expectedValue = 0x03;
-	valueList[4].actualValue = deviceMemory[vertexPointerList[1]];
-
-	CheckResults(TestName, valueList, 5);
+	CheckResults(TestName, valueList, 3);
 }	
 
 void TestControlRegister()
