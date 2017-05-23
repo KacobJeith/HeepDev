@@ -255,31 +255,15 @@ void TestIconIDOpCode()
 	valueList[0].expectedValue = IconIDOpCode;
 	valueList[0].actualValue = deviceMemory[0];
 
-	valueList[1].valueName = "Device ID 1";
-	valueList[1].expectedValue = 1;
-	valueList[1].actualValue = deviceMemory[1];
-
-	valueList[2].valueName = "Device ID 2";
-	valueList[2].expectedValue = 2;
-	valueList[2].actualValue = deviceMemory[2];
-
-	valueList[3].valueName = "Device ID 3";
-	valueList[3].expectedValue = 3;
-	valueList[3].actualValue = deviceMemory[3];
-
-	valueList[4].valueName = "Device ID 4";
-	valueList[4].expectedValue = 4;
-	valueList[4].actualValue = deviceMemory[4];
-
 	valueList[5].valueName = "Num Bytes";
 	valueList[5].expectedValue = 1;
-	valueList[5].actualValue = deviceMemory[5];
+	valueList[5].actualValue = deviceMemory[ID_SIZE + 1];
 
 	valueList[6].valueName = "Letter One";
 	valueList[6].expectedValue = 4;
-	valueList[6].actualValue = deviceMemory[6];
+	valueList[6].actualValue = deviceMemory[ID_SIZE + 2];
 
-	CheckResults(TestName, valueList, 7);
+	CheckResults(TestName, valueList, 4);
 }
 
 void TestIconDataOpCode()

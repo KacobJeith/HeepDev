@@ -1,9 +1,10 @@
 CC = g++
+DEFINE_INDEXING = -DUSE_INDEXED_IDS
 
-all: clean TestFirmware.app
+all: TestFirmwareIndexing.app TestFirmwareUnIndexed.app
 
-TestFirmware.app : TestServerlessFirmware.cpp
+TestFirmwareIndexing.app : TestServerlessFirmware.cpp
+	$(CC) $(DEFINE_INDEXING) $< -o $@
+
+TestFirmwareUnIndexed.app : TestServerlessFirmware.cpp
 	$(CC) $< -o $@
-
-clean:
-	rm TestFirmware.app

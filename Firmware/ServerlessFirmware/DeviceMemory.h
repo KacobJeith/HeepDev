@@ -171,7 +171,7 @@ void SetDeviceNameInMemory(char* deviceName, int numCharacters, unsigned long de
 void SetIconIDInMemory(char iconID, unsigned long deviceID)
 {
 	AddNewCharToMemory(IconIDOpCode);
-	AddDeviceIDToMemory(deviceID);
+	AddIndexOrDeviceIDToMemory(deviceID);
 	AddNewCharToMemory(1);
 	AddNewCharToMemory(iconID);
 }
@@ -179,7 +179,7 @@ void SetIconIDInMemory(char iconID, unsigned long deviceID)
 void SetIconDataInMemory(char* iconData, int numCharacters, unsigned long deviceID)
 {
 	AddNewCharToMemory(CustomIconDrawingOpCode); 
-	AddDeviceIDToMemory(deviceID);
+	AddIndexOrDeviceIDToMemory(deviceID);
 	AddNewCharToMemory((char)numCharacters);
 
 	for(int i = 0; i < numCharacters; i++)
@@ -192,7 +192,7 @@ unsigned int ParseXYOpCode(int &x, int &y, unsigned long &deviceID, unsigned int
 {
 	counter ++;
 
-	deviceID = GetNumberFromBuffer(deviceMemory, counter, 4);
+	deviceID = GetNumberFromBuffer(deviceMemory, counter, ID_SIZE);
 	GetNumberFromBuffer(deviceMemory, counter, 1);
 	x = GetNumberFromBuffer(deviceMemory, counter, 2);
 	y = GetNumberFromBuffer(deviceMemory, counter, 2);
@@ -203,6 +203,8 @@ unsigned int ParseXYOpCode(int &x, int &y, unsigned long &deviceID, unsigned int
 unsigned int GetXYFromMemory(int &x, int &y, unsigned long deviceID, unsigned int &XYMemPosition)
 {
 	unsigned int counter = 0;
+
+	deviceID = GetIndexedDeviceID(deviceID);
 
 	while(counter < curFilledMemory)
 	{
@@ -230,7 +232,7 @@ unsigned int GetXYFromMemory(int &x, int &y, unsigned long deviceID, unsigned in
 void SetXYInMemory(int x, int y, unsigned long deviceID)
 {
 	AddNewCharToMemory(FrontEndPositionOpCode);
-	AddDeviceIDToMemory(deviceID);
+	AddIndexOrDeviceIDToMemory(deviceID);
 	AddNewCharToMemory((char)4);
 	AddNumberToMemoryWithSpecifiedBytes(x, 2);
 	AddNumberToMemoryWithSpecifiedBytes(y, 2);
@@ -260,7 +262,7 @@ void UpdateXYInMemory(int x, int y, unsigned long deviceID)
 void SetIPInMemory(HeepIPAddress theIP, unsigned long deviceID)
 {
 	AddNewCharToMemory(DeviceIPOpCode);
-	AddDeviceIDToMemory(deviceID);
+	AddIndexOrDeviceIDToMemory(deviceID);
 	AddNewCharToMemory((char)4);
 	AddIPToMemory(theIP);
 }
@@ -296,9 +298,9 @@ int SetVertexInMemory(Vertex theVertex)
 	int beginningOfMemory = curFilledMemory;
 
 	AddNewCharToMemory(VertexOpCode);
-	AddDeviceIDToMemory(theVertex.txID);
+	AddIndexOrDeviceIDToMemory(theVertex.txID);
 	AddNewCharToMemory((char)10);
-	AddDeviceIDToMemory(theVertex.rxID);
+	AddIndexOrDeviceIDToMemory(theVertex.rxID);
 	AddNewCharToMemory(theVertex.txControlID);
 	AddNewCharToMemory(theVertex.rxControlID);
 	AddIPToMemory(theVertex.rxIPAddress);
@@ -338,7 +340,7 @@ unsigned int GetFragmentFromMemory(int &pointerToFragment, int &numFragementByte
 		{
 			pointerToFragment = counter;
 
-			numFragementBytes = 6 + deviceMemory[counter + ID_SIZE + 1];
+			numFragementBytes = 2 + ID_SIZE + deviceMemory[counter + ID_SIZE + 1];
 
 			return 0;
 		}
