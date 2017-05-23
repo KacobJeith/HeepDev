@@ -1,6 +1,15 @@
 #include "UnitTestSystem.h"
 #include "../ActionAndResponseOpCodes.h"
 
+void PrintDeviceMemory()
+{
+	for(int i = 0; i < curFilledMemory; i++)
+	{
+		cout << (int)deviceMemory[i] << " ";
+	}
+	cout << endl;
+}
+
 void TestAddCharToBuffer()
 {
 	std::string TestName = "Add Char to Buffer";
@@ -250,20 +259,22 @@ void TestIconIDOpCode()
 	ClearDeviceMemory();
 	SetIconIDInMemory(4, 0x01020304);
 
-	ExpectedValue valueList [7];
+	ExpectedValue valueList [3];
 	valueList[0].valueName = "Icon ID OpCode";
 	valueList[0].expectedValue = IconIDOpCode;
 	valueList[0].actualValue = deviceMemory[0];
 
-	valueList[5].valueName = "Num Bytes";
-	valueList[5].expectedValue = 1;
-	valueList[5].actualValue = deviceMemory[ID_SIZE + 1];
+	valueList[1].valueName = "Num Bytes";
+	valueList[1].expectedValue = 1;
+	valueList[1].actualValue = deviceMemory[ID_SIZE + 1];
 
-	valueList[6].valueName = "Letter One";
-	valueList[6].expectedValue = 4;
-	valueList[6].actualValue = deviceMemory[ID_SIZE + 2];
+	valueList[2].valueName = "Letter One";
+	valueList[2].expectedValue = 4;
+	valueList[2].actualValue = deviceMemory[ID_SIZE + 2];
 
-	CheckResults(TestName, valueList, 4);
+	CheckResults(TestName, valueList, 3);
+
+	PrintDeviceMemory();
 }
 
 void TestIconDataOpCode()
