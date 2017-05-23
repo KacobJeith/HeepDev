@@ -3,6 +3,8 @@
 
 void PrintDeviceMemory()
 {
+	cout << "Start" << endl;
+
 	for(int i = 0; i < curFilledMemory; i++)
 	{
 		cout << (int)deviceMemory[i] << " ";
@@ -259,6 +261,8 @@ void TestIconIDOpCode()
 	ClearDeviceMemory();
 	SetIconIDInMemory(4, 0x01020304);
 
+	PrintDeviceMemory();
+
 	ExpectedValue valueList [3];
 	valueList[0].valueName = "Icon ID OpCode";
 	valueList[0].expectedValue = IconIDOpCode;
@@ -273,8 +277,6 @@ void TestIconIDOpCode()
 	valueList[2].actualValue = deviceMemory[ID_SIZE + 2];
 
 	CheckResults(TestName, valueList, 3);
-
-	PrintDeviceMemory();
 }
 
 void TestIconDataOpCode()

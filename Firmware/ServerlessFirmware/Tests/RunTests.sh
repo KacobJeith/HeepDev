@@ -1,4 +1,4 @@
-rm TestFirmwareIndexed.app
+rm TestFirmwareIndexing.app
 rm TestFirmwareUnIndexed.app
 
 make all
