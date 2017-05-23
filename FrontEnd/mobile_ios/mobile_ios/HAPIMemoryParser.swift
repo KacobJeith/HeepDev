@@ -27,6 +27,20 @@ class HAPIMemoryParser {
     
     public func BuildSetVertexCOP(vertex: Vertex) -> [UInt8] {
         let COP = UInt8(0x0C)
+        let packet = prepareVertexPacket(vertex: vertex)
+        let entireArray = packageCOP(COP: COP, packet: packet)
+        return entireArray
+    }
+    
+    public func BuildDeleteVertexCOP(vertex: Vertex) -> [UInt8] {
+        let COP = UInt8(0x0D)
+        let packet = prepareVertexPacket(vertex: vertex)
+        let entireArray = packageCOP(COP: COP, packet: packet)
+        return entireArray
+    }
+    
+    func prepareVertexPacket(vertex: Vertex) -> [UInt8] {
+        
         var packet = [UInt8]()
         let txDeviceID = GetDeviceIDBytesFromInt(deviceID: (vertex.tx?.deviceID)!)
         let rxDeviceID = GetDeviceIDBytesFromInt(deviceID: (vertex.rx?.deviceID)!)
@@ -46,8 +60,7 @@ class HAPIMemoryParser {
         packet.append(UInt8(rxControlID))
         packet.append(contentsOf: rxIPAddress)
         
-        let entireArray = packageCOP(COP: COP, packet: packet)
-        return entireArray
+        return packet
     }
     
     func IPStringToByteArray(IPString: String) -> [UInt8] {

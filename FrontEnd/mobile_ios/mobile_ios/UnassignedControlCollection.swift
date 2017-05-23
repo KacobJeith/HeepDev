@@ -27,6 +27,25 @@ class UnassignedControlCollection: UITableViewCell, UICollectionViewDataSource, 
         self.thisGroup = thisGroup
         self.myIndexPath = indexPath
         
+        
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = UICollectionViewScrollDirection.horizontal
+        layout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10)
+        layout.itemSize = CGSize(width: 80, height: 80)
+        
+        let screenSize = UIScreen.main.bounds
+        let screenWidth = screenSize.width
+        collectionView = UICollectionView(frame: CGRect(x: 0,y: 0,width: screenWidth,height: 100) , collectionViewLayout: layout)
+        
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "CollectionViewCell")
+        collectionView.backgroundColor = .white
+        collectionView.contentOffset = CGPoint(x: thisGroup.unassignedOffsetX, y: 0)
+        
+        self.addSubview(collectionView)
+        
+        
         notificationToken = results.addNotificationBlock {  [weak self] (changes: RealmCollectionChange) in
             
             switch changes {
@@ -53,21 +72,6 @@ class UnassignedControlCollection: UITableViewCell, UICollectionViewDataSource, 
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = UICollectionViewScrollDirection.horizontal
-        layout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10)
-        layout.itemSize = CGSize(width: 80, height: 80)
-        
-        let screenSize = UIScreen.main.bounds
-        let screenWidth = screenSize.width
-        collectionView = UICollectionView(frame: CGRect(x: 0,y: 0,width: screenWidth,height: 100) , collectionViewLayout: layout)
-        
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "CollectionViewCell")
-        collectionView.backgroundColor = .white
-        
-        self.addSubview(collectionView)
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -125,8 +129,33 @@ extension UnassignedControlCollection {
             controls[sender.tag].groupsAssigned += 1
             addToGroup.controls.append(controls[sender.tag])
             addToGroup.selectedControl = controls[sender.tag].uniqueID
+            thisGroup.unassignedOffsetX = collectionView.contentOffset.x
         }
         
     }
     
+    // Scrolling Functions  (thisGroup.selectedControl == 0)
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        
+        let realm = try! Realm(configuration: config)
+        
+        try! realm.write {
+            thisGroup.unassignedOffsetX = collectionView.contentOffset.x
+        }
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if !decelerate {
+            
+            let realm = try! Realm(configuration: config)
+            
+            try! realm.write {
+                thisGroup.unassignedOffsetX = collectionView.contentOffset.x
+            }
+        }
+        
+    }
+    
+
 }

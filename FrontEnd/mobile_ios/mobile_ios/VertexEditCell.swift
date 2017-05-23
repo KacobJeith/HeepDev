@@ -289,11 +289,16 @@ extension VertexEditCell {
         for vertex in vertexDictToDelete {
             if vertex.value == true {
                 let thisVertex = realm.object(ofType: Vertex.self, forPrimaryKey: vertex.key)!
+                HeepConnections().sendDeleteVertexToHeepDevice(activeVertex: thisVertex)
+                
                 try! realm.write {
                     realm.delete(thisVertex)
                 }
+                
             }
         }
+        
+        
     }
     
     func commitAddVertex() {

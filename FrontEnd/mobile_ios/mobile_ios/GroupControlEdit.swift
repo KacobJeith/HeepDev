@@ -55,7 +55,7 @@ class GroupControlEdit: UITableViewCell, UICollectionViewDataSource, UICollectio
         collectionView.dataSource = self
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "CollectionViewCell")
         collectionView.backgroundColor = .white
-        
+        collectionView.contentOffset = CGPoint(x: thisGroup.assignedOffsetX, y: 0)
         self.addSubview(collectionView)
         
     }
@@ -124,9 +124,34 @@ extension GroupControlEdit {
             } else {
                 thisGroup.selectedControl = controls[sender.tag].uniqueID
             }
+            thisGroup.assignedOffsetX = collectionView.contentOffset.x
+            
         }
         
         print(thisGroup.selectedControl)
+        
+    }
+    
+    // Scrolling Functions  (thisGroup.selectedControl == 0)
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        
+        let realm = try! Realm(configuration: config)
+        
+        try! realm.write {
+            thisGroup.assignedOffsetX = collectionView.contentOffset.x
+        }
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if !decelerate {
+            
+            let realm = try! Realm(configuration: config)
+            
+            try! realm.write {
+                thisGroup.assignedOffsetX = collectionView.contentOffset.x
+            }
+        }
         
     }
     
