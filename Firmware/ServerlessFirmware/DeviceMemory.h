@@ -42,6 +42,11 @@ unsigned char controlRegister = 0;
 unsigned long GetDeviceIDFromIndex(unsigned long index);
 unsigned long GetIndexedDeviceID(unsigned long deviceID);
 
+void PerformPreOpCodeProcessing(unsigned long deviceID)
+{
+	GetIndexedDeviceID(deviceID);
+}
+
 void SetControlRegister()
 {
 #ifdef USE_INDEXED_IDS
@@ -158,8 +163,10 @@ void AddIPToMemory(HeepIPAddress theIP)
 
 void SetDeviceNameInMemory(char* deviceName, int numCharacters, unsigned long deviceID)
 {
+	PerformPreOpCodeProcessing(deviceID);
+
 	AddNewCharToMemory(DeviceNameOpCode);
-	AddDeviceIDToMemory(deviceID);
+	AddIndexOrDeviceIDToMemory(deviceID);
 	AddNewCharToMemory((char)numCharacters);
 
 	for(int i = 0; i < numCharacters; i++)
@@ -170,6 +177,8 @@ void SetDeviceNameInMemory(char* deviceName, int numCharacters, unsigned long de
 
 void SetIconIDInMemory(char iconID, unsigned long deviceID)
 {
+	PerformPreOpCodeProcessing(deviceID);
+
 	AddNewCharToMemory(IconIDOpCode);
 	AddIndexOrDeviceIDToMemory(deviceID);
 	AddNewCharToMemory(1);
@@ -178,6 +187,8 @@ void SetIconIDInMemory(char iconID, unsigned long deviceID)
 
 void SetIconDataInMemory(char* iconData, int numCharacters, unsigned long deviceID)
 {
+	PerformPreOpCodeProcessing(deviceID);
+
 	AddNewCharToMemory(CustomIconDrawingOpCode); 
 	AddIndexOrDeviceIDToMemory(deviceID);
 	AddNewCharToMemory((char)numCharacters);
@@ -231,6 +242,8 @@ unsigned int GetXYFromMemory(int &x, int &y, unsigned long deviceID, unsigned in
 
 void SetXYInMemory(int x, int y, unsigned long deviceID)
 {
+	PerformPreOpCodeProcessing(deviceID);
+
 	AddNewCharToMemory(FrontEndPositionOpCode);
 	AddIndexOrDeviceIDToMemory(deviceID);
 	AddNewCharToMemory((char)4);
@@ -261,6 +274,8 @@ void UpdateXYInMemory(int x, int y, unsigned long deviceID)
 
 void SetIPInMemory(HeepIPAddress theIP, unsigned long deviceID)
 {
+	PerformPreOpCodeProcessing(deviceID);
+
 	AddNewCharToMemory(DeviceIPOpCode);
 	AddIndexOrDeviceIDToMemory(deviceID);
 	AddNewCharToMemory((char)4);
@@ -295,6 +310,9 @@ int GetVertexAtPonter(unsigned long pointer, Vertex &returnedVertex)
 
 int SetVertexInMemory(Vertex theVertex)
 {
+	PerformPreOpCodeProcessing(theVertex.rxID);
+	PerformPreOpCodeProcessing(theVertex.txID);
+
 	int beginningOfMemory = curFilledMemory;
 
 	AddNewCharToMemory(VertexOpCode);
