@@ -57,11 +57,11 @@ func currentWifiInfo() -> (ssid: String, bssid:  String){
             let rec = unsafeBitCast(interfaceName, to: AnyObject.self)
             if let unsafeInterfaceData = CNCopyCurrentNetworkInfo("\(rec)" as CFString), let interfaceData = unsafeInterfaceData as? [String : AnyObject] {
                 // connected wifi
-                print("BSSID: \(String(describing: interfaceData["BSSID"])), SSID: \(String(describing: interfaceData["SSID"])), SSIDDATA: \(String(describing: interfaceData["SSIDDATA"]))")
+                //print("BSSID: \(String(describing: interfaceData["BSSID"])), SSID: \(String(describing: interfaceData["SSID"])), SSIDDATA: \(String(describing: interfaceData["SSIDDATA"]))")
                 
                 ssid = interfaceData["SSID"] as! String
                 bssid = interfaceData["BSSID"] as! String
-                print(ssid)
+                //print(ssid)
                 
             } else {
                 // not connected wifi
@@ -74,6 +74,9 @@ func currentWifiInfo() -> (ssid: String, bssid:  String){
 }
 
 func nameVertex(tx: DeviceControl?, rx: DeviceControl?) -> String {
+    if tx == nil || rx == nil {
+        return "nil"
+    }
     
     return String(describing: (tx?.uniqueID)!) + String(describing: (rx?.uniqueID)!)
 }

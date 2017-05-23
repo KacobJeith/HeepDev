@@ -498,7 +498,6 @@ extension VertexEditCell {
     
     
     func handlePan(gestureRecognizer: UIPanGestureRecognizer) {
-        print("Caught by pan")
         let translation = gestureRecognizer.translation(in: self)
         let myView = self.viewWithTag(thisGroup.selectedControl)!
         myView.center.x += translation.x

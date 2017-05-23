@@ -166,7 +166,13 @@ extension GroupCollectionView {
         let firstGroupInPlace = Group()
         firstGroupInPlace.place = thisPlace.bssid
         firstGroupInPlace.name = "My First Room"
-        firstGroupInPlace.id = (allGroups.first?.id)! + 1
+        
+        if allGroups.count == 0 {
+            firstGroupInPlace.id = 0
+        } else {
+            
+            firstGroupInPlace.id = (allGroups.first?.id)! + 1
+        }
         print(firstGroupInPlace.id)
         
         try! realm.write {
