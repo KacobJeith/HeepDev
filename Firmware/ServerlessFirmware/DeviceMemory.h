@@ -38,6 +38,10 @@ unsigned char memoryChanged = 0;
 
 unsigned char controlRegister = 0;
 
+
+unsigned long GetDeviceIDFromIndex(unsigned long index);
+unsigned long GetIndexedDeviceID(unsigned long deviceID);
+
 void SetControlRegister()
 {
 #ifdef USE_INDEXED_IDS
@@ -136,6 +140,12 @@ void AddIndexToMemory(unsigned long deviceIndex)
 void AddDeviceIDToMemory(unsigned long deviceID)
 {
 	curFilledMemory = AddDeviceIDToBuffer(deviceMemory, curFilledMemory, deviceID);
+}
+
+void AddIndexOrDeviceIDToMemory(unsigned long deviceID)
+{
+	unsigned long index = GetIndexedDeviceID(deviceID);
+	AddIndexToMemory(index);
 }
 
 void AddIPToMemory(HeepIPAddress theIP)
