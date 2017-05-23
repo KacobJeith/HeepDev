@@ -1,6 +1,15 @@
 #include "../ActionAndResponseOpCodes.h"
 #include "UnitTestSystem.h"
 
+void PrintOutputBuffer()
+{
+	for(int i = 0; i < outputBufferLastByte; i++)
+	{
+		cout << (int)outputBuffer[i] << " ";
+	}
+	cout << endl;
+}
+
 void TestClearOutputBufferAndAddChar()
 {
 	std::string TestName = "Add Char to Output Buffer and Clear";
@@ -39,19 +48,19 @@ void TestMemoryDumpROP()
 
 	valueList[1].valueName = "Device ID 1";
 	valueList[1].expectedValue = 1;
-	valueList[1].actualValue = deviceMemory[1];
+	valueList[1].actualValue = outputBuffer[1];
 
 	valueList[2].valueName = "Device ID 2";
 	valueList[2].expectedValue = 2;
-	valueList[2].actualValue = deviceMemory[2];
+	valueList[2].actualValue = outputBuffer[2];
 
 	valueList[3].valueName = "Device ID 3";
 	valueList[3].expectedValue = 3;
-	valueList[3].actualValue = deviceMemory[3];
+	valueList[3].actualValue = outputBuffer[3];
 
 	valueList[4].valueName = "Device ID 4";
 	valueList[4].expectedValue = 4;
-	valueList[4].actualValue = deviceMemory[4];
+	valueList[4].actualValue = outputBuffer[4];
 
 	CheckResults(TestName, valueList, 5);
 }
