@@ -628,22 +628,24 @@ void TestDefragmentDeviceMemory()
 	theIP.Octet1 = 150;
 	theVertex.rxIPAddress = theIP;
 
+	int memCheckStart = GetMemCounterStart()*2;
+
 	SetVertexInMemory(theVertex);
 	ExpectedValue valueList [3];
 	unsigned int beforeDeletionMemory = curFilledMemory;
 	valueList[0].valueName = "Memory Filled Before Deletion";
-	valueList[0].expectedValue = 16;
+	valueList[0].expectedValue = ID_SIZE+2+ID_SIZE+6 + memCheckStart;
 	valueList[0].actualValue = beforeDeletionMemory;
 
-	DeleteVertexAtPointer(0);
+	DeleteVertexAtPointer(memCheckStart);
 	unsigned int afterDeletionMemory = curFilledMemory;
 	valueList[1].valueName = "Memory Filled After Deletion";
-	valueList[1].expectedValue = 16;
+	valueList[1].expectedValue = ID_SIZE+2+ID_SIZE+6 + memCheckStart;
 	valueList[1].actualValue = afterDeletionMemory;
 
 	DefragmentMemory();
 	valueList[2].valueName = "Memory Filled after Defragmentation";
-	valueList[2].expectedValue = 0;
+	valueList[2].expectedValue = memCheckStart;
 	valueList[2].actualValue = curFilledMemory;
 	CheckResults(TestName, valueList, 3);
 }
