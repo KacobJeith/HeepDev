@@ -401,7 +401,6 @@ unsigned long GetIndexedDeviceID(unsigned long deviceID)
 	}
 
 	// If Not Indexed, then index it!
-	// Add 1 to get new index value
 	AddNewCharToMemory(LocalDeviceIDOpCode);
 	AddIndexToMemory(topIndex);
 	AddNewCharToMemory(STANDARD_ID_SIZE);
