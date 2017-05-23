@@ -247,6 +247,7 @@ void TestSetVertxCOP()
 {
 	std::string TestName = "Test Set Vertex COP";
 
+	ClearVertices();
 	ClearDeviceMemory();
 	ClearInputBuffer();
 
@@ -273,7 +274,7 @@ void TestSetVertxCOP()
 	ExecuteControlOpCodes();
 
 	Vertex newVertex;
-	int success = GetVertexAtPonter(0, newVertex);
+	int success = GetVertexAtPonter(vertexPointerList[0], newVertex);
 
 	ExpectedValue valueList [8];
 	valueList[0].valueName = "TXID";
