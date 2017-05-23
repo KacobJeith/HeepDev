@@ -414,8 +414,6 @@ void TestSetVertexOpCode()
 
 	int memCheckStart = GetMemCounterStart()*2;
 
-	PrintDeviceMemory();
-
 	ExpectedValue valueList [8];
 	valueList[0].valueName = "Vertex OpCode";
 	valueList[0].expectedValue = VertexOpCode;
@@ -470,8 +468,10 @@ void TestGetVertex()
 	myVertex.rxControlID = 0x02;
 	SetVertexInMemory(myVertex);
 
+	int memCheckStart = GetMemCounterStart()*2;
+
 	Vertex newVertex;
-	int success = GetVertexAtPonter(0, newVertex);
+	int success = GetVertexAtPonter(memCheckStart, newVertex);
 
 	ExpectedValue valueList [8];
 	valueList[0].valueName = "TXID";

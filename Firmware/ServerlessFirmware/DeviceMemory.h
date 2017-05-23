@@ -295,9 +295,9 @@ int GetVertexAtPonter(unsigned long pointer, Vertex &returnedVertex)
 
 	unsigned int counter = pointer + 1;
 
-	returnedVertex.txID = GetNumberFromBuffer(deviceMemory, counter, ID_SIZE);
+	returnedVertex.txID = GetDeviceIDFromIndex(GetNumberFromBuffer(deviceMemory, counter, ID_SIZE));
 	int numBytes = GetNumberFromBuffer(deviceMemory, counter, 1);
-	returnedVertex.rxID = GetNumberFromBuffer(deviceMemory, counter, ID_SIZE);
+	returnedVertex.rxID = GetDeviceIDFromIndex(GetNumberFromBuffer(deviceMemory, counter, ID_SIZE));
 	returnedVertex.txControlID = GetNumberFromBuffer(deviceMemory, counter, 1);
 	returnedVertex.rxControlID = GetNumberFromBuffer(deviceMemory, counter, 1);
 	returnedVertex.rxIPAddress.Octet4 = GetNumberFromBuffer(deviceMemory, counter, 1);
