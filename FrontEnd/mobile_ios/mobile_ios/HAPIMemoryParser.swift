@@ -68,17 +68,17 @@ class HAPIMemoryParser {
     public func ParseMemoryDump(dump: [UInt8], ipAddress: String) {
         print(dump)
         let header = ParseDeviceID(dump: dump, index: 1)
-        let thisDevice = realm.object(ofType: Device.self, forPrimaryKey: header.deviceID)
+        //let thisDevice = realm.object(ofType: Device.self, forPrimaryKey: header.deviceID)
 
         
-        if thisDevice == nil {
+        //if thisDevice == nil {
             let packet = CalculateNumberOfBytes(dump: dump, index: header.index)
             var index = packet.index
             
             while (index < dump.count) {
                 index = InterpretNextMOP(dump: dump, index: index, ipAddress: ipAddress)
             }
-        } else { print("This devices has already been detected")}
+        //} else { print("This devices has already been detected")}
         
     }
     
@@ -133,12 +133,12 @@ class HAPIMemoryParser {
     
     func ParseDevice(dump: [UInt8], index: Int, deviceID: Int, ipAddress: String) {
         //let version = dump[index]
-        let thisDevice = realm.object(ofType: Device.self, forPrimaryKey: deviceID)
+        //let thisDevice = realm.object(ofType: Device.self, forPrimaryKey: deviceID)
         
-        if thisDevice == nil {
-            print("Adding anyways...")
+        //if thisDevice == nil {
+        //    print("Adding anyways...")
             AddNewDevice(deviceID: deviceID, ipAddress: ipAddress)
-        } else { print("This devices has already been detected") }
+        //} else { print("This devices has already been detected") }
         
     }
     
@@ -146,6 +146,7 @@ class HAPIMemoryParser {
         print("Found a new device... adding now")
         
         let currentWifi = currentWifiInfo()
+        let currentPlace = realm.object(ofType: Place.self, forPrimaryKey: currentWifi.bssid)
         
         let newDevice = Device()
         newDevice.deviceID = deviceID
@@ -154,17 +155,16 @@ class HAPIMemoryParser {
         
         try! realm.write {
             
-            realm.add(newDevice)
+            realm.add(newDevice, update: true)
+            //currentPlace?.devices.append(newDevice)
         }
         
-        // Add device to the current Place using BSSID of wifi network
-        let devices = realm.objects(Device.self).filter("associatedPlace == %s", currentWifi.bssid)
+        let thisPlaceDevices = realm.objects(Device.self).filter("associatedPlace == %@", currentPlace?.bssid)
         
         try! realm.write {
-            
             realm.create(Place.self,
-                         value: ["bssid": currentWifi.bssid,
-                                 "devices": devices],
+                         value: ["bssid": currentPlace?.bssid,
+                                 "devices": thisPlaceDevices],
                          update: true)
         }
         
@@ -192,13 +192,12 @@ class HAPIMemoryParser {
         
         try! realm.write {
             
-            realm.add(newControl)
+            realm.add(newControl, update: true)
             
         }
         
         // Resolve Addition to device array (masterState)
         let thisDevicesControls = realm.objects(DeviceControl.self).filter("deviceID == %d", deviceID)
-        
         
         try! realm.write {
             realm.create(Device.self,
@@ -258,11 +257,10 @@ class HAPIMemoryParser {
             print("Adding Device Name \(deviceName) to device \(deviceID)")
             
             try! realm.write {
-                realm.create(Device.self,
-                             value: ["deviceID": deviceID,
-                                    "name": deviceName,
-                                    "iconName": SuggestIconFromName(name: deviceName)],
-                             update: true)
+                
+                thisDevice?.name = deviceName
+                thisDevice?.iconName = SuggestIconFromName(name: deviceName)
+                
             }
             
         } else {
