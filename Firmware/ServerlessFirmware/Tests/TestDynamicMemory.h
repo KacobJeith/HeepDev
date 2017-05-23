@@ -905,6 +905,20 @@ void TestBuildVertexListFromPointers()
 	valueList[4].actualValue = deviceMemory[vertexPointerList[1]];
 
 	CheckResults(TestName, valueList, 5);
+}	
+
+void TestControlRegister()
+{
+	std::string TestName = "Test Control Register";
+
+	SetControlRegister();
+
+	ExpectedValue valueList [1];
+	valueList[0].valueName = "Control Register Value";
+	valueList[0].expectedValue = 0x04;
+	valueList[0].actualValue = controlRegister;
+
+	CheckResults(TestName, valueList, 1);
 }
 
 void TestDynamicMemory()
@@ -931,4 +945,5 @@ void TestDynamicMemory()
 	TestDefragmentDeviceMemoryDeviceAtFront();
 	TestDefragmentDeviceMemoryAtEnd();
 	TestBuildVertexListFromPointers();
+	TestControlRegister();
 }

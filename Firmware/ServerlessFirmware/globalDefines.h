@@ -10,3 +10,11 @@
 #define NUMBER_OF_TASKS 4
 
 //#define ON_ARDUINO
+
+#define USE_INDEXED_IDS
+
+#ifdef USE_INDEXED_IDS
+#define ID_SIZE 1
+#else 
+#define ID_SIZE 4
+#endif

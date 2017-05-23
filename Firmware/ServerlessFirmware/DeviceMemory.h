@@ -37,6 +37,21 @@ unsigned char memoryChanged = 0;
 
 unsigned char controlRegister = 0;
 
+void SetControlRegister()
+{
+#ifdef USE_INDEXED_IDS
+		controlRegister |= 0x04;
+
+	#if ID_SIZE == 2
+		controlRegister |= 0x01;
+	#elif ID_SIZE == 3
+		controlRegister |= 0x02;
+	#elif ID_SIZE == 4
+		controlRegister |= 0x03;
+	#endif
+#endif
+}
+
 unsigned long GetNumberFromBuffer(unsigned char* buffer, unsigned int &counter, unsigned char numBytes)
 {
 	unsigned long number = 0;
