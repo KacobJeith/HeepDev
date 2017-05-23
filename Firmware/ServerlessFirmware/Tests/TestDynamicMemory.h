@@ -671,24 +671,30 @@ void TestDefragmentDeviceMemoryAtEnd()
 
 	SetDeviceNameInMemory("Crowbar", 7, 0x01020304);
 	SetIPInMemory(theIP, 0x04030210);
+
+	int vertexPointer = curFilledMemory;
+
+#ifdef USE_INDEXED_IDS
+	vertexPointer += ID_SIZE+STANDARD_ID_SIZE+2;
+#endif
+
 	SetVertexInMemory(theVertex);
-	ExpectedValue valueList [3];
 	unsigned int beforeDeletionMemory = curFilledMemory;
-	valueList[0].valueName = "Memory Filled Before Deletion";
-	valueList[0].expectedValue = 39;
+	DeleteVertexAtPointer(vertexPointer);
+	unsigned int afterDeletionMemory = curFilledMemory;
+
+	ExpectedValue valueList [2];
+	
+	valueList[0].valueName = "Memory Filled Before and after Deletion";
+	valueList[0].expectedValue = afterDeletionMemory;
 	valueList[0].actualValue = beforeDeletionMemory;
 
-	DeleteVertexAtPointer(23);
-	unsigned int afterDeletionMemory = curFilledMemory;
-	valueList[1].valueName = "Memory Filled After Deletion";
-	valueList[1].expectedValue = 39;
-	valueList[1].actualValue = afterDeletionMemory;
-
 	DefragmentMemory();
-	valueList[2].valueName = "Memory Filled after Defragmentation";
-	valueList[2].expectedValue = 23;
-	valueList[2].actualValue = curFilledMemory;
-	CheckResults(TestName, valueList, 3);
+	valueList[1].valueName = "Memory Filled after Defragmentation";
+	valueList[1].expectedValue = afterDeletionMemory - (ID_SIZE + 2 + ID_SIZE + 6);
+	valueList[1].actualValue = curFilledMemory;
+
+	CheckResults(TestName, valueList, 2);
 }
 
 void TestDefragmentDeviceMemoryDeviceAtFront()
@@ -709,27 +715,26 @@ void TestDefragmentDeviceMemoryDeviceAtFront()
 	theIP.Octet1 = 150;
 	theVertex.rxIPAddress = theIP;
 
+	int memCheckStart = GetMemCounterStart()*2;
+
 	SetVertexInMemory(theVertex);
 	SetDeviceNameInMemory("Crowbar", 7, 0x01020304);
 	SetIPInMemory(theIP, 0x04030210);
-	ExpectedValue valueList [3];
+	ExpectedValue valueList [2];
 	unsigned int beforeDeletionMemory = curFilledMemory;
-	valueList[0].valueName = "Memory Filled Before Deletion";
-	valueList[0].expectedValue = 39;
+	DeleteVertexAtPointer(memCheckStart);
+	unsigned int afterDeletionMemory = curFilledMemory;
+
+	valueList[0].valueName = "Memory Filled Before and after Deletion";
+	valueList[0].expectedValue = afterDeletionMemory;
 	valueList[0].actualValue = beforeDeletionMemory;
 
-	DeleteVertexAtPointer(0);
-	unsigned int afterDeletionMemory = curFilledMemory;
-	valueList[1].valueName = "Memory Filled After Deletion";
-	valueList[1].expectedValue = 39;
-	valueList[1].actualValue = afterDeletionMemory;
-
 	DefragmentMemory();
-	valueList[2].valueName = "Memory Filled after Defragmentation";
-	valueList[2].expectedValue = 23;
-	valueList[2].actualValue = curFilledMemory;
+	valueList[1].valueName = "Memory Filled after Defragmentation";
+	valueList[1].expectedValue = afterDeletionMemory - (ID_SIZE + 2 + ID_SIZE + 6);
+	valueList[1].actualValue = curFilledMemory;
 
-	CheckResults(TestName, valueList, 3);
+	CheckResults(TestName, valueList, 2);
 }
 
 void TestDefragmentDeviceMemoryInMiddle()
@@ -752,25 +757,29 @@ void TestDefragmentDeviceMemoryInMiddle()
 
 
 	SetDeviceNameInMemory("Crowbar", 7, 0x01020304);
+
+	int vertexPointer = curFilledMemory;
+
+#ifdef USE_INDEXED_IDS
+	vertexPointer += ID_SIZE+STANDARD_ID_SIZE+2;
+#endif
+
 	SetVertexInMemory(theVertex);
 	SetIPInMemory(theIP, 0x04030210);
-	ExpectedValue valueList [3];
 	unsigned int beforeDeletionMemory = curFilledMemory;
-	valueList[0].valueName = "Memory Filled Before Deletion";
-	valueList[0].expectedValue = 39;
+	DeleteVertexAtPointer(vertexPointer);
+	unsigned int afterDeletionMemory = curFilledMemory;
+
+	ExpectedValue valueList [2];
+	valueList[0].valueName = "Memory Filled Before and after Deletion";
+	valueList[0].expectedValue = afterDeletionMemory;
 	valueList[0].actualValue = beforeDeletionMemory;
 
-	DeleteVertexAtPointer(13);
-	unsigned int afterDeletionMemory = curFilledMemory;
-	valueList[1].valueName = "Memory Filled After Deletion";
-	valueList[1].expectedValue = 39;
-	valueList[1].actualValue = afterDeletionMemory;
-
 	DefragmentMemory();
-	valueList[2].valueName = "Memory Filled after Defragmentation";
-	valueList[2].expectedValue = 23;
-	valueList[2].actualValue = curFilledMemory;
-	CheckResults(TestName, valueList, 3);
+	valueList[1].valueName = "Memory Filled after Defragmentation";
+	valueList[1].expectedValue = afterDeletionMemory - (ID_SIZE + 2 + ID_SIZE + 6);
+	valueList[1].actualValue = curFilledMemory;
+	CheckResults(TestName, valueList, 2);
 }
 
 void TestBuildVertexListFromPointers()
