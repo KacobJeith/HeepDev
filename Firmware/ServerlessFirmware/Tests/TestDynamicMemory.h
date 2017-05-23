@@ -932,9 +932,9 @@ void TestControlRegister()
 	CheckResults(TestName, valueList, 1);
 }
 
-void TestIndexedMemory()
+void TestGetIndexFromDeviceID()
 {
-	std::string TestName = "Memory Indexing";
+	std::string TestName = "Test Index From Device ID";
 
 	ClearDeviceMemory();
 	unsigned long indexId0 = GetIndexedDeviceID(0x01020304);
@@ -949,11 +949,29 @@ void TestIndexedMemory()
 	}
 	cout << endl;
 
-	cout << indexId0 << endl;
-	cout << indexId1 << endl;
-	cout << indexID2 << endl;
+	cout << indexId0 << " " << 0x01020304 << endl;
+	cout << indexId1 << " " << 0x02304012 << endl;
+	cout << indexID2 << " " << 0x02395813 << endl;
 	cout << indexId3 << endl;
 	cout << indexId4 << endl;
+}
+
+void TestGetDeviceIDFromIndex()
+{
+	std::string TestName = "Test Device ID From Index";
+
+	ClearDeviceMemory();
+	GetIndexedDeviceID(0x01020304);
+	GetIndexedDeviceID(0x02304012);
+	GetIndexedDeviceID(0x01020304);
+	GetIndexedDeviceID(0x02395813);
+	GetIndexedDeviceID(0x02304012);
+
+	unsigned long realID = GetDeviceIDFromIndex(0);
+
+	cout << realID << endl;
+	cout << GetDeviceIDFromIndex(1) << endl;
+	cout << GetDeviceIDFromIndex(2) << endl;
 }
 
 void TestDynamicMemory()
@@ -981,5 +999,6 @@ void TestDynamicMemory()
 	TestDefragmentDeviceMemoryAtEnd();
 	TestBuildVertexListFromPointers();
 	TestControlRegister();
-	TestIndexedMemory();
+	TestGetIndexFromDeviceID();
+	TestGetDeviceIDFromIndex();
 }
