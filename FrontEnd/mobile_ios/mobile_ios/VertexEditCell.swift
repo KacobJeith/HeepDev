@@ -275,8 +275,10 @@ extension VertexEditCell {
             catchVertexCollisions(cellView: cellView, gesture: gesture)
             
         } else if gesture.state == UIGestureRecognizerState.ended {
-            commitDeleteVertex()
             
+            commitDeleteVertex()
+            searchSublayersForNameToRemove(view: cellView,
+                                           names: ["circle"])
             
         }
         
@@ -284,6 +286,8 @@ extension VertexEditCell {
     }
     
     func commitDeleteVertex() {
+        
+        
         let realm = try! Realm(configuration: config)
         
         for vertex in vertexDictToDelete {
@@ -302,18 +306,22 @@ extension VertexEditCell {
     }
     
     func commitAddVertex() {
-        print("Adding Vertex!")
-        let realm = try! Realm(configuration: config)
         
-        let vertexID = nameVertex(tx: activeVertex.tx, rx: activeVertex.rx)
-        activeVertex.vertexID = vertexID
-        
-        try! realm.write {
-            realm.add(activeVertex, update: true)
-            activeVertex.tx?.vertexList.append(activeVertex)
+        if activeVertex.rx != nil && activeVertex.tx != nil {
+            
+            print("Adding Vertex!")
+            let realm = try! Realm(configuration: config)
+            
+            let vertexID = nameVertex(tx: activeVertex.tx, rx: activeVertex.rx)
+            activeVertex.vertexID = vertexID
+            
+            try! realm.write {
+                realm.add(activeVertex, update: true)
+                activeVertex.tx?.vertexList.append(activeVertex)
+            }
+            
+            HeepConnections().sendSetVertexToHeepDevice(activeVertex: activeVertex)
         }
-        
-        HeepConnections().sendSetVertexToHeepDevice(activeVertex: activeVertex)
     }
     
     
