@@ -12,6 +12,15 @@ void PrintDeviceMemory()
 	cout << endl;
 }
 
+int GetMemCounterStart()
+{
+#ifdef USE_INDEXED_IDS
+	return 1 + ID_SIZE + 1 + STANDARD_ID_SIZE;
+#else
+	return 0;
+#endif
+}
+
 void TestAddCharToBuffer()
 {
 	std::string TestName = "Add Char to Buffer";
@@ -206,52 +215,38 @@ void TestDeviceNameOpCode()
 	char* deviceName = "Jacob";
 	SetDeviceNameInMemory(deviceName, strlen(deviceName), 0x01020304);
 
-	ExpectedValue valueList [11];
+	int memCheckStart = GetMemCounterStart();
+
+	ExpectedValue valueList [7];
 	valueList[0].valueName = "Device Name OpCode";
 	valueList[0].expectedValue = DeviceNameOpCode;
-	valueList[0].actualValue = deviceMemory[0];
+	valueList[0].actualValue = deviceMemory[memCheckStart];
 
-	valueList[1].valueName = "Device ID 1";
-	valueList[1].expectedValue = 1;
-	valueList[1].actualValue = deviceMemory[1];
+	valueList[1].valueName = "Num Bytes";
+	valueList[1].expectedValue = 5;
+	valueList[1].actualValue = deviceMemory[memCheckStart + ID_SIZE + 1];
 
-	valueList[2].valueName = "Device ID 2";
-	valueList[2].expectedValue = 2;
-	valueList[2].actualValue = deviceMemory[2];
+	valueList[2].valueName = "Letter One";
+	valueList[2].expectedValue = 'J';
+	valueList[2].actualValue = deviceMemory[memCheckStart + ID_SIZE + 2];
 
-	valueList[3].valueName = "Device ID 3";
-	valueList[3].expectedValue = 3;
-	valueList[3].actualValue = deviceMemory[3];
+	valueList[3].valueName = "Letter Two";
+	valueList[3].expectedValue = 'a';
+	valueList[3].actualValue = deviceMemory[memCheckStart + ID_SIZE + 3];
 
-	valueList[4].valueName = "Device ID 4";
-	valueList[4].expectedValue = 4;
-	valueList[4].actualValue = deviceMemory[4];
+	valueList[4].valueName = "Letter Three";
+	valueList[4].expectedValue = 'c';
+	valueList[4].actualValue = deviceMemory[memCheckStart + ID_SIZE + 4];
 
-	valueList[5].valueName = "Num Bytes";
-	valueList[5].expectedValue = 5;
-	valueList[5].actualValue = deviceMemory[5];
+	valueList[5].valueName = "Letter Four";
+	valueList[5].expectedValue = 'o';
+	valueList[5].actualValue = deviceMemory[memCheckStart + ID_SIZE + 5];
 
-	valueList[6].valueName = "Letter One";
-	valueList[6].expectedValue = 'J';
-	valueList[6].actualValue = deviceMemory[6];
+	valueList[6].valueName = "Letter Five";
+	valueList[6].expectedValue = 'b';
+	valueList[6].actualValue = deviceMemory[memCheckStart + ID_SIZE + 6];
 
-	valueList[7].valueName = "Letter Two";
-	valueList[7].expectedValue = 'a';
-	valueList[7].actualValue = deviceMemory[7];
-
-	valueList[8].valueName = "Letter Three";
-	valueList[8].expectedValue = 'c';
-	valueList[8].actualValue = deviceMemory[8];
-
-	valueList[9].valueName = "Letter Four";
-	valueList[9].expectedValue = 'o';
-	valueList[9].actualValue = deviceMemory[9];
-
-	valueList[10].valueName = "Letter Five";
-	valueList[10].expectedValue = 'b';
-	valueList[10].actualValue = deviceMemory[10];
-
-	CheckResults(TestName, valueList, 11);
+	CheckResults(TestName, valueList, 7);
 }
 
 void TestIconIDOpCode()
@@ -261,20 +256,20 @@ void TestIconIDOpCode()
 	ClearDeviceMemory();
 	SetIconIDInMemory(4, 0x01020304);
 
-	PrintDeviceMemory();
+	int memCheckStart = GetMemCounterStart();
 
 	ExpectedValue valueList [3];
 	valueList[0].valueName = "Icon ID OpCode";
 	valueList[0].expectedValue = IconIDOpCode;
-	valueList[0].actualValue = deviceMemory[0];
+	valueList[0].actualValue = deviceMemory[memCheckStart];
 
 	valueList[1].valueName = "Num Bytes";
 	valueList[1].expectedValue = 1;
-	valueList[1].actualValue = deviceMemory[ID_SIZE + 1];
+	valueList[1].actualValue = deviceMemory[memCheckStart + ID_SIZE + 1];
 
 	valueList[2].valueName = "Letter One";
 	valueList[2].expectedValue = 4;
-	valueList[2].actualValue = deviceMemory[ID_SIZE + 2];
+	valueList[2].actualValue = deviceMemory[memCheckStart + ID_SIZE + 2];
 
 	CheckResults(TestName, valueList, 3);
 }
@@ -287,52 +282,38 @@ void TestIconDataOpCode()
 	char* deviceName = "Jacob";
 	SetIconDataInMemory(deviceName, strlen(deviceName), 0x01020304);
 
-	ExpectedValue valueList [11];
+	int memCheckStart = GetMemCounterStart();
+
+	ExpectedValue valueList [7];
 	valueList[0].valueName = "Icon Data OpCode";
 	valueList[0].expectedValue = CustomIconDrawingOpCode;
-	valueList[0].actualValue = deviceMemory[0];
+	valueList[0].actualValue = deviceMemory[memCheckStart];
 
-	valueList[1].valueName = "Device ID 1";
-	valueList[1].expectedValue = 1;
-	valueList[1].actualValue = deviceMemory[1];
+	valueList[1].valueName = "Num Bytes";
+	valueList[1].expectedValue = 5;
+	valueList[1].actualValue = deviceMemory[memCheckStart + ID_SIZE + 1];
 
-	valueList[2].valueName = "Device ID 2";
-	valueList[2].expectedValue = 2;
-	valueList[2].actualValue = deviceMemory[2];
+	valueList[2].valueName = "Letter One";
+	valueList[2].expectedValue = 'J';
+	valueList[2].actualValue = deviceMemory[memCheckStart + ID_SIZE + 2];
 
-	valueList[3].valueName = "Device ID 3";
-	valueList[3].expectedValue = 3;
-	valueList[3].actualValue = deviceMemory[3];
+	valueList[3].valueName = "Letter Two";
+	valueList[3].expectedValue = 'a';
+	valueList[3].actualValue = deviceMemory[memCheckStart + ID_SIZE + 3];
 
-	valueList[4].valueName = "Device ID 4";
-	valueList[4].expectedValue = 4;
-	valueList[4].actualValue = deviceMemory[4];
+	valueList[4].valueName = "Letter Three";
+	valueList[4].expectedValue = 'c';
+	valueList[4].actualValue = deviceMemory[memCheckStart + ID_SIZE + 4];
 
-	valueList[5].valueName = "Num Bytes";
-	valueList[5].expectedValue = 5;
-	valueList[5].actualValue = deviceMemory[5];
+	valueList[5].valueName = "Letter Four";
+	valueList[5].expectedValue = 'o';
+	valueList[5].actualValue = deviceMemory[memCheckStart + ID_SIZE + 5];
 
-	valueList[6].valueName = "Letter One";
-	valueList[6].expectedValue = 'J';
-	valueList[6].actualValue = deviceMemory[6];
+	valueList[6].valueName = "Letter Five";
+	valueList[6].expectedValue = 'b';
+	valueList[6].actualValue = deviceMemory[memCheckStart + ID_SIZE + 6];
 
-	valueList[7].valueName = "Letter Two";
-	valueList[7].expectedValue = 'a';
-	valueList[7].actualValue = deviceMemory[7];
-
-	valueList[8].valueName = "Letter Three";
-	valueList[8].expectedValue = 'c';
-	valueList[8].actualValue = deviceMemory[8];
-
-	valueList[9].valueName = "Letter Four";
-	valueList[9].expectedValue = 'o';
-	valueList[9].actualValue = deviceMemory[9];
-
-	valueList[10].valueName = "Letter Five";
-	valueList[10].expectedValue = 'b';
-	valueList[10].actualValue = deviceMemory[10];
-
-	CheckResults(TestName, valueList, 11);
+	CheckResults(TestName, valueList, 7);
 }
 
 void TestSetXYOpCode()
