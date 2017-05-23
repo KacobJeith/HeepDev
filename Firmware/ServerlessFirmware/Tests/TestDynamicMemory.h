@@ -913,10 +913,21 @@ void TestControlRegister()
 
 	SetControlRegister();
 
+#ifdef USE_INDEXED_IDS
+
 	ExpectedValue valueList [1];
 	valueList[0].valueName = "Control Register Value";
 	valueList[0].expectedValue = 0x04;
 	valueList[0].actualValue = controlRegister;
+
+#else 
+
+	ExpectedValue valueList [1];
+	valueList[0].valueName = "Control Register Value";
+	valueList[0].expectedValue = 0x00;
+	valueList[0].actualValue = controlRegister;
+
+#endif
 
 	CheckResults(TestName, valueList, 1);
 }

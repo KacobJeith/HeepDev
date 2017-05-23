@@ -68,7 +68,7 @@ unsigned long GetNumberFromBuffer(unsigned char* buffer, unsigned int &counter, 
 
 unsigned int SkipOpCode(unsigned int counter)
 {
-	counter += 5;
+	counter += ID_SIZE + 1;
 
 	unsigned int bytesToSkip = deviceMemory[counter];
 	counter += bytesToSkip + 1;
@@ -322,7 +322,7 @@ unsigned int GetFragmentFromMemory(int &pointerToFragment, int &numFragementByte
 		{
 			pointerToFragment = counter;
 
-			numFragementBytes = 6 + deviceMemory[counter+5];
+			numFragementBytes = 6 + deviceMemory[counter + ID_SIZE + 1];
 
 			return 0;
 		}

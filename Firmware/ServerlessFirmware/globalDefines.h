@@ -11,7 +11,7 @@
 
 //#define ON_ARDUINO
 
-#define USE_INDEXED_IDS
+//#define USE_INDEXED_IDS
 
 #ifdef USE_INDEXED_IDS
 #define ID_SIZE 1
