@@ -322,49 +322,34 @@ void TestSetXYOpCode()
 
 	ClearDeviceMemory();
 	SetXYInMemory(312, 513, 0x01020304);
+	int memCheckStart = GetMemCounterStart();
 
-	ExpectedValue valueList [10];
+	ExpectedValue valueList [6];
 	valueList[0].valueName = "Front End XY OpCode";
 	valueList[0].expectedValue = FrontEndPositionOpCode;
-	valueList[0].actualValue = deviceMemory[0];
+	valueList[0].actualValue = deviceMemory[memCheckStart];
 
-	valueList[1].valueName = "Device ID 1";
-	valueList[1].expectedValue = 1;
-	valueList[1].actualValue = deviceMemory[1];
+	valueList[1].valueName = "Num Bytes";
+	valueList[1].expectedValue = 4;
+	valueList[1].actualValue = deviceMemory[memCheckStart + ID_SIZE + 1];
 
-	valueList[2].valueName = "Device ID 2";
-	valueList[2].expectedValue = 2;
-	valueList[2].actualValue = deviceMemory[2];
+	valueList[2].valueName = "X High Byte";
+	valueList[2].expectedValue = 312 >> 8;
+	valueList[2].actualValue = deviceMemory[memCheckStart + ID_SIZE + 2];
 
-	valueList[3].valueName = "Device ID 3";
-	valueList[3].expectedValue = 3;
-	valueList[3].actualValue = deviceMemory[3];
+	valueList[3].valueName = "X Low Byte";
+	valueList[3].expectedValue = 312%256;
+	valueList[3].actualValue = deviceMemory[memCheckStart + ID_SIZE + 3];
 
-	valueList[4].valueName = "Device ID 4";
-	valueList[4].expectedValue = 4;
-	valueList[4].actualValue = deviceMemory[4];
+	valueList[4].valueName = "Y High Byte";
+	valueList[4].expectedValue = 513 >> 8;
+	valueList[4].actualValue = deviceMemory[memCheckStart + ID_SIZE + 4];
 
-	valueList[5].valueName = "Num Bytes";
-	valueList[5].expectedValue = 4;
-	valueList[5].actualValue = deviceMemory[5];
+	valueList[5].valueName = "Y Low Byte";
+	valueList[5].expectedValue = 513%256;
+	valueList[5].actualValue = deviceMemory[memCheckStart + ID_SIZE + 5];
 
-	valueList[6].valueName = "X High Byte";
-	valueList[6].expectedValue = 312 >> 8;
-	valueList[6].actualValue = deviceMemory[6];
-
-	valueList[7].valueName = "X Low Byte";
-	valueList[7].expectedValue = 312%256;
-	valueList[7].actualValue = deviceMemory[7];
-
-	valueList[8].valueName = "Y High Byte";
-	valueList[8].expectedValue = 513 >> 8;
-	valueList[8].actualValue = deviceMemory[8];
-
-	valueList[9].valueName = "Y Low Byte";
-	valueList[9].expectedValue = 513%256;
-	valueList[9].actualValue = deviceMemory[9];
-
-	CheckResults(TestName, valueList, 10);
+	CheckResults(TestName, valueList, 6);
 }
 
 void TestSetIPOpCode()
@@ -379,48 +364,34 @@ void TestSetIPOpCode()
 	myIP.Octet1 = 100;
 	SetIPInMemory(myIP, 0x01020304);
 
-	ExpectedValue valueList [10];
+	int memCheckStart = GetMemCounterStart();
+
+	ExpectedValue valueList [6];
 	valueList[0].valueName = "IP OpCode";
 	valueList[0].expectedValue = DeviceIPOpCode;
-	valueList[0].actualValue = deviceMemory[0];
+	valueList[0].actualValue = deviceMemory[memCheckStart];
 
-	valueList[1].valueName = "Device ID 1";
-	valueList[1].expectedValue = 1;
-	valueList[1].actualValue = deviceMemory[1];
+	valueList[1].valueName = "Num Bytes";
+	valueList[1].expectedValue = 4;
+	valueList[1].actualValue = deviceMemory[memCheckStart + ID_SIZE + 1];
 
-	valueList[2].valueName = "Device ID 2";
-	valueList[2].expectedValue = 2;
-	valueList[2].actualValue = deviceMemory[2];
+	valueList[2].valueName = "Octet 4";
+	valueList[2].expectedValue = 192;
+	valueList[2].actualValue = deviceMemory[memCheckStart + ID_SIZE + 2];
 
-	valueList[3].valueName = "Device ID 3";
-	valueList[3].expectedValue = 3;
-	valueList[3].actualValue = deviceMemory[3];
+	valueList[3].valueName = "Octet 3";
+	valueList[3].expectedValue = 168;
+	valueList[3].actualValue = deviceMemory[memCheckStart + ID_SIZE + 3];
 
-	valueList[4].valueName = "Device ID 4";
-	valueList[4].expectedValue = 4;
-	valueList[4].actualValue = deviceMemory[4];
+	valueList[4].valueName = "Octet 2";
+	valueList[4].expectedValue = 1;
+	valueList[4].actualValue = deviceMemory[memCheckStart + ID_SIZE + 4];
 
-	valueList[5].valueName = "Num Bytes";
-	valueList[5].expectedValue = 4;
-	valueList[5].actualValue = deviceMemory[5];
+	valueList[5].valueName = "Octet 1";
+	valueList[5].expectedValue = 100;
+	valueList[5].actualValue = deviceMemory[memCheckStart + ID_SIZE + 5];
 
-	valueList[6].valueName = "Octet 4";
-	valueList[6].expectedValue = 192;
-	valueList[6].actualValue = deviceMemory[6];
-
-	valueList[7].valueName = "Octet 3";
-	valueList[7].expectedValue = 168;
-	valueList[7].actualValue = deviceMemory[7];
-
-	valueList[8].valueName = "Octet 2";
-	valueList[8].expectedValue = 1;
-	valueList[8].actualValue = deviceMemory[8];
-
-	valueList[9].valueName = "Octet 1";
-	valueList[9].expectedValue = 100;
-	valueList[9].actualValue = deviceMemory[9];
-
-	CheckResults(TestName, valueList, 10);
+	CheckResults(TestName, valueList, 6);
 }
 
 void TestSetVertexOpCode()
@@ -441,72 +412,44 @@ void TestSetVertexOpCode()
 	myVertex.rxControlID = 0x02;
 	SetVertexInMemory(myVertex);
 
-	ExpectedValue valueList [16];
+	int memCheckStart = GetMemCounterStart()*2;
+
+	PrintDeviceMemory();
+
+	ExpectedValue valueList [8];
 	valueList[0].valueName = "Vertex OpCode";
 	valueList[0].expectedValue = VertexOpCode;
-	valueList[0].actualValue = deviceMemory[0];
+	valueList[0].actualValue = deviceMemory[memCheckStart];
 
-	valueList[1].valueName = "Tx Device ID 1";
-	valueList[1].expectedValue = 1;
-	valueList[1].actualValue = deviceMemory[1];
+	valueList[1].valueName = "Num Bytes";
+	valueList[1].expectedValue = ID_SIZE + 6;
+	valueList[1].actualValue = deviceMemory[memCheckStart + ID_SIZE + 1];
 
-	valueList[2].valueName = "Tx Device ID 2";
-	valueList[2].expectedValue = 2;
-	valueList[2].actualValue = deviceMemory[2];
+	valueList[2].valueName = "Tx Control ID";
+	valueList[2].expectedValue = 1;
+	valueList[2].actualValue = deviceMemory[memCheckStart + ID_SIZE + ID_SIZE + 2];
 
-	valueList[3].valueName = "Tx Device ID 3";
-	valueList[3].expectedValue = 3;
-	valueList[3].actualValue = deviceMemory[3];
+	valueList[3].valueName = "Rx Control ID";
+	valueList[3].expectedValue = 2;
+	valueList[3].actualValue = deviceMemory[memCheckStart + ID_SIZE + ID_SIZE + 3];
 
-	valueList[4].valueName = "Tx Device ID 4";
-	valueList[4].expectedValue = 4;
-	valueList[4].actualValue = deviceMemory[4];
+	valueList[4].valueName = "IP Octet 4";
+	valueList[4].expectedValue = 192;
+	valueList[4].actualValue = deviceMemory[memCheckStart + ID_SIZE + ID_SIZE + 4];
 
-	valueList[5].valueName = "Num Bytes";
-	valueList[5].expectedValue = 10;
-	valueList[5].actualValue = deviceMemory[5];
+	valueList[5].valueName = "IP Octet 3";
+	valueList[5].expectedValue = 168;
+	valueList[5].actualValue = deviceMemory[memCheckStart + ID_SIZE + ID_SIZE + 5];
 
-	valueList[6].valueName = "Rx Device ID 1";
-	valueList[6].expectedValue = 9;
-	valueList[6].actualValue = deviceMemory[6];
+	valueList[6].valueName = "IP Octet 2";
+	valueList[6].expectedValue = 1;
+	valueList[6].actualValue = deviceMemory[memCheckStart + ID_SIZE + ID_SIZE + 6];
 
-	valueList[7].valueName = "Rx Device ID 2";
-	valueList[7].expectedValue = 8;
-	valueList[7].actualValue = deviceMemory[7];
+	valueList[7].valueName = "IP Octet 1";
+	valueList[7].expectedValue = 100;
+	valueList[7].actualValue = deviceMemory[memCheckStart + ID_SIZE + ID_SIZE + 7];
 
-	valueList[8].valueName = "Rx Device ID 3";
-	valueList[8].expectedValue = 7;
-	valueList[8].actualValue = deviceMemory[8];
-
-	valueList[9].valueName = "Rx Device ID 4";
-	valueList[9].expectedValue = 6;
-	valueList[9].actualValue = deviceMemory[9];
-
-	valueList[10].valueName = "Tx Control ID";
-	valueList[10].expectedValue = 1;
-	valueList[10].actualValue = deviceMemory[10];
-
-	valueList[11].valueName = "Rx Control ID";
-	valueList[11].expectedValue = 2;
-	valueList[11].actualValue = deviceMemory[11];
-
-	valueList[12].valueName = "IP Octet 4";
-	valueList[12].expectedValue = 192;
-	valueList[12].actualValue = deviceMemory[12];
-
-	valueList[13].valueName = "IP Octet 3";
-	valueList[13].expectedValue = 168;
-	valueList[13].actualValue = deviceMemory[13];
-
-	valueList[14].valueName = "IP Octet 2";
-	valueList[14].expectedValue = 1;
-	valueList[14].actualValue = deviceMemory[14];
-
-	valueList[15].valueName = "IP Octet 1";
-	valueList[15].expectedValue = 100;
-	valueList[15].actualValue = deviceMemory[15];
-
-	CheckResults(TestName, valueList, 16);
+	CheckResults(TestName, valueList, 8);
 }
 
 void TestGetVertex()

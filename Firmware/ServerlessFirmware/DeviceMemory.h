@@ -317,7 +317,7 @@ int SetVertexInMemory(Vertex theVertex)
 
 	AddNewCharToMemory(VertexOpCode);
 	AddIndexOrDeviceIDToMemory(theVertex.txID);
-	AddNewCharToMemory((char)10);
+	AddNewCharToMemory((char)ID_SIZE+6);
 	AddIndexOrDeviceIDToMemory(theVertex.rxID);
 	AddNewCharToMemory(theVertex.txControlID);
 	AddNewCharToMemory(theVertex.rxControlID);
