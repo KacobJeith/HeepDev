@@ -368,8 +368,6 @@ void DefragmentMemory()
 	}while(isFragmentFound == 0);
 }
 
-#include <iostream>
-using namespace std;
 unsigned long GetIndexedDeviceID(unsigned long deviceID)
 {
 #ifdef USE_INDEXED_IDS
@@ -408,6 +406,40 @@ unsigned long GetIndexedDeviceID(unsigned long deviceID)
 
 	return topIndex;
 #else 
-	return deviceID;
+	return deviceID; // Index is just device ID
+#endif
+}
+
+unsigned long GetDeviceIDFromIndex(unsigned long index)
+{
+#ifdef USE_INDEXED_IDS
+
+	unsigned int counter = 0;
+
+	// Find Indexed ID
+	while(counter < curFilledMemory)
+	{
+		if(deviceMemory[counter] == LocalDeviceIDOpCode)
+		{
+			counter++;
+			unsigned long indexedValue = GetNumberFromBuffer(deviceMemory, counter, ID_SIZE);
+			counter++;
+			unsigned long foundID = GetNumberFromBuffer(deviceMemory, counter, STANDARD_ID_SIZE);
+
+			if(indexedValue == index)
+			{
+				return foundID;
+			}
+		}
+		else
+		{
+			counter = SkipOpCode(counter);
+		}
+	}
+
+	return 0;
+
+#else
+	return index; // Index is just device ID!
 #endif
 }
