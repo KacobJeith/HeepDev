@@ -932,6 +932,30 @@ void TestControlRegister()
 	CheckResults(TestName, valueList, 1);
 }
 
+void TestIndexedMemory()
+{
+	std::string TestName = "Memory Indexing";
+
+	ClearDeviceMemory();
+	unsigned long indexId0 = GetIndexedDeviceID(0x01020304);
+	unsigned long indexId1 = GetIndexedDeviceID(0x02304012);
+	unsigned long indexID2 = GetIndexedDeviceID(0x01020304);
+	unsigned long indexId3 = GetIndexedDeviceID(0x02395813);
+	unsigned long indexId4 = GetIndexedDeviceID(0x02304012);
+
+	for(int i = 0; i < curFilledMemory; i++)
+	{
+		cout << (int)deviceMemory[i] << " ";
+	}
+	cout << endl;
+
+	cout << indexId0 << endl;
+	cout << indexId1 << endl;
+	cout << indexID2 << endl;
+	cout << indexId3 << endl;
+	cout << indexId4 << endl;
+}
+
 void TestDynamicMemory()
 {
 	TestAddCharToBuffer();
@@ -957,4 +981,5 @@ void TestDynamicMemory()
 	TestDefragmentDeviceMemoryAtEnd();
 	TestBuildVertexListFromPointers();
 	TestControlRegister();
+	TestIndexedMemory();
 }

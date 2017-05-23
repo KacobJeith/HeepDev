@@ -11,7 +11,7 @@
 
 //#define ON_ARDUINO
 
-//#define USE_INDEXED_IDS
+#define USE_INDEXED_IDS
 
 #define STANDARD_ID_SIZE 4
 
