@@ -28,6 +28,7 @@ const unsigned char FragmentOpCode = 0x12;
 const unsigned char AddMOPOpCode = 0x13;
 const unsigned char DynamicMemorySizeOpCode = 0x14;
 const unsigned char DeleteMOPOpCode = 0x15;
+const unsigned char LocalDeviceIDOpCode = 0x16;
 
 unsigned char deviceMemory [MAX_MEMORY];
 unsigned int curFilledMemory = 0; // Indicate the curent filled memory. 
@@ -127,9 +128,9 @@ unsigned long AddDeviceIDToBuffer(unsigned char* buffer, unsigned long startPoin
 	return startPoint;
 }
 
-unsigned long AddIndexedIDToBuffer(unsigned char* buffer, unsigned long startPoint, unsigned long deviceID)
+void AddIndexToMemory(unsigned long deviceIndex)
 {
-
+	AddNumberToMemoryWithSpecifiedBytes(deviceIndex, ID_SIZE);
 }
 
 void AddDeviceIDToMemory(unsigned long deviceID)
@@ -365,4 +366,43 @@ void DefragmentMemory()
 		}
 
 	}while(isFragmentFound == 0);
+}
+
+unsigned long GetIndexedDeviceID(unsigned long deviceID)
+{
+	unsigned int counter = 0;
+	unsigned long topIndex = -1;
+
+	// Find Indexed ID
+	while(counter < curFilledMemory)
+	{
+		if(deviceMemory[counter] == LocalDeviceIDOpCode)
+		{
+			counter++;
+			unsigned long indexedValue = GetNumberFromBuffer(deviceMemory, counter, ID_SIZE);
+			counter++;
+			unsigned long foundID = GetNumberFromBuffer(deviceMemory, counter, STANDARD_ID_SIZE);
+
+			if(indexedValue > topIndex)
+				topIndex = indexedValue;
+
+			if(foundID == deviceID)
+				return foundID;
+		}
+		else
+		{
+			counter = SkipOpCode(counter);
+		}
+	}
+
+	// If Not Indexed, then index it!
+
+	// Add 1 to get new index value
+	topIndex++;
+	AddNewCharToMemory(LocalDeviceIDOpCode);
+	AddIndexToMemory(topIndex);
+	AddNewCharToMemory(STANDARD_ID_SIZE);
+	AddDeviceIDToMemory(deviceID);
+
+	return topIndex;
 }
