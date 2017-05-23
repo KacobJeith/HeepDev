@@ -35,6 +35,18 @@ class DeviceSummaryViewController: UITableViewController {
                 "Control Type: " + type,
                 "Current Value: " + String(control.valueCurrent)]
             self.cells.append(thisControl)
+            
+            for vertex in control.vertexList {
+                self.sections.append("Vertex: " + vertex.vertexID)
+                let txName = "tx Name: " + (vertex.tx?.controlName)!
+                let txID = "tx ID: " + String(describing: (vertex.tx?.uniqueID)!)
+                let rxName = "rx Name: " + (vertex.rx?.controlName)!
+                let rxID = "rx ID: " + String(describing: (vertex.rx?.uniqueID)!)
+                
+                let thisVertex = [txName, txID, rxName, rxID]
+                self.cells.append(thisVertex)
+                
+            }
         }
         
         

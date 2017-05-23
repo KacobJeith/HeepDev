@@ -43,6 +43,17 @@ class HeepConnections {
         
     }
     
+    public func sendSetVertexToHeepDevice(activeVertex: Vertex) {
+        //let activeVertex = realm.object(ofType: Vertex.self, forPrimaryKey: vertexID)
+        let thisDevice = realm.object(ofType: Device.self, forPrimaryKey: activeVertex.tx?.deviceID)
+        let thisDeviceIP = thisDevice?.ipAddress
+        let message = HAPIMemoryParser().BuildSetVertexCOP(vertex: activeVertex)
+        //let hexMessage = message.map { String(format:"%2X", $0) }
+        print("Sending: \(message) to Heep Device at \(thisDeviceIP!)")
+        
+        ConnectToHeepDevice(ipAddress: thisDeviceIP!, printErrors: false, message: message)
+    }
+    
     func sendVertexToHeepDevice() {
         
     }

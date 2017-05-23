@@ -307,6 +307,8 @@ extension VertexEditCell {
             realm.add(activeVertex, update: true)
             activeVertex.tx?.vertexList.append(activeVertex)
         }
+        
+        HeepConnections().sendSetVertexToHeepDevice(activeVertex: activeVertex)
     }
     
     

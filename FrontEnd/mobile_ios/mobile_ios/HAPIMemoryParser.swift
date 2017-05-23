@@ -19,11 +19,40 @@ class HAPIMemoryParser {
     }
     
     public func BuildSetValueCOP(controlID: Int, newValue: Int) -> [UInt8] {
-        //let deviceID = GetDeviceIDBytesFromInt(deviceID: deviceID)
         let COP = UInt8(0x0A)
         let packet = [UInt8(controlID), UInt8(newValue)]
         let entireArray = packageCOP(COP: COP, packet: packet)
         return entireArray
+    }
+    
+    public func BuildSetVertexCOP(vertex: Vertex) -> [UInt8] {
+        let COP = UInt8(0x0C)
+        var packet = [UInt8]()
+        let txDeviceID = GetDeviceIDBytesFromInt(deviceID: (vertex.tx?.deviceID)!)
+        let rxDeviceID = GetDeviceIDBytesFromInt(deviceID: (vertex.rx?.deviceID)!)
+        let txControlID = (vertex.tx?.controlID)!
+        let rxControlID = (vertex.rx?.controlID)!
+        
+        let rxDevice = realm.object(ofType: Device.self, forPrimaryKey: (vertex.rx?.deviceID)!)
+        let rxIPAddress = IPStringToByteArray(IPString: (rxDevice?.ipAddress)!)
+        print("txDeviceID: \(txDeviceID)")
+        print("rxDeviceID: \(rxDeviceID)")
+        print("txControlID: \(txControlID)")
+        print("rxControlID: \(rxControlID)")
+        
+        packet.append(contentsOf: txDeviceID)
+        packet.append(contentsOf: rxDeviceID)
+        packet.append(UInt8(txControlID))
+        packet.append(UInt8(rxControlID))
+        packet.append(contentsOf: rxIPAddress)
+        
+        let entireArray = packageCOP(COP: COP, packet: packet)
+        return entireArray
+    }
+    
+    func IPStringToByteArray(IPString: String) -> [UInt8] {
+        let split = IPString.characters.split(separator: ".").map(String.init)
+        return split.map { UInt8($0)!}
     }
     
     public func packageCOP(COP: UInt8, packet: [UInt8]) -> [UInt8] {
@@ -32,10 +61,10 @@ class HAPIMemoryParser {
     }
     
     public func GetDeviceIDBytesFromInt(deviceID: Int) -> [UInt8] {
-        let byte1 = UInt8(truncatingBitPattern: deviceID)
-        let byte2 = UInt8(truncatingBitPattern: deviceID >> 8)
-        let byte3 = UInt8(truncatingBitPattern: deviceID >> 16)
-        let byte4 = UInt8(truncatingBitPattern: deviceID >> 24)
+        let byte4 = UInt8(truncatingBitPattern: deviceID)
+        let byte3 = UInt8(truncatingBitPattern: deviceID >> 8)
+        let byte2 = UInt8(truncatingBitPattern: deviceID >> 16)
+        let byte1 = UInt8(truncatingBitPattern: deviceID >> 24)
         
         return [byte1, byte2, byte3, byte4]
     }
@@ -263,17 +292,21 @@ class HAPIMemoryParser {
             
         }
         
-        
-        let txVertices = realm.objects(Vertex.self).filter("tx == %@", txControl!)
-        
-        try! realm.write {
+        if txControl != nil {
+            let txVertices = realm.objects(Vertex.self).filter("tx == %@", txControl!)
             
-            print(txVertices)
-            realm.create(DeviceControl.self,
-                         value: ["uniqueID": (txControl?.uniqueID)!,
-                                 "vertexList": txVertices],
-                         update: true)
+            try! realm.write {
+                print(txControl?.uniqueID)
+                print(txVertices)
+                realm.create(DeviceControl.self,
+                             value: ["uniqueID": (txControl?.uniqueID)!,
+                                     "vertexList": txVertices],
+                             update: true)
+            }
         }
+        
+        let allVertices = realm.objects(Vertex.self)
+        print(allVertices)
         
     }
     
@@ -281,8 +314,13 @@ class HAPIMemoryParser {
         let realm = try! Realm(configuration: config)
         let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: controlUniqueID)
         try! realm.write {
+            
             realm.delete((thisControl?.vertexList)!)
         }
+        
+        let allVertices = realm.objects(Vertex.self)
+        print("After flusing \(thisControl?.controlName)")
+        print(allVertices)
     }
     
     

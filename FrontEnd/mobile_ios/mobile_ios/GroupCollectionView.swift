@@ -52,7 +52,12 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
                                      target: nil,
                                      action: nil)
         
-        self.toolbarItems = [flush, spacer, search, spacer]
+        let info = UIBarButtonItem(barButtonSystemItem: .organize,
+                                   target: self,
+                                   action: #selector(openDeviceTable))
+        
+        
+        self.toolbarItems = [flush, spacer, search, spacer, info]
 
         
     }
@@ -126,6 +131,13 @@ extension GroupCollectionView {
         navigationController?.pushViewController(editRoomView, animated: true)
     }
     
+    func openDeviceTable() {
+        print("Open Device Table View")
+        
+        let seeAllDevicesInPlace = DeviceTableViewController(place: thisPlace)
+        navigationController?.pushViewController(seeAllDevicesInPlace, animated: true)
+    }
+    
     func searchForHeepDevices() {
         print("Searching...")
         HeepConnections().SearchForHeepDeviecs()
@@ -185,6 +197,21 @@ extension GroupCollectionView {
         try! realm.write {
             assignedControls.setValue(0, forKey: "groupsAssigned")
         }
+        
+        let devicesInPlace = realm.objects(Device.self).filter("associatedPlace = %@", thisPlace.bssid)
+        
+        try! realm.write {
+            for device in devicesInPlace {
+                for control in device.controlList {
+                    
+                    realm.delete(control)
+                }
+                
+                realm.delete(device)
+            }
+        }
+        
+        
         
         reloadView()
     }
