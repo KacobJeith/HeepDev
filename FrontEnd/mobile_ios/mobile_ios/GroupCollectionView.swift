@@ -40,7 +40,9 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
                                                             target: self,
                                                             action: #selector(addNewGroupToThisPlace))
 
-        
+        let flush = UIBarButtonItem(barButtonSystemItem: .trash,
+                                    target: self,
+                                    action: #selector(flushGroup))
         
         let search = UIBarButtonItem(barButtonSystemItem: .refresh,
                                      target: self,
@@ -50,7 +52,7 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
                                      target: nil,
                                      action: nil)
         
-        self.toolbarItems = [spacer, search, spacer]
+        self.toolbarItems = [flush, spacer, search, spacer]
 
         
     }
@@ -144,6 +146,38 @@ extension GroupCollectionView {
             
             realm.add(newGroup)
             thisPlace.groups.append(newGroup)
+        }
+        
+        reloadView()
+    }
+    
+    func flushGroup() {
+        let realm = try! Realm(configuration: config)
+        
+        
+        try! realm.write {
+            
+            realm.delete(thisPlace.groups)
+        }
+        
+        
+        let allGroups = realm.objects(Group.self).sorted(byKeyPath: "id", ascending: false)
+        
+        let firstGroupInPlace = Group()
+        firstGroupInPlace.place = thisPlace.bssid
+        firstGroupInPlace.name = "My First Room"
+        firstGroupInPlace.id = (allGroups.first?.id)! + 1
+        print(firstGroupInPlace.id)
+        
+        try! realm.write {
+            
+            thisPlace.groups.append(firstGroupInPlace)
+        }
+        
+        let assignedControls = realm.objects(DeviceControl.self).filter("place = %@ AND groupsAssigned = 1", thisPlace.bssid)
+        
+        try! realm.write {
+            assignedControls.setValue(0, forKey: "groupsAssigned")
         }
         
         reloadView()
