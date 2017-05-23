@@ -943,17 +943,57 @@ void TestGetIndexFromDeviceID()
 	unsigned long indexId3 = GetIndexedDeviceID(0x02395813);
 	unsigned long indexId4 = GetIndexedDeviceID(0x02304012);
 
-	for(int i = 0; i < curFilledMemory; i++)
-	{
-		cout << (int)deviceMemory[i] << " ";
-	}
-	cout << endl;
+#ifdef USE_INDEXED_IDS
 
-	cout << indexId0 << " " << 0x01020304 << endl;
-	cout << indexId1 << " " << 0x02304012 << endl;
-	cout << indexID2 << " " << 0x02395813 << endl;
-	cout << indexId3 << endl;
-	cout << indexId4 << endl;
+	ExpectedValue valueList [5];
+	valueList[0].valueName = "Index Value 1";
+	valueList[0].expectedValue = 0;
+	valueList[0].actualValue = indexId0;
+
+	valueList[1].valueName = "Index Value 2";
+	valueList[1].expectedValue = 1;
+	valueList[1].actualValue = indexId1;
+
+	valueList[2].valueName = "Index Value 3";
+	valueList[2].expectedValue = 0;
+	valueList[2].actualValue = indexID2;
+
+	valueList[3].valueName = "Index Value 4";
+	valueList[3].expectedValue = 2;
+	valueList[3].actualValue = indexId3;
+
+	valueList[4].valueName = "Index Value 5";
+	valueList[4].expectedValue = 1;
+	valueList[4].actualValue = indexId4;
+
+	CheckResults(TestName, valueList, 5);
+
+#else 
+
+	ExpectedValue valueList [5];
+	valueList[0].valueName = "Index Value 1";
+	valueList[0].expectedValue = 0x01020304;
+	valueList[0].actualValue = indexId0;
+
+	valueList[1].valueName = "Index Value 2";
+	valueList[1].expectedValue = 0x02304012;
+	valueList[1].actualValue = indexId1;
+
+	valueList[2].valueName = "Index Value 3";
+	valueList[2].expectedValue = 0x01020304;
+	valueList[2].actualValue = indexID2;
+
+	valueList[3].valueName = "Index Value 4";
+	valueList[3].expectedValue = 0x02395813;
+	valueList[3].actualValue = indexId3;
+
+	valueList[4].valueName = "Index Value 5";
+	valueList[4].expectedValue = 0x02304012;
+	valueList[4].actualValue = indexId4;
+
+	CheckResults(TestName, valueList, 5);
+
+#endif
 }
 
 void TestGetDeviceIDFromIndex()
@@ -967,11 +1007,45 @@ void TestGetDeviceIDFromIndex()
 	GetIndexedDeviceID(0x02395813);
 	GetIndexedDeviceID(0x02304012);
 
-	unsigned long realID = GetDeviceIDFromIndex(0);
+	unsigned long realID1 = GetDeviceIDFromIndex(0);
+	unsigned long realID2 = GetDeviceIDFromIndex(1);
+	unsigned long realID3 = GetDeviceIDFromIndex(2);
 
-	cout << realID << endl;
-	cout << GetDeviceIDFromIndex(1) << endl;
-	cout << GetDeviceIDFromIndex(2) << endl;
+#ifdef USE_INDEXED_IDS
+
+	ExpectedValue valueList [3];
+	valueList[0].valueName = "Index Value 1";
+	valueList[0].expectedValue = 0x01020304;
+	valueList[0].actualValue = realID1;
+
+	valueList[1].valueName = "Index Value 2";
+	valueList[1].expectedValue = 0x02304012;
+	valueList[1].actualValue = realID2;
+
+	valueList[2].valueName = "Index Value 3";
+	valueList[2].expectedValue = 0x02395813;
+	valueList[2].actualValue = realID3;
+
+	CheckResults(TestName, valueList, 3);
+
+#else 
+
+	ExpectedValue valueList [3];
+	valueList[0].valueName = "Index Value 1";
+	valueList[0].expectedValue = 0;
+	valueList[0].actualValue = realID1;
+
+	valueList[1].valueName = "Index Value 2";
+	valueList[1].expectedValue = 1;
+	valueList[1].actualValue = realID2;
+
+	valueList[2].valueName = "Index Value 3";
+	valueList[2].expectedValue = 2;
+	valueList[2].actualValue = realID3;
+
+	CheckResults(TestName, valueList, 3);
+
+#endif
 }
 
 void TestDynamicMemory()
