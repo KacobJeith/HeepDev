@@ -10,6 +10,15 @@ void PrintOutputBuffer()
 	cout << endl;
 }
 
+void PrintBuffer(unsigned char *buffer, unsigned long bufferSize)
+{
+	for(int i = 0; i < bufferSize; i++)
+	{
+		cout << (int)buffer[i] << " ";
+	}
+	cout << endl;
+}
+
 void TestClearOutputBufferAndAddChar()
 {
 	std::string TestName = "Add Char to Output Buffer and Clear";
@@ -350,21 +359,31 @@ void TestAddMOPOpCode()
 	UpdateXYInMemory(2321, 5101, 0x01020304);
 	unsigned int afterTraveresal = curFilledMemory;
 
+#ifdef USE_INDEXED_IDS
+	unsigned int expectedMemory = ID_SIZE + STANDARD_ID_SIZE + 2 + 2 + ID_SIZE + 5 + 2 + ID_SIZE + 4;
+#else
+	unsigned int expectedMemory = 21;
+#endif
+
 	ExpectedValue valueList [4];
 	valueList[0].valueName = "Before Memory Size";
 	valueList[0].expectedValue = 0;
 	valueList[0].actualValue = beforeMemory;
 
 	valueList[1].valueName = "After Memory Size";
+#ifdef USE_INDEXED_IDS
+	valueList[1].expectedValue = ID_SIZE + STANDARD_ID_SIZE + 2 + 2 + ID_SIZE + 5;
+#else
 	valueList[1].expectedValue = 11;
+#endif
 	valueList[1].actualValue = afterMemory;
 
 	valueList[2].valueName = "Before Traversal Memory Size";
-	valueList[2].expectedValue = 21;
+	valueList[2].expectedValue = expectedMemory;
 	valueList[2].actualValue = beforeTraversal;
 
 	valueList[3].valueName = "After Traversal Memory Size";
-	valueList[3].expectedValue = 21;
+	valueList[3].expectedValue = expectedMemory;
 	valueList[3].actualValue = afterTraveresal;
 
 	CheckResults(TestName, valueList, 4);
@@ -401,11 +420,19 @@ void TestDeleteMOPOpCode()
 	inputBuffer[11] = 'e';
 	inputBuffer[12] = 's';
 
+#ifdef USE_INDEXED_IDS
+	unsigned char valAtSpotBeforeDeleteion = deviceMemory[15];
+#else
 	unsigned char valAtSpotBeforeDeleteion = deviceMemory[11];
+#endif
 	
 	ExecuteControlOpCodes();
 
+#ifdef USE_INDEXED_IDS
+	unsigned char valAtSpotAfterDeletion = deviceMemory[15];
+#else
 	unsigned char valAtSpotAfterDeletion = deviceMemory[11];
+#endif
 
 	ExpectedValue valueList [2];
 	valueList[0].valueName = "Before OpCode";

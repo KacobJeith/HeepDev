@@ -258,34 +258,88 @@ void ExecuteDeleteVertexOpCode()
 	}
 }
 
+// Validate that a MOP can be added. Then restructure it for localIDs as necessary
+int ValidateAndRestructureIncomingMOP(unsigned int MOPStartAddr, unsigned int &numBytes)
+{
+	if(numBytes < STANDARD_ID_SIZE + 2)
+	{
+		return 1; // INVALID MOP
+	}
+
+	MOPStartAddr++;
+	int startID = MOPStartAddr;
+	unsigned long curID = GetNumberFromBuffer(inputBuffer, MOPStartAddr, STANDARD_ID_SIZE);
+	unsigned char bytesOfData = GetNumberFromBuffer(inputBuffer, MOPStartAddr, 1);
+	curID = GetIndexedDeviceID(curID);
+
+	int memDiff = STANDARD_ID_SIZE - ID_SIZE;
+	numBytes = numBytes - memDiff;
+
+	startID = AddNumberToBufferWithSpecifiedBytes(inputBuffer, curID, startID, ID_SIZE);
+	startID = AddCharToBuffer(inputBuffer, startID, bytesOfData);
+
+	for(int i = 0; i < bytesOfData; i++)
+	{
+		inputBuffer[startID + i] = inputBuffer[startID + i + memDiff];
+	}
+
+	return 0;
+}
+
 void ExecuteDeleteMOPOpCode()
 {
 	unsigned int counter = 1;
 
 	unsigned int numBytes = GetNumberFromBuffer(inputBuffer, counter, 1);
-	unsigned int foundCode = 0;
-	unsigned int deviceMemCounter = 0;
+	int dataError = ValidateAndRestructureIncomingMOP(counter, numBytes);
 
-	while(deviceMemCounter < curFilledMemory)
+	if(dataError == 0)
 	{
-		for(int i = 0; i < numBytes; i++)
+		unsigned int foundCode = 0;
+		unsigned int deviceMemCounter = 0;
+		int MOPSDeleted = 0;
+
+		while(deviceMemCounter < curFilledMemory)
 		{
-			if(deviceMemory[deviceMemCounter+i] != inputBuffer[counter+i])
+			for(int i = 0; i < numBytes; i++)
 			{
-				break;
+				if(deviceMemory[deviceMemCounter+i] != inputBuffer[counter+i])
+				{
+					break;
+				}
+
+				foundCode++;
 			}
 
-			foundCode++;
+			if(foundCode == numBytes)
+			{
+				deviceMemory[deviceMemCounter] = FragmentOpCode;
+				deviceMemory[deviceMemCounter + 5] = numBytes;
+				MOPSDeleted++;
+			}
+			foundCode = 0;
+
+			deviceMemCounter = SkipOpCode(deviceMemCounter);
 		}
 
-		if(foundCode == numBytes)
+		if(MOPSDeleted > 0)
 		{
-			deviceMemory[deviceMemCounter] = FragmentOpCode;
-			deviceMemory[deviceMemCounter + 5] = numBytes;
+			ClearOutputBuffer();
+			char SuccessMessage [] = "MOP Deleted!";
+			FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
 		}
-		foundCode = 0;
-
-		deviceMemCounter = SkipOpCode(deviceMemCounter);
+		else
+		{
+			ClearOutputBuffer();
+			char errorMessage [] = "Cannot Delete: MOP not found in memory";
+			FillOutputBufferWithError(errorMessage, strlen(errorMessage));
+		}
+	}
+	else
+	{
+		ClearOutputBuffer();
+		char errorMessage [] = "Cannot Delete: Delivered Generic MOP was determined to be invalid!";
+		FillOutputBufferWithError(errorMessage, strlen(errorMessage));
 	}
 	
 }
@@ -294,17 +348,29 @@ void ExecuteAddMOPOpCode()
 {
 	unsigned int counter = 1;
 
-	unsigned char numBytes = GetNumberFromBuffer(inputBuffer, counter, 1);
+	unsigned int numBytes = GetNumberFromBuffer(inputBuffer, counter, 1);
 
-	for(int i = 0; i < numBytes; i++)
+	int dataError = ValidateAndRestructureIncomingMOP(counter, numBytes);
+
+	if(dataError == 0)
 	{
-		AddNewCharToMemory(inputBuffer[counter]);
-		counter++;
+		for(int i = 0; i < numBytes; i++)
+		{
+			AddNewCharToMemory(inputBuffer[counter]);
+			counter++;
+		}
+
+		ClearOutputBuffer();
+		char SuccessMessage [] = "MOP Added!";
+		FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
+	}
+	else
+	{
+		ClearOutputBuffer();
+		char errorMessage [] = "Cannot Add: Delivered Generic MOP was determined to be invalid!";
+		FillOutputBufferWithError(errorMessage, strlen(errorMessage));
 	}
 
-	ClearOutputBuffer();
-	char SuccessMessage [] = "MOP Added!";
-	FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
 }
 
 void ExecuteControlOpCodes()
