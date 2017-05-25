@@ -269,17 +269,19 @@ int ValidateAndRestructureIncomingMOP(unsigned int MOPStartAddr, unsigned int &n
 	MOPStartAddr++;
 	int startID = MOPStartAddr;
 	unsigned long curID = GetNumberFromBuffer(inputBuffer, MOPStartAddr, STANDARD_ID_SIZE);
-	cout << curID << endl;
+	unsigned char bytesOfData = GetNumberFromBuffer(inputBuffer, MOPStartAddr, 1);
 	curID = GetIndexedDeviceID(curID);
-	cout << curID << endl;
 
 	int memDiff = STANDARD_ID_SIZE - ID_SIZE;
+	numBytes = numBytes - memDiff;
 
-	// for(int i = 0; i < inputBufferLastByte - memDiff; i++)
-	// {
-	// 	inputBuffer[MOPStartAddr]
-	// }
+	startID = AddNumberToBufferWithSpecifiedBytes(inputBuffer, curID, startID, ID_SIZE);
+	startID = AddCharToBuffer(inputBuffer, startID, bytesOfData);
 
+	for(int i = 0; i < bytesOfData; i++)
+	{
+		inputBuffer[startID + i] = inputBuffer[startID + i + memDiff];
+	}
 
 	return 0;
 }
