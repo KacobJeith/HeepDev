@@ -420,11 +420,19 @@ void TestDeleteMOPOpCode()
 	inputBuffer[11] = 'e';
 	inputBuffer[12] = 's';
 
+#ifdef USE_INDEXED_IDS
+	unsigned char valAtSpotBeforeDeleteion = deviceMemory[15];
+#else
 	unsigned char valAtSpotBeforeDeleteion = deviceMemory[11];
+#endif
 	
 	ExecuteControlOpCodes();
 
+#ifdef USE_INDEXED_IDS
+	unsigned char valAtSpotAfterDeletion = deviceMemory[15];
+#else
 	unsigned char valAtSpotAfterDeletion = deviceMemory[11];
+#endif
 
 	ExpectedValue valueList [2];
 	valueList[0].valueName = "Before OpCode";

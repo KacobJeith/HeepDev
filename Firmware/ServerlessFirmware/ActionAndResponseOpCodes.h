@@ -291,6 +291,8 @@ void ExecuteDeleteMOPOpCode()
 	unsigned int counter = 1;
 
 	unsigned int numBytes = GetNumberFromBuffer(inputBuffer, counter, 1);
+	ValidateAndRestructureIncomingMOP(counter, numBytes);
+
 	unsigned int foundCode = 0;
 	unsigned int deviceMemCounter = 0;
 
