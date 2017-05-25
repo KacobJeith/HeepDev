@@ -27,6 +27,13 @@ void SetupHeepDevice(char* deviceName)
 	}
 }
 
+void FactoryReset(char* deviceName)
+{
+	clearMemory = 1;
+	SetupHeepDevice(deviceName);
+	clearMemory = 0;
+}
+
 void SendOutputByID(unsigned char controlID, unsigned int value)
 {
 	SetControlValueByID(controlID, value);
