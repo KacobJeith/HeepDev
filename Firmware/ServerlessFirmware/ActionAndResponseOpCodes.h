@@ -258,6 +258,32 @@ void ExecuteDeleteVertexOpCode()
 	}
 }
 
+// Validate that a MOP can be added. Then restructure it for localIDs as necessary
+int ValidateAndRestructureIncomingMOP(unsigned int MOPStartAddr, unsigned int &numBytes)
+{
+	if(numBytes < STANDARD_ID_SIZE + 2)
+	{
+		return 1; // INVALID MOP
+	}
+
+	MOPStartAddr++;
+	int startID = MOPStartAddr;
+	unsigned long curID = GetNumberFromBuffer(inputBuffer, MOPStartAddr, STANDARD_ID_SIZE);
+	cout << curID << endl;
+	curID = GetIndexedDeviceID(curID);
+	cout << curID << endl;
+
+	int memDiff = STANDARD_ID_SIZE - ID_SIZE;
+
+	// for(int i = 0; i < inputBufferLastByte - memDiff; i++)
+	// {
+	// 	inputBuffer[MOPStartAddr]
+	// }
+
+
+	return 0;
+}
+
 void ExecuteDeleteMOPOpCode()
 {
 	unsigned int counter = 1;
@@ -294,7 +320,9 @@ void ExecuteAddMOPOpCode()
 {
 	unsigned int counter = 1;
 
-	unsigned char numBytes = GetNumberFromBuffer(inputBuffer, counter, 1);
+	unsigned int numBytes = GetNumberFromBuffer(inputBuffer, counter, 1);
+
+	ValidateAndRestructureIncomingMOP(counter, numBytes);
 
 	for(int i = 0; i < numBytes; i++)
 	{

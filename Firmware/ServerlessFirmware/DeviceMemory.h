@@ -112,13 +112,20 @@ void GetDeviceIDOctets(unsigned long deviceID, unsigned char &octet4, unsigned c
 	octet4 = (deviceID >> 24)%256;
 }
 
-void AddNumberToMemoryWithSpecifiedBytes(unsigned int number, int numBytes)
+unsigned long AddNumberToBufferWithSpecifiedBytes(unsigned char* buffer, unsigned long number, unsigned long startPoint, int numBytes)
 {
 	for(int i = 0; i < numBytes; i++)
 	{
 		char numToAdd = (number >> 8*( (numBytes-1) - i))%256;
-		AddNewCharToMemory(numToAdd);
+		startPoint = AddCharToBuffer(buffer, startPoint, numToAdd);
 	}
+
+	return startPoint;
+}
+
+void AddNumberToMemoryWithSpecifiedBytes(unsigned long number, int numBytes)
+{
+	curFilledMemory = AddNumberToBufferWithSpecifiedBytes(deviceMemory, number, curFilledMemory, numBytes);
 }
 
 unsigned long AddDeviceIDToBuffer(unsigned char* buffer, unsigned long startPoint, unsigned long deviceID)
