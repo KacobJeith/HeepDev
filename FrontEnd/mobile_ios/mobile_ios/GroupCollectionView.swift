@@ -27,6 +27,7 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
             
             switch changes {
             case .change:
+                
                 self.reloadView()
                 break
             case .error(let error):
@@ -45,9 +46,6 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
         layout.itemSize = CGSize(width: dimension,
                                  height: dimension)
         
-        print(self.view.bounds.width)
-        print(2 * dimension + 20 + 10)
-        
         self.collectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: layout)
         self.collectionView?.dataSource = self
         self.collectionView?.delegate = self
@@ -57,25 +55,24 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
                                                             target: self,
-                                                            action: #selector(addNewGroupToThisPlace))
+                                                            action: #selector(addGroupFromButton))
 
         let flush = UIBarButtonItem(barButtonSystemItem: .trash,
                                     target: self,
                                     action: #selector(flushGroup))
-        
+
         let search = UIBarButtonItem(title: "Search For Devices",
                                      style: .plain,
                                      target: self,
                                      action: #selector(searchForHeepDevices))
-        
+ 
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace,
                                      target: nil,
                                      action: nil)
-        
+
         let info = UIBarButtonItem(barButtonSystemItem: .organize,
                                    target: self,
                                    action: #selector(openDeviceTable))
-        
         
         self.toolbarItems = [flush, spacer, search, spacer, info]
 
@@ -138,7 +135,7 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
         
         let thisImageData = thisPlace.groups[indexPath.row].imageData
         if (thisImageData == NSData()) {
-            print("empty image")
+            
             title.backgroundColor = getRandomColor()
         } else {
             title.backgroundColor = .clear
@@ -182,17 +179,33 @@ extension GroupCollectionView {
         navigationController?.pushViewController(seeAllDevicesInPlace, animated: true)
     }
     
+    func addGroupFromButton() {
+        //print("this shouldn't be necessary")
+        addNewGroupToThisPlace()
+    }
     
-    
-    func addNewGroupToThisPlace() {
+    func addNewGroupToThisPlace(name: String = "") {
         let realm = try! Realm(configuration: config)
         let updatedThisPlace = realm.object(ofType: Place.self, forPrimaryKey: thisPlace.bssid)!
         let allGroups = realm.objects(Group.self)
+        
         let newGroup = Group()
         newGroup.place = thisPlace.bssid
-        newGroup.name = "New Room " + String(updatedThisPlace.groups.count)
-        newGroup.id = allGroups.count
         
+        if name == "" {
+            newGroup.name = "New Room " + String(updatedThisPlace.groups.count)
+        } else {
+            newGroup.name = name
+        }
+        
+        if allGroups.count > 0 {
+            
+            newGroup.id = allGroups.max(ofProperty: "id")! + 1
+            
+        } else {
+            
+            newGroup.id = 0
+        }
         
         try! realm.write {
             
@@ -205,35 +218,16 @@ extension GroupCollectionView {
     
     func flushGroup() {
         let realm = try! Realm(configuration: config)
-        
+        notificationToken?.stop()
         
         try! realm.write {
-            
             realm.delete(thisPlace.groups)
         }
         
-        
-        let allGroups = realm.objects(Group.self).sorted(byKeyPath: "id", ascending: false)
-        
-        let firstGroupInPlace = Group()
-        firstGroupInPlace.place = thisPlace.bssid
-        firstGroupInPlace.name = "My First Room"
-        
-        if allGroups.count == 0 {
-            firstGroupInPlace.id = 0
-        } else {
-            
-            firstGroupInPlace.id = (allGroups.first?.id)! + 1
-        }
-        print(firstGroupInPlace.id)
-        
-        try! realm.write {
-            
-            thisPlace.groups.append(firstGroupInPlace)
-        }
+        addNewGroupToThisPlace(name: "My First Room")
         
         let assignedControls = realm.objects(DeviceControl.self).filter("place = %@ AND groupsAssigned = 1", thisPlace.bssid)
-        
+
         try! realm.write {
             assignedControls.setValue(0, forKey: "groupsAssigned")
         }
@@ -250,7 +244,6 @@ extension GroupCollectionView {
                 realm.delete(device)
             }
         }
-        
         
         
         reloadView()

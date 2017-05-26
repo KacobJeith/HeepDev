@@ -12,6 +12,7 @@ import RealmSwift
 class EditRoomView: UITableViewController {
     var notificationTokenControls: NotificationToken? = nil
     var notificationTokenGroup: NotificationToken? = nil
+    var notificationTokenVertices: NotificationToken? = nil
     
     let devices: [Device]
     let realm = try! Realm(configuration: config)
@@ -42,7 +43,7 @@ class EditRoomView: UITableViewController {
         self.initRealmNotification()
         
         
-        self.title = roomName
+        self.title = thisGroup.name
         self.navigationController?.isToolbarHidden = false
         tableView.alwaysBounceVertical = false
         let search = UIBarButtonItem(title: "Search For Devices",
@@ -50,7 +51,7 @@ class EditRoomView: UITableViewController {
                                      target: self,
                                      action: #selector(searchForHeepDevices))
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .camera,
                                                             target: self,
                                                             action: #selector(importPicture))
         
@@ -62,11 +63,13 @@ class EditRoomView: UITableViewController {
     deinit{
         notificationTokenControls?.stop()
         notificationTokenGroup?.stop()
+        notificationTokenVertices?.stop()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         notificationTokenControls?.stop()
         notificationTokenGroup?.stop()
+        notificationTokenVertices?.stop()
     }
     
     
@@ -168,43 +171,69 @@ extension EditRoomView: UIImagePickerControllerDelegate, UINavigationControllerD
 // Utility functions
 extension EditRoomView {
     
-    func drawVertexToggleButton() -> UIButton {
-        let vertexToggle = UIButton()
+    func drawVertexToggleButton() -> UIView {
+        let modePuck = UIView()
+        modePuck.backgroundColor = .clear
         let imageSpaceHeight = self.view.frame.height - 200 - self.navigationController!.navigationBar.bounds.height
-        vertexToggle.frame = CGRect(x: self.view.frame.width - 70,
+        modePuck.frame = CGRect(x: self.view.frame.width - 70,
                                     y: imageSpaceHeight - 70,
                                     width: 60,
                                     height: 60)
+        
+        let innerElementFrame = CGRect(x: 0,
+                                       y: 0,
+                                       width: 60,
+                                       height: 60)
+        
+        
+        
+        
+        let vertexToggle = UIButton()
+        vertexToggle.frame = innerElementFrame
         vertexToggle.layer.cornerRadius = 0.5 * vertexToggle.bounds.size.width
+        vertexToggle.layer.opacity = 0.7
+        vertexToggle.layer.shadowColor = UIColor.lightGray.cgColor
+        vertexToggle.layer.shadowOffset = CGSize(width: 1.0, height: 1.0)
+        vertexToggle.layer.shadowRadius = 0.25
+        vertexToggle.layer.shadowOpacity = 0.5
         vertexToggle.clipsToBounds = true
+        
+        
+        let modeLabel = UILabel()
+        modeLabel.frame = innerElementFrame
         
         if thisGroup.selectedControl == 0 {
             
             vertexToggle.backgroundColor = UIColor.lightGray
-            vertexToggle.setTitle("Edit", for: [])
+            modeLabel.text = " Scrolling "
             
         } else if thisGroup.selectedControl == 1 {
-            vertexToggle.backgroundColor = UIColor.blue
-            vertexToggle.setTitle("Adding", for: [])
+            vertexToggle.backgroundColor = UIColor.green
+            modeLabel.text = " Adding "
             
         } else if thisGroup.selectedControl == 2 {
             vertexToggle.backgroundColor = UIColor.red
-            vertexToggle.setTitle("Deleting", for: [])
-            
+            modeLabel.text = " Deleting "
         } else {
-            vertexToggle.backgroundColor = UIColor.lightGray
-            vertexToggle.setTitle("Back", for: [])
+            vertexToggle.backgroundColor = UIColor.blue
+            modeLabel.text = " Positioning "
         }
         
         
-        vertexToggle.setTitleColor(UIColor.white, for: UIControlState.normal)
-        vertexToggle.titleLabel?.adjustsFontSizeToFitWidth = true
+        modeLabel.textColor = UIColor.white
+        modeLabel.adjustsFontSizeToFitWidth = true
+        modeLabel.layer.shadowColor = UIColor.lightGray.cgColor
+        modeLabel.layer.shadowOffset = CGSize(width: 1.0, height: 1.0)
+        modeLabel.layer.shadowRadius = 0.25
+        modeLabel.layer.shadowOpacity = 0.5
         
         vertexToggle.addTarget(self,
                                action: #selector(toggleVertexEditState),
                                for: UIControlEvents.primaryActionTriggered)
+        modePuck.addSubview(vertexToggle)
+        modePuck.addSubview(modeLabel)
         
-        return vertexToggle
+        return modePuck
     }
     
     func toggleVertexEditState() {
@@ -256,6 +285,22 @@ extension EditRoomView {
                 }
         }
         
+        let watchVertices = realm.objects(Vertex.self)
+        
+        notificationTokenVertices = watchVertices.addNotificationBlock {  [weak self] (changes: RealmCollectionChange) in
+            
+            switch changes {
+            case .update:
+                
+                self?.tableView.reloadData()
+                break
+            case .error(let error):
+                fatalError("\(error)")
+                break
+            default: break
+                
+            }
+        }
         
         let watchGroup = realm.object(ofType: Group.self, forPrimaryKey: thisGroup.id)!
         

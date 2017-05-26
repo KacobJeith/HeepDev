@@ -49,10 +49,6 @@ class HAPIMemoryParser {
         
         let rxDevice = realm.object(ofType: Device.self, forPrimaryKey: (vertex.rx?.deviceID)!)
         let rxIPAddress = IPStringToByteArray(IPString: (rxDevice?.ipAddress)!)
-        print("txDeviceID: \(txDeviceID)")
-        print("rxDeviceID: \(rxDeviceID)")
-        print("txControlID: \(txControlID)")
-        print("rxControlID: \(rxControlID)")
         
         packet.append(contentsOf: txDeviceID)
         packet.append(contentsOf: rxDeviceID)

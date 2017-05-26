@@ -235,7 +235,9 @@ class DeviceTableViewController: UITableViewController {
             
             switch changes {
             case .change:
+                
                 self.tableView.reloadData()
+                
                 break
             case .error(let error):
                 fatalError("\(error)")
