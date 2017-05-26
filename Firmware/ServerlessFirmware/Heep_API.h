@@ -14,7 +14,7 @@ void SetupHeepDevice(char* deviceName)
 	if(clearMemory)
 	{
 		ClearMemory();
-		SetDeviceName(deviceName);
+		SetDeviceName(deviceName); //This line is necessary with local IDs because it indexes the ID when the name is added
 	}
 	else
 	{
