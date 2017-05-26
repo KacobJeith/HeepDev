@@ -56,16 +56,29 @@ class EditRoomView: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
+        
+        
         if (indexPath.row == 0) {
+            
             let cell = UnassignedControlCollection(bssid: thisBSSID,
                                                    parentTable: tableView,
                                                    thisGroup: thisGroup,
                                                    indexPath: indexPath)
+            
             return cell
             
         } else if (indexPath.row == 1) {
+            
+            let bounds = self.navigationController!.navigationBar.bounds
+            
+            let editFrame = CGRect(x: 0,
+                                   y: 0,
+                                   width: self.view.frame.width,
+                                   height: self.view.frame.height - 200 - bounds.height)
+            
             let cell = VertexEditCell(bssid: thisBSSID,
                                       parentTable: tableView,
+                                      cellFrame: editFrame,
                                       thisGroup: thisGroup,
                                       indexPath: indexPath)
             
@@ -97,7 +110,7 @@ class EditRoomView: UITableViewController {
         }
         
         return customHeight
-    }    
+    }
     
 }
 

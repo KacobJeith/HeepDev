@@ -10,6 +10,7 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     var controlDeviceReference: [Device] = []
     var thisBSSID: String = ""
     var parentTable = UITableView()
+    var cellFrame = CGRect()
     var editImage: UIImage = UIImage()
     var controlIDs = [Int]()
     var myIndexPath = IndexPath()
@@ -26,12 +27,14 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     
     convenience init(bssid: String,
                      parentTable: UITableView,
+                     cellFrame: CGRect,
                      thisGroup: Group,
                      indexPath: IndexPath) {
         self.init()
         
         self.thisBSSID = bssid
         self.parentTable = parentTable
+        self.cellFrame = cellFrame
         self.controls = thisGroup.controls
         self.myIndexPath = indexPath
         self.thisGroup = realm.object(ofType: Group.self, forPrimaryKey: thisGroup.id)!
@@ -58,10 +61,12 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         
         let screenSize = UIScreen.main.bounds
         let screenWidth = screenSize.width
+        let editSpaceHeight = self.cellFrame.height
         
         if tryImage == nil {
             
-            layout.itemSize = CGSize(width: screenWidth, height: 435)
+            layout.itemSize = CGSize(width: screenWidth,
+                                     height: editSpaceHeight)
             
         } else {
             
@@ -71,16 +76,18 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
             let aspectRatio = naturalWidth! / naturalHeight!
             if aspectRatio < 1 {
                 
-                layout.itemSize = CGSize(width: screenWidth, height: 420)
+                layout.itemSize = CGSize(width: screenWidth,
+                                         height: editSpaceHeight)
             } else {
                 
-                layout.itemSize = CGSize(width: 420 * aspectRatio, height: 420)
+                layout.itemSize = CGSize(width: editSpaceHeight * aspectRatio,
+                                         height: editSpaceHeight)
             }
         }
         
         collectionView = UICollectionView(frame: CGRect(x: 0,y: 0,
                                                         width: screenWidth,
-                                                        height: 435) ,
+                                                        height: editSpaceHeight) ,
                                           collectionViewLayout: layout)
         
         collectionView.delegate = self

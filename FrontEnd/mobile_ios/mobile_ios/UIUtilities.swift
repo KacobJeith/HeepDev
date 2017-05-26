@@ -19,6 +19,7 @@ func createControlPuck(thisControl: DeviceControl, cellSize: CGRect) -> UIView {
     let iconName = SuggestIconFromName(name: thisControl.controlName)
     let image = UIImage(named: iconName) as UIImage?
     let deviceSprite = UIButton()
+    
     deviceSprite.setBackgroundImage(image, for: [])
     deviceSprite.contentHorizontalAlignment = .center
     deviceSprite.contentMode = .scaleAspectFit

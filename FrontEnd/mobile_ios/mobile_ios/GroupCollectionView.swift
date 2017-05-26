@@ -61,6 +61,7 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
 
         
     }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
