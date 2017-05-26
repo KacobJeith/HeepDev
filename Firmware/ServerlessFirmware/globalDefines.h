@@ -20,3 +20,5 @@
 #else 
 #define ID_SIZE STANDARD_ID_SIZE
 #endif
+
+typedef unsigned char heepByte;
