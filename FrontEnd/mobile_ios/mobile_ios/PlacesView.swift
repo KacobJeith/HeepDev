@@ -12,7 +12,7 @@ import RealmSwift
 class PlacesView: UIViewController {
     
     let realm = try! Realm(configuration: config)
-    
+    var activelyPanning = Int()
     var bssids = [String]()
     
     override func viewDidLoad() {
@@ -100,23 +100,25 @@ class PlacesView: UIViewController {
         button.setTitle("  " + thisName + "  ", for: [])
         button.setTitleColor(UIColor.white, for: UIControlState.normal)
         button.titleLabel?.adjustsFontSizeToFitWidth = true
-        button.tag = bssids.count - 1
+        button.tag = bssids.count
         self.view.addSubview(button)
         
         
-        button.addTarget(self,
-                         action: #selector(drag),
-                         for: [UIControlEvents.touchDragInside,
-                               UIControlEvents.touchDragOutside,
-                               UIControlEvents.touchDragExit])
+        let pan = UIPanGestureRecognizer(target: self,
+                                         action: #selector(drag))
+        
+        button.addGestureRecognizer(pan)
         
         button.addTarget(self,
                          action: #selector(enterPlace),
-                         for: .touchDownRepeat)
+                         for: UIControlEvents.primaryActionTriggered)
     }
     
     func enterPlace(sender: UIButton) {
-        let enterPlace = realm.object(ofType: Place.self, forPrimaryKey: bssids[sender.tag])
+        let enterPlace = realm.object(ofType: Place.self, forPrimaryKey: bssids[sender.tag - 1])
+        
+        print("entering \(String(describing: enterPlace?.name))")
+
         let groupView = GroupCollectionView()
         groupView.thisPlace = enterPlace!
         navigationController?.pushViewController(groupView, animated: true)
@@ -124,19 +126,57 @@ class PlacesView: UIViewController {
         
     }
     
-    func drag(control: UIControl, event: UIEvent) {
-
+    func drag(gesture: UIPanGestureRecognizer) {
         
-        if let center = event.allTouches?.first?.location(in: self.view) {
-            control.center = center
-            let realm = try! Realm(configuration: config)
-            try! realm.write {
-                realm.create(Place.self,
-                             value: ["bssid": bssids[(event.allTouches?.first?.view!.tag)!],
-                                     "x": center.x,
-                                     "y": center.y],
-                             update: true)
+        if gesture.state == UIGestureRecognizerState.began {
+
+            findPanningPlace(gesture: gesture)
+            
+        } else if gesture.state == UIGestureRecognizerState.changed {
+            if activelyPanning != Int(){
+                let translation = CGAffineTransform(translationX: gesture.translation(in: self.view).x,
+                                                    y: gesture.translation(in: self.view).y)
+                (self.view.viewWithTag(activelyPanning))!.transform = translation
+                
             }
+            
+            
+        } else if gesture.state == UIGestureRecognizerState.ended {
+            if activelyPanning != Int(){
+                
+                let realm = try! Realm(configuration: config)
+                let thisPlace = realm.object(ofType: Place.self, forPrimaryKey: bssids[activelyPanning - 1])
+                try! realm.write {
+                    thisPlace?.x = (thisPlace?.x)! + gesture.translation(in: self.view).x
+                    thisPlace?.y = (thisPlace?.y)! + gesture.translation(in: self.view).y
+                }
+                
+                
+                self.reloadView()
+                
+            }
+            
+            activelyPanning = Int()
+            
+            
+        }
+        
+        
+        
+    }
+    
+    func findPanningPlace(gesture: UIPanGestureRecognizer) {
+        for index in 1...(bssids.count) {
+            
+            let activelyPanningPlace = self.view.viewWithTag(index)
+            let gestureLocation = gesture.location(in: self.view)
+            if activelyPanningPlace != nil {
+                if (activelyPanningPlace?.frame)!.contains(gestureLocation) {
+                    
+                    activelyPanning = (activelyPanningPlace?.tag)!
+                }
+            }
+            
         }
     }
     

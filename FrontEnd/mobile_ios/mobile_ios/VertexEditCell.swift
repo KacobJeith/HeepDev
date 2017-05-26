@@ -545,6 +545,7 @@ extension VertexEditCell {
             for eachVertex in eachControl.vertexList {
                 
                 let index = eachVertex.vertexID.range(of: String(describing: (thisControl?.uniqueID)!))
+                
                 if  index != nil {
                     let calculatedIndex = eachVertex.vertexID.distance(from: eachVertex.vertexID.startIndex, to: (index?.lowerBound)!)
                     
