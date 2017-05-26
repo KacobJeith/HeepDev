@@ -39,3 +39,89 @@ func createControlPuck(thisControl: DeviceControl, cellSize: CGRect) -> UIView {
     return bigWhiteBox
 }
 
+
+func getModeColor(thisGroup: Group, highlight: Bool = false) -> UIColor {
+    
+    
+    if thisGroup.selectedControl == 0 {
+        
+        if highlight {
+            
+            return UIColor.purple
+            
+        } else {
+            
+            return UIColor.purple.withAlphaComponent(0.4)
+        }
+        
+    } else if thisGroup.selectedControl == 1 {
+        if highlight {
+            
+            return UIColor.green
+            
+        } else {
+            
+            return UIColor.green.withAlphaComponent(0.5)
+        }
+        
+    } else if thisGroup.selectedControl == 2 {
+        if highlight {
+            return UIColor.red
+        } else {
+            return UIColor.blue.withAlphaComponent(0.6)
+        }
+        
+        
+    } else {
+        if highlight {
+            
+            return UIColor.blue
+        } else {
+            return UIColor.blue.withAlphaComponent(0.3)
+        }
+    }
+    
+}
+/*
+func getModeColor(thisGroup: Group, object: Any, checklist: [String : Bool]) -> UIColor {
+    
+    if thisGroup.selectedControl == 0 {
+        
+        return UIColor.lightGray
+        
+    } else if thisGroup.selectedControl == 1 {
+        
+        
+        return UIColor.green
+        
+    } else if thisGroup.selectedControl == 2 {
+        
+        
+        return UIColor.red
+        
+        
+    } else {
+        return UIColor.blue
+    }
+    
+}*/
+
+func getModeText(thisGroup: Group) -> String {
+    
+    if thisGroup.selectedControl == 0 {
+        
+        return " Scrolling "
+        
+    } else if thisGroup.selectedControl == 1 {
+        
+        return " Adding "
+        
+    } else if thisGroup.selectedControl == 2 {
+        
+        return " Deleting "
+    } else {
+        
+        return " Positioning "
+    }
+}
+

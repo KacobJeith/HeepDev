@@ -123,9 +123,6 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
             
             
             let controlSprite = addControlSprite(cell: cell, thisControl: eachControl)
-            controlSprite.layer.borderWidth = 2
-            controlSprite.layer.borderColor = eachControl.uniqueID == thisGroup.selectedControl ? UIColor.blue.cgColor : UIColor.clear.cgColor
-            controlSprite.tag = eachControl.uniqueID
             
             cell.addSubview(controlSprite)
             
@@ -176,7 +173,6 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
 
         }
         
-        
         return cell
     }
     
@@ -213,7 +209,9 @@ extension VertexEditCell {
             activeVertex = Vertex()
             cellView.layer.addSublayer(drawCircle(center: gesture.location(in: cellView),
                                                   radius: 35,
-                                                  name: "circle"))
+                                                  name: "circle",
+                                                  highlight: true))
+            
             
             
         } else if gesture.state == UIGestureRecognizerState.changed {
@@ -332,8 +330,9 @@ extension VertexEditCell {
                                 generator.impactOccurred()
                                 
                                 cellView.layer.addSublayer(drawVertex(vertex: thisVertex,
-                                                                      color: UIColor.red.cgColor,
+                                                                      highlight: true,
                                                                       name: "toDelete"))
+                                
                             }
                         }
                     }
@@ -361,9 +360,11 @@ extension VertexEditCell {
         
         if activeVertexFinish == CGPoint() {
             
-            cellView.layer.addSublayer(drawLine(start: activeVertexStart,
-                                                finish: gesture.location(in: cellView),
-                                                name: "vertex"))
+            
+            cellView.layer.addSublayer(drawVertex(start: activeVertexStart,
+                                                  finish: gesture.location(in: cellView),
+                                                  name: "vertex",
+                                                  highlight: true))
             
             verifyControlForVertex(cellView: cellView,
                                    gesture: gesture,
@@ -371,9 +372,10 @@ extension VertexEditCell {
             
         } else {
             
-            cellView.layer.addSublayer(drawLine(start: activeVertexStart,
-                                                finish: activeVertexFinish,
-                                                name: "vertex"))
+            cellView.layer.addSublayer(drawVertex(start: activeVertexStart,
+                                                  finish: gesture.location(in: cellView),
+                                                  name: "vertex",
+                                                  highlight: true))
             
             verifyControlForVertex(cellView: cellView,
                                    gesture: gesture,
@@ -412,7 +414,8 @@ extension VertexEditCell {
                         
                         cellView.layer.addSublayer(drawCircle(center: activeVertexFinish,
                                                               radius: 35,
-                                                              name: "finish"))
+                                                              name: "finish",
+                                                              highlight: true))
                     }
                     
                 }
@@ -428,7 +431,8 @@ extension VertexEditCell {
                     
                     cellView.layer.addSublayer(drawCircle(center: activeVertexStart,
                                                           radius: 35,
-                                                          name: "start"))
+                                                          name: "start",
+                                                          highlight: true))
                     
                 }
             }
@@ -455,7 +459,7 @@ extension VertexEditCell {
         }
     }
     
-    func drawCircle(center: CGPoint, radius: CGFloat, name: String) -> CAShapeLayer {
+    func drawCircle(center: CGPoint, radius: CGFloat, name: String, highlight: Bool = false) -> CAShapeLayer {
         
         let circlePath = UIBezierPath(arcCenter: center,
                                       radius: radius,
@@ -465,8 +469,8 @@ extension VertexEditCell {
         
         let shapeLayer = CAShapeLayer()
         shapeLayer.path = circlePath.cgPath
-        shapeLayer.fillColor = UIColor.red.cgColor
-        shapeLayer.strokeColor = UIColor.red.cgColor
+        shapeLayer.fillColor = getModeColor(thisGroup: thisGroup, highlight: highlight).cgColor
+        shapeLayer.strokeColor = getModeColor(thisGroup: thisGroup, highlight: highlight).cgColor
         shapeLayer.lineWidth = 3.0
         shapeLayer.opacity = 0.4
         shapeLayer.name = name
@@ -541,8 +545,11 @@ extension VertexEditCell {
                     
                     let newPath = drawVertex(start: start,
                                              finish: finish)
+                    
                     newPath.name = eachVertex.vertexID
                     cellView.layer.addSublayer(newPath)
+                    
+                    //bringControlSpritesToFront()
                 }
             }
         }
@@ -612,7 +619,7 @@ extension VertexEditCell {
 // Drawing Functions
 extension VertexEditCell {
     
-    func drawVertex(vertex: Vertex, color: CGColor = UIColor.blue.cgColor, name: String? = nil) -> CAShapeLayer {
+    func drawVertex(vertex: Vertex, highlight: Bool = false, name: String? = nil) -> CAShapeLayer {
         let shapeLayer = CAShapeLayer()
         let curve = UIBezierPath()
         let startPoint = CGPoint(x: (vertex.tx?.editX)!, y: (vertex.tx?.editY)!)
@@ -622,21 +629,20 @@ extension VertexEditCell {
         curve.addQuadCurve(to: finishPoint, controlPoint: CGPoint(x: (vertex.tx?.editX)!, y: (vertex.rx?.editY)!))
         shapeLayer.path = curve.cgPath
         shapeLayer.shadowPath = curve.cgPath
+        shapeLayer.strokeColor = getModeColor(thisGroup: thisGroup, highlight: highlight).cgColor
         
-        shapeLayer.strokeColor = color
         shapeLayer.fillColor = UIColor.clear.cgColor
-        shapeLayer.lineWidth = 5.0
+        shapeLayer.lineWidth = 3.0
         if name == nil {
             shapeLayer.name = vertex.vertexID
         } else {
             shapeLayer.name = name
         }
         shapeLayer.accessibilityPath = curve
-        
         return shapeLayer
     }
     
-    func drawVertex(start: CGPoint, finish: CGPoint) -> CAShapeLayer {
+    func drawVertex(start: CGPoint, finish: CGPoint, name: String = "", highlight: Bool = false) -> CAShapeLayer {
         let shapeLayer = CAShapeLayer()
         let curve = UIBezierPath()
         
@@ -644,9 +650,12 @@ extension VertexEditCell {
         curve.addQuadCurve(to: finish, controlPoint: CGPoint(x: start.x, y: finish.y))
         shapeLayer.path = curve.cgPath
         
-        shapeLayer.strokeColor = UIColor.green.cgColor
+        shapeLayer.strokeColor = getModeColor(thisGroup: thisGroup, highlight: highlight).cgColor
         shapeLayer.fillColor = UIColor.clear.cgColor
-        shapeLayer.lineWidth = 1.0
+        shapeLayer.lineWidth = 3.0
+        if name != "" {
+            shapeLayer.name = name
+        }
         
         return shapeLayer
     }
@@ -681,26 +690,39 @@ extension VertexEditCell {
         return UIImage(data: thisGroup.imageData as Data)
     }
     
-    func addControlSprite(cell: UICollectionViewCell, thisControl: DeviceControl) -> UIButton {
+    func addControlSprite(cell: UICollectionViewCell, thisControl: DeviceControl) -> UIView {
         controlIDs.append(thisControl.uniqueID)
         
-        let iconName = SuggestIconFromName(name: thisControl.controlName)
-        let image = UIImage(named: iconName) as UIImage?
-        let controlSprite = UIButton()
-        
-        controlSprite.setBackgroundImage(image, for: [])
-        controlSprite.contentMode = .scaleAspectFit
-        controlSprite.frame = CGRect(x: thisControl.editX - 30,
+        let container = UIView()
+        container.frame = CGRect(x: thisControl.editX - 30,
                                      y: thisControl.editY - 30,
                                      width: 60,
                                      height: 60)
-        controlSprite.isUserInteractionEnabled = false
-        controlSprite.transform = CGAffineTransform(scaleX: thisControl.scale, y: thisControl.scale).rotated(by: thisControl.rotation)
-        controlSprite.clipsToBounds = true
-        controlSprite.tag = controlIDs.count - 1
+        
+        container.layer.cornerRadius = 30
+        container.clipsToBounds = true
+        container.tag = controlIDs.count - 1
+        container.layer.borderWidth = 2
+        container.layer.borderColor = thisControl.uniqueID == thisGroup.selectedControl ? getModeColor(thisGroup: thisGroup, highlight: true).cgColor : getModeColor(thisGroup: thisGroup, highlight: false).cgColor
+        container.tag = thisControl.uniqueID
         
         
-        return controlSprite
+        let controlSprite = UIImageView()
+        let iconName = SuggestIconFromName(name: thisControl.controlName)
+        let image = UIImage(named: iconName) as UIImage?
+        controlSprite.image = image
+        controlSprite.contentMode = .scaleAspectFit
+        let scaledSize = container.frame.width * 0.75
+        let startPosition = (container.frame.width * 0.25) / 2
+        controlSprite.frame = CGRect(x: startPosition,
+                                     y: startPosition,
+                                     width: scaledSize,
+                                     height: scaledSize)
+        container.addSubview(controlSprite)
+        
+        
+        container.transform = CGAffineTransform(scaleX: thisControl.scale, y: thisControl.scale).rotated(by: thisControl.rotation)
+        return container
     }
     
     func saveSelectedSprite() {
@@ -729,6 +751,18 @@ extension VertexEditCell {
         for control in thisGroup.controls {
             for vertex in control.vertexList {
                 vertexDictToDelete[vertex.vertexID] = false
+            }
+        }
+    }
+    
+    func bringControlSpritesToFront() {
+        print("Trying to pull forward")
+        for subview in self.subviews {
+            for eachControl in controls {
+                
+                if subview.tag == eachControl.uniqueID {
+                    subview.bringSubview(toFront: self)
+                }
             }
         }
     }

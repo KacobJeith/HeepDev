@@ -202,23 +202,9 @@ extension EditRoomView {
         let modeLabel = UILabel()
         modeLabel.frame = innerElementFrame
         
-        if thisGroup.selectedControl == 0 {
-            
-            vertexToggle.backgroundColor = UIColor.lightGray
-            modeLabel.text = " Scrolling "
-            
-        } else if thisGroup.selectedControl == 1 {
-            vertexToggle.backgroundColor = UIColor.green
-            modeLabel.text = " Adding "
-            
-        } else if thisGroup.selectedControl == 2 {
-            vertexToggle.backgroundColor = UIColor.red
-            modeLabel.text = " Deleting "
-        } else {
-            vertexToggle.backgroundColor = UIColor.blue
-            modeLabel.text = " Positioning "
-        }
         
+        vertexToggle.backgroundColor = getModeColor(thisGroup: thisGroup, highlight: true)
+        modeLabel.text = getModeText(thisGroup: thisGroup)
         
         modeLabel.textColor = UIColor.white
         modeLabel.adjustsFontSizeToFitWidth = true
@@ -234,7 +220,7 @@ extension EditRoomView {
         modePuck.addSubview(modeLabel)
         
         return modePuck
-    }
+    }    
     
     func toggleVertexEditState() {
         print("Toggle Vertex Edit")
