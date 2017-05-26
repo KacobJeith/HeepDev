@@ -8,13 +8,17 @@
 #include "Simulation_NonVolatileMemory.h"
 #endif
 
+// Prototypes
+void CommitMemory();
+
 unsigned char clearMemory = 0;
 void SetupHeepDevice(char* deviceName)
 {
 	if(clearMemory)
 	{
 		ClearMemory();
-		SetDeviceName(deviceName); //This line is necessary with local IDs because it indexes the ID when the name is added
+		SetDeviceName(deviceName);
+		CommitMemory();
 	}
 	else
 	{
