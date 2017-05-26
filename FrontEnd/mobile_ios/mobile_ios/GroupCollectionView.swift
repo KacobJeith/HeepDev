@@ -27,7 +27,14 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
         self.title = thisPlace.name + " Groups"
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        layout.itemSize = CGSize(width: self.view.bounds.width/2 - 20, height: self.view.bounds.width/2 - 20)
+        layout.minimumInteritemSpacing = 10
+        layout.minimumLineSpacing = 10
+        let dimension = (self.view.bounds.width )/2 - layout.sectionInset.left - layout.sectionInset.right + 5
+        layout.itemSize = CGSize(width: dimension,
+                                 height: dimension)
+        
+        print(self.view.bounds.width)
+        print(2 * dimension + 20 + 10)
         
         self.collectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: layout)
         self.collectionView?.dataSource = self
@@ -82,14 +89,19 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
         cell.backgroundColor = getRandomColor()
         
         let title = UILabel()
-        title.text = thisPlace.groups[indexPath.row].name.uppercased()
+        title.text = " " + thisPlace.groups[indexPath.row].name.uppercased() + " "
         title.numberOfLines = 0
         title.sizeToFit()
         title.textColor = .white
         title.font = UIFont.boldSystemFont(ofSize: 30.0)
+        
+        title.layer.shadowColor = UIColor.lightGray.cgColor
+        title.layer.shadowOffset = CGSize(width: 1.0, height: 1.0)
+        title.layer.shadowOpacity = 0.5
+        title.layer.shadowRadius = 0.25
+
         title.textAlignment = .center
         title.tag = indexPath.row
-        //title.adjustsFontSizeToFitWidth = true
         title.isUserInteractionEnabled = true
         title.frame = cell.bounds
         
@@ -108,6 +120,10 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
             imageView.contentMode = .scaleAspectFit
             imageView.frame = cell.bounds
             cell.addSubview(imageView)
+            let overlay = UIView()
+            overlay.backgroundColor = UIColor.black
+            overlay.alpha = 0.1
+            
         }
         
         
