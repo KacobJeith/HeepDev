@@ -17,14 +17,26 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
     
     private let reuseIdentifier = "Cell"
     
-    deinit{
-        notificationToken?.stop()
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = thisPlace.name + " Groups"
+        let realm = try! Realm(configuration: config)
+        let watchPlace = realm.object(ofType: Place.self, forPrimaryKey: thisPlace.bssid)!
+        
+        notificationToken = watchPlace.addNotificationBlock { changes in
+            
+            switch changes {
+            case .change:
+                self.reloadView()
+                break
+            case .error(let error):
+                fatalError("\(error)")
+                break
+            default: break
+            }
+        }
+        
+        self.title = thisPlace.name
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         layout.minimumInteritemSpacing = 10
@@ -51,7 +63,8 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
                                     target: self,
                                     action: #selector(flushGroup))
         
-        let search = UIBarButtonItem(barButtonSystemItem: .refresh,
+        let search = UIBarButtonItem(title: "Search For Devices",
+                                     style: .plain,
                                      target: self,
                                      action: #selector(searchForHeepDevices))
         
@@ -67,6 +80,20 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
         self.toolbarItems = [flush, spacer, search, spacer, info]
 
         
+    }
+    
+    deinit{
+        notificationToken?.stop()
+    }
+    
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        notificationToken?.stop()
+        self.title = ""
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.title = thisPlace.name
     }
     
 
@@ -155,11 +182,7 @@ extension GroupCollectionView {
         navigationController?.pushViewController(seeAllDevicesInPlace, animated: true)
     }
     
-    func searchForHeepDevices() {
-        print("Searching...")
-        HeepConnections().SearchForHeepDeviecs()
-        
-    }
+    
     
     func addNewGroupToThisPlace() {
         let realm = try! Realm(configuration: config)
@@ -237,5 +260,11 @@ extension GroupCollectionView {
         
         self.loadView()
         self.viewDidLoad()
+    }
+    
+    func searchForHeepDevices() {
+        print("Searching...")
+        HeepConnections().SearchForHeepDeviecs()
+        
     }
 }

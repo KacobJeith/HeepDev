@@ -6,15 +6,12 @@ class UnassignedControlCollection: UITableViewCell, UICollectionViewDataSource, 
     let realm = try! Realm(configuration: config)
     var collectionView: UICollectionView!
     var controls: [DeviceControl] = []
-    var parentTable = UITableView()
     var thisBSSID = ""
     var thisGroup = Group()
     var myIndexPath = IndexPath()
-    var notificationToken: NotificationToken? = nil
     
     
     convenience init(bssid: String,
-                     parentTable: UITableView,
                      thisGroup: Group,
                      indexPath: IndexPath) {
         self.init()
@@ -46,27 +43,7 @@ class UnassignedControlCollection: UITableViewCell, UICollectionViewDataSource, 
         self.addSubview(collectionView)
         
         
-        notificationToken = results.addNotificationBlock {  [weak self] (changes: RealmCollectionChange) in
-            
-            switch changes {
-            case .update:
-                
-                parentTable.reloadData()
-                break
-            case .error(let error):
-                fatalError("\(error)")
-                break
-            default: break
-                
-            }
-        }
         
-        
-        
-    }
-    
-    deinit{
-        notificationToken?.stop()
     }
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {

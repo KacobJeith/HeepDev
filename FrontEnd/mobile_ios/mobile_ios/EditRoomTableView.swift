@@ -10,6 +10,8 @@ import UIKit
 import RealmSwift
 
 class EditRoomView: UITableViewController {
+    var notificationTokenControls: NotificationToken? = nil
+    var notificationTokenGroup: NotificationToken? = nil
     
     let devices: [Device]
     let realm = try! Realm(configuration: config)
@@ -25,6 +27,8 @@ class EditRoomView: UITableViewController {
         self.roomName = (thisPlace?.name)!
         thisGroup = realm.object(ofType: Group.self, forPrimaryKey: groupID)!
         print(thisGroup)
+        
+        
         super.init(style: UITableViewStyle.plain)
     }
     
@@ -34,19 +38,35 @@ class EditRoomView: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.initRealmNotification()
+        
+        
         self.title = roomName
         self.navigationController?.isToolbarHidden = false
         tableView.alwaysBounceVertical = false
-        let reload = UIBarButtonItem(barButtonSystemItem: .refresh,
+        let search = UIBarButtonItem(title: "Search For Devices",
+                                     style: .plain,
                                      target: self,
-                                     action: #selector(reloadView))
+                                     action: #selector(searchForHeepDevices))
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
                                                             target: self,
                                                             action: #selector(importPicture))
         
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        self.toolbarItems = [spacer, reload, spacer]
+        self.toolbarItems = [spacer, search, spacer]
+    }
+    
+    
+    deinit{
+        notificationTokenControls?.stop()
+        notificationTokenGroup?.stop()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        notificationTokenControls?.stop()
+        notificationTokenGroup?.stop()
     }
     
     
@@ -61,7 +81,6 @@ class EditRoomView: UITableViewController {
         if (indexPath.row == 0) {
             
             let cell = UnassignedControlCollection(bssid: thisBSSID,
-                                                   parentTable: tableView,
                                                    thisGroup: thisGroup,
                                                    indexPath: indexPath)
             
@@ -77,7 +96,6 @@ class EditRoomView: UITableViewController {
                                    height: self.view.frame.height - 200 - bounds.height)
             
             let cell = VertexEditCell(bssid: thisBSSID,
-                                      parentTable: tableView,
                                       cellFrame: editFrame,
                                       thisGroup: thisGroup,
                                       indexPath: indexPath)
@@ -89,7 +107,6 @@ class EditRoomView: UITableViewController {
             
         } else if (indexPath.row == 2) {
             let cell = GroupControlEdit(bssid: thisBSSID,
-                                        parentTable: tableView,
                                         thisGroup: thisGroup,
                                         indexPath: indexPath)
             
@@ -212,5 +229,49 @@ extension EditRoomView {
         
         self.loadView()
         self.viewDidLoad()
+    }
+    
+    func searchForHeepDevices() {
+        print("Searching...")
+        HeepConnections().SearchForHeepDeviecs()
+        
+    }
+    
+    
+    func initRealmNotification() {
+        let watchControls = realm.objects(DeviceControl.self).filter("place = %@ AND groupsAssigned = 0", thisBSSID)
+            
+        notificationTokenControls = watchControls.addNotificationBlock {  [weak self] (changes: RealmCollectionChange) in
+                
+                switch changes {
+                case .update:
+                    
+                    self?.tableView.reloadData()
+                    break
+                case .error(let error):
+                    fatalError("\(error)")
+                    break
+                default: break
+                    
+                }
+        }
+        
+        
+        let watchGroup = realm.object(ofType: Group.self, forPrimaryKey: thisGroup.id)!
+        
+        notificationTokenGroup = watchGroup.addNotificationBlock { changes in
+            /* results available asynchronously here */
+            switch changes {
+            case .change:
+                
+                self.tableView.reloadData()
+                break
+            case .error(let error):
+                fatalError("\(error)")
+                break
+            default: break
+            }
+        }
+        
     }
 }

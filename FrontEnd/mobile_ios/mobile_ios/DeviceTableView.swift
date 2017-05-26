@@ -30,24 +30,28 @@ class DeviceTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Heep Device List"
+        self.title = "All Local Devices"
         
-        
+        self.initRealmNotifications()
         
         self.navigationController?.isToolbarHidden = false
-        let search = UIBarButtonItem(barButtonSystemItem: .refresh,
-                                             target: self,
-                                             action: #selector(searchForHeepDevices))
-        search.title = "Search"
         
-        let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         
-        let edit = UIBarButtonItem(barButtonSystemItem: .edit,
-                                   target: self,
-                                   action: #selector(openVertexView))
-        edit.title = "Edit Vertexes"
+        let flush = UIBarButtonItem(barButtonSystemItem: .trash,
+                                    target: self,
+                                    action: #selector(flushDevices))
         
-        self.toolbarItems = [spacer, search, spacer, edit]
+        let search = UIBarButtonItem(title: "Search For Devices",
+                                     style: .plain,
+                                     target: self,
+                                     action: #selector(searchForHeepDevices))
+        
+        let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace,
+                                     target: nil,
+                                     action: nil)
+        
+        
+        self.toolbarItems = [flush, spacer, search, spacer]
         
         
     }
@@ -55,6 +59,10 @@ class DeviceTableViewController: UITableViewController {
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        notificationToken?.stop()
     }
 
     
@@ -197,33 +205,44 @@ class DeviceTableViewController: UITableViewController {
         navigationController?.pushViewController(summaryView, animated: true)
     }
     
-    func openVertexView() {
-        print("Open edit Vertex View")
-        //let editVertexView = VertexView.init(thisPlaceBSSID: thisBSSID)
-        //let editRoomView = EditRoomView(bssid: thisBSSID)
-        //let thisPlace = realm.object(ofType: Place.self, forPrimaryKey: thisBSSID)
-        //editVertexView.devices = (configureThis?.devices)!
-        //editVertexView.placeBSSID = thisBSSID
-        //navigationController?.pushViewController(editRoomView, animated: true)
-        //self.performSegue(withIdentifier: "segue", sender: self)
-    }
-    
-    
     func searchForHeepDevices() {
         print("Searching...")
         HeepConnections().SearchForHeepDeviecs()
-        let dispatchTime = DispatchTime.now() + .seconds(2)
-        DispatchQueue.main.asyncAfter(deadline: dispatchTime) {
-            
-            self.CheckForNewDevicesAndDisplay()
-        }
         
-
     }
     
-    func CheckForNewDevicesAndDisplay() {
-        self.tableView.reloadData()
+    func flushDevices() {
+        let realm = try! Realm(configuration: config)
+        let flushdevices = realm.objects(Device.self).filter("associatedPlace = %s", thisBSSID)
         
+        
+        try! realm.write {
+            for device in flushdevices {
+                for control in device.controlList {
+                    
+                    realm.delete(control)
+                }
+                
+                realm.delete(device)
+            }
+        }
+    }
+    
+    func initRealmNotifications() {
+        let watchPlace = realm.object(ofType: Place.self, forPrimaryKey: thisBSSID)!
+        
+        notificationToken = watchPlace.addNotificationBlock { changes in
+            
+            switch changes {
+            case .change:
+                self.tableView.reloadData()
+                break
+            case .error(let error):
+                fatalError("\(error)")
+                break
+            default: break
+            }
+        }
     }
 
 }

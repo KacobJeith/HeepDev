@@ -8,39 +8,17 @@ class GroupControlEdit: UITableViewCell, UICollectionViewDataSource, UICollectio
     var controls = List<DeviceControl>()
     var thisBSSID = ""
     var thisGroup = Group()
-    var parentTable = UITableView()
     var myIndexPath = IndexPath()
-    var notificationToken: NotificationToken? = nil
-    
-    deinit{
-        notificationToken?.stop()
-    }
     
     convenience init(bssid: String,
-                     parentTable: UITableView,
                      thisGroup: Group,
                      indexPath: IndexPath) {
         self.init()
         
         self.thisBSSID = bssid
-        self.parentTable = parentTable
         self.controls = thisGroup.controls
         self.myIndexPath = indexPath
         self.thisGroup = realm.object(ofType: Group.self, forPrimaryKey: thisGroup.id)!
-        
-        notificationToken = controls.addNotificationBlock { [weak self] (changes: RealmCollectionChange) in
-            /* results available asynchronously here */
-            switch changes {
-            case .update:
-                parentTable.reloadData()
-                break
-            case .error(let error):
-                fatalError("\(error)")
-                break
-            default: break
-            }
-        }
-        
         
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = UICollectionViewScrollDirection.horizontal

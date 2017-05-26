@@ -9,7 +9,6 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     var controls = List<DeviceControl>()
     var controlDeviceReference: [Device] = []
     var thisBSSID: String = ""
-    var parentTable = UITableView()
     var cellFrame = CGRect()
     var editImage: UIImage = UIImage()
     var controlIDs = [Int]()
@@ -17,7 +16,6 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     var thisGroup = Group()
     var contextImage = UIImage()
     var controlTags = [Int]()
-    var notificationToken: NotificationToken? = nil
     
     var activeVertexStart = CGPoint()
     var activeVertexFinish = CGPoint()
@@ -26,33 +24,16 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     var vertexDictToDelete = [String : Bool]()
     
     convenience init(bssid: String,
-                     parentTable: UITableView,
                      cellFrame: CGRect,
                      thisGroup: Group,
                      indexPath: IndexPath) {
         self.init()
         
         self.thisBSSID = bssid
-        self.parentTable = parentTable
         self.cellFrame = cellFrame
         self.controls = thisGroup.controls
         self.myIndexPath = indexPath
         self.thisGroup = realm.object(ofType: Group.self, forPrimaryKey: thisGroup.id)!
-        
-        
-        notificationToken = thisGroup.addNotificationBlock { changes in
-            /* results available asynchronously here */
-            switch changes {
-            case .change:
-                
-                parentTable.reloadData()
-                break
-            case .error(let error):
-                fatalError("\(error)")
-                break
-            default: break 
-            }
-        }
         
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = UICollectionViewScrollDirection.horizontal
@@ -98,10 +79,6 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         collectionView.contentOffset.y = thisGroup.contentOffsetY
         
         self.addSubview(collectionView)
-    }
-    
-    deinit{
-        notificationToken?.stop()
     }
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {

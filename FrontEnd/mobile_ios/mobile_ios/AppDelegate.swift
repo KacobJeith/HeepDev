@@ -30,7 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                
         self.window?.rootViewController = navigationController
         self.window?.makeKeyAndVisible()
-        
+        //self.searchForHeepDevices()
         // Override point for customization after application launch.
         return true
     }
@@ -106,6 +106,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
             }
         }
+    }
+    
+    func searchForHeepDevices() {
+        //HeepConnections().SearchForHeepDeviecs()
+        Timer.scheduledTimer(timeInterval: 5.0,
+                             target: self,
+                             selector: #selector(launchSearch),
+                             userInfo: nil,
+                             repeats: true)
+        
+    }
+    
+    func launchSearch() {
+        print("Searching...")
+        HeepConnections().SearchForHeepDeviecs()
     }
 
 }

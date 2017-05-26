@@ -10,34 +10,60 @@ import UIKit
 import RealmSwift
 
 class PlacesView: UIViewController {
+    var notificationToken: NotificationToken? = nil
     
     let realm = try! Realm(configuration: config)
     var activelyPanning = Int()
+    var searchTimeout = 4
     var bssids = [String]()
+    var colors = [UIColor]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "My Places"
+        
+        self.initRealmNotification()
+        
+        self.title = "My Heep Zones"
         self.view.backgroundColor = .white
-        
-        
-        let toolbarContent = UIBarButtonItem()
-        toolbarContent.title = "Delete All"
         self.navigationController?.isToolbarHidden = false
-        toolbarContent.target = self
-        toolbarContent.action = #selector(deleteAll)
+        
+        let flush = UIBarButtonItem(barButtonSystemItem: .trash,
+                                    target: self,
+                                    action: #selector(deleteAll))
+        
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let reload = UIBarButtonItem(barButtonSystemItem: .refresh,
+        
+        let search = UIBarButtonItem(title: "Search For Devices",
+                                     style: .plain,
                                      target: self,
-                                     action: #selector(reloadView))
-        self.toolbarItems = [toolbarContent, spacer, reload, spacer]
+                                     action: #selector(searchForHeepDevices))
+        
+        self.toolbarItems = [flush, spacer,  search, spacer]
 
         addPlaces()
+        
+        //self.searchForHeepDevices()
+    }
+    
+    
+    deinit{
+        notificationToken?.stop()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        notificationToken?.stop()
+        self.title = ""
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.title = "My Heep Zones"
+        self.initRealmNotification()
+        
     }
     
 
@@ -202,5 +228,39 @@ extension PlacesView {
         
         self.loadView()
         self.viewDidLoad()
+    }
+    
+    func searchForHeepDevices() {
+        HeepConnections().SearchForHeepDeviecs()
+        /*
+        Timer.scheduledTimer(timeInterval: 5.0,
+                             target: self,
+                             selector: #selector(launchSearch),
+                             userInfo: nil,
+                             repeats: true)*/
+        
+    }
+    
+    func launchSearch() {
+        print("Searching...")
+        HeepConnections().SearchForHeepDeviecs()
+    }
+    
+    func initRealmNotification() {
+        let places = realm.objects(Place.self)
+        
+        notificationToken = places.addNotificationBlock { [weak self] (changes: RealmCollectionChange) in
+            
+            switch changes {
+            case .update:
+                
+                self?.reloadView()
+                break
+            case .error(let error):
+                fatalError("\(error)")
+                break
+            default: break
+            }
+        }
     }
 }
