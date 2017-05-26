@@ -98,9 +98,12 @@ void FillOutputBufferWithMemoryDump()
 	AddNewCharToOutputBuffer(MemoryDumpOpCode);
 	AddDeviceIDToOutputBuffer(deviceID);
 
-	unsigned long totalMemory = curFilledMemory + CalculateCoreMemorySize();
+	unsigned long totalMemory = curFilledMemory + CalculateCoreMemorySize() + 1;
 
 	AddNewCharToOutputBuffer(totalMemory);
+
+	// First data sent is control register so that receiver can decode the rest
+	AddNewCharToOutputBuffer(controlRegister);
 
 	// Add Client Data
 	AddNewCharToOutputBuffer(ClientDataOpCode);
