@@ -41,6 +41,19 @@ unsigned char controlRegister = 0;
 unsigned long GetDeviceIDFromIndex(unsigned long index);
 unsigned long GetIndexedDeviceID(unsigned long deviceID);
 
+int CheckDeviceIDEquality(heepByte* deviceID1, heepByte* deviceID2)
+{
+	for(int i = 0; i < STANDARD_ID_SIZE; i++)
+	{
+		if(deviceID1[i] != deviceID2[i])
+		{
+			return 0;
+		}
+	}
+
+	return 1;
+}
+
 void PerformPreOpCodeProcessing(unsigned long deviceID)
 {
 	GetIndexedDeviceID(deviceID);
