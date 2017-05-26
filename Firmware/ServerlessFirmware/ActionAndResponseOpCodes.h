@@ -29,6 +29,12 @@ void AddDeviceIDToOutputBuffer(unsigned long deviceID)
 	outputBufferLastByte = AddDeviceIDToBuffer(outputBuffer, outputBufferLastByte, deviceID);
 }
 
+void AddDeviceIDOrIndexToOutputBuffer(unsigned long deviceID)
+{
+	unsigned long localID = GetIndexedDeviceID(deviceID);
+	outputBufferLastByte = AddNumberToBufferWithSpecifiedBytes(outputBuffer, localID, outputBufferLastByte, ID_SIZE);
+}
+
 unsigned long CalculateControlDataSize()
 {
 	unsigned long controlDataSize = 0;
@@ -66,7 +72,7 @@ void FillOutputBufferWithControlData()
 	for(int i = 0; i < numberOfControls; i++)
 	{
 		AddNewCharToOutputBuffer(ControlOpCode);
-		AddDeviceIDToOutputBuffer(deviceID);
+		AddDeviceIDOrIndexToOutputBuffer(deviceID);
 		unsigned int byteSize = strlen(controlList[i].controlName) + 6;
 		AddNewCharToOutputBuffer(byteSize);
 		AddNewCharToOutputBuffer(controlList[i].controlID);
@@ -86,7 +92,7 @@ void FillOutputBufferWithControlData()
 void FillOutputBufferWithDynamicMemorySize()
 {
 	AddNewCharToOutputBuffer(DynamicMemorySizeOpCode);
-	AddDeviceIDToOutputBuffer(deviceID);
+	AddDeviceIDOrIndexToOutputBuffer(deviceID);
 	AddNewCharToOutputBuffer(1);
 	AddNewCharToOutputBuffer(MAX_MEMORY);
 }
@@ -107,7 +113,7 @@ void FillOutputBufferWithMemoryDump()
 
 	// Add Client Data
 	AddNewCharToOutputBuffer(ClientDataOpCode);
-	AddDeviceIDToOutputBuffer(deviceID);
+	AddDeviceIDOrIndexToOutputBuffer(deviceID);
 	AddNewCharToOutputBuffer(1);
 	AddNewCharToOutputBuffer(firmwareVersion);
 
