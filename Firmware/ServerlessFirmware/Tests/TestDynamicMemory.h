@@ -247,6 +247,8 @@ void TestDeviceNameOpCode()
 	valueList[6].actualValue = deviceMemory[memCheckStart + ID_SIZE + 6];
 
 	CheckResults(TestName, valueList, 7);
+
+	PrintDeviceMemory();
 }
 
 void TestIconIDOpCode()

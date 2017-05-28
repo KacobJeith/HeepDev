@@ -142,18 +142,7 @@ void AddNumberToMemoryWithSpecifiedBytes(unsigned long number, int numBytes)
 
 unsigned long AddDeviceIDToBuffer(unsigned char* buffer, unsigned long startPoint, unsigned long deviceID)
 {
-	unsigned char DeviceID4 = 0;
-	unsigned char DeviceID3 = 0;
-	unsigned char DeviceID2 = 0;
-	unsigned char DeviceID1 = 0;
-	GetDeviceIDOctets(deviceID, DeviceID4, DeviceID3, DeviceID2, DeviceID1);
-
-	startPoint = AddCharToBuffer(buffer, startPoint, DeviceID4);
-	startPoint = AddCharToBuffer(buffer, startPoint, DeviceID3);
-	startPoint = AddCharToBuffer(buffer, startPoint, DeviceID2);
-	startPoint = AddCharToBuffer(buffer, startPoint, DeviceID1);
-
-	return startPoint;
+	return AddNumberToBufferWithSpecifiedBytes(buffer, deviceID, startPoint, STANDARD_ID_SIZE);
 }
 
 void AddIndexToMemory(unsigned long deviceIndex)
