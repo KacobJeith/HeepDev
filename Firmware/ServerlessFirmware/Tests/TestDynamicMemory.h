@@ -61,38 +61,6 @@ void TestAddCharToDeviceMemory()
 	CheckResults(TestName, valueList, 2);
 }
 
-void TestGetDeviceIDOctets()
-{
-	std::string TestName = "Get Device Octets";
-
-	unsigned long ID = 0x01020304;
-	unsigned char octet1 = 0;
-	unsigned char octet2 = 0;
-	unsigned char octet3 = 0;
-	unsigned char octet4 = 0;
-
-	GetDeviceIDOctets(ID, octet4, octet3, octet2, octet1);
-
-	ExpectedValue valueList [4];
-	valueList[0].valueName = "Octet 4";
-	valueList[0].expectedValue = 1;
-	valueList[0].actualValue = octet4;
-
-	valueList[1].valueName = "Octet 3";
-	valueList[1].expectedValue = 2;
-	valueList[1].actualValue = octet3;
-
-	valueList[1].valueName = "Octet 2";
-	valueList[1].expectedValue = 3;
-	valueList[1].actualValue = octet2;
-
-	valueList[1].valueName = "Octet 1";
-	valueList[1].expectedValue = 4;
-	valueList[1].actualValue = octet1;
-
-	CheckResults(TestName, valueList, 4);
-}
-
 void TestClearDeviceMemory()
 {
 	std::string TestName = "Clear Device Memory";
@@ -1026,7 +994,6 @@ void TestDynamicMemory()
 {
 	TestAddCharToBuffer();
 	TestAddCharToDeviceMemory();
-	TestGetDeviceIDOctets();
 	TestClearDeviceMemory();
 	TestAddDeviceIDToMemory();
 	TestAddDeviceIDToBuffer();

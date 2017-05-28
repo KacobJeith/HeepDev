@@ -116,14 +116,6 @@ void AddNewCharToMemory(unsigned char newMem)
 	memoryChanged = 1;
 }
 
-void GetDeviceIDOctets(unsigned long deviceID, unsigned char &octet4, unsigned char &octet3, unsigned char &octet2, unsigned char &octet1)
-{
-	octet1 = deviceID%256;
-	octet2 = (deviceID >> 8)%256;
-	octet3 = (deviceID >> 16)%256;
-	octet4 = (deviceID >> 24)%256;
-}
-
 unsigned long AddNumberToBufferWithSpecifiedBytes(unsigned char* buffer, unsigned long number, unsigned long startPoint, int numBytes)
 {
 	for(int i = 0; i < numBytes; i++)
