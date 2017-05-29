@@ -52,17 +52,22 @@ unsigned long GetDeviceIDFromBuffer(unsigned char* buffer, heepByte* deviceID, u
 	return counter;
 }
 
-int CheckDeviceIDEquality(heepByte* deviceID1, heepByte* deviceID2)
+int CheckBufferEquality(heepByte* buffer1, heepByte* buffer2, int numBytes)
 {
-	for(int i = 0; i < STANDARD_ID_SIZE; i++)
+	for(int i = 0; i < numBytes; i++)
 	{
-		if(deviceID1[i] != deviceID2[i])
+		if(buffer1[i] != buffer2[i])
 		{
 			return 0;
 		}
 	}
 
 	return 1;
+}
+
+int CheckDeviceIDEquality(heepByte* deviceID1, heepByte* deviceID2)
+{
+	return CheckBufferEquality(deviceID1, deviceID2, STANDARD_ID_SIZE);
 }
 
 unsigned long AddDeviceIDToBuffer_Byte(unsigned char* buffer, heepByte* deviceID, unsigned long counter)
