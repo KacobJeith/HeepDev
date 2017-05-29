@@ -154,16 +154,19 @@ void AddNumberToMemoryWithSpecifiedBytes(unsigned long number, int numBytes)
 	curFilledMemory = AddNumberToBufferWithSpecifiedBytes(deviceMemory, number, curFilledMemory, numBytes);
 }
 
-unsigned long AddDeviceIDToBuffer(unsigned char* buffer, unsigned long startPoint, unsigned long deviceID)
+// DEPRECATE * 
+unsigned long AddDeviceIDToBuffer(unsigned char* buffer, unsigned long startPoint, unsigned long deviceID) 
 {
 	return AddNumberToBufferWithSpecifiedBytes(buffer, deviceID, startPoint, STANDARD_ID_SIZE);
 }
 
+// DEPRECATE
 void AddIndexToMemory(unsigned long deviceIndex)
 {
 	AddNumberToMemoryWithSpecifiedBytes(deviceIndex, ID_SIZE);
 }
 
+// Deprecate
 void AddDeviceIDToMemory(unsigned long deviceID)
 {
 	curFilledMemory = AddDeviceIDToBuffer(deviceMemory, curFilledMemory, deviceID);
@@ -420,6 +423,7 @@ void DefragmentMemory()
 	}while(isFragmentFound == 0);
 }
 
+// DEPRECATE
 unsigned long GetIndexedDeviceID(unsigned long deviceID)
 {
 #ifdef USE_INDEXED_IDS
