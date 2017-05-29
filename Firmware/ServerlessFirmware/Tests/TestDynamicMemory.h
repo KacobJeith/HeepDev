@@ -990,6 +990,31 @@ void TestByteWiseDeviceInequality()
 	CheckResults(TestName, valueList, 1);
 }
 
+void TestGetDeviceIDFromMemory()
+{
+	std::string TestName = "Get Device ID From Memory";
+
+	heepByte ID1 [STANDARD_ID_SIZE];
+	heepByte ID2 [STANDARD_ID_SIZE];
+
+	for(int i = 0; i < STANDARD_ID_SIZE; i++)
+	{
+		ID1[i] = i;
+	}
+
+	ClearDeviceMemory();
+	curFilledMemory = AddDeviceIDToBuffer_Byte(deviceMemory, ID1, 0);
+
+	int devicesEqual = CheckDeviceIDEquality(ID1, ID2);
+
+	ExpectedValue valueList [1];
+	valueList[0].valueName = "Devices Equal";
+	valueList[0].expectedValue = 0;
+	valueList[0].actualValue = devicesEqual;
+
+	CheckResults(TestName, valueList, 1);
+}
+
 void TestDynamicMemory()
 {
 	TestAddCharToBuffer();
@@ -1018,4 +1043,5 @@ void TestDynamicMemory()
 	TestGetDeviceIDFromIndex();
 	TestByteWiseDeviceEquality();
 	TestByteWiseDeviceInequality();
+	TestGetDeviceIDFromMemory();
 }

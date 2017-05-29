@@ -41,6 +41,17 @@ unsigned char controlRegister = 0;
 unsigned long GetDeviceIDFromIndex(unsigned long index);
 unsigned long GetIndexedDeviceID(unsigned long deviceID);
 
+unsigned long GetDeviceIDFromBuffer(unsigned char* buffer, heepByte* deviceID, unsigned long counter)
+{
+	for(int i = 0; i < ID_SIZE; i++)
+	{
+		deviceID[i] = buffer[counter];
+		counter++;
+	}
+
+	return counter;
+}
+
 int CheckDeviceIDEquality(heepByte* deviceID1, heepByte* deviceID2)
 {
 	for(int i = 0; i < STANDARD_ID_SIZE; i++)
@@ -52,6 +63,17 @@ int CheckDeviceIDEquality(heepByte* deviceID1, heepByte* deviceID2)
 	}
 
 	return 1;
+}
+
+unsigned long AddDeviceIDToBuffer_Byte(unsigned char* buffer, heepByte* deviceID, unsigned long counter)
+{
+	for(int i = 0; i < STANDARD_ID_SIZE; i++)
+	{
+		buffer[counter] = deviceID[i];
+		counter++;
+	}
+
+	return counter;
 }
 
 void PerformPreOpCodeProcessing(unsigned long deviceID)
