@@ -7571,6 +7571,15 @@ Standard 0603 ceramic capacitor, and 0.1" leaded capacitor.</description>
 <part name="J15" library="SparkFun-Connectors" deviceset="CONN_02" device="5MM"/>
 <part name="J16" library="SparkFun-Connectors" deviceset="CONN_02" device="5MM"/>
 <part name="J17" library="SparkFun-Connectors" deviceset="CONN_02" device="5MM"/>
+<part name="OK2" library="optocoupler" deviceset="MOC30*" device="T" technology="42"/>
+<part name="J18" library="SparkFun-Connectors" deviceset="CONN_02" device="5MM"/>
+<part name="R29" library="SparkFun-Resistors" deviceset="100KOHM" device="-HORIZ-1/4W-1%" value="100k"/>
+<part name="R30" library="SparkFun-Resistors" deviceset="100KOHM" device="-HORIZ-1/4W-1%" value="100k"/>
+<part name="T2" library="triac" deviceset="BT138" device="-H"/>
+<part name="C26" library="SparkFun-Capacitors" deviceset="CAP" device="PTH3"/>
+<part name="R31" library="SparkFun-Resistors" deviceset="100KOHM" device="-HORIZ-1/4W-1%" value="100k"/>
+<part name="R32" library="SparkFun-Resistors" deviceset="100KOHM" device="-HORIZ-1/4W-1%" value="100k"/>
+<part name="J19" library="SparkFun-Connectors" deviceset="CONN_02" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -7712,6 +7721,15 @@ Standard 0603 ceramic capacitor, and 0.1" leaded capacitor.</description>
 <instance part="J15" gate="G$1" x="477.52" y="106.68" rot="R180"/>
 <instance part="J16" gate="G$1" x="477.52" y="132.08" rot="R180"/>
 <instance part="J17" gate="G$1" x="477.52" y="119.38" rot="R180"/>
+<instance part="OK2" gate="-1" x="368.3" y="78.74"/>
+<instance part="J18" gate="G$1" x="447.04" y="83.82" rot="R180"/>
+<instance part="R29" gate="G$1" x="388.62" y="91.44" rot="R90"/>
+<instance part="R30" gate="G$1" x="388.62" y="63.5" rot="R90"/>
+<instance part="T2" gate="G$1" x="403.86" y="78.74"/>
+<instance part="C26" gate="G$1" x="421.64" y="66.04"/>
+<instance part="R31" gate="G$1" x="421.64" y="86.36" rot="R90"/>
+<instance part="R32" gate="G$1" x="347.98" y="83.82" rot="R180"/>
+<instance part="J19" gate="G$1" x="330.2" y="81.28"/>
 </instances>
 <busses>
 </busses>
@@ -8910,6 +8928,96 @@ Standard 0603 ceramic capacitor, and 0.1" leaded capacitor.</description>
 <pinref part="R27" gate="G$1" pin="1"/>
 <wire x1="414.02" y1="116.84" x2="414.02" y2="127" width="0.1524" layer="91"/>
 <label x="408.94" y="121.92" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="N$20" class="0">
+<segment>
+<pinref part="J19" gate="G$1" pin="2"/>
+<pinref part="R32" gate="G$1" pin="2"/>
+<wire x1="337.82" y1="83.82" x2="342.9" y2="83.82" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$21" class="0">
+<segment>
+<pinref part="R32" gate="G$1" pin="1"/>
+<pinref part="OK2" gate="-1" pin="A"/>
+<wire x1="353.06" y1="83.82" x2="358.14" y2="83.82" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$22" class="0">
+<segment>
+<pinref part="OK2" gate="-1" pin="C"/>
+<wire x1="358.14" y1="73.66" x2="342.9" y2="73.66" width="0.1524" layer="91"/>
+<wire x1="342.9" y1="73.66" x2="342.9" y2="81.28" width="0.1524" layer="91"/>
+<pinref part="J19" gate="G$1" pin="1"/>
+<wire x1="342.9" y1="81.28" x2="337.82" y2="81.28" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="RESTOMOC2" class="0">
+<segment>
+<pinref part="R29" gate="G$1" pin="1"/>
+<wire x1="388.62" y1="86.36" x2="388.62" y2="83.82" width="0.1524" layer="91"/>
+<pinref part="OK2" gate="-1" pin="A2"/>
+<wire x1="388.62" y1="83.82" x2="378.46" y2="83.82" width="0.1524" layer="91"/>
+<label x="378.46" y="81.28" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="GATE2" class="0">
+<segment>
+<pinref part="OK2" gate="-1" pin="A1"/>
+<wire x1="378.46" y1="73.66" x2="388.62" y2="73.66" width="0.1524" layer="91"/>
+<wire x1="388.62" y1="73.66" x2="391.16" y2="73.66" width="0.1524" layer="91"/>
+<wire x1="391.16" y1="73.66" x2="391.16" y2="78.74" width="0.1524" layer="91"/>
+<pinref part="T2" gate="G$1" pin="G"/>
+<wire x1="391.16" y1="78.74" x2="398.78" y2="78.74" width="0.1524" layer="91"/>
+<pinref part="R30" gate="G$1" pin="2"/>
+<wire x1="388.62" y1="68.58" x2="388.62" y2="73.66" width="0.1524" layer="91"/>
+<junction x="388.62" y="73.66"/>
+<label x="391.16" y="78.74" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="HOT2" class="0">
+<segment>
+<pinref part="T2" gate="G$1" pin="A2"/>
+<wire x1="403.86" y1="83.82" x2="403.86" y2="96.52" width="0.1524" layer="91"/>
+<pinref part="R29" gate="G$1" pin="2"/>
+<wire x1="403.86" y1="96.52" x2="388.62" y2="96.52" width="0.1524" layer="91"/>
+<pinref part="J18" gate="G$1" pin="1"/>
+<wire x1="439.42" y1="83.82" x2="434.34" y2="83.82" width="0.1524" layer="91"/>
+<wire x1="434.34" y1="83.82" x2="434.34" y2="96.52" width="0.1524" layer="91"/>
+<wire x1="434.34" y1="96.52" x2="421.64" y2="96.52" width="0.1524" layer="91"/>
+<junction x="403.86" y="96.52"/>
+<pinref part="R31" gate="G$1" pin="2"/>
+<wire x1="421.64" y1="96.52" x2="403.86" y2="96.52" width="0.1524" layer="91"/>
+<wire x1="421.64" y1="91.44" x2="421.64" y2="96.52" width="0.1524" layer="91"/>
+<junction x="421.64" y="96.52"/>
+<label x="406.4" y="96.52" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="CAPTORES2" class="0">
+<segment>
+<pinref part="C26" gate="G$1" pin="1"/>
+<pinref part="R31" gate="G$1" pin="1"/>
+<wire x1="421.64" y1="71.12" x2="421.64" y2="81.28" width="0.1524" layer="91"/>
+<label x="416.56" y="76.2" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="NEUTRAL2" class="0">
+<segment>
+<pinref part="J18" gate="G$1" pin="2"/>
+<wire x1="439.42" y1="81.28" x2="434.34" y2="81.28" width="0.1524" layer="91"/>
+<wire x1="434.34" y1="81.28" x2="434.34" y2="58.42" width="0.1524" layer="91"/>
+<pinref part="R30" gate="G$1" pin="1"/>
+<wire x1="434.34" y1="58.42" x2="421.64" y2="58.42" width="0.1524" layer="91"/>
+<pinref part="T2" gate="G$1" pin="A1"/>
+<wire x1="421.64" y1="58.42" x2="403.86" y2="58.42" width="0.1524" layer="91"/>
+<wire x1="403.86" y1="58.42" x2="388.62" y2="58.42" width="0.1524" layer="91"/>
+<wire x1="403.86" y1="76.2" x2="403.86" y2="58.42" width="0.1524" layer="91"/>
+<junction x="403.86" y="58.42"/>
+<pinref part="C26" gate="G$1" pin="2"/>
+<wire x1="421.64" y1="63.5" x2="421.64" y2="58.42" width="0.1524" layer="91"/>
+<junction x="421.64" y="58.42"/>
+<label x="406.4" y="58.42" size="1.778" layer="95"/>
 </segment>
 </net>
 </nets>
