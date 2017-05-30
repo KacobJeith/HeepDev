@@ -7562,6 +7562,15 @@ Standard 0603 ceramic capacitor, and 0.1" leaded capacitor.</description>
 <part name="R27" library="SparkFun-Resistors" deviceset="100KOHM" device="-HORIZ-1/4W-1%" value="100k"/>
 <part name="R28" library="SparkFun-Resistors" deviceset="100KOHM" device="-HORIZ-1/4W-1%" value="100k"/>
 <part name="J7" library="SparkFun-Connectors" deviceset="CONN_02" device=""/>
+<part name="J11" library="SparkFun-Connectors" deviceset="CONN_02" device="5MM"/>
+<part name="J12" library="SparkFun-Connectors" deviceset="CONN_02" device="5MM"/>
+<part name="J13" library="SparkFun-Connectors" deviceset="CONN_02" device="5MM"/>
+<part name="J14" library="SparkFun-Connectors" deviceset="CONN_02" device="5MM"/>
+<part name="J9" library="SparkFun-Connectors" deviceset="CONN_02" device="5MM"/>
+<part name="J10" library="SparkFun-Connectors" deviceset="CONN_02" device="5MM"/>
+<part name="J15" library="SparkFun-Connectors" deviceset="CONN_02" device="5MM"/>
+<part name="J16" library="SparkFun-Connectors" deviceset="CONN_02" device="5MM"/>
+<part name="J17" library="SparkFun-Connectors" deviceset="CONN_02" device="5MM"/>
 </parts>
 <sheets>
 <sheet>
@@ -7694,6 +7703,15 @@ Standard 0603 ceramic capacitor, and 0.1" leaded capacitor.</description>
 <instance part="R27" gate="G$1" x="414.02" y="132.08" rot="R90"/>
 <instance part="R28" gate="G$1" x="340.36" y="129.54" rot="R180"/>
 <instance part="J7" gate="G$1" x="322.58" y="127"/>
+<instance part="J11" gate="G$1" x="452.12" y="132.08" rot="R180"/>
+<instance part="J12" gate="G$1" x="464.82" y="132.08" rot="R180"/>
+<instance part="J13" gate="G$1" x="452.12" y="119.38" rot="R180"/>
+<instance part="J14" gate="G$1" x="464.82" y="119.38" rot="R180"/>
+<instance part="J9" gate="G$1" x="452.12" y="106.68" rot="R180"/>
+<instance part="J10" gate="G$1" x="464.82" y="106.68" rot="R180"/>
+<instance part="J15" gate="G$1" x="477.52" y="106.68" rot="R180"/>
+<instance part="J16" gate="G$1" x="477.52" y="132.08" rot="R180"/>
+<instance part="J17" gate="G$1" x="477.52" y="119.38" rot="R180"/>
 </instances>
 <busses>
 </busses>
