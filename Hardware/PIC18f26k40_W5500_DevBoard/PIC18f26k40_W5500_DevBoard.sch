@@ -5741,11 +5741,26 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <instance part="C23" gate="G$1" x="45.72" y="-76.2"/>
 <instance part="C24" gate="G$1" x="55.88" y="-76.2"/>
 <instance part="GND18" gate="1" x="35.56" y="-93.98"/>
-<instance part="R12" gate="G$1" x="213.36" y="139.7" rot="R90"/>
-<instance part="R13" gate="G$1" x="208.28" y="139.7" rot="R90"/>
-<instance part="R14" gate="G$1" x="228.6" y="139.7" rot="R90"/>
-<instance part="R15" gate="G$1" x="223.52" y="139.7" rot="R90"/>
-<instance part="R16" gate="G$1" x="218.44" y="139.7" rot="R90"/>
+<instance part="R12" gate="G$1" x="213.36" y="139.7" smashed="yes" rot="R90">
+<attribute name="NAME" x="211.8614" y="135.89" size="1.778" layer="95" rot="R90"/>
+<attribute name="VALUE" x="211.582" y="140.97" size="1.778" layer="96" rot="R90"/>
+</instance>
+<instance part="R13" gate="G$1" x="208.28" y="139.7" smashed="yes" rot="R90">
+<attribute name="NAME" x="206.7814" y="135.89" size="1.778" layer="95" rot="R90"/>
+<attribute name="VALUE" x="206.502" y="140.97" size="1.778" layer="96" rot="R90"/>
+</instance>
+<instance part="R14" gate="G$1" x="228.6" y="139.7" smashed="yes" rot="R90">
+<attribute name="NAME" x="227.1014" y="135.89" size="1.778" layer="95" rot="R90"/>
+<attribute name="VALUE" x="226.822" y="140.97" size="1.778" layer="96" rot="R90"/>
+</instance>
+<instance part="R15" gate="G$1" x="223.52" y="139.7" smashed="yes" rot="R90">
+<attribute name="NAME" x="222.0214" y="135.89" size="1.778" layer="95" rot="R90"/>
+<attribute name="VALUE" x="221.742" y="140.97" size="1.778" layer="96" rot="R90"/>
+</instance>
+<instance part="R16" gate="G$1" x="218.44" y="139.7" smashed="yes" rot="R90">
+<attribute name="NAME" x="216.9414" y="135.89" size="1.778" layer="95" rot="R90"/>
+<attribute name="VALUE" x="216.662" y="140.97" size="1.778" layer="96" rot="R90"/>
+</instance>
 <instance part="GND8" gate="1" x="236.22" y="144.78"/>
 <instance part="R17" gate="G$1" x="152.4" y="152.4" rot="R270"/>
 <instance part="R18" gate="G$1" x="152.4" y="139.7" rot="R270"/>
