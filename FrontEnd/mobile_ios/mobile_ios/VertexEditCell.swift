@@ -722,7 +722,21 @@ extension VertexEditCell {
         
         
         container.transform = CGAffineTransform(scaleX: thisControl.scale, y: thisControl.scale).rotated(by: thisControl.rotation)
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(selectThisController))
+        
+        container.addGestureRecognizer(tap)
+        
         return container
+    }
+    
+    func selectThisController(gesture: UITapGestureRecognizer) {
+        print((gesture.view?.tag)!)
+        let realm = try! Realm(configuration: config)
+        try! realm.write {
+            thisGroup.selectedControl = (gesture.view?.tag)!
+        }
+        
     }
     
     func saveSelectedSprite() {
