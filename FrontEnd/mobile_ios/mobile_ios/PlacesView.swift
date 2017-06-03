@@ -96,7 +96,7 @@ class PlacesView: UIViewController {
         let firstGroupInPlace = Group()
         firstGroupInPlace.place = currentWifi.bssid
         firstGroupInPlace.name = "My First Room"
-        firstGroupInPlace.id = allGroups.count
+        firstGroupInPlace.id = allGroups.max(ofProperty: "id")! + 1
         
         let newPlace = Place()
         newPlace.ssid = currentWifi.ssid
