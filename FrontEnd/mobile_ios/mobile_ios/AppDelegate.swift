@@ -9,18 +9,30 @@
 import UIKit
 import CoreData
 import RealmSwift
+import UserNotifications
+import CoreLocation
+
 
 var user = User()
 //var currentWifi: [String: String] = ["ssid": "none", "bssid": "none"]
 let config = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
 
+protocol AddBeacon {
+    func addBeacon(item: Item)
+}
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
+    let locationManager = CLLocationManager()
     var window: UIWindow?
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        // Request permission to send notifications
+        let center = UNUserNotificationCenter.current()
+        center.requestAuthorization(options:[.alert, .sound]) { (granted, error) in }
+        
+        locationManager.delegate = self
         
         window = UIWindow(frame: UIScreen.main.bounds)
         let mainController = PlacesView()
@@ -31,9 +43,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window?.rootViewController = navigationController
         self.window?.makeKeyAndVisible()
         //self.searchForHeepDevices()
+        
+        
+        var delegate: AddBeacon?
+        
+        // Create new beacon item
+        let uuidString = "B87273A8-3C02-11E7-A919-92EBCB67FE33"
+        let uuid = UUID(uuidString: uuidString)
+        let major = 256
+        let minor = 65535
+        let name = "HEEP HQ"
+        
+        let newItem = Item(name: name, uuid: uuid!, majorValue: major, minorValue: minor)
+        
+        delegate?.addBeacon(item: newItem)
+        print("new item added!")
+        
+        locationManager.delegate = self
+        
+        locationManager.requestAlwaysAuthorization()
+        
+        startMonitoringItem(newItem)
+        print("we ranging")
         // Override point for customization after application launch.
         return true
     }
+    
+    func startMonitoringItem(_ item: Item) {
+        let beaconRegion = item.asBeaconRegion()
+        locationManager.startMonitoring(for: beaconRegion)
+//        locationManager.startRangingBeacons(in: beaconRegion)
+    }
+
     
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
         return UIInterfaceOrientationMask.portrait
@@ -123,6 +164,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         HeepConnections().SearchForHeepDeviecs()
     }
 
+}
+
+// MARK: - CLLocationManagerDelegate
+extension AppDelegate: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        
+        //        guard region is CLBeaconRegion else { return }
+        
+        let content = UNMutableNotificationContent()
+        content.title = "Heep Zone"
+        content.body = "You are now entering the Heep Zone™"
+        content.sound = .default()
+        
+        let request = UNNotificationRequest(identifier: "Heep", content: content, trigger: nil)
+        
+        
+        UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+        
+    }
+    
 }
 
 
