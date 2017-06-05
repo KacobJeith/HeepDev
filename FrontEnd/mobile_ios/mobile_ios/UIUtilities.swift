@@ -8,8 +8,6 @@
 
 import UIKit
 
-
-
 func createControlPuck(thisControl: DeviceControl, cellSize: CGRect) -> UIView {
     
     let bigWhiteBox = UIView()

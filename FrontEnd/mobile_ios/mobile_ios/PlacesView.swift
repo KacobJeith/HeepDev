@@ -37,18 +37,8 @@ class PlacesView: UIViewController {
                                      style: .plain,
                                      target: self,
                                      action: #selector(searchForHeepDevices))
-        
-        let userImage = UIImage(named: "female")
-        let userButton = UIButton(frame: CGRect(x: 0, y: 0,
-                                                width: self.navigationController!.navigationBar.bounds.height,
-                                                height: self.navigationController!.navigationBar.bounds.height))
-        userButton.imageView?.contentMode = .scaleAspectFit
-        userButton.setImage(userImage, for: .normal)
-        userButton.addTarget(self,
-                             action: #selector(userLogin),
-                             for: .primaryActionTriggered)
-        
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: userButton)
+                
+        self.navigationItem.rightBarButtonItem = getActiveUserIcon()
         
         self.toolbarItems = [flush, spacer,  search, spacer]
 
@@ -246,11 +236,7 @@ extension PlacesView {
         HeepConnections().SearchForHeepDeviecs()
         
     }
-    
-    func userLogin() {
-        print("Login dropdown")
-    }
-    
+        
     func launchSearch() {
         print("Searching...")
         HeepConnections().SearchForHeepDeviecs()
@@ -272,5 +258,25 @@ extension PlacesView {
             default: break
             }
         }
+    }
+    
+    func userLogin() {
+        print("LOGGGING IN")
+    }
+    
+    func getActiveUserIcon() -> UIBarButtonItem {
+        
+        let userImage = UIImage(named: "female")
+        let userButton = UIButton(frame: CGRect(x: 0, y: 0,
+                                                width: (navigationController?.navigationBar.bounds.height)!,
+                                                height: (navigationController?.navigationBar.bounds.height)!))
+        userButton.imageView?.contentMode = .scaleAspectFit
+        userButton.setImage(userImage, for: .normal)
+        userButton.addTarget(self,
+                             action: #selector(userLogin),
+                             for: .primaryActionTriggered)
+        
+        return UIBarButtonItem(customView: userButton)
+        
     }
 }
