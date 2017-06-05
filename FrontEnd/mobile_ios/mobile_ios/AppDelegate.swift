@@ -25,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         SDKApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
         window = UIWindow(frame: UIScreen.main.bounds)
-        let mainController = LoginView() //PlacesView()
+        let mainController = PlacesView()
         let navigationController = UINavigationController(rootViewController: mainController)
         navigationController.navigationBar.isTranslucent = false
         navigationController.isToolbarHidden = true
