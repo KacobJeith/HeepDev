@@ -8,6 +8,11 @@
 
 import UIKit
 import CoreData
+import RealmSwift
+
+var user = User()
+//var currentWifi: [String: String] = ["ssid": "none", "bssid": "none"]
+let config = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,8 +21,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        
+        window = UIWindow(frame: UIScreen.main.bounds)
+        let mainController = PlacesView()
+        let navigationController = UINavigationController(rootViewController: mainController)
+        navigationController.navigationBar.isTranslucent = false
+        navigationController.isToolbarHidden = true
+               
+        self.window?.rootViewController = navigationController
+        self.window?.makeKeyAndVisible()
+        //self.searchForHeepDevices()
         // Override point for customization after application launch.
         return true
+    }
+    
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.portrait
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -88,6 +107,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
+    
+    func searchForHeepDevices() {
+        //HeepConnections().SearchForHeepDeviecs()
+        Timer.scheduledTimer(timeInterval: 5.0,
+                             target: self,
+                             selector: #selector(launchSearch),
+                             userInfo: nil,
+                             repeats: true)
+        
+    }
+    
+    func launchSearch() {
+        print("Searching...")
+        HeepConnections().SearchForHeepDeviecs()
+    }
 
 }
+
+
 
