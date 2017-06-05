@@ -38,6 +38,18 @@ class PlacesView: UIViewController {
                                      target: self,
                                      action: #selector(searchForHeepDevices))
         
+        let userImage = UIImage(named: "female")
+        let userButton = UIButton(frame: CGRect(x: 0, y: 0,
+                                                width: self.navigationController!.navigationBar.bounds.height,
+                                                height: self.navigationController!.navigationBar.bounds.height))
+        userButton.imageView?.contentMode = .scaleAspectFit
+        userButton.setImage(userImage, for: .normal)
+        userButton.addTarget(self,
+                             action: #selector(userLogin),
+                             for: .primaryActionTriggered)
+        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: userButton)
+        
         self.toolbarItems = [flush, spacer,  search, spacer]
 
         addPlaces()
@@ -232,13 +244,11 @@ extension PlacesView {
     
     func searchForHeepDevices() {
         HeepConnections().SearchForHeepDeviecs()
-        /*
-        Timer.scheduledTimer(timeInterval: 5.0,
-                             target: self,
-                             selector: #selector(launchSearch),
-                             userInfo: nil,
-                             repeats: true)*/
         
+    }
+    
+    func userLogin() {
+        print("Login dropdown")
     }
     
     func launchSearch() {
