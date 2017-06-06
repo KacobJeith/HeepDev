@@ -95,6 +95,7 @@ class PlacesView: UIViewController {
     func addPlaceToRealm() {
         let currentWifi = currentWifiInfo()
         let allGroups = realm.objects(Group.self)
+        let app = realm.object(ofType: App.self, forPrimaryKey: 0)
         
         let firstGroupInPlace = Group()
         firstGroupInPlace.place = currentWifi.bssid
@@ -109,6 +110,7 @@ class PlacesView: UIViewController {
         let newPlace = Place()
         newPlace.ssid = currentWifi.ssid
         newPlace.bssid = currentWifi.bssid
+        newPlace.id = currentWifi.bssid + String(describing: app?.activeUser)
         newPlace.name = currentWifi.ssid
         
         try! realm.write {

@@ -52,6 +52,7 @@ class Place: Object {
     
     dynamic var ssid: String = "placeholder"
     dynamic var bssid: String = "LANMAC"
+    dynamic var id: String = ""
     dynamic var name: String = "unnamed"
     dynamic var gateway: String = "0.0.0"
     dynamic var x: CGFloat = 100
@@ -66,6 +67,7 @@ class Place: Object {
 }
 
 class Group: Object {
+    
     let controls = List<DeviceControl>()
     dynamic var name: String = "Unassigned"
     dynamic var place: String = "none"
