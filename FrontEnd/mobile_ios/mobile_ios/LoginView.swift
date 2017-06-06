@@ -67,6 +67,7 @@ class LoginView: UIViewController, LoginButtonDelegate {
     
     func selectUser(sender: UIButton) {
         print("Selecting new user: \(sender.tag)")
+        loginToUserRealm(user: sender.tag)
     }
     
     func addBackdrop() {
