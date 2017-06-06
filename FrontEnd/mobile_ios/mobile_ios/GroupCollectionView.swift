@@ -20,7 +20,7 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let realm = try! Realm(configuration: config)
+        let realm = try! Realm(configuration: configUser)
         let watchPlace = realm.object(ofType: Place.self, forPrimaryKey: thisPlace.bssid)!
         
         notificationToken = watchPlace.addNotificationBlock { changes in
@@ -185,7 +185,7 @@ extension GroupCollectionView {
     }
     
     func addNewGroupToThisPlace(name: String = "") {
-        let realm = try! Realm(configuration: config)
+        let realm = try! Realm(configuration: configUser)
         let updatedThisPlace = realm.object(ofType: Place.self, forPrimaryKey: thisPlace.bssid)!
         let allGroups = realm.objects(Group.self)
         
@@ -217,7 +217,7 @@ extension GroupCollectionView {
     }
     
     func flushGroup() {
-        let realm = try! Realm(configuration: config)
+        let realm = try! Realm(configuration: configUser)
         notificationToken?.stop()
         
         try! realm.write {

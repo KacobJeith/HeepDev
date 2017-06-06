@@ -48,7 +48,7 @@ class LoginView: UIViewController, LoginButtonDelegate {
     
     func exitModalView() {
         print("exiting")
-        self.dismiss(animated: true, completion: <#T##(() -> Void)?##(() -> Void)?##() -> Void#>)
+        self.dismiss(animated: true)
     }
     
     func loginButtonDidCompleteLogin(_ loginButton: LoginButton, result: LoginResult) {
@@ -116,7 +116,7 @@ class LoginView: UIViewController, LoginButtonDelegate {
     }
     
     func seedNewUserFromFacebook(name: String, imageURL: String, id: String) {
-        let realm = try! Realm(configuration: config)
+        let realm = try! Realm(configuration: configApp)
         let app = realm.object(ofType: App.self, forPrimaryKey: 0)
         let newUser = User()
         //print(actualInfo)
@@ -147,6 +147,17 @@ class LoginView: UIViewController, LoginButtonDelegate {
         let data = try? Data(contentsOf: url!)
         
         return data! as NSData
+    }
+    
+    func loginToUserRealm(user: Int) {
+        let realmApp = try! Realm(configuration: configApp)
+        let app = realmApp.object(ofType: App.self, forPrimaryKey: 0)
+        
+        try! realmApp.write {
+            app?.activeUser = user
+        }
+        
+        configUser.fileURL = configUser.fileURL!.deletingLastPathComponent().appendingPathComponent("\(String(describing: user)).realm")
     }
     
 }

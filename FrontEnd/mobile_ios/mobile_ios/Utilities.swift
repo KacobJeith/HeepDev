@@ -11,8 +11,20 @@ import Foundation
 import SystemConfiguration.CaptiveNetwork
 import RealmSwift
 
+func flushApp() {
+    let realmApp = try! Realm(configuration: configApp)
+    try! realmApp.write {
+        realmApp.deleteAll()
+    }
+    
+    let realmUser = try! Realm(configuration: configUser)
+    try! realmUser.write {
+        realmUser.deleteAll()
+    }
+}
+
 func initializeApp() {
-    let realm = try! Realm(configuration: config)
+    let realm = try! Realm(configuration: configApp)
     
     let app = realm.object(ofType: App.self, forPrimaryKey: 0)
     

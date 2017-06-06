@@ -3,7 +3,6 @@ import RealmSwift
 
 class UnassignedControlCollection: UITableViewCell, UICollectionViewDataSource, UICollectionViewDelegate {
     
-    let realm = try! Realm(configuration: config)
     var collectionView: UICollectionView!
     var controls: [DeviceControl] = []
     var thisBSSID = ""
@@ -15,6 +14,8 @@ class UnassignedControlCollection: UITableViewCell, UICollectionViewDataSource, 
                      thisGroup: Group,
                      indexPath: IndexPath) {
         self.init()
+        
+        let realm = try! Realm(configuration: configUser)
         
         
         self.thisBSSID = bssid
@@ -95,7 +96,7 @@ class UnassignedControlCollection: UITableViewCell, UICollectionViewDataSource, 
 extension UnassignedControlCollection {
     
     func selectControl(sender: UIButton) {
-        let realm = try! Realm(configuration: config)
+        let realm = try! Realm(configuration: configUser)
         print(controls[sender.tag].uniqueID)
         print(realm.object(ofType: DeviceControl.self, forPrimaryKey: controls[sender.tag].uniqueID)!)
         print("Adding to group!")
@@ -115,7 +116,7 @@ extension UnassignedControlCollection {
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         
-        let realm = try! Realm(configuration: config)
+        let realm = try! Realm(configuration: configUser)
         
         try! realm.write {
             thisGroup.unassignedOffsetX = collectionView.contentOffset.x
@@ -125,7 +126,7 @@ extension UnassignedControlCollection {
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate {
             
-            let realm = try! Realm(configuration: config)
+            let realm = try! Realm(configuration: configUser)
             
             try! realm.write {
                 thisGroup.unassignedOffsetX = collectionView.contentOffset.x

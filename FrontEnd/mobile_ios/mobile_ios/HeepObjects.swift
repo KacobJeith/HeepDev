@@ -9,6 +9,7 @@
 import Foundation
 import RealmSwift
 
+// App Realm
 class App: Object {
     dynamic var phoneID: Int = 0
     dynamic var activeUser: Int = 0
@@ -19,6 +20,20 @@ class App: Object {
     }
 }
 
+// App Realm
+class UserReference: Object {
+    
+    dynamic var icon: NSData = NSData()
+    dynamic var userID: Int = 0
+    dynamic var name: String = "Guest"
+    
+    override static func primaryKey() -> String? {
+        return "userID"
+    }
+    
+}
+
+// App Realm
 class User: Object {
     
     dynamic var userID: Int = 0
@@ -29,15 +44,13 @@ class User: Object {
     dynamic var iconURL: String = ""
     dynamic var icon: NSData = NSData()
     
-    let keys = List<Key>()
-    let places = List<Place>()
-    
     override static func primaryKey() -> String? {
         return "userID"
     }
     
 }
 
+// User Realm
 class Key: Object {
     dynamic var deviceID: Int = 0
     dynamic var deviceSecret: Int = 0
@@ -48,11 +61,11 @@ class Key: Object {
     
 }
 
+// User Realm
 class Place: Object {
     
     dynamic var ssid: String = "placeholder"
     dynamic var bssid: String = "LANMAC"
-    dynamic var id: String = ""
     dynamic var name: String = "unnamed"
     dynamic var gateway: String = "0.0.0"
     dynamic var x: CGFloat = 100
@@ -66,6 +79,7 @@ class Place: Object {
     }
 }
 
+// User Realm
 class Group: Object {
     
     let controls = List<DeviceControl>()
@@ -84,10 +98,12 @@ class Group: Object {
     }
 }
 
+// User Realm
 class Device: Object {
     
     dynamic var name: String = "placeholder"
     dynamic var deviceID: Int = 0
+    dynamic var humanAdmin: Int = 0
     dynamic var version: Int = 0
     dynamic var iconName: String = "lightbulb"
     dynamic var ipAddress: String = "0.0.0.0"
@@ -101,6 +117,7 @@ class Device: Object {
     
 }
 
+// User Realm
 class DeviceControl: Object {
     
     dynamic var deviceID: Int = 0
@@ -126,6 +143,7 @@ class DeviceControl: Object {
     
 }
 
+// User Realm
 class Vertex: Object {
     
     dynamic var tx: DeviceControl?

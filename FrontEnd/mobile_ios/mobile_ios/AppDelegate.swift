@@ -11,9 +11,9 @@ import CoreData
 import RealmSwift
 import FacebookCore
 
-var user = User()
-//var currentWifi: [String: String] = ["ssid": "none", "bssid": "none"]
-let config = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
+var configApp = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
+var configUser = Realm.Configuration(fileURL: configApp.fileURL!.deletingLastPathComponent()
+    .appendingPathComponent("guest.realm"), deleteRealmIfMigrationNeeded: true)
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -22,11 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
-        let realm = try! Realm(configuration: config)
-        try! realm.write {
-            realm.deleteAll()
-        }
-        
+        flushApp()
         initializeApp()
         
         SDKApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)

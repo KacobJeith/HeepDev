@@ -12,7 +12,6 @@ import RealmSwift
 class PlacesView: UIViewController {
     var notificationToken: NotificationToken? = nil
     
-    let realm = try! Realm(configuration: config)
     var activelyPanning = Int()
     var searchTimeout = 4
     var bssids = [String]()
@@ -71,7 +70,7 @@ class PlacesView: UIViewController {
     
 
     func addPlaces() {
-        
+        let realm = try! Realm(configuration: configUser)
         let currentWifi = currentWifiInfo()
         let thisWifiCheck = realm.objects(Place.self).filter("bssid == %s", currentWifi.bssid)
         if (thisWifiCheck.count == 0) {
@@ -93,9 +92,12 @@ class PlacesView: UIViewController {
     
     
     func addPlaceToRealm() {
+        //let realmApp = try! Realm(configuration: configApp)
+        let realm = try! Realm(configuration: configUser)
+        
         let currentWifi = currentWifiInfo()
         let allGroups = realm.objects(Group.self)
-        let app = realm.object(ofType: App.self, forPrimaryKey: 0)
+        //let app = realmApp.object(ofType: App.self, forPrimaryKey: 0)
         
         let firstGroupInPlace = Group()
         firstGroupInPlace.place = currentWifi.bssid
@@ -110,7 +112,7 @@ class PlacesView: UIViewController {
         let newPlace = Place()
         newPlace.ssid = currentWifi.ssid
         newPlace.bssid = currentWifi.bssid
-        newPlace.id = currentWifi.bssid + String(describing: app?.activeUser)
+        //newPlace.id = currentWifi.bssid + String(describing: app?.activeUser)
         newPlace.name = currentWifi.ssid
         
         try! realm.write {
@@ -151,6 +153,7 @@ class PlacesView: UIViewController {
     }
     
     func enterPlace(sender: UIButton) {
+        let realm = try! Realm(configuration: configUser)
         let enterPlace = realm.object(ofType: Place.self, forPrimaryKey: bssids[sender.tag - 1])
         
         print("entering \(String(describing: enterPlace?.name))")
@@ -180,7 +183,7 @@ class PlacesView: UIViewController {
         } else if gesture.state == UIGestureRecognizerState.ended {
             if activelyPanning != Int(){
                 
-                let realm = try! Realm(configuration: config)
+                let realm = try! Realm(configuration: configUser)
                 let thisPlace = realm.object(ofType: Place.self, forPrimaryKey: bssids[activelyPanning - 1])
                 try! realm.write {
                     thisPlace?.x = (thisPlace?.x)! + gesture.translation(in: self.view).x
@@ -218,7 +221,7 @@ class PlacesView: UIViewController {
     
     func deleteAll() {
         print("Deleting all Devices")
-        let realm = try! Realm(configuration: config)
+        let realm = try! Realm(configuration: configUser)
         try! realm.write {
          
             realm.deleteAll()
@@ -251,6 +254,7 @@ extension PlacesView {
     }
     
     func initRealmNotification() {
+        let realm = try! Realm(configuration: configUser)
         let places = realm.objects(Place.self)
         
         notificationToken = places.addNotificationBlock { [weak self] (changes: RealmCollectionChange) in
@@ -278,7 +282,7 @@ extension PlacesView {
     }
     
     func getActiveUserIcon() -> UIBarButtonItem {
-        let realm = try! Realm(configuration: config)
+        let realm = try! Realm(configuration: configApp)
         let app = realm.object(ofType: App.self, forPrimaryKey: 0)
         let activeUser = realm.object(ofType: User.self, forPrimaryKey: app?.activeUser)
         
