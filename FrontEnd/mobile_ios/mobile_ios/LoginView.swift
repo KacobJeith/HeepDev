@@ -13,29 +13,86 @@ import RealmSwift
 
 class LoginView: UIViewController, LoginButtonDelegate {
     
+    var placesView = PlacesView()
+    var userOffset: CGFloat = 75
+    var userHeight: CGFloat = 50
+    
     override func viewDidLoad() {
-        //view.layer.opacity = 0.5
-        //view.isOpaque = false
+        let realm = try! Realm(configuration: configApp)
+        let numUsers = realm.objects(User.self).count
+        let binHeight = CGFloat(numUsers * 60 + 35 + 35 + 10)
+        
         view.frame = CGRect(x: view.bounds.width/2,
                             y: 65,
                             width: view.bounds.width/2,
-                            height: view.bounds.height/4)
+                            height: binHeight)
         
         view.backgroundColor = UIColor.clear
+        
+        addBackdrop()
+        addUserButtons()
+        addLoginButton()
+        addExitButton()
+        
+        
+    }
+    
+    func addUserButtons() {
+        let realm = try! Realm(configuration: configApp)
+        let loggedInUsers = realm.objects(User.self)
+        
+        for eachUser in loggedInUsers {
+            print(eachUser)
+            displayEachUserButton(user: eachUser)
+        }
+    }
+    
+    func displayEachUserButton(user: User) {
+        
+        let userButton = UIButton(frame: CGRect(x: self.view.frame.minX + (self.view.bounds.width/2 - userHeight/2),
+                                                y: userOffset,
+                                                width: userHeight,
+                                                height: userHeight))
+        let userImage = UIImage(data: user.icon as Data)
+        userButton.imageView?.contentMode = .scaleAspectFit
+        userButton.setImage(userImage, for: .normal)
+        userButton.tag = user.userID
+        userButton.addTarget(self,
+                             action: #selector(selectUser),
+                             for: .primaryActionTriggered)
+        
+        userOffset += (userHeight + 10)
+        self.view.addSubview(userButton)
+    }
+    
+    func selectUser(sender: UIButton) {
+        print("Selecting new user: \(sender.tag)")
+    }
+    
+    func addBackdrop() {
         let backdrop = UIView()
         backdrop.frame = view.frame
         backdrop.backgroundColor = UIColor.black.withAlphaComponent(0.3)
         view.addSubview(backdrop)
-        
+    }
+    
+    func addLoginButton() {
         let loginButton = LoginButton(readPermissions: [ .publicProfile ])
-        loginButton.center = view.center
+        loginButton.frame = CGRect(x: self.view.frame.minX + 10,
+                                   y: userOffset,
+                                   width: self.view.bounds.width - 20,
+                                   height: 35)
+        
         loginButton.delegate = self
         view.addSubview(loginButton)
         print("User Profile \(String(describing: UserProfile.current))")
         
-        let exitButton = UIButton(frame: CGRect(x: view.frame.minX + 5,
-                                                y: view.frame.maxY - 35,
-                                                width: view.frame.width,
+    }
+    
+    func addExitButton() {
+        let exitButton = UIButton(frame: CGRect(x: self.view.frame.minX + 5,
+                                                y: self.view.frame.maxY - 35,
+                                                width: self.view.frame.width,
                                                 height: 35))
         
         exitButton.setTitle("Exit", for: .normal)
@@ -43,12 +100,6 @@ class LoginView: UIViewController, LoginButtonDelegate {
         exitButton.setTitleColor(UIColor.white, for: UIControlState.normal)
         exitButton.addTarget(self, action: #selector(exitModalView), for: .primaryActionTriggered)
         view.addSubview(exitButton)
-        
-    }
-    
-    func exitModalView() {
-        print("exiting")
-        self.dismiss(animated: true)
     }
     
     func loginButtonDidCompleteLogin(_ loginButton: LoginButton, result: LoginResult) {
@@ -140,6 +191,8 @@ class LoginView: UIViewController, LoginButtonDelegate {
             newUser.icon = iconData
         }
         print("After getting image \(newUser)")
+        
+        loginToUserRealm(user: newUser.userID)
     }
     
     func getUserIcon(iconURL: String) -> NSData {
@@ -158,6 +211,13 @@ class LoginView: UIViewController, LoginButtonDelegate {
         }
         
         configUser.fileURL = configUser.fileURL!.deletingLastPathComponent().appendingPathComponent("\(String(describing: user)).realm")
+        
+        exitModalView()
+    }
+    
+    func exitModalView() {
+        print("exiting")
+        self.dismiss(animated: true, completion: { self.placesView.reloadView()})
     }
     
 }

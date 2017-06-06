@@ -33,6 +33,7 @@ func initializeApp() {
         let initialApp = App()
         let initialUser = User()
         
+        
         try! realm.write {
             realm.add(initialApp)
             realm.add(initialUser)

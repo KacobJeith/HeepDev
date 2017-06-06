@@ -13,7 +13,6 @@ import RealmSwift
 class App: Object {
     dynamic var phoneID: Int = 0
     dynamic var activeUser: Int = 0
-    let users = List<User>()
     
     override static func primaryKey() -> String? {
         return "phoneID"
@@ -21,28 +20,15 @@ class App: Object {
 }
 
 // App Realm
-class UserReference: Object {
-    
-    dynamic var icon: NSData = NSData()
-    dynamic var userID: Int = 0
-    dynamic var name: String = "Guest"
-    
-    override static func primaryKey() -> String? {
-        return "userID"
-    }
-    
-}
-
-// App Realm
 class User: Object {
     
     dynamic var userID: Int = 0
     dynamic var facebookID: Int = 0
-    dynamic var name: String = "Guest"
+    dynamic var name: String = "guest"
     dynamic var email: String = ""
     dynamic var password: String = ""
     dynamic var iconURL: String = ""
-    dynamic var icon: NSData = NSData()
+    dynamic var icon: NSData = (UIImagePNGRepresentation((UIImage(named: "female"))!))! as NSData
     
     override static func primaryKey() -> String? {
         return "userID"

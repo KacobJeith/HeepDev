@@ -275,6 +275,8 @@ extension PlacesView {
     func userLogin() {
         // Open modal view that gives login options
         let modalViewController = LoginView()
+        modalViewController.placesView = self
+        
         modalViewController.modalPresentationStyle = .overCurrentContext
         present(modalViewController, animated: false, completion: nil)
         print("facebook?")
