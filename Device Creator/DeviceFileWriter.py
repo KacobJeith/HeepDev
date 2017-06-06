@@ -73,6 +73,7 @@ class DeviceWriter:
 		
 		print "Begin File Write"
 
+		f.write("#define ON_ARDUINO\n")
 		f.write("#include \"Heep_API.h\"\n")
 		f.write("char deviceName [] = \"" + deviceInfo.deviceName + "\";\n\n")
 		self.WriteControlNames(f, deviceInfo)
