@@ -65,6 +65,7 @@ class PlacesView: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         self.title = "My Heep Zones"
         self.initRealmNotification()
+        self.reloadView()
         
     }
     
@@ -98,7 +99,12 @@ class PlacesView: UIViewController {
         let firstGroupInPlace = Group()
         firstGroupInPlace.place = currentWifi.bssid
         firstGroupInPlace.name = "My First Room"
-        firstGroupInPlace.id = allGroups.max(ofProperty: "id")! + 1
+        if allGroups.count > 0 {
+            
+            firstGroupInPlace.id = allGroups.max(ofProperty: "id")! + 1
+        } else {
+            firstGroupInPlace.id = 1
+        }
         
         let newPlace = Place()
         newPlace.ssid = currentWifi.ssid
@@ -261,15 +267,30 @@ extension PlacesView {
     }
     
     func userLogin() {
-        print("LOGGGING IN")
+        // Open modal view that gives login options
+        let modalViewController = LoginView()
+        modalViewController.modalPresentationStyle = .overCurrentContext
+        present(modalViewController, animated: false, completion: nil)
+        print("facebook?")
+        
     }
     
     func getActiveUserIcon() -> UIBarButtonItem {
+        let realm = try! Realm(configuration: config)
+        let app = realm.object(ofType: App.self, forPrimaryKey: 0)
+        let activeUser = realm.object(ofType: User.self, forPrimaryKey: app?.activeUser)
         
-        let userImage = UIImage(named: "female")
+        var userImage = UIImage(named: "female")
+        
+        if (activeUser?.icon.length)! > 0 {
+            userImage = UIImage(data: (activeUser?.icon)! as Data)
+        }
+        
+        
         let userButton = UIButton(frame: CGRect(x: 0, y: 0,
                                                 width: (navigationController?.navigationBar.bounds.height)!,
                                                 height: (navigationController?.navigationBar.bounds.height)!))
+        
         userButton.imageView?.contentMode = .scaleAspectFit
         userButton.setImage(userImage, for: .normal)
         userButton.addTarget(self,

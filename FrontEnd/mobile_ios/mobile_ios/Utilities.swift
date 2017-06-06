@@ -9,6 +9,25 @@
 import UIKit
 import Foundation
 import SystemConfiguration.CaptiveNetwork
+import RealmSwift
+
+func initializeApp() {
+    let realm = try! Realm(configuration: config)
+    
+    let app = realm.object(ofType: App.self, forPrimaryKey: 0)
+    
+    if app == nil {
+        print("Adding empty app")
+        let initialApp = App()
+        let initialUser = User()
+        
+        try! realm.write {
+            realm.add(initialApp)
+            realm.add(initialUser)
+        }
+    }
+    
+}
 
 func SuggestIconFromName(name: String) -> String {
     var suggestion = "switch"

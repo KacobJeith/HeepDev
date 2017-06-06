@@ -9,15 +9,28 @@
 import Foundation
 import RealmSwift
 
+class App: Object {
+    dynamic var phoneID: Int = 0
+    dynamic var activeUser: Int = 0
+    let users = List<User>()
+    
+    override static func primaryKey() -> String? {
+        return "phoneID"
+    }
+}
+
 class User: Object {
     
-    var userID: Int = 0
-    var name: String = "Guest"
-    var email: String = ""
-    var password: String = ""
-    var keys = List<Key>()
-    var devices = List<Device>()
-    var places = List<Place>()
+    dynamic var userID: Int = 0
+    dynamic var facebookID: Int = 0
+    dynamic var name: String = "Guest"
+    dynamic var email: String = ""
+    dynamic var password: String = ""
+    dynamic var iconURL: String = ""
+    dynamic var icon: NSData = NSData()
+    
+    let keys = List<Key>()
+    let places = List<Place>()
     
     override static func primaryKey() -> String? {
         return "userID"
@@ -26,8 +39,8 @@ class User: Object {
 }
 
 class Key: Object {
-    var deviceID: Int = 0
-    var deviceSecret: Int = 0
+    dynamic var deviceID: Int = 0
+    dynamic var deviceSecret: Int = 0
     
     override static func primaryKey() -> String? {
         return "deviceID"
