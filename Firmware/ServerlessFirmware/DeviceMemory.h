@@ -481,6 +481,17 @@ void UpdateXYInMemory(int x, int y, unsigned long deviceID)
 	memoryChanged = 1;
 }
 
+void SetIPInMemory_Byte(HeepIPAddress theIP, heepByte* deviceID)
+{
+	PerformPreOpCodeProcessing_Byte(deviceID);
+
+	AddNewCharToMemory(DeviceIPOpCode);
+	AddIndexOrDeviceIDToMemory_Byte(deviceID);
+	AddNewCharToMemory((char)4);
+	AddIPToMemory(theIP);
+}
+
+// DEPRECATE*
 void SetIPInMemory(HeepIPAddress theIP, unsigned long deviceID)
 {
 	PerformPreOpCodeProcessing(deviceID);
