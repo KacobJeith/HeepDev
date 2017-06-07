@@ -36,19 +36,11 @@ class mobile_iosTests: XCTestCase {
     //MARK: Device Class Tests
     //Confirm that the Device initializer returns a Device Object when passed valid parameters. 
     
-    func testDeviceInitializationSucceeds() {
-        let basicDevice = Device.init(deviceID: 1234)
-        XCTAssertNotNil(basicDevice)
-    }
     
-    func testROPParser() {
-        XCTAssertEqual(HAPIMemoryParser.ParseROP(dump: [0x0F, 0x13, 0x7F]), true)
+    func testIPStringSplitting() {
+        let testString = "1.2.3.4"
+        XCTAssertEqual(HAPIMemoryParser().IPStringToByteArray(IPString: testString), [0x01, 0x02, 0x03, 0x04])
         
-    }
-    
-    func testDeviceIDParsing() {
-        let testByteArray : [UInt8] =  [0x01, 0x02, 0x03, 0x04]
-        XCTAssertEqual(HAPIMemoryParser.ParseClientID(dump: testByteArray, index: 0), 16909060)
     }
     
 }

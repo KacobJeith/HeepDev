@@ -9,6 +9,7 @@
 #ifndef BridgingHeader_h
 #define BridgingHeader_h
 #include <ifaddrs.h>
+#import <SystemConfiguration/CaptiveNetwork.h>
 
 
 #endif /* BridgingHeader_h */
