@@ -40,6 +40,9 @@ unsigned char controlRegister = 0;
 unsigned long GetDeviceIDFromIndex(unsigned long index);
 unsigned long GetIndexedDeviceID(unsigned long deviceID);
 
+heepByte GetDeviceIDFromIndex_Byte(heepByte* index, heepByte* returnedID);
+heepByte GetIndexedDeviceID_Byte(heepByte* deviceID);
+
 unsigned long GetDataFromBufferOfSpecifiedSize(heepByte* buffer, heepByte* data, unsigned long size, unsigned long counter)
 {
 	for(int i = 0; i < size; i++)
@@ -90,6 +93,12 @@ unsigned long AddDeviceIDToBuffer_Byte(unsigned char* buffer, heepByte* deviceID
 	return counter;
 }
 
+void PerformPreOpCodeProcessing_Byte(heepByte* deviceID)
+{
+	GetIndexedDeviceID_Byte(deviceID);
+}
+
+// DEPRECATE
 void PerformPreOpCodeProcessing(unsigned long deviceID)
 {
 	GetIndexedDeviceID(deviceID);
@@ -565,6 +574,44 @@ unsigned long GetIndexedDeviceID(unsigned long deviceID)
 #endif
 }
 
+heepByte GetDeviceIDFromIndex_Byte(heepByte* index, heepByte* returnedID)
+{
+#ifdef USE_INDEXED_IDS
+
+	unsigned int counter = 0;
+	unsigned long sentIndex = GetNumberFromBuffer(index, counter, ID_SIZE);
+	counter = 0;
+
+	// Find Indexed ID
+	while(counter < curFilledMemory)
+	{
+		if(deviceMemory[counter] == LocalDeviceIDOpCode)
+		{
+			counter++;
+			unsigned long indexedValue = GetNumberFromBuffer(deviceMemory, counter, ID_SIZE);
+			counter++;
+			counter = GetFullDeviceIDFromBuffer(deviceMemory, returnedID, counter);
+
+			if(indexedValue == sentIndex)
+			{
+				return STANDARD_ID_SIZE; // Found ID
+			}
+		}
+		else
+		{
+			counter = SkipOpCode(counter);
+		}
+	}
+
+	return 0; // No ID Found
+
+#else
+	GetDeviceIDOrLocalIDFromBuffer(index, returnedID, 0);
+	return STANDARD_ID_SIZE; // Index is just device ID!
+#endif
+}
+
+// DEPRECATE
 unsigned long GetDeviceIDFromIndex(unsigned long index)
 {
 #ifdef USE_INDEXED_IDS

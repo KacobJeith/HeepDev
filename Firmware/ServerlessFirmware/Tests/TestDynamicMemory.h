@@ -1204,6 +1204,83 @@ void TestAddBufferToMemory()
 	CheckResults(TestName, valueList, 4);
 }
 
+void TestGetDeviceIDFromIndexByteWise()
+{
+	std::string TestName = "Test Device ID From Index Bytewise";
+
+	heepByte myID0 [STANDARD_ID_SIZE];
+	heepByte myID1 [STANDARD_ID_SIZE];
+	heepByte myID2 [STANDARD_ID_SIZE];
+	heepByte myID3 [STANDARD_ID_SIZE];
+	heepByte myID4 [STANDARD_ID_SIZE];
+
+	heepByte destID0 [STANDARD_ID_SIZE];
+	heepByte destID1 [STANDARD_ID_SIZE];
+	heepByte destID2 [STANDARD_ID_SIZE];
+	heepByte destID3 [STANDARD_ID_SIZE];
+	heepByte destID4 [STANDARD_ID_SIZE];
+
+	heepByte retID0 [STANDARD_ID_SIZE];
+	heepByte retID1 [STANDARD_ID_SIZE];
+	heepByte retID2 [STANDARD_ID_SIZE];
+	heepByte retID3 [STANDARD_ID_SIZE];
+	heepByte retID4 [STANDARD_ID_SIZE];
+
+	for(int i = 0; i < STANDARD_ID_SIZE; i++)
+	{
+		myID0[i] = i + 1;
+		myID1[i] = i + 2;
+		myID2[i] = i + 1;
+		myID3[i] = i + 3;
+		myID4[i] = i + 4;
+
+		destID0[i] = i + 1;
+		destID1[i] = i + 2;
+		destID2[i] = i + 1;
+		destID3[i] = i + 3;
+		destID4[i] = i + 4;
+	}
+
+	ClearDeviceMemory();
+
+	heepByte retSize0 = GetIndexedDeviceID_Byte(myID0);
+	heepByte retSize1 = GetIndexedDeviceID_Byte(myID1);
+	heepByte retSize2 = GetIndexedDeviceID_Byte(myID2);
+	heepByte retSize3 = GetIndexedDeviceID_Byte(myID3);
+	heepByte retSize4 = GetIndexedDeviceID_Byte(myID4);
+
+	GetDeviceIDFromIndex_Byte(myID0, retID0);
+	GetDeviceIDFromIndex_Byte(myID1, retID1);
+	GetDeviceIDFromIndex_Byte(myID2, retID2);
+	GetDeviceIDFromIndex_Byte(myID3, retID3);
+	GetDeviceIDFromIndex_Byte(myID4, retID4);
+
+	PrintDeviceMemory();
+
+	ExpectedValue valueList [5];
+	valueList[0].valueName = "Index Value 1";
+	valueList[0].expectedValue = 1;
+	valueList[0].actualValue = CheckBufferEquality(retID0, destID0, STANDARD_ID_SIZE);
+
+	valueList[1].valueName = "Index Value 2";
+	valueList[1].expectedValue = 1;
+	valueList[1].actualValue = CheckBufferEquality(retID1, destID1, STANDARD_ID_SIZE);
+
+	valueList[2].valueName = "Index Value 3";
+	valueList[2].expectedValue = 1;
+	valueList[2].actualValue = CheckBufferEquality(retID2, destID2, STANDARD_ID_SIZE);
+
+	valueList[3].valueName = "Index Value 4";
+	valueList[3].expectedValue = 1;
+	valueList[3].actualValue = CheckBufferEquality(retID3, destID3, STANDARD_ID_SIZE);
+
+	valueList[4].valueName = "Index Value 5";
+	valueList[4].expectedValue = 1;
+	valueList[4].actualValue = CheckBufferEquality(retID4, destID4, STANDARD_ID_SIZE);
+
+	CheckResults(TestName, valueList, 5);
+}
+
 void TestDynamicMemory()
 {
 	TestAddCharToBuffer();
@@ -1237,4 +1314,5 @@ void TestDynamicMemory()
 	TestCreateBufferFromNumber();
 	TestAddBufferToBuffer();
 	TestAddBufferToMemory();
+	TestGetDeviceIDFromIndexByteWise();
 }
