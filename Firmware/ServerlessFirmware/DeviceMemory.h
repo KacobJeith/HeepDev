@@ -204,7 +204,7 @@ unsigned long AddDeviceIDToBuffer(unsigned char* buffer, unsigned long startPoin
 	return AddNumberToBufferWithSpecifiedBytes(buffer, deviceID, startPoint, STANDARD_ID_SIZE);
 }
 
-// DEPRECATE
+// DEPRECATE *
 void AddIndexToMemory(unsigned long deviceIndex)
 {
 	AddNumberToMemoryWithSpecifiedBytes(deviceIndex, ID_SIZE);
@@ -215,12 +215,19 @@ void AddDeviceIDToMemory_Byte(heepByte* deviceID)
 	curFilledMemory = AddDeviceIDToBuffer_Byte(deviceMemory, deviceID, curFilledMemory);
 }
 
-// Deprecate
+// Deprecate *
 void AddDeviceIDToMemory(unsigned long deviceID)
 {
 	curFilledMemory = AddDeviceIDToBuffer(deviceMemory, curFilledMemory, deviceID);
 }
 
+void AddIndexOrDeviceIDToMemory_Byte(heepByte* deviceID)
+{
+	GetIndexedDeviceID_Byte(deviceID);
+	AddBufferToMemory(deviceID, ID_SIZE);
+}
+
+// Deprecate
 void AddIndexOrDeviceIDToMemory(unsigned long deviceID)
 {
 	unsigned long index = GetIndexedDeviceID(deviceID);
@@ -531,7 +538,7 @@ heepByte GetIndexedDeviceID_Byte(heepByte* deviceID)
 #endif
 }
 
-// DEPRECATE
+// DEPRECATE *
 unsigned long GetIndexedDeviceID(unsigned long deviceID)
 {
 #ifdef USE_INDEXED_IDS
@@ -611,7 +618,7 @@ heepByte GetDeviceIDFromIndex_Byte(heepByte* index, heepByte* returnedID)
 #endif
 }
 
-// DEPRECATE
+// DEPRECATE *
 unsigned long GetDeviceIDFromIndex(unsigned long index)
 {
 #ifdef USE_INDEXED_IDS

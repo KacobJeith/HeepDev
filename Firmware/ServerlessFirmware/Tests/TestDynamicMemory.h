@@ -1281,6 +1281,33 @@ void TestGetDeviceIDFromIndexByteWise()
 	CheckResults(TestName, valueList, 5);
 }
 
+void TestAddIndexOrDeviceIDToMemoryBytewise()
+{
+	std::string TestName = "Test Index or Device to Memory Bytewise";
+
+	heepByte deviceID [STANDARD_ID_SIZE];
+	for(int i = 0; i < STANDARD_ID_SIZE; i++)
+	{
+		deviceID[i] = i + 1;
+	}
+
+	ClearDeviceMemory();
+	AddIndexOrDeviceIDToMemory_Byte(deviceID);
+
+#ifdef USE_INDEXED_IDS
+	int memoryFilled = ID_SIZE + STANDARD_ID_SIZE + 2 + 1;
+#else
+	int memoryFilled = STANDARD_ID_SIZE;
+#endif
+
+	ExpectedValue valueList [1];
+	valueList[0].valueName = "Index Value 1";
+	valueList[0].expectedValue = memoryFilled;
+	valueList[0].actualValue = curFilledMemory;
+
+	CheckResults(TestName, valueList, 1);
+}
+
 void TestDynamicMemory()
 {
 	TestAddCharToBuffer();
@@ -1315,4 +1342,5 @@ void TestDynamicMemory()
 	TestAddBufferToBuffer();
 	TestAddBufferToMemory();
 	TestGetDeviceIDFromIndexByteWise();
+	TestAddIndexOrDeviceIDToMemoryBytewise();
 }
