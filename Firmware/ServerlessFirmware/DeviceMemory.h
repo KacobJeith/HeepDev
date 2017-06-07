@@ -540,7 +540,7 @@ int GetVertexAtPointer_Byte(unsigned long pointer, Vertex_Byte &returnedVertex)
 	return 0;
 }
 
-// DEPRECATE
+// DEPRECATE*
 int GetVertexAtPonter(unsigned long pointer, Vertex &returnedVertex)
 {
 	if(deviceMemory[pointer] != VertexOpCode)
