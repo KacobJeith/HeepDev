@@ -163,6 +163,22 @@ unsigned long AddNumberToBufferWithSpecifiedBytes(unsigned char* buffer, unsigne
 	return startPoint;
 }
 
+void AddBufferToBuffer(heepByte* rxBuffer, heepByte* txBuffer, heepByte size, unsigned int &rxCounter, unsigned int &txCounter)
+{
+	for(int i = 0; i < size; i++)
+	{
+		rxBuffer[rxCounter] = txBuffer[txCounter];
+		rxCounter++;
+		txCounter++;
+	}
+}
+
+void AddBufferToMemory(heepByte* buffer, heepByte size)
+{
+	unsigned int counter = 0;
+	AddBufferToBuffer(deviceMemory, buffer, size, curFilledMemory, counter);
+}
+
 void CreateBufferFromNumber(heepByte* buffer, unsigned long number, heepByte size)
 {
 	AddNumberToBufferWithSpecifiedBytes(buffer, number, 0, size);

@@ -1130,6 +1130,74 @@ void TestCreateBufferFromNumber()
 	CheckResults(TestName, valueList, 4);
 }
 
+void TestAddBufferToBuffer()
+{
+	std::string TestName = "Test Add Buffer to Buffer";
+
+	heepByte myBuf [4];
+	heepByte theirBuf [4];
+	for(int i = 0; i < 4; i++)
+	{
+		myBuf[i] = i + 3;
+	}
+
+	unsigned int rxCounter = 0;
+	unsigned int txCounter = 0;
+	AddBufferToBuffer(theirBuf, myBuf, 4, rxCounter, txCounter);
+
+	ExpectedValue valueList [4];
+	valueList[0].valueName = "Index Value 1";
+	valueList[0].expectedValue = theirBuf[0];
+	valueList[0].actualValue = myBuf[0];
+
+	valueList[1].valueName = "Index Value 2";
+	valueList[1].expectedValue = theirBuf[1];
+	valueList[1].actualValue = myBuf[1];
+
+	valueList[2].valueName = "Index Value 3";
+	valueList[2].expectedValue = theirBuf[2];
+	valueList[2].actualValue = myBuf[2];
+
+	valueList[3].valueName = "Index Value 4";
+	valueList[3].expectedValue = theirBuf[3];
+	valueList[3].actualValue = myBuf[3];
+
+	CheckResults(TestName, valueList, 4);
+}
+
+void TestAddBufferToMemory()
+{
+	std::string TestName = "Test Add Buffer to Memory";
+
+	heepByte myBuf [4];
+	for(int i = 0; i < 4; i++)
+	{
+		myBuf[i] = i + 3;
+	}
+
+	ClearDeviceMemory();
+	AddBufferToMemory(myBuf, 4);
+
+	ExpectedValue valueList [4];
+	valueList[0].valueName = "Index Value 1";
+	valueList[0].expectedValue = deviceMemory[0];
+	valueList[0].actualValue = myBuf[0];
+
+	valueList[1].valueName = "Index Value 2";
+	valueList[1].expectedValue = deviceMemory[1];
+	valueList[1].actualValue = myBuf[1];
+
+	valueList[2].valueName = "Index Value 3";
+	valueList[2].expectedValue = deviceMemory[2];
+	valueList[2].actualValue = myBuf[2];
+
+	valueList[3].valueName = "Index Value 4";
+	valueList[3].expectedValue = deviceMemory[3];
+	valueList[3].actualValue = myBuf[3];
+
+	CheckResults(TestName, valueList, 4);
+}
+
 void TestDynamicMemory()
 {
 	TestAddCharToBuffer();
@@ -1161,4 +1229,6 @@ void TestDynamicMemory()
 	TestGetDeviceIDFromMemory();
 	TestGetDeviceIndexByteWise();
 	TestCreateBufferFromNumber();
+	TestAddBufferToBuffer();
+	TestAddBufferToMemory();
 }
