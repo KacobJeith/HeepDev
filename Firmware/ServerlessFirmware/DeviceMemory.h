@@ -41,15 +41,25 @@ unsigned char controlRegister = 0;
 unsigned long GetDeviceIDFromIndex(unsigned long index);
 unsigned long GetIndexedDeviceID(unsigned long deviceID);
 
-unsigned long GetDeviceIDFromBuffer(unsigned char* buffer, heepByte* deviceID, unsigned long counter)
+unsigned long GetDataFromBufferOfSpecifiedSize(heepByte* buffer, heepByte* data, unsigned long size, unsigned long counter)
 {
-	for(int i = 0; i < ID_SIZE; i++)
+	for(int i = 0; i < size; i++)
 	{
-		deviceID[i] = buffer[counter];
+		data[i] = buffer[counter];
 		counter++;
 	}
 
 	return counter;
+}
+
+unsigned long GetFullDeviceIDFromBuffer(unsigned char* buffer, heepByte* deviceID, unsigned long counter)
+{
+	return GetDataFromBufferOfSpecifiedSize(buffer, deviceID, STANDARD_ID_SIZE, counter);
+}
+
+unsigned long GetDeviceIDOrLocalIDFromBuffer(unsigned char* buffer, heepByte* deviceID, unsigned long counter)
+{
+	return GetDataFromBufferOfSpecifiedSize(buffer, deviceID, ID_SIZE, counter);
 }
 
 int CheckBufferEquality(heepByte* buffer1, heepByte* buffer2, int numBytes)
@@ -169,6 +179,11 @@ unsigned long AddDeviceIDToBuffer(unsigned char* buffer, unsigned long startPoin
 void AddIndexToMemory(unsigned long deviceIndex)
 {
 	AddNumberToMemoryWithSpecifiedBytes(deviceIndex, ID_SIZE);
+}
+
+void AddDeviceIDToMemory_Byte(heepByte* deviceID)
+{
+	curFilledMemory = AddDeviceIDToBuffer_Byte(deviceMemory, deviceID, curFilledMemory);
 }
 
 // Deprecate
@@ -426,6 +441,72 @@ void DefragmentMemory()
 		}
 
 	}while(isFragmentFound == 0);
+}
+
+// Returns True if Index ID Used. Returns False if True ID Used
+// Always expects true ID as input
+heepByte GetIndexedDeviceID_Byte(heepByte* deviceID, unsigned long &localID)
+{
+#ifdef USE_INDEXED_IDS
+	unsigned int counter = 0;
+	unsigned long topIndex = 0;
+
+	// Find Indexed ID
+	while(counter < curFilledMemory)
+	{
+		if(deviceMemory[counter] == LocalDeviceIDOpCode)
+		{
+			counter++;
+			unsigned long indexedValue = GetNumberFromBuffer(deviceMemory, counter, ID_SIZE);
+			counter++;
+
+			heepByte foundID [STANDARD_ID_SIZE];
+			counter = GetFullDeviceIDFromBuffer(deviceMemory, foundID, counter);
+
+			if(indexedValue == topIndex)
+			{
+				topIndex = indexedValue + 1;
+			}
+
+			// cout << "Counter: " << counter << endl;
+			// cout << "Cur Index: " << indexedValue << endl;
+			// cout << "Found: ";
+			// for(int i = 0; i < STANDARD_ID_SIZE; i++)
+			// {
+			// 	cout << (int)foundID[i] << ' ';
+			// }
+			// cout << endl;
+
+			// cout << "Want: ";
+			// for(int i = 0; i < STANDARD_ID_SIZE; i++)
+			// {
+			// 	cout << (int)deviceID[i] << ' ';
+			// }
+			// cout << endl;
+
+			if(CheckBufferEquality(deviceID, foundID, STANDARD_ID_SIZE))
+			{
+				localID = indexedValue;
+				return 1;
+			}
+		}
+		else
+		{
+			counter = SkipOpCode(counter);
+		}
+	}
+
+	// If Not Indexed, then index it!
+	AddNewCharToMemory(LocalDeviceIDOpCode);
+	AddIndexToMemory(topIndex);
+	AddNewCharToMemory(STANDARD_ID_SIZE);
+	AddDeviceIDToMemory_Byte(deviceID);
+
+	localID = topIndex;
+	return 1;
+#else 
+	return 0;
+#endif
 }
 
 // DEPRECATE

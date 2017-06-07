@@ -1015,6 +1015,93 @@ void TestGetDeviceIDFromMemory()
 	CheckResults(TestName, valueList, 1);
 }
 
+void TestGetDeviceIndexByteWise()
+{
+	std::string TestName = "Test Index From Device ID Bytewise";
+
+	heepByte myID0 [STANDARD_ID_SIZE];
+	heepByte myID1 [STANDARD_ID_SIZE];
+	heepByte myID2 [STANDARD_ID_SIZE];
+	heepByte myID3 [STANDARD_ID_SIZE];
+	heepByte myID4 [STANDARD_ID_SIZE];
+
+	for(int i = 0; i < STANDARD_ID_SIZE; i++)
+	{
+		myID0[i] = i + 1;
+		myID1[i] = i + 3;
+		myID2[i] = i + 1;
+		myID3[i] = i + 9;
+		myID4[i] = i + 14;
+	}
+
+	ClearDeviceMemory();
+	unsigned long indexId0 = 0;
+	unsigned long indexId1 = 0;
+	unsigned long indexId2 = 0;
+	unsigned long indexId3 = 0;
+	unsigned long indexId4 = 0;
+
+	GetIndexedDeviceID_Byte(myID0, indexId0);
+	GetIndexedDeviceID_Byte(myID1, indexId1);
+	GetIndexedDeviceID_Byte(myID2, indexId2);
+	GetIndexedDeviceID_Byte(myID3, indexId3);
+	GetIndexedDeviceID_Byte(myID4, indexId4);
+
+	PrintDeviceMemory();
+
+#ifdef USE_INDEXED_IDS
+
+	ExpectedValue valueList [5];
+	valueList[0].valueName = "Index Value 1";
+	valueList[0].expectedValue = 0;
+	valueList[0].actualValue = indexId0;
+
+	valueList[1].valueName = "Index Value 2";
+	valueList[1].expectedValue = 1;
+	valueList[1].actualValue = indexId1;
+
+	valueList[2].valueName = "Index Value 3";
+	valueList[2].expectedValue = 0;
+	valueList[2].actualValue = indexId2;
+
+	valueList[3].valueName = "Index Value 4";
+	valueList[3].expectedValue = 2;
+	valueList[3].actualValue = indexId3;
+
+	valueList[4].valueName = "Index Value 5";
+	valueList[4].expectedValue = 3;
+	valueList[4].actualValue = indexId4;
+
+	CheckResults(TestName, valueList, 5);
+
+#else 
+
+	ExpectedValue valueList [5];
+	valueList[0].valueName = "Index Value 1";
+	valueList[0].expectedValue = 0;
+	valueList[0].actualValue = indexId0;
+
+	valueList[1].valueName = "Index Value 2";
+	valueList[1].expectedValue = 0;
+	valueList[1].actualValue = indexId1;
+
+	valueList[2].valueName = "Index Value 3";
+	valueList[2].expectedValue = 0;
+	valueList[2].actualValue = indexId2;
+
+	valueList[3].valueName = "Index Value 4";
+	valueList[3].expectedValue = 0;
+	valueList[3].actualValue = indexId3;
+
+	valueList[4].valueName = "Index Value 5";
+	valueList[4].expectedValue = 0;
+	valueList[4].actualValue = indexId4;
+
+	CheckResults(TestName, valueList, 5);
+
+#endif
+}
+
 void TestDynamicMemory()
 {
 	TestAddCharToBuffer();
@@ -1044,4 +1131,5 @@ void TestDynamicMemory()
 	TestByteWiseDeviceEquality();
 	TestByteWiseDeviceInequality();
 	TestGetDeviceIDFromMemory();
+	TestGetDeviceIndexByteWise();
 }
