@@ -1102,6 +1102,34 @@ void TestGetDeviceIndexByteWise()
 #endif
 }
 
+void TestCreateBufferFromNumber()
+{
+	std::string TestName = "Test Create Buffer From Number";
+
+	heepByte myBuf [4];
+
+	CreateBufferFromNumber(myBuf, 0x01020304, 4);
+
+	ExpectedValue valueList [4];
+	valueList[0].valueName = "Index Value 1";
+	valueList[0].expectedValue = 1;
+	valueList[0].actualValue = myBuf[0];
+
+	valueList[1].valueName = "Index Value 2";
+	valueList[1].expectedValue = 2;
+	valueList[1].actualValue = myBuf[1];
+
+	valueList[2].valueName = "Index Value 3";
+	valueList[2].expectedValue = 3;
+	valueList[2].actualValue = myBuf[2];
+
+	valueList[3].valueName = "Index Value 4";
+	valueList[3].expectedValue = 4;
+	valueList[3].actualValue = myBuf[3];
+
+	CheckResults(TestName, valueList, 4);
+}
+
 void TestDynamicMemory()
 {
 	TestAddCharToBuffer();
@@ -1132,4 +1160,5 @@ void TestDynamicMemory()
 	TestByteWiseDeviceInequality();
 	TestGetDeviceIDFromMemory();
 	TestGetDeviceIndexByteWise();
+	TestCreateBufferFromNumber();
 }

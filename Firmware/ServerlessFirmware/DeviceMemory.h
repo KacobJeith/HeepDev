@@ -37,7 +37,6 @@ unsigned char memoryChanged = 0;
 
 unsigned char controlRegister = 0;
 
-
 unsigned long GetDeviceIDFromIndex(unsigned long index);
 unsigned long GetIndexedDeviceID(unsigned long deviceID);
 
@@ -162,6 +161,11 @@ unsigned long AddNumberToBufferWithSpecifiedBytes(unsigned char* buffer, unsigne
 	}
 
 	return startPoint;
+}
+
+void CreateBufferFromNumber(heepByte* buffer, unsigned long number, heepByte size)
+{
+	AddNumberToBufferWithSpecifiedBytes(buffer, number, 0, size);
 }
 
 void AddNumberToMemoryWithSpecifiedBytes(unsigned long number, int numBytes)
