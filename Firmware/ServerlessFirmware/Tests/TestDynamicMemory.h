@@ -518,18 +518,23 @@ void TestSkipOpCode()
 	std::string TestName = "Skip Op Code";
 
 	ClearDeviceMemory();
+	heepByte deviceID1[STANDARD_ID_SIZE];
+	heepByte deviceID2[STANDARD_ID_SIZE];
+	CreateFakeDeviceID(deviceID1);
+	CreateFakeDeviceID(deviceID2, 1);
+
 	HeepIPAddress myIP;
 	myIP.Octet4 = 192;
 	myIP.Octet3 = 168;
 	myIP.Octet2 = 1;
 	myIP.Octet1 = 100;
-	SetIPInMemory(myIP, 0x01020304);
+	SetIPInMemory_Byte(myIP, deviceID1);
 	char* deviceName = "Jacob";
-	SetDeviceNameInMemory(deviceName, strlen(deviceName), 0x01020304);
-	SetXYInMemory(312, 513, 0x01020304);
+	SetDeviceNameInMemory_Byte(deviceName, strlen(deviceName), deviceID2);
+	SetXYInMemory_Byte(312, 513, deviceID1);
 
-	int x = 0; int y = 0; unsigned long deviceID = 0x01020304; unsigned int xyMemPosition = 0; 
-	int retVal = GetXYFromMemory(x, y, deviceID, xyMemPosition);
+	int x = 0; int y = 0; unsigned int xyMemPosition = 0; 
+	int retVal = GetXYFromMemory_Byte(x, y, deviceID1, xyMemPosition);
 
 	ExpectedValue valueList [3];
 	valueList[0].valueName = "X Position";
@@ -1733,7 +1738,6 @@ void TestDynamicMemory()
 	TestSetIPOpCode();
 	TestSetVertexOpCode();
 	TestGetXYFromMemory();
-	TestSkipOpCode();
 	TestUpdateXYPosition();
 	TestGetVertex();
 	TestDefragmentDeviceMemory();
@@ -1742,6 +1746,7 @@ void TestDynamicMemory()
 	TestDefragmentDeviceMemoryAtEnd();
 	TestBuildVertexListFromPointers();
 
+	TestSkipOpCode();
 	TestControlRegister();
 	TestGetIndexFromDeviceID();
 	TestGetDeviceIDFromIndex();

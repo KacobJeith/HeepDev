@@ -231,8 +231,11 @@ void AddDeviceIDToMemory(unsigned long deviceID)
 
 void AddIndexOrDeviceIDToMemory_Byte(heepByte* deviceID)
 {
-	GetIndexedDeviceID_Byte(deviceID);
-	AddBufferToMemory(deviceID, ID_SIZE);
+	heepByte copyID [STANDARD_ID_SIZE];
+	CopyDeviceID(deviceID, copyID);
+
+	GetIndexedDeviceID_Byte(copyID);
+	AddBufferToMemory(copyID, ID_SIZE);
 }
 
 // Deprecate *
