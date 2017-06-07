@@ -259,7 +259,7 @@ void SetDeviceNameInMemory_Byte(char* deviceName, int numCharacters, heepByte* d
 	}
 }
 
-// DEPRECATE
+// DEPRECATE*
 void SetDeviceNameInMemory(char* deviceName, int numCharacters, unsigned long deviceID)
 {
 	PerformPreOpCodeProcessing(deviceID);
@@ -274,6 +274,17 @@ void SetDeviceNameInMemory(char* deviceName, int numCharacters, unsigned long de
 	}
 }
 
+void SetIconIDInMemory_Byte(char iconID, heepByte* deviceID)
+{
+	PerformPreOpCodeProcessing_Byte(deviceID);
+
+	AddNewCharToMemory(IconIDOpCode);
+	AddIndexOrDeviceIDToMemory_Byte(deviceID);
+	AddNewCharToMemory(1);
+	AddNewCharToMemory(iconID);
+}
+
+// DEPRECATE*
 void SetIconIDInMemory(char iconID, unsigned long deviceID)
 {
 	PerformPreOpCodeProcessing(deviceID);

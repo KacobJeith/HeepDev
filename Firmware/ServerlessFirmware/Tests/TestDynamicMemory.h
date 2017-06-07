@@ -1362,6 +1362,33 @@ void TestDeviceNameOpCode_Byte()
 	PrintDeviceMemory();
 }
 
+void TestIconIDOpCode_Byte()
+{
+	std::string TestName = "Icon ID Op Code Bytewise";
+
+	ClearDeviceMemory();
+	heepByte deviceID[STANDARD_ID_SIZE];
+	CreateFakeDeviceID(deviceID);
+	SetIconIDInMemory_Byte(4, deviceID);
+
+	int memCheckStart = GetMemCounterStart();
+
+	ExpectedValue valueList [3];
+	valueList[0].valueName = "Icon ID OpCode";
+	valueList[0].expectedValue = IconIDOpCode;
+	valueList[0].actualValue = deviceMemory[memCheckStart];
+
+	valueList[1].valueName = "Num Bytes";
+	valueList[1].expectedValue = 1;
+	valueList[1].actualValue = deviceMemory[memCheckStart + ID_SIZE + 1];
+
+	valueList[2].valueName = "Letter One";
+	valueList[2].expectedValue = 4;
+	valueList[2].actualValue = deviceMemory[memCheckStart + ID_SIZE + 2];
+
+	CheckResults(TestName, valueList, 3);
+}
+
 void TestDynamicMemory()
 {
 	TestAddCharToBuffer();
@@ -1398,4 +1425,5 @@ void TestDynamicMemory()
 	TestGetDeviceIDFromIndexByteWise();
 	TestAddIndexOrDeviceIDToMemoryBytewise();
 	TestDeviceNameOpCode_Byte();
+	TestIconIDOpCode_Byte();
 }
