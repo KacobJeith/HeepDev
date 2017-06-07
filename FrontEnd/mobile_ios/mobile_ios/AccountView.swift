@@ -12,19 +12,25 @@ import RealmSwift
 class AccountView: UIViewController {
     
     var placesView = PlacesView()
-    var userOffset: CGFloat = 75
-    var userHeight: CGFloat = 50
+    var optionsOffset: CGFloat = 75
+    var userOffset: CGFloat = 120
+    var userHeight: CGFloat = 45
+    var activeUser = User()
     
     override func viewDidLoad() {
         let realm = try! Realm(configuration: configApp)
+        let app = realm.object(ofType: App.self, forPrimaryKey: 0)
+        activeUser = realm.object(ofType: User.self, forPrimaryKey: app?.activeUser)!
+        
         let numUsers = realm.objects(User.self).count
         let binHeight = CGFloat((numUsers + 2) * 60 + 10)
         
-        view.frame = CGRect(x: view.frame.maxX - 70,
+        
+        /*view.frame = CGRect(x: view.frame.maxX - 70,
                             y: 65,
                             width: userHeight + 20,
                             height: binHeight)
-        
+        */
         self.view.backgroundColor = UIColor.clear
         
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(exitModalView)))
@@ -32,7 +38,7 @@ class AccountView: UIViewController {
         //addBackdrop()
         addUserButtons()
         addLoginButton()
-        //addExitButton()
+        addLogoutButton()
         
     }
     
@@ -48,10 +54,15 @@ class AccountView: UIViewController {
     
     func displayEachUserButton(user: User) {
         
-        let userButton = UIButton(frame: CGRect(x: self.view.frame.maxX - 60,
-                                                y: userOffset,
+        if user == activeUser {
+            return
+        }
+        
+        let userButton = UIButton(frame: CGRect(x: self.view.bounds.maxX - userOffset,
+                                                y: 17,
                                                 width: userHeight,
                                                 height: userHeight))
+        
         let userImage = UIImage(data: user.icon as Data)
         userButton.imageView?.contentMode = .scaleAspectFit
         userButton.setImage(userImage, for: .normal)
@@ -96,25 +107,15 @@ class AccountView: UIViewController {
     }
     
     func addLoginButton() {
-        /*
-        let loginButton = LoginButton(readPermissions: [ .publicProfile ])
-        loginButton.frame = CGRect(x: self.view.frame.minX + 10,
-                                   y: userOffset,
-                                   width: self.view.bounds.width - 20,
-                                   height: 35)
-        
-        loginButton.delegate = self
-        view.addSubview(loginButton)*/
-        
-        let loginButton = UIButton(frame: CGRect(x: self.view.frame.maxX - 60,
-                                                y: userOffset,
-                                                width: userHeight,
-                                                height: userHeight))
+        let loginButton = UIButton(frame: CGRect(x: self.view.bounds.maxX - userOffset,
+                                                 y: 17,
+                                                 width: userHeight,
+                                                 height: userHeight))
         loginButton.tag = 1
         loginButton.addTarget(self,
                              action: #selector(openLoginOptions),
                              for: .primaryActionTriggered)
-        loginButton.backgroundColor = .blue
+        loginButton.backgroundColor = .gray
         loginButton.setTitle("+", for: .normal)
         loginButton.titleLabel?.adjustsFontSizeToFitWidth = true
         loginButton.layer.borderWidth = 1
@@ -127,38 +128,65 @@ class AccountView: UIViewController {
         self.view.addSubview(loginButton)
         
         
-        //print("User Profile \(String(describing: UserProfile.current))")
-        
     }
     
     func openLoginOptions() {
         let modalViewController = LoginOptionsView()
-        modalViewController.placesView = placesView
+        modalViewController.prevView = self
         
         modalViewController.modalPresentationStyle = .overCurrentContext
         present(modalViewController, animated: true, completion: nil)
         print("facebook?")
     }
     
-    func addExitButton() {
-        let exitButton = UIButton(frame: CGRect(x: self.view.frame.maxX - 60,
-                                                y: userOffset,
+    func addLogoutButton() {
+        let logoutButton = UIButton(frame: CGRect(x: self.view.frame.maxX - 60,
+                                                y: optionsOffset,
                                                 width: userHeight,
                                                 height: userHeight))
         
-        exitButton.setTitle("Exit", for: .normal)
-        exitButton.titleLabel?.adjustsFontSizeToFitWidth = true
-        exitButton.setTitleColor(UIColor.white, for: UIControlState.normal)
-        exitButton.backgroundColor = .red
-        exitButton.titleLabel?.adjustsFontSizeToFitWidth = true
-        exitButton.layer.borderWidth = 1
-        exitButton.layer.borderColor = UIColor.white.cgColor
-        exitButton.layer.cornerRadius = 0.5 * exitButton.bounds.size.width
-        exitButton.clipsToBounds = true
-
+        logoutButton.setTitle("Logout", for: .normal)
+        logoutButton.titleLabel?.adjustsFontSizeToFitWidth = true
+        logoutButton.setTitleColor(UIColor.white, for: UIControlState.normal)
+        logoutButton.backgroundColor = .gray
+        logoutButton.titleLabel?.adjustsFontSizeToFitWidth = true
+        logoutButton.layer.borderWidth = 1
+        logoutButton.layer.borderColor = UIColor.white.cgColor
+        logoutButton.layer.cornerRadius = 0.5 * logoutButton.bounds.size.width
+        logoutButton.clipsToBounds = true
         
-        exitButton.addTarget(self, action: #selector(exitModalView), for: .primaryActionTriggered)
-        view.addSubview(exitButton)
+        optionsOffset += userHeight
+        
+        logoutButton.addTarget(self, action: #selector(logoutUser), for: .primaryActionTriggered)
+        view.addSubview(logoutButton)
+        
+    }
+    
+    func logoutUser() {
+        print("Log \(activeUser.name) Out")
+        
+        /*
+        let fileManager = FileManager()
+        
+        do {
+            print("Deleting user Realm")
+            try fileManager.removeItem(atPath: String(contentsOf: (configUser.fileURL)!))
+        }
+        catch let error as NSError {
+            print("Ooops! Something went wrong: \(error)")
+        }
+        */
+        
+        let realm = try! Realm(configuration: configApp)
+        let userToDelete = realm.object(ofType: User.self, forPrimaryKey: activeUser.userID)!
+        let app = realm.object(ofType: App.self, forPrimaryKey: 0)!
+        
+        try! realm.write {
+            realm.delete(userToDelete)
+            app.activeUser = 0
+        }
+        
+        exitModalView()
         
     }
     

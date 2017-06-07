@@ -14,7 +14,7 @@ import FacebookCore
 class LoginOptionsView: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
     var collectionView: UICollectionView!
-    var placesView = PlacesView()
+    var prevView = AccountView()
     private let reuseIdentifier = "Cell"
     
     override func viewDidLoad() {
@@ -73,11 +73,36 @@ class LoginOptionsView: UIViewController, UICollectionViewDataSource, UICollecti
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
         
         cell.backgroundColor = getRandomColor()
+        cell.tag = indexPath.row
+        cell.isUserInteractionEnabled = true
         
+        
+        var thisCell = UIView()
+        var tap = UITapGestureRecognizer(target: self, action: #selector(loginWithEmail))
+        
+        switch indexPath.row {
+        case 1:
+            thisCell = renderLoginOption(frame: cell.bounds,
+                                         text: " facebook ")
+            tap = UITapGestureRecognizer(target: self, action: #selector(loginWithFacebook))
+            
+        default:
+            thisCell = renderLoginOption(frame: cell.bounds,
+                                         text: " email ")
+            
+                    }
+        
+        cell.addSubview(thisCell)
+        cell.addGestureRecognizer(tap)
+        
+        return cell
+    }
+    
+    func renderLoginOption(frame: CGRect, text: String, icon: UIImage = UIImage()) -> UIView {
+        let customView = UIView()
         let title = UILabel()
-        title.text = " Facebook "
-        title.numberOfLines = 0
-        title.sizeToFit()
+        title.text = text
+        title.adjustsFontSizeToFitWidth = true
         title.textColor = .white
         title.font = UIFont.boldSystemFont(ofSize: 30.0)
         
@@ -87,27 +112,21 @@ class LoginOptionsView: UIViewController, UICollectionViewDataSource, UICollecti
         title.layer.shadowRadius = 0.25
         
         title.textAlignment = .center
-        title.tag = indexPath.row
-        title.isUserInteractionEnabled = true
-        title.frame = cell.bounds
+        title.frame = frame
         
-        let tap = UITapGestureRecognizer(target: self, action: #selector(selectLoginOption))
-        tap.numberOfTapsRequired = 1
-        title.addGestureRecognizer(tap)
-        
-        cell.addSubview(title)
-        
-        return cell
+        customView.addSubview(title)
+        return customView
     }
-    
     
 }
 
-extension LoginOptionsView : LoginButtonDelegate {
-    
-    func selectLoginOption() {
-        print("Selected Option")
+extension LoginOptionsView {
+    func loginWithEmail() {
+        print("Login with email...")
     }
+}
+
+extension LoginOptionsView : LoginButtonDelegate {
     
     func loginWithFacebook() {
         let fbLoginManager : LoginManager = LoginManager()
@@ -235,7 +254,9 @@ extension LoginOptionsView : LoginButtonDelegate {
     
     func exitModalView() {
         print("exiting")
-        self.dismiss(animated: true, completion: { self.placesView.reloadView()})
+        self.dismiss(animated: true, completion: {
+            self.prevView.exitModalView()
+        })
     }
 }
 

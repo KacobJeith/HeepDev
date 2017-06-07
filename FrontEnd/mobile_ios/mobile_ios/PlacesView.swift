@@ -278,7 +278,7 @@ extension PlacesView {
         modalViewController.placesView = self
         
         modalViewController.modalPresentationStyle = .overCurrentContext
-        present(modalViewController, animated: true, completion: nil)
+        present(modalViewController, animated: false, completion: nil)
         print("facebook?")
         
     }
