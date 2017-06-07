@@ -278,7 +278,7 @@ extension PlacesView {
         modalViewController.placesView = self
         
         modalViewController.modalPresentationStyle = .overCurrentContext
-        present(modalViewController, animated: false, completion: nil)
+        present(modalViewController, animated: true, completion: nil)
         print("facebook?")
         
     }
@@ -301,6 +301,13 @@ extension PlacesView {
         
         userButton.imageView?.contentMode = .scaleAspectFit
         userButton.setImage(userImage, for: .normal)
+        userButton.layer.borderWidth = 1
+        userButton.layer.borderColor = UIColor.white.cgColor
+        userButton.layer.shadowColor = UIColor.lightGray.cgColor
+        userButton.layer.shadowOffset = CGSize(width: 1, height: 1)
+        userButton.layer.shadowRadius = 2
+        userButton.layer.cornerRadius = 0.5 * userButton.bounds.size.width
+        userButton.clipsToBounds = true
         userButton.addTarget(self,
                              action: #selector(userLogin),
                              for: .primaryActionTriggered)

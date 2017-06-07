@@ -20,11 +20,11 @@ class LoginView: UIViewController, LoginButtonDelegate {
     override func viewDidLoad() {
         let realm = try! Realm(configuration: configApp)
         let numUsers = realm.objects(User.self).count
-        let binHeight = CGFloat(numUsers * 60 + 35 + 35 + 10)
+        let binHeight = CGFloat((numUsers + 2) * 60 + 10)
         
-        view.frame = CGRect(x: view.bounds.width/2,
+        view.frame = CGRect(x: view.frame.maxX - 70,
                             y: 65,
-                            width: view.bounds.width/2,
+                            width: userHeight + 20,
                             height: binHeight)
         
         view.backgroundColor = UIColor.clear
@@ -49,7 +49,7 @@ class LoginView: UIViewController, LoginButtonDelegate {
     
     func displayEachUserButton(user: User) {
         
-        let userButton = UIButton(frame: CGRect(x: self.view.frame.minX + (self.view.bounds.width/2 - userHeight/2),
+        let userButton = UIButton(frame: CGRect(x: self.view.frame.maxX - 60,
                                                 y: userOffset,
                                                 width: userHeight,
                                                 height: userHeight))
@@ -60,6 +60,12 @@ class LoginView: UIViewController, LoginButtonDelegate {
         userButton.addTarget(self,
                              action: #selector(selectUser),
                              for: .primaryActionTriggered)
+        
+        userButton.layer.borderWidth = 1
+        userButton.layer.borderColor = UIColor.white.cgColor
+        userButton.layer.cornerRadius = 0.5 * userButton.bounds.size.width
+        userButton.clipsToBounds = true
+        
         
         userOffset += (userHeight + 10)
         self.view.addSubview(userButton)
@@ -78,6 +84,7 @@ class LoginView: UIViewController, LoginButtonDelegate {
     }
     
     func addLoginButton() {
+        /*
         let loginButton = LoginButton(readPermissions: [ .publicProfile ])
         loginButton.frame = CGRect(x: self.view.frame.minX + 10,
                                    y: userOffset,
@@ -85,22 +92,62 @@ class LoginView: UIViewController, LoginButtonDelegate {
                                    height: 35)
         
         loginButton.delegate = self
-        view.addSubview(loginButton)
+        view.addSubview(loginButton)*/
+        
+        let loginButton = UIButton(frame: CGRect(x: self.view.frame.maxX - 60,
+                                                y: userOffset,
+                                                width: userHeight,
+                                                height: userHeight))
+        loginButton.tag = 1
+        loginButton.addTarget(self,
+                             action: #selector(loginWithFacebook),
+                             for: .primaryActionTriggered)
+        loginButton.backgroundColor = .blue
+        loginButton.setTitle("+f", for: .normal)
+        loginButton.titleLabel?.adjustsFontSizeToFitWidth = true
+        loginButton.layer.borderWidth = 1
+        loginButton.layer.borderColor = UIColor.white.cgColor
+        loginButton.layer.cornerRadius = 0.5 * loginButton.bounds.size.width
+        loginButton.clipsToBounds = true
+        
+        
+        userOffset += (userHeight + 10)
+        self.view.addSubview(loginButton)
+        
+        
         print("User Profile \(String(describing: UserProfile.current))")
         
     }
     
+    func loginWithFacebook() {
+        let fbLoginManager : LoginManager = LoginManager()
+        fbLoginManager.logIn([.publicProfile, .email], viewController: self) { result in
+            print(result)
+            self.facebookLogin()
+        }
+        fbLoginManager.logOut()
+    }
+    
     func addExitButton() {
-        let exitButton = UIButton(frame: CGRect(x: self.view.frame.minX + 5,
-                                                y: self.view.frame.maxY - 35,
-                                                width: self.view.frame.width,
-                                                height: 35))
+        let exitButton = UIButton(frame: CGRect(x: self.view.frame.maxX - 60,
+                                                y: userOffset,
+                                                width: userHeight,
+                                                height: userHeight))
         
         exitButton.setTitle("Exit", for: .normal)
         exitButton.titleLabel?.adjustsFontSizeToFitWidth = true
         exitButton.setTitleColor(UIColor.white, for: UIControlState.normal)
+        exitButton.backgroundColor = .red
+        exitButton.titleLabel?.adjustsFontSizeToFitWidth = true
+        exitButton.layer.borderWidth = 1
+        exitButton.layer.borderColor = UIColor.white.cgColor
+        exitButton.layer.cornerRadius = 0.5 * exitButton.bounds.size.width
+        exitButton.clipsToBounds = true
+
+        
         exitButton.addTarget(self, action: #selector(exitModalView), for: .primaryActionTriggered)
         view.addSubview(exitButton)
+        
     }
     
     func loginButtonDidCompleteLogin(_ loginButton: LoginButton, result: LoginResult) {
@@ -146,6 +193,7 @@ class LoginView: UIViewController, LoginButtonDelegate {
                     }
                 }
             }
+            
             /*
             let graphFriendRequest = GraphRequest(graphPath: "/103528713584037/friends", parameters: params)
             graphFriendRequest.start { (urlResponse, requestResult) in
