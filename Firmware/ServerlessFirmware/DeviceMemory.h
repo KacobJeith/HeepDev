@@ -463,13 +463,14 @@ void DefragmentMemory()
 	}while(isFragmentFound == 0);
 }
 
-// Returns True if Index ID Used. Returns False if True ID Used
-// Always expects true ID as input
-heepByte GetIndexedDeviceID_Byte(heepByte* deviceID, unsigned long &localID)
+// Returns size of returned buffer
+heepByte GetIndexedDeviceID_Byte(heepByte* deviceID)
 {
 #ifdef USE_INDEXED_IDS
 	unsigned int counter = 0;
 	unsigned long topIndex = 0;
+
+	heepByte localID [ID_SIZE];
 
 	// Find Indexed ID
 	while(counter < curFilledMemory)
@@ -488,26 +489,13 @@ heepByte GetIndexedDeviceID_Byte(heepByte* deviceID, unsigned long &localID)
 				topIndex = indexedValue + 1;
 			}
 
-			// cout << "Counter: " << counter << endl;
-			// cout << "Cur Index: " << indexedValue << endl;
-			// cout << "Found: ";
-			// for(int i = 0; i < STANDARD_ID_SIZE; i++)
-			// {
-			// 	cout << (int)foundID[i] << ' ';
-			// }
-			// cout << endl;
-
-			// cout << "Want: ";
-			// for(int i = 0; i < STANDARD_ID_SIZE; i++)
-			// {
-			// 	cout << (int)deviceID[i] << ' ';
-			// }
-			// cout << endl;
-
 			if(CheckBufferEquality(deviceID, foundID, STANDARD_ID_SIZE))
 			{
-				localID = indexedValue;
-				return 1;
+				CreateBufferFromNumber(localID, indexedValue, ID_SIZE);
+				unsigned int rxCounter = 0;
+				unsigned int txCounter = 0;
+				AddBufferToBuffer(deviceID, localID, ID_SIZE, rxCounter, txCounter);
+				return ID_SIZE;
 			}
 		}
 		else
@@ -516,16 +504,21 @@ heepByte GetIndexedDeviceID_Byte(heepByte* deviceID, unsigned long &localID)
 		}
 	}
 
+	CreateBufferFromNumber(localID, topIndex, ID_SIZE);
+
 	// If Not Indexed, then index it!
 	AddNewCharToMemory(LocalDeviceIDOpCode);
-	AddIndexToMemory(topIndex);
+	AddBufferToMemory(localID, ID_SIZE);
 	AddNewCharToMemory(STANDARD_ID_SIZE);
 	AddDeviceIDToMemory_Byte(deviceID);
 
-	localID = topIndex;
-	return 1;
+	unsigned int rxCounter = 0;
+	unsigned int txCounter = 0;
+	AddBufferToBuffer(deviceID, localID, ID_SIZE, rxCounter, txCounter);
+
+	return ID_SIZE;
 #else 
-	return 0;
+	return STANDARD_ID_SIZE;
 #endif
 }
 

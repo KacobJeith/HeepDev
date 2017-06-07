@@ -1035,42 +1035,48 @@ void TestGetDeviceIndexByteWise()
 	}
 
 	ClearDeviceMemory();
-	unsigned long indexId0 = 0;
-	unsigned long indexId1 = 0;
-	unsigned long indexId2 = 0;
-	unsigned long indexId3 = 0;
-	unsigned long indexId4 = 0;
 
-	GetIndexedDeviceID_Byte(myID0, indexId0);
-	GetIndexedDeviceID_Byte(myID1, indexId1);
-	GetIndexedDeviceID_Byte(myID2, indexId2);
-	GetIndexedDeviceID_Byte(myID3, indexId3);
-	GetIndexedDeviceID_Byte(myID4, indexId4);
+	heepByte retSize0 = GetIndexedDeviceID_Byte(myID0);
+	heepByte retSize1 = GetIndexedDeviceID_Byte(myID1);
+	heepByte retSize2 = GetIndexedDeviceID_Byte(myID2);
+	heepByte retSize3 = GetIndexedDeviceID_Byte(myID3);
+	heepByte retSize4 = GetIndexedDeviceID_Byte(myID4);
 
 	PrintDeviceMemory();
 
 #ifdef USE_INDEXED_IDS
 
+	unsigned int startCount = 0;
+	unsigned long value0 = GetNumberFromBuffer(myID0, startCount, retSize0);
+	startCount = 0;
+	unsigned long value1 = GetNumberFromBuffer(myID1, startCount, retSize1);
+	startCount = 0;
+	unsigned long value2 = GetNumberFromBuffer(myID2, startCount, retSize2);
+	startCount = 0;
+	unsigned long value3 = GetNumberFromBuffer(myID3, startCount, retSize3);
+	startCount = 0;
+	unsigned long value4 = GetNumberFromBuffer(myID4, startCount, retSize4);
+
 	ExpectedValue valueList [5];
 	valueList[0].valueName = "Index Value 1";
 	valueList[0].expectedValue = 0;
-	valueList[0].actualValue = indexId0;
+	valueList[0].actualValue = value0;
 
 	valueList[1].valueName = "Index Value 2";
 	valueList[1].expectedValue = 1;
-	valueList[1].actualValue = indexId1;
+	valueList[1].actualValue = value1;
 
 	valueList[2].valueName = "Index Value 3";
 	valueList[2].expectedValue = 0;
-	valueList[2].actualValue = indexId2;
+	valueList[2].actualValue = value2;
 
 	valueList[3].valueName = "Index Value 4";
 	valueList[3].expectedValue = 2;
-	valueList[3].actualValue = indexId3;
+	valueList[3].actualValue = value3;
 
 	valueList[4].valueName = "Index Value 5";
 	valueList[4].expectedValue = 3;
-	valueList[4].actualValue = indexId4;
+	valueList[4].actualValue = value4;
 
 	CheckResults(TestName, valueList, 5);
 
@@ -1078,24 +1084,24 @@ void TestGetDeviceIndexByteWise()
 
 	ExpectedValue valueList [5];
 	valueList[0].valueName = "Index Value 1";
-	valueList[0].expectedValue = 0;
-	valueList[0].actualValue = indexId0;
+	valueList[0].expectedValue = retSize0;
+	valueList[0].actualValue = STANDARD_ID_SIZE;
 
 	valueList[1].valueName = "Index Value 2";
-	valueList[1].expectedValue = 0;
-	valueList[1].actualValue = indexId1;
+	valueList[1].expectedValue = retSize1;
+	valueList[1].actualValue = STANDARD_ID_SIZE;
 
 	valueList[2].valueName = "Index Value 3";
-	valueList[2].expectedValue = 0;
-	valueList[2].actualValue = indexId2;
+	valueList[2].expectedValue = retSize2;
+	valueList[2].actualValue = STANDARD_ID_SIZE;
 
 	valueList[3].valueName = "Index Value 4";
-	valueList[3].expectedValue = 0;
-	valueList[3].actualValue = indexId3;
+	valueList[3].expectedValue = retSize3;
+	valueList[3].actualValue = STANDARD_ID_SIZE;
 
 	valueList[4].valueName = "Index Value 5";
-	valueList[4].expectedValue = 0;
-	valueList[4].actualValue = indexId4;
+	valueList[4].expectedValue = retSize4;
+	valueList[4].actualValue = STANDARD_ID_SIZE;
 
 	CheckResults(TestName, valueList, 5);
 
