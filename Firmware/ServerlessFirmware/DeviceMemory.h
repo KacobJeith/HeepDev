@@ -93,6 +93,11 @@ unsigned long AddDeviceIDToBuffer_Byte(unsigned char* buffer, heepByte* deviceID
 	return counter;
 }
 
+void CopyDeviceID(heepByte* idSend, heepByte* idReturn)
+{
+	AddDeviceIDToBuffer_Byte(idReturn, idSend, 0);
+}
+
 void PerformPreOpCodeProcessing_Byte(heepByte* deviceID)
 {
 	// CopyDevice ID Into throw away buffer so that we don't corrupt original pointer
@@ -377,7 +382,7 @@ unsigned int GetXYFromMemory_Byte(int &x, int &y, heepByte* deviceID, unsigned i
 	return 1;
 }
 
-// DEPRECATE
+// DEPRECATE *
 unsigned int GetXYFromMemory(int &x, int &y, unsigned long deviceID, unsigned int &XYMemPosition)
 {
 	unsigned int counter = 0;
@@ -418,7 +423,7 @@ void SetXYInMemory_Byte(int x, int y, heepByte* deviceID)
 	AddNumberToMemoryWithSpecifiedBytes(y, 2);
 }
 
-// Deprecate
+// Deprecate *
 void SetXYInMemory(int x, int y, unsigned long deviceID)
 {
 	PerformPreOpCodeProcessing(deviceID);
@@ -430,6 +435,31 @@ void SetXYInMemory(int x, int y, unsigned long deviceID)
 	AddNumberToMemoryWithSpecifiedBytes(y, 2);
 }
 
+void UpdateXYInMemory_Byte(int x, int y, heepByte* deviceID)
+{	
+	heepByte copyID[STANDARD_ID_SIZE];
+	CopyDeviceID(deviceID, copyID);
+
+	int curX = 0; int curY = 0; 
+	unsigned int XYMemPosition = 0;
+	unsigned int success = GetXYFromMemory_Byte(curX, curY, copyID, XYMemPosition);
+
+	if(success == 0)
+	{
+		deviceMemory[XYMemPosition + ID_SIZE + 2] = (x >> 8)%256;
+		deviceMemory[XYMemPosition + ID_SIZE + 3] = (x%256);
+		deviceMemory[XYMemPosition + ID_SIZE + 4] = (y >> 8)%256;
+		deviceMemory[XYMemPosition + ID_SIZE + 5] = (y%256);
+	}
+	else
+	{
+		SetXYInMemory_Byte(x, y, deviceID);
+	}
+
+	memoryChanged = 1;
+}
+
+// DEPRECATE*
 void UpdateXYInMemory(int x, int y, unsigned long deviceID)
 {
 	int curX = 0; int curY = 0; 

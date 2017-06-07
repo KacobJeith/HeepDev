@@ -1500,6 +1500,52 @@ void TestSetXYOpCode_Byte()
 	CheckResults(TestName, valueList, 6);
 }
 
+void TestUpdateXYPosition_Byte()
+{
+	std::string TestName = "Test Update XY Position Byte";
+
+	ClearDeviceMemory();
+	heepByte deviceID[STANDARD_ID_SIZE];
+	CreateFakeDeviceID(deviceID);
+	UpdateXYInMemory_Byte(312, 513, deviceID);
+
+	CreateFakeDeviceID(deviceID);
+	int x = 0; int y = 0; unsigned int xyMemPosition = 0; 
+	int retVal = GetXYFromMemory_Byte(x, y, deviceID, xyMemPosition);
+
+	ExpectedValue valueList [6];
+	valueList[0].valueName = "X Position";
+	valueList[0].expectedValue = 312;
+	valueList[0].actualValue = x;
+
+	valueList[1].valueName = "Y Position";
+	valueList[1].expectedValue = 513;
+	valueList[1].actualValue = y;
+
+	valueList[2].valueName = "Success Return";
+	valueList[2].expectedValue = 0;
+	valueList[2].actualValue = retVal;
+
+	CreateFakeDeviceID(deviceID);
+	UpdateXYInMemory_Byte(16235, 256, deviceID);
+	CreateFakeDeviceID(deviceID);
+	retVal = GetXYFromMemory_Byte(x, y, deviceID, xyMemPosition);
+
+	valueList[3].valueName = "X Position";
+	valueList[3].expectedValue = 16235;
+	valueList[3].actualValue = x;
+
+	valueList[4].valueName = "Y Position";
+	valueList[4].expectedValue = 256;
+	valueList[4].actualValue = y;
+
+	valueList[5].valueName = "Success Return";
+	valueList[5].expectedValue = 0;
+	valueList[5].actualValue = retVal;
+
+	CheckResults(TestName, valueList, 6);
+}
+
 void TestDynamicMemory()
 {
 	TestAddCharToBuffer();
@@ -1523,6 +1569,7 @@ void TestDynamicMemory()
 	TestDefragmentDeviceMemoryDeviceAtFront();
 	TestDefragmentDeviceMemoryAtEnd();
 	TestBuildVertexListFromPointers();
+
 	TestControlRegister();
 	TestGetIndexFromDeviceID();
 	TestGetDeviceIDFromIndex();
@@ -1540,4 +1587,5 @@ void TestDynamicMemory()
 	TestIconDataOpCode_Byte();
 	TestGetXYFromMemory_Byte();
 	TestSetXYOpCode_Byte();
+	TestUpdateXYPosition_Byte();
 }
