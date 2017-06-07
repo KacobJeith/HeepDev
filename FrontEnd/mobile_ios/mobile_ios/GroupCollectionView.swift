@@ -134,6 +134,7 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
         title.addGestureRecognizer(tap)
         
         let thisImageData = thisPlace.groups[indexPath.row].imageData
+        
         if (thisImageData == NSData()) {
             
             title.backgroundColor = getRandomColor()
