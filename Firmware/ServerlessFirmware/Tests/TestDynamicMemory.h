@@ -1433,6 +1433,73 @@ void TestIconDataOpCode_Byte()
 	CheckResults(TestName, valueList, 7);
 }
 
+void TestGetXYFromMemory_Byte()
+{
+	std::string TestName = "Get Front End XY Byte";
+
+	ClearDeviceMemory();
+	heepByte deviceID[STANDARD_ID_SIZE];
+	CreateFakeDeviceID(deviceID);
+	SetXYInMemory_Byte(312, 513, deviceID);
+
+	int x = 0; int y = 0; unsigned int xyMemPosition = 0; 
+	CreateFakeDeviceID(deviceID);
+	int retVal = GetXYFromMemory_Byte(x, y, deviceID, xyMemPosition);
+
+	ExpectedValue valueList [3];
+	valueList[0].valueName = "X Position";
+	valueList[0].expectedValue = 312;
+	valueList[0].actualValue = x;
+
+	valueList[1].valueName = "Y Position";
+	valueList[1].expectedValue = 513;
+	valueList[1].actualValue = y;
+
+	valueList[2].valueName = "Success Return";
+	valueList[2].expectedValue = 0;
+	valueList[2].actualValue = retVal;
+
+	CheckResults(TestName, valueList, 3);
+}
+
+void TestSetXYOpCode_Byte()
+{
+	std::string TestName = "Front End XY Op Code Byte";
+
+	ClearDeviceMemory();
+	heepByte deviceID[STANDARD_ID_SIZE];
+	CreateFakeDeviceID(deviceID);
+	SetXYInMemory_Byte(312, 513, deviceID);
+	int memCheckStart = GetMemCounterStart();
+
+	ExpectedValue valueList [6];
+	valueList[0].valueName = "Front End XY OpCode";
+	valueList[0].expectedValue = FrontEndPositionOpCode;
+	valueList[0].actualValue = deviceMemory[memCheckStart];
+
+	valueList[1].valueName = "Num Bytes";
+	valueList[1].expectedValue = 4;
+	valueList[1].actualValue = deviceMemory[memCheckStart + ID_SIZE + 1];
+
+	valueList[2].valueName = "X High Byte";
+	valueList[2].expectedValue = 312 >> 8;
+	valueList[2].actualValue = deviceMemory[memCheckStart + ID_SIZE + 2];
+
+	valueList[3].valueName = "X Low Byte";
+	valueList[3].expectedValue = 312%256;
+	valueList[3].actualValue = deviceMemory[memCheckStart + ID_SIZE + 3];
+
+	valueList[4].valueName = "Y High Byte";
+	valueList[4].expectedValue = 513 >> 8;
+	valueList[4].actualValue = deviceMemory[memCheckStart + ID_SIZE + 4];
+
+	valueList[5].valueName = "Y Low Byte";
+	valueList[5].expectedValue = 513%256;
+	valueList[5].actualValue = deviceMemory[memCheckStart + ID_SIZE + 5];
+
+	CheckResults(TestName, valueList, 6);
+}
+
 void TestDynamicMemory()
 {
 	TestAddCharToBuffer();
@@ -1471,4 +1538,6 @@ void TestDynamicMemory()
 	TestDeviceNameOpCode_Byte();
 	TestIconIDOpCode_Byte();
 	TestIconDataOpCode_Byte();
+	TestGetXYFromMemory_Byte();
+	TestSetXYOpCode_Byte();
 }

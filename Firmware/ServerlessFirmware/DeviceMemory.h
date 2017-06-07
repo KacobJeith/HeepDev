@@ -324,6 +324,18 @@ void SetIconDataInMemory(char* iconData, int numCharacters, unsigned long device
 	}
 }
 
+unsigned int ParseXYOpCode_Byte(int &x, int &y, heepByte* deviceID, unsigned int counter)
+{
+	counter ++;
+	counter = GetDeviceIDOrLocalIDFromBuffer(deviceMemory, deviceID, counter);
+	GetNumberFromBuffer(deviceMemory, counter, 1);
+	x = GetNumberFromBuffer(deviceMemory, counter, 2);
+	y = GetNumberFromBuffer(deviceMemory, counter, 2);
+
+	return counter;
+}
+
+// DEPRECATE* 
 unsigned int ParseXYOpCode(int &x, int &y, unsigned long &deviceID, unsigned int counter)
 {
 	counter ++;
@@ -336,6 +348,36 @@ unsigned int ParseXYOpCode(int &x, int &y, unsigned long &deviceID, unsigned int
 	return counter;
 }
 
+unsigned int GetXYFromMemory_Byte(int &x, int &y, heepByte* deviceID, unsigned int &XYMemPosition)
+{
+	unsigned int counter = 0;
+
+	GetIndexedDeviceID_Byte(deviceID);
+
+	while(counter < curFilledMemory)
+	{
+		if(deviceMemory[counter] == FrontEndPositionOpCode)
+		{
+			XYMemPosition = counter;
+
+			heepByte tempID [ID_SIZE];
+			counter = ParseXYOpCode_Byte(x, y, tempID, counter);
+
+			if(CheckBufferEquality(deviceID, tempID, ID_SIZE))
+			{
+				return 0;
+			}
+		}
+		else
+		{
+			counter = SkipOpCode(counter);
+		}
+	}
+
+	return 1;
+}
+
+// DEPRECATE
 unsigned int GetXYFromMemory(int &x, int &y, unsigned long deviceID, unsigned int &XYMemPosition)
 {
 	unsigned int counter = 0;
@@ -365,6 +407,18 @@ unsigned int GetXYFromMemory(int &x, int &y, unsigned long deviceID, unsigned in
 	return 1;
 }
 
+void SetXYInMemory_Byte(int x, int y, heepByte* deviceID)
+{
+	PerformPreOpCodeProcessing_Byte(deviceID);
+
+	AddNewCharToMemory(FrontEndPositionOpCode);
+	AddIndexOrDeviceIDToMemory_Byte(deviceID);
+	AddNewCharToMemory((char)4);
+	AddNumberToMemoryWithSpecifiedBytes(x, 2);
+	AddNumberToMemoryWithSpecifiedBytes(y, 2);
+}
+
+// Deprecate
 void SetXYInMemory(int x, int y, unsigned long deviceID)
 {
 	PerformPreOpCodeProcessing(deviceID);
