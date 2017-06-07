@@ -12,11 +12,11 @@ void PrintDeviceMemory()
 	cout << endl;
 }
 
-void CreateFakeDeviceID(heepByte* deviceID)
+void CreateFakeDeviceID(heepByte* deviceID, int offset = 0)
 {
 	for(int i = 0; i < STANDARD_ID_SIZE; i++)
 	{
-		deviceID[i] = i + 1;
+		deviceID[i] = i + 1 + offset;
 	}
 }
 
@@ -1590,6 +1590,67 @@ void TestSetIPOpCode_Byte()
 	CheckResults(TestName, valueList, 6);
 }
 
+void TestSetVertexOpCode_Byte()
+{
+	std::string TestName = "Set Vertex OpCode Byte";
+
+	ClearDeviceMemory();
+	heepByte deviceID1[STANDARD_ID_SIZE];
+	heepByte deviceID2[STANDARD_ID_SIZE];
+	CreateFakeDeviceID(deviceID1);
+	CreateFakeDeviceID(deviceID2, 1);
+	Vertex_Byte myVertex;
+	HeepIPAddress myIP;
+	myIP.Octet4 = 192;
+	myIP.Octet3 = 168;
+	myIP.Octet2 = 1;
+	myIP.Octet1 = 100;
+	myVertex.rxIPAddress = myIP;
+	myVertex.txID = deviceID1;
+	myVertex.rxID = deviceID2;
+	myVertex.txControlID = 0x01;
+	myVertex.rxControlID = 0x02;
+
+	SetVertexInMemory_Byte(myVertex);
+
+	int memCheckStart = GetMemCounterStart()*2;
+
+	ExpectedValue valueList [8];
+	valueList[0].valueName = "Vertex OpCode";
+	valueList[0].expectedValue = VertexOpCode;
+	valueList[0].actualValue = deviceMemory[memCheckStart];
+
+	valueList[1].valueName = "Num Bytes";
+	valueList[1].expectedValue = ID_SIZE + 6;
+	valueList[1].actualValue = deviceMemory[memCheckStart + ID_SIZE + 1];
+
+	valueList[2].valueName = "Tx Control ID";
+	valueList[2].expectedValue = 1;
+	valueList[2].actualValue = deviceMemory[memCheckStart + ID_SIZE + ID_SIZE + 2];
+
+	valueList[3].valueName = "Rx Control ID";
+	valueList[3].expectedValue = 2;
+	valueList[3].actualValue = deviceMemory[memCheckStart + ID_SIZE + ID_SIZE + 3];
+
+	valueList[4].valueName = "IP Octet 4";
+	valueList[4].expectedValue = 192;
+	valueList[4].actualValue = deviceMemory[memCheckStart + ID_SIZE + ID_SIZE + 4];
+
+	valueList[5].valueName = "IP Octet 3";
+	valueList[5].expectedValue = 168;
+	valueList[5].actualValue = deviceMemory[memCheckStart + ID_SIZE + ID_SIZE + 5];
+
+	valueList[6].valueName = "IP Octet 2";
+	valueList[6].expectedValue = 1;
+	valueList[6].actualValue = deviceMemory[memCheckStart + ID_SIZE + ID_SIZE + 6];
+
+	valueList[7].valueName = "IP Octet 1";
+	valueList[7].expectedValue = 100;
+	valueList[7].actualValue = deviceMemory[memCheckStart + ID_SIZE + ID_SIZE + 7];
+
+	CheckResults(TestName, valueList, 8);
+}
+
 void TestDynamicMemory()
 {
 	TestAddCharToBuffer();
@@ -1633,4 +1694,5 @@ void TestDynamicMemory()
 	TestSetXYOpCode_Byte();
 	TestUpdateXYPosition_Byte();
  	TestSetIPOpCode_Byte();
+ 	TestSetVertexOpCode_Byte();
 }

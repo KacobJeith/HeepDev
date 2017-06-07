@@ -528,6 +528,27 @@ int GetVertexAtPonter(unsigned long pointer, Vertex &returnedVertex)
 	return 0;
 }
 
+int SetVertexInMemory_Byte(Vertex_Byte theVertex)
+{
+	PerformPreOpCodeProcessing_Byte(theVertex.rxID);
+	PerformPreOpCodeProcessing_Byte(theVertex.txID);
+
+	int beginningOfMemory = curFilledMemory;
+
+	AddNewCharToMemory(VertexOpCode);
+	AddIndexOrDeviceIDToMemory_Byte(theVertex.txID);
+	AddNewCharToMemory((char)ID_SIZE+6);
+	AddIndexOrDeviceIDToMemory_Byte(theVertex.rxID);
+	AddNewCharToMemory(theVertex.txControlID);
+	AddNewCharToMemory(theVertex.rxControlID);
+	AddIPToMemory(theVertex.rxIPAddress);
+
+	memoryChanged = 1;
+
+	return beginningOfMemory;
+}
+
+// DEPRECATE*
 int SetVertexInMemory(Vertex theVertex)
 {
 	PerformPreOpCodeProcessing(theVertex.rxID);
