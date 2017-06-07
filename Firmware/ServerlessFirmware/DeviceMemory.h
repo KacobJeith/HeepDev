@@ -95,7 +95,10 @@ unsigned long AddDeviceIDToBuffer_Byte(unsigned char* buffer, heepByte* deviceID
 
 void PerformPreOpCodeProcessing_Byte(heepByte* deviceID)
 {
-	GetIndexedDeviceID_Byte(deviceID);
+	// CopyDevice ID Into throw away buffer so that we don't corrupt original pointer
+	heepByte copyID [STANDARD_ID_SIZE];
+	AddDeviceIDToBuffer_Byte(copyID, deviceID, 0);
+	GetIndexedDeviceID_Byte(copyID);
 }
 
 // DEPRECATE
@@ -227,7 +230,7 @@ void AddIndexOrDeviceIDToMemory_Byte(heepByte* deviceID)
 	AddBufferToMemory(deviceID, ID_SIZE);
 }
 
-// Deprecate
+// Deprecate *
 void AddIndexOrDeviceIDToMemory(unsigned long deviceID)
 {
 	unsigned long index = GetIndexedDeviceID(deviceID);
@@ -242,6 +245,21 @@ void AddIPToMemory(HeepIPAddress theIP)
 	AddNewCharToMemory(theIP.Octet1);
 }
 
+void SetDeviceNameInMemory_Byte(char* deviceName, int numCharacters, heepByte* deviceID)
+{
+	PerformPreOpCodeProcessing_Byte(deviceID);
+
+	AddNewCharToMemory(DeviceNameOpCode);
+	AddIndexOrDeviceIDToMemory_Byte(deviceID);
+	AddNewCharToMemory((char)numCharacters);
+
+	for(int i = 0; i < numCharacters; i++)
+	{
+		AddNewCharToMemory(deviceName[i]);
+	}
+}
+
+// DEPRECATE
 void SetDeviceNameInMemory(char* deviceName, int numCharacters, unsigned long deviceID)
 {
 	PerformPreOpCodeProcessing(deviceID);

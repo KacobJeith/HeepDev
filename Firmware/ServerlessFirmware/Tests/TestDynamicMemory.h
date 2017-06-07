@@ -12,6 +12,14 @@ void PrintDeviceMemory()
 	cout << endl;
 }
 
+void CreateFakeDeviceID(heepByte* deviceID)
+{
+	for(int i = 0; i < STANDARD_ID_SIZE; i++)
+	{
+		deviceID[i] = i + 1;
+	}
+}
+
 int GetMemCounterStart()
 {
 #ifdef USE_INDEXED_IDS
@@ -1308,6 +1316,52 @@ void TestAddIndexOrDeviceIDToMemoryBytewise()
 	CheckResults(TestName, valueList, 1);
 }
 
+void TestDeviceNameOpCode_Byte()
+{
+	std::string TestName = "Device Name Op Code Bytewise";
+
+	ClearDeviceMemory();
+	char* deviceName = "Jacob";
+	heepByte deviceID[STANDARD_ID_SIZE];
+	CreateFakeDeviceID(deviceID);
+	SetDeviceNameInMemory_Byte(deviceName, strlen(deviceName), deviceID);
+
+	int memCheckStart = GetMemCounterStart();
+
+	ExpectedValue valueList [7];
+	valueList[0].valueName = "Device Name OpCode";
+	valueList[0].expectedValue = DeviceNameOpCode;
+	valueList[0].actualValue = deviceMemory[memCheckStart];
+
+	valueList[1].valueName = "Num Bytes";
+	valueList[1].expectedValue = 5;
+	valueList[1].actualValue = deviceMemory[memCheckStart + ID_SIZE + 1];
+
+	valueList[2].valueName = "Letter One";
+	valueList[2].expectedValue = 'J';
+	valueList[2].actualValue = deviceMemory[memCheckStart + ID_SIZE + 2];
+
+	valueList[3].valueName = "Letter Two";
+	valueList[3].expectedValue = 'a';
+	valueList[3].actualValue = deviceMemory[memCheckStart + ID_SIZE + 3];
+
+	valueList[4].valueName = "Letter Three";
+	valueList[4].expectedValue = 'c';
+	valueList[4].actualValue = deviceMemory[memCheckStart + ID_SIZE + 4];
+
+	valueList[5].valueName = "Letter Four";
+	valueList[5].expectedValue = 'o';
+	valueList[5].actualValue = deviceMemory[memCheckStart + ID_SIZE + 5];
+
+	valueList[6].valueName = "Letter Five";
+	valueList[6].expectedValue = 'b';
+	valueList[6].actualValue = deviceMemory[memCheckStart + ID_SIZE + 6];
+
+	CheckResults(TestName, valueList, 7);
+
+	PrintDeviceMemory();
+}
+
 void TestDynamicMemory()
 {
 	TestAddCharToBuffer();
@@ -1343,4 +1397,5 @@ void TestDynamicMemory()
 	TestAddBufferToMemory();
 	TestGetDeviceIDFromIndexByteWise();
 	TestAddIndexOrDeviceIDToMemoryBytewise();
+	TestDeviceNameOpCode_Byte();
 }
