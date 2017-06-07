@@ -123,3 +123,18 @@ func getModeText(thisGroup: Group) -> String {
     }
 }
 
+func drawLineGeneral(start: CGPoint, finish: CGPoint, color: UIColor = UIColor.black) -> CAShapeLayer {
+    let shapeLayer = CAShapeLayer()
+    let curve = UIBezierPath()
+    
+    curve.move(to: start)
+    curve.addLine(to: finish)
+    shapeLayer.path = curve.cgPath
+    
+    shapeLayer.strokeColor = color.cgColor
+    shapeLayer.fillColor = UIColor.clear.cgColor
+    shapeLayer.lineWidth = 3.0
+    
+    return shapeLayer
+}
+

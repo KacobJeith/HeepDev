@@ -48,10 +48,14 @@ class LoginOptionsView: UIViewController, UICollectionViewDataSource, UICollecti
         layout.itemSize = CGSize(width: dimension,
                                  height: dimension)
         
+        layout.headerReferenceSize = CGSize(width: self.view.bounds.width, height: self.view.bounds.width/7)
+        
+        
         self.collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height), collectionViewLayout: layout)
         self.collectionView?.dataSource = self
         self.collectionView?.delegate = self
         self.collectionView?.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        self.collectionView.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "headerView")
         self.collectionView?.backgroundColor = UIColor.white
         return collectionView!
     }
@@ -62,6 +66,35 @@ class LoginOptionsView: UIViewController, UICollectionViewDataSource, UICollecti
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        
+        let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "headerView", for: indexPath)
+        
+        headerView.subviews.forEach({ $0.removeFromSuperview() })
+        
+        headerView.addSubview(addHeaderText(frame: headerView.frame, text: " Select Login Method "))
+        
+        return headerView
+    }
+    
+    func addHeaderText(frame: CGRect, text: String) -> UIView {
+        let returnView = UIView()
+        let title = UILabel()
+        title.frame = frame
+        title.text = text
+        title.textColor = UIColor.gray
+        title.textAlignment = .center
+        title.adjustsFontSizeToFitWidth = true
+        title.layer.shadowColor = UIColor.lightGray.cgColor
+        title.layer.shadowOffset = CGSize(width: 1.0, height: 1.0)
+        title.layer.shadowOpacity = 0.5
+        title.layer.shadowRadius = 0.25
+        
+        returnView.addSubview(title)
+        
+        return title
     }
     
     
@@ -124,8 +157,6 @@ class LoginOptionsView: UIViewController, UICollectionViewDataSource, UICollecti
                              y: customView.frame.maxY - 40,
                              width: customView.frame.width,
                              height: 35)
-        
-        //let optionIconView = UIImageView()
         
         let optionIconView = fitAndCenterImageInView(frame: CGRect(x: 0,
                                                                    y: customView.frame.minY + 20,
