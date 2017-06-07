@@ -19,8 +19,8 @@ struct Vertex
 
 struct Vertex_Byte
 {
-	heepByte* rxID;
-	heepByte* txID;
+	heepByte rxID [STANDARD_ID_SIZE];
+	heepByte txID [STANDARD_ID_SIZE];
 
 	unsigned char rxControlID;
 	unsigned char txControlID;

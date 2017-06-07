@@ -508,6 +508,39 @@ void DeleteVertexAtPointer(unsigned long pointer)
 	memoryChanged = 1;
 }
 
+int GetVertexAtPointer_Byte(unsigned long pointer, Vertex_Byte &returnedVertex)
+{
+	if(deviceMemory[pointer] != VertexOpCode)
+		return 1;
+
+	heepByte receiveIDLocal [ID_SIZE];
+	heepByte sendIDLocal [ID_SIZE];
+	heepByte receiveIDGlobal [STANDARD_ID_SIZE];
+	heepByte sendIDGlobal [STANDARD_ID_SIZE];
+
+	unsigned int counter = pointer + 1;
+
+	counter = GetDeviceIDOrLocalIDFromBuffer(deviceMemory, sendIDLocal, counter);
+	GetDeviceIDFromIndex_Byte(sendIDLocal, sendIDGlobal);
+	CopyDeviceID(sendIDGlobal, returnedVertex.txID);
+
+	int numBytes = GetNumberFromBuffer(deviceMemory, counter, 1);
+
+	counter = GetDeviceIDOrLocalIDFromBuffer(deviceMemory, receiveIDLocal, counter);
+	GetDeviceIDFromIndex_Byte(receiveIDLocal, receiveIDGlobal);
+	CopyDeviceID(receiveIDGlobal, returnedVertex.rxID);
+
+	returnedVertex.txControlID = GetNumberFromBuffer(deviceMemory, counter, 1);
+	returnedVertex.rxControlID = GetNumberFromBuffer(deviceMemory, counter, 1);
+	returnedVertex.rxIPAddress.Octet4 = GetNumberFromBuffer(deviceMemory, counter, 1);
+	returnedVertex.rxIPAddress.Octet3 = GetNumberFromBuffer(deviceMemory, counter, 1);
+	returnedVertex.rxIPAddress.Octet2 = GetNumberFromBuffer(deviceMemory, counter, 1);
+	returnedVertex.rxIPAddress.Octet1 = GetNumberFromBuffer(deviceMemory, counter, 1);
+
+	return 0;
+}
+
+// DEPRECATE
 int GetVertexAtPonter(unsigned long pointer, Vertex &returnedVertex)
 {
 	if(deviceMemory[pointer] != VertexOpCode)
@@ -530,15 +563,20 @@ int GetVertexAtPonter(unsigned long pointer, Vertex &returnedVertex)
 
 int SetVertexInMemory_Byte(Vertex_Byte theVertex)
 {
-	PerformPreOpCodeProcessing_Byte(theVertex.rxID);
 	PerformPreOpCodeProcessing_Byte(theVertex.txID);
+	PerformPreOpCodeProcessing_Byte(theVertex.rxID);
+	
+	heepByte copyIDTx[STANDARD_ID_SIZE];
+	CopyDeviceID(theVertex.txID, copyIDTx);
+	heepByte copyIDRx[STANDARD_ID_SIZE];
+	CopyDeviceID(theVertex.rxID, copyIDRx);
 
 	int beginningOfMemory = curFilledMemory;
 
 	AddNewCharToMemory(VertexOpCode);
-	AddIndexOrDeviceIDToMemory_Byte(theVertex.txID);
+	AddIndexOrDeviceIDToMemory_Byte(copyIDTx);
 	AddNewCharToMemory((char)ID_SIZE+6);
-	AddIndexOrDeviceIDToMemory_Byte(theVertex.rxID);
+	AddIndexOrDeviceIDToMemory_Byte(copyIDRx);
 	AddNewCharToMemory(theVertex.txControlID);
 	AddNewCharToMemory(theVertex.rxControlID);
 	AddIPToMemory(theVertex.rxIPAddress);
@@ -551,8 +589,8 @@ int SetVertexInMemory_Byte(Vertex_Byte theVertex)
 // DEPRECATE*
 int SetVertexInMemory(Vertex theVertex)
 {
-	PerformPreOpCodeProcessing(theVertex.rxID);
 	PerformPreOpCodeProcessing(theVertex.txID);
+	PerformPreOpCodeProcessing(theVertex.rxID);
 
 	int beginningOfMemory = curFilledMemory;
 
