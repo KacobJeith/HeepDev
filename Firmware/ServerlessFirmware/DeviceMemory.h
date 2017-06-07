@@ -295,6 +295,21 @@ void SetIconIDInMemory(char iconID, unsigned long deviceID)
 	AddNewCharToMemory(iconID);
 }
 
+void SetIconDataInMemory_Byte(char* iconData, int numCharacters, heepByte* deviceID)
+{
+	PerformPreOpCodeProcessing_Byte(deviceID);
+
+	AddNewCharToMemory(CustomIconDrawingOpCode); 
+	AddIndexOrDeviceIDToMemory_Byte(deviceID);
+	AddNewCharToMemory((char)numCharacters);
+
+	for(int i = 0; i < numCharacters; i++)
+	{
+		AddNewCharToMemory(iconData[i]);
+	}
+}
+
+// DEPRECATE*
 void SetIconDataInMemory(char* iconData, int numCharacters, unsigned long deviceID)
 {
 	PerformPreOpCodeProcessing(deviceID);
