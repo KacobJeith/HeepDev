@@ -72,7 +72,7 @@ class LoginOptionsView: UIViewController, UICollectionViewDataSource, UICollecti
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
         
-        cell.backgroundColor = getRandomColor()
+        cell.backgroundColor = .white
         cell.tag = indexPath.row
         cell.isUserInteractionEnabled = true
         
@@ -83,12 +83,15 @@ class LoginOptionsView: UIViewController, UICollectionViewDataSource, UICollecti
         switch indexPath.row {
         case 1:
             thisCell = renderLoginOption(frame: cell.bounds,
-                                         text: " facebook ")
+                                         text: " facebook ",
+                                         icon: #imageLiteral(resourceName: "FB-f-Logo__blue_1024"))
+            
             tap = UITapGestureRecognizer(target: self, action: #selector(loginWithFacebook))
             
         default:
             thisCell = renderLoginOption(frame: cell.bounds,
-                                         text: " email ")
+                                         text: " email ",
+                                         icon: #imageLiteral(resourceName: "mail"))
             
                     }
         
@@ -100,20 +103,39 @@ class LoginOptionsView: UIViewController, UICollectionViewDataSource, UICollecti
     
     func renderLoginOption(frame: CGRect, text: String, icon: UIImage = UIImage()) -> UIView {
         let customView = UIView()
+        customView.frame = frame
+        customView.layer.borderColor = UIColor.gray.cgColor
+        customView.layer.borderWidth = 0
+        customView.layer.cornerRadius = 5
+        
         let title = UILabel()
         title.text = text
         title.adjustsFontSizeToFitWidth = true
-        title.textColor = .white
+        title.textColor = .gray
         title.font = UIFont.boldSystemFont(ofSize: 30.0)
         
         title.layer.shadowColor = UIColor.lightGray.cgColor
         title.layer.shadowOffset = CGSize(width: 1.0, height: 1.0)
-        title.layer.shadowOpacity = 0.5
+        title.layer.shadowOpacity = 0.3
         title.layer.shadowRadius = 0.25
         
         title.textAlignment = .center
-        title.frame = frame
+        title.frame = CGRect(x: 0,
+                             y: customView.frame.maxY - 40,
+                             width: customView.frame.width,
+                             height: 35)
         
+        //let optionIconView = UIImageView()
+        
+        let optionIconView = fitAndCenterImageInView(frame: CGRect(x: 0,
+                                                                   y: customView.frame.minY + 20,
+                                                                   width: customView.frame.width,
+                                                                   height: customView.frame.maxY - 60),
+                                                     image: icon)
+        
+        //optionIconView.contentMode = .scaleAspectFill
+        
+        customView.addSubview(optionIconView)
         customView.addSubview(title)
         return customView
     }

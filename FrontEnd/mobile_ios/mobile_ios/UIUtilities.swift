@@ -80,29 +80,29 @@ func getModeColor(thisGroup: Group, highlight: Bool = false) -> UIColor {
     }
     
 }
-/*
-func getModeColor(thisGroup: Group, object: Any, checklist: [String : Bool]) -> UIColor {
+
+
+func fitAndCenterImageInView(frame: CGRect, image: UIImage) -> UIImageView {
     
-    if thisGroup.selectedControl == 0 {
-        
-        return UIColor.lightGray
-        
-    } else if thisGroup.selectedControl == 1 {
-        
-        
-        return UIColor.green
-        
-    } else if thisGroup.selectedControl == 2 {
-        
-        
-        return UIColor.red
-        
+    let imWidth = image.size.width
+    let imHeight = image.size.height
+    
+    let aspectRatio = imWidth / imHeight
+    let predictedWidth = aspectRatio * frame.height
+    
+    let returnView = UIImageView(frame: frame)
+    
+    if predictedWidth > frame.width {
         
     } else {
-        return UIColor.blue
+        returnView.frame.insetBy(dx: (frame.width / 2) - (predictedWidth / 2),
+                                 dy: 0)
     }
     
-}*/
+    returnView.image = image
+    returnView.contentMode = .scaleAspectFit
+    return returnView
+}
 
 func getModeText(thisGroup: Group) -> String {
     
