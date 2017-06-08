@@ -83,12 +83,13 @@ void FillOutputBufferWithSetValCOP(unsigned char controlID, unsigned char value)
 	AddNewCharToOutputBuffer(value);
 }
 
+// Updated
 void FillOutputBufferWithControlData()
 {
 	for(int i = 0; i < numberOfControls; i++)
 	{
 		AddNewCharToOutputBuffer(ControlOpCode);
-		AddDeviceIDOrIndexToOutputBuffer(deviceID);
+		AddDeviceIDOrIndexToOutputBuffer_Byte(deviceIDByte);
 		unsigned int byteSize = strlen(controlList[i].controlName) + 6;
 		AddNewCharToOutputBuffer(byteSize);
 		AddNewCharToOutputBuffer(controlList[i].controlID);
@@ -105,13 +106,15 @@ void FillOutputBufferWithControlData()
 	}
 }
 
+// Updated
 void FillOutputBufferWithDynamicMemorySize()
 {
 	AddNewCharToOutputBuffer(DynamicMemorySizeOpCode);
-	AddDeviceIDOrIndexToOutputBuffer(deviceID);
+	AddDeviceIDOrIndexToOutputBuffer_Byte(deviceIDByte);
 	AddNewCharToOutputBuffer(1);
 	AddNewCharToOutputBuffer(MAX_MEMORY);
 }
+
 
 void FillOutputBufferWithMemoryDump()
 {
