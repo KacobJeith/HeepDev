@@ -98,7 +98,7 @@ void FillVertexListFromMemory()
 void SetDeviceName(char* deviceName)
 {
 	int deviceNameLength = strlen(deviceName);
-	SetDeviceNameInMemory(deviceName, deviceNameLength, deviceID);
+	SetDeviceNameInMemory_Byte(deviceName, deviceNameLength, deviceIDByte);
 }
 
 int SetControlValueByID(unsigned char controlID, unsigned int value, unsigned char setFromNetwork = 0)
