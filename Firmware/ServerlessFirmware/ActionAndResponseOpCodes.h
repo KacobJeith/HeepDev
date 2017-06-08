@@ -149,12 +149,13 @@ void FillOutputBufferWithMemoryDump()
 	}
 }
 
+// Updated
 void FillOutputBufferWithSuccess(char* message, int stringLength)
 {
 	ClearOutputBuffer();
 
 	AddNewCharToOutputBuffer(SuccessOpCode);
-	AddDeviceIDToOutputBuffer(deviceID);
+	AddDeviceIDToOutputBuffer_Byte(deviceIDByte);
 
 	unsigned long totalMemory = strlen(message);
 
@@ -166,12 +167,13 @@ void FillOutputBufferWithSuccess(char* message, int stringLength)
 	}
 }
 
+// Updated
 void FillOutputBufferWithError(char* message, int stringLength)
 {
 	ClearOutputBuffer();
 
 	AddNewCharToOutputBuffer(ErrorOpCode);
-	AddDeviceIDToOutputBuffer(deviceID);
+	AddDeviceIDToOutputBuffer_Byte(deviceIDByte);
 
 	unsigned long totalMemory = strlen(message);
 
