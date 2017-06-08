@@ -4,10 +4,10 @@
 #include "Device.h"
 
 unsigned char outputBuffer [OUTPUT_BUFFER_SIZE];
-unsigned long outputBufferLastByte = 0;
+unsigned int outputBufferLastByte = 0;
 
 unsigned char inputBuffer [INPUT_BUFFER_SIZE];
-unsigned long inputBufferLastByte = 0;
+unsigned int inputBufferLastByte = 0;
 
 void ClearOutputBuffer()
 {
@@ -24,11 +24,27 @@ void AddNewCharToOutputBuffer(unsigned char newMem)
 	outputBufferLastByte = AddCharToBuffer(outputBuffer, outputBufferLastByte, newMem);
 }
 
+void AddDeviceIDToOutputBuffer_Byte(heepByte* deviceID)
+{
+	outputBufferLastByte = AddDeviceIDToBuffer_Byte(outputBuffer, deviceID, outputBufferLastByte);
+}
+
+// DEPRECATE*
 void AddDeviceIDToOutputBuffer(unsigned long deviceID)
 {
 	outputBufferLastByte = AddDeviceIDToBuffer(outputBuffer, outputBufferLastByte, deviceID);
 }
 
+void AddDeviceIDOrIndexToOutputBuffer_Byte(heepByte* deviceID)
+{
+	unsigned int counter = 0;
+	heepByte copyDeviceID [STANDARD_ID_SIZE];
+	CopyDeviceID(deviceID, copyDeviceID);
+	GetIndexedDeviceID_Byte(copyDeviceID);
+	AddBufferToBuffer(copyDeviceID, outputBuffer, ID_SIZE, counter, outputBufferLastByte);
+}
+
+// DEPERECATE*
 void AddDeviceIDOrIndexToOutputBuffer(unsigned long deviceID)
 {
 	unsigned long localID = GetIndexedDeviceID(deviceID);
