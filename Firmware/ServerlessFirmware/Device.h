@@ -24,14 +24,14 @@ void AddControl(Control myControl)
 	numberOfControls++;
 }
 
-unsigned char isVertexEqual(Vertex &vertex1, Vertex &vertex2)
+unsigned char isVertexEqual(Vertex_Byte &vertex1, Vertex_Byte &vertex2)
 {
 	unsigned char vertexIsEqual = 1;
 
-	if(vertex1.txID != vertex2.txID)
+	if(CheckBufferEquality(vertex1.txID, vertex2.txID, STANDARD_ID_SIZE) == 0)
 		vertexIsEqual = 0;
 
-	if(vertex1.rxID != vertex2.rxID)
+	if(CheckBufferEquality(vertex1.rxID, vertex2.rxID, STANDARD_ID_SIZE) == 0)
 		vertexIsEqual = 0;
 
 	if(vertex1.rxControlID != vertex2.rxControlID)
@@ -65,12 +65,12 @@ void RemoveVertexListEntry(unsigned int pointer)
 	numberOfVertices--;
 }
 
-int DeleteVertex(Vertex myVertex)
+int DeleteVertex(Vertex_Byte myVertex)
 {
 	for(int i = 0; i < numberOfVertices; i++)
 	{
-		Vertex newVertex;
-		if(GetVertexAtPonter(vertexPointerList[i], newVertex) == 0)
+		Vertex_Byte newVertex;
+		if(GetVertexAtPointer_Byte(vertexPointerList[i], newVertex) == 0)
 		{
 			if(isVertexEqual(myVertex, newVertex))
 			{
