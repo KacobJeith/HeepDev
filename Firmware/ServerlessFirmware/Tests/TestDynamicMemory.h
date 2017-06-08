@@ -771,9 +771,17 @@ void TestBuildVertexListFromPointers()
 
 	ClearDeviceMemory();
 
-	Vertex theVertex;
-	theVertex.rxID = 0x01020304;
-	theVertex.txID = 0x05060708;
+	heepByte deviceID1 [STANDARD_ID_SIZE];
+	heepByte deviceID2 [STANDARD_ID_SIZE];
+	heepByte deviceID3 [STANDARD_ID_SIZE];
+
+	CreateFakeDeviceID(deviceID1);
+	CreateFakeDeviceID(deviceID2, 1);
+	CreateFakeDeviceID(deviceID3, 4);
+
+	Vertex_Byte theVertex;
+	CopyDeviceID(deviceID1, theVertex.rxID);
+	CopyDeviceID(deviceID2, theVertex.txID);
 	theVertex.rxControlID = 1;
 	theVertex.txControlID = 2;
 	HeepIPAddress theIP;
@@ -783,18 +791,18 @@ void TestBuildVertexListFromPointers()
 	theIP.Octet1 = 150;
 	theVertex.rxIPAddress = theIP;
 
-	Vertex theVertex2;
-	theVertex2.rxID = 0x01020304;
-	theVertex2.txID = 0x05060708;
+	Vertex_Byte theVertex2;
+	CopyDeviceID(deviceID1, theVertex2.rxID);
+	CopyDeviceID(deviceID3, theVertex2.txID);
 	theVertex2.rxControlID = 1;
 	theVertex2.txControlID = 2;
 	theVertex2.rxIPAddress = theIP;
 
 
-	SetDeviceNameInMemory("Crowbar", 7, 0x01020304);
-	SetVertexInMemory(theVertex);
-	SetIPInMemory(theIP, 0x04030210);
-	SetVertexInMemory(theVertex2);
+	SetDeviceNameInMemory_Byte("Crowbar", 7, deviceID2);
+	SetVertexInMemory_Byte(theVertex);
+	SetIPInMemory_Byte(theIP, deviceID1);
+	SetVertexInMemory_Byte(theVertex2);
 
 	FillVertexListFromMemory();
 
@@ -1744,8 +1752,8 @@ void TestDynamicMemory()
 	TestDefragmentDeviceMemoryInMiddle();
 	TestDefragmentDeviceMemoryDeviceAtFront();
 	TestDefragmentDeviceMemoryAtEnd();
+	
 	TestBuildVertexListFromPointers();
-
 	TestSkipOpCode();
 	TestControlRegister();
 	TestGetIndexFromDeviceID();
