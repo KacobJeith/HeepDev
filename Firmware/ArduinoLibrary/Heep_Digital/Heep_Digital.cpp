@@ -29,3 +29,15 @@ int Heep_Digital_Input::Read()
 {
 	return digitalRead(mPinNumber);
 }
+
+Heep_Digital_Output::Heep_Digital_Output(int pinNumber, int defaultVal) 
+	: mPinNumber(pinNumber)
+{
+	pinMode(mPinNumber, OUTPUT);
+	digitalWrite(mPinNumber, defaultVal);
+}
+
+void Heep_Digital_Output::Write(int value)
+{
+	digitalWrite(mPinNumber, value);
+}
