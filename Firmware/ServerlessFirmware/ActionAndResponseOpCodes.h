@@ -211,6 +211,7 @@ void ExecuteSetValOpCode()
 	}
 }
 
+// Updatded
 void ExecuteSetPositionOpCode()
 {
 	unsigned int counter = 1;
@@ -218,7 +219,7 @@ void ExecuteSetPositionOpCode()
 	unsigned int xValue = GetNumberFromBuffer(inputBuffer, counter, 2);
 	unsigned int yValue = GetNumberFromBuffer(inputBuffer, counter, 2);
 
-	UpdateXYInMemory(xValue, yValue, deviceID);
+	UpdateXYInMemory_Byte(xValue, yValue, deviceIDByte);
 
 	char SuccessMessage [] = "Value Set";
 	FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
