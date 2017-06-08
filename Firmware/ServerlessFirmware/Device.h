@@ -95,11 +95,6 @@ void FillVertexListFromMemory()
 	}
 }
 
-void SetDeviceID(unsigned long newDeviceID)
-{
-	deviceID = newDeviceID;
-}
-
 void SetDeviceName(char* deviceName)
 {
 	int deviceNameLength = strlen(deviceName);

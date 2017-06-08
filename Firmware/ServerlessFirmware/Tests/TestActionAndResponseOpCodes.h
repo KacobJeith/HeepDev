@@ -45,7 +45,6 @@ void TestMemoryDumpROP()
 	std::string TestName = "Memory Dump ROP";
 
 	ClearDeviceMemory();
-	SetDeviceID(0x01020304);
 	SetDeviceName("Jacob");
 	ClearOutputBuffer();
 	FillOutputBufferWithMemoryDump();
@@ -79,7 +78,6 @@ void TestHeepDeviceCOP()
 	std::string TestName = "Is Heep Device COP";
 
 	ClearDeviceMemory();
-	SetDeviceID(0x01020304);
 	SetDeviceName("Jacob");
 	ClearOutputBuffer();
 	ClearInputBuffer();
@@ -136,7 +134,6 @@ void TestSetValSuccess()
 	std::string TestName = "Test Set Val COP";
 
 	ClearControls();
-	SetDeviceID(0x06040601);
 	SetDeviceName("Test");
 	Control theControl;
 	theControl.controlName = "Test Control";
@@ -172,7 +169,6 @@ void TestSetValFailure()
 	std::string TestName = "Test Set Val COP Failures";
 
 	ClearControls();
-	SetDeviceID(0x06040601);
 	SetDeviceName("Test");
 	Control theControl;
 	theControl.controlName = "Test Control";
@@ -208,7 +204,6 @@ void TestSetPositionOpCode()
 	std::string TestName = "Test Set Position COP";
 
 	ClearControls();
-	SetDeviceID(0x06040601);
 	SetDeviceName("Test");
 
 	ClearInputBuffer();
