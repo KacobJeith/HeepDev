@@ -292,6 +292,7 @@ void ExecuteDeleteVertexOpCode()
 	}
 }
 
+// Updated
 // Validate that a MOP can be added. Then restructure it for localIDs as necessary
 int ValidateAndRestructureIncomingMOP(unsigned int MOPStartAddr, unsigned int &numBytes)
 {
@@ -299,17 +300,20 @@ int ValidateAndRestructureIncomingMOP(unsigned int MOPStartAddr, unsigned int &n
 	{
 		return 1; // INVALID MOP
 	}
-
+	
+	heepByte curID [STANDARD_ID_SIZE];
 	MOPStartAddr++;
-	int startID = MOPStartAddr;
-	unsigned long curID = GetNumberFromBuffer(inputBuffer, MOPStartAddr, STANDARD_ID_SIZE);
+	unsigned int startID = MOPStartAddr;
+	unsigned int localCounter = 0;
+	AddBufferToBuffer(curID, inputBuffer, STANDARD_ID_SIZE, localCounter, MOPStartAddr);
 	unsigned char bytesOfData = GetNumberFromBuffer(inputBuffer, MOPStartAddr, 1);
-	curID = GetIndexedDeviceID(curID);
+	GetIndexedDeviceID_Byte(curID);
 
 	int memDiff = STANDARD_ID_SIZE - ID_SIZE;
 	numBytes = numBytes - memDiff;
 
-	startID = AddNumberToBufferWithSpecifiedBytes(inputBuffer, curID, startID, ID_SIZE);
+	localCounter = 0;
+	AddBufferToBuffer(inputBuffer, curID, ID_SIZE, startID, localCounter);
 	startID = AddCharToBuffer(inputBuffer, startID, bytesOfData);
 
 	for(int i = 0; i < bytesOfData; i++)
