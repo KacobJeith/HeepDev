@@ -44,10 +44,17 @@ void TestMemoryDumpROP()
 {
 	std::string TestName = "Memory Dump ROP";
 
+	for(int i = 0; i < STANDARD_ID_SIZE; i++)
+	{
+		deviceIDByte[i] = i+1;
+	}
+
 	ClearDeviceMemory();
 	SetDeviceName("Jacob");
 	ClearOutputBuffer();
 	FillOutputBufferWithMemoryDump();
+
+	PrintOutputBuffer();
 
 	ExpectedValue valueList[10];
 	valueList[0].valueName = "Memory Dump";

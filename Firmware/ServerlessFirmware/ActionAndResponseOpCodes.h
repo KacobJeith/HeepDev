@@ -41,7 +41,7 @@ void AddDeviceIDOrIndexToOutputBuffer_Byte(heepByte* deviceID)
 	heepByte copyDeviceID [STANDARD_ID_SIZE];
 	CopyDeviceID(deviceID, copyDeviceID);
 	GetIndexedDeviceID_Byte(copyDeviceID);
-	AddBufferToBuffer(copyDeviceID, outputBuffer, ID_SIZE, counter, outputBufferLastByte);
+	AddBufferToBuffer(outputBuffer, copyDeviceID, ID_SIZE, outputBufferLastByte, counter);
 }
 
 // DEPERECATE*
@@ -115,13 +115,13 @@ void FillOutputBufferWithDynamicMemorySize()
 	AddNewCharToOutputBuffer(MAX_MEMORY);
 }
 
-
+// Updated
 void FillOutputBufferWithMemoryDump()
 {
 	ClearOutputBuffer();
 	
 	AddNewCharToOutputBuffer(MemoryDumpOpCode);
-	AddDeviceIDToOutputBuffer(deviceID);
+	AddDeviceIDToOutputBuffer_Byte(deviceIDByte);
 
 	unsigned long totalMemory = curFilledMemory + CalculateCoreMemorySize() + 1;
 
@@ -132,7 +132,7 @@ void FillOutputBufferWithMemoryDump()
 
 	// Add Client Data
 	AddNewCharToOutputBuffer(ClientDataOpCode);
-	AddDeviceIDOrIndexToOutputBuffer(deviceID);
+	AddDeviceIDOrIndexToOutputBuffer_Byte(deviceIDByte);
 	AddNewCharToOutputBuffer(1);
 	AddNewCharToOutputBuffer(firmwareVersion);
 
