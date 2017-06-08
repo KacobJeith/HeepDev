@@ -1754,6 +1754,7 @@ void TestGetVertex_Byte()
 
 void TestDynamicMemory()
 {
+	cout << endl << "BEGIN DEPRECATED TESTS" << endl << endl;
 	TestAddDeviceIDToMemory();	// Deprecate
 	TestAddDeviceIDToBuffer();	// Deprecate
 	TestDeviceNameOpCode();		// Deprecate
@@ -1765,6 +1766,7 @@ void TestDynamicMemory()
 	TestGetXYFromMemory();		// Deprecate
 	TestUpdateXYPosition(); 	// Deprecate
 	TestGetVertex();			// Deprecate
+	cout << endl << "END DEPRECATED TESTS" << endl << endl;
 	
 	TestAddIPToDeviceMemory();
 	TestAddCharToBuffer();
