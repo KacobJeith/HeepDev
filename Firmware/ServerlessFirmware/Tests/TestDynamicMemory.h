@@ -54,6 +54,7 @@ void TestAddCharToDeviceMemory()
 {
 	std::string TestName = "Add Char to Device Memory";
 
+	ClearDeviceMemory();
 	AddNewCharToMemory('3');
 	AddNewCharToMemory('6');
 
@@ -1753,22 +1754,22 @@ void TestGetVertex_Byte()
 
 void TestDynamicMemory()
 {
+	TestAddDeviceIDToMemory();	// Deprecate
+	TestAddDeviceIDToBuffer();	// Deprecate
+	TestDeviceNameOpCode();		// Deprecate
+	TestIconIDOpCode();			// Deprecate
+	TestIconDataOpCode();		// Deprecate
+	TestSetXYOpCode();			// Deprecate
+	TestSetIPOpCode();			// Deprecate
+	TestSetVertexOpCode();		// Deprecate
+	TestGetXYFromMemory();		// Deprecate
+	TestUpdateXYPosition(); 	// Deprecate
+	TestGetVertex();			// Deprecate
+	
+	TestAddIPToDeviceMemory();
 	TestAddCharToBuffer();
 	TestAddCharToDeviceMemory();
 	TestClearDeviceMemory();
-	TestAddDeviceIDToMemory();
-	TestAddDeviceIDToBuffer();
-	TestAddIPToDeviceMemory();
-	TestDeviceNameOpCode();
-	TestIconIDOpCode();
-	TestIconDataOpCode();
-	TestSetXYOpCode();
-	TestSetIPOpCode();
-	TestSetVertexOpCode();
-	TestGetXYFromMemory();
-	TestUpdateXYPosition();
-	TestGetVertex();				// Deprecate
-	
 	TestDefragmentDeviceMemory();
 	TestDefragmentDeviceMemoryInMiddle();
 	TestDefragmentDeviceMemoryDeviceAtFront();
