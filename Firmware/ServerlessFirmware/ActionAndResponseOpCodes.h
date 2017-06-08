@@ -4,10 +4,10 @@
 #include "Device.h"
 
 unsigned char outputBuffer [OUTPUT_BUFFER_SIZE];
-unsigned long outputBufferLastByte = 0;
+unsigned int outputBufferLastByte = 0;
 
 unsigned char inputBuffer [INPUT_BUFFER_SIZE];
-unsigned long inputBufferLastByte = 0;
+unsigned int inputBufferLastByte = 0;
 
 void ClearOutputBuffer()
 {
@@ -24,15 +24,18 @@ void AddNewCharToOutputBuffer(unsigned char newMem)
 	outputBufferLastByte = AddCharToBuffer(outputBuffer, outputBufferLastByte, newMem);
 }
 
-void AddDeviceIDToOutputBuffer(unsigned long deviceID)
+void AddDeviceIDToOutputBuffer_Byte(heepByte* deviceID)
 {
-	outputBufferLastByte = AddDeviceIDToBuffer(outputBuffer, outputBufferLastByte, deviceID);
+	outputBufferLastByte = AddDeviceIDToBuffer_Byte(outputBuffer, deviceID, outputBufferLastByte);
 }
 
-void AddDeviceIDOrIndexToOutputBuffer(unsigned long deviceID)
+void AddDeviceIDOrIndexToOutputBuffer_Byte(heepByte* deviceID)
 {
-	unsigned long localID = GetIndexedDeviceID(deviceID);
-	outputBufferLastByte = AddNumberToBufferWithSpecifiedBytes(outputBuffer, localID, outputBufferLastByte, ID_SIZE);
+	unsigned int counter = 0;
+	heepByte copyDeviceID [STANDARD_ID_SIZE];
+	CopyDeviceID(deviceID, copyDeviceID);
+	GetIndexedDeviceID_Byte(copyDeviceID);
+	AddBufferToBuffer(outputBuffer, copyDeviceID, ID_SIZE, outputBufferLastByte, counter);
 }
 
 unsigned long CalculateControlDataSize()
@@ -67,12 +70,13 @@ void FillOutputBufferWithSetValCOP(unsigned char controlID, unsigned char value)
 	AddNewCharToOutputBuffer(value);
 }
 
+// Updated
 void FillOutputBufferWithControlData()
 {
 	for(int i = 0; i < numberOfControls; i++)
 	{
 		AddNewCharToOutputBuffer(ControlOpCode);
-		AddDeviceIDOrIndexToOutputBuffer(deviceID);
+		AddDeviceIDOrIndexToOutputBuffer_Byte(deviceIDByte);
 		unsigned int byteSize = strlen(controlList[i].controlName) + 6;
 		AddNewCharToOutputBuffer(byteSize);
 		AddNewCharToOutputBuffer(controlList[i].controlID);
@@ -89,20 +93,22 @@ void FillOutputBufferWithControlData()
 	}
 }
 
+// Updated
 void FillOutputBufferWithDynamicMemorySize()
 {
 	AddNewCharToOutputBuffer(DynamicMemorySizeOpCode);
-	AddDeviceIDOrIndexToOutputBuffer(deviceID);
+	AddDeviceIDOrIndexToOutputBuffer_Byte(deviceIDByte);
 	AddNewCharToOutputBuffer(1);
 	AddNewCharToOutputBuffer(MAX_MEMORY);
 }
 
+// Updated
 void FillOutputBufferWithMemoryDump()
 {
 	ClearOutputBuffer();
 	
 	AddNewCharToOutputBuffer(MemoryDumpOpCode);
-	AddDeviceIDToOutputBuffer(deviceID);
+	AddDeviceIDToOutputBuffer_Byte(deviceIDByte);
 
 	unsigned long totalMemory = curFilledMemory + CalculateCoreMemorySize() + 1;
 
@@ -113,7 +119,7 @@ void FillOutputBufferWithMemoryDump()
 
 	// Add Client Data
 	AddNewCharToOutputBuffer(ClientDataOpCode);
-	AddDeviceIDOrIndexToOutputBuffer(deviceID);
+	AddDeviceIDOrIndexToOutputBuffer_Byte(deviceIDByte);
 	AddNewCharToOutputBuffer(1);
 	AddNewCharToOutputBuffer(firmwareVersion);
 
@@ -130,12 +136,13 @@ void FillOutputBufferWithMemoryDump()
 	}
 }
 
+// Updated
 void FillOutputBufferWithSuccess(char* message, int stringLength)
 {
 	ClearOutputBuffer();
 
 	AddNewCharToOutputBuffer(SuccessOpCode);
-	AddDeviceIDToOutputBuffer(deviceID);
+	AddDeviceIDToOutputBuffer_Byte(deviceIDByte);
 
 	unsigned long totalMemory = strlen(message);
 
@@ -147,12 +154,13 @@ void FillOutputBufferWithSuccess(char* message, int stringLength)
 	}
 }
 
+// Updated
 void FillOutputBufferWithError(char* message, int stringLength)
 {
 	ClearOutputBuffer();
 
 	AddNewCharToOutputBuffer(ErrorOpCode);
-	AddDeviceIDToOutputBuffer(deviceID);
+	AddDeviceIDToOutputBuffer_Byte(deviceIDByte);
 
 	unsigned long totalMemory = strlen(message);
 
@@ -190,6 +198,7 @@ void ExecuteSetValOpCode()
 	}
 }
 
+// Updatded
 void ExecuteSetPositionOpCode()
 {
 	unsigned int counter = 1;
@@ -197,29 +206,31 @@ void ExecuteSetPositionOpCode()
 	unsigned int xValue = GetNumberFromBuffer(inputBuffer, counter, 2);
 	unsigned int yValue = GetNumberFromBuffer(inputBuffer, counter, 2);
 
-	UpdateXYInMemory(xValue, yValue, deviceID);
+	UpdateXYInMemory_Byte(xValue, yValue, deviceIDByte);
 
 	char SuccessMessage [] = "Value Set";
 	FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
 }
 
+// Updated
 void ExecuteSetVertexOpCode()
 {
+	Vertex_Byte myVertex;
+
+	unsigned int localCounter = 0;
 	unsigned int counter = 1;
 	unsigned char numBytes = GetNumberFromBuffer(inputBuffer, counter, 1);
-	unsigned long txID = GetNumberFromBuffer(inputBuffer, counter, 4);
-	unsigned long rxID = GetNumberFromBuffer(inputBuffer, counter, 4);
+	AddBufferToBuffer(myVertex.txID, inputBuffer, STANDARD_ID_SIZE, localCounter, counter);
+	localCounter = 0;
+	AddBufferToBuffer(myVertex.rxID, inputBuffer, STANDARD_ID_SIZE, localCounter, counter);
 	unsigned char txControl = GetNumberFromBuffer(inputBuffer, counter, 1);
 	unsigned char rxControl = GetNumberFromBuffer(inputBuffer, counter, 1);
+
 	HeepIPAddress vertexIP;
 	vertexIP.Octet4 = GetNumberFromBuffer(inputBuffer, counter, 1);
 	vertexIP.Octet3 = GetNumberFromBuffer(inputBuffer, counter, 1);
 	vertexIP.Octet2 = GetNumberFromBuffer(inputBuffer, counter, 1);
 	vertexIP.Octet1 = GetNumberFromBuffer(inputBuffer, counter, 1);
-
-	Vertex myVertex;
-	myVertex.rxID = rxID;
-	myVertex.txID = txID;
 	myVertex.rxControlID = rxControl;
 	myVertex.txControlID = txControl;
 	myVertex.rxIPAddress = vertexIP;
@@ -231,24 +242,25 @@ void ExecuteSetVertexOpCode()
 	FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
 }
 
+// Updated
 void ExecuteDeleteVertexOpCode()
 {
-	unsigned int counter = 1;
+	Vertex_Byte myVertex;
 
+	unsigned int localCounter = 0;
+	unsigned int counter = 1;
 	unsigned char numBytes = GetNumberFromBuffer(inputBuffer, counter, 1);
-	unsigned long txID = GetNumberFromBuffer(inputBuffer, counter, 4);
-	unsigned long rxID = GetNumberFromBuffer(inputBuffer, counter, 4);
+	AddBufferToBuffer(myVertex.txID, inputBuffer, STANDARD_ID_SIZE, localCounter, counter);
+	localCounter = 0;
+	AddBufferToBuffer(myVertex.rxID, inputBuffer, STANDARD_ID_SIZE, localCounter, counter);
 	unsigned char txControl = GetNumberFromBuffer(inputBuffer, counter, 1);
 	unsigned char rxControl = GetNumberFromBuffer(inputBuffer, counter, 1);
+
 	HeepIPAddress vertexIP;
 	vertexIP.Octet4 = GetNumberFromBuffer(inputBuffer, counter, 1);
 	vertexIP.Octet3 = GetNumberFromBuffer(inputBuffer, counter, 1);
 	vertexIP.Octet2 = GetNumberFromBuffer(inputBuffer, counter, 1);
 	vertexIP.Octet1 = GetNumberFromBuffer(inputBuffer, counter, 1);
-
-	Vertex myVertex;
-	myVertex.rxID = rxID;
-	myVertex.txID = txID;
 	myVertex.rxControlID = rxControl;
 	myVertex.txControlID = txControl;
 	myVertex.rxIPAddress = vertexIP;
@@ -267,6 +279,7 @@ void ExecuteDeleteVertexOpCode()
 	}
 }
 
+// Updated
 // Validate that a MOP can be added. Then restructure it for localIDs as necessary
 int ValidateAndRestructureIncomingMOP(unsigned int MOPStartAddr, unsigned int &numBytes)
 {
@@ -275,16 +288,19 @@ int ValidateAndRestructureIncomingMOP(unsigned int MOPStartAddr, unsigned int &n
 		return 1; // INVALID MOP
 	}
 
+	heepByte curID [STANDARD_ID_SIZE];
 	MOPStartAddr++;
-	int startID = MOPStartAddr;
-	unsigned long curID = GetNumberFromBuffer(inputBuffer, MOPStartAddr, STANDARD_ID_SIZE);
+	unsigned int startID = MOPStartAddr;
+	unsigned int localCounter = 0;
+	AddBufferToBuffer(curID, inputBuffer, STANDARD_ID_SIZE, localCounter, MOPStartAddr);
 	unsigned char bytesOfData = GetNumberFromBuffer(inputBuffer, MOPStartAddr, 1);
-	curID = GetIndexedDeviceID(curID);
+	GetIndexedDeviceID_Byte(curID);
 
 	int memDiff = STANDARD_ID_SIZE - ID_SIZE;
 	numBytes = numBytes - memDiff;
 
-	startID = AddNumberToBufferWithSpecifiedBytes(inputBuffer, curID, startID, ID_SIZE);
+	localCounter = 0;
+	AddBufferToBuffer(inputBuffer, curID, ID_SIZE, startID, localCounter);
 	startID = AddCharToBuffer(inputBuffer, startID, bytesOfData);
 
 	for(int i = 0; i < bytesOfData; i++)

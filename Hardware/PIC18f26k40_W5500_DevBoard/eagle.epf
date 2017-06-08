@@ -403,12 +403,5 @@ UsedLibrary="/Users/dylan/Documents/EagleLibraries/Texas Instruments/Texas Instr
 UsedLibrary="/Users/dylan/Documents/EagleLibraries/Lio-Eagle-Library-master/lio.lbr"
 UsedLibrary="/Users/dylan/Documents/EagleLibraries/Heep/Heep.lbr"
 
-[Win_1]
-Type="Control Panel"
-Loc="240 169 1439 768"
-State=2
-Number=0
-
 [Desktop]
 Screen="640 480"
-Window="Win_1"
