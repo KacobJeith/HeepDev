@@ -29,12 +29,6 @@ void AddDeviceIDToOutputBuffer_Byte(heepByte* deviceID)
 	outputBufferLastByte = AddDeviceIDToBuffer_Byte(outputBuffer, deviceID, outputBufferLastByte);
 }
 
-// DEPRECATE*
-void AddDeviceIDToOutputBuffer(unsigned long deviceID)
-{
-	outputBufferLastByte = AddDeviceIDToBuffer(outputBuffer, outputBufferLastByte, deviceID);
-}
-
 void AddDeviceIDOrIndexToOutputBuffer_Byte(heepByte* deviceID)
 {
 	unsigned int counter = 0;
@@ -42,13 +36,6 @@ void AddDeviceIDOrIndexToOutputBuffer_Byte(heepByte* deviceID)
 	CopyDeviceID(deviceID, copyDeviceID);
 	GetIndexedDeviceID_Byte(copyDeviceID);
 	AddBufferToBuffer(outputBuffer, copyDeviceID, ID_SIZE, outputBufferLastByte, counter);
-}
-
-// DEPERECATE*
-void AddDeviceIDOrIndexToOutputBuffer(unsigned long deviceID)
-{
-	unsigned long localID = GetIndexedDeviceID(deviceID);
-	outputBufferLastByte = AddNumberToBufferWithSpecifiedBytes(outputBuffer, localID, outputBufferLastByte, ID_SIZE);
 }
 
 unsigned long CalculateControlDataSize()
@@ -300,7 +287,7 @@ int ValidateAndRestructureIncomingMOP(unsigned int MOPStartAddr, unsigned int &n
 	{
 		return 1; // INVALID MOP
 	}
-	
+
 	heepByte curID [STANDARD_ID_SIZE];
 	MOPStartAddr++;
 	unsigned int startID = MOPStartAddr;
