@@ -26,4 +26,4 @@ public:
 
 private:
 	int mPinNumber;
-}
+};
