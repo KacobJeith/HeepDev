@@ -403,11 +403,12 @@ void TestDeleteMOPOpCode()
 	ClearDeviceMemory();
 	ClearInputBuffer();
 
+	heepByte deviceID[STANDARD_ID_SIZE] = {0x01, 0x02, 0x03, 0x04};
 	char* device1Name = "Jacob";
-	SetDeviceNameInMemory(device1Name, strlen(device1Name), 0x01020304);
+	SetDeviceNameInMemory_Byte(device1Name, strlen(device1Name), deviceID);
 	char* device2Name = "James";
-	SetDeviceNameInMemory(device2Name, strlen(device2Name), 0x01020304);
-	UpdateXYInMemory(1234, 161, 0x01020304);
+	SetDeviceNameInMemory_Byte(device2Name, strlen(device2Name), deviceID);
+	UpdateXYInMemory_Byte(1234, 161, deviceID);
 
 	// Add a random clients name
 	inputBuffer[0] = 0x15;
