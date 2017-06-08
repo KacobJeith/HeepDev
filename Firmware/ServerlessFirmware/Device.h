@@ -49,9 +49,9 @@ void AddVertexPointer(unsigned int pointer)
 	numberOfVertices++;
 }
 
-void AddVertex(Vertex myVertex)
+void AddVertex(Vertex_Byte myVertex)
 {
-	unsigned int pointerToVertex = SetVertexInMemory(myVertex);
+	unsigned int pointerToVertex = SetVertexInMemory_Byte(myVertex);
 	AddVertexPointer(pointerToVertex);
 }
 
