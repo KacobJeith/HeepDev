@@ -221,8 +221,9 @@ void TestSetPositionOpCode()
 	inputBuffer[4] = 0x10;
 	inputBuffer[5] = 0x10;
 	ExecuteControlOpCodes();
-	int x = 0; int y = 0; unsigned long deviceID = 0x06040601; unsigned int xyMemPosition = 0; 
-	GetXYFromMemory(x, y, deviceID, xyMemPosition);
+	heepByte deviceID [STANDARD_ID_SIZE] = {0x06, 0x04, 0x06, 0x01};
+	int x = 0; int y = 0; unsigned int xyMemPosition = 0; 
+	GetXYFromMemory_Byte(x, y, deviceID, xyMemPosition);
 
 	ExpectedValue valueList[4];
 	valueList[0].valueName = "x";
@@ -241,7 +242,7 @@ void TestSetPositionOpCode()
 	inputBuffer[4] = 0xB2;
 	inputBuffer[5] = 0x3C;
 	ExecuteControlOpCodes();
-	GetXYFromMemory(x, y, deviceID, xyMemPosition);
+	GetXYFromMemory_Byte(x, y, deviceID, xyMemPosition);
 
 	valueList[2].valueName = "x";
 	valueList[2].expectedValue = 0xF102;
@@ -284,17 +285,20 @@ void TestSetVertxCOP()
 	inputBuffer[15] = 0x02;
 	ExecuteControlOpCodes();
 
-	Vertex newVertex;
-	int success = GetVertexAtPonter(vertexPointerList[0], newVertex);
+	Vertex_Byte newVertex;
+	int success = GetVertexAtPointer_Byte(vertexPointerList[0], newVertex);
+
+	heepByte trueTxID [STANDARD_ID_SIZE] = {0xF1,0x02,0xB2,0x3C};
+	heepByte trueRxID [STANDARD_ID_SIZE] = {0x1A, 0x2D, 0x40, 0x02};
 
 	ExpectedValue valueList [8];
 	valueList[0].valueName = "TXID";
-	valueList[0].expectedValue = 0xF102B23C;
-	valueList[0].actualValue = newVertex.txID;
+	valueList[0].expectedValue = 1;
+	valueList[0].actualValue = CheckBufferEquality(newVertex.txID, trueTxID, STANDARD_ID_SIZE);
 
 	valueList[1].valueName = "RXID";
-	valueList[1].expectedValue = 0x1A2D4002;
-	valueList[1].actualValue = newVertex.rxID;
+	valueList[1].expectedValue = 1;
+	valueList[1].actualValue = CheckBufferEquality(newVertex.rxID, trueRxID, STANDARD_ID_SIZE);
 
 	valueList[2].valueName = "TX Control ID";
 	valueList[2].expectedValue = 0x01;
@@ -355,10 +359,11 @@ void TestAddMOPOpCode()
 	unsigned int afterMemory = curFilledMemory;
 
 	// Traverse the new memory by updating XY twice
-	UpdateXYInMemory(1234, 161, 0x01020304);
+	heepByte deviceID[STANDARD_ID_SIZE] = {0x01, 0x02, 0x03, 0x04};
+	UpdateXYInMemory_Byte(1234, 161, deviceID);
 	unsigned int beforeTraversal = curFilledMemory;
 
-	UpdateXYInMemory(2321, 5101, 0x01020304);
+	UpdateXYInMemory_Byte(2321, 5101, deviceID);
 	unsigned int afterTraveresal = curFilledMemory;
 
 #ifdef USE_INDEXED_IDS
