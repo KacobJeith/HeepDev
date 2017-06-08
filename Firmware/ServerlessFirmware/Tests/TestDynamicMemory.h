@@ -599,9 +599,14 @@ void TestDefragmentDeviceMemory()
 
 	ClearDeviceMemory();
 
-	Vertex theVertex;
-	theVertex.rxID = 0x01020304;
-	theVertex.txID = 0x05060708;
+	heepByte deviceID1[STANDARD_ID_SIZE];
+	heepByte deviceID2[STANDARD_ID_SIZE];
+	CreateFakeDeviceID(deviceID1);
+	CreateFakeDeviceID(deviceID2, 1);
+
+	Vertex_Byte theVertex;
+	CopyDeviceID(deviceID1, theVertex.rxID);
+	CopyDeviceID(deviceID2, theVertex.txID);
 	theVertex.rxControlID = 1;
 	theVertex.txControlID = 2;
 	HeepIPAddress theIP;
@@ -613,7 +618,7 @@ void TestDefragmentDeviceMemory()
 
 	int memCheckStart = GetMemCounterStart()*2;
 
-	SetVertexInMemory(theVertex);
+	SetVertexInMemory_Byte(theVertex);
 	ExpectedValue valueList [3];
 	unsigned int beforeDeletionMemory = curFilledMemory;
 	valueList[0].valueName = "Memory Filled Before Deletion";
@@ -639,9 +644,14 @@ void TestDefragmentDeviceMemoryAtEnd()
 
 	ClearDeviceMemory();
 
-	Vertex theVertex;
-	theVertex.rxID = 0x01020304;
-	theVertex.txID = 0x05060708;
+	heepByte deviceID1[STANDARD_ID_SIZE];
+	heepByte deviceID2[STANDARD_ID_SIZE];
+	CreateFakeDeviceID(deviceID1);
+	CreateFakeDeviceID(deviceID2, 1);
+
+	Vertex_Byte theVertex;
+	CopyDeviceID(deviceID1, theVertex.rxID);
+	CopyDeviceID(deviceID2, theVertex.txID);
 	theVertex.rxControlID = 1;
 	theVertex.txControlID = 2;
 	HeepIPAddress theIP;
@@ -652,8 +662,8 @@ void TestDefragmentDeviceMemoryAtEnd()
 	theVertex.rxIPAddress = theIP;
 
 
-	SetDeviceNameInMemory("Crowbar", 7, 0x01020304);
-	SetIPInMemory(theIP, 0x04030210);
+	SetDeviceNameInMemory_Byte("Crowbar", 7, deviceID1);
+	SetIPInMemory_Byte(theIP, deviceID1);
 
 	int vertexPointer = curFilledMemory;
 
@@ -661,7 +671,7 @@ void TestDefragmentDeviceMemoryAtEnd()
 	vertexPointer += ID_SIZE+STANDARD_ID_SIZE+2;
 #endif
 
-	SetVertexInMemory(theVertex);
+	SetVertexInMemory_Byte(theVertex);
 	unsigned int beforeDeletionMemory = curFilledMemory;
 	DeleteVertexAtPointer(vertexPointer);
 	unsigned int afterDeletionMemory = curFilledMemory;
@@ -686,9 +696,14 @@ void TestDefragmentDeviceMemoryDeviceAtFront()
 
 	ClearDeviceMemory();
 
-	Vertex theVertex;
-	theVertex.rxID = 0x01020304;
-	theVertex.txID = 0x05060708;
+	heepByte deviceID1[STANDARD_ID_SIZE];
+	heepByte deviceID2[STANDARD_ID_SIZE];
+	CreateFakeDeviceID(deviceID1);
+	CreateFakeDeviceID(deviceID2, 1);
+
+	Vertex_Byte theVertex;
+	CopyDeviceID(deviceID1, theVertex.rxID);
+	CopyDeviceID(deviceID2, theVertex.txID);
 	theVertex.rxControlID = 1;
 	theVertex.txControlID = 2;
 	HeepIPAddress theIP;
@@ -700,9 +715,9 @@ void TestDefragmentDeviceMemoryDeviceAtFront()
 
 	int memCheckStart = GetMemCounterStart()*2;
 
-	SetVertexInMemory(theVertex);
-	SetDeviceNameInMemory("Crowbar", 7, 0x01020304);
-	SetIPInMemory(theIP, 0x04030210);
+	SetVertexInMemory_Byte(theVertex);
+	SetDeviceNameInMemory_Byte("Crowbar", 7, deviceID1);
+	SetIPInMemory_Byte(theIP, deviceID2);
 	ExpectedValue valueList [2];
 	unsigned int beforeDeletionMemory = curFilledMemory;
 	DeleteVertexAtPointer(memCheckStart);
@@ -726,9 +741,14 @@ void TestDefragmentDeviceMemoryInMiddle()
 
 	ClearDeviceMemory();
 
-	Vertex theVertex;
-	theVertex.rxID = 0x01020304;
-	theVertex.txID = 0x05060708;
+	heepByte deviceID1[STANDARD_ID_SIZE];
+	heepByte deviceID2[STANDARD_ID_SIZE];
+	CreateFakeDeviceID(deviceID1);
+	CreateFakeDeviceID(deviceID2, 1);
+
+	Vertex_Byte theVertex;
+	CopyDeviceID(deviceID1, theVertex.rxID);
+	CopyDeviceID(deviceID2, theVertex.txID);
 	theVertex.rxControlID = 1;
 	theVertex.txControlID = 2;
 	HeepIPAddress theIP;
@@ -739,7 +759,7 @@ void TestDefragmentDeviceMemoryInMiddle()
 	theVertex.rxIPAddress = theIP;
 
 
-	SetDeviceNameInMemory("Crowbar", 7, 0x01020304);
+	SetDeviceNameInMemory_Byte("Crowbar", 7, deviceID2);
 
 	int vertexPointer = curFilledMemory;
 
@@ -747,8 +767,8 @@ void TestDefragmentDeviceMemoryInMiddle()
 	vertexPointer += ID_SIZE+STANDARD_ID_SIZE+2;
 #endif
 
-	SetVertexInMemory(theVertex);
-	SetIPInMemory(theIP, 0x04030210);
+	SetVertexInMemory_Byte(theVertex);
+	SetIPInMemory_Byte(theIP, deviceID2);
 	unsigned int beforeDeletionMemory = curFilledMemory;
 	DeleteVertexAtPointer(vertexPointer);
 	unsigned int afterDeletionMemory = curFilledMemory;
@@ -1747,12 +1767,12 @@ void TestDynamicMemory()
 	TestSetVertexOpCode();
 	TestGetXYFromMemory();
 	TestUpdateXYPosition();
-	TestGetVertex();
+	TestGetVertex();				// Deprecate
+	
 	TestDefragmentDeviceMemory();
 	TestDefragmentDeviceMemoryInMiddle();
 	TestDefragmentDeviceMemoryDeviceAtFront();
 	TestDefragmentDeviceMemoryAtEnd();
-	
 	TestBuildVertexListFromPointers();
 	TestSkipOpCode();
 	TestControlRegister();
