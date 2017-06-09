@@ -154,12 +154,30 @@ uint8_t TestW5500RegisterWriting()
 {
     uint8_t writeSubBuff [4] = {255,255,14,0};
     uint8_t readSubBuf [4];
-    uint8_t success = 1;
+    
+    uint8_t writeMACBuf [6] = {123, 231, 222, 102, 111, 4};
+    uint8_t readMACBuf[6];
+    
+    uint8_t success = 0;
+    uint8_t numTests = 0;
     
     WriteSubnetMask(writeSubBuff);
     ReadSubnetMask(readSubBuf);
     
-    success = AreBufsEqual(writeSubBuff, readSubBuf, 4);
+    WriteMacAddress(writeMACBuf);
+    ReadMacAddress(readMACBuf);
     
-    return success;
+    success += AreBufsEqual(writeSubBuff, readSubBuf, 4);
+    numTests++;
+    success += AreBufsEqual(writeMACBuf, readMACBuf, 6);
+    numTests++;
+    
+    if(numTests == success)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
 }
