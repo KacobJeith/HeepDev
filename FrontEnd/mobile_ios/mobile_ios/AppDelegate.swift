@@ -22,21 +22,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
-        //flushApp()
-        initializeApp()
-        
         SDKApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
-        window = UIWindow(frame: UIScreen.main.bounds)
-        let mainController = PlacesView()
-        let navigationController = UINavigationController(rootViewController: mainController)
-        navigationController.navigationBar.isTranslucent = false
-        navigationController.isToolbarHidden = true
-               
-        self.window?.rootViewController = navigationController
-        self.window?.makeKeyAndVisible()
-        //self.searchForHeepDevices()
-        // Override point for customization after application launch.
         
+        initializeApp()
+        setupAppNavigation()
         
         return true
     }
@@ -46,8 +35,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     public func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
-        //return SDKApplicationDelegate.shared.application(application, open: url, options: [:])
-        return SDKApplicationDelegate.shared.application(application, open: url, sourceApplication: sourceApplication, annotation: annotation)
+        return SDKApplicationDelegate.shared.application(application,
+                                                         open: url,
+                                                         options: [UIApplicationOpenURLOptionsKey.annotation : annotation,
+                                                                   UIApplicationOpenURLOptionsKey.sourceApplication : sourceApplication!])
+        
     }
     
     func applicationWillResignActive(_ application: UIApplication) {
@@ -119,21 +111,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    func searchForHeepDevices() {
-        //HeepConnections().SearchForHeepDeviecs()
-        Timer.scheduledTimer(timeInterval: 5.0,
-                             target: self,
-                             selector: #selector(launchSearch),
-                             userInfo: nil,
-                             repeats: true)
-        
-    }
-    
-    func launchSearch() {
-        print("Searching...")
-        HeepConnections().SearchForHeepDeviecs()
-    }
+}
 
+extension AppDelegate {
+    func setupAppNavigation() {
+        window = UIWindow(frame: UIScreen.main.bounds)
+        let mainController = PlacesView()
+        let navigationController = UINavigationController(rootViewController: mainController)
+        navigationController.navigationBar.isTranslucent = false
+        navigationController.isToolbarHidden = true
+        
+        self.window?.rootViewController = navigationController
+        self.window?.makeKeyAndVisible()
+    }
 }
 
 
