@@ -142,10 +142,6 @@ class EmailLoginView : UIViewController {
     
     func submitValues(gesture: UITapGestureRecognizer) {
         let inputResults = extractInputValues()
-        print("Final results... \(inputResults.email), \(inputResults.password)")
-        let hashed = hashString(name: "SHA1", string: inputResults.email)
-        print("Hashed...\(hashed! as NSData)")
-        print()
         let pseudoUniqueID = getIDFromByteArray(bytes: inputResults.email.asciiArray)
         seedNewUserAccount(name: "placeholder", id: String(describing: pseudoUniqueID))
         loginToUserRealm(user: pseudoUniqueID)
