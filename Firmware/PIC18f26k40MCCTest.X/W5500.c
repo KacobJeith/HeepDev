@@ -136,3 +136,37 @@ void ReadDefaultGateway(uint8_t* buf)
 {
     ReadFromW5500(GAR0, 0x00, buf, 4);
 }
+
+uint8_t TestW5500RegisterWriting()
+{
+    uint8_t writeSubBuff [4];
+    writeSubBuff[0] = 255;
+    writeSubBuff[1] = 255;
+    writeSubBuff[2] = 14;
+    writeSubBuff[3] = 0;
+    
+    uint8_t readSubBuf [4];
+    uint8_t success = 1;
+    
+    WriteSubnetMask(writeSubBuff);
+    ReadSubnetMask(readSubBuf);
+    
+    if(readSubBuf[0] != writeSubBuff[0])
+    {
+        success = 0;
+    }
+    if(readSubBuf[1] != writeSubBuff[1])
+    {
+        success = 0;
+    }
+    if(readSubBuf[2] != writeSubBuff[2])
+    {
+        success = 0;
+    }
+    if(readSubBuf[3] != writeSubBuff[3])
+    {
+        success = 0;
+    }
+    
+    return success;
+}

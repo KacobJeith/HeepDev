@@ -21,5 +21,7 @@ void ReadSourceIP(uint8_t* buf);
 void WriteDefaultGateway(uint8_t* buf);
 void ReadDefaultGateway(uint8_t* buf);
 
+uint8_t TestW5500RegisterWriting();
+
 #endif	/* W5500_H */
 
