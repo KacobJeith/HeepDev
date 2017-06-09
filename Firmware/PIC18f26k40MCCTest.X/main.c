@@ -1,4 +1,5 @@
 #include "mcc_generated_files/mcc.h"
+#include "W5500.h"
 
 /* 
  * SPI on W5500 works in 3 phases.
