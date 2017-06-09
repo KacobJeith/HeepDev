@@ -8,9 +8,18 @@ void ResetW5500SS();
 
 void WriteToW5500(uint16_t addr, uint8_t controlBit, uint8_t* buf, uint16_t len);
 void ReadFromW5500(uint16_t addr, uint8_t controlBit, uint8_t* buf, uint16_t len);
+
 void WriteSubnetMask(uint8_t* buf);
 void ReadSubnetMask(uint8_t* buf);
 
+void WriteMacAddress(uint8_t* buf);
+void ReadMacAddress(uint8_t* buf);
+
+void WriteSourceIP(uint8_t* buf);
+void ReadSourceIP(uint8_t* buf);
+
+void WriteDefaultGateway(uint8_t* buf);
+void ReadDefaultGateway(uint8_t* buf);
 
 #endif	/* W5500_H */
 

@@ -106,3 +106,33 @@ void ReadSubnetMask(uint8_t* buf)
 {
     ReadFromW5500(SUBR0, 0x00, buf, 4);
 }
+
+void WriteMacAddress(uint8_t* buf)
+{
+    WriteToW5500(SHAR0, 0b00000100, buf, 6);
+}
+
+void ReadMacAddress(uint8_t* buf)
+{
+    ReadFromW5500(SHAR0, 0x00, buf, 6);
+}
+
+void WriteSourceIP(uint8_t* buf)
+{
+    WriteToW5500(SIPR, 0b00000100, buf, 4);
+}
+
+void ReadSourceIP(uint8_t* buf)
+{
+    ReadFromW5500(SIPR, 0x00, buf, 4);
+}
+
+void WriteDefaultGateway(uint8_t* buf)
+{
+    WriteToW5500(GAR0, 0b00000100, buf, 4);
+}
+
+void ReadDefaultGateway(uint8_t* buf)
+{
+    ReadFromW5500(GAR0, 0x00, buf, 4);
+}
