@@ -138,7 +138,7 @@ func drawLineGeneral(start: CGPoint, finish: CGPoint, color: UIColor = UIColor.b
     return shapeLayer
 }
 
-func insetTextView(frame: CGRect, placeholderText: String, keyboardType: UIKeyboardType = .default) -> UIView {
+func insetTextView(frame: CGRect, placeholderText: String, keyboardType: UIKeyboardType = .default, secure: Bool = false) -> UIView {
     let insetView = UIView(frame: frame)
     insetView.backgroundColor = UIColor(white: 0.9, alpha: 1)
     insetView.layer.cornerRadius = 5
@@ -150,9 +150,10 @@ func insetTextView(frame: CGRect, placeholderText: String, keyboardType: UIKeybo
                             width: insetView.frame.width - 20,
                             height: insetView.frame.height - 5)
         
-        text.placeholder = "email"
+        text.placeholder = placeholderText
         text.textColor = UIColor.darkGray
         text.keyboardType = .emailAddress
+        text.isSecureTextEntry = secure
         
         return text
     }()
