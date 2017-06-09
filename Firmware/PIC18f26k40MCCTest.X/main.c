@@ -1,84 +1,6 @@
 #include "mcc_generated_files/mcc.h"
 #include "W5500.h"
 
-/* 
- * SPI on W5500 works in 3 phases.
- * 1. Address Phase
- * 2. Control Phase
- * 3. Data Phase
- */
-
-void SetW5500SS()
-{
-    LATCbits.LATC0 = 0;
-}
-
-void ResetW5500SS()
-{
-    LATCbits.LATC0 = 1;
-}
-
-void InitializeW5500SS()
-{
-    TRISCbits.TRISC0 = 0;
-}
-
-// Gateway Address (GAR) - 0x0001->0x0004
-#define GAR0 0x0001
-
-// Subnet Mask Address (SUBR) - 0x0005->0x0008
-#define SUBR0 0x0005
-
-// Source Hardware Address [MAC Address] (SHAR) - 0x0009->0x000E
-#define SHAR0 0x0009
-
-// Source IP Address (SIPR) - 0x000F->0x0012
-#define SIPR 0x000F
-
-void ReadFromW5500(uint16_t addr, uint8_t controlBit, uint8_t* buf, uint16_t len)
-{
-    SetW5500SS();
-    
-    SPI1_Exchange8bit(addr >> 8); // Get High Byte
-    SPI1_Exchange8bit(addr & 0xff); // Get Low Byte
-    SPI1_Exchange8bit(controlBit);
-    
-    uint16_t i = 0;
-    for(i = 0; i < len; i++)
-    {
-        buf[i] = SPI1_Exchange8bit(0);
-    }
-    
-    ResetW5500SS();
-}
-
-void WriteToW5500(uint16_t addr, uint8_t controlBit, uint8_t* buf, uint16_t len)
-{
-    SetW5500SS();
-    
-    SPI1_Exchange8bit(addr >> 8); // Get High Byte
-    SPI1_Exchange8bit(addr & 0xff); // Get Low Byte
-    SPI1_Exchange8bit(controlBit);
-    
-    uint16_t i = 0;
-    for(i = 0; i < len; i++)
-    {
-        SPI1_Exchange8bit(buf[i]);
-    }
-    
-    ResetW5500SS();
-}
-
-void WriteSubnetMask(uint8_t* buf)
-{
-    WriteToW5500(SUBR0, 0b00000100, buf, 4);
-}
-
-void ReadSubnetMask(uint8_t* buf)
-{
-    ReadFromW5500(SUBR0, 0x00, buf, 4);
-}
-
 void main(void)
 {
     // Initialize the device
@@ -113,7 +35,9 @@ void main(void)
     //INTERRUPT_PeripheralInterruptDisable();
     uint8_t counter = 0;
     TRISA = 0x00;
-    InitializeW5500SS();
+    LATAbits.LA1 = 1;
+    
+    InitializeW5500();
     
     uint8_t writeSubBuff [4];
     writeSubBuff[0] = 255;

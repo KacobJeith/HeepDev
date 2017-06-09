@@ -23,6 +23,7 @@ void InitializeW5500()
     RESET_PIN_TRIS = 0;
     INT_PIN_TRIS = 1;
     
+    SS_PIN = 1;
     RESET_PIN = 1;
     
     ResetW5500();
@@ -43,4 +44,65 @@ void ResetW5500()
     {
         Nop();
     }
+}
+
+void SetW5500SS()
+{
+    SS_PIN = 0;
+}
+
+void ResetW5500SS()
+{
+    SS_PIN = 1;
+}
+
+
+/* 
+ * SPI on W5500 works in 3 phases.
+ * 1. Address Phase
+ * 2. Control Phase
+ * 3. Data Phase
+ */
+void WriteToW5500(uint16_t addr, uint8_t controlBit, uint8_t* buf, uint16_t len)
+{
+    SetW5500SS();
+    
+    SPI1_Exchange8bit(addr >> 8); // Get High Byte
+    SPI1_Exchange8bit(addr & 0xff); // Get Low Byte
+    SPI1_Exchange8bit(controlBit);
+    
+    uint16_t i = 0;
+    for(i = 0; i < len; i++)
+    {
+        SPI1_Exchange8bit(buf[i]);
+    }
+    
+    ResetW5500SS();
+}
+
+void ReadFromW5500(uint16_t addr, uint8_t controlBit, uint8_t* buf, uint16_t len)
+{
+    SetW5500SS();
+    
+    SPI1_Exchange8bit(addr >> 8); // Get High Byte
+    SPI1_Exchange8bit(addr & 0xff); // Get Low Byte
+    SPI1_Exchange8bit(controlBit);
+    
+    uint16_t i = 0;
+    for(i = 0; i < len; i++)
+    {
+        buf[i] = SPI1_Exchange8bit(0);
+    }
+    
+    ResetW5500SS();
+}
+
+void WriteSubnetMask(uint8_t* buf)
+{
+    WriteToW5500(SUBR0, 0b00000100, buf, 4);
+}
+
+void ReadSubnetMask(uint8_t* buf)
+{
+    ReadFromW5500(SUBR0, 0x00, buf, 4);
 }
