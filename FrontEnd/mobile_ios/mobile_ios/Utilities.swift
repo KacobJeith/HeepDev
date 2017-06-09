@@ -114,12 +114,12 @@ func nameVertex(tx: DeviceControl?, rx: DeviceControl?) -> String {
     return String(describing: (tx?.uniqueID)!) + String(describing: (rx?.uniqueID)!)
 }
 
-func hash(name:String, string:String) -> Data? {
+func hashString(name:String, string:String) -> Data? {
     let data = string.data(using:.utf8)!
-    return hash(name:name, data:data)
+    return hashData(name:name, data:data)
 }
 
-func hash(name:String, data:Data) -> Data? {
+func hashData(name:String, data:Data) -> Data? {
     let algos = ["MD2":    (CC_MD2,    CC_MD2_DIGEST_LENGTH),
                  "MD4":    (CC_MD4,    CC_MD4_DIGEST_LENGTH),
                  "MD5":    (CC_MD5,    CC_MD5_DIGEST_LENGTH),
@@ -137,5 +137,22 @@ func hash(name:String, data:Data) -> Data? {
         }
     }
     return hashData
+}
+
+extension String {
+    var asciiArray: [UInt32] {
+        return unicodeScalars.filter{$0.isASCII}.map{$0.value}
+    }
+}
+
+func getIDFromByteArray(bytes: [UInt32]) -> Int {
+    let id1: Int = Int(bytes[0])
+    let id2: Int = Int(bytes[1])
+    let id3: Int = Int(bytes[2])
+    let id4: Int = Int(bytes[3])
+    
+    let finalID = (id1 << 24) + (id2 << 16) + (id3 << 8) + id4
+    
+    return finalID
 }
 

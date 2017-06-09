@@ -77,7 +77,6 @@ class EmailLoginView : UIViewController {
         subview.addSubview(cancelButton)
         subview.addSubview(submitButton)
         
-        //subview.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(submitValues)))
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(exitModalView)))
         self.view.addSubview(subview)
     }
@@ -97,6 +96,12 @@ class EmailLoginView : UIViewController {
     func submitValues(gesture: UITapGestureRecognizer) {
         let inputResults = extractInputValues()
         print("Final results... \(inputResults.email), \(inputResults.password)")
+        let hashed = hashString(name: "SHA1", string: inputResults.email)
+        print("Hashed...\(hashed! as NSData)")
+        print()
+        let pseudoUniqueID = getIDFromByteArray(bytes: inputResults.email.asciiArray)
+        
+        
     }
     
     func extractInputValues() -> (email: String, password: String) {
