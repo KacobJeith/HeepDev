@@ -138,3 +138,26 @@ func drawLineGeneral(start: CGPoint, finish: CGPoint, color: UIColor = UIColor.b
     return shapeLayer
 }
 
+func insetTextView(frame: CGRect, placeholderText: String, keyboardType: UIKeyboardType = .default) -> UIView {
+    let insetView = UIView(frame: frame)
+    insetView.backgroundColor = UIColor(white: 0.9, alpha: 1)
+    insetView.layer.cornerRadius = 5
+    
+    let emailTextField: UITextField = {
+        let text = UITextField()
+        text.frame = CGRect(x: 10,
+                            y: 2.5,
+                            width: insetView.frame.width - 20,
+                            height: insetView.frame.height - 5)
+        
+        text.placeholder = "email"
+        text.textColor = UIColor.darkGray
+        text.keyboardType = .emailAddress
+        
+        return text
+    }()
+    
+    insetView.addSubview(emailTextField)
+    return insetView
+}
+
