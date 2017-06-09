@@ -30,55 +30,100 @@ class EmailLoginView : UIViewController {
         super.viewDidLoad()
         
         self.view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
-        
+        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self,
+                                                              action: #selector(exitModalView)))
+        self.view.addSubview(addSubview())
+    }
+    
+    func addSubview() -> UIView {
         let subview = UIView(frame: subviewFrame)
         subview.addGestureRecognizer(UITapGestureRecognizer(target: nil, action: nil))
         subview.backgroundColor = .white
         subview.layer.cornerRadius = 5
         subview.clipsToBounds = true
         
-        var newUserInputFrame = CGRect(x: 20,
-                                       y: (subview.bounds.height / 2) - 40,
-                                       width: subview.bounds.width - 40,
-                                       height: 35)
+        let startFrame = CGRect(x: 20,
+                                y: (subview.bounds.height / 2) - 40,
+                                width: subview.bounds.width - 40,
+                                height: 35)
         
-        let emailTextBox = insetTextView(frame: newUserInputFrame,
-                                         placeholderText: "email",
-                                         keyboardType: .emailAddress,
-                                         tag: 0)
-        
-        newUserInputFrame = CGRect(x: newUserInputFrame.minX,
-                                   y: newUserInputFrame.maxY + 10,
-                                   width: newUserInputFrame.width,
-                                   height: newUserInputFrame.height)
-        
-        let passwordTextBox = insetTextView(frame: newUserInputFrame,
-                                            placeholderText: "password",
-                                            secure: true,
-                                            tag: 1)
-        
-        newUserInputFrame = CGRect(x: newUserInputFrame.minX,
-                                   y: newUserInputFrame.maxY + 10,
-                                   width: newUserInputFrame.width / 2 - 5,
-                                   height: newUserInputFrame.height)
-        
-        let cancelButton = createActionButton(frame: newUserInputFrame, title: "cancel", action: #selector(exitModalView))
-        
-        newUserInputFrame = CGRect(x: newUserInputFrame.maxX + 10,
-                                   y: newUserInputFrame.minY,
-                                   width: newUserInputFrame.width,
-                                   height: newUserInputFrame.height)
-        
-        let submitButton = createActionButton(frame: newUserInputFrame, title: "submit", action: #selector(submitValues))
+        let emailTextBox = addEmailTextBox(frame: startFrame)
+        let passwordTextBox = addPasswordTextBox(frame: emailTextBox.frame)
+        let cancelButton = addCancelButton(frame: passwordTextBox.frame)
+        let submitButton = addSubmitButton(frame: cancelButton.frame)
         
         subview.addSubview(addTitle())
-        subview.addSubview(emailTextBox)
-        subview.addSubview(passwordTextBox)
-        subview.addSubview(cancelButton)
-        subview.addSubview(submitButton)
+        subview.addSubview(emailTextBox.view)
+        subview.addSubview(passwordTextBox.view)
+        subview.addSubview(cancelButton.view)
+        subview.addSubview(submitButton.view)
         
-        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(exitModalView)))
-        self.view.addSubview(subview)
+        return subview
+    }
+    
+    func addTitle() -> UILabel {
+        let title = UILabel(frame: CGRect(x: 0,
+                                          y: 0,
+                                          width: subviewFrame.width,
+                                          height: 50))
+        title.text = "Login Using Email"
+        title.adjustsFontSizeToFitWidth = true
+        title.contentMode = .center
+        title.textAlignment = .center
+        title.textColor = UIColor.darkGray
+        
+        return title
+    }
+    
+    func addEmailTextBox(frame: CGRect) -> (view: UIView, frame: CGRect) {
+        let view = insetTextView(frame: frame,
+                                 placeholderText: "email",
+                                 keyboardType: .emailAddress,
+                                 tag: 0)
+        
+        return (view: view, frame: frame)
+        
+    }
+    
+    func addPasswordTextBox(frame: CGRect) -> (view: UIView, frame: CGRect) {
+        let nextFrame = CGRect(x: frame.minX,
+                               y: frame.maxY + 10,
+                               width: frame.width,
+                               height: frame.height)
+        
+        let view = insetTextView(frame: nextFrame,
+                                 placeholderText: "password",
+                                 secure: true,
+                                 tag: 1)
+        
+        return (view: view, frame: nextFrame)
+    }
+    
+    func addCancelButton(frame: CGRect) -> (view: UIButton, frame: CGRect) {
+        let nextFrame = CGRect(x: frame.minX,
+                               y: frame.maxY + 10,
+                               width: frame.width / 2 - 5,
+                               height: frame.height)
+        
+        let cancelButton = createActionButton(frame: nextFrame,
+                                              title: "cancel",
+                                              action: #selector(exitModalView))
+        
+        return (view: cancelButton, frame: nextFrame)
+    }
+    
+    func addSubmitButton(frame: CGRect) -> (view: UIButton, frame: CGRect) {
+        let nextFrame = CGRect(x: frame.maxX + 10,
+                               y: frame.minY,
+                               width: frame.width,
+                               height: frame.height)
+        
+        let submitButton = createActionButton(frame: nextFrame,
+                                              title: "submit",
+                                              action: #selector(submitValues))
+        
+        return (view: submitButton, frame: nextFrame)
+        
     }
     
     func createActionButton(frame: CGRect, title: String, action: Selector) -> UIButton {
@@ -88,7 +133,9 @@ class EmailLoginView : UIViewController {
         button.backgroundColor = UIColor(white: 0.85, alpha: 1)
         button.setTitleColor(UIColor.white, for: .normal)
         button.layer.cornerRadius = 5
-        button.addTarget(self, action: action, for: .primaryActionTriggered)
+        button.addTarget(self,
+                         action: action,
+                         for: .primaryActionTriggered)
         
         return button
     }
@@ -128,19 +175,7 @@ class EmailLoginView : UIViewController {
     }
     
     
-    func addTitle() -> UILabel {
-        let title = UILabel(frame: CGRect(x: 0,
-                                          y: 0,
-                                          width: subviewFrame.width,
-                                          height: 50))
-        title.text = "Login Using Email"
-        title.adjustsFontSizeToFitWidth = true
-        title.contentMode = .center
-        title.textAlignment = .center
-        title.textColor = UIColor.darkGray
-        
-        return title
-    }
+    
     
     func exitModalView() {
         self.view.window!.rootViewController?.dismiss(animated: false, completion: nil)
