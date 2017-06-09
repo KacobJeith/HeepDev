@@ -15,6 +15,7 @@ class LoginOptionsView: UIViewController, UICollectionViewDataSource, UICollecti
     
     var collectionView: UICollectionView!
     var prevView = AccountView()
+    var subviewFrame = CGRect()
     private let reuseIdentifier = "Cell"
     
     override func viewDidLoad() {
@@ -25,10 +26,12 @@ class LoginOptionsView: UIViewController, UICollectionViewDataSource, UICollecti
         self.view.addGestureRecognizer(tap)
         
         let subview = UIView()
-        subview.frame = CGRect(x: self.view.frame.width/6,
-                                 y: self.view.frame.height/3,
-                                 width: 2 * self.view.bounds.width/3,
-                                 height: self.view.bounds.height/3)
+        subviewFrame = CGRect(x: self.view.frame.width/6,
+                             y: self.view.frame.height/3,
+                             width: 2 * self.view.bounds.width/3,
+                             height: self.view.bounds.height/3)
+        
+        subview.frame = subviewFrame
         subview.addGestureRecognizer(UITapGestureRecognizer(target: nil, action: nil))
         subview.layer.cornerRadius = 5
         subview.clipsToBounds = true
@@ -176,6 +179,14 @@ class LoginOptionsView: UIViewController, UICollectionViewDataSource, UICollecti
 extension LoginOptionsView {
     func loginWithEmail() {
         print("Login with email...")
+        openEmailLogin()
+    }
+    
+    func openEmailLogin() {
+        let modalViewController = EmailLoginView(frame: subviewFrame)
+        modalViewController.modalPresentationStyle = .overCurrentContext
+        present(modalViewController, animated: true, completion: nil)
+        
     }
 }
 
@@ -307,10 +318,14 @@ extension LoginOptionsView : LoginButtonDelegate {
     
     func exitModalView() {
         print("exiting")
+        self.view.window!.rootViewController?.dismiss(animated: false, completion: nil)
+        /*
         self.dismiss(animated: true, completion: {
-            self.prevView.exitModalView()
-        })
+            self.exitModalView()
+        })*/
     }
+    
+    
 }
 
 

@@ -136,7 +136,7 @@ class AccountView: UIViewController {
         
         modalViewController.modalPresentationStyle = .overCurrentContext
         present(modalViewController, animated: true, completion: nil)
-        print("facebook?")
+
     }
     
     func addLogoutButton() {
