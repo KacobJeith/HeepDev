@@ -24,6 +24,9 @@ const unsigned char ErrorOpCode = 0x11;
 
 const unsigned char FragmentOpCode = 0x12;
 
+const unsigned char AddMOPOpCode = 0x13;
+const unsigned char DynamicMemorySizeOpCode = 0x14;
+
 unsigned char deviceMemory [MAX_MEMORY];
 unsigned int curFilledMemory = 0; // Indicate the curent filled memory. 
 						 // Also serve as a place holder to 
@@ -70,6 +73,7 @@ unsigned long AddCharToBuffer(unsigned char* buffer, unsigned long startPoint, u
 void AddNewCharToMemory(unsigned char newMem)
 {
 	curFilledMemory = AddCharToBuffer(deviceMemory, curFilledMemory, newMem);
+	memoryChanged = 1;
 }
 
 void GetDeviceIDOctets(unsigned long deviceID, unsigned char &octet4, unsigned char &octet3, unsigned char &octet2, unsigned char &octet1)

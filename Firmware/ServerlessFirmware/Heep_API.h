@@ -8,6 +8,32 @@
 #include "Simulation_NonVolatileMemory.h"
 #endif
 
+// Prototypes
+void CommitMemory();
+
+unsigned char clearMemory = 0;
+void SetupHeepDevice(char* deviceName)
+{
+	if(clearMemory)
+	{
+		ClearMemory();
+		SetDeviceName(deviceName);
+		CommitMemory();
+	}
+	else
+	{
+		ReadMemory(deviceMemory, curFilledMemory);
+		FillVertexListFromMemory();
+	}
+}
+
+void FactoryReset(char* deviceName)
+{
+	clearMemory = 1;
+	SetupHeepDevice(deviceName);
+	clearMemory = 0;
+}
+
 void SendOutputByID(unsigned char controlID, unsigned int value)
 {
 	SetControlValueByID(controlID, value);

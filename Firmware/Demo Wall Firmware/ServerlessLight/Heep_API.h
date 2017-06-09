@@ -8,6 +8,20 @@
 #include "Simulation_NonVolatileMemory.h"
 #endif
 
+unsigned char clearMemory = 0;
+void SetupHeepDevice(char* deviceName)
+{
+	if(clearMemory)
+	{
+		ClearMemory();
+		SetDeviceName(deviceName);
+	}
+	else
+	{
+		ReadMemory(deviceMemory, curFilledMemory);
+	}
+}
+
 void SendOutputByID(unsigned char controlID, unsigned int value)
 {
 	SetControlValueByID(controlID, value);
