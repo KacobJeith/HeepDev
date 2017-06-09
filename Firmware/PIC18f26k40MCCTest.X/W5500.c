@@ -38,6 +38,13 @@ void InitializeW5500()
     RESET_PIN = 1;
     
     ResetW5500();
+    
+    W5500SoftwareReset();
+    for(int i = 0; i < NUMBER_OF_SOCKETS; i++)
+    {
+        SetSocketRXSize(i, 2);
+        SetSocketTXSize(i, 2);
+    }
 }
 
 void ResetW5500()
@@ -179,6 +186,28 @@ void SetSocketTXSize(uint8_t socket, uint8_t size)
     buf[0] = size;
     
     WriteToW5500(Sn_RXBUF_SIZE, cntl_byte, buf, 1);
+}
+
+void SetMR(uint8_t newVal)
+{
+    uint8_t buf [1];
+    buf[0] = newVal;
+    WriteToW5500(MR, 0b00000100, buf, 1);
+}
+
+uint8_t ReadMR()
+{
+    uint8_t buf [1];
+    ReadFromW5500(MR, 0x00, buf, 1);
+    
+    return buf[0];
+}
+
+void W5500SoftwareReset()
+{
+    uint8_t curMR = ReadMR();
+    
+    SetMR( curMR | 0x80 );
 }
 
 uint8_t TestW5500RegisterWriting()

@@ -24,6 +24,11 @@ void ReadDefaultGateway(uint8_t* buf);
 void SetSocketRXSize(uint8_t socket, uint8_t size);
 void SetSocketTXSize(uint8_t socket, uint8_t size);
 
+void SetMR(uint8_t newVal);
+uint8_t ReadMR();
+
+void W5500SoftwareReset();
+
 uint8_t TestW5500RegisterWriting();
 
 #endif	/* W5500_H */
