@@ -157,7 +157,7 @@ func getIDFromByteArray(bytes: [UInt32]) -> Int {
 }
 
 func seedNewUserAccount(name: String,
-                        imageURL: String = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3rUzcovzwqgHbGUXAnEe6LP8GxT3ea43R4590LhkcS7RFwjdbpQ",
+                        imageURL: String = "https://lorempixel.com/400/400/cats/",
                         id: String) -> User {
         let realm = try! Realm(configuration: configApp)
         let app = realm.object(ofType: App.self, forPrimaryKey: 0)
