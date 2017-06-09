@@ -158,6 +158,12 @@ uint8_t TestW5500RegisterWriting()
     uint8_t writeMACBuf [6] = {123, 231, 222, 102, 111, 4};
     uint8_t readMACBuf[6];
     
+    uint8_t writeSourceIPBuf [4] = {52,25,64,11};
+    uint8_t readSourceIPBuf [4];
+    
+    uint8_t writeGatewayBuf [4] = {57,65,61,42};
+    uint8_t readGatewayBuf [4];
+    
     uint8_t success = 0;
     uint8_t numTests = 0;
     
@@ -167,9 +173,19 @@ uint8_t TestW5500RegisterWriting()
     WriteMacAddress(writeMACBuf);
     ReadMacAddress(readMACBuf);
     
+    WriteSourceIP(writeSourceIPBuf);
+    ReadSourceIP(readSourceIPBuf);
+    
+    WriteDefaultGateway(writeGatewayBuf);
+    ReadDefaultGateway(readGatewayBuf);
+    
     success += AreBufsEqual(writeSubBuff, readSubBuf, 4);
     numTests++;
     success += AreBufsEqual(writeMACBuf, readMACBuf, 6);
+    numTests++;
+    success += AreBufsEqual(writeSourceIPBuf, readSourceIPBuf, 4);
+    numTests++;
+    success += AreBufsEqual(writeGatewayBuf, readGatewayBuf, 4);
     numTests++;
     
     if(numTests == success)
