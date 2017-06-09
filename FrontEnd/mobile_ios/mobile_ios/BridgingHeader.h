@@ -10,6 +10,7 @@
 #define BridgingHeader_h
 #include <ifaddrs.h>
 #import <SystemConfiguration/CaptiveNetwork.h>
+#import <CommonCrypto/CommonCrypto.h>
 
 
 #endif /* BridgingHeader_h */

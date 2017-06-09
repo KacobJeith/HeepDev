@@ -31,6 +31,7 @@
 		B06DE4371EE4AE7600680A35 /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06DE4361EE4AE7600680A35 /* AccountView.swift */; };
 		B06DE43D1EE86FCD00680A35 /* LoginOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06DE43C1EE86FCD00680A35 /* LoginOptionsView.swift */; };
 		B06DE43F1EE8C43800680A35 /* EmailLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06DE43E1EE8C43800680A35 /* EmailLoginView.swift */; };
+		B06DE4431EEA2B2E00680A35 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B06DE4421EEA2B2E00680A35 /* Security.framework */; };
 		D7A8C048C69A2C379A20948F /* Pods_mobile_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 321E9915FF90A4E39B163211 /* Pods_mobile_ios.framework */; };
 		EEA944211EAA7D880022588B /* HAPIMemoryParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEA944201EAA7D880022588B /* HAPIMemoryParser.swift */; };
 		EEA944231EAA93950022588B /* HeepConnections.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEA944221EAA93950022588B /* HeepConnections.swift */; };
@@ -86,6 +87,7 @@
 		B06DE4361EE4AE7600680A35 /* AccountView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
 		B06DE43C1EE86FCD00680A35 /* LoginOptionsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginOptionsView.swift; sourceTree = "<group>"; };
 		B06DE43E1EE8C43800680A35 /* EmailLoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailLoginView.swift; sourceTree = "<group>"; };
+		B06DE4421EEA2B2E00680A35 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		B7918E77C7C5DB9DEBC8629A /* Pods-mobile_iosUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mobile_iosUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-mobile_iosUITests/Pods-mobile_iosUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		E1962A9C5DE87696544789AE /* Pods-mobile_iosTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mobile_iosTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-mobile_iosTests/Pods-mobile_iosTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E4A427428745AEB7A4877647 /* Pods-mobile_ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mobile_ios.release.xcconfig"; path = "Pods/Target Support Files/Pods-mobile_ios/Pods-mobile_ios.release.xcconfig"; sourceTree = "<group>"; };
@@ -99,6 +101,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B06DE4431EEA2B2E00680A35 /* Security.framework in Frameworks */,
 				D7A8C048C69A2C379A20948F /* Pods_mobile_ios.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -193,6 +196,7 @@
 		A0A3D89C112B1587508A369D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B06DE4421EEA2B2E00680A35 /* Security.framework */,
 				321E9915FF90A4E39B163211 /* Pods_mobile_ios.framework */,
 				629528E8C86E48C60E29C454 /* Pods_mobile_iosTests.framework */,
 				9455865AC2AC2771C588F666 /* Pods_mobile_iosUITests.framework */,

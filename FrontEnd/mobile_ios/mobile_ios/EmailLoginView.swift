@@ -12,6 +12,8 @@ import RealmSwift
 class EmailLoginView : UIViewController {
     
     var subviewFrame = CGRect()
+    var userEmail = String()
+    var userPassword = String()
     
     init(frame: CGRect) {
         super.init(nibName: nil, bundle: nil)
@@ -42,7 +44,8 @@ class EmailLoginView : UIViewController {
         
         let emailTextBox = insetTextView(frame: newUserInputFrame,
                                          placeholderText: "email",
-                                         keyboardType: .emailAddress)
+                                         keyboardType: .emailAddress,
+                                         tag: 0)
         
         newUserInputFrame = CGRect(x: newUserInputFrame.minX,
                                    y: newUserInputFrame.minY + 45,
@@ -51,15 +54,47 @@ class EmailLoginView : UIViewController {
         
         let passwordTextBox = insetTextView(frame: newUserInputFrame,
                                             placeholderText: "password",
-                                            secure: true)
+                                            secure: true,
+                                            tag: 1)
         
         subview.addSubview(addTitle())
         subview.addSubview(emailTextBox)
         subview.addSubview(passwordTextBox)
-        
+        subview.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(submitValues)))
+        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(exitModalView)))
         self.view.addSubview(subview)
     }
     
+    func submitValues(gesture: UITapGestureRecognizer) {
+        let inputResults = extractInputValues()
+        print("Final results... \(inputResults.email), \(inputResults.password)")
+    }
+    
+    func extractInputValues() -> (email: String, password: String) {
+        var email = "0"
+        var password = "0"
+        
+        for subview in self.view.subviews {
+            for subsubview in subview.subviews {
+                for subsubsubview in subsubview.subviews {
+                    if let textField = subsubsubview as? UITextField {
+                        if textField.tag == 0 {
+                            email = textField.text!
+                            
+                        } else if textField.tag == 1 {
+                            password = textField.text!
+                        }
+                        
+                        print(textField.text)
+                    } else {
+                        print("not a textfield")
+                    }
+                }
+            }
+        }
+        
+        return (email: email, password: password)
+    }
     
     
     func addTitle() -> UILabel {

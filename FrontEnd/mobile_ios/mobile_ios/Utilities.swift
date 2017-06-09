@@ -10,6 +10,7 @@ import UIKit
 import Foundation
 import SystemConfiguration.CaptiveNetwork
 import RealmSwift
+//import CommonCrypto.CommonCrypto
 
 func flushApp() {
     let realmApp = try! Realm(configuration: configApp)
@@ -111,5 +112,30 @@ func nameVertex(tx: DeviceControl?, rx: DeviceControl?) -> String {
     }
     
     return String(describing: (tx?.uniqueID)!) + String(describing: (rx?.uniqueID)!)
+}
+
+func hash(name:String, string:String) -> Data? {
+    let data = string.data(using:.utf8)!
+    return hash(name:name, data:data)
+}
+
+func hash(name:String, data:Data) -> Data? {
+    let algos = ["MD2":    (CC_MD2,    CC_MD2_DIGEST_LENGTH),
+                 "MD4":    (CC_MD4,    CC_MD4_DIGEST_LENGTH),
+                 "MD5":    (CC_MD5,    CC_MD5_DIGEST_LENGTH),
+                 "SHA1":   (CC_SHA1,   CC_SHA1_DIGEST_LENGTH),
+                 "SHA224": (CC_SHA224, CC_SHA224_DIGEST_LENGTH),
+                 "SHA256": (CC_SHA256, CC_SHA256_DIGEST_LENGTH),
+                 "SHA384": (CC_SHA384, CC_SHA384_DIGEST_LENGTH),
+                 "SHA512": (CC_SHA512, CC_SHA512_DIGEST_LENGTH)]
+    guard let (hashAlgorithm, length) = algos[name]  else { return nil }
+    var hashData = Data(count: Int(length))
+    
+    _ = hashData.withUnsafeMutableBytes {digestBytes in
+        data.withUnsafeBytes {messageBytes in
+            hashAlgorithm(messageBytes, CC_LONG(data.count), digestBytes)
+        }
+    }
+    return hashData
 }
 
