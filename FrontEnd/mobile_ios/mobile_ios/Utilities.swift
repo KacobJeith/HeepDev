@@ -9,6 +9,39 @@
 import UIKit
 import Foundation
 import SystemConfiguration.CaptiveNetwork
+import RealmSwift
+//import CommonCrypto.CommonCrypto
+
+func flushApp() {
+    let realmApp = try! Realm(configuration: configApp)
+    try! realmApp.write {
+        realmApp.deleteAll()
+    }
+    
+    let realmUser = try! Realm(configuration: configUser)
+    try! realmUser.write {
+        realmUser.deleteAll()
+    }
+}
+
+func initializeApp() {
+    let realm = try! Realm(configuration: configApp)
+    
+    let app = realm.object(ofType: App.self, forPrimaryKey: 0)
+    
+    if app == nil {
+        print("Adding empty app")
+        let initialApp = App()
+        let initialUser = User()
+        
+        
+        try! realm.write {
+            realm.add(initialApp)
+            realm.add(initialUser)
+        }
+    }
+    
+}
 
 func SuggestIconFromName(name: String) -> String {
     var suggestion = "switch"
@@ -79,5 +112,97 @@ func nameVertex(tx: DeviceControl?, rx: DeviceControl?) -> String {
     }
     
     return String(describing: (tx?.uniqueID)!) + String(describing: (rx?.uniqueID)!)
+}
+
+func hashString(name:String, string:String) -> Data? {
+    let data = string.data(using:.utf8)!
+    return hashData(name:name, data:data)
+}
+
+func hashData(name:String, data:Data) -> Data? {
+    let algos = ["MD2":    (CC_MD2,    CC_MD2_DIGEST_LENGTH),
+                 "MD4":    (CC_MD4,    CC_MD4_DIGEST_LENGTH),
+                 "MD5":    (CC_MD5,    CC_MD5_DIGEST_LENGTH),
+                 "SHA1":   (CC_SHA1,   CC_SHA1_DIGEST_LENGTH),
+                 "SHA224": (CC_SHA224, CC_SHA224_DIGEST_LENGTH),
+                 "SHA256": (CC_SHA256, CC_SHA256_DIGEST_LENGTH),
+                 "SHA384": (CC_SHA384, CC_SHA384_DIGEST_LENGTH),
+                 "SHA512": (CC_SHA512, CC_SHA512_DIGEST_LENGTH)]
+    guard let (hashAlgorithm, length) = algos[name]  else { return nil }
+    var hashData = Data(count: Int(length))
+    
+    _ = hashData.withUnsafeMutableBytes {digestBytes in
+        data.withUnsafeBytes {messageBytes in
+            hashAlgorithm(messageBytes, CC_LONG(data.count), digestBytes)
+        }
+    }
+    return hashData
+}
+
+extension String {
+    var asciiArray: [UInt32] {
+        return unicodeScalars.filter{$0.isASCII}.map{$0.value}
+    }
+}
+
+func getIDFromByteArray(bytes: [UInt32]) -> Int {
+    let id1: Int = Int(bytes[0])
+    let id2: Int = Int(bytes[1])
+    let id3: Int = Int(bytes[2])
+    let id4: Int = Int(bytes[3])
+    
+    let finalID = (id1 << 24) + (id2 << 16) + (id3 << 8) + id4
+    
+    return finalID
+}
+
+func seedNewUserAccount(name: String,
+                        imageURL: String = "https://lorempixel.com/400/400/cats/",
+                        id: String) -> User {
+        let realm = try! Realm(configuration: configApp)
+        let app = realm.object(ofType: App.self, forPrimaryKey: 0)
+        let newUser = User()
+        //print(actualInfo)
+        
+        newUser.userID = Int(id)!
+        newUser.facebookID = Int(id)!
+        newUser.name = name
+        newUser.iconURL = imageURL
+        print(newUser)
+        
+        try! realm.write {
+            app?.activeUser = Int(id)!
+            realm.add(newUser,
+                      update: true)
+        }
+        
+        let iconData = getUserIcon(iconURL: newUser.iconURL)
+        
+        try! realm.write {
+            
+            newUser.icon = iconData
+        }
+        print("After getting image \(newUser)")
+    
+    return newUser
+}
+
+func getUserIcon(iconURL: String) -> NSData {
+    let url = URL(string: iconURL)
+    let data = try? Data(contentsOf: url!)
+    
+    return data! as NSData
+}
+
+func loginToUserRealm(user: Int) {
+    let realmApp = try! Realm(configuration: configApp)
+    let app = realmApp.object(ofType: App.self, forPrimaryKey: 0)
+    
+    try! realmApp.write {
+        app?.activeUser = user
+    }
+    
+    configUser.fileURL = configUser.fileURL!.deletingLastPathComponent().appendingPathComponent("\(String(describing: user)).realm")
+    
 }
 

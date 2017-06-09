@@ -3,7 +3,6 @@ import RealmSwift
 
 class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionViewDelegate {
     
-    let realm = try! Realm()
     var collectionView: UICollectionView!
     var devices: [Device] = []
     var controls = List<DeviceControl>()
@@ -28,6 +27,8 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
                      thisGroup: Group,
                      indexPath: IndexPath) {
         self.init()
+        
+        let realm = try! Realm(configuration: configUser)
         
         self.thisBSSID = bssid
         self.cellFrame = cellFrame
@@ -270,7 +271,7 @@ extension VertexEditCell {
     func commitDeleteVertex() {
         
         
-        let realm = try! Realm(configuration: config)
+        let realm = try! Realm(configuration: configUser)
         
         for vertex in vertexDictToDelete {
             if vertex.value == true {
@@ -292,7 +293,7 @@ extension VertexEditCell {
         if activeVertex.rx != nil && activeVertex.tx != nil {
             
             print("Adding Vertex!")
-            let realm = try! Realm(configuration: config)
+            let realm = try! Realm(configuration: configUser)
             
             let vertexID = nameVertex(tx: activeVertex.tx, rx: activeVertex.rx)
             activeVertex.vertexID = vertexID
@@ -323,7 +324,7 @@ extension VertexEditCell {
                             if check! == true {
                                 
                                 vertexDictToDelete[vertexName] = true
-                                let realm = try! Realm(configuration: config)
+                                let realm = try! Realm(configuration: configUser)
                                 let thisVertex = realm.object(ofType: Vertex.self,
                                                               forPrimaryKey: vertexName)!
                                 let generator = UIImpactFeedbackGenerator(style: .medium)
@@ -519,7 +520,7 @@ extension VertexEditCell {
         }
         
         
-        let realm = try! Realm()
+        let realm = try! Realm(configuration: configUser)
         let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl)
         
         for eachControl in thisGroup.controls {
@@ -564,6 +565,8 @@ extension VertexEditCell {
     
     
     func handlePinch(gestureRecognizer: UIPinchGestureRecognizer) {
+        let realm = try! Realm(configuration: configUser)
+        
         let myView = self.viewWithTag(thisGroup.selectedControl)!
         let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl)!
         myView.transform = CGAffineTransform(scaleX: thisControl.scale * gestureRecognizer.scale,
@@ -593,7 +596,7 @@ extension VertexEditCell {
 extension VertexEditCell {
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         print("End scrollView Deceleration")
-        let realm = try! Realm()
+        let realm = try! Realm(configuration: configUser)
         
         try! realm.write {
             thisGroup.contentOffsetX = collectionView.contentOffset.x
@@ -604,7 +607,7 @@ extension VertexEditCell {
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate {
             print("End scrollView Dragging")
-            let realm = try! Realm()
+            let realm = try! Realm(configuration: configUser)
             
             try! realm.write {
                 thisGroup.contentOffsetX = collectionView.contentOffset.x
@@ -732,7 +735,7 @@ extension VertexEditCell {
     
     func selectThisController(gesture: UITapGestureRecognizer) {
         print((gesture.view?.tag)!)
-        let realm = try! Realm(configuration: config)
+        let realm = try! Realm(configuration: configUser)
         try! realm.write {
             thisGroup.selectedControl = (gesture.view?.tag)!
         }
@@ -740,7 +743,7 @@ extension VertexEditCell {
     }
     
     func saveSelectedSprite() {
-        let realm = try! Realm(configuration: config)
+        let realm = try! Realm(configuration: configUser)
         
         let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl)!
         let myView = self.viewWithTag(thisGroup.selectedControl)!

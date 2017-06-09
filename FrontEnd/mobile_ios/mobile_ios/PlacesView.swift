@@ -12,7 +12,6 @@ import RealmSwift
 class PlacesView: UIViewController {
     var notificationToken: NotificationToken? = nil
     
-    let realm = try! Realm(configuration: config)
     var activelyPanning = Int()
     var searchTimeout = 4
     var bssids = [String]()
@@ -37,6 +36,8 @@ class PlacesView: UIViewController {
                                      style: .plain,
                                      target: self,
                                      action: #selector(searchForHeepDevices))
+                
+        self.navigationItem.rightBarButtonItem = getActiveUserIcon()
         
         self.toolbarItems = [flush, spacer,  search, spacer]
 
@@ -63,12 +64,13 @@ class PlacesView: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         self.title = "My Heep Zones"
         self.initRealmNotification()
+        self.reloadView()
         
     }
     
 
     func addPlaces() {
-        
+        let realm = try! Realm(configuration: configUser)
         let currentWifi = currentWifiInfo()
         let thisWifiCheck = realm.objects(Place.self).filter("bssid == %s", currentWifi.bssid)
         if (thisWifiCheck.count == 0) {
@@ -90,17 +92,27 @@ class PlacesView: UIViewController {
     
     
     func addPlaceToRealm() {
+        //let realmApp = try! Realm(configuration: configApp)
+        let realm = try! Realm(configuration: configUser)
+        
         let currentWifi = currentWifiInfo()
         let allGroups = realm.objects(Group.self)
+        //let app = realmApp.object(ofType: App.self, forPrimaryKey: 0)
         
         let firstGroupInPlace = Group()
         firstGroupInPlace.place = currentWifi.bssid
         firstGroupInPlace.name = "My First Room"
-        firstGroupInPlace.id = allGroups.max(ofProperty: "id")! + 1
+        if allGroups.count > 0 {
+            
+            firstGroupInPlace.id = allGroups.max(ofProperty: "id")! + 1
+        } else {
+            firstGroupInPlace.id = 1
+        }
         
         let newPlace = Place()
         newPlace.ssid = currentWifi.ssid
         newPlace.bssid = currentWifi.bssid
+        //newPlace.id = currentWifi.bssid + String(describing: app?.activeUser)
         newPlace.name = currentWifi.ssid
         
         try! realm.write {
@@ -141,6 +153,7 @@ class PlacesView: UIViewController {
     }
     
     func enterPlace(sender: UIButton) {
+        let realm = try! Realm(configuration: configUser)
         let enterPlace = realm.object(ofType: Place.self, forPrimaryKey: bssids[sender.tag - 1])
         
         print("entering \(String(describing: enterPlace?.name))")
@@ -170,7 +183,7 @@ class PlacesView: UIViewController {
         } else if gesture.state == UIGestureRecognizerState.ended {
             if activelyPanning != Int(){
                 
-                let realm = try! Realm(configuration: config)
+                let realm = try! Realm(configuration: configUser)
                 let thisPlace = realm.object(ofType: Place.self, forPrimaryKey: bssids[activelyPanning - 1])
                 try! realm.write {
                     thisPlace?.x = (thisPlace?.x)! + gesture.translation(in: self.view).x
@@ -208,7 +221,7 @@ class PlacesView: UIViewController {
     
     func deleteAll() {
         print("Deleting all Devices")
-        let realm = try! Realm(configuration: config)
+        let realm = try! Realm(configuration: configUser)
         try! realm.write {
          
             realm.deleteAll()
@@ -232,21 +245,16 @@ extension PlacesView {
     
     func searchForHeepDevices() {
         HeepConnections().SearchForHeepDeviecs()
-        /*
-        Timer.scheduledTimer(timeInterval: 5.0,
-                             target: self,
-                             selector: #selector(launchSearch),
-                             userInfo: nil,
-                             repeats: true)*/
         
     }
-    
+        
     func launchSearch() {
         print("Searching...")
         HeepConnections().SearchForHeepDeviecs()
     }
     
     func initRealmNotification() {
+        let realm = try! Realm(configuration: configUser)
         let places = realm.objects(Place.self)
         
         notificationToken = places.addNotificationBlock { [weak self] (changes: RealmCollectionChange) in
@@ -262,5 +270,49 @@ extension PlacesView {
             default: break
             }
         }
+    }
+    
+    func userLogin() {
+        // Open modal view that gives login options
+        let modalViewController = AccountView()
+        modalViewController.placesView = self
+        
+        modalViewController.modalPresentationStyle = .overCurrentContext
+        present(modalViewController, animated: false, completion: nil)
+        print("facebook?")
+        
+    }
+    
+    func getActiveUserIcon() -> UIBarButtonItem {
+        let realm = try! Realm(configuration: configApp)
+        let app = realm.object(ofType: App.self, forPrimaryKey: 0)
+        let activeUser = realm.object(ofType: User.self, forPrimaryKey: app?.activeUser)
+        
+        var userImage = UIImage(named: "female")
+        
+        if (activeUser?.icon.length)! > 0 {
+            userImage = UIImage(data: (activeUser?.icon)! as Data)
+        }
+        
+        
+        let userButton = UIButton(frame: CGRect(x: 0, y: 0,
+                                                width: (navigationController?.navigationBar.bounds.height)!,
+                                                height: (navigationController?.navigationBar.bounds.height)!))
+        
+        userButton.imageView?.contentMode = .scaleAspectFit
+        userButton.setImage(userImage, for: .normal)
+        userButton.layer.borderWidth = 1
+        userButton.layer.borderColor = UIColor.white.cgColor
+        userButton.layer.shadowColor = UIColor.lightGray.cgColor
+        userButton.layer.shadowOffset = CGSize(width: 1, height: 1)
+        userButton.layer.shadowRadius = 2
+        userButton.layer.cornerRadius = 0.5 * userButton.bounds.size.width
+        userButton.clipsToBounds = true
+        userButton.addTarget(self,
+                             action: #selector(userLogin),
+                             for: .primaryActionTriggered)
+        
+        return UIBarButtonItem(customView: userButton)
+        
     }
 }

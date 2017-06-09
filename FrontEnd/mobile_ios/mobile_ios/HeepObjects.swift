@@ -9,15 +9,26 @@
 import Foundation
 import RealmSwift
 
+// App Realm
+class App: Object {
+    dynamic var phoneID: Int = 0
+    dynamic var activeUser: Int = 0
+    
+    override static func primaryKey() -> String? {
+        return "phoneID"
+    }
+}
+
+// App Realm
 class User: Object {
     
-    var userID: Int = 0
-    var name: String = "Guest"
-    var email: String = ""
-    var password: String = ""
-    var keys = List<Key>()
-    var devices = List<Device>()
-    var places = List<Place>()
+    dynamic var userID: Int = 0
+    dynamic var facebookID: Int = 0
+    dynamic var name: String = "guest"
+    dynamic var email: String = ""
+    dynamic var password: String = ""
+    dynamic var iconURL: String = ""
+    dynamic var icon: NSData = (UIImagePNGRepresentation((UIImage(named: "female"))!))! as NSData
     
     override static func primaryKey() -> String? {
         return "userID"
@@ -25,9 +36,10 @@ class User: Object {
     
 }
 
+// User Realm
 class Key: Object {
-    var deviceID: Int = 0
-    var deviceSecret: Int = 0
+    dynamic var deviceID: Int = 0
+    dynamic var deviceSecret: Int = 0
     
     override static func primaryKey() -> String? {
         return "deviceID"
@@ -35,6 +47,7 @@ class Key: Object {
     
 }
 
+// User Realm
 class Place: Object {
     
     dynamic var ssid: String = "placeholder"
@@ -52,7 +65,9 @@ class Place: Object {
     }
 }
 
+// User Realm
 class Group: Object {
+    
     let controls = List<DeviceControl>()
     dynamic var name: String = "Unassigned"
     dynamic var place: String = "none"
@@ -69,10 +84,12 @@ class Group: Object {
     }
 }
 
+// User Realm
 class Device: Object {
     
     dynamic var name: String = "placeholder"
     dynamic var deviceID: Int = 0
+    dynamic var humanAdmin: Int = 0
     dynamic var version: Int = 0
     dynamic var iconName: String = "lightbulb"
     dynamic var ipAddress: String = "0.0.0.0"
@@ -86,6 +103,7 @@ class Device: Object {
     
 }
 
+// User Realm
 class DeviceControl: Object {
     
     dynamic var deviceID: Int = 0
@@ -111,6 +129,7 @@ class DeviceControl: Object {
     
 }
 
+// User Realm
 class Vertex: Object {
     
     dynamic var tx: DeviceControl?

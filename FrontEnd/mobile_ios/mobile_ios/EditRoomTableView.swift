@@ -15,7 +15,7 @@ class EditRoomView: UITableViewController {
     var notificationTokenVertices: NotificationToken? = nil
     
     let devices: [Device]
-    let realm = try! Realm(configuration: config)
+    let realm = try! Realm(configuration: configUser)
     var roomName: String = ""
     var thisBSSID: String = ""
     var thisGroup: Group
@@ -156,7 +156,7 @@ extension EditRoomView: UIImagePickerControllerDelegate, UINavigationControllerD
         print("Saving Image")
         let imageData = UIImageJPEGRepresentation(image, 0.5)
         
-        let realm = try! Realm()
+        let realm = try! Realm(configuration: configUser)
         
         try! realm.write {
             thisGroup.imageData = imageData! as NSData
@@ -225,7 +225,7 @@ extension EditRoomView {
     func toggleVertexEditState() {
         print("Toggle Vertex Edit")
         
-        let realm = try! Realm(configuration: config)
+        let realm = try! Realm(configuration: configUser)
         
         try! realm.write {
             if thisGroup.selectedControl <= 1 {
