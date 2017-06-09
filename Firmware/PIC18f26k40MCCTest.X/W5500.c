@@ -152,16 +152,16 @@ uint8_t AreBufsEqual(uint8_t* buf1, uint8_t* buf2, uint8_t len)
 
 uint8_t TestW5500RegisterWriting()
 {
-    uint8_t writeSubBuff [4] = {255,255,14,0};
+    uint8_t writeSubBuff [4] = {255,255,255,0};
     uint8_t readSubBuf [4];
     
-    uint8_t writeMACBuf [6] = {123, 231, 222, 102, 111, 4};
+    uint8_t writeMACBuf [6] = {1,3, 4, 16, 25, 7};
     uint8_t readMACBuf[6];
     
-    uint8_t writeSourceIPBuf [4] = {52,25,64,11};
+    uint8_t writeSourceIPBuf [4] = {192,168,1,184};
     uint8_t readSourceIPBuf [4];
     
-    uint8_t writeGatewayBuf [4] = {57,65,61,42};
+    uint8_t writeGatewayBuf [4] = {192,168,1,1};
     uint8_t readGatewayBuf [4];
     
     uint8_t success = 0;
