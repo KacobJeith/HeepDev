@@ -156,3 +156,53 @@ func getIDFromByteArray(bytes: [UInt32]) -> Int {
     return finalID
 }
 
+func seedNewUserAccount(name: String,
+                        imageURL: String = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3rUzcovzwqgHbGUXAnEe6LP8GxT3ea43R4590LhkcS7RFwjdbpQ",
+                        id: String) -> User {
+        let realm = try! Realm(configuration: configApp)
+        let app = realm.object(ofType: App.self, forPrimaryKey: 0)
+        let newUser = User()
+        //print(actualInfo)
+        
+        newUser.userID = Int(id)!
+        newUser.facebookID = Int(id)!
+        newUser.name = name
+        newUser.iconURL = imageURL
+        print(newUser)
+        
+        try! realm.write {
+            app?.activeUser = Int(id)!
+            realm.add(newUser,
+                      update: true)
+        }
+        
+        let iconData = getUserIcon(iconURL: newUser.iconURL)
+        
+        try! realm.write {
+            
+            newUser.icon = iconData
+        }
+        print("After getting image \(newUser)")
+    
+    return newUser
+}
+
+func getUserIcon(iconURL: String) -> NSData {
+    let url = URL(string: iconURL)
+    let data = try? Data(contentsOf: url!)
+    
+    return data! as NSData
+}
+
+func loginToUserRealm(user: Int) {
+    let realmApp = try! Realm(configuration: configApp)
+    let app = realmApp.object(ofType: App.self, forPrimaryKey: 0)
+    
+    try! realmApp.write {
+        app?.activeUser = user
+    }
+    
+    configUser.fileURL = configUser.fileURL!.deletingLastPathComponent().appendingPathComponent("\(String(describing: user)).realm")
+    
+}
+

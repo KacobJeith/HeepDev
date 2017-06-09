@@ -100,8 +100,9 @@ class EmailLoginView : UIViewController {
         print("Hashed...\(hashed! as NSData)")
         print()
         let pseudoUniqueID = getIDFromByteArray(bytes: inputResults.email.asciiArray)
-        
-        
+        seedNewUserAccount(name: "placeholder", id: String(describing: pseudoUniqueID))
+        loginToUserRealm(user: pseudoUniqueID)
+        exitModalView()
     }
     
     func extractInputValues() -> (email: String, password: String) {

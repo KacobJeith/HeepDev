@@ -246,83 +246,22 @@ extension LoginOptionsView : LoginButtonDelegate {
                 }
             }
             
-            /*
-             let graphFriendRequest = GraphRequest(graphPath: "/103528713584037/friends", parameters: params)
-             graphFriendRequest.start { (urlResponse, requestResult) in
-             switch requestResult {
-             case .failed(let error):
-             print(error)
-             case .success(let graphResponse):
-             if let responseDictionary = graphResponse.dictionaryValue {
-             print(responseDictionary)
-             //UserDefaults.standard.set(responseDictionary, forKey: "userInfo")
-             
-             }
-             }
-             }
-             
-             */
-            
         } else {
         }
     }
     
     func seedNewUserFromFacebook(name: String, imageURL: String, id: String) {
-        let realm = try! Realm(configuration: configApp)
-        let app = realm.object(ofType: App.self, forPrimaryKey: 0)
-        let newUser = User()
-        //print(actualInfo)
-        
-        newUser.userID = Int(id)!
-        newUser.facebookID = Int(id)!
-        newUser.name = name
-        newUser.iconURL = imageURL
-        print(newUser)
-        
-        try! realm.write {
-            app?.activeUser = Int(id)!
-            realm.add(newUser,
-                      update: true)
-        }
-        
-        let iconData = getUserIcon(iconURL: newUser.iconURL)
-        
-        try! realm.write {
-            
-            newUser.icon = iconData
-        }
-        print("After getting image \(newUser)")
+        let newUser = seedNewUserAccount(name: name, imageURL: imageURL, id: id)
         
         loginToUserRealm(user: newUser.userID)
-    }
-    
-    func getUserIcon(iconURL: String) -> NSData {
-        let url = URL(string: iconURL)
-        let data = try? Data(contentsOf: url!)
-        
-        return data! as NSData
-    }
-    
-    func loginToUserRealm(user: Int) {
-        let realmApp = try! Realm(configuration: configApp)
-        let app = realmApp.object(ofType: App.self, forPrimaryKey: 0)
-        
-        try! realmApp.write {
-            app?.activeUser = user
-        }
-        
-        configUser.fileURL = configUser.fileURL!.deletingLastPathComponent().appendingPathComponent("\(String(describing: user)).realm")
-        
         exitModalView()
     }
+    
     
     func exitModalView() {
         print("exiting")
         self.view.window!.rootViewController?.dismiss(animated: false, completion: nil)
-        /*
-        self.dismiss(animated: true, completion: {
-            self.exitModalView()
-        })*/
+        
     }
     
     
