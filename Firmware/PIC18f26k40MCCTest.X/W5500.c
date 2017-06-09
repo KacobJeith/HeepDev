@@ -1,6 +1,11 @@
 #include "mcc_generated_files/mcc.h"
 #include "W5500.h"
 
+#define NUMBER_OF_SOCKETS 8
+
+// COMMON REGISTER
+// Mode Register (MR)
+#define MR 0x0000
 // Gateway Address (GAR) - 0x0001->0x0004
 #define GAR0 0x0001
 // Subnet Mask Address (SUBR) - 0x0005->0x0008
@@ -9,6 +14,12 @@
 #define SHAR0 0x0009
 // Source IP Address (SIPR) - 0x000F->0x0012
 #define SIPR 0x000F
+
+// SOCKET REGISTERS
+// Receive Buffer Size Register
+#define Sn_RXBUF_SIZE 0x001E
+// Send Buffer Size Register
+#define Sn_TXBUF_SIZE 0x001F
 
 #define SS_PIN_TRIS TRISCbits.TRISC0
 #define SS_PIN LATCbits.LATC0
@@ -150,6 +161,26 @@ uint8_t AreBufsEqual(uint8_t* buf1, uint8_t* buf2, uint8_t len)
     return 1;
 }
 
+void SetSocketRXSize(uint8_t socket, uint8_t size)
+{
+    uint8_t cntl_byte = (0x0C + (socket<<5));
+    
+    uint8_t buf [1];
+    buf[0] = size;
+    
+    WriteToW5500(Sn_RXBUF_SIZE, cntl_byte, buf, 1);
+}
+
+void SetSocketTXSize(uint8_t socket, uint8_t size)
+{
+    uint8_t cntl_byte = (0x0C + (socket<<5));
+     
+    uint8_t buf [1];
+    buf[0] = size;
+    
+    WriteToW5500(Sn_RXBUF_SIZE, cntl_byte, buf, 1);
+}
+
 uint8_t TestW5500RegisterWriting()
 {
     uint8_t writeSubBuff [4] = {255,255,255,0};
@@ -158,7 +189,7 @@ uint8_t TestW5500RegisterWriting()
     uint8_t writeMACBuf [6] = {1,3, 4, 16, 25, 7};
     uint8_t readMACBuf[6];
     
-    uint8_t writeSourceIPBuf [4] = {192,168,1,184};
+    uint8_t writeSourceIPBuf [4] = {192,168,1,186};
     uint8_t readSourceIPBuf [4];
     
     uint8_t writeGatewayBuf [4] = {192,168,1,1};
