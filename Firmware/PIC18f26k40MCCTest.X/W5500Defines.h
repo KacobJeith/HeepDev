@@ -48,3 +48,20 @@
 #define Sn_CR_SEND_MAC  0x21
 #define Sn_CR_SEND_KEEP 0x22
 #define Sn_CR_RECV      0x40
+
+//Sn SR Bits (Socket Status)
+#define Sn_SR_CLOSED        0x00
+#define Sn_SR_INIT          0x13
+#define Sn_SR_LISTEN        0x14
+#define Sn_SR_SYNSENT       0x15
+#define Sn_SR_SYNRECV       0x16
+#define Sn_SR_ESTABLISHED   0x17
+#define Sn_SR_FIN_WAIT      0x18
+#define Sn_SR_CLOSING       0x1A
+#define Sn_SR_TIME_WAIT     0x1B
+#define Sn_SR_CLOSE_WAIT    0x1C
+#define Sn_SR_LAST_ACK      0x1D
+#define Sn_SR_UDP           0x22
+#define Sn_SR_IPRAW         0x32
+#define Sn_SR_MACRAW        0x42
+#define Sn_SR_PPPOE         0x5F
