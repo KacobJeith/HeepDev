@@ -27,3 +27,24 @@
 #define Sn_RXBUF_SIZE 0x001E
 // Send Buffer Size Register
 #define Sn_TXBUF_SIZE 0x001F
+
+// Socket Register Settings
+// Sn_MR Bits (Socket Mode)
+#define Sn_MR_CLOSE     0x00
+#define Sn_MR_TCP       0x01
+#define Sn_MR_UDP       0x02
+#define Sn_MR_MACRAW    0x04
+#define Sn_MR_PPPOE     0x05
+#define Sn_MR_ND        0x20
+#define Sn_MR_MULTI     0x80
+
+// Sn_CR Bits (Socket Command))
+#define Sn_CR_OPEN      0x01
+#define Sn_CR_LISTEN    0x02
+#define Sn_CR_CONNECT   0x04
+#define Sn_CR_DISCON    0x08
+#define Sn_CR_CLOSE     0x10
+#define Sn_CR_SEND      0x20
+#define Sn_CR_SEND_MAC  0x21
+#define Sn_CR_SEND_KEEP 0x22
+#define Sn_CR_RECV      0x40
