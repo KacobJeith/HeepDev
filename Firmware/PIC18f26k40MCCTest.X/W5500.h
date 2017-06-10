@@ -24,6 +24,9 @@ void ReadDefaultGateway(uint8_t* buf);
 void SetSocketRXSize(uint8_t socket, uint8_t size);
 void SetSocketTXSize(uint8_t socket, uint8_t size);
 
+void SetSingleByteW5500(uint8_t addr, uint8_t value);
+uint8_t ReadSingleByteW5500(uint8_t addr);
+
 void SetMR(uint8_t newVal);
 uint8_t ReadMR();
 

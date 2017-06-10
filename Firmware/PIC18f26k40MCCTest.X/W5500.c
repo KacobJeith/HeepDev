@@ -171,27 +171,33 @@ void SetSocketTXSize(uint8_t socket, uint8_t size)
     WriteToW5500(Sn_RXBUF_SIZE, cntl_byte, buf, 1);
 }
 
-void SetMR(uint8_t newVal)
+void SetSingleByteW5500(uint8_t addr, uint8_t value)
 {
     uint8_t buf [1];
-    buf[0] = newVal;
-    WriteToW5500(MR, 0b00000100, buf, 1);
+    buf[0] = value;
+    WriteToW5500(addr, 0b00000100, buf, 1);
+}
+
+uint8_t ReadSingleByteW5500(uint8_t addr)
+{
+    uint8_t buf [1];
+    ReadFromW5500(addr, 0x00, buf, 1);
+    return buf[0];
+}
+
+void SetMR(uint8_t newVal)
+{
+    SetSingleByteW5500(MR, newVal);
 }
 
 uint8_t ReadMR()
 {
-    uint8_t buf [1];
-    ReadFromW5500(MR, 0x00, buf, 1);
-    
-    return buf[0];
+    return ReadSingleByteW5500(MR);
 }
 
 uint8_t ReadPHYCFGR()
 {
-    uint8_t buf [1];
-    ReadFromW5500(PHYCFGR, 0x00, buf, 1);
-    
-    return buf[0];
+    return ReadSingleByteW5500(PHYCFGR);
 }
 
 void W5500SoftwareReset()
