@@ -48,6 +48,9 @@ void main(void)
         LATAbits.LA0 = 0;
     }
     
+    uint8_t myByte = ReadMR();
+    uint8_t anotherByte =  ReadPHYCFGR();
+    
     while (1)
     {
         // Add your application code

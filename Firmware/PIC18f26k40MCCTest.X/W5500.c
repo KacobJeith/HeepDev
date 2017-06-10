@@ -14,6 +14,8 @@
 #define SHAR0 0x0009
 // Source IP Address (SIPR) - 0x000F->0x0012
 #define SIPR 0x000F
+// Phy configuration Register (PHYCFGR)
+#define PHYCFGR 0x002E
 
 // SOCKET REGISTERS
 // Receive Buffer Size Register
@@ -199,6 +201,14 @@ uint8_t ReadMR()
 {
     uint8_t buf [1];
     ReadFromW5500(MR, 0x00, buf, 1);
+    
+    return buf[0];
+}
+
+uint8_t ReadPHYCFGR()
+{
+    uint8_t buf [1];
+    ReadFromW5500(PHYCFGR, 0x00, buf, 1);
     
     return buf[0];
 }

@@ -27,6 +27,8 @@ void SetSocketTXSize(uint8_t socket, uint8_t size);
 void SetMR(uint8_t newVal);
 uint8_t ReadMR();
 
+uint8_t ReadPHYCFGR();
+
 void W5500SoftwareReset();
 
 uint8_t TestW5500RegisterWriting();
