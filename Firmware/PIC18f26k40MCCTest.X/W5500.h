@@ -47,6 +47,7 @@ void WriteSocketCommand(uint8_t socket, uint8_t value);
 uint8_t ReadSocketStatus(uint8_t socket);
 
 void ConnectToIP(uint8_t* IP, uint8_t* port);
+void SendData(uint8_t* buf, uint16_t len);
 
 void W5500SoftwareReset();
 

@@ -291,6 +291,12 @@ void ConnectToIP(uint8_t* IP, uint8_t* port)
     }while(socketStatus != Sn_SR_ESTABLISHED);
 }
 
+void SendData(uint8_t* buf, uint16_t len)
+{
+    
+    WriteSocketCommand(0, Sn_CR_SEND);
+}
+
 void FillBuf4(uint8_t* buf, uint8_t a, uint8_t b, uint8_t c, uint8_t d)
 {
     buf[0] = a;

@@ -17,6 +17,8 @@
 #define Sn_MR 0x0000
 // Socket n Command
 #define Sn_CR 0x0001
+// Socket n Interrupt Register
+#define Sn_IR 0x0002
 // Socket n Status
 #define Sn_SR 0x0003
 // Socket Destination IP [Sn_DIPR] - 0x000C -> 0c000F
