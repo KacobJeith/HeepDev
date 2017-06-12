@@ -64,7 +64,12 @@ void main(void)
     ConnectToIP(destIP, destPort);
     LATAbits.LA0 = 0;
     
-    char buf [5] = "James";
+    uint8_t buf [5];
+    buf[0] = 'J';
+    buf[1] = 'a';
+    buf[2] = 'm';
+    buf[3] = 'e';
+    buf[4] = 's';
     SendData(buf, 5);
     
     while (1)
