@@ -64,6 +64,9 @@ void main(void)
     ConnectToIP(destIP, destPort);
     LATAbits.LA0 = 0;
     
+    char buf [5] = "James";
+    SendData(buf, 5);
+    
     while (1)
     {
         // Add your application code
