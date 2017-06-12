@@ -32,6 +32,13 @@ uint8_t ReadMR();
 
 uint8_t ReadPHYCFGR();
 
+void WriteDestinationIP(uint8_t socket, uint8_t* buf);
+void WriteDestinationPort(uint8_t socket, uint8_t* buf);
+void WriteSocketCommand(uint8_t socket, uint8_t value);
+uint8_t ReadSocketStatus(uint8_t socket);
+
+void ConnectToIP(uint8_t* IP, uint8_t* port);
+
 void W5500SoftwareReset();
 
 uint8_t TestW5500RegisterWriting();
