@@ -39,36 +39,7 @@ void main(void)
     
     InitializeW5500();
     
-    uint8_t writeSubBuff [4];
-    writeSubBuff[0] = 255;
-    writeSubBuff[1] = 255;
-    writeSubBuff[2] = 14;
-    writeSubBuff[3] = 0;
-    
-    uint8_t readSubBuf [4];
-    uint8_t success = 1;
-    
-    WriteSubnetMask(writeSubBuff);
-    ReadSubnetMask(readSubBuf);
-    
-    if(readSubBuf[0] != writeSubBuff[0])
-    {
-        success = 0;
-    }
-    if(readSubBuf[1] != writeSubBuff[1])
-    {
-        success = 0;
-    }
-    if(readSubBuf[2] != writeSubBuff[2])
-    {
-        success = 0;
-    }
-    if(readSubBuf[3] != writeSubBuff[3])
-    {
-        success = 0;
-    }
-    
-    if(success)
+    if(TestW5500RegisterWriting())
     {
         LATAbits.LA0 = 1;
     }
@@ -76,6 +47,30 @@ void main(void)
     {
         LATAbits.LA0 = 0;
     }
+    
+    uint8_t myByte = ReadMR();
+    uint8_t anotherByte =  ReadPHYCFGR();
+    
+    uint8_t destIP [4];
+    destIP[0] = 192;
+    destIP[1] = 168;
+    destIP[2] = 0;
+    destIP[3] = 102;
+    uint16_t myPort = 5000;
+    uint8_t destPort[2];
+    destPort[0] = myPort >> 8;
+    destPort[1] = myPort & 0xFF;
+    //LATAbits.LA0 = 0;
+    ConnectToIP(destIP, destPort);
+    LATAbits.LA0 = 0;
+    
+    uint8_t buf [5];
+    buf[0] = 'J';
+    buf[1] = 'a';
+    buf[2] = 'm';
+    buf[3] = 'e';
+    buf[4] = 's';
+    SendData(buf, 5);
     
     while (1)
     {
