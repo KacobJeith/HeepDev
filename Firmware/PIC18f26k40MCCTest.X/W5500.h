@@ -32,7 +32,8 @@ uint8_t ReadMR();
 
 uint8_t ReadPHYCFGR();
 
-
+uint8_t GetWriteControlByteFromSocket(uint8_t socket);
+uint8_t GetReadControlByteFromSocket(uint8_t socket);
 
 
 void WriteDestinationIP(uint8_t socket, uint8_t* buf);

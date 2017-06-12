@@ -207,6 +207,26 @@ void W5500SoftwareReset()
     SetMR( curMR | 0x80 );
 }
 
+uint8_t GetWriteControlByteFromSocket(uint8_t socket)
+{
+    uint8_t cntl_byte = (0x0C + (socket<<5));
+    return cntl_byte;
+}
+
+uint8_t GetReadControlByteFromSocket(uint8_t socket)
+{
+    uint8_t cntl_byte = (0x08 + (socket<<5));
+    return cntl_byte;
+}
+
+void WriteDestinationIP(uint8_t socket, uint8_t* buf);
+
+void WriteDestinationPort(uint8_t socket, uint8_t* buf);
+void WriteSocketCommand(uint8_t socket, uint8_t value);
+uint8_t ReadSocketStatus(uint8_t socket);
+
+void ConnectToIP(uint8_t* IP, uint8_t* port);
+
 void FillBuf4(uint8_t* buf, uint8_t a, uint8_t b, uint8_t c, uint8_t d)
 {
     buf[0] = a;
