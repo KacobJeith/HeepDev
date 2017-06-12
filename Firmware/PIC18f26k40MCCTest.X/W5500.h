@@ -41,6 +41,7 @@ uint8_t GetReadControlByteFromSocket(uint8_t socket);
 
 void WriteDestinationIP(uint8_t socket, uint8_t* buf);
 void WriteDestinationPort(uint8_t socket, uint8_t* buf);
+void WriteSocketMode(uint8_t socket, uint8_t value);
 void WriteSocketCommand(uint8_t socket, uint8_t value);
 uint8_t ReadSocketStatus(uint8_t socket);
 

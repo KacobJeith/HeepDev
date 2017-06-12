@@ -243,6 +243,11 @@ void WriteDestinationPort(uint8_t socket, uint8_t* buf)
     WriteToW5500(Sn_DPORT0, GetWriteControlByteFromSocket(socket), buf, 2);
 }
 
+void WriteSocketMode(uint8_t socket, uint8_t value)
+{
+   SetSingleByteW5500WithCntl(Sn_MR ,value, GetWriteControlByteFromSocket(socket));
+}
+
 void WriteSocketCommand(uint8_t socket, uint8_t value)
 {
     SetSingleByteW5500WithCntl(Sn_CR ,value, GetWriteControlByteFromSocket(socket));

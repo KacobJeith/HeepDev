@@ -51,6 +51,19 @@ void main(void)
     uint8_t myByte = ReadMR();
     uint8_t anotherByte =  ReadPHYCFGR();
     
+    uint8_t destIP [4];
+    destIP[0] = 192;
+    destIP[1] = 168;
+    destIP[2] = 0;
+    destIP[3] = 102;
+    uint16_t myPort = 5000;
+    uint8_t destPort[2];
+    destPort[0] = myPort >> 8;
+    destPort[1] = myPort & 0xFF;
+    //LATAbits.LA0 = 0;
+    ConnectToIP(destIP, destPort);
+    LATAbits.LA0 = 0;
+    
     while (1)
     {
         // Add your application code
