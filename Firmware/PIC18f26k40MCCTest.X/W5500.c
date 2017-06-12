@@ -171,14 +171,14 @@ void SetSocketTXSize(uint8_t socket, uint8_t size)
     WriteToW5500(Sn_RXBUF_SIZE, cntl_byte, buf, 1);
 }
 
-void SetSingleByteW5500(uint8_t addr, uint8_t value)
+void SetSingleByteW5500(uint16_t addr, uint8_t value)
 {
     uint8_t buf [1];
     buf[0] = value;
     WriteToW5500(addr, 0b00000100, buf, 1);
 }
 
-uint8_t ReadSingleByteW5500(uint8_t addr)
+uint8_t ReadSingleByteW5500(uint16_t addr)
 {
     uint8_t buf [1];
     ReadFromW5500(addr, 0x00, buf, 1);
@@ -231,16 +231,16 @@ uint8_t TestW5500RegisterWriting()
     FillBuf4(writeSubBuff, 255, 255, 255, 0);
     uint8_t readSubBuf [4];
     
-    uint8_t writeMACBuf [6] = {1,3, 4, 16, 25, 7};
-    FillBuf6(writeMACBuf, 1, 3, 4, 16, 25, 7);
+    uint8_t writeMACBuf [6] = {0,1, 3, 5, 77, 9};
+    FillBuf6(writeMACBuf, 0, 1, 3, 5, 77, 9);
     uint8_t readMACBuf[6];
     
-    uint8_t writeSourceIPBuf [4] = {192,168,1,186};
-    FillBuf4(writeSourceIPBuf, 192, 168, 1, 186);
+    uint8_t writeSourceIPBuf [4] = {192,168,0,186};
+    FillBuf4(writeSourceIPBuf, 192, 168, 0, 186);
     uint8_t readSourceIPBuf [4];
     
-    uint8_t writeGatewayBuf [4] = {192,168,1,1};
-    FillBuf4(writeGatewayBuf, 192, 168, 1, 186);
+    uint8_t writeGatewayBuf [4] = {192,168,0,1};
+    FillBuf4(writeGatewayBuf, 192, 168, 0, 1);
     uint8_t readGatewayBuf [4];
     
     uint8_t success = 0;
