@@ -31,6 +31,8 @@
 #define Sn_RXBUF_SIZE 0x001E
 // Send Buffer Size Register
 #define Sn_TXBUF_SIZE 0x001F
+// TX Write Pointer Register - 0x0024 -> 0x0025
+#define Sn_TX_WR0 0x0024
 
 // Socket Register Settings
 // Sn_MR Bits (Socket Mode)

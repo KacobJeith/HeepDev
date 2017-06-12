@@ -275,6 +275,25 @@ uint8_t ReadSocketStatus(uint8_t socket)
     return ReadSingleByteW5500WithCntl(Sn_SR, GetReadControlByteFromSocket(socket));
 }
 
+void WriteSocketTXPointer(uint8_t socket, uint16_t value)
+{
+    uint8_t dataPointer[2];
+    dataPointer[0] = value >> 8;
+    dataPointer[1] = value & 0xFF;
+    WriteToW5500(Sn_TX_WR0, GetWriteControlByteFromSocket(socket), dataPointer, 2);
+}
+
+uint16_t ReadSocketTxPointer(uint8_t socket)
+{
+    uint8_t dataPointer[2];
+    ReadFromW5500(Sn_TX_WR0, GetReadControlByteFromSocket(socket), dataPointer, 2);
+    
+    uint16_t retValue = dataPointer[0] << 8;
+    retValue += dataPointer[1];
+    
+    return retValue;
+}
+
 void ConnectToIP(uint8_t* IP, uint8_t* port)
 {
     uint16_t sourcePort = 1024;
@@ -300,10 +319,10 @@ void ConnectToIP(uint8_t* IP, uint8_t* port)
 void SendData(uint8_t* buf, uint16_t len)
 {
     uint16_t pointer = 0;
-    // Read Pointer
+    pointer = ReadSocketTxPointer(0);
     WriteToW5500(pointer, GetWriteControlByteFromSocketTx(0), buf, len);
     pointer += len;
-    //Write Pointer
+    WriteSocketTXPointer(0, pointer);
     
     WriteSocketCommand(0, Sn_CR_SEND);
 }
