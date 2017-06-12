@@ -233,6 +233,12 @@ uint8_t GetReadControlByteFromSocket(uint8_t socket)
     return cntl_byte;
 }
 
+uint8_t GetWriteControlByteFromSocketTx(uint8_t socket)
+{
+    uint8_t cntl_byte = (0x14 + (socket<<5));
+    return cntl_byte;
+}
+
 void WriteSourcePort(uint8_t socket, uint8_t* buf)
 {
     WriteToW5500(Sn_PORT0, GetWriteControlByteFromSocket(socket), buf, 2);
@@ -293,6 +299,11 @@ void ConnectToIP(uint8_t* IP, uint8_t* port)
 
 void SendData(uint8_t* buf, uint16_t len)
 {
+    uint16_t pointer = 0;
+    // Read Pointer
+    WriteToW5500(pointer, GetWriteControlByteFromSocketTx(0), buf, len);
+    pointer += len;
+    //Write Pointer
     
     WriteSocketCommand(0, Sn_CR_SEND);
 }
