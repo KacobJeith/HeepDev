@@ -27,6 +27,9 @@ void SetSocketTXSize(uint8_t socket, uint8_t size);
 void SetSingleByteW5500(uint16_t addr, uint8_t value);
 uint8_t ReadSingleByteW5500(uint16_t addr);
 
+void SetSingleByteW5500WithCntl(uint16_t addr, uint8_t value, uint8_t cntl_byte);
+uint8_t ReadSingleByteW5500WithCntl(uint16_t addr, uint8_t cntl_byte);
+
 void SetMR(uint8_t newVal);
 uint8_t ReadMR();
 
