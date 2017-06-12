@@ -405,7 +405,7 @@ UsedLibrary="/Users/dylan/Documents/EagleLibraries/Heep/Heep.lbr"
 
 [Win_1]
 Type="Control Panel"
-Loc="240 169 1439 768"
+Loc="89 58 1288 657"
 State=2
 Number=0
 

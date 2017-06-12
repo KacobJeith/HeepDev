@@ -1,5 +1,7 @@
 #define FIRMWARE_VERSION 1
 
+#define FACTORY_RESET_PIN 4
+
 #define MAX_MEMORY 255
 #define NUM_VERTICES 100
 #define NUM_CONTROLS 100
