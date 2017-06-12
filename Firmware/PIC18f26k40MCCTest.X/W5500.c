@@ -233,6 +233,11 @@ uint8_t GetReadControlByteFromSocket(uint8_t socket)
     return cntl_byte;
 }
 
+void WriteSourcePort(uint8_t socket, uint8_t* buf)
+{
+    WriteToW5500(Sn_PORT0, GetWriteControlByteFromSocket(socket), buf, 2);
+}
+
 void WriteDestinationIP(uint8_t socket, uint8_t* buf)
 {
     WriteToW5500(Sn_DIPR0, GetWriteControlByteFromSocket(socket), buf, 4);
@@ -248,6 +253,12 @@ void WriteSocketMode(uint8_t socket, uint8_t value)
    SetSingleByteW5500WithCntl(Sn_MR ,value, GetWriteControlByteFromSocket(socket));
 }
 
+uint8_t ReadSocketMode(uint8_t socket)
+{
+    uint8_t controlByte = GetReadControlByteFromSocket(socket);
+    return ReadSingleByteW5500WithCntl(Sn_MR, controlByte);
+}
+
 void WriteSocketCommand(uint8_t socket, uint8_t value)
 {
     SetSingleByteW5500WithCntl(Sn_CR ,value, GetWriteControlByteFromSocket(socket));
@@ -260,14 +271,24 @@ uint8_t ReadSocketStatus(uint8_t socket)
 
 void ConnectToIP(uint8_t* IP, uint8_t* port)
 {
+    uint16_t sourcePort = 1024;
+    uint8_t srcPort[2];
+    srcPort[0] = sourcePort >> 8;
+    srcPort[1] = sourcePort & 0xFF;
+    WriteSocketMode(0, Sn_MR_TCP);
+    WriteSourcePort(0, srcPort);
+    WriteSocketCommand(0, Sn_CR_OPEN);
+    
+    uint8_t socketMode = ReadSocketMode(0);
+    uint8_t socketStatus = 0;
     WriteDestinationIP(0, IP);
     WriteDestinationPort(0, port);
     WriteSocketCommand(0, Sn_CR_CONNECT);
     
-    while(ReadSocketStatus(0) != Sn_SR_ESTABLISHED)
+    do
     {
-        
-    }
+        socketStatus = ReadSocketStatus(0);
+    }while(socketStatus != Sn_SR_ESTABLISHED);
 }
 
 void FillBuf4(uint8_t* buf, uint8_t a, uint8_t b, uint8_t c, uint8_t d)

@@ -23,6 +23,8 @@
 #define Sn_DIPR0 0x000C
 // Socket Destination Port [Sn_DPORT] - 0x0010 -> 0x0011 
 #define Sn_DPORT0 0x0010
+// Socket Source Port [Sn_PORT] - 0x0004 -> 0x0005
+#define Sn_PORT0 0x0004
 // Receive Buffer Size Register
 #define Sn_RXBUF_SIZE 0x001E
 // Send Buffer Size Register
