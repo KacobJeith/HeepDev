@@ -67,22 +67,19 @@ class HeepConnections {
         ConnectToHeepDevice(ipAddress: thisDeviceIP!, printErrors: false, message: message)
     }
     
-    public func sendAssignAdminToHeepDevice(uniqueID: Int) {
+    public func sendAssignAdminToHeepDevice(deviceID: Int) {
         let realmApp = try! Realm(configuration: configApp)
         let adminID = realmApp.object(ofType: App.self, forPrimaryKey: 0)?.activeUser
         
-        
         let realm = try! Realm(configuration: configUser)
-        let activeControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: uniqueID)
-        let thisDevice = realm.object(ofType: Device.self, forPrimaryKey: activeControl?.deviceID)
+        let thisDevice = realm.object(ofType: Device.self, forPrimaryKey: deviceID)
         let thisDeviceIP = thisDevice?.ipAddress
-        //let thisControl = activeControl?.controlID
         
         let message = HAPIMemoryParser().BuildAssignAdminCOP(adminID: adminID!)
         
         print("Sending: \(message) to Heep Device at \(thisDeviceIP!)")
         
-        //ConnectToHeepDevice(ipAddress: thisDeviceIP!, printErrors: false, message: message)
+        ConnectToHeepDevice(ipAddress: thisDeviceIP!, printErrors: false, message: message)
         
     }
     

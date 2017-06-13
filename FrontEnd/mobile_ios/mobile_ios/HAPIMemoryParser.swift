@@ -113,17 +113,11 @@ class HAPIMemoryParser {
     public func ParseMemoryDump(dump: [UInt8], ipAddress: String) {
         print(dump)
         let header = ParseDeviceID(dump: dump, index: 1)
-        //let thisDevice = realm.object(ofType: Device.self, forPrimaryKey: header.deviceID)
-
-        
-        //if thisDevice == nil {
-            let packet = CalculateNumberOfBytes(dump: dump, index: header.index)
-            var index = packet.index
-            
-            while (index < dump.count) {
-                index = InterpretNextMOP(dump: dump, index: index, ipAddress: ipAddress)
-            }
-        //} else { print("This devices has already been detected")}
+        let packet = CalculateNumberOfBytes(dump: dump, index: header.index)
+        var index = packet.index
+        while (index < dump.count) {
+            index = InterpretNextMOP(dump: dump, index: index, ipAddress: ipAddress)
+        }
         
     }
     
@@ -131,7 +125,7 @@ class HAPIMemoryParser {
         let thisMOP = dump[index]
         let header = ParseDeviceID(dump: dump, index: index + 1)
         let packet = CalculateNumberOfBytes(dump: dump, index: header.index)
-        //print("Next MOP: \(thisMOP)")
+        print("Next MOP: \(thisMOP)")
         
         if (thisMOP == 0x01) {
             // Device Data: ID & Version
