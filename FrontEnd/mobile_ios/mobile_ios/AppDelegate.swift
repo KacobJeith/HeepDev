@@ -18,7 +18,7 @@ var user = User()
 let config = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
 
 protocol AddBeacon {
-    func addBeacon(item: Item)
+    func addBeacon(beacon: HeepBeacon)
 }
 
 @UIApplicationMain
@@ -45,35 +45,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window?.makeKeyAndVisible()
         //self.searchForHeepDevices()
         
+        //Start monitoring for iBeacon
+        startMonitoringBeacon()
+        
+        // Override point for customization after application launch.
+        return true
+    }
+    
+    func startMonitoringBeacon() {
         
         var delegate: AddBeacon?
         
-        // Create new beacon item
+        // Create new Heep Beacon
         let uuidString = "B87273A8-3C02-11E7-A919-92EBCB67FE33"
         let uuid = UUID(uuidString: uuidString)
         let major = 256
         let minor = 65535
         let name = "HEEP HQ"
         
-        let newItem = Item(name: name, uuid: uuid!, majorValue: major, minorValue: minor)
+        let newBeacon = HeepBeacon(name: name, uuid: uuid!, majorValue: major, minorValue: minor)
         
-        delegate?.addBeacon(item: newItem)
-        print("new item added!")
+        delegate?.addBeacon(beacon: newBeacon)
         
         locationManager.delegate = self
         
         locationManager.requestAlwaysAuthorization()
         
-        startMonitoringItem(newItem)
-        print("we ranging")
-        // Override point for customization after application launch.
-        return true
-    }
-    
-    func startMonitoringItem(_ item: Item) {
-        let beaconRegion = item.asBeaconRegion()
+        let beaconRegion = newBeacon.asBeaconRegionIgnoreMajorMinor()
+        
         locationManager.startMonitoring(for: beaconRegion)
-//        locationManager.startRangingBeacons(in: beaconRegion)
+        
     }
 
     
@@ -171,7 +172,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         
-        //        guard region is CLBeaconRegion else { return }
+        //region must be cast as CLBeaconRegion to expose UUID & major/minor variables
+        let r = (region as! CLBeaconRegion)
+        
+        //Here we can act on the beacons depending on their Major & Minor data
+        print("I see a beacon:")
+        print("Name: \(r.identifier)")
+        print("UUID: \(r.proximityUUID)")
+        print("Major: \(r.major)")
+        print("Minor: \(r.minor)")
         
         let content = UNMutableNotificationContent()
         content.title = "Heep Zone"
