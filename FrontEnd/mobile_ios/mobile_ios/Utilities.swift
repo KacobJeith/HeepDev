@@ -206,3 +206,20 @@ func loginToUserRealm(user: Int) {
     
 }
 
+func convertIntToByteArray(integer: Int) {
+    print(calcNumBytes(integer: integer))
+}
+
+func calcNumBytes(integer: Int) -> Int {
+    var numBytesRequired = 1
+    
+    while integer > (2 << (numBytesRequired * 8 - 1)) {
+        print(integer)
+        print((2 << (numBytesRequired * 8 - 1)))
+        numBytesRequired += 1
+    }
+    
+    return numBytesRequired
+}
+
+
