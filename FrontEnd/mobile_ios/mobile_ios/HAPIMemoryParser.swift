@@ -39,6 +39,13 @@ class HAPIMemoryParser {
         return entireArray
     }
     
+    public func BuildAssignAdminCOP(adminID: Int) -> [UInt8] {
+        let COP = UInt8(0x13)
+        let packet = convertIntToByteArray(integer: adminID)
+        let entireArray = packageCOP(COP: COP, packet: packet)
+        return entireArray
+    }
+    
     func prepareVertexPacket(vertex: Vertex) -> [UInt8] {
         
         var packet = [UInt8]()

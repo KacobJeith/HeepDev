@@ -206,11 +206,13 @@ func loginToUserRealm(user: Int) {
     
 }
 
-func convertIntToByteArray(integer: Int) {
+func convertIntToByteArray(integer: Int) -> [UInt8] {
     var byteArray = [UInt8]()
     for index in 0...(calcNumBytes(integer: integer) - 1) {
         byteArray.append(UInt8(truncatingBitPattern: integer >> (index * 8)))
     }
+    
+    return byteArray
 }
 
 func calcNumBytes(integer: Int) -> Int {
