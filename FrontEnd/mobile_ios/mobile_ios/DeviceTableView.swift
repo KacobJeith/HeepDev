@@ -16,7 +16,7 @@ class DeviceTableViewController: UITableViewController {
     let devices: Results<Device>
     var controlTags = [IndexPath]()
     var thisBSSID = ""
-    let realm = try! Realm(configuration: config)
+    let realm = try! Realm(configuration: configUser)
     
     init(place: Place) {
         devices = realm.objects(Device.self).filter("associatedPlace = %s", place.bssid)
@@ -149,7 +149,7 @@ class DeviceTableViewController: UITableViewController {
     
     func toggle(sender: UISwitch) {
         
-        let realm = try! Realm(configuration: config)
+        let realm = try! Realm(configuration: configUser)
         let thisIndexPath = controlTags[sender.tag]
         let thisControlUniqueID = devices[thisIndexPath.section].controlList[thisIndexPath.row].uniqueID
         
@@ -174,7 +174,7 @@ class DeviceTableViewController: UITableViewController {
     
     func sliderUpdate(sender: UISlider) {
         
-        let realm = try! Realm(configuration: config)
+        let realm = try! Realm(configuration: configUser)
         let thisIndexPath = controlTags[sender.tag]
         let thisControlUniqueID = devices[thisIndexPath.section].controlList[thisIndexPath.row].uniqueID
         
@@ -212,7 +212,7 @@ class DeviceTableViewController: UITableViewController {
     }
     
     func flushDevices() {
-        let realm = try! Realm(configuration: config)
+        let realm = try! Realm(configuration: configUser)
         let flushdevices = realm.objects(Device.self).filter("associatedPlace = %s", thisBSSID)
         
         

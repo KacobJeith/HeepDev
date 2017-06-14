@@ -3,7 +3,6 @@ import RealmSwift
 
 class GroupControlEdit: UITableViewCell, UICollectionViewDataSource, UICollectionViewDelegate {
     
-    let realm = try! Realm(configuration: config)
     var collectionView: UICollectionView!
     var controls = List<DeviceControl>()
     var thisBSSID = ""
@@ -14,6 +13,8 @@ class GroupControlEdit: UITableViewCell, UICollectionViewDataSource, UICollectio
                      thisGroup: Group,
                      indexPath: IndexPath) {
         self.init()
+        
+        let realm = try! Realm(configuration: configUser)
         
         self.thisBSSID = bssid
         self.controls = thisGroup.controls
@@ -94,7 +95,7 @@ extension GroupControlEdit {
     func selectControl(sender: UIButton) {
         print("Selected \(controls[sender.tag].controlName)")
         
-        let realm = try! Realm(configuration: config)
+        let realm = try! Realm(configuration: configUser)
         
         try! realm.write {
             if thisGroup.selectedControl == controls[sender.tag].uniqueID {
@@ -114,7 +115,7 @@ extension GroupControlEdit {
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         
-        let realm = try! Realm(configuration: config)
+        let realm = try! Realm(configuration: configUser)
         
         try! realm.write {
             thisGroup.assignedOffsetX = collectionView.contentOffset.x
@@ -124,7 +125,7 @@ extension GroupControlEdit {
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate {
             
-            let realm = try! Realm(configuration: config)
+            let realm = try! Realm(configuration: configUser)
             
             try! realm.write {
                 thisGroup.assignedOffsetX = collectionView.contentOffset.x

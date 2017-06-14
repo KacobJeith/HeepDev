@@ -11,7 +11,6 @@ import RealmSwift
 
 class HeepConnections {
     
-    let realm = try! Realm(configuration: config)
     
     public func SearchForHeepDeviecs() {
         
@@ -31,6 +30,7 @@ class HeepConnections {
     }
     
     public func sendValueToHeepDevice(uniqueID: Int) {
+        let realm = try! Realm(configuration: configUser)
         let activeControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: uniqueID)
         let thisDevice = realm.object(ofType: Device.self, forPrimaryKey: activeControl?.deviceID)
         let thisDeviceIP = thisDevice?.ipAddress
@@ -44,18 +44,21 @@ class HeepConnections {
     }
     
     public func sendSetVertexToHeepDevice(activeVertex: Vertex) {
-        //let activeVertex = realm.object(ofType: Vertex.self, forPrimaryKey: vertexID)
+        
+        let realm = try! Realm(configuration: configUser)
         let thisDevice = realm.object(ofType: Device.self, forPrimaryKey: activeVertex.tx?.deviceID)
         let thisDeviceIP = thisDevice?.ipAddress
         let message = HAPIMemoryParser().BuildSetVertexCOP(vertex: activeVertex)
-        //let hexMessage = message.map { String(format:"%2X", $0) }
+        
         print("Sending: \(message) to Heep Device at \(thisDeviceIP!)")
         
         ConnectToHeepDevice(ipAddress: thisDeviceIP!, printErrors: false, message: message)
     }
     
     public func sendDeleteVertexToHeepDevice(activeVertex: Vertex) {
-        //let activeVertex = realm.object(ofType: Vertex.self, forPrimaryKey: vertexID)
+        
+        let realm = try! Realm(configuration: configUser)
+        
         let thisDevice = realm.object(ofType: Device.self, forPrimaryKey: activeVertex.tx?.deviceID)
         let thisDeviceIP = thisDevice?.ipAddress
         let message = HAPIMemoryParser().BuildDeleteVertexCOP(vertex: activeVertex)

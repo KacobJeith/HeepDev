@@ -11,7 +11,7 @@ import RealmSwift
 
 class HAPIMemoryParser {
     
-    let realm = try! Realm(configuration: config)
+    let realm = try! Realm(configuration: configUser)
     
     public func BuildIsHeepDeviceCOP() -> [UInt8] {
         
@@ -274,7 +274,7 @@ class HAPIMemoryParser {
         let txControlID = dump[index + 4]
         let rxControlID = dump[index + 5]
         
-        let realm = try! Realm(configuration: config)
+        let realm = try! Realm(configuration: configUser)
         let txControl = realm.object(ofType: DeviceControl.self,
                                      forPrimaryKey: generateUniqueControlID(deviceID: txDeviceID,
                                                                             controlID: txControlID))
@@ -320,7 +320,7 @@ class HAPIMemoryParser {
     }
     
     func flushControlVertices(controlUniqueID: Int) {
-        let realm = try! Realm(configuration: config)
+        let realm = try! Realm(configuration: configUser)
         let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: controlUniqueID)
         try! realm.write {
             

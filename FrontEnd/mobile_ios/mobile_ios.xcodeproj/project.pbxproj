@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1005B8D91ECA0ABB00414F8E /* VertexView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1005B8D81ECA0ABB00414F8E /* VertexView.swift */; };
 		1005B8DC1ECB47CD00414F8E /* EditRoomTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1005B8DA1ECB47CD00414F8E /* EditRoomTableView.swift */; };
 		1005B8E31ECB7C5B00414F8E /* UnassignedControlCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1005B8E21ECB7C5B00414F8E /* UnassignedControlCollection.swift */; };
 		1005B8E51ECC8C9900414F8E /* VertexEditCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1005B8E41ECC8C9900414F8E /* VertexEditCell.swift */; };
@@ -29,6 +28,10 @@
 		104C18111EC8FA0C000A75D7 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104C18101EC8FA0C000A75D7 /* Utilities.swift */; };
 		70DC641C8DFD5145B3E2F178 /* Pods_mobile_iosUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9455865AC2AC2771C588F666 /* Pods_mobile_iosUITests.framework */; };
 		AFBAEC1B382B06E54E70DAC7 /* Pods_mobile_iosTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 629528E8C86E48C60E29C454 /* Pods_mobile_iosTests.framework */; };
+		B06DE4371EE4AE7600680A35 /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06DE4361EE4AE7600680A35 /* AccountView.swift */; };
+		B06DE43D1EE86FCD00680A35 /* LoginOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06DE43C1EE86FCD00680A35 /* LoginOptionsView.swift */; };
+		B06DE43F1EE8C43800680A35 /* EmailLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06DE43E1EE8C43800680A35 /* EmailLoginView.swift */; };
+		B06DE4431EEA2B2E00680A35 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B06DE4421EEA2B2E00680A35 /* Security.framework */; };
 		D7A8C048C69A2C379A20948F /* Pods_mobile_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 321E9915FF90A4E39B163211 /* Pods_mobile_ios.framework */; };
 		E7ACBFC81EE4BE1400EFB21E /* HeepBeacon.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7ACBFC71EE4BE1400EFB21E /* HeepBeacon.swift */; };
 		EEA944211EAA7D880022588B /* HAPIMemoryParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEA944201EAA7D880022588B /* HAPIMemoryParser.swift */; };
@@ -55,7 +58,6 @@
 
 /* Begin PBXFileReference section */
 		04FE62370CD9FBCA0A3E91F8 /* Pods-mobile_iosTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mobile_iosTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-mobile_iosTests/Pods-mobile_iosTests.release.xcconfig"; sourceTree = "<group>"; };
-		1005B8D81ECA0ABB00414F8E /* VertexView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VertexView.swift; sourceTree = "<group>"; };
 		1005B8DA1ECB47CD00414F8E /* EditRoomTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditRoomTableView.swift; sourceTree = "<group>"; };
 		1005B8E21ECB7C5B00414F8E /* UnassignedControlCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnassignedControlCollection.swift; sourceTree = "<group>"; };
 		1005B8E41ECC8C9900414F8E /* VertexEditCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VertexEditCell.swift; sourceTree = "<group>"; };
@@ -83,6 +85,10 @@
 		629528E8C86E48C60E29C454 /* Pods_mobile_iosTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_mobile_iosTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		76BE85D99FD14F073F5556A1 /* Pods-mobile_iosUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mobile_iosUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-mobile_iosUITests/Pods-mobile_iosUITests.release.xcconfig"; sourceTree = "<group>"; };
 		9455865AC2AC2771C588F666 /* Pods_mobile_iosUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_mobile_iosUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B06DE4361EE4AE7600680A35 /* AccountView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
+		B06DE43C1EE86FCD00680A35 /* LoginOptionsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginOptionsView.swift; sourceTree = "<group>"; };
+		B06DE43E1EE8C43800680A35 /* EmailLoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailLoginView.swift; sourceTree = "<group>"; };
+		B06DE4421EEA2B2E00680A35 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		B7918E77C7C5DB9DEBC8629A /* Pods-mobile_iosUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mobile_iosUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-mobile_iosUITests/Pods-mobile_iosUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		E1962A9C5DE87696544789AE /* Pods-mobile_iosTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mobile_iosTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-mobile_iosTests/Pods-mobile_iosTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E4A427428745AEB7A4877647 /* Pods-mobile_ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mobile_ios.release.xcconfig"; path = "Pods/Target Support Files/Pods-mobile_ios/Pods-mobile_ios.release.xcconfig"; sourceTree = "<group>"; };
@@ -97,6 +103,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B06DE4431EEA2B2E00680A35 /* Security.framework in Frameworks */,
 				D7A8C048C69A2C379A20948F /* Pods_mobile_ios.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -146,14 +153,15 @@
 			isa = PBXGroup;
 			children = (
 				101D2F621EA968230074D807 /* AppDelegate.swift */,
+				B06DE4361EE4AE7600680A35 /* AccountView.swift */,
+				B06DE43C1EE86FCD00680A35 /* LoginOptionsView.swift */,
+				B06DE43E1EE8C43800680A35 /* EmailLoginView.swift */,
 				100821FB1EC49BDF0079E6F5 /* PlacesView.swift */,
 				1005B8E61ECDB99100414F8E /* GroupCollectionView.swift */,
 				1005B8DA1ECB47CD00414F8E /* EditRoomTableView.swift */,
 				1005B8E21ECB7C5B00414F8E /* UnassignedControlCollection.swift */,
 				1005B8E41ECC8C9900414F8E /* VertexEditCell.swift */,
 				1005B8E81ECE2A0C00414F8E /* GroupControlEdit.swift */,
-				1005B8D81ECA0ABB00414F8E /* VertexView.swift */,
-				103FE2881EC3AF5F0033D021 /* HeepObjects.swift */,
 				EEA944221EAA93950022588B /* HeepConnections.swift */,
 				EEA944201EAA7D880022588B /* HAPIMemoryParser.swift */,
 				E7ACBFC71EE4BE1400EFB21E /* HeepBeacon.swift */,
@@ -161,6 +169,7 @@
 				1005B8EA1ECE2A8A00414F8E /* UIUtilities.swift */,
 				EEA944261EAA9EF40022588B /* DeviceTableView.swift */,
 				103FE2841EC373830033D021 /* DeviceSummaryView.swift */,
+				103FE2881EC3AF5F0033D021 /* HeepObjects.swift */,
 				101D2F6C1EA968230074D807 /* Assets.xcassets */,
 				101D2F711EA968230074D807 /* Info.plist */,
 				1067B93C1EACE35D00E7607E /* BridgingHeader.h */,
@@ -190,6 +199,7 @@
 		A0A3D89C112B1587508A369D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B06DE4421EEA2B2E00680A35 /* Security.framework */,
 				321E9915FF90A4E39B163211 /* Pods_mobile_ios.framework */,
 				629528E8C86E48C60E29C454 /* Pods_mobile_iosTests.framework */,
 				9455865AC2AC2771C588F666 /* Pods_mobile_iosUITests.framework */,
@@ -287,7 +297,7 @@
 				TargetAttributes = {
 					101D2F5E1EA968230074D807 = {
 						CreatedOnToolsVersion = 8.3.1;
-						DevelopmentTeam = WKVKE7H364;
+						DevelopmentTeam = 6494UP82R2;
 						ProvisioningStyle = Automatic;
 					};
 					101D2F751EA968230074D807 = {
@@ -500,12 +510,14 @@
 				104C18111EC8FA0C000A75D7 /* Utilities.swift in Sources */,
 				101D2F6B1EA968230074D807 /* mobile_ios.xcdatamodeld in Sources */,
 				100821FC1EC49BDF0079E6F5 /* PlacesView.swift in Sources */,
+				B06DE43D1EE86FCD00680A35 /* LoginOptionsView.swift in Sources */,
+				B06DE43F1EE8C43800680A35 /* EmailLoginView.swift in Sources */,
 				1005B8DC1ECB47CD00414F8E /* EditRoomTableView.swift in Sources */,
 				103FE2851EC373830033D021 /* DeviceSummaryView.swift in Sources */,
+				B06DE4371EE4AE7600680A35 /* AccountView.swift in Sources */,
 				EEA944231EAA93950022588B /* HeepConnections.swift in Sources */,
 				1005B8E71ECDB99100414F8E /* GroupCollectionView.swift in Sources */,
 				101D2F631EA968230074D807 /* AppDelegate.swift in Sources */,
-				1005B8D91ECA0ABB00414F8E /* VertexView.swift in Sources */,
 				1005B8E91ECE2A0C00414F8E /* GroupControlEdit.swift in Sources */,
 				103FE2891EC3AF5F0033D021 /* HeepObjects.swift in Sources */,
 			);
@@ -648,7 +660,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = WKVKE7H364;
+				DEVELOPMENT_TEAM = 6494UP82R2;
 				INFOPLIST_FILE = mobile_ios/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -665,7 +677,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = WKVKE7H364;
+				DEVELOPMENT_TEAM = 6494UP82R2;
 				INFOPLIST_FILE = mobile_ios/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

@@ -7,26 +7,17 @@ Control theControl1;
 
 int rightSwitch = 3;
 
-//#define CLEAR_MEMORY
-
 void setup()
 {
 	Serial.begin(9600);
 	delay(1000);
 	Serial.println("START");
 
-#ifdef CLEAR_MEMORY
-	ClearMemory();
-#else
-	Serial.println("Reading Memory...");
-	ReadMemory(deviceMemory, curFilledMemory);
-#endif
-
 	pinMode(rightSwitch, INPUT);
 	digitalWrite(rightSwitch, HIGH);
 
 	SetDeviceID(140001);
-	SetDeviceName(deviceName);
+	SetupHeepDevice(deviceName);
 	theControl1.controlName = controlName1;
 	theControl1.controlID = 0;
 	theControl1.controlDirection = 1;
