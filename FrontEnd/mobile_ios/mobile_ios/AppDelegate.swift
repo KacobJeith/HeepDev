@@ -33,18 +33,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         locationManager.delegate = self
         
-        
-
-        window = UIWindow(frame: UIScreen.main.bounds)
-        let mainController = PlacesView()
-        let navigationController = UINavigationController(rootViewController: mainController)
-        navigationController.navigationBar.isTranslucent = false
-        navigationController.isToolbarHidden = true
-               
-        self.window?.rootViewController = navigationController
-        self.window?.makeKeyAndVisible()
-        //self.searchForHeepDevices()
-        
         //Start monitoring for iBeacon
         startMonitoringBeacon()
         
