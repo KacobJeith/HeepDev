@@ -27,39 +27,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        
+        SDKApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
+        
+        initializeApp()
+        setupAppNavigation()
+        startMonitoringBeacon()
+        
+        return true
+    }
+    
+    func startMonitoringBeacon() {
         // Request permission to send notifications
         let center = UNUserNotificationCenter.current()
         center.requestAuthorization(options:[.alert, .sound]) { (granted, error) in }
         
         locationManager.delegate = self
-        
-        
-
-        window = UIWindow(frame: UIScreen.main.bounds)
-        let mainController = PlacesView()
-        let navigationController = UINavigationController(rootViewController: mainController)
-        navigationController.navigationBar.isTranslucent = false
-        navigationController.isToolbarHidden = true
-               
-        self.window?.rootViewController = navigationController
-        self.window?.makeKeyAndVisible()
-        //self.searchForHeepDevices()
-        
-        //Start monitoring for iBeacon
-        startMonitoringBeacon()
-        
-        // Override point for customization after application launch.
-
-        SDKApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
-        
-        initializeApp()
-        setupAppNavigation()
-        
-
-        return true
-    }
-    
-    func startMonitoringBeacon() {
         
         var delegate: AddBeacon?
         
