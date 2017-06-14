@@ -33,6 +33,7 @@
 		B06DE43F1EE8C43800680A35 /* EmailLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06DE43E1EE8C43800680A35 /* EmailLoginView.swift */; };
 		B06DE4431EEA2B2E00680A35 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B06DE4421EEA2B2E00680A35 /* Security.framework */; };
 		D7A8C048C69A2C379A20948F /* Pods_mobile_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 321E9915FF90A4E39B163211 /* Pods_mobile_ios.framework */; };
+		E7ACBFC81EE4BE1400EFB21E /* HeepBeacon.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7ACBFC71EE4BE1400EFB21E /* HeepBeacon.swift */; };
 		EEA944211EAA7D880022588B /* HAPIMemoryParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEA944201EAA7D880022588B /* HAPIMemoryParser.swift */; };
 		EEA944231EAA93950022588B /* HeepConnections.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEA944221EAA93950022588B /* HeepConnections.swift */; };
 		EEA944271EAA9EF40022588B /* DeviceTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEA944261EAA9EF40022588B /* DeviceTableView.swift */; };
@@ -91,6 +92,7 @@
 		B7918E77C7C5DB9DEBC8629A /* Pods-mobile_iosUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mobile_iosUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-mobile_iosUITests/Pods-mobile_iosUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		E1962A9C5DE87696544789AE /* Pods-mobile_iosTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mobile_iosTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-mobile_iosTests/Pods-mobile_iosTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E4A427428745AEB7A4877647 /* Pods-mobile_ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mobile_ios.release.xcconfig"; path = "Pods/Target Support Files/Pods-mobile_ios/Pods-mobile_ios.release.xcconfig"; sourceTree = "<group>"; };
+		E7ACBFC71EE4BE1400EFB21E /* HeepBeacon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeepBeacon.swift; sourceTree = "<group>"; };
 		EEA944201EAA7D880022588B /* HAPIMemoryParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HAPIMemoryParser.swift; sourceTree = "<group>"; };
 		EEA944221EAA93950022588B /* HeepConnections.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeepConnections.swift; sourceTree = "<group>"; };
 		EEA944261EAA9EF40022588B /* DeviceTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceTableView.swift; sourceTree = "<group>"; };
@@ -162,6 +164,7 @@
 				1005B8E81ECE2A0C00414F8E /* GroupControlEdit.swift */,
 				EEA944221EAA93950022588B /* HeepConnections.swift */,
 				EEA944201EAA7D880022588B /* HAPIMemoryParser.swift */,
+				E7ACBFC71EE4BE1400EFB21E /* HeepBeacon.swift */,
 				104C18101EC8FA0C000A75D7 /* Utilities.swift */,
 				1005B8EA1ECE2A8A00414F8E /* UIUtilities.swift */,
 				EEA944261EAA9EF40022588B /* DeviceTableView.swift */,
@@ -500,6 +503,7 @@
 			files = (
 				1005B8E51ECC8C9900414F8E /* VertexEditCell.swift in Sources */,
 				1005B8E31ECB7C5B00414F8E /* UnassignedControlCollection.swift in Sources */,
+				E7ACBFC81EE4BE1400EFB21E /* HeepBeacon.swift in Sources */,
 				EEA944271EAA9EF40022588B /* DeviceTableView.swift in Sources */,
 				EEA944211EAA7D880022588B /* HAPIMemoryParser.swift in Sources */,
 				1005B8EB1ECE2A8A00414F8E /* UIUtilities.swift in Sources */,
