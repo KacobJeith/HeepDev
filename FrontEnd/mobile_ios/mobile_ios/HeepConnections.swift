@@ -75,7 +75,8 @@ class HeepConnections {
         let thisDevice = realm.object(ofType: Device.self, forPrimaryKey: deviceID)
         let thisDeviceIP = thisDevice?.ipAddress
         
-        let message = HAPIMemoryParser().BuildAssignAdminCOP(adminID: adminID!)
+        let MOP = HAPIMemoryParser().BuildAdminMOP(deviceID: deviceID, adminID: adminID!)
+        let message = HAPIMemoryParser().BuildStoreMOPCOP(byteArray: MOP)
         
         print("Sending: \(message) to Heep Device at \(thisDeviceIP!)")
         

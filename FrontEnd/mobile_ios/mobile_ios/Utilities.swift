@@ -212,7 +212,7 @@ func convertIntToByteArray(integer: Int) -> [UInt8] {
         byteArray.append(UInt8(truncatingBitPattern: integer >> (index * 8)))
     }
     
-    return byteArray
+    return byteArray.reversed()
 }
 
 func calcNumBytes(integer: Int) -> Int {
@@ -225,10 +225,16 @@ func calcNumBytes(integer: Int) -> Int {
     return numBytesRequired
 }
 
-func convertArrayToInt(byteArray: [UInt8]) -> Int {
+func convertArrayToInt(byteArray: [UInt8], reverse: Bool = false) -> Int {
     var integer = 0
     var currentIndex = 0
-    for nextByte in byteArray {
+    var isReversed = byteArray
+    
+    if reverse {
+        isReversed = byteArray.reversed()
+    }
+    
+    for nextByte in isReversed {
         integer += (Int(nextByte) << currentIndex)
         currentIndex += 8
     }

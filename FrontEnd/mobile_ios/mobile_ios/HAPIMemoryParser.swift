@@ -39,10 +39,16 @@ class HAPIMemoryParser {
         return entireArray
     }
     
-    public func BuildAssignAdminCOP(adminID: Int) -> [UInt8] {
-        let COP = UInt8(0x13)
+    public func BuildAdminMOP(deviceID: Int, adminID: Int) -> [UInt8] {
+        let MOP = UInt8(0x17)
         let packet = convertIntToByteArray(integer: adminID)
-        let entireArray = packageCOP(COP: COP, packet: packet)
+        let entireArray = packageMOP(MOP: MOP, deviceID: deviceID, packet: packet)
+        return entireArray
+    }
+    
+    public func BuildStoreMOPCOP(byteArray: [UInt8]) -> [UInt8] {
+        let COP = UInt8(0x13)
+        let entireArray = packageCOP(COP: COP, packet: byteArray)
         return entireArray
     }
     
@@ -74,6 +80,13 @@ class HAPIMemoryParser {
     public func packageCOP(COP: UInt8, packet: [UInt8]) -> [UInt8] {
         let numBytes = UInt8(packet.count)
         return [COP, numBytes] + packet
+    }
+    
+    public func packageMOP(MOP: UInt8, deviceID: Int, packet: [UInt8]) -> [UInt8] {
+        let numBytes = UInt8(packet.count)
+        let deviceIDArray = convertIntToByteArray(integer: deviceID)
+        print(deviceIDArray)
+        return [MOP] + deviceIDArray + [numBytes] + packet
     }
     
     public func GetDeviceIDBytesFromInt(deviceID: Int) -> [UInt8] {
@@ -125,7 +138,7 @@ class HAPIMemoryParser {
         let thisMOP = dump[index]
         let header = ParseDeviceID(dump: dump, index: index + 1)
         let packet = CalculateNumberOfBytes(dump: dump, index: header.index)
-        print("Next MOP: \(thisMOP)")
+        print("Next MOP: \(thisMOP) from \(header.deviceID)")
         
         if (thisMOP == 0x01) {
             // Device Data: ID & Version
@@ -158,6 +171,10 @@ class HAPIMemoryParser {
         } else if (thisMOP == 0x12) {
             // Fragment
             
+        } else if (thisMOP == 0x17) {
+            // AdminID 
+            
+            
         } else {
             // Unknown MOP or misinterpreted datastream
         }
@@ -171,13 +188,7 @@ class HAPIMemoryParser {
     }
     
     func ParseDevice(dump: [UInt8], index: Int, deviceID: Int, ipAddress: String) {
-        //let version = dump[index]
-        //let thisDevice = realm.object(ofType: Device.self, forPrimaryKey: deviceID)
-        
-        //if thisDevice == nil {
-        //    print("Adding anyways...")
-            AddNewDevice(deviceID: deviceID, ipAddress: ipAddress)
-        //} else { print("This devices has already been detected") }
+        AddNewDevice(deviceID: deviceID, ipAddress: ipAddress)
         
     }
     
@@ -217,7 +228,7 @@ class HAPIMemoryParser {
         let currentWifi = currentWifiInfo()
         let uniqueID = generateUniqueControlID(deviceID: deviceID, controlID: dump[index])
         let existingControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: uniqueID)
-        print("\(controlName): \(Int(dump[index + 5]))")
+        //print("\(controlName): \(Int(dump[index + 5]))")
         if existingControl != nil {
             flushControlVertices(controlUniqueID: uniqueID)
             
@@ -288,8 +299,6 @@ class HAPIMemoryParser {
         newVertex.tx = txControl
         newVertex.vertexID = nameVertex(tx: txControl, rx: rxControl)
         
-        
-        
         let existingVertexCheck = realm.object(ofType: Vertex.self, forPrimaryKey: newVertex.vertexID)
         
         if existingVertexCheck == nil && txControl != nil && rxControl != nil {
@@ -306,8 +315,7 @@ class HAPIMemoryParser {
             let txVertices = realm.objects(Vertex.self).filter("tx == %@", txControl!)
             
             try! realm.write {
-                print(txControl?.uniqueID)
-                print(txVertices)
+                
                 realm.create(DeviceControl.self,
                              value: ["uniqueID": (txControl?.uniqueID)!,
                                      "vertexList": txVertices],
@@ -316,7 +324,6 @@ class HAPIMemoryParser {
         }
         
         let allVertices = realm.objects(Vertex.self)
-        print(allVertices)
         
     }
     
@@ -329,8 +336,8 @@ class HAPIMemoryParser {
         }
         
         let allVertices = realm.objects(Vertex.self)
-        print("After flusing \(thisControl?.controlName)")
-        print(allVertices)
+        //print("After flusing \(thisControl?.controlName)")
+        //print(allVertices)
     }
     
     
