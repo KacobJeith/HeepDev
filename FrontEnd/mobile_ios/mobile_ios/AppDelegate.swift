@@ -9,15 +9,21 @@
 import UIKit
 import CoreData
 import RealmSwift
+import UserNotifications
+import CoreLocation
 import FacebookCore
 
 var configApp = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
 var configUser = Realm.Configuration(fileURL: configApp.fileURL!.deletingLastPathComponent()
     .appendingPathComponent("guest.realm"), deleteRealmIfMigrationNeeded: true)
 
+protocol AddBeacon {
+    func addBeacon(beacon: HeepBeacon)
+}
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
+    let locationManager = CLLocationManager()
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
@@ -26,9 +32,41 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         initializeApp()
         setupAppNavigation()
- 
+        startMonitoringBeacon()
+        
         return true
     }
+    
+    func startMonitoringBeacon() {
+        // Request permission to send notifications
+        let center = UNUserNotificationCenter.current()
+        center.requestAuthorization(options:[.alert, .sound]) { (granted, error) in }
+        
+        locationManager.delegate = self
+        
+        var delegate: AddBeacon?
+        
+        // Create new Heep Beacon
+        let uuidString = "B87273A8-3C02-11E7-A919-92EBCB67FE33"
+        let uuid = UUID(uuidString: uuidString)
+        let major = 256
+        let minor = 65535
+        let name = "HEEP HQ"
+        
+        let newBeacon = HeepBeacon(name: name, uuid: uuid!, majorValue: major, minorValue: minor)
+        
+        delegate?.addBeacon(beacon: newBeacon)
+        
+        locationManager.delegate = self
+        
+        locationManager.requestAlwaysAuthorization()
+        
+        let beaconRegion = newBeacon.asBeaconRegionIgnoreMajorMinor()
+        
+        locationManager.startMonitoring(for: beaconRegion)
+        
+    }
+
     
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
         return UIInterfaceOrientationMask.portrait
@@ -124,6 +162,34 @@ extension AppDelegate {
         self.window?.rootViewController = navigationController
         self.window?.makeKeyAndVisible()
     }
+}
+
+// MARK: - CLLocationManagerDelegate
+extension AppDelegate: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        
+        //region must be cast as CLBeaconRegion to expose UUID & major/minor variables
+        let r = (region as! CLBeaconRegion)
+        
+        //Here we can act on the beacons depending on their Major & Minor data
+        print("I see a beacon:")
+        print("Name: \(r.identifier)")
+        print("UUID: \(r.proximityUUID)")
+        print("Major: \(r.major)")
+        print("Minor: \(r.minor)")
+        
+        let content = UNMutableNotificationContent()
+        content.title = "Heep Zone"
+        content.body = "You are now entering the Heep Zone™"
+        content.sound = .default()
+        
+        let request = UNNotificationRequest(identifier: "Heep", content: content, trigger: nil)
+        
+        
+        UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+        
+    }
+    
 }
 
 
