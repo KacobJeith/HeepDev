@@ -83,7 +83,7 @@ class AccountView: UIViewController {
     
     func selectUser(sender: UIButton) {
         print("Selecting new user: \(sender.tag)")
-        loginToUserRealm(user: sender.tag)
+        loginToUserRealmSync(user: sender.tag)
     }
     
     func loginToUserRealm(user: Int) {

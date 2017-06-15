@@ -144,7 +144,7 @@ class EmailLoginView : UIViewController {
         let inputResults = extractInputValues()
         let pseudoUniqueID = getIDFromByteArray(bytes: inputResults.email.asciiArray)
         seedNewUserAccount(name: "placeholder", id: String(describing: pseudoUniqueID))
-        loginToUserRealm(user: pseudoUniqueID)
+        loginToUserRealmSync(user: pseudoUniqueID)
         exitModalView()
     }
     

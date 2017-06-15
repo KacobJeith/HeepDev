@@ -194,16 +194,90 @@ func getUserIcon(iconURL: String) -> NSData {
     return data! as NSData
 }
 
-func loginToUserRealm(user: Int) {
+func loginToUserRealmSync(user: Int) {
     let realmApp = try! Realm(configuration: configApp)
+    
     let app = realmApp.object(ofType: App.self, forPrimaryKey: 0)
     
     try! realmApp.write {
         app?.activeUser = user
     }
     
+    /*
     configUser.fileURL = configUser.fileURL!.deletingLastPathComponent().appendingPathComponent("\(String(describing: user)).realm")
+    */
+    //Sign in
+    let urlString = "http://192.168.1.157:9080"
+    let url = URL(string: urlString)!
+    print(url)
+    let credentials = SyncCredentials.usernamePassword(username: "user",
+                                                       password: "password",
+                                                       register: false)
     
+    let registerCredentials =  SyncCredentials.usernamePassword(username: "user",
+                                                                password: "password",
+                                                                register: true)
+    
+    print(credentials)
+    /*
+    SyncUser.logIn(with: credentials,
+                   server: URL(string: urlString)!,
+                   onCompletion: { user, error in
+                    
+                    if user == nil {
+                        print("Need to register a new user")
+                        */
+                        SyncUser.logIn(with: registerCredentials,
+                                       server: url) { user, error in
+                                        
+                                        print(user!)
+    }
+    /*
+                    }
+                    
+    })
+    */
+    /*
+    SyncUser.logIn(with: .usernamePassword(username: "user",
+                                           password: "password",
+                                           register: false),
+                          server: URL(string: urlString)!,
+                          onCompletion: { user, error in
+        if user == nil {
+            //Sign in error; create a new account account instead
+            SyncUser.authenticate(with: Credential.usernamePassword(username: "user",
+                                                                    password: "password",
+                                                                    actions: [.createAccount]),
+                                  server: URL(string: address)!,
+                                  onCompletion: { user, error in
+                print(user)
+                //...
+            })
+        }
+    })
+    
+                
+    SyncUser.logIn(with: .usernamePassword(username: "username", password: "password", actions: [.createAccount]),
+                   server: URL(string: "http://127.0.0.1:9080/~/userRealm")!,
+                   onCompletion: { user, error in
+        
+                    if let user = user {
+                        print(user)
+                        
+                        DispatchQueue.main.async {
+                            configUser =  Realm.Configuration(syncConfiguration: SyncConfiguration(user: user, realmURL: URL(string: "http://127.0.0.17:9080/~/userRealm")!))
+                        }
+                    } else if let error = error {
+                        print(error)
+                    }
+        
+    })
+ */
+    
+    //print("Current: \(SyncUser.current!)")
+    // Open the remote Realm
+    // let realm = try! Realm(configuration: config)
+    // Any changes made to this Realm will be synced across all devices!
 }
 
 func convertIntToByteArray(integer: Int) -> [UInt8] {
