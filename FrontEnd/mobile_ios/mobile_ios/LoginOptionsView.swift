@@ -253,7 +253,7 @@ extension LoginOptionsView : LoginButtonDelegate {
     func seedNewUserFromFacebook(name: String, imageURL: String, id: String) {
         let newUser = seedNewUserAccount(name: name, imageURL: imageURL, id: id)
         
-        loginToUserRealmSync(user: newUser.userID)
+        //loginToUserRealmSync(user: newUser.userID)
         exitModalView()
     }
     

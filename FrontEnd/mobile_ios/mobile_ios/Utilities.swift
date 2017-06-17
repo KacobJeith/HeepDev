@@ -158,7 +158,10 @@ func getIDFromByteArray(bytes: [UInt32]) -> Int {
 
 func seedNewUserAccount(name: String,
                         imageURL: String = "https://lorempixel.com/400/400/cats/",
-                        id: String) -> User {
+                        id: String,
+                        email: String = "",
+                        password: String = "") -> User {
+    
         let realm = try! Realm(configuration: configApp)
         let app = realm.object(ofType: App.self, forPrimaryKey: 0)
         let newUser = User()
@@ -168,6 +171,8 @@ func seedNewUserAccount(name: String,
         newUser.facebookID = Int(id)!
         newUser.name = name
         newUser.iconURL = imageURL
+        newUser.email = email
+        newUser.password = password
         print(newUser)
         
         try! realm.write {
@@ -194,25 +199,27 @@ func getUserIcon(iconURL: String) -> NSData {
     return data! as NSData
 }
 
-func loginToUserRealmSync(user: Int) {
+func loginToUserRealmSync(username: String, password: String) {
     let realmApp = try! Realm(configuration: configApp)
     
     let app = realmApp.object(ofType: App.self, forPrimaryKey: 0)
+    let thisUser = realmApp.objects(User.self).filter("email = %s", username)
     
     try! realmApp.write {
-        app?.activeUser = user
+        app?.activeUser = (thisUser.first?.userID)!
     }
     
     //Sign in
-    let urlString = "http://192.168.1.251:9080"
+    let urlString = "http://45.55.249.217:9080"
     let url = URL(string: urlString)!
     print(url)
-    let credentials = SyncCredentials.usernamePassword(username: "user",
-                                                       password: "password",
+    let userURL = URL(string: "realm://45.55.249.217:9080/~/heepzone")!
+    let credentials = SyncCredentials.usernamePassword(username: username,
+                                                       password: password,
                                                        register: false)
     
-    let registerCredentials =  SyncCredentials.usernamePassword(username: "user",
-                                                                password: "password",
+    let registerCredentials =  SyncCredentials.usernamePassword(username: username,
+                                                                password: password,
                                                                 register: true)
     
     print(credentials)
@@ -229,18 +236,19 @@ func loginToUserRealmSync(user: Int) {
                                         
                                         print("user: \(user)")
                                         print("Error: \(error)")
-                                        let userURL = URL(string: "realm://192.168.1.251:9080/~/heepzone")!
                                         configUser =  Realm.Configuration(syncConfiguration: SyncConfiguration(user: user!, realmURL: userURL))
                                         
                         }
                     } else {
-                        configUser =  Realm.Configuration(syncConfiguration: SyncConfiguration(user: user!, realmURL: url))
+                        
+                        configUser =  Realm.Configuration(syncConfiguration: SyncConfiguration(user: user!, realmURL: userURL))
                         print("Found existing")
                     }
     })
     
     print(configUser)
 }
+
 
 func convertIntToByteArray(integer: Int) -> [UInt8] {
     var byteArray = [UInt8]()

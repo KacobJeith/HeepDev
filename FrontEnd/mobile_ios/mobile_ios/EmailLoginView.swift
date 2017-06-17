@@ -143,8 +143,12 @@ class EmailLoginView : UIViewController {
     func submitValues(gesture: UITapGestureRecognizer) {
         let inputResults = extractInputValues()
         let pseudoUniqueID = getIDFromByteArray(bytes: inputResults.email.asciiArray)
-        seedNewUserAccount(name: "placeholder", id: String(describing: pseudoUniqueID))
-        loginToUserRealmSync(user: pseudoUniqueID)
+        seedNewUserAccount(name: "placeholder",
+                           id: String(describing: pseudoUniqueID),
+                           email: inputResults.email,
+                           password: inputResults.password)
+        
+        loginToUserRealmSync(username: inputResults.email, password: inputResults.password)
         exitModalView()
     }
     

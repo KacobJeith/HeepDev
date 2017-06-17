@@ -83,7 +83,11 @@ class AccountView: UIViewController {
     
     func selectUser(sender: UIButton) {
         print("Selecting new user: \(sender.tag)")
-        loginToUserRealmSync(user: sender.tag)
+        let realm = try! Realm(configuration: configApp)
+        let selectedUser = realm.object(ofType: User.self, forPrimaryKey: sender.tag)
+        
+        loginToUserRealmSync(username: (selectedUser?.email)!,
+                             password: (selectedUser?.password)!)
     }
     
     func loginToUserRealm(user: Int) {
