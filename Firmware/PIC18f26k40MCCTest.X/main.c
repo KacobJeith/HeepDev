@@ -56,6 +56,7 @@ void main(void)
 #ifdef TEST_SERVER
     uint8_t rxBuf[200];
     Listen(5000);
+    
 #else
     uint8_t destIP [4];
     destIP[0] = 192;
@@ -90,6 +91,13 @@ void main(void)
     {
         LATAbits.LA0 = 0;
         ReadData(rxBuf, curData);
+        uint8_t buf [5];
+        buf[0] = 'J';
+        buf[1] = 'a';
+        buf[2] = 'm';
+        buf[3] = 'e';
+        buf[4] = 's';
+        SendData(buf, 5);
     }
 #endif
         // Add your application code
