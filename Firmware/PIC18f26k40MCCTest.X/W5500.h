@@ -49,6 +49,10 @@ uint8_t ReadSocketStatus(uint8_t socket);
 
 void WriteSocketTXPointer(uint8_t socket, uint16_t value);
 uint16_t ReadSocketTxPointer(uint8_t socket);
+
+void WriteSocketRXPointer(uint8_t socket, uint16_t value);
+uint16_t ReadSocketRxPointer(uint8_t socket);
+
 uint16_t ReadRecievedBufferSize(uint8_t socket);
 
 void ConnectToIP(uint8_t* IP, uint8_t* port);
