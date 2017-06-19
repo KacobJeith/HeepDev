@@ -340,6 +340,11 @@ void Listen(uint16_t sourcePort)
     WriteSocketCommand(0, Sn_CR_LISTEN);
 }
 
+uint16_t DataAvailable()
+{
+    
+}
+
 void FillBuf4(uint8_t* buf, uint8_t a, uint8_t b, uint8_t c, uint8_t d)
 {
     buf[0] = a;

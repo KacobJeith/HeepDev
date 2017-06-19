@@ -53,6 +53,7 @@ uint16_t ReadSocketTxPointer(uint8_t socket);
 void ConnectToIP(uint8_t* IP, uint8_t* port);
 void SendData(uint8_t* buf, uint16_t len);
 void Listen(uint16_t sourcePort);
+uint16_t DataAvailable();
 
 void W5500SoftwareReset();
 
