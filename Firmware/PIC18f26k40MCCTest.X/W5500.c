@@ -294,6 +294,17 @@ uint16_t ReadSocketTxPointer(uint8_t socket)
     return retValue;
 }
 
+uint16_t ReadRecievedBufferSize(uint8_t socket)
+{
+    uint8_t dataPointer[2];
+    ReadFromW5500(Sn_RX_RSR0, GetReadControlByteFromSocket(socket), dataPointer, 2);
+    
+    uint16_t retValue = dataPointer[0] << 8;
+    retValue += dataPointer[1];
+    
+    return retValue;
+}
+
 void ConnectToIP(uint8_t* IP, uint8_t* port)
 {
     uint16_t sourcePort = 1024;
@@ -342,7 +353,7 @@ void Listen(uint16_t sourcePort)
 
 uint16_t DataAvailable()
 {
-    
+    return ReadRecievedBufferSize(0);
 }
 
 void FillBuf4(uint8_t* buf, uint8_t a, uint8_t b, uint8_t c, uint8_t d)
