@@ -98,6 +98,9 @@ void main(void)
         buf[3] = 'e';
         buf[4] = 's';
         SendData(buf, 5);
+        Disconnect();
+        Listen(5000);
+        LATAbits.LA0 = 1;
     }
 #endif
         // Add your application code
