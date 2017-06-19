@@ -55,6 +55,7 @@ void ConnectToIP(uint8_t* IP, uint8_t* port);
 void SendData(uint8_t* buf, uint16_t len);
 void Listen(uint16_t sourcePort);
 uint16_t DataAvailable();
+void ReadData(uint8_t* buffer, uint16_t size);
 
 void W5500SoftwareReset();
 

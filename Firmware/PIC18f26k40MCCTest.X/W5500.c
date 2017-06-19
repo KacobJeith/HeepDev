@@ -353,7 +353,19 @@ void Listen(uint16_t sourcePort)
 
 uint16_t DataAvailable()
 {
-    return ReadRecievedBufferSize(0);
+    uint16_t val=0,val1=0;
+    do {
+        val1 = ReadRecievedBufferSize(0);
+        if (val1 != 0)
+            val = ReadRecievedBufferSize(0);
+    } 
+    while (val != val1);
+    return val;
+}
+
+void ReadData(uint8_t* buffer, uint16_t size)
+{
+    
 }
 
 void FillBuf4(uint8_t* buf, uint8_t a, uint8_t b, uint8_t c, uint8_t d)
