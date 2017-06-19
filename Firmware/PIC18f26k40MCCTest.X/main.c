@@ -88,8 +88,8 @@ void main(void)
     uint16_t curData = DataAvailable();
     if(curData > 0)
     {
-        ReadData(rxBuf, curData);
         LATAbits.LA0 = 0;
+        ReadData(rxBuf, curData);
     }
 #endif
         // Add your application code

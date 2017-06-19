@@ -274,6 +274,13 @@ uint8_t ReadSocketMode(uint8_t socket)
 void WriteSocketCommand(uint8_t socket, uint8_t value)
 {
     SetSingleByteW5500WithCntl(Sn_CR ,value, GetWriteControlByteFromSocket(socket));
+    
+    while(ReadSocketCommand(socket)) {}
+}
+
+uint8_t ReadSocketCommand(uint8_t socket)
+{
+    return ReadSingleByteW5500WithCntl(Sn_CR, GetReadControlByteFromSocket(socket));
 }
 
 uint8_t ReadSocketStatus(uint8_t socket)
@@ -394,14 +401,19 @@ void ReadData(uint8_t* buffer, uint16_t size)
     
     if(dataInBuf > 0)
     {
-        uint16_t rxPtr = ReadSocketRxPointer(0);
+        uint16_t rxPtr = 0;
+        rxPtr = ReadSocketRxPointer(0);
         
         // Recv the data
         ReadFromW5500(rxPtr, GetReadControlByteFromSocketRx(0), buffer, size);
         rxPtr += size;
         WriteSocketRXPointer(0, rxPtr);
         
+        rxPtr = ReadSocketRxPointer(0);
+        
         WriteSocketCommand(0, Sn_CR_RECV);
+        
+        rxPtr = ReadSocketRxPointer(0);
     }
 }
 

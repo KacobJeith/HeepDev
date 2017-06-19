@@ -46,6 +46,7 @@ void WriteDestinationPort(uint8_t socket, uint8_t* buf);
 void WriteSocketMode(uint8_t socket, uint8_t value);
 uint8_t ReadSocketMode(uint8_t socket);
 void WriteSocketCommand(uint8_t socket, uint8_t value);
+uint8_t ReadSocketCommand(uint8_t socket);
 uint8_t ReadSocketStatus(uint8_t socket);
 
 void WriteSocketTXPointer(uint8_t socket, uint16_t value);
