@@ -239,6 +239,12 @@ uint8_t GetWriteControlByteFromSocketTx(uint8_t socket)
     return cntl_byte;
 }
 
+uint8_t GetReadControlByteFromSocketRx(uint8_t socket)
+{
+    uint8_t cntl_byte = (0x18 + (socket<<5));
+    return cntl_byte;
+}
+
 void WriteSourcePort(uint8_t socket, uint8_t* buf)
 {
     WriteToW5500(Sn_PORT0, GetWriteControlByteFromSocket(socket), buf, 2);
@@ -268,6 +274,13 @@ uint8_t ReadSocketMode(uint8_t socket)
 void WriteSocketCommand(uint8_t socket, uint8_t value)
 {
     SetSingleByteW5500WithCntl(Sn_CR ,value, GetWriteControlByteFromSocket(socket));
+    
+    while(ReadSocketCommand(socket)) {}
+}
+
+uint8_t ReadSocketCommand(uint8_t socket)
+{
+    return ReadSingleByteW5500WithCntl(Sn_CR, GetReadControlByteFromSocket(socket));
 }
 
 uint8_t ReadSocketStatus(uint8_t socket)
@@ -287,6 +300,36 @@ uint16_t ReadSocketTxPointer(uint8_t socket)
 {
     uint8_t dataPointer[2];
     ReadFromW5500(Sn_TX_WR0, GetReadControlByteFromSocket(socket), dataPointer, 2);
+    
+    uint16_t retValue = dataPointer[0] << 8;
+    retValue += dataPointer[1];
+    
+    return retValue;
+}
+
+void WriteSocketRXPointer(uint8_t socket, uint16_t value)
+{
+    uint8_t dataPointer[2];
+    dataPointer[0] = value >> 8;
+    dataPointer[1] = value & 0xFF;
+    WriteToW5500(Sn_RX_RD0, GetWriteControlByteFromSocket(socket), dataPointer, 2);
+}
+
+uint16_t ReadSocketRxPointer(uint8_t socket)
+{
+    uint8_t dataPointer[2];
+    ReadFromW5500(Sn_RX_RD0, GetReadControlByteFromSocket(socket), dataPointer, 2);
+    
+    uint16_t retValue = dataPointer[0] << 8;
+    retValue += dataPointer[1];
+    
+    return retValue;
+}
+
+uint16_t ReadRecievedBufferSize(uint8_t socket)
+{
+    uint8_t dataPointer[2];
+    ReadFromW5500(Sn_RX_RSR0, GetReadControlByteFromSocket(socket), dataPointer, 2);
     
     uint16_t retValue = dataPointer[0] << 8;
     retValue += dataPointer[1];
@@ -325,6 +368,53 @@ void SendData(uint8_t* buf, uint16_t len)
     WriteSocketTXPointer(0, pointer);
     
     WriteSocketCommand(0, Sn_CR_SEND);
+}
+
+void Listen(uint16_t sourcePort)
+{
+    // currently assume socket 0
+    uint8_t srcPort[2];
+    srcPort[0] = sourcePort >> 8;
+    srcPort[1] = sourcePort & 0xFF;
+    WriteSocketMode(0, Sn_MR_TCP);
+    WriteSourcePort(0, srcPort);
+    WriteSocketCommand(0, Sn_CR_OPEN);
+    
+    WriteSocketCommand(0, Sn_CR_LISTEN);
+}
+
+uint16_t DataAvailable()
+{
+    uint16_t val=0,val1=0;
+    do {
+        val1 = ReadRecievedBufferSize(0);
+        if (val1 != 0)
+            val = ReadRecievedBufferSize(0);
+    } 
+    while (val != val1);
+    return val;
+}
+
+void ReadData(uint8_t* buffer, uint16_t size)
+{
+    uint16_t dataInBuf = DataAvailable();
+    
+    if(dataInBuf > 0)
+    {
+        uint16_t rxPtr = 0;
+        rxPtr = ReadSocketRxPointer(0);
+        
+        // Recv the data
+        ReadFromW5500(rxPtr, GetReadControlByteFromSocketRx(0), buffer, size);
+        rxPtr += size;
+        WriteSocketRXPointer(0, rxPtr);
+        
+        rxPtr = ReadSocketRxPointer(0);
+        
+        WriteSocketCommand(0, Sn_CR_RECV);
+        
+        rxPtr = ReadSocketRxPointer(0);
+    }
 }
 
 void FillBuf4(uint8_t* buf, uint8_t a, uint8_t b, uint8_t c, uint8_t d)

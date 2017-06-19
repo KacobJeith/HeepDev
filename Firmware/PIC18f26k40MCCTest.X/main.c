@@ -1,6 +1,8 @@
 #include "mcc_generated_files/mcc.h"
 #include "W5500.h"
 
+#define TEST_SERVER
+
 void main(void)
 {
     // Initialize the device
@@ -51,6 +53,10 @@ void main(void)
     uint8_t myByte = ReadMR();
     uint8_t anotherByte =  ReadPHYCFGR();
     
+#ifdef TEST_SERVER
+    uint8_t rxBuf[200];
+    Listen(5000);
+#else
     uint8_t destIP [4];
     destIP[0] = 192;
     destIP[1] = 168;
@@ -71,9 +77,21 @@ void main(void)
     buf[3] = 'e';
     buf[4] = 's';
     SendData(buf, 5);
+#endif
+    
+
     
     while (1)
     {
+        
+#ifdef TEST_SERVER
+    uint16_t curData = DataAvailable();
+    if(curData > 0)
+    {
+        LATAbits.LA0 = 0;
+        ReadData(rxBuf, curData);
+    }
+#endif
         // Add your application code
        // LATAbits.LA0 = !LATAbits.LA0;
         //SPI1_Exchange8bit(counter);

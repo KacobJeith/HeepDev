@@ -38,6 +38,7 @@ uint8_t ReadPHYCFGR();
 uint8_t GetWriteControlByteFromSocket(uint8_t socket);
 uint8_t GetReadControlByteFromSocket(uint8_t socket);
 uint8_t GetWriteControlByteFromSocketTx(uint8_t socket);
+uint8_t GetReadControlByteFromSocketRx(uint8_t socket);
 
 void WriteSourcePort(uint8_t socket, uint8_t* buf);
 void WriteDestinationIP(uint8_t socket, uint8_t* buf);
@@ -45,13 +46,22 @@ void WriteDestinationPort(uint8_t socket, uint8_t* buf);
 void WriteSocketMode(uint8_t socket, uint8_t value);
 uint8_t ReadSocketMode(uint8_t socket);
 void WriteSocketCommand(uint8_t socket, uint8_t value);
+uint8_t ReadSocketCommand(uint8_t socket);
 uint8_t ReadSocketStatus(uint8_t socket);
 
 void WriteSocketTXPointer(uint8_t socket, uint16_t value);
 uint16_t ReadSocketTxPointer(uint8_t socket);
 
+void WriteSocketRXPointer(uint8_t socket, uint16_t value);
+uint16_t ReadSocketRxPointer(uint8_t socket);
+
+uint16_t ReadRecievedBufferSize(uint8_t socket);
+
 void ConnectToIP(uint8_t* IP, uint8_t* port);
 void SendData(uint8_t* buf, uint16_t len);
+void Listen(uint16_t sourcePort);
+uint16_t DataAvailable();
+void ReadData(uint8_t* buffer, uint16_t size);
 
 void W5500SoftwareReset();
 
