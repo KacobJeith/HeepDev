@@ -327,6 +327,19 @@ void SendData(uint8_t* buf, uint16_t len)
     WriteSocketCommand(0, Sn_CR_SEND);
 }
 
+void Listen(uint16_t sourcePort)
+{
+    // currently assume socket 0
+    uint8_t srcPort[2];
+    srcPort[0] = sourcePort >> 8;
+    srcPort[1] = sourcePort & 0xFF;
+    WriteSocketMode(0, Sn_MR_TCP);
+    WriteSourcePort(0, srcPort);
+    WriteSocketCommand(0, Sn_CR_OPEN);
+    
+    WriteSocketCommand(0, Sn_CR_LISTEN);
+}
+
 void FillBuf4(uint8_t* buf, uint8_t a, uint8_t b, uint8_t c, uint8_t d)
 {
     buf[0] = a;
