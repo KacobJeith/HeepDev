@@ -54,6 +54,7 @@ void main(void)
     uint8_t anotherByte =  ReadPHYCFGR();
     
 #ifdef TEST_SERVER
+    uint8_t rxBuf[200];
     Listen(5000);
 #else
     uint8_t destIP [4];
@@ -84,8 +85,10 @@ void main(void)
     {
         
 #ifdef TEST_SERVER
-    if(DataAvailable() > 0)
+    uint16_t curData = DataAvailable();
+    if(curData > 0)
     {
+        ReadData(rxBuf, curData);
         LATAbits.LA0 = 0;
     }
 #endif

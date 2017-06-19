@@ -239,6 +239,12 @@ uint8_t GetWriteControlByteFromSocketTx(uint8_t socket)
     return cntl_byte;
 }
 
+uint8_t GetReadControlByteFromSocketRx(uint8_t socket)
+{
+    uint8_t cntl_byte = (0x18 + (socket<<5));
+    return cntl_byte;
+}
+
 void WriteSourcePort(uint8_t socket, uint8_t* buf)
 {
     WriteToW5500(Sn_PORT0, GetWriteControlByteFromSocket(socket), buf, 2);
@@ -388,7 +394,13 @@ void ReadData(uint8_t* buffer, uint16_t size)
     
     if(dataInBuf > 0)
     {
+        uint16_t rxPtr = ReadSocketRxPointer(0);
+        
         // Recv the data
+        ReadFromW5500(rxPtr, GetReadControlByteFromSocketRx(0), buffer, size);
+        rxPtr += size;
+        WriteSocketRXPointer(0, rxPtr);
+        
         WriteSocketCommand(0, Sn_CR_RECV);
     }
 }
