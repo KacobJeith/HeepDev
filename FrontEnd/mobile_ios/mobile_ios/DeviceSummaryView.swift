@@ -12,10 +12,12 @@ class DeviceSummaryViewController: UITableViewController {
     
     var sections: [String]!
     var cells: [[String]]!
+    var thisDevice = Device()
     
     init(device: Device) {
         self.sections = ["Device: " + device.name]
         
+        thisDevice = device
         
         let deviceData = [
             "ID: " + String(device.deviceID),
@@ -61,7 +63,20 @@ class DeviceSummaryViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.setupNavToolbar()
+
+    }
     
+    func setupNavToolbar() {
+        let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        
+        let claim = UIBarButtonItem(title: "Claim Device",
+                                    style: .plain,
+                                    target: self,
+                                    action: #selector(claimDevice))
+        
+        self.toolbarItems = [spacer,  claim, spacer]
     }
     
     override func didReceiveMemoryWarning() {
@@ -110,7 +125,9 @@ class DeviceSummaryViewController: UITableViewController {
         return cell
     }
     
-    
-    
+    func claimDevice() {
+        HeepConnections().sendAssignAdminToHeepDevice(deviceID: thisDevice.deviceID)
+        
+    }
     
 }
