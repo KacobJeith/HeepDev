@@ -329,7 +329,7 @@ int GetNextVertexPointer(unsigned int* pointer,unsigned int* counter)
 	return 1;
 }
 
-unsigned int GetFragmentFromMemory(int &pointerToFragment, int &numFragementBytes)
+unsigned int GetFragmentFromMemory(int *pointerToFragment, int *numFragementBytes)
 {
 	unsigned int counter = 0;
 
@@ -337,9 +337,9 @@ unsigned int GetFragmentFromMemory(int &pointerToFragment, int &numFragementByte
 	{
 		if(deviceMemory[counter] == FragmentOpCode)
 		{
-			pointerToFragment = counter;
+			*pointerToFragment = counter;
 
-			numFragementBytes = 2 + ID_SIZE + deviceMemory[counter + ID_SIZE + 1];
+			*numFragementBytes = 2 + ID_SIZE + deviceMemory[counter + ID_SIZE + 1];
 
 			return 0;
 		}
@@ -368,7 +368,7 @@ void DefragmentMemory()
 	do
 	{
 		int pointerToFragment = 0; int numFragementBytes = 0;
-		isFragmentFound = GetFragmentFromMemory(pointerToFragment, numFragementBytes);
+		isFragmentFound = GetFragmentFromMemory(&pointerToFragment, &numFragementBytes);
 
 		if(isFragmentFound == 0)
 		{
