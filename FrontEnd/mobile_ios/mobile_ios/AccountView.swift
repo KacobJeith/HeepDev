@@ -18,11 +18,7 @@ class AccountView: UIViewController {
     var activeUser = User()
     
     override func viewDidLoad() {
-        let realm = try! Realm(configuration: configApp)
-        let app = realm.object(ofType: App.self, forPrimaryKey: 0)
-        activeUser = realm.object(ofType: User.self, forPrimaryKey: app?.activeUser)!
-        
-        let numUsers = realm.objects(User.self).count
+        let numUsers = SyncUser.all.count
         let binHeight = CGFloat((numUsers + 2) * 60 + 10)
         
         
@@ -43,12 +39,12 @@ class AccountView: UIViewController {
     }
     
     func addUserButtons() {
-        let realm = try! Realm(configuration: configApp)
-        let loggedInUsers = realm.objects(User.self)
+        
+        let loggedInUsers = SyncUser.all
         
         for eachUser in loggedInUsers {
             print(eachUser)
-            displayEachUserButton(user: eachUser)
+            //displayEachUserButton(user: eachUser)
         }
     }
     
@@ -66,7 +62,7 @@ class AccountView: UIViewController {
         let userImage = UIImage(data: user.icon as Data)
         userButton.imageView?.contentMode = .scaleAspectFit
         userButton.setImage(userImage, for: .normal)
-        userButton.tag = user.userID
+        userButton.tag = user.heepID
         userButton.addTarget(self,
                              action: #selector(selectUser),
                              for: .primaryActionTriggered)
@@ -83,24 +79,10 @@ class AccountView: UIViewController {
     
     func selectUser(sender: UIButton) {
         print("Selecting new user: \(sender.tag)")
-        let realm = try! Realm(configuration: configApp)
+        let realm = try! Realm(configuration: configPublic)
         let selectedUser = realm.object(ofType: User.self, forPrimaryKey: sender.tag)
         
-        loginToUserRealmSync(username: (selectedUser?.email)!,
-                             password: (selectedUser?.password)!)
-    }
-    
-    func loginToUserRealm(user: Int) {
-        let realmApp = try! Realm(configuration: configApp)
-        let app = realmApp.object(ofType: App.self, forPrimaryKey: 0)
-        
-        try! realmApp.write {
-            app?.activeUser = user
-        }
-        
-        configUser.fileURL = configUser.fileURL!.deletingLastPathComponent().appendingPathComponent("\(String(describing: user)).realm")
-        
-        exitModalView()
+        //loginToUserRealmSync(username: (selectedUser?.email)!, password: (selectedUser?.password)!)
     }
     
     func addBackdrop() {
@@ -169,26 +151,7 @@ class AccountView: UIViewController {
     func logoutUser() {
         print("Log \(activeUser.name) Out")
         
-        /*
-        let fileManager = FileManager()
-        
-        do {
-            print("Deleting user Realm")
-            try fileManager.removeItem(atPath: String(contentsOf: (configUser.fileURL)!))
-        }
-        catch let error as NSError {
-            print("Ooops! Something went wrong: \(error)")
-        }
-        */
-        
-        let realm = try! Realm(configuration: configApp)
-        let userToDelete = realm.object(ofType: User.self, forPrimaryKey: activeUser.userID)!
-        let app = realm.object(ofType: App.self, forPrimaryKey: 0)!
-        
-        try! realm.write {
-            realm.delete(userToDelete)
-            app.activeUser = 0
-        }
+        SyncUser.current?.logOut()
         
         exitModalView()
         
