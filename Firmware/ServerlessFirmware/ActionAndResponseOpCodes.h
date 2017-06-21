@@ -215,7 +215,7 @@ void ExecuteSetPositionOpCode()
 // Updated
 void ExecuteSetVertexOpCode()
 {
-	Vertex_Byte myVertex;
+	struct Vertex_Byte myVertex;
 
 	unsigned int localCounter = 0;
 	unsigned int counter = 1;
@@ -226,7 +226,7 @@ void ExecuteSetVertexOpCode()
 	unsigned char txControl = GetNumberFromBuffer(inputBuffer, &counter, 1);
 	unsigned char rxControl = GetNumberFromBuffer(inputBuffer, &counter, 1);
 
-	HeepIPAddress vertexIP;
+	struct HeepIPAddress vertexIP;
 	vertexIP.Octet4 = GetNumberFromBuffer(inputBuffer, &counter, 1);
 	vertexIP.Octet3 = GetNumberFromBuffer(inputBuffer, &counter, 1);
 	vertexIP.Octet2 = GetNumberFromBuffer(inputBuffer, &counter, 1);
@@ -245,7 +245,7 @@ void ExecuteSetVertexOpCode()
 // Updated
 void ExecuteDeleteVertexOpCode()
 {
-	Vertex_Byte myVertex;
+	struct Vertex_Byte myVertex;
 
 	unsigned int localCounter = 0;
 	unsigned int counter = 1;
@@ -256,7 +256,7 @@ void ExecuteDeleteVertexOpCode()
 	unsigned char txControl = GetNumberFromBuffer(inputBuffer, &counter, 1);
 	unsigned char rxControl = GetNumberFromBuffer(inputBuffer, &counter, 1);
 
-	HeepIPAddress vertexIP;
+	struct HeepIPAddress vertexIP;
 	vertexIP.Octet4 = GetNumberFromBuffer(inputBuffer, &counter, 1);
 	vertexIP.Octet3 = GetNumberFromBuffer(inputBuffer, &counter, 1);
 	vertexIP.Octet2 = GetNumberFromBuffer(inputBuffer, &counter, 1);
