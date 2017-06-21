@@ -180,14 +180,6 @@ func getUserIcon(iconURL: String) -> NSData {
 }
 
 func loginToUserRealmSync(username: String, password: String) {
-    let realmApp = try! Realm(configuration: configApp)
-    
-    let app = realmApp.object(ofType: App.self, forPrimaryKey: 0)
-    let thisUser = realmApp.objects(User.self).filter("email = %s", username)
-    
-    try! realmApp.write {
-        app?.activeUser = (thisUser.first?.userID)!
-    }
     
     //Sign in
     let urlString = "http://45.55.249.217:9080"
@@ -227,6 +219,7 @@ func loginToUserRealmSync(username: String, password: String) {
     })
     
     print(configUser)
+    print("Current User: \(SyncUser.current!)")
 }
 
 func loginToPublicRealm() {
