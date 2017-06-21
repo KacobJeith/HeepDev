@@ -31,7 +31,7 @@ void SetupHeepDevice(char* deviceName)
 	}
 	else
 	{
-		ReadMemory(controlRegister, deviceMemory, curFilledMemory);
+		ReadMemory(&controlRegister, deviceMemory, &curFilledMemory);
 		FillVertexListFromMemory();
 	}
 }
@@ -47,7 +47,7 @@ void SendOutputByID(unsigned char controlID, unsigned int value)
 {
 	SetControlValueByID(controlID, value, 0);
 
-	Vertex_Byte newVertex;
+	struct Vertex_Byte newVertex;
 
 	for(int i = 0; i < numberOfVertices; i++)
 	{

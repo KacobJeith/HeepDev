@@ -21,11 +21,11 @@ void ClearMemory()
 }
 
 
-void ReadMemory(unsigned char &controlRegister, unsigned char* memoryBuffer, unsigned int &bytesRead)
+void ReadMemory(unsigned char* controlRegister, unsigned char* memoryBuffer, unsigned int* bytesRead)
 {
-	controlRegister = EEPROM.read(0); // Address 0 contains control register
+	*controlRegister = EEPROM.read(0); // Address 0 contains control register
 	int numberBytesToRead = EEPROM.read(1); // Address 1 contains number of bytes
-	bytesRead = numberBytesToRead;
+	*bytesRead = numberBytesToRead;
 
 	for(int i = 2; i < numberBytesToRead + 1; i++)
 	{
