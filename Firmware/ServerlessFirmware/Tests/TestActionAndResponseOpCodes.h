@@ -126,7 +126,7 @@ void TestNumberFromBuffer()
 	myBuffer[1] = 0xFF;
 
 	unsigned int counter = 0;
-	unsigned int retVal = GetNumberFromBuffer(myBuffer, counter, 2);
+	unsigned int retVal = GetNumberFromBuffer(myBuffer, &counter, 2);
 
 	ExpectedValue valueList[1];
 	valueList[0].valueName = "Returned Number";

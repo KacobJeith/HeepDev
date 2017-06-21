@@ -543,15 +543,15 @@ void TestGetDeviceIndexByteWise()
 #ifdef USE_INDEXED_IDS
 
 	unsigned int startCount = 0;
-	unsigned long value0 = GetNumberFromBuffer(myID0, startCount, retSize0);
+	unsigned long value0 = GetNumberFromBuffer(myID0, &startCount, retSize0);
 	startCount = 0;
-	unsigned long value1 = GetNumberFromBuffer(myID1, startCount, retSize1);
+	unsigned long value1 = GetNumberFromBuffer(myID1, &startCount, retSize1);
 	startCount = 0;
-	unsigned long value2 = GetNumberFromBuffer(myID2, startCount, retSize2);
+	unsigned long value2 = GetNumberFromBuffer(myID2, &startCount, retSize2);
 	startCount = 0;
-	unsigned long value3 = GetNumberFromBuffer(myID3, startCount, retSize3);
+	unsigned long value3 = GetNumberFromBuffer(myID3, &startCount, retSize3);
 	startCount = 0;
-	unsigned long value4 = GetNumberFromBuffer(myID4, startCount, retSize4);
+	unsigned long value4 = GetNumberFromBuffer(myID4, &startCount, retSize4);
 
 	ExpectedValue valueList [5];
 	valueList[0].valueName = "Index Value 1";

@@ -165,9 +165,9 @@ unsigned int ParseXYOpCode_Byte(int *x, int *y, heepByte* deviceID, unsigned int
 {
 	counter ++;
 	counter = GetDeviceIDOrLocalIDFromBuffer(deviceMemory, deviceID, counter);
-	GetNumberFromBuffer(deviceMemory, counter, 1);
-	*x = GetNumberFromBuffer(deviceMemory, counter, 2);
-	*y = GetNumberFromBuffer(deviceMemory, counter, 2);
+	GetNumberFromBuffer(deviceMemory, &counter, 1);
+	*x = GetNumberFromBuffer(deviceMemory, &counter, 2);
+	*y = GetNumberFromBuffer(deviceMemory, &counter, 2);
 
 	return counter;
 }
@@ -268,18 +268,18 @@ int GetVertexAtPointer_Byte(unsigned long pointer, Vertex_Byte &returnedVertex)
 	GetDeviceIDFromIndex_Byte(sendIDLocal, sendIDGlobal);
 	CopyDeviceID(sendIDGlobal, returnedVertex.txID);
 
-	int numBytes = GetNumberFromBuffer(deviceMemory, counter, 1);
+	int numBytes = GetNumberFromBuffer(deviceMemory, &counter, 1);
 
 	counter = GetDeviceIDOrLocalIDFromBuffer(deviceMemory, receiveIDLocal, counter);
 	GetDeviceIDFromIndex_Byte(receiveIDLocal, receiveIDGlobal);
 	CopyDeviceID(receiveIDGlobal, returnedVertex.rxID);
 
-	returnedVertex.txControlID = GetNumberFromBuffer(deviceMemory, counter, 1);
-	returnedVertex.rxControlID = GetNumberFromBuffer(deviceMemory, counter, 1);
-	returnedVertex.rxIPAddress.Octet4 = GetNumberFromBuffer(deviceMemory, counter, 1);
-	returnedVertex.rxIPAddress.Octet3 = GetNumberFromBuffer(deviceMemory, counter, 1);
-	returnedVertex.rxIPAddress.Octet2 = GetNumberFromBuffer(deviceMemory, counter, 1);
-	returnedVertex.rxIPAddress.Octet1 = GetNumberFromBuffer(deviceMemory, counter, 1);
+	returnedVertex.txControlID = GetNumberFromBuffer(deviceMemory, &counter, 1);
+	returnedVertex.rxControlID = GetNumberFromBuffer(deviceMemory, &counter, 1);
+	returnedVertex.rxIPAddress.Octet4 = GetNumberFromBuffer(deviceMemory, &counter, 1);
+	returnedVertex.rxIPAddress.Octet3 = GetNumberFromBuffer(deviceMemory, &counter, 1);
+	returnedVertex.rxIPAddress.Octet2 = GetNumberFromBuffer(deviceMemory, &counter, 1);
+	returnedVertex.rxIPAddress.Octet1 = GetNumberFromBuffer(deviceMemory, &counter, 1);
 
 	return 0;
 }
@@ -394,7 +394,7 @@ heepByte GetIndexedDeviceID_Byte(heepByte* deviceID)
 		if(deviceMemory[counter] == LocalDeviceIDOpCode)
 		{
 			counter++;
-			unsigned long indexedValue = GetNumberFromBuffer(deviceMemory, counter, ID_SIZE);
+			unsigned long indexedValue = GetNumberFromBuffer(deviceMemory, &counter, ID_SIZE);
 			counter++;
 
 			heepByte foundID [STANDARD_ID_SIZE];
@@ -443,7 +443,7 @@ heepByte GetDeviceIDFromIndex_Byte(heepByte* index, heepByte* returnedID)
 #ifdef USE_INDEXED_IDS
 
 	unsigned int counter = 0;
-	unsigned long sentIndex = GetNumberFromBuffer(index, counter, ID_SIZE);
+	unsigned long sentIndex = GetNumberFromBuffer(index, &counter, ID_SIZE);
 	counter = 0;
 
 	// Find Indexed ID
@@ -452,7 +452,7 @@ heepByte GetDeviceIDFromIndex_Byte(heepByte* index, heepByte* returnedID)
 		if(deviceMemory[counter] == LocalDeviceIDOpCode)
 		{
 			counter++;
-			unsigned long indexedValue = GetNumberFromBuffer(deviceMemory, counter, ID_SIZE);
+			unsigned long indexedValue = GetNumberFromBuffer(deviceMemory, &counter, ID_SIZE);
 			counter++;
 			counter = GetFullDeviceIDFromBuffer(deviceMemory, returnedID, counter);
 

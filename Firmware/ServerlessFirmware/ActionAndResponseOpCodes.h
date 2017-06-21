@@ -182,7 +182,7 @@ void ExecuteSetValOpCode()
 	unsigned int counter = 1;
 	unsigned char numBytes = inputBuffer[counter++];
 	unsigned char controlID = inputBuffer[counter++];
-	unsigned int value = GetNumberFromBuffer(inputBuffer, counter, numBytes - 1);
+	unsigned int value = GetNumberFromBuffer(inputBuffer, &counter, numBytes - 1);
 
 	int success = SetControlValueByIDFromNetwork(controlID, value);
 
@@ -203,8 +203,8 @@ void ExecuteSetPositionOpCode()
 {
 	unsigned int counter = 1;
 	unsigned char numBytes = inputBuffer[counter++];
-	unsigned int xValue = GetNumberFromBuffer(inputBuffer, counter, 2);
-	unsigned int yValue = GetNumberFromBuffer(inputBuffer, counter, 2);
+	unsigned int xValue = GetNumberFromBuffer(inputBuffer, &counter, 2);
+	unsigned int yValue = GetNumberFromBuffer(inputBuffer, &counter, 2);
 
 	UpdateXYInMemory_Byte(xValue, yValue, deviceIDByte);
 
@@ -219,18 +219,18 @@ void ExecuteSetVertexOpCode()
 
 	unsigned int localCounter = 0;
 	unsigned int counter = 1;
-	unsigned char numBytes = GetNumberFromBuffer(inputBuffer, counter, 1);
+	unsigned char numBytes = GetNumberFromBuffer(inputBuffer, &counter, 1);
 	AddBufferToBuffer(myVertex.txID, inputBuffer, STANDARD_ID_SIZE, localCounter, counter);
 	localCounter = 0;
 	AddBufferToBuffer(myVertex.rxID, inputBuffer, STANDARD_ID_SIZE, localCounter, counter);
-	unsigned char txControl = GetNumberFromBuffer(inputBuffer, counter, 1);
-	unsigned char rxControl = GetNumberFromBuffer(inputBuffer, counter, 1);
+	unsigned char txControl = GetNumberFromBuffer(inputBuffer, &counter, 1);
+	unsigned char rxControl = GetNumberFromBuffer(inputBuffer, &counter, 1);
 
 	HeepIPAddress vertexIP;
-	vertexIP.Octet4 = GetNumberFromBuffer(inputBuffer, counter, 1);
-	vertexIP.Octet3 = GetNumberFromBuffer(inputBuffer, counter, 1);
-	vertexIP.Octet2 = GetNumberFromBuffer(inputBuffer, counter, 1);
-	vertexIP.Octet1 = GetNumberFromBuffer(inputBuffer, counter, 1);
+	vertexIP.Octet4 = GetNumberFromBuffer(inputBuffer, &counter, 1);
+	vertexIP.Octet3 = GetNumberFromBuffer(inputBuffer, &counter, 1);
+	vertexIP.Octet2 = GetNumberFromBuffer(inputBuffer, &counter, 1);
+	vertexIP.Octet1 = GetNumberFromBuffer(inputBuffer, &counter, 1);
 	myVertex.rxControlID = rxControl;
 	myVertex.txControlID = txControl;
 	myVertex.rxIPAddress = vertexIP;
@@ -249,18 +249,18 @@ void ExecuteDeleteVertexOpCode()
 
 	unsigned int localCounter = 0;
 	unsigned int counter = 1;
-	unsigned char numBytes = GetNumberFromBuffer(inputBuffer, counter, 1);
+	unsigned char numBytes = GetNumberFromBuffer(inputBuffer, &counter, 1);
 	AddBufferToBuffer(myVertex.txID, inputBuffer, STANDARD_ID_SIZE, localCounter, counter);
 	localCounter = 0;
 	AddBufferToBuffer(myVertex.rxID, inputBuffer, STANDARD_ID_SIZE, localCounter, counter);
-	unsigned char txControl = GetNumberFromBuffer(inputBuffer, counter, 1);
-	unsigned char rxControl = GetNumberFromBuffer(inputBuffer, counter, 1);
+	unsigned char txControl = GetNumberFromBuffer(inputBuffer, &counter, 1);
+	unsigned char rxControl = GetNumberFromBuffer(inputBuffer, &counter, 1);
 
 	HeepIPAddress vertexIP;
-	vertexIP.Octet4 = GetNumberFromBuffer(inputBuffer, counter, 1);
-	vertexIP.Octet3 = GetNumberFromBuffer(inputBuffer, counter, 1);
-	vertexIP.Octet2 = GetNumberFromBuffer(inputBuffer, counter, 1);
-	vertexIP.Octet1 = GetNumberFromBuffer(inputBuffer, counter, 1);
+	vertexIP.Octet4 = GetNumberFromBuffer(inputBuffer, &counter, 1);
+	vertexIP.Octet3 = GetNumberFromBuffer(inputBuffer, &counter, 1);
+	vertexIP.Octet2 = GetNumberFromBuffer(inputBuffer, &counter, 1);
+	vertexIP.Octet1 = GetNumberFromBuffer(inputBuffer, &counter, 1);
 	myVertex.rxControlID = rxControl;
 	myVertex.txControlID = txControl;
 	myVertex.rxIPAddress = vertexIP;
@@ -293,7 +293,7 @@ int ValidateAndRestructureIncomingMOP(unsigned int MOPStartAddr, unsigned int &n
 	unsigned int startID = MOPStartAddr;
 	unsigned int localCounter = 0;
 	AddBufferToBuffer(curID, inputBuffer, STANDARD_ID_SIZE, localCounter, MOPStartAddr);
-	unsigned char bytesOfData = GetNumberFromBuffer(inputBuffer, MOPStartAddr, 1);
+	unsigned char bytesOfData = GetNumberFromBuffer(inputBuffer, &MOPStartAddr, 1);
 	GetIndexedDeviceID_Byte(curID);
 
 	int memDiff = STANDARD_ID_SIZE - ID_SIZE;
@@ -315,7 +315,7 @@ void ExecuteDeleteMOPOpCode()
 {
 	unsigned int counter = 1;
 
-	unsigned int numBytes = GetNumberFromBuffer(inputBuffer, counter, 1);
+	unsigned int numBytes = GetNumberFromBuffer(inputBuffer, &counter, 1);
 	int dataError = ValidateAndRestructureIncomingMOP(counter, numBytes);
 
 	if(dataError == 0)
@@ -373,7 +373,7 @@ void ExecuteAddMOPOpCode()
 {
 	unsigned int counter = 1;
 
-	unsigned int numBytes = GetNumberFromBuffer(inputBuffer, counter, 1);
+	unsigned int numBytes = GetNumberFromBuffer(inputBuffer, &counter, 1);
 
 	int dataError = ValidateAndRestructureIncomingMOP(counter, numBytes);
 

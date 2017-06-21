@@ -53,15 +53,15 @@ void CopyDeviceID(heepByte* idSend, heepByte* idReturn)
 	AddDeviceIDToBuffer_Byte(idReturn, idSend, 0);
 }
 
-unsigned long GetNumberFromBuffer(unsigned char* buffer, unsigned int &counter, unsigned char numBytes)
+unsigned long GetNumberFromBuffer(unsigned char* buffer, unsigned int* counter, unsigned char numBytes)
 {
 	unsigned long number = 0;
 
 	for(int i = 0; i < numBytes; i++)
 	{
-		int curNum = buffer[counter];
+		int curNum = buffer[*counter];
 		number += curNum << (8 * (numBytes-i-1));
-		counter++;
+		(*counter)++;
 	}
 
 	return number;
