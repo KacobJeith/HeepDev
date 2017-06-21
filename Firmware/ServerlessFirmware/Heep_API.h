@@ -45,7 +45,7 @@ void FactoryReset(char* deviceName)
 
 void SendOutputByID(unsigned char controlID, unsigned int value)
 {
-	SetControlValueByID(controlID, value);
+	SetControlValueByID(controlID, value, 0);
 
 	Vertex_Byte newVertex;
 

@@ -101,7 +101,7 @@ void SetDeviceName(char* deviceName)
 	SetDeviceNameInMemory_Byte(deviceName, deviceNameLength, deviceIDByte);
 }
 
-int SetControlValueByID(unsigned char controlID, unsigned int value, unsigned char setFromNetwork = 0)
+int SetControlValueByID(unsigned char controlID, unsigned int value, unsigned char setFromNetwork)
 {
 	for(int i = 0; i < numberOfControls; i++)
 	{
