@@ -35,7 +35,7 @@ void AddDeviceIDOrIndexToOutputBuffer_Byte(heepByte* deviceID)
 	heepByte copyDeviceID [STANDARD_ID_SIZE];
 	CopyDeviceID(deviceID, copyDeviceID);
 	GetIndexedDeviceID_Byte(copyDeviceID);
-	AddBufferToBuffer(outputBuffer, copyDeviceID, ID_SIZE, outputBufferLastByte, counter);
+	AddBufferToBuffer(outputBuffer, copyDeviceID, ID_SIZE, &outputBufferLastByte, &counter);
 }
 
 unsigned long CalculateControlDataSize()
@@ -220,9 +220,9 @@ void ExecuteSetVertexOpCode()
 	unsigned int localCounter = 0;
 	unsigned int counter = 1;
 	unsigned char numBytes = GetNumberFromBuffer(inputBuffer, &counter, 1);
-	AddBufferToBuffer(myVertex.txID, inputBuffer, STANDARD_ID_SIZE, localCounter, counter);
+	AddBufferToBuffer(myVertex.txID, inputBuffer, STANDARD_ID_SIZE, &localCounter, &counter);
 	localCounter = 0;
-	AddBufferToBuffer(myVertex.rxID, inputBuffer, STANDARD_ID_SIZE, localCounter, counter);
+	AddBufferToBuffer(myVertex.rxID, inputBuffer, STANDARD_ID_SIZE, &localCounter, &counter);
 	unsigned char txControl = GetNumberFromBuffer(inputBuffer, &counter, 1);
 	unsigned char rxControl = GetNumberFromBuffer(inputBuffer, &counter, 1);
 
@@ -250,9 +250,9 @@ void ExecuteDeleteVertexOpCode()
 	unsigned int localCounter = 0;
 	unsigned int counter = 1;
 	unsigned char numBytes = GetNumberFromBuffer(inputBuffer, &counter, 1);
-	AddBufferToBuffer(myVertex.txID, inputBuffer, STANDARD_ID_SIZE, localCounter, counter);
+	AddBufferToBuffer(myVertex.txID, inputBuffer, STANDARD_ID_SIZE, &localCounter, &counter);
 	localCounter = 0;
-	AddBufferToBuffer(myVertex.rxID, inputBuffer, STANDARD_ID_SIZE, localCounter, counter);
+	AddBufferToBuffer(myVertex.rxID, inputBuffer, STANDARD_ID_SIZE, &localCounter, &counter);
 	unsigned char txControl = GetNumberFromBuffer(inputBuffer, &counter, 1);
 	unsigned char rxControl = GetNumberFromBuffer(inputBuffer, &counter, 1);
 
@@ -292,7 +292,7 @@ int ValidateAndRestructureIncomingMOP(unsigned int MOPStartAddr, unsigned int &n
 	MOPStartAddr++;
 	unsigned int startID = MOPStartAddr;
 	unsigned int localCounter = 0;
-	AddBufferToBuffer(curID, inputBuffer, STANDARD_ID_SIZE, localCounter, MOPStartAddr);
+	AddBufferToBuffer(curID, inputBuffer, STANDARD_ID_SIZE, &localCounter, &MOPStartAddr);
 	unsigned char bytesOfData = GetNumberFromBuffer(inputBuffer, &MOPStartAddr, 1);
 	GetIndexedDeviceID_Byte(curID);
 
@@ -300,7 +300,7 @@ int ValidateAndRestructureIncomingMOP(unsigned int MOPStartAddr, unsigned int &n
 	numBytes = numBytes - memDiff;
 
 	localCounter = 0;
-	AddBufferToBuffer(inputBuffer, curID, ID_SIZE, startID, localCounter);
+	AddBufferToBuffer(inputBuffer, curID, ID_SIZE, &startID, &localCounter);
 	startID = AddCharToBuffer(inputBuffer, startID, bytesOfData);
 
 	for(int i = 0; i < bytesOfData; i++)

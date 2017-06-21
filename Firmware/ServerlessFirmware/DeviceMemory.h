@@ -88,7 +88,7 @@ void AddNewCharToMemory(unsigned char newMem)
 void AddBufferToMemory(heepByte* buffer, heepByte size)
 {
 	unsigned int counter = 0;
-	AddBufferToBuffer(deviceMemory, buffer, size, curFilledMemory, counter);
+	AddBufferToBuffer(deviceMemory, buffer, size, &curFilledMemory, &counter);
 }
 
 void CreateBufferFromNumber(heepByte* buffer, unsigned long number, heepByte size)
@@ -410,7 +410,7 @@ heepByte GetIndexedDeviceID_Byte(heepByte* deviceID)
 				CreateBufferFromNumber(localID, indexedValue, ID_SIZE);
 				unsigned int rxCounter = 0;
 				unsigned int txCounter = 0;
-				AddBufferToBuffer(deviceID, localID, ID_SIZE, rxCounter, txCounter);
+				AddBufferToBuffer(deviceID, localID, ID_SIZE, &rxCounter, &txCounter);
 				return ID_SIZE;
 			}
 		}
@@ -430,7 +430,7 @@ heepByte GetIndexedDeviceID_Byte(heepByte* deviceID)
 
 	unsigned int rxCounter = 0;
 	unsigned int txCounter = 0;
-	AddBufferToBuffer(deviceID, localID, ID_SIZE, rxCounter, txCounter);
+	AddBufferToBuffer(deviceID, localID, ID_SIZE, &rxCounter, &txCounter);
 
 	return ID_SIZE;
 #else 

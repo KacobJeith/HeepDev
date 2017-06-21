@@ -645,7 +645,7 @@ void TestAddBufferToBuffer()
 
 	unsigned int rxCounter = 0;
 	unsigned int txCounter = 0;
-	AddBufferToBuffer(theirBuf, myBuf, 4, rxCounter, txCounter);
+	AddBufferToBuffer(theirBuf, myBuf, 4, &rxCounter, &txCounter);
 
 	ExpectedValue valueList [4];
 	valueList[0].valueName = "Index Value 1";

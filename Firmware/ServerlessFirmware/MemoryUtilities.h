@@ -85,12 +85,12 @@ unsigned long AddNumberToBufferWithSpecifiedBytes(unsigned char* buffer, unsigne
 	return startPoint;
 }
 
-void AddBufferToBuffer(heepByte* rxBuffer, heepByte* txBuffer, heepByte size, unsigned int &rxCounter, unsigned int &txCounter)
+void AddBufferToBuffer(heepByte* rxBuffer, heepByte* txBuffer, heepByte size, unsigned int *rxCounter, unsigned int *txCounter)
 {
 	for(int i = 0; i < size; i++)
 	{
-		rxBuffer[rxCounter] = txBuffer[txCounter];
-		rxCounter++;
-		txCounter++;
+		rxBuffer[*rxCounter] = txBuffer[*txCounter];
+		(*rxCounter)++;
+		(*txCounter)++;
 	}
 }
