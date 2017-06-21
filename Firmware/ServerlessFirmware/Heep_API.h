@@ -31,7 +31,7 @@ void SetupHeepDevice(char* deviceName)
 	}
 	else
 	{
-		ReadMemory(deviceMemory, curFilledMemory);
+		ReadMemory(controlRegister, deviceMemory, curFilledMemory);
 		FillVertexListFromMemory();
 	}
 }
@@ -47,13 +47,13 @@ void SendOutputByID(unsigned char controlID, unsigned int value)
 {
 	SetControlValueByID(controlID, value);
 
-	Vertex newVertex;
+	Vertex_Byte newVertex;
 
 	for(int i = 0; i < numberOfVertices; i++)
 	{
-		GetVertexAtPonter(vertexPointerList[i], newVertex);
+		GetVertexAtPointer_Byte(vertexPointerList[i], newVertex);
 
-		if(newVertex.txID == deviceID && newVertex.txControlID == controlID)
+		if(CheckBufferEquality(newVertex.txID, deviceIDByte, STANDARD_ID_SIZE) && newVertex.txControlID == controlID)
 		{
 			FillOutputBufferWithSetValCOP(newVertex.rxControlID, value);
 			SendOutputBufferToIP(newVertex.rxIPAddress);
@@ -72,7 +72,7 @@ void CommitMemory()
 {
 	if(memoryChanged)
 	{
-		SaveMemory(deviceMemory, curFilledMemory);
+		SaveMemory(controlRegister, deviceMemory, curFilledMemory);
 		memoryChanged = 0;
 	}
 }
