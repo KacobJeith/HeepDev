@@ -115,7 +115,7 @@ void AddIndexOrDeviceIDToMemory_Byte(heepByte* deviceID)
 	AddBufferToMemory(copyID, ID_SIZE);
 }
 
-void AddIPToMemory(HeepIPAddress theIP)
+void AddIPToMemory(struct HeepIPAddress theIP)
 {
 	AddNewCharToMemory(theIP.Octet4);
 	AddNewCharToMemory(theIP.Octet3);
@@ -161,13 +161,13 @@ void SetIconDataInMemory_Byte(char* iconData, int numCharacters, heepByte* devic
 	}
 }
 
-unsigned int ParseXYOpCode_Byte(int &x, int &y, heepByte* deviceID, unsigned int counter)
+unsigned int ParseXYOpCode_Byte(int *x, int *y, heepByte* deviceID, unsigned int counter)
 {
 	counter ++;
 	counter = GetDeviceIDOrLocalIDFromBuffer(deviceMemory, deviceID, counter);
 	GetNumberFromBuffer(deviceMemory, counter, 1);
-	x = GetNumberFromBuffer(deviceMemory, counter, 2);
-	y = GetNumberFromBuffer(deviceMemory, counter, 2);
+	*x = GetNumberFromBuffer(deviceMemory, counter, 2);
+	*y = GetNumberFromBuffer(deviceMemory, counter, 2);
 
 	return counter;
 }
@@ -185,7 +185,7 @@ unsigned int GetXYFromMemory_Byte(int &x, int &y, heepByte* deviceID, unsigned i
 			XYMemPosition = counter;
 
 			heepByte tempID [ID_SIZE];
-			counter = ParseXYOpCode_Byte(x, y, tempID, counter);
+			counter = ParseXYOpCode_Byte(&x, &y, tempID, counter);
 
 			if(CheckBufferEquality(deviceID, tempID, ID_SIZE))
 			{
