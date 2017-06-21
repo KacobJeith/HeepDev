@@ -49,7 +49,7 @@ void AddVertexPointer(unsigned int pointer)
 	numberOfVertices++;
 }
 
-void AddVertex(Vertex_Byte myVertex)
+void AddVertex(struct Vertex_Byte myVertex)
 {
 	unsigned int pointerToVertex = SetVertexInMemory_Byte(myVertex);
 	AddVertexPointer(pointerToVertex);
@@ -65,11 +65,11 @@ void RemoveVertexListEntry(unsigned int pointer)
 	numberOfVertices--;
 }
 
-int DeleteVertex(Vertex_Byte myVertex)
+int DeleteVertex(struct Vertex_Byte myVertex)
 {
 	for(int i = 0; i < numberOfVertices; i++)
 	{
-		Vertex_Byte newVertex;
+		struct Vertex_Byte newVertex;
 		if(GetVertexAtPointer_Byte(vertexPointerList[i], &newVertex) == 0)
 		{
 			if(isVertexEqual(&myVertex, &newVertex))
