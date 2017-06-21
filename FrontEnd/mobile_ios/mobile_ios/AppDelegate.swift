@@ -13,8 +13,10 @@ import UserNotifications
 import CoreLocation
 import FacebookCore
 
-var configApp = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
+var configPublic = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
 var configUser = Realm.Configuration(fileURL: configApp.fileURL!.deletingLastPathComponent()
+    .appendingPathComponent("guest.realm"), deleteRealmIfMigrationNeeded: true)
+var configGuest = Realm.Configuration(fileURL: configApp.fileURL!.deletingLastPathComponent()
     .appendingPathComponent("guest.realm"), deleteRealmIfMigrationNeeded: true)
 
 protocol AddBeacon {

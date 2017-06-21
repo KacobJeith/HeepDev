@@ -25,7 +25,7 @@ func flushApp() {
 }
 
 func initializeApp() {
-    let realm = try! Realm(configuration: configApp)
+    let realm = try! Realm(configuration: configPublic)
     
     let app = realm.object(ofType: App.self, forPrimaryKey: 0)
     
@@ -247,6 +247,19 @@ func loginToUserRealmSync(username: String, password: String) {
     })
     
     print(configUser)
+}
+
+func loginToPublicRealm() {
+    
+    SyncUser.logIn(with: SyncCredentials.usernamePassword(username: "public@heep.io",
+                                                          password: "public",
+                                                          register: false),
+                   server: URL(string: "http://45.55.249.217:9080")!) { user, error in
+                    
+                    configPublic =  Realm.Configuration(syncConfiguration: SyncConfiguration(user: user!,
+                                                                                             realmURL: URL(string: "realm://45.55.249.217:9080/~/userDirectory")!))
+                    
+    }
 }
 
 
