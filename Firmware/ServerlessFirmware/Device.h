@@ -2,7 +2,7 @@
 
 unsigned int firmwareVersion = FIRMWARE_VERSION;
 
-Control controlList [NUM_CONTROLS];
+struct Control controlList [NUM_CONTROLS];
 unsigned int numberOfControls = 0;
 
 unsigned int vertexPointerList[NUM_VERTICES];
@@ -18,26 +18,26 @@ void ClearVertices()
 	numberOfVertices = 0;
 }
 
-void AddControl(Control myControl)
+void AddControl(struct Control myControl)
 {
 	controlList[numberOfControls] = myControl;
 	numberOfControls++;
 }
 
-unsigned char isVertexEqual(Vertex_Byte &vertex1, Vertex_Byte &vertex2)
+unsigned char isVertexEqual(struct Vertex_Byte* vertex1, struct Vertex_Byte* vertex2)
 {
 	unsigned char vertexIsEqual = 1;
 
-	if(CheckBufferEquality(vertex1.txID, vertex2.txID, STANDARD_ID_SIZE) == 0)
+	if(CheckBufferEquality((*vertex1).txID, (*vertex2).txID, STANDARD_ID_SIZE) == 0)
 		vertexIsEqual = 0;
 
-	if(CheckBufferEquality(vertex1.rxID, vertex2.rxID, STANDARD_ID_SIZE) == 0)
+	if(CheckBufferEquality((*vertex1).rxID, (*vertex2).rxID, STANDARD_ID_SIZE) == 0)
 		vertexIsEqual = 0;
 
-	if(vertex1.rxControlID != vertex2.rxControlID)
+	if((*vertex1).rxControlID != (*vertex2).rxControlID)
 		vertexIsEqual = 0;
 
-	if(vertex1.txControlID != vertex2.txControlID)
+	if((*vertex1).txControlID != (*vertex2).txControlID)
 		vertexIsEqual = 0;
 
 	return vertexIsEqual;
@@ -72,7 +72,7 @@ int DeleteVertex(Vertex_Byte myVertex)
 		Vertex_Byte newVertex;
 		if(GetVertexAtPointer_Byte(vertexPointerList[i], &newVertex) == 0)
 		{
-			if(isVertexEqual(myVertex, newVertex))
+			if(isVertexEqual(&myVertex, &newVertex))
 			{
 				DeleteVertexAtPointer(vertexPointerList[i]);
 				RemoveVertexListEntry(i);
