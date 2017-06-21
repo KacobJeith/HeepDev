@@ -284,7 +284,7 @@ int GetVertexAtPointer_Byte(unsigned long pointer, struct Vertex_Byte* returnedV
 	return 0;
 }
 
-int SetVertexInMemory_Byte(Vertex_Byte theVertex)
+int SetVertexInMemory_Byte(struct Vertex_Byte theVertex)
 {
 	PerformPreOpCodeProcessing_Byte(theVertex.txID);
 	PerformPreOpCodeProcessing_Byte(theVertex.rxID);
@@ -309,20 +309,20 @@ int SetVertexInMemory_Byte(Vertex_Byte theVertex)
 	return beginningOfMemory;
 }
 
-int GetNextVertexPointer(unsigned int &pointer,unsigned int &counter)
+int GetNextVertexPointer(unsigned int* pointer,unsigned int* counter)
 {
-	while(counter < curFilledMemory)
+	while(*counter < curFilledMemory)
 	{
-		if(deviceMemory[counter] == VertexOpCode)
+		if(deviceMemory[*counter] == VertexOpCode)
 		{
-			pointer = counter;
+			*pointer = *counter;
 
-			counter = SkipOpCode(counter);
+			*counter = SkipOpCode(*counter);
 			return 0;
 		}
 		else
 		{
-			counter = SkipOpCode(counter);
+			*counter = SkipOpCode(*counter);
 		}
 	}
 

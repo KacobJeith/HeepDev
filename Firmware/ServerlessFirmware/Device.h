@@ -89,7 +89,7 @@ void FillVertexListFromMemory()
 	unsigned int pointer = 0;
 	unsigned int counter = 0;
 
-	while(GetNextVertexPointer(pointer, counter) == 0)
+	while(GetNextVertexPointer(&pointer, &counter) == 0)
 	{
 		AddVertexPointer(pointer);
 	}
