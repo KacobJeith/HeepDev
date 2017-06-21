@@ -2,7 +2,7 @@
 
 unsigned int firmwareVersion = FIRMWARE_VERSION;
 
-Control controlList [NUM_CONTROLS];
+struct Control controlList [NUM_CONTROLS];
 unsigned int numberOfControls = 0;
 
 unsigned int vertexPointerList[NUM_VERTICES];
@@ -18,26 +18,26 @@ void ClearVertices()
 	numberOfVertices = 0;
 }
 
-void AddControl(Control myControl)
+void AddControl(struct Control myControl)
 {
 	controlList[numberOfControls] = myControl;
 	numberOfControls++;
 }
 
-unsigned char isVertexEqual(Vertex &vertex1, Vertex &vertex2)
+unsigned char isVertexEqual(struct Vertex_Byte* vertex1, struct Vertex_Byte* vertex2)
 {
 	unsigned char vertexIsEqual = 1;
 
-	if(vertex1.txID != vertex2.txID)
+	if(CheckBufferEquality((*vertex1).txID, (*vertex2).txID, STANDARD_ID_SIZE) == 0)
 		vertexIsEqual = 0;
 
-	if(vertex1.rxID != vertex2.rxID)
+	if(CheckBufferEquality((*vertex1).rxID, (*vertex2).rxID, STANDARD_ID_SIZE) == 0)
 		vertexIsEqual = 0;
 
-	if(vertex1.rxControlID != vertex2.rxControlID)
+	if((*vertex1).rxControlID != (*vertex2).rxControlID)
 		vertexIsEqual = 0;
 
-	if(vertex1.txControlID != vertex2.txControlID)
+	if((*vertex1).txControlID != (*vertex2).txControlID)
 		vertexIsEqual = 0;
 
 	return vertexIsEqual;
@@ -49,9 +49,9 @@ void AddVertexPointer(unsigned int pointer)
 	numberOfVertices++;
 }
 
-void AddVertex(Vertex myVertex)
+void AddVertex(struct Vertex_Byte myVertex)
 {
-	unsigned int pointerToVertex = SetVertexInMemory(myVertex);
+	unsigned int pointerToVertex = SetVertexInMemory_Byte(myVertex);
 	AddVertexPointer(pointerToVertex);
 }
 
@@ -65,14 +65,14 @@ void RemoveVertexListEntry(unsigned int pointer)
 	numberOfVertices--;
 }
 
-int DeleteVertex(Vertex myVertex)
+int DeleteVertex(struct Vertex_Byte myVertex)
 {
 	for(int i = 0; i < numberOfVertices; i++)
 	{
-		Vertex newVertex;
-		if(GetVertexAtPonter(vertexPointerList[i], newVertex) == 0)
+		struct Vertex_Byte newVertex;
+		if(GetVertexAtPointer_Byte(vertexPointerList[i], &newVertex) == 0)
 		{
-			if(isVertexEqual(myVertex, newVertex))
+			if(isVertexEqual(&myVertex, &newVertex))
 			{
 				DeleteVertexAtPointer(vertexPointerList[i]);
 				RemoveVertexListEntry(i);
@@ -89,24 +89,19 @@ void FillVertexListFromMemory()
 	unsigned int pointer = 0;
 	unsigned int counter = 0;
 
-	while(GetNextVertexPointer(pointer, counter) == 0)
+	while(GetNextVertexPointer(&pointer, &counter) == 0)
 	{
 		AddVertexPointer(pointer);
 	}
 }
 
-void SetDeviceID(unsigned long newDeviceID)
-{
-	deviceID = newDeviceID;
-}
-
 void SetDeviceName(char* deviceName)
 {
 	int deviceNameLength = strlen(deviceName);
-	SetDeviceNameInMemory(deviceName, deviceNameLength, deviceID);
+	SetDeviceNameInMemory_Byte(deviceName, deviceNameLength, deviceIDByte);
 }
 
-int SetControlValueByID(unsigned char controlID, unsigned int value, unsigned char setFromNetwork = 0)
+int SetControlValueByID(unsigned char controlID, unsigned int value, unsigned char setFromNetwork)
 {
 	for(int i = 0; i < numberOfControls; i++)
 	{

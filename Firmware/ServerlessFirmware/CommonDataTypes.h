@@ -14,7 +14,18 @@ struct Vertex
 	unsigned char rxControlID;
 	unsigned char txControlID;
 
-	HeepIPAddress rxIPAddress;
+	struct HeepIPAddress rxIPAddress;
+};
+
+struct Vertex_Byte
+{
+	heepByte rxID [STANDARD_ID_SIZE];
+	heepByte txID [STANDARD_ID_SIZE];
+
+	unsigned char rxControlID;
+	unsigned char txControlID;
+
+	struct HeepIPAddress rxIPAddress;
 };
 
 struct Control

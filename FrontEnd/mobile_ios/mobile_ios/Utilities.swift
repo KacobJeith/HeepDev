@@ -206,3 +206,40 @@ func loginToUserRealm(user: Int) {
     
 }
 
+func convertIntToByteArray(integer: Int) -> [UInt8] {
+    var byteArray = [UInt8]()
+    for index in 0...(calcNumBytes(integer: integer) - 1) {
+        byteArray.append(UInt8(truncatingBitPattern: integer >> (index * 8)))
+    }
+    
+    return byteArray.reversed()
+}
+
+func calcNumBytes(integer: Int) -> Int {
+    var numBytesRequired = 1
+    
+    while integer > (2 << (numBytesRequired * 8 - 1)) {
+        numBytesRequired += 1
+    }
+    
+    return numBytesRequired
+}
+
+func convertArrayToInt(byteArray: [UInt8], reverse: Bool = false) -> Int {
+    var integer = 0
+    var currentIndex = 0
+    var isReversed = byteArray
+    
+    if reverse {
+        isReversed = byteArray.reversed()
+    }
+    
+    for nextByte in isReversed {
+        integer += (Int(nextByte) << currentIndex)
+        currentIndex += 8
+    }
+    
+    return integer
+}
+
+
