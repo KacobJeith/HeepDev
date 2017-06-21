@@ -146,7 +146,7 @@ void TestSkipOpCode()
 	SetXYInMemory_Byte(312, 513, deviceID1);
 
 	int x = 0; int y = 0; unsigned int xyMemPosition = 0; 
-	int retVal = GetXYFromMemory_Byte(x, y, deviceID1, xyMemPosition);
+	int retVal = GetXYFromMemory_Byte(&x, &y, deviceID1, xyMemPosition);
 
 	ExpectedValue valueList [3];
 	valueList[0].valueName = "X Position";
@@ -932,7 +932,7 @@ void TestGetXYFromMemory_Byte()
 
 	int x = 0; int y = 0; unsigned int xyMemPosition = 0; 
 	CreateFakeDeviceID(deviceID);
-	int retVal = GetXYFromMemory_Byte(x, y, deviceID, xyMemPosition);
+	int retVal = GetXYFromMemory_Byte(&x, &y, deviceID, xyMemPosition);
 
 	ExpectedValue valueList [3];
 	valueList[0].valueName = "X Position";
@@ -999,7 +999,7 @@ void TestUpdateXYPosition_Byte()
 
 	CreateFakeDeviceID(deviceID);
 	int x = 0; int y = 0; unsigned int xyMemPosition = 0; 
-	int retVal = GetXYFromMemory_Byte(x, y, deviceID, xyMemPosition);
+	int retVal = GetXYFromMemory_Byte(&x, &y, deviceID, xyMemPosition);
 
 	ExpectedValue valueList [6];
 	valueList[0].valueName = "X Position";
@@ -1017,7 +1017,7 @@ void TestUpdateXYPosition_Byte()
 	CreateFakeDeviceID(deviceID);
 	UpdateXYInMemory_Byte(16235, 256, deviceID);
 	CreateFakeDeviceID(deviceID);
-	retVal = GetXYFromMemory_Byte(x, y, deviceID, xyMemPosition);
+	retVal = GetXYFromMemory_Byte(&x, &y, deviceID, xyMemPosition);
 
 	valueList[3].valueName = "X Position";
 	valueList[3].expectedValue = 16235;

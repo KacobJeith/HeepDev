@@ -223,7 +223,7 @@ void TestSetPositionOpCode()
 	ExecuteControlOpCodes();
 	heepByte deviceID [STANDARD_ID_SIZE] = {0x06, 0x04, 0x06, 0x01};
 	int x = 0; int y = 0; unsigned int xyMemPosition = 0; 
-	GetXYFromMemory_Byte(x, y, deviceID, xyMemPosition);
+	GetXYFromMemory_Byte(&x, &y, deviceID, xyMemPosition);
 
 	ExpectedValue valueList[4];
 	valueList[0].valueName = "x";
@@ -242,7 +242,7 @@ void TestSetPositionOpCode()
 	inputBuffer[4] = 0xB2;
 	inputBuffer[5] = 0x3C;
 	ExecuteControlOpCodes();
-	GetXYFromMemory_Byte(x, y, deviceID, xyMemPosition);
+	GetXYFromMemory_Byte(&x, &y, deviceID, xyMemPosition);
 
 	valueList[2].valueName = "x";
 	valueList[2].expectedValue = 0xF102;
