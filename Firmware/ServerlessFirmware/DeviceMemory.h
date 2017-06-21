@@ -236,7 +236,7 @@ void UpdateXYInMemory_Byte(int x, int y, heepByte* deviceID)
 	memoryChanged = 1;
 }
 
-void SetIPInMemory_Byte(HeepIPAddress theIP, heepByte* deviceID)
+void SetIPInMemory_Byte(struct HeepIPAddress theIP, heepByte* deviceID)
 {
 	PerformPreOpCodeProcessing_Byte(deviceID);
 
@@ -252,7 +252,7 @@ void DeleteVertexAtPointer(unsigned long pointer)
 	memoryChanged = 1;
 }
 
-int GetVertexAtPointer_Byte(unsigned long pointer, Vertex_Byte &returnedVertex)
+int GetVertexAtPointer_Byte(unsigned long pointer, struct Vertex_Byte* returnedVertex)
 {
 	if(deviceMemory[pointer] != VertexOpCode)
 		return 1;
@@ -266,20 +266,20 @@ int GetVertexAtPointer_Byte(unsigned long pointer, Vertex_Byte &returnedVertex)
 
 	counter = GetDeviceIDOrLocalIDFromBuffer(deviceMemory, sendIDLocal, counter);
 	GetDeviceIDFromIndex_Byte(sendIDLocal, sendIDGlobal);
-	CopyDeviceID(sendIDGlobal, returnedVertex.txID);
+	CopyDeviceID(sendIDGlobal, (*returnedVertex).txID);
 
 	int numBytes = GetNumberFromBuffer(deviceMemory, &counter, 1);
 
 	counter = GetDeviceIDOrLocalIDFromBuffer(deviceMemory, receiveIDLocal, counter);
 	GetDeviceIDFromIndex_Byte(receiveIDLocal, receiveIDGlobal);
-	CopyDeviceID(receiveIDGlobal, returnedVertex.rxID);
+	CopyDeviceID(receiveIDGlobal, (*returnedVertex).rxID);
 
-	returnedVertex.txControlID = GetNumberFromBuffer(deviceMemory, &counter, 1);
-	returnedVertex.rxControlID = GetNumberFromBuffer(deviceMemory, &counter, 1);
-	returnedVertex.rxIPAddress.Octet4 = GetNumberFromBuffer(deviceMemory, &counter, 1);
-	returnedVertex.rxIPAddress.Octet3 = GetNumberFromBuffer(deviceMemory, &counter, 1);
-	returnedVertex.rxIPAddress.Octet2 = GetNumberFromBuffer(deviceMemory, &counter, 1);
-	returnedVertex.rxIPAddress.Octet1 = GetNumberFromBuffer(deviceMemory, &counter, 1);
+	(*returnedVertex).txControlID = GetNumberFromBuffer(deviceMemory, &counter, 1);
+	(*returnedVertex).rxControlID = GetNumberFromBuffer(deviceMemory, &counter, 1);
+	(*returnedVertex).rxIPAddress.Octet4 = GetNumberFromBuffer(deviceMemory, &counter, 1);
+	(*returnedVertex).rxIPAddress.Octet3 = GetNumberFromBuffer(deviceMemory, &counter, 1);
+	(*returnedVertex).rxIPAddress.Octet2 = GetNumberFromBuffer(deviceMemory, &counter, 1);
+	(*returnedVertex).rxIPAddress.Octet1 = GetNumberFromBuffer(deviceMemory, &counter, 1);
 
 	return 0;
 }

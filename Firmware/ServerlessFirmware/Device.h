@@ -70,7 +70,7 @@ int DeleteVertex(Vertex_Byte myVertex)
 	for(int i = 0; i < numberOfVertices; i++)
 	{
 		Vertex_Byte newVertex;
-		if(GetVertexAtPointer_Byte(vertexPointerList[i], newVertex) == 0)
+		if(GetVertexAtPointer_Byte(vertexPointerList[i], &newVertex) == 0)
 		{
 			if(isVertexEqual(myVertex, newVertex))
 			{

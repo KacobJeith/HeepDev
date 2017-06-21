@@ -286,7 +286,7 @@ void TestSetVertxCOP()
 	ExecuteControlOpCodes();
 
 	Vertex_Byte newVertex;
-	int success = GetVertexAtPointer_Byte(vertexPointerList[0], newVertex);
+	int success = GetVertexAtPointer_Byte(vertexPointerList[0], &newVertex);
 
 	heepByte trueTxID [STANDARD_ID_SIZE] = {0xF1,0x02,0xB2,0x3C};
 	heepByte trueRxID [STANDARD_ID_SIZE] = {0x1A, 0x2D, 0x40, 0x02};

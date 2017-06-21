@@ -51,7 +51,7 @@ void SendOutputByID(unsigned char controlID, unsigned int value)
 
 	for(int i = 0; i < numberOfVertices; i++)
 	{
-		GetVertexAtPointer_Byte(vertexPointerList[i], newVertex);
+		GetVertexAtPointer_Byte(vertexPointerList[i], &newVertex);
 
 		if(CheckBufferEquality(newVertex.txID, deviceIDByte, STANDARD_ID_SIZE) && newVertex.txControlID == controlID)
 		{

@@ -1165,7 +1165,7 @@ void TestGetVertex_Byte()
 	int memCheckStart = GetMemCounterStart()*2;
 
 	Vertex_Byte newVertex;
-	int success = GetVertexAtPointer_Byte(memCheckStart, newVertex);
+	int success = GetVertexAtPointer_Byte(memCheckStart, &newVertex);
 
 	PrintDeviceMemory();
 
