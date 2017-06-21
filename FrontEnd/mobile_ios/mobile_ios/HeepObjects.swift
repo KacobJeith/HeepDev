@@ -20,7 +20,7 @@ class User: Object {
     dynamic var icon: NSData = (UIImagePNGRepresentation((UIImage(named: "female"))!))! as NSData
     
     override static func primaryKey() -> String? {
-        return "userID"
+        return "heepID"
     }
     
 }

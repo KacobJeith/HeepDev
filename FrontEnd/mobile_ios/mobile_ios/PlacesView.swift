@@ -284,16 +284,14 @@ extension PlacesView {
     }
     
     func getActiveUserIcon() -> UIBarButtonItem {
-        let realm = try! Realm(configuration: configApp)
-        let app = realm.object(ofType: App.self, forPrimaryKey: 0)
-        let activeUser = SyncUser.current!
+        let realm = try! Realm(configuration: configPublic)
         
         var userImage = UIImage(named: "female")
-        
+        /*
         if (activeUser?.icon.length)! > 0 {
             userImage = UIImage(data: (activeUser?.icon)! as Data)
         }
-        
+        */
         
         let userButton = UIButton(frame: CGRect(x: 0, y: 0,
                                                 width: (navigationController?.navigationBar.bounds.height)!,
