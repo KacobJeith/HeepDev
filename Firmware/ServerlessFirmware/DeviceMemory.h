@@ -172,7 +172,7 @@ unsigned int ParseXYOpCode_Byte(int *x, int *y, heepByte* deviceID, unsigned int
 	return counter;
 }
 
-unsigned int GetXYFromMemory_Byte(int *x, int *y, heepByte* deviceID, unsigned int &XYMemPosition)
+unsigned int GetXYFromMemory_Byte(int *x, int *y, heepByte* deviceID, unsigned int* XYMemPosition)
 {
 	unsigned int counter = 0;
 
@@ -182,7 +182,7 @@ unsigned int GetXYFromMemory_Byte(int *x, int *y, heepByte* deviceID, unsigned i
 	{
 		if(deviceMemory[counter] == FrontEndPositionOpCode)
 		{
-			XYMemPosition = counter;
+			*XYMemPosition = counter;
 
 			heepByte tempID [ID_SIZE];
 			counter = ParseXYOpCode_Byte(x, y, tempID, counter);
@@ -219,7 +219,7 @@ void UpdateXYInMemory_Byte(int x, int y, heepByte* deviceID)
 
 	int curX = 0; int curY = 0; 
 	unsigned int XYMemPosition = 0;
-	unsigned int success = GetXYFromMemory_Byte(&curX, &curY, copyID, XYMemPosition);
+	unsigned int success = GetXYFromMemory_Byte(&curX, &curY, copyID, &XYMemPosition);
 
 	if(success == 0)
 	{
