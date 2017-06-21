@@ -281,9 +281,9 @@ void ExecuteDeleteVertexOpCode()
 
 // Updated
 // Validate that a MOP can be added. Then restructure it for localIDs as necessary
-int ValidateAndRestructureIncomingMOP(unsigned int MOPStartAddr, unsigned int &numBytes)
+int ValidateAndRestructureIncomingMOP(unsigned int MOPStartAddr, unsigned int* numBytes)
 {
-	if(numBytes < STANDARD_ID_SIZE + 2)
+	if(*numBytes < STANDARD_ID_SIZE + 2)
 	{
 		return 1; // INVALID MOP
 	}
@@ -297,7 +297,7 @@ int ValidateAndRestructureIncomingMOP(unsigned int MOPStartAddr, unsigned int &n
 	GetIndexedDeviceID_Byte(curID);
 
 	int memDiff = STANDARD_ID_SIZE - ID_SIZE;
-	numBytes = numBytes - memDiff;
+	*numBytes = *numBytes - memDiff;
 
 	localCounter = 0;
 	AddBufferToBuffer(inputBuffer, curID, ID_SIZE, &startID, &localCounter);
@@ -316,7 +316,7 @@ void ExecuteDeleteMOPOpCode()
 	unsigned int counter = 1;
 
 	unsigned int numBytes = GetNumberFromBuffer(inputBuffer, &counter, 1);
-	int dataError = ValidateAndRestructureIncomingMOP(counter, numBytes);
+	int dataError = ValidateAndRestructureIncomingMOP(counter, &numBytes);
 
 	if(dataError == 0)
 	{
@@ -375,7 +375,7 @@ void ExecuteAddMOPOpCode()
 
 	unsigned int numBytes = GetNumberFromBuffer(inputBuffer, &counter, 1);
 
-	int dataError = ValidateAndRestructureIncomingMOP(counter, numBytes);
+	int dataError = ValidateAndRestructureIncomingMOP(counter, &numBytes);
 
 	if(dataError == 0)
 	{
