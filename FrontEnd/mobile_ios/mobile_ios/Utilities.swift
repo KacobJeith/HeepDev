@@ -13,33 +13,16 @@ import RealmSwift
 //import CommonCrypto.CommonCrypto
 
 func flushApp() {
-    let realmApp = try! Realm(configuration: configApp)
-    try! realmApp.write {
-        realmApp.deleteAll()
+    
+    let realmGuest = try! Realm(configuration: configGuest)
+    try! realmGuest.write {
+        realmGuest.deleteAll()
     }
     
-    let realmUser = try! Realm(configuration: configUser)
-    try! realmUser.write {
-        realmUser.deleteAll()
-    }
 }
 
 func initializeApp() {
-    let realm = try! Realm(configuration: configPublic)
-    
-    let app = realm.object(ofType: App.self, forPrimaryKey: 0)
-    
-    if app == nil {
-        print("Adding empty app")
-        let initialApp = App()
-        let initialUser = User()
-        
-        
-        try! realm.write {
-            realm.add(initialApp)
-            realm.add(initialUser)
-        }
-    }
+    loginToPublicRealm()
     
 }
 
@@ -162,21 +145,17 @@ func seedNewUserAccount(name: String,
                         email: String = "",
                         password: String = "") -> User {
     
-        let realm = try! Realm(configuration: configApp)
-        let app = realm.object(ofType: App.self, forPrimaryKey: 0)
+        let realm = try! Realm(configuration: configPublic)
         let newUser = User()
-        //print(actualInfo)
         
-        newUser.userID = Int(id)!
+        newUser.heepID = Int(id)!
         newUser.facebookID = Int(id)!
         newUser.name = name
         newUser.iconURL = imageURL
         newUser.email = email
-        newUser.password = password
         print(newUser)
         
         try! realm.write {
-            app?.activeUser = Int(id)!
             realm.add(newUser,
                       update: true)
         }
@@ -187,6 +166,7 @@ func seedNewUserAccount(name: String,
             
             newUser.icon = iconData
         }
+    
         print("After getting image \(newUser)")
     
     return newUser
