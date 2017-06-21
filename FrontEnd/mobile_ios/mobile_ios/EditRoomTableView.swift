@@ -156,7 +156,7 @@ extension EditRoomView: UIImagePickerControllerDelegate, UINavigationControllerD
         print("Saving Image")
         let imageData = UIImageJPEGRepresentation(image, 0.5)
         
-        let realm = try! Realm(configuration: configUser)
+        //let realm = try! Realm(configuration: configUser)
         
         try! realm.write {
             thisGroup.imageData = imageData! as NSData
@@ -225,7 +225,7 @@ extension EditRoomView {
     func toggleVertexEditState() {
         print("Toggle Vertex Edit")
         
-        let realm = try! Realm(configuration: configUser)
+        //let realm = try! Realm(configuration: configUser)
         
         try! realm.write {
             if thisGroup.selectedControl <= 1 {

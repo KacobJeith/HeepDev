@@ -208,26 +208,13 @@ func loginToUserRealmSync(username: String, password: String) {
                    server: URL(string: urlString)!,
                    onCompletion: { user, error in
                     
-                    if user == nil {
-                        print("Need to register a new user")
- 
-                        SyncUser.logIn(with: registerCredentials,
-                                       server: url) { user, error in
-                                        
-                                        print("user: \(user)")
-                                        print("Error: \(error)")
-                                        configUser =  Realm.Configuration(syncConfiguration: SyncConfiguration(user: user!, realmURL: userURL))
-                                        
-                        }
-                    } else {
-                        
-                        configUser =  Realm.Configuration(syncConfiguration: SyncConfiguration(user: user!, realmURL: userURL))
-                        print("Found existing")
-                    }
+                    configUser =  Realm.Configuration(syncConfiguration: SyncConfiguration(user: user!, realmURL: userURL))
+                    print("Found existing")
+                    
     })
     
-    //print(configUser)
-    //print("Current User: \(SyncUser.current!)")
+    print(configUser)
+    print("Current User: \(SyncUser.current)")
 }
 
 func loginToPublicRealm() {

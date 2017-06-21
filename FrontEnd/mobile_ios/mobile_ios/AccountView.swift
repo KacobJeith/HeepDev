@@ -149,9 +149,9 @@ class AccountView: UIViewController {
     }
     
     func logoutUser() {
-        print("Log \(activeUser.name) Out")
+        print("Log \(SyncUser.current) Out")
         
-        SyncUser.current?.logOut()
+        logoutOfAllRealmUsers()
         
         exitModalView()
         
