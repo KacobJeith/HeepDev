@@ -22,8 +22,16 @@ func flushApp() {
 }
 
 func initializeApp() {
-    loginToPublicRealm()
+    logoutOfAllRealmUsers()
+    //loginToPublicRealm()
     
+}
+
+func logoutOfAllRealmUsers() {
+    for user in SyncUser.all {
+        debugPrint("user: \(user.key) - \(user.value)")
+        user.value.logOut()
+    }
 }
 
 func SuggestIconFromName(name: String) -> String {
@@ -218,8 +226,8 @@ func loginToUserRealmSync(username: String, password: String) {
                     }
     })
     
-    print(configUser)
-    print("Current User: \(SyncUser.current!)")
+    //print(configUser)
+    //print("Current User: \(SyncUser.current!)")
 }
 
 func loginToPublicRealm() {
