@@ -373,6 +373,13 @@ void SendData(uint8_t* buf, uint16_t len)
     WriteSocketTXPointer(0, pointer);
     
     WriteSocketCommand(0, Sn_CR_SEND);
+    
+    uint8_t socketIRValue = 0; 
+    uint8_t sendOKValue = Sn_IR_SEND_OK;
+    do
+    {
+        socketIRValue = ReadSocketIR(0);
+    }while( (socketIRValue & sendOKValue) != sendOKValue );
 }
 
 void Listen(uint16_t sourcePort)

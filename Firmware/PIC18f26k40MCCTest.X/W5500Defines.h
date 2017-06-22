@@ -75,3 +75,10 @@
 #define Sn_SR_IPRAW         0x32
 #define Sn_SR_MACRAW        0x42
 #define Sn_SR_PPPOE         0x5F
+
+//Sn IR
+#define Sn_IR_SEND_OK       0x10;
+#define Sn_IR_TIMEOUT       0x08;
+#define Sn_IR_RECV          0x04;
+#define Sn_IR_DISCON        0x02;
+#define Sn_IR_CON           0x01;
