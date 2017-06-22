@@ -288,6 +288,11 @@ uint8_t ReadSocketStatus(uint8_t socket)
     return ReadSingleByteW5500WithCntl(Sn_SR, GetReadControlByteFromSocket(socket));
 }
 
+uint8_t ReadSocketIR(uint8_t socket)
+{
+    return ReadSingleByteW5500WithCntl(Sn_IR, GetReadControlByteFromSocket(socket));
+}
+
 void WriteSocketTXPointer(uint8_t socket, uint16_t value)
 {
     uint8_t dataPointer[2];
@@ -386,8 +391,7 @@ void Listen(uint16_t sourcePort)
 uint16_t DataAvailable()
 {
     // If Not listening, listen... Otherwise data will never be available 
-    uint8_t socketStatus = 0;
-    socketStatus = ReadSocketStatus(0);
+    uint8_t socketStatus = ReadSocketStatus(0);
     if(socketStatus != Sn_SR_LISTEN)
     {
         Listen(5000);
