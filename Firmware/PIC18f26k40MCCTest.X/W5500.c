@@ -385,7 +385,7 @@ void Listen(uint16_t sourcePort)
 
 uint16_t DataAvailable()
 {
-    // If Not listening, listen... Otherwise data will never be available
+    // If Not listening, listen... Otherwise data will never be available 
     uint8_t socketStatus = 0;
     socketStatus = ReadSocketStatus(0);
     if(socketStatus != Sn_SR_LISTEN)
