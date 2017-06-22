@@ -380,10 +380,18 @@ void SendData(uint8_t* buf, uint16_t len)
     WriteSocketCommand(0, Sn_CR_SEND);
     
     uint8_t socketIRValue = 0; 
+    uint8_t socketSRValue = 0;
     uint8_t sendOKValue = Sn_IR_SEND_OK;
     do
     {
         socketIRValue = ReadSocketIR(0);
+        socketSRValue = ReadSocketStatus(0);
+        
+        if(socketSRValue == Sn_SR_CLOSED)
+        {
+            CloseSocket();
+            return;
+        }
     }while( (socketIRValue & sendOKValue) != sendOKValue );
 }
 
