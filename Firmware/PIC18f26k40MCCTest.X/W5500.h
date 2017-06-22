@@ -49,6 +49,7 @@ void WriteSocketCommand(uint8_t socket, uint8_t value);
 uint8_t ReadSocketCommand(uint8_t socket);
 uint8_t ReadSocketStatus(uint8_t socket);
 uint8_t ReadSocketIR(uint8_t socket);
+void WriteSocketIR(uint8_t socket, uint8_t value);
 
 void WriteSocketTXPointer(uint8_t socket, uint16_t value);
 uint16_t ReadSocketTxPointer(uint8_t socket);
@@ -64,6 +65,7 @@ void Listen(uint16_t sourcePort);
 uint16_t DataAvailable();
 void ReadData(uint8_t* buffer, uint16_t size);
 void Disconnect();
+void CloseSocket();
 
 void W5500SoftwareReset();
 

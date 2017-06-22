@@ -293,6 +293,11 @@ uint8_t ReadSocketIR(uint8_t socket)
     return ReadSingleByteW5500WithCntl(Sn_IR, GetReadControlByteFromSocket(socket));
 }
 
+void WriteSocketIR(uint8_t socket, uint8_t value)
+{
+    SetSingleByteW5500WithCntl(Sn_CR ,value, GetWriteControlByteFromSocket(socket));
+}
+
 void WriteSocketTXPointer(uint8_t socket, uint16_t value)
 {
     uint8_t dataPointer[2];
@@ -445,6 +450,12 @@ void Disconnect()
     {
         socketStatus = ReadSocketStatus(0);
     }while(socketStatus != Sn_SR_CLOSED);
+}
+
+void CloseSocket()
+{
+  WriteSocketCommand(0, Sn_CR_CLOSE);
+  WriteSocketIR(0, 0xFF);
 }
 
 void FillBuf4(uint8_t* buf, uint8_t a, uint8_t b, uint8_t c, uint8_t d)
