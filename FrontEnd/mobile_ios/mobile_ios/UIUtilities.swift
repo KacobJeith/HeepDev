@@ -149,7 +149,7 @@ func insetTextView(frame: CGRect, placeholderText: String, keyboardType: UIKeybo
                             y: 2.5,
                             width: insetView.frame.width - 20,
                             height: insetView.frame.height - 5)
-        
+        text.autocapitalizationType = .none
         text.placeholder = placeholderText
         text.textColor = UIColor.darkGray
         text.keyboardType = .emailAddress

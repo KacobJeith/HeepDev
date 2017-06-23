@@ -187,7 +187,7 @@ func getUserIcon(iconURL: String) -> NSData {
     return data! as NSData
 }
 
-func loginToUserRealmSync(username: String, password: String) {
+func loginToUserRealmSync(username: String, password: String, callback: @escaping () -> Void = {}) {
     
     //Sign in
     let urlString = "http://45.55.249.217:9080"
@@ -198,9 +198,7 @@ func loginToUserRealmSync(username: String, password: String) {
                                                        password: password,
                                                        register: false)
     
-    let registerCredentials =  SyncCredentials.usernamePassword(username: username,
-                                                                password: password,
-                                                                register: true)
+    //let registerCredentials =  SyncCredentials.usernamePassword(username: username, password: password, register: true)
     
     print(credentials)
     
@@ -211,10 +209,10 @@ func loginToUserRealmSync(username: String, password: String) {
                     configUser =  Realm.Configuration(syncConfiguration: SyncConfiguration(user: user!, realmURL: userURL))
                     print("Found existing")
                     
+                    callback()
+                    
     })
     
-    print(configUser)
-    print("Current User: \(SyncUser.current)")
 }
 
 func loginToPublicRealm() {

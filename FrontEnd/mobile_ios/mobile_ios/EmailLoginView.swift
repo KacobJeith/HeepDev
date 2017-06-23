@@ -143,13 +143,44 @@ class EmailLoginView : UIViewController {
     func submitValues(gesture: UITapGestureRecognizer) {
         let inputResults = extractInputValues()
         let pseudoUniqueID = getIDFromByteArray(bytes: inputResults.email.asciiArray)
-        seedNewUserAccount(name: "placeholder",
-                           id: String(describing: pseudoUniqueID),
-                           email: inputResults.email,
-                           password: inputResults.password)
+        //seedNewUserAccount(name: "placeholder", id: String(describing: pseudoUniqueID), email: inputResults.email, password: inputResults.password)
+        let loginGroup = DispatchGroup()
+        loginGroup.enter()
         
-        loginToUserRealmSync(username: inputResults.email, password: inputResults.password)
-        exitModalView()
+        DispatchQueue.global(qos: .default).sync {
+            loginToUserRealmSync(username: inputResults.email,
+                                 password: inputResults.password,
+                                 callback: { loginGroup.leave()})
+            
+        }
+        
+        loginGroup.wait()
+        
+        validateUser()
+        
+        
+        
+    }
+    
+    func validateUser() {
+        
+        if SyncUser.current != nil {
+            let alert = UIAlertController(title: "Alert",
+                                          message: "Successfully Logged in to Realm",
+                                          preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.cancel, handler: { action in
+                self.exitModalView()
+            }))
+            present(alert, animated: true, completion: nil)
+        } else {
+            let alert = UIAlertController(title: "Alert",
+                                          message: "Could Not find Realm",
+                                          preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.cancel, handler: { action in
+                self.exitModalView()
+            }))
+            present(alert, animated: true, completion: nil)
+        }
     }
     
     func extractInputValues() -> (email: String, password: String) {
