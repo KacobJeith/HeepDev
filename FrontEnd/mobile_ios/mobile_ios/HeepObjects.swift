@@ -26,17 +26,6 @@ class User: Object {
 }
 
 // User Realm
-class Key: Object {
-    dynamic var deviceID: Int = 0
-    dynamic var deviceSecret: Int = 0
-    
-    override static func primaryKey() -> String? {
-        return "deviceID"
-    }
-    
-}
-
-// User Realm
 class Place: Object {
     
     dynamic var ssid: String = "placeholder"

@@ -117,8 +117,11 @@ class AccountView: UIViewController {
     }
     
     func openLoginOptions() {
-        let modalViewController = LoginOptionsView()
-        modalViewController.prevView = self
+        let modalViewController = EmailLoginView(frame: CGRect(x: self.view.frame.width/6,
+                                                               y: self.view.frame.height/3,
+                                                               width: 2 * self.view.bounds.width/3,
+                                                               height: self.view.bounds.height/3))
+        //modalViewController.prevView = self
         
         modalViewController.modalPresentationStyle = .overCurrentContext
         present(modalViewController, animated: true, completion: nil)

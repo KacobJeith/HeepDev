@@ -237,11 +237,12 @@ extension LoginOptionsView : LoginButtonDelegate {
                         print(responseDictionary)
                         UserDefaults.standard.set(responseDictionary, forKey: "userInfo")
                         let name = responseDictionary["name"] as! String
+                        let email = responseDictionary["email"] as! String
                         let pic = responseDictionary["picture"] as! NSDictionary
                         let data = pic["data"] as! NSDictionary
                         let url = data["url"] as! String
                         let id = responseDictionary["id"] as! String
-                        self.seedNewUserFromFacebook(name: name, imageURL: url, id: id)
+                        self.seedNewUserFromFacebook(name: name, imageURL: url, id: id, email: email)
                     }
                 }
             }
@@ -250,9 +251,11 @@ extension LoginOptionsView : LoginButtonDelegate {
         }
     }
     
-    func seedNewUserFromFacebook(name: String, imageURL: String, id: String) {
+    func seedNewUserFromFacebook(name: String, imageURL: String, id: String, email: String) {
         let newUser = seedNewUserAccount(name: name, imageURL: imageURL, id: id)
-        
+        print("Email: \(email)")
+        print("Name: \(name)")
+        //loginToUserRealmSync(username: email, password: email)
         //loginToUserRealmSync(user: newUser.userID)
         exitModalView()
     }
