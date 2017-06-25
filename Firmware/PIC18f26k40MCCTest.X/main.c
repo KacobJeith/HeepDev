@@ -98,6 +98,8 @@ void main(void)
     while(1)
     {
         PerformHeepTasks();
+        
+        LATAbits.LA1 = controlList[0].curValue;
     }
   
 }
