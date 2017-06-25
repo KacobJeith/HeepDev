@@ -78,7 +78,7 @@ void main(void)
 	control0.controlID = 0;
 	control0.controlDirection = 0;
 	control0.controlType = 0;
-	control0.highValue = 0;
+	control0.highValue = 1;
 	control0.lowValue = 0;
 	control0.curValue = 0;
 	AddControl(control0);
@@ -99,7 +99,10 @@ void main(void)
     {
         PerformHeepTasks();
     }
-    
+  
+}
+
+  
 //    
 //#ifdef TEST_SERVER
 //    uint8_t rxBuf[200];
@@ -165,7 +168,8 @@ void main(void)
 //            Nop();
 //        }
    // }
-}
+
+
 /**
  End of File
 */
