@@ -23,9 +23,11 @@
 // Prototypes
 void CommitMemory();
 
-unsigned char clearMemory = 0;
+unsigned char clearMemory = 1;
 void SetupHeepDevice(char* deviceName)
 {
+	unsigned char clearMemory = 1;
+	
 	if(clearMemory)
 	{
 		ClearMemory();

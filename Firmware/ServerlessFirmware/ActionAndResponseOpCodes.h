@@ -115,7 +115,7 @@ void FillOutputBufferWithMemoryDump()
 	AddNewCharToOutputBuffer(totalMemory);
 
 	// First data sent is control register so that receiver can decode the rest
-	AddNewCharToOutputBuffer(controlRegister);
+	//AddNewCharToOutputBuffer(controlRegister);
 
 	// Add Client Data
 	AddNewCharToOutputBuffer(ClientDataOpCode);
