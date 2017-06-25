@@ -9,41 +9,12 @@ void CreateInterruptServer()
 
 void CheckServerForInputs()
 {
-//	if (EthernetClient client = server.available())
-//    {
-//    	size_t size;
-//	  	while((size = client.available()) > 0)
-//	    {
-//	      uint8_t* msg = (uint8_t*)malloc(size);
-//	      size = client.read(msg,size);
-//	      for(int i = 0; i < size; i++)
-//	      {
-//	      	inputBuffer[i] = msg[i];
-//	      }
-//	      free(msg);
-//
-//	      Serial.println("Received Data");
-//	      ExecuteControlOpCodes();
-//	  	}
-//
-//	  	client.write(outputBuffer, outputBufferLastByte);
-//		client.stop();
-//    }
-    
     uint16_t curData = DataAvailable();
     if(curData > 0)
     {
         LATAbits.LA0 = 0;
         ReadData(inputBuffer, curData);
         ExecuteControlOpCodes();
-        
-//        uint8_t buf [5];
-//        buf[0] = 'J';
-//        buf[1] = 'a';
-//        buf[2] = 'm';
-//        buf[3] = 'e';
-//        buf[4] = 's';
-//        SendData(buf, 5);
         
         SendData(outputBuffer, outputBufferLastByte);
         Disconnect();
