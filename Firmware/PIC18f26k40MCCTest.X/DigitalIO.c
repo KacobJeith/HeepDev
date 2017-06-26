@@ -2,101 +2,63 @@
 
 void PinMode(int pin, enum pinType type)
 {
-    if(pin == 0)
+    switch(pin)
     {
-        TRISAbits.TRISA0 = type == input ? 1 : 0;
-    }
-    else if(pin == 1)
-    {
-        TRISAbits.TRISA1 = type == input ? 1 : 0;
-    }
-    else if(pin == 2)
-    {
-        TRISAbits.TRISA2 = type == input ? 1 : 0;
-    }
-    else if(pin == 3)
-    {
-        TRISAbits.TRISA3 = type == input ? 1 : 0;
-    }
-    else if(pin == 4)
-    {
-        TRISAbits.TRISA4 = type == input ? 1 : 0;
-    }
-    else if(pin == 5)
-    {
-        TRISAbits.TRISA5 = type == input ? 1 : 0;
-    }
-    else if(pin == 6)
-    {
-        TRISAbits.TRISA6 = type == input ? 1 : 0;
-    }
-    else if(pin == 7)
-    {
-        TRISAbits.TRISA7 = type == input ? 1 : 0;
-    }
-    
-    else if(pin == 8)
-    {
-        TRISCbits.TRISC0 = type == input ? 1 : 0;
-    }
-    else if(pin == 9)
-    {
-        TRISCbits.TRISC1 = type == input ? 1 : 0;
-    }
-    else if(pin == 10)
-    {
-    TRISCbits.TRISC2 = type == input ? 1 : 0;
-    }
-    else if(pin == 11)
-    {
-        TRISCbits.TRISC3 = type == input ? 1 : 0;
-    }
-    else if(pin == 12)
-    {
-        TRISCbits.TRISC4 = type == input ? 1 : 0;
-    }
-    else if(pin == 13)
-    {
-        TRISCbits.TRISC5 = type == input ? 1 : 0;
-    }
-    else if(pin == 14)
-    {
-        TRISCbits.TRISC6 = type == input ? 1 : 0;
-    }
-    else if(pin == 15)
-    {
-        TRISCbits.TRISC7 = type == input ? 1 : 0;
-    }
-    
-    else if(pin == 16)
-    {
-        TRISBbits.TRISB0 = type == input ? 1 : 0;
-    }
-    else if(pin == 17)
-    {
-        TRISBbits.TRISB1 = type == input ? 1 : 0;
-    }
-    else if(pin == 18)
-    {
-        TRISBbits.TRISB2 = type == input ? 1 : 0;
-    }
-    else if(pin == 19)
-    {
-        TRISBbits.TRISB3 = type == input ? 1 : 0;
-    }
-    else if(pin == 20)
-    {
-        TRISBbits.TRISB4 = type == input ? 1 : 0;
-    }
-    else if(pin == 21)
-    {
-        TRISBbits.TRISB5 = type == input ? 1 : 0;
+        case 0  : TRISAbits.TRISA0 = type == input ? 1 : 0; return;
+        case 1  : TRISAbits.TRISA1 = type == input ? 1 : 0; return;
+        case 2  : TRISAbits.TRISA2 = type == input ? 1 : 0; return;
+        case 3  : TRISAbits.TRISA3 = type == input ? 1 : 0; return;
+        case 4  : TRISAbits.TRISA4 = type == input ? 1 : 0; return;
+        case 5  : TRISAbits.TRISA5 = type == input ? 1 : 0; return;
+        case 6  : TRISAbits.TRISA6 = type == input ? 1 : 0; return;
+        case 7  : TRISAbits.TRISA7 = type == input ? 1 : 0; return;
+        case 8  : TRISCbits.TRISC0 = type == input ? 1 : 0; return;
+        case 9  : TRISCbits.TRISC1 = type == input ? 1 : 0; return;
+        case 10 : TRISCbits.TRISC2 = type == input ? 1 : 0; return;
+        case 11 : TRISCbits.TRISC3 = type == input ? 1 : 0; return;
+        case 12 : TRISCbits.TRISC4 = type == input ? 1 : 0; return;
+        case 13 : TRISCbits.TRISC5 = type == input ? 1 : 0; return;
+        case 14 : TRISCbits.TRISC6 = type == input ? 1 : 0; return;
+        case 15 : TRISCbits.TRISC7 = type == input ? 1 : 0; return;
+        case 16 : TRISBbits.TRISB0 = type == input ? 1 : 0; return;
+        case 17 : TRISBbits.TRISB1 = type == input ? 1 : 0; return;
+        case 18 : TRISBbits.TRISB2 = type == input ? 1 : 0; return;
+        case 19 : TRISBbits.TRISB3 = type == input ? 1 : 0; return;
+        case 20 : TRISBbits.TRISB4 = type == input ? 1 : 0; return;
+        case 21 : TRISBbits.TRISB5 = type == input ? 1 : 0; return;
     }
 }
 
 void DigitalWrite(int pin, int value)
 {
-    
+    if(value > 1 || value < 0)
+        return;
+
+    switch(pin)
+    {
+        case 0  : LATAbits.LATA0 = value; return;
+        case 1  : LATAbits.LATA1 = value; return;
+        case 2  : LATAbits.LATA2 = value; return;
+        case 3  : LATAbits.LATA3 = value; return;
+        case 4  : LATAbits.LATA4 = value; return;
+        case 5  : LATAbits.LATA5 = value; return;
+        case 6  : LATAbits.LATA6 = value; return;
+        case 7  : LATAbits.LATA7 = value; return;
+        case 8  : LATCbits.LATC0 = value; return;
+        case 9  : LATCbits.LATC1 = value; return;
+        case 10 : LATCbits.LATC2 = value; return;
+        case 11 : LATCbits.LATC3 = value; return;
+        case 12 : LATCbits.LATC4 = value; return;
+        case 13 : LATCbits.LATC5 = value; return;
+        case 14 : LATCbits.LATC6 = value; return;
+        case 15 : LATCbits.LATC7 = value; return;
+        case 16 : LATBbits.LATB0 = value; return;
+        case 17 : LATBbits.LATB1 = value; return;
+        case 18 : LATBbits.LATB2 = value; return;
+        case 19 : LATBbits.LATB3 = value; return;
+        case 20 : LATBbits.LATB4 = value; return;
+        case 21 : LATBbits.LATB5 = value; return;
+    }
 }
 
 int DigitalRead(int pin)
