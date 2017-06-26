@@ -48,16 +48,19 @@ extension NavAccountView {
     func alreadyLoggedInView() -> UIView {
         let userAccountView = UIView()
         
-        userAccountView.addSubview(userIconView())
-        //userAccountView.addSubview(userNameView())
-        //userAccountView.addSubview(userEmailView())
+        let iconView = userIconView()
+        let nameView = userNameView(frame: iconView.frame)
+        let emailView = userEmailView(frame: nameView.frame)
+        
+        userAccountView.addSubview(iconView.view)
+        userAccountView.addSubview(nameView.view)
+        userAccountView.addSubview(emailView.view)
         
         return userAccountView
     }
     
-    func userIconView() -> UIView {
+    func userIconView() -> (view: UIView, frame: CGRect) {
         let iconDiameter = self.view.frame.width / 5
-        let navBarHeight = (self.navigationController?.navigationBar.bounds.height)!
     
         let frame = CGRect(x: (self.view.frame.width / 2) - (iconDiameter / 2),
                            y: (iconDiameter / 4),
@@ -75,17 +78,42 @@ extension NavAccountView {
         
         containerView.addSubview(iconView)
         
-        return containerView
+        return (view: containerView, frame: frame)
+    }
+    
+    func userNameView(frame: CGRect)  -> (view: UIView, frame: CGRect) {
+        let nextFrame = CGRect(x: 0,
+                               y: frame.maxY + 10,
+                               width: self.view.frame.width,
+                               height: frame.height / 3)
+        
+        let userNameView = UILabel(frame: nextFrame)
+        userNameView.text = "Placeholder Name"
+        userNameView.adjustsFontSizeToFitWidth = true
+        userNameView.textColor = .darkGray
+        userNameView.textAlignment = .center
+        userNameView.contentMode = .bottom
+        
+        return (view: userNameView, frame: nextFrame)
+    }
+    
+    
+    func userEmailView(frame: CGRect) -> (view: UIView, frame: CGRect) {
+        let nextFrame = CGRect(x: 0,
+                               y: frame.maxY,
+                               width: self.view.frame.width,
+                               height: frame.height)
+        
+        let emailView = UILabel(frame: nextFrame)
+        emailView.text = "testing@heep.io"
+        emailView.adjustsFontSizeToFitWidth = true
+        emailView.textColor = .lightGray
+        emailView.textAlignment = .center
+        emailView.contentMode = .top
+        
+        return (view: emailView, frame: nextFrame)
     }
     /*
-    func userNameView()  -> UIView {
-        
-    }
-    
-    func userEmailView() -> UIView {
-        
-    }
-    
     func launchStatsView() {
         
     }
