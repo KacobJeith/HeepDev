@@ -102,7 +102,7 @@ void main(void)
     {
         PerformHeepTasks();
         
-        LATAbits.LA1 = controlList[0].curValue;
+        DigitalWrite(1, controlList[0].curValue);
     }
   
 }
