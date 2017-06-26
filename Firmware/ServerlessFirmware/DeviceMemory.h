@@ -3,32 +3,32 @@
 #include "MemoryUtilities.h"
 
 // OPCodes
-const unsigned char ClientDataOpCode = 0x01;
-const unsigned char ControlOpCode = 0x02;
-const unsigned char VertexOpCode = 0x03;
-const unsigned char IconIDOpCode = 0x04;
-const unsigned char CustomIconDrawingOpCode = 0x05;
-const unsigned char DeviceNameOpCode = 0x06;
-const unsigned char FrontEndPositionOpCode = 0x07;
-const unsigned char DeviceIPOpCode = 0x08;
+#define ClientDataOpCode 		 	0x01
+#define ControlOpCode 			 	0x02
+#define VertexOpCode 			 	0x03
+#define IconIDOpCode 			 	0x04
+#define CustomIconDrawingOpCode 	0x05
+#define DeviceNameOpCode 		 	0x06
+#define FrontEndPositionOpCode	 	0x07
+#define DeviceIPOpCode 			 	0x08
+	
+#define IsHeepDeviceOpCode 		 	0x09
+#define SetValueOpCode 			 	0x0A
+#define SetPositionOpCode 		 	0x0B
+#define SetVertexOpCode 		 	0x0C
+#define DeleteVertexOpCode 		 	0x0D
+#define EchoOpCode 				 	0x0E
 
-const unsigned char IsHeepDeviceOpCode = 0x09;
-const unsigned char SetValueOpCode = 0x0A;
-const unsigned char SetPositionOpCode = 0x0B;
-const unsigned char SetVertexOpCode = 0x0C;
-const unsigned char DeleteVertexOpCode = 0x0D;
-const unsigned char EchoOpCode = 0x0E;
+#define MemoryDumpOpCode 			0x0F
+#define SuccessOpCode 				0x10
+#define ErrorOpCode 				0x11
 
-const unsigned char MemoryDumpOpCode = 0x0F;
-const unsigned char SuccessOpCode = 0x10;
-const unsigned char ErrorOpCode = 0x11;
+#define FragmentOpCode 				0x12
 
-const unsigned char FragmentOpCode = 0x12;
-
-const unsigned char AddMOPOpCode = 0x13;
-const unsigned char DynamicMemorySizeOpCode = 0x14;
-const unsigned char DeleteMOPOpCode = 0x15;
-const unsigned char LocalDeviceIDOpCode = 0x16;
+#define AddMOPOpCode 				0x13
+#define DynamicMemorySizeOpCode 	0x14
+#define DeleteMOPOpCode 			0x15
+#define LocalDeviceIDOpCode 		0x16
 
 unsigned char deviceMemory [MAX_MEMORY];
 unsigned int curFilledMemory = 0; // Indicate the curent filled memory. 

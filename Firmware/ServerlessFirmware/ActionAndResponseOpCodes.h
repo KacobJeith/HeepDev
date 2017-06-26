@@ -115,7 +115,7 @@ void FillOutputBufferWithMemoryDump()
 	AddNewCharToOutputBuffer(totalMemory);
 
 	// First data sent is control register so that receiver can decode the rest
-	AddNewCharToOutputBuffer(controlRegister);
+	//AddNewCharToOutputBuffer(controlRegister);
 
 	// Add Client Data
 	AddNewCharToOutputBuffer(ClientDataOpCode);
@@ -400,32 +400,32 @@ void ExecuteAddMOPOpCode()
 
 void ExecuteControlOpCodes()
 {
-	unsigned char ControlOpCode = inputBuffer[0];
-	if(ControlOpCode == IsHeepDeviceOpCode)
+	unsigned char ReceivedOpCode = inputBuffer[0];
+	if(ReceivedOpCode == IsHeepDeviceOpCode)
 	{
 		ExecuteMemoryDumpOpCode();
 	}
-	else if(ControlOpCode == SetValueOpCode)
+	else if(ReceivedOpCode == SetValueOpCode)
 	{
 		ExecuteSetValOpCode();
 	}
-	else if(ControlOpCode == SetPositionOpCode)
+	else if(ReceivedOpCode == SetPositionOpCode)
 	{
 		ExecuteSetPositionOpCode();
 	}
-	else if(ControlOpCode == SetVertexOpCode)
+	else if(ReceivedOpCode == SetVertexOpCode)
 	{
 		ExecuteSetVertexOpCode();
 	}
-	else if(ControlOpCode == DeleteVertexOpCode)
+	else if(ReceivedOpCode == DeleteVertexOpCode)
 	{
 		ExecuteDeleteVertexOpCode();
 	}
-	else if(ControlOpCode == AddMOPOpCode)
+	else if(ReceivedOpCode == AddMOPOpCode)
 	{
 		ExecuteAddMOPOpCode();
 	}
-	else if(ControlOpCode == DeleteMOPOpCode)
+	else if(ReceivedOpCode == DeleteMOPOpCode)
 	{
 		ExecuteDeleteMOPOpCode();
 	}
