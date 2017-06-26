@@ -16,12 +16,7 @@ class NavAccountView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigation()
-        self.subviewFrame = CGRect(x: 0,
-                            y: 0,
-                            width: self.view.frame.width,
-                            height: self.view.frame.height)
-        
-        self.view.addSubview(loginView())
+        isUserLoggedIn()
     }
     
     func setupNavigation() {
@@ -36,12 +31,77 @@ class NavAccountView: UIViewController {
         
     }
     
+    func isUserLoggedIn() {
+        print("Current User: \(String(describing: SyncUser.current))")
+        
+        if SyncUser.current == nil {
+            self.view.addSubview(loginView())
+            
+        } else {
+            self.view.addSubview(alreadyLoggedInView())
+        }
+    }
+    
+}
+
+extension NavAccountView {
+    func alreadyLoggedInView() -> UIView {
+        let userAccountView = UIView()
+        
+        userAccountView.addSubview(userIconView())
+        //userAccountView.addSubview(userNameView())
+        //userAccountView.addSubview(userEmailView())
+        
+        return userAccountView
+    }
+    
+    func userIconView() -> UIView {
+        let iconDiameter = self.view.frame.width / 5
+        let navBarHeight = (self.navigationController?.navigationBar.bounds.height)!
+    
+        let frame = CGRect(x: (self.view.frame.width / 2) - (iconDiameter / 2),
+                           y: (iconDiameter / 4),
+                           width: iconDiameter,
+                           height: iconDiameter)
+
+        let containerView = UIView(frame: frame)
+        containerView.layer.cornerRadius = containerView.frame.width / 2
+        containerView.layer.borderColor = UIColor.lightGray.cgColor
+        containerView.layer.borderWidth = 1
+        
+        let iconView = UIImageView(frame: containerView.bounds)
+        iconView.image = #imageLiteral(resourceName: "male")
+        iconView.contentMode = .scaleAspectFit
+        
+        containerView.addSubview(iconView)
+        
+        return containerView
+    }
+    /*
+    func userNameView()  -> UIView {
+        
+    }
+    
+    func userEmailView() -> UIView {
+        
+    }
+    
+    func launchStatsView() {
+        
+    }
+ */
 }
 
 // NO USER LOGGED IN
 
 extension NavAccountView {
     func loginView() -> UIView {
+        
+        self.subviewFrame = CGRect(x: 0,
+                                   y: 0,
+                                   width: self.view.frame.width,
+                                   height: self.view.frame.height)
+        
         let subview = UIView(frame: subviewFrame)
         subview.addGestureRecognizer(UITapGestureRecognizer(target: nil, action: nil))
         subview.backgroundColor = .white
