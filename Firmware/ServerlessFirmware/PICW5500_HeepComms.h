@@ -4,21 +4,21 @@ int TCP_PORT = 5000;
 
 void CreateInterruptServer()
 {
-  Listen(5000);
+  Listen(5000, 0);
 }
 
 void CheckServerForInputs()
 {
-    uint16_t curData = DataAvailable();
+    uint16_t curData = DataAvailable(0);
     if(curData > 0)
     {
         LATAbits.LA0 = 0;
-        ReadData(inputBuffer, curData);
+        ReadData(inputBuffer, curData, 0);
         ExecuteControlOpCodes();
         
-        SendData(outputBuffer, outputBufferLastByte);
-        Disconnect();
-        Listen(5000);
+        SendData(outputBuffer, outputBufferLastByte, 0);
+        Disconnect(0);
+        Listen(5000, 0);
     }
 }
 

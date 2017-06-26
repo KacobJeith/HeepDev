@@ -59,13 +59,13 @@ uint16_t ReadSocketRxPointer(uint8_t socket);
 
 uint16_t ReadRecievedBufferSize(uint8_t socket);
 
-void ConnectToIP(uint8_t* IP, uint8_t* port);
-void SendData(uint8_t* buf, uint16_t len);
-void Listen(uint16_t sourcePort);
-uint16_t DataAvailable();
-void ReadData(uint8_t* buffer, uint16_t size);
-void Disconnect();
-void CloseSocket();
+void ConnectToIP(uint8_t* IP, uint8_t* port, uint8_t socket);
+void SendData(uint8_t* buf, uint16_t len, uint8_t socket);
+void Listen(uint16_t sourcePort, uint8_t socket);
+uint16_t DataAvailable(uint8_t socket);
+void ReadData(uint8_t* buffer, uint16_t size, uint8_t socket);
+void Disconnect(uint8_t socket);
+void CloseSocket(uint8_t socket);
 
 void W5500SoftwareReset();
 

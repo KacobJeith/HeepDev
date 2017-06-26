@@ -347,35 +347,35 @@ uint16_t ReadRecievedBufferSize(uint8_t socket)
     return retValue;
 }
 
-void ConnectToIP(uint8_t* IP, uint8_t* port)
+void ConnectToIP(uint8_t* IP, uint8_t* port, uint8_t socket)
 {
     uint16_t sourcePort = 1024;
     uint8_t srcPort[2];
     srcPort[0] = sourcePort >> 8;
     srcPort[1] = sourcePort & 0xFF;
-    WriteSocketMode(0, Sn_MR_TCP);
-    WriteSourcePort(0, srcPort);
-    WriteSocketCommand(0, Sn_CR_OPEN);
+    WriteSocketMode(socket, Sn_MR_TCP);
+    WriteSourcePort(socket, srcPort);
+    WriteSocketCommand(socket, Sn_CR_OPEN);
     
     uint8_t socketMode = ReadSocketMode(0);
     uint8_t socketStatus = 0;
-    WriteDestinationIP(0, IP);
-    WriteDestinationPort(0, port);
-    WriteSocketCommand(0, Sn_CR_CONNECT);
+    WriteDestinationIP(socket, IP);
+    WriteDestinationPort(socket, port);
+    WriteSocketCommand(socket, Sn_CR_CONNECT);
     
     do
     {
-        socketStatus = ReadSocketStatus(0);
+        socketStatus = ReadSocketStatus(socket);
     }while(socketStatus != Sn_SR_ESTABLISHED);
 }
 
-void SendData(uint8_t* buf, uint16_t len)
+void SendData(uint8_t* buf, uint16_t len, uint8_t socket)
 {
     uint16_t pointer = 0;
-    pointer = ReadSocketTxPointer(0);
-    WriteToW5500(pointer, GetWriteControlByteFromSocketTx(0), buf, len);
+    pointer = ReadSocketTxPointer(socket);
+    WriteToW5500(pointer, GetWriteControlByteFromSocketTx(socket), buf, len);
     pointer += len;
-    WriteSocketTXPointer(0, pointer);
+    WriteSocketTXPointer(socket, pointer);
     
     WriteSocketCommand(0, Sn_CR_SEND);
     
@@ -384,31 +384,31 @@ void SendData(uint8_t* buf, uint16_t len)
     uint8_t sendOKValue = Sn_IR_SEND_OK;
     do
     {
-        socketIRValue = ReadSocketIR(0);
-        socketSRValue = ReadSocketStatus(0);
+        socketIRValue = ReadSocketIR(socket);
+        socketSRValue = ReadSocketStatus(socket);
         
         if(socketSRValue == Sn_SR_CLOSED)
         {
-            CloseSocket();
+            CloseSocket(socket);
             return;
         }
     }while( (socketIRValue & sendOKValue) != sendOKValue );
 }
 
-void Listen(uint16_t sourcePort)
+void Listen(uint16_t sourcePort, uint8_t socket)
 {
     // currently assume socket 0
     uint8_t srcPort[2];
     srcPort[0] = sourcePort >> 8;
     srcPort[1] = sourcePort & 0xFF;
-    WriteSocketMode(0, Sn_MR_TCP);
-    WriteSourcePort(0, srcPort);
-    WriteSocketCommand(0, Sn_CR_OPEN);
+    WriteSocketMode(socket, Sn_MR_TCP);
+    WriteSourcePort(socket, srcPort);
+    WriteSocketCommand(socket, Sn_CR_OPEN);
     
-    WriteSocketCommand(0, Sn_CR_LISTEN);
+    WriteSocketCommand(socket, Sn_CR_LISTEN);
 }
 
-uint16_t DataAvailable()
+uint16_t DataAvailable(uint8_t socket)
 {
     // If Not listening, listen... Otherwise data will never be available 
 //    uint8_t socketStatus = ReadSocketStatus(0);
@@ -419,51 +419,51 @@ uint16_t DataAvailable()
     
     uint16_t val=0,val1=0;
     do {
-        val1 = ReadRecievedBufferSize(0);
+        val1 = ReadRecievedBufferSize(socket);
         if (val1 != 0)
-            val = ReadRecievedBufferSize(0);
+            val = ReadRecievedBufferSize(socket);
     } 
     while (val != val1);
     return val;
 }
 
-void ReadData(uint8_t* buffer, uint16_t size)
+void ReadData(uint8_t* buffer, uint16_t size, uint8_t socket)
 {
-    uint16_t dataInBuf = DataAvailable();
+    uint16_t dataInBuf = DataAvailable(socket);
     
     if(dataInBuf > 0)
     {
         uint16_t rxPtr = 0;
-        rxPtr = ReadSocketRxPointer(0);
+        rxPtr = ReadSocketRxPointer(socket);
         
         // Recv the data
-        ReadFromW5500(rxPtr, GetReadControlByteFromSocketRx(0), buffer, size);
+        ReadFromW5500(rxPtr, GetReadControlByteFromSocketRx(socket), buffer, size);
         rxPtr += size;
-        WriteSocketRXPointer(0, rxPtr);
+        WriteSocketRXPointer(socket, rxPtr);
         
-        rxPtr = ReadSocketRxPointer(0);
+        rxPtr = ReadSocketRxPointer(socket);
         
-        WriteSocketCommand(0, Sn_CR_RECV);
+        WriteSocketCommand(socket, Sn_CR_RECV);
         
-        rxPtr = ReadSocketRxPointer(0);
+        rxPtr = ReadSocketRxPointer(socket);
     }
 }
 
-void Disconnect()
+void Disconnect(uint8_t socket)
 {
-    WriteSocketCommand(0, Sn_CR_DISCON);
+    WriteSocketCommand(socket, Sn_CR_DISCON);
     
     uint8_t socketStatus = 0;
     do
     {
-        socketStatus = ReadSocketStatus(0);
+        socketStatus = ReadSocketStatus(socket);
     }while(socketStatus != Sn_SR_CLOSED);
 }
 
-void CloseSocket()
+void CloseSocket(uint8_t socket)
 {
-  WriteSocketCommand(0, Sn_CR_CLOSE);
-  WriteSocketIR(0, 0xFF);
+  WriteSocketCommand(socket, Sn_CR_CLOSE);
+  WriteSocketIR(socket, 0xFF);
 }
 
 void FillBuf4(uint8_t* buf, uint8_t a, uint8_t b, uint8_t c, uint8_t d)
