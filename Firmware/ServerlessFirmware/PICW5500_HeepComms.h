@@ -24,6 +24,7 @@ void CheckServerForInputs()
 
 void SendOutputBufferToIP(struct HeepIPAddress destIP)
 {
+    LATAbits.LA0 = 1;
     uint8_t byteIP [4];
     byteIP[0] = destIP.Octet4;
     byteIP[1] = destIP.Octet3;
@@ -46,4 +47,6 @@ void SendOutputBufferToIP(struct HeepIPAddress destIP)
  
     ReadData(inputBuffer, curData, 1);
     Disconnect(1);
+    
+    LATAbits.LA0 = 0;
 }
