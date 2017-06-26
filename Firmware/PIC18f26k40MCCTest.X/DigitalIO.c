@@ -32,7 +32,7 @@ void PinMode(int pin, enum pinType type)
     {
         SetPullUp(pin, 1);
     }
-    else
+    else if(type == input)
     {
         SetPullUp(pin, 0);
     }
