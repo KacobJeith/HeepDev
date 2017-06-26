@@ -3,6 +3,7 @@
 #include "mcc_generated_files/mcc.h"
 #include "W5500.h"
 #include "../ServerlessFirmware/Heep_API.h"
+#include "DigitalIO.h"
 
 #define TEST_SERVER
 
