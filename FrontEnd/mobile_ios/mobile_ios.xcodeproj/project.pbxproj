@@ -29,9 +29,6 @@
 		70DC641C8DFD5145B3E2F178 /* Pods_mobile_iosUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9455865AC2AC2771C588F666 /* Pods_mobile_iosUITests.framework */; };
 		AFBAEC1B382B06E54E70DAC7 /* Pods_mobile_iosTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 629528E8C86E48C60E29C454 /* Pods_mobile_iosTests.framework */; };
 		B010B6011F01428D00363CAB /* NavAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B010B6001F01428D00363CAB /* NavAccountView.swift */; };
-		B06DE4371EE4AE7600680A35 /* ModalAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06DE4361EE4AE7600680A35 /* ModalAccountView.swift */; };
-		B06DE43D1EE86FCD00680A35 /* LoginOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06DE43C1EE86FCD00680A35 /* LoginOptionsView.swift */; };
-		B06DE43F1EE8C43800680A35 /* EmailLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06DE43E1EE8C43800680A35 /* EmailLoginView.swift */; };
 		B06DE4431EEA2B2E00680A35 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B06DE4421EEA2B2E00680A35 /* Security.framework */; };
 		D7A8C048C69A2C379A20948F /* Pods_mobile_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 321E9915FF90A4E39B163211 /* Pods_mobile_ios.framework */; };
 		E7ACBFC81EE4BE1400EFB21E /* HeepBeacon.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7ACBFC71EE4BE1400EFB21E /* HeepBeacon.swift */; };
@@ -87,9 +84,6 @@
 		76BE85D99FD14F073F5556A1 /* Pods-mobile_iosUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mobile_iosUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-mobile_iosUITests/Pods-mobile_iosUITests.release.xcconfig"; sourceTree = "<group>"; };
 		9455865AC2AC2771C588F666 /* Pods_mobile_iosUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_mobile_iosUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B010B6001F01428D00363CAB /* NavAccountView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavAccountView.swift; sourceTree = "<group>"; };
-		B06DE4361EE4AE7600680A35 /* ModalAccountView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModalAccountView.swift; sourceTree = "<group>"; };
-		B06DE43C1EE86FCD00680A35 /* LoginOptionsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginOptionsView.swift; sourceTree = "<group>"; };
-		B06DE43E1EE8C43800680A35 /* EmailLoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailLoginView.swift; sourceTree = "<group>"; };
 		B06DE4421EEA2B2E00680A35 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		B7918E77C7C5DB9DEBC8629A /* Pods-mobile_iosUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mobile_iosUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-mobile_iosUITests/Pods-mobile_iosUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		E1962A9C5DE87696544789AE /* Pods-mobile_iosTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mobile_iosTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-mobile_iosTests/Pods-mobile_iosTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -156,10 +150,7 @@
 			children = (
 				101D2F621EA968230074D807 /* AppDelegate.swift */,
 				100821FB1EC49BDF0079E6F5 /* PlacesView.swift */,
-				B06DE4361EE4AE7600680A35 /* ModalAccountView.swift */,
 				B010B6001F01428D00363CAB /* NavAccountView.swift */,
-				B06DE43C1EE86FCD00680A35 /* LoginOptionsView.swift */,
-				B06DE43E1EE8C43800680A35 /* EmailLoginView.swift */,
 				1005B8E61ECDB99100414F8E /* GroupCollectionView.swift */,
 				1005B8DA1ECB47CD00414F8E /* EditRoomTableView.swift */,
 				1005B8E21ECB7C5B00414F8E /* UnassignedControlCollection.swift */,
@@ -513,11 +504,8 @@
 				104C18111EC8FA0C000A75D7 /* Utilities.swift in Sources */,
 				101D2F6B1EA968230074D807 /* mobile_ios.xcdatamodeld in Sources */,
 				100821FC1EC49BDF0079E6F5 /* PlacesView.swift in Sources */,
-				B06DE43D1EE86FCD00680A35 /* LoginOptionsView.swift in Sources */,
-				B06DE43F1EE8C43800680A35 /* EmailLoginView.swift in Sources */,
 				1005B8DC1ECB47CD00414F8E /* EditRoomTableView.swift in Sources */,
 				103FE2851EC373830033D021 /* DeviceSummaryView.swift in Sources */,
-				B06DE4371EE4AE7600680A35 /* ModalAccountView.swift in Sources */,
 				EEA944231EAA93950022588B /* HeepConnections.swift in Sources */,
 				1005B8E71ECDB99100414F8E /* GroupCollectionView.swift in Sources */,
 				B010B6011F01428D00363CAB /* NavAccountView.swift in Sources */,
