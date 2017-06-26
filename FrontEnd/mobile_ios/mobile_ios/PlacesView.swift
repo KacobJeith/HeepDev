@@ -42,7 +42,6 @@ class PlacesView: UIViewController {
         self.toolbarItems = [flush, spacer,  search, spacer]
 
         addPlaces()
-        
         //self.searchForHeepDevices()
     }
     
@@ -228,14 +227,13 @@ class PlacesView: UIViewController {
         self.loadView()
         self.viewDidLoad()
     }
-    
-
 }
 
 extension PlacesView {
     
     func reloadView() {
         
+        print("Ran reloadView")
         self.loadView()
         self.viewDidLoad()
     }
@@ -273,13 +271,15 @@ extension PlacesView {
     
     func userLogin() {
         // Open modal view that gives login options
+        /*
         let modalViewController = AccountView()
         modalViewController.placesView = self
         
         modalViewController.modalPresentationStyle = .overCurrentContext
         present(modalViewController, animated: false, completion: nil)
-        print("facebook?")
+        */
         
+        navigationController?.pushViewController(NavAccountView(), animated: false)
     }
     
     func getActiveUserIcon() -> UIBarButtonItem {

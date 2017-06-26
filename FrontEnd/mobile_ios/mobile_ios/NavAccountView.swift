@@ -1,41 +1,47 @@
 //
-//  EmailLoginView.swift
+//  PlacesView.swift
 //  mobile_ios
 //
-//  Created by Jacob on 6/7/17.
+//  Created by Jacob Keith on 5/11/17.
 //  Copyright © 2017 Heep. All rights reserved.
 //
 
 import UIKit
 import RealmSwift
 
-class EmailLoginView : UIViewController {
-    
+class NavAccountView: UIViewController {
+    var notificationToken: NotificationToken? = nil
     var subviewFrame = CGRect()
-    var userEmail = String()
-    var userPassword = String()
-    
-    init(frame: CGRect) {
-        super.init(nibName: nil, bundle: nil)
-        print(frame)
-        self.subviewFrame = frame
-        
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupNavigation()
+        self.subviewFrame = CGRect(x: 0,
+                            y: 0,
+                            width: self.view.frame.width,
+                            height: self.view.frame.height)
         
-        self.view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
-        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self,
-                                                              action: #selector(exitModalView)))
-        self.view.addSubview(addSubview())
+        self.view.addSubview(loginView())
     }
     
-    func addSubview() -> UIView {
+    func setupNavigation() {
+        
+        self.title = "My Account"
+        self.view.backgroundColor = .white
+        self.navigationController?.isToolbarHidden = false
+        
+        let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        
+        self.toolbarItems = [spacer]
+        
+    }
+    
+}
+
+// NO USER LOGGED IN
+
+extension NavAccountView {
+    func loginView() -> UIView {
         let subview = UIView(frame: subviewFrame)
         subview.addGestureRecognizer(UITapGestureRecognizer(target: nil, action: nil))
         subview.backgroundColor = .white
@@ -43,8 +49,8 @@ class EmailLoginView : UIViewController {
         subview.clipsToBounds = true
         
         let startFrame = CGRect(x: 20,
-                                y: (subview.bounds.height / 2) - 40,
-                                width: subview.bounds.width - 40,
+                                y: 150,
+                                width: subview.frame.width - 40,
                                 height: 35)
         
         let emailTextBox = addEmailTextBox(frame: startFrame)
@@ -52,7 +58,6 @@ class EmailLoginView : UIViewController {
         let cancelButton = addCancelButton(frame: passwordTextBox.frame)
         let submitButton = addSubmitButton(frame: cancelButton.frame)
         
-        subview.addSubview(addTitle())
         subview.addSubview(emailTextBox.view)
         subview.addSubview(passwordTextBox.view)
         subview.addSubview(cancelButton.view)
@@ -107,7 +112,7 @@ class EmailLoginView : UIViewController {
         
         let cancelButton = createActionButton(frame: nextFrame,
                                               title: "cancel",
-                                              action: #selector(exitModalView))
+                                              action: #selector(exitView))
         
         return (view: cancelButton, frame: nextFrame)
     }
@@ -169,7 +174,7 @@ class EmailLoginView : UIViewController {
                                           message: "Successfully Logged in to Realm",
                                           preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.cancel, handler: { action in
-                self.exitModalView()
+                self.exitView()
             }))
             present(alert, animated: true, completion: nil)
         } else {
@@ -177,7 +182,7 @@ class EmailLoginView : UIViewController {
                                           message: "Could Not find Realm",
                                           preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.cancel, handler: { action in
-                self.exitModalView()
+                self.exitView()
             }))
             present(alert, animated: true, completion: nil)
         }
@@ -205,14 +210,9 @@ class EmailLoginView : UIViewController {
         return (email: email, password: password)
     }
     
-    
-    
-    
-    func exitModalView() {
-        //self.view.window!.rootViewController?.dismiss(animated: false, completion: updatePlace)
-        
-        dismiss(animated: true, completion: nil)
+    func exitView() {
+        self.navigationController?.popViewController(animated: true)
+
     }
-    
-    
+
 }

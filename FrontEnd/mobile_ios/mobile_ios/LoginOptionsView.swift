@@ -14,7 +14,7 @@ import FacebookCore
 class LoginOptionsView: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
     var collectionView: UICollectionView!
-    var prevView = AccountView()
+    var prevView = NavAccountView()
     var subviewFrame = CGRect()
     private let reuseIdentifier = "Cell"
     

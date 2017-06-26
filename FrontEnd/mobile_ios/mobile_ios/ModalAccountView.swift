@@ -9,7 +9,7 @@ import UIKit
 import RealmSwift
 
 
-class AccountView: UIViewController {
+class ModalAccountView: UIViewController {
     
     var placesView = PlacesView()
     var optionsOffset: CGFloat = 75
@@ -28,7 +28,7 @@ class AccountView: UIViewController {
                             height: binHeight)
         */
         self.view.backgroundColor = UIColor.clear
-        
+        self.navigationController!.navigationBar.backgroundColor = UIColor.clear
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(exitModalView)))
         
         //addBackdrop()

@@ -28,7 +28,8 @@
 		104C18111EC8FA0C000A75D7 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104C18101EC8FA0C000A75D7 /* Utilities.swift */; };
 		70DC641C8DFD5145B3E2F178 /* Pods_mobile_iosUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9455865AC2AC2771C588F666 /* Pods_mobile_iosUITests.framework */; };
 		AFBAEC1B382B06E54E70DAC7 /* Pods_mobile_iosTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 629528E8C86E48C60E29C454 /* Pods_mobile_iosTests.framework */; };
-		B06DE4371EE4AE7600680A35 /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06DE4361EE4AE7600680A35 /* AccountView.swift */; };
+		B010B6011F01428D00363CAB /* NavAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B010B6001F01428D00363CAB /* NavAccountView.swift */; };
+		B06DE4371EE4AE7600680A35 /* ModalAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06DE4361EE4AE7600680A35 /* ModalAccountView.swift */; };
 		B06DE43D1EE86FCD00680A35 /* LoginOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06DE43C1EE86FCD00680A35 /* LoginOptionsView.swift */; };
 		B06DE43F1EE8C43800680A35 /* EmailLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06DE43E1EE8C43800680A35 /* EmailLoginView.swift */; };
 		B06DE4431EEA2B2E00680A35 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B06DE4421EEA2B2E00680A35 /* Security.framework */; };
@@ -85,7 +86,8 @@
 		629528E8C86E48C60E29C454 /* Pods_mobile_iosTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_mobile_iosTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		76BE85D99FD14F073F5556A1 /* Pods-mobile_iosUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mobile_iosUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-mobile_iosUITests/Pods-mobile_iosUITests.release.xcconfig"; sourceTree = "<group>"; };
 		9455865AC2AC2771C588F666 /* Pods_mobile_iosUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_mobile_iosUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		B06DE4361EE4AE7600680A35 /* AccountView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
+		B010B6001F01428D00363CAB /* NavAccountView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavAccountView.swift; sourceTree = "<group>"; };
+		B06DE4361EE4AE7600680A35 /* ModalAccountView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModalAccountView.swift; sourceTree = "<group>"; };
 		B06DE43C1EE86FCD00680A35 /* LoginOptionsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginOptionsView.swift; sourceTree = "<group>"; };
 		B06DE43E1EE8C43800680A35 /* EmailLoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailLoginView.swift; sourceTree = "<group>"; };
 		B06DE4421EEA2B2E00680A35 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -153,10 +155,11 @@
 			isa = PBXGroup;
 			children = (
 				101D2F621EA968230074D807 /* AppDelegate.swift */,
-				B06DE4361EE4AE7600680A35 /* AccountView.swift */,
+				100821FB1EC49BDF0079E6F5 /* PlacesView.swift */,
+				B06DE4361EE4AE7600680A35 /* ModalAccountView.swift */,
+				B010B6001F01428D00363CAB /* NavAccountView.swift */,
 				B06DE43C1EE86FCD00680A35 /* LoginOptionsView.swift */,
 				B06DE43E1EE8C43800680A35 /* EmailLoginView.swift */,
-				100821FB1EC49BDF0079E6F5 /* PlacesView.swift */,
 				1005B8E61ECDB99100414F8E /* GroupCollectionView.swift */,
 				1005B8DA1ECB47CD00414F8E /* EditRoomTableView.swift */,
 				1005B8E21ECB7C5B00414F8E /* UnassignedControlCollection.swift */,
@@ -514,9 +517,10 @@
 				B06DE43F1EE8C43800680A35 /* EmailLoginView.swift in Sources */,
 				1005B8DC1ECB47CD00414F8E /* EditRoomTableView.swift in Sources */,
 				103FE2851EC373830033D021 /* DeviceSummaryView.swift in Sources */,
-				B06DE4371EE4AE7600680A35 /* AccountView.swift in Sources */,
+				B06DE4371EE4AE7600680A35 /* ModalAccountView.swift in Sources */,
 				EEA944231EAA93950022588B /* HeepConnections.swift in Sources */,
 				1005B8E71ECDB99100414F8E /* GroupCollectionView.swift in Sources */,
+				B010B6011F01428D00363CAB /* NavAccountView.swift in Sources */,
 				101D2F631EA968230074D807 /* AppDelegate.swift in Sources */,
 				1005B8E91ECE2A0C00414F8E /* GroupControlEdit.swift in Sources */,
 				103FE2891EC3AF5F0033D021 /* HeepObjects.swift in Sources */,
