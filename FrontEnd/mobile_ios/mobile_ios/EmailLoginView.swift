@@ -142,7 +142,7 @@ class EmailLoginView : UIViewController {
     
     func submitValues(gesture: UITapGestureRecognizer) {
         let inputResults = extractInputValues()
-        let pseudoUniqueID = getIDFromByteArray(bytes: inputResults.email.asciiArray)
+        //let pseudoUniqueID = getIDFromByteArray(bytes: inputResults.email.asciiArray)
         //seedNewUserAccount(name: "placeholder", id: String(describing: pseudoUniqueID), email: inputResults.email, password: inputResults.password)
         let loginGroup = DispatchGroup()
         loginGroup.enter()
@@ -209,7 +209,7 @@ class EmailLoginView : UIViewController {
     
     
     func exitModalView() {
-        self.view.window!.rootViewController?.dismiss(animated: false, completion: nil)
+        self.view.window!.rootViewController?.dismiss(animated: false, completion: updatePlace)
     }
     
     

@@ -35,6 +35,7 @@ class Place: Object {
     dynamic var x: CGFloat = 100
     dynamic var y: CGFloat = 100
     dynamic var radius: Int = 100
+    dynamic var update: Bool = false
     let devices = List<Device>()
     let groups = List<Group>()
     

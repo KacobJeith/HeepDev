@@ -267,6 +267,8 @@ extension PlacesView {
             default: break
             }
         }
+        
+
     }
     
     func userLogin() {

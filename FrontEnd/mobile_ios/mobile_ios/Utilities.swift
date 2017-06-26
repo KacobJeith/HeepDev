@@ -210,6 +210,7 @@ func loginToUserRealmSync(username: String, password: String, callback: @escapin
                     print("Found existing")
                     
                     callback()
+                    updatePlace()
                     
     })
     
