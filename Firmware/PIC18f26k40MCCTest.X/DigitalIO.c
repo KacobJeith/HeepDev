@@ -88,3 +88,63 @@ int DigitalRead(int pin)
     
     return 0xFF; // Error
 }
+
+void SetPullUp(int pin, int pullUp)
+{
+    if(pullUp)
+    {
+        switch(pin)
+        {
+            case 0  : WPUA |= (1 << 0); return;
+            case 1  : WPUA |= (1 << 1); return;
+            case 2  : WPUA |= (1 << 2); return;
+            case 3  : WPUA |= (1 << 3); return;
+            case 4  : WPUA |= (1 << 4); return;
+            case 5  : WPUA |= (1 << 5); return;
+            case 6  : WPUA |= (1 << 6); return;
+            case 7  : WPUA |= (1 << 7); return;
+            case 8  : WPUC |= (1 << 0); return;
+            case 9  : WPUC |= (1 << 1); return;
+            case 10 : WPUC |= (1 << 2); return;
+            case 11 : WPUC |= (1 << 3); return;
+            case 12 : WPUC |= (1 << 4); return;
+            case 13 : WPUC |= (1 << 5); return;
+            case 14 : WPUC |= (1 << 6); return;
+            case 15 : WPUC |= (1 << 7); return;
+            case 16 : WPUB |= (1 << 0); return;
+            case 17 : WPUB |= (1 << 1); return;
+            case 18 : WPUB |= (1 << 2); return;
+            case 19 : WPUB |= (1 << 3); return;
+            case 20 : WPUB |= (1 << 4); return;
+            case 21 : WPUB |= (1 << 5); return;
+        }
+    }
+    else
+    {
+        switch(pin)
+        {
+            case 0  : WPUA &= ~(1 << 0); return;
+            case 1  : WPUA &= ~(1 << 1); return;
+            case 2  : WPUA &= ~(1 << 2); return;
+            case 3  : WPUA &= ~(1 << 3); return;
+            case 4  : WPUA &= ~(1 << 4); return;
+            case 5  : WPUA &= ~(1 << 5); return;
+            case 6  : WPUA &= ~(1 << 6); return;
+            case 7  : WPUA &= ~(1 << 7); return;
+            case 8  : WPUC &= ~(1 << 0); return;
+            case 9  : WPUC &= ~(1 << 1); return;
+            case 10 : WPUC &= ~(1 << 2); return;
+            case 11 : WPUC &= ~(1 << 3); return;
+            case 12 : WPUC &= ~(1 << 4); return;
+            case 13 : WPUC &= ~(1 << 5); return;
+            case 14 : WPUC &= ~(1 << 6); return;
+            case 15 : WPUC &= ~(1 << 7); return;
+            case 16 : WPUB &= ~(1 << 0); return;
+            case 17 : WPUB &= ~(1 << 1); return;
+            case 18 : WPUB &= ~(1 << 2); return;
+            case 19 : WPUB &= ~(1 << 3); return;
+            case 20 : WPUB &= ~(1 << 4); return;
+            case 21 : WPUB &= ~(1 << 5); return;
+        }
+    }
+}
