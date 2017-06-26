@@ -4,28 +4,37 @@ void PinMode(int pin, enum pinType type)
 {
     switch(pin)
     {
-        case 0  : TRISAbits.TRISA0 = type == input ? 1 : 0; return;
-        case 1  : TRISAbits.TRISA1 = type == input ? 1 : 0; return;
-        case 2  : TRISAbits.TRISA2 = type == input ? 1 : 0; return;
-        case 3  : TRISAbits.TRISA3 = type == input ? 1 : 0; return;
-        case 4  : TRISAbits.TRISA4 = type == input ? 1 : 0; return;
-        case 5  : TRISAbits.TRISA5 = type == input ? 1 : 0; return;
-        case 6  : TRISAbits.TRISA6 = type == input ? 1 : 0; return;
-        case 7  : TRISAbits.TRISA7 = type == input ? 1 : 0; return;
-        case 8  : TRISCbits.TRISC0 = type == input ? 1 : 0; return;
-        case 9  : TRISCbits.TRISC1 = type == input ? 1 : 0; return;
-        case 10 : TRISCbits.TRISC2 = type == input ? 1 : 0; return;
-        case 11 : TRISCbits.TRISC3 = type == input ? 1 : 0; return;
-        case 12 : TRISCbits.TRISC4 = type == input ? 1 : 0; return;
-        case 13 : TRISCbits.TRISC5 = type == input ? 1 : 0; return;
-        case 14 : TRISCbits.TRISC6 = type == input ? 1 : 0; return;
-        case 15 : TRISCbits.TRISC7 = type == input ? 1 : 0; return;
-        case 16 : TRISBbits.TRISB0 = type == input ? 1 : 0; return;
-        case 17 : TRISBbits.TRISB1 = type == input ? 1 : 0; return;
-        case 18 : TRISBbits.TRISB2 = type == input ? 1 : 0; return;
-        case 19 : TRISBbits.TRISB3 = type == input ? 1 : 0; return;
-        case 20 : TRISBbits.TRISB4 = type == input ? 1 : 0; return;
-        case 21 : TRISBbits.TRISB5 = type == input ? 1 : 0; return;
+        case 0  : TRISAbits.TRISA0 = type == input ? 1 : 0; break;
+        case 1  : TRISAbits.TRISA1 = type == input ? 1 : 0; break;
+        case 2  : TRISAbits.TRISA2 = type == input ? 1 : 0; break;
+        case 3  : TRISAbits.TRISA3 = type == input ? 1 : 0; break;
+        case 4  : TRISAbits.TRISA4 = type == input ? 1 : 0; break;
+        case 5  : TRISAbits.TRISA5 = type == input ? 1 : 0; break;
+        case 6  : TRISAbits.TRISA6 = type == input ? 1 : 0; break;
+        case 7  : TRISAbits.TRISA7 = type == input ? 1 : 0; break;
+        case 8  : TRISCbits.TRISC0 = type == input ? 1 : 0; break;
+        case 9  : TRISCbits.TRISC1 = type == input ? 1 : 0; break;
+        case 10 : TRISCbits.TRISC2 = type == input ? 1 : 0; break;
+        case 11 : TRISCbits.TRISC3 = type == input ? 1 : 0; break;
+        case 12 : TRISCbits.TRISC4 = type == input ? 1 : 0; break;
+        case 13 : TRISCbits.TRISC5 = type == input ? 1 : 0; break;
+        case 14 : TRISCbits.TRISC6 = type == input ? 1 : 0; break;
+        case 15 : TRISCbits.TRISC7 = type == input ? 1 : 0; break;
+        case 16 : TRISBbits.TRISB0 = type == input ? 1 : 0; break;
+        case 17 : TRISBbits.TRISB1 = type == input ? 1 : 0; break;
+        case 18 : TRISBbits.TRISB2 = type == input ? 1 : 0; break;
+        case 19 : TRISBbits.TRISB3 = type == input ? 1 : 0; break;
+        case 20 : TRISBbits.TRISB4 = type == input ? 1 : 0; break;
+        case 21 : TRISBbits.TRISB5 = type == input ? 1 : 0; break;
+    }
+    
+    if(type == input_pullup)
+    {
+        SetPullUp(pin, 1);
+    }
+    else
+    {
+        SetPullUp(pin, 0);
     }
 }
 
