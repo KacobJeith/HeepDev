@@ -29,11 +29,8 @@ void PinMode(int pin, enum pinType type)
     }
 }
 
-void DigitalWrite(int pin, int value)
+void DigitalWrite(int pin, enum outType value)
 {
-    if(value > 1 || value < 0)
-        return;
-
     switch(pin)
     {
         case 0  : LATAbits.LATA0 = value; return;

@@ -52,18 +52,20 @@ void main(void)
     // Disable the Peripheral Interrupts
     //INTERRUPT_PeripheralInterruptDisable();
     uint8_t counter = 0;
-    TRISA = 0x00;
-    LATAbits.LA1 = 1;
+    //TRISA = 0x00;
+    PinMode(0, output);
+    PinMode(1, output);
+    DigitalWrite(1, high);
     
     InitializeW5500();
     
     if(TestW5500RegisterWriting())
     {
-        LATAbits.LA0 = 1;
+        DigitalWrite(0, high);
     }
     else
     {
-        LATAbits.LA0 = 0;
+        DigitalWrite(0, low);
     }
     
     uint8_t myByte = ReadMR();
