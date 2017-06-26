@@ -101,7 +101,33 @@ void DigitalWrite(int pin, int value)
 
 int DigitalRead(int pin)
 {
-    return 0;
+    switch(pin)
+    {
+        case 0  : return PORTAbits.RA0;
+        case 1  : return PORTAbits.RA1;
+        case 2  : return PORTAbits.RA2;
+        case 3  : return PORTAbits.RA3;
+        case 4  : return PORTAbits.RA4;
+        case 5  : return PORTAbits.RA5;
+        case 6  : return PORTAbits.RA6;
+        case 7  : return PORTAbits.RA7;
+        case 8  : return PORTCbits.RC0;
+        case 9  : return PORTCbits.RC1;
+        case 10 : return PORTCbits.RC2;
+        case 11 : return PORTCbits.RC3;
+        case 12 : return PORTCbits.RC4;
+        case 13 : return PORTCbits.RC5;
+        case 14 : return PORTCbits.RC6;
+        case 15 : return PORTCbits.RC7;
+        case 16 : return PORTBbits.RB0;
+        case 17 : return PORTBbits.RB1;
+        case 18 : return PORTBbits.RB2;
+        case 19 : return PORTBbits.RB3;
+        case 20 : return PORTBbits.RB4;
+        case 21 : return PORTBbits.RB5;
+    }
+    
+    return 0xFF; // Error
 }
 
 uint8_t GetPortFromPinNumber(int pinNumber)
