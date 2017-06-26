@@ -2,13 +2,95 @@
 
 void PinMode(int pin, enum pinType type)
 {
-    if(type == input)
+    if(pin == 0)
     {
-        
+        TRISAbits.TRISA0 = type == input ? 1 : 0;
     }
-    else
+    else if(pin == 1)
     {
-        
+        TRISAbits.TRISA1 = type == input ? 1 : 0;
+    }
+    else if(pin == 2)
+    {
+        TRISAbits.TRISA2 = type == input ? 1 : 0;
+    }
+    else if(pin == 3)
+    {
+        TRISAbits.TRISA3 = type == input ? 1 : 0;
+    }
+    else if(pin == 4)
+    {
+        TRISAbits.TRISA4 = type == input ? 1 : 0;
+    }
+    else if(pin == 5)
+    {
+        TRISAbits.TRISA5 = type == input ? 1 : 0;
+    }
+    else if(pin == 6)
+    {
+        TRISAbits.TRISA6 = type == input ? 1 : 0;
+    }
+    else if(pin == 7)
+    {
+        TRISAbits.TRISA7 = type == input ? 1 : 0;
+    }
+    
+    else if(pin == 8)
+    {
+        TRISCbits.TRISC0 = type == input ? 1 : 0;
+    }
+    else if(pin == 9)
+    {
+        TRISCbits.TRISC1 = type == input ? 1 : 0;
+    }
+    else if(pin == 10)
+    {
+    TRISCbits.TRISC2 = type == input ? 1 : 0;
+    }
+    else if(pin == 11)
+    {
+        TRISCbits.TRISC3 = type == input ? 1 : 0;
+    }
+    else if(pin == 12)
+    {
+        TRISCbits.TRISC4 = type == input ? 1 : 0;
+    }
+    else if(pin == 13)
+    {
+        TRISCbits.TRISC5 = type == input ? 1 : 0;
+    }
+    else if(pin == 14)
+    {
+        TRISCbits.TRISC6 = type == input ? 1 : 0;
+    }
+    else if(pin == 15)
+    {
+        TRISCbits.TRISC7 = type == input ? 1 : 0;
+    }
+    
+    else if(pin == 16)
+    {
+        TRISBbits.TRISB0 = type == input ? 1 : 0;
+    }
+    else if(pin == 17)
+    {
+        TRISBbits.TRISB1 = type == input ? 1 : 0;
+    }
+    else if(pin == 18)
+    {
+        TRISBbits.TRISB2 = type == input ? 1 : 0;
+    }
+    else if(pin == 19)
+    {
+        TRISBbits.TRISB3 = type == input ? 1 : 0;
+    }
+    else if(pin == 20)
+    {
+        TRISBbits.TRISB4 = type == input ? 1 : 0;
+    }
+    else if(pin == 21)
+    {
+        TRISBbits.TRISB5 = type == input ? 1 : 0;
     }
 }
 
