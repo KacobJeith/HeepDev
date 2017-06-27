@@ -34,6 +34,15 @@ func logoutOfAllRealmUsers() {
     }
 }
 
+func logoutOfPublicRealmUser() {
+    for user in SyncUser.all {
+        if user.key == "3236896a34becbac18c96a9a24c55de9" {
+            debugPrint("user: \(user.key) - \(user.value)")
+            user.value.logOut()
+        }
+    }
+}
+
 func SuggestIconFromName(name: String) -> String {
     var suggestion = "switch"
     
@@ -157,7 +166,7 @@ func seedNewUserAccount(name: String,
     
         let newUser = User()
         
-        newUser.heepID = Int(id)!
+        newUser.heepID = randomNumber(inRange: 1...1000000)
         newUser.name = name
         newUser.iconURL = imageURL
         newUser.email = email
@@ -255,7 +264,7 @@ func loginToPublicRealm(newUser: User) {
                     }
     }
     
-    logoutOfAllRealmUsers()
+    logoutOfPublicRealmUser()
 }
 
 

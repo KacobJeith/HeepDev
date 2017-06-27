@@ -249,7 +249,7 @@ extension NavAccountView {
         return button
     }
     
-    func submitValues(gesture: UITapGestureRecognizer) {
+    func submitValues() {
         let inputResults = extractInputValues()
         //let pseudoUniqueID = getIDFromByteArray(bytes: inputResults.email.asciiArray)
         //seedNewUserAccount(name: "placeholder", id: String(describing: pseudoUniqueID), email: inputResults.email, password: inputResults.password)
@@ -272,35 +272,41 @@ extension NavAccountView {
     }
     
     func validateUser() {
-        
-        if SyncUser.current != nil {
-            let alert = UIAlertController(title: "Alert",
-                                          message: "Successfully Logged in to Realm",
-                                          preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.cancel, handler: { action in
-                self.exitView()
-            }))
-            present(alert, animated: true, completion: nil)
+        if SyncUser.all.count > 1 {
+            logoutOfPublicRealmUser()
+            print("Logging out of public")
+            validateUser()
         } else {
-            let alert = UIAlertController(title: "Alert",
-                                          message: "Could Not find Realm. Would you like to register a new account using these credentials?",
-                                          preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { action in
+            if SyncUser.current != nil {
+                let alert = UIAlertController(title: "Alert",
+                                              message: "Successfully Logged in to Realm",
+                                              preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.cancel, handler: { action in
+                    self.exitView()
+                }))
+                present(alert, animated: true, completion: nil)
+            } else {
+                let alert = UIAlertController(title: "Alert",
+                                              message: "Could Not find Realm. Would you like to register a new account using these credentials?",
+                                              preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { action in
+                    
+                    let inputResults = self.extractInputValues()
+                    seedNewUserAccount(name: "Jacob Keith",
+                                       id: "1000",
+                                       email: inputResults.email,
+                                       password: inputResults.password)
+                    logoutOfAllRealmUsers()
+                    self.submitValues()
+                }))
                 
-                let inputResults = self.extractInputValues()
-                seedNewUserAccount(name: "Jacob Keith",
-                                   id: "1000",
-                                   email: inputResults.email,
-                                   password: inputResults.password)
-                
-                self.exitView()
-            }))
-            
-            alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: { action in
-                self.exitView()
-            }))
-            present(alert, animated: true, completion: nil)
+                alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: { action in
+                    self.exitView()
+                }))
+                present(alert, animated: true, completion: nil)
+            }
         }
+        
     }
     
     func extractInputValues() -> (email: String, password: String) {
