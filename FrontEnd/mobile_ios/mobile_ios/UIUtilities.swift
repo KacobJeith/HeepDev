@@ -174,3 +174,14 @@ func updatePlace() {
     }
 }
 
+func horizontalLine(yPosition: CGFloat) -> UIView {
+    let line = UIView(frame: CGRect(x: 0,
+                                    y: yPosition,
+                                    width: UIScreen().bounds.width,
+                                    height: 1))
+    
+    line.backgroundColor = .darkGray
+    
+    return line
+}
+

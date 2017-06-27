@@ -26,8 +26,12 @@ class NavAccountView: UIViewController {
         self.navigationController?.isToolbarHidden = false
         
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let logout = UIBarButtonItem(title: "Logout",
+                                     style: .plain,
+                                     target: self,
+                                     action: #selector(logoutUser))
         
-        self.toolbarItems = [spacer]
+        self.toolbarItems = [spacer, logout, spacer]
         
     }
     
@@ -40,6 +44,18 @@ class NavAccountView: UIViewController {
         } else {
             self.view.addSubview(alreadyLoggedInView())
         }
+    }
+    
+    func logoutUser() {
+        logoutOfAllRealmUsers()
+        reloadView()
+        
+    }
+    
+    func reloadView() {
+        
+        self.loadView()
+        self.viewDidLoad()
     }
     
 }
