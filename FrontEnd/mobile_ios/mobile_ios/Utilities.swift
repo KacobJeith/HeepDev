@@ -13,34 +13,34 @@ import RealmSwift
 //import CommonCrypto.CommonCrypto
 
 func flushApp() {
-    let realmApp = try! Realm(configuration: configApp)
-    try! realmApp.write {
-        realmApp.deleteAll()
+    
+    let realmGuest = try! Realm(configuration: configGuest)
+    try! realmGuest.write {
+        realmGuest.deleteAll()
     }
     
-    let realmUser = try! Realm(configuration: configUser)
-    try! realmUser.write {
-        realmUser.deleteAll()
-    }
 }
 
 func initializeApp() {
-    let realm = try! Realm(configuration: configApp)
+    logoutOfAllRealmUsers()
+    //loginToPublicRealm()
     
-    let app = realm.object(ofType: App.self, forPrimaryKey: 0)
-    
-    if app == nil {
-        print("Adding empty app")
-        let initialApp = App()
-        let initialUser = User()
-        
-        
-        try! realm.write {
-            realm.add(initialApp)
-            realm.add(initialUser)
+}
+
+func logoutOfAllRealmUsers() {
+    for user in SyncUser.all {
+        debugPrint("user: \(user.key) - \(user.value)")
+        user.value.logOut()
+    }
+}
+
+func logoutOfPublicRealmUser() {
+    for user in SyncUser.all {
+        if user.key == "3236896a34becbac18c96a9a24c55de9" {
+            debugPrint("user: \(user.key) - \(user.value)")
+            user.value.logOut()
         }
     }
-    
 }
 
 func SuggestIconFromName(name: String) -> String {
@@ -158,33 +158,23 @@ func getIDFromByteArray(bytes: [UInt32]) -> Int {
 
 func seedNewUserAccount(name: String,
                         imageURL: String = "https://lorempixel.com/400/400/cats/",
-                        id: String) -> User {
-        let realm = try! Realm(configuration: configApp)
-        let app = realm.object(ofType: App.self, forPrimaryKey: 0)
+                        id: String,
+                        email: String = "",
+                        password: String = "",
+                        callback: @escaping () -> Void = {}) {
+    
+    
         let newUser = User()
-        //print(actualInfo)
         
-        newUser.userID = Int(id)!
-        newUser.facebookID = Int(id)!
+        newUser.heepID = randomNumber(inRange: 1...1000000)
         newUser.name = name
         newUser.iconURL = imageURL
-        print(newUser)
-        
-        try! realm.write {
-            app?.activeUser = Int(id)!
-            realm.add(newUser,
-                      update: true)
-        }
-        
-        let iconData = getUserIcon(iconURL: newUser.iconURL)
-        
-        try! realm.write {
-            
-            newUser.icon = iconData
-        }
-        print("After getting image \(newUser)")
+        newUser.email = email
+        newUser.icon = getUserIcon(iconURL: newUser.iconURL)
     
-    return newUser
+        print("After getting image \(newUser)")
+        loginToPublicRealm(newUser: newUser)
+        registerNewSyncRealm(username: email, password: password, callback: callback)
 }
 
 func getUserIcon(iconURL: String) -> NSData {
@@ -194,17 +184,89 @@ func getUserIcon(iconURL: String) -> NSData {
     return data! as NSData
 }
 
-func loginToUserRealm(user: Int) {
-    let realmApp = try! Realm(configuration: configApp)
-    let app = realmApp.object(ofType: App.self, forPrimaryKey: 0)
+func registerNewSyncRealm(username: String, password: String, callback: @escaping () -> Void = {}) {
+    let url = URL(string: "http://45.55.249.217:9080")!
+    let userURL = URL(string: "realm://45.55.249.217:9080/~/heepzone")!
+
+    let registerCredentials =  SyncCredentials.usernamePassword(username: username, password: password, register: true)
     
-    try! realmApp.write {
-        app?.activeUser = user
-    }
-    
-    configUser.fileURL = configUser.fileURL!.deletingLastPathComponent().appendingPathComponent("\(String(describing: user)).realm")
+    SyncUser.logIn(with: registerCredentials,
+                   server: url,
+                   onCompletion: { user, error in
+                    
+                    configUser =  Realm.Configuration(syncConfiguration: SyncConfiguration(user: user!, realmURL: userURL))
+                    print("Created New Account")
+                    callback()
+    })
     
 }
+
+
+func loginToUserRealmSync(username: String, password: String, callback: @escaping () -> Void = {}) {
+    
+    //Sign in
+    let urlString = "http://45.55.249.217:9080"
+    let url = URL(string: urlString)!
+    print(url)
+    let userURL = URL(string: "realm://45.55.249.217:9080/~/heepzone")!
+    let credentials = SyncCredentials.usernamePassword(username: username,
+                                                       password: password,
+                                                       register: false)
+    
+    //let registerCredentials =  SyncCredentials.usernamePassword(username: username, password: password, register: true)
+    
+    print(credentials)
+    
+    SyncUser.logIn(with: credentials,
+                   server: URL(string: urlString)!,
+                   onCompletion: { user, error in
+                    if user == nil {
+                        print("No User Account Found")
+                        callback()
+                    } else {
+                        
+                        configUser =  Realm.Configuration(syncConfiguration: SyncConfiguration(user: user!, realmURL: userURL))
+                        print("Found existing")
+                        callback()
+                    }
+                    
+    })
+    
+}
+
+
+func registerNewUser(name: String, id: String, email: String, password: String) {
+    
+    seedNewUserAccount(name: name,
+                       id: id,
+                       email: email,
+                       password: password)
+    
+    
+    
+}
+
+func loginToPublicRealm(newUser: User) {
+    
+    SyncUser.logIn(with: SyncCredentials.usernamePassword(username: "public@heep.io",
+                                                          password: "public",
+                                                          register: false),
+                   server: URL(string: "http://45.55.249.217:9080")!) { user, error in
+                    
+                    configPublic =  Realm.Configuration(syncConfiguration: SyncConfiguration(user: user!,
+                                                                                             realmURL: URL(string: "realm://45.55.249.217:9080/~/userDirectory")!))
+                    
+                    let realm = try! Realm(configuration: configPublic)
+                    
+                    try! realm.write {
+                        realm.add(newUser,
+                                  update: true)
+                    }
+    }
+    
+    logoutOfPublicRealmUser()
+}
+
 
 func convertIntToByteArray(integer: Int) -> [UInt8] {
     var byteArray = [UInt8]()

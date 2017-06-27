@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 func createControlPuck(thisControl: DeviceControl, cellSize: CGRect) -> UIView {
     
@@ -149,7 +150,7 @@ func insetTextView(frame: CGRect, placeholderText: String, keyboardType: UIKeybo
                             y: 2.5,
                             width: insetView.frame.width - 20,
                             height: insetView.frame.height - 5)
-        
+        text.autocapitalizationType = .none
         text.placeholder = placeholderText
         text.textColor = UIColor.darkGray
         text.keyboardType = .emailAddress
@@ -160,5 +161,27 @@ func insetTextView(frame: CGRect, placeholderText: String, keyboardType: UIKeybo
     
     insetView.addSubview(emailTextField)
     return insetView
+}
+
+func updatePlace() {
+    print("Updating place")
+    print("CURRENT USER \(configUser)")
+    let realm = try! Realm(configuration: configUser)
+    let firstPlace = realm.objects(Place.self).first
+    
+    try! realm.write {
+        firstPlace?.update = !(firstPlace?.update)!
+    }
+}
+
+func horizontalLine(yPosition: CGFloat) -> UIView {
+    let line = UIView(frame: CGRect(x: 0,
+                                    y: yPosition,
+                                    width: UIScreen().bounds.width,
+                                    height: 1))
+    
+    line.backgroundColor = .darkGray
+    
+    return line
 }
 
