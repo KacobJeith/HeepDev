@@ -273,7 +273,7 @@ extension NavAccountView {
     
     func validateUser() {
         if SyncUser.all.count > 1 {
-            logoutOfPublicRealmUser()
+            //logoutOfPublicRealmUser()
             print("Logging out of public")
             validateUser()
         } else {
