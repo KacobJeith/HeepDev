@@ -7,6 +7,11 @@
 
 #define TEST_SERVER
 
+void TestEEPROM()
+{
+     
+}
+
 char deviceName [] = "Flap";
 
 char controlName0 [] = "Log";
