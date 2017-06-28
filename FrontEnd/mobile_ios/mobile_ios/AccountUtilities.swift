@@ -38,52 +38,35 @@ func seedNewUserAccount(name: String,
     newUser.email = email
     newUser.icon = getUserIcon(iconURL: newUser.iconURL)
     
-    print("After getting image \(newUser)")
-    let newUserKey = registerNewSyncRealm(username: email, password: password, callback: callback)
-    print("IMMEDIATE READ: \(newUserKey)")
-    addNewUserToPublicRealm(newUser: newUser)
+    registerNewSyncRealm(username: email, password: password, callback: callback, newUser: newUser)
     
 }
 
-func registerNewSyncRealm(username: String, password: String, callback: @escaping () -> Void = {}) -> String {
+func registerNewSyncRealm(username: String, password: String, callback: @escaping () -> Void = {}, newUser: User = User()) {
     let url = URL(string: "http://45.55.249.217:9080")!
     let userURL = URL(string: "realm://45.55.249.217:9080/~/heepzone")!
     
     let registerCredentials =  SyncCredentials.usernamePassword(username: username, password: password, register: true)
     
-    let loginGroup = DispatchGroup()
-    loginGroup.enter()
-    
-    DispatchQueue.global(qos: .default).sync {
-        SyncUser.logIn(with: registerCredentials,
-                       server: url,
-                       onCompletion: { user, error in
+    SyncUser.logIn(with: registerCredentials,
+                   server: url,
+                   onCompletion: { user, error in
+                    
+                    if user == nil {
+                        print("ERROR: \(String(describing: error))")
+                        return
+                    }
                         
-                        if user == nil {
-                            print("ERROR: \(String(describing: error))")
-                            return
-                        }
-                        
-                        configUser =  Realm.Configuration(syncConfiguration: SyncConfiguration(user: user!, realmURL: userURL))
-                        
-                        userKey = (user?.identity)!
-                        print("GENERATING KEY: \(userKey)")
-                        print("Created New Account")
-                        loginGroup.leave()
-        })
-        
-    }
-    
-    loginGroup.wait()
-    
-    
-    return userKey
+                    configUser =  Realm.Configuration(syncConfiguration: SyncConfiguration(user: user!, realmURL: userURL))
+                    addNewUserToUserRealm(newUser: newUser)
+                    addNewUserToPublicRealm(newUser: newUser)
+
+    })
+      
 }
 
 
 func loginToUserRealmSync(username: String, password: String, callback: @escaping () -> Void = {}) {
-    
-    //Sign in
     
     let url = URL(string: "http://45.55.249.217:9080")!
     let userURL = URL(string: "realm://45.55.249.217:9080/~/heepzone")!
@@ -101,7 +84,7 @@ func loginToUserRealmSync(username: String, password: String, callback: @escapin
                         
                         configUser =  Realm.Configuration(syncConfiguration: SyncConfiguration(user: user!,
                                                                                                realmURL: userURL))
-                
+                        
                         print("Found existing")
                         callback()
                     }
@@ -109,8 +92,6 @@ func loginToUserRealmSync(username: String, password: String, callback: @escapin
     })
     
 }
-
-
 
 func queryAllUser() {
     let realm = try! Realm(configuration: configPublicSync)
@@ -130,12 +111,9 @@ func setDefaultPermissionToPublic(publicUser: SyncUser) {
         print("ENTER?")
         if let error = error {
             // handle error
-            print("PERMISSION UNSUCCESSFUL")
+            print("PERMISSION UNSUCCESSFUL \(error)")
             return
         }
-        
-        // permission was successfully applied
-        print("PERMISSION SUCCESS?")
     }
 }
 
@@ -153,3 +131,15 @@ func addNewUserToPublicRealm(newUser: User) {
     print("All Users: \(allUsers)")
     
 }
+
+func addNewUserToUserRealm(newUser: User) {
+    let realm = try! Realm(configuration: configUser)
+    
+    try! realm.write {
+        realm.create(User.self,
+                     value: ["heepID": newUser.heepID],
+                     update: true)
+    }
+    
+}
+
