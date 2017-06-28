@@ -105,13 +105,27 @@ extension NavAccountView {
                                height: frame.height / 3)
         
         let userNameView = UILabel(frame: nextFrame)
-        userNameView.text = "Placeholder Name"
+        userNameView.text = myName()
         userNameView.adjustsFontSizeToFitWidth = true
         userNameView.textColor = .darkGray
         userNameView.textAlignment = .center
         userNameView.contentMode = .bottom
         
         return (view: userNameView, frame: nextFrame)
+    }
+    
+    func myName() -> String {
+        let myProfile = retrieveUserProfile()
+        return myProfile.name
+    }
+    
+    func retrieveUserProfile() -> User {
+        
+        var publicRealm = try! Realm(configuration: configPublicSync)
+        var userRealm = try! Realm(configuration: configUser)
+        
+        let myId = userRealm.objects(User.self).first?.heepID
+        return publicRealm.object(ofType: User.self, forPrimaryKey: myId!)!
     }
     
     
@@ -122,7 +136,7 @@ extension NavAccountView {
                                height: frame.height)
         
         let emailView = UILabel(frame: nextFrame)
-        emailView.text = "testing@heep.io"
+        emailView.text = myEmail()
         emailView.adjustsFontSizeToFitWidth = true
         emailView.textColor = .lightGray
         emailView.textAlignment = .center
@@ -130,11 +144,11 @@ extension NavAccountView {
         
         return (view: emailView, frame: nextFrame)
     }
-    /*
-    func launchStatsView() {
-        
+    
+    func myEmail() -> String {
+        let myProfile = retrieveUserProfile()
+        return myProfile.email
     }
- */
 }
 
 // NO USER LOGGED IN
