@@ -30,8 +30,9 @@ class NavAccountView: UIViewController {
                                      style: .plain,
                                      target: self,
                                      action: #selector(logoutUser))
+        let query = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(queryAllUsers))
         
-        self.toolbarItems = [spacer, logout, spacer]
+        self.toolbarItems = [spacer, logout, spacer, query]
         
     }
     
@@ -268,7 +269,6 @@ extension NavAccountView {
         validateUser()
         
         
-        
     }
     
     func validateUser() {
@@ -296,7 +296,7 @@ extension NavAccountView {
                                        id: "1000",
                                        email: inputResults.email,
                                        password: inputResults.password)
-                    logoutOfAllRealmUsers()
+                    
                     self.submitValues()
                 }))
                 
@@ -334,6 +334,10 @@ extension NavAccountView {
     func exitView() {
         self.navigationController?.popViewController(animated: true)
 
+    }
+    
+    func queryAllUsers() {
+        queryAllUser()
     }
 
 }
