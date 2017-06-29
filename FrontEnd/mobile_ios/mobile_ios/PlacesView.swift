@@ -283,7 +283,7 @@ extension PlacesView {
     }
     
     func getActiveUserIcon() -> UIBarButtonItem {
-        let realm = try! Realm(configuration: configPublic)
+        //let realm = try! Realm(configuration: configPublicSync)
         
         var userImage = UIImage(named: "female")
         /*

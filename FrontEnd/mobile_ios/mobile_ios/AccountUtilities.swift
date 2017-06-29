@@ -10,7 +10,11 @@ import Foundation
 import RealmSwift
 
 func initializeApp() {
+    print("Logging out")
     logoutOfAllRealmUsers()
+    print("Initializing")
+    configUser = configGuest
+    
     //loginToPublicRealm()
     
 }

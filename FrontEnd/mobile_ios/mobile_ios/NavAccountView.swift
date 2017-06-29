@@ -120,10 +120,12 @@ extension NavAccountView {
     }
     
     func retrieveUserProfile() -> User {
-        
+        print(SyncUser.current)
         var publicRealm = try! Realm(configuration: configPublicSync)
         var userRealm = try! Realm(configuration: configUser)
-        
+        print("Retrieving")
+        print(publicRealm)
+        print(configUser)
         let myId = userRealm.objects(User.self).first?.heepID
         return publicRealm.object(ofType: User.self, forPrimaryKey: myId!)!
     }
