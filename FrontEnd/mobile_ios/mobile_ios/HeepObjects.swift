@@ -25,6 +25,17 @@ class User: Object {
     
 }
 
+// Device Realm
+class Key: Object {
+    dynamic var secretKey: Int = 0
+    dynamic var publicKey: Int = 0
+    dynamic var type: Int = 0
+    
+    override static func primaryKey() -> String? {
+        return "type"
+    }
+}
+
 // User Realm
 class Place: Object {
     

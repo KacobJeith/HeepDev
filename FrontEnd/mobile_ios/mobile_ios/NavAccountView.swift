@@ -298,7 +298,7 @@ extension NavAccountView {
                 alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.cancel, handler: { action in
                     self.exitView()
                 }))
-                present(alert, animated: true, completion: nil)
+                present(alert, animated: false, completion: nil)
             } else {
                 let alert = UIAlertController(title: "Alert",
                                               message: "Could Not find Realm. Would you like to register a new account using these credentials?",
@@ -317,7 +317,7 @@ extension NavAccountView {
                 alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: { action in
                     self.exitView()
                 }))
-                present(alert, animated: true, completion: nil)
+                present(alert, animated: false, completion: nil)
             }
         }
         
@@ -346,7 +346,7 @@ extension NavAccountView {
     }
     
     func exitView() {
-        self.navigationController?.popViewController(animated: true)
+        self.navigationController?.popViewController(animated: false)
 
     }
     

@@ -126,8 +126,8 @@ class DeviceSummaryViewController: UITableViewController {
     }
     
     func claimDevice() {
-        HeepConnections().sendAssignAdminToHeepDevice(deviceID: thisDevice.deviceID)
-        
+        //HeepConnections().sendAssignAdminToHeepDevice(deviceID: thisDevice.deviceID)
+        createDeviceRealm(deviceID: thisDevice.deviceID)
     }
     
 }

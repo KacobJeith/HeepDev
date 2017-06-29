@@ -34,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         SDKApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
         
         flushApp()
-        initializeApp()
+        //initializeApp()
         setupAppNavigation()
         //startMonitoringBeacon()
         

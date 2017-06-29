@@ -156,7 +156,7 @@ class PlacesView: UIViewController {
 
         let groupView = GroupCollectionView()
         groupView.thisPlace = enterPlace!
-        navigationController?.pushViewController(groupView, animated: true)
+        navigationController?.pushViewController(groupView, animated: false)
         
         
     }
