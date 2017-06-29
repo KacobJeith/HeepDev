@@ -420,7 +420,7 @@ extern void (*TMR1_InterruptHandler)(void);
 */
 void TMR1_DefaultInterruptHandler(void);
 
-uint16_t millis(void);
+uint32_t millis(void);
 void resetMillis(void);
 
 #ifdef __cplusplus  // Provide C++ Compatibility

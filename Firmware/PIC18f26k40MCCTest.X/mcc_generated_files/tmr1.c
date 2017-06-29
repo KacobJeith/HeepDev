@@ -56,7 +56,7 @@
 volatile uint16_t timer1ReloadVal;
 void (*TMR1_InterruptHandler)(void);
 
-volatile uint16_t currentMilliseconds;
+volatile uint32_t currentMilliseconds;
 
 /**
   Section: TMR1 APIs
@@ -187,7 +187,7 @@ void TMR1_DefaultInterruptHandler(void){
     currentMilliseconds+=4;
 }
 
-uint16_t millis(void)
+uint32_t millis(void)
 {
     return currentMilliseconds;
 }
