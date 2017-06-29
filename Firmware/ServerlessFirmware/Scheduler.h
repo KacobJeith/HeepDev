@@ -1,9 +1,19 @@
 #include "globalDefines.h"
 
+#ifdef ON_PC
+#include "Simulation_Timer.h"
+#endif
+
 #ifdef ON_ARDUINO
 #include "Arduino_Timer.h"
-#else
+#endif
+
+#ifdef SIMULATION
 #include "Simulation_Timer.h"
+#endif
+
+#ifdef ON_PIC
+#include "PICW5500_Timer.h"
 #endif
 
 unsigned long lastMillis = 0;
