@@ -507,10 +507,9 @@ extension VertexEditCell {
     
     func handlePan(gestureRecognizer: UIPanGestureRecognizer){
         if longPressActive{
-            print("adjusting range")
+//            print("adjusting range")
         }
         else{
-            print("translating sprite position")
             translateSpritePosition(gestureRecognizer: gestureRecognizer)
         }
     }
@@ -609,7 +608,7 @@ extension VertexEditCell {
         if gestureRecognizer.state == UIGestureRecognizerState.began {
             //insert subview
             longPressActive = true
-            print("BEGIN!")
+            print("BEGIN LONG PRESS!")
         }
         else if gestureRecognizer.state == UIGestureRecognizerState.ended {
             saveSelectedSprite()
@@ -618,7 +617,7 @@ extension VertexEditCell {
             DispatchQueue.main.asyncAfter(deadline: when) {
                 // Your code with delay
                 self.longPressActive = false
-                print("END!")
+                print("END LONG PRESS!")
             }
         }
     }
@@ -758,10 +757,23 @@ extension VertexEditCell {
                                      y: startPosition,
                                      width: scaledSize,
                                      height: scaledSize)
+        
+        let currentRangeContainer = UIView(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
+        let currentRange = UIView(frame: CGRect(x: 0, y: 60 - thisControl.valueCurrent, width: 60, height: thisControl.valueCurrent))
+        currentRange.backgroundColor = UIColor.green.withAlphaComponent(0.5)
+        
+        currentRangeContainer.transform = CGAffineTransform(scaleX: 1, y: 1).rotated(by: -thisControl.rotation)
+        
+        currentRangeContainer.addSubview(currentRange)
+        
+        container.addSubview(currentRangeContainer)
+        
         container.addSubview(controlSprite)
         
         
         container.transform = CGAffineTransform(scaleX: thisControl.scale, y: thisControl.scale).rotated(by: thisControl.rotation)
+        
+        
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(selectThisController))
         
