@@ -15,6 +15,7 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     var thisGroup = Group()
     var contextImage = UIImage()
     var controlTags = [Int]()
+    var longPressActive = false
     
     var activeVertexStart = CGPoint()
     var activeVertexFinish = CGPoint()
@@ -165,9 +166,13 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
                                                  action: #selector(handlePinch))
             let rotate = UIRotationGestureRecognizer(target: self,
                                                      action: #selector(handleRotation))
+            let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
+            
             pinch.delegate = self
             rotate.delegate = self
             pan.delegate = self
+            longPress.delegate = self
+            cell.addGestureRecognizer(longPress)
             cell.addGestureRecognizer(pan)
             cell.addGestureRecognizer(pinch)
             cell.addGestureRecognizer(rotate)
@@ -500,8 +505,17 @@ extension VertexEditCell {
 
 extension VertexEditCell {
     
+    func handlePan(gestureRecognizer: UIPanGestureRecognizer){
+        if longPressActive{
+            print("adjusting range")
+        }
+        else{
+            print("translating sprite position")
+            translateSpritePosition(gestureRecognizer: gestureRecognizer)
+        }
+    }
     
-    func handlePan(gestureRecognizer: UIPanGestureRecognizer) {
+    func translateSpritePosition(gestureRecognizer: UIPanGestureRecognizer) {
         let translation = gestureRecognizer.translation(in: self)
         let myView = self.viewWithTag(thisGroup.selectedControl)!
         myView.center.x += translation.x
@@ -588,6 +602,27 @@ extension VertexEditCell {
         
         gestureRecognizer.rotation = 0
     }
+    
+    func handleLongPress(gestureRecognizer: UIRotationGestureRecognizer) {
+        
+    
+        if gestureRecognizer.state == UIGestureRecognizerState.began {
+            //insert subview
+            longPressActive = true
+            print("BEGIN!")
+        }
+        else if gestureRecognizer.state == UIGestureRecognizerState.ended {
+            saveSelectedSprite()
+            
+            let when = DispatchTime.now() + 0.1 // delay for 0.1 seconds to prevent sprite translation from kicking in
+            DispatchQueue.main.asyncAfter(deadline: when) {
+                // Your code with delay
+                self.longPressActive = false
+                print("END!")
+            }
+        }
+    }
+
 
 }
 
@@ -711,7 +746,9 @@ extension VertexEditCell {
         
         
         let controlSprite = UIImageView()
-        let iconName = SuggestIconFromName(name: thisControl.controlName)
+        let iconName = SuggestIconFromName(name: thisControl.controlName,
+                                           state: thisControl.valueCurrent,
+                                           lowVal: thisControl.valueLow)
         let image = UIImage(named: iconName) as UIImage?
         controlSprite.image = image
         controlSprite.contentMode = .scaleAspectFit
@@ -753,14 +790,10 @@ extension VertexEditCell {
         
         let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: controlUniqueID)
         
-//        print("Device toggled: \(toggleRangeDevice(control: thisControl!))")
-        
-        
-        
         try! realm.write {
             realm.create(DeviceControl.self,
                          value: ["uniqueID": controlUniqueID,
-                                 "valueCurrent": toggleRangeDevice(control: thisControl!)],
+                                 "valueCurrent": toggleDevice(control: thisControl!)],
                          update: true)
         }
         

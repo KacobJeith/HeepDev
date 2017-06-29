@@ -43,7 +43,7 @@ func initializeApp() {
     
 }
 
-func SuggestIconFromName(name: String) -> String {
+func SuggestIconFromName(name: String, state: Int = -1, lowVal: Int = 0) -> String {
     var suggestion = "switch"
     
     if ( name.lowercased().range(of: "outlet") != nil){
@@ -55,7 +55,13 @@ func SuggestIconFromName(name: String) -> String {
         name.lowercased().range(of: "relay") != nil ||
         name.lowercased().range(of: "dimmer") != nil ||
         name.lowercased().range(of: "LED") != nil) {
-        suggestion = "lightbulb"
+        if state == lowVal{
+            suggestion = "light_off"
+        }
+        else {
+            suggestion = "light_on"
+        }
+        
     }
     
     if ( name.lowercased().range(of: "switch") != nil){
@@ -65,15 +71,18 @@ func SuggestIconFromName(name: String) -> String {
     return suggestion
 }
 
-func toggleRangeDevice(control: DeviceControl ) -> Int{
+func toggleDevice(control: DeviceControl ) -> Int{
     
     print(control)
     
-    
+    //If control type is a switch or binary on/off
     if control.controlType == 0{
         return 1 - control.valueCurrent
     }
     
+    //We should add some concept of maintaining the ranges previous brightness level
+    
+    //if its a range, we need to figure out if its closer to all on or off
     let ratio = CGFloat( control.valueCurrent - control.valueLow ) / CGFloat( control.valueHigh - control.valueLow )
     
 
