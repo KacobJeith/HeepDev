@@ -51,6 +51,7 @@
       <itemPath>../ServerlessFirmware/Simulation_Timer.h</itemPath>
       <itemPath>../ServerlessFirmware/Socket_HeepComms.h</itemPath>
       <itemPath>../ServerlessFirmware/PICW5500_Timer.h</itemPath>
+      <itemPath>../ServerlessFirmware/PICW5500_NonVolatileMemory.h</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"

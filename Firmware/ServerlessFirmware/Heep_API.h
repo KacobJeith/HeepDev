@@ -17,7 +17,7 @@
 
 #ifdef ON_PIC
 #include "PICW5500_HeepComms.h"
-#include "Simulation_NonVolatileMemory.h"
+#include "PICW5500_NonVolatileMemory.h"
 #endif
 
 // Prototypes
