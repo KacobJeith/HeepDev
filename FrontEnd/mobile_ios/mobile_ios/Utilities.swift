@@ -71,6 +71,16 @@ func SuggestIconFromName(name: String, state: Int = -1, lowVal: Int = 0) -> Stri
     return suggestion
 }
 
+func getControlValueRatio(control: DeviceControl) -> CGFloat{
+    if control.controlType == 0{
+        return CGFloat(control.valueCurrent)
+    }
+    else{
+        let ratio = CGFloat(control.valueHigh - control.valueCurrent) / CGFloat( control.valueHigh - control.valueLow)
+        return ratio
+    }
+}
+
 func toggleDevice(control: DeviceControl ) -> Int{
     
     print(control)

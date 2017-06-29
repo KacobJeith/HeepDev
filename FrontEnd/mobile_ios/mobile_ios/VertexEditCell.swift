@@ -759,7 +759,10 @@ extension VertexEditCell {
                                      height: scaledSize)
         
         let currentRangeContainer = UIView(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
-        let currentRange = UIView(frame: CGRect(x: 0, y: 60 - thisControl.valueCurrent, width: 60, height: thisControl.valueCurrent))
+        print(thisControl)
+
+        
+        let currentRange = UIView(frame: CGRect(x: 0, y: getControlValueRatio(control: thisControl) * 60, width: 60, height: 60))
         currentRange.backgroundColor = UIColor.green.withAlphaComponent(0.5)
         
         currentRangeContainer.transform = CGAffineTransform(scaleX: 1, y: 1).rotated(by: -thisControl.rotation)
