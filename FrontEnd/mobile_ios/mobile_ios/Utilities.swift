@@ -65,6 +65,30 @@ func SuggestIconFromName(name: String) -> String {
     return suggestion
 }
 
+func toggleRangeDevice(control: DeviceControl ) -> Int{
+    
+    print(control)
+    
+    
+    if control.controlType == 0{
+        return 1 - control.valueCurrent
+    }
+    
+    let ratio = CGFloat( control.valueCurrent - control.valueLow ) / CGFloat( control.valueHigh - control.valueLow )
+    
+
+    print("Range Ratio = \(ratio)")
+    
+    if ratio >= 0.5 {
+        return control.valueLow
+    }
+    else{
+        return control.valueHigh
+    }
+    
+}
+
+
 func getRandomColor() -> UIColor{
     //Generate between 0 to 1
     let red:CGFloat = CGFloat(arc4random_uniform(256))/255

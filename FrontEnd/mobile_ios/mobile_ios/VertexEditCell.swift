@@ -735,9 +735,37 @@ extension VertexEditCell {
     
     func selectThisController(gesture: UITapGestureRecognizer) {
         print((gesture.view?.tag)!)
+        if thisGroup.selectedControl == (gesture.view?.tag)!{
+            toggleOnOff(controlUniqueID: (gesture.view?.tag)!)
+        }
+        else{
+            let realm = try! Realm(configuration: configUser)
+            try! realm.write {
+                thisGroup.selectedControl = (gesture.view?.tag)!
+            }
+        }
+        
+    }
+    
+    func toggleOnOff(controlUniqueID: Int){
+        
         let realm = try! Realm(configuration: configUser)
+        
+        let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: controlUniqueID)
+        
+//        print("Device toggled: \(toggleRangeDevice(control: thisControl!))")
+        
+        
+        
         try! realm.write {
-            thisGroup.selectedControl = (gesture.view?.tag)!
+            realm.create(DeviceControl.self,
+                         value: ["uniqueID": controlUniqueID,
+                                 "valueCurrent": toggleRangeDevice(control: thisControl!)],
+                         update: true)
+        }
+        
+        DispatchQueue.global().async {
+            HeepConnections().sendValueToHeepDevice(uniqueID: controlUniqueID)
         }
         
     }
