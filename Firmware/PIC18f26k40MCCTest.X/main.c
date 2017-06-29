@@ -56,7 +56,7 @@ void main(void)
 
     // Disable the Peripheral Interrupts
     //INTERRUPT_PeripheralInterruptDisable();
-    uint8_t counter = 0;
+    uint8_t counter = 0; 
     //TRISA = 0x00;
     PinMode(0, output);
     PinMode(1, output);
