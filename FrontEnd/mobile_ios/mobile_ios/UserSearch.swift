@@ -93,6 +93,9 @@ extension UserSearch: UICollectionViewDataSource, UICollectionViewDelegate {
         bigWhiteBackground.frame = cell.bounds
         
         cell.addSubview(bigWhiteBackground)
+        let realm = try! Realm(configuration: configPublicSync)
+        let allUsers = realm.objects(User.self)
+        cell.addSubview(generateUserCard(userID: allUsers[indexPath.row].heepID))
         
         return cell
     }
