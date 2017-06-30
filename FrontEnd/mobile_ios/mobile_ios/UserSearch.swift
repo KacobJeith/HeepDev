@@ -10,7 +10,7 @@ import UIKit
 import RealmSwift
 
 
-class UserSearch: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
+class UserSearch: UIViewController {
     
     var collectionView: UICollectionView!
     
@@ -23,23 +23,35 @@ class UserSearch: UIViewController, UICollectionViewDataSource, UICollectionView
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let mainView = UIView()
-        
-        mainView.frame = UIScreen.main.bounds
-        mainView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        setupModalViewBackdrop()
+        setupSearchSection()
+    }
+    
+    func setupModalViewBackdrop() {
+        self.view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(exitSearch))
-        mainView.addGestureRecognizer(tap)
+        self.view.addGestureRecognizer(tap)
+
+    }
+    
+    func setupSearchSection() {
+        let searchSection = UIView(frame: CGRect(x: 0,
+                                                 y: self.view.bounds.maxY - 150,
+                                                 width: self.view.bounds.width,
+                                                 height: 150))
+        searchSection.backgroundColor = .white
+        searchSection.addSubview(setupCollectionView())
+        self.view.addSubview(searchSection)
         
-        self.view.addSubview(mainView)
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
-    func setupCollectionView() {
+}
+
+extension UserSearch: UICollectionViewDataSource, UICollectionViewDelegate {
+    
+    func setupCollectionView() -> UIView {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = UICollectionViewScrollDirection.horizontal
         layout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10)
@@ -55,8 +67,8 @@ class UserSearch: UIViewController, UICollectionViewDataSource, UICollectionView
         collectionView.backgroundColor = .white
         collectionView.contentOffset = CGPoint(x: 0, y: 0)
         
-        //self.addSubview(collectionView)
-
+        return collectionView
+        
     }
     
     // MARK: UICollectionViewDataSource
@@ -77,7 +89,7 @@ class UserSearch: UIViewController, UICollectionViewDataSource, UICollectionView
         let cell: UICollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath as IndexPath) as UICollectionViewCell
         
         let bigWhiteBackground = UIView()
-        bigWhiteBackground.backgroundColor = .white
+        bigWhiteBackground.backgroundColor = .green
         bigWhiteBackground.frame = cell.bounds
         
         cell.addSubview(bigWhiteBackground)
@@ -85,9 +97,6 @@ class UserSearch: UIViewController, UICollectionViewDataSource, UICollectionView
         return cell
     }
     
-}
-
-extension UserSearch {
     
     func selectUser(sender: UIButton) {
         
