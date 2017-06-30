@@ -9,11 +9,11 @@
 import UIKit
 import RealmSwift
 
-func generateUserCard(userID: Int) -> UIView {
+func generateUserCard(frame: CGRect, userID: Int) -> UIView {
     let userAccountView = UIView()
-    let boundingFrame = CGRect(x: 0, y: 0, width: 80, height: 80)
     
-    let iconView = userIconView(frame: boundingFrame, userID: userID)
+    
+    let iconView = userIconView(startingframe: frame, userID: userID)
     let nameView = userNameView(frame: iconView.frame, userID: userID)
     let emailView = userEmailView(frame: nameView.frame, userID: userID)
     
@@ -24,11 +24,11 @@ func generateUserCard(userID: Int) -> UIView {
     return userAccountView
 }
 
-func userIconView(frame: CGRect, userID: Int) -> (view: UIView, frame: CGRect) {
-    let iconDiameter = frame.width * 0.8 //UIScreen.main.width / 5
+func userIconView(startingframe: CGRect, userID: Int) -> (view: UIView, frame: CGRect) {
+    let iconDiameter = startingframe.width * 0.8 //UIScreen.main.width / 5
     
-    let frame = CGRect(x: (frame.width / 2) - (iconDiameter / 2),
-                       y: 0,
+    let frame = CGRect(x: (startingframe.width / 2) - (iconDiameter / 2),
+                       y: 5,
                        width: iconDiameter,
                        height: iconDiameter)
     
@@ -50,13 +50,13 @@ func userIconView(frame: CGRect, userID: Int) -> (view: UIView, frame: CGRect) {
 
 func userNameView(frame: CGRect, userID: Int)  -> (view: UIView, frame: CGRect) {
     let nextFrame = CGRect(x: 0,
-                           y: frame.maxY + 10,
+                           y: frame.maxY + 3,
                            width: frame.width,
-                           height: frame.height / 3)
+                           height: 10)
     
     let userNameView = UILabel(frame: nextFrame)
     userNameView.text = myName(userID: userID)
-    userNameView.adjustsFontSizeToFitWidth = true
+    userNameView.font = userNameView.font.withSize(12)
     userNameView.textColor = .darkGray
     userNameView.textAlignment = .center
     userNameView.contentMode = .bottom
@@ -78,13 +78,13 @@ func retrieveUserProfile(userID: Int) -> User {
 
 func userEmailView(frame: CGRect, userID: Int) -> (view: UIView, frame: CGRect) {
     let nextFrame = CGRect(x: 0,
-                           y: frame.maxY,
+                           y: frame.maxY + 3,
                            width: frame.width,
                            height: frame.height)
     
     let emailView = UILabel(frame: nextFrame)
     emailView.text = myEmail(userID: userID)
-    emailView.adjustsFontSizeToFitWidth = true
+    emailView.font = emailView.font.withSize(12)
     emailView.textColor = .lightGray
     emailView.textAlignment = .center
     emailView.contentMode = .top

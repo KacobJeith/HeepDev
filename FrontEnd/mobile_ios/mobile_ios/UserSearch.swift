@@ -55,11 +55,11 @@ extension UserSearch: UICollectionViewDataSource, UICollectionViewDelegate {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = UICollectionViewScrollDirection.horizontal
         layout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10)
-        layout.itemSize = CGSize(width: 80, height: 80)
+        layout.itemSize = CGSize(width: 100, height: 130)
         
         let screenSize = UIScreen.main.bounds
         let screenWidth = screenSize.width
-        collectionView = UICollectionView(frame: CGRect(x: 0,y: 0,width: screenWidth,height: 100) , collectionViewLayout: layout)
+        collectionView = UICollectionView(frame: CGRect(x: 0,y: 0,width: screenWidth, height: 150) , collectionViewLayout: layout)
         
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -89,13 +89,13 @@ extension UserSearch: UICollectionViewDataSource, UICollectionViewDelegate {
         let cell: UICollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath as IndexPath) as UICollectionViewCell
         
         let bigWhiteBackground = UIView()
-        bigWhiteBackground.backgroundColor = .green
+        bigWhiteBackground.backgroundColor = .white
         bigWhiteBackground.frame = cell.bounds
         
         cell.addSubview(bigWhiteBackground)
         let realm = try! Realm(configuration: configPublicSync)
         let allUsers = realm.objects(User.self)
-        cell.addSubview(generateUserCard(userID: allUsers[indexPath.row].heepID))
+        cell.addSubview(generateUserCard(frame: cell.bounds, userID: allUsers[indexPath.row].heepID))
         
         return cell
     }
