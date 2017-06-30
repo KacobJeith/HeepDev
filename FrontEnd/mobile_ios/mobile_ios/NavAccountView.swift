@@ -30,8 +30,9 @@ class NavAccountView: UIViewController {
                                      style: .plain,
                                      target: self,
                                      action: #selector(logoutUser))
+        let query = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(queryAllUsers))
         
-        self.toolbarItems = [spacer, logout, spacer]
+        self.toolbarItems = [spacer, logout, spacer, query]
         
     }
     
@@ -104,13 +105,27 @@ extension NavAccountView {
                                height: frame.height / 3)
         
         let userNameView = UILabel(frame: nextFrame)
-        userNameView.text = "Placeholder Name"
+        userNameView.text = myName()
         userNameView.adjustsFontSizeToFitWidth = true
         userNameView.textColor = .darkGray
         userNameView.textAlignment = .center
         userNameView.contentMode = .bottom
         
         return (view: userNameView, frame: nextFrame)
+    }
+    
+    func myName() -> String {
+        let myProfile = retrieveUserProfile()
+        return myProfile.name
+    }
+    
+    func retrieveUserProfile() -> User {
+        
+        var publicRealm = try! Realm(configuration: configPublicSync)
+        var userRealm = try! Realm(configuration: configUser)
+        
+        let myId = userRealm.objects(User.self).first?.heepID
+        return publicRealm.object(ofType: User.self, forPrimaryKey: myId!)!
     }
     
     
@@ -121,7 +136,7 @@ extension NavAccountView {
                                height: frame.height)
         
         let emailView = UILabel(frame: nextFrame)
-        emailView.text = "testing@heep.io"
+        emailView.text = myEmail()
         emailView.adjustsFontSizeToFitWidth = true
         emailView.textColor = .lightGray
         emailView.textAlignment = .center
@@ -129,11 +144,11 @@ extension NavAccountView {
         
         return (view: emailView, frame: nextFrame)
     }
-    /*
-    func launchStatsView() {
-        
+    
+    func myEmail() -> String {
+        let myProfile = retrieveUserProfile()
+        return myProfile.email
     }
- */
 }
 
 // NO USER LOGGED IN
@@ -268,12 +283,11 @@ extension NavAccountView {
         validateUser()
         
         
-        
     }
     
     func validateUser() {
         if SyncUser.all.count > 1 {
-            logoutOfPublicRealmUser()
+            //logoutOfPublicRealmUser()
             print("Logging out of public")
             validateUser()
         } else {
@@ -296,7 +310,7 @@ extension NavAccountView {
                                        id: "1000",
                                        email: inputResults.email,
                                        password: inputResults.password)
-                    logoutOfAllRealmUsers()
+                    
                     self.submitValues()
                 }))
                 
@@ -334,6 +348,10 @@ extension NavAccountView {
     func exitView() {
         self.navigationController?.popViewController(animated: true)
 
+    }
+    
+    func queryAllUsers() {
+        queryAllUser()
     }
 
 }
