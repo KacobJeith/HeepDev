@@ -76,7 +76,9 @@ class DeviceSummaryViewController: UITableViewController {
                                     target: self,
                                     action: #selector(claimDevice))
         
-        self.toolbarItems = [spacer,  claim, spacer]
+        let grant = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addUserToThisDevice))
+        
+        self.toolbarItems = [spacer,  claim, spacer, grant]
     }
     
     override func didReceiveMemoryWarning() {
@@ -128,6 +130,14 @@ class DeviceSummaryViewController: UITableViewController {
     func claimDevice() {
         //HeepConnections().sendAssignAdminToHeepDevice(deviceID: thisDevice.deviceID)
         createDeviceRealm(deviceID: thisDevice.deviceID)
+    }
+    
+    func addUserToThisDevice() {
+        let modalViewController = UserSearch()
+        modalViewController.modalPresentationStyle = .overCurrentContext
+        present(modalViewController, animated: false) {
+            print("Completed")
+        }
     }
     
 }
