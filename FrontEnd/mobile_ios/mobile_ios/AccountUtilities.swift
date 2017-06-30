@@ -12,7 +12,13 @@ import RealmSwift
 func initializeApp() {
     print("Initializing")
     
-    if SyncUser.current == nil {
+    if SyncUser.all.count == 0 {
+        
+        print("Logging out")
+        logoutOfAllRealmUsers()
+        configUser = configGuest
+        
+    } else if SyncUser.all.first?.key == "3236896a34becbac18c96a9a24c55de9" {
         
         print("Logging out")
         logoutOfAllRealmUsers()
@@ -33,23 +39,29 @@ func logoutOfAllRealmUsers() {
     }
 }
 
-func seedNewUserAccount(name: String,
+func seedNewUserAccount(name: String = "Jacob Keith",
                         imageURL: String = "https://lorempixel.com/400/400/cats/",
-                        id: String,
+                        heepID: Int = randomNumber(inRange: 1...1000000),
                         email: String = "",
                         password: String = "",
-                        callback: @escaping () -> Void = {}) {
+                        callback: @escaping () -> Void = {},
+                        repair: Bool = false) {
     
     
     let newUser = User()
     
-    newUser.heepID = randomNumber(inRange: 1...1000000)
+    newUser.heepID = heepID
     newUser.name = name
     newUser.iconURL = imageURL
     newUser.email = email
     newUser.icon = getUserIcon(iconURL: newUser.iconURL)
     
-    registerNewSyncRealm(username: email, password: password, callback: callback, newUser: newUser)
+    if repair {
+        addNewUserToPublicRealm(newUser: newUser, callback: callback)
+    } else {
+        registerNewSyncRealm(username: email, password: password, callback: callback, newUser: newUser)
+        
+    }
     
 }
 
@@ -70,6 +82,7 @@ func registerNewSyncRealm(username: String, password: String, callback: @escapin
                         
                     configUser =  Realm.Configuration(syncConfiguration: SyncConfiguration(user: user!, realmURL: userURL))
                     addNewUserToUserRealm(newUser: newUser)
+                    newUser.realmKey = (SyncUser.all.keys.first)!
                     addNewUserToPublicRealm(newUser: newUser)
 
     })
@@ -128,7 +141,32 @@ func setDefaultPermissionToPublic(publicUser: SyncUser) {
     }
 }
 
-func addNewUserToPublicRealm(newUser: User) {
+func loginToPublicRealm() {
+    let url = URL(string: "http://45.55.249.217:9080")!
+    let userURL = URL(string: "realm://45.55.249.217:9080/~/userDirectory")!
+    let credentials = SyncCredentials.usernamePassword(username: "public@heep.io",
+                                                       password: "public",
+                                                       register: false)
+    
+    SyncUser.logIn(with: credentials,
+                   server: url,
+                   onCompletion: { user, error in
+                    if user == nil {
+                        print("No User Account Found")
+                        
+                    } else {
+                        
+                        let firstUser = User()
+                        addNewUserToPublicRealm(newUser: firstUser)
+                        print("Found existing: \(user)")
+                        setDefaultPermissionToPublic(publicUser: user!)
+                        
+                    }
+                    
+    })
+}
+
+func addNewUserToPublicRealm(newUser: User, callback: @escaping () -> Void = {}) {
     let realm = try! Realm(configuration: configPublicSync)
     
     try! realm.write {
@@ -140,6 +178,7 @@ func addNewUserToPublicRealm(newUser: User) {
     let allUsers = realm.objects(User.self)
     
     print("All Users: \(allUsers)")
+    callback()
     
 }
 

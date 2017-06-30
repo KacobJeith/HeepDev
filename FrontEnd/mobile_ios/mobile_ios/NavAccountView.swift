@@ -43,7 +43,7 @@ class NavAccountView: UIViewController {
             self.view.addSubview(loginView())
             
         } else {
-            self.view.addSubview(alreadyLoggedInView())
+            attemptToRender()
         }
     }
     
@@ -57,6 +57,33 @@ class NavAccountView: UIViewController {
         
         self.loadView()
         self.viewDidLoad()
+    }
+    
+    func attemptToRender() {
+        let realm = try! Realm(configuration: configUser)
+        let myID = realm.objects(User.self).first?.heepID
+        
+        
+        let realmPublic = try! Realm(configuration: configPublicSync)
+        let myUserData = realmPublic.object(ofType: User.self, forPrimaryKey: myID)
+       
+        
+        let loginGroup = DispatchGroup()
+        loginGroup.enter()
+        
+        DispatchQueue.global(qos: .default).sync {
+            if myUserData == nil {
+                seedNewUserAccount(heepID: myID!,
+                                   callback: { loginGroup.leave() },
+                                   repair: true)
+            } else {
+                loginGroup.leave()
+            }
+        }
+        
+        loginGroup.wait()
+        
+        self.view.addSubview(alreadyLoggedInView())
     }
     
 }
@@ -312,7 +339,6 @@ extension NavAccountView {
                     
                     let inputResults = self.extractInputValues()
                     seedNewUserAccount(name: "Jacob Keith",
-                                       id: "1000",
                                        email: inputResults.email,
                                        password: inputResults.password)
                     
