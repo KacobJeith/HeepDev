@@ -69,6 +69,7 @@
       <itemPath>main.c</itemPath>
       <itemPath>W5500.c</itemPath>
       <itemPath>DigitalIO.c</itemPath>
+      <itemPath>mcc_generated_files/powerup.as</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
