@@ -49,7 +49,10 @@
 #include "pin_manager.h"
 #include <stdint.h>
 #include <stdbool.h>
+#include "interrupt_manager.h"
+#include "tmr1.h"
 #include "spi1.h"
+#include "memory.h"
 
 #define _XTAL_FREQ  64000000
 

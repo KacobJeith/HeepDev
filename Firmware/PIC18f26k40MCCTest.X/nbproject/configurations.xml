@@ -10,6 +10,9 @@
         <itemPath>mcc_generated_files/pin_manager.h</itemPath>
         <itemPath>mcc_generated_files/mcc.h</itemPath>
         <itemPath>mcc_generated_files/spi1.h</itemPath>
+        <itemPath>mcc_generated_files/memory.h</itemPath>
+        <itemPath>mcc_generated_files/interrupt_manager.h</itemPath>
+        <itemPath>mcc_generated_files/tmr1.h</itemPath>
       </logicalFolder>
       <itemPath>W5500.h</itemPath>
       <itemPath>W5500Defines.h</itemPath>
@@ -47,6 +50,8 @@
       <itemPath>../ServerlessFirmware/Simulation_NonVolatileMemory.h</itemPath>
       <itemPath>../ServerlessFirmware/Simulation_Timer.h</itemPath>
       <itemPath>../ServerlessFirmware/Socket_HeepComms.h</itemPath>
+      <itemPath>../ServerlessFirmware/PICW5500_Timer.h</itemPath>
+      <itemPath>../ServerlessFirmware/PICW5500_NonVolatileMemory.h</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
@@ -57,6 +62,9 @@
         <itemPath>mcc_generated_files/spi1.c</itemPath>
         <itemPath>mcc_generated_files/mcc.c</itemPath>
         <itemPath>mcc_generated_files/pin_manager.c</itemPath>
+        <itemPath>mcc_generated_files/memory.c</itemPath>
+        <itemPath>mcc_generated_files/tmr1.c</itemPath>
+        <itemPath>mcc_generated_files/interrupt_manager.c</itemPath>
       </logicalFolder>
       <itemPath>main.c</itemPath>
       <itemPath>W5500.c</itemPath>
@@ -84,7 +92,7 @@
         <platformTool>PICkit3PlatformTool</platformTool>
         <languageToolchain>XC8</languageToolchain>
         <languageToolchainVersion>1.41</languageToolchainVersion>
-        <platform>3</platform>
+        <platform>4</platform>
       </toolsSet>
       <compileType>
         <linkerTool>

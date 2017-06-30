@@ -7,6 +7,11 @@
 
 #define TEST_SERVER
 
+void TestEEPROM()
+{
+     
+}
+
 char deviceName [] = "Flap";
 
 char controlName0 [] = "Log";
@@ -41,17 +46,17 @@ void main(void)
     //INTERRUPT_GlobalInterruptLowDisable();
 
     // Enable the Global Interrupts
-    //INTERRUPT_GlobalInterruptEnable();
+    INTERRUPT_GlobalInterruptEnable();
 
     // Enable the Peripheral Interrupts
-    //INTERRUPT_PeripheralInterruptEnable();
+    INTERRUPT_PeripheralInterruptEnable();
 
     // Disable the Global Interrupts
     //INTERRUPT_GlobalInterruptDisable();
 
     // Disable the Peripheral Interrupts
     //INTERRUPT_PeripheralInterruptDisable();
-    uint8_t counter = 0;
+    uint8_t counter = 0; 
     //TRISA = 0x00;
     PinMode(0, output);
     PinMode(1, output);
