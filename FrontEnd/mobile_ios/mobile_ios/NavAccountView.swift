@@ -61,6 +61,8 @@ class NavAccountView: UIViewController {
     
 }
 
+// Already Logged in View 
+
 extension NavAccountView {
     func alreadyLoggedInView() -> UIView {
         let userAccountView = UIView()
@@ -124,8 +126,10 @@ extension NavAccountView {
         var publicRealm = try! Realm(configuration: configPublicSync)
         var userRealm = try! Realm(configuration: configUser)
         print("Retrieving")
-        print(publicRealm)
+        print(configPublicSync)
         print(configUser)
+        let allUsers = publicRealm.objects(User.self)
+        print("All Users: \(allUsers)")
         let myId = userRealm.objects(User.self).first?.heepID
         return publicRealm.object(ofType: User.self, forPrimaryKey: myId!)!
     }

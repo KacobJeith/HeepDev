@@ -15,7 +15,6 @@ import FacebookCore
 
 var configGuest = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
 var configUser = configGuest
-    //Realm.Configuration(syncConfiguration: SyncConfiguration(user: SyncUser.current!, realmURL: URL(string: "realm://45.55.249.217:9080/~/heepzone")!))
 var configPublicSync =  Realm.Configuration(syncConfiguration: SyncConfiguration(user: SyncUser.current!, realmURL: URL(string: "realm://45.55.249.217:9080/3236896a34becbac18c96a9a24c55de9/userDirectory")!))
 
 protocol AddBeacon {
@@ -34,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         flushApp()
         initializeApp()
         setupAppNavigation()
-        //startMonitoringBeacon()
+        startMonitoringBeacon()
         
         return true
     }
