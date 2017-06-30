@@ -80,19 +80,22 @@ extension NavAccountView {
     
     func userIconView() -> (view: UIView, frame: CGRect) {
         let iconDiameter = self.view.frame.width / 5
-    
+        let realm = try! Realm(configuration: configUser)
+        let myID = realm.objects(User.self).first?.heepID
+
         let frame = CGRect(x: (self.view.frame.width / 2) - (iconDiameter / 2),
                            y: (iconDiameter / 4),
                            width: iconDiameter,
                            height: iconDiameter)
 
         let containerView = UIView(frame: frame)
+        containerView.clipsToBounds = true
         containerView.layer.cornerRadius = containerView.frame.width / 2
         containerView.layer.borderColor = UIColor.lightGray.cgColor
         containerView.layer.borderWidth = 1
         
         let iconView = UIImageView(frame: containerView.bounds)
-        iconView.image = #imageLiteral(resourceName: "male")
+        iconView.image = myImage(userID: myID!)
         iconView.contentMode = .scaleAspectFit
         
         containerView.addSubview(iconView)

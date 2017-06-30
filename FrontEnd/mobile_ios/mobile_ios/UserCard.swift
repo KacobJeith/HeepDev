@@ -40,12 +40,24 @@ func userIconView(startingframe: CGRect, userID: Int) -> (view: UIView, frame: C
     containerView.clipsToBounds = true
     
     let iconView = UIImageView(frame: containerView.bounds)
-    iconView.image = #imageLiteral(resourceName: "male")
+    iconView.image = myImage(userID: userID)
     iconView.contentMode = .scaleAspectFit
     
     containerView.addSubview(iconView)
     
     return (view: containerView, frame: frame)
+}
+
+func myImage(userID: Int) -> UIImage {
+    let myProfile = retrieveUserProfile(userID: userID)
+    let image = UIImage(data: myProfile.icon as Data)
+    
+    if image == nil {
+        return #imageLiteral(resourceName: "male")
+    } else {
+        return image!
+    }
+    
 }
 
 func userNameView(frame: CGRect, userID: Int)  -> (view: UIView, frame: CGRect) {
