@@ -12,3 +12,8 @@
 #define NUMBER_OF_TASKS 4
 
 //#define ON_ARDUINO
+//#define ON_PC
+
+#ifndef ON_ARDUINO
+#include <string.h>
+#endif

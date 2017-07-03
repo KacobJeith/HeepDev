@@ -5,3 +5,4 @@ FrontEnd/mobile_ios/Pods
 # Outputs
 *.pyc
 *.app
+.DS_Store

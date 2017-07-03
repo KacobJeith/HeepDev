@@ -33,8 +33,11 @@ func SuggestIconFromName(name: String) -> String {
         name.lowercased().range(of: "bulb") != nil ||
         name.lowercased().range(of: "relay") != nil ||
         name.lowercased().range(of: "dimmer") != nil ||
+        name.lowercased().range(of: "red") != nil ||
+        name.lowercased().range(of: "green") != nil ||
+        name.lowercased().range(of: "blue") != nil ||
         name.lowercased().range(of: "LED") != nil) {
-        suggestion = "lightbulb"
+        suggestion = "light_on"
     }
     
     if ( name.lowercased().range(of: "switch") != nil){
