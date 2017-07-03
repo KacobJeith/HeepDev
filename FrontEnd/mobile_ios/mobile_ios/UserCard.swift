@@ -49,13 +49,11 @@ func userIconView(startingframe: CGRect, userID: Int) -> (view: UIView, frame: C
 }
 
 func myImage(userID: Int) -> UIImage {
-    let myProfile = retrieveUserProfile(userID: userID)
-    let image = UIImage(data: myProfile.icon as Data)
     
-    if image == nil {
-        return #imageLiteral(resourceName: "male")
+    if let profile = retrieveUserProfile(userID: userID) {
+        return UIImage(data: profile.icon as Data)!
     } else {
-        return image!
+        return #imageLiteral(resourceName: "male")
     }
     
 }
@@ -78,13 +76,21 @@ func userNameView(frame: CGRect, userID: Int)  -> (view: UIView, frame: CGRect) 
 
 func myName(userID: Int) -> String {
     let myProfile = retrieveUserProfile(userID: userID)
-    return myProfile.name
+    
+    if let name = myProfile?.name {
+        return name
+    } else {
+        return "nil"
+    }
+    
 }
 
-func retrieveUserProfile(userID: Int) -> User {
+func retrieveUserProfile(userID: Int) -> User? {
     
     let publicRealm = try! Realm(configuration: configPublicSync)
-    return publicRealm.object(ofType: User.self, forPrimaryKey: userID)!
+    let profile = publicRealm.object(ofType: User.self, forPrimaryKey: userID) 
+    
+    return profile
 }
 
 
@@ -105,6 +111,10 @@ func userEmailView(frame: CGRect, userID: Int) -> (view: UIView, frame: CGRect) 
 }
 
 func myEmail(userID: Int) -> String {
-    let myProfile = retrieveUserProfile(userID: userID)
-    return myProfile.email
+    if let profile = retrieveUserProfile(userID: userID) {
+        
+        return profile.email
+    } else {
+        return "nil"
+    }
 }
