@@ -11,7 +11,7 @@ void CreateInterruptServer()
 
 void CheckServerForInputs()
 {
-    uint16_t curData = 0;//DataAvailable(1);
+    uint16_t curData = DataAvailable(1);
     if(curData > 0)
     {
         recv(1, inputBuffer, curData);

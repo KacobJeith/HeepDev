@@ -1,11 +1,13 @@
 #define ON_PIC
+#define USE_HEEP
+//#define DHCP
 
 #include "mcc_generated_files/mcc.h"
 #include "W5500.h"
 #include "DigitalIO.h"
 #include "ioLibrary_Driver-master/Ethernet/socket.h"
 #include "ioLibrary_Driver-master/Internet/DHCP/dhcp.h"
-//#include "../ServerlessFirmware/Heep_API.h"
+#include "../ServerlessFirmware/Heep_API.h"
 
 #define TEST_SERVER
 
@@ -58,8 +60,8 @@ void main(void)
 
     // Disable the Peripheral Interrupts
     //INTERRUPT_PeripheralInterruptDisable();
-    uint8_t counter = 0; 
-    //TRISA = 0x00;
+
+    
     PinMode(0, output);
     PinMode(1, output);
     DigitalWrite(1, high);
@@ -71,26 +73,19 @@ void main(void)
     WIZCHIP.CS._select = SetW5500SS;
     WIZCHIP.CS._deselect = ResetW5500SS;
     
-    uint8_t mySub [4] = {255, 255, 255, 0};
-    uint8_t myIP [4] = {192, 168, 0, 186};
-    uint8_t myMAC [6] = {0, 2, 3, 4, 7, 6};
-    uint8_t myGateway [4] = {192, 168, 0, 1};
-    //setSUBR(mySub);
-    setSHAR(myMAC);
-    //setSIPR(myIP);
-    //setGAR(myGateway);
-    
-    uint8_t dhcpBuf[200];
-    DHCP_init(0, dhcpBuf);
-    
-    uint8_t destIP [4] = {192, 168, 0, 110};
     
     uint32_t lastTime = 0;
     uint32_t interval = 1000;
     uint8_t lightState = 0;
     
-    uint8_t recvBuf[200];
+#ifdef DHCP
     
+    uint8_t myMAC [6] = {0, 2, 3, 4, 7, 6};
+    setSHAR(myMAC);
+
+    uint8_t dhcpBuf[200];
+    DHCP_init(0, dhcpBuf);
+      
     while(1)
     {
         if(millis() - lastTime > interval)
@@ -118,16 +113,29 @@ void main(void)
         }
     }
     
+#else
     
     
+    uint8_t myMAC [6] = {0, 2, 3, 4, 7, 6};
+    uint8_t mySub [4] = {255, 255, 255, 0};
+    uint8_t myIP [4] = {192, 168, 0, 186};
+    uint8_t myGateway[4] = {192, 168, 0, 1};
+    
+    setSUBR(mySub);
+    setSHAR(myMAC);
+    setSIPR(myIP);
+    setGAR(myGateway);
+    
+#endif
     
     
+    DigitalWrite(0, 1);
     
     
 #ifndef USE_HEEP
     
-    
-    
+    uint8_t destIP [4] = {192, 168, 0, 110};
+    uint8_t recvBuf[200];
     interval = 500;
     socket(1, Sn_MR_TCP, 5000, 0);
     
@@ -151,7 +159,7 @@ void main(void)
                 lightState = 1;
             }
             
-            DigitalWrite(0, lightState);
+            //DigitalWrite(0, lightState);
             
 #ifndef TEST_SERVER
             connect(1, destIP, 5000);
@@ -228,17 +236,17 @@ void main(void)
 	control1.lowValue = 0;
 	control1.curValue = 0;
 	AddControl(control1);
-//
-//	SetupHeepTasks();
-//	CreateInterruptServer();
-//    
-//    while(1)
-//    {
-//        PerformHeepTasks();
-//        
-//        DigitalWrite(1, controlList[0].curValue);
-//    }
-//  
+
+	SetupHeepTasks();
+	CreateInterruptServer();
+    
+    while(1)
+    {
+        PerformHeepTasks();
+        
+        DigitalWrite(0, controlList[0].curValue);
+    }
+  
     
 #endif
 }

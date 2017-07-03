@@ -1,6 +1,6 @@
 import socket
 
-ipAddress = '192.168.0.113'
+ipAddress = '192.168.0.186'
 TCP_PORT = 5000
 connectMessage = 'James and Jacob are Cute'
 BUFFER_SIZE = 1500
