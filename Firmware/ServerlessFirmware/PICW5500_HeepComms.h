@@ -4,21 +4,23 @@ int TCP_PORT = 5000;
 
 void CreateInterruptServer()
 {
-  Listen(5000, 0);
+  socket(1, Sn_MR_TCP, 5000, 0);
+  listen(1);
+
 }
 
 void CheckServerForInputs()
 {
-    uint16_t curData = DataAvailable(0);
+    uint16_t curData = 0;//DataAvailable(1);
     if(curData > 0)
     {
-        LATAbits.LA0 = 0;
-        ReadData(inputBuffer, curData, 0);
-        ExecuteControlOpCodes();
+        recv(1, inputBuffer, curData);
         
-        SendData(outputBuffer, outputBufferLastByte, 0);
-        Disconnect(0);
-        Listen(5000, 0);
+        ExecuteControlOpCodes();
+        send(1, outputBuffer, outputBufferLastByte);
+        
+        socket(1, Sn_MR_TCP, 5000, 0);
+        listen(1);
     }
 }
 
@@ -31,22 +33,16 @@ void SendOutputBufferToIP(struct HeepIPAddress destIP)
     byteIP[2] = destIP.Octet2;
     byteIP[3] = destIP.Octet1;
     uint16_t myPort = 5000;
-    uint8_t destPort[2];
-    destPort[0] = myPort >> 8;
-    destPort[1] = myPort & 0xFF;
 
-    ConnectToIP(byteIP, destPort, 1);
-    SendData(outputBuffer, outputBufferLastByte, 1);
+    socket(2, Sn_MR_TCP, 1024, 0);
     
-    // Wait for data available in timeout
-    uint16_t curData = 0;
-    do
+    connect(2, byteIP, myPort);
+    send(2, outputBuffer, outputBufferLastByte);
+
+    uint16_t curData = DataAvailable(2);
+    if(curData > 0)
     {
-        curData = DataAvailable(1);
-    }while(curData == 0);
- 
-    ReadData(inputBuffer, curData, 1);
-    Disconnect(1);
-    
-    LATAbits.LA0 = 0;
+        recv(2, inputBuffer, curData);
+    }
+    close(2);
 }

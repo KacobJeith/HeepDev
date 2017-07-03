@@ -2,12 +2,13 @@
 
 #include "mcc_generated_files/mcc.h"
 #include "W5500.h"
-//#include "../ServerlessFirmware/Heep_API.h"
 #include "DigitalIO.h"
 #include "ioLibrary_Driver-master/Ethernet/socket.h"
 #include "ioLibrary_Driver-master/Internet/DHCP/dhcp.h"
+//#include "../ServerlessFirmware/Heep_API.h"
 
 #define TEST_SERVER
+
 
 void TestEEPROM()
 {
@@ -84,7 +85,7 @@ void main(void)
     
     uint8_t destIP [4] = {192, 168, 0, 110};
     
-    uint32_t lastMillis = 0;
+    uint32_t lastTime = 0;
     uint32_t interval = 1000;
     uint8_t lightState = 0;
     
@@ -92,9 +93,9 @@ void main(void)
     
     while(1)
     {
-        if(millis() - lastMillis > interval)
+        if(millis() - lastTime > interval)
         {
-            lastMillis = millis();
+            lastTime = millis();
             
             if(lightState)
             {
@@ -117,6 +118,16 @@ void main(void)
         }
     }
     
+    
+    
+    
+    
+    
+    
+#ifndef USE_HEEP
+    
+    
+    
     interval = 500;
     socket(1, Sn_MR_TCP, 5000, 0);
     
@@ -127,9 +138,9 @@ void main(void)
     while(1)
     {
         
-        if(millis() - lastMillis > interval)
+        if(millis() - lastTime > interval)
         {
-            lastMillis = millis();
+            lastTime = millis();
             
             if(lightState)
             {
@@ -172,43 +183,51 @@ void main(void)
 #endif
     }
     
-//    InitializeW5500();
-//    
-//    if(TestW5500RegisterWriting())
-//    {
-//        DigitalWrite(0, high);
-//    }
-//    else
-//    {
-//        DigitalWrite(0, low);
-//    }
-//    
-//    uint8_t myByte = ReadMR();
-//    uint8_t anotherByte =  ReadPHYCFGR();
-//    
-//    deviceIDByte[0] = 0x34;
-//    deviceIDByte[1] = 0x12;
-//    deviceIDByte[2] = 0x05;
-//    deviceIDByte[3] = 0x01;
-//    
-//    SetupHeepDevice(deviceName);
-//	control0.controlName = controlName0;
-//	control0.controlID = 0;
-//	control0.controlDirection = 0;
-//	control0.controlType = 0;
-//	control0.highValue = 1;
-//	control0.lowValue = 0;
-//	control0.curValue = 0;
-//	AddControl(control0);
-//
-//	control1.controlName = controlName1;
-//	control1.controlID = 1;
-//	control1.controlDirection = 1;
-//	control1.controlType = 1;
-//	control1.highValue = 100;
-//	control1.lowValue = 0;
-//	control1.curValue = 0;
-//	AddControl(control1);
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+#else
+    
+    char deviceName [] = "Flap";
+
+    char controlName0 [] = "Log";
+    struct Control control0;
+
+    char controlName1 [] = "Tor";
+    struct Control control1;    
+    
+    deviceIDByte[0] = 0x34;
+    deviceIDByte[1] = 0x12;
+    deviceIDByte[2] = 0x05;
+    deviceIDByte[3] = 0x01;
+    
+    SetupHeepDevice(deviceName);
+	control0.controlName = controlName0;
+	control0.controlID = 0;
+	control0.controlDirection = 0;
+	control0.controlType = 0;
+	control0.highValue = 1;
+	control0.lowValue = 0;
+	control0.curValue = 0;
+	AddControl(control0);
+
+	control1.controlName = controlName1;
+	control1.controlID = 1;
+	control1.controlDirection = 1;
+	control1.controlType = 1;
+	control1.highValue = 100;
+	control1.lowValue = 0;
+	control1.curValue = 0;
+	AddControl(control1);
 //
 //	SetupHeepTasks();
 //	CreateInterruptServer();
@@ -220,4 +239,6 @@ void main(void)
 //        DigitalWrite(1, controlList[0].curValue);
 //    }
 //  
+    
+#endif
 }
