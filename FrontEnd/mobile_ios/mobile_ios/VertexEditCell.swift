@@ -616,8 +616,12 @@ extension VertexEditCell {
             
             let maxFingerRange = CGFloat(200.0)
             
-            var offset = (initialLongPressLocation.y - location.y) + CGFloat(maxFingerRange/2.0)// - ((1.0-startSliderRatio) * maxFingerRange)
-
+            
+            let startingRatioOffset = ( maxFingerRange * startSliderRatio ) - CGFloat( maxFingerRange/2.0 )
+            
+//            print("startingRatioOffset\(startingRatioOffset)")
+            
+            var offset = (initialLongPressLocation.y - location.y) + CGFloat(maxFingerRange/2.0) + startingRatioOffset
             
             if offset > maxFingerRange{
                 offset = maxFingerRange
@@ -626,26 +630,36 @@ extension VertexEditCell {
                 offset = 0
             }
             
-            
             ratio = offset / maxFingerRange
-            
-            print("startRatio \(startSliderRatio)")
-            print("ratio \(ratio)")
-            print("offset \(offset)")
-            print("ratioOffset \(((1.0-startSliderRatio) * maxFingerRange))")
             
             let yTransform = 60 * (1.0-ratio)
         
-            myView.subviews[0].subviews[0].transform = CGAffineTransform(translationX: 0, y: yTransform )
+            myView.subviews[0].subviews[0].frame = CGRect(x: 0, y: yTransform, width: 60, height: 60)
+            
+            let controlUniqueID = thisControl.uniqueID
+            
+            
+//            if !realm.isInWriteTransaction{
+//                try! realm.write {
+//                    realm.create(DeviceControl.self,
+//                                 value: ["uniqueID": controlUniqueID,
+//                                         "valueCurrent": Int(ratio * CGFloat(thisControl.valueHigh - thisControl.valueLow))],
+//                                 update: true)
+//                }
+//            }
+
+            DispatchQueue.global().async {
+                HeepConnections().sendValueToHeepDevice(uniqueID: controlUniqueID)
+            }
+
             
         }
         
         if gestureRecognizer.state == UIGestureRecognizerState.began {
-            //insert subview
+            
             longPressActive = true
             
-            startSliderRatio = getControlValueRatio(control: thisControl)
-            
+            startSliderRatio = 1.0 - getControlValueRatio(control: thisControl)
             initialLongPressLocation = gestureRecognizer.location(in: gestureRecognizer.view)
 
             print("BEGIN LONG PRESS!")
@@ -654,7 +668,6 @@ extension VertexEditCell {
             let controlUniqueID = thisControl.uniqueID
             
             try! realm.write {
-                print(Int(ratio * CGFloat(thisControl.valueHigh - thisControl.valueLow)))
                 realm.create(DeviceControl.self,
                              value: ["uniqueID": controlUniqueID,
                                      "valueCurrent": Int(ratio * CGFloat(thisControl.valueHigh - thisControl.valueLow))],
