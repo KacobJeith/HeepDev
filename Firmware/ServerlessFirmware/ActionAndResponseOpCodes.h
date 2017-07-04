@@ -346,27 +346,26 @@ void ExecuteDeleteMOPOpCode()
 
 			deviceMemCounter = SkipOpCode(deviceMemCounter);
 		}
-//
-//		if(MOPSDeleted > 0)
-//		{
-//			ClearOutputBuffer();
-//			char SuccessMessage [] = "MOP Deleted!";
-//			FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
-//		}
-//		else
-//		{
-//			ClearOutputBuffer();
-//			char errorMessage [] = "Cannot Delete: MOP not found in memory";
-//			FillOutputBufferWithError(errorMessage, strlen(errorMessage));
-//		}
+
+		if(MOPSDeleted > 0)
+		{
+			ClearOutputBuffer();
+			char SuccessMessage [] = "MOP Deleted!";
+			FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
+		}
+		else
+		{
+			ClearOutputBuffer();
+			char MyerrorMessage [] = "Cannot Delete: MOP not found";
+			FillOutputBufferWithError(MyerrorMessage, strlen(MyerrorMessage));
+		}
 	}
 	else
 	{
 		ClearOutputBuffer();
-		char errorMessage [] = "Cannot Delete: Delivered Generic MOP was determined to be invalid!";
+		char errorMessage [] = "Cannot Delete: Generic MOP was invalid!";
 		FillOutputBufferWithError(errorMessage, strlen(errorMessage));
 	}
-	
 }
 
 void ExecuteAddMOPOpCode()
