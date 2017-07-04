@@ -597,6 +597,12 @@ extension VertexEditCell {
         
         myView.transform = myView.transform.rotated(by: gestureRecognizer.rotation * 3)
         
+//        currentRangeContainer.transform = CGAffineTransform(scaleX: 1, y: 1).rotated(by: -thisControl.rotation)
+        
+        myView.subviews[0].transform = myView.subviews[0].transform.rotated(by: -gestureRecognizer.rotation * 3)
+        
+        print(gestureRecognizer.rotation)
+        
         if gestureRecognizer.state == UIGestureRecognizerState.ended {
             saveSelectedSprite()
         }
