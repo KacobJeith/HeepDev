@@ -16,6 +16,8 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     var contextImage = UIImage()
     var controlTags = [Int]()
     var longPressActive = false
+    var initialLongPressLocation = CGPoint()
+    var startSliderRatio = CGFloat()
     
     var activeVertexStart = CGPoint()
     var activeVertexFinish = CGPoint()
@@ -603,13 +605,67 @@ extension VertexEditCell {
     }
     
     func handleLongPress(gestureRecognizer: UILongPressGestureRecognizer) {
+        var ratio = CGFloat(0.5)
+        
+        let realm = try! Realm(configuration: configUser)
+        let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl)!
+        
+        if longPressActive == true{
+            let myView = self.viewWithTag(thisGroup.selectedControl)!
+            let location = gestureRecognizer.location(in: gestureRecognizer.view)
+            
+            let maxFingerRange = CGFloat(200.0)
+            
+            var offset = (initialLongPressLocation.y - location.y) + CGFloat(maxFingerRange/2.0)// - ((1.0-startSliderRatio) * maxFingerRange)
+
+            
+            if offset > maxFingerRange{
+                offset = maxFingerRange
+            }
+            else if offset < 0{
+                offset = 0
+            }
+            
+            
+            ratio = offset / maxFingerRange
+            
+            print("startRatio \(startSliderRatio)")
+            print("ratio \(ratio)")
+            print("offset \(offset)")
+            print("ratioOffset \(((1.0-startSliderRatio) * maxFingerRange))")
+            
+            let yTransform = 60 * (1.0-ratio)
+        
+            myView.subviews[0].subviews[0].transform = CGAffineTransform(translationX: 0, y: yTransform )
+            
+        }
         
         if gestureRecognizer.state == UIGestureRecognizerState.began {
             //insert subview
             longPressActive = true
+            
+            startSliderRatio = getControlValueRatio(control: thisControl)
+            
+            initialLongPressLocation = gestureRecognizer.location(in: gestureRecognizer.view)
+
             print("BEGIN LONG PRESS!")
         }
         else if gestureRecognizer.state == UIGestureRecognizerState.ended {
+            let controlUniqueID = thisControl.uniqueID
+            
+            try! realm.write {
+                print(Int(ratio * CGFloat(thisControl.valueHigh - thisControl.valueLow)))
+                realm.create(DeviceControl.self,
+                             value: ["uniqueID": controlUniqueID,
+                                     "valueCurrent": Int(ratio * CGFloat(thisControl.valueHigh - thisControl.valueLow))],
+                             update: true)
+            }
+            
+            DispatchQueue.global().async {
+                HeepConnections().sendValueToHeepDevice(uniqueID: controlUniqueID)
+            }
+            
+            
             saveSelectedSprite()
             
             // delay for 0.1 seconds to prevent sprite translation from kicking in
@@ -619,17 +675,6 @@ extension VertexEditCell {
             }
         }
         
-        if longPressActive == true{
-            let realm = try! Realm(configuration: configUser)
-            let myView = self.viewWithTag(thisGroup.selectedControl)!
-            let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl)!
-            print((myView.subviews[1] as UIView).frame)
-            myView.transform.translatedBy(x: 0, y: 1)
-//            print("thisControl")
-//            print(thisControl)
-            //            myView.transform = CGAffineTransform(scaleX: thisControl.scale * gestureRecognizer.scale,
-            //                                                     y: thisControl.scale * gestureRecognizer.scale).rotated(by: CGFloat(atan2f(Float(CGFloat(myView.transform.b)),Float(myView.transform.a))))
-        }
     }
 
 
@@ -769,7 +814,7 @@ extension VertexEditCell {
                                      height: scaledSize)
         
         let currentRangeContainer = UIView(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
-        print(thisControl)
+//        print(thisControl)
 
         let currentRange = UIView(frame: CGRect(x: 0, y: getControlValueRatio(control: thisControl) * 60, width: 60, height: 60))
         currentRange.backgroundColor = UIColor.green.withAlphaComponent(0.5)
@@ -795,7 +840,7 @@ extension VertexEditCell {
     }
     
     func selectThisController(gesture: UITapGestureRecognizer) {
-        print((gesture.view?.tag)!)
+//        print((gesture.view?.tag)!)
         if thisGroup.selectedControl == (gesture.view?.tag)!{
             toggleOnOff(controlUniqueID: (gesture.view?.tag)!)
         }
