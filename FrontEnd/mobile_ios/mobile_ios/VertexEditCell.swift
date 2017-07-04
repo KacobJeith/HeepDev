@@ -602,9 +602,8 @@ extension VertexEditCell {
         gestureRecognizer.rotation = 0
     }
     
-    func handleLongPress(gestureRecognizer: UIRotationGestureRecognizer) {
+    func handleLongPress(gestureRecognizer: UILongPressGestureRecognizer) {
         
-    
         if gestureRecognizer.state == UIGestureRecognizerState.began {
             //insert subview
             longPressActive = true
@@ -613,12 +612,23 @@ extension VertexEditCell {
         else if gestureRecognizer.state == UIGestureRecognizerState.ended {
             saveSelectedSprite()
             
-            let when = DispatchTime.now() + 0.1 // delay for 0.1 seconds to prevent sprite translation from kicking in
-            DispatchQueue.main.asyncAfter(deadline: when) {
-                // Your code with delay
+            // delay for 0.1 seconds to prevent sprite translation from kicking in
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
                 self.longPressActive = false
                 print("END LONG PRESS!")
             }
+        }
+        
+        if longPressActive == true{
+            let realm = try! Realm(configuration: configUser)
+            let myView = self.viewWithTag(thisGroup.selectedControl)!
+            let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl)!
+            print((myView.subviews[1] as UIView).frame)
+            myView.transform.translatedBy(x: 0, y: 1)
+//            print("thisControl")
+//            print(thisControl)
+            //            myView.transform = CGAffineTransform(scaleX: thisControl.scale * gestureRecognizer.scale,
+            //                                                     y: thisControl.scale * gestureRecognizer.scale).rotated(by: CGFloat(atan2f(Float(CGFloat(myView.transform.b)),Float(myView.transform.a))))
         }
     }
 
@@ -761,7 +771,6 @@ extension VertexEditCell {
         let currentRangeContainer = UIView(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
         print(thisControl)
 
-        
         let currentRange = UIView(frame: CGRect(x: 0, y: getControlValueRatio(control: thisControl) * 60, width: 60, height: 60))
         currentRange.backgroundColor = UIColor.green.withAlphaComponent(0.5)
         

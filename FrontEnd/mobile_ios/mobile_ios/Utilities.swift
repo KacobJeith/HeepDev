@@ -54,7 +54,11 @@ func SuggestIconFromName(name: String, state: Int = -1, lowVal: Int = 0) -> Stri
         name.lowercased().range(of: "bulb") != nil ||
         name.lowercased().range(of: "relay") != nil ||
         name.lowercased().range(of: "dimmer") != nil ||
+        name.lowercased().range(of: "red") != nil ||
+        name.lowercased().range(of: "green") != nil ||
+        name.lowercased().range(of: "blue") != nil ||
         name.lowercased().range(of: "LED") != nil) {
+
         if state == lowVal{
             suggestion = "light_off"
         }
