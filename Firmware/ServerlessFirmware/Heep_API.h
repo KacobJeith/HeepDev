@@ -108,7 +108,7 @@ void PerformHeepTasks()
 			CommitMemory();
 		}
 	}
-
+//
 	CheckServerForInputs();
 	ControlDaemon();
 }

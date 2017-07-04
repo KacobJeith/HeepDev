@@ -493,7 +493,15 @@ int32_t sendto(uint8_t sn, uint8_t * buf, uint16_t len, uint8_t * addr, uint16_t
    uint32_t taddr;
 
    CHECK_SOCKNUM();
-   switch(getSn_MR(sn) & 0x0F)
+   uint8_t sockMode = getSn_MR(sn);
+   uint8_t yes = 2;
+   
+   if(yes)
+   {
+       yes = 3;
+   }
+   
+   switch(sockMode & 0x0F)
    {
       case Sn_MR_UDP:
       case Sn_MR_IPRAW:

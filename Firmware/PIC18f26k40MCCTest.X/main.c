@@ -1,6 +1,6 @@
 #define ON_PIC
 #define USE_HEEP
-//#define DHCP
+#define DHCP
 
 #include "mcc_generated_files/mcc.h"
 #include "W5500.h"
@@ -26,6 +26,14 @@ uint8_t ReadPICByte()
 {
     uint8_t readByte = SPI1_Exchange8bit(0);
     return readByte;
+}
+
+void delay(uint32_t theTime)
+{
+    uint32_t startTime = millis();
+    uint32_t endTime = startTime + theTime;
+    
+    while(millis() < endTime) {}
 }
 
 void main(void)
@@ -61,10 +69,28 @@ void main(void)
     // Disable the Peripheral Interrupts
     //INTERRUPT_PeripheralInterruptDisable();
 
-    
     PinMode(0, output);
     PinMode(1, output);
     DigitalWrite(1, high);
+    DigitalWrite(0, high);
+    
+    uint32_t lastTime = 0;
+    uint32_t interval = 1000;
+    uint8_t lightState = 0;
+    
+    DigitalWrite(0, high);
+    delay(200);
+    DigitalWrite(0, low);
+    delay(200);
+    DigitalWrite(0, high);
+    delay(200);
+    DigitalWrite(0, low);
+    delay(200);
+    DigitalWrite(0, high);
+    delay(200);
+    DigitalWrite(0, low);
+    
+    delay(500);
     
     InitializeW5500();
     
@@ -72,11 +98,7 @@ void main(void)
     WIZCHIP.IF.SPI._read_byte = ReadPICByte;
     WIZCHIP.CS._select = SetW5500SS;
     WIZCHIP.CS._deselect = ResetW5500SS;
-    
-    
-    uint32_t lastTime = 0;
-    uint32_t interval = 1000;
-    uint8_t lightState = 0;
+        
     
 #ifdef DHCP
     
@@ -88,9 +110,9 @@ void main(void)
       
     while(1)
     {
-        if(millis() - lastTime > interval)
+        if(GetMillis() - lastTime > interval)
         {
-            lastTime = millis();
+            lastTime = GetMillis();
             
             if(lightState)
             {
@@ -101,12 +123,12 @@ void main(void)
                 lightState = 1;
             }
             
-            DigitalWrite(0, lightState);
+            //DigitalWrite(0, lightState);
             DHCP_time_handler();
         }
         
         uint8_t dhcpUserState = DHCP_run();
-        
+
         if(dhcpUserState == DHCP_IP_LEASED)
         {
             break;
@@ -129,7 +151,7 @@ void main(void)
 #endif
     
     
-    DigitalWrite(0, 1);
+    DigitalWrite(0, 0);
     
     
 #ifndef USE_HEEP

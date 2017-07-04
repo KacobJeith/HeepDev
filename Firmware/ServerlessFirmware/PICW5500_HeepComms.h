@@ -15,7 +15,7 @@ void CheckServerForInputs()
     if(curData > 0)
     {
         recv(1, inputBuffer, curData);
-        
+//        
         ExecuteControlOpCodes();
         send(1, outputBuffer, outputBufferLastByte);
         
