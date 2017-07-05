@@ -14,12 +14,6 @@ class UserSearch: UIViewController {
     
     var collectionView: UICollectionView!
     
-//    convenience init() {
-//        self.init()
-//        
-//        
-//    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -97,11 +91,32 @@ extension UserSearch: UICollectionViewDataSource, UICollectionViewDelegate {
         let allUsers = realm.objects(User.self)
         cell.addSubview(generateUserCard(frame: cell.bounds, userID: allUsers[indexPath.row].heepID))
         
+        let tap = UITapGestureRecognizer(target: self, action: #selector(selectUser))
+        cell.addGestureRecognizer(tap)
+        
         return cell
     }
     
     
-    func selectUser(sender: UIButton) {
+    func selectUser(gesture: UITapGestureRecognizer) {
+        print("SELECTED")
+        
+        let alert = UIAlertController(title: "Select User?",
+                                      message: "Aer you sure you can to grant access to this user?",
+                                      preferredStyle: UIAlertControllerStyle.alert)
+        
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { action in
+            print("ADD")
+            self.exitSearch()
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: { action in
+            print("DONT ADD")
+            self.exitSearch()
+        }))
+        
+        present(alert, animated: false, completion: nil)
+
         
         
     }
