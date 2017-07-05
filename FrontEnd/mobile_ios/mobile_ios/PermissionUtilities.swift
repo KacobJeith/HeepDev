@@ -28,3 +28,27 @@ func createDeviceRealm(deviceID: Int) {
     
     print(newDeviceKey)
 }
+
+
+func grantPermissionToOtherUser(deviceID: Int, userID: Int) {
+    let realmPublic = try! Realm(configuration: configPublicSync)
+    let userToGrant = realmPublic.object(ofType: User.self, forPrimaryKey: userID)
+    
+    let permission = SyncPermissionValue(realmPath: "/~/" + String(deviceID),
+                                         userID: (userToGrant?.realmKey)!,
+                                         accessLevel: .write)
+    
+    SyncUser.current?.applyPermission(permission) { error in
+        print("Successfully added permission to new user")
+        
+        if let error = error {
+            // handle error
+            print("PERMISSION UNSUCCESSFUL \(error)")
+            return
+        }
+    }
+}
+
+
+
+

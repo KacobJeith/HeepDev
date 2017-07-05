@@ -13,12 +13,28 @@ import RealmSwift
 class UserSearch: UIViewController {
     
     var collectionView: UICollectionView!
+    var allUsers: [User] = []
+    var thisDevice = Device()
+    
+    convenience init(device: Device) {
+        self.init()
+        
+        thisDevice = device
+        populateAllUsers()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupModalViewBackdrop()
         setupSearchSection()
+    }
+    
+    func populateAllUsers() {
+        
+        let realm = try! Realm(configuration: configPublicSync)
+        allUsers = realm.objects(User.self).toArray()
+        
     }
     
     func setupModalViewBackdrop() {
@@ -82,31 +98,40 @@ extension UserSearch: UICollectionViewDataSource, UICollectionViewDelegate {
         
         let cell: UICollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath as IndexPath) as UICollectionViewCell
         
+        let realm = try! Realm(configuration: configUser)
+        let myID = realm.objects(User.self).first?.heepID
+        
+        if allUsers[indexPath.row].heepID == myID {
+            cell.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
+            return cell
+        }
+        
         let bigWhiteBackground = UIView()
         bigWhiteBackground.backgroundColor = .white
         bigWhiteBackground.frame = cell.bounds
         
         cell.addSubview(bigWhiteBackground)
-        let realm = try! Realm(configuration: configPublicSync)
-        let allUsers = realm.objects(User.self)
         cell.addSubview(generateUserCard(frame: cell.bounds, userID: allUsers[indexPath.row].heepID))
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(selectUser))
         cell.addGestureRecognizer(tap)
+        cell.tag = allUsers[indexPath.row].heepID
         
         return cell
     }
     
     
     func selectUser(gesture: UITapGestureRecognizer) {
-        print("SELECTED")
+        print("SELECTED \(gesture.view?.tag)")
         
         let alert = UIAlertController(title: "Select User?",
-                                      message: "Aer you sure you can to grant access to this user?",
+                                      message: "Are you sure you want to grant access to this user?",
                                       preferredStyle: UIAlertControllerStyle.alert)
         
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { action in
             print("ADD")
+            
+            grantPermissionToOtherUser(deviceID: self.thisDevice.deviceID, userID: (gesture.view?.tag)!)
             self.exitSearch()
         }))
         

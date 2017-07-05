@@ -133,7 +133,7 @@ class DeviceSummaryViewController: UITableViewController {
     }
     
     func addUserToThisDevice() {
-        let modalViewController = UserSearch()
+        let modalViewController = UserSearch(device: thisDevice)
         modalViewController.modalPresentationStyle = .overCurrentContext
         present(modalViewController, animated: false) {
             print("Completed")

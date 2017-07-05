@@ -63,6 +63,12 @@ class NavAccountView: UIViewController {
         let realm = try! Realm(configuration: configUser)
         let myID = realm.objects(User.self).first?.heepID
         
+        if myID == nil {
+            print("Couldn't grab ID from logged in realm.... logging out")
+            logoutUser()
+            self.reloadView()
+            return
+        }
         
         let realmPublic = try! Realm(configuration: configPublicSync)
         let myUserData = realmPublic.object(ofType: User.self, forPrimaryKey: myID)

@@ -186,4 +186,17 @@ func convertArrayToInt(byteArray: [UInt8], reverse: Bool = false) -> Int {
     return integer
 }
 
+extension Results {
+    
+    func toArray() -> [T] {
+        return self.map{$0}
+    }
+}
+
+extension RealmSwift.List {
+    
+    func toArray() -> [T] {
+        return self.map{$0}
+    }
+}
 
