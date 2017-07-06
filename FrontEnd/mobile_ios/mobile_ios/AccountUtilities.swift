@@ -18,7 +18,7 @@ func initializeApp() {
         logoutOfAllRealmUsers()
         configUser = configGuest
         
-    } else if SyncUser.all.first?.key == "3236896a34becbac18c96a9a24c55de9" {
+    } else if SyncUser.all.first?.key == publicUserKey {
         
         print("Logging out")
         logoutOfAllRealmUsers()
@@ -125,7 +125,7 @@ func queryAllUser() {
 }
 
 func setDefaultPermissionToPublic(publicUser: SyncUser) {
-    let permission = SyncPermissionValue(realmPath: "/3236896a34becbac18c96a9a24c55de9/userDirectory",
+    let permission = SyncPermissionValue(realmPath: "/" + publicUserKey + "/userDirectory",
                                          userID: "*",
                                          accessLevel: .write)
     
