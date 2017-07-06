@@ -10,7 +10,7 @@ import Foundation
 import RealmSwift
 
 func createDeviceRealm(deviceID: Int) {
-    let urlString = "realm://45.55.249.217:9080/~/" + String(deviceID)
+    let urlString = digitalOceanRealm + "/~/" + String(deviceID)
     let syncConfig = SyncConfiguration(user: SyncUser.current!,
                                        realmURL: URL(string: urlString)!)
     let configDevice = Realm.Configuration(syncConfiguration: syncConfig,

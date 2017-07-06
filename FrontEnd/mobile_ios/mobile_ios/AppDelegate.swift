@@ -13,10 +13,11 @@ import UserNotifications
 import CoreLocation
 import FacebookCore
 
-let digitalOceanHTTP = "http://45.55.249.217:9080"
-let digitalOceanRealm = "realm://45.55.249.217:9080"
-let digitalOceamUserRealm = "realm://45.55.249.217:9080/~/heepzone"
-let dititalOceanPublicRealm = "realm://45.55.249.217:9080/3236896a34becbac18c96a9a24c55de9/userDirectory"
+let digitalOceanIP = "45.55.249.217:9080"
+let digitalOceanHTTP = "http://" + digitalOceanIP
+let digitalOceanRealm = "realm://" + digitalOceanIP
+let digitalOceamUserRealm = digitalOceanRealm + "/~/heepzone"
+let dititalOceanPublicRealm = digitalOceanRealm + "/3236896a34becbac18c96a9a24c55de9/userDirectory"
 
 var configGuest = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
 var configUser = configGuest
