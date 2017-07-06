@@ -17,6 +17,8 @@ var configApp = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
 var configUser = Realm.Configuration(fileURL: configApp.fileURL!.deletingLastPathComponent()
     .appendingPathComponent("guest.realm"), deleteRealmIfMigrationNeeded: true)
 
+var SuccessROPReceived = true
+
 protocol AddBeacon {
     func addBeacon(beacon: HeepBeacon)
 }

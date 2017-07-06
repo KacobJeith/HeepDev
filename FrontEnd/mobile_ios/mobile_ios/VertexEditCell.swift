@@ -15,13 +15,17 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     var thisGroup = Group()
     var contextImage = UIImage()
     var controlTags = [Int]()
+    
     var longPressActive = false
     var initialLongPressLocation = CGPoint()
     var startSliderRatio = CGFloat()
+    var lastSlidingValue = Int()
     
     var activeVertexStart = CGPoint()
     var activeVertexFinish = CGPoint()
     var activeVertex = Vertex()
+    
+    var lastSendTime = DispatchTime.init(uptimeNanoseconds: 0)
     
     var vertexDictToDelete = [String : Bool]()
     
@@ -597,11 +601,8 @@ extension VertexEditCell {
         
         myView.transform = myView.transform.rotated(by: gestureRecognizer.rotation * 3)
         
-//        currentRangeContainer.transform = CGAffineTransform(scaleX: 1, y: 1).rotated(by: -thisControl.rotation)
-        
         myView.subviews[0].transform = myView.subviews[0].transform.rotated(by: -gestureRecognizer.rotation * 3)
         
-        print(gestureRecognizer.rotation)
         
         if gestureRecognizer.state == UIGestureRecognizerState.ended {
             saveSelectedSprite()
@@ -622,10 +623,7 @@ extension VertexEditCell {
             
             let maxFingerRange = CGFloat(200.0)
             
-            
             let startingRatioOffset = ( maxFingerRange * startSliderRatio ) - CGFloat( maxFingerRange/2.0 )
-            
-//            print("startingRatioOffset\(startingRatioOffset)")
             
             var offset = (initialLongPressLocation.y - location.y) + CGFloat(maxFingerRange/2.0) + startingRatioOffset
             
@@ -644,23 +642,23 @@ extension VertexEditCell {
             
             let controlUniqueID = thisControl.uniqueID
             
+            let slidingValue = Int( ratio * CGFloat(thisControl.valueHigh - thisControl.valueLow) )
             
-//            if !realm.isInWriteTransaction{
-//                try! realm.write {
-//                    realm.create(DeviceControl.self,
-//                                 value: ["uniqueID": controlUniqueID,
-//                                         "valueCurrent": Int(ratio * CGFloat(thisControl.valueHigh - thisControl.valueLow))],
-//                                 update: true)
-//                }
-//            }
-
-            DispatchQueue.global().async {
-                HeepConnections().sendValueToHeepDevice(uniqueID: controlUniqueID)
+            
+            //timeSince returns false if duration is less than timeInterval specified
+            if ( SuccessROPReceived || !lessThanTimeInterval(start: lastSendTime, end: DispatchTime.now(), timeInterval: 10_000_000) ) && slidingValue != lastSlidingValue {
+                
+                DispatchQueue.global().async(){
+                    HeepConnections().sendValueToHeepDevice(uniqueID: controlUniqueID,
+                                                            currentValue: slidingValue )
+                }
+                SuccessROPReceived = false
+                lastSlidingValue = slidingValue
+                lastSendTime = DispatchTime.now()
             }
-
             
         }
-        
+    
         if gestureRecognizer.state == UIGestureRecognizerState.began {
             
             longPressActive = true

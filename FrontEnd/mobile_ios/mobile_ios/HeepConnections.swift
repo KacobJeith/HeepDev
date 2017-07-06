@@ -8,9 +8,9 @@
 
 import SwiftSocket
 import RealmSwift
+import Foundation
 
 class HeepConnections {
-    
     
     public func SearchForHeepDeviecs() {
         
@@ -29,19 +29,28 @@ class HeepConnections {
         }
     }
     
-    public func sendValueToHeepDevice(uniqueID: Int) {
+    public func sendValueToHeepDevice(uniqueID: Int, currentValue: Int = -1) {
+    
+        var newVal = -1
         let realm = try! Realm(configuration: configUser)
         let activeControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: uniqueID)
         let thisDevice = realm.object(ofType: Device.self, forPrimaryKey: activeControl?.deviceID)
         let thisDeviceIP = thisDevice?.ipAddress
         let thisControl = activeControl?.controlID
-        let newVal = activeControl?.valueCurrent
+        if currentValue == -1 {
+            newVal = (activeControl?.valueCurrent)!
+        }
+        else{
+            newVal = currentValue
+        }
         
-        let message = HAPIMemoryParser().BuildSetValueCOP(controlID: thisControl!, newValue: newVal!)
+        let message = HAPIMemoryParser().BuildSetValueCOP(controlID: thisControl!, newValue: newVal)
         print("Sending: \(message) to Heep Device at to \(thisDeviceIP!)")
         ConnectToHeepDevice(ipAddress: thisDeviceIP!, printErrors: false, message: message)
         
+        
     }
+    
     
     public func sendSetVertexToHeepDevice(activeVertex: Vertex) {
         
@@ -97,6 +106,7 @@ class HeepConnections {
             case .success:
                 guard let data = client.read(1024*10) else { return }
                 HAPIMemoryParser().ParseROP(dump: data, ipAddress: ipAddress)
+                client.close()
             case .failure(let error):
                 if (printErrors) {
                     print(error)

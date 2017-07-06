@@ -85,6 +85,19 @@ func getControlValueRatio(control: DeviceControl) -> CGFloat{
     }
 }
 
+func lessThanTimeInterval(start: DispatchTime, end: DispatchTime, timeInterval: UInt64) -> Bool {
+    let elapsed = end.uptimeNanoseconds - start.uptimeNanoseconds
+    
+    if(elapsed < timeInterval){
+//        print("LESS THAN TIMEINTERVAL")
+        return true
+    }
+    else{
+//        print("GR8R THAN TIMEINTERVAL")
+        return false
+    }
+}
+
 func toggleDevice(control: DeviceControl ) -> Int{
     
     print(control)
