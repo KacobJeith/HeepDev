@@ -13,9 +13,16 @@ import UserNotifications
 import CoreLocation
 import FacebookCore
 
+let digitalOceanHTTP = "http://45.55.249.217:9080"
+let digitalOceanRealm = "realm://45.55.249.217:9080"
+let digitalOceamUserRealm = "realm://45.55.249.217:9080/~/heepzone"
+let dititalOceanPublicRealm = "realm://45.55.249.217:9080/3236896a34becbac18c96a9a24c55de9/userDirectory"
+
 var configGuest = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
 var configUser = configGuest
-var configPublicSync =  Realm.Configuration(syncConfiguration: SyncConfiguration(user: SyncUser.current!, realmURL: URL(string: "realm://45.55.249.217:9080/3236896a34becbac18c96a9a24c55de9/userDirectory")!), objectTypes: [User.self])
+var configPublicSync =  Realm.Configuration(syncConfiguration: SyncConfiguration(user: SyncUser.current!,
+                                                                                 realmURL: URL(string: dititalOceanPublicRealm)!),
+                                            objectTypes: [User.self])
 
 protocol AddBeacon {
     func addBeacon(beacon: HeepBeacon)

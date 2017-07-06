@@ -25,10 +25,9 @@ func initializeApp() {
         configUser = configGuest
         
     } else {
-        configUser = Realm.Configuration(syncConfiguration: SyncConfiguration(user: SyncUser.current!, realmURL: URL(string: "realm://45.55.249.217:9080/~/heepzone")!))
+        configUser = Realm.Configuration(syncConfiguration: SyncConfiguration(user: SyncUser.current!,
+                                                                              realmURL: URL(string: digitalOceamUserRealm)!))
     }
-    
-    //loginToPublicRealm()
     
 }
 
@@ -66,8 +65,8 @@ func seedNewUserAccount(name: String = "Jacob Keith",
 }
 
 func registerNewSyncRealm(username: String, password: String, callback: @escaping () -> Void = {}, newUser: User = User()) {
-    let url = URL(string: "http://45.55.249.217:9080")!
-    let userURL = URL(string: "realm://45.55.249.217:9080/~/heepzone")!
+    let url = URL(string: digitalOceanHTTP)!
+    let userURL = URL(string: digitalOceamUserRealm)!
     
     let registerCredentials =  SyncCredentials.usernamePassword(username: username, password: password, register: true)
     
@@ -92,8 +91,8 @@ func registerNewSyncRealm(username: String, password: String, callback: @escapin
 
 func loginToUserRealmSync(username: String, password: String, callback: @escaping () -> Void = {}) {
     
-    let url = URL(string: "http://45.55.249.217:9080")!
-    let userURL = URL(string: "realm://45.55.249.217:9080/~/heepzone")!
+    let url = URL(string: digitalOceanHTTP)!
+    let userURL = URL(string: digitalOceamUserRealm)!
     let credentials = SyncCredentials.usernamePassword(username: username,
                                                        password: password,
                                                        register: false)
@@ -142,8 +141,8 @@ func setDefaultPermissionToPublic(publicUser: SyncUser) {
 }
 
 func loginToPublicRealm() {
-    let url = URL(string: "http://45.55.249.217:9080")!
-    let userURL = URL(string: "realm://45.55.249.217:9080/~/userDirectory")!
+    let url = URL(string: digitalOceanHTTP)!
+    
     let credentials = SyncCredentials.usernamePassword(username: "public@heep.io",
                                                        password: "public",
                                                        register: false)
