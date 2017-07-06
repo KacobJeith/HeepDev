@@ -1,31 +1,43 @@
 #define ON_PIC
+#define USE_HEEP
+#define DHCP
 
 #include "mcc_generated_files/mcc.h"
 #include "W5500.h"
-#include "../ServerlessFirmware/Heep_API.h"
 #include "DigitalIO.h"
+#include "ioLibrary_Driver-master/Ethernet/socket.h"
+#include "ioLibrary_Driver-master/Internet/DHCP/dhcp.h"
+#include "../ServerlessFirmware/Heep_API.h"
 
 #define TEST_SERVER
+
 
 void TestEEPROM()
 {
      
 }
 
-char deviceName [] = "Flap";
+void WritePICByte(uint8_t byte)
+{
+    SPI1_Exchange8bit(byte);
+}
 
-char controlName0 [] = "Log";
-struct Control control0;
+uint8_t ReadPICByte()
+{
+    uint8_t readByte = SPI1_Exchange8bit(0);
+    return readByte;
+}
 
-char controlName1 [] = "Tor";
-struct Control control1;
+void delay(uint32_t theTime)
+{
+    uint32_t startTime = millis();
+    uint32_t endTime = startTime + theTime;
+    
+    while(millis() < endTime) {}
+}
 
 void main(void)
 {
-    deviceName[0] = 'F'; deviceName[1] = 'l'; deviceName[2] = 'a'; deviceName[3] = 'p';
-    controlName0[0] = 'L'; controlName0[1] = 'o'; controlName0[2] = 'g';
-    controlName1[0] = 'T'; controlName1[1] = 'o'; controlName1[2] = 'r';
-    
     // Initialize the device
     SYSTEM_Initialize();
 
@@ -56,25 +68,172 @@ void main(void)
 
     // Disable the Peripheral Interrupts
     //INTERRUPT_PeripheralInterruptDisable();
-    uint8_t counter = 0; 
-    //TRISA = 0x00;
+
     PinMode(0, output);
     PinMode(1, output);
     DigitalWrite(1, high);
+    DigitalWrite(0, high);
+    
+    uint32_t lastTime = 0;
+    uint32_t interval = 1000;
+    uint8_t lightState = 0;
+    
+    DigitalWrite(0, high);
+    delay(200);
+    DigitalWrite(0, low);
+    delay(200);
+    DigitalWrite(0, high);
+    delay(200);
+    DigitalWrite(0, low);
+    delay(200);
+    DigitalWrite(0, high);
+    delay(200);
+    DigitalWrite(0, low);
+    
+    delay(500);
     
     InitializeW5500();
     
-    if(TestW5500RegisterWriting())
+    WIZCHIP.IF.SPI._write_byte = WritePICByte;
+    WIZCHIP.IF.SPI._read_byte = ReadPICByte;
+    WIZCHIP.CS._select = SetW5500SS;
+    WIZCHIP.CS._deselect = ResetW5500SS;
+        
+    
+#ifdef DHCP
+    
+    uint8_t myMAC [6] = {0, 2, 3, 4, 7, 6};
+    setSHAR(myMAC);
+
+    uint8_t dhcpBuf[200];
+    DHCP_init(0, dhcpBuf);
+      
+    while(1)
     {
-        DigitalWrite(0, high);
-    }
-    else
-    {
-        DigitalWrite(0, low);
+        if(GetMillis() - lastTime > interval)
+        {
+            lastTime = GetMillis();
+            
+            if(lightState)
+            {
+                lightState = 0;
+            }
+            else
+            {
+                lightState = 1;
+            }
+            
+            //DigitalWrite(0, lightState);
+            DHCP_time_handler();
+        }
+        
+        uint8_t dhcpUserState = DHCP_run();
+
+        if(dhcpUserState == DHCP_IP_LEASED)
+        {
+            break;
+        }
     }
     
-    uint8_t myByte = ReadMR();
-    uint8_t anotherByte =  ReadPHYCFGR();
+#else
+    
+    
+    uint8_t myMAC [6] = {0, 2, 3, 4, 7, 6};
+    uint8_t mySub [4] = {255, 255, 255, 0};
+    uint8_t myIP [4] = {192, 168, 0, 186};
+    uint8_t myGateway[4] = {192, 168, 0, 1};
+    
+    setSUBR(mySub);
+    setSHAR(myMAC);
+    setSIPR(myIP);
+    setGAR(myGateway);
+    
+#endif
+    
+    
+    DigitalWrite(0, 0);
+    
+    
+#ifndef USE_HEEP
+    
+    uint8_t destIP [4] = {192, 168, 0, 110};
+    uint8_t recvBuf[200];
+    interval = 500;
+    socket(1, Sn_MR_TCP, 5000, 0);
+    
+#ifdef TEST_SERVER
+    listen(1);
+#endif
+    
+    while(1)
+    {
+        
+        if(millis() - lastTime > interval)
+        {
+            lastTime = millis();
+            
+            if(lightState)
+            {
+                lightState = 0;
+            }
+            else
+            {
+                lightState = 1;
+            }
+            
+            //DigitalWrite(0, lightState);
+            
+#ifndef TEST_SERVER
+            connect(1, destIP, 5000);
+            uint8_t sendBuf [7] = {'W', 'e', 'l', 'c', 'o', 'm', 'e'};
+            send(1, sendBuf, 7);
+            uint16_t curData = DataAvailable(1);
+            if(curData > 0)
+            {
+                recv(1, recvBuf, curData);
+            }
+            close(1);
+            socket(1, Sn_MR_TCP, 5000, 0);
+#endif
+            
+        }
+        
+#ifdef TEST_SERVER
+        uint16_t curData = DataAvailable(1);
+        if(curData > 0)
+        {
+            recv(1, recvBuf, curData);
+            
+            uint8_t sendBuf [7] = {'W', 'e', 'l', 'c', 'o', 'm', 'e'};
+            send(1, sendBuf, 7);
+            
+            socket(1, Sn_MR_TCP, 5000, 0);
+            listen(1);
+        }
+#endif
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+#else
+    
+    char deviceName [] = "Flap";
+
+    char controlName0 [] = "Log";
+    struct Control control0;
+
+    char controlName1 [] = "Tor";
+    struct Control control1;    
     
     deviceIDByte[0] = 0x34;
     deviceIDByte[1] = 0x12;
@@ -107,79 +266,9 @@ void main(void)
     {
         PerformHeepTasks();
         
-        DigitalWrite(1, controlList[0].curValue);
+        DigitalWrite(0, controlList[0].curValue);
     }
   
+    
+#endif
 }
-
-  
-//    
-//#ifdef TEST_SERVER
-//    uint8_t rxBuf[200];
-//    Listen(5000);
-//    
-//#else
-//    uint8_t destIP [4];
-//    destIP[0] = 192;
-//    destIP[1] = 168;
-//    destIP[2] = 0;
-//    destIP[3] = 102;
-//    uint16_t myPort = 5000;
-//    uint8_t destPort[2];
-//    destPort[0] = myPort >> 8;
-//    destPort[1] = myPort & 0xFF;
-//    //LATAbits.LA0 = 0;
-//    ConnectToIP(destIP, destPort);
-//    LATAbits.LA0 = 0;
-//    
-//    uint8_t buf [5];
-//    buf[0] = 'J';
-//    buf[1] = 'a';
-//    buf[2] = 'm';
-//    buf[3] = 'e';
-//    buf[4] = 's';
-//    SendData(buf, 5);
-//#endif
-//    
-//
-//    
-//    while (1)
-//    {
-//        
-//#ifdef TEST_SERVER
-//    uint16_t curData = DataAvailable();
-//    if(curData > 0)
-//    {
-//        LATAbits.LA0 = 0;
-//        ReadData(rxBuf, curData);
-//        uint8_t buf [5];
-//        buf[0] = 'J';
-//        buf[1] = 'a';
-//        buf[2] = 'm';
-//        buf[3] = 'e';
-//        buf[4] = 's';
-//        SendData(buf, 5);
-//        Disconnect();
-//        Listen(5000);
-//        LATAbits.LA0 = 1;
-//    }
-//#endif
-        // Add your application code
-       // LATAbits.LA0 = !LATAbits.LA0;
-        //SPI1_Exchange8bit(counter);
-        //counter++;
-        
-        //if(counter > 9)
-          //  counter = 0;
-        
-//        unsigned long loopValue = 100000;
-//        for(unsigned long i = 0; i < loopValue; i++)
-//        {
-//            Nop();
-//        }
-   // }
-
-
-/**
- End of File
-*/
