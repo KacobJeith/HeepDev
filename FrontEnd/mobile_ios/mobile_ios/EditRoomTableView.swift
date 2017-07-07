@@ -257,7 +257,9 @@ extension EditRoomView {
         let watchControls = realm.objects(DeviceControl.self).filter("place = %@ AND groupsAssigned = 0", thisBSSID)
             
         notificationTokenControls = watchControls.addNotificationBlock {  [weak self] (changes: RealmCollectionChange) in
-                
+            
+            
+            
                 switch changes {
                 case .update:
                     
@@ -292,6 +294,7 @@ extension EditRoomView {
         
         notificationTokenGroup = watchGroup.addNotificationBlock { changes in
             /* results available asynchronously here */
+            
             switch changes {
             case .change:
                 

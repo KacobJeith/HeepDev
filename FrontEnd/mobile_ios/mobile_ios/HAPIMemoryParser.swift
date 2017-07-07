@@ -109,6 +109,7 @@ class HAPIMemoryParser {
         else if ( dump[0] == 0x10){
             // Success ROP
             print("Detected Success ROP")
+            SuccessROPReceived = true
         }
         else if ( dump[0] == 0x11){
             // Error ROP
