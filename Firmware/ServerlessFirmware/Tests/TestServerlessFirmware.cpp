@@ -9,6 +9,7 @@ int main(void)
 
 	TestDynamicMemory();
 	TestActionAndResponseOpCodes();
+	TestHeepAPI();
 
 	return 0;
 }

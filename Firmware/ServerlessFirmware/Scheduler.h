@@ -41,10 +41,12 @@ unsigned char IsTaskTime()
 		lastMillis = GetMillis();
 		return 1;
 	}
-	else
+	else if( lastMillis > GetMillis() )
 	{
-		return 0;
+		lastMillis = 0; // Up to one Task interval of error may be introduced, but that is no issue for current scheduling
 	}
+
+	return 0;
 }
 
 unsigned char GetCurrentTask()
