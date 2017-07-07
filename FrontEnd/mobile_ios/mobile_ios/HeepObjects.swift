@@ -13,6 +13,7 @@ import RealmSwift
 class User: Object {
     
     dynamic var heepID: Int = 0
+    dynamic var realmKey: String = ""
     dynamic var facebookID: Int = 0
     dynamic var name: String = "guest"
     dynamic var email: String = ""
@@ -23,6 +24,17 @@ class User: Object {
         return "heepID"
     }
     
+}
+
+// Device Realm
+class Key: Object {
+    dynamic var accessCode: Int = 0
+    dynamic var publicKey: Int = 0
+    dynamic var type: Int = 0
+    
+    override static func primaryKey() -> String? {
+        return "type"
+    }
 }
 
 // User Realm

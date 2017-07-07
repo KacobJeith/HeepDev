@@ -43,7 +43,7 @@ class NavAccountView: UIViewController {
             self.view.addSubview(loginView())
             
         } else {
-            self.view.addSubview(alreadyLoggedInView())
+            attemptToRender()
         }
     }
     
@@ -59,7 +59,42 @@ class NavAccountView: UIViewController {
         self.viewDidLoad()
     }
     
+    func attemptToRender() {
+        let realm = try! Realm(configuration: configUser)
+        let myID = realm.objects(User.self).first?.heepID
+        
+        if myID == nil {
+            print("Couldn't grab ID from logged in realm.... logging out")
+            logoutUser()
+            self.reloadView()
+            return
+        }
+        
+        let realmPublic = try! Realm(configuration: configPublicSync)
+        let myUserData = realmPublic.object(ofType: User.self, forPrimaryKey: myID)
+       
+        
+        let loginGroup = DispatchGroup()
+        loginGroup.enter()
+        
+        DispatchQueue.global(qos: .default).sync {
+            if myUserData == nil {
+                seedNewUserAccount(heepID: myID!,
+                                   callback: { loginGroup.leave() },
+                                   repair: true)
+            } else {
+                loginGroup.leave()
+            }
+        }
+        
+        loginGroup.wait()
+        
+        self.view.addSubview(alreadyLoggedInView())
+    }
+    
 }
+
+// Already Logged in View 
 
 extension NavAccountView {
     func alreadyLoggedInView() -> UIView {
@@ -78,19 +113,22 @@ extension NavAccountView {
     
     func userIconView() -> (view: UIView, frame: CGRect) {
         let iconDiameter = self.view.frame.width / 5
-    
+        let realm = try! Realm(configuration: configUser)
+        let myID = realm.objects(User.self).first?.heepID
+
         let frame = CGRect(x: (self.view.frame.width / 2) - (iconDiameter / 2),
                            y: (iconDiameter / 4),
                            width: iconDiameter,
                            height: iconDiameter)
 
         let containerView = UIView(frame: frame)
+        containerView.clipsToBounds = true
         containerView.layer.cornerRadius = containerView.frame.width / 2
         containerView.layer.borderColor = UIColor.lightGray.cgColor
         containerView.layer.borderWidth = 1
         
         let iconView = UIImageView(frame: containerView.bounds)
-        iconView.image = #imageLiteral(resourceName: "male")
+        iconView.image = myImage(userID: myID!)
         iconView.contentMode = .scaleAspectFit
         
         containerView.addSubview(iconView)
@@ -298,7 +336,7 @@ extension NavAccountView {
                 alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.cancel, handler: { action in
                     self.exitView()
                 }))
-                present(alert, animated: true, completion: nil)
+                present(alert, animated: false, completion: nil)
             } else {
                 let alert = UIAlertController(title: "Alert",
                                               message: "Could Not find Realm. Would you like to register a new account using these credentials?",
@@ -307,7 +345,6 @@ extension NavAccountView {
                     
                     let inputResults = self.extractInputValues()
                     seedNewUserAccount(name: "Jacob Keith",
-                                       id: "1000",
                                        email: inputResults.email,
                                        password: inputResults.password)
                     
@@ -317,7 +354,7 @@ extension NavAccountView {
                 alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: { action in
                     self.exitView()
                 }))
-                present(alert, animated: true, completion: nil)
+                present(alert, animated: false, completion: nil)
             }
         }
         
@@ -346,7 +383,7 @@ extension NavAccountView {
     }
     
     func exitView() {
-        self.navigationController?.popViewController(animated: true)
+        self.navigationController?.popViewController(animated: false)
 
     }
     
