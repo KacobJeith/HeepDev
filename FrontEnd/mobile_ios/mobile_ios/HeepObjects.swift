@@ -28,7 +28,7 @@ class User: Object {
 
 // Device Realm
 class Key: Object {
-    dynamic var secretKey: Int = 0
+    dynamic var accessCode: Int = 0
     dynamic var publicKey: Int = 0
     dynamic var type: Int = 0
     

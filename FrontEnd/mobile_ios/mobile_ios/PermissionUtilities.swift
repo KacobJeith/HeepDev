@@ -20,7 +20,7 @@ func createDeviceRealm(deviceID: Int) {
     
     let newDeviceKey = Key()
     newDeviceKey.publicKey = deviceID
-    newDeviceKey.secretKey = randomNumber(inRange: 0...4000000000)
+    newDeviceKey.accessCode = randomNumber(inRange: 0...4000000000)
     
     try! realm.write {
         realm.add(newDeviceKey, update: true)
