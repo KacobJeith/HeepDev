@@ -16,9 +16,16 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     var contextImage = UIImage()
     var controlTags = [Int]()
     
+    var longPressActive = false
+    var initialLongPressLocation = CGPoint()
+    var startSliderRatio = CGFloat()
+    var lastSlidingValue = Int()
+    
     var activeVertexStart = CGPoint()
     var activeVertexFinish = CGPoint()
     var activeVertex = Vertex()
+    
+    var lastSendTime = DispatchTime.init(uptimeNanoseconds: 0)
     
     var vertexDictToDelete = [String : Bool]()
     
@@ -165,9 +172,13 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
                                                  action: #selector(handlePinch))
             let rotate = UIRotationGestureRecognizer(target: self,
                                                      action: #selector(handleRotation))
+            let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
+            
             pinch.delegate = self
             rotate.delegate = self
             pan.delegate = self
+            longPress.delegate = self
+            cell.addGestureRecognizer(longPress)
             cell.addGestureRecognizer(pan)
             cell.addGestureRecognizer(pinch)
             cell.addGestureRecognizer(rotate)
@@ -500,8 +511,16 @@ extension VertexEditCell {
 
 extension VertexEditCell {
     
+    func handlePan(gestureRecognizer: UIPanGestureRecognizer){
+        if longPressActive{
+//            print("adjusting range")
+        }
+        else{
+            translateSpritePosition(gestureRecognizer: gestureRecognizer)
+        }
+    }
     
-    func handlePan(gestureRecognizer: UIPanGestureRecognizer) {
+    func translateSpritePosition(gestureRecognizer: UIPanGestureRecognizer) {
         let translation = gestureRecognizer.translation(in: self)
         let myView = self.viewWithTag(thisGroup.selectedControl)!
         myView.center.x += translation.x
@@ -582,12 +601,99 @@ extension VertexEditCell {
         
         myView.transform = myView.transform.rotated(by: gestureRecognizer.rotation * 3)
         
+        myView.subviews[0].transform = myView.subviews[0].transform.rotated(by: -gestureRecognizer.rotation * 3)
+        
+        
         if gestureRecognizer.state == UIGestureRecognizerState.ended {
             saveSelectedSprite()
         }
         
         gestureRecognizer.rotation = 0
     }
+    
+    func handleLongPress(gestureRecognizer: UILongPressGestureRecognizer) {
+        var ratio = CGFloat(0.5)
+        
+        let realm = try! Realm(configuration: configUser)
+        let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl)!
+        
+        if longPressActive == true{
+            let myView = self.viewWithTag(thisGroup.selectedControl)!
+            let location = gestureRecognizer.location(in: gestureRecognizer.view)
+            
+            let maxFingerRange = CGFloat(200.0)
+            
+            let startingRatioOffset = ( maxFingerRange * startSliderRatio ) - CGFloat( maxFingerRange/2.0 )
+            
+            var offset = (initialLongPressLocation.y - location.y) + CGFloat(maxFingerRange/2.0) + startingRatioOffset
+            
+            if offset > maxFingerRange{
+                offset = maxFingerRange
+            }
+            else if offset < 0{
+                offset = 0
+            }
+            
+            ratio = offset / maxFingerRange
+            
+            let yTransform = 60 * (1.0-ratio)
+        
+            myView.subviews[0].subviews[0].frame = CGRect(x: 0, y: yTransform, width: 60, height: 60)
+            
+            let controlUniqueID = thisControl.uniqueID
+            
+            let slidingValue = Int( ratio * CGFloat(thisControl.valueHigh - thisControl.valueLow) )
+            
+            
+            //timeSince returns false if duration is less than timeInterval specified
+            if ( SuccessROPReceived || !lessThanTimeInterval(start: lastSendTime, end: DispatchTime.now(), timeInterval: 10_000_000) ) && slidingValue != lastSlidingValue {
+                
+                DispatchQueue.global().async(){
+                    HeepConnections().sendValueToHeepDevice(uniqueID: controlUniqueID,
+                                                            currentValue: slidingValue )
+                }
+                SuccessROPReceived = false
+                lastSlidingValue = slidingValue
+                lastSendTime = DispatchTime.now()
+            }
+            
+        }
+    
+        if gestureRecognizer.state == UIGestureRecognizerState.began {
+            
+            longPressActive = true
+            
+            startSliderRatio = 1.0 - getControlValueRatio(control: thisControl)
+            initialLongPressLocation = gestureRecognizer.location(in: gestureRecognizer.view)
+
+            print("BEGIN LONG PRESS!")
+        }
+        else if gestureRecognizer.state == UIGestureRecognizerState.ended {
+            let controlUniqueID = thisControl.uniqueID
+            
+            try! realm.write {
+                realm.create(DeviceControl.self,
+                             value: ["uniqueID": controlUniqueID,
+                                     "valueCurrent": Int(ratio * CGFloat(thisControl.valueHigh - thisControl.valueLow))],
+                             update: true)
+            }
+            
+            DispatchQueue.global().async {
+                HeepConnections().sendValueToHeepDevice(uniqueID: controlUniqueID)
+            }
+            
+            
+            saveSelectedSprite()
+            
+            // delay for 0.1 seconds to prevent sprite translation from kicking in
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
+                self.longPressActive = false
+                print("END LONG PRESS!")
+            }
+        }
+        
+    }
+
 
 }
 
@@ -711,7 +817,9 @@ extension VertexEditCell {
         
         
         let controlSprite = UIImageView()
-        let iconName = SuggestIconFromName(name: thisControl.controlName)
+        let iconName = SuggestIconFromName(name: thisControl.controlName,
+                                           state: thisControl.valueCurrent,
+                                           lowVal: thisControl.valueLow)
         let image = UIImage(named: iconName) as UIImage?
         controlSprite.image = image
         controlSprite.contentMode = .scaleAspectFit
@@ -721,10 +829,25 @@ extension VertexEditCell {
                                      y: startPosition,
                                      width: scaledSize,
                                      height: scaledSize)
+        
+        let currentRangeContainer = UIView(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
+//        print(thisControl)
+
+        let currentRange = UIView(frame: CGRect(x: 0, y: getControlValueRatio(control: thisControl) * 60, width: 60, height: 60))
+        currentRange.backgroundColor = UIColor.green.withAlphaComponent(0.5)
+        
+        currentRangeContainer.transform = CGAffineTransform(scaleX: 1, y: 1).rotated(by: -thisControl.rotation)
+        
+        currentRangeContainer.addSubview(currentRange)
+        
+        container.addSubview(currentRangeContainer)
+        
         container.addSubview(controlSprite)
         
         
         container.transform = CGAffineTransform(scaleX: thisControl.scale, y: thisControl.scale).rotated(by: thisControl.rotation)
+        
+        
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(selectThisController))
         
@@ -734,10 +857,34 @@ extension VertexEditCell {
     }
     
     func selectThisController(gesture: UITapGestureRecognizer) {
-        print((gesture.view?.tag)!)
+//        print((gesture.view?.tag)!)
+        if thisGroup.selectedControl == (gesture.view?.tag)!{
+            toggleOnOff(controlUniqueID: (gesture.view?.tag)!)
+        }
+        else{
+            let realm = try! Realm(configuration: configUser)
+            try! realm.write {
+                thisGroup.selectedControl = (gesture.view?.tag)!
+            }
+        }
+        
+    }
+    
+    func toggleOnOff(controlUniqueID: Int){
+        
         let realm = try! Realm(configuration: configUser)
+        
+        let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: controlUniqueID)
+        
         try! realm.write {
-            thisGroup.selectedControl = (gesture.view?.tag)!
+            realm.create(DeviceControl.self,
+                         value: ["uniqueID": controlUniqueID,
+                                 "valueCurrent": toggleDevice(control: thisControl!)],
+                         update: true)
+        }
+        
+        DispatchQueue.global().async {
+            HeepConnections().sendValueToHeepDevice(uniqueID: controlUniqueID)
         }
         
     }

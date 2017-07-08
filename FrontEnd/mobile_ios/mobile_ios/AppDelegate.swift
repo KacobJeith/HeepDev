@@ -26,6 +26,8 @@ var configPublicSync =  Realm.Configuration(syncConfiguration: SyncConfiguration
                                                                                  realmURL: URL(string: dititalOceanPublicRealm)!),
                                             objectTypes: [User.self])
 
+var SuccessROPReceived = true
+
 protocol AddBeacon {
     func addBeacon(beacon: HeepBeacon)
 }

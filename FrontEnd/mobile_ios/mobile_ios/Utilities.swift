@@ -22,7 +22,7 @@ func flushApp() {
     
 }
 
-func SuggestIconFromName(name: String) -> String {
+func SuggestIconFromName(name: String, state: Int = -1, lowVal: Int = 0) -> String {
     var suggestion = "switch"
     
     if ( name.lowercased().range(of: "outlet") != nil){
@@ -37,7 +37,14 @@ func SuggestIconFromName(name: String) -> String {
         name.lowercased().range(of: "green") != nil ||
         name.lowercased().range(of: "blue") != nil ||
         name.lowercased().range(of: "LED") != nil) {
-        suggestion = "light_on"
+
+        if state == lowVal{
+            suggestion = "light_off"
+        }
+        else {
+            suggestion = "light_on"
+        }
+        
     }
     
     if ( name.lowercased().range(of: "switch") != nil){
@@ -46,6 +53,56 @@ func SuggestIconFromName(name: String) -> String {
     
     return suggestion
 }
+
+func getControlValueRatio(control: DeviceControl) -> CGFloat{
+    if control.controlType == 0{
+        return CGFloat(control.valueCurrent)
+    }
+    else{
+        let ratio = CGFloat(control.valueHigh - control.valueCurrent) / CGFloat( control.valueHigh - control.valueLow)
+        return ratio
+    }
+}
+
+func lessThanTimeInterval(start: DispatchTime, end: DispatchTime, timeInterval: UInt64) -> Bool {
+    let elapsed = end.uptimeNanoseconds - start.uptimeNanoseconds
+    
+    if(elapsed < timeInterval){
+//        print("LESS THAN TIMEINTERVAL")
+        return true
+    }
+    else{
+//        print("GR8R THAN TIMEINTERVAL")
+        return false
+    }
+}
+
+func toggleDevice(control: DeviceControl ) -> Int{
+    
+    print(control)
+    
+    //If control type is a switch or binary on/off
+    if control.controlType == 0{
+        return 1 - control.valueCurrent
+    }
+    
+    //We should add some concept of maintaining the ranges previous brightness level
+    
+    //if its a range, we need to figure out if its closer to all on or off
+    let ratio = CGFloat( control.valueCurrent - control.valueLow ) / CGFloat( control.valueHigh - control.valueLow )
+    
+
+    print("Range Ratio = \(ratio)")
+    
+    if ratio >= 0.5 {
+        return control.valueLow
+    }
+    else{
+        return control.valueHigh
+    }
+    
+}
+
 
 func getRandomColor() -> UIColor{
     //Generate between 0 to 1
