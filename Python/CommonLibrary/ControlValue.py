@@ -11,7 +11,7 @@ class ControlValue:
 	#Controls
 	ControlValueType = Range
 	ControlDirection = Input
-	HighValue = 10
+	HighValue = 150
 	LowValue = 0
 	CurCtrlValue = 0
 	ControlName = 'None'

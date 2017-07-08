@@ -109,18 +109,29 @@ func toggleDevice(control: DeviceControl ) -> Int{
     
     //We should add some concept of maintaining the ranges previous brightness level
     
-    //if its a range, we need to figure out if its closer to all on or off
-    let ratio = CGFloat( control.valueCurrent - control.valueLow ) / CGFloat( control.valueHigh - control.valueLow )
+    print(control.lastOnValue)
     
-
-    print("Range Ratio = \(ratio)")
-    
-    if ratio >= 0.5 {
+    if control.valueCurrent != control.valueLow {
         return control.valueLow
     }
     else{
-        return control.valueHigh
+        return control.lastOnValue
     }
+    
+    
+    
+    //if its a range, we need to figure out if its closer to all on or off
+//    let ratio = CGFloat( control.valueCurrent - control.valueLow ) / CGFloat( control.valueHigh - control.valueLow )
+//    
+//
+//    print("Range Ratio = \(ratio)")
+//    
+//    if ratio >= 0.5 {
+//        return control.valueLow
+//    }
+//    else{
+//        return control.valueHigh
+//    }
     
 }
 

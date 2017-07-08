@@ -37,6 +37,11 @@ class HeepConnections {
         let thisDevice = realm.object(ofType: Device.self, forPrimaryKey: activeControl?.deviceID)
         let thisDeviceIP = thisDevice?.ipAddress
         let thisControl = activeControl?.controlID
+        
+        if currentValue > (activeControl?.valueLow)! {
+//            activeControl?.lastOnValue = currentValue
+        }
+        
         if currentValue == -1 {
             newVal = (activeControl?.valueCurrent)!
         }
