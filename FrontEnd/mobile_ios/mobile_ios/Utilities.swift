@@ -29,15 +29,13 @@ func SuggestIconFromName(name: String, state: Int = -1, lowVal: Int = 0) -> Stri
         suggestion = "outlet"
     }
     
+    
     if (name.lowercased().range(of: "light") != nil ||
         name.lowercased().range(of: "bulb") != nil ||
         name.lowercased().range(of: "relay") != nil ||
         name.lowercased().range(of: "dimmer") != nil ||
-        name.lowercased().range(of: "red") != nil ||
-        name.lowercased().range(of: "green") != nil ||
-        name.lowercased().range(of: "blue") != nil ||
         name.lowercased().range(of: "LED") != nil) {
-
+        
         if state == lowVal{
             suggestion = "light_off"
         }
@@ -47,12 +45,41 @@ func SuggestIconFromName(name: String, state: Int = -1, lowVal: Int = 0) -> Stri
         
     }
     
+    if name.lowercased().range(of: "red") != nil {
+        suggestion = "red_icon"
+    }
+    if name.lowercased().range(of: "green") != nil {
+        suggestion = "green_icon"
+    }
+    if name.lowercased().range(of: "blue") != nil {
+        suggestion = "blue_icon"
+    }
+    
     if ( name.lowercased().range(of: "switch") != nil){
         suggestion = "switch"
     }
     
     return suggestion
 }
+
+
+func SuggestColorFromName(name: String) -> UIColor {
+    var suggestion = UIColor(colorLiteralRed: 1.0, green: 0.93, blue: 0.26, alpha: 1.0)
+
+    
+    if name.lowercased().range(of: "red") != nil {
+        suggestion = UIColor.red
+    }
+    if name.lowercased().range(of: "green") != nil {
+        suggestion = UIColor.green
+    }
+    if name.lowercased().range(of: "blue") != nil {
+        suggestion = UIColor.blue
+    }
+    
+    return suggestion
+}
+
 
 func getControlValueRatio(control: DeviceControl) -> CGFloat{
     if control.controlType == 0{

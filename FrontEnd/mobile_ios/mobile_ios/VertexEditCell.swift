@@ -833,7 +833,8 @@ extension VertexEditCell {
         let currentRangeContainer = UIView(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
 
         let currentRange = UIView(frame: CGRect(x: 0, y: getControlValueRatio(control: thisControl) * 60, width: 60, height: 60))
-        currentRange.backgroundColor = UIColor.green.withAlphaComponent(0.5)
+        
+        currentRange.backgroundColor = SuggestColorFromName(name: thisControl.controlName).withAlphaComponent(0.5)
         
         currentRangeContainer.transform = applyTransform ? CGAffineTransform(scaleX: 1, y: 1).rotated(by: -thisControl.rotation) : CGAffineTransform(scaleX: 1, y: 1)
         
