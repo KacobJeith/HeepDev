@@ -872,6 +872,7 @@ extension VertexEditCell {
                                   y: 0,
                                   width: 10,
                                   height: 10)
+        infoButton.tintColor = .blue
         
         infoButton.addTarget(self, action: #selector(openDetail), for: .primaryActionTriggered)
         
