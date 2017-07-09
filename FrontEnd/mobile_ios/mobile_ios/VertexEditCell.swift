@@ -120,23 +120,6 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         cell.tag = 1
         
         
-        for eachControl in controls {
-            
-            for eachVertex in eachControl.vertexList {
-                
-                let vertexLayer = drawVertex(vertex: eachVertex)
-                //print("Adding Vertex \(String(describing: eachVertex.rx?.controlName))")
-                cell.layer.addSublayer(vertexLayer)
-            }
-            
-            
-            let controlSprite = addControlSprite(cell: cell, thisControl: eachControl)
-            
-            cell.addSubview(controlSprite)
-            
-            
-        }
-        
         if self.thisGroup.selectedControl == 0 {
             
             self.collectionView.isScrollEnabled = true
@@ -185,6 +168,23 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
             cell.addSubview(addDetailButton())
         }
         
+        for eachControl in controls {
+            
+            for eachVertex in eachControl.vertexList {
+                
+                let vertexLayer = drawVertex(vertex: eachVertex)
+                //print("Adding Vertex \(String(describing: eachVertex.rx?.controlName))")
+                cell.layer.addSublayer(vertexLayer)
+            }
+            
+            
+            let controlSprite = addControlSprite(cell: cell, thisControl: eachControl)
+            
+            cell.addSubview(controlSprite)
+            
+            
+        }
+        
         return cell
     }
     
@@ -205,8 +205,6 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     }
     
 }
-
-// Editing Vertexes (thisGroup.selectedControl == 1)
 
 extension VertexEditCell {
     
@@ -864,14 +862,14 @@ extension VertexEditCell {
             return UIView()
         }
         
-        let infoContainer = UIView(frame: CGRect(x: thisControl.editX + 20,
+        let infoContainer = UIView(frame: CGRect(x: thisControl.editX - 30,
                                                  y: thisControl.editY - 30,
                                                  width: 60, height: 60))
         
         let infoButton = UIButton(type: .detailDisclosure)
         
-        infoButton.frame = CGRect(x: 40,
-                                  y: 10,
+        infoButton.frame = CGRect(x: 50,
+                                  y: 0,
                                   width: 10,
                                   height: 10)
         
@@ -886,7 +884,7 @@ extension VertexEditCell {
     
     
     func selectThisController(gesture: UITapGestureRecognizer) {
-//        print((gesture.view?.tag)!)
+
         if thisGroup.selectedControl == (gesture.view?.tag)!{
             print("TOGGLING")
             toggleOnOff(controlUniqueID: (gesture.view?.tag)!)

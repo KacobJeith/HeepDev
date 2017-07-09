@@ -257,14 +257,9 @@ extension EditRoomView {
         let query = NSCompoundPredicate(type: .and, subpredicates: [NSPredicate(format: "place = '\(thisBSSID)'"),
                                                                     NSPredicate(format: "groupsAssigned = \(thisGroup.id)")])
 
-        //let watchControls = realm.objects(DeviceControl.self).filter("place = %@ AND groupsAssigned = %@", thisBSSID, thisGroup.id)
         let watchControls = realm.objects(DeviceControl.self).filter(query)
-        print(query)
-        print("WATCHING \(watchControls)")
+
         notificationTokenControls = watchControls.addNotificationBlock {  [weak self] (changes: RealmCollectionChange) in
-            
-            
-            print("DETECTED CONTROL CHANGE")
             
                 switch changes {
                 case .update:
