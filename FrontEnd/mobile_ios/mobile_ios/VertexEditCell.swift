@@ -799,7 +799,7 @@ extension VertexEditCell {
         return UIImage(data: thisGroup.imageData as Data)
     }
     
-    func addControlSprite(cell: UICollectionViewCell, thisControl: DeviceControl) -> UIView {
+    func addControlSprite(cell: UICollectionViewCell, thisControl: DeviceControl, applyTransform: Bool = true) -> UIView {
         controlIDs.append(thisControl.uniqueID)
         
         let container = UIView()
@@ -831,12 +831,11 @@ extension VertexEditCell {
                                      height: scaledSize)
         
         let currentRangeContainer = UIView(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
-//        print(thisControl)
 
         let currentRange = UIView(frame: CGRect(x: 0, y: getControlValueRatio(control: thisControl) * 60, width: 60, height: 60))
         currentRange.backgroundColor = UIColor.green.withAlphaComponent(0.5)
         
-        currentRangeContainer.transform = CGAffineTransform(scaleX: 1, y: 1).rotated(by: -thisControl.rotation)
+        currentRangeContainer.transform = applyTransform ? CGAffineTransform(scaleX: 1, y: 1).rotated(by: -thisControl.rotation) : CGAffineTransform(scaleX: 1, y: 1)
         
         currentRangeContainer.addSubview(currentRange)
         
@@ -845,7 +844,7 @@ extension VertexEditCell {
         container.addSubview(controlSprite)
         
         
-        container.transform = CGAffineTransform(scaleX: thisControl.scale, y: thisControl.scale).rotated(by: thisControl.rotation)
+        container.transform = applyTransform ? CGAffineTransform(scaleX: thisControl.scale, y: thisControl.scale).rotated(by: thisControl.rotation) : CGAffineTransform(scaleX: 1, y: 1)
         
         
         
@@ -856,9 +855,19 @@ extension VertexEditCell {
         return container
     }
     
+    func addDetailButton(frame: CGRect) -> UIView {
+        let infoButton = UIButton(type: .detailDisclosure)
+        infoButton.frame = frame
+        infoButton.addTarget(self, action: #selector(openDetail), for: .primaryActionTriggered)
+        
+        return infoButton
+    }
+    
+    
     func selectThisController(gesture: UITapGestureRecognizer) {
 //        print((gesture.view?.tag)!)
         if thisGroup.selectedControl == (gesture.view?.tag)!{
+            print("TOGGLING")
             toggleOnOff(controlUniqueID: (gesture.view?.tag)!)
         }
         else{

@@ -32,6 +32,7 @@
 		B010B6051F0448A200363CAB /* AccountUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B010B6041F0448A200363CAB /* AccountUtilities.swift */; };
 		B010B6071F057C0B00363CAB /* PermissionUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B010B6061F057C0B00363CAB /* PermissionUtilities.swift */; };
 		B010B6091F06D9CC00363CAB /* UserSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = B010B6081F06D9CA00363CAB /* UserSearch.swift */; };
+		B027DFD01F11C0F200270C26 /* ContextWho.swift in Sources */ = {isa = PBXBuildFile; fileRef = B027DFCF1F11C0F200270C26 /* ContextWho.swift */; };
 		B06DE4431EEA2B2E00680A35 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B06DE4421EEA2B2E00680A35 /* Security.framework */; };
 		B0F6B8421F06EEF40054E07D /* UserCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F6B8411F06EEF40054E07D /* UserCard.swift */; };
 		D7A8C048C69A2C379A20948F /* Pods_mobile_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 321E9915FF90A4E39B163211 /* Pods_mobile_ios.framework */; };
@@ -91,6 +92,7 @@
 		B010B6041F0448A200363CAB /* AccountUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountUtilities.swift; sourceTree = "<group>"; };
 		B010B6061F057C0B00363CAB /* PermissionUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PermissionUtilities.swift; sourceTree = "<group>"; };
 		B010B6081F06D9CA00363CAB /* UserSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSearch.swift; sourceTree = "<group>"; };
+		B027DFCF1F11C0F200270C26 /* ContextWho.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextWho.swift; sourceTree = "<group>"; };
 		B06DE4421EEA2B2E00680A35 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		B0F6B8411F06EEF40054E07D /* UserCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCard.swift; sourceTree = "<group>"; };
 		B7918E77C7C5DB9DEBC8629A /* Pods-mobile_iosUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mobile_iosUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-mobile_iosUITests/Pods-mobile_iosUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -163,6 +165,7 @@
 				1005B8DA1ECB47CD00414F8E /* EditRoomTableView.swift */,
 				1005B8E21ECB7C5B00414F8E /* UnassignedControlCollection.swift */,
 				1005B8E41ECC8C9900414F8E /* VertexEditCell.swift */,
+				B027DFCF1F11C0F200270C26 /* ContextWho.swift */,
 				1005B8E81ECE2A0C00414F8E /* GroupControlEdit.swift */,
 				EEA944221EAA93950022588B /* HeepConnections.swift */,
 				EEA944201EAA7D880022588B /* HAPIMemoryParser.swift */,
@@ -523,6 +526,7 @@
 				103FE2851EC373830033D021 /* DeviceSummaryView.swift in Sources */,
 				EEA944231EAA93950022588B /* HeepConnections.swift in Sources */,
 				1005B8E71ECDB99100414F8E /* GroupCollectionView.swift in Sources */,
+				B027DFD01F11C0F200270C26 /* ContextWho.swift in Sources */,
 				B010B6011F01428D00363CAB /* NavAccountView.swift in Sources */,
 				101D2F631EA968230074D807 /* AppDelegate.swift in Sources */,
 				1005B8E91ECE2A0C00414F8E /* GroupControlEdit.swift in Sources */,
