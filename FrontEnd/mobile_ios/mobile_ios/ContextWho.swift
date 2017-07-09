@@ -10,6 +10,6 @@ import UIKit
 
 extension VertexEditCell {
     func openDetail() {
-        
+        print("WHO")
     }
 }

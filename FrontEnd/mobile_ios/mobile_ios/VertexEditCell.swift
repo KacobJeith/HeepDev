@@ -182,7 +182,7 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
             cell.addGestureRecognizer(pan)
             cell.addGestureRecognizer(pinch)
             cell.addGestureRecognizer(rotate)
-
+            cell.addSubview(addDetailButton())
         }
         
         return cell
@@ -578,6 +578,7 @@ extension VertexEditCell {
         gestureRecognizer.setTranslation(CGPoint(), in: self)
         
         if gestureRecognizer.state == UIGestureRecognizerState.ended {
+            print("End")
             saveSelectedSprite()
         }
     }
@@ -856,12 +857,31 @@ extension VertexEditCell {
         return container
     }
     
-    func addDetailButton(frame: CGRect) -> UIView {
+    func addDetailButton() -> UIView {
+        let realm = try! Realm(configuration: configUser)
+        
+        guard let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl) else {
+            return UIView()
+        }
+        
+        let infoContainer = UIView(frame: CGRect(x: thisControl.editX + 20,
+                                                 y: thisControl.editY - 30,
+                                                 width: 60, height: 60))
+        
         let infoButton = UIButton(type: .detailDisclosure)
-        infoButton.frame = frame
+        
+        infoButton.frame = CGRect(x: 40,
+                                  y: 10,
+                                  width: 10,
+                                  height: 10)
+        
         infoButton.addTarget(self, action: #selector(openDetail), for: .primaryActionTriggered)
         
-        return infoButton
+        infoContainer.addSubview(infoButton)
+        
+        infoContainer.transform = CGAffineTransform(scaleX: thisControl.scale, y: thisControl.scale)
+        
+        return infoContainer
     }
     
     
