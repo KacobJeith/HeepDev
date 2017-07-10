@@ -26,18 +26,6 @@
         <itemPath>ioLibrary_Driver-master/Internet/DHCP/dhcp.h</itemPath>
       </logicalFolder>
       <logicalFolder name="Ethernet" displayName="Ethernet" projectFiles="true">
-        <logicalFolder name="W5100" displayName="W5100" projectFiles="true">
-          <itemPath>ioLibrary_Driver-master/Ethernet/W5100/w5100.c</itemPath>
-          <itemPath>ioLibrary_Driver-master/Ethernet/W5100/w5100.h</itemPath>
-        </logicalFolder>
-        <logicalFolder name="W5200" displayName="W5200" projectFiles="true">
-          <itemPath>ioLibrary_Driver-master/Ethernet/W5200/w5200.c</itemPath>
-          <itemPath>ioLibrary_Driver-master/Ethernet/W5200/w5200.h</itemPath>
-        </logicalFolder>
-        <logicalFolder name="W5300" displayName="W5300" projectFiles="true">
-          <itemPath>ioLibrary_Driver-master/Ethernet/W5300/w5300.c</itemPath>
-          <itemPath>ioLibrary_Driver-master/Ethernet/W5300/w5300.h</itemPath>
-        </logicalFolder>
         <logicalFolder name="W5500" displayName="W5500" projectFiles="true">
           <itemPath>ioLibrary_Driver-master/Ethernet/W5500/w5500.c</itemPath>
           <itemPath>ioLibrary_Driver-master/Ethernet/W5500/w5500.h</itemPath>
