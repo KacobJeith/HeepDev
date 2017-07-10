@@ -39,7 +39,7 @@ class PlacesView: UIViewController {
                 
         self.navigationItem.rightBarButtonItem = getActiveUserIcon()
         
-        self.toolbarItems = [flush, spacer,  search, spacer]
+        self.toolbarItems = [spacer,  search, spacer]
 
         addPlaces()
         //self.searchForHeepDevices()

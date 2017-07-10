@@ -103,6 +103,7 @@ class EditRoomView: UITableViewController {
                                       thisGroup: thisGroup,
                                       indexPath: indexPath)
             
+            cell.parentTable = self
             
             cell.addSubview(drawVertexToggleButton())
             
