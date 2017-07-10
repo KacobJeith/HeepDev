@@ -241,7 +241,6 @@ class HAPIMemoryParser {
                 existingControl?.valueLow = Int(dump[index + 3])
                 existingControl?.valueHigh = Int(dump[index + 4])
                 existingControl?.valueCurrent = Int(dump[index + 5])
-                existingControl?.lastOnValue = Int(dump[index + 6])
                 existingControl?.controlName = controlName
                 existingControl?.place = currentWifi.bssid
             }
@@ -256,7 +255,6 @@ class HAPIMemoryParser {
             newControl.valueLow = Int(dump[index + 3])
             newControl.valueHigh = Int(dump[index + 4])
             newControl.valueCurrent = Int(dump[index + 5])
-            newControl.lastOnValue = Int(dump[index + 6])
             newControl.controlName = controlName
             newControl.place = currentWifi.bssid
             

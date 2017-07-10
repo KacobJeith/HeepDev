@@ -670,11 +670,16 @@ extension VertexEditCell {
         }
         else if gestureRecognizer.state == UIGestureRecognizerState.ended {
             let controlUniqueID = thisControl.uniqueID
-            
+            let currentValue = Int(ratio * CGFloat(thisControl.valueHigh - thisControl.valueLow))
             try! realm.write {
+                
+                if currentValue > (thisControl.valueLow) {
+                    thisControl.lastOnValue = currentValue
+                }
+                
                 realm.create(DeviceControl.self,
                              value: ["uniqueID": controlUniqueID,
-                                     "valueCurrent": Int(ratio * CGFloat(thisControl.valueHigh - thisControl.valueLow))],
+                                     "valueCurrent": currentValue],
                              update: true)
             }
             

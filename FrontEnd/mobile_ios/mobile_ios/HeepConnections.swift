@@ -38,9 +38,6 @@ class HeepConnections {
         let thisDeviceIP = thisDevice?.ipAddress
         let thisControl = activeControl?.controlID
         
-        if currentValue > (activeControl?.valueLow)! {
-//            activeControl?.lastOnValue = currentValue
-        }
         
         if currentValue == -1 {
             newVal = (activeControl?.valueCurrent)!
