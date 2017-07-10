@@ -1,42 +1,38 @@
 #define ON_PIC
-#define USE_HEEP
 #define DHCP
 
 #include "mcc_generated_files/mcc.h"
-#include "W5500.h"
-#include "DigitalIO.h"
-#include "ioLibrary_Driver-master/Ethernet/socket.h"
-#include "ioLibrary_Driver-master/Internet/DHCP/dhcp.h"
+#include "../PICHeepLibrary/PICIncludes.h"
 #include "../ServerlessFirmware/Heep_API.h"
 
-#define TEST_SERVER
-
-
-void TestEEPROM()
+void BlinkLights()
 {
-     
+    DigitalWrite(0, high);
+    delay(200);
+    DigitalWrite(0, low);
+    delay(200);
+    DigitalWrite(0, high);
+    delay(200);
+    DigitalWrite(0, low);
+    delay(200);
+    DigitalWrite(0, high);
+    delay(200);
+    DigitalWrite(0, low);
+    delay(500);
 }
 
-void WritePICByte(uint8_t byte)
+void SetHeepCommFunctions()
 {
-    SPI1_Exchange8bit(byte);
+    Heep_Millis = millis;
+    Get_DHCP_Time_Millis = millis;
+    HEEP_SPI_Exchange_Byte = SPI1_Exchange8bit;
+    WIZCHIP.IF.SPI._write_byte = WritePICByte;
+    WIZCHIP.IF.SPI._read_byte = ReadPICByte;
+    WIZCHIP.CS._select = SetW5500SS;
+    WIZCHIP.CS._deselect = ResetW5500SS;
 }
 
-uint8_t ReadPICByte()
-{
-    uint8_t readByte = SPI1_Exchange8bit(0);
-    return readByte;
-}
-
-void delay(uint32_t theTime)
-{
-    uint32_t startTime = millis();
-    uint32_t endTime = startTime + theTime;
-    
-    while(millis() < endTime) {}
-}
-
-void main(void)
+void RunMCCBoilerPlate()
 {
     // Initialize the device
     SYSTEM_Initialize();
@@ -68,76 +64,31 @@ void main(void)
 
     // Disable the Peripheral Interrupts
     //INTERRUPT_PeripheralInterruptDisable();
+}
 
+void main(void)
+{
+    RunMCCBoilerPlate();
+    SetHeepCommFunctions();
+    
     PinMode(0, output);
     PinMode(1, output);
     DigitalWrite(1, high);
     DigitalWrite(0, high);
     
-    uint32_t lastTime = 0;
-    uint32_t interval = 1000;
-    uint8_t lightState = 0;
-    
-    DigitalWrite(0, high);
-    delay(200);
-    DigitalWrite(0, low);
-    delay(200);
-    DigitalWrite(0, high);
-    delay(200);
-    DigitalWrite(0, low);
-    delay(200);
-    DigitalWrite(0, high);
-    delay(200);
-    DigitalWrite(0, low);
-    
-    delay(500);
+    BlinkLights();
     
     InitializeW5500();
-    
-    WIZCHIP.IF.SPI._write_byte = WritePICByte;
-    WIZCHIP.IF.SPI._read_byte = ReadPICByte;
-    WIZCHIP.CS._select = SetW5500SS;
-    WIZCHIP.CS._deselect = ResetW5500SS;
-        
     
 #ifdef DHCP
     
     uint8_t myMAC [6] = {0, 2, 3, 4, 7, 6};
     setSHAR(myMAC);
-
-    uint8_t dhcpBuf[200];
-    DHCP_init(0, dhcpBuf);
-      
-    while(1)
-    {
-        if(GetMillis() - lastTime > interval)
-        {
-            lastTime = GetMillis();
-            
-            if(lightState)
-            {
-                lightState = 0;
-            }
-            else
-            {
-                lightState = 1;
-            }
-            
-            //DigitalWrite(0, lightState);
-            DHCP_time_handler();
-        }
-        
-        uint8_t dhcpUserState = DHCP_run();
-
-        if(dhcpUserState == DHCP_IP_LEASED)
-        {
-            break;
-        }
-    }
+    
+    Start_Heep_With_DHCP ();
     
 #else
-    
-    
+      
     uint8_t myMAC [6] = {0, 2, 3, 4, 7, 6};
     uint8_t mySub [4] = {255, 255, 255, 0};
     uint8_t myIP [4] = {192, 168, 0, 186};
@@ -152,80 +103,6 @@ void main(void)
     
     
     DigitalWrite(0, 0);
-    
-    
-#ifndef USE_HEEP
-    
-    uint8_t destIP [4] = {192, 168, 0, 110};
-    uint8_t recvBuf[200];
-    interval = 500;
-    socket(1, Sn_MR_TCP, 5000, 0);
-    
-#ifdef TEST_SERVER
-    listen(1);
-#endif
-    
-    while(1)
-    {
-        
-        if(millis() - lastTime > interval)
-        {
-            lastTime = millis();
-            
-            if(lightState)
-            {
-                lightState = 0;
-            }
-            else
-            {
-                lightState = 1;
-            }
-            
-            //DigitalWrite(0, lightState);
-            
-#ifndef TEST_SERVER
-            connect(1, destIP, 5000);
-            uint8_t sendBuf [7] = {'W', 'e', 'l', 'c', 'o', 'm', 'e'};
-            send(1, sendBuf, 7);
-            uint16_t curData = DataAvailable(1);
-            if(curData > 0)
-            {
-                recv(1, recvBuf, curData);
-            }
-            close(1);
-            socket(1, Sn_MR_TCP, 5000, 0);
-#endif
-            
-        }
-        
-#ifdef TEST_SERVER
-        uint16_t curData = DataAvailable(1);
-        if(curData > 0)
-        {
-            recv(1, recvBuf, curData);
-            
-            uint8_t sendBuf [7] = {'W', 'e', 'l', 'c', 'o', 'm', 'e'};
-            send(1, sendBuf, 7);
-            
-            socket(1, Sn_MR_TCP, 5000, 0);
-            listen(1);
-        }
-#endif
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-#else
     
     char deviceName [] = "Flap";
 
@@ -269,6 +146,4 @@ void main(void)
         DigitalWrite(0, controlList[0].curValue);
     }
   
-    
-#endif
 }

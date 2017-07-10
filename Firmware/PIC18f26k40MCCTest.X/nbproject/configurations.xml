@@ -14,43 +14,42 @@
         <itemPath>mcc_generated_files/interrupt_manager.h</itemPath>
         <itemPath>mcc_generated_files/tmr1.h</itemPath>
       </logicalFolder>
-      <itemPath>W5500.h</itemPath>
-      <itemPath>W5500Defines.h</itemPath>
-      <itemPath>DigitalIO.h</itemPath>
-    </logicalFolder>
-    <logicalFolder name="ioLibrary_Driver-master"
-                   displayName="ioLibrary_Driver-master"
-                   projectFiles="true">
-      <logicalFolder name="DHCP" displayName="DHCP" projectFiles="true">
-        <itemPath>ioLibrary_Driver-master/Internet/DHCP/dhcp.c</itemPath>
-        <itemPath>ioLibrary_Driver-master/Internet/DHCP/dhcp.h</itemPath>
-      </logicalFolder>
-      <logicalFolder name="Ethernet" displayName="Ethernet" projectFiles="true">
-        <logicalFolder name="W5100" displayName="W5100" projectFiles="true">
-          <itemPath>ioLibrary_Driver-master/Ethernet/W5100/w5100.c</itemPath>
-          <itemPath>ioLibrary_Driver-master/Ethernet/W5100/w5100.h</itemPath>
-        </logicalFolder>
-        <logicalFolder name="W5200" displayName="W5200" projectFiles="true">
-          <itemPath>ioLibrary_Driver-master/Ethernet/W5200/w5200.c</itemPath>
-          <itemPath>ioLibrary_Driver-master/Ethernet/W5200/w5200.h</itemPath>
-        </logicalFolder>
-        <logicalFolder name="W5300" displayName="W5300" projectFiles="true">
-          <itemPath>ioLibrary_Driver-master/Ethernet/W5300/w5300.c</itemPath>
-          <itemPath>ioLibrary_Driver-master/Ethernet/W5300/w5300.h</itemPath>
-        </logicalFolder>
-        <logicalFolder name="W5500" displayName="W5500" projectFiles="true">
-          <itemPath>ioLibrary_Driver-master/Ethernet/W5500/w5500.c</itemPath>
-          <itemPath>ioLibrary_Driver-master/Ethernet/W5500/w5500.h</itemPath>
-        </logicalFolder>
-        <itemPath>ioLibrary_Driver-master/Ethernet/socket.c</itemPath>
-        <itemPath>ioLibrary_Driver-master/Ethernet/wizchip_conf.c</itemPath>
-        <itemPath>ioLibrary_Driver-master/Ethernet/socket.h</itemPath>
-        <itemPath>ioLibrary_Driver-master/Ethernet/wizchip_conf.h</itemPath>
-      </logicalFolder>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
                    projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="PICHeepLibrary"
+                   displayName="PICHeepLibrary"
+                   projectFiles="true">
+      <logicalFolder name="ioLibrary_Driver-master"
+                     displayName="ioLibrary_Driver-master"
+                     projectFiles="true">
+        <logicalFolder name="Ethernet" displayName="Ethernet" projectFiles="true">
+          <logicalFolder name="W5500" displayName="W5500" projectFiles="true">
+            <itemPath>../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/W5500/w5500.c</itemPath>
+            <itemPath>../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/W5500/w5500.h</itemPath>
+          </logicalFolder>
+          <itemPath>../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/socket.c</itemPath>
+          <itemPath>../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/socket.h</itemPath>
+          <itemPath>../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/wizchip_conf.c</itemPath>
+          <itemPath>../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/wizchip_conf.h</itemPath>
+        </logicalFolder>
+        <logicalFolder name="Internet" displayName="Internet" projectFiles="true">
+          <logicalFolder name="DHCP" displayName="DHCP" projectFiles="true">
+            <itemPath>../PICHeepLibrary/ioLibrary_Driver-master/Internet/DHCP/dhcp.c</itemPath>
+            <itemPath>../PICHeepLibrary/ioLibrary_Driver-master/Internet/DHCP/dhcp.h</itemPath>
+          </logicalFolder>
+        </logicalFolder>
+      </logicalFolder>
+      <itemPath>../PICHeepLibrary/DigitalIO.c</itemPath>
+      <itemPath>../PICHeepLibrary/DigitalIO.h</itemPath>
+      <itemPath>../PICHeepLibrary/W5500.c</itemPath>
+      <itemPath>../PICHeepLibrary/W5500.h</itemPath>
+      <itemPath>../PICHeepLibrary/W5500Defines.h</itemPath>
+      <itemPath>../PICHeepLibrary/Heep_DHCP.c</itemPath>
+      <itemPath>../PICHeepLibrary/Heep_DHCP.h</itemPath>
+      <itemPath>../PICHeepLibrary/PICIncludes.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ServerlessFirmware"
                    displayName="ServerlessFirmware"
@@ -97,8 +96,6 @@
         <itemPath>mcc_generated_files/interrupt_manager.c</itemPath>
       </logicalFolder>
       <itemPath>main.c</itemPath>
-      <itemPath>W5500.c</itemPath>
-      <itemPath>DigitalIO.c</itemPath>
       <itemPath>mcc_generated_files/powerup.as</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
@@ -111,6 +108,7 @@
   <sourceRootList>
     <Elem>../ServerlessFirmware</Elem>
     <Elem>.</Elem>
+    <Elem>../PICHeepLibrary</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
