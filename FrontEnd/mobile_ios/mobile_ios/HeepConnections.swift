@@ -77,8 +77,12 @@ class HeepConnections {
     }
     
     public func sendAssignAdminToHeepDevice(deviceID: Int) {
-        let adminID = SyncUser.current!
-        print("AdminID: \(adminID)")
+        
+        guard let adminID = SyncUser.current else {
+            return
+        }
+        
+        print("AdminRealmID: \(adminID)")
         
         /*
         let realm = try! Realm(configuration: configUser)

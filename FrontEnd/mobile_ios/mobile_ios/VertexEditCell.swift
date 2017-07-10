@@ -836,8 +836,7 @@ extension VertexEditCell {
         
         currentRange.backgroundColor = SuggestColorFromName(name: thisControl.controlName).withAlphaComponent(0.5)
         
-        currentRangeContainer.transform = applyTransform ? CGAffineTransform(scaleX: 1, y: 1).rotated(by: -thisControl.rotation) : CGAffineTransform(scaleX: 1, y: 1)
-        
+        currentRangeContainer.transform = CGAffineTransform(scaleX: 1, y: 1).rotated(by: -thisControl.rotation)
         currentRangeContainer.addSubview(currentRange)
         
         container.addSubview(currentRangeContainer)
@@ -845,7 +844,7 @@ extension VertexEditCell {
         container.addSubview(controlSprite)
         
         
-        container.transform = applyTransform ? CGAffineTransform(scaleX: thisControl.scale, y: thisControl.scale).rotated(by: thisControl.rotation) : CGAffineTransform(scaleX: 1, y: 1)
+        container.transform = CGAffineTransform(scaleX: thisControl.scale, y: thisControl.scale).rotated(by: thisControl.rotation)
         
         
         
@@ -958,14 +957,9 @@ extension VertexEditCell {
     
     func displayDeviceSummary() {
         let realm = try! Realm(configuration: configUser)
-        print("DETAIL")
         
         if let control = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl) {
-            print(control)
             if let device = realm.object(ofType: Device.self, forPrimaryKey: control.deviceID) {
-                print(device)
-                
-                print("Display device summary for: \(String(describing: device.deviceID))")
                 let summaryView = DeviceSummaryViewController(device: device)
                 parentTable.navigationController?.pushViewController(summaryView, animated: true)
 
