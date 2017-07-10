@@ -103,37 +103,6 @@ void main(void)
     
     Get_DHCP_Time_Millis = GetMillis;
     Start_Heep_With_DHCP ();
-    /*
-    uint8_t dhcpBuf[200];
-    DHCP_init(0, dhcpBuf);
-      
-    while(1)
-    {
-        if(GetMillis() - lastTime > interval)
-        {
-            lastTime = GetMillis();
-            
-            if(lightState)
-            {
-                lightState = 0;
-            }
-            else
-            {
-                lightState = 1;
-            }
-            
-            //DigitalWrite(0, lightState);
-            DHCP_time_handler();
-        }
-        
-        uint8_t dhcpUserState = DHCP_run();
-
-        if(dhcpUserState == DHCP_IP_LEASED)
-        {
-            break;
-        }
-    }
-     * */
     
 #else
     
