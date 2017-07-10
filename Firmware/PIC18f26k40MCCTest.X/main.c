@@ -109,8 +109,7 @@ void main(void)
     Start_Heep_With_DHCP ();
     
 #else
-    
-    
+      
     uint8_t myMAC [6] = {0, 2, 3, 4, 7, 6};
     uint8_t mySub [4] = {255, 255, 255, 0};
     uint8_t myIP [4] = {192, 168, 0, 186};
@@ -125,80 +124,6 @@ void main(void)
     
     
     DigitalWrite(0, 0);
-    
-    
-#ifndef USE_HEEP
-    
-    uint8_t destIP [4] = {192, 168, 0, 110};
-    uint8_t recvBuf[200];
-    interval = 500;
-    socket(1, Sn_MR_TCP, 5000, 0);
-    
-#ifdef TEST_SERVER
-    listen(1);
-#endif
-    
-    while(1)
-    {
-        
-        if(millis() - lastTime > interval)
-        {
-            lastTime = millis();
-            
-            if(lightState)
-            {
-                lightState = 0;
-            }
-            else
-            {
-                lightState = 1;
-            }
-            
-            //DigitalWrite(0, lightState);
-            
-#ifndef TEST_SERVER
-            connect(1, destIP, 5000);
-            uint8_t sendBuf [7] = {'W', 'e', 'l', 'c', 'o', 'm', 'e'};
-            send(1, sendBuf, 7);
-            uint16_t curData = DataAvailable(1);
-            if(curData > 0)
-            {
-                recv(1, recvBuf, curData);
-            }
-            close(1);
-            socket(1, Sn_MR_TCP, 5000, 0);
-#endif
-            
-        }
-        
-#ifdef TEST_SERVER
-        uint16_t curData = DataAvailable(1);
-        if(curData > 0)
-        {
-            recv(1, recvBuf, curData);
-            
-            uint8_t sendBuf [7] = {'W', 'e', 'l', 'c', 'o', 'm', 'e'};
-            send(1, sendBuf, 7);
-            
-            socket(1, Sn_MR_TCP, 5000, 0);
-            listen(1);
-        }
-#endif
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-#else
     
     char deviceName [] = "Flap";
 
@@ -242,6 +167,4 @@ void main(void)
         DigitalWrite(0, controlList[0].curValue);
     }
   
-    
-#endif
 }
