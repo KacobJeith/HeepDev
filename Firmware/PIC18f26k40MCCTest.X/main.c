@@ -69,8 +69,8 @@ void RunMCCBoilerPlate()
 void main(void)
 {
     RunMCCBoilerPlate();
-
     SetHeepCommFunctions();
+    
     PinMode(0, output);
     PinMode(1, output);
     DigitalWrite(1, high);
