@@ -3,10 +3,7 @@
 #define DHCP
 
 #include "mcc_generated_files/mcc.h"
-#include "../PICHeepLibrary/W5500.h"
-#include "../PICHeepLibrary/DigitalIO.h"
-#include "../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/socket.h"
-#include "../PICHeepLibrary/Heep_DHCP.h"
+#include "../PICHeepLibrary/PICIncludes.h"
 #include "../ServerlessFirmware/Heep_API.h"
 
 #define TEST_SERVER
