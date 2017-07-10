@@ -5,8 +5,8 @@
 #include "mcc_generated_files/mcc.h"
 #include "W5500.h"
 #include "DigitalIO.h"
-#include "ioLibrary_Driver-master/Ethernet/socket.h"
-#include "ioLibrary_Driver-master/Internet/DHCP/dhcp.h"
+#include "../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/socket.h"
+#include "../PICHeepLibrary/ioLibrary_Driver-master/Internet/DHCP/dhcp.h"
 #include "../ServerlessFirmware/Heep_API.h"
 
 #define TEST_SERVER

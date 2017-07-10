@@ -18,27 +18,33 @@
       <itemPath>W5500Defines.h</itemPath>
       <itemPath>DigitalIO.h</itemPath>
     </logicalFolder>
-    <logicalFolder name="ioLibrary_Driver-master"
-                   displayName="ioLibrary_Driver-master"
-                   projectFiles="true">
-      <logicalFolder name="DHCP" displayName="DHCP" projectFiles="true">
-        <itemPath>ioLibrary_Driver-master/Internet/DHCP/dhcp.c</itemPath>
-        <itemPath>ioLibrary_Driver-master/Internet/DHCP/dhcp.h</itemPath>
-      </logicalFolder>
-      <logicalFolder name="Ethernet" displayName="Ethernet" projectFiles="true">
-        <logicalFolder name="W5500" displayName="W5500" projectFiles="true">
-          <itemPath>ioLibrary_Driver-master/Ethernet/W5500/w5500.c</itemPath>
-          <itemPath>ioLibrary_Driver-master/Ethernet/W5500/w5500.h</itemPath>
-        </logicalFolder>
-        <itemPath>ioLibrary_Driver-master/Ethernet/socket.c</itemPath>
-        <itemPath>ioLibrary_Driver-master/Ethernet/wizchip_conf.c</itemPath>
-        <itemPath>ioLibrary_Driver-master/Ethernet/socket.h</itemPath>
-        <itemPath>ioLibrary_Driver-master/Ethernet/wizchip_conf.h</itemPath>
-      </logicalFolder>
-    </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
                    projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="PICHeepLibrary"
+                   displayName="PICHeepLibrary"
+                   projectFiles="true">
+      <logicalFolder name="ioLibrary_Driver-master"
+                     displayName="ioLibrary_Driver-master"
+                     projectFiles="true">
+        <logicalFolder name="Ethernet" displayName="Ethernet" projectFiles="true">
+          <logicalFolder name="W5500" displayName="W5500" projectFiles="true">
+            <itemPath>../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/W5500/w5500.c</itemPath>
+            <itemPath>../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/W5500/w5500.h</itemPath>
+          </logicalFolder>
+          <itemPath>../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/socket.c</itemPath>
+          <itemPath>../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/socket.h</itemPath>
+          <itemPath>../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/wizchip_conf.c</itemPath>
+          <itemPath>../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/wizchip_conf.h</itemPath>
+        </logicalFolder>
+        <logicalFolder name="Internet" displayName="Internet" projectFiles="true">
+          <logicalFolder name="DHCP" displayName="DHCP" projectFiles="true">
+            <itemPath>../PICHeepLibrary/ioLibrary_Driver-master/Internet/DHCP/dhcp.c</itemPath>
+            <itemPath>../PICHeepLibrary/ioLibrary_Driver-master/Internet/DHCP/dhcp.h</itemPath>
+          </logicalFolder>
+        </logicalFolder>
+      </logicalFolder>
     </logicalFolder>
     <logicalFolder name="ServerlessFirmware"
                    displayName="ServerlessFirmware"
@@ -99,6 +105,7 @@
   <sourceRootList>
     <Elem>../ServerlessFirmware</Elem>
     <Elem>.</Elem>
+    <Elem>../PICHeepLibrary</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
