@@ -7,3 +7,4 @@ FrontEnd/mobile_ios/Pods
 *.app
 /Firmware/PIC18f26k40MCCTest.X/build/default/
 /Firmware/PIC18f26k40MCCTest.X/dist/default/
+.DS_Store
