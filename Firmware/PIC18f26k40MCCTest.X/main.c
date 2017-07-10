@@ -5,25 +5,6 @@
 #include "../PICHeepLibrary/PICIncludes.h"
 #include "../ServerlessFirmware/Heep_API.h"
 
-void WritePICByte(uint8_t byte)
-{
-    SPI1_Exchange8bit(byte);
-}
-
-uint8_t ReadPICByte()
-{
-    uint8_t readByte = SPI1_Exchange8bit(0);
-    return readByte;
-}
-
-void delay(uint32_t theTime)
-{
-    uint32_t startTime = millis();
-    uint32_t endTime = startTime + theTime;
-    
-    while(millis() < endTime) {}
-}
-
 void BlinkLights()
 {
     DigitalWrite(0, high);
@@ -42,6 +23,8 @@ void BlinkLights()
 
 void SetHeepCommFunctions()
 {
+    Heep_Millis = millis;
+    Get_DHCP_Time_Millis = millis;
     HEEP_SPI_Exchange_Byte = SPI1_Exchange8bit;
     WIZCHIP.IF.SPI._write_byte = WritePICByte;
     WIZCHIP.IF.SPI._read_byte = ReadPICByte;
@@ -102,7 +85,6 @@ void main(void)
     uint8_t myMAC [6] = {0, 2, 3, 4, 7, 6};
     setSHAR(myMAC);
     
-    Get_DHCP_Time_Millis = GetMillis;
     Start_Heep_With_DHCP ();
     
 #else
