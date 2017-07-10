@@ -1,12 +1,9 @@
 #define ON_PIC
-#define USE_HEEP
 #define DHCP
 
 #include "mcc_generated_files/mcc.h"
 #include "../PICHeepLibrary/PICIncludes.h"
 #include "../ServerlessFirmware/Heep_API.h"
-
-#define TEST_SERVER
 
 void WritePICByte(uint8_t byte)
 {
