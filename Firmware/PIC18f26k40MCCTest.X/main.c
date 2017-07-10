@@ -52,7 +52,7 @@ void SetHeepCommFunctions()
     WIZCHIP.CS._deselect = ResetW5500SS;
 }
 
-void main(void)
+void RunMCCBoilerPlate()
 {
     // Initialize the device
     SYSTEM_Initialize();
@@ -84,6 +84,11 @@ void main(void)
 
     // Disable the Peripheral Interrupts
     //INTERRUPT_PeripheralInterruptDisable();
+}
+
+void main(void)
+{
+    RunMCCBoilerPlate();
 
     SetHeepCommFunctions();
     PinMode(0, output);
