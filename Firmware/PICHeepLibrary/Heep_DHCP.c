@@ -6,7 +6,7 @@ void Start_Heep_With_DHCP (void)
     uint32_t lastTime = 0;
     uint32_t interval = 1000;
     
-    uint8_t dhcpBuf[200];
+    uint8_t dhcpBuf[100];
     DHCP_init(0, dhcpBuf);
       
     while(1)
