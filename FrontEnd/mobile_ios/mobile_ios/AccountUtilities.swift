@@ -74,16 +74,24 @@ func registerNewSyncRealm(username: String, password: String, callback: @escapin
                    server: url,
                    onCompletion: { user, error in
                     
-                    if user == nil {
+                    if let userUnwrapped = user {
+                        configUser =  Realm.Configuration(syncConfiguration: SyncConfiguration(user: userUnwrapped,
+                                                                                               realmURL: userURL))
+                        addNewUserToUserRealm(newUser: newUser)
+                        
+                        if let identity = userUnwrapped.identity {
+                            print("NOT NIL: \(identity)")
+                            newUser.realmKey = identity
+                            addNewUserToPublicRealm(newUser: newUser)
+                        } else {
+                            print("NEW REALM RETURNED NIL")
+                        }
+                        
+                    } else {
                         print("ERROR: \(String(describing: error))")
                         return
                     }
-                        
-                    configUser =  Realm.Configuration(syncConfiguration: SyncConfiguration(user: user!, realmURL: userURL))
-                    addNewUserToUserRealm(newUser: newUser)
-                    newUser.realmKey = (SyncUser.all.keys.first)!
-                    addNewUserToPublicRealm(newUser: newUser)
-
+                    
     })
       
 }

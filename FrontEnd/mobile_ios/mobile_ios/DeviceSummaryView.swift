@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 class DeviceSummaryViewController: UITableViewController {
     
@@ -15,7 +16,6 @@ class DeviceSummaryViewController: UITableViewController {
     var thisDevice = Device()
     
     init(device: Device) {
-        self.sections = ["Device: " + device.name]
         
         thisDevice = device
         self.cells = []
@@ -26,13 +26,33 @@ class DeviceSummaryViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.title = thisDevice.name
+        
+        self.prepareUserData()
         self.prepareDeviceData()
         self.prepareControls()
         self.setupNavToolbar()
         
     }
     
+    func prepareUserData() {
+        self.sections = ["Device Admin"]
+        let realm = try! Realm(configuration: configPublicSync)
+        var humanData = [String]()
+        
+        if let adminID = realm.object(ofType: User.self, forPrimaryKey: thisDevice.humanAdmin)?.heepID {
+            humanData.append(String.init(describing: adminID))
+        } else {
+            print("This Device's owner is not registered in the Heep User Directory")
+        }
+        
+        self.cells.append(humanData)
+    }
+    
     func prepareDeviceData() {
+        
+        self.sections.append("Device: " + thisDevice.name)
+        
         var deviceData = [String]()
         let deviceProps = thisDevice.propertyNames()
         var nextValue = ""
@@ -172,6 +192,20 @@ class DeviceSummaryViewController: UITableViewController {
     func claimDevice() {
         //HeepConnections().sendAssignAdminToHeepDevice(deviceID: thisDevice.deviceID)
         createDeviceRealm(deviceID: thisDevice.deviceID)
+        
+        let realm = try! Realm(configuration: configUser)
+        
+        if let myID = realm.objects(User.self).first?.heepID {
+            
+            try! realm.write {
+                thisDevice.humanAdmin = myID
+            }
+            
+        } else {
+            
+            print("I am not assigned a Heep ID for some reason....going to have issues")
+        }
+        
     }
     
     func addUserToThisDevice() {
