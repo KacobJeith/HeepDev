@@ -270,16 +270,7 @@ extension PlacesView {
     }
     
     func userLogin() {
-        // Open modal view that gives login options
-        /*
-        let modalViewController = AccountView()
-        modalViewController.placesView = self
-        
-        modalViewController.modalPresentationStyle = .overCurrentContext
-        present(modalViewController, animated: false, completion: nil)
-        */
-        
-        navigationController?.pushViewController(NavAccountView(), animated: false)
+        navigationController?.pushViewController(AccountView(), animated: false)
     }
     
     func getActiveUserIcon() -> UIBarButtonItem {

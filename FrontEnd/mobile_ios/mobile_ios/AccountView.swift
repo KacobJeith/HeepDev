@@ -9,7 +9,7 @@
 import UIKit
 import RealmSwift
 
-class NavAccountView: UIViewController {
+class AccountView: UIViewController {
     var notificationToken: NotificationToken? = nil
     var subviewFrame = CGRect()
     
