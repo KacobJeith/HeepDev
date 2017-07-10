@@ -133,3 +133,10 @@ class Vertex: Object {
     
 }
 
+
+extension Object {
+    func propertyNames() -> [String] {
+        return Mirror(reflecting: self).children.flatMap { $0.label }
+    }
+}
+

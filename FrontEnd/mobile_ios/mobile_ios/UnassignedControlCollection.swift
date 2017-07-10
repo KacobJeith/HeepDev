@@ -99,12 +99,11 @@ extension UnassignedControlCollection {
         let realm = try! Realm(configuration: configUser)
         print(controls[sender.tag].uniqueID)
         print(realm.object(ofType: DeviceControl.self, forPrimaryKey: controls[sender.tag].uniqueID)!)
-        print("Adding to group!")
-        print(self.thisGroup.name)
+
         let addToGroup = realm.object(ofType: Group.self, forPrimaryKey: thisGroup.id)!
         
         try! realm.write {
-            controls[sender.tag].groupsAssigned += 1
+            controls[sender.tag].groupsAssigned = thisGroup.id
             addToGroup.controls.append(controls[sender.tag])
             addToGroup.selectedControl = controls[sender.tag].uniqueID
             thisGroup.unassignedOffsetX = collectionView.contentOffset.x
