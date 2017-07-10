@@ -14,6 +14,7 @@ class DeviceSummaryViewController: UITableViewController {
     var sections: [String]!
     var cells: [[String]]!
     var thisDevice = Device()
+    var userIds: [Int] = []
     
     init(device: Device) {
         
@@ -36,14 +37,19 @@ class DeviceSummaryViewController: UITableViewController {
     }
     
     func prepareUserData() {
-        self.sections = ["Device Admin"]
+        self.sections = ["Users with Access"]
         let realm = try! Realm(configuration: configPublicSync)
         var humanData = [String]()
         
         if let adminID = realm.object(ofType: User.self, forPrimaryKey: thisDevice.humanAdmin)?.heepID {
-            humanData.append(String.init(describing: adminID))
+            userIds.append(adminID)
+            humanData.append("admin")
+            humanData.append(contentsOf: ["user", "user"])
+            humanData.append("addNewUser")
+            
         } else {
             print("This Device's owner is not registered in the Heep User Directory")
+            humanData.append("claimDevice")
         }
         
         self.cells.append(humanData)
@@ -140,7 +146,7 @@ class DeviceSummaryViewController: UITableViewController {
         
         let grant = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addUserToThisDevice))
         
-        self.toolbarItems = [spacer,  claim, spacer, grant]
+        //self.toolbarItems = [spacer,  claim, spacer, grant]
     }
     
     override func didReceiveMemoryWarning() {
@@ -180,13 +186,74 @@ class DeviceSummaryViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = UITableViewCell()
-        let label = UILabel()
-        label.text = self.cells[indexPath.section][indexPath.row]
-        label.frame = CGRect(x: 60, y: 5, width: tableView.frame.size.width, height: 35)
-        cell.addSubview(label)
-        cell.selectionStyle = .none
+        
+        if indexPath.section == 0 {
+            switch self.cells[indexPath.section][indexPath.row] {
+            case "admin" :
+                cell.backgroundColor = .blue
+                cell.addSubview(addAdminCell(indexPath: indexPath))
+                
+            case "claimDevice" :
+                cell.backgroundColor = .green
+                cell.addSubview(addClaimDeviceCell())
+                
+            case "user" :
+                cell.backgroundColor = getRandomColor()
+                
+            case "addNewUser" :
+                cell.backgroundColor = .red
+                cell.addSubview(addNewUserCell())
+                
+            default:
+                cell.backgroundColor = .white
+                
+            }
+            
+        } else {
+            
+            let label = UILabel()
+            label.text = self.cells[indexPath.section][indexPath.row]
+            label.frame = CGRect(x: 0, y: 5, width: tableView.frame.size.width, height: 35)
+            cell.addSubview(label)
+            cell.selectionStyle = .none
+        }
+        
         
         return cell
+    }
+    
+    func addAdminCell(indexPath: IndexPath) -> UIView {
+        
+        let label = UILabel()
+        label.text = String.init(describing: userIds[indexPath.row])
+        label.frame = CGRect(x: 0, y: 5, width: tableView.frame.size.width, height: 35)
+        
+        return label
+    }
+    
+    func addClaimDeviceCell() -> UIView {
+        
+        let button = UIButton(frame: CGRect(x: 60,
+                                           y: 5,
+                                           width: tableView.frame.size.width,
+                                           height: 35))
+        
+        button.setTitle("Claim this Device?", for: .normal)
+        button.addTarget(self, action: #selector(claimDevice), for: .primaryActionTriggered)
+        
+        return button
+    }
+    
+    func addNewUserCell() -> UIView {
+        let button = UIButton(frame: CGRect(x: 60,
+                                            y: 5,
+                                            width: tableView.frame.size.width,
+                                            height: 35))
+        
+        button.setTitle("Grant access to a new User", for: .normal)
+        button.addTarget(self, action: #selector(addUserToThisDevice), for: .primaryActionTriggered)
+        
+        return button
     }
     
     func claimDevice() {
