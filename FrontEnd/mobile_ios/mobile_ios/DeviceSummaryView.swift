@@ -55,6 +55,18 @@ class DeviceSummaryViewController: UITableViewController {
         
         super.init(style: UITableViewStyle.plain)
     }
+    
+    func prepareDeviceData() {
+        let deviceData = [String]()
+        print(thisDevice.propertyNames())
+        /*
+        for (key, value) in device {
+            
+            let nextValue = "\(key): \(String(value))"
+            print(nextValue)
+        }*/
+        
+    }
 
     
     required init?(coder aDecoder: NSCoder) {
@@ -64,6 +76,7 @@ class DeviceSummaryViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.prepareDeviceData()
         self.setupNavToolbar()
 
     }
