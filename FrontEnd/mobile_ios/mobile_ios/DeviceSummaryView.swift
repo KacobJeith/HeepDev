@@ -18,68 +18,97 @@ class DeviceSummaryViewController: UITableViewController {
         self.sections = ["Device: " + device.name]
         
         thisDevice = device
-        
-        let deviceData = [
-            "ID: " + String(device.deviceID),
-            "Firmware Version: " + String(device.version),
-            "IP Address: " + device.ipAddress,
-            "Icon Name: " + device.iconName]
-        
         self.cells = []
-        self.cells.append(deviceData)
-        
-        for control in device.controlList {
-            self.sections.append("Control: " + control.controlName)
-            let direction = control.controlDirection == 0 ? "Input" : "Output"
-            let type = control.controlType == 0 ? "Binary" : "Range"
-            let thisControl = [
-                "Control Direction: " + direction,
-                "Control Type: " + type,
-                "Current Value: " + String(control.valueCurrent)]
-            self.cells.append(thisControl)
-            
-            for vertex in control.vertexList {
-                self.sections.append("Vertex: " + vertex.vertexID)
-                let txName = "tx Name: " + (vertex.tx?.controlName)!
-                let txID = "tx ID: " + String(describing: (vertex.tx?.uniqueID)!)
-                let rxName = "rx Name: " + (vertex.rx?.controlName)!
-                let rxID = "rx ID: " + String(describing: (vertex.rx?.uniqueID)!)
-                
-                let thisVertex = [txName, txID, rxName, rxID]
-                self.cells.append(thisVertex)
-                
-            }
-        }
-        
-        
         
         super.init(style: UITableViewStyle.plain)
-    }
-    
-    func prepareDeviceData() {
-        let deviceData = [String]()
-        print(thisDevice.propertyNames())
-        /*
-        for (key, value) in device {
-            
-            let nextValue = "\(key): \(String(value))"
-            print(nextValue)
-        }*/
-        
-    }
-
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.prepareDeviceData()
+        self.prepareControls()
         self.setupNavToolbar()
-
+        
     }
+    
+    func prepareDeviceData() {
+        var deviceData = [String]()
+        let deviceProps = thisDevice.propertyNames()
+        var nextValue = ""
+        
+        for property in deviceProps {
+            if property == "controlList" {
+                continue
+            }
+            
+            if let value = thisDevice.value(forKey: property) {
+                nextValue = "\(property): \(String.init(describing: value))"
+            } else {
+                nextValue = "\(property): nil"
+            }
+            
+            deviceData.append(nextValue)
+        }
+        
+        self.cells.append(deviceData)
+        
+    }
+    
+    func prepareControls() {
+        
+        for control in thisDevice.controlList {
+            prepareControlData(control: control)
+            
+            for vertex in control.vertexList {
+                prepareVertex(vertex: vertex)
+                
+            }
+        }
+    }
+    
+    func prepareControlData(control: DeviceControl) {
+        
+        self.sections.append("Control: " + control.controlName)
+        
+        var controlData = [String]()
+        let controlProps = control.propertyNames()
+        var nextValue = ""
+        
+        for property in controlProps {
+            if property == "vertexList" {
+                continue
+            }
+            
+            if let value = control.value(forKey: property) {
+                nextValue = "\(property): \(String.init(describing: value))"
+            } else {
+                nextValue = "\(property): nil"
+            }
+            
+            controlData.append(nextValue)
+        }
+        
+        self.cells.append(controlData)
+    }
+    
+    func prepareVertex(vertex: Vertex) {
+        self.sections.append("Vertex: " + vertex.vertexID)
+        
+        let txName = "tx Name: " + (vertex.tx?.controlName)!
+        let txID = "tx ID: " + String(describing: (vertex.tx?.uniqueID)!)
+        let rxName = "rx Name: " + (vertex.rx?.controlName)!
+        let rxID = "rx ID: " + String(describing: (vertex.rx?.uniqueID)!)
+        
+        let thisVertex = [txName, txID, rxName, rxID]
+        self.cells.append(thisVertex)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    
     
     func setupNavToolbar() {
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
