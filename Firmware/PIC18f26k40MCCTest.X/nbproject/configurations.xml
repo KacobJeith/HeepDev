@@ -47,6 +47,8 @@
       <itemPath>../PICHeepLibrary/W5500.c</itemPath>
       <itemPath>../PICHeepLibrary/W5500.h</itemPath>
       <itemPath>../PICHeepLibrary/W5500Defines.h</itemPath>
+      <itemPath>../PICHeepLibrary/Heep_DHCP.c</itemPath>
+      <itemPath>../PICHeepLibrary/Heep_DHCP.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ServerlessFirmware"
                    displayName="ServerlessFirmware"
