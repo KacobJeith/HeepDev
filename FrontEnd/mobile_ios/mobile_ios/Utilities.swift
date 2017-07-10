@@ -43,19 +43,37 @@ func initializeApp() {
     
 }
 
-func SuggestIconFromName(name: String) -> String {
+func SuggestIconFromName(name: String, state: Int = -1, lowVal: Int = 0) -> String {
     var suggestion = "switch"
     
     if ( name.lowercased().range(of: "outlet") != nil){
         suggestion = "outlet"
     }
     
+    
     if (name.lowercased().range(of: "light") != nil ||
         name.lowercased().range(of: "bulb") != nil ||
         name.lowercased().range(of: "relay") != nil ||
         name.lowercased().range(of: "dimmer") != nil ||
         name.lowercased().range(of: "LED") != nil) {
-        suggestion = "lightbulb"
+        
+        if state == lowVal{
+            suggestion = "light_off"
+        }
+        else {
+            suggestion = "light_on"
+        }
+        
+    }
+    
+    if name.lowercased().range(of: "red") != nil {
+        suggestion = "red_icon"
+    }
+    if name.lowercased().range(of: "green") != nil {
+        suggestion = "green_icon"
+    }
+    if name.lowercased().range(of: "blue") != nil {
+        suggestion = "blue_icon"
     }
     
     if ( name.lowercased().range(of: "switch") != nil){
@@ -64,6 +82,67 @@ func SuggestIconFromName(name: String) -> String {
     
     return suggestion
 }
+
+
+func SuggestColorFromName(name: String) -> UIColor {
+    var suggestion = UIColor(colorLiteralRed: 1.0, green: 0.93, blue: 0.26, alpha: 1.0)
+
+    
+    if name.lowercased().range(of: "red") != nil {
+        suggestion = UIColor.red
+    }
+    if name.lowercased().range(of: "green") != nil {
+        suggestion = UIColor.green
+    }
+    if name.lowercased().range(of: "blue") != nil {
+        suggestion = UIColor.blue
+    }
+    
+    return suggestion
+}
+
+
+func getControlValueRatio(control: DeviceControl) -> CGFloat{
+    if control.controlType == 0{
+        return CGFloat(control.valueCurrent)
+    }
+    else{
+        let ratio = CGFloat(control.valueHigh - control.valueCurrent) / CGFloat( control.valueHigh - control.valueLow)
+        return ratio
+    }
+}
+
+func lessThanTimeInterval(start: DispatchTime, end: DispatchTime, timeInterval: UInt64) -> Bool {
+    let elapsed = end.uptimeNanoseconds - start.uptimeNanoseconds
+    
+    if(elapsed < timeInterval){
+//        print("LESS THAN TIMEINTERVAL")
+        return true
+    }
+    else{
+//        print("GR8R THAN TIMEINTERVAL")
+        return false
+    }
+}
+
+func toggleDevice(control: DeviceControl ) -> Int{
+    
+    print(control)
+    
+    //If control type is a switch or binary on/off
+    if control.controlType == 0{
+        return 1 - control.valueCurrent
+    }
+    
+    if control.valueCurrent != control.valueLow {
+        return control.valueLow
+    }
+    else{
+        return control.lastOnValue
+    }
+    
+}
+
 
 func getRandomColor() -> UIColor{
     //Generate between 0 to 1

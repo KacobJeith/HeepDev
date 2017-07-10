@@ -136,7 +136,7 @@ export var findGateway = () => {
         var myIp = address.pop();
         
         
-        //return address
+        return address
       }
     }
   }

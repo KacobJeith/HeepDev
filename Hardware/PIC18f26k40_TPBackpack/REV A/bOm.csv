@@ -1,0 +1,68 @@
+
+
+Part,     Value ,                      Package    ,            Library             
+
+C5  ,   0.1uF                      , 0603-CAP               , SparkFun-Passives   
+C6  ,   0.1uF                      , 0603-CAP               , SparkFun-Passives   
+C7  ,   0.1uF                      , 0603-CAP               , SparkFun-Passives   
+C21 ,   4.7uF                      , 0603-CAP               , SparkFun-Passives   
+C22 ,   10nF                       , 0603-CAP               , SparkFun-Passives   
+C23 ,   0.1uF                      , 0603-CAP               , SparkFun-Passives   
+C24 ,   10uF                       , 0603-CAP               , SparkFun-Passives   
+C25 ,   10uF                       , 0603-CAP               , SparkFun-Passives   
+C33 ,   10uF                       , 0603-CAP               , SparkFun-Passives   
+C35 ,   8pF                        , 0603-CAP               , SparkFun-Passives   
+C36 ,   8pF                        , 0603-CAP               , SparkFun-Passives   
+C37 ,   0.1uF                      , 0603-CAP               , SparkFun-Passives   
+C38 ,   6.8nF                      , 0603-CAP               , SparkFun-Passives   
+C39 ,   6.8nF                      , 0603-CAP               , SparkFun-Passives   
+C40 ,   10nf                       , 0603-CAP               , SparkFun-Passives   
+C41 ,   0.1uF                      , 1210                   , SparkFun-Capacitors 
+C42 ,   0.1uF                      , 1210                   , SparkFun-Capacitors 
+D1  ,                              , CHIPLED_0603_NOOUTLINE , microbuilder        
+D2  ,                              , CHIPLED_0603_NOOUTLINE , microbuilder        
+D3  ,                              , CHIPLED_0603_NOOUTLINE , microbuilder        
+D4  ,                              , CHIPLED_0603_NOOUTLINE , microbuilder        
+D5  ,                              , SOD-123                , adafruit            
+IC1 ,   PIC18F2480-I/ML            , QFN28-ML_6X6MM         , microchip           
+J2  ,                              , 1X06_NO_SILK           , SparkFun-Connectors 
+L2  ,   1uH                        , 0603                   , SparkFun-Passives   
+OK1 ,   MOC3042S                   , DIL6-SMD               , optocoupler         
+OK2 ,   MOC3042S                   , DIL6-SMD               , optocoupler         
+R1  ,   10K                        , RESPACK_4X0603         , microbuilder        
+R2  ,   10K                        , RESPACK_4X0603         , microbuilder        
+R3  ,   10k                        , 0603-RES               , SparkFun-Passives   
+R4  ,   100K                       , 0805_10MGAP            , microbuilder        
+R5  ,   100K                       , 0805_10MGAP            , microbuilder        
+R6  ,   100K                       , 0805_10MGAP            , microbuilder        
+R7  ,   10k                        , 0603-RES               , SparkFun-Passives   
+R8  ,   10k                        , 0603-RES               , SparkFun-Passives   
+R9  ,   10k                        , 0603-RES               , SparkFun-Passives   
+R10 ,   330                        , 0603-RES               , SparkFun-Passives   
+R11 ,   330                        , 0603-RES               , SparkFun-Passives   
+R12 ,   12.4k                      , 0603-RES               , SparkFun-Passives   
+R16 ,   4.7k                       , 0603-RES               , SparkFun-Passives   
+R17 ,   330                        , 0603-RES               , SparkFun-Passives   
+R18 ,   330                        , 0603-RES               , SparkFun-Passives   
+R19 ,   51                         , 0603-RES               , SparkFun-Passives   
+R20 ,   51                         , 0603-RES               , SparkFun-Passives   
+R21 ,   51                         , 0603-RES               , SparkFun-Passives   
+R22 ,   51                         , 0603-RES               , SparkFun-Passives   
+R23 ,   120?                       , 0805_10MGAP            , microbuilder        
+R24 ,   120?                       , 0805_10MGAP            , microbuilder        
+R25 ,   100K                       , 0805_10MGAP            , microbuilder        
+R26 ,   175?                       , 0603-RES               , SparkFun-Passives   
+R27 ,   175?                       , 0603-RES               , SparkFun-Passives   
+R34 ,   10k                        , 0603-RES               , SparkFun-Passives   
+T1  ,   BT138-V                    , TO220BV                , triac               
+T2  ,   BT138-V                    , TO220BV                , triac               
+U$1 ,   TPLINK_BACKPACK            , BACKPACK_WITH_PROTO    , Heep                
+U$2 ,   AC_BLADE                   , AC_BLADE               , Heep                
+U$3 ,   AC_BLADE                   , AC_BLADE               , Heep                
+U$4 ,   AC_TERMINAL                , AC_TERMINAL            , Heep                
+U$5 ,   AC_TERMINAL                , AC_TERMINAL            , Heep                
+U4  ,   W5500                      , W5500                  , W5500               
+X1  ,   332-06                     , 332-06                 , con-garry           
+X4  ,   332-12                     , 332-12                 , con-garry           
+Y2  ,   CRYSTAL-GROUNDEDSMD-3.2X2.5, CRYSTAL-SMD-3.2X2.5MM  , SparkFun-Clocks     
+, 
