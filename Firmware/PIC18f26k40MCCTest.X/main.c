@@ -6,7 +6,6 @@
 #include "../PICHeepLibrary/W5500.h"
 #include "../PICHeepLibrary/DigitalIO.h"
 #include "../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/socket.h"
-#include "../PICHeepLibrary/ioLibrary_Driver-master/Internet/DHCP/dhcp.h"
 #include "../PICHeepLibrary/Heep_DHCP.h"
 #include "../ServerlessFirmware/Heep_API.h"
 
