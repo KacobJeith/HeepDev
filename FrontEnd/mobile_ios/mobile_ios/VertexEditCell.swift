@@ -670,12 +670,15 @@ extension VertexEditCell {
         }
         else if gestureRecognizer.state == UIGestureRecognizerState.ended {
             let controlUniqueID = thisControl.uniqueID
+            let currentValue = Int(ratio * CGFloat(thisControl.valueHigh - thisControl.valueLow))
             
             try! realm.write {
-                realm.create(DeviceControl.self,
-                             value: ["uniqueID": controlUniqueID,
-                                     "valueCurrent": Int(ratio * CGFloat(thisControl.valueHigh - thisControl.valueLow))],
-                             update: true)
+                
+                if currentValue > (thisControl.valueLow) {
+                    thisControl.lastOnValue = currentValue
+                }
+                
+                thisControl.valueCurrent = currentValue
             }
             
             DispatchQueue.global().async {
@@ -877,11 +880,8 @@ extension VertexEditCell {
         
         let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: controlUniqueID)
         
-        try! realm.write {
-            realm.create(DeviceControl.self,
-                         value: ["uniqueID": controlUniqueID,
-                                 "valueCurrent": toggleDevice(control: thisControl!)],
-                         update: true)
+        try! realm.write{
+            thisControl?.valueCurrent = toggleDevice(control: thisControl!)
         }
         
         DispatchQueue.global().async {

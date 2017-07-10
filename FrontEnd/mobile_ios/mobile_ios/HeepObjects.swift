@@ -114,6 +114,7 @@ class DeviceControl: Object {
     dynamic var valueLow: Int = 0
     dynamic var valueHigh: Int = 100
     dynamic var valueCurrent: Int = 0
+    dynamic var lastOnValue: Int = 100
     dynamic var controlName: String = "Default"
     dynamic var place: String = "none"
     dynamic var groupsAssigned: Int = 0
