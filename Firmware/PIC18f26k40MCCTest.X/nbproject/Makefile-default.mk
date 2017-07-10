@@ -51,17 +51,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=mcc_generated_files/spi1.c mcc_generated_files/mcc.c mcc_generated_files/pin_manager.c mcc_generated_files/memory.c mcc_generated_files/tmr1.c mcc_generated_files/interrupt_manager.c main.c W5500.c DigitalIO.c mcc_generated_files/powerup.as ../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/socket.c ../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/W5500/w5500.c ../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/wizchip_conf.c ../PICHeepLibrary/ioLibrary_Driver-master/Internet/DHCP/dhcp.c
+SOURCEFILES_QUOTED_IF_SPACED=../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/W5500/w5500.c ../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/socket.c ../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/wizchip_conf.c ../PICHeepLibrary/ioLibrary_Driver-master/Internet/DHCP/dhcp.c mcc_generated_files/spi1.c mcc_generated_files/mcc.c mcc_generated_files/pin_manager.c mcc_generated_files/memory.c mcc_generated_files/tmr1.c mcc_generated_files/interrupt_manager.c main.c mcc_generated_files/powerup.as ../PICHeepLibrary/DigitalIO.c ../PICHeepLibrary/W5500.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/mcc_generated_files/spi1.p1 ${OBJECTDIR}/mcc_generated_files/mcc.p1 ${OBJECTDIR}/mcc_generated_files/pin_manager.p1 ${OBJECTDIR}/mcc_generated_files/memory.p1 ${OBJECTDIR}/mcc_generated_files/tmr1.p1 ${OBJECTDIR}/mcc_generated_files/interrupt_manager.p1 ${OBJECTDIR}/main.p1 ${OBJECTDIR}/W5500.p1 ${OBJECTDIR}/DigitalIO.p1 ${OBJECTDIR}/mcc_generated_files/powerup.obj ${OBJECTDIR}/_ext/228537824/socket.p1 ${OBJECTDIR}/_ext/1663956104/w5500.p1 ${OBJECTDIR}/_ext/228537824/wizchip_conf.p1 ${OBJECTDIR}/_ext/371745174/dhcp.p1
-POSSIBLE_DEPFILES=${OBJECTDIR}/mcc_generated_files/spi1.p1.d ${OBJECTDIR}/mcc_generated_files/mcc.p1.d ${OBJECTDIR}/mcc_generated_files/pin_manager.p1.d ${OBJECTDIR}/mcc_generated_files/memory.p1.d ${OBJECTDIR}/mcc_generated_files/tmr1.p1.d ${OBJECTDIR}/mcc_generated_files/interrupt_manager.p1.d ${OBJECTDIR}/main.p1.d ${OBJECTDIR}/W5500.p1.d ${OBJECTDIR}/DigitalIO.p1.d ${OBJECTDIR}/mcc_generated_files/powerup.obj.d ${OBJECTDIR}/_ext/228537824/socket.p1.d ${OBJECTDIR}/_ext/1663956104/w5500.p1.d ${OBJECTDIR}/_ext/228537824/wizchip_conf.p1.d ${OBJECTDIR}/_ext/371745174/dhcp.p1.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/_ext/1663956104/w5500.p1 ${OBJECTDIR}/_ext/228537824/socket.p1 ${OBJECTDIR}/_ext/228537824/wizchip_conf.p1 ${OBJECTDIR}/_ext/371745174/dhcp.p1 ${OBJECTDIR}/mcc_generated_files/spi1.p1 ${OBJECTDIR}/mcc_generated_files/mcc.p1 ${OBJECTDIR}/mcc_generated_files/pin_manager.p1 ${OBJECTDIR}/mcc_generated_files/memory.p1 ${OBJECTDIR}/mcc_generated_files/tmr1.p1 ${OBJECTDIR}/mcc_generated_files/interrupt_manager.p1 ${OBJECTDIR}/main.p1 ${OBJECTDIR}/mcc_generated_files/powerup.obj ${OBJECTDIR}/_ext/1038190184/DigitalIO.p1 ${OBJECTDIR}/_ext/1038190184/W5500.p1
+POSSIBLE_DEPFILES=${OBJECTDIR}/_ext/1663956104/w5500.p1.d ${OBJECTDIR}/_ext/228537824/socket.p1.d ${OBJECTDIR}/_ext/228537824/wizchip_conf.p1.d ${OBJECTDIR}/_ext/371745174/dhcp.p1.d ${OBJECTDIR}/mcc_generated_files/spi1.p1.d ${OBJECTDIR}/mcc_generated_files/mcc.p1.d ${OBJECTDIR}/mcc_generated_files/pin_manager.p1.d ${OBJECTDIR}/mcc_generated_files/memory.p1.d ${OBJECTDIR}/mcc_generated_files/tmr1.p1.d ${OBJECTDIR}/mcc_generated_files/interrupt_manager.p1.d ${OBJECTDIR}/main.p1.d ${OBJECTDIR}/mcc_generated_files/powerup.obj.d ${OBJECTDIR}/_ext/1038190184/DigitalIO.p1.d ${OBJECTDIR}/_ext/1038190184/W5500.p1.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/mcc_generated_files/spi1.p1 ${OBJECTDIR}/mcc_generated_files/mcc.p1 ${OBJECTDIR}/mcc_generated_files/pin_manager.p1 ${OBJECTDIR}/mcc_generated_files/memory.p1 ${OBJECTDIR}/mcc_generated_files/tmr1.p1 ${OBJECTDIR}/mcc_generated_files/interrupt_manager.p1 ${OBJECTDIR}/main.p1 ${OBJECTDIR}/W5500.p1 ${OBJECTDIR}/DigitalIO.p1 ${OBJECTDIR}/mcc_generated_files/powerup.obj ${OBJECTDIR}/_ext/228537824/socket.p1 ${OBJECTDIR}/_ext/1663956104/w5500.p1 ${OBJECTDIR}/_ext/228537824/wizchip_conf.p1 ${OBJECTDIR}/_ext/371745174/dhcp.p1
+OBJECTFILES=${OBJECTDIR}/_ext/1663956104/w5500.p1 ${OBJECTDIR}/_ext/228537824/socket.p1 ${OBJECTDIR}/_ext/228537824/wizchip_conf.p1 ${OBJECTDIR}/_ext/371745174/dhcp.p1 ${OBJECTDIR}/mcc_generated_files/spi1.p1 ${OBJECTDIR}/mcc_generated_files/mcc.p1 ${OBJECTDIR}/mcc_generated_files/pin_manager.p1 ${OBJECTDIR}/mcc_generated_files/memory.p1 ${OBJECTDIR}/mcc_generated_files/tmr1.p1 ${OBJECTDIR}/mcc_generated_files/interrupt_manager.p1 ${OBJECTDIR}/main.p1 ${OBJECTDIR}/mcc_generated_files/powerup.obj ${OBJECTDIR}/_ext/1038190184/DigitalIO.p1 ${OBJECTDIR}/_ext/1038190184/W5500.p1
 
 # Source Files
-SOURCEFILES=mcc_generated_files/spi1.c mcc_generated_files/mcc.c mcc_generated_files/pin_manager.c mcc_generated_files/memory.c mcc_generated_files/tmr1.c mcc_generated_files/interrupt_manager.c main.c W5500.c DigitalIO.c mcc_generated_files/powerup.as ../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/socket.c ../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/W5500/w5500.c ../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/wizchip_conf.c ../PICHeepLibrary/ioLibrary_Driver-master/Internet/DHCP/dhcp.c
+SOURCEFILES=../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/W5500/w5500.c ../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/socket.c ../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/wizchip_conf.c ../PICHeepLibrary/ioLibrary_Driver-master/Internet/DHCP/dhcp.c mcc_generated_files/spi1.c mcc_generated_files/mcc.c mcc_generated_files/pin_manager.c mcc_generated_files/memory.c mcc_generated_files/tmr1.c mcc_generated_files/interrupt_manager.c main.c mcc_generated_files/powerup.as ../PICHeepLibrary/DigitalIO.c ../PICHeepLibrary/W5500.c
 
 
 CFLAGS=
@@ -87,6 +87,38 @@ MP_PROCESSOR_OPTION=18F26K40
 # ------------------------------------------------------------------------------------
 # Rules for buildStep: compile
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
+${OBJECTDIR}/_ext/1663956104/w5500.p1: ../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/W5500/w5500.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/_ext/1663956104" 
+	@${RM} ${OBJECTDIR}/_ext/1663956104/w5500.p1.d 
+	@${RM} ${OBJECTDIR}/_ext/1663956104/w5500.p1 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=pickit3  --double=24 --float=24 --emi=wordwrite --opt=+asm,+asmfile,-speed,+space,-debug,-local --addrqual=ignore --mode=free -P -N255 --warn=-3 --asmlist -DXPRJ_default=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/_ext/1663956104/w5500.p1  ../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/W5500/w5500.c 
+	@-${MV} ${OBJECTDIR}/_ext/1663956104/w5500.d ${OBJECTDIR}/_ext/1663956104/w5500.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/_ext/1663956104/w5500.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	
+${OBJECTDIR}/_ext/228537824/socket.p1: ../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/socket.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/_ext/228537824" 
+	@${RM} ${OBJECTDIR}/_ext/228537824/socket.p1.d 
+	@${RM} ${OBJECTDIR}/_ext/228537824/socket.p1 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=pickit3  --double=24 --float=24 --emi=wordwrite --opt=+asm,+asmfile,-speed,+space,-debug,-local --addrqual=ignore --mode=free -P -N255 --warn=-3 --asmlist -DXPRJ_default=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/_ext/228537824/socket.p1  ../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/socket.c 
+	@-${MV} ${OBJECTDIR}/_ext/228537824/socket.d ${OBJECTDIR}/_ext/228537824/socket.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/_ext/228537824/socket.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	
+${OBJECTDIR}/_ext/228537824/wizchip_conf.p1: ../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/wizchip_conf.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/_ext/228537824" 
+	@${RM} ${OBJECTDIR}/_ext/228537824/wizchip_conf.p1.d 
+	@${RM} ${OBJECTDIR}/_ext/228537824/wizchip_conf.p1 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=pickit3  --double=24 --float=24 --emi=wordwrite --opt=+asm,+asmfile,-speed,+space,-debug,-local --addrqual=ignore --mode=free -P -N255 --warn=-3 --asmlist -DXPRJ_default=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/_ext/228537824/wizchip_conf.p1  ../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/wizchip_conf.c 
+	@-${MV} ${OBJECTDIR}/_ext/228537824/wizchip_conf.d ${OBJECTDIR}/_ext/228537824/wizchip_conf.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/_ext/228537824/wizchip_conf.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	
+${OBJECTDIR}/_ext/371745174/dhcp.p1: ../PICHeepLibrary/ioLibrary_Driver-master/Internet/DHCP/dhcp.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/_ext/371745174" 
+	@${RM} ${OBJECTDIR}/_ext/371745174/dhcp.p1.d 
+	@${RM} ${OBJECTDIR}/_ext/371745174/dhcp.p1 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=pickit3  --double=24 --float=24 --emi=wordwrite --opt=+asm,+asmfile,-speed,+space,-debug,-local --addrqual=ignore --mode=free -P -N255 --warn=-3 --asmlist -DXPRJ_default=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/_ext/371745174/dhcp.p1  ../PICHeepLibrary/ioLibrary_Driver-master/Internet/DHCP/dhcp.c 
+	@-${MV} ${OBJECTDIR}/_ext/371745174/dhcp.d ${OBJECTDIR}/_ext/371745174/dhcp.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/_ext/371745174/dhcp.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	
 ${OBJECTDIR}/mcc_generated_files/spi1.p1: mcc_generated_files/spi1.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/mcc_generated_files" 
 	@${RM} ${OBJECTDIR}/mcc_generated_files/spi1.p1.d 
@@ -143,43 +175,44 @@ ${OBJECTDIR}/main.p1: main.c  nbproject/Makefile-${CND_CONF}.mk
 	@-${MV} ${OBJECTDIR}/main.d ${OBJECTDIR}/main.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/main.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
-${OBJECTDIR}/W5500.p1: W5500.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/W5500.p1.d 
-	@${RM} ${OBJECTDIR}/W5500.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=pickit3  --double=24 --float=24 --emi=wordwrite --opt=+asm,+asmfile,-speed,+space,-debug,-local --addrqual=ignore --mode=free -P -N255 --warn=-3 --asmlist -DXPRJ_default=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/W5500.p1  W5500.c 
-	@-${MV} ${OBJECTDIR}/W5500.d ${OBJECTDIR}/W5500.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/W5500.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+${OBJECTDIR}/_ext/1038190184/DigitalIO.p1: ../PICHeepLibrary/DigitalIO.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/_ext/1038190184" 
+	@${RM} ${OBJECTDIR}/_ext/1038190184/DigitalIO.p1.d 
+	@${RM} ${OBJECTDIR}/_ext/1038190184/DigitalIO.p1 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=pickit3  --double=24 --float=24 --emi=wordwrite --opt=+asm,+asmfile,-speed,+space,-debug,-local --addrqual=ignore --mode=free -P -N255 --warn=-3 --asmlist -DXPRJ_default=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/_ext/1038190184/DigitalIO.p1  ../PICHeepLibrary/DigitalIO.c 
+	@-${MV} ${OBJECTDIR}/_ext/1038190184/DigitalIO.d ${OBJECTDIR}/_ext/1038190184/DigitalIO.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/_ext/1038190184/DigitalIO.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
-${OBJECTDIR}/DigitalIO.p1: DigitalIO.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/DigitalIO.p1.d 
-	@${RM} ${OBJECTDIR}/DigitalIO.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=pickit3  --double=24 --float=24 --emi=wordwrite --opt=+asm,+asmfile,-speed,+space,-debug,-local --addrqual=ignore --mode=free -P -N255 --warn=-3 --asmlist -DXPRJ_default=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/DigitalIO.p1  DigitalIO.c 
-	@-${MV} ${OBJECTDIR}/DigitalIO.d ${OBJECTDIR}/DigitalIO.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/DigitalIO.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+${OBJECTDIR}/_ext/1038190184/W5500.p1: ../PICHeepLibrary/W5500.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/_ext/1038190184" 
+	@${RM} ${OBJECTDIR}/_ext/1038190184/W5500.p1.d 
+	@${RM} ${OBJECTDIR}/_ext/1038190184/W5500.p1 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=pickit3  --double=24 --float=24 --emi=wordwrite --opt=+asm,+asmfile,-speed,+space,-debug,-local --addrqual=ignore --mode=free -P -N255 --warn=-3 --asmlist -DXPRJ_default=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/_ext/1038190184/W5500.p1  ../PICHeepLibrary/W5500.c 
+	@-${MV} ${OBJECTDIR}/_ext/1038190184/W5500.d ${OBJECTDIR}/_ext/1038190184/W5500.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/_ext/1038190184/W5500.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	
+else
+${OBJECTDIR}/_ext/1663956104/w5500.p1: ../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/W5500/w5500.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/_ext/1663956104" 
+	@${RM} ${OBJECTDIR}/_ext/1663956104/w5500.p1.d 
+	@${RM} ${OBJECTDIR}/_ext/1663956104/w5500.p1 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --emi=wordwrite --opt=+asm,+asmfile,-speed,+space,-debug,-local --addrqual=ignore --mode=free -P -N255 --warn=-3 --asmlist -DXPRJ_default=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/_ext/1663956104/w5500.p1  ../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/W5500/w5500.c 
+	@-${MV} ${OBJECTDIR}/_ext/1663956104/w5500.d ${OBJECTDIR}/_ext/1663956104/w5500.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/_ext/1663956104/w5500.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
 ${OBJECTDIR}/_ext/228537824/socket.p1: ../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/socket.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/228537824" 
 	@${RM} ${OBJECTDIR}/_ext/228537824/socket.p1.d 
 	@${RM} ${OBJECTDIR}/_ext/228537824/socket.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=pickit3  --double=24 --float=24 --emi=wordwrite --opt=+asm,+asmfile,-speed,+space,-debug,-local --addrqual=ignore --mode=free -P -N255 --warn=-3 --asmlist -DXPRJ_default=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/_ext/228537824/socket.p1  ../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/socket.c 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --emi=wordwrite --opt=+asm,+asmfile,-speed,+space,-debug,-local --addrqual=ignore --mode=free -P -N255 --warn=-3 --asmlist -DXPRJ_default=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/_ext/228537824/socket.p1  ../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/socket.c 
 	@-${MV} ${OBJECTDIR}/_ext/228537824/socket.d ${OBJECTDIR}/_ext/228537824/socket.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/_ext/228537824/socket.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
-	
-${OBJECTDIR}/_ext/1663956104/w5500.p1: ../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/W5500/w5500.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/_ext/1663956104" 
-	@${RM} ${OBJECTDIR}/_ext/1663956104/w5500.p1.d 
-	@${RM} ${OBJECTDIR}/_ext/1663956104/w5500.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=pickit3  --double=24 --float=24 --emi=wordwrite --opt=+asm,+asmfile,-speed,+space,-debug,-local --addrqual=ignore --mode=free -P -N255 --warn=-3 --asmlist -DXPRJ_default=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/_ext/1663956104/w5500.p1  ../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/W5500/w5500.c 
-	@-${MV} ${OBJECTDIR}/_ext/1663956104/w5500.d ${OBJECTDIR}/_ext/1663956104/w5500.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/_ext/1663956104/w5500.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
 ${OBJECTDIR}/_ext/228537824/wizchip_conf.p1: ../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/wizchip_conf.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/228537824" 
 	@${RM} ${OBJECTDIR}/_ext/228537824/wizchip_conf.p1.d 
 	@${RM} ${OBJECTDIR}/_ext/228537824/wizchip_conf.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=pickit3  --double=24 --float=24 --emi=wordwrite --opt=+asm,+asmfile,-speed,+space,-debug,-local --addrqual=ignore --mode=free -P -N255 --warn=-3 --asmlist -DXPRJ_default=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/_ext/228537824/wizchip_conf.p1  ../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/wizchip_conf.c 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --emi=wordwrite --opt=+asm,+asmfile,-speed,+space,-debug,-local --addrqual=ignore --mode=free -P -N255 --warn=-3 --asmlist -DXPRJ_default=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/_ext/228537824/wizchip_conf.p1  ../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/wizchip_conf.c 
 	@-${MV} ${OBJECTDIR}/_ext/228537824/wizchip_conf.d ${OBJECTDIR}/_ext/228537824/wizchip_conf.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/_ext/228537824/wizchip_conf.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
@@ -187,11 +220,10 @@ ${OBJECTDIR}/_ext/371745174/dhcp.p1: ../PICHeepLibrary/ioLibrary_Driver-master/I
 	@${MKDIR} "${OBJECTDIR}/_ext/371745174" 
 	@${RM} ${OBJECTDIR}/_ext/371745174/dhcp.p1.d 
 	@${RM} ${OBJECTDIR}/_ext/371745174/dhcp.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=pickit3  --double=24 --float=24 --emi=wordwrite --opt=+asm,+asmfile,-speed,+space,-debug,-local --addrqual=ignore --mode=free -P -N255 --warn=-3 --asmlist -DXPRJ_default=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/_ext/371745174/dhcp.p1  ../PICHeepLibrary/ioLibrary_Driver-master/Internet/DHCP/dhcp.c 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --emi=wordwrite --opt=+asm,+asmfile,-speed,+space,-debug,-local --addrqual=ignore --mode=free -P -N255 --warn=-3 --asmlist -DXPRJ_default=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/_ext/371745174/dhcp.p1  ../PICHeepLibrary/ioLibrary_Driver-master/Internet/DHCP/dhcp.c 
 	@-${MV} ${OBJECTDIR}/_ext/371745174/dhcp.d ${OBJECTDIR}/_ext/371745174/dhcp.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/_ext/371745174/dhcp.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
-else
 ${OBJECTDIR}/mcc_generated_files/spi1.p1: mcc_generated_files/spi1.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/mcc_generated_files" 
 	@${RM} ${OBJECTDIR}/mcc_generated_files/spi1.p1.d 
@@ -248,53 +280,21 @@ ${OBJECTDIR}/main.p1: main.c  nbproject/Makefile-${CND_CONF}.mk
 	@-${MV} ${OBJECTDIR}/main.d ${OBJECTDIR}/main.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/main.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
-${OBJECTDIR}/W5500.p1: W5500.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/W5500.p1.d 
-	@${RM} ${OBJECTDIR}/W5500.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --emi=wordwrite --opt=+asm,+asmfile,-speed,+space,-debug,-local --addrqual=ignore --mode=free -P -N255 --warn=-3 --asmlist -DXPRJ_default=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/W5500.p1  W5500.c 
-	@-${MV} ${OBJECTDIR}/W5500.d ${OBJECTDIR}/W5500.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/W5500.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+${OBJECTDIR}/_ext/1038190184/DigitalIO.p1: ../PICHeepLibrary/DigitalIO.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/_ext/1038190184" 
+	@${RM} ${OBJECTDIR}/_ext/1038190184/DigitalIO.p1.d 
+	@${RM} ${OBJECTDIR}/_ext/1038190184/DigitalIO.p1 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --emi=wordwrite --opt=+asm,+asmfile,-speed,+space,-debug,-local --addrqual=ignore --mode=free -P -N255 --warn=-3 --asmlist -DXPRJ_default=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/_ext/1038190184/DigitalIO.p1  ../PICHeepLibrary/DigitalIO.c 
+	@-${MV} ${OBJECTDIR}/_ext/1038190184/DigitalIO.d ${OBJECTDIR}/_ext/1038190184/DigitalIO.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/_ext/1038190184/DigitalIO.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
-${OBJECTDIR}/DigitalIO.p1: DigitalIO.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/DigitalIO.p1.d 
-	@${RM} ${OBJECTDIR}/DigitalIO.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --emi=wordwrite --opt=+asm,+asmfile,-speed,+space,-debug,-local --addrqual=ignore --mode=free -P -N255 --warn=-3 --asmlist -DXPRJ_default=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/DigitalIO.p1  DigitalIO.c 
-	@-${MV} ${OBJECTDIR}/DigitalIO.d ${OBJECTDIR}/DigitalIO.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/DigitalIO.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
-	
-${OBJECTDIR}/_ext/228537824/socket.p1: ../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/socket.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/_ext/228537824" 
-	@${RM} ${OBJECTDIR}/_ext/228537824/socket.p1.d 
-	@${RM} ${OBJECTDIR}/_ext/228537824/socket.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --emi=wordwrite --opt=+asm,+asmfile,-speed,+space,-debug,-local --addrqual=ignore --mode=free -P -N255 --warn=-3 --asmlist -DXPRJ_default=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/_ext/228537824/socket.p1  ../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/socket.c 
-	@-${MV} ${OBJECTDIR}/_ext/228537824/socket.d ${OBJECTDIR}/_ext/228537824/socket.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/_ext/228537824/socket.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
-	
-${OBJECTDIR}/_ext/1663956104/w5500.p1: ../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/W5500/w5500.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/_ext/1663956104" 
-	@${RM} ${OBJECTDIR}/_ext/1663956104/w5500.p1.d 
-	@${RM} ${OBJECTDIR}/_ext/1663956104/w5500.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --emi=wordwrite --opt=+asm,+asmfile,-speed,+space,-debug,-local --addrqual=ignore --mode=free -P -N255 --warn=-3 --asmlist -DXPRJ_default=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/_ext/1663956104/w5500.p1  ../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/W5500/w5500.c 
-	@-${MV} ${OBJECTDIR}/_ext/1663956104/w5500.d ${OBJECTDIR}/_ext/1663956104/w5500.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/_ext/1663956104/w5500.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
-	
-${OBJECTDIR}/_ext/228537824/wizchip_conf.p1: ../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/wizchip_conf.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/_ext/228537824" 
-	@${RM} ${OBJECTDIR}/_ext/228537824/wizchip_conf.p1.d 
-	@${RM} ${OBJECTDIR}/_ext/228537824/wizchip_conf.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --emi=wordwrite --opt=+asm,+asmfile,-speed,+space,-debug,-local --addrqual=ignore --mode=free -P -N255 --warn=-3 --asmlist -DXPRJ_default=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/_ext/228537824/wizchip_conf.p1  ../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/wizchip_conf.c 
-	@-${MV} ${OBJECTDIR}/_ext/228537824/wizchip_conf.d ${OBJECTDIR}/_ext/228537824/wizchip_conf.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/_ext/228537824/wizchip_conf.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
-	
-${OBJECTDIR}/_ext/371745174/dhcp.p1: ../PICHeepLibrary/ioLibrary_Driver-master/Internet/DHCP/dhcp.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/_ext/371745174" 
-	@${RM} ${OBJECTDIR}/_ext/371745174/dhcp.p1.d 
-	@${RM} ${OBJECTDIR}/_ext/371745174/dhcp.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --emi=wordwrite --opt=+asm,+asmfile,-speed,+space,-debug,-local --addrqual=ignore --mode=free -P -N255 --warn=-3 --asmlist -DXPRJ_default=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/_ext/371745174/dhcp.p1  ../PICHeepLibrary/ioLibrary_Driver-master/Internet/DHCP/dhcp.c 
-	@-${MV} ${OBJECTDIR}/_ext/371745174/dhcp.d ${OBJECTDIR}/_ext/371745174/dhcp.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/_ext/371745174/dhcp.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+${OBJECTDIR}/_ext/1038190184/W5500.p1: ../PICHeepLibrary/W5500.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/_ext/1038190184" 
+	@${RM} ${OBJECTDIR}/_ext/1038190184/W5500.p1.d 
+	@${RM} ${OBJECTDIR}/_ext/1038190184/W5500.p1 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --emi=wordwrite --opt=+asm,+asmfile,-speed,+space,-debug,-local --addrqual=ignore --mode=free -P -N255 --warn=-3 --asmlist -DXPRJ_default=$(CND_CONF)  --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,-download,+config,+clib,-plib $(COMPARISON_BUILD)  --output=-mcof,+elf:multilocs --stack=compiled:auto:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/_ext/1038190184/W5500.p1  ../PICHeepLibrary/W5500.c 
+	@-${MV} ${OBJECTDIR}/_ext/1038190184/W5500.d ${OBJECTDIR}/_ext/1038190184/W5500.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/_ext/1038190184/W5500.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
 endif
 

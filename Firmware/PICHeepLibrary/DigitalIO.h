@@ -1,4 +1,4 @@
-#include "mcc_generated_files/mcc.h"
+#include <xc.h>
 
 enum pinType {input, output, input_pullup};
 enum outType {high = 1, low = 0};

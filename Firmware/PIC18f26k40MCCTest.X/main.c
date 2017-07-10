@@ -3,8 +3,8 @@
 #define DHCP
 
 #include "mcc_generated_files/mcc.h"
-#include "W5500.h"
-#include "DigitalIO.h"
+#include "../PICHeepLibrary/W5500.h"
+#include "../PICHeepLibrary/DigitalIO.h"
 #include "../PICHeepLibrary/ioLibrary_Driver-master/Ethernet/socket.h"
 #include "../PICHeepLibrary/ioLibrary_Driver-master/Internet/DHCP/dhcp.h"
 #include "../ServerlessFirmware/Heep_API.h"
@@ -69,6 +69,7 @@ void main(void)
     // Disable the Peripheral Interrupts
     //INTERRUPT_PeripheralInterruptDisable();
 
+    HEEP_SPI_Exchange_Byte = SPI1_Exchange8bit;
     PinMode(0, output);
     PinMode(1, output);
     DigitalWrite(1, high);

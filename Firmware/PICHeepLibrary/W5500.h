@@ -1,5 +1,9 @@
 #ifndef W5500_H
+#include <xc.h>
+#include <stdint.h>
 #define	W5500_H
+
+uint8_t (*HEEP_SPI_Exchange_Byte)   (uint8_t data);
 
 void InitializeW5500();
 void ResetW5500();

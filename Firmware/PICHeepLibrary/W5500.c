@@ -1,4 +1,3 @@
-#include "mcc_generated_files/mcc.h"
 #include "W5500.h"
 #include "W5500Defines.h"
 
@@ -68,14 +67,14 @@ void WriteToW5500(uint16_t addr, uint8_t controlBit, uint8_t* buf, uint16_t len)
 {
     SetW5500SS();
     
-    SPI1_Exchange8bit(addr >> 8); // Get High Byte
-    SPI1_Exchange8bit(addr & 0xff); // Get Low Byte
-    SPI1_Exchange8bit(controlBit);
+    HEEP_SPI_Exchange_Byte(addr >> 8); // Get High Byte
+    HEEP_SPI_Exchange_Byte(addr & 0xff); // Get Low Byte
+    HEEP_SPI_Exchange_Byte(controlBit);
     
     uint16_t i = 0;
     for(i = 0; i < len; i++)
     {
-        SPI1_Exchange8bit(buf[i]);
+        HEEP_SPI_Exchange_Byte(buf[i]);
     }
     
     ResetW5500SS();
@@ -85,14 +84,14 @@ void ReadFromW5500(uint16_t addr, uint8_t controlBit, uint8_t* buf, uint16_t len
 {
     SetW5500SS();
     
-    SPI1_Exchange8bit(addr >> 8); // Get High Byte
-    SPI1_Exchange8bit(addr & 0xff); // Get Low Byte
-    SPI1_Exchange8bit(controlBit);
+    HEEP_SPI_Exchange_Byte(addr >> 8); // Get High Byte
+    HEEP_SPI_Exchange_Byte(addr & 0xff); // Get Low Byte
+    HEEP_SPI_Exchange_Byte(controlBit);
     
     uint16_t i = 0;
     for(i = 0; i < len; i++)
     {
-        buf[i] = SPI1_Exchange8bit(0);
+        buf[i] = HEEP_SPI_Exchange_Byte(0);
     }
     
     ResetW5500SS();
