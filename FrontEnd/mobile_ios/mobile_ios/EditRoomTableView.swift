@@ -72,6 +72,10 @@ class EditRoomView: UITableViewController {
         notificationTokenVertices?.stop()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        self.initRealmNotification()
+    }
+    
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 3
