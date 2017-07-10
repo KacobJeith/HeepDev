@@ -96,7 +96,7 @@ class AccountView: UIViewController {
 
 // Already Logged in View 
 
-extension NavAccountView {
+extension AccountView {
     func alreadyLoggedInView() -> UIView {
         let userAccountView = UIView()
         
@@ -191,7 +191,7 @@ extension NavAccountView {
 
 // NO USER LOGGED IN
 
-extension NavAccountView {
+extension AccountView {
     func loginView() -> UIView {
         
         self.subviewFrame = CGRect(x: 0,
