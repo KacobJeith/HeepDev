@@ -27,6 +27,31 @@ void delay(uint32_t theTime)
     while(millis() < endTime) {}
 }
 
+void BlinkLights()
+{
+    DigitalWrite(0, high);
+    delay(200);
+    DigitalWrite(0, low);
+    delay(200);
+    DigitalWrite(0, high);
+    delay(200);
+    DigitalWrite(0, low);
+    delay(200);
+    DigitalWrite(0, high);
+    delay(200);
+    DigitalWrite(0, low);
+    delay(500);
+}
+
+void SetHeepCommFunctions()
+{
+    HEEP_SPI_Exchange_Byte = SPI1_Exchange8bit;
+    WIZCHIP.IF.SPI._write_byte = WritePICByte;
+    WIZCHIP.IF.SPI._read_byte = ReadPICByte;
+    WIZCHIP.CS._select = SetW5500SS;
+    WIZCHIP.CS._deselect = ResetW5500SS;
+}
+
 void main(void)
 {
     // Initialize the device
@@ -60,37 +85,15 @@ void main(void)
     // Disable the Peripheral Interrupts
     //INTERRUPT_PeripheralInterruptDisable();
 
-    HEEP_SPI_Exchange_Byte = SPI1_Exchange8bit;
+    SetHeepCommFunctions();
     PinMode(0, output);
     PinMode(1, output);
     DigitalWrite(1, high);
     DigitalWrite(0, high);
     
-    uint32_t lastTime = 0;
-    uint32_t interval = 1000;
-    uint8_t lightState = 0;
-    
-    DigitalWrite(0, high);
-    delay(200);
-    DigitalWrite(0, low);
-    delay(200);
-    DigitalWrite(0, high);
-    delay(200);
-    DigitalWrite(0, low);
-    delay(200);
-    DigitalWrite(0, high);
-    delay(200);
-    DigitalWrite(0, low);
-    
-    delay(500);
+    BlinkLights();
     
     InitializeW5500();
-    
-    WIZCHIP.IF.SPI._write_byte = WritePICByte;
-    WIZCHIP.IF.SPI._read_byte = ReadPICByte;
-    WIZCHIP.CS._select = SetW5500SS;
-    WIZCHIP.CS._deselect = ResetW5500SS;
-        
     
 #ifdef DHCP
     
