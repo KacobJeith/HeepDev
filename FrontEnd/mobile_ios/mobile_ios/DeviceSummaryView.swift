@@ -11,6 +11,7 @@ import RealmSwift
 
 class DeviceSummaryViewController: UITableViewController {
     
+    var notificationToken: NotificationToken? = nil
     var sections: [String]!
     var cells: [[String]]!
     var thisDevice = Device()
@@ -20,21 +21,32 @@ class DeviceSummaryViewController: UITableViewController {
         
         thisDevice = device
         self.cells = []
-        
         super.init(style: UITableViewStyle.plain)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        print("RELOADING")
         self.title = thisDevice.name
         self.tableView.separatorStyle = .none
         
+        retrieveDeviceUsers(deviceID: thisDevice.deviceID)
+        
+        self.initRealmNotification()
         self.prepareUserData()
         self.prepareDeviceData()
         self.prepareControls()
         //self.setupNavToolbar()
         
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
     
     func setupNavToolbar() {
@@ -58,8 +70,7 @@ class DeviceSummaryViewController: UITableViewController {
         if let adminID = realm.object(ofType: User.self, forPrimaryKey: thisDevice.humanAdmin)?.heepID {
             userIds.append(adminID)
             humanData.append("admin")
-            retrieveDeviceUsers(deviceID: thisDevice.deviceID)
-            humanData.append(contentsOf: ["user", "user"])
+            humanData.append(contentsOf: thisDevice.authorizedUsers.components(separatedBy: "/"))
             humanData.append("addNewUser")
             
         } else {
@@ -145,14 +156,7 @@ class DeviceSummaryViewController: UITableViewController {
         self.cells.append(thisVertex)
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
 
@@ -204,6 +208,10 @@ class DeviceSummaryViewController: UITableViewController {
                 
             default:
                 cell.backgroundColor = .white
+                let label = UILabel()
+                label.text = self.cells[indexPath.section][indexPath.row]
+                label.frame = CGRect(x: 60, y: 5, width: tableView.frame.size.width, height: 35)
+                cell.addSubview(label)
                 
             }
             
@@ -299,6 +307,37 @@ class DeviceSummaryViewController: UITableViewController {
         present(modalViewController, animated: false) {
             print("Completed")
         }
+    }
+    
+    func initRealmNotification() {
+        let realm = try! Realm(configuration: configUser)
+        if let watchThisDevice = realm.object(ofType: Device.self, forPrimaryKey: thisDevice.deviceID) {
+            
+            notificationToken = watchThisDevice.addNotificationBlock {  changes in
+                
+                switch changes {
+                case .change:
+                    self.thisDevice = watchThisDevice
+                    print(watchThisDevice)
+                    
+                    self.tableView.reloadData()
+                    
+                    break
+                case .error(let error):
+                    fatalError("\(error)")
+                    break
+                default: break
+                }
+            }
+        } else {
+            print("REALM WATCHING FAILED")
+        }
+    }
+    
+    func reloadView() {
+        
+        self.loadView()
+        self.viewDidLoad()
     }
     
 }
