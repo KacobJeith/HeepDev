@@ -58,8 +58,15 @@ void SendOutputByID(unsigned char controlID, unsigned int value)
 
 		if(CheckBufferEquality(newVertex.txID, deviceIDByte, STANDARD_ID_SIZE) && newVertex.txControlID == controlID)
 		{
-			FillOutputBufferWithSetValCOP(newVertex.rxControlID, value);
-			SendOutputBufferToIP(newVertex.rxIPAddress);
+			if(CheckBufferEquality(newVertex.txID, newVertex.rxID, STANDARD_ID_SIZE))
+			{
+				SetControlValueByID(newVertex.rxControlID, value, 0);
+			}
+			else
+			{
+				FillOutputBufferWithSetValCOP(newVertex.rxControlID, value);
+				SendOutputBufferToIP(newVertex.rxIPAddress);
+			}
 		}
 	}
 }
