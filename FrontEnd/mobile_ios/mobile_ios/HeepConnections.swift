@@ -79,9 +79,14 @@ class HeepConnections {
     }
     
     public func sendAssignAdminToHeepDevice(deviceID: Int) {
-        let realmApp = try! Realm(configuration: configApp)
-        let adminID = realmApp.object(ofType: App.self, forPrimaryKey: 0)?.activeUser
         
+        guard let adminID = SyncUser.current else {
+            return
+        }
+        
+        print("AdminRealmID: \(adminID)")
+        
+        /*
         let realm = try! Realm(configuration: configUser)
         let thisDevice = realm.object(ofType: Device.self, forPrimaryKey: deviceID)
         let thisDeviceIP = thisDevice?.ipAddress
@@ -92,7 +97,7 @@ class HeepConnections {
         print("Sending: \(message) to Heep Device at \(thisDeviceIP!)")
         
         ConnectToHeepDevice(ipAddress: thisDeviceIP!, printErrors: false, message: message)
-        
+        */
     }
     
     func ConnectToHeepDevice(ipAddress: String, printErrors: Bool, message: [UInt8]) {

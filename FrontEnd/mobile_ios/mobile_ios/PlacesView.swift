@@ -39,10 +39,9 @@ class PlacesView: UIViewController {
                 
         self.navigationItem.rightBarButtonItem = getActiveUserIcon()
         
-        self.toolbarItems = [flush, spacer,  search, spacer]
+        self.toolbarItems = [spacer,  search, spacer]
 
         addPlaces()
-        
         //self.searchForHeepDevices()
     }
     
@@ -92,12 +91,10 @@ class PlacesView: UIViewController {
     
     
     func addPlaceToRealm() {
-        //let realmApp = try! Realm(configuration: configApp)
         let realm = try! Realm(configuration: configUser)
         
         let currentWifi = currentWifiInfo()
         let allGroups = realm.objects(Group.self)
-        //let app = realmApp.object(ofType: App.self, forPrimaryKey: 0)
         
         let firstGroupInPlace = Group()
         firstGroupInPlace.place = currentWifi.bssid
@@ -112,7 +109,6 @@ class PlacesView: UIViewController {
         let newPlace = Place()
         newPlace.ssid = currentWifi.ssid
         newPlace.bssid = currentWifi.bssid
-        //newPlace.id = currentWifi.bssid + String(describing: app?.activeUser)
         newPlace.name = currentWifi.ssid
         
         try! realm.write {
@@ -160,7 +156,7 @@ class PlacesView: UIViewController {
 
         let groupView = GroupCollectionView()
         groupView.thisPlace = enterPlace!
-        navigationController?.pushViewController(groupView, animated: true)
+        navigationController?.pushViewController(groupView, animated: false)
         
         
     }
@@ -231,14 +227,13 @@ class PlacesView: UIViewController {
         self.loadView()
         self.viewDidLoad()
     }
-    
-
 }
 
 extension PlacesView {
     
     func reloadView() {
         
+        print("Ran reloadView")
         self.loadView()
         self.viewDidLoad()
     }
@@ -270,30 +265,24 @@ extension PlacesView {
             default: break
             }
         }
+        
+
     }
     
     func userLogin() {
-        // Open modal view that gives login options
-        let modalViewController = AccountView()
-        modalViewController.placesView = self
-        
-        modalViewController.modalPresentationStyle = .overCurrentContext
-        present(modalViewController, animated: false, completion: nil)
-        print("facebook?")
-        
+        navigationController?.pushViewController(AccountView(), animated: false)
     }
     
     func getActiveUserIcon() -> UIBarButtonItem {
-        let realm = try! Realm(configuration: configApp)
-        let app = realm.object(ofType: App.self, forPrimaryKey: 0)
-        let activeUser = realm.object(ofType: User.self, forPrimaryKey: app?.activeUser)
+        let realm = try! Realm(configuration: configUser)
+        let myID = realm.objects(User.self).first?.heepID
         
-        var userImage = UIImage(named: "female")
+        var userImage = #imageLiteral(resourceName: "female")
         
-        if (activeUser?.icon.length)! > 0 {
-            userImage = UIImage(data: (activeUser?.icon)! as Data)
-        }
-        
+        if myID != nil {
+            
+            userImage = myImage(userID: myID!)
+        }        
         
         let userButton = UIButton(frame: CGRect(x: 0, y: 0,
                                                 width: (navigationController?.navigationBar.bounds.height)!,

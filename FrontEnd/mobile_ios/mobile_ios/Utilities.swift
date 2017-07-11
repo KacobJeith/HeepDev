@@ -11,34 +11,13 @@ import Foundation
 import SystemConfiguration.CaptiveNetwork
 import RealmSwift
 //import CommonCrypto.CommonCrypto
+var userKey = String()
 
 func flushApp() {
-    let realmApp = try! Realm(configuration: configApp)
-    try! realmApp.write {
-        realmApp.deleteAll()
-    }
     
-    let realmUser = try! Realm(configuration: configUser)
-    try! realmUser.write {
-        realmUser.deleteAll()
-    }
-}
-
-func initializeApp() {
-    let realm = try! Realm(configuration: configApp)
-    
-    let app = realm.object(ofType: App.self, forPrimaryKey: 0)
-    
-    if app == nil {
-        print("Adding empty app")
-        let initialApp = App()
-        let initialUser = User()
-        
-        
-        try! realm.write {
-            realm.add(initialApp)
-            realm.add(initialUser)
-        }
+    let realmGuest = try! Realm(configuration: configGuest)
+    try! realmGuest.write {
+        realmGuest.deleteAll()
     }
     
 }
@@ -235,36 +214,7 @@ func getIDFromByteArray(bytes: [UInt32]) -> Int {
     return finalID
 }
 
-func seedNewUserAccount(name: String,
-                        imageURL: String = "https://lorempixel.com/400/400/cats/",
-                        id: String) -> User {
-        let realm = try! Realm(configuration: configApp)
-        let app = realm.object(ofType: App.self, forPrimaryKey: 0)
-        let newUser = User()
-        //print(actualInfo)
-        
-        newUser.userID = Int(id)!
-        newUser.facebookID = Int(id)!
-        newUser.name = name
-        newUser.iconURL = imageURL
-        print(newUser)
-        
-        try! realm.write {
-            app?.activeUser = Int(id)!
-            realm.add(newUser,
-                      update: true)
-        }
-        
-        let iconData = getUserIcon(iconURL: newUser.iconURL)
-        
-        try! realm.write {
-            
-            newUser.icon = iconData
-        }
-        print("After getting image \(newUser)")
-    
-    return newUser
-}
+
 
 func getUserIcon(iconURL: String) -> NSData {
     let url = URL(string: iconURL)
@@ -273,17 +223,8 @@ func getUserIcon(iconURL: String) -> NSData {
     return data! as NSData
 }
 
-func loginToUserRealm(user: Int) {
-    let realmApp = try! Realm(configuration: configApp)
-    let app = realmApp.object(ofType: App.self, forPrimaryKey: 0)
-    
-    try! realmApp.write {
-        app?.activeUser = user
-    }
-    
-    configUser.fileURL = configUser.fileURL!.deletingLastPathComponent().appendingPathComponent("\(String(describing: user)).realm")
-    
-}
+
+
 
 func convertIntToByteArray(integer: Int) -> [UInt8] {
     var byteArray = [UInt8]()
@@ -321,4 +262,17 @@ func convertArrayToInt(byteArray: [UInt8], reverse: Bool = false) -> Int {
     return integer
 }
 
+extension Results {
+    
+    func toArray() -> [T] {
+        return self.map{$0}
+    }
+}
+
+extension RealmSwift.List {
+    
+    func toArray() -> [T] {
+        return self.map{$0}
+    }
+}
 

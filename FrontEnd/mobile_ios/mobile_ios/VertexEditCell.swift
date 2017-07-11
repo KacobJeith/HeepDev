@@ -3,10 +3,9 @@ import RealmSwift
 
 class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionViewDelegate {
     
+    var parentTable = UITableViewController()
     var collectionView: UICollectionView!
-    var devices: [Device] = []
     var controls = List<DeviceControl>()
-    var controlDeviceReference: [Device] = []
     var thisBSSID: String = ""
     var cellFrame = CGRect()
     var editImage: UIImage = UIImage()
@@ -119,7 +118,6 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         cell.isUserInteractionEnabled = true
         cell.tag = 1
         
-        
         for eachControl in controls {
             
             for eachVertex in eachControl.vertexList {
@@ -136,6 +134,7 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
             
             
         }
+        
         
         if self.thisGroup.selectedControl == 0 {
             
@@ -182,8 +181,10 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
             cell.addGestureRecognizer(pan)
             cell.addGestureRecognizer(pinch)
             cell.addGestureRecognizer(rotate)
-
+            cell.addSubview(addDetailButton())
         }
+        
+        
         
         return cell
     }
@@ -205,8 +206,6 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     }
     
 }
-
-// Editing Vertexes (thisGroup.selectedControl == 1)
 
 extension VertexEditCell {
     
@@ -578,6 +577,7 @@ extension VertexEditCell {
         gestureRecognizer.setTranslation(CGPoint(), in: self)
         
         if gestureRecognizer.state == UIGestureRecognizerState.ended {
+            print("End")
             saveSelectedSprite()
         }
     }
@@ -802,7 +802,7 @@ extension VertexEditCell {
         return UIImage(data: thisGroup.imageData as Data)
     }
     
-    func addControlSprite(cell: UICollectionViewCell, thisControl: DeviceControl) -> UIView {
+    func addControlSprite(cell: UICollectionViewCell, thisControl: DeviceControl, applyTransform: Bool = true) -> UIView {
         controlIDs.append(thisControl.uniqueID)
         
         let container = UIView()
@@ -834,14 +834,12 @@ extension VertexEditCell {
                                      height: scaledSize)
         
         let currentRangeContainer = UIView(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
-//        print(thisControl)
 
         let currentRange = UIView(frame: CGRect(x: 0, y: getControlValueRatio(control: thisControl) * 60, width: 60, height: 60))
         
         currentRange.backgroundColor = SuggestColorFromName(name: thisControl.controlName).withAlphaComponent(0.5)
         
         currentRangeContainer.transform = CGAffineTransform(scaleX: 1, y: 1).rotated(by: -thisControl.rotation)
-        
         currentRangeContainer.addSubview(currentRange)
         
         container.addSubview(currentRangeContainer)
@@ -861,8 +859,9 @@ extension VertexEditCell {
     }
     
     func selectThisController(gesture: UITapGestureRecognizer) {
-//        print((gesture.view?.tag)!)
+
         if thisGroup.selectedControl == (gesture.view?.tag)!{
+            print("TOGGLING")
             toggleOnOff(controlUniqueID: (gesture.view?.tag)!)
         }
         else{
@@ -932,4 +931,42 @@ extension VertexEditCell {
         }
     }
     
+    func addDetailButton() -> UIView {
+        let realm = try! Realm(configuration: configUser)
+        
+        guard let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl) else {
+            return UIView()
+        }
+        
+        
+        let infoButton = UIButton(type: .detailDisclosure)
+        infoButton.isUserInteractionEnabled = true
+        infoButton.frame = CGRect(x: 0,
+                                  y: 0,
+                                  width: 15,
+                                  height: 15)
+        
+        infoButton.tintColor = .blue
+        infoButton.addTarget(self, action: #selector(displayDeviceSummary), for: .primaryActionTriggered)
+        
+        infoButton.transform = CGAffineTransform(translationX: thisControl.editX + (24 * thisControl.scale),
+                                                 y: thisControl.editY - (30 * thisControl.scale)).scaledBy(x: thisControl.scale,
+                                                                                                           y: thisControl.scale)
+        return infoButton
+    }
+    
+    func displayDeviceSummary() {
+        let realm = try! Realm(configuration: configUser)
+        
+        if let control = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl) {
+            if let device = realm.object(ofType: Device.self, forPrimaryKey: control.deviceID) {
+                let summaryView = DeviceSummaryViewController(device: device)
+                parentTable.navigationController?.pushViewController(summaryView, animated: true)
+
+            }
+        }
+        
+    }
+    
 }
+

@@ -72,6 +72,10 @@ class EditRoomView: UITableViewController {
         notificationTokenVertices?.stop()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        self.initRealmNotification()
+    }
+    
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 3
@@ -103,6 +107,7 @@ class EditRoomView: UITableViewController {
                                       thisGroup: thisGroup,
                                       indexPath: indexPath)
             
+            cell.parentTable = self
             
             cell.addSubview(drawVertexToggleButton())
             
@@ -156,7 +161,6 @@ extension EditRoomView: UIImagePickerControllerDelegate, UINavigationControllerD
         print("Saving Image")
         let imageData = UIImageJPEGRepresentation(image, 0.5)
         
-        let realm = try! Realm(configuration: configUser)
         
         try! realm.write {
             thisGroup.imageData = imageData! as NSData
@@ -225,7 +229,6 @@ extension EditRoomView {
     func toggleVertexEditState() {
         print("Toggle Vertex Edit")
         
-        let realm = try! Realm(configuration: configUser)
         
         try! realm.write {
             if thisGroup.selectedControl <= 1 {
@@ -254,11 +257,12 @@ extension EditRoomView {
     
     
     func initRealmNotification() {
-        let watchControls = realm.objects(DeviceControl.self).filter("place = %@ AND groupsAssigned = 0", thisBSSID)
-            
+        let query = NSCompoundPredicate(type: .and, subpredicates: [NSPredicate(format: "place = '\(thisBSSID)'"),
+                                                                    NSPredicate(format: "groupsAssigned = \(thisGroup.id)")])
+
+        let watchControls = realm.objects(DeviceControl.self).filter(query)
+
         notificationTokenControls = watchControls.addNotificationBlock {  [weak self] (changes: RealmCollectionChange) in
-            
-            
             
                 switch changes {
                 case .update:

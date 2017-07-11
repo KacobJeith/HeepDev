@@ -13,9 +13,18 @@ import UserNotifications
 import CoreLocation
 import FacebookCore
 
-var configApp = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
-var configUser = Realm.Configuration(fileURL: configApp.fileURL!.deletingLastPathComponent()
-    .appendingPathComponent("guest.realm"), deleteRealmIfMigrationNeeded: true)
+let digitalOceanIP = "45.55.249.217:9080"
+let publicUserKey = "3236896a34becbac18c96a9a24c55de9"
+let digitalOceanHTTP = "http://" + digitalOceanIP
+let digitalOceanRealm = "realm://" + digitalOceanIP
+let digitalOceamUserRealm = digitalOceanRealm + "/~/heepzone"
+let dititalOceanPublicRealm = digitalOceanRealm + "/" + publicUserKey + "/userDirectory"
+
+var configGuest = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
+var configUser = configGuest
+var configPublicSync =  Realm.Configuration(syncConfiguration: SyncConfiguration(user: SyncUser.current!,
+                                                                                 realmURL: URL(string: dititalOceanPublicRealm)!),
+                                            objectTypes: [User.self])
 
 var SuccessROPReceived = true
 
@@ -32,9 +41,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         SDKApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
         
+        flushApp()
+        //logoutOfAllRealmUsers()
         initializeApp()
         setupAppNavigation()
         startMonitoringBeacon()
+        
+        //logoutOfAllRealmUsers()
+        //loginToPublicRealm()
         
         return true
     }

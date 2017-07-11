@@ -9,42 +9,32 @@
 import Foundation
 import RealmSwift
 
-// App Realm
-class App: Object {
-    dynamic var phoneID: Int = 0
-    dynamic var activeUser: Int = 0
-    
-    override static func primaryKey() -> String? {
-        return "phoneID"
-    }
-}
-
-// App Realm
+// Public Realm
 class User: Object {
     
-    dynamic var userID: Int = 0
+    dynamic var heepID: Int = 0
+    dynamic var realmKey: String = ""
     dynamic var facebookID: Int = 0
     dynamic var name: String = "guest"
     dynamic var email: String = ""
-    dynamic var password: String = ""
     dynamic var iconURL: String = ""
     dynamic var icon: NSData = (UIImagePNGRepresentation((UIImage(named: "female"))!))! as NSData
     
     override static func primaryKey() -> String? {
-        return "userID"
+        return "heepID"
     }
     
 }
 
-// User Realm
+// Device Realm
 class Key: Object {
-    dynamic var deviceID: Int = 0
-    dynamic var deviceSecret: Int = 0
+    dynamic var accessCode: Int = 0
+    dynamic var publicKey: Int = 0
+    dynamic var type: Int = 0
     
     override static func primaryKey() -> String? {
-        return "deviceID"
+        return "type"
     }
-    
 }
 
 // User Realm
@@ -57,6 +47,7 @@ class Place: Object {
     dynamic var x: CGFloat = 100
     dynamic var y: CGFloat = 100
     dynamic var radius: Int = 100
+    dynamic var update: Bool = false
     let devices = List<Device>()
     let groups = List<Group>()
     
@@ -141,5 +132,12 @@ class Vertex: Object {
         return "vertexID"
     }
     
+}
+
+
+extension Object {
+    func propertyNames() -> [String] {
+        return Mirror(reflecting: self).children.flatMap { $0.label }
+    }
 }
 
