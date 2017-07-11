@@ -18,15 +18,18 @@ class DeviceSummaryViewController: UITableViewController {
     var userIds: [Int] = []
     
     init(device: Device) {
+        let realm = try! Realm(configuration: configUser)
+        if let pullDevice = realm.object(ofType: Device.self, forPrimaryKey: device.deviceID) {
+            thisDevice = pullDevice
+        }
         
-        thisDevice = device
         self.cells = []
         super.init(style: UITableViewStyle.plain)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("RELOADING")
+        
         self.title = thisDevice.name
         self.tableView.separatorStyle = .none
         
@@ -36,7 +39,7 @@ class DeviceSummaryViewController: UITableViewController {
         self.prepareUserData()
         self.prepareDeviceData()
         self.prepareControls()
-        //self.setupNavToolbar()
+        
         
     }
     
@@ -77,7 +80,7 @@ class DeviceSummaryViewController: UITableViewController {
             print("This Device's owner is not registered in the Heep User Directory")
             humanData.append("claimDevice")
         }
-        
+        print(humanData)
         self.cells.append(humanData)
     }
     
@@ -188,7 +191,7 @@ class DeviceSummaryViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+
         let cell = UITableViewCell()
         
         if indexPath.section == 0 {
@@ -304,9 +307,7 @@ class DeviceSummaryViewController: UITableViewController {
     func addUserToThisDevice() {
         let modalViewController = UserSearch(device: thisDevice)
         modalViewController.modalPresentationStyle = .overCurrentContext
-        present(modalViewController, animated: false) {
-            print("Completed")
-        }
+        present(modalViewController, animated: false) {}
     }
     
     func initRealmNotification() {
@@ -317,10 +318,18 @@ class DeviceSummaryViewController: UITableViewController {
                 
                 switch changes {
                 case .change:
-                    self.thisDevice = watchThisDevice
-                    print(watchThisDevice)
                     
-                    self.tableView.reloadData()
+                    self.thisDevice = watchThisDevice
+                    self.cells = [[String]]()
+                    
+                    self.prepareUserData()
+                    self.prepareDeviceData()
+                    self.prepareControls()
+                    
+                    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
+                        
+                        self.tableView.reloadData()
+                    }
                     
                     break
                 case .error(let error):

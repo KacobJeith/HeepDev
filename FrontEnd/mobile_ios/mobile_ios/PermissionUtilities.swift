@@ -39,52 +39,53 @@ func grantPermissionToOtherUser(deviceID: Int, userID: Int) {
                                          accessLevel: .write)
     
     SyncUser.current?.applyPermission(permission) { error in
-        print("Successfully added permission to new user")
         
         if let error = error {
-            // handle error
             print("PERMISSION UNSUCCESSFUL \(error)")
             return
         }
+        
+        print("Successfully added permission to new user")
+        
+        let realm = try! Realm(configuration: configUser)
+        
+        if let device = realm.object(ofType: Device.self, forPrimaryKey: deviceID) {
+            
+            let newUserList = device.authorizedUsers + "/" + (userToGrant?.realmKey)!
+            
+            try! realm.write {
+                
+                device.authorizedUsers = newUserList
+            }
+        }
+        
+        return
     }
+    
+    
 }
 
 func retrieveDeviceUsers(deviceID: Int) {
     var matchingUsers = [String]()
     
-    SyncUser.current?.retrievePermissions { permissions, error in
+    if let man = try! SyncUser.current?.managementRealm() {
         
-        if error != nil {
-            // handle error
-            
-            return
-        }
+        let changes = man.objects(SyncPermissionChange.self)
         
-        // success! access permissions
-        if let permissionList = permissions {
+        for permission in changes {
             
-            print(permissionList)
-            
-            for permission in permissionList {
-                
-                if parseDeviceIDFromRealmPath(deviceID: deviceID, realmPath: permission.path) {
-                    print("FOUND ONE: \(String(describing: permission.userId))")
-                    matchingUsers.append((permission.userId)!)
-                } else {
-                    print("DOES NOT MATCH")
-                }
+            if parseDeviceIDFromRealmPath(deviceID: deviceID, realmPath: permission.realmUrl) {
+                matchingUsers.append(permission.userId)
             }
-            
-            let realm = try! Realm(configuration: configUser)
-            
-            if let device = realm.object(ofType: Device.self, forPrimaryKey: deviceID) {
-                try! realm.write {
-                    device.authorizedUsers = matchingUsers.joined(separator: "/")
-                }
-            }
-            
         }
-        return
+    }
+    
+    let realm = try! Realm(configuration: configUser)
+    
+    if let device = realm.object(ofType: Device.self, forPrimaryKey: deviceID) {
+        try! realm.write {
+            device.authorizedUsers = matchingUsers.joined(separator: "/")
+        }
     }
     
 }
@@ -92,9 +93,8 @@ func retrieveDeviceUsers(deviceID: Int) {
 func parseDeviceIDFromRealmPath(deviceID: Int, realmPath: String?) -> Bool {
     if let openedPath = realmPath {
         var pathComponents =  openedPath.components(separatedBy: "/")
-        //print(pathComponents)
-        //print("DEVICE: \(String.init(describing: deviceID)), PATH: \(pathComponents[1])")
-        if pathComponents[2] == String.init(describing: deviceID) {
+        
+        if pathComponents[4] == String.init(describing: deviceID) {
             return true
         } else {
             return false
