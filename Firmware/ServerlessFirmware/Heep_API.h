@@ -3,26 +3,29 @@
 #ifdef ON_PC
 #include "Socket_HeepComms.h"
 #include "Simulation_NonVolatileMemory.h"
-
-#else
+#endif
 
 #ifdef ON_ARDUINO
 #include "ENC28j60_HeepComms.h"
 #include "Arduino_EEPROM.h"
+#endif
 
-#else
+#ifdef SIMULATION
 #include "Simulation_HeepComms.h"
 #include "Simulation_NonVolatileMemory.h"
 #endif
 
+#ifdef ON_PIC
+#include "PICW5500_HeepComms.h"
+#include "PICW5500_NonVolatileMemory.h"
 #endif
 
 // Prototypes
 void CommitMemory();
 
-unsigned char clearMemory = 0;
+unsigned char clearMemory = 1;
 void SetupHeepDevice(char* deviceName)
-{
+{	
 	if(clearMemory)
 	{
 		ClearMemory();
@@ -31,7 +34,7 @@ void SetupHeepDevice(char* deviceName)
 	}
 	else
 	{
-		ReadMemory(deviceMemory, curFilledMemory);
+		ReadMemory(&controlRegister, deviceMemory, &curFilledMemory);
 		FillVertexListFromMemory();
 	}
 }
@@ -45,15 +48,15 @@ void FactoryReset(char* deviceName)
 
 void SendOutputByID(unsigned char controlID, unsigned int value)
 {
-	SetControlValueByID(controlID, value);
+	SetControlValueByID(controlID, value, 0);
 
-	Vertex newVertex;
+	struct Vertex_Byte newVertex;
 
 	for(int i = 0; i < numberOfVertices; i++)
 	{
-		GetVertexAtPonter(vertexPointerList[i], newVertex);
+		GetVertexAtPointer_Byte(vertexPointerList[i], &newVertex);
 
-		if(newVertex.txID == deviceID && newVertex.txControlID == controlID)
+		if(CheckBufferEquality(newVertex.txID, deviceIDByte, STANDARD_ID_SIZE) && newVertex.txControlID == controlID)
 		{
 			FillOutputBufferWithSetValCOP(newVertex.rxControlID, value);
 			SendOutputBufferToIP(newVertex.rxIPAddress);
@@ -72,7 +75,7 @@ void CommitMemory()
 {
 	if(memoryChanged)
 	{
-		SaveMemory(deviceMemory, curFilledMemory);
+		SaveMemory(controlRegister, deviceMemory, curFilledMemory);
 		memoryChanged = 0;
 	}
 }
@@ -105,7 +108,7 @@ void PerformHeepTasks()
 			CommitMemory();
 		}
 	}
-
+//
 	CheckServerForInputs();
 	ControlDaemon();
 }

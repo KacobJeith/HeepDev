@@ -10,7 +10,7 @@ void CheckServerForInputs()
 
 }
 
-void SendOutputBufferToIP(HeepIPAddress destIP)
+void SendOutputBufferToIP(struct HeepIPAddress destIP)
 {
 
 }

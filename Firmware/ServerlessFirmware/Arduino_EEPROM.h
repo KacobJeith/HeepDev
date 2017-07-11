@@ -1,13 +1,14 @@
 #include <EEPROM.h>
 
-void SaveMemory(unsigned char* memoryBuffer, unsigned int bytesToWrite)
+void SaveMemory(unsigned char controlRegister, unsigned char* memoryBuffer, unsigned int bytesToWrite)
 {
 	// First store number of bytes to write
-	EEPROM.write(0, bytesToWrite);
+	EEPROM.write(0, controlRegister);
+	EEPROM.write(1, bytesToWrite);
 
-	for(int i = 1; i < bytesToWrite + 1; i++)
+	for(int i = 2; i < bytesToWrite + 1; i++)
 	{
-		EEPROM.write(i, memoryBuffer[i-1]);
+		EEPROM.write(i, memoryBuffer[i-2]);
 	}
 }
 
@@ -20,13 +21,14 @@ void ClearMemory()
 }
 
 
-void ReadMemory(unsigned char* memoryBuffer, unsigned int &bytesRead)
+void ReadMemory(unsigned char* controlRegister, unsigned char* memoryBuffer, unsigned int* bytesRead)
 {
-	int numberBytesToRead = EEPROM.read(0); // Address 0 contains number of bytes
-	bytesRead = numberBytesToRead;
+	*controlRegister = EEPROM.read(0); // Address 0 contains control register
+	int numberBytesToRead = EEPROM.read(1); // Address 1 contains number of bytes
+	*bytesRead = numberBytesToRead;
 
-	for(int i = 1; i < numberBytesToRead + 1; i++)
+	for(int i = 2; i < numberBytesToRead + 1; i++)
 	{
-		memoryBuffer[i-1] = EEPROM.read(i);
+		memoryBuffer[i-2] = EEPROM.read(i);
 	}
 }

@@ -1,9 +1,19 @@
 #include "globalDefines.h"
 
+#ifdef ON_PC
+#include "Simulation_Timer.h"
+#endif
+
 #ifdef ON_ARDUINO
 #include "Arduino_Timer.h"
-#else
+#endif
+
+#ifdef SIMULATION
 #include "Simulation_Timer.h"
+#endif
+
+#ifdef ON_PIC
+#include "PICW5500_Timer.h"
 #endif
 
 unsigned long lastMillis = 0;
@@ -31,10 +41,12 @@ unsigned char IsTaskTime()
 		lastMillis = GetMillis();
 		return 1;
 	}
-	else
+	else if( lastMillis > GetMillis() )
 	{
-		return 0;
+		lastMillis = 0; // Up to one Task interval of error may be introduced, but that is no issue for current scheduling
 	}
+
+	return 0;
 }
 
 unsigned char GetCurrentTask()
