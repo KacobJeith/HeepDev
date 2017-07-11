@@ -58,17 +58,22 @@ func myImage(userID: Int) -> UIImage {
     
 }
 
-func userNameView(frame: CGRect, userID: Int)  -> (view: UIView, frame: CGRect) {
-    let nextFrame = CGRect(x: 0,
+func userNameView(frame: CGRect, userID: Int, textAlignment: NSTextAlignment = .center, calculateFrame: Bool = true)  -> (view: UIView, frame: CGRect) {
+    var nextFrame = frame
+    
+    if calculateFrame {
+        nextFrame = CGRect(x: 0,
                            y: frame.maxY + 3,
                            width: frame.width,
                            height: 10)
+    }
+    
     
     let userNameView = UILabel(frame: nextFrame)
     userNameView.text = myName(userID: userID)
     userNameView.font = userNameView.font.withSize(12)
     userNameView.textColor = .darkGray
-    userNameView.textAlignment = .center
+    userNameView.textAlignment = textAlignment
     userNameView.contentMode = .bottom
     
     return (view: userNameView, frame: nextFrame)
