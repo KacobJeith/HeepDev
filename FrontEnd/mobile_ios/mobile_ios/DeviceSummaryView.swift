@@ -16,6 +16,7 @@ class DeviceSummaryViewController: UITableViewController {
     var cells: [[String]]!
     var thisDevice = Device()
     var userIds: [Int] = []
+    var userRealmKeys: [String] = []
     
     init(device: Device) {
         let realm = try! Realm(configuration: configUser)
@@ -67,13 +68,13 @@ class DeviceSummaryViewController: UITableViewController {
     
     func prepareUserData() {
         self.sections = ["Users with Access"]
-        let realm = try! Realm(configuration: configPublicSync)
         var humanData = [String]()
         
-        if let adminID = realm.object(ofType: User.self, forPrimaryKey: thisDevice.humanAdmin)?.heepID {
-            userIds.append(adminID)
+        if thisDevice.humanAdmin != 0 {
+            userIds.append(thisDevice.humanAdmin)
             humanData.append("admin")
-            humanData.append(contentsOf: thisDevice.authorizedUsers.components(separatedBy: "/"))
+            userRealmKeys = thisDevice.authorizedUsers.components(separatedBy: "/")
+            humanData.append(contentsOf: userRealmKeys)
             humanData.append("addNewUser")
             
         } else {
@@ -203,18 +204,17 @@ class DeviceSummaryViewController: UITableViewController {
             case "claimDevice" :
                 cell.addSubview(addClaimDeviceCell())
                 
-            case "user" :
-                cell.backgroundColor = getRandomColor()
-                
             case "addNewUser" :
                 cell.addSubview(addNewUserCell())
                 
             default:
-                cell.backgroundColor = .white
-                let label = UILabel()
-                label.text = self.cells[indexPath.section][indexPath.row]
-                label.frame = CGRect(x: 60, y: 5, width: tableView.frame.size.width, height: 35)
-                cell.addSubview(label)
+                let realm = try! Realm(configuration: configPublicSync)
+                
+                if let heepID = realm.objects(User.self).filter("realmKey = %@", userRealmKeys[indexPath.row - 1]).first?.heepID {
+                    
+                    cell.addSubview(addUserCell(userID: heepID, initialOffset: 60))
+                }
+                
                 
             }
             
