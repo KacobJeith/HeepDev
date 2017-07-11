@@ -58,6 +58,7 @@ class DeviceSummaryViewController: UITableViewController {
         if let adminID = realm.object(ofType: User.self, forPrimaryKey: thisDevice.humanAdmin)?.heepID {
             userIds.append(adminID)
             humanData.append("admin")
+            retrieveDeviceUsers(deviceID: thisDevice.deviceID)
             humanData.append(contentsOf: ["user", "user"])
             humanData.append("addNewUser")
             
@@ -193,14 +194,12 @@ class DeviceSummaryViewController: UITableViewController {
                 cell.addSubview(addUserCell(userID: userIds[indexPath.row], initialOffset: 15))
                 
             case "claimDevice" :
-                //cell.backgroundColor = .green
                 cell.addSubview(addClaimDeviceCell())
                 
             case "user" :
                 cell.backgroundColor = getRandomColor()
                 
             case "addNewUser" :
-                //cell.backgroundColor = .red
                 cell.addSubview(addNewUserCell())
                 
             default:
