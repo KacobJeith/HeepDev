@@ -663,6 +663,8 @@ extension VertexEditCell {
             
             longPressActive = true
             
+            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+            
             startSliderRatio = 1.0 - getControlValueRatio(control: thisControl)
             initialLongPressLocation = gestureRecognizer.location(in: gestureRecognizer.view)
 
@@ -861,7 +863,6 @@ extension VertexEditCell {
     func selectThisController(gesture: UITapGestureRecognizer) {
 
         if thisGroup.selectedControl == (gesture.view?.tag)!{
-            print("TOGGLING")
             toggleOnOff(controlUniqueID: (gesture.view?.tag)!)
         }
         else{
@@ -874,6 +875,8 @@ extension VertexEditCell {
     }
     
     func toggleOnOff(controlUniqueID: Int){
+        
+        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         
         let realm = try! Realm(configuration: configUser)
         
