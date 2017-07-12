@@ -212,10 +212,7 @@ class ReactiveButton: UIButton {
 }
 
 func addEmailTextBox(frame: CGRect) -> (view: UIView, frame: CGRect) {
-    let nextFrame = CGRect(x: frame.minX,
-                           y: frame.maxY + 10,
-                           width: frame.width,
-                           height: frame.height)
+    let nextFrame = getNextFrame(frame: frame)
     
     let view = insetTextView(frame: nextFrame,
                              placeholderText: "email",
@@ -227,10 +224,7 @@ func addEmailTextBox(frame: CGRect) -> (view: UIView, frame: CGRect) {
 }
 
 func addPasswordTextBox(frame: CGRect, placeholderText: String) -> (view: UIView, frame: CGRect) {
-    let nextFrame = CGRect(x: frame.minX,
-                           y: frame.maxY + 10,
-                           width: frame.width,
-                           height: frame.height)
+    let nextFrame = getNextFrame(frame: frame)
     
     let view = insetTextView(frame: nextFrame,
                              placeholderText: placeholderText,
@@ -240,16 +234,24 @@ func addPasswordTextBox(frame: CGRect, placeholderText: String) -> (view: UIView
     return (view: view, frame: nextFrame)
 }
 
+func addPasswordCheckTextBox(frame: CGRect, placeholderText: String) -> (view: UIView, frame: CGRect) {
+    let nextFrame = getNextFrame(frame: frame)
+    
+    let view = insetTextView(frame: nextFrame,
+                             placeholderText: placeholderText,
+                             secure: true,
+                             tag: 2)
+    
+    return (view: view, frame: nextFrame)
+}
+
 func addNameTextBox(frame: CGRect) -> (view: UIView, frame: CGRect) {
-    let nextFrame = CGRect(x: frame.minX,
-                           y: frame.maxY + 10,
-                           width: frame.width,
-                           height: frame.height)
+    let nextFrame = getNextFrame(frame: frame)
     
     let view = insetTextView(frame: nextFrame,
                              placeholderText: "name",
                              keyboardType: .emailAddress,
-                             tag: 2)
+                             tag: 3)
     
     return (view: view, frame: nextFrame)
     
@@ -279,16 +281,13 @@ func addSubmitButton(frame: CGRect, sender: Any?, action: Selector) -> (view: UI
                                           title: "submit",
                                           sender: sender,
                                           action: action)
-    print(nextFrame)
+    
     return (view: submitButton, frame: nextFrame)
     
 }
 
 func addTextInstruction(frame: CGRect, text: String) -> (view: UIView, frame: CGRect) {
-    let nextFrame = CGRect(x: frame.minX,
-                           y: frame.maxY + 10,
-                           width: frame.width,
-                           height: frame.height)
+    let nextFrame = getNextFrame(frame: frame)
     
     let view = UILabel(frame: nextFrame)
     view.text = text
@@ -300,10 +299,7 @@ func addTextInstruction(frame: CGRect, text: String) -> (view: UIView, frame: CG
 }
 
 func addRegistrationButton(frame: CGRect, sender: Any?, action: Selector) -> (view: UIButton, frame: CGRect) {
-    let nextFrame = CGRect(x: frame.minX,
-                           y: frame.maxY + 10,
-                           width: frame.width,
-                           height: frame.height)
+    let nextFrame = getNextFrame(frame: frame)
     
     let registerButton = createActionButton(frame: nextFrame,
                                             title: "Register New Account",
@@ -315,7 +311,7 @@ func addRegistrationButton(frame: CGRect, sender: Any?, action: Selector) -> (vi
     
 }
 
-func skipNextFrame(frame: CGRect) -> CGRect {
+func getNextFrame(frame: CGRect) -> CGRect {
     let nextFrame = CGRect(x: frame.minX,
                            y: frame.maxY + 10,
                            width: frame.width,

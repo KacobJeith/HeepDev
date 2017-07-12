@@ -165,8 +165,8 @@ extension AccountView {
     
     func retrieveUserProfile() -> User {
         
-        var publicRealm = try! Realm(configuration: configPublicSync)
-        var userRealm = try! Realm(configuration: configUser)
+        let publicRealm = try! Realm(configuration: configPublicSync)
+        let userRealm = try! Realm(configuration: configUser)
         
         let myId = userRealm.objects(User.self).first?.heepID
         return publicRealm.object(ofType: User.self, forPrimaryKey: myId!)!
@@ -230,7 +230,7 @@ extension AccountView{
         let emailTextBox = addEmailTextBox(frame: loginLabel.frame)
         let passwordTextBox = addPasswordTextBox(frame: emailTextBox.frame, placeholderText: "password")
         let cancelButton = addCancelButton(frame: passwordTextBox.frame, sender: self, action: #selector(exitView))
-        let submitButton = addSubmitButton(frame: cancelButton.frame, sender: self, action: #selector(submitValues))
+        let submitButton = addSubmitButton(frame: cancelButton.frame, sender: self, action: #selector(submitLogin))
         
         
         
@@ -245,7 +245,7 @@ extension AccountView{
         return subview
     }
     
-    func submitValues() {
+    func submitLogin() {
         let inputResults = extractInputValues()
         
         let loginGroup = DispatchGroup()
@@ -278,52 +278,52 @@ extension AccountView{
             validateUser()
         } else {
             if SyncUser.current != nil {
-                let alert = easyAlert(message: "Login Successful!")
-                present(alert, animated: false, completion: nil)
+                
+                present(easyAlert(message: "Login Successful!"),
+                        animated: false, completion: nil)
                 
             } else {
-                let alert = UIAlertController(title: "Alert",
-                                              message: "Could Not find Realm. Would you like to register a new account using these credentials?",
-                                              preferredStyle: UIAlertControllerStyle.alert)
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { action in
-                    
-                    let inputResults = self.extractInputValues()
-                    seedNewUserAccount(name: "Jacob Keith",
-                                       email: inputResults.email,
-                                       password: inputResults.password)
-                    
-                    self.submitValues()
-                }))
                 
-                alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: { action in
-                    self.exitView()
-                }))
-                present(alert, animated: false, completion: nil)
+                present(easyAlert(message: "Try Again. Email or Password invalid"),
+                        animated: false,
+                        completion: nil)
             }
         }
         
     }
     
-    func extractInputValues() -> (email: String, password: String) {
+    func extractInputValues() -> (email: String, password: String, name: String, passwordCheck: String) {
         var email = "0"
         var password = "0"
+        var passwordCheck = "0"
+        var name = "0"
         
         for subview in self.view.subviews {
             for subsubview in subview.subviews {
                 for subsubsubview in subsubview.subviews {
                     if let textField = subsubsubview as? UITextField {
+                        
                         if textField.tag == 0 {
                             email = textField.text!
                             
                         } else if textField.tag == 1 {
+                            
                             password = textField.text!
+                            
+                        } else if textField.tag == 2 {
+                            
+                            passwordCheck = textField.text!
+                            
+                        } else if textField.tag == 3 {
+                            
+                            name = textField.text!
                         }
                     }
                 }
             }
         }
         
-        return (email: email, password: password)
+        return (email: email, password: password, name: name, passwordCheck: passwordCheck)
     }
     
     func exitView() {
@@ -356,11 +356,11 @@ extension AccountView {
         let nameTextBox = addNameTextBox(frame: startFrame)
         let emailTextBox = addEmailTextBox(frame: nameTextBox.frame)
         
-        let passwordTextBox = addPasswordTextBox(frame: skipNextFrame(frame: emailTextBox.frame), placeholderText: "password")
+        let passwordTextBox = addPasswordTextBox(frame: getNextFrame(frame: emailTextBox.frame), placeholderText: "password")
         let retypePasswordTextBox = addPasswordTextBox(frame: passwordTextBox.frame, placeholderText: "retype password")
         
-        let cancelButton = addCancelButton(frame: skipNextFrame(frame: retypePasswordTextBox.frame), sender: self, action: #selector(exitView))
-        let submitButton = addSubmitButton(frame: cancelButton.frame, sender: self, action: #selector(submitValues))
+        let cancelButton = addCancelButton(frame: getNextFrame(frame: retypePasswordTextBox.frame), sender: self, action: #selector(exitRegistrationBackToLogin))
+        let submitButton = addSubmitButton(frame: cancelButton.frame, sender: self, action: #selector(submitRegistrationForm))
         
         
         subview.addSubview(nameTextBox.view)
@@ -373,6 +373,22 @@ extension AccountView {
         
         
         return subview
+    }
+    
+    func submitRegistrationForm() {
+        let inputResults = self.extractInputValues()
+        
+        
+        seedNewUserAccount(name: inputResults.name,
+                           email: inputResults.email,
+                           password: inputResults.password)
+        
+        self.submitLogin()
+    }
+    
+    func exitRegistrationBackToLogin() {
+        registeringNewAccount = false
+        self.reloadView()
     }
 
 }
