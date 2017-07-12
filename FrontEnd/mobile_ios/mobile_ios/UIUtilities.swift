@@ -274,7 +274,7 @@ func addTextInstruction(frame: CGRect, text: String) -> (view: UIView, frame: CG
                            y: frame.maxY + 10,
                            width: frame.width,
                            height: frame.height)
-    print("TEXT \(nextFrame)")
+    
     let view = UILabel(frame: nextFrame)
     view.text = text
     view.textColor = .lightGray
@@ -312,6 +312,19 @@ func createActionButton(frame: CGRect, title: String, sender: Any?, action: Sele
                      for: .primaryActionTriggered)
     
     return button
+}
+
+func easyAlert(message: String) -> UIAlertController {
+    
+    let alert = UIAlertController(title: "",
+                                  message: message,
+                                  preferredStyle: UIAlertControllerStyle.alert)
+    
+    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.cancel, handler: { action in
+        //self.dismiss()
+    }))
+    
+    return alert
 }
 
 

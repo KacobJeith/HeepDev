@@ -210,20 +210,23 @@ extension AccountView{
                                 width: subview.frame.width - 40,
                                 height: 35)
         
-        let loginLabel = addTextInstruction(frame: startFrame,
+        
+        let registrationButton = addRegistrationButton(frame: startFrame,
+                                                       sender: self,
+                                                       action: #selector(handleRegistration) )
+        
+        let instructionLabel = addTextInstruction(frame: registrationButton.frame,
+                                                  text: "- or -")
+        
+        let loginLabel = addTextInstruction(frame: instructionLabel.frame,
                                                   text: "Log in to Existing Account")
         
         let emailTextBox = addEmailTextBox(frame: loginLabel.frame)
         let passwordTextBox = addPasswordTextBox(frame: emailTextBox.frame)
         let cancelButton = addCancelButton(frame: passwordTextBox.frame, sender: self, action: #selector(exitView))
         let submitButton = addSubmitButton(frame: cancelButton.frame, sender: self, action: #selector(submitValues))
-        let instructionLabel = addTextInstruction(frame: CGRect(x: cancelButton.frame.minX,
-                                                                y: cancelButton.frame.minY,
-                                                                width: emailTextBox.frame.width,
-                                                                height: cancelButton.frame.height),
-                                                  text: "- or -")
         
-        let registrationButton = addRegistrationButton(frame: instructionLabel.frame, sender: self, action: #selector(handleRegistration) )
+        
         
         subview.addSubview(loginLabel.view)
         subview.addSubview(emailTextBox.view)
@@ -238,8 +241,7 @@ extension AccountView{
     
     func submitValues() {
         let inputResults = extractInputValues()
-        //let pseudoUniqueID = getIDFromByteArray(bytes: inputResults.email.asciiArray)
-        //seedNewUserAccount(name: "placeholder", id: String(describing: pseudoUniqueID), email: inputResults.email, password: inputResults.password)
+        
         let loginGroup = DispatchGroup()
         loginGroup.enter()
         
@@ -263,18 +265,14 @@ extension AccountView{
     
     func validateUser() {
         if SyncUser.all.count > 1 {
-            //logoutOfPublicRealmUser()
+            
             print("Logging out of public")
             validateUser()
         } else {
             if SyncUser.current != nil {
-                let alert = UIAlertController(title: "Alert",
-                                              message: "Successfully Logged in to Realm",
-                                              preferredStyle: UIAlertControllerStyle.alert)
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.cancel, handler: { action in
-                    self.exitView()
-                }))
+                let alert = easyAlert(message: "Login Successful!")
                 present(alert, animated: false, completion: nil)
+                
             } else {
                 let alert = UIAlertController(title: "Alert",
                                               message: "Could Not find Realm. Would you like to register a new account using these credentials?",
