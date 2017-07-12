@@ -863,7 +863,6 @@ extension VertexEditCell {
     func selectThisController(gesture: UITapGestureRecognizer) {
 
         if thisGroup.selectedControl == (gesture.view?.tag)!{
-            print("TOGGLING")
             toggleOnOff(controlUniqueID: (gesture.view?.tag)!)
         }
         else{
@@ -877,6 +876,8 @@ extension VertexEditCell {
     
     func toggleOnOff(controlUniqueID: Int){
         
+        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+        
         let realm = try! Realm(configuration: configUser)
         
         let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: controlUniqueID)
@@ -889,7 +890,6 @@ extension VertexEditCell {
             HeepConnections().sendValueToHeepDevice(uniqueID: controlUniqueID)
         }
         
-        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
     }
     
     func saveSelectedSprite() {
