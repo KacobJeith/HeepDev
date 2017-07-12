@@ -30,9 +30,8 @@ class AccountView: UIViewController {
                                      style: .plain,
                                      target: self,
                                      action: #selector(logoutUser))
-        let query = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(queryAllUsers))
         
-        self.toolbarItems = [spacer, logout, spacer, query]
+        self.toolbarItems = [spacer, logout, spacer]
         
     }
     
@@ -323,8 +322,4 @@ extension AccountView{
 
     }
     
-    func queryAllUsers() {
-        queryAllUser()
-    }
-
 }

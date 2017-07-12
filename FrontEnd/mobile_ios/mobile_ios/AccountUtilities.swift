@@ -125,14 +125,6 @@ func loginToUserRealmSync(username: String, password: String, callback: @escapin
     
 }
 
-func queryAllUser() {
-    let realm = try! Realm(configuration: configPublicSync)
-    let allUsers = realm.objects(User.self)
-    print("Configuration: \(String(describing: configPublicSync.syncConfiguration))")
-    print("All Users: \(allUsers)")
-    
-}
-
 func setDefaultPermissionToPublic(publicUser: SyncUser) {
     let permission = SyncPermissionValue(realmPath: "/" + publicUserKey + "/userDirectory",
                                          userID: "*",
