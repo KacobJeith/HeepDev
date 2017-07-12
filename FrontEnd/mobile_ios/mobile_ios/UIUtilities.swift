@@ -315,6 +315,15 @@ func addRegistrationButton(frame: CGRect, sender: Any?, action: Selector) -> (vi
     
 }
 
+func skipNextFrame(frame: CGRect) -> CGRect {
+    let nextFrame = CGRect(x: frame.minX,
+                           y: frame.maxY + 10,
+                           width: frame.width,
+                           height: frame.height)
+
+    return nextFrame
+}
+
 func createActionButton(frame: CGRect, title: String, sender: Any?, action: Selector, color: UIColor = UIColor(white: 0.85, alpha: 1)) -> UIButton {
     let button = ReactiveButton(frame: frame)
     button.setTitle(title, for: .normal)

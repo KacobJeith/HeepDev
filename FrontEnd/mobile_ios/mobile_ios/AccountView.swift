@@ -16,15 +16,13 @@ class AccountView: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupNavigation()
+        
+        self.view.backgroundColor = .white
+        self.navigationController?.isToolbarHidden = false
         isUserLoggedIn()
     }
     
     func setupNavigation() {
-        
-        self.title = "My Account"
-        self.view.backgroundColor = .white
-        self.navigationController?.isToolbarHidden = false
         
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let logout = UIBarButtonItem(title: "Logout",
@@ -41,12 +39,16 @@ class AccountView: UIViewController {
         
         if SyncUser.current == nil {
             if registeringNewAccount {
+                self.title = "Register New Account"
                 self.view.addSubview(registerView())
             } else {
+                self.title = "Login to Heep"
                 self.view.addSubview(loginView())
             }
             
         } else {
+            self.title = "My Account"
+            setupNavigation()
             attemptToRender()
         }
     }
@@ -349,12 +351,15 @@ extension AccountView {
                                 width: subview.frame.width - 40,
                                 height: 35)
         
+        
+        
         let nameTextBox = addNameTextBox(frame: startFrame)
         let emailTextBox = addEmailTextBox(frame: nameTextBox.frame)
-        let passwordTextBox = addPasswordTextBox(frame: emailTextBox.frame, placeholderText: "password")
+        
+        let passwordTextBox = addPasswordTextBox(frame: skipNextFrame(frame: emailTextBox.frame), placeholderText: "password")
         let retypePasswordTextBox = addPasswordTextBox(frame: passwordTextBox.frame, placeholderText: "retype password")
         
-        let cancelButton = addCancelButton(frame: retypePasswordTextBox.frame, sender: self, action: #selector(exitView))
+        let cancelButton = addCancelButton(frame: skipNextFrame(frame: retypePasswordTextBox.frame), sender: self, action: #selector(exitView))
         let submitButton = addSubmitButton(frame: cancelButton.frame, sender: self, action: #selector(submitValues))
         
         
