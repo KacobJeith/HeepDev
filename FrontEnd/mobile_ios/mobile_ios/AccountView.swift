@@ -206,21 +206,26 @@ extension AccountView {
         subview.clipsToBounds = true
         
         let startFrame = CGRect(x: 20,
-                                y: 150,
+                                y: 50,
                                 width: subview.frame.width - 40,
                                 height: 35)
         
-        let emailTextBox = addEmailTextBox(frame: startFrame)
+        let loginLabel = addTextInstruction(frame: startFrame,
+                                                  text: "Log in to Existing Account")
+        
+        let emailTextBox = addEmailTextBox(frame: loginLabel.frame)
         let passwordTextBox = addPasswordTextBox(frame: emailTextBox.frame)
         let cancelButton = addCancelButton(frame: passwordTextBox.frame)
         let submitButton = addSubmitButton(frame: cancelButton.frame)
         let instructionLabel = addTextInstruction(frame: CGRect(x: cancelButton.frame.minX,
                                                                 y: cancelButton.frame.minY,
                                                                 width: emailTextBox.frame.width,
-                                                                height: cancelButton.frame.height))
+                                                                height: cancelButton.frame.height),
+                                                  text: "- or -")
         
         let registrationButton = addRegistrationButton(frame: instructionLabel.frame)
         
+        subview.addSubview(loginLabel.view)
         subview.addSubview(emailTextBox.view)
         subview.addSubview(passwordTextBox.view)
         subview.addSubview(cancelButton.view)
@@ -246,12 +251,17 @@ extension AccountView {
     }
     
     func addEmailTextBox(frame: CGRect) -> (view: UIView, frame: CGRect) {
-        let view = insetTextView(frame: frame,
+        let nextFrame = CGRect(x: frame.minX,
+                               y: frame.maxY + 10,
+                               width: frame.width,
+                               height: frame.height)
+        
+        let view = insetTextView(frame: nextFrame,
                                  placeholderText: "email",
                                  keyboardType: .emailAddress,
                                  tag: 0)
         
-        return (view: view, frame: frame)
+        return (view: view, frame: nextFrame)
         
     }
     
@@ -296,14 +306,14 @@ extension AccountView {
         
     }
     
-    func addTextInstruction(frame: CGRect) -> (view: UIView, frame: CGRect) {
+    func addTextInstruction(frame: CGRect, text: String) -> (view: UIView, frame: CGRect) {
         let nextFrame = CGRect(x: frame.minX,
                                y: frame.maxY + 10,
                                width: frame.width,
                                height: frame.height)
         print("TEXT \(nextFrame)")
         let view = UILabel(frame: nextFrame)
-        view.text = "- or -"
+        view.text = text
         view.textColor = .lightGray
         view.contentMode = .center
         view.textAlignment = .center
