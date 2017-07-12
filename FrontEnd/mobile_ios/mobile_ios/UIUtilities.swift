@@ -211,6 +211,111 @@ class ReactiveButton: UIButton {
     
 }
 
+func addEmailTextBox(frame: CGRect) -> (view: UIView, frame: CGRect) {
+    let nextFrame = CGRect(x: frame.minX,
+                           y: frame.maxY + 10,
+                           width: frame.width,
+                           height: frame.height)
+    
+    let view = insetTextView(frame: nextFrame,
+                             placeholderText: "email",
+                             keyboardType: .emailAddress,
+                             tag: 0)
+    
+    return (view: view, frame: nextFrame)
+    
+}
+
+func addPasswordTextBox(frame: CGRect) -> (view: UIView, frame: CGRect) {
+    let nextFrame = CGRect(x: frame.minX,
+                           y: frame.maxY + 10,
+                           width: frame.width,
+                           height: frame.height)
+    
+    let view = insetTextView(frame: nextFrame,
+                             placeholderText: "password",
+                             secure: true,
+                             tag: 1)
+    
+    return (view: view, frame: nextFrame)
+}
+
+func addCancelButton(frame: CGRect, sender: Any?, action: Selector) -> (view: UIButton, frame: CGRect) {
+    let nextFrame = CGRect(x: frame.minX,
+                           y: frame.maxY + 10,
+                           width: frame.width / 2 - 5,
+                           height: frame.height)
+    
+    let cancelButton = createActionButton(frame: nextFrame,
+                                          title: "cancel",
+                                          sender: sender,
+                                          action: action)
+    
+    return (view: cancelButton, frame: nextFrame)
+}
+
+func addSubmitButton(frame: CGRect, sender: Any?, action: Selector) -> (view: UIButton, frame: CGRect) {
+    let nextFrame = CGRect(x: frame.maxX + 10,
+                           y: frame.minY,
+                           width: frame.width,
+                           height: frame.height)
+    
+    let submitButton = createActionButton(frame: nextFrame,
+                                          title: "submit",
+                                          sender: sender,
+                                          action: action)
+    print(nextFrame)
+    return (view: submitButton, frame: nextFrame)
+    
+}
+
+func addTextInstruction(frame: CGRect, text: String) -> (view: UIView, frame: CGRect) {
+    let nextFrame = CGRect(x: frame.minX,
+                           y: frame.maxY + 10,
+                           width: frame.width,
+                           height: frame.height)
+    print("TEXT \(nextFrame)")
+    let view = UILabel(frame: nextFrame)
+    view.text = text
+    view.textColor = .lightGray
+    view.contentMode = .center
+    view.textAlignment = .center
+    
+    return (view: view, frame: nextFrame)
+}
+
+func addRegistrationButton(frame: CGRect, sender: Any?, action: Selector) -> (view: UIButton, frame: CGRect) {
+    let nextFrame = CGRect(x: frame.minX,
+                           y: frame.maxY + 10,
+                           width: frame.width,
+                           height: frame.height)
+    
+    let registerButton = createActionButton(frame: nextFrame,
+                                            title: "Register New Account",
+                                            sender: sender,
+                                            action: action,
+                                            color: UIView().tintColor)
+    
+    return (view: registerButton, frame: nextFrame)
+    
+}
+
+func createActionButton(frame: CGRect, title: String, sender: Any?, action: Selector, color: UIColor = UIColor(white: 0.85, alpha: 1)) -> UIButton {
+    let button = ReactiveButton(frame: frame)
+    button.setTitle(title, for: .normal)
+    button.contentHorizontalAlignment = .center
+    button.backgroundColor = color
+    button.setTitleColor(UIColor.white, for: .normal)
+    button.layer.cornerRadius = 5
+    button.addTarget(sender,
+                     action: action,
+                     for: .primaryActionTriggered)
+    
+    return button
+}
+
+
+
 extension UIColor {
     
     func lighter(amount : CGFloat = 0.25) -> UIColor {

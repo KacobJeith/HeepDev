@@ -191,7 +191,7 @@ extension AccountView {
 
 // NO USER LOGGED IN
 
-extension AccountView {
+extension AccountView{
     func loginView() -> UIView {
         
         self.subviewFrame = CGRect(x: 0,
@@ -215,15 +215,15 @@ extension AccountView {
         
         let emailTextBox = addEmailTextBox(frame: loginLabel.frame)
         let passwordTextBox = addPasswordTextBox(frame: emailTextBox.frame)
-        let cancelButton = addCancelButton(frame: passwordTextBox.frame)
-        let submitButton = addSubmitButton(frame: cancelButton.frame)
+        let cancelButton = addCancelButton(frame: passwordTextBox.frame, sender: self, action: #selector(exitView))
+        let submitButton = addSubmitButton(frame: cancelButton.frame, sender: self, action: #selector(submitValues))
         let instructionLabel = addTextInstruction(frame: CGRect(x: cancelButton.frame.minX,
                                                                 y: cancelButton.frame.minY,
                                                                 width: emailTextBox.frame.width,
                                                                 height: cancelButton.frame.height),
                                                   text: "- or -")
         
-        let registrationButton = addRegistrationButton(frame: instructionLabel.frame)
+        let registrationButton = addRegistrationButton(frame: instructionLabel.frame, sender: self, action: #selector(handleRegistration) )
         
         subview.addSubview(loginLabel.view)
         subview.addSubview(emailTextBox.view)
@@ -234,120 +234,6 @@ extension AccountView {
         subview.addSubview(registrationButton.view)
         
         return subview
-    }
-    
-    func addTitle() -> UILabel {
-        let title = UILabel(frame: CGRect(x: 0,
-                                          y: 0,
-                                          width: subviewFrame.width,
-                                          height: 50))
-        title.text = "Login Using Email"
-        title.adjustsFontSizeToFitWidth = true
-        title.contentMode = .center
-        title.textAlignment = .center
-        title.textColor = UIColor.darkGray
-        
-        return title
-    }
-    
-    func addEmailTextBox(frame: CGRect) -> (view: UIView, frame: CGRect) {
-        let nextFrame = CGRect(x: frame.minX,
-                               y: frame.maxY + 10,
-                               width: frame.width,
-                               height: frame.height)
-        
-        let view = insetTextView(frame: nextFrame,
-                                 placeholderText: "email",
-                                 keyboardType: .emailAddress,
-                                 tag: 0)
-        
-        return (view: view, frame: nextFrame)
-        
-    }
-    
-    func addPasswordTextBox(frame: CGRect) -> (view: UIView, frame: CGRect) {
-        let nextFrame = CGRect(x: frame.minX,
-                               y: frame.maxY + 10,
-                               width: frame.width,
-                               height: frame.height)
-        
-        let view = insetTextView(frame: nextFrame,
-                                 placeholderText: "password",
-                                 secure: true,
-                                 tag: 1)
-        
-        return (view: view, frame: nextFrame)
-    }
-    
-    func addCancelButton(frame: CGRect) -> (view: UIButton, frame: CGRect) {
-        let nextFrame = CGRect(x: frame.minX,
-                               y: frame.maxY + 10,
-                               width: frame.width / 2 - 5,
-                               height: frame.height)
-        
-        let cancelButton = createActionButton(frame: nextFrame,
-                                              title: "cancel",
-                                              action: #selector(exitView))
-        
-        return (view: cancelButton, frame: nextFrame)
-    }
-    
-    func addSubmitButton(frame: CGRect) -> (view: UIButton, frame: CGRect) {
-        let nextFrame = CGRect(x: frame.maxX + 10,
-                               y: frame.minY,
-                               width: frame.width,
-                               height: frame.height)
-        
-        let submitButton = createActionButton(frame: nextFrame,
-                                              title: "submit",
-                                              action: #selector(submitValues))
-        print(nextFrame)
-        return (view: submitButton, frame: nextFrame)
-        
-    }
-    
-    func addTextInstruction(frame: CGRect, text: String) -> (view: UIView, frame: CGRect) {
-        let nextFrame = CGRect(x: frame.minX,
-                               y: frame.maxY + 10,
-                               width: frame.width,
-                               height: frame.height)
-        print("TEXT \(nextFrame)")
-        let view = UILabel(frame: nextFrame)
-        view.text = text
-        view.textColor = .lightGray
-        view.contentMode = .center
-        view.textAlignment = .center
-        
-        return (view: view, frame: nextFrame)
-    }
-    
-    func addRegistrationButton(frame: CGRect) -> (view: UIButton, frame: CGRect) {
-        let nextFrame = CGRect(x: frame.minX,
-                               y: frame.maxY + 10,
-                               width: frame.width,
-                               height: frame.height)
-        print(nextFrame)
-        let registerButton = createActionButton(frame: nextFrame,
-                                                title: "Register New Account",
-                                                action: #selector(handleRegistration),
-                                                color: UIView().tintColor)
-        
-        return (view: registerButton, frame: nextFrame)
-    
-    }
-    
-    func createActionButton(frame: CGRect, title: String, action: Selector, color: UIColor = UIColor(white: 0.85, alpha: 1)) -> UIButton {
-        let button = ReactiveButton(frame: frame)
-        button.setTitle(title, for: .normal)
-        button.contentHorizontalAlignment = .center
-        button.backgroundColor = color
-        button.setTitleColor(UIColor.white, for: .normal)
-        button.layer.cornerRadius = 5
-        button.addTarget(self,
-                         action: action,
-                         for: .primaryActionTriggered)
-        
-        return button
     }
     
     func submitValues() {
