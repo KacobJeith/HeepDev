@@ -663,6 +663,9 @@ extension VertexEditCell {
             
             longPressActive = true
             
+            let generator = UIImpactFeedbackGenerator(style: .medium)
+            generator.impactOccurred()
+            
             startSliderRatio = 1.0 - getControlValueRatio(control: thisControl)
             initialLongPressLocation = gestureRecognizer.location(in: gestureRecognizer.view)
 
