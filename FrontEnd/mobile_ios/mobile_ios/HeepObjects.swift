@@ -86,6 +86,7 @@ class Device: Object {
     dynamic var ipAddress: String = "0.0.0.0"
     let controlList =   List<DeviceControl>() //LinkingObjects(fromType: DeviceControl.self, property: "deviceID")
     dynamic var associatedPlace: String = "wanderer"
+    dynamic var authorizedUsers: String = ""
     
     override static func primaryKey() -> String? {
         return "deviceID"

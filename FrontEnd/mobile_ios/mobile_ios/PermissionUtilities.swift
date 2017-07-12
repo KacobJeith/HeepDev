@@ -39,14 +39,71 @@ func grantPermissionToOtherUser(deviceID: Int, userID: Int) {
                                          accessLevel: .write)
     
     SyncUser.current?.applyPermission(permission) { error in
-        print("Successfully added permission to new user")
         
         if let error = error {
-            // handle error
             print("PERMISSION UNSUCCESSFUL \(error)")
             return
         }
+        
+        print("Successfully added permission to new user")
+        
+        let realm = try! Realm(configuration: configUser)
+        
+        if let device = realm.object(ofType: Device.self, forPrimaryKey: deviceID) {
+            
+            let newUserList = device.authorizedUsers + "/" + (userToGrant?.realmKey)!
+            
+            try! realm.write {
+                
+                device.authorizedUsers = newUserList
+            }
+        }
+        
+        return
     }
+    
+    
+}
+
+func retrieveDeviceUsers(deviceID: Int) {
+    var matchingUsers = [String]()
+    
+    if let man = try! SyncUser.current?.managementRealm() {
+        
+        let changes = man.objects(SyncPermissionChange.self)
+        
+        for permission in changes {
+            
+            if parseDeviceIDFromRealmPath(deviceID: deviceID, realmPath: permission.realmUrl) {
+                matchingUsers.append(permission.userId)
+            }
+        }
+    }
+    
+    let realm = try! Realm(configuration: configUser)
+    
+    if let device = realm.object(ofType: Device.self, forPrimaryKey: deviceID) {
+        try! realm.write {
+            device.authorizedUsers = matchingUsers.joined(separator: "/")
+        }
+    }
+    
+}
+
+func parseDeviceIDFromRealmPath(deviceID: Int, realmPath: String?) -> Bool {
+    if let openedPath = realmPath {
+        var pathComponents =  openedPath.components(separatedBy: "/")
+        
+        if pathComponents[4] == String.init(describing: deviceID) {
+            return true
+        } else {
+            return false
+        }
+        
+    } else {
+        return false
+    }
+    
 }
 
 

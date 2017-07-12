@@ -20,8 +20,6 @@
 		101D2F861EA968230074D807 /* mobile_iosUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101D2F851EA968230074D807 /* mobile_iosUITests.swift */; };
 		101D2F941EA97DD90074D807 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 101D2F6C1EA968230074D807 /* Assets.xcassets */; };
 		103FE2851EC373830033D021 /* DeviceSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103FE2841EC373830033D021 /* DeviceSummaryView.swift */; };
-		103FE2861EC373830033D021 /* DeviceSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103FE2841EC373830033D021 /* DeviceSummaryView.swift */; };
-		103FE2871EC373830033D021 /* DeviceSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103FE2841EC373830033D021 /* DeviceSummaryView.swift */; };
 		103FE2891EC3AF5F0033D021 /* HeepObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103FE2881EC3AF5F0033D021 /* HeepObjects.swift */; };
 		103FE28A1EC3AF5F0033D021 /* HeepObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103FE2881EC3AF5F0033D021 /* HeepObjects.swift */; };
 		103FE28B1EC3AF5F0033D021 /* HeepObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103FE2881EC3AF5F0033D021 /* HeepObjects.swift */; };
@@ -536,7 +534,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				103FE28A1EC3AF5F0033D021 /* HeepObjects.swift in Sources */,
-				103FE2861EC373830033D021 /* DeviceSummaryView.swift in Sources */,
 				101D2F7B1EA968230074D807 /* mobile_iosTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -546,7 +543,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				101D2F861EA968230074D807 /* mobile_iosUITests.swift in Sources */,
-				103FE2871EC373830033D021 /* DeviceSummaryView.swift in Sources */,
 				103FE28B1EC3AF5F0033D021 /* HeepObjects.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

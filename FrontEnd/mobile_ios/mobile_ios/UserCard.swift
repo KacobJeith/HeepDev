@@ -58,17 +58,22 @@ func myImage(userID: Int) -> UIImage {
     
 }
 
-func userNameView(frame: CGRect, userID: Int)  -> (view: UIView, frame: CGRect) {
-    let nextFrame = CGRect(x: 0,
+func userNameView(frame: CGRect, userID: Int, textAlignment: NSTextAlignment = .center, calculateFrame: Bool = true)  -> (view: UIView, frame: CGRect) {
+    var nextFrame = frame
+    
+    if calculateFrame {
+        nextFrame = CGRect(x: 0,
                            y: frame.maxY + 3,
                            width: frame.width,
                            height: 10)
+    }
+    
     
     let userNameView = UILabel(frame: nextFrame)
     userNameView.text = myName(userID: userID)
     userNameView.font = userNameView.font.withSize(12)
     userNameView.textColor = .darkGray
-    userNameView.textAlignment = .center
+    userNameView.textAlignment = textAlignment
     userNameView.contentMode = .bottom
     
     return (view: userNameView, frame: nextFrame)
@@ -94,17 +99,21 @@ func retrieveUserProfile(userID: Int) -> User? {
 }
 
 
-func userEmailView(frame: CGRect, userID: Int) -> (view: UIView, frame: CGRect) {
-    let nextFrame = CGRect(x: 0,
+func userEmailView(frame: CGRect, userID: Int, textAlignment: NSTextAlignment = .center, calculateFrame: Bool = true) -> (view: UIView, frame: CGRect) {
+    var nextFrame = frame
+    
+    if calculateFrame {
+        nextFrame = CGRect(x: 0,
                            y: frame.maxY + 3,
                            width: frame.width,
                            height: frame.height)
+    }
     
     let emailView = UILabel(frame: nextFrame)
     emailView.text = myEmail(userID: userID)
     emailView.font = emailView.font.withSize(12)
     emailView.textColor = .lightGray
-    emailView.textAlignment = .center
+    emailView.textAlignment = textAlignment
     emailView.contentMode = .top
     
     return (view: emailView, frame: nextFrame)
