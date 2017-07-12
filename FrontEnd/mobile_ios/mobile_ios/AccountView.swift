@@ -214,16 +214,18 @@ extension AccountView {
         let passwordTextBox = addPasswordTextBox(frame: emailTextBox.frame)
         let cancelButton = addCancelButton(frame: passwordTextBox.frame)
         let submitButton = addSubmitButton(frame: cancelButton.frame)
+        let instructionLabel = addTextInstruction(frame: CGRect(x: cancelButton.frame.minX,
+                                                                y: cancelButton.frame.minY,
+                                                                width: emailTextBox.frame.width,
+                                                                height: cancelButton.frame.height))
         
-        let registrationButton = addRegistrationButton(frame: CGRect(x: cancelButton.frame.minX,
-                                                                    y: cancelButton.frame.minY,
-                                                                    width: emailTextBox.frame.width,
-                                                                    height: cancelButton.frame.height))
+        let registrationButton = addRegistrationButton(frame: instructionLabel.frame)
         
         subview.addSubview(emailTextBox.view)
         subview.addSubview(passwordTextBox.view)
         subview.addSubview(cancelButton.view)
         subview.addSubview(submitButton.view)
+        subview.addSubview(instructionLabel.view)
         subview.addSubview(registrationButton.view)
         
         return subview
@@ -294,9 +296,24 @@ extension AccountView {
         
     }
     
+    func addTextInstruction(frame: CGRect) -> (view: UIView, frame: CGRect) {
+        let nextFrame = CGRect(x: frame.minX,
+                               y: frame.maxY + 10,
+                               width: frame.width,
+                               height: frame.height)
+        print("TEXT \(nextFrame)")
+        let view = UILabel(frame: nextFrame)
+        view.text = "- or -"
+        view.textColor = .lightGray
+        view.contentMode = .center
+        view.textAlignment = .center
+        
+        return (view: view, frame: nextFrame)
+    }
+    
     func addRegistrationButton(frame: CGRect) -> (view: UIButton, frame: CGRect) {
         let nextFrame = CGRect(x: frame.minX,
-                               y: frame.maxY + 30,
+                               y: frame.maxY + 10,
                                width: frame.width,
                                height: frame.height)
         print(nextFrame)
