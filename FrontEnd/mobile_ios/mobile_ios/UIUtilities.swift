@@ -154,6 +154,8 @@ func insetTextView(frame: CGRect, placeholderText: String, keyboardType: UIKeybo
         text.placeholder = placeholderText
         text.textColor = UIColor.darkGray
         text.keyboardType = .emailAddress
+        text.spellCheckingType = .no
+        text.autocorrectionType = .no
         text.isSecureTextEntry = secure
         text.tag = tag
         return text
@@ -197,8 +199,6 @@ class ReactiveButton: UIButton {
                     
                     originalBackgroundColor = currentBackground
                     alreadySet = true
-                    backgroundColor = UIColor.lightGray
-                } else {
                     backgroundColor = UIColor.lightGray
                 }
                 
