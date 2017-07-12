@@ -887,6 +887,8 @@ extension VertexEditCell {
             HeepConnections().sendValueToHeepDevice(uniqueID: controlUniqueID)
         }
         
+        let generator = UIImpactFeedbackGenerator(style: .medium)
+        generator.impactOccurred()
     }
     
     func saveSelectedSprite() {
