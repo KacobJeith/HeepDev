@@ -185,12 +185,30 @@ func horizontalLine(yPosition: CGFloat) -> UIView {
     return line
 }
 
-extension UIButton {
+class ReactiveButton: UIButton {
+    var originalBackgroundColor: UIColor = .white
+    var alreadySet: Bool = false
+    
     override open var isHighlighted: Bool {
         didSet {
-            backgroundColor = isHighlighted ? UIColor.lightGray : UIColor(white: 0.85, alpha: 1)
+            if isHighlighted {
+                
+                if !alreadySet, let currentBackground = backgroundColor {
+                    
+                    originalBackgroundColor = currentBackground
+                    alreadySet = true
+                    backgroundColor = UIColor.lightGray
+                } else {
+                    backgroundColor = UIColor.lightGray
+                }
+                
+            } else {
+                alreadySet = false
+                backgroundColor = originalBackgroundColor
+            }
         }
     }
+    
 }
 
 

@@ -289,7 +289,7 @@ extension AccountView {
     }
     
     func createActionButton(frame: CGRect, title: String, action: Selector) -> UIButton {
-        let button = UIButton(frame: frame)
+        let button = ReactiveButton(frame: frame)
         button.setTitle(title, for: .normal)
         button.contentHorizontalAlignment = .center
         button.backgroundColor = UIColor(white: 0.85, alpha: 1)
