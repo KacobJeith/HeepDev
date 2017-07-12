@@ -226,18 +226,33 @@ func addEmailTextBox(frame: CGRect) -> (view: UIView, frame: CGRect) {
     
 }
 
-func addPasswordTextBox(frame: CGRect) -> (view: UIView, frame: CGRect) {
+func addPasswordTextBox(frame: CGRect, placeholderText: String) -> (view: UIView, frame: CGRect) {
     let nextFrame = CGRect(x: frame.minX,
                            y: frame.maxY + 10,
                            width: frame.width,
                            height: frame.height)
     
     let view = insetTextView(frame: nextFrame,
-                             placeholderText: "password",
+                             placeholderText: placeholderText,
                              secure: true,
                              tag: 1)
     
     return (view: view, frame: nextFrame)
+}
+
+func addNameTextBox(frame: CGRect) -> (view: UIView, frame: CGRect) {
+    let nextFrame = CGRect(x: frame.minX,
+                           y: frame.maxY + 10,
+                           width: frame.width,
+                           height: frame.height)
+    
+    let view = insetTextView(frame: nextFrame,
+                             placeholderText: "name",
+                             keyboardType: .emailAddress,
+                             tag: 2)
+    
+    return (view: view, frame: nextFrame)
+    
 }
 
 func addCancelButton(frame: CGRect, sender: Any?, action: Selector) -> (view: UIButton, frame: CGRect) {

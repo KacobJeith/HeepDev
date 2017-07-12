@@ -12,6 +12,7 @@ import RealmSwift
 class AccountView: UIViewController {
     var notificationToken: NotificationToken? = nil
     var subviewFrame = CGRect()
+    var registeringNewAccount: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,7 +40,11 @@ class AccountView: UIViewController {
         print("Current User: \(String(describing: SyncUser.current))")
         
         if SyncUser.current == nil {
-            self.view.addSubview(loginView())
+            if registeringNewAccount {
+                self.view.addSubview(registerView())
+            } else {
+                self.view.addSubview(loginView())
+            }
             
         } else {
             attemptToRender()
@@ -221,7 +226,7 @@ extension AccountView{
                                                   text: "Log in to Existing Account")
         
         let emailTextBox = addEmailTextBox(frame: loginLabel.frame)
-        let passwordTextBox = addPasswordTextBox(frame: emailTextBox.frame)
+        let passwordTextBox = addPasswordTextBox(frame: emailTextBox.frame, placeholderText: "password")
         let cancelButton = addCancelButton(frame: passwordTextBox.frame, sender: self, action: #selector(exitView))
         let submitButton = addSubmitButton(frame: cancelButton.frame, sender: self, action: #selector(submitValues))
         
@@ -260,6 +265,8 @@ extension AccountView{
     
     func handleRegistration() {
         print("REGISTER!")
+        registeringNewAccount = true
+        self.reloadView()
     }
     
     func validateUser() {
@@ -322,4 +329,45 @@ extension AccountView{
 
     }
     
+}
+
+//registering new account view 
+extension AccountView {
+    func registerView() -> UIView {
+        
+        self.subviewFrame = CGRect(x: 0,
+                                   y: 0,
+                                   width: self.view.frame.width,
+                                   height: self.view.frame.height)
+        
+        let subview = UIView(frame: subviewFrame)
+        subview.addGestureRecognizer(UITapGestureRecognizer(target: nil, action: nil))
+        
+        
+        let startFrame = CGRect(x: 20,
+                                y: 50,
+                                width: subview.frame.width - 40,
+                                height: 35)
+        
+        let nameTextBox = addNameTextBox(frame: startFrame)
+        let emailTextBox = addEmailTextBox(frame: nameTextBox.frame)
+        let passwordTextBox = addPasswordTextBox(frame: emailTextBox.frame, placeholderText: "password")
+        let retypePasswordTextBox = addPasswordTextBox(frame: passwordTextBox.frame, placeholderText: "retype password")
+        
+        let cancelButton = addCancelButton(frame: retypePasswordTextBox.frame, sender: self, action: #selector(exitView))
+        let submitButton = addSubmitButton(frame: cancelButton.frame, sender: self, action: #selector(submitValues))
+        
+        
+        subview.addSubview(nameTextBox.view)
+        subview.addSubview(emailTextBox.view)
+        subview.addSubview(passwordTextBox.view)
+        subview.addSubview(retypePasswordTextBox.view)
+        
+        subview.addSubview(cancelButton.view)
+        subview.addSubview(submitButton.view)
+        
+        
+        return subview
+    }
+
 }
