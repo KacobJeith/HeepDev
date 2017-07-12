@@ -215,10 +215,16 @@ extension AccountView {
         let cancelButton = addCancelButton(frame: passwordTextBox.frame)
         let submitButton = addSubmitButton(frame: cancelButton.frame)
         
+        let registrationButton = addRegistrationButton(frame: CGRect(x: cancelButton.frame.minX,
+                                                                    y: cancelButton.frame.minY,
+                                                                    width: emailTextBox.frame.width,
+                                                                    height: cancelButton.frame.height))
+        
         subview.addSubview(emailTextBox.view)
         subview.addSubview(passwordTextBox.view)
         subview.addSubview(cancelButton.view)
         subview.addSubview(submitButton.view)
+        subview.addSubview(registrationButton.view)
         
         return subview
     }
@@ -283,16 +289,31 @@ extension AccountView {
         let submitButton = createActionButton(frame: nextFrame,
                                               title: "submit",
                                               action: #selector(submitValues))
-        
+        print(nextFrame)
         return (view: submitButton, frame: nextFrame)
         
     }
     
-    func createActionButton(frame: CGRect, title: String, action: Selector) -> UIButton {
+    func addRegistrationButton(frame: CGRect) -> (view: UIButton, frame: CGRect) {
+        let nextFrame = CGRect(x: frame.minX,
+                               y: frame.maxY + 30,
+                               width: frame.width,
+                               height: frame.height)
+        print(nextFrame)
+        let registerButton = createActionButton(frame: nextFrame,
+                                                title: "Register New Account",
+                                                action: #selector(handleRegistration),
+                                                color: UIView().tintColor)
+        
+        return (view: registerButton, frame: nextFrame)
+    
+    }
+    
+    func createActionButton(frame: CGRect, title: String, action: Selector, color: UIColor = UIColor(white: 0.85, alpha: 1)) -> UIButton {
         let button = ReactiveButton(frame: frame)
         button.setTitle(title, for: .normal)
         button.contentHorizontalAlignment = .center
-        button.backgroundColor = UIColor(white: 0.85, alpha: 1)
+        button.backgroundColor = color
         button.setTitleColor(UIColor.white, for: .normal)
         button.layer.cornerRadius = 5
         button.addTarget(self,
@@ -321,6 +342,10 @@ extension AccountView {
         validateUser()
         
         
+    }
+    
+    func handleRegistration() {
+        print("REGISTER!")
     }
     
     func validateUser() {
