@@ -81,7 +81,7 @@ class DeviceSummaryViewController: UITableViewController {
             print("This Device's owner is not registered in the Heep User Directory")
             humanData.append("claimDevice")
         }
-        print(humanData)
+        
         self.cells.append(humanData)
     }
     
@@ -246,7 +246,7 @@ class DeviceSummaryViewController: UITableViewController {
         
         let userName = userNameView(frame: CGRect(x: userIcon.frame.maxX + 10,
                                                    y: 0,
-                                                   width: tableView.frame.size.width - userIcon.frame.maxX,
+                                                   width: (tableView.frame.size.width - userIcon.frame.maxX) / 5,
                                                    height: 45),
                                      userID: userID,
                                      textAlignment: .left,
@@ -254,6 +254,16 @@ class DeviceSummaryViewController: UITableViewController {
         
         
         userView.addSubview(userName.view)
+        
+        let userEmail = userEmailView(frame: CGRect(x: userName.frame.maxX + 10,
+                                                   y: 0,
+                                                   width: tableView.frame.size.width - userIcon.frame.maxX,
+                                                   height: 45),
+                                     userID: userID,
+                                     textAlignment: .left,
+                                     calculateFrame: false)
+        
+        userView.addSubview(userEmail.view)
         
         return userView
     }

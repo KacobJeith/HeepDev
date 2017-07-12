@@ -11,6 +11,7 @@ import RealmSwift
 
 func initializeApp() {
     print("Initializing")
+    SyncManager.shared.logLevel = .off
     
     if SyncUser.all.count == 0 {
         
