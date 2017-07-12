@@ -185,5 +185,13 @@ func horizontalLine(yPosition: CGFloat) -> UIView {
     return line
 }
 
+extension UIButton {
+    override open var isHighlighted: Bool {
+        didSet {
+            backgroundColor = isHighlighted ? UIColor.lightGray : UIColor(white: 0.85, alpha: 1)
+        }
+    }
+}
+
 
 
