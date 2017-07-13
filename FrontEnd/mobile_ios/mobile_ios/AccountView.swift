@@ -14,10 +14,10 @@ class AccountView: UIViewController {
     var subviewFrame = CGRect()
     var registeringNewAccount: Bool = false
     
-    var email: String? = nil
-    var password: String? = nil
-    var passwordCheck: String? = nil
-    var name: String? = nil
+    var email: String? = ""
+    var password: String? = ""
+    var passwordCheck: String? = ""
+    var name: String? = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -232,8 +232,8 @@ extension AccountView{
         let loginLabel = addTextInstruction(frame: instructionLabel.frame,
                                                   text: "Log in to Existing Account")
         
-        let emailTextBox = addEmailTextBox(frame: loginLabel.frame)
-        let passwordTextBox = addPasswordTextBox(frame: emailTextBox.frame)
+        let emailTextBox = addEmailTextBox(frame: loginLabel.frame, lastAttempt: email)
+        let passwordTextBox = addPasswordTextBox(frame: emailTextBox.frame, lastAttempt: password)
         let cancelButton = addCancelButton(frame: passwordTextBox.frame, sender: self, action: #selector(exitView))
         let submitButton = addSubmitButton(frame: cancelButton.frame, sender: self, action: #selector(submitLogin))
         
@@ -260,13 +260,13 @@ extension AccountView{
         DispatchQueue.global(qos: .default).sync {
             guard let email = email else {
                 
-                present(easyAlert(message: "Please input your email!"), animated: false, completion: nil)
+                present(easyAlert(message: "Please input your email!", callback: {self.reloadView()}), animated: false, completion: nil)
                 loginGroup.leave()
                 return
             }
             
             guard let password = password else {
-                present(easyAlert(message: "Please input your password!"), animated: false, completion: nil)
+                present(easyAlert(message: "Please input your password!", callback: {self.reloadView()}), animated: false, completion: nil)
                 loginGroup.leave()
                 return
                 
@@ -299,11 +299,11 @@ extension AccountView{
             if SyncUser.current != nil {
                 
                 present(easyAlert(message: "Login Successful!",
-                                  callback: { self.exitView()}),
+                                  callback: { self.reloadView()}),
                         animated: false, completion: nil)
             } else {
                 
-                present(easyAlert(message: "Try Again. Email or Password invalid."),
+                present(easyAlert(message: "Try Again. Email or Password invalid.", callback: {self.reloadView()}),
                         animated: false,
                         completion: nil)
             }
@@ -312,7 +312,6 @@ extension AccountView{
     }
     
     func extractInputValues() {
-        print("extracting \(email)")
         
         email = nil
         name = nil
@@ -368,8 +367,6 @@ extension AccountView{
     
 }
 
-
-
 //registering new account view
 extension AccountView {
     func registerView() -> UIView {
@@ -390,11 +387,11 @@ extension AccountView {
         
         
         
-        let nameTextBox = addNameTextBox(frame: startFrame)
-        let emailTextBox = addEmailTextBox(frame: nameTextBox.frame)
+        let nameTextBox = addNameTextBox(frame: startFrame, lastAttempt: name)
+        let emailTextBox = addEmailTextBox(frame: nameTextBox.frame, lastAttempt: email)
         
-        let passwordTextBox = addPasswordTextBox(frame: getNextFrame(frame: emailTextBox.frame))
-        let retypePasswordTextBox = addPasswordCheckTextBox(frame: passwordTextBox.frame)
+        let passwordTextBox = addPasswordTextBox(frame: getNextFrame(frame: emailTextBox.frame), lastAttempt: password)
+        let retypePasswordTextBox = addPasswordCheckTextBox(frame: passwordTextBox.frame, lastAttempt: passwordCheck)
         
         let cancelButton = addCancelButton(frame: getNextFrame(frame: retypePasswordTextBox.frame), sender: self, action: #selector(exitRegistrationBackToLogin))
         let submitButton = addSubmitButton(frame: cancelButton.frame, sender: self, action: #selector(submitRegistrationForm))
@@ -417,41 +414,51 @@ extension AccountView {
         
         
         guard let password = password else {
-            present(easyAlert(message: "You forgot to input a password!"), animated: false, completion: nil)
+            present(easyAlert(message: "You forgot to input a password!",
+                              callback: {self.reloadView()}),
+                    animated: false, completion: nil)
             return
         }
         
         guard let passwordCheck = passwordCheck else {
-            present(easyAlert(message: "You forgot to input the verification password >_<"), animated: false, completion: nil)
+            present(easyAlert(message: "You forgot to input the verification password >_<",
+                              callback: {self.reloadView()}),
+                    animated: false, completion: nil)
             return
         }
         
         guard let name = name else {
-            present(easyAlert(message: "You forgot to tell us who you are!"), animated: false, completion: nil)
+            present(easyAlert(message: "You forgot to tell us who you are!",
+                              callback: {self.reloadView()}),
+                    animated: false, completion: nil)
             return
         }
         
         guard let email = email else {
-            present(easyAlert(message: "Invalid email"), animated: false, completion: nil)
+            present(easyAlert(message: "Invalid email",
+                              callback: {self.reloadView()}),
+                    animated: false, completion: nil)
             return
         }
         
-        print(password)
-        print(name)
-        print(email)
-        print(passwordCheck)
         
-//        if password == passwordCheck {
-//            present(easyAlert(message: "Passwords match!"), animated: false, completion: nil)
-////            seedNewUserAccount(name: inputResults.name,
-////                               email: inputResults.email,
-////                               password: inputResults.password)
-////            
-////            self.submitLogin()
-//        } else {
-//            
-//            present(easyAlert(message: "Passwords don't match"), animated: false, completion: nil)
-//        }
+        
+        if password == passwordCheck {
+            present(easyAlert(message: "Passwords match!"),
+                    animated: false, completion: nil)
+            
+            seedNewUserAccount(name: name,
+                               email: email,
+                               password: password)
+            
+            self.submitLogin()
+            
+        } else {
+            
+            present(easyAlert(message: "Passwords don't match",
+                              callback: {self.reloadView()}),
+                    animated: false, completion: nil)
+        }
         
     }
     

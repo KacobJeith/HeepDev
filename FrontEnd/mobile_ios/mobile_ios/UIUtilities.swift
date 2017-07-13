@@ -139,10 +139,17 @@ func drawLineGeneral(start: CGPoint, finish: CGPoint, color: UIColor = UIColor.b
     return shapeLayer
 }
 
-func insetTextView(frame: CGRect, placeholderText: String, keyboardType: UIKeyboardType = .default, secure: Bool = false, tag: Int = 0) -> UIView {
+func insetTextView(frame: CGRect, placeholderText: String, lastAttempt: String? = "", keyboardType: UIKeyboardType = .default, secure: Bool = false, tag: Int = 0) -> UIView {
+    
     let insetView = UIView(frame: frame)
     insetView.backgroundColor = UIColor(white: 0.9, alpha: 1)
     insetView.layer.cornerRadius = 5
+    
+    if lastAttempt == nil {
+        
+        insetView.layer.borderWidth = 2
+        insetView.layer.borderColor = UIColor.red.cgColor
+    }
     
     let emailTextField: UITextField = {
         let text = UITextField()
@@ -153,7 +160,7 @@ func insetTextView(frame: CGRect, placeholderText: String, keyboardType: UIKeybo
         text.autocapitalizationType = .none
         text.placeholder = placeholderText
         text.textColor = UIColor.darkGray
-        text.text = nil
+        text.text = lastAttempt
         text.keyboardType = keyboardType
         text.spellCheckingType = .no
         text.autocorrectionType = .no
@@ -212,11 +219,12 @@ class ReactiveButton: UIButton {
     
 }
 
-func addEmailTextBox(frame: CGRect) -> (view: UIView, frame: CGRect) {
+func addEmailTextBox(frame: CGRect, lastAttempt: String? = "") -> (view: UIView, frame: CGRect) {
     let nextFrame = getNextFrame(frame: frame)
     
     let view = insetTextView(frame: nextFrame,
                              placeholderText: "email",
+                             lastAttempt:  lastAttempt,
                              keyboardType: .emailAddress,
                              tag: 0)
     
@@ -224,33 +232,36 @@ func addEmailTextBox(frame: CGRect) -> (view: UIView, frame: CGRect) {
     
 }
 
-func addPasswordTextBox(frame: CGRect) -> (view: UIView, frame: CGRect) {
+func addPasswordTextBox(frame: CGRect, lastAttempt: String? = "") -> (view: UIView, frame: CGRect) {
     let nextFrame = getNextFrame(frame: frame)
     
     let view = insetTextView(frame: nextFrame,
                              placeholderText: "password",
+                             lastAttempt:  lastAttempt,
                              secure: true,
                              tag: 1)
     
     return (view: view, frame: nextFrame)
 }
 
-func addPasswordCheckTextBox(frame: CGRect) -> (view: UIView, frame: CGRect) {
+func addPasswordCheckTextBox(frame: CGRect, lastAttempt: String? = "") -> (view: UIView, frame: CGRect) {
     let nextFrame = getNextFrame(frame: frame)
     
     let view = insetTextView(frame: nextFrame,
                              placeholderText: "re-type password",
+                             lastAttempt:  lastAttempt,
                              secure: true,
                              tag: 2)
     
     return (view: view, frame: nextFrame)
 }
 
-func addNameTextBox(frame: CGRect) -> (view: UIView, frame: CGRect) {
+func addNameTextBox(frame: CGRect, lastAttempt: String? = "") -> (view: UIView, frame: CGRect) {
     let nextFrame = getNextFrame(frame: frame)
     
     let view = insetTextView(frame: nextFrame,
                              placeholderText: "name",
+                             lastAttempt: lastAttempt,
                              tag: 3)
     
     return (view: view, frame: nextFrame)
