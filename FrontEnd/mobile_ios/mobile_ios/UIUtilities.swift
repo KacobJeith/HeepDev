@@ -153,7 +153,8 @@ func insetTextView(frame: CGRect, placeholderText: String, keyboardType: UIKeybo
         text.autocapitalizationType = .none
         text.placeholder = placeholderText
         text.textColor = UIColor.darkGray
-        text.keyboardType = .emailAddress
+        text.text = nil
+        text.keyboardType = keyboardType
         text.spellCheckingType = .no
         text.autocorrectionType = .no
         text.isSecureTextEntry = secure
@@ -223,22 +224,22 @@ func addEmailTextBox(frame: CGRect) -> (view: UIView, frame: CGRect) {
     
 }
 
-func addPasswordTextBox(frame: CGRect, placeholderText: String) -> (view: UIView, frame: CGRect) {
+func addPasswordTextBox(frame: CGRect) -> (view: UIView, frame: CGRect) {
     let nextFrame = getNextFrame(frame: frame)
     
     let view = insetTextView(frame: nextFrame,
-                             placeholderText: placeholderText,
+                             placeholderText: "password",
                              secure: true,
                              tag: 1)
     
     return (view: view, frame: nextFrame)
 }
 
-func addPasswordCheckTextBox(frame: CGRect, placeholderText: String) -> (view: UIView, frame: CGRect) {
+func addPasswordCheckTextBox(frame: CGRect) -> (view: UIView, frame: CGRect) {
     let nextFrame = getNextFrame(frame: frame)
     
     let view = insetTextView(frame: nextFrame,
-                             placeholderText: placeholderText,
+                             placeholderText: "re-type password",
                              secure: true,
                              tag: 2)
     
@@ -250,7 +251,6 @@ func addNameTextBox(frame: CGRect) -> (view: UIView, frame: CGRect) {
     
     let view = insetTextView(frame: nextFrame,
                              placeholderText: "name",
-                             keyboardType: .emailAddress,
                              tag: 3)
     
     return (view: view, frame: nextFrame)
@@ -334,14 +334,14 @@ func createActionButton(frame: CGRect, title: String, sender: Any?, action: Sele
     return button
 }
 
-func easyAlert(message: String) -> UIAlertController {
+func easyAlert(message: String, callback: @escaping () -> Void = {}) -> UIAlertController {
     
     let alert = UIAlertController(title: "",
                                   message: message,
                                   preferredStyle: UIAlertControllerStyle.alert)
     
     alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.cancel, handler: { action in
-        //self.dismiss()
+        callback()
     }))
     
     return alert

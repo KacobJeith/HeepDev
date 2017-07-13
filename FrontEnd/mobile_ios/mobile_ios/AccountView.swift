@@ -14,6 +14,11 @@ class AccountView: UIViewController {
     var subviewFrame = CGRect()
     var registeringNewAccount: Bool = false
     
+    var email: String? = nil
+    var password: String? = nil
+    var passwordCheck: String? = nil
+    var name: String? = nil
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -228,7 +233,7 @@ extension AccountView{
                                                   text: "Log in to Existing Account")
         
         let emailTextBox = addEmailTextBox(frame: loginLabel.frame)
-        let passwordTextBox = addPasswordTextBox(frame: emailTextBox.frame, placeholderText: "password")
+        let passwordTextBox = addPasswordTextBox(frame: emailTextBox.frame)
         let cancelButton = addCancelButton(frame: passwordTextBox.frame, sender: self, action: #selector(exitView))
         let submitButton = addSubmitButton(frame: cancelButton.frame, sender: self, action: #selector(submitLogin))
         
@@ -246,22 +251,36 @@ extension AccountView{
     }
     
     func submitLogin() {
-        let inputResults = extractInputValues()
+        extractInputValues()
+        print("submitting \(email)")
         
         let loginGroup = DispatchGroup()
         loginGroup.enter()
         
         DispatchQueue.global(qos: .default).sync {
-            loginToUserRealmSync(username: inputResults.email,
-                                 password: inputResults.password,
+            guard let email = email else {
+                
+                present(easyAlert(message: "Please input your email!"), animated: false, completion: nil)
+                loginGroup.leave()
+                return
+            }
+            
+            guard let password = password else {
+                present(easyAlert(message: "Please input your password!"), animated: false, completion: nil)
+                loginGroup.leave()
+                return
+                
+            }
+            
+            loginToUserRealmSync(username: email,
+                                 password: password,
                                  callback: { loginGroup.leave()})
             
         }
         
         loginGroup.wait()
         
-        validateUser()
-        
+        self.validateUser()
         
     }
     
@@ -279,12 +298,12 @@ extension AccountView{
         } else {
             if SyncUser.current != nil {
                 
-                present(easyAlert(message: "Login Successful!"),
+                present(easyAlert(message: "Login Successful!",
+                                  callback: { self.exitView()}),
                         animated: false, completion: nil)
-                
             } else {
                 
-                present(easyAlert(message: "Try Again. Email or Password invalid"),
+                present(easyAlert(message: "Try Again. Email or Password invalid."),
                         animated: false,
                         completion: nil)
             }
@@ -292,38 +311,26 @@ extension AccountView{
         
     }
     
-    func extractInputValues() -> (email: String, password: String, name: String, passwordCheck: String) {
-        var email = "0"
-        var password = "0"
-        var passwordCheck = "0"
-        var name = "0"
+    func extractInputValues() {
+        print("extracting \(email)")
+        
+        email = nil
+        name = nil
+        password = nil
+        passwordCheck = nil
         
         for subview in self.view.subviews {
             for subsubview in subview.subviews {
                 for subsubsubview in subsubview.subviews {
                     if let textField = subsubsubview as? UITextField {
                         
-                        if textField.tag == 0 {
-                            email = textField.text!
-                            
-                        } else if textField.tag == 1 {
-                            
-                            password = textField.text!
-                            
-                        } else if textField.tag == 2 {
-                            
-                            passwordCheck = textField.text!
-                            
-                        } else if textField.tag == 3 {
-                            
-                            name = textField.text!
-                        }
+                        checkStatusOfTextBox(textField: textField)
                     }
                 }
             }
         }
         
-        return (email: email, password: password, name: name, passwordCheck: passwordCheck)
+        
     }
     
     func exitView() {
@@ -331,9 +338,39 @@ extension AccountView{
 
     }
     
+    func checkStatusOfTextBox(textField: UITextField)  {
+        
+        guard let text = textField.text else {
+            return
+        }
+        
+        var doubleCheckedText: String? = nil
+        
+        if text != "" {
+            doubleCheckedText = text
+        }
+        
+        switch textField.tag {
+        case 0 :
+            
+            email = doubleCheckedText
+        case 1 :
+            password = doubleCheckedText
+        case 2 :
+            passwordCheck = doubleCheckedText
+        case 3 :
+            name = doubleCheckedText
+        default :
+            return
+        }
+        
+    }
+    
 }
 
-//registering new account view 
+
+
+//registering new account view
 extension AccountView {
     func registerView() -> UIView {
         
@@ -356,8 +393,8 @@ extension AccountView {
         let nameTextBox = addNameTextBox(frame: startFrame)
         let emailTextBox = addEmailTextBox(frame: nameTextBox.frame)
         
-        let passwordTextBox = addPasswordTextBox(frame: getNextFrame(frame: emailTextBox.frame), placeholderText: "password")
-        let retypePasswordTextBox = addPasswordTextBox(frame: passwordTextBox.frame, placeholderText: "retype password")
+        let passwordTextBox = addPasswordTextBox(frame: getNextFrame(frame: emailTextBox.frame))
+        let retypePasswordTextBox = addPasswordCheckTextBox(frame: passwordTextBox.frame)
         
         let cancelButton = addCancelButton(frame: getNextFrame(frame: retypePasswordTextBox.frame), sender: self, action: #selector(exitRegistrationBackToLogin))
         let submitButton = addSubmitButton(frame: cancelButton.frame, sender: self, action: #selector(submitRegistrationForm))
@@ -376,14 +413,46 @@ extension AccountView {
     }
     
     func submitRegistrationForm() {
-        let inputResults = self.extractInputValues()
+        extractInputValues()
         
         
-        seedNewUserAccount(name: inputResults.name,
-                           email: inputResults.email,
-                           password: inputResults.password)
+        guard let password = password else {
+            present(easyAlert(message: "You forgot to input a password!"), animated: false, completion: nil)
+            return
+        }
         
-        self.submitLogin()
+        guard let passwordCheck = passwordCheck else {
+            present(easyAlert(message: "You forgot to input the verification password >_<"), animated: false, completion: nil)
+            return
+        }
+        
+        guard let name = name else {
+            present(easyAlert(message: "You forgot to tell us who you are!"), animated: false, completion: nil)
+            return
+        }
+        
+        guard let email = email else {
+            present(easyAlert(message: "Invalid email"), animated: false, completion: nil)
+            return
+        }
+        
+        print(password)
+        print(name)
+        print(email)
+        print(passwordCheck)
+        
+//        if password == passwordCheck {
+//            present(easyAlert(message: "Passwords match!"), animated: false, completion: nil)
+////            seedNewUserAccount(name: inputResults.name,
+////                               email: inputResults.email,
+////                               password: inputResults.password)
+////            
+////            self.submitLogin()
+//        } else {
+//            
+//            present(easyAlert(message: "Passwords don't match"), animated: false, completion: nil)
+//        }
+        
     }
     
     func exitRegistrationBackToLogin() {
