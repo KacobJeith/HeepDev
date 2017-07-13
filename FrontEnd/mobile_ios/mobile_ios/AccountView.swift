@@ -413,38 +413,37 @@ extension AccountView {
         extractInputValues()
         
         
-        guard let password = password else {
-            present(easyAlert(message: "You forgot to input a password!",
-                              callback: {self.reloadView()}),
-                    animated: false, completion: nil)
-            return
-        }
-        
-        guard let passwordCheck = passwordCheck else {
-            present(easyAlert(message: "You forgot to input the verification password >_<",
-                              callback: {self.reloadView()}),
-                    animated: false, completion: nil)
-            return
-        }
-        
         guard let name = name else {
-            present(easyAlert(message: "You forgot to tell us who you are!",
+            present(easyAlert(message: "Don't forget your name!",
                               callback: {self.reloadView()}),
                     animated: false, completion: nil)
             return
         }
         
         guard let email = email else {
-            present(easyAlert(message: "Invalid email",
+            present(easyAlert(message: "Sorry...invalid email",
                               callback: {self.reloadView()}),
                     animated: false, completion: nil)
             return
         }
         
+        guard let password = password else {
+            present(easyAlert(message: "Forgot to input a password!",
+                              callback: {self.reloadView()}),
+                    animated: false, completion: nil)
+            return
+        }
         
+        guard let passwordCheck = passwordCheck else {
+            present(easyAlert(message: "Forgot to input the verification password >_<",
+                              callback: {self.reloadView()}),
+                    animated: false, completion: nil)
+            return
+        }
         
         if password == passwordCheck {
-            present(easyAlert(message: "Passwords match!"),
+            present(easyAlert(message: "Creating your new Heep Account!",
+                              callback: {self.reloadView()}),
                     animated: false, completion: nil)
             
             seedNewUserAccount(name: name,
@@ -455,7 +454,10 @@ extension AccountView {
             
         } else {
             
-            present(easyAlert(message: "Passwords don't match",
+            self.password = nil
+            self.passwordCheck = nil
+            
+            present(easyAlert(message: "Passwords don't match =/",
                               callback: {self.reloadView()}),
                     animated: false, completion: nil)
         }
