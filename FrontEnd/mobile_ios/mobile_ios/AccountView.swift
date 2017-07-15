@@ -308,12 +308,14 @@ extension AccountView{
             
             loginToUserRealmSync(username: email,
                                  password: password,
-                                 callback: { //loginGroup.leave()
+                                 callback: {
+                                    print("Executing Callback")
+                                    loginGroup.leave()
             })
             
         }
         
-        //loginGroup.wait()
+        loginGroup.wait()
         
         self.validateUser()
         

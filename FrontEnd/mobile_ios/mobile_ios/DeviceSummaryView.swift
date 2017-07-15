@@ -74,7 +74,10 @@ class DeviceSummaryViewController: UITableViewController {
             userIds.append(thisDevice.humanAdmin)
             humanData.append("admin")
             userRealmKeys = thisDevice.authorizedUsers.components(separatedBy: "/")
-            humanData.append(contentsOf: userRealmKeys)
+            if userRealmKeys.first != "" {
+                
+                humanData.append(contentsOf: userRealmKeys)
+            }
             humanData.append("addNewUser")
             
         } else {
