@@ -72,15 +72,26 @@ class AccountView: UIViewController {
     
     func attemptToRender() {
         let realm = try! Realm(configuration: configUser)
-        let myID = realm.objects(User.self).first?.heepID
         
-        if myID == nil {
+        if let myID = realm.objects(User.self).first?.heepID {
+            
+            print("GOT AN ID: \(myID)")
+            self.view.addSubview(alreadyLoggedInView())
+            
+        } else {
             print("Couldn't grab ID from logged in realm.... logging out")
-            logoutUser()
-            self.reloadView()
-            return
+            //logoutUser()
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1, execute: {
+                print("Trying... \(DispatchTime.now())")
+                self.reloadView()
+                return
+            })
         }
         
+        print(SyncUser.current)
+        print(configUser)
+        
+        /*
         let realmPublic = try! Realm(configuration: configPublicSync)
         let myUserData = realmPublic.object(ofType: User.self, forPrimaryKey: myID)
        
@@ -93,6 +104,7 @@ class AccountView: UIViewController {
                 seedNewUserAccount(heepID: myID!,
                                    callback: { loginGroup.leave() },
                                    repair: true)
+                
             } else {
                 loginGroup.leave()
             }
@@ -101,6 +113,7 @@ class AccountView: UIViewController {
         loginGroup.wait()
         
         self.view.addSubview(alreadyLoggedInView())
+ */
     }
     
 }
@@ -164,17 +177,34 @@ extension AccountView {
     }
     
     func myName() -> String {
-        let myProfile = retrieveUserProfile()
-        return myProfile.name
+        if let myProfile = retrieveUserProfile() {
+            
+            return myProfile.name
+        } else {
+            return "nil"
+        }
     }
     
-    func retrieveUserProfile() -> User {
+    func retrieveUserProfile() -> User? {
         
         let publicRealm = try! Realm(configuration: configPublicSync)
         let userRealm = try! Realm(configuration: configUser)
         
-        let myId = userRealm.objects(User.self).first?.heepID
-        return publicRealm.object(ofType: User.self, forPrimaryKey: myId!)!
+        if let myId = userRealm.objects(User.self).first?.heepID {
+            if let profile = publicRealm.object(ofType: User.self, forPrimaryKey: myId) {
+                return profile
+                
+            } else {
+                
+                return nil
+            }
+        } else {
+            print("Could not find ID")
+            return nil
+        }
+        
+            
+        
     }
     
     
@@ -195,8 +225,12 @@ extension AccountView {
     }
     
     func myEmail() -> String {
-        let myProfile = retrieveUserProfile()
-        return myProfile.email
+        if let myProfile = retrieveUserProfile() {
+            
+            return myProfile.email
+        } else {
+            return "nil"
+        }
     }
 }
 
@@ -274,11 +308,12 @@ extension AccountView{
             
             loginToUserRealmSync(username: email,
                                  password: password,
-                                 callback: { loginGroup.leave()})
+                                 callback: { //loginGroup.leave()
+            })
             
         }
         
-        loginGroup.wait()
+        //loginGroup.wait()
         
         self.validateUser()
         

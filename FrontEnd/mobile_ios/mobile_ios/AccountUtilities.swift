@@ -117,12 +117,28 @@ func loginToUserRealmSync(username: String, password: String, callback: @escapin
                         configUser =  Realm.Configuration(syncConfiguration: SyncConfiguration(user: user!,
                                                                                                realmURL: userURL))
                         
+                        openUserRealmAsync(config: configUser, callback: callback)
+                        
                         print("Found existing")
-                        callback()
+                        
                     }
                     
     })
     
+}
+
+func openUserRealmAsync(config: Realm.Configuration, callback: @escaping () -> Void = {}) {
+    
+    Realm.asyncOpen(configuration: config) { realm, error in
+        if let realm = realm {
+            // Realm successfully opened, with migration applied on background thread
+            print("REALM OPEN")
+            callback()
+        } else if let error = error {
+            // Handle error that occurred while opening the Realm
+            print(error)
+        }
+    }
 }
 
 func setDefaultPermissionToPublic(publicUser: SyncUser) {
