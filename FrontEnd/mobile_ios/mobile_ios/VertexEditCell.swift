@@ -158,55 +158,69 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         
         switch self.thisGroup.selectedControl {
             
-        case 0 :
+        case 0 : // Just Scrolling
             
             self.collectionView.isScrollEnabled = true
             
-        case 1 : // Adding New Vertex Mode
+        case 1 :
             
-            self.collectionView.isScrollEnabled =  false
+            addAddingVertexGestures(cell: cell)
             
-            let vertexPan = UIPanGestureRecognizer(target: self,
-                                                   action: #selector(handleVertexPan))
+        case 2 :
             
-            vertexPan.delegate = self
-            cell.addGestureRecognizer(vertexPan)
+            addDeletingVertexGestures(cell: cell)
             
-        case 2 : // Deleting Existing Vertex Mode
+        default :
             
-            self.collectionView.isScrollEnabled =  false
-            resetVertexDictToDelete()
+            addSelectedControlGestures(cell: cell)
             
-            let deleteVertexPan = UIPanGestureRecognizer(target: self,
-                                                         action: #selector(handleDeleteVertexPan))
-            
-            deleteVertexPan.delegate = self
-            cell.addGestureRecognizer(deleteVertexPan)
-            
-        default : // Specific Control selected
-            
-            self.collectionView.isScrollEnabled =  false
-            
-            let pan = UIPanGestureRecognizer(target: self,
-                                             action: #selector(handlePan))
-            let pinch = UIPinchGestureRecognizer(target: self,
-                                                 action: #selector(handlePinch))
-            let rotate = UIRotationGestureRecognizer(target: self,
-                                                     action: #selector(handleRotation))
-            let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
-            
-            pinch.delegate = self
-            rotate.delegate = self
-            pan.delegate = self
-            longPress.delegate = self
-            cell.addGestureRecognizer(longPress)
-            cell.addGestureRecognizer(pan)
-            cell.addGestureRecognizer(pinch)
-            cell.addGestureRecognizer(rotate)
-            cell.addSubview(addDetailButton())
         }
         
+    }
+    
+    func addAddingVertexGestures(cell: UICollectionViewCell) {
+        self.collectionView.isScrollEnabled =  false
+        
+        let vertexPan = UIPanGestureRecognizer(target: self,
+                                               action: #selector(handleVertexPan))
+        
+        vertexPan.delegate = self
+        cell.addGestureRecognizer(vertexPan)
 
+    }
+    
+    func addDeletingVertexGestures(cell: UICollectionViewCell) {
+        self.collectionView.isScrollEnabled =  false
+        resetVertexDictToDelete()
+        
+        let deleteVertexPan = UIPanGestureRecognizer(target: self,
+                                                     action: #selector(handleDeleteVertexPan))
+        
+        deleteVertexPan.delegate = self
+        cell.addGestureRecognizer(deleteVertexPan)
+    }
+    
+    func addSelectedControlGestures(cell: UICollectionViewCell) {
+        
+        self.collectionView.isScrollEnabled =  false
+        
+        let pan = UIPanGestureRecognizer(target: self,
+                                         action: #selector(handlePan))
+        let pinch = UIPinchGestureRecognizer(target: self,
+                                             action: #selector(handlePinch))
+        let rotate = UIRotationGestureRecognizer(target: self,
+                                                 action: #selector(handleRotation))
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
+        
+        pinch.delegate = self
+        rotate.delegate = self
+        pan.delegate = self
+        longPress.delegate = self
+        cell.addGestureRecognizer(longPress)
+        cell.addGestureRecognizer(pan)
+        cell.addGestureRecognizer(pinch)
+        cell.addGestureRecognizer(rotate)
+        cell.addSubview(addDetailButton())
     }
     
     
