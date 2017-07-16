@@ -288,8 +288,6 @@ extension VertexEditCell {
     }
     
     func handleDeleteVertexPan(gesture: UIPanGestureRecognizer) {
-        let cellView = self.viewWithTag(1)!
-        
         searchSublayersForNameToRemove(names: ["circle"])
         
         cellView.layer.addSublayer(drawCircle(center: gesture.location(in: cellView),
@@ -422,28 +420,15 @@ extension VertexEditCell {
         
     func findInputControl(gesture: UIPanGestureRecognizer) {
         
-        if activeVertexFinish == CGPoint() {
-            
-            
-            cellView.layer.addSublayer(drawVertex(start: activeVertexStart,
-                                                  finish: gesture.location(in: cellView),
-                                                  name: "vertex",
-                                                  highlight: true))
-            
-            verifyControlForVertex(gesture: gesture,
-                                   direction: 0)
-            
-        } else {
-            
-            cellView.layer.addSublayer(drawVertex(start: activeVertexStart,
-                                                  finish: gesture.location(in: cellView),
-                                                  name: "vertex",
-                                                  highlight: true))
-            
-            verifyControlForVertex(gesture: gesture,
-                                   direction: 0,
-                                   replace: true)
-        }
+        cellView.layer.addSublayer(drawVertex(start: activeVertexStart,
+                                              finish: gesture.location(in: cellView),
+                                              name: "vertex",
+                                              highlight: true))
+        
+        verifyControlForVertex(gesture: gesture,
+                               direction: 0,
+                               replace: activeVertexFinish == CGPoint() ? false : true )
+    
     }
     
     func verifyControlForVertex(gesture: UIPanGestureRecognizer, direction: Int, replace: Bool = false) {
