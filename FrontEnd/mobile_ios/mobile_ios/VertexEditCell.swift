@@ -344,21 +344,29 @@ extension VertexEditCell {
     
     func commitAddVertex() {
         
-        if activeVertex.rx != nil && activeVertex.tx != nil {
-            
-            print("Adding Vertex!")
-            let realm = try! Realm(configuration: configUser)
-            
-            let vertexID = nameVertex(tx: activeVertex.tx, rx: activeVertex.rx)
-            activeVertex.vertexID = vertexID
-            
-            try! realm.write {
-                realm.add(activeVertex, update: true)
-                activeVertex.tx?.vertexList.append(activeVertex)
-            }
-            
-            HeepConnections().sendSetVertexToHeepDevice(activeVertex: activeVertex)
+        guard let tx = activeVertex.tx else {
+            print("TX not set")
+            return
         }
+        
+        guard let rx = activeVertex.rx else {
+            print("RX  not set")
+            return
+        }
+        
+        print("Adding Vertex!")
+        
+        let realm = try! Realm(configuration: configUser)
+        
+        activeVertex.vertexID = nameVertex(tx: tx, rx: rx)
+        
+        try! realm.write {
+            realm.add(activeVertex, update: true)
+            activeVertex.tx?.vertexList.append(activeVertex)
+        }
+        
+        HeepConnections().sendSetVertexToHeepDevice(activeVertex: activeVertex)
+        
     }
     
     
