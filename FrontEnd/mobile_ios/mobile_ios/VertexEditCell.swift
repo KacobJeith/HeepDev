@@ -569,23 +569,17 @@ extension VertexEditCell {
         let calculatedIndex = vertex.vertexID.distance(from: vertex.vertexID.startIndex,
                                                        to: index.lowerBound)
         
-        var start = CGPoint(x: controlView.center.x,
-                            y: controlView.center.y)
-        var finish = CGPoint(x: rxX,
-                             y: rxY)
-        print(calculatedIndex)
+        var start = CGPoint(x: controlView.center.x, y: controlView.center.y)
+        var finish = CGPoint(x: rxX, y: rxY)
+        
         if calculatedIndex != 0 {
-            
-            start = CGPoint(x: txX,
-                            y: txY)
-            finish = CGPoint(x: controlView.center.x,
-                             y: controlView.center.y)
+            start = CGPoint(x: txX, y: txY)
+            finish = CGPoint(x: controlView.center.x, y: controlView.center.y)
         }
         
-        let newPath = drawVertex(start: start,
-                                 finish: finish)
-        
+        let newPath = drawVertex(start: start, finish: finish)
         newPath.name = vertex.vertexID
+        
         cellView.layer.addSublayer(newPath)
         
     }
