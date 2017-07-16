@@ -604,7 +604,6 @@ extension VertexEditCell {
                     newPath.name = eachVertex.vertexID
                     cellView.layer.addSublayer(newPath)
                     
-                    //bringControlSpritesToFront()
                 }
             }
         }
@@ -949,17 +948,6 @@ extension VertexEditCell {
         }
     }
     
-    func bringControlSpritesToFront() {
-        print("Trying to pull forward")
-        for subview in self.subviews {
-            for eachControl in controls {
-                
-                if subview.tag == eachControl.uniqueID {
-                    subview.bringSubview(toFront: self)
-                }
-            }
-        }
-    }
     
     func addDetailButton() -> UIView {
         let realm = try! Realm(configuration: configUser)
