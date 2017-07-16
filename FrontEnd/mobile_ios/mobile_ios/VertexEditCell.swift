@@ -659,13 +659,35 @@ extension VertexEditCell {
     }
     
     func duringLongPressActive(control: DeviceControl, gesture: UILongPressGestureRecognizer) -> CGFloat {
-        var ratio: CGFloat = 0.5
         
         guard let myView = self.viewWithTag(thisGroup.selectedControl) else {
             print("Could not find this view")
-            return ratio
+            return 0.5
         }
         
+        let transform = calculateLongPressTransform(gesture: gesture)
+        
+        myView.subviews[0].subviews[0].frame = CGRect(x: 0, y: transform.yTransform, width: 60, height: 60)
+        
+        let slidingValue = Int( transform.ratio * CGFloat(control.valueHigh - control.valueLow) )
+        
+        //timeSince returns false if duration is less than timeInterval specified
+        if ( SuccessROPReceived || !lessThanTimeInterval(start: lastSendTime, end: DispatchTime.now(), timeInterval: 10_000_000) ) && slidingValue != lastSlidingValue {
+            
+            DispatchQueue.global().async(){
+                HeepConnections().sendValueToHeepDevice(uniqueID: control.uniqueID,
+                                                        currentValue: slidingValue )
+            }
+            
+            SuccessROPReceived = false
+            lastSlidingValue = slidingValue
+            lastSendTime = DispatchTime.now()
+        }
+        
+        return transform.ratio
+    }
+    
+    func calculateLongPressTransform(gesture: UILongPressGestureRecognizer) -> (yTransform: CGFloat, ratio: CGFloat) {
         let location = gesture.location(in: gesture.view)
         let maxFingerRange = CGFloat(200.0)
         let startingRatioOffset = ( maxFingerRange * startSliderRatio ) - CGFloat( maxFingerRange/2.0 )
@@ -679,31 +701,11 @@ extension VertexEditCell {
             offset = 0
         }
         
-        ratio = offset / maxFingerRange
+        let ratio = offset / maxFingerRange
         
         let yTransform = 60 * (1.0 - ratio)
         
-        myView.subviews[0].subviews[0].frame = CGRect(x: 0, y: yTransform, width: 60, height: 60)
-        
-        let controlUniqueID = control.uniqueID
-        
-        let slidingValue = Int( ratio * CGFloat(control.valueHigh - control.valueLow) )
-        
-        
-        //timeSince returns false if duration is less than timeInterval specified
-        if ( SuccessROPReceived || !lessThanTimeInterval(start: lastSendTime, end: DispatchTime.now(), timeInterval: 10_000_000) ) && slidingValue != lastSlidingValue {
-            
-            DispatchQueue.global().async(){
-                HeepConnections().sendValueToHeepDevice(uniqueID: controlUniqueID,
-                                                        currentValue: slidingValue )
-            }
-            
-            SuccessROPReceived = false
-            lastSlidingValue = slidingValue
-            lastSendTime = DispatchTime.now()
-        }
-        
-        return ratio
+        return (yTransform: yTransform, ratio: ratio)
     }
     
     func finalizeLongPress(control: DeviceControl, ratio: CGFloat) {
