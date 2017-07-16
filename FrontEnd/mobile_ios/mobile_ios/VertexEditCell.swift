@@ -618,90 +618,120 @@ extension VertexEditCell {
     }
     
     func handleLongPress(gestureRecognizer: UILongPressGestureRecognizer) {
-        var ratio = CGFloat(0.5)
-        
         let realm = try! Realm(configuration: configUser)
-        let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl)!
+        guard let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl) else {
+            print("Failed to retrieve the control from realm")
+            return
+        }
         
-        if longPressActive == true{
-            let myView = self.viewWithTag(thisGroup.selectedControl)!
-            let location = gestureRecognizer.location(in: gestureRecognizer.view)
-            
-            let maxFingerRange = CGFloat(200.0)
-            
-            let startingRatioOffset = ( maxFingerRange * startSliderRatio ) - CGFloat( maxFingerRange/2.0 )
-            
-            var offset = (initialLongPressLocation.y - location.y) + CGFloat(maxFingerRange/2.0) + startingRatioOffset
-            
-            if offset > maxFingerRange{
-                offset = maxFingerRange
-            }
-            else if offset < 0{
-                offset = 0
-            }
-            
-            ratio = offset / maxFingerRange
-            
-            let yTransform = 60 * (1.0-ratio)
+        var ratio: CGFloat = 0.5
         
-            myView.subviews[0].subviews[0].frame = CGRect(x: 0, y: yTransform, width: 60, height: 60)
+        if longPressActive == true {
+             ratio = duringLongPressActive(control: thisControl, gesture: gestureRecognizer)
+        }
+        
+        switch gestureRecognizer.state {
             
-            let controlUniqueID = thisControl.uniqueID
+        case .began :
             
-            let slidingValue = Int( ratio * CGFloat(thisControl.valueHigh - thisControl.valueLow) )
+            initializeLongPress(control: thisControl, gesture: gestureRecognizer)
             
+        case .ended :
             
-            //timeSince returns false if duration is less than timeInterval specified
-            if ( SuccessROPReceived || !lessThanTimeInterval(start: lastSendTime, end: DispatchTime.now(), timeInterval: 10_000_000) ) && slidingValue != lastSlidingValue {
-                
-                DispatchQueue.global().async(){
-                    HeepConnections().sendValueToHeepDevice(uniqueID: controlUniqueID,
-                                                            currentValue: slidingValue )
-                }
-                SuccessROPReceived = false
-                lastSlidingValue = slidingValue
-                lastSendTime = DispatchTime.now()
-            }
+            finalizeLongPress(control: thisControl, ratio: ratio)
+            
+        default : break
             
         }
+        
+        
+    }
     
-        if gestureRecognizer.state == UIGestureRecognizerState.began {
-            
-            longPressActive = true
-            
-            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-            
-            startSliderRatio = 1.0 - getControlValueRatio(control: thisControl)
-            initialLongPressLocation = gestureRecognizer.location(in: gestureRecognizer.view)
-
-            print("BEGIN LONG PRESS!")
-        }
-        else if gestureRecognizer.state == UIGestureRecognizerState.ended {
-            let controlUniqueID = thisControl.uniqueID
-            let currentValue = Int(ratio * CGFloat(thisControl.valueHigh - thisControl.valueLow))
-            
-            try! realm.write {
-                
-                if currentValue > (thisControl.valueLow) {
-                    thisControl.lastOnValue = currentValue
-                }
-                
-                thisControl.valueCurrent = currentValue
-            }
-            
-            DispatchQueue.global().async {
-                HeepConnections().sendValueToHeepDevice(uniqueID: controlUniqueID)
-            }
-            
-            
-            saveSelectedSprite()
-            
-            // delay for 0.1 seconds to prevent sprite translation from kicking in
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
-                self.longPressActive = false
-            }
+    func initializeLongPress(control: DeviceControl, gesture: UILongPressGestureRecognizer) {
+        longPressActive = true
+        
+        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+        
+        startSliderRatio = 1.0 - getControlValueRatio(control: control)
+        initialLongPressLocation = gesture.location(in: gesture.view)
+        
+        print("BEGIN LONG PRESS!")
+    }
+    
+    func duringLongPressActive(control: DeviceControl, gesture: UILongPressGestureRecognizer) -> CGFloat {
+        var ratio: CGFloat = 0.5
+        
+        guard let myView = self.viewWithTag(thisGroup.selectedControl) else {
+            print("Could not find this view")
+            return ratio
         }
         
+        let location = gesture.location(in: gesture.view)
+        let maxFingerRange = CGFloat(200.0)
+        let startingRatioOffset = ( maxFingerRange * startSliderRatio ) - CGFloat( maxFingerRange/2.0 )
+        
+        var offset = (initialLongPressLocation.y - location.y) + CGFloat(maxFingerRange/2.0) + startingRatioOffset
+        
+        if offset > maxFingerRange{
+            offset = maxFingerRange
+        }
+        else if offset < 0 {
+            offset = 0
+        }
+        
+        ratio = offset / maxFingerRange
+        
+        let yTransform = 60 * (1.0 - ratio)
+        
+        myView.subviews[0].subviews[0].frame = CGRect(x: 0, y: yTransform, width: 60, height: 60)
+        
+        let controlUniqueID = control.uniqueID
+        
+        let slidingValue = Int( ratio * CGFloat(control.valueHigh - control.valueLow) )
+        
+        
+        //timeSince returns false if duration is less than timeInterval specified
+        if ( SuccessROPReceived || !lessThanTimeInterval(start: lastSendTime, end: DispatchTime.now(), timeInterval: 10_000_000) ) && slidingValue != lastSlidingValue {
+            
+            DispatchQueue.global().async(){
+                HeepConnections().sendValueToHeepDevice(uniqueID: controlUniqueID,
+                                                        currentValue: slidingValue )
+            }
+            
+            SuccessROPReceived = false
+            lastSlidingValue = slidingValue
+            lastSendTime = DispatchTime.now()
+        }
+        
+        return ratio
+    }
+    
+    func finalizeLongPress(control: DeviceControl, ratio: CGFloat) {
+        let realm = try! Realm(configuration: configUser)
+        
+        let controlUniqueID = control.uniqueID
+        let currentValue = Int(ratio * CGFloat(control.valueHigh - control.valueLow))
+        
+        try! realm.write {
+            
+            if currentValue > (control.valueLow) {
+                control.lastOnValue = currentValue
+            }
+            
+            control.valueCurrent = currentValue
+        }
+        
+        DispatchQueue.global().async {
+            HeepConnections().sendValueToHeepDevice(uniqueID: controlUniqueID)
+        }
+        
+        
+        saveSelectedSprite()
+        
+        // delay for 0.1 seconds to prevent sprite translation from kicking in
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
+            self.longPressActive = false
+        }
     }
 
 
