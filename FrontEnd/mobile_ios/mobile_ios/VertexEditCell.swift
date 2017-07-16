@@ -842,34 +842,45 @@ extension VertexEditCell {
     }
     
     func selectThisController(gesture: UITapGestureRecognizer) {
-
-        if thisGroup.selectedControl == (gesture.view?.tag)!{
-            toggleOnOff(controlUniqueID: (gesture.view?.tag)!)
+        
+        guard let tag = gesture.view?.tag else {
+            print("Selected view did not have a tag")
+            return
         }
-        else{
+        
+        if thisGroup.selectedControl == tag {
+            
+            toggleOnOff(controlUniqueID: tag)
+            
+        } else {
             let realm = try! Realm(configuration: configUser)
+            
             try! realm.write {
-                thisGroup.selectedControl = (gesture.view?.tag)!
+                thisGroup.selectedControl = tag
             }
         }
         
     }
     
-    func toggleOnOff(controlUniqueID: Int){
+    func toggleOnOff(controlUniqueID: Int) {
         
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-        
-        let realm = try! Realm(configuration: configUser)
-        
-        let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: controlUniqueID)
-        
-        try! realm.write{
-            thisControl?.valueCurrent = toggleDevice(control: thisControl!)
-        }
         
         DispatchQueue.global().async {
             HeepConnections().sendValueToHeepDevice(uniqueID: controlUniqueID)
         }
+        
+        let realm = try! Realm(configuration: configUser)
+        
+        guard let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: controlUniqueID) else {
+            print("Could not retrieve the control from realm")
+            return
+        }
+        
+        try! realm.write{
+            thisControl.valueCurrent = toggleDevice(control: thisControl)
+        }
+        
         
     }
     
