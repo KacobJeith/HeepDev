@@ -10,7 +10,7 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     var cellView = UICollectionViewCell()
     
     var controlIDs = [Int]()
-    var myIndexPath = IndexPath()
+    
     var thisGroup = Group()
     var contextImage = UIImage()
     var controlTags = [Int]()
@@ -37,29 +37,26 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         let realm = try! Realm(configuration: configUser)
         
         self.controls = thisGroup.controls
-        self.myIndexPath = indexPath
         self.thisGroup = realm.object(ofType: Group.self, forPrimaryKey: thisGroup.id)!
         
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = UICollectionViewScrollDirection.horizontal
         
-        let tryImage = getContextImage()
         
         let screenSize = UIScreen.main.bounds
         let screenWidth = screenSize.width
         let editSpaceHeight = cellFrame.height
         
-        if tryImage == nil {
+        if let tryImage = getContextImage() {
             
-            layout.itemSize = CGSize(width: screenWidth,
-                                     height: editSpaceHeight)
             
-        } else {
             
-            let naturalWidth = tryImage?.size.width
-            let naturalHeight = tryImage?.size.height
             
-            let aspectRatio = naturalWidth! / naturalHeight!
+            let naturalWidth = tryImage.size.width
+            let naturalHeight = tryImage.size.height
+            
+            let aspectRatio = naturalWidth / naturalHeight
+            
             if aspectRatio < 1 {
                 
                 layout.itemSize = CGSize(width: screenWidth,
@@ -69,6 +66,12 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
                 layout.itemSize = CGSize(width: editSpaceHeight * aspectRatio,
                                          height: editSpaceHeight)
             }
+            
+        } else {
+            
+            layout.itemSize = CGSize(width: screenWidth,
+                                     height: editSpaceHeight)
+
         }
         
         collectionView = UICollectionView(frame: CGRect(x: 0,y: 0,
@@ -118,7 +121,7 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         setContextImage(imageData: thisGroup.imageData,
                         tag: indexPath.row)
         
-        addControlsAndVertices(cell: cell)
+        addControlsAndVertices()
         setActiveGestures(cell: cell)
         
         return cell
@@ -137,17 +140,16 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         
     }
     
-    func addControlsAndVertices(cell: UICollectionViewCell) {
+    func addControlsAndVertices() {
         
         for eachControl in controls {
             
             for eachVertex in eachControl.vertexList {
                 
-                cell.layer.addSublayer(drawVertex(vertex: eachVertex))
+                cellView.layer.addSublayer(drawVertex(vertex: eachVertex))
             }
             
-            cell.addSubview(addControlSprite(cell: cell,
-                                             thisControl: eachControl))
+            cellView.addSubview(addControlSprite(thisControl: eachControl))
             
         }
     }
@@ -246,8 +248,7 @@ extension VertexEditCell {
     func handleVertexPan(gesture: UIPanGestureRecognizer) {
         let cellView = self.viewWithTag(1)!
         
-        searchSublayersForNameToRemove(view: cellView,
-                                       names: ["circle", "vertex"])
+        searchSublayersForNameToRemove(names: ["circle", "vertex"])
         
         switch gesture.state {
             
@@ -263,12 +264,12 @@ extension VertexEditCell {
             
             if activeVertexStart == CGPoint() {
                 
-                findOutputControl(cellView: cellView, gesture: gesture)
+                findOutputControl(gesture: gesture)
                 
                 
             } else {
                 
-                findInputControl(cellView: cellView, gesture: gesture)
+                findInputControl(gesture: gesture)
                 
             }
             
@@ -277,7 +278,7 @@ extension VertexEditCell {
             commitAddVertex()
             activeVertexStart = CGPoint()
             activeVertexFinish = CGPoint()
-            searchSublayersForNameToRemove(view: cellView, names: ["finish", "start", "vertex"])
+            searchSublayersForNameToRemove(names: ["finish", "start", "vertex"])
             
         default : break
             
@@ -289,8 +290,7 @@ extension VertexEditCell {
     func handleDeleteVertexPan(gesture: UIPanGestureRecognizer) {
         let cellView = self.viewWithTag(1)!
         
-        searchSublayersForNameToRemove(view: cellView,
-                                       names: ["circle"])
+        searchSublayersForNameToRemove(names: ["circle"])
         
         cellView.layer.addSublayer(drawCircle(center: gesture.location(in: cellView),
                                               radius: 35,
@@ -300,13 +300,12 @@ extension VertexEditCell {
             
         case .began , .changed :
             
-            catchVertexCollisions(cellView: cellView, gesture: gesture)
+            catchVertexCollisions(gesture: gesture)
     
         case .ended :
             
             commitDeleteVertex()
-            searchSublayersForNameToRemove(view: cellView,
-                                           names: ["circle"])
+            searchSublayersForNameToRemove(names: ["circle"])
             
         default : break
             
@@ -366,7 +365,7 @@ extension VertexEditCell {
     }
     
     
-    func catchVertexCollisions(cellView: UIView, gesture: UIPanGestureRecognizer)  {
+    func catchVertexCollisions(gesture: UIPanGestureRecognizer)  {
         
         for sublayer in cellView.layer.sublayers! {
             if let sublayerName = sublayer.name {
@@ -377,8 +376,7 @@ extension VertexEditCell {
                         
                         checkVertexPositionAndResolve(gesture: gesture,
                                                       sublayer: sublayer,
-                                                      vertexName: vertexName,
-                                                      cellView: cellView)
+                                                      vertexName: vertexName)
                         
                     }
                 }
@@ -387,7 +385,7 @@ extension VertexEditCell {
         }
     }
     
-    func checkVertexPositionAndResolve(gesture: UIPanGestureRecognizer, sublayer: CALayer, vertexName: String, cellView: UIView) {
+    func checkVertexPositionAndResolve(gesture: UIPanGestureRecognizer, sublayer: CALayer, vertexName: String) {
         
         let position = gesture.location(in: collectionView)
         
@@ -411,21 +409,18 @@ extension VertexEditCell {
         }
     }
     
-    func findOutputControl(cellView: UIView, gesture: UIPanGestureRecognizer) {
+    func findOutputControl(gesture: UIPanGestureRecognizer) {
         
         cellView.layer.addSublayer(drawCircle(center: gesture.location(in: cellView),
                                               radius: 35,
                                               name: "circle"))
         
-        verifyControlForVertex(cellView: cellView,
-                               gesture: gesture,
+        verifyControlForVertex(gesture: gesture,
                                direction: 1)
 
     }
         
-    func findInputControl(cellView: UIView, gesture: UIPanGestureRecognizer) {
-        
-        
+    func findInputControl(gesture: UIPanGestureRecognizer) {
         
         if activeVertexFinish == CGPoint() {
             
@@ -435,8 +430,7 @@ extension VertexEditCell {
                                                   name: "vertex",
                                                   highlight: true))
             
-            verifyControlForVertex(cellView: cellView,
-                                   gesture: gesture,
+            verifyControlForVertex(gesture: gesture,
                                    direction: 0)
             
         } else {
@@ -446,18 +440,13 @@ extension VertexEditCell {
                                                   name: "vertex",
                                                   highlight: true))
             
-            verifyControlForVertex(cellView: cellView,
-                                   gesture: gesture,
+            verifyControlForVertex(gesture: gesture,
                                    direction: 0,
                                    replace: true)
         }
-        
-        
-        
-        
     }
     
-    func verifyControlForVertex(cellView: UIView, gesture: UIPanGestureRecognizer, direction: Int, replace: Bool = false) {
+    func verifyControlForVertex(gesture: UIPanGestureRecognizer, direction: Int, replace: Bool = false) {
         
         if let touched = touchingControlSprite(gesture: gesture) {
             
@@ -466,19 +455,18 @@ extension VertexEditCell {
                 if touched.controlDirection == direction {
                     
                     let newActiveVertexFinish = CGPoint(x: touched.editX,
-                                                 y: touched.editY)
+                                                        y: touched.editY)
                     
                     if newActiveVertexFinish != activeVertexFinish {
                         activeVertexFinish = CGPoint(x: touched.editX,
                                                      y: touched.editY)
                         
-                        let generator = UIImpactFeedbackGenerator(style: .medium)
-                        generator.impactOccurred()
+                        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                         
                         activeVertex.rx = touched
                         
                         if replace {
-                            searchSublayersForNameToRemove(view: cellView, names: ["finish"])
+                            searchSublayersForNameToRemove(names: ["finish"])
                         }
                         
                         cellView.layer.addSublayer(drawCircle(center: activeVertexFinish,
@@ -510,9 +498,9 @@ extension VertexEditCell {
         
     }
     
-    func searchSublayersForNameToRemove(view: UIView, names: [String]) {
+    func searchSublayersForNameToRemove(names: [String]) {
         
-        for sublayer in view.layer.sublayers! {
+        for sublayer in cellView.layer.sublayers! {
             if sublayer.name != nil {
                 for name in names {
                     removeSublayerWithName(sublayer: sublayer, name: name)
@@ -852,7 +840,7 @@ extension VertexEditCell {
         return UIImage(data: thisGroup.imageData as Data)
     }
     
-    func addControlSprite(cell: UICollectionViewCell, thisControl: DeviceControl, applyTransform: Bool = true) -> UIView {
+    func addControlSprite(thisControl: DeviceControl, applyTransform: Bool = true) -> UIView {
         controlIDs.append(thisControl.uniqueID)
         
         let container = UIView()
