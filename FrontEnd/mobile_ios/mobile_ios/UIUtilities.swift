@@ -186,12 +186,5 @@ func horizontalLine(yPosition: CGFloat) -> UIView {
 }
 
 
-func setContextImage(cell: UICollectionViewCell, imageData: NSData, tag: Int) -> UIImageView {
-    let imageView = UIImageView()
-    imageView.frame = CGRect(x: 0, y: 0, width: cell.bounds.width, height: cell.bounds.height)
-    imageView.image = UIImage(data: imageData as Data)
-    imageView.contentMode = .scaleAspectFit
-    imageView.tag = tag
-    return imageView
-}
+
 

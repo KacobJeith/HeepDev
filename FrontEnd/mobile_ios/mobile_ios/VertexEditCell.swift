@@ -113,19 +113,56 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         let cell: UICollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath as IndexPath) as UICollectionViewCell
         
         
-        cell.addSubview(setContextImage(cell: cell,
-                                        imageData: thisGroup.imageData,
-                                        tag: indexPath.row))
         cell.isUserInteractionEnabled = true
         cell.tag = 1
         
-        addControls(cell: cell)
+        setContextImage(cell: cell,
+                        imageData: thisGroup.imageData,
+                        tag: indexPath.row)
         
-        if self.thisGroup.selectedControl == 0 {
+        addControlsAndVertices(cell: cell)
+        setActiveGestures(cell: cell)
+        
+        return cell
+    }
+    
+    func setContextImage(cell: UICollectionViewCell, imageData: NSData, tag: Int) {
+        let imageView = UIImageView(frame: CGRect(x: 0,
+                                                  y: 0,
+                                                  width: cell.bounds.width,
+                                                  height: cell.bounds.height))
+        
+        imageView.image = UIImage(data: imageData as Data)
+        imageView.contentMode = .scaleAspectFit
+        imageView.tag = tag
+        cell.addSubview(imageView)
+        
+    }
+    
+    func addControlsAndVertices(cell: UICollectionViewCell) {
+        
+        for eachControl in controls {
+            
+            for eachVertex in eachControl.vertexList {
+                
+                cell.layer.addSublayer(drawVertex(vertex: eachVertex))
+            }
+            
+            cell.addSubview(addControlSprite(cell: cell,
+                                             thisControl: eachControl))
+            
+        }
+    }
+    
+    func setActiveGestures(cell: UICollectionViewCell) {
+        
+        switch self.thisGroup.selectedControl {
+            
+        case 0 :
             
             self.collectionView.isScrollEnabled = true
             
-        } else if self.thisGroup.selectedControl == 1 {
+        case 1 : // Adding New Vertex Mode
             
             self.collectionView.isScrollEnabled =  false
             
@@ -135,21 +172,21 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
             vertexPan.delegate = self
             cell.addGestureRecognizer(vertexPan)
             
-            
-        } else if self.thisGroup.selectedControl == 2 {
+        case 2 : // Deleting Existing Vertex Mode
             
             self.collectionView.isScrollEnabled =  false
             resetVertexDictToDelete()
             
             let deleteVertexPan = UIPanGestureRecognizer(target: self,
-                                                   action: #selector(handleDeleteVertexPan))
+                                                         action: #selector(handleDeleteVertexPan))
             
             deleteVertexPan.delegate = self
             cell.addGestureRecognizer(deleteVertexPan)
             
+        default : // Specific Control selected
             
-        } else {
             self.collectionView.isScrollEnabled =  false
+            
             let pan = UIPanGestureRecognizer(target: self,
                                              action: #selector(handlePan))
             let pinch = UIPinchGestureRecognizer(target: self,
@@ -169,29 +206,10 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
             cell.addSubview(addDetailButton())
         }
         
-        
-        
-        return cell
+
     }
     
-    func addControls(cell: UICollectionViewCell) {
-        for eachControl in controls {
-            
-            for eachVertex in eachControl.vertexList {
-                
-                let vertexLayer = drawVertex(vertex: eachVertex)
-                
-                cell.layer.addSublayer(vertexLayer)
-            }
-            
-            
-            let controlSprite = addControlSprite(cell: cell, thisControl: eachControl)
-            
-            cell.addSubview(controlSprite)
-            
-            
-        }
-    }
+    
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize{
 
