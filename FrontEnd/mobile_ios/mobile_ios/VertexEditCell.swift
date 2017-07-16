@@ -49,9 +49,6 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         
         if let tryImage = getContextImage() {
             
-            
-            
-            
             let naturalWidth = tryImage.size.width
             let naturalHeight = tryImage.size.height
             
@@ -520,72 +517,77 @@ extension VertexEditCell {
 
 extension VertexEditCell {
     
-    func handlePan(gestureRecognizer: UIPanGestureRecognizer){
+    func handlePan(gesture: UIPanGestureRecognizer){
         if !longPressActive {
-            translateSpritePosition(gestureRecognizer: gestureRecognizer)
+            translateSpritePosition(gesture: gesture)
         }
     }
     
-    func translateSpritePosition(gestureRecognizer: UIPanGestureRecognizer) {
-        let translation = gestureRecognizer.translation(in: self)
-        let myView = self.viewWithTag(thisGroup.selectedControl)!
-        myView.center.x += translation.x
-        myView.center.y += translation.y
+    func translateSpritePosition(gesture: UIPanGestureRecognizer) {
+        let translation = gesture.translation(in: self)
+        let controlView = self.viewWithTag(thisGroup.selectedControl)!
         
-        let cellView = self.viewWithTag(1)!
+        controlView.center.x += translation.x
+        controlView.center.y += translation.y
         
-        for sublayer in cellView.layer.sublayers! {
+        resolveConnectedVertices(controlView: controlView)
+        
+        gesture.setTranslation(CGPoint(), in: self)
+        
+        switch gesture.state {
+        case .ended :
             
-            if sublayer.name != nil {
-                if sublayer.name!.range(of: String(thisGroup.selectedControl)) != nil {
-                    sublayer.removeFromSuperlayer()
-                }
-            }
+            saveSelectedSprite()
             
+        default : break
         }
+    }
+    
+    func resolveConnectedVertices(controlView: UIView) {
         
-        
+        searchSublayersForNameToRemove(names: [String(thisGroup.selectedControl)])
         let realm = try! Realm(configuration: configUser)
-        let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl)
+        guard let control = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl) else { return}
         
         for eachControl in thisGroup.controls {
-            for eachVertex in eachControl.vertexList {
+            for vertex in eachControl.vertexList {
                 
-                let index = eachVertex.vertexID.range(of: String(describing: (thisControl?.uniqueID)!))
+                translateConnectedVertex(control: control, vertex: vertex, controlView: controlView)
                 
-                if  index != nil {
-                    let calculatedIndex = eachVertex.vertexID.distance(from: eachVertex.vertexID.startIndex, to: (index?.lowerBound)!)
-                    
-                    var start = CGPoint(x: myView.center.x,
-                                        y: myView.center.y)
-                    var finish = CGPoint(x: (eachVertex.rx?.editX)!,
-                                         y: (eachVertex.rx?.editY)!)
-                    
-                    if calculatedIndex != 0 {
-                        
-                        start = CGPoint(x: (eachVertex.tx?.editX)!,
-                                        y: (eachVertex.tx?.editY)!)
-                        finish = CGPoint(x: myView.center.x,
-                                         y: myView.center.y)
-                    }
-                    
-                    let newPath = drawVertex(start: start,
-                                             finish: finish)
-                    
-                    newPath.name = eachVertex.vertexID
-                    cellView.layer.addSublayer(newPath)
-                    
-                }
             }
         }
+    }
+    
+    func translateConnectedVertex(control: DeviceControl, vertex: Vertex, controlView: UIView) {
         
+        guard let index = vertex.vertexID.range(of: String(describing: control.uniqueID)) else { return }
+        guard let txX = vertex.tx?.editX else { return }
+        guard let txY = vertex.tx?.editY else { return }
+        guard let rxX = vertex.rx?.editX else { return }
+        guard let rxY = vertex.rx?.editY else { return }
         
-        gestureRecognizer.setTranslation(CGPoint(), in: self)
+        let calculatedIndex = vertex.vertexID.distance(from: vertex.vertexID.startIndex,
+                                                       to: index.lowerBound)
         
-        if gestureRecognizer.state == UIGestureRecognizerState.ended {
-            print("End")
-            saveSelectedSprite()
+        var start = CGPoint(x: controlView.center.x,
+                            y: controlView.center.y)
+        var finish = CGPoint(x: rxX,
+                             y: rxY)
+        print(calculatedIndex)
+        if calculatedIndex != 0 {
+            
+            start = CGPoint(x: txX,
+                            y: txY)
+            finish = CGPoint(x: controlView.center.x,
+                             y: controlView.center.y)
         }
+        
+        let newPath = drawVertex(start: start,
+                                 finish: finish)
+        
+        newPath.name = vertex.vertexID
+        cellView.layer.addSublayer(newPath)
+        
     }
     
     
