@@ -6,9 +6,9 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     var parentTable = UITableViewController()
     var collectionView: UICollectionView!
     var controls = List<DeviceControl>()
-    var thisBSSID: String = ""
-    var cellFrame = CGRect()
-    var editImage: UIImage = UIImage()
+    
+    var cellView = UICollectionViewCell()
+    
     var controlIDs = [Int]()
     var myIndexPath = IndexPath()
     var thisGroup = Group()
@@ -36,8 +36,6 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         
         let realm = try! Realm(configuration: configUser)
         
-        self.thisBSSID = bssid
-        self.cellFrame = cellFrame
         self.controls = thisGroup.controls
         self.myIndexPath = indexPath
         self.thisGroup = realm.object(ofType: Group.self, forPrimaryKey: thisGroup.id)!
@@ -49,7 +47,7 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         
         let screenSize = UIScreen.main.bounds
         let screenWidth = screenSize.width
-        let editSpaceHeight = self.cellFrame.height
+        let editSpaceHeight = cellFrame.height
         
         if tryImage == nil {
             
@@ -112,12 +110,12 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         
         let cell: UICollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath as IndexPath) as UICollectionViewCell
         
+        cellView = cell
         
         cell.isUserInteractionEnabled = true
         cell.tag = 1
         
-        setContextImage(cell: cell,
-                        imageData: thisGroup.imageData,
+        setContextImage(imageData: thisGroup.imageData,
                         tag: indexPath.row)
         
         addControlsAndVertices(cell: cell)
@@ -126,16 +124,16 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         return cell
     }
     
-    func setContextImage(cell: UICollectionViewCell, imageData: NSData, tag: Int) {
+    func setContextImage(imageData: NSData, tag: Int) {
         let imageView = UIImageView(frame: CGRect(x: 0,
                                                   y: 0,
-                                                  width: cell.bounds.width,
-                                                  height: cell.bounds.height))
+                                                  width: cellView.bounds.width,
+                                                  height: cellView.bounds.height))
         
         imageView.image = UIImage(data: imageData as Data)
         imageView.contentMode = .scaleAspectFit
         imageView.tag = tag
-        cell.addSubview(imageView)
+        cellView.addSubview(imageView)
         
     }
     
@@ -354,8 +352,6 @@ extension VertexEditCell {
             return
         }
         
-        print("Adding Vertex!")
-        
         let realm = try! Realm(configuration: configUser)
         
         activeVertex.vertexID = nameVertex(tx: tx, rx: rx)
@@ -373,33 +369,43 @@ extension VertexEditCell {
     func catchVertexCollisions(cellView: UIView, gesture: UIPanGestureRecognizer)  {
         
         for sublayer in cellView.layer.sublayers! {
-            if sublayer.name != nil {
+            if let sublayerName = sublayer.name {
                 
                 for vertexName in vertexDictToDelete.keys {
                     
-                    if sublayer.name! == vertexName && vertexDictToDelete[vertexName] != true {
+                    if sublayerName == vertexName && vertexDictToDelete[vertexName] != true {
                         
-                        let position = gesture.location(in: collectionView)
+                        checkVertexPositionAndResolve(gesture: gesture,
+                                                      sublayer: sublayer,
+                                                      vertexName: vertexName,
+                                                      cellView: cellView)
                         
-                        let check = sublayer.accessibilityPath?.contains(position)
-                        if check != nil {
-                            if check! == true {
-                                
-                                vertexDictToDelete[vertexName] = true
-                                let realm = try! Realm(configuration: configUser)
-                                let thisVertex = realm.object(ofType: Vertex.self,
-                                                              forPrimaryKey: vertexName)!
-                                let generator = UIImpactFeedbackGenerator(style: .medium)
-                                generator.impactOccurred()
-                                
-                                cellView.layer.addSublayer(drawVertex(vertex: thisVertex,
-                                                                      highlight: true,
-                                                                      name: "toDelete"))
-                                
-                            }
-                        }
                     }
                 }
+                
+            }
+        }
+    }
+    
+    func checkVertexPositionAndResolve(gesture: UIPanGestureRecognizer, sublayer: CALayer, vertexName: String, cellView: UIView) {
+        
+        let position = gesture.location(in: collectionView)
+        
+        if let check = sublayer.accessibilityPath?.contains(position) {
+            if check == true {
+                
+                vertexDictToDelete[vertexName] = true
+                let realm = try! Realm(configuration: configUser)
+                
+                let thisVertex = realm.object(ofType: Vertex.self,
+                                              forPrimaryKey: vertexName)!
+                
+                let generator = UIImpactFeedbackGenerator(style: .medium)
+                generator.impactOccurred()
+                
+                cellView.layer.addSublayer(drawVertex(vertex: thisVertex,
+                                                      highlight: true,
+                                                      name: "toDelete"))
                 
             }
         }
