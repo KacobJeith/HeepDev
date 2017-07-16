@@ -113,7 +113,7 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         let cell: UICollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath as IndexPath) as UICollectionViewCell
         
         
-        let imageView = setContextImage(cell: cell, indexPath: indexPath)
+        let imageView = setContextImage(cell: cell, imageData: thisGroup.imageData, tag: indexPath.row)
         cell.addSubview(imageView)
         cell.isUserInteractionEnabled = true
         cell.tag = 1
@@ -788,15 +788,6 @@ extension VertexEditCell {
         shapeLayer.name = name
         
         return shapeLayer
-    }
-    
-    func setContextImage(cell: UICollectionViewCell, indexPath: IndexPath) -> UIImageView {
-        let imageView = UIImageView()
-        imageView.frame = CGRect(x: 0, y: 0, width: cell.bounds.width, height: cell.bounds.height)
-        imageView.image = UIImage(data: thisGroup.imageData as Data)
-        imageView.contentMode = .scaleAspectFit
-        imageView.tag = indexPath.row
-        return imageView
     }
     
     func getContextImage() -> UIImage? {
