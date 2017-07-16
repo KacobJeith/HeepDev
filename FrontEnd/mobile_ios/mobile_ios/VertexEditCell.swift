@@ -250,8 +250,10 @@ extension VertexEditCell {
         
         searchSublayersForNameToRemove(view: cellView,
                                        names: ["circle", "vertex"])
-    
-        if gesture.state == UIGestureRecognizerState.began {
+        
+        switch gesture.state {
+            
+        case .began :
             
             activeVertex = Vertex()
             cellView.layer.addSublayer(drawCircle(center: gesture.location(in: cellView),
@@ -259,9 +261,7 @@ extension VertexEditCell {
                                                   name: "circle",
                                                   highlight: true))
             
-            
-            
-        } else if gesture.state == UIGestureRecognizerState.changed {
+        case .changed :
             
             if activeVertexStart == CGPoint() {
                 
@@ -274,13 +274,17 @@ extension VertexEditCell {
                 
             }
             
-        } else if gesture.state == UIGestureRecognizerState.ended {
+        case .ended :
+            
             commitAddVertex()
             activeVertexStart = CGPoint()
             activeVertexFinish = CGPoint()
             searchSublayersForNameToRemove(view: cellView, names: ["finish", "start", "vertex"])
+            
+        default : break
+            
+            
         }
-        
         
     }
     
@@ -290,27 +294,25 @@ extension VertexEditCell {
         searchSublayersForNameToRemove(view: cellView,
                                        names: ["circle"])
         
-        if gesture.state == UIGestureRecognizerState.began {
+        cellView.layer.addSublayer(drawCircle(center: gesture.location(in: cellView),
+                                              radius: 35,
+                                              name: "circle"))
+        
+        switch gesture.state {
             
-            cellView.layer.addSublayer(drawCircle(center: gesture.location(in: cellView),
-                                                  radius: 35,
-                                                  name: "circle"))
+        case .began , .changed :
+            
             catchVertexCollisions(cellView: cellView, gesture: gesture)
-            
-        } else if gesture.state == UIGestureRecognizerState.changed {
-            cellView.layer.addSublayer(drawCircle(center: gesture.location(in: cellView),
-                                                  radius: 35,
-                                                  name: "circle"))
-            catchVertexCollisions(cellView: cellView, gesture: gesture)
-            
-        } else if gesture.state == UIGestureRecognizerState.ended {
+    
+        case .ended :
             
             commitDeleteVertex()
             searchSublayersForNameToRemove(view: cellView,
                                            names: ["circle"])
             
+        default : break
+            
         }
-        
         
     }
     
