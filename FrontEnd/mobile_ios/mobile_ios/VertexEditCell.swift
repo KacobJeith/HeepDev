@@ -113,28 +113,13 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         let cell: UICollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath as IndexPath) as UICollectionViewCell
         
         
-        let imageView = setContextImage(cell: cell, imageData: thisGroup.imageData, tag: indexPath.row)
-        cell.addSubview(imageView)
+        cell.addSubview(setContextImage(cell: cell,
+                                        imageData: thisGroup.imageData,
+                                        tag: indexPath.row))
         cell.isUserInteractionEnabled = true
         cell.tag = 1
         
-        for eachControl in controls {
-            
-            for eachVertex in eachControl.vertexList {
-                
-                let vertexLayer = drawVertex(vertex: eachVertex)
-                //print("Adding Vertex \(String(describing: eachVertex.rx?.controlName))")
-                cell.layer.addSublayer(vertexLayer)
-            }
-            
-            
-            let controlSprite = addControlSprite(cell: cell, thisControl: eachControl)
-            
-            cell.addSubview(controlSprite)
-            
-            
-        }
-        
+        addControls(cell: cell)
         
         if self.thisGroup.selectedControl == 0 {
             
@@ -187,6 +172,25 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         
         
         return cell
+    }
+    
+    func addControls(cell: UICollectionViewCell) {
+        for eachControl in controls {
+            
+            for eachVertex in eachControl.vertexList {
+                
+                let vertexLayer = drawVertex(vertex: eachVertex)
+                
+                cell.layer.addSublayer(vertexLayer)
+            }
+            
+            
+            let controlSprite = addControlSprite(cell: cell, thisControl: eachControl)
+            
+            cell.addSubview(controlSprite)
+            
+            
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize{
