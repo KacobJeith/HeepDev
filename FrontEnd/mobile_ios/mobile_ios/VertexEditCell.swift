@@ -699,7 +699,6 @@ extension VertexEditCell {
             // delay for 0.1 seconds to prevent sprite translation from kicking in
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
                 self.longPressActive = false
-                print("END LONG PRESS!")
             }
         }
         
@@ -712,7 +711,7 @@ extension VertexEditCell {
 
 extension VertexEditCell {
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        print("End scrollView Deceleration")
+        
         let realm = try! Realm(configuration: configUser)
         
         try! realm.write {
@@ -723,7 +722,7 @@ extension VertexEditCell {
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate {
-            print("End scrollView Dragging")
+            
             let realm = try! Realm(configuration: configUser)
             
             try! realm.write {
@@ -742,23 +741,34 @@ extension VertexEditCell {
     func drawVertex(vertex: Vertex, highlight: Bool = false, name: String? = nil) -> CAShapeLayer {
         let shapeLayer = CAShapeLayer()
         let curve = UIBezierPath()
-        let startPoint = CGPoint(x: (vertex.tx?.editX)!, y: (vertex.tx?.editY)!)
-        let finishPoint = CGPoint(x: (vertex.rx?.editX)!, y: (vertex.rx?.editY)!)
+        
+        guard let txX = vertex.tx?.editX else { return CAShapeLayer()}
+        guard let txY = vertex.tx?.editY else { return CAShapeLayer()}
+        guard let rxX = vertex.rx?.editX else { return CAShapeLayer()}
+        guard let rxY = vertex.rx?.editY else { return CAShapeLayer()}
+        
+        let startPoint = CGPoint(x: txX, y: txY)
+        let finishPoint = CGPoint(x: rxX, y: rxY)
         
         curve.move(to: startPoint)
-        curve.addQuadCurve(to: finishPoint, controlPoint: CGPoint(x: (vertex.tx?.editX)!, y: (vertex.rx?.editY)!))
+        curve.addQuadCurve(to: finishPoint,
+                           controlPoint: CGPoint(x: txX, y: rxY))
+        
         shapeLayer.path = curve.cgPath
         shapeLayer.shadowPath = curve.cgPath
         shapeLayer.strokeColor = getModeColor(thisGroup: thisGroup, highlight: highlight).cgColor
         
         shapeLayer.fillColor = UIColor.clear.cgColor
         shapeLayer.lineWidth = 3.0
+        
         if name == nil {
             shapeLayer.name = vertex.vertexID
         } else {
             shapeLayer.name = name
         }
+        
         shapeLayer.accessibilityPath = curve
+        
         return shapeLayer
     }
     
@@ -786,59 +796,78 @@ extension VertexEditCell {
     }
     
     func addControlSprite(thisControl: DeviceControl, applyTransform: Bool = true) -> UIView {
+        
         controlIDs.append(thisControl.uniqueID)
         
-        let container = UIView()
-        container.frame = CGRect(x: thisControl.editX - 30,
-                                     y: thisControl.editY - 30,
-                                     width: 60,
-                                     height: 60)
+        let containerFrame = CGRect(x: thisControl.editX - 30,
+                                 y: thisControl.editY - 30,
+                                 width: 60,
+                                 height: 60)
+        
+        let spriteContainer = addSpriteFrame(control: thisControl, frame: containerFrame)
+        let spriteImage = addSpriteImage(control: thisControl, containerWidth: containerFrame.width)
+        let spriteRange = addSpriteRangeIndicator(control: thisControl, frame: containerFrame)
+        
+        spriteContainer.addSubview(spriteRange)
+        spriteContainer.addSubview(spriteImage)
+        
+        spriteContainer.transform = CGAffineTransform(scaleX: thisControl.scale, y: thisControl.scale).rotated(by: thisControl.rotation)
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(selectThisController))
+        spriteContainer.addGestureRecognizer(tap)
+        
+        return spriteContainer
+    }
+    
+    func addSpriteFrame(control: DeviceControl, frame: CGRect) -> UIView {
+        let container = UIView(frame: frame)
         
         container.layer.cornerRadius = 30
         container.clipsToBounds = true
         container.tag = controlIDs.count - 1
         container.layer.borderWidth = 2
-        container.layer.borderColor = thisControl.uniqueID == thisGroup.selectedControl ? getModeColor(thisGroup: thisGroup, highlight: true).cgColor : getModeColor(thisGroup: thisGroup, highlight: false).cgColor
-        container.tag = thisControl.uniqueID
+        container.layer.borderColor = control.uniqueID == thisGroup.selectedControl ? getModeColor(thisGroup: thisGroup, highlight: true).cgColor : getModeColor(thisGroup: thisGroup, highlight: false).cgColor
+        container.tag = control.uniqueID
         
-        
+        return container
+    }
+    
+    func addSpriteImage(control: DeviceControl, containerWidth: CGFloat) -> UIView {
         let controlSprite = UIImageView()
-        let iconName = SuggestIconFromName(name: thisControl.controlName,
-                                           state: thisControl.valueCurrent,
-                                           lowVal: thisControl.valueLow)
+        let iconName = SuggestIconFromName(name: control.controlName,
+                                           state: control.valueCurrent,
+                                           lowVal: control.valueLow)
         let image = UIImage(named: iconName) as UIImage?
         controlSprite.image = image
         controlSprite.contentMode = .scaleAspectFit
-        let scaledSize = container.frame.width * 0.75
-        let startPosition = (container.frame.width * 0.25) / 2
+        let scaledSize = containerWidth * 0.75
+        let startPosition = (containerWidth * 0.25) / 2
         controlSprite.frame = CGRect(x: startPosition,
                                      y: startPosition,
                                      width: scaledSize,
                                      height: scaledSize)
         
-        let currentRangeContainer = UIView(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
+        return controlSprite
+    }
+    
+    func addSpriteRangeIndicator(control: DeviceControl, frame: CGRect) -> UIView {
+        
+        let currentRangeContainer = UIView(frame: CGRect(x: 0,
+                                                         y: 0,
+                                                         width: 60,
+                                                         height: 60))
+        
+        let currentRange = UIView(frame: CGRect(x: 0,
+                                                y: getControlValueRatio(control: control) * 60,
+                                                width: 60,
+                                                height: 60))
+        
+        currentRange.backgroundColor = SuggestColorFromName(name: control.controlName).withAlphaComponent(0.5)
+        currentRangeContainer.transform = CGAffineTransform(rotationAngle: -control.rotation)
 
-        let currentRange = UIView(frame: CGRect(x: 0, y: getControlValueRatio(control: thisControl) * 60, width: 60, height: 60))
-        
-        currentRange.backgroundColor = SuggestColorFromName(name: thisControl.controlName).withAlphaComponent(0.5)
-        
-        currentRangeContainer.transform = CGAffineTransform(scaleX: 1, y: 1).rotated(by: -thisControl.rotation)
         currentRangeContainer.addSubview(currentRange)
         
-        container.addSubview(currentRangeContainer)
-        
-        container.addSubview(controlSprite)
-        
-        
-        container.transform = CGAffineTransform(scaleX: thisControl.scale, y: thisControl.scale).rotated(by: thisControl.rotation)
-        
-        
-        
-        let tap = UITapGestureRecognizer(target: self, action: #selector(selectThisController))
-        
-        container.addGestureRecognizer(tap)
-        
-        return container
+        return currentRangeContainer
     }
     
     func selectThisController(gesture: UITapGestureRecognizer) {
@@ -949,15 +978,19 @@ extension VertexEditCell {
     func displayDeviceSummary() {
         let realm = try! Realm(configuration: configUser)
         
-        if let control = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl) {
-            if let device = realm.object(ofType: Device.self, forPrimaryKey: control.deviceID) {
-                let summaryView = DeviceSummaryViewController(device: device)
-                parentTable.navigationController?.pushViewController(summaryView, animated: true)
-
-            }
+        guard let control = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl) else {
+            print("Could not retrieve control")
+            return
         }
         
+        guard let device = realm.object(ofType: Device.self, forPrimaryKey: control.deviceID) else {
+            print("Could not retrieve device")
+            return
+        }
+        
+        let summaryView = DeviceSummaryViewController(device: device)
+        parentTable.navigationController?.pushViewController(summaryView, animated: true)
+
     }
     
 }
-
