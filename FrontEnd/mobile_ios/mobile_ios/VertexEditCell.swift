@@ -426,61 +426,63 @@ extension VertexEditCell {
                                               highlight: true))
         
         verifyControlForVertex(gesture: gesture,
-                               direction: 0,
-                               replace: activeVertexFinish == CGPoint() ? false : true )
+                               direction: 0)
     
     }
     
-    func verifyControlForVertex(gesture: UIPanGestureRecognizer, direction: Int, replace: Bool = false) {
+    func verifyControlForVertex(gesture: UIPanGestureRecognizer, direction: Int) {
         
         if let touched = touchingControlSprite(gesture: gesture) {
             
-            if direction == 0 {
+            if direction == 0 && touched.controlDirection == direction {
                 
-                if touched.controlDirection == direction {
-                    
-                    let newActiveVertexFinish = CGPoint(x: touched.editX,
-                                                        y: touched.editY)
-                    
-                    if newActiveVertexFinish != activeVertexFinish {
-                        activeVertexFinish = CGPoint(x: touched.editX,
-                                                     y: touched.editY)
-                        
-                        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-                        
-                        activeVertex.rx = touched
-                        
-                        if replace {
-                            searchSublayersForNameToRemove(names: ["finish"])
-                        }
-                        
-                        cellView.layer.addSublayer(drawCircle(center: activeVertexFinish,
-                                                              radius: 35,
-                                                              name: "finish",
-                                                              highlight: true))
-                    }
-                    
-                }
+                completeNewVertex(touched: touched)
                 
-            } else if direction == 1 {
+            } else if direction == 1 && touched.controlDirection == direction {
                 
-                if touched.controlDirection == direction {
-                    activeVertexStart = CGPoint(x: touched.editX,
-                                                y: touched.editY)
-                    activeVertex.tx = touched
-                    let generator = UIImpactFeedbackGenerator(style: .medium)
-                    generator.impactOccurred()
-                    
-                    cellView.layer.addSublayer(drawCircle(center: activeVertexStart,
-                                                          radius: 35,
-                                                          name: "start",
-                                                          highlight: true))
-                    
-                }
+                initializeNewVertex(touched: touched)
+                
             }
             
         }
         
+    }
+    
+    func initializeNewVertex(touched: DeviceControl) {
+        
+        activeVertexStart = CGPoint(x: touched.editX,
+                                    y: touched.editY)
+        activeVertex.tx = touched
+        
+        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+        
+        cellView.layer.addSublayer(drawCircle(center: activeVertexStart,
+                                              radius: 35,
+                                              name: "start",
+                                              highlight: true))
+    }
+    
+    
+    func completeNewVertex(touched: DeviceControl) {
+        
+        let newActiveVertexFinish = CGPoint(x: touched.editX,
+                                            y: touched.editY)
+        
+        if newActiveVertexFinish != activeVertexFinish {
+            activeVertexFinish = CGPoint(x: touched.editX,
+                                         y: touched.editY)
+            
+            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+            
+            activeVertex.rx = touched
+            
+            searchSublayersForNameToRemove(names: ["finish"])
+            
+            cellView.layer.addSublayer(drawCircle(center: activeVertexFinish,
+                                                  radius: 35,
+                                                  name: "finish",
+                                                  highlight: true))
+        }
     }
     
     func searchSublayersForNameToRemove(names: [String]) {
