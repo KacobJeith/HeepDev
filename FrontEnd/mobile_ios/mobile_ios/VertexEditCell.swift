@@ -258,7 +258,7 @@ extension VertexEditCell {
             cellView.layer.addSublayer(drawCircle(center: gesture.location(in: cellView),
                                                   radius: 35,
                                                   name: "circle",
-                                                  highlight: true))
+                                                  modeColor: getModeColor(thisGroup: thisGroup, highlight: true)))
             
         case .changed :
             
@@ -292,7 +292,8 @@ extension VertexEditCell {
         
         cellView.layer.addSublayer(drawCircle(center: gesture.location(in: cellView),
                                               radius: 35,
-                                              name: "circle"))
+                                              name: "circle",
+                                              modeColor: getModeColor(thisGroup: thisGroup, highlight: false)))
         
         switch gesture.state {
             
@@ -411,7 +412,8 @@ extension VertexEditCell {
         
         cellView.layer.addSublayer(drawCircle(center: gesture.location(in: cellView),
                                               radius: 35,
-                                              name: "circle"))
+                                              name: "circle",
+                                              modeColor: getModeColor(thisGroup: thisGroup, highlight: false)))
         
         verifyControlForVertex(gesture: gesture,
                                direction: 1)
@@ -459,7 +461,7 @@ extension VertexEditCell {
         cellView.layer.addSublayer(drawCircle(center: activeVertexStart,
                                               radius: 35,
                                               name: "start",
-                                              highlight: true))
+                                              modeColor: getModeColor(thisGroup: thisGroup, highlight: true)))
     }
     
     
@@ -481,7 +483,7 @@ extension VertexEditCell {
             cellView.layer.addSublayer(drawCircle(center: activeVertexFinish,
                                                   radius: 35,
                                                   name: "finish",
-                                                  highlight: true))
+                                                  modeColor: getModeColor(thisGroup: thisGroup, highlight: true)))
         }
     }
     
@@ -495,31 +497,6 @@ extension VertexEditCell {
                 
             }
         }
-    }
-    
-    func removeSublayerWithName(sublayer: CALayer, name: String) {
-        if sublayer.name!.range(of: name) != nil {
-            sublayer.removeFromSuperlayer()
-        }
-    }
-    
-    func drawCircle(center: CGPoint, radius: CGFloat, name: String, highlight: Bool = false) -> CAShapeLayer {
-        
-        let circlePath = UIBezierPath(arcCenter: center,
-                                      radius: radius,
-                                      startAngle: CGFloat(0),
-                                      endAngle:CGFloat(Double.pi * 2),
-                                      clockwise: true)
-        
-        let shapeLayer = CAShapeLayer()
-        shapeLayer.path = circlePath.cgPath
-        shapeLayer.fillColor = getModeColor(thisGroup: thisGroup, highlight: highlight).cgColor
-        shapeLayer.strokeColor = getModeColor(thisGroup: thisGroup, highlight: highlight).cgColor
-        shapeLayer.lineWidth = 3.0
-        shapeLayer.opacity = 0.4
-        shapeLayer.name = name
-        
-        return shapeLayer
     }
     
     func touchingControlSprite(gesture: UIPanGestureRecognizer) -> DeviceControl? {
@@ -544,10 +521,7 @@ extension VertexEditCell {
 extension VertexEditCell {
     
     func handlePan(gestureRecognizer: UIPanGestureRecognizer){
-        if longPressActive{
-//            print("adjusting range")
-        }
-        else{
+        if !longPressActive {
             translateSpritePosition(gestureRecognizer: gestureRecognizer)
         }
     }
@@ -806,22 +780,6 @@ extension VertexEditCell {
         return shapeLayer
     }
     
-    func drawLine(start: CGPoint, finish: CGPoint, name: String) -> CAShapeLayer {
-        let shapeLayer = CAShapeLayer()
-        let curve = UIBezierPath()
-        
-        curve.move(to: start)
-        curve.addLine(to: finish)
-        shapeLayer.path = curve.cgPath
-        
-        shapeLayer.strokeColor = UIColor.red.cgColor
-        shapeLayer.fillColor = UIColor.clear.cgColor
-        shapeLayer.lineWidth = 1.0
-        shapeLayer.name = name
-        
-        return shapeLayer
-    }
-    
     func getContextImage() -> UIImage? {
         
         return UIImage(data: thisGroup.imageData as Data)
@@ -918,8 +876,15 @@ extension VertexEditCell {
     func saveSelectedSprite() {
         let realm = try! Realm(configuration: configUser)
         
-        let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl)!
-        let myView = self.viewWithTag(thisGroup.selectedControl)!
+        guard let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl) else {
+            print("Could not retrieve the control from realm")
+            return
+        }
+        
+        guard let myView = self.viewWithTag(thisGroup.selectedControl) else {
+            print("Could not find the selected control in the view")
+            return
+        }
         
         let rotation = CGFloat(atan2f(Float(CGFloat(myView.transform.b)),Float(myView.transform.a)))
         let scale = sqrt(pow(myView.transform.a,2) + pow(myView.transform.b, 2))

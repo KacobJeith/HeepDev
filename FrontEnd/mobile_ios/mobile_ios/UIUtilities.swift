@@ -185,6 +185,31 @@ func horizontalLine(yPosition: CGFloat) -> UIView {
     return line
 }
 
+func drawCircle(center: CGPoint, radius: CGFloat, name: String = "default", modeColor: UIColor = .blue) -> CAShapeLayer {
+    
+    let circlePath = UIBezierPath(arcCenter: center,
+                                  radius: radius,
+                                  startAngle: CGFloat(0),
+                                  endAngle:CGFloat(Double.pi * 2),
+                                  clockwise: true)
+    
+    let shapeLayer = CAShapeLayer()
+    shapeLayer.path = circlePath.cgPath
+    shapeLayer.fillColor = modeColor.cgColor
+    shapeLayer.strokeColor = modeColor.cgColor
+    shapeLayer.lineWidth = 3.0
+    shapeLayer.opacity = 0.4
+    shapeLayer.name = name
+    
+    return shapeLayer
+}
+
+func removeSublayerWithName(sublayer: CALayer, name: String) {
+    if sublayer.name!.range(of: name) != nil {
+        sublayer.removeFromSuperlayer()
+    }
+}
+
 
 
 
