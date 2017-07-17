@@ -670,7 +670,7 @@ extension VertexEditCell {
         //timeSince returns false if duration is less than timeInterval specified
         if ( SuccessROPReceived || !lessThanTimeInterval(start: lastSendTime, end: DispatchTime.now(), timeInterval: 10_000_000) ) && slidingValue != lastSlidingValue {
             
-            DispatchQueue.global().async(){
+            DispatchQueue.main.async(){
                 HeepConnections().sendValueToHeepDevice(uniqueID: control.uniqueID,
                                                         currentValue: slidingValue )
             }
