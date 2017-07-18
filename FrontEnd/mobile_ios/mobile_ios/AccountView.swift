@@ -13,6 +13,7 @@ class AccountView: UIViewController {
     var notificationToken: NotificationToken? = nil
     var subviewFrame = CGRect()
     var registeringNewAccount: Bool = false
+    var currentPage: Int = 0
     
     var email: String? = ""
     var password: String? = ""
@@ -21,7 +22,7 @@ class AccountView: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+    
         self.view.backgroundColor = .white
         self.navigationController?.isToolbarHidden = false
         isUserLoggedIn()
@@ -91,34 +92,12 @@ class AccountView: UIViewController {
         print(SyncUser.current)
         print(configUser)
         
-        /*
-        let realmPublic = try! Realm(configuration: configPublicSync)
-        let myUserData = realmPublic.object(ofType: User.self, forPrimaryKey: myID)
-       
-        
-        let loginGroup = DispatchGroup()
-        loginGroup.enter()
-        
-        DispatchQueue.global(qos: .default).sync {
-            if myUserData == nil {
-                seedNewUserAccount(heepID: myID!,
-                                   callback: { loginGroup.leave() },
-                                   repair: true)
-                
-            } else {
-                loginGroup.leave()
-            }
-        }
-        
-        loginGroup.wait()
-        
-        self.view.addSubview(alreadyLoggedInView())
- */
     }
+    
     
 }
 
-// Already Logged in View 
+// Already Logged in View
 
 extension AccountView {
     func alreadyLoggedInView() -> UIView {
@@ -272,7 +251,6 @@ extension AccountView{
         let submitButton = addSubmitButton(frame: cancelButton.frame, sender: self, action: #selector(submitLogin))
         
         
-        
         subview.addSubview(loginLabel.view)
         subview.addSubview(emailTextBox.view)
         subview.addSubview(passwordTextBox.view)
@@ -408,6 +386,23 @@ extension AccountView{
 extension AccountView {
     func registerView() -> UIView {
         
+        switch currentPage {
+        case 0 :
+            return inputNameAndEmailPage()
+            
+        case 1 :
+            return inputPasswordsPage()
+            
+        default :
+            
+            return UIView()
+        }
+        
+    }
+    
+    
+    
+    func inputNameAndEmailPage() -> UIView {
         self.subviewFrame = CGRect(x: 0,
                                    y: 0,
                                    width: self.view.frame.width,
@@ -427,15 +422,41 @@ extension AccountView {
         let nameTextBox = addNameTextBox(frame: startFrame, lastAttempt: name)
         let emailTextBox = addEmailTextBox(frame: nameTextBox.frame, lastAttempt: email)
         
-        let passwordTextBox = addPasswordTextBox(frame: getNextFrame(frame: emailTextBox.frame), lastAttempt: password)
+        let cancelButton = addCancelButton(frame: getNextFrame(frame: emailTextBox.frame), sender: self, action: #selector(exitRegistrationBackToLogin))
+        let submitButton = addNextButton(frame: cancelButton.frame, sender: self, action: #selector(submitNameAndEmail))
+        
+        subview.addSubview(nameTextBox.view)
+        subview.addSubview(emailTextBox.view)
+        
+        subview.addSubview(cancelButton.view)
+        subview.addSubview(submitButton.view)
+        
+        
+        return subview
+    }
+    
+    func inputPasswordsPage() -> UIView {
+        self.subviewFrame = CGRect(x: 0,
+                                   y: 0,
+                                   width: self.view.frame.width,
+                                   height: self.view.frame.height)
+        
+        let subview = UIView(frame: subviewFrame)
+        subview.addGestureRecognizer(UITapGestureRecognizer(target: nil, action: nil))
+        
+        
+        let startFrame = CGRect(x: 20,
+                                y: 50,
+                                width: subview.frame.width - 40,
+                                height: 35)
+        
+        let passwordTextBox = addPasswordTextBox(frame: startFrame, lastAttempt: password)
         let retypePasswordTextBox = addPasswordCheckTextBox(frame: passwordTextBox.frame, lastAttempt: passwordCheck)
         
         let cancelButton = addCancelButton(frame: getNextFrame(frame: retypePasswordTextBox.frame), sender: self, action: #selector(exitRegistrationBackToLogin))
         let submitButton = addSubmitButton(frame: cancelButton.frame, sender: self, action: #selector(submitRegistrationForm))
         
         
-        subview.addSubview(nameTextBox.view)
-        subview.addSubview(emailTextBox.view)
         subview.addSubview(passwordTextBox.view)
         subview.addSubview(retypePasswordTextBox.view)
         
@@ -444,6 +465,28 @@ extension AccountView {
         
         
         return subview
+    }
+    
+    func submitNameAndEmail() {
+        
+        guard let name = name else {
+            present(easyAlert(message: "Don't forget your name!",
+                              callback: {self.reloadView()}),
+                    animated: false, completion: nil)
+            return
+        }
+        
+        guard let email = email else {
+            present(easyAlert(message: "Sorry...invalid email",
+                              callback: {self.reloadView()}),
+                    animated: false, completion: nil)
+            return
+        }
+        
+        currentPage += 1
+        print("Creating \(name)'s account with email: \(email)")
+        
+        self.reloadView()
     }
     
     func submitRegistrationForm() {

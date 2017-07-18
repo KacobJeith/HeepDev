@@ -291,9 +291,26 @@ func addSubmitButton(frame: CGRect, sender: Any?, action: Selector) -> (view: UI
     let submitButton = createActionButton(frame: nextFrame,
                                           title: "submit",
                                           sender: sender,
-                                          action: action)
+                                          action: action,
+                                          color: UIView().tintColor)
     
     return (view: submitButton, frame: nextFrame)
+    
+}
+
+func addNextButton(frame: CGRect, sender: Any?, action: Selector) -> (view: UIButton, frame: CGRect) {
+    let nextFrame = CGRect(x: frame.maxX + 10,
+                           y: frame.minY,
+                           width: frame.width,
+                           height: frame.height)
+    
+    let nextButton = createActionButton(frame: nextFrame,
+                                        title: "next",
+                                        sender: sender,
+                                        action: action,
+                                        color: UIView().tintColor)
+    
+    return (view: nextButton, frame: nextFrame)
     
 }
 
