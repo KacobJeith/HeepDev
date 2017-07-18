@@ -666,12 +666,13 @@ extension VertexEditCell {
         myView.subviews[0].subviews[0].frame = CGRect(x: 0, y: transform.yTransform, width: 60, height: 60)
         
         let slidingValue = Int( transform.ratio * CGFloat(control.valueHigh - control.valueLow) )
+        let passControlID = control.uniqueID
         
         //timeSince returns false if duration is less than timeInterval specified
         if ( SuccessROPReceived || !lessThanTimeInterval(start: lastSendTime, end: DispatchTime.now(), timeInterval: 10_000_000) ) && slidingValue != lastSlidingValue {
             
-            DispatchQueue.main.async(){
-                HeepConnections().sendValueToHeepDevice(uniqueID: control.uniqueID,
+            DispatchQueue.global().async(){
+                HeepConnections().sendValueToHeepDevice(uniqueID: passControlID,
                                                         currentValue: slidingValue )
             }
             
