@@ -326,12 +326,8 @@ extension AccountView{
         
     }
     
-    func extractInputValues() {
-        
-        email = nil
-        name = nil
-        password = nil
-        passwordCheck = nil
+    func extractInputValues(inputs: [String] = ["name", "email", "password", "passwordCheck"]) {
+        resetExtractionValues(inputs: inputs)
         
         for subview in self.view.subviews {
             for subsubview in subview.subviews {
@@ -345,6 +341,19 @@ extension AccountView{
         }
         
         
+    }
+    
+    func resetExtractionValues(inputs: [String]) {
+        
+        for input in inputs {
+            switch input {
+            case "email" : email = nil
+            case "name" : name = nil
+            case "password" : password = nil
+            case "passwordCheck" : passwordCheck = nil
+            default : break
+            }
+        }
     }
     
     func exitView() {
@@ -400,8 +409,6 @@ extension AccountView {
         
     }
     
-    
-    
     func inputNameAndEmailPage() -> UIView {
         self.subviewFrame = CGRect(x: 0,
                                    y: 0,
@@ -416,8 +423,6 @@ extension AccountView {
                                 y: 50,
                                 width: subview.frame.width - 40,
                                 height: 35)
-        
-        
         
         let nameTextBox = addNameTextBox(frame: startFrame, lastAttempt: name)
         let emailTextBox = addEmailTextBox(frame: nameTextBox.frame, lastAttempt: email)
@@ -468,6 +473,7 @@ extension AccountView {
     }
     
     func submitNameAndEmail() {
+        extractInputValues(inputs: ["name", "email"])
         
         guard let name = name else {
             present(easyAlert(message: "Don't forget your name!",
@@ -490,7 +496,7 @@ extension AccountView {
     }
     
     func submitRegistrationForm() {
-        extractInputValues()
+        extractInputValues(inputs: ["password", "passwordCheck"])
         
         
         guard let name = name else {
