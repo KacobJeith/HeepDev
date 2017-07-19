@@ -15,6 +15,7 @@ class PlacesView: UIViewController {
     var activelyPanning = Int()
     var searchTimeout = 4
     var colors = [UIColor]()
+    var placeNames = [Int : String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -122,6 +123,7 @@ class PlacesView: UIViewController {
  
     func drawPlace(place: Place, perspective: PlacePerspective) {
         
+        placeNames[place.placeID] = place.name
         
         let diameter = CGFloat(100 + 10*perspective.numDevices)
         let adjustedX = perspective.x - diameter/2
@@ -153,9 +155,17 @@ class PlacesView: UIViewController {
     
     func enterPlace(sender: UIButton) {
         
-        print("entering \(String(describing: sender.tag))")
-
-        let groupView = GroupCollectionView(placeID: sender.tag)
+        
+        guard let name = placeNames[sender.tag] else {
+            print("Bouncing...couldn't find the name")
+            return
+        }
+        
+        print("entering \(name)")
+        
+        let groupView = GroupCollectionView(placeID: sender.tag,
+                                            placeName: name)
+        
         navigationController?.pushViewController(groupView, animated: false)
         
         
@@ -163,24 +173,27 @@ class PlacesView: UIViewController {
     
     func drag(gesture: UIPanGestureRecognizer) {
         
-        if gesture.state == UIGestureRecognizerState.began {
-
+        switch gesture.state {
+        case .began :
+            
             findPanningPlace(gesture: gesture)
             
-        } else if gesture.state == UIGestureRecognizerState.changed {
-            if activelyPanning != Int(){
+        case .changed :
+            
+            if activelyPanning != Int() {
                 let translation = CGAffineTransform(translationX: gesture.translation(in: self.view).x,
                                                     y: gesture.translation(in: self.view).y)
+                
                 (self.view.viewWithTag(activelyPanning))!.transform = translation
                 
             }
             
+        case .ended :
             
-        } else if gesture.state == UIGestureRecognizerState.ended {
             if activelyPanning != Int(){
                 
                 let realm = try! Realm(configuration: configUser)
-                let thisPlace = realm.object(ofType: Place.self, forPrimaryKey: bssids[activelyPanning - 1])
+                let thisPlace = realm.object(ofType: PlacePerspective.self, forPrimaryKey: gesture.view?.tag)
                 
                 try! realm.write {
                     thisPlace?.x = (thisPlace?.x)! + gesture.translation(in: self.view).x
@@ -195,16 +208,15 @@ class PlacesView: UIViewController {
             activelyPanning = Int()
             
             
+        default : break
         }
-        
-        
         
     }
     
     func findPanningPlace(gesture: UIPanGestureRecognizer) {
-        for index in 1...(bssids.count) {
+        for key in placeNames.keys {
             
-            let activelyPanningPlace = self.view.viewWithTag(index)
+            let activelyPanningPlace = self.view.viewWithTag(key)
             let gestureLocation = gesture.location(in: self.view)
             
             if activelyPanningPlace != nil {
@@ -247,7 +259,7 @@ extension PlacesView {
     
     func initRealmNotification() {
         let realm = try! Realm(configuration: configUser)
-        let places = realm.objects(Place.self)
+        let places = realm.objects(PlacePerspective.self)
         
         notificationToken = places.addNotificationBlock { [weak self] (changes: RealmCollectionChange) in
             

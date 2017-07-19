@@ -12,10 +12,15 @@ import RealmSwift
 
 class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     var notificationToken: NotificationToken? = nil
-    var thisPlace: Place = Place()
     var collectionView: UICollectionView!
+    var placeName: String = "placeholder"
     
     private let reuseIdentifier = "Cell"
+    
+    convenience init(placeID: Int, placeName: String) {
+        self.init()
+        self.placeName = placeName
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
