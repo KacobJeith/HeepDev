@@ -57,19 +57,20 @@ class PHY: Object {
     dynamic var gateway: String = "0.0.0"
     
     override static func primaryKey() -> String? {
-        return "BSSID"
+        return "bssid"
     }
     
 }
-
 
 // User Realm
 class PlacePerspective: Object {
     
     dynamic var placeID: Int = 0
+    dynamic var realmPath: String = ""
     dynamic var x: CGFloat = 100
     dynamic var y: CGFloat = 100
     dynamic var radius: Int = 100
+    dynamic var numDevices: Int = 0
     
     override static func primaryKey() -> String? {
         return "placeID"
@@ -93,6 +94,7 @@ class Group: Object {
 class GroupPerspective: Object {
     
     dynamic var groupID: Int = 0
+    dynamic var realmPath: String = ""
     dynamic var selectedControl: Int = 0
     dynamic var unassignedOffsetX: CGFloat = 0
     dynamic var assignedOffsetX: CGFloat = 0
