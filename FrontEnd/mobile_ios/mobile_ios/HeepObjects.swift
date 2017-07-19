@@ -37,33 +37,62 @@ class Key: Object {
     }
 }
 
-// User Realm
+// Place Realm
 class Place: Object {
+    
+    dynamic var placeID: Int = 0
+    dynamic var name: String = "unnamed"
+    let PHYList = List<PHY>()
+    
+    override static func primaryKey() -> String? {
+        return "placeID"
+    }
+}
+
+// Place Realm
+class PHY: Object {
     
     dynamic var ssid: String = "placeholder"
     dynamic var bssid: String = "LANMAC"
-    dynamic var name: String = "unnamed"
     dynamic var gateway: String = "0.0.0"
+    
+    override static func primaryKey() -> String? {
+        return "BSSID"
+    }
+    
+}
+
+
+// User Realm
+class PlacePerspective: Object {
+    
+    dynamic var placeID: Int = 0
     dynamic var x: CGFloat = 100
     dynamic var y: CGFloat = 100
     dynamic var radius: Int = 100
-    dynamic var update: Bool = false
-    let devices = List<Device>()
-    let groups = List<Group>()
     
     override static func primaryKey() -> String? {
-        return "bssid"
+        return "placeID"
+    }
+}
+
+// Group Realm
+class Group: Object {
+    
+    dynamic var groupID: Int = 0
+    dynamic var placeID: Int = 0
+    dynamic var name: String = "Unassigned"
+    dynamic var imageData: NSData = NSData()
+    
+    override static func primaryKey() -> String? {
+        return "groupID"
     }
 }
 
 // User Realm
-class Group: Object {
+class GroupPerspective: Object {
     
-    let controls = List<DeviceControl>()
-    dynamic var name: String = "Unassigned"
-    dynamic var place: String = "none"
-    dynamic var id: Int = 0
-    dynamic var imageData: NSData = NSData()
+    dynamic var groupID: Int = 0
     dynamic var selectedControl: Int = 0
     dynamic var unassignedOffsetX: CGFloat = 0
     dynamic var assignedOffsetX: CGFloat = 0
@@ -71,22 +100,21 @@ class Group: Object {
     dynamic var contentOffsetY: CGFloat = 0
     
     override static func primaryKey() -> String? {
-        return "id"
+        return "groupID"
     }
 }
 
 // User Realm
 class Device: Object {
     
-    dynamic var name: String = "placeholder"
     dynamic var deviceID: Int = 0
+    dynamic var name: String = "placeholder"
     dynamic var humanAdmin: Int = 0
     dynamic var version: Int = 0
     dynamic var iconName: String = "lightbulb"
     dynamic var ipAddress: String = "0.0.0.0"
-    let controlList =   List<DeviceControl>() //LinkingObjects(fromType: DeviceControl.self, property: "deviceID")
-    dynamic var associatedPlace: String = "wanderer"
-    dynamic var authorizedUsers: String = ""
+    let controlList =   List<DeviceControl>()
+    dynamic var authorizedUsers: String = "" // actually a list, but parsed using a delimiter
     
     override static func primaryKey() -> String? {
         return "deviceID"
@@ -101,6 +129,7 @@ class DeviceControl: Object {
     dynamic var deviceID: Int = 0
     dynamic var controlID: Int = 0
     dynamic var uniqueID: Int = 0
+    dynamic var groupID: Int = 0
     dynamic var controlType: Int = 0
     dynamic var controlDirection: Int = 0
     dynamic var valueLow: Int = 0
@@ -109,7 +138,6 @@ class DeviceControl: Object {
     dynamic var lastOnValue: Int = 100
     dynamic var controlName: String = "Default"
     dynamic var place: String = "none"
-    dynamic var groupsAssigned: Int = 0
     dynamic var editX: CGFloat = 100
     dynamic var editY: CGFloat = 100
     dynamic var scale: CGFloat = 1
