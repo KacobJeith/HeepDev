@@ -20,7 +20,13 @@ class HAPIMemoryParser {
     
     public func BuildSetValueCOP(controlID: Int, newValue: Int) -> [UInt8] {
         let COP = UInt8(0x0A)
-        let packet = [UInt8(controlID), UInt8(newValue)]
+        var setVal = 0
+        
+        if newValue > 0 {
+            setVal = newValue
+        }
+        
+        let packet = [UInt8(controlID), UInt8(setVal)]
         let entireArray = packageCOP(COP: COP, packet: packet)
         return entireArray
     }
