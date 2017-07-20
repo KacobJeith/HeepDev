@@ -5,13 +5,13 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     
     var parentTable = UITableViewController()
     var collectionView: UICollectionView!
-    var controls = List<DeviceControl>()
+    var controls = [DeviceControl]()
     
     var cellView = UICollectionViewCell()
     
     var controlIDs = [Int]()
     
-    var thisGroup = Group()
+    var thisGroup = GroupPerspective()
     var contextImage = UIImage()
     var controlTags = [Int]()
     
@@ -32,10 +32,24 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
                      groupID: Int) {
         self.init()
         
+        setupGroupAndControls(groupID: groupID)
+        setupCollectionView(cellFrame: cellFrame)
+        
+    }
+    
+    func setupGroupAndControls(groupID: Int) {
         let realm = try! Realm(configuration: configUser)
         
-        self.controls = thisGroup.controls
-        self.thisGroup = realm.object(ofType: Group.self, forPrimaryKey: thisGroup.id)!
+        self.controls = realm.objects(DeviceControl.self).filter(NSPredicate(format: "groupID = '\(groupID)'")).toArray()
+        
+        if let perspective = realm.object(ofType: GroupPerspective.self, forPrimaryKey: groupID) {
+            self.thisGroup = perspective
+        } else {
+            print("Could not find perspective with this groupID")
+        }
+    }
+    
+    func setupCollectionView(cellFrame: CGRect) {
         
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = UICollectionViewScrollDirection.horizontal
@@ -66,7 +80,7 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
             
             layout.itemSize = CGSize(width: screenWidth,
                                      height: editSpaceHeight)
-
+            
         }
         
         collectionView = UICollectionView(frame: CGRect(x: 0,y: 0,
@@ -113,8 +127,7 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         cell.isUserInteractionEnabled = true
         cell.tag = 1
         
-        setContextImage(imageData: thisGroup.imageData,
-                        tag: indexPath.row)
+        setContextImage()
         
         addControlsAndVertices()
         setActiveGestures(cell: cell)
@@ -122,15 +135,22 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         return cell
     }
     
-    func setContextImage(imageData: NSData, tag: Int) {
+    func setContextImage() {
         let imageView = UIImageView(frame: CGRect(x: 0,
                                                   y: 0,
                                                   width: cellView.bounds.width,
                                                   height: cellView.bounds.height))
         
-        imageView.image = UIImage(data: imageData as Data)
+        let groupRealm = try! Realm(configuration: getGroupConfiguration(path: thisGroup.realmPath))
+        
+        guard let groupContext = groupRealm.objects(Group.self).first else {
+            print("Could not retrieve shared group realm to grab the image")
+            return
+        }
+        
+        imageView.image = UIImage(data: groupContext.imageData as Data)
         imageView.contentMode = .scaleAspectFit
-        imageView.tag = tag
+        imageView.tag = 0
         cellView.addSubview(imageView)
         
     }
@@ -496,7 +516,7 @@ extension VertexEditCell {
     
     func touchingControlSprite(gesture: UIPanGestureRecognizer) -> DeviceControl? {
         
-        for control in thisGroup.controls {
+        for control in controls {
             
             let position = gesture.location(in: collectionView)
             let check = self.viewWithTag(control.uniqueID)!.frame.contains(position)
@@ -547,7 +567,7 @@ extension VertexEditCell {
         let realm = try! Realm(configuration: configUser)
         guard let control = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl) else { return}
         
-        for eachControl in thisGroup.controls {
+        for eachControl in controls {
             for vertex in eachControl.vertexList {
                 
                 translateConnectedVertex(control: control, vertex: vertex, controlView: controlView)
@@ -818,8 +838,14 @@ extension VertexEditCell {
     }
     
     func getContextImage() -> UIImage? {
+        let groupRealm = try! Realm(configuration: getGroupConfiguration(path: thisGroup.realmPath))
         
-        return UIImage(data: thisGroup.imageData as Data)
+        guard let groupContext = groupRealm.objects(Group.self).first else {
+            print("Could not retrieve shared group realm to grab the image")
+            return nil
+        }
+        
+        return UIImage(data: groupContext.imageData as Data)
     }
     
     func addControlSprite(thisControl: DeviceControl, applyTransform: Bool = true) -> UIView {
@@ -970,7 +996,7 @@ extension VertexEditCell {
     
     func resetVertexDictToDelete() {
         vertexDictToDelete = [:]
-        for control in thisGroup.controls {
+        for control in controls {
             for vertex in control.vertexList {
                 vertexDictToDelete[vertex.vertexID] = false
             }
