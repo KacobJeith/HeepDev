@@ -7,22 +7,29 @@ class UnassignedControlCollection: UITableViewCell, UICollectionViewDataSource, 
     var controls: [DeviceControl] = []
     var thisGroup = GroupPerspective()
     
-    convenience init(groupID: Int,
-                     indexPath: IndexPath) {
+    convenience init(groupID: Int) {
         self.init()
         
+        setControlsAndGroup(groupID: groupID)
+        setupCollectionView()
+        
+    }
+    
+    func setControlsAndGroup(groupID: Int) {
         let realm = try! Realm(configuration: configUser)
         
         self.controls = realm.objects(DeviceControl.self).filter("groupID = 0").toArray()
         
-        if let group = realm.object(ofType: GroupPerspective.self, forPrimaryKey: groupID) {
-            thisGroup = group
-        } else {
+        guard let group = realm.object(ofType: GroupPerspective.self, forPrimaryKey: groupID) else {
             print("Failed to find perspective for unassigned")
+            return
         }
+    
+        self.thisGroup = group
         
-        
-        
+    }
+    
+    func setupCollectionView() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = UICollectionViewScrollDirection.horizontal
         layout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10)
@@ -39,9 +46,6 @@ class UnassignedControlCollection: UITableViewCell, UICollectionViewDataSource, 
         collectionView.contentOffset = CGPoint(x: thisGroup.unassignedOffsetX, y: 0)
         
         self.addSubview(collectionView)
-        
-        
-        
     }
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
