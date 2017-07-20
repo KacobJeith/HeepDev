@@ -15,12 +15,10 @@ class DeviceTableViewController: UITableViewController {
     var notificationToken: NotificationToken!
     let devices: Results<Device>
     var controlTags = [IndexPath]()
-    var thisBSSID = ""
     let realm = try! Realm(configuration: configUser)
     
     init(place: Place) {
-        devices = realm.objects(Device.self).filter("associatedPlace = %s", place.bssid)
-        thisBSSID = place.bssid
+        devices = realm.objects(Device.self)
         super.init(style: UITableViewStyle.plain)
     }
     
@@ -37,9 +35,6 @@ class DeviceTableViewController: UITableViewController {
         self.navigationController?.isToolbarHidden = false
         
         
-        let flush = UIBarButtonItem(barButtonSystemItem: .trash,
-                                    target: self,
-                                    action: #selector(flushDevices))
         
         let search = UIBarButtonItem(title: "Search For Devices",
                                      style: .plain,
@@ -51,7 +46,7 @@ class DeviceTableViewController: UITableViewController {
                                      action: nil)
         
         
-        self.toolbarItems = [flush, spacer, search, spacer]
+        self.toolbarItems = [spacer, search, spacer]
         
         
     }
@@ -210,31 +205,15 @@ class DeviceTableViewController: UITableViewController {
         HeepConnections().SearchForHeepDeviecs()
         
     }
-    
-    func flushDevices() {
-        let realm = try! Realm(configuration: configUser)
-        let flushdevices = realm.objects(Device.self).filter("associatedPlace = %s", thisBSSID)
-        
-        
-        try! realm.write {
-            for device in flushdevices {
-                for control in device.controlList {
-                    
-                    realm.delete(control)
-                }
-                
-                realm.delete(device)
-            }
-        }
-    }
+
     
     func initRealmNotifications() {
-        let watchPlace = realm.object(ofType: Place.self, forPrimaryKey: thisBSSID)!
+        let watchDevices = realm.objects(Device.self)
         
-        notificationToken = watchPlace.addNotificationBlock { changes in
+        notificationToken = watchDevices.addNotificationBlock { changes in
             
             switch changes {
-            case .change:
+            case .update:
                 
                 self.tableView.reloadData()
                 
