@@ -148,12 +148,16 @@ extension EditRoomView: UIImagePickerControllerDelegate, UINavigationControllerD
     func saveImageToGroup(image: UIImage) {
         print("Saving Image")
         let imageData = UIImageJPEGRepresentation(image, 0.5)
+        let groupRealm = try! Realm(configuration: getGroupConfiguration(path: thisGroup.realmPath))
         
-        
-        try! realm.write {
-            thisGroup.imageData = imageData! as NSData
+        guard let groupContext = groupRealm.objects(Group.self).first else {
+            print("Could not retrieve shared group realm to save the image")
+            return
         }
-        print(thisGroup.name)
+            
+        try! groupRealm.write {
+            groupContext.imageData = imageData! as NSData
+        }
             
     }
     
