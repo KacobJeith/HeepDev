@@ -39,7 +39,7 @@ func createControlPuck(thisControl: DeviceControl, cellSize: CGRect) -> UIView {
 }
 
 
-func getModeColor(thisGroup: Group, highlight: Bool = false) -> UIColor {
+func getModeColor(thisGroup: GroupPerspective, highlight: Bool = false) -> UIColor {
     
     
     if thisGroup.selectedControl == 0 {
@@ -105,7 +105,7 @@ func fitAndCenterImageInView(frame: CGRect, image: UIImage) -> UIImageView {
     return returnView
 }
 
-func getModeText(thisGroup: Group) -> String {
+func getModeText(thisGroup: GroupPerspective) -> String {
     
     if thisGroup.selectedControl == 0 {
         
@@ -171,17 +171,6 @@ func insetTextView(frame: CGRect, placeholderText: String, lastAttempt: String? 
     
     insetView.addSubview(emailTextField)
     return insetView
-}
-
-func updatePlace() {
-    print("Updating place")
-    print("CURRENT USER \(configUser)")
-    let realm = try! Realm(configuration: configUser)
-    let firstPlace = realm.objects(Place.self).first
-    
-    try! realm.write {
-        firstPlace?.update = !(firstPlace?.update)!
-    }
 }
 
 func horizontalLine(yPosition: CGFloat) -> UIView {
