@@ -6,8 +6,6 @@ class UnassignedControlCollection: UITableViewCell, UICollectionViewDataSource, 
     var collectionView: UICollectionView!
     var controls: [DeviceControl] = []
     var thisGroup = GroupPerspective()
-    var myIndexPath = IndexPath()
-    
     
     convenience init(groupID: Int,
                      indexPath: IndexPath) {
@@ -15,7 +13,6 @@ class UnassignedControlCollection: UITableViewCell, UICollectionViewDataSource, 
         
         let realm = try! Realm(configuration: configUser)
         
-        self.myIndexPath = indexPath
         self.controls = realm.objects(DeviceControl.self).filter("groupID = 0").toArray()
         
         if let group = realm.object(ofType: GroupPerspective.self, forPrimaryKey: groupID) {
@@ -24,7 +21,6 @@ class UnassignedControlCollection: UITableViewCell, UICollectionViewDataSource, 
             print("Failed to find perspective for unassigned")
         }
         
-        self.myIndexPath = indexPath
         
         
         let layout = UICollectionViewFlowLayout()
