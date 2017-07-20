@@ -12,7 +12,7 @@ class GroupControlEdit: UITableViewCell, UICollectionViewDataSource, UICollectio
         
         let realm = try! Realm(configuration: configUser)
         
-        self.controls = realm.objects(DeviceControl.self).filter(NSPredicate(format: "groupID = '\(groupID)'")).toArray()
+        self.controls = realm.objects(DeviceControl.self).filter("groupID = %@", groupID).toArray()
         
         if let perspective = realm.object(ofType: GroupPerspective.self, forPrimaryKey: groupID) {
             self.thisGroup = perspective

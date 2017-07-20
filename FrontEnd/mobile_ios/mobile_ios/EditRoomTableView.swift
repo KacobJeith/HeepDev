@@ -245,9 +245,8 @@ extension EditRoomView {
     
     
     func initRealmNotification() {
-        let query = NSCompoundPredicate(type: .and, subpredicates: [NSPredicate(format: "groupID = \(thisGroup.groupID)")])
-
-        let watchControls = realm.objects(DeviceControl.self).filter(query)
+        
+        let watchControls = realm.objects(DeviceControl.self).filter("groupID = %@", thisGroup.groupID)
 
         let notificationTokenControls = watchControls.addNotificationBlock {  [weak self] (changes: RealmCollectionChange) in
             
@@ -281,7 +280,25 @@ extension EditRoomView {
             }
         }
         
-        let watchGroup = realm.object(ofType: Group.self, forPrimaryKey: thisGroup.groupID)!
+        let watchGroupPerspective = realm.object(ofType: GroupPerspective.self, forPrimaryKey: thisGroup.groupID)!
+        
+        let notificationTokenGroupPerspective = watchGroupPerspective.addNotificationBlock { changes in
+            /* results available asynchronously here */
+            
+            switch changes {
+            case .change:
+                
+                self.tableView.reloadData()
+                break
+            case .error(let error):
+                fatalError("\(error)")
+                break
+            default: break
+            }
+        }
+        
+        let realmGroup = try! Realm(configuration: getGroupConfiguration(path: thisGroup.realmPath))
+        let watchGroup = realmGroup.object(ofType: Group.self, forPrimaryKey: thisGroup.groupID)!
         
         let notificationTokenGroup = watchGroup.addNotificationBlock { changes in
             /* results available asynchronously here */
@@ -298,8 +315,9 @@ extension EditRoomView {
             }
         }
         
-        notificationTokenList.append(notificationTokenControls)
         notificationTokenList.append(notificationTokenGroup)
+        notificationTokenList.append(notificationTokenGroupPerspective)
+        notificationTokenList.append(notificationTokenControls)
         notificationTokenList.append(notificationTokenVertices)
         
     }

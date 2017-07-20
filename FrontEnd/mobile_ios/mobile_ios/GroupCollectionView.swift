@@ -217,11 +217,16 @@ extension GroupCollectionView {
     
     func openGroupView(gesture: UITapGestureRecognizer) {
         print("Open edit Group View")
-        print(groups[(gesture.view?.tag)!].name)
         
-//        let editRoomView = EditRoomView(groupID: groups[(recognizer.view?.tag)!].id)
-//        
-//        navigationController?.pushViewController(editRoomView, animated: true)
+        guard let index = gesture.view?.tag else {
+            print("Could not retrieve group")
+            return
+        }
+        
+        
+        let editRoomView = EditRoomView(groupID: groups[index].groupID, groupName: groups[index].name)
+        
+        navigationController?.pushViewController(editRoomView, animated: true)
     }
     
     func openDeviceTable() {
