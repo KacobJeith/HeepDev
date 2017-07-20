@@ -19,7 +19,6 @@ class EditRoomView: UITableViewController {
     
     init(groupID: Int, groupName: String) {
         
-        self.title = groupName
         
         thisGroup = realm.object(ofType: GroupPerspective.self, forPrimaryKey: groupID)!
         print(thisGroup)
