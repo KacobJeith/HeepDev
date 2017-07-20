@@ -28,10 +28,8 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     
     var vertexDictToDelete = [String : Bool]()
     
-    convenience init(bssid: String,
-                     cellFrame: CGRect,
-                     thisGroup: Group,
-                     indexPath: IndexPath) {
+    convenience init(cellFrame: CGRect,
+                     groupID: Int) {
         self.init()
         
         let realm = try! Realm(configuration: configUser)

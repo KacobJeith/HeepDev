@@ -122,7 +122,7 @@ extension UserSearch: UICollectionViewDataSource, UICollectionViewDelegate {
     
     
     func selectUser(gesture: UITapGestureRecognizer) {
-        print("SELECTED \(gesture.view?.tag)")
+        print("SELECTED \(String(describing: gesture.view?.tag))")
         
         let alert = UIAlertController(title: "Select User?",
                                       message: "Are you sure you want to grant access to this user?",

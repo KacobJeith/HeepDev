@@ -9,9 +9,7 @@ class GroupControlEdit: UITableViewCell, UICollectionViewDataSource, UICollectio
     var thisGroup = Group()
     var myIndexPath = IndexPath()
     
-    convenience init(bssid: String,
-                     thisGroup: Group,
-                     indexPath: IndexPath) {
+    convenience init(groupID: Int) {
         self.init()
         
         let realm = try! Realm(configuration: configUser)
