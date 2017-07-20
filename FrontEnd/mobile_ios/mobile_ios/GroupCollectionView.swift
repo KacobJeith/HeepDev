@@ -29,7 +29,6 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         self.title = placeName
         
         self.initRealmNotifications()
@@ -39,34 +38,41 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
     }
     
     func initRealmNotifications() {
+        groups = []
+        
         let realm = try! Realm(configuration: configUser)
         let groupsQuery = NSPredicate(format: "placeID = '\(placeID)'")
         
-        let groups = realm.objects(GroupPerspective.self).filter(groupsQuery).toArray()
+        let groupPerspectives = realm.objects(GroupPerspective.self).filter(groupsQuery).toArray()
         
-        for group in groups {
-            initGroupNotification(group: group)
+        for perspective in groupPerspectives {
+            
+            initGroupNotification(perspective: perspective)
         }
         
     }
     
-    func initGroupNotification(group: GroupPerspective) {
-        let realm = try! Realm(configuration: getGroupConfiguration(path: group.realmPath))
+    func initGroupNotification(perspective: GroupPerspective) {
+        let realm = try! Realm(configuration: getGroupConfiguration(path: perspective.realmPath))
         
-        guard let groupRealm = realm.objects(Group.self).first else {
+        guard let group = realm.objects(Group.self).first else {
             print("Did not find a Group Realm for this Group Perspective")
             return
         }
         
-        let notificationToken = groupRealm.addNotificationBlock { changes in
+        groups.append(group)
+        
+        let notificationToken = group.addNotificationBlock { changes in
 
                 switch changes {
                 case .change:
                     
                     self.reloadView()
+                    
                     break
                     
                 case .error(let error):
+                    
                     fatalError("\(error)")
                     break
                     
@@ -208,9 +214,9 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
 extension GroupCollectionView {
     
     
-    func openGroupView(recognizer: UITapGestureRecognizer) {
+    func openGroupView(gesture: UITapGestureRecognizer) {
         print("Open edit Group View")
-        print(groups[(recognizer.view?.tag)!].name)
+        print(groups[(gesture.view?.tag)!].name)
         
 //        let editRoomView = EditRoomView(groupID: groups[(recognizer.view?.tag)!].id)
 //        

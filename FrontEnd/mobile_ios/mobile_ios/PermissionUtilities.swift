@@ -108,7 +108,7 @@ func parseDeviceIDFromRealmPath(deviceID: Int, realmPath: String?) -> Bool {
 
 func getPlaceConfiguration(path: String) -> Realm.Configuration {
     return Realm.Configuration(syncConfiguration: SyncConfiguration(user: SyncUser.current!, realmURL: URL(string: path)!),
-                               objectTypes: [Place.self])
+                               objectTypes: [Place.self, PHY.self])
     
 }
 

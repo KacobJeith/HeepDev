@@ -5,24 +5,25 @@ class UnassignedControlCollection: UITableViewCell, UICollectionViewDataSource, 
     
     var collectionView: UICollectionView!
     var controls: [DeviceControl] = []
-    var thisBSSID = ""
-    var thisGroup = Group()
+    var thisGroup = GroupPerspective()
     var myIndexPath = IndexPath()
     
     
-    convenience init(bssid: String,
-                     thisGroup: Group,
+    convenience init(groupID: Int,
                      indexPath: IndexPath) {
         self.init()
         
         let realm = try! Realm(configuration: configUser)
         
-        
-        self.thisBSSID = bssid
         self.myIndexPath = indexPath
-        let results = realm.objects(DeviceControl.self).filter("place = %@ AND groupsAssigned = 0", thisBSSID)
-        self.controls = Array(results)
-        self.thisGroup = thisGroup
+        self.controls = realm.objects(DeviceControl.self).filter("groupID = 0").toArray()
+        
+        if let group = realm.object(ofType: GroupPerspective.self, forPrimaryKey: groupID) {
+            thisGroup = group
+        } else {
+            print("Failed to find perspective for unassigned")
+        }
+        
         self.myIndexPath = indexPath
         
         
@@ -97,15 +98,12 @@ extension UnassignedControlCollection {
     
     func selectControl(sender: UIButton) {
         let realm = try! Realm(configuration: configUser)
-        print(controls[sender.tag].uniqueID)
+        
         print(realm.object(ofType: DeviceControl.self, forPrimaryKey: controls[sender.tag].uniqueID)!)
 
-        let addToGroup = realm.object(ofType: Group.self, forPrimaryKey: thisGroup.id)!
-        
         try! realm.write {
-            controls[sender.tag].groupsAssigned = thisGroup.id
-            addToGroup.controls.append(controls[sender.tag])
-            addToGroup.selectedControl = controls[sender.tag].uniqueID
+            controls[sender.tag].groupID = thisGroup.groupID
+            thisGroup.selectedControl = controls[sender.tag].uniqueID
             thisGroup.unassignedOffsetX = collectionView.contentOffset.x
         }
         
