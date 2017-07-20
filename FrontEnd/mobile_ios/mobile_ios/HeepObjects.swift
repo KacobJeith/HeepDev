@@ -94,6 +94,7 @@ class Group: Object {
 class GroupPerspective: Object {
     
     dynamic var groupID: Int = 0
+    dynamic var placeID: Int = 0 // Sync with global group realm as often as possible. This is just for easy querying
     dynamic var realmPath: String = ""
     dynamic var selectedControl: Int = 0
     dynamic var unassignedOffsetX: CGFloat = 0

@@ -41,9 +41,8 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
         groups = []
         
         let realm = try! Realm(configuration: configUser)
-        let groupsQuery = NSPredicate(format: "placeID = '\(placeID)'")
         
-        let groupPerspectives = realm.objects(GroupPerspective.self).filter(groupsQuery).toArray()
+        let groupPerspectives = realm.objects(GroupPerspective.self).filter("placeID = %@", placeID).toArray()
         
         for perspective in groupPerspectives {
             
@@ -61,6 +60,8 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
         }
         
         groups.append(group)
+        
+        print(groups)
         
         let notificationToken = group.addNotificationBlock { changes in
 
@@ -231,13 +232,8 @@ extension GroupCollectionView {
     }
     
     func addGroupFromButton() {
-        //print("this shouldn't be necessary")
-        addNewGroupToThisPlace()
-    }
-    
-    func addNewGroupToThisPlace(name: String = "") {
-        print("ADD GROUP")
-        
+        createGroupRealm(placeID: placeID)
+        self.reloadView()
     }
     
     func reloadView() {

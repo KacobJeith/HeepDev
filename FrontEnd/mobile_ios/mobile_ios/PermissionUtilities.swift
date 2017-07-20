@@ -58,6 +58,32 @@ func createPlaceRealm() -> Place {
     return newPlace
 }
 
+func createGroupRealm(placeID: Int) {
+    let groupID = randomNumber(inRange: 0...4000000000)
+    let urlString = digitalOceanRealm + "/~/" + String(groupID)
+    
+    let realmGroup = try! Realm(configuration: getGroupConfiguration(path: urlString))
+    let realmUser = try! Realm(configuration: configUser)
+    
+    let newGroup = Group()
+    newGroup.groupID = groupID
+    newGroup.placeID = placeID
+    
+    let newGroupPerspective = GroupPerspective()
+    newGroupPerspective.groupID = groupID
+    newGroupPerspective.placeID = placeID
+    newGroupPerspective.realmPath = urlString
+    
+    try! realmGroup.write {
+        realmGroup.add(newGroup, update: true)
+    }
+    
+    try! realmUser.write {
+        realmUser.add(newGroupPerspective, update: true)
+    }
+    
+}
+
 
 func grantPermissionToOtherUser(deviceID: Int, userID: Int) {
     let realmPublic = try! Realm(configuration: configPublicSync)
