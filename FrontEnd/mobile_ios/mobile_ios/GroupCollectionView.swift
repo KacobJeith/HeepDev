@@ -16,6 +16,7 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
     
     var placeName: String = "placeholder"
     var placeID: Int = 0
+    var groups = [Group]()
     
     private let reuseIdentifier = "Cell"
     
@@ -82,10 +83,6 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
                                                             target: self,
                                                             action: #selector(addGroupFromButton))
         
-        let flush = UIBarButtonItem(barButtonSystemItem: .trash,
-                                    target: self,
-                                    action: #selector(flushGroup))
-        
         let search = UIBarButtonItem(title: "Search For Devices",
                                      style: .plain,
                                      target: self,
@@ -99,7 +96,7 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
                                    target: self,
                                    action: #selector(openDeviceTable))
         
-        self.toolbarItems = [flush, spacer, search, spacer, info]
+        self.toolbarItems = [spacer, search, spacer, info]
     }
     
     func setupCollectionView() {
@@ -120,18 +117,23 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
     }
     
     deinit{
-        notificationToken?.stop()
+        for token in notificationTokenList {
+            token.stop()
+        }
     }
     
     
     override func viewWillDisappear(_ animated: Bool) {
         
-        notificationToken?.stop()
+        for token in notificationTokenList {
+            token.stop()
+        }
+        
         self.title = ""
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.title = thisPlace.name
+        self.title = placeName
     }
     
 
@@ -145,7 +147,7 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
 
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return thisPlace.groups.count
+        return groups.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -154,7 +156,7 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
         cell.backgroundColor = getRandomColor()
         
         let title = UILabel()
-        title.text = " " + thisPlace.groups[indexPath.row].name.uppercased() + " "
+        title.text = " " + groups[indexPath.row].name.uppercased() + " "
         title.numberOfLines = 0
         title.sizeToFit()
         title.textColor = .white
@@ -174,11 +176,12 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
         tap.numberOfTapsRequired = 1
         title.addGestureRecognizer(tap)
         
-        let thisImageData = thisPlace.groups[indexPath.row].imageData
+        let thisImageData = groups[indexPath.row].imageData
         
         if (thisImageData == NSData()) {
             
             title.backgroundColor = getRandomColor()
+            
         } else {
             title.backgroundColor = .clear
             let image = UIImage(data: thisImageData as Data)
@@ -207,18 +210,18 @@ extension GroupCollectionView {
     
     func openGroupView(recognizer: UITapGestureRecognizer) {
         print("Open edit Group View")
-        print(thisPlace.groups[(recognizer.view?.tag)!].name)
+        print(groups[(recognizer.view?.tag)!].name)
         
-        let editRoomView = EditRoomView(bssid: thisPlace.bssid,
-                                        groupID: thisPlace.groups[(recognizer.view?.tag)!].id)
-        navigationController?.pushViewController(editRoomView, animated: true)
+//        let editRoomView = EditRoomView(groupID: groups[(recognizer.view?.tag)!].id)
+//        
+//        navigationController?.pushViewController(editRoomView, animated: true)
     }
     
     func openDeviceTable() {
         print("Open Device Table View")
         
-        let seeAllDevicesInPlace = DeviceTableViewController(place: thisPlace)
-        navigationController?.pushViewController(seeAllDevicesInPlace, animated: true)
+//        let seeAllDevicesInPlace = DeviceTableViewController(place: thisPlace)
+//        navigationController?.pushViewController(seeAllDevicesInPlace, animated: true)
     }
     
     func addGroupFromButton() {
@@ -227,68 +230,8 @@ extension GroupCollectionView {
     }
     
     func addNewGroupToThisPlace(name: String = "") {
-        let realm = try! Realm(configuration: configUser)
-        let updatedThisPlace = realm.object(ofType: Place.self, forPrimaryKey: thisPlace.bssid)!
-        let allGroups = realm.objects(Group.self)
+        print("ADD GROUP")
         
-        let newGroup = Group()
-        newGroup.place = thisPlace.bssid
-        
-        if name == "" {
-            newGroup.name = "New Room " + String(updatedThisPlace.groups.count)
-        } else {
-            newGroup.name = name
-        }
-        
-        if allGroups.count > 0 {
-            
-            newGroup.id = allGroups.max(ofProperty: "id")! + 1
-            
-        } else {
-            
-            newGroup.id = 0
-        }
-        
-        try! realm.write {
-            
-            realm.add(newGroup)
-            thisPlace.groups.append(newGroup)
-        }
-        
-        reloadView()
-    }
-    
-    func flushGroup() {
-        let realm = try! Realm(configuration: configUser)
-        notificationToken?.stop()
-        
-        try! realm.write {
-            realm.delete(thisPlace.groups)
-        }
-        
-        addNewGroupToThisPlace(name: "My First Room")
-        
-        let assignedControls = realm.objects(DeviceControl.self).filter("place = %@ AND groupsAssigned = 1", thisPlace.bssid)
-
-        try! realm.write {
-            assignedControls.setValue(0, forKey: "groupsAssigned")
-        }
-        
-        let devicesInPlace = realm.objects(Device.self).filter("associatedPlace = %@", thisPlace.bssid)
-        
-        try! realm.write {
-            for device in devicesInPlace {
-                for control in device.controlList {
-                    
-                    realm.delete(control)
-                }
-                
-                realm.delete(device)
-            }
-        }
-        
-        
-        reloadView()
     }
     
     func reloadView() {
