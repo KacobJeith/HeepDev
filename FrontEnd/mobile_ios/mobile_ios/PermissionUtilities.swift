@@ -29,6 +29,49 @@ func createDeviceRealm(deviceID: Int) {
     print(newDeviceKey)
 }
 
+func createPlaceRealm() -> Place {
+    let placeID = randomNumber(inRange: 0...4000000000)
+    
+    print("CREATING NEW PLACE")
+    
+    let urlString = digitalOceanRealm + "/~/" + String(placeID)
+    let syncConfig = SyncConfiguration(user: SyncUser.current!,
+                                       realmURL: URL(string: urlString)!)
+    
+    let configPlace = Realm.Configuration(syncConfiguration: syncConfig,
+                                           objectTypes: [Place.self, PHY.self])
+    
+    let realm = try! Realm(configuration: configPlace)
+    
+    let newPlace = Place()
+    newPlace.name = "New Place"
+    newPlace.placeID = placeID
+    
+    let currentWifi = currentWifiInfo()
+    
+    if currentWifi.ssid != "none" {
+        let newWifi = PHY()
+        newWifi.bssid = currentWifi.bssid
+        newWifi.ssid = currentWifi.ssid
+        
+        try! realm.write {
+            realm.add(newWifi, update: true)
+        }
+        
+        newPlace.PHYList.append(newWifi)
+        
+    }
+    
+    
+    try! realm.write {
+        realm.add(newPlace, update: true)
+    }
+    
+    print(newPlace)
+    
+    return newPlace
+}
+
 
 func grantPermissionToOtherUser(deviceID: Int, userID: Int) {
     let realmPublic = try! Realm(configuration: configPublicSync)
@@ -112,10 +155,21 @@ func getPlaceConfiguration(path: String) -> Realm.Configuration {
     
 }
 
+
 func getGroupConfiguration(path: String) -> Realm.Configuration {
     return  Realm.Configuration(syncConfiguration: SyncConfiguration(user: SyncUser.current!, realmURL: URL(string: path)!),
                                 objectTypes: [Group.self])
     
+}
+
+func getUserConfiguration(user: SyncUser, path: String) -> Realm.Configuration {
+    return  Realm.Configuration(syncConfiguration: SyncConfiguration(user: user, realmURL: URL(string: path)!),
+                                objectTypes: [User.self,
+                                              PlacePerspective.self,
+                                              GroupPerspective.self,
+                                              Device.self,
+                                              DeviceControl.self,
+                                              Vertex.self])
 }
 
 

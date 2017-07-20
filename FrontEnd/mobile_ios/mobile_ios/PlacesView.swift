@@ -21,10 +21,17 @@ class PlacesView: UIViewController {
         super.viewDidLoad()
         
         self.initRealmNotification()
+        self.setupNavBar()
         
+        addPlaces()
+    }
+    
+    func setupNavBar() {
         self.title = "My Heep Zones"
         self.view.backgroundColor = .white
         self.navigationController?.isToolbarHidden = false
+        
+        let addPlace = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addPlaceToRealm))
         
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         
@@ -32,12 +39,10 @@ class PlacesView: UIViewController {
                                      style: .plain,
                                      target: self,
                                      action: #selector(searchForHeepDevices))
-                
+        
         self.navigationItem.rightBarButtonItem = getActiveUserIcon()
         
-        self.toolbarItems = [spacer, search, spacer]
-
-        addPlaces()
+        self.toolbarItems = [addPlace, spacer, search, spacer]
     }
     
     
@@ -93,32 +98,8 @@ class PlacesView: UIViewController {
     
     
     func addPlaceToRealm() {
-//        let realm = try! Realm(configuration: configUser)
-//        
-//        let currentWifi = currentWifiInfo()
-//        let allGroups = realm.objects(Group.self)
-//        
-//        let firstGroupInPlace = Group()
-//        firstGroupInPlace.place = currentWifi.bssid
-//        firstGroupInPlace.name = "My First Room"
-//        if allGroups.count > 0 {
-//            
-//            firstGroupInPlace.id = allGroups.max(ofProperty: "id")! + 1
-//        } else {
-//            firstGroupInPlace.id = 1
-//        }
-//        
-//        let newPlace = Place()
-//        newPlace.ssid = currentWifi.ssid
-//        newPlace.bssid = currentWifi.bssid
-//        newPlace.name = currentWifi.ssid
-//        
-//        try! realm.write {
-//            
-//            realm.add(newPlace)
-//            realm.add(firstGroupInPlace)
-//            newPlace.groups.append(firstGroupInPlace)
-//        }
+        let newPlace = createPlaceRealm()
+        
     }
  
     func drawPlace(place: Place, perspective: PlacePerspective) {

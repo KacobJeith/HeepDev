@@ -26,8 +26,9 @@ func initializeApp() {
         configUser = configGuest
         
     } else {
-        configUser = Realm.Configuration(syncConfiguration: SyncConfiguration(user: SyncUser.current!,
-                                                                              realmURL: URL(string: digitalOceamUserRealm)!))
+        
+        configUser =  getUserConfiguration(user: SyncUser.current!, path: digitalOceamUserRealm)
+        
     }
     
 }
@@ -76,8 +77,8 @@ func registerNewSyncRealm(username: String, password: String, callback: @escapin
                    onCompletion: { user, error in
                     
                     if let userUnwrapped = user {
-                        configUser =  Realm.Configuration(syncConfiguration: SyncConfiguration(user: userUnwrapped,
-                                                                                               realmURL: userURL))
+                        configUser =  getUserConfiguration(user: userUnwrapped, path: digitalOceamUserRealm)
+                        
                         addNewUserToUserRealm(newUser: newUser)
                         
                         if let identity = userUnwrapped.identity {
@@ -114,9 +115,7 @@ func loginToUserRealmSync(username: String, password: String, callback: @escapin
                         callback()
                     } else {
                         
-                        configUser =  Realm.Configuration(syncConfiguration: SyncConfiguration(user: user!,
-                                                                                               realmURL: userURL))
-                        
+                        configUser =  getUserConfiguration(user: user!, path: digitalOceamUserRealm)
                         
                         openRealmAsync(config: configUser)
                         openRealmAsync(config: configPublicSync)
