@@ -32,39 +32,25 @@ func createDeviceRealm(deviceID: Int) {
 func createPlaceRealm() -> Place {
     let placeID = randomNumber(inRange: 0...4000000000)
     
-    print("CREATING NEW PLACE")
-    
     let urlString = digitalOceanRealm + "/~/" + String(placeID)
-    let syncConfig = SyncConfiguration(user: SyncUser.current!,
-                                       realmURL: URL(string: urlString)!)
     
-    let configPlace = Realm.Configuration(syncConfiguration: syncConfig,
-                                           objectTypes: [Place.self, PHY.self])
-    
-    let realm = try! Realm(configuration: configPlace)
+    let realmPlace = try! Realm(configuration: getPlaceConfiguration(path: urlString))
+    let realmUser = try! Realm(configuration: configUser)
     
     let newPlace = Place()
     newPlace.name = "New Place"
     newPlace.placeID = placeID
     
-    let currentWifi = currentWifiInfo()
+    let newPlacePerspective = PlacePerspective()
+    newPlacePerspective.placeID = placeID
+    newPlacePerspective.realmPath = urlString
     
-    if currentWifi.ssid != "none" {
-        let newWifi = PHY()
-        newWifi.bssid = currentWifi.bssid
-        newWifi.ssid = currentWifi.ssid
-        
-        try! realm.write {
-            realm.add(newWifi, update: true)
-        }
-        
-        newPlace.PHYList.append(newWifi)
-        
+    try! realmPlace.write {
+        realmPlace.add(newPlace, update: true)
     }
     
-    
-    try! realm.write {
-        realm.add(newPlace, update: true)
+    try! realmUser.write {
+        realmUser.add(newPlacePerspective, update: true)
     }
     
     print(newPlace)
