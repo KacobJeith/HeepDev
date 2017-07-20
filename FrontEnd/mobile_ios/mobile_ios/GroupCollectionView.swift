@@ -11,38 +11,98 @@ import RealmSwift
 
 
 class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
-    var notificationToken: NotificationToken? = nil
+    var notificationTokenList = [NotificationToken]()
     var collectionView: UICollectionView!
+    
     var placeName: String = "placeholder"
+    var placeID: Int = 0
     
     private let reuseIdentifier = "Cell"
     
     convenience init(placeID: Int, placeName: String) {
         self.init()
         self.placeName = placeName
+        self.placeID = placeID
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let realm = try! Realm(configuration: configUser)
-        let watchPlace = realm.object(ofType: Place.self, forPrimaryKey: thisPlace.bssid)!
         
-        notificationToken = watchPlace.addNotificationBlock { changes in
-            
-            switch changes {
-            case .change:
-                
-                self.reloadView()
-                break
-            case .error(let error):
-                fatalError("\(error)")
-                break
-            default: break
-            }
+        self.title = placeName
+        
+        self.initRealmNotifications()
+        self.setupCollectionView()
+        self.setupNavBar()
+        
+    }
+    
+    func initRealmNotifications() {
+        let realm = try! Realm(configuration: configUser)
+        let groupsQuery = NSPredicate(format: "placeID = '\(placeID)'")
+        
+        let groups = realm.objects(GroupPerspective.self).filter(groupsQuery).toArray()
+        
+        for group in groups {
+            initGroupNotification(group: group)
         }
         
-        self.title = thisPlace.name
+    }
+    
+    func initGroupNotification(group: GroupPerspective) {
+        let realm = try! Realm(configuration: getGroupConfiguration(path: group.realmPath))
+        
+        guard let groupRealm = realm.objects(Group.self).first else {
+            print("Did not find a Group Realm for this Group Perspective")
+            return
+        }
+        
+        let notificationToken = groupRealm.addNotificationBlock { changes in
+
+                switch changes {
+                case .change:
+                    
+                    self.reloadView()
+                    break
+                    
+                case .error(let error):
+                    fatalError("\(error)")
+                    break
+                    
+                default: break
+                }
+        }
+        
+        notificationTokenList.append(notificationToken)
+        
+    }
+    
+    func setupNavBar() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
+                                                            target: self,
+                                                            action: #selector(addGroupFromButton))
+        
+        let flush = UIBarButtonItem(barButtonSystemItem: .trash,
+                                    target: self,
+                                    action: #selector(flushGroup))
+        
+        let search = UIBarButtonItem(title: "Search For Devices",
+                                     style: .plain,
+                                     target: self,
+                                     action: #selector(searchForHeepDevices))
+        
+        let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace,
+                                     target: nil,
+                                     action: nil)
+        
+        let info = UIBarButtonItem(barButtonSystemItem: .organize,
+                                   target: self,
+                                   action: #selector(openDeviceTable))
+        
+        self.toolbarItems = [flush, spacer, search, spacer, info]
+    }
+    
+    func setupCollectionView() {
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         layout.minimumInteritemSpacing = 10
@@ -57,31 +117,6 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
         self.collectionView?.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         self.collectionView?.backgroundColor = UIColor.white
         self.view.addSubview(collectionView!)
-        
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
-                                                            target: self,
-                                                            action: #selector(addGroupFromButton))
-
-        let flush = UIBarButtonItem(barButtonSystemItem: .trash,
-                                    target: self,
-                                    action: #selector(flushGroup))
-
-        let search = UIBarButtonItem(title: "Search For Devices",
-                                     style: .plain,
-                                     target: self,
-                                     action: #selector(searchForHeepDevices))
- 
-        let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace,
-                                     target: nil,
-                                     action: nil)
-
-        let info = UIBarButtonItem(barButtonSystemItem: .organize,
-                                   target: self,
-                                   action: #selector(openDeviceTable))
-        
-        self.toolbarItems = [flush, spacer, search, spacer, info]
-
-        
     }
     
     deinit{
@@ -90,6 +125,7 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
     
     
     override func viewWillDisappear(_ animated: Bool) {
+        
         notificationToken?.stop()
         self.title = ""
     }
