@@ -29,7 +29,7 @@ func createDeviceRealm(deviceID: Int) {
     print(newDeviceKey)
 }
 
-func createPlaceRealm() -> Place {
+func createPlaceRealm() {
     let placeID = randomNumber(inRange: 0...4000000000)
     
     let urlString = digitalOceanRealm + "/~/place/" + String(placeID)
@@ -53,9 +53,6 @@ func createPlaceRealm() -> Place {
         realmUser.add(newPlacePerspective, update: true)
     }
     
-    print(newPlace)
-    
-    return newPlace
 }
 
 func createGroupRealm(placeID: Int) {

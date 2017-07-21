@@ -110,7 +110,7 @@ class PlacesView: UIViewController {
     
     
     func addPlaceToRealm() {
-        let newPlace = createPlaceRealm()
+        createPlaceRealm()
         
     }
  

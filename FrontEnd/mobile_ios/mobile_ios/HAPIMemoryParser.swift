@@ -214,14 +214,12 @@ class HAPIMemoryParser {
     }
     
     func AddControlToDevice(dump: [UInt8], index: Int, deviceID: Int, packetSize: Int ) {
-        //print("Adding Control to device: \(deviceID)")
         
         let controlName = GetStringFromByteArrayIndices(dump: dump, indexStart: index + 6, indexFinish: index + packetSize)
         
-        let currentWifi = currentWifiInfo()
         let uniqueID = generateUniqueControlID(deviceID: deviceID, controlID: dump[index])
         let existingControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: uniqueID)
-        //print("\(controlName): \(Int(dump[index + 5]))")
+        
         if existingControl != nil {
             flushControlVertices(controlUniqueID: uniqueID)
             
@@ -234,7 +232,6 @@ class HAPIMemoryParser {
                 existingControl?.valueHigh = Int(dump[index + 4])
                 existingControl?.valueCurrent = Int(dump[index + 5])
                 existingControl?.controlName = controlName
-                existingControl?.place = currentWifi.bssid
             }
         } else {
             
@@ -248,7 +245,6 @@ class HAPIMemoryParser {
             newControl.valueHigh = Int(dump[index + 4])
             newControl.valueCurrent = Int(dump[index + 5])
             newControl.controlName = controlName
-            newControl.place = currentWifi.bssid
             
             try! realm.write {
                 
@@ -316,7 +312,6 @@ class HAPIMemoryParser {
             }
         }
         
-        let allVertices = realm.objects(Vertex.self)
         
     }
     
@@ -327,10 +322,6 @@ class HAPIMemoryParser {
             
             realm.delete((thisControl?.vertexList)!)
         }
-        
-        let allVertices = realm.objects(Vertex.self)
-        //print("After flusing \(thisControl?.controlName)")
-        //print(allVertices)
     }
     
     
