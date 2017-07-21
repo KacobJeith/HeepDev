@@ -40,7 +40,19 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     func setupGroupAndControls(groupID: Int) {
         let realm = try! Realm(configuration: configUser)
         
-        self.controls = realm.objects(DeviceControl.self).filter("groupID = %@", groupID).toArray()
+        let matchingContexts = realm.objects(ControlContext.self).filter("groupID = %@", groupID)
+        
+        for context in matchingContexts {
+            
+            if let control = realm.object(ofType: DeviceControl.self, forPrimaryKey: context.controlUniqueID) {
+                
+                self.controls.append(control)
+                
+            } else {
+                print("Failed to load a control that was referenced in a matching context")
+            }
+            
+        }
         
         if let perspective = realm.object(ofType: GroupPerspective.self, forPrimaryKey: groupID) {
             self.thisGroup = perspective

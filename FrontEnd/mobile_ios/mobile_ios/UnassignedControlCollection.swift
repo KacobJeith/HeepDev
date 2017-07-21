@@ -105,15 +105,21 @@ extension UnassignedControlCollection {
             }
         }
         
-        let newControlContext = ControlContext()
-        newControlContext.controlUniqueID = controls[sender.tag].uniqueID
-        newControlContext.groupID = thisGroup.groupID
+        if realm.objects(ControlContext.self).filter("groupID == %@ AND controlUniqueID == %@", controls[sender.tag].uniqueID, thisGroup.groupID).count > 0 {
+            print("This control has already been added to this context.")
+            return
+        } else {
             
-        try! realm.write {
-            realm.add(newControlContext)
+            let newControlContext = ControlContext()
+            newControlContext.controlUniqueID = controls[sender.tag].uniqueID
+            newControlContext.groupID = thisGroup.groupID
             
-            thisGroup.selectedControl = controls[sender.tag].uniqueID
-            thisGroup.unassignedOffsetX = collectionView.contentOffset.x
+            try! realm.write {
+                realm.add(newControlContext)
+                
+                thisGroup.selectedControl = controls[sender.tag].uniqueID
+                thisGroup.unassignedOffsetX = collectionView.contentOffset.x
+            }
         }
         
     }
