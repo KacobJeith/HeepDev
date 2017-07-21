@@ -85,15 +85,27 @@ class PlacesView: UIViewController {
             
             if let place = thisPlaceRealm.objects(Place.self).first {
                 
-                drawPlace(place: place, perspective: perspective)
+                self.drawPlace(place: place, perspective: perspective)
                 
             } else {
+                
+                asyncOpenPlace(perspective: perspective)
                 print("Could not find any places at this realm config")
             }
-            
-            
-        }
         
+        }
+    }
+    
+    func asyncOpenPlace(perspective: PlacePerspective) {
+        openRealmAsync(config: getPlaceConfiguration(path: perspective.realmPath), callback: {
+            let thisPlaceRealm = try! Realm(configuration: getPlaceConfiguration(path: perspective.realmPath))
+            
+            if let place = thisPlaceRealm.objects(Place.self).first {
+                
+                self.drawPlace(place: place, perspective: perspective)
+                
+            }
+        })
     }
     
     

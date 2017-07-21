@@ -46,18 +46,36 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
         
         for perspective in groupPerspectives {
             
-            initGroupNotification(perspective: perspective)
+            let thisGroupRealm = try! Realm(configuration: getGroupConfiguration(path: perspective.realmPath))
+            
+            if let thisGroup = thisGroupRealm.objects(Group.self).first {
+                
+                initGroupNotification(group: thisGroup)
+                
+            } else {
+                
+                asyncOpenGroup(perspective: perspective)
+                print("Could not find any groups at this realm config")
+            }
+            
         }
         
     }
     
-    func initGroupNotification(perspective: GroupPerspective) {
-        let realm = try! Realm(configuration: getGroupConfiguration(path: perspective.realmPath))
-        
-        guard let group = realm.objects(Group.self).first else {
-            print("Did not find a Group Realm for this Group Perspective")
-            return
-        }
+    func asyncOpenGroup(perspective: GroupPerspective) {
+        openRealmAsync(config: getGroupConfiguration(path: perspective.realmPath), callback: {
+            let thisGroupRealm = try! Realm(configuration: getGroupConfiguration(path: perspective.realmPath))
+            
+            if let thisGroup = thisGroupRealm.objects(Group.self).first {
+                
+                self.initGroupNotification(group: thisGroup)
+            }
+            self.reloadView()
+        })
+    }
+
+    
+    func initGroupNotification(group: Group) {
         
         groups.append(group)
         
@@ -82,6 +100,7 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
         }
         
         notificationTokenList.append(notificationToken)
+        
         
     }
     
