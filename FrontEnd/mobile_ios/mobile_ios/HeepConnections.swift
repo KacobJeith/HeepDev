@@ -78,26 +78,24 @@ class HeepConnections {
         ConnectToHeepDevice(ipAddress: thisDeviceIP!, printErrors: false, message: message)
     }
     
-    public func sendAssignAdminToHeepDevice(deviceID: Int) {
+    public func sendAssignAdminToHeepDevice(deviceID: Int, adminID: Int) {
         
-        guard let adminID = SyncUser.current else {
+        let realm = try! Realm(configuration: configUser)
+        
+        guard let thisDevice = realm.object(ofType: Device.self, forPrimaryKey: deviceID) else {
+            print("Could not retrieve this device from realm. Canceling COP")
             return
         }
         
-        print("AdminRealmID: \(adminID)")
+        let thisDeviceIP = thisDevice.ipAddress
         
-        /*
-        let realm = try! Realm(configuration: configUser)
-        let thisDevice = realm.object(ofType: Device.self, forPrimaryKey: deviceID)
-        let thisDeviceIP = thisDevice?.ipAddress
-        
-        let MOP = HAPIMemoryParser().BuildAdminMOP(deviceID: deviceID, adminID: adminID!)
+        let MOP = HAPIMemoryParser().BuildAdminMOP(deviceID: deviceID, adminID: adminID)
         let message = HAPIMemoryParser().BuildStoreMOPCOP(byteArray: MOP)
         
-        print("Sending: \(message) to Heep Device at \(thisDeviceIP!)")
+        print("Sending: \(message) to Heep Device at \(thisDeviceIP)")
         
-        ConnectToHeepDevice(ipAddress: thisDeviceIP!, printErrors: false, message: message)
-        */
+        ConnectToHeepDevice(ipAddress: thisDeviceIP, printErrors: false, message: message)
+        
     }
     
     func ConnectToHeepDevice(ipAddress: String, printErrors: Bool, message: [UInt8]) {

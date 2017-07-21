@@ -303,7 +303,7 @@ class DeviceSummaryViewController: UITableViewController {
     }
     
     func claimDevice() {
-        //HeepConnections().sendAssignAdminToHeepDevice(deviceID: thisDevice.deviceID)
+        
         createDeviceRealm(deviceID: thisDevice.deviceID)
         
         let realm = try! Realm(configuration: configUser)
@@ -313,6 +313,8 @@ class DeviceSummaryViewController: UITableViewController {
             try! realm.write {
                 thisDevice.humanAdmin = myID
             }
+            
+            HeepConnections().sendAssignAdminToHeepDevice(deviceID: thisDevice.deviceID, adminID: myID)
             
         } else {
             
