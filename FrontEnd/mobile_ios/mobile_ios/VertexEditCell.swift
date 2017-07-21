@@ -6,6 +6,7 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     var parentTable = UITableViewController()
     var collectionView: UICollectionView!
     var controls = [DeviceControl]()
+    var controlContexts = [ControlContext]()
     
     var cellView = UICollectionViewCell()
     
@@ -47,6 +48,7 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
             if let control = realm.object(ofType: DeviceControl.self, forPrimaryKey: context.controlUniqueID) {
                 
                 self.controls.append(control)
+                self.controlContexts.append(context)
                 
             } else {
                 print("Failed to load a control that was referenced in a matching context")
