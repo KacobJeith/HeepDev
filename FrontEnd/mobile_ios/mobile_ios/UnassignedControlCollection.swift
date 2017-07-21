@@ -105,10 +105,13 @@ extension UnassignedControlCollection {
             }
         }
         
-        print(realm.object(ofType: DeviceControl.self, forPrimaryKey: controls[sender.tag].uniqueID)!)
-
+        let newControlContext = ControlContext()
+        newControlContext.controlUniqueID = controls[sender.tag].uniqueID
+        newControlContext.groupID = thisGroup.groupID
+            
         try! realm.write {
-            controls[sender.tag].groupID = thisGroup.groupID
+            realm.add(newControlContext)
+            
             thisGroup.selectedControl = controls[sender.tag].uniqueID
             thisGroup.unassignedOffsetX = collectionView.contentOffset.x
         }
