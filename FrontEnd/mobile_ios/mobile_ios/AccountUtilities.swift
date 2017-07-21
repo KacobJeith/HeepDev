@@ -77,6 +77,9 @@ func registerNewSyncRealm(username: String, password: String, callback: @escapin
                    onCompletion: { user, error in
                     
                     if let userUnwrapped = user {
+                        
+                        setNewPublicSyncUser(newUser: userUnwrapped)
+                            
                         configUser =  getUserConfiguration(user: userUnwrapped, path: digitalOceamUserRealm)
                         
                         addNewUserToUserRealm(newUser: newUser)
@@ -206,6 +209,13 @@ func addNewUserToUserRealm(newUser: User) {
                      value: ["heepID": newUser.heepID],
                      update: true)
     }
+    
+}
+
+func setNewPublicSyncUser(newUser: SyncUser) {
+    configPublicSync =  Realm.Configuration(syncConfiguration: SyncConfiguration(user: newUser,
+                                                                                 realmURL: URL(string: dititalOceanPublicRealm)!),
+                                            objectTypes: [User.self])
     
 }
 
