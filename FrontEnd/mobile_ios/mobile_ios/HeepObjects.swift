@@ -122,8 +122,6 @@ class Device: Object {
     override static func primaryKey() -> String? {
         return "deviceID"
     }
-    
-    
 }
 
 // User Realm
@@ -132,7 +130,6 @@ class DeviceControl: Object {
     dynamic var deviceID: Int = 0
     dynamic var controlID: Int = 0
     dynamic var uniqueID: Int = 0
-    dynamic var groupID: Int = 0
     dynamic var controlType: Int = 0
     dynamic var controlDirection: Int = 0
     dynamic var valueLow: Int = 0
@@ -140,16 +137,23 @@ class DeviceControl: Object {
     dynamic var valueCurrent: Int = 0
     dynamic var lastOnValue: Int = 100
     dynamic var controlName: String = "Default"
-    dynamic var place: String = "none"
-    dynamic var editX: CGFloat = 100
-    dynamic var editY: CGFloat = 100
-    dynamic var scale: CGFloat = 1
-    dynamic var rotation: CGFloat = 0
     let vertexList = List<Vertex>()
     
     override static func primaryKey() -> String? {
         return "uniqueID"
     }
+    
+}
+
+class ControlContext: Object {
+    
+    dynamic var deviceID: Int = 0
+    dynamic var controlID: Int = 0
+    dynamic var groupID: Int = 0
+    dynamic var x: CGFloat = 100
+    dynamic var y: CGFloat = 100
+    dynamic var scale: CGFloat = 1
+    dynamic var rotation: CGFloat = 0
     
 }
 
