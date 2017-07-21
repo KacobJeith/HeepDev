@@ -215,18 +215,9 @@ extension EditRoomView {
     }    
     
     func toggleVertexEditState() {
-        print("Toggle Vertex Edit")
-        
-        
+        print("Toggle Lock Icon")
         try! realm.write {
-            if thisGroup.selectedControl <= 1 {
-                
-                thisGroup.selectedControl += 1
-                
-            } else {
-                thisGroup.selectedControl = 0
-                
-            }
+            thisGroup.UILocked = !thisGroup.UILocked
         }
         
     }

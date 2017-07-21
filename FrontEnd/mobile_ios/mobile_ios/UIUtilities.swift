@@ -41,45 +41,31 @@ func createControlPuck(thisControl: DeviceControl, cellSize: CGRect) -> UIView {
 
 func getModeColor(thisGroup: GroupPerspective, highlight: Bool = false) -> UIColor {
     
-    
-    if thisGroup.selectedControl == 0 {
+    //Locked
+    if thisGroup.UILocked == true {
         
-        if highlight {
-            
-            return UIColor.purple
-            
-        } else {
-            
-            return UIColor.purple.withAlphaComponent(0.4)
-        }
-        
-    } else if thisGroup.selectedControl == 1 {
         if highlight {
             
             return UIColor.green
             
         } else {
             
-            return UIColor.green.withAlphaComponent(0.5)
+            return UIColor.green.withAlphaComponent(0.4)
         }
         
-    } else if thisGroup.selectedControl == 2 {
-        if highlight {
-            return UIColor.red
-        } else {
-            return UIColor.blue.withAlphaComponent(0.6)
-        }
-        
-        
-    } else {
+    }
+    //Unlocked
+    else {
         if highlight {
             
-            return UIColor.blue
+            return UIColor.red
+            
         } else {
-            return UIColor.blue.withAlphaComponent(0.3)
+            
+            return UIColor.red.withAlphaComponent(0.5)
         }
+        
     }
-    
 }
 
 
@@ -107,20 +93,14 @@ func fitAndCenterImageInView(frame: CGRect, image: UIImage) -> UIImageView {
 
 func getModeText(thisGroup: GroupPerspective) -> String {
     
-    if thisGroup.selectedControl == 0 {
+    if thisGroup.UILocked == true {
         
-        return " Scrolling "
+        return " Locked "
         
-    } else if thisGroup.selectedControl == 1 {
+    } else  {
         
-        return " Adding "
+        return " Unlocked "
         
-    } else if thisGroup.selectedControl == 2 {
-        
-        return " Deleting "
-    } else {
-        
-        return " Positioning "
     }
 }
 

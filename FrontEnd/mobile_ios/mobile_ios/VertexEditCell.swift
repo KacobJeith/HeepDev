@@ -171,25 +171,7 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     
     func setActiveGestures(cell: UICollectionViewCell) {
         
-        switch self.thisGroup.selectedControl {
-            
-        case 0 : // Just Scrolling
-            
-            self.collectionView.isScrollEnabled = true
-            
-        case 1 :
-            
-            addAddingVertexGestures(cell: cell)
-            
-        case 2 :
-            
-            addDeletingVertexGestures(cell: cell)
-            
-        default :
-            
-            addSelectedControlGestures(cell: cell)
-            
-        }
+        
         
     }
     
@@ -215,7 +197,7 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         cell.addGestureRecognizer(deleteVertexPan)
     }
     
-    func addSelectedControlGestures(cell: UICollectionViewCell) {
+    func addSelectedControlGesturesUnlocked(cell: UICollectionViewCell) {
         
         self.collectionView.isScrollEnabled =  false
         
@@ -225,16 +207,31 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
                                              action: #selector(handlePinch))
         let rotate = UIRotationGestureRecognizer(target: self,
                                                  action: #selector(handleRotation))
-        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
         
         pinch.delegate = self
         rotate.delegate = self
         pan.delegate = self
-        longPress.delegate = self
-        cell.addGestureRecognizer(longPress)
+        
         cell.addGestureRecognizer(pan)
         cell.addGestureRecognizer(pinch)
         cell.addGestureRecognizer(rotate)
+        cell.addSubview(addDetailButton())
+    }
+    
+    func addRangeAndToggleGesture(cell: UICollectionViewCell) {
+        
+        self.collectionView.isScrollEnabled =  false
+       
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        
+        
+        longPress.delegate = self
+        tap.delegate = self
+        
+        cell.addGestureRecognizer(longPress)
+        cell.addGestureRecognizer(tap)
+        
         cell.addSubview(addDetailButton())
     }
     
@@ -631,6 +628,15 @@ extension VertexEditCell {
         gestureRecognizer.rotation = 0
     }
     
+    func handleTap(gestureRecognizer: UITapGestureRecognizer){
+        let realm = try! Realm(configuration: configUser)
+        guard let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl) else {
+            print("Failed to retrieve the control from realm")
+            return
+        }
+        toggleOnOff(controlUniqueID: thisControl.uniqueID)
+    }
+    
     func handleLongPress(gestureRecognizer: UILongPressGestureRecognizer) {
         let realm = try! Realm(configuration: configUser)
         guard let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl) else {
@@ -930,17 +936,28 @@ extension VertexEditCell {
             return
         }
         
-        if thisGroup.selectedControl == tag {
-            
-            toggleOnOff(controlUniqueID: tag)
-            
-        } else {
-            let realm = try! Realm(configuration: configUser)
-            
-            try! realm.write {
-                thisGroup.selectedControl = tag
-            }
+        let realm = try! Realm(configuration: configUser)
+
+        try! realm.write {
+            thisGroup.selectedControl = tag
         }
+        
+        if (thisGroup.UILocked){
+            toggleOnOff(controlUniqueID: thisGroup.selectedControl)
+        }
+        
+//        self.collectionView.isScrollEnabled = false
+//        
+//        if (thisGroup.UILocked){
+//            print("setting locked gestures")
+//            addRangeAndToggleGesture(cell: cell)
+//        }
+//        else{
+//            print("setting UNLOCKED gestures")
+//            addSelectedControlGesturesUnlocked(cell: cell)
+//            addAddingVertexGestures(cell: cell)
+//            addDeletingVertexGestures(cell: cell)
+//        }
         
     }
     
