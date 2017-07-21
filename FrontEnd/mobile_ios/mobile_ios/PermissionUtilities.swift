@@ -203,7 +203,7 @@ func retrieveDeviceUsers(deviceID: Int) {
         
         for permission in changes {
             
-            if parseDeviceIDFromRealmPath(deviceID: deviceID, realmPath: permission.realmUrl) {
+            if parseIDFromRealmPath(id: deviceID, realmPath: permission.realmUrl) {
                 matchingUsers.append(permission.userId)
             }
         }
@@ -221,11 +221,11 @@ func retrieveDeviceUsers(deviceID: Int) {
     
 }
 
-func parseDeviceIDFromRealmPath(deviceID: Int, realmPath: String?) -> Bool {
+func parseIDFromRealmPath(id: Int, realmPath: String?) -> Bool {
     if let openedPath = realmPath {
         var pathComponents =  openedPath.components(separatedBy: "/")
         
-        if pathComponents[5] == String.init(describing: deviceID) {
+        if pathComponents[5] == String.init(describing: id) {
             return true
         } else {
             return false
@@ -234,7 +234,21 @@ func parseDeviceIDFromRealmPath(deviceID: Int, realmPath: String?) -> Bool {
     } else {
         return false
     }
-    
+}
+
+func parseTypeFromRealmPath(type: String, realmPath: String?) -> Bool {
+    if let openedPath = realmPath {
+        var pathComponents =  openedPath.components(separatedBy: "/")
+        
+        if pathComponents[2] == String.init(describing: type) {
+            return true
+        } else {
+            return false
+        }
+        
+    } else {
+        return false
+    }
 }
 
 func getPlaceConfiguration(path: String) -> Realm.Configuration {
@@ -267,6 +281,103 @@ func extractRelativeRealmPath(realmPath: String) -> String {
     return "/" + separatedPath[count-3...count-1].joined(separator: "/")
     
     
+}
+
+func checkForNewRealmPermissions() {
+    var allPlaces = [String]()
+    var allGroups = [String]()
+    
+    SyncUser.current?.retrievePermissions { permissions, error in
+        
+        guard let allRealms = permissions else  {
+            print("No permissions")
+            return
+        }
+        print(allRealms)
+        
+        for permission in allRealms {
+            
+            if parseTypeFromRealmPath(type: "place", realmPath: permission.path) {
+                allPlaces.append(permission.path)
+                
+            } else if parseTypeFromRealmPath(type: "group", realmPath: permission.path) {
+                allGroups.append(permission.path)
+            }
+        }
+        
+        let uniquePlaces = Array(Set(allPlaces))
+        let uniqueGroups = Array(Set(allGroups))
+        
+        findNewPlaces(places: uniquePlaces)
+        findNewGroups(groups: uniqueGroups)
+    }
+}
+
+func findNewPlaces(places: [String]) {
+    
+    let realm = try! Realm(configuration: configUser)
+    
+    for placePath in places {
+        let fullPlacePath = digitalOceanRealm + placePath
+        let realmPlace = try! Realm(configuration: getPlaceConfiguration(path: fullPlacePath))
+        
+        if let placeID = realmPlace.objects(Place.self).first?.placeID {
+            if realm.object(ofType: PlacePerspective.self, forPrimaryKey: placeID) == nil {
+                createNewPlace(placeID: placeID, realmPath: fullPlacePath)
+            }
+        } else {
+            print("COULDNT RETRIEVE PLACEID")
+        }
+    }
+}
+
+func findNewGroups(groups: [String]) {
+    
+    let realm = try! Realm(configuration: configUser)
+    
+    for groupPath in groups {
+        let fullGroupPath = digitalOceanRealm + groupPath
+        let realmGroup = try! Realm(configuration: getGroupConfiguration(path: fullGroupPath))
+        
+        if let thisGroup = realmGroup.objects(Group.self).first {
+            if realm.object(ofType: GroupPerspective.self, forPrimaryKey: thisGroup.groupID) == nil {
+                createNewGroup(groupID: thisGroup.groupID, realmPath: fullGroupPath, placeID: thisGroup.placeID)
+            }
+        } else {
+            print("COULDNT RETRIEVE GROUPID")
+        }
+    }
+}
+
+func createNewPlace(placeID: Int, realmPath: String) {
+    DispatchQueue.global().async {
+        let realm = try! Realm(configuration: configUser)
+        
+        let newPlacePerspective = PlacePerspective()
+        newPlacePerspective.placeID = placeID
+        newPlacePerspective.realmPath = realmPath
+        
+        try! realm.write {
+            realm.add(newPlacePerspective, update: true)
+        }
+        
+    }
+}
+
+func createNewGroup(groupID: Int, realmPath: String, placeID: Int) {
+    DispatchQueue.global().async {
+        let realm = try! Realm(configuration: configUser)
+        
+        let newGroupPerspective = GroupPerspective()
+        newGroupPerspective.groupID = groupID
+        newGroupPerspective.placeID = placeID
+        newGroupPerspective.realmPath = realmPath
+        
+        try! realm.write {
+            realm.add(newGroupPerspective, update: true)
+        }
+
+    }
 }
 
 
