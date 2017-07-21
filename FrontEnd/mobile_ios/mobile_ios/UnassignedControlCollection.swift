@@ -18,7 +18,7 @@ class UnassignedControlCollection: UITableViewCell, UICollectionViewDataSource, 
     func setControlsAndGroup(groupID: Int) {
         let realm = try! Realm(configuration: configUser)
         
-        self.controls = realm.objects(DeviceControl.self).filter("groupID = 0").toArray()
+        controls = realm.objects(DeviceControl.self).toArray()
         
         guard let group = realm.object(ofType: GroupPerspective.self, forPrimaryKey: groupID) else {
             print("Failed to find perspective for unassigned")

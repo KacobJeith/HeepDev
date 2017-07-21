@@ -312,7 +312,6 @@ class HAPIMemoryParser {
             }
         }
         
-        let allVertices = realm.objects(Vertex.self)
         
     }
     
@@ -324,9 +323,6 @@ class HAPIMemoryParser {
             realm.delete((thisControl?.vertexList)!)
         }
         
-        let allVertices = realm.objects(Vertex.self)
-        //print("After flusing \(thisControl?.controlName)")
-        //print(allVertices)
     }
     
     

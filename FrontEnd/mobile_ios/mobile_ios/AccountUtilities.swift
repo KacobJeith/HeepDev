@@ -68,7 +68,6 @@ func seedNewUserAccount(name: String = "Jacob Keith",
 
 func registerNewSyncRealm(username: String, password: String, callback: @escaping () -> Void = {}, newUser: User = User()) {
     let url = URL(string: digitalOceanHTTP)!
-    let userURL = URL(string: digitalOceamUserRealm)!
     
     let registerCredentials =  SyncCredentials.usernamePassword(username: username, password: password, register: true)
     
@@ -105,7 +104,6 @@ func registerNewSyncRealm(username: String, password: String, callback: @escapin
 func loginToUserRealmSync(username: String, password: String, callback: @escaping () -> Void = {}) {
     
     let url = URL(string: digitalOceanHTTP)!
-    let userURL = URL(string: digitalOceamUserRealm)!
     let credentials = SyncCredentials.usernamePassword(username: username,
                                                        password: password,
                                                        register: false)
@@ -177,7 +175,7 @@ func loginToPublicRealm() {
                         
                         let firstUser = User()
                         addNewUserToPublicRealm(newUser: firstUser)
-                        print("Found existing: \(user)")
+                        print("Found existing: \(String(describing: user))")
                         setDefaultPermissionToPublic(publicUser: user!)
                         
                     }

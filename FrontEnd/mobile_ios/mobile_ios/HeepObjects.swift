@@ -147,8 +147,7 @@ class DeviceControl: Object {
 
 class ControlContext: Object {
     
-    dynamic var deviceID: Int = 0
-    dynamic var controlID: Int = 0
+    dynamic var controlUniqueID: Int = 0
     dynamic var groupID: Int = 0
     dynamic var x: CGFloat = 100
     dynamic var y: CGFloat = 100
