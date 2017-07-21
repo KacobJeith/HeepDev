@@ -141,6 +141,7 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
     
     override func viewWillAppear(_ animated: Bool) {
         self.title = placeName
+        self.reloadView()
     }
     
 

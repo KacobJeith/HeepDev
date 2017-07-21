@@ -41,7 +41,7 @@ func logoutOfAllRealmUsers() {
 }
 
 func seedNewUserAccount(name: String = "Jacob Keith",
-                        imageURL: String = "https://lorempixel.com/400/400/cats/",
+                        imageURL: String = "https://lorempixel.com/400/400/",
                         heepID: Int = randomNumber(inRange: 1...1000000),
                         email: String = "",
                         password: String = "",

@@ -99,6 +99,12 @@ extension UnassignedControlCollection {
     func selectControl(sender: UIButton) {
         let realm = try! Realm(configuration: configUser)
         
+        if let place = realm.object(ofType: PlacePerspective.self, forPrimaryKey: thisGroup.placeID) {
+            try! realm.write {
+                place.numDevices += 1
+            }
+        }
+        
         print(realm.object(ofType: DeviceControl.self, forPrimaryKey: controls[sender.tag].uniqueID)!)
 
         try! realm.write {

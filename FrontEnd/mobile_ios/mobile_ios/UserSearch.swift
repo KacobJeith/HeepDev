@@ -128,6 +128,7 @@ extension UserSearch: UICollectionViewDataSource, UICollectionViewDelegate {
                                       message: "Are you sure you want to grant access to this user?",
                                       preferredStyle: UIAlertControllerStyle.alert)
         
+        
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { action in
             print("ADD")
             

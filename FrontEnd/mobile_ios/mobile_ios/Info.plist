@@ -56,7 +56,7 @@
 		<string>fbauth2</string>
 	</array>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Lemme use yo photos</string>
+	<string>Allow Heep to access your photos? All images uploaded as context are secure and can be removed at your desire</string>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

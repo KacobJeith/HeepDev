@@ -10,7 +10,7 @@ import Foundation
 import RealmSwift
 
 func createDeviceRealm(deviceID: Int) {
-    let urlString = digitalOceanRealm + "/~/" + String(deviceID)
+    let urlString = digitalOceanRealm + "/~/device/" + String(deviceID)
     let syncConfig = SyncConfiguration(user: SyncUser.current!,
                                        realmURL: URL(string: urlString)!)
     let configDevice = Realm.Configuration(syncConfiguration: syncConfig,
@@ -32,7 +32,7 @@ func createDeviceRealm(deviceID: Int) {
 func createPlaceRealm() -> Place {
     let placeID = randomNumber(inRange: 0...4000000000)
     
-    let urlString = digitalOceanRealm + "/~/" + String(placeID)
+    let urlString = digitalOceanRealm + "/~/place/" + String(placeID)
     
     let realmPlace = try! Realm(configuration: getPlaceConfiguration(path: urlString))
     let realmUser = try! Realm(configuration: configUser)
@@ -60,7 +60,7 @@ func createPlaceRealm() -> Place {
 
 func createGroupRealm(placeID: Int) {
     let groupID = randomNumber(inRange: 0...4000000000)
-    let urlString = digitalOceanRealm + "/~/" + String(groupID)
+    let urlString = digitalOceanRealm + "/~/group/" + String(groupID)
     
     let realmGroup = try! Realm(configuration: getGroupConfiguration(path: urlString))
     let realmUser = try! Realm(configuration: configUser)
@@ -87,10 +87,14 @@ func createGroupRealm(placeID: Int) {
 
 func grantPermissionToOtherUser(deviceID: Int, userID: Int) {
     let realmPublic = try! Realm(configuration: configPublicSync)
-    let userToGrant = realmPublic.object(ofType: User.self, forPrimaryKey: userID)
     
-    let permission = SyncPermissionValue(realmPath: "/~/" + String(deviceID),
-                                         userID: (userToGrant?.realmKey)!,
+    guard let userToGrant = realmPublic.object(ofType: User.self, forPrimaryKey: userID)?.realmKey else {
+        print("Could not find the realm path for this user. Exiting Grant.")
+        return
+    }
+    
+    let permission = SyncPermissionValue(realmPath: "/~/device/" + String(deviceID),
+                                         userID: userToGrant,
                                          accessLevel: .write)
     
     SyncUser.current?.applyPermission(permission) { error in
@@ -102,23 +106,93 @@ func grantPermissionToOtherUser(deviceID: Int, userID: Int) {
         
         print("Successfully added permission to new user")
         
-        let realm = try! Realm(configuration: configUser)
-        
-        if let device = realm.object(ofType: Device.self, forPrimaryKey: deviceID) {
-            
-            let newUserList = device.authorizedUsers + "/" + (userToGrant?.realmKey)!
-            
-            try! realm.write {
-                
-                device.authorizedUsers = newUserList
-            }
-        }
+        addNewUserToAuthorizedList(deviceID: deviceID, newUser: userToGrant)
+        grantDeviceContextAccessToNewUser(deviceID: deviceID, newUser: userToGrant)
         
         return
     }
+}
+
+func addNewUserToAuthorizedList(deviceID: Int, newUser: String) {
+    let realm = try! Realm(configuration: configUser)
     
+    guard let device = realm.object(ofType: Device.self, forPrimaryKey: deviceID) else {
+        print("Could not retrieve device")
+        return
+    }
+    
+    let newUserList = device.authorizedUsers + "/" + newUser
+    print("previously...\(device.authorizedUsers)")
+    print("authorized \(newUserList)")
+    
+    try! realm.write {
+        device.authorizedUsers = newUserList
+    }
+}
+
+func grantDeviceContextAccessToNewUser(deviceID: Int, newUser: String) {
+    let realm = try! Realm(configuration: configUser)
+    
+    guard let device = realm.object(ofType: Device.self, forPrimaryKey: deviceID) else {
+        print("Could not retrieve the device")
+        return
+    }
+    
+    for control in device.controlList {
+        grantGroupAccessToNewUser(groupID: control.groupID, newUser: newUser)
+    }
+}
+
+func grantGroupAccessToNewUser(groupID: Int, newUser: String) {
+    let realmUser = try! Realm(configuration: configUser)
+    
+    guard let group = realmUser.object(ofType: GroupPerspective.self, forPrimaryKey: groupID) else {
+        print("Could not find group")
+        return
+    }
+    
+    let permission = SyncPermissionValue(realmPath: extractRelativeRealmPath(realmPath: group.realmPath),
+                                         userID: newUser,
+                                         accessLevel: .admin)
+    
+    SyncUser.current?.applyPermission(permission) { error in
+        if let error = error {
+            print("Group Permission Error: \(error)")
+            return
+        }
+        
+        print("Successfully added group permission to new user")
+        return
+    }
+    
+    grantPlaceAccessToNewUser(placeID: group.placeID, newUser: newUser)
     
 }
+
+func grantPlaceAccessToNewUser(placeID: Int, newUser: String) {
+    let realmUser = try! Realm(configuration: configUser)
+    
+    guard let place = realmUser.object(ofType: PlacePerspective.self, forPrimaryKey: placeID) else {
+        print("Could not find place perspective")
+        return
+    }
+    
+    let permission = SyncPermissionValue(realmPath: extractRelativeRealmPath(realmPath: place.realmPath),
+                                         userID: newUser,
+                                         accessLevel: .admin)
+    
+    SyncUser.current?.applyPermission(permission) { error in
+        if let error = error {
+            print("Place Permission Error: \(error)")
+            return
+        }
+        
+        print("Successfully added place permission to new user")
+        return
+    }
+
+}
+
 
 func retrieveDeviceUsers(deviceID: Int) {
     var matchingUsers = [String]()
@@ -149,7 +223,7 @@ func parseDeviceIDFromRealmPath(deviceID: Int, realmPath: String?) -> Bool {
     if let openedPath = realmPath {
         var pathComponents =  openedPath.components(separatedBy: "/")
         
-        if pathComponents[4] == String.init(describing: deviceID) {
+        if pathComponents[5] == String.init(describing: deviceID) {
             return true
         } else {
             return false
@@ -184,6 +258,14 @@ func getUserConfiguration(user: SyncUser, path: String) -> Realm.Configuration {
                                               Vertex.self])
 }
 
+func extractRelativeRealmPath(realmPath: String) -> String {
+    let separatedPath = realmPath.components(separatedBy: "/")
+    let count = separatedPath.count
+    
+    return "/" + separatedPath[count-3...count-1].joined(separator: "/")
+    
+    
+}
 
 
 

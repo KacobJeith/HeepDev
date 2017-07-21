@@ -246,7 +246,7 @@ extension EditRoomView {
     
     func initRealmNotification() {
         
-        let watchControls = realm.objects(DeviceControl.self).filter("groupID = %@", thisGroup.groupID)
+        let watchControls = realm.objects(DeviceControl.self)
 
         let notificationTokenControls = watchControls.addNotificationBlock {  [weak self] (changes: RealmCollectionChange) in
             
