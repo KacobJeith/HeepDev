@@ -117,6 +117,7 @@ func loginToUserRealmSync(username: String, password: String, callback: @escapin
                         
                         configUser =  getUserConfiguration(user: user!, path: digitalOceamUserRealm)
                         
+                        checkForNewRealmPermissions()
                         openRealmAsync(config: configUser)
                         openRealmAsync(config: configPublicSync)
                         
