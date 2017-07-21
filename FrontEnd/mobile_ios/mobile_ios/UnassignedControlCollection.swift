@@ -5,27 +5,31 @@ class UnassignedControlCollection: UITableViewCell, UICollectionViewDataSource, 
     
     var collectionView: UICollectionView!
     var controls: [DeviceControl] = []
-    var thisBSSID = ""
-    var thisGroup = Group()
-    var myIndexPath = IndexPath()
+    var thisGroup = GroupPerspective()
     
-    
-    convenience init(bssid: String,
-                     thisGroup: Group,
-                     indexPath: IndexPath) {
+    convenience init(groupID: Int) {
         self.init()
         
+        setControlsAndGroup(groupID: groupID)
+        setupCollectionView()
+        
+    }
+    
+    func setControlsAndGroup(groupID: Int) {
         let realm = try! Realm(configuration: configUser)
         
+        self.controls = realm.objects(DeviceControl.self).filter("groupID = 0").toArray()
         
-        self.thisBSSID = bssid
-        self.myIndexPath = indexPath
-        let results = realm.objects(DeviceControl.self).filter("place = %@ AND groupsAssigned = 0", thisBSSID)
-        self.controls = Array(results)
-        self.thisGroup = thisGroup
-        self.myIndexPath = indexPath
+        guard let group = realm.object(ofType: GroupPerspective.self, forPrimaryKey: groupID) else {
+            print("Failed to find perspective for unassigned")
+            return
+        }
+    
+        self.thisGroup = group
         
-        
+    }
+    
+    func setupCollectionView() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = UICollectionViewScrollDirection.horizontal
         layout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10)
@@ -42,9 +46,6 @@ class UnassignedControlCollection: UITableViewCell, UICollectionViewDataSource, 
         collectionView.contentOffset = CGPoint(x: thisGroup.unassignedOffsetX, y: 0)
         
         self.addSubview(collectionView)
-        
-        
-        
     }
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
@@ -97,15 +98,18 @@ extension UnassignedControlCollection {
     
     func selectControl(sender: UIButton) {
         let realm = try! Realm(configuration: configUser)
-        print(controls[sender.tag].uniqueID)
+        
+        if let place = realm.object(ofType: PlacePerspective.self, forPrimaryKey: thisGroup.placeID) {
+            try! realm.write {
+                place.numDevices += 1
+            }
+        }
+        
         print(realm.object(ofType: DeviceControl.self, forPrimaryKey: controls[sender.tag].uniqueID)!)
 
-        let addToGroup = realm.object(ofType: Group.self, forPrimaryKey: thisGroup.id)!
-        
         try! realm.write {
-            controls[sender.tag].groupsAssigned = thisGroup.id
-            addToGroup.controls.append(controls[sender.tag])
-            addToGroup.selectedControl = controls[sender.tag].uniqueID
+            controls[sender.tag].groupID = thisGroup.groupID
+            thisGroup.selectedControl = controls[sender.tag].uniqueID
             thisGroup.unassignedOffsetX = collectionView.contentOffset.x
         }
         

@@ -26,8 +26,9 @@ func initializeApp() {
         configUser = configGuest
         
     } else {
-        configUser = Realm.Configuration(syncConfiguration: SyncConfiguration(user: SyncUser.current!,
-                                                                              realmURL: URL(string: digitalOceamUserRealm)!))
+        
+        configUser =  getUserConfiguration(user: SyncUser.current!, path: digitalOceamUserRealm)
+        
     }
     
 }
@@ -40,7 +41,7 @@ func logoutOfAllRealmUsers() {
 }
 
 func seedNewUserAccount(name: String = "Jacob Keith",
-                        imageURL: String = "https://lorempixel.com/400/400/cats/",
+                        imageURL: String = "https://lorempixel.com/400/400/",
                         heepID: Int = randomNumber(inRange: 1...1000000),
                         email: String = "",
                         password: String = "",
@@ -76,8 +77,11 @@ func registerNewSyncRealm(username: String, password: String, callback: @escapin
                    onCompletion: { user, error in
                     
                     if let userUnwrapped = user {
-                        configUser =  Realm.Configuration(syncConfiguration: SyncConfiguration(user: userUnwrapped,
-                                                                                               realmURL: userURL))
+                        
+                        setNewPublicSyncUser(newUser: userUnwrapped)
+                            
+                        configUser =  getUserConfiguration(user: userUnwrapped, path: digitalOceamUserRealm)
+                        
                         addNewUserToUserRealm(newUser: newUser)
                         
                         if let identity = userUnwrapped.identity {
@@ -114,10 +118,9 @@ func loginToUserRealmSync(username: String, password: String, callback: @escapin
                         callback()
                     } else {
                         
-                        configUser =  Realm.Configuration(syncConfiguration: SyncConfiguration(user: user!,
-                                                                                               realmURL: userURL))
+                        configUser =  getUserConfiguration(user: user!, path: digitalOceamUserRealm)
                         
-                        
+                        checkForNewRealmPermissions()
                         openRealmAsync(config: configUser)
                         openRealmAsync(config: configPublicSync)
                         
@@ -206,6 +209,13 @@ func addNewUserToUserRealm(newUser: User) {
                      value: ["heepID": newUser.heepID],
                      update: true)
     }
+    
+}
+
+func setNewPublicSyncUser(newUser: SyncUser) {
+    configPublicSync =  Realm.Configuration(syncConfiguration: SyncConfiguration(user: newUser,
+                                                                                 realmURL: URL(string: dititalOceanPublicRealm)!),
+                                            objectTypes: [User.self])
     
 }
 

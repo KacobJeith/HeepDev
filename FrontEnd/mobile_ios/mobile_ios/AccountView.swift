@@ -101,12 +101,7 @@ class AccountView: UIViewController {
             })
         }
         
-        print(SyncUser.current)
-        print(configUser)
-        
     }
-    
-    
 }
 
 // Already Logged in View

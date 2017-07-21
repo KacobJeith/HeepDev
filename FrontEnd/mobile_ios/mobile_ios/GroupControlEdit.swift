@@ -4,23 +4,26 @@ import RealmSwift
 class GroupControlEdit: UITableViewCell, UICollectionViewDataSource, UICollectionViewDelegate {
     
     var collectionView: UICollectionView!
-    var controls = List<DeviceControl>()
-    var thisBSSID = ""
-    var thisGroup = Group()
-    var myIndexPath = IndexPath()
+    var controls = [DeviceControl]()
+    var thisGroup = GroupPerspective()
     
-    convenience init(bssid: String,
-                     thisGroup: Group,
-                     indexPath: IndexPath) {
+    convenience init(groupID: Int) {
         self.init()
         
         let realm = try! Realm(configuration: configUser)
         
-        self.thisBSSID = bssid
-        self.controls = thisGroup.controls
-        self.myIndexPath = indexPath
-        self.thisGroup = realm.object(ofType: Group.self, forPrimaryKey: thisGroup.id)!
+        self.controls = realm.objects(DeviceControl.self).filter("groupID = %@", groupID).toArray()
         
+        if let perspective = realm.object(ofType: GroupPerspective.self, forPrimaryKey: groupID) {
+            self.thisGroup = perspective
+        } else {
+            print("Could not find perspective with this groupID")
+        }
+        
+        setupCollectionView()
+    }
+    
+    func setupCollectionView() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = UICollectionViewScrollDirection.horizontal
         layout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10)
@@ -36,7 +39,6 @@ class GroupControlEdit: UITableViewCell, UICollectionViewDataSource, UICollectio
         collectionView.backgroundColor = .white
         collectionView.contentOffset = CGPoint(x: thisGroup.assignedOffsetX, y: 0)
         self.addSubview(collectionView)
-        
     }
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {

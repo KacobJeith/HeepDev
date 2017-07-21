@@ -10,23 +10,17 @@ import UIKit
 import RealmSwift
 
 class EditRoomView: UITableViewController {
-    var notificationTokenControls: NotificationToken? = nil
-    var notificationTokenGroup: NotificationToken? = nil
-    var notificationTokenVertices: NotificationToken? = nil
+    var notificationTokenList = [NotificationToken]()
     
-    let devices: [Device]
     let realm = try! Realm(configuration: configUser)
-    var roomName: String = ""
-    var thisBSSID: String = ""
-    var thisGroup: Group
     
-    init(bssid: String, groupID: Int) {
-        devices = Array(realm.objects(Device.self).filter("associatedPlace = %s", bssid))
-        let thisPlace = realm.object(ofType: Place.self, forPrimaryKey: bssid)
-        //print(thisPlace)
-        self.thisBSSID = (thisPlace?.bssid)!
-        self.roomName = (thisPlace?.name)!
-        thisGroup = realm.object(ofType: Group.self, forPrimaryKey: groupID)!
+    var thisBSSID: String = ""
+    var thisGroup: GroupPerspective
+    
+    init(groupID: Int, groupName: String) {
+        
+        
+        thisGroup = realm.object(ofType: GroupPerspective.self, forPrimaryKey: groupID)!
         print(thisGroup)
         
         
@@ -42,8 +36,6 @@ class EditRoomView: UITableViewController {
         
         self.initRealmNotification()
         
-        
-        self.title = thisGroup.name
         self.navigationController?.isToolbarHidden = false
         tableView.alwaysBounceVertical = false
         let search = UIBarButtonItem(title: "Search For Devices",
@@ -60,16 +52,18 @@ class EditRoomView: UITableViewController {
     }
     
     
+    
+    
     deinit{
-        notificationTokenControls?.stop()
-        notificationTokenGroup?.stop()
-        notificationTokenVertices?.stop()
+        for token in notificationTokenList {
+            token.stop()
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        notificationTokenControls?.stop()
-        notificationTokenGroup?.stop()
-        notificationTokenVertices?.stop()
+        for token in notificationTokenList {
+            token.stop()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -84,16 +78,12 @@ class EditRoomView: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         
-        
-        if (indexPath.row == 0) {
+        switch indexPath.row {
+        case 0 :
             
-            let cell = UnassignedControlCollection(bssid: thisBSSID,
-                                                   thisGroup: thisGroup,
-                                                   indexPath: indexPath)
+            return UnassignedControlCollection(groupID: thisGroup.groupID)
             
-            return cell
-            
-        } else if (indexPath.row == 1) {
+        case 1 :
             
             let bounds = self.navigationController!.navigationBar.bounds
             
@@ -102,10 +92,8 @@ class EditRoomView: UITableViewController {
                                    width: self.view.frame.width,
                                    height: self.view.frame.height - 200 - bounds.height)
             
-            let cell = VertexEditCell(bssid: thisBSSID,
-                                      cellFrame: editFrame,
-                                      thisGroup: thisGroup,
-                                      indexPath: indexPath)
+            let cell = VertexEditCell(cellFrame: editFrame,
+                                      groupID: thisGroup.groupID)
             
             cell.parentTable = self
             
@@ -113,12 +101,11 @@ class EditRoomView: UITableViewController {
             
             return cell
             
-        } else if (indexPath.row == 2) {
-            let cell = GroupControlEdit(bssid: thisBSSID,
-                                        thisGroup: thisGroup,
-                                        indexPath: indexPath)
+        case 2 :
             
-            return cell
+            return GroupControlEdit(groupID: thisGroup.groupID)
+            
+        default : break
         }
         
         return UITableViewCell()
@@ -160,12 +147,16 @@ extension EditRoomView: UIImagePickerControllerDelegate, UINavigationControllerD
     func saveImageToGroup(image: UIImage) {
         print("Saving Image")
         let imageData = UIImageJPEGRepresentation(image, 0.5)
+        let groupRealm = try! Realm(configuration: getGroupConfiguration(path: thisGroup.realmPath))
         
-        
-        try! realm.write {
-            thisGroup.imageData = imageData! as NSData
+        guard let groupContext = groupRealm.objects(Group.self).first else {
+            print("Could not retrieve shared group realm to save the image")
+            return
         }
-        print(thisGroup.name)
+            
+        try! groupRealm.write {
+            groupContext.imageData = imageData! as NSData
+        }
             
     }
     
@@ -188,9 +179,6 @@ extension EditRoomView {
                                        y: 0,
                                        width: 60,
                                        height: 60)
-        
-        
-        
         
         let vertexToggle = UIButton()
         vertexToggle.frame = innerElementFrame
@@ -257,12 +245,10 @@ extension EditRoomView {
     
     
     func initRealmNotification() {
-        let query = NSCompoundPredicate(type: .and, subpredicates: [NSPredicate(format: "place = '\(thisBSSID)'"),
-                                                                    NSPredicate(format: "groupsAssigned = \(thisGroup.id)")])
+        
+        let watchControls = realm.objects(DeviceControl.self)
 
-        let watchControls = realm.objects(DeviceControl.self).filter(query)
-
-        notificationTokenControls = watchControls.addNotificationBlock {  [weak self] (changes: RealmCollectionChange) in
+        let notificationTokenControls = watchControls.addNotificationBlock {  [weak self] (changes: RealmCollectionChange) in
             
                 switch changes {
                 case .update:
@@ -279,7 +265,7 @@ extension EditRoomView {
         
         let watchVertices = realm.objects(Vertex.self)
         
-        notificationTokenVertices = watchVertices.addNotificationBlock {  [weak self] (changes: RealmCollectionChange) in
+        let notificationTokenVertices = watchVertices.addNotificationBlock {  [weak self] (changes: RealmCollectionChange) in
             
             switch changes {
             case .update:
@@ -294,9 +280,9 @@ extension EditRoomView {
             }
         }
         
-        let watchGroup = realm.object(ofType: Group.self, forPrimaryKey: thisGroup.id)!
+        let watchGroupPerspective = realm.object(ofType: GroupPerspective.self, forPrimaryKey: thisGroup.groupID)!
         
-        notificationTokenGroup = watchGroup.addNotificationBlock { changes in
+        let notificationTokenGroupPerspective = watchGroupPerspective.addNotificationBlock { changes in
             /* results available asynchronously here */
             
             switch changes {
@@ -310,6 +296,29 @@ extension EditRoomView {
             default: break
             }
         }
+        
+        let realmGroup = try! Realm(configuration: getGroupConfiguration(path: thisGroup.realmPath))
+        let watchGroup = realmGroup.object(ofType: Group.self, forPrimaryKey: thisGroup.groupID)!
+        
+        let notificationTokenGroup = watchGroup.addNotificationBlock { changes in
+            /* results available asynchronously here */
+            
+            switch changes {
+            case .change:
+                
+                self.tableView.reloadData()
+                break
+            case .error(let error):
+                fatalError("\(error)")
+                break
+            default: break
+            }
+        }
+        
+        notificationTokenList.append(notificationTokenGroup)
+        notificationTokenList.append(notificationTokenGroupPerspective)
+        notificationTokenList.append(notificationTokenControls)
+        notificationTokenList.append(notificationTokenVertices)
         
     }
 }

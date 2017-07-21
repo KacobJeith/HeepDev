@@ -19,9 +19,12 @@ class DeviceSummaryViewController: UITableViewController {
     var userRealmKeys: [String] = []
     
     init(device: Device) {
+        print("Starting with...\(device)")
+        
         let realm = try! Realm(configuration: configUser)
         if let pullDevice = realm.object(ofType: Device.self, forPrimaryKey: device.deviceID) {
             thisDevice = pullDevice
+            print("ending with \(thisDevice)")
         }
         
         self.cells = []
@@ -35,7 +38,6 @@ class DeviceSummaryViewController: UITableViewController {
         self.tableView.separatorStyle = .none
         
         retrieveDeviceUsers(deviceID: thisDevice.deviceID)
-        
         self.initRealmNotification()
         self.prepareUserData()
         self.prepareDeviceData()
@@ -74,10 +76,11 @@ class DeviceSummaryViewController: UITableViewController {
             userIds.append(thisDevice.humanAdmin)
             humanData.append("admin")
             userRealmKeys = thisDevice.authorizedUsers.components(separatedBy: "/")
-            if userRealmKeys.first != "" {
-                
+            
+            if userRealmKeys.count > 1 {
                 humanData.append(contentsOf: userRealmKeys)
             }
+            
             humanData.append("addNewUser")
             
         } else {
@@ -203,7 +206,7 @@ class DeviceSummaryViewController: UITableViewController {
             case "admin" :
                 
                 cell.addSubview(addUserCell(userID: userIds[indexPath.row], initialOffset: 15))
-                
+             
             case "claimDevice" :
                 cell.addSubview(addClaimDeviceCell())
                 
@@ -212,7 +215,8 @@ class DeviceSummaryViewController: UITableViewController {
                 
             default:
                 let realm = try! Realm(configuration: configPublicSync)
-                
+                print(indexPath.row)
+                print(userRealmKeys)
                 if let heepID = realm.objects(User.self).filter("realmKey = %@", userRealmKeys[indexPath.row - 1]).first?.heepID {
                     
                     cell.addSubview(addUserCell(userID: heepID, initialOffset: 60))
@@ -331,6 +335,8 @@ class DeviceSummaryViewController: UITableViewController {
                 
                 switch changes {
                 case .change:
+                    
+                    print(watchThisDevice)
                     
                     self.thisDevice = watchThisDevice
                     self.cells = [[String]]()

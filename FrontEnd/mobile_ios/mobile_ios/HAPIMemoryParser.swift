@@ -202,28 +202,14 @@ class HAPIMemoryParser {
     func AddNewDevice(deviceID: Int, ipAddress: String) {
         print("Found a new device... adding now")
         
-        let currentWifi = currentWifiInfo()
-        let currentPlace = realm.object(ofType: Place.self, forPrimaryKey: currentWifi.bssid)
-        
         let newDevice = Device()
         newDevice.deviceID = deviceID
         newDevice.ipAddress = ipAddress
-        newDevice.associatedPlace = currentWifi.bssid
         
         try! realm.write {
-            
             realm.add(newDevice, update: true)
-            //currentPlace?.devices.append(newDevice)
         }
         
-        let thisPlaceDevices = realm.objects(Device.self).filter("associatedPlace == %@", currentPlace?.bssid)
-        
-        try! realm.write {
-            realm.create(Place.self,
-                         value: ["bssid": currentPlace?.bssid,
-                                 "devices": thisPlaceDevices],
-                         update: true)
-        }
         
     }
     

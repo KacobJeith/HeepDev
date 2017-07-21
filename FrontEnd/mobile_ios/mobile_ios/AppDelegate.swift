@@ -42,6 +42,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         SDKApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
         
         flushApp()
+        checkForNewRealmPermissions()
         //logoutOfAllRealmUsers()
         initializeApp()
         setupAppNavigation()

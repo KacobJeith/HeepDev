@@ -14,21 +14,24 @@ class PlacesView: UIViewController {
     
     var activelyPanning = Int()
     var searchTimeout = 4
-    var bssids = [String]()
     var colors = [UIColor]()
+    var placeNames = [Int : String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.initRealmNotification()
+        self.setupNavBar()
         
+        addPlaces()
+    }
+    
+    func setupNavBar() {
         self.title = "My Heep Zones"
         self.view.backgroundColor = .white
         self.navigationController?.isToolbarHidden = false
         
-        let flush = UIBarButtonItem(barButtonSystemItem: .trash,
-                                    target: self,
-                                    action: #selector(deleteAll))
+        let addPlace = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addPlaceToRealm))
         
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         
@@ -36,13 +39,10 @@ class PlacesView: UIViewController {
                                      style: .plain,
                                      target: self,
                                      action: #selector(searchForHeepDevices))
-                
+        
         self.navigationItem.rightBarButtonItem = getActiveUserIcon()
         
-        self.toolbarItems = [spacer,  search, spacer]
-
-        addPlaces()
-        //self.searchForHeepDevices()
+        self.toolbarItems = [addPlace, spacer, search, spacer]
     }
     
     
@@ -70,71 +70,69 @@ class PlacesView: UIViewController {
 
     func addPlaces() {
         let realm = try! Realm(configuration: configUser)
-        let currentWifi = currentWifiInfo()
-        let thisWifiCheck = realm.objects(Place.self).filter("bssid == %s", currentWifi.bssid)
-        if (thisWifiCheck.count == 0) {
-            addPlaceToRealm()
-        }
         
-        let allPlaces = realm.objects(Place.self)
+//        let currentWifi = currentWifiInfo()
+//        let thisWifiCheck = realm.objects(Place.self).filter("bssid == %s", currentWifi.bssid)
+//        if (thisWifiCheck.count == 0) {
+//            addPlaceToRealm()
+//        }
         
-        for place in allPlaces {
+        let perspectives = realm.objects(PlacePerspective.self)
+        
+        for perspective in perspectives {
             
-            drawPlace(thisX: place.x,
-                      thisY: place.y,
-                      thisName: place.name,
-                      numDevices: place.devices.count,
-                      thisBSSID: place.bssid)
-        }
+            let thisPlaceRealm = try! Realm(configuration: getPlaceConfiguration(path: perspective.realmPath))
+            
+            if let place = thisPlaceRealm.objects(Place.self).first {
+                
+                self.drawPlace(place: place, perspective: perspective)
+                
+            } else {
+                
+                asyncOpenPlace(perspective: perspective)
+                print("Could not find any places at this realm config")
+            }
         
+        }
+    }
+    
+    func asyncOpenPlace(perspective: PlacePerspective) {
+        openRealmAsync(config: getPlaceConfiguration(path: perspective.realmPath), callback: {
+            let thisPlaceRealm = try! Realm(configuration: getPlaceConfiguration(path: perspective.realmPath))
+            
+            if let place = thisPlaceRealm.objects(Place.self).first {
+                
+                self.drawPlace(place: place, perspective: perspective)
+                
+            }
+        })
     }
     
     
     func addPlaceToRealm() {
-        let realm = try! Realm(configuration: configUser)
+        let newPlace = createPlaceRealm()
         
-        let currentWifi = currentWifiInfo()
-        let allGroups = realm.objects(Group.self)
-        
-        let firstGroupInPlace = Group()
-        firstGroupInPlace.place = currentWifi.bssid
-        firstGroupInPlace.name = "My First Room"
-        if allGroups.count > 0 {
-            
-            firstGroupInPlace.id = allGroups.max(ofProperty: "id")! + 1
-        } else {
-            firstGroupInPlace.id = 1
-        }
-        
-        let newPlace = Place()
-        newPlace.ssid = currentWifi.ssid
-        newPlace.bssid = currentWifi.bssid
-        newPlace.name = currentWifi.ssid
-        
-        try! realm.write {
-            
-            realm.add(newPlace)
-            realm.add(firstGroupInPlace)
-            newPlace.groups.append(firstGroupInPlace)
-        }
     }
  
-    func drawPlace(thisX: CGFloat, thisY: CGFloat, thisName: String, numDevices: Int, thisBSSID: String) {
-        bssids.append(thisBSSID)
-        let diameter = CGFloat(100 + 10*numDevices)
-        let adjustedX = thisX - diameter/2
-        let adjustedY = thisY - diameter/2
+    func drawPlace(place: Place, perspective: PlacePerspective) {
+        
+        placeNames[place.placeID] = place.name
+        
+        let diameter = CGFloat(100 + 10*perspective.numDevices)
+        let adjustedX = perspective.x - diameter/2
+        let adjustedY = perspective.y - diameter/2
         
         let button = UIButton(frame: CGRect(x: adjustedX, y: adjustedY, width: diameter, height: diameter))
-        button.backgroundColor = numDevices == 0 ? .lightGray : getRandomColor()
+        button.backgroundColor = perspective.numDevices == 0 ? .lightGray : getRandomColor()
         button.layer.borderWidth = 1
         button.layer.borderColor = UIColor.white.cgColor
         button.layer.cornerRadius = 0.5 * button.bounds.size.width
         button.clipsToBounds = true
-        button.setTitle("  " + thisName + "  ", for: [])
+        button.setTitle("  " + place.name + "  ", for: [])
         button.setTitleColor(UIColor.white, for: UIControlState.normal)
         button.titleLabel?.adjustsFontSizeToFitWidth = true
-        button.tag = bssids.count
+        button.tag = place.placeID
+        
         self.view.addSubview(button)
         
         
@@ -149,13 +147,18 @@ class PlacesView: UIViewController {
     }
     
     func enterPlace(sender: UIButton) {
-        let realm = try! Realm(configuration: configUser)
-        let enterPlace = realm.object(ofType: Place.self, forPrimaryKey: bssids[sender.tag - 1])
         
-        print("entering \(String(describing: enterPlace?.name))")
-
-        let groupView = GroupCollectionView()
-        groupView.thisPlace = enterPlace!
+        
+        guard let name = placeNames[sender.tag] else {
+            print("Bouncing...couldn't find the name")
+            return
+        }
+        
+        print("entering \(name)")
+        
+        let groupView = GroupCollectionView(placeID: sender.tag,
+                                            placeName: name)
+        
         navigationController?.pushViewController(groupView, animated: false)
         
         
@@ -163,24 +166,28 @@ class PlacesView: UIViewController {
     
     func drag(gesture: UIPanGestureRecognizer) {
         
-        if gesture.state == UIGestureRecognizerState.began {
-
+        switch gesture.state {
+        case .began :
+            
             findPanningPlace(gesture: gesture)
             
-        } else if gesture.state == UIGestureRecognizerState.changed {
-            if activelyPanning != Int(){
+        case .changed :
+            
+            if activelyPanning != Int() {
                 let translation = CGAffineTransform(translationX: gesture.translation(in: self.view).x,
                                                     y: gesture.translation(in: self.view).y)
+                
                 (self.view.viewWithTag(activelyPanning))!.transform = translation
                 
             }
             
+        case .ended :
             
-        } else if gesture.state == UIGestureRecognizerState.ended {
             if activelyPanning != Int(){
                 
                 let realm = try! Realm(configuration: configUser)
-                let thisPlace = realm.object(ofType: Place.self, forPrimaryKey: bssids[activelyPanning - 1])
+                let thisPlace = realm.object(ofType: PlacePerspective.self, forPrimaryKey: gesture.view?.tag)
+                
                 try! realm.write {
                     thisPlace?.x = (thisPlace?.x)! + gesture.translation(in: self.view).x
                     thisPlace?.y = (thisPlace?.y)! + gesture.translation(in: self.view).y
@@ -194,17 +201,17 @@ class PlacesView: UIViewController {
             activelyPanning = Int()
             
             
+        default : break
         }
-        
-        
         
     }
     
     func findPanningPlace(gesture: UIPanGestureRecognizer) {
-        for index in 1...(bssids.count) {
+        for key in placeNames.keys {
             
-            let activelyPanningPlace = self.view.viewWithTag(index)
+            let activelyPanningPlace = self.view.viewWithTag(key)
             let gestureLocation = gesture.location(in: self.view)
+            
             if activelyPanningPlace != nil {
                 if (activelyPanningPlace?.frame)!.contains(gestureLocation) {
                     
@@ -242,15 +249,10 @@ extension PlacesView {
         HeepConnections().SearchForHeepDeviecs()
         
     }
-        
-    func launchSearch() {
-        print("Searching...")
-        HeepConnections().SearchForHeepDeviecs()
-    }
     
     func initRealmNotification() {
         let realm = try! Realm(configuration: configUser)
-        let places = realm.objects(Place.self)
+        let places = realm.objects(PlacePerspective.self)
         
         notificationToken = places.addNotificationBlock { [weak self] (changes: RealmCollectionChange) in
             
@@ -259,9 +261,12 @@ extension PlacesView {
                 
                 self?.reloadView()
                 break
+                
             case .error(let error):
+                
                 fatalError("\(error)")
                 break
+                
             default: break
             }
         }
