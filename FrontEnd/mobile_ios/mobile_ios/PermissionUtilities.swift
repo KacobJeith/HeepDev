@@ -209,11 +209,13 @@ func retrieveDeviceUsers(deviceID: Int) {
         }
     }
     
+    let uniqueUsers = Array(Set(matchingUsers))
+    
     let realm = try! Realm(configuration: configUser)
     
     if let device = realm.object(ofType: Device.self, forPrimaryKey: deviceID) {
         try! realm.write {
-            device.authorizedUsers = matchingUsers.joined(separator: "/")
+            device.authorizedUsers = uniqueUsers.joined(separator: "/")
         }
     }
     
