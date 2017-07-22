@@ -180,7 +180,7 @@ class HAPIMemoryParser {
             
         } else if (thisMOP == 0x17) {
             // AdminID 
-            
+            ParseDeviceAdmin(dump: dump, index: packet.index, packetSize: packet.numBytes, deviceID: header.deviceID)
             
         } else {
             // Unknown MOP or misinterpreted datastream
@@ -211,6 +211,19 @@ class HAPIMemoryParser {
         }
         
         
+    }
+    
+    func ParseDeviceAdmin(dump: [UInt8], index: Int, packetSize: Int, deviceID: Int) {
+    
+        if let device = realm.object(ofType: Device.self, forPrimaryKey: deviceID) {
+            let adminByteArray = Array(dump[index...index+packetSize-1])
+            let adminID = convertArrayToInt(byteArray: adminByteArray, reverse: true)
+            print("PARSED ADMIN ID: \(adminID)")
+            
+            try! realm.write {
+                device.humanAdmin = adminID
+            }
+        }
     }
     
     func AddControlToDevice(dump: [UInt8], index: Int, deviceID: Int, packetSize: Int ) {
@@ -323,8 +336,6 @@ class HAPIMemoryParser {
             realm.delete((thisControl?.vertexList)!)
         }
     }
-    
-    
     
     func readIPAddress(dump: [UInt8], index: Int) -> String {
         return String(Int(dump[index])) + "." + String(Int(dump[index + 1])) + "." + String(Int(dump[index + 2])) + "." + String(Int(dump[index + 3]))

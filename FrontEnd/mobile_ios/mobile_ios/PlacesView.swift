@@ -246,6 +246,7 @@ extension PlacesView {
     }
     
     func searchForHeepDevices() {
+        print("Searching...")
         HeepConnections().SearchForHeepDeviecs()
         
     }
