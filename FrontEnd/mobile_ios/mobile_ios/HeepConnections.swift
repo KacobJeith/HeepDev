@@ -98,6 +98,31 @@ class HeepConnections {
         
     }
     
+    public func sendControlContextMOPToHeepDevice(deviceID: Int, controlUniqueID: Int) {
+        
+        let realm = try! Realm(configuration: configUser)
+        
+        guard let thisDevice = realm.object(ofType: Device.self, forPrimaryKey: deviceID) else {
+            print("Could not retrieve this device from realm. Canceling COP")
+            return
+        }
+        
+        guard let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: controlUniqueID) else {
+            print("Could not retrieve this control from realm. Canceling MOPCOP")
+            return
+        }
+        
+        let thisDeviceIP = thisDevice.ipAddress
+        
+        let MOP = HAPIMemoryParser().BuildControlContextMOP(controlContext: thisControl)
+        let message = HAPIMemoryParser().BuildStoreMOPCOP(byteArray: MOP)
+        
+        print("Sending: \(message) to Heep Device at \(thisDeviceIP)")
+        
+        //ConnectToHeepDevice(ipAddress: thisDeviceIP, printErrors: false, message: message)
+        
+    }
+    
     func ConnectToHeepDevice(ipAddress: String, printErrors: Bool, message: [UInt8]) {
         
         let client = TCPClient(address: ipAddress, port:5000)

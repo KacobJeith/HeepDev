@@ -992,6 +992,8 @@ extension VertexEditCell {
             thisControl.editY = editY
         }
         
+        HeepConnections().sendControlContextMOPToHeepDevice(deviceID: thisControl.deviceID, controlUniqueID: thisControl.uniqueID)
+        
     }
     
     func resetVertexDictToDelete() {

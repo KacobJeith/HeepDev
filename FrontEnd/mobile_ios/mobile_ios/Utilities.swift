@@ -229,11 +229,16 @@ func getUserIcon(iconURL: String) -> NSData {
 
 
 
-func convertIntToByteArray(integer: Int) -> [UInt8] {
+func convertIntToByteArray(integer: Int, size: Int = 0) -> [UInt8] {
     var byteArray = [UInt8]()
     for index in 0...(calcNumBytes(integer: integer) - 1) {
         byteArray.append(UInt8(truncatingBitPattern: integer >> (index * 8)))
     }
+    if byteArray.count < size {
+        byteArray.append(contentsOf: [UInt8](repeating: 0, count: size - byteArray.count))
+
+    }
+    print("size: \(size), actual: \(byteArray.count)")
     
     return byteArray.reversed()
 }

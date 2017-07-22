@@ -52,6 +52,19 @@ class HAPIMemoryParser {
         return entireArray
     }
     
+    public func BuildControlContextMOP(controlContext: DeviceControl) -> [UInt8] {
+        let MOP = UInt8(0x1A)
+        var packet = convertIntToByteArray(integer: controlContext.controlID)
+        packet.append(contentsOf: convertIntToByteArray(integer: controlContext.groupID, size: 4))
+        packet.append(contentsOf: convertIntToByteArray(integer: Int(controlContext.editX.rounded()), size: 2))
+        packet.append(contentsOf: convertIntToByteArray(integer: Int(controlContext.editY.rounded()), size: 2))
+        packet.append(contentsOf: convertIntToByteArray(integer: Int(controlContext.scale * 100), size: 2))
+        packet.append(contentsOf: convertIntToByteArray(integer: Int((controlContext.rotation + CGFloat.pi) * 100), size: 2))
+        
+        let entireArray = packageMOP(MOP: MOP, deviceID: controlContext.deviceID, packet: packet)
+        return entireArray
+    }
+    
     public func BuildStoreMOPCOP(byteArray: [UInt8]) -> [UInt8] {
         let COP = UInt8(0x13)
         let entireArray = packageCOP(COP: COP, packet: byteArray)
