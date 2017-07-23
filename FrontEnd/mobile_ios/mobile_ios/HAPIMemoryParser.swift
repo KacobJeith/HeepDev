@@ -52,7 +52,7 @@ class HAPIMemoryParser {
         return entireArray
     }
     
-    public func BuildControlContextMOP(controlContext: DeviceControl) -> [UInt8] {
+    public func BuildControlContextMOP(controlContext: DeviceControl) -> [UInt8]  {
         let MOP = UInt8(0x1A)
         var packet = convertIntToByteArray(integer: controlContext.controlID)
         packet.append(contentsOf: convertIntToByteArray(integer: controlContext.groupID, size: 4))
@@ -195,11 +195,37 @@ class HAPIMemoryParser {
             // AdminID 
             ParseDeviceAdmin(dump: dump, index: packet.index, packetSize: packet.numBytes, deviceID: header.deviceID)
             
+        } else if (thisMOP == 0x1A) {
+            // Control Context 
+            ParseControlContext(dump: dump, index: packet.index, packetSize: packet.numBytes, deviceID: header.deviceID)
+            
         } else {
             // Unknown MOP or misinterpreted datastream
         }
         
         return packet.index + packet.numBytes
+    }
+    
+    func searchForSpecificMOP(dump: [UInt8], targetMOP: UInt8) -> [UInt8]? {
+        print(dump)
+        let header = ParseDeviceID(dump: dump, index: 1)
+        let packet = CalculateNumberOfBytes(dump: dump, index: header.index)
+        var index = packet.index
+        
+        while (index < dump.count) {
+            let header = ParseDeviceID(dump: dump, index: index + 1)
+            let packet = CalculateNumberOfBytes(dump: dump, index: header.index)
+            
+            if dump[index] == targetMOP {
+                print("FOUND MOP")
+                return Array(dump[index ... index + packet.numBytes])
+            }
+            
+            index = packet.index + packet.numBytes
+            
+        }
+        
+        return nil
     }
     
     func CalculateNumberOfBytes(dump: [UInt8], index: Int) -> (numBytes: Int, index: Int) {
@@ -235,6 +261,27 @@ class HAPIMemoryParser {
             
             try! realm.write {
                 device.humanAdmin = adminID
+            }
+        }
+    }
+    
+    func ParseControlContext(dump: [UInt8], index: Int, packetSize: Int, deviceID: Int) {
+        let uniqueID = generateUniqueControlID(deviceID: deviceID, controlID: dump[index])
+        
+        if let control = realm.object(ofType: DeviceControl.self, forPrimaryKey: uniqueID) {
+            print(dump)
+            let groupID = convertArrayToInt(byteArray: Array(dump[index + 1 ... index + 4]), reverse: true)
+            let x = CGFloat(convertArrayToInt(byteArray: Array(dump[index + 5 ... index + 6]), reverse: true))
+            let y = CGFloat(convertArrayToInt(byteArray: Array(dump[index + 7 ... index + 8]), reverse: true))
+            let scale = CGFloat(convertArrayToInt(byteArray: Array(dump[index + 9 ... index + 10]), reverse: true)) / 100
+            let rotation = (CGFloat(convertArrayToInt(byteArray: Array(dump[index + 11 ... index + 12]), reverse: true)) / 100) - CGFloat.pi
+            
+            try! realm.write {
+                control.groupID = groupID
+                control.editX = x
+                control.editY = y
+                control.scale = scale
+                control.rotation = rotation
             }
         }
     }

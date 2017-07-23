@@ -45,8 +45,8 @@ func seedNewUserAccount(name: String = "Jacob Keith",
                         heepID: Int = randomNumber(inRange: 1...1000000),
                         email: String = "",
                         password: String = "",
-                        callback: @escaping () -> Void = {},
-                        repair: Bool = false) {
+                        repair: Bool = false,
+                        callback: @escaping () -> Void = {}) {
     
     
     let newUser = User()
@@ -60,15 +60,14 @@ func seedNewUserAccount(name: String = "Jacob Keith",
     if repair {
         addNewUserToPublicRealm(newUser: newUser, callback: callback)
     } else {
-        registerNewSyncRealm(username: email, password: password, callback: callback, newUser: newUser)
+        registerNewSyncRealm(username: email, password: password, newUser: newUser, callback: callback)
         
     }
     
 }
 
-func registerNewSyncRealm(username: String, password: String, callback: @escaping () -> Void = {}, newUser: User = User()) {
+func registerNewSyncRealm(username: String, password: String, newUser: User = User(), callback: @escaping () -> Void = {}) {
     let url = URL(string: digitalOceanHTTP)!
-    let userURL = URL(string: digitalOceamUserRealm)!
     
     let registerCredentials =  SyncCredentials.usernamePassword(username: username, password: password, register: true)
     
@@ -105,7 +104,6 @@ func registerNewSyncRealm(username: String, password: String, callback: @escapin
 func loginToUserRealmSync(username: String, password: String, callback: @escaping () -> Void = {}) {
     
     let url = URL(string: digitalOceanHTTP)!
-    let userURL = URL(string: digitalOceamUserRealm)!
     let credentials = SyncCredentials.usernamePassword(username: username,
                                                        password: password,
                                                        register: false)
@@ -177,7 +175,7 @@ func loginToPublicRealm() {
                         
                         let firstUser = User()
                         addNewUserToPublicRealm(newUser: firstUser)
-                        print("Found existing: \(user)")
+                        print("Found existing: \(String(describing: user))")
                         setDefaultPermissionToPublic(publicUser: user!)
                         
                     }

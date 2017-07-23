@@ -22,7 +22,9 @@ class HeepConnections {
             let thisAddress = getAddress(gateway: gateway, ip: ip)
             DispatchQueue.global().async {
                 
-                self.ConnectToHeepDevice(ipAddress: thisAddress, printErrors: false, message: message)
+                self.ConnectToHeepDevice(ipAddress: thisAddress, printErrors: false, message: message) { (data, ipAddress) in
+                    HAPIMemoryParser().ParseROP(dump: data, ipAddress: ipAddress)
+                }
                 
             }
             
@@ -48,7 +50,10 @@ class HeepConnections {
         
         let message = HAPIMemoryParser().BuildSetValueCOP(controlID: thisControl!, newValue: newVal)
         print("Sending: \(message) to Heep Device at to \(thisDeviceIP!)")
-        ConnectToHeepDevice(ipAddress: thisDeviceIP!, printErrors: false, message: message)
+        ConnectToHeepDevice(ipAddress: thisDeviceIP!, printErrors: false, message: message){ (data, ipAddress) in
+            HAPIMemoryParser().ParseROP(dump: data, ipAddress: ipAddress)
+        }
+
         
         
     }
@@ -63,7 +68,10 @@ class HeepConnections {
         
         print("Sending: \(message) to Heep Device at \(thisDeviceIP!)")
         
-        ConnectToHeepDevice(ipAddress: thisDeviceIP!, printErrors: false, message: message)
+        ConnectToHeepDevice(ipAddress: thisDeviceIP!, printErrors: false, message: message){ (data, ipAddress) in
+            HAPIMemoryParser().ParseROP(dump: data, ipAddress: ipAddress)
+        }
+
     }
     
     public func sendDeleteVertexToHeepDevice(activeVertex: Vertex) {
@@ -75,7 +83,10 @@ class HeepConnections {
         let message = HAPIMemoryParser().BuildDeleteVertexCOP(vertex: activeVertex)
         print("Sending: \(message) to Heep Device at \(thisDeviceIP!)")
         
-        ConnectToHeepDevice(ipAddress: thisDeviceIP!, printErrors: false, message: message)
+        ConnectToHeepDevice(ipAddress: thisDeviceIP!, printErrors: false, message: message){ (data, ipAddress) in
+            HAPIMemoryParser().ParseROP(dump: data, ipAddress: ipAddress)
+        }
+
     }
     
     public func sendAssignAdminToHeepDevice(deviceID: Int, adminID: Int) {
@@ -94,7 +105,10 @@ class HeepConnections {
         
         print("Sending: \(message) to Heep Device at \(thisDeviceIP)")
         
-        ConnectToHeepDevice(ipAddress: thisDeviceIP, printErrors: false, message: message)
+        ConnectToHeepDevice(ipAddress: thisDeviceIP, printErrors: false, message: message){ (data, ipAddress) in
+            HAPIMemoryParser().ParseROP(dump: data, ipAddress: ipAddress)
+        }
+
         
     }
     
@@ -112,18 +126,63 @@ class HeepConnections {
             return
         }
         
-        let thisDeviceIP = thisDevice.ipAddress
+        
         
         let MOP = HAPIMemoryParser().BuildControlContextMOP(controlContext: thisControl)
         let message = HAPIMemoryParser().BuildStoreMOPCOP(byteArray: MOP)
         
-        print("Sending: \(message) to Heep Device at \(thisDeviceIP)")
+        print("Sending: \(message) to Heep Device at \(thisDevice.ipAddress)")
+        
+        replaceExistingMOP(deviceIP: thisDevice.ipAddress,
+                           MOPidentifier: 0x1A,
+                           message: message)
         
         //ConnectToHeepDevice(ipAddress: thisDeviceIP, printErrors: false, message: message)
         
     }
     
-    func ConnectToHeepDevice(ipAddress: String, printErrors: Bool, message: [UInt8]) {
+//    func replaceExistingMOP(deviceIP: String, MOPidentifier: UInt8, message: [UInt8]) {
+//        
+//        guard let dump = requestMemoryDumpFromDevice(deviceIP: deviceIP) else {
+//            print("Could not retrieve memory dump from device")
+//            return
+//        }
+//        
+//        guard let targetMOP = HAPIMemoryParser().searchForSpecificMOP(dump: dump, targetMOP: MOPidentifier) else {
+//            print("Did not find target MOP in memory dump")
+//            return
+//        }
+//        
+//        print("TARGET MOP SUCCESS: \(targetMOP)")
+//        
+//        //sendFragmentCOPToDevice()
+//        //SendReplacementMOPToDevice()
+//        
+//        
+//    }
+    
+    func replaceExistingMOP(deviceIP: String, MOPidentifier: UInt8, message: [UInt8]) {
+        let requestDumpMessage = HAPIMemoryParser().BuildIsHeepDeviceCOP()
+        
+        ConnectToHeepDevice(ipAddress: deviceIP, printErrors: false, message: requestDumpMessage) { (data, ipAddress) in
+            
+            guard let targetMOP = HAPIMemoryParser().searchForSpecificMOP(dump: data, targetMOP: MOPidentifier) else {
+                
+                print("Did not find target MOP \(MOPidentifier) in memory dump. Writing now.")
+                
+                self.ConnectToHeepDevice(ipAddress: deviceIP, printErrors: false, message: message) { (data, ipAddress) in
+                    HAPIMemoryParser().ParseROP(dump: data, ipAddress: ipAddress)
+                }
+                
+                return
+            }
+            
+            print("TARGET MOP SUCCESS: \(targetMOP)")
+        }
+
+    }
+    
+    func ConnectToHeepDevice(ipAddress: String, printErrors: Bool, message: [UInt8], callback: @escaping ([UInt8], String) -> Void = {_,_ in }) {
         
         let client = TCPClient(address: ipAddress, port:5000)
         
@@ -135,7 +194,8 @@ class HeepConnections {
                 
             case .success:
                 guard let data = client.read(1024*10) else { return }
-                HAPIMemoryParser().ParseROP(dump: data, ipAddress: ipAddress)
+                callback(data, ipAddress)
+                
                 client.close()
             case .failure(let error):
                 if (printErrors) {
