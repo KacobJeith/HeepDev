@@ -79,8 +79,6 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
         
         groups.append(group)
         
-        print(groups)
-        
         let notificationToken = group.addNotificationBlock { changes in
 
                 switch changes {

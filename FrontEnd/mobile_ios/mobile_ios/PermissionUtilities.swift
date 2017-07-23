@@ -290,7 +290,6 @@ func checkForNewRealmPermissions() {
             print("No permissions")
             return
         }
-        print(allRealms)
         
         for permission in allRealms {
             

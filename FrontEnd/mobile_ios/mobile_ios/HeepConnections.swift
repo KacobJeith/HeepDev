@@ -166,21 +166,48 @@ class HeepConnections {
         
         ConnectToHeepDevice(ipAddress: deviceIP, printErrors: false, message: requestDumpMessage) { (data, ipAddress) in
             
-            guard let targetMOP = HAPIMemoryParser().searchForSpecificMOP(dump: data, targetMOP: MOPidentifier) else {
-                
-                print("Did not find target MOP \(MOPidentifier) in memory dump. Writing now.")
-                
-                self.ConnectToHeepDevice(ipAddress: deviceIP, printErrors: false, message: message) { (data, ipAddress) in
-                    HAPIMemoryParser().ParseROP(dump: data, ipAddress: ipAddress)
-                }
-                
-                return
-            }
+            self.checkIfMOPPresentAndHandle(deviceIP: deviceIP,
+                                            MOPidentifier: MOPidentifier,
+                                            message: message,
+                                            data: data,
+                                            ipAddress: ipAddress)
             
-            print("TARGET MOP SUCCESS: \(targetMOP)")
         }
 
     }
+    
+    func checkIfMOPPresentAndHandle(deviceIP: String, MOPidentifier: UInt8, message: [UInt8], data: [UInt8], ipAddress: String) {
+        
+        guard let targetMOP = HAPIMemoryParser().searchForSpecificMOP(dump: data, targetMOP: MOPidentifier) else {
+            print("Did not find target MOP \(MOPidentifier) in memory dump. Writing now.")
+            
+            self.ConnectToHeepDevice(ipAddress: deviceIP, printErrors: false, message: message) { (data, ipAddress) in
+                HAPIMemoryParser().ParseROP(dump: data, ipAddress: ipAddress)
+            }
+            return
+        }
+        
+        print("DETECTED THE TARGET MOP: \(targetMOP)")
+        
+        DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + 2) {
+            let deleteMOPCOP = HAPIMemoryParser().BuildDeleteMOPCOP(MOP: targetMOP)
+            print("SENDING DELETE MOP COP: \(deleteMOPCOP)")
+            
+            self.ConnectToHeepDevice(ipAddress: deviceIP, printErrors: false, message: deleteMOPCOP) { (data, ipAddress) in
+                HAPIMemoryParser().ParseROP(dump: data, ipAddress: ipAddress)
+            }
+            
+        }
+        
+        DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + 4) {
+        
+            print("SENDING UPDATED MOP: \(message)")
+            self.ConnectToHeepDevice(ipAddress: deviceIP, printErrors: false, message: message) { (data, ipAddress) in
+                HAPIMemoryParser().ParseROP(dump: data, ipAddress: ipAddress)
+            }
+        }
+    }
+    
     
     func ConnectToHeepDevice(ipAddress: String, printErrors: Bool, message: [UInt8], callback: @escaping ([UInt8], String) -> Void = {_,_ in }) {
         
@@ -194,9 +221,10 @@ class HeepConnections {
                 
             case .success:
                 guard let data = client.read(1024*10) else { return }
-                callback(data, ipAddress)
                 
                 client.close()
+                callback(data, ipAddress)
+                
             case .failure(let error):
                 if (printErrors) {
                     print(error)

@@ -238,7 +238,6 @@ func convertIntToByteArray(integer: Int, size: Int = 0) -> [UInt8] {
         byteArray.append(contentsOf: [UInt8](repeating: 0, count: size - byteArray.count))
 
     }
-    print("size: \(size), actual: \(byteArray.count)")
     
     return byteArray.reversed()
 }

@@ -18,6 +18,12 @@ class HAPIMemoryParser {
         return packageCOP(COP: UInt8(0x09), packet: [UInt8]())
     }
     
+    public func BuildDeleteMOPCOP(MOP: [UInt8]) -> [UInt8] {
+        let COP = UInt8(0x15)
+        let entireArray = packageCOP(COP: COP, packet: MOP)
+        return entireArray
+    }
+    
     public func BuildSetValueCOP(controlID: Int, newValue: Int) -> [UInt8] {
         let COP = UInt8(0x0A)
         var setVal = 0
@@ -104,7 +110,7 @@ class HAPIMemoryParser {
     public func packageMOP(MOP: UInt8, deviceID: Int, packet: [UInt8]) -> [UInt8] {
         let numBytes = UInt8(packet.count)
         let deviceIDArray = convertIntToByteArray(integer: deviceID)
-        print(deviceIDArray)
+
         return [MOP] + deviceIDArray + [numBytes] + packet
     }
     
@@ -218,7 +224,7 @@ class HAPIMemoryParser {
             
             if dump[index] == targetMOP {
                 print("FOUND MOP")
-                return Array(dump[index ... index + packet.numBytes])
+                return Array(dump[index ... packet.index + packet.numBytes - 1])
             }
             
             index = packet.index + packet.numBytes
