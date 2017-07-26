@@ -214,48 +214,6 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
 
 extension VertexEditCell {
     
-    func handleVertexPan(gesture: UIPanGestureRecognizer) {
-        let cellView = self.viewWithTag(1)!
-        
-        searchSublayersForNameToRemove(names: ["circle", "vertex"])
-        
-        switch gesture.state {
-            
-        case .began :
-            
-            activeVertex = Vertex()
-            cellView.layer.addSublayer(drawCircle(center: gesture.location(in: cellView),
-                                                  radius: 35,
-                                                  name: "circle",
-                                                  modeColor: getModeColor(thisGroup: thisGroup, highlight: true)))
-            
-        case .changed :
-            
-            if activeVertexStart == CGPoint() {
-                
-                findOutputControl(gesture: gesture)
-                
-                
-            } else {
-                
-                findInputControl(gesture: gesture)
-                
-            }
-            
-        case .ended :
-            
-            commitAddVertex()
-            activeVertexStart = CGPoint()
-            activeVertexFinish = CGPoint()
-            searchSublayersForNameToRemove(names: ["finish", "start", "vertex"])
-            
-        default : break
-            
-            
-        }
-        
-    }
-    
     func handleDeleteVertexPan(gesture: UIPanGestureRecognizer) {
         searchSublayersForNameToRemove(names: ["circle"])
         
@@ -377,7 +335,7 @@ extension VertexEditCell {
         }
     }
     
-    func findOutputControl(gesture: UIPanGestureRecognizer) {
+    func findOutputControl(gesture: UILongPressGestureRecognizer) {
         
         cellView.layer.addSublayer(drawCircle(center: gesture.location(in: cellView),
                                               radius: 35,
@@ -389,7 +347,7 @@ extension VertexEditCell {
 
     }
         
-    func findInputControl(gesture: UIPanGestureRecognizer) {
+    func findInputControl(gesture: UILongPressGestureRecognizer) {
         
         cellView.layer.addSublayer(drawVertex(start: activeVertexStart,
                                               finish: gesture.location(in: cellView),
@@ -401,7 +359,7 @@ extension VertexEditCell {
     
     }
     
-    func verifyControlForVertex(gesture: UIPanGestureRecognizer, direction: Int) {
+    func verifyControlForVertex(gesture: UILongPressGestureRecognizer, direction: Int) {
         
         if let touched = touchingControlSprite(gesture: gesture) {
             
@@ -468,7 +426,7 @@ extension VertexEditCell {
         }
     }
     
-    func touchingControlSprite(gesture: UIPanGestureRecognizer) -> DeviceControl? {
+    func touchingControlSprite(gesture: UILongPressGestureRecognizer) -> DeviceControl? {
         
         for control in controls {
             
@@ -586,34 +544,90 @@ extension VertexEditCell {
     }
     
     func handleLongPress(gesture: UILongPressGestureRecognizer) {
-        if !thisGroup.UILocked { return }
         
         let realm = try! Realm(configuration: configUser)
-        guard let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: gesture.view?.tag) else {
+        guard let control = realm.object(ofType: DeviceControl.self, forPrimaryKey: gesture.view?.tag) else {
             print("Failed to retrieve the control with tag \(String(describing: gesture.view?.tag)) from realm handleLongPress")
             return
         }
         
+        if thisGroup.UILocked {
+            
+            handleLongPressLocked(gesture: gesture, control: control)
+            
+        } else {
+            
+            handleLongPressUnlocked(gesture: gesture, control: control)
+            
+        }
+        
+        
+    }
+    
+    func handleLongPressLocked(gesture: UILongPressGestureRecognizer, control: DeviceControl) {
+        
         var ratio: CGFloat = 0.5
         
         if longPressActive == true {
-             ratio = duringLongPressActive(control: thisControl, gesture: gesture)
+            ratio = duringLongPressActive(control: control, gesture: gesture)
         }
         
         switch gesture.state {
             
         case .began :
             
-            initializeLongPress(control: thisControl, gesture: gesture)
+            initializeLongPress(control: control, gesture: gesture)
             
         case .ended :
             
-            finalizeLongPress(control: thisControl, ratio: ratio)
+            finalizeLongPress(control: control, ratio: ratio)
             
         default : break
             
         }
+
+    }
+    
+    func handleLongPressUnlocked(gesture: UILongPressGestureRecognizer, control: DeviceControl) {
         
+        let cellView = self.viewWithTag(1)!
+        
+        searchSublayersForNameToRemove(names: ["circle", "vertex"])
+        
+        switch gesture.state {
+            
+        case .began :
+            
+            activeVertex = Vertex()
+            cellView.layer.addSublayer(drawCircle(center: gesture.location(in: cellView),
+                                                  radius: 35,
+                                                  name: "circle",
+                                                  modeColor: getModeColor(thisGroup: thisGroup, highlight: true)))
+            
+        case .changed :
+            
+            if activeVertexStart == CGPoint() {
+                
+                findOutputControl(gesture: gesture)
+                
+                
+            } else {
+                
+                findInputControl(gesture: gesture)
+                
+            }
+            
+        case .ended :
+            
+            commitAddVertex()
+            activeVertexStart = CGPoint()
+            activeVertexFinish = CGPoint()
+            searchSublayersForNameToRemove(names: ["finish", "start", "vertex"])
+            
+        default : break
+            
+            
+        }
         
     }
     
