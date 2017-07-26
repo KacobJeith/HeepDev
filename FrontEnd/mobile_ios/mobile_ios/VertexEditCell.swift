@@ -929,6 +929,8 @@ extension VertexEditCell {
     
     func tapToggle(gesture: UITapGestureRecognizer){
         
+        if(!thisGroup.UILocked) { return }
+        
         guard let tappedID = gesture.view?.tag else {
             print ("no tag on gesture")
             return
