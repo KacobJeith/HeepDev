@@ -356,14 +356,14 @@ void ExecuteDeleteMOPOpCode()
 		else
 		{
 			ClearOutputBuffer();
-			char MyerrorMessage [] = "Cannot Delete: MOP not found";
+			char MyerrorMessage [] = "MOP not found";
 			FillOutputBufferWithError(MyerrorMessage, strlen(MyerrorMessage));
 		}
 	}
 	else
 	{
 		ClearOutputBuffer();
-		char errorMessage [] = "Cannot Delete: Generic MOP was invalid!";
+		char errorMessage [] = "MOP was invalid!";
 		FillOutputBufferWithError(errorMessage, strlen(errorMessage));
 	}
 }
