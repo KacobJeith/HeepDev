@@ -335,19 +335,13 @@ extension VertexEditCell {
         }
     }
     
-    func findOutputControl(gesture: UILongPressGestureRecognizer) {
+    func findNextControl(gesture: UILongPressGestureRecognizer, direction: Int) {
+        
         
         cellView.layer.addSublayer(drawCircle(center: gesture.location(in: cellView),
                                               radius: 35,
                                               name: "circle",
                                               modeColor: getModeColor(thisGroup: thisGroup, highlight: false)))
-        
-        verifyControlForVertex(gesture: gesture,
-                               direction: 1)
-
-    }
-        
-    func findInputControl(gesture: UILongPressGestureRecognizer) {
         
         cellView.layer.addSublayer(drawVertex(start: activeVertexStart,
                                               finish: gesture.location(in: cellView),
@@ -355,7 +349,7 @@ extension VertexEditCell {
                                               highlight: true))
         
         verifyControlForVertex(gesture: gesture,
-                               direction: 0)
+                               direction: direction)
     
     }
     
@@ -363,13 +357,9 @@ extension VertexEditCell {
         
         if let touched = touchingControlSprite(gesture: gesture) {
             
-            if direction == 0 && touched.controlDirection == direction {
+            if touched.controlDirection == direction {
                 
                 completeNewVertex(touched: touched)
-                
-            } else if direction == 1 && touched.controlDirection == direction {
-                
-                initializeNewVertex(touched: touched)
                 
             }
             
@@ -381,7 +371,12 @@ extension VertexEditCell {
         
         activeVertexStart = CGPoint(x: touched.editX,
                                     y: touched.editY)
-        activeVertex.tx = touched
+        
+        if touched.controlDirection == 0 {
+            activeVertex.tx = touched
+        } else {
+            activeVertex.rx = touched
+        }
         
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         
@@ -590,8 +585,6 @@ extension VertexEditCell {
     
     func handleLongPressUnlocked(gesture: UILongPressGestureRecognizer, control: DeviceControl) {
         
-        let cellView = self.viewWithTag(1)!
-        
         searchSublayersForNameToRemove(names: ["circle", "vertex"])
         
         switch gesture.state {
@@ -599,23 +592,12 @@ extension VertexEditCell {
         case .began :
             
             activeVertex = Vertex()
-            cellView.layer.addSublayer(drawCircle(center: gesture.location(in: cellView),
-                                                  radius: 35,
-                                                  name: "circle",
-                                                  modeColor: getModeColor(thisGroup: thisGroup, highlight: true)))
+            
+            initializeNewVertex(touched: control)
             
         case .changed :
             
-            if activeVertexStart == CGPoint() {
-                
-                findOutputControl(gesture: gesture)
-                
-                
-            } else {
-                
-                findInputControl(gesture: gesture)
-                
-            }
+            findNextControl(gesture: gesture, direction: abs(1 - control.controlDirection))
             
         case .ended :
             
@@ -907,52 +889,6 @@ extension VertexEditCell {
             return
         }
         toggleOnOff(controlUniqueID: tappedID)
-        
-    }
-    
-    func selectThisControllerTap(gesture: UITapGestureRecognizer) {
-        
-//        for sublayer in cellView.layer.sublayers! {
-//            if let sublayerName = sublayer.name {
-//                
-//                for controlIDName in controlIDs.keys {
-//                    
-//                    if sublayerName == controlIDName && controlIDs[controlIDName] != true {
-//                        
-//                        checkVertexPositionAndResolve(gesture: gesture,
-//                                                      sublayer: sublayer,
-//                                                      vertexName: vertexName)
-//                        
-//                    }
-//                }
-//                
-//            }
-//        }
-
-        
-//        print(tag)
-//        
-//        guard let tag = gesture.view?.tag else {
-//            print("Selected view did not have a tag")
-//            return
-//        }
-//        
-//        print(tag)
-//        
-//        let realm = try! Realm(configuration: configUser)
-//
-//        try! realm.write {
-//            thisGroup.selectedControl = tag
-//        }
-//        
-//        if (thisGroup.UILocked){
-//            print("trying to toggle locked object")
-//            toggleOnOff(controlUniqueID: thisGroup.selectedControl)
-//        }
-//        else{
-//            print("trying to toggle UNLOCKED object")
-//        }
-
         
     }
     
