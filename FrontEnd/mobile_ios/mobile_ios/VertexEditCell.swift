@@ -450,7 +450,7 @@ extension VertexEditCell {
     
     func translateSpritePosition(gesture: UIPanGestureRecognizer) {
         guard let tag = gesture.view?.tag else {
-            print("Selectd view not tagged")
+            print("Selected view not tagged")
             return
         }
         
@@ -467,14 +467,14 @@ extension VertexEditCell {
         resolveConnectedVertices(controlView: controlView)
         
         gesture.setTranslation(CGPoint(), in: self)
-        
-        switch gesture.state {
-        case .ended :
-            
-            saveSelectedSprite()
-            
-        default : break
-        }
+//        
+//        switch gesture.state {
+//        case .ended :
+//            
+//            saveSelectedSprite()
+//            
+//        default : break
+//        }
     }
     
     func resolveConnectedVertices(controlView: UIView) {
@@ -520,24 +520,30 @@ extension VertexEditCell {
     
     
     func handlePinch(gesture: UIPinchGestureRecognizer) {
+        guard let tag = gesture.view?.tag else {
+            print("View not tagged")
+            return
+        }
         
-        guard let myView = self.viewWithTag(thisGroup.selectedControl) else {
-            print("No control selected pinch")
+        guard let myView = self.viewWithTag(tag) else {
+            print("No view for control selected pinch")
             return
         }
         
         let realm = try! Realm(configuration: configUser)
         
+        guard let control = realm.object(ofType: DeviceControl.self, forPrimaryKey: tag) else {
+            print("Could not grab control")
+            return
+        }
         
-        
-        let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl)!
-        myView.transform = CGAffineTransform(scaleX: thisControl.scale * gesture.scale,
-                                             y: thisControl.scale * gesture.scale).rotated(by: CGFloat(atan2f(Float(CGFloat(myView.transform.b)),Float(myView.transform.a))))
+        myView.transform = CGAffineTransform(scaleX: control.scale * gesture.scale,
+                                             y: control.scale * gesture.scale).rotated(by: CGFloat(atan2f(Float(CGFloat(myView.transform.b)),Float(myView.transform.a))))
         
         switch gesture.state {
         case .ended :
             
-            saveSelectedSprite()
+            saveSelectedSprite(control: control)
             
         default : break
         }
@@ -545,23 +551,23 @@ extension VertexEditCell {
     
     func handleRotation(gesture: UIRotationGestureRecognizer) {
         
-        guard let myView = self.viewWithTag(thisGroup.selectedControl) else {
-            print("No control selected rotation")
-            return
-        }
-        
-        myView.transform = myView.transform.rotated(by: gesture.rotation * 3)
-        
-        myView.subviews[0].transform = myView.subviews[0].transform.rotated(by: -gesture.rotation * 3)
-        
-        
-        switch gesture.state {
-        case .ended :
-            saveSelectedSprite()
-        default : break
-        }
-        
-        gesture.rotation = 0
+//        guard let myView = self.viewWithTag(thisGroup.selectedControl) else {
+//            print("No control selected rotation")
+//            return
+//        }
+//        
+//        myView.transform = myView.transform.rotated(by: gesture.rotation * 3)
+//        
+//        myView.subviews[0].transform = myView.subviews[0].transform.rotated(by: -gesture.rotation * 3)
+//        
+//        
+//        switch gesture.state {
+//        case .ended :
+//            saveSelectedSprite(control: )
+//        default : break
+//        }
+//        
+//        gesture.rotation = 0
     }
     
     func handleLongPress(gesture: UILongPressGestureRecognizer) {
@@ -721,7 +727,7 @@ extension VertexEditCell {
         }
         
         
-        saveSelectedSprite()
+        saveSelectedSprite(control: control)
         
         // delay for 0.1 seconds to prevent sprite translation from kicking in
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
@@ -945,15 +951,8 @@ extension VertexEditCell {
         
     }
     
-    func saveSelectedSprite() {
-        let realm = try! Realm(configuration: configUser)
-        
-        guard let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl) else {
-            print("Could not retrieve the control from realm on saveSelectedSprite")
-            return
-        }
-        
-        guard let myView = self.viewWithTag(thisGroup.selectedControl) else {
+    func saveSelectedSprite(control: DeviceControl) {
+        guard let myView = self.viewWithTag(control.uniqueID) else {
             print("Could not find the selected control in the view")
             return
         }
@@ -963,12 +962,14 @@ extension VertexEditCell {
         let editX = myView.frame.origin.x + myView.frame.width/2
         let editY = myView.frame.origin.y + myView.frame.height/2
         
+        let realm = try! Realm(configuration: configUser)
+        
         try! realm.write {
             
-            thisControl.rotation = rotation
-            thisControl.scale = scale
-            thisControl.editX = editX
-            thisControl.editY = editY
+            control.rotation = rotation
+            control.scale = scale
+            control.editX = editX
+            control.editY = editY
         }
         
     }
