@@ -398,7 +398,11 @@ extension VertexEditCell {
             
             UIImpactFeedbackGenerator(style: .medium).impactOccurred()
             
-            activeVertex.rx = touched
+            if touched.controlDirection == 0 {
+                activeVertex.tx = touched
+            } else {
+                activeVertex.rx = touched
+            }
             
             searchSublayersForNameToRemove(names: ["finish"])
             
