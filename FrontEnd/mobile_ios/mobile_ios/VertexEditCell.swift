@@ -852,6 +852,7 @@ extension VertexEditCell {
         spriteContainer.addGestureRecognizer(longPress)
         spriteContainer.addGestureRecognizer(tap)
         
+        
         return spriteContainer
     }
     
