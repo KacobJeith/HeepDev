@@ -132,7 +132,6 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         setContextImage()
         
         addControlsAndVertices()
-        setLockedGestures(cell: cell)
         
         return cell
     }
@@ -169,22 +168,6 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
             cellView.addSubview(addControlSprite(thisControl: eachControl))
             
         }
-    }
-    
-    func setLockedGestures(cell: UICollectionViewCell) {
-        //Add toggle & range gestures here
-        
-        self.collectionView.isScrollEnabled =  false
-        
-//        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(selectThisControllerLongPress))
-        let tap = UITapGestureRecognizer(target: self, action: #selector(tapToggle))
-        
-//        longPress.delegate = self
-        tap.delegate = self
-        
-//        cell.addGestureRecognizer(longPress)
-        cell.addGestureRecognizer(tap)
-        
     }
 
     
@@ -625,33 +608,26 @@ extension VertexEditCell {
         gestureRecognizer.rotation = 0
     }
     
-    func handleTap(gestureRecognizer: UITapGestureRecognizer){
+    func handleLongPress(gesture: UILongPressGestureRecognizer) {
+        if !thisGroup.UILocked { return }
+        
         let realm = try! Realm(configuration: configUser)
-        guard let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl) else {
-            print("Failed to retrieve the control from realm")
-            return
-        }
-        toggleOnOff(controlUniqueID: thisControl.uniqueID)
-    }
-    
-    func handleLongPress(gestureRecognizer: UILongPressGestureRecognizer) {
-        let realm = try! Realm(configuration: configUser)
-        guard let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl) else {
-            print("Failed to retrieve the control from realm")
+        guard let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: gesture.view?.tag) else {
+            print("Failed to retrieve the control with tag \(gesture.view?.tag) from realm handleLongPress")
             return
         }
         
         var ratio: CGFloat = 0.5
         
         if longPressActive == true {
-             ratio = duringLongPressActive(control: thisControl, gesture: gestureRecognizer)
+             ratio = duringLongPressActive(control: thisControl, gesture: gesture)
         }
         
-        switch gestureRecognizer.state {
+        switch gesture.state {
             
         case .began :
             
-            initializeLongPress(control: thisControl, gesture: gestureRecognizer)
+            initializeLongPress(control: thisControl, gesture: gesture)
             
         case .ended :
             
@@ -677,7 +653,7 @@ extension VertexEditCell {
     
     func duringLongPressActive(control: DeviceControl, gesture: UILongPressGestureRecognizer) -> CGFloat {
         
-        guard let myView = self.viewWithTag(thisGroup.selectedControl) else {
+        guard let myView = gesture.view else {
             print("Could not find this view")
             return 0.5
         }
@@ -870,7 +846,10 @@ extension VertexEditCell {
         spriteContainer.transform = CGAffineTransform(scaleX: thisControl.scale, y: thisControl.scale).rotated(by: thisControl.rotation)
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(tapToggle))
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress) )
         
+        
+        spriteContainer.addGestureRecognizer(longPress)
         spriteContainer.addGestureRecognizer(tap)
         
         return spriteContainer
@@ -984,33 +963,6 @@ extension VertexEditCell {
 
         
     }
-    
-    func selectThisControllerLongPress(gesture: UILongPressGestureRecognizer){
-        
-        guard let tag = gesture.view?.tag else {
-            print("Selected view did not have a tag")
-            return
-        }
-        
-        print("how many times")
-        
-        let realm = try! Realm(configuration: configUser)
-        
-        try! realm.write {
-            thisGroup.selectedControl = tag
-        }
-        
-        if (thisGroup.UILocked){
-            print("trying to longpress locked object")
-            handleLongPress(gestureRecognizer: gesture)
-//            toggleOnOff(controlUniqueID: thisGroup.selectedControl)
-        }
-        else{
-            print("trying to longpress UNLOCKED object")
-        }
-        
-    }
-
     
     func toggleOnOff(controlUniqueID: Int) {
         
