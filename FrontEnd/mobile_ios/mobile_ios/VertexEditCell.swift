@@ -24,6 +24,8 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     var activeVertexFinish = CGPoint()
     var activeVertex = Vertex()
     
+    var check = 1
+    
     var lastSendTime = DispatchTime.init(uptimeNanoseconds: 0)
     
     var vertexDictToDelete = [String : Bool]()
@@ -130,7 +132,7 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         setContextImage()
         
         addControlsAndVertices()
-        setActiveGestures(cell: cell)
+        setLockedGestures(cell: cell)
         
         return cell
     }
@@ -169,11 +171,22 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         }
     }
     
-    func setActiveGestures(cell: UICollectionViewCell) {
+    func setLockedGestures(cell: UICollectionViewCell) {
+        //Add toggle & range gestures here
         
+        self.collectionView.isScrollEnabled =  false
         
+//        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(selectThisControllerLongPress))
+        let tap = UITapGestureRecognizer(target: self, action: #selector(tapToggle))
+        
+//        longPress.delegate = self
+        tap.delegate = self
+        
+//        cell.addGestureRecognizer(longPress)
+        cell.addGestureRecognizer(tap)
         
     }
+
     
     func addAddingVertexGestures(cell: UICollectionViewCell) {
         self.collectionView.isScrollEnabled =  false
@@ -217,23 +230,7 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         cell.addGestureRecognizer(rotate)
         cell.addSubview(addDetailButton())
     }
-    
-    func addRangeAndToggleGesture(cell: UICollectionViewCell) {
-        
-        self.collectionView.isScrollEnabled =  false
-       
-        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
-        let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-        
-        
-        longPress.delegate = self
-        tap.delegate = self
-        
-        cell.addGestureRecognizer(longPress)
-        cell.addGestureRecognizer(tap)
-        
-        cell.addSubview(addDetailButton())
-    }
+
     
     
     
@@ -872,7 +869,8 @@ extension VertexEditCell {
         
         spriteContainer.transform = CGAffineTransform(scaleX: thisControl.scale, y: thisControl.scale).rotated(by: thisControl.rotation)
         
-        let tap = UITapGestureRecognizer(target: self, action: #selector(selectThisController))
+        let tap = UITapGestureRecognizer(target: self, action: #selector(tapToggle))
+        
         spriteContainer.addGestureRecognizer(tap)
         
         return spriteContainer
@@ -929,52 +927,106 @@ extension VertexEditCell {
         return currentRangeContainer
     }
     
-    func selectThisController(gesture: UITapGestureRecognizer) {
+    func tapToggle(gesture: UITapGestureRecognizer){
+        
+        guard let tappedID = gesture.view?.tag else {
+            print ("no tag on gesture")
+            return
+        }
+        toggleOnOff(controlUniqueID: tappedID)
+        
+    }
+    
+    func selectThisControllerTap(gesture: UITapGestureRecognizer) {
+        
+//        for sublayer in cellView.layer.sublayers! {
+//            if let sublayerName = sublayer.name {
+//                
+//                for controlIDName in controlIDs.keys {
+//                    
+//                    if sublayerName == controlIDName && controlIDs[controlIDName] != true {
+//                        
+//                        checkVertexPositionAndResolve(gesture: gesture,
+//                                                      sublayer: sublayer,
+//                                                      vertexName: vertexName)
+//                        
+//                    }
+//                }
+//                
+//            }
+//        }
+
+        
+//        print(tag)
+//        
+//        guard let tag = gesture.view?.tag else {
+//            print("Selected view did not have a tag")
+//            return
+//        }
+//        
+//        print(tag)
+//        
+//        let realm = try! Realm(configuration: configUser)
+//
+//        try! realm.write {
+//            thisGroup.selectedControl = tag
+//        }
+//        
+//        if (thisGroup.UILocked){
+//            print("trying to toggle locked object")
+//            toggleOnOff(controlUniqueID: thisGroup.selectedControl)
+//        }
+//        else{
+//            print("trying to toggle UNLOCKED object")
+//        }
+
+        
+    }
+    
+    func selectThisControllerLongPress(gesture: UILongPressGestureRecognizer){
         
         guard let tag = gesture.view?.tag else {
             print("Selected view did not have a tag")
             return
         }
         
+        print("how many times")
+        
         let realm = try! Realm(configuration: configUser)
-
+        
         try! realm.write {
             thisGroup.selectedControl = tag
         }
         
         if (thisGroup.UILocked){
-            toggleOnOff(controlUniqueID: thisGroup.selectedControl)
+            print("trying to longpress locked object")
+            handleLongPress(gestureRecognizer: gesture)
+//            toggleOnOff(controlUniqueID: thisGroup.selectedControl)
+        }
+        else{
+            print("trying to longpress UNLOCKED object")
         }
         
-//        self.collectionView.isScrollEnabled = false
-//        
-//        if (thisGroup.UILocked){
-//            print("setting locked gestures")
-//            addRangeAndToggleGesture(cell: cell)
-//        }
-//        else{
-//            print("setting UNLOCKED gestures")
-//            addSelectedControlGesturesUnlocked(cell: cell)
-//            addAddingVertexGestures(cell: cell)
-//            addDeletingVertexGestures(cell: cell)
-//        }
-        
     }
+
     
     func toggleOnOff(controlUniqueID: Int) {
         
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         
-        DispatchQueue.global().async {
-            HeepConnections().sendValueToHeepDevice(uniqueID: controlUniqueID)
-        }
+        print(controlUniqueID)
         
         let realm = try! Realm(configuration: configUser)
-        
         guard let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: controlUniqueID) else {
             print("Could not retrieve the control from realm")
             return
         }
+        
+        DispatchQueue.global().async {
+            HeepConnections().sendValueToHeepDevice(uniqueID: controlUniqueID)
+        }
+        
+        
         
         try! realm.write{
             thisControl.valueCurrent = toggleDevice(control: thisControl)
@@ -987,7 +1039,7 @@ extension VertexEditCell {
         let realm = try! Realm(configuration: configUser)
         
         guard let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl) else {
-            print("Could not retrieve the control from realm")
+            print("Could not retrieve the control from realm on saveSelectedSprite")
             return
         }
         
