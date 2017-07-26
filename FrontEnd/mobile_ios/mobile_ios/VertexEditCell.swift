@@ -169,29 +169,6 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
             
         }
     }
-
-    
-    func addAddingVertexGestures(cell: UICollectionViewCell) {
-        self.collectionView.isScrollEnabled =  false
-        
-        let vertexPan = UIPanGestureRecognizer(target: self,
-                                               action: #selector(handleVertexPan))
-        
-        vertexPan.delegate = self
-        cell.addGestureRecognizer(vertexPan)
-
-    }
-    
-    func addDeletingVertexGestures(cell: UICollectionViewCell) {
-        self.collectionView.isScrollEnabled =  false
-        resetVertexDictToDelete()
-        
-        let deleteVertexPan = UIPanGestureRecognizer(target: self,
-                                                     action: #selector(handleDeleteVertexPan))
-        
-        deleteVertexPan.delegate = self
-        cell.addGestureRecognizer(deleteVertexPan)
-    }
     
     func addSelectedControlGesturesUnlocked(cell: UICollectionViewCell) {
         
@@ -613,7 +590,7 @@ extension VertexEditCell {
         
         let realm = try! Realm(configuration: configUser)
         guard let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: gesture.view?.tag) else {
-            print("Failed to retrieve the control with tag \(gesture.view?.tag) from realm handleLongPress")
+            print("Failed to retrieve the control with tag \(String(describing: gesture.view?.tag)) from realm handleLongPress")
             return
         }
         

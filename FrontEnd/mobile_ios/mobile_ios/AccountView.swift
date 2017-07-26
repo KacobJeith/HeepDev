@@ -260,7 +260,7 @@ extension AccountView{
     
     func submitLogin() {
         extractInputValues()
-        print("submitting \(email)")
+        print("submitting \(String(describing: email))")
         
         let loginGroup = DispatchGroup()
         loginGroup.enter()
