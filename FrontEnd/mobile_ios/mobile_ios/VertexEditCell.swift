@@ -170,7 +170,7 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         }
     }
     
-    func addSelectedControlGesturesUnlocked(cell: UICollectionViewCell) {
+    func addSelectedControlGesturesUnlocked(sprite: UIView) {
         
         self.collectionView.isScrollEnabled =  false
         
@@ -181,14 +181,10 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         let rotate = UIRotationGestureRecognizer(target: self,
                                                  action: #selector(handleRotation))
         
-        pinch.delegate = self
-        rotate.delegate = self
-        pan.delegate = self
-        
-        cell.addGestureRecognizer(pan)
-        cell.addGestureRecognizer(pinch)
-        cell.addGestureRecognizer(rotate)
-        cell.addSubview(addDetailButton())
+        sprite.addGestureRecognizer(pan)
+        sprite.addGestureRecognizer(pinch)
+        sprite.addGestureRecognizer(rotate)
+        sprite.addSubview(addDetailButton())
     }
 
     
@@ -446,15 +442,24 @@ extension VertexEditCell {
 
 extension VertexEditCell {
     
-    func handlePan(gesture: UIPanGestureRecognizer){
-        if !longPressActive {
+    func handlePan(gesture: UIPanGestureRecognizer) {
+        if !thisGroup.UILocked {
             translateSpritePosition(gesture: gesture)
         }
     }
     
     func translateSpritePosition(gesture: UIPanGestureRecognizer) {
+        guard let tag = gesture.view?.tag else {
+            print("Selectd view not tagged")
+            return
+        }
+        
+        guard let controlView = self.viewWithTag(tag) else {
+            print("No control selected translate")
+            return
+        }
+        
         let translation = gesture.translation(in: self)
-        let controlView = self.viewWithTag(thisGroup.selectedControl)!
         
         controlView.center.x += translation.x
         controlView.center.y += translation.y
@@ -514,32 +519,49 @@ extension VertexEditCell {
     }
     
     
-    func handlePinch(gestureRecognizer: UIPinchGestureRecognizer) {
+    func handlePinch(gesture: UIPinchGestureRecognizer) {
+        
+        guard let myView = self.viewWithTag(thisGroup.selectedControl) else {
+            print("No control selected pinch")
+            return
+        }
+        
         let realm = try! Realm(configuration: configUser)
         
-        let myView = self.viewWithTag(thisGroup.selectedControl)!
-        let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl)!
-        myView.transform = CGAffineTransform(scaleX: thisControl.scale * gestureRecognizer.scale,
-                                             y: thisControl.scale * gestureRecognizer.scale).rotated(by: CGFloat(atan2f(Float(CGFloat(myView.transform.b)),Float(myView.transform.a))))
         
-        if gestureRecognizer.state == UIGestureRecognizerState.ended {
+        
+        let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl)!
+        myView.transform = CGAffineTransform(scaleX: thisControl.scale * gesture.scale,
+                                             y: thisControl.scale * gesture.scale).rotated(by: CGFloat(atan2f(Float(CGFloat(myView.transform.b)),Float(myView.transform.a))))
+        
+        switch gesture.state {
+        case .ended :
+            
             saveSelectedSprite()
+            
+        default : break
         }
     }
     
-    func handleRotation(gestureRecognizer: UIRotationGestureRecognizer) {
-        let myView = self.viewWithTag(thisGroup.selectedControl)!
+    func handleRotation(gesture: UIRotationGestureRecognizer) {
         
-        myView.transform = myView.transform.rotated(by: gestureRecognizer.rotation * 3)
-        
-        myView.subviews[0].transform = myView.subviews[0].transform.rotated(by: -gestureRecognizer.rotation * 3)
-        
-        
-        if gestureRecognizer.state == UIGestureRecognizerState.ended {
-            saveSelectedSprite()
+        guard let myView = self.viewWithTag(thisGroup.selectedControl) else {
+            print("No control selected rotation")
+            return
         }
         
-        gestureRecognizer.rotation = 0
+        myView.transform = myView.transform.rotated(by: gesture.rotation * 3)
+        
+        myView.subviews[0].transform = myView.subviews[0].transform.rotated(by: -gesture.rotation * 3)
+        
+        
+        switch gesture.state {
+        case .ended :
+            saveSelectedSprite()
+        default : break
+        }
+        
+        gesture.rotation = 0
     }
     
     func handleLongPress(gesture: UILongPressGestureRecognizer) {
@@ -825,10 +847,12 @@ extension VertexEditCell {
         let tap = UITapGestureRecognizer(target: self, action: #selector(tapToggle))
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress) )
         
-        
         spriteContainer.addGestureRecognizer(longPress)
         spriteContainer.addGestureRecognizer(tap)
         
+        if !thisGroup.UILocked  {
+            addSelectedControlGesturesUnlocked(sprite: spriteContainer)
+        }
         
         return spriteContainer
     }
