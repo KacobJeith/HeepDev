@@ -955,7 +955,16 @@ extension VertexEditCell {
             return
         }
         
-        toggleOnOff(controlUniqueID: tappedID)
+        if thisGroup.UILocked {
+            
+            toggleOnOff(controlUniqueID: tappedID)
+            
+        } else {
+            
+            try! Realm(configuration: configUser).write {
+                thisGroup.selectedControl = tappedID
+            }
+        }
         
     }
     
