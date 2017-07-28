@@ -13,13 +13,45 @@ class DeviceTableViewController: UITableViewController {
     //MARK: Properties
     
     var notificationToken: NotificationToken!
-    let devices: Results<Device>
+    var devices = [Device]()
     var controlTags = [IndexPath]()
     let realm = try! Realm(configuration: configUser)
     
-    init(place: Place) {
-        devices = realm.objects(Device.self)
+    init(placeID: Int) {
         super.init(style: UITableViewStyle.plain)
+        
+        self.findDevicesInPlace(placeID: placeID)
+    }
+    
+    func findDevicesInPlace(placeID: Int) {
+        let realm = try! Realm(configuration: configUser)
+        
+        let groupsInPlace = realm.objects(GroupPerspective.self).filter("placeID = %@", placeID)
+        
+        for group in groupsInPlace {
+            
+            let controlsInGroup = realm.objects(DeviceControl.self).filter("groupID = %@", group.groupID)
+            
+            for control in controlsInGroup {
+                checkControlAndAdd(control: control)
+            }
+        }
+        
+    }
+    
+    func checkControlAndAdd(control: DeviceControl) {
+        for device in devices {
+            if control.deviceID == device.deviceID {
+                return
+            }
+        }
+        
+        let realm = try! Realm(configuration: configUser)
+        
+        if let device = realm.object(ofType: Device.self, forPrimaryKey: control.deviceID) {
+            
+            devices.append(device)
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {

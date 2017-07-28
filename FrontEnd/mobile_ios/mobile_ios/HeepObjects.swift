@@ -141,7 +141,7 @@ class DeviceControl: Object {
     dynamic var valueCurrent: Int = 0
     dynamic var lastOnValue: Int = 100
     dynamic var controlName: String = "Default"
-    dynamic var place: String = "none"
+    dynamic var active: Bool = false
     dynamic var editX: CGFloat = 100
     dynamic var editY: CGFloat = 100
     dynamic var scale: CGFloat = 1

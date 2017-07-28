@@ -252,8 +252,8 @@ extension GroupCollectionView {
     func openDeviceTable() {
         print("Open Device Table View")
         
-//        let seeAllDevicesInPlace = DeviceTableViewController(place: thisPlace)
-//        navigationController?.pushViewController(seeAllDevicesInPlace, animated: true)
+        let seeAllDevicesInPlace = DeviceTableViewController(placeID: placeID)
+        navigationController?.pushViewController(seeAllDevicesInPlace, animated: true)
     }
     
     func addGroupFromButton() {
