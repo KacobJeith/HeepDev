@@ -453,14 +453,34 @@ extension VertexEditCell {
                 translateSpritePosition(gesture: gesture, controlView: controlView, uniqueID: thisGroup.selectedControl)
             }
             
+            if let detailsIconView = self.viewWithTag(-thisGroup.selectedControl) {
+                    translateView(view: detailsIconView, translation: gesture.translation(in: self))
+            }
+            
+            
         } else {
+            
+            if tag == thisGroup.selectedControl {
+                if let detailsIconView = self.viewWithTag(-tag) {
+                    translateView(view: detailsIconView, translation: gesture.translation(in: self))
+                }
+            }
             
             if let controlView = self.viewWithTag(tag) {
                 translateSpritePosition(gesture: gesture, controlView: controlView, uniqueID: tag)
                 
             }
+            
         }
         
+        gesture.setTranslation(CGPoint(), in: self)
+        
+    }
+    
+    func translateView(view: UIView, translation: CGPoint) {
+        
+        view.center.x += translation.x
+        view.center.y += translation.y
     }
     
     func translateSpritePosition(gesture: UIPanGestureRecognizer, controlView: UIView, uniqueID: Int) {
@@ -471,14 +491,9 @@ extension VertexEditCell {
             return
         }
         
-        let translation = gesture.translation(in: self)
-        
-        controlView.center.x += translation.x
-        controlView.center.y += translation.y
-        
+        translateView(view: controlView, translation: gesture.translation(in: self))
+
         resolveConnectedVertices(control: control)
-        
-        gesture.setTranslation(CGPoint(), in: self)
         
         switch gesture.state {
         case .ended :
@@ -1003,6 +1018,7 @@ extension VertexEditCell {
         
         
         let infoButton = UIButton(type: .detailDisclosure)
+        infoButton.tag = -thisGroup.selectedControl
         infoButton.isUserInteractionEnabled = true
         infoButton.frame = CGRect(x: 0,
                                   y: 0,
