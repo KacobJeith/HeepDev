@@ -553,6 +553,10 @@ extension VertexEditCell {
             return
         }
         
+        guard let infoView = self.viewWithTag(-thisGroup.selectedControl) else {
+            return
+        }
+        
         let realm = try! Realm(configuration: configUser)
         
         guard let control = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl) else {
@@ -562,9 +566,14 @@ extension VertexEditCell {
         
         switch gesture.state {
         case .changed :
+            let newScale = control.scale * gesture.scale
+            myView.transform = CGAffineTransform(scaleX: newScale,
+                                                 y: newScale).rotated(by: CGFloat(atan2f(Float(CGFloat(myView.transform.b)),Float(myView.transform.a))))
             
-            myView.transform = CGAffineTransform(scaleX: control.scale * gesture.scale,
-                                                 y: control.scale * gesture.scale).rotated(by: CGFloat(atan2f(Float(CGFloat(myView.transform.b)),Float(myView.transform.a))))
+            infoView.transform = CGAffineTransform(translationX: control.editX + (24 * newScale),
+                                                   y: control.editY - (30 * newScale)).scaledBy(x: newScale, y: newScale)
+        
+            
         case .ended :
             
             saveSelectedSprite(control: control)
@@ -1013,12 +1022,6 @@ extension VertexEditCell {
     
     
     func addDetailButton() -> UIView {
-        let realm = try! Realm(configuration: configUser)
-        
-        guard let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl) else {
-            return UIView()
-        }
-        
         
         let infoButton = UIButton(type: .detailDisclosure)
         infoButton.tag = -thisGroup.selectedControl
@@ -1031,10 +1034,27 @@ extension VertexEditCell {
         infoButton.tintColor = .blue
         infoButton.addTarget(self, action: #selector(displayDeviceSummary), for: .primaryActionTriggered)
         
-        infoButton.transform = CGAffineTransform(translationX: thisControl.editX + (24 * thisControl.scale),
-                                                 y: thisControl.editY - (30 * thisControl.scale)).scaledBy(x: thisControl.scale,
-                                                                                                           y: thisControl.scale)
+        infoButton.transform = applyDetailTransform()
         return infoButton
+    }
+    
+    func applyDetailTransform(scale: CGFloat = 0) -> CGAffineTransform {
+        let realm = try! Realm(configuration: configUser)
+        
+        guard let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl) else {
+            return CGAffineTransform()
+        }
+        
+        if scale != 0 {
+            return CGAffineTransform(translationX: thisControl.editX + (24 * scale),
+                                     y: thisControl.editY - (30 * scale)).scaledBy(x: scale,
+                                                                                   y: scale)
+        }
+        
+        return CGAffineTransform(translationX: thisControl.editX + (24 * thisControl.scale),
+                          y: thisControl.editY - (30 * thisControl.scale)).scaledBy(x: thisControl.scale,
+                                                                                    y: thisControl.scale)
+        
     }
     
     func displayDeviceSummary() {
