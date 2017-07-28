@@ -379,7 +379,7 @@ extension VertexEditCell {
         activeVertexStart = CGPoint(x: touched.editX,
                                     y: touched.editY)
         
-        if touched.controlDirection == 0 {
+        if touched.controlDirection == 1 {
             activeVertex.tx = touched
         } else {
             activeVertex.rx = touched
@@ -405,7 +405,7 @@ extension VertexEditCell {
             
             UIImpactFeedbackGenerator(style: .medium).impactOccurred()
             
-            if touched.controlDirection == 0 {
+            if touched.controlDirection == 1 {
                 activeVertex.tx = touched
             } else {
                 activeVertex.rx = touched
@@ -457,87 +457,87 @@ extension VertexEditCell {
         
         if thisGroup.UILocked { return }
         
-        if let tag = gesture.view?.tag {
-            print("TAG: \(tag)")
-            if tag == 0 {
-                
-                guard let controlView = self.viewWithTag(thisGroup.selectedControl) else {
-                    return
-                }
-                
-                translateSpritePosition(gesture: gesture, controlView: controlView)
-                
-            } else {
-                
-                if let controlView = self.viewWithTag(tag) {
-                    translateSpritePosition(gesture: gesture, controlView: controlView)
-                    
-                }
-            }
+        guard let tag = gesture.view?.tag else {
+            print("No Tag")
+            return
         }
         
         
-        
+        if tag == 0 {
+            
+            if let controlView = self.viewWithTag(thisGroup.selectedControl)  {
+                translateSpritePosition(gesture: gesture, controlView: controlView, uniqueID: thisGroup.selectedControl)
+            }
+            
+        } else {
+            
+            if let controlView = self.viewWithTag(tag) {
+                translateSpritePosition(gesture: gesture, controlView: controlView, uniqueID: tag)
+                
+            }
+        }
         
     }
     
-    func translateSpritePosition(gesture: UIPanGestureRecognizer, controlView: UIView) {
+    func translateSpritePosition(gesture: UIPanGestureRecognizer, controlView: UIView, uniqueID: Int) {
+        let realm = try! Realm(configuration: configUser)
+        
+        guard let control = realm.object(ofType: DeviceControl.self, forPrimaryKey: uniqueID) else {
+            print("Couldn't save control from translate")
+            return
+        }
         
         let translation = gesture.translation(in: self)
         
         controlView.center.x += translation.x
         controlView.center.y += translation.y
         
-        resolveConnectedVertices(controlView: controlView)
+        resolveConnectedVertices(control: control)
         
         gesture.setTranslation(CGPoint(), in: self)
         
         switch gesture.state {
         case .ended :
-            
-            let realm = try! Realm(configuration: configUser)
-            
-            guard let control = realm.object(ofType: DeviceControl.self, forPrimaryKey: tag) else {
-                print("Couldn't save control from translate")
-                return
-            }
-            
             saveSelectedSprite(control: control)
             
         default : break
         }
     }
     
-    func resolveConnectedVertices(controlView: UIView) {
+    func resolveConnectedVertices(control: DeviceControl) {
         
         searchSublayersForNameToRemove(names: [String(thisGroup.selectedControl)])
+        
         let realm = try! Realm(configuration: configUser)
-        guard let control = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl) else { return}
+        guard let control = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl) else {
+            return
+        }
         
         for eachControl in controls {
             for vertex in eachControl.vertexList {
                 
-                translateConnectedVertex(control: control, vertex: vertex, controlView: controlView)
+                translateConnectedVertex(control: control, vertex: vertex)
                 
             }
         }
     }
     
-    func translateConnectedVertex(control: DeviceControl, vertex: Vertex, controlView: UIView) {
+    func translateConnectedVertex(control: DeviceControl, vertex: Vertex) {
         
-        guard let index = vertex.vertexID.range(of: String(describing: control.uniqueID)) else { return }
         guard let txX = vertex.tx?.editX else { return }
         guard let txY = vertex.tx?.editY else { return }
         guard let rxX = vertex.rx?.editX else { return }
         guard let rxY = vertex.rx?.editY else { return }
         
-        let calculatedIndex = vertex.vertexID.distance(from: vertex.vertexID.startIndex,
-                                                       to: index.lowerBound)
+        guard let controlView = self.viewWithTag(control.uniqueID) else {
+            print("Could not retrieve controlView to edit Vertex path")
+            return
+        }
         
         var start = CGPoint(x: controlView.center.x, y: controlView.center.y)
         var finish = CGPoint(x: rxX, y: rxY)
         
-        if calculatedIndex != 0 {
+        if control.controlDirection == 1 {
             start = CGPoint(x: txX, y: txY)
             finish = CGPoint(x: controlView.center.x, y: controlView.center.y)
         }
