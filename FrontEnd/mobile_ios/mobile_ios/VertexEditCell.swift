@@ -8,9 +8,6 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     var controls = [DeviceControl]()
     
     var cellView = UICollectionViewCell()
-    
-    var controlIDs = [Int]()
-    
     var thisGroup = GroupPerspective()
     var contextImage = UIImage()
     var controlTags = [Int]()
@@ -23,8 +20,6 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     var activeVertexStart = CGPoint()
     var activeVertexFinish = CGPoint()
     var activeVertex = Vertex()
-    
-    var check = 1
     
     var lastSendTime = DispatchTime.init(uptimeNanoseconds: 0)
     
@@ -308,6 +303,7 @@ extension VertexEditCell {
         
         if let check = sublayer.accessibilityPath?.contains(position) {
             if check == true {
+                print("ACTUAL: TRUE")
                 
                 vertexDictToDelete[vertexName] = true
                 let realm = try! Realm(configuration: configUser)
@@ -421,8 +417,8 @@ extension VertexEditCell {
         for control in controls {
             
             let position = gesture.location(in: collectionView)
-            let check = self.viewWithTag(control.uniqueID)!.frame.contains(position)
-            if check {
+            
+            if self.viewWithTag(control.uniqueID)!.frame.contains(position) {
                 return control
             }
         }
@@ -876,8 +872,6 @@ extension VertexEditCell {
     
     func addControlSprite(thisControl: DeviceControl, applyTransform: Bool = true) -> UIView {
         
-        controlIDs.append(thisControl.uniqueID)
-        
         let containerFrame = CGRect(x: thisControl.editX - 30,
                                  y: thisControl.editY - 30,
                                  width: 60,
@@ -909,7 +903,6 @@ extension VertexEditCell {
         
         container.layer.cornerRadius = 30
         container.clipsToBounds = true
-        container.tag = controlIDs.count - 1
         container.layer.borderWidth = 2
         container.layer.borderColor = control.uniqueID == thisGroup.selectedControl ? getModeColor(thisGroup: thisGroup, highlight: true).cgColor : getModeColor(thisGroup: thisGroup, highlight: false).cgColor
         container.tag = control.uniqueID
