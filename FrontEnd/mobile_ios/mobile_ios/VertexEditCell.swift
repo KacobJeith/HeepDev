@@ -509,9 +509,10 @@ extension VertexEditCell {
         
         for eachControl in controls {
             for vertex in eachControl.vertexList {
-                
-                translateConnectedVertex(control: control, vertex: vertex)
-                
+                if (vertex.rx)! == control || (vertex.tx)! == control {
+                    translateConnectedVertex(control: control, vertex: vertex)
+                    
+                }
             }
         }
     }
