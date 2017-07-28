@@ -205,6 +205,7 @@ class HAPIMemoryParser {
         let newDevice = Device()
         newDevice.deviceID = deviceID
         newDevice.ipAddress = ipAddress
+        newDevice.active = true
         
         try! realm.write {
             realm.add(newDevice, update: true)
@@ -234,7 +235,6 @@ class HAPIMemoryParser {
                 existingControl?.valueHigh = Int(dump[index + 4])
                 existingControl?.valueCurrent = Int(dump[index + 5])
                 existingControl?.controlName = controlName
-                existingControl?.place = currentWifi.bssid
             }
         } else {
             
@@ -248,7 +248,6 @@ class HAPIMemoryParser {
             newControl.valueHigh = Int(dump[index + 4])
             newControl.valueCurrent = Int(dump[index + 5])
             newControl.controlName = controlName
-            newControl.place = currentWifi.bssid
             
             try! realm.write {
                 

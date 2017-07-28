@@ -117,6 +117,7 @@ class Device: Object {
     dynamic var version: Int = 0
     dynamic var iconName: String = "lightbulb"
     dynamic var ipAddress: String = "0.0.0.0"
+    dynamic var active: Bool = false
     let controlList =   List<DeviceControl>()
     dynamic var authorizedUsers: String = "" // actually a list, but parsed using a delimiter
     
@@ -141,7 +142,6 @@ class DeviceControl: Object {
     dynamic var valueCurrent: Int = 0
     dynamic var lastOnValue: Int = 100
     dynamic var controlName: String = "Default"
-    dynamic var active: Bool = false
     dynamic var editX: CGFloat = 100
     dynamic var editY: CGFloat = 100
     dynamic var scale: CGFloat = 1

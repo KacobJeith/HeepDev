@@ -17,10 +17,24 @@ class DeviceTableViewController: UITableViewController {
     var controlTags = [IndexPath]()
     let realm = try! Realm(configuration: configUser)
     
-    init(placeID: Int) {
+    init(placeID: Int = 0, activeOnly: Bool = false) {
         super.init(style: UITableViewStyle.plain)
         
-        self.findDevicesInPlace(placeID: placeID)
+        if activeOnly {
+            
+            self.findActiveDevices()
+            
+        } else {
+            
+            self.findDevicesInPlace(placeID: placeID)
+            
+        }
+    }
+    
+    func findActiveDevices() {
+        let realm = try! Realm(configuration: configUser)
+        
+        devices = realm.objects(Device.self).filter("active = %@", true).toArray()
     }
     
     func findDevicesInPlace(placeID: Int) {
