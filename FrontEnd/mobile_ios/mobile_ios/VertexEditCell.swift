@@ -8,9 +8,6 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     var controls = [DeviceControl]()
     
     var cellView = UICollectionViewCell()
-    
-    var controlIDs = [Int]()
-    
     var thisGroup = GroupPerspective()
     var contextImage = UIImage()
     var controlTags = [Int]()
@@ -129,8 +126,11 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         
         setContextImage()
         
+        if !thisGroup.UILocked  {
+            addSelectedControlGesturesUnlocked()
+        }
+        
         addControlsAndVertices()
-        setActiveGestures(cell: cell)
         
         return cell
     }
@@ -169,74 +169,31 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         }
     }
     
-    func setActiveGestures(cell: UICollectionViewCell) {
-        
-        switch self.thisGroup.selectedControl {
-            
-        case 0 : // Just Scrolling
-            
-            self.collectionView.isScrollEnabled = true
-            
-        case 1 :
-            
-            addAddingVertexGestures(cell: cell)
-            
-        case 2 :
-            
-            addDeletingVertexGestures(cell: cell)
-            
-        default :
-            
-            addSelectedControlGestures(cell: cell)
-            
-        }
-        
-    }
-    
-    func addAddingVertexGestures(cell: UICollectionViewCell) {
-        self.collectionView.isScrollEnabled =  false
-        
-        let vertexPan = UIPanGestureRecognizer(target: self,
-                                               action: #selector(handleVertexPan))
-        
-        vertexPan.delegate = self
-        cell.addGestureRecognizer(vertexPan)
-
-    }
-    
-    func addDeletingVertexGestures(cell: UICollectionViewCell) {
-        self.collectionView.isScrollEnabled =  false
-        resetVertexDictToDelete()
-        
-        let deleteVertexPan = UIPanGestureRecognizer(target: self,
-                                                     action: #selector(handleDeleteVertexPan))
-        
-        deleteVertexPan.delegate = self
-        cell.addGestureRecognizer(deleteVertexPan)
-    }
-    
-    func addSelectedControlGestures(cell: UICollectionViewCell) {
+    func addSelectedControlGesturesUnlocked() {
         
         self.collectionView.isScrollEnabled =  false
         
-        let pan = UIPanGestureRecognizer(target: self,
-                                         action: #selector(handlePan))
-        let pinch = UIPinchGestureRecognizer(target: self,
-                                             action: #selector(handlePinch))
-        let rotate = UIRotationGestureRecognizer(target: self,
-                                                 action: #selector(handleRotation))
-        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
+        let gestureSubview = UIView(frame: cellView.bounds)
+        
+        let pinch = UIPinchGestureRecognizer(target: self, action: #selector(handlePinch))
+        let rotate = UIRotationGestureRecognizer(target: self, action: #selector(handleRotation))
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
+        let doubleTap = UITapGestureRecognizer(target: self, action: #selector(handleDeleteVertexTap))
         
         pinch.delegate = self
         rotate.delegate = self
         pan.delegate = self
-        longPress.delegate = self
-        cell.addGestureRecognizer(longPress)
-        cell.addGestureRecognizer(pan)
-        cell.addGestureRecognizer(pinch)
-        cell.addGestureRecognizer(rotate)
-        cell.addSubview(addDetailButton())
+        doubleTap.numberOfTapsRequired = 2
+        
+        gestureSubview.addGestureRecognizer(pinch)
+        gestureSubview.addGestureRecognizer(rotate)
+        gestureSubview.addGestureRecognizer(pan)
+        gestureSubview.addGestureRecognizer(doubleTap)
+        
+        gestureSubview.addSubview(addDetailButton())
+        cellView.addSubview(gestureSubview)
     }
+
     
     
     
@@ -260,75 +217,16 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
 
 extension VertexEditCell {
     
-    func handleVertexPan(gesture: UIPanGestureRecognizer) {
-        let cellView = self.viewWithTag(1)!
+    func handleDeleteVertexTap(gesture: UITapGestureRecognizer) {
+        print("Enter Tap")
+        resetVertexDictToDelete()
+        catchVertexCollisions(gesture: gesture)
+        commitDeleteVertex()
         
-        searchSublayersForNameToRemove(names: ["circle", "vertex"])
-        
-        switch gesture.state {
-            
-        case .began :
-            
-            activeVertex = Vertex()
-            cellView.layer.addSublayer(drawCircle(center: gesture.location(in: cellView),
-                                                  radius: 35,
-                                                  name: "circle",
-                                                  modeColor: getModeColor(thisGroup: thisGroup, highlight: true)))
-            
-        case .changed :
-            
-            if activeVertexStart == CGPoint() {
-                
-                findOutputControl(gesture: gesture)
-                
-                
-            } else {
-                
-                findInputControl(gesture: gesture)
-                
-            }
-            
-        case .ended :
-            
-            commitAddVertex()
-            activeVertexStart = CGPoint()
-            activeVertexFinish = CGPoint()
-            searchSublayersForNameToRemove(names: ["finish", "start", "vertex"])
-            
-        default : break
-            
-            
-        }
-        
-    }
-    
-    func handleDeleteVertexPan(gesture: UIPanGestureRecognizer) {
-        searchSublayersForNameToRemove(names: ["circle"])
-        
-        cellView.layer.addSublayer(drawCircle(center: gesture.location(in: cellView),
-                                              radius: 35,
-                                              name: "circle",
-                                              modeColor: getModeColor(thisGroup: thisGroup, highlight: false)))
-        
-        switch gesture.state {
-            
-        case .began , .changed :
-            
-            catchVertexCollisions(gesture: gesture)
-    
-        case .ended :
-            
-            commitDeleteVertex()
-            searchSublayersForNameToRemove(names: ["circle"])
-            
-        default : break
-            
-        }
         
     }
     
     func commitDeleteVertex() {
-        
         
         let realm = try! Realm(configuration: configUser)
         
@@ -379,14 +277,14 @@ extension VertexEditCell {
     }
     
     
-    func catchVertexCollisions(gesture: UIPanGestureRecognizer)  {
+    func catchVertexCollisions(gesture: UITapGestureRecognizer)  {
         
         for sublayer in cellView.layer.sublayers! {
             if let sublayerName = sublayer.name {
                 
                 for vertexName in vertexDictToDelete.keys {
                     
-                    if sublayerName == vertexName && vertexDictToDelete[vertexName] != true {
+                    if sublayerName == vertexName && vertexDictToDelete[vertexName] == false {
                         
                         checkVertexPositionAndResolve(gesture: gesture,
                                                       sublayer: sublayer,
@@ -399,12 +297,13 @@ extension VertexEditCell {
         }
     }
     
-    func checkVertexPositionAndResolve(gesture: UIPanGestureRecognizer, sublayer: CALayer, vertexName: String) {
+    func checkVertexPositionAndResolve(gesture: UITapGestureRecognizer, sublayer: CALayer, vertexName: String) {
         
         let position = gesture.location(in: collectionView)
         
         if let check = sublayer.accessibilityPath?.contains(position) {
             if check == true {
+                print("ACTUAL: TRUE")
                 
                 vertexDictToDelete[vertexName] = true
                 let realm = try! Realm(configuration: configUser)
@@ -423,19 +322,13 @@ extension VertexEditCell {
         }
     }
     
-    func findOutputControl(gesture: UIPanGestureRecognizer) {
+    func findNextControl(gesture: UILongPressGestureRecognizer, direction: Int) {
+        
         
         cellView.layer.addSublayer(drawCircle(center: gesture.location(in: cellView),
                                               radius: 35,
                                               name: "circle",
                                               modeColor: getModeColor(thisGroup: thisGroup, highlight: false)))
-        
-        verifyControlForVertex(gesture: gesture,
-                               direction: 1)
-
-    }
-        
-    func findInputControl(gesture: UIPanGestureRecognizer) {
         
         cellView.layer.addSublayer(drawVertex(start: activeVertexStart,
                                               finish: gesture.location(in: cellView),
@@ -443,21 +336,17 @@ extension VertexEditCell {
                                               highlight: true))
         
         verifyControlForVertex(gesture: gesture,
-                               direction: 0)
+                               direction: direction)
     
     }
     
-    func verifyControlForVertex(gesture: UIPanGestureRecognizer, direction: Int) {
+    func verifyControlForVertex(gesture: UILongPressGestureRecognizer, direction: Int) {
         
         if let touched = touchingControlSprite(gesture: gesture) {
             
-            if direction == 0 && touched.controlDirection == direction {
+            if touched.controlDirection == direction {
                 
                 completeNewVertex(touched: touched)
-                
-            } else if direction == 1 && touched.controlDirection == direction {
-                
-                initializeNewVertex(touched: touched)
                 
             }
             
@@ -469,7 +358,12 @@ extension VertexEditCell {
         
         activeVertexStart = CGPoint(x: touched.editX,
                                     y: touched.editY)
-        activeVertex.tx = touched
+        
+        if touched.controlDirection == 1 {
+            activeVertex.tx = touched
+        } else {
+            activeVertex.rx = touched
+        }
         
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         
@@ -491,7 +385,11 @@ extension VertexEditCell {
             
             UIImpactFeedbackGenerator(style: .medium).impactOccurred()
             
-            activeVertex.rx = touched
+            if touched.controlDirection == 1 {
+                activeVertex.tx = touched
+            } else {
+                activeVertex.rx = touched
+            }
             
             searchSublayersForNameToRemove(names: ["finish"])
             
@@ -514,13 +412,13 @@ extension VertexEditCell {
         }
     }
     
-    func touchingControlSprite(gesture: UIPanGestureRecognizer) -> DeviceControl? {
+    func touchingControlSprite(gesture: UILongPressGestureRecognizer) -> DeviceControl? {
         
         for control in controls {
             
             let position = gesture.location(in: collectionView)
-            let check = self.viewWithTag(control.uniqueID)!.frame.contains(position)
-            if check {
+            
+            if self.viewWithTag(control.uniqueID)!.frame.contains(position) {
                 return control
             }
         }
@@ -535,62 +433,104 @@ extension VertexEditCell {
 
 extension VertexEditCell {
     
-    func handlePan(gesture: UIPanGestureRecognizer){
-        if !longPressActive {
-            translateSpritePosition(gesture: gesture)
+    func handlePan(gesture: UIPanGestureRecognizer) {
+        
+        if thisGroup.UILocked { return }
+        
+        guard let tag = gesture.view?.tag else {
+            print("No Tag")
+            return
         }
-    }
-    
-    func translateSpritePosition(gesture: UIPanGestureRecognizer) {
-        let translation = gesture.translation(in: self)
-        let controlView = self.viewWithTag(thisGroup.selectedControl)!
         
-        controlView.center.x += translation.x
-        controlView.center.y += translation.y
         
-        resolveConnectedVertices(controlView: controlView)
+        if tag == 0 {
+            
+            if thisGroup.selectedControl == 0 { return }
+            
+            if let controlView = self.viewWithTag(thisGroup.selectedControl)  {
+                translateSpritePosition(gesture: gesture, controlView: controlView, uniqueID: thisGroup.selectedControl)
+            }
+            
+            if let detailsIconView = self.viewWithTag(-thisGroup.selectedControl) {
+                    translateView(view: detailsIconView, translation: gesture.translation(in: self))
+            }
+            
+            
+        } else {
+            
+            if tag == thisGroup.selectedControl {
+                if let detailsIconView = self.viewWithTag(-tag) {
+                    translateView(view: detailsIconView, translation: gesture.translation(in: self))
+                }
+            }
+            
+            if let controlView = self.viewWithTag(tag) {
+                translateSpritePosition(gesture: gesture, controlView: controlView, uniqueID: tag)
+                
+            }
+            
+        }
         
         gesture.setTranslation(CGPoint(), in: self)
         
+    }
+    
+    func translateView(view: UIView, translation: CGPoint) {
+        
+        view.center.x += translation.x
+        view.center.y += translation.y
+    }
+    
+    func translateSpritePosition(gesture: UIPanGestureRecognizer, controlView: UIView, uniqueID: Int) {
+        let realm = try! Realm(configuration: configUser)
+        
+        guard let control = realm.object(ofType: DeviceControl.self, forPrimaryKey: uniqueID) else {
+            print("Couldn't save control from translate")
+            return
+        }
+        
+        translateView(view: controlView, translation: gesture.translation(in: self))
+
+        resolveConnectedVertices(control: control)
+        
         switch gesture.state {
         case .ended :
-            
-            saveSelectedSprite()
+            saveSelectedSprite(control: control)
             
         default : break
         }
     }
     
-    func resolveConnectedVertices(controlView: UIView) {
+    func resolveConnectedVertices(control: DeviceControl) {
         
-        searchSublayersForNameToRemove(names: [String(thisGroup.selectedControl)])
-        let realm = try! Realm(configuration: configUser)
-        guard let control = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl) else { return}
+        searchSublayersForNameToRemove(names: [String(control.uniqueID)])
         
         for eachControl in controls {
             for vertex in eachControl.vertexList {
-                
-                translateConnectedVertex(control: control, vertex: vertex, controlView: controlView)
-                
+                if (vertex.rx)! == control || (vertex.tx)! == control {
+                    translateConnectedVertex(control: control, vertex: vertex)
+                    
+                }
             }
         }
     }
     
-    func translateConnectedVertex(control: DeviceControl, vertex: Vertex, controlView: UIView) {
+    func translateConnectedVertex(control: DeviceControl, vertex: Vertex) {
         
-        guard let index = vertex.vertexID.range(of: String(describing: control.uniqueID)) else { return }
         guard let txX = vertex.tx?.editX else { return }
         guard let txY = vertex.tx?.editY else { return }
         guard let rxX = vertex.rx?.editX else { return }
         guard let rxY = vertex.rx?.editY else { return }
         
-        let calculatedIndex = vertex.vertexID.distance(from: vertex.vertexID.startIndex,
-                                                       to: index.lowerBound)
+        guard let controlView = self.viewWithTag(control.uniqueID) else {
+            print("Could not retrieve controlView to edit Vertex path")
+            return
+        }
         
         var start = CGPoint(x: controlView.center.x, y: controlView.center.y)
         var finish = CGPoint(x: rxX, y: rxY)
         
-        if calculatedIndex != 0 {
+        if control.controlDirection == 0 {
             start = CGPoint(x: txX, y: txY)
             finish = CGPoint(x: controlView.center.x, y: controlView.center.y)
         }
@@ -603,61 +543,143 @@ extension VertexEditCell {
     }
     
     
-    func handlePinch(gestureRecognizer: UIPinchGestureRecognizer) {
-        let realm = try! Realm(configuration: configUser)
-        
-        let myView = self.viewWithTag(thisGroup.selectedControl)!
-        let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl)!
-        myView.transform = CGAffineTransform(scaleX: thisControl.scale * gestureRecognizer.scale,
-                                             y: thisControl.scale * gestureRecognizer.scale).rotated(by: CGFloat(atan2f(Float(CGFloat(myView.transform.b)),Float(myView.transform.a))))
-        
-        if gestureRecognizer.state == UIGestureRecognizerState.ended {
-            saveSelectedSprite()
-        }
-    }
-    
-    func handleRotation(gestureRecognizer: UIRotationGestureRecognizer) {
-        let myView = self.viewWithTag(thisGroup.selectedControl)!
-        
-        myView.transform = myView.transform.rotated(by: gestureRecognizer.rotation * 3)
-        
-        myView.subviews[0].transform = myView.subviews[0].transform.rotated(by: -gestureRecognizer.rotation * 3)
+    func handlePinch(gesture: UIPinchGestureRecognizer) {
         
         
-        if gestureRecognizer.state == UIGestureRecognizerState.ended {
-            saveSelectedSprite()
-        }
-        
-        gestureRecognizer.rotation = 0
-    }
-    
-    func handleLongPress(gestureRecognizer: UILongPressGestureRecognizer) {
-        let realm = try! Realm(configuration: configUser)
-        guard let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl) else {
-            print("Failed to retrieve the control from realm")
+        guard let myView = self.viewWithTag(thisGroup.selectedControl) else {
+            print("No view for control selected pinch")
             return
         }
+        
+        guard let infoView = self.viewWithTag(-thisGroup.selectedControl) else {
+            return
+        }
+        
+        let realm = try! Realm(configuration: configUser)
+        
+        guard let control = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl) else {
+            print("Could not grab control")
+            return
+        }
+        
+        switch gesture.state {
+        case .changed :
+            let newScale = control.scale * gesture.scale
+            myView.transform = CGAffineTransform(scaleX: newScale,
+                                                 y: newScale).rotated(by: CGFloat(atan2f(Float(CGFloat(myView.transform.b)),Float(myView.transform.a))))
+            
+            infoView.transform = CGAffineTransform(translationX: control.editX + (24 * newScale),
+                                                   y: control.editY - (30 * newScale)).scaledBy(x: newScale, y: newScale)
+        
+            
+        case .ended :
+            
+            saveSelectedSprite(control: control)
+            
+        default : break
+        }
+    }
+    
+    func handleRotation(gesture: UIRotationGestureRecognizer) {
+        
+        guard let myView = self.viewWithTag(thisGroup.selectedControl) else {
+            print("No control selected rotation")
+            return
+        }
+        
+        let realm = try! Realm(configuration: configUser)
+        
+        guard let control = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl) else {
+            print("Could not find control rotation")
+            return
+        }
+        
+        myView.transform = myView.transform.rotated(by: gesture.rotation * 3)
+        
+        myView.subviews[0].transform = myView.subviews[0].transform.rotated(by: -gesture.rotation * 3)
+        
+        
+        switch gesture.state {
+        case .ended :
+            saveSelectedSprite(control: control)
+        default : break
+        }
+        
+        gesture.rotation = 0
+    }
+    
+    func handleLongPress(gesture: UILongPressGestureRecognizer) {
+        
+        let realm = try! Realm(configuration: configUser)
+        guard let control = realm.object(ofType: DeviceControl.self, forPrimaryKey: gesture.view?.tag) else {
+            print("Failed to retrieve the control with tag \(String(describing: gesture.view?.tag)) from realm handleLongPress")
+            return
+        }
+        
+        if thisGroup.UILocked {
+            
+            handleLongPressLocked(gesture: gesture, control: control)
+            
+        } else {
+            
+            handleLongPressUnlocked(gesture: gesture, control: control)
+            
+        }
+        
+        
+    }
+    
+    func handleLongPressLocked(gesture: UILongPressGestureRecognizer, control: DeviceControl) {
         
         var ratio: CGFloat = 0.5
         
         if longPressActive == true {
-             ratio = duringLongPressActive(control: thisControl, gesture: gestureRecognizer)
+            ratio = duringLongPressActive(control: control, gesture: gesture)
         }
         
-        switch gestureRecognizer.state {
+        switch gesture.state {
             
         case .began :
             
-            initializeLongPress(control: thisControl, gesture: gestureRecognizer)
+            initializeLongPress(control: control, gesture: gesture)
             
         case .ended :
             
-            finalizeLongPress(control: thisControl, ratio: ratio)
+            finalizeLongPress(control: control, ratio: ratio)
             
         default : break
             
         }
+
+    }
+    
+    func handleLongPressUnlocked(gesture: UILongPressGestureRecognizer, control: DeviceControl) {
         
+        searchSublayersForNameToRemove(names: ["circle", "vertex"])
+        
+        switch gesture.state {
+            
+        case .began :
+            
+            activeVertex = Vertex()
+            
+            initializeNewVertex(touched: control)
+            
+        case .changed :
+            
+            findNextControl(gesture: gesture, direction: abs(1 - control.controlDirection))
+            
+        case .ended :
+            
+            commitAddVertex()
+            activeVertexStart = CGPoint()
+            activeVertexFinish = CGPoint()
+            searchSublayersForNameToRemove(names: ["finish", "start", "vertex"])
+            
+        default : break
+            
+            
+        }
         
     }
     
@@ -674,7 +696,7 @@ extension VertexEditCell {
     
     func duringLongPressActive(control: DeviceControl, gesture: UILongPressGestureRecognizer) -> CGFloat {
         
-        guard let myView = self.viewWithTag(thisGroup.selectedControl) else {
+        guard let myView = gesture.view else {
             print("Could not find this view")
             return 0.5
         }
@@ -743,7 +765,7 @@ extension VertexEditCell {
         }
         
         
-        saveSelectedSprite()
+        saveSelectedSprite(control: control)
         
         // delay for 0.1 seconds to prevent sprite translation from kicking in
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
@@ -850,8 +872,6 @@ extension VertexEditCell {
     
     func addControlSprite(thisControl: DeviceControl, applyTransform: Bool = true) -> UIView {
         
-        controlIDs.append(thisControl.uniqueID)
-        
         let containerFrame = CGRect(x: thisControl.editX - 30,
                                  y: thisControl.editY - 30,
                                  width: 60,
@@ -866,8 +886,14 @@ extension VertexEditCell {
         
         spriteContainer.transform = CGAffineTransform(scaleX: thisControl.scale, y: thisControl.scale).rotated(by: thisControl.rotation)
         
-        let tap = UITapGestureRecognizer(target: self, action: #selector(selectThisController))
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress) )
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
+        
+        spriteContainer.addGestureRecognizer(longPress)
         spriteContainer.addGestureRecognizer(tap)
+        spriteContainer.addGestureRecognizer(pan)
+        
         
         return spriteContainer
     }
@@ -877,7 +903,6 @@ extension VertexEditCell {
         
         container.layer.cornerRadius = 30
         container.clipsToBounds = true
-        container.tag = controlIDs.count - 1
         container.layer.borderWidth = 2
         container.layer.borderColor = control.uniqueID == thisGroup.selectedControl ? getModeColor(thisGroup: thisGroup, highlight: true).cgColor : getModeColor(thisGroup: thisGroup, highlight: false).cgColor
         container.tag = control.uniqueID
@@ -923,22 +948,21 @@ extension VertexEditCell {
         return currentRangeContainer
     }
     
-    func selectThisController(gesture: UITapGestureRecognizer) {
+    func handleTap(gesture: UITapGestureRecognizer){
         
-        guard let tag = gesture.view?.tag else {
-            print("Selected view did not have a tag")
+        guard let tappedID = gesture.view?.tag else {
+            print ("no tag on gesture")
             return
         }
         
-        if thisGroup.selectedControl == tag {
+        if thisGroup.UILocked {
             
-            toggleOnOff(controlUniqueID: tag)
+            toggleOnOff(controlUniqueID: tappedID)
             
         } else {
-            let realm = try! Realm(configuration: configUser)
             
-            try! realm.write {
-                thisGroup.selectedControl = tag
+            try! Realm(configuration: configUser).write {
+                thisGroup.selectedControl = tappedID
             }
         }
         
@@ -948,33 +972,26 @@ extension VertexEditCell {
         
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         
-        DispatchQueue.global().async {
-            HeepConnections().sendValueToHeepDevice(uniqueID: controlUniqueID)
-        }
-        
         let realm = try! Realm(configuration: configUser)
-        
         guard let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: controlUniqueID) else {
             print("Could not retrieve the control from realm")
             return
         }
         
+        DispatchQueue.global().async {
+            HeepConnections().sendValueToHeepDevice(uniqueID: controlUniqueID)
+        }
+        
         try! realm.write{
             thisControl.valueCurrent = toggleDevice(control: thisControl)
+            thisGroup.selectedControl = thisControl.uniqueID
         }
         
         
     }
     
-    func saveSelectedSprite() {
-        let realm = try! Realm(configuration: configUser)
-        
-        guard let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl) else {
-            print("Could not retrieve the control from realm")
-            return
-        }
-        
-        guard let myView = self.viewWithTag(thisGroup.selectedControl) else {
+    func saveSelectedSprite(control: DeviceControl) {
+        guard let myView = self.viewWithTag(control.uniqueID) else {
             print("Could not find the selected control in the view")
             return
         }
@@ -984,13 +1001,34 @@ extension VertexEditCell {
         let editX = myView.frame.origin.x + myView.frame.width/2
         let editY = myView.frame.origin.y + myView.frame.height/2
         
-        try! realm.write {
+        let realm = try! Realm(configuration: configUser)
+        
+        if editY < 0 {
+            print("REMOVING THIS DEVICE FROM THE GROUP")
             
-            thisControl.rotation = rotation
-            thisControl.scale = scale
-            thisControl.editX = editX
-            thisControl.editY = editY
+            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+            
+            try! realm.write {
+                
+                control.groupID = 0
+                thisGroup.selectedControl = 0
+            }
+            
+            
+        } else {
+            
+            try! realm.write {
+                
+                control.rotation = rotation
+                control.scale = scale
+                control.editX = editX
+                control.editY = editY
+                
+                thisGroup.selectedControl = control.uniqueID
+            }
         }
+        
+        
         
     }
     
@@ -1005,14 +1043,9 @@ extension VertexEditCell {
     
     
     func addDetailButton() -> UIView {
-        let realm = try! Realm(configuration: configUser)
-        
-        guard let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl) else {
-            return UIView()
-        }
-        
         
         let infoButton = UIButton(type: .detailDisclosure)
+        infoButton.tag = -thisGroup.selectedControl
         infoButton.isUserInteractionEnabled = true
         infoButton.frame = CGRect(x: 0,
                                   y: 0,
@@ -1022,10 +1055,28 @@ extension VertexEditCell {
         infoButton.tintColor = .blue
         infoButton.addTarget(self, action: #selector(displayDeviceSummary), for: .primaryActionTriggered)
         
-        infoButton.transform = CGAffineTransform(translationX: thisControl.editX + (24 * thisControl.scale),
-                                                 y: thisControl.editY - (30 * thisControl.scale)).scaledBy(x: thisControl.scale,
-                                                                                                           y: thisControl.scale)
+        infoButton.transform = applyDetailTransform()
         return infoButton
+    }
+    
+    
+    func applyDetailTransform(scale: CGFloat = 0) -> CGAffineTransform {
+        let realm = try! Realm(configuration: configUser)
+        
+        guard let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl) else {
+            return CGAffineTransform()
+        }
+        
+        if scale != 0 {
+            return CGAffineTransform(translationX: thisControl.editX + (24 * scale),
+                                     y: thisControl.editY - (30 * scale)).scaledBy(x: scale,
+                                                                                   y: scale)
+        }
+        
+        return CGAffineTransform(translationX: thisControl.editX + (24 * thisControl.scale),
+                          y: thisControl.editY - (30 * thisControl.scale)).scaledBy(x: thisControl.scale,
+                                                                                    y: thisControl.scale)
+        
     }
     
     func displayDeviceSummary() {

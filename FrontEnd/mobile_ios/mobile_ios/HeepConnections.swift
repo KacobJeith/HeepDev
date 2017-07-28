@@ -14,6 +14,8 @@ class HeepConnections {
     
     public func SearchForHeepDeviecs() {
         
+        resetActiveDevices()
+        
         let gateway = getWiFiGateway()
         
         let message = HAPIMemoryParser().BuildIsHeepDeviceCOP()
@@ -176,6 +178,16 @@ class HeepConnections {
     func getAddress(gateway: String, ip: Int) -> String {
         
         return gateway + "." + String(ip)
+    }
+    
+    public func resetActiveDevices() {
+        let realm = try! Realm(configuration: configUser)
+        let devices = realm.objects(Device.self)
+        
+        try! realm.write {
+            devices.setValue(false, forKey: "active")
+        }
+        
     }
     
     

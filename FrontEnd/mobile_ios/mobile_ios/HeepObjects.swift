@@ -97,6 +97,7 @@ class GroupPerspective: Object {
     dynamic var placeID: Int = 0 // Sync with global group realm as often as possible. This is just for easy querying
     dynamic var realmPath: String = ""
     dynamic var selectedControl: Int = 0
+    dynamic var UILocked: Bool = true
     dynamic var unassignedOffsetX: CGFloat = 0
     dynamic var assignedOffsetX: CGFloat = 0
     dynamic var contentOffsetX: CGFloat = 0
@@ -116,6 +117,7 @@ class Device: Object {
     dynamic var version: Int = 0
     dynamic var iconName: String = "lightbulb"
     dynamic var ipAddress: String = "0.0.0.0"
+    dynamic var active: Bool = false
     let controlList =   List<DeviceControl>()
     dynamic var authorizedUsers: String = "" // actually a list, but parsed using a delimiter
     
@@ -140,7 +142,6 @@ class DeviceControl: Object {
     dynamic var valueCurrent: Int = 0
     dynamic var lastOnValue: Int = 100
     dynamic var controlName: String = "Default"
-    dynamic var place: String = "none"
     dynamic var editX: CGFloat = 100
     dynamic var editY: CGFloat = 100
     dynamic var scale: CGFloat = 1

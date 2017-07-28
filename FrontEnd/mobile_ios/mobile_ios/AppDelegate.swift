@@ -192,8 +192,8 @@ extension AppDelegate: CLLocationManagerDelegate {
         print("I see a beacon:")
         print("Name: \(r.identifier)")
         print("UUID: \(r.proximityUUID)")
-        print("Major: \(r.major)")
-        print("Minor: \(r.minor)")
+        print("Major: \(String(describing: r.major))")
+        print("Minor: \(String(describing: r.minor))")
         
         let content = UNMutableNotificationContent()
         content.title = "Heep Zone"

@@ -40,9 +40,13 @@ class PlacesView: UIViewController {
                                      target: self,
                                      action: #selector(searchForHeepDevices))
         
+        let info = UIBarButtonItem(barButtonSystemItem: .organize,
+                                   target: self,
+                                   action: #selector(openDeviceTable))
+        
         self.navigationItem.rightBarButtonItem = getActiveUserIcon()
         
-        self.toolbarItems = [addPlace, spacer, search, spacer]
+        self.toolbarItems = [addPlace, spacer, search, spacer, info]
     }
     
     
@@ -110,7 +114,7 @@ class PlacesView: UIViewController {
     
     
     func addPlaceToRealm() {
-        let newPlace = createPlaceRealm()
+        createPlaceRealm()
         
     }
  
@@ -308,5 +312,12 @@ extension PlacesView {
         
         return UIBarButtonItem(customView: userButton)
         
+    }
+    
+    func openDeviceTable() {
+        print("Open Active Device Table View")
+        
+        let seeAllActiveDevices = DeviceTableViewController(activeOnly: true)
+        navigationController?.pushViewController(seeAllActiveDevices, animated: true)
     }
 }

@@ -12,14 +12,72 @@ import RealmSwift
 class DeviceTableViewController: UITableViewController {
     //MARK: Properties
     
+    var activeOnly = false
+    var placeID = 0
+    var tableTitle = "Currently Active"
+    
     var notificationToken: NotificationToken!
-    let devices: Results<Device>
+    var devices = [Device]()
     var controlTags = [IndexPath]()
     let realm = try! Realm(configuration: configUser)
     
-    init(place: Place) {
-        devices = realm.objects(Device.self)
+    init(title: String = "Currently Active", placeID: Int = 0, activeOnly: Bool = false) {
         super.init(style: UITableViewStyle.plain)
+        self.placeID = placeID
+        self.activeOnly = activeOnly
+        self.tableTitle = title
+        
+        findDevices()
+    }
+    
+    func findDevices() {
+        
+        if self.activeOnly {
+            
+            self.findActiveDevices()
+            
+        } else {
+            
+            self.findDevicesInPlace(placeID: self.placeID)
+            
+        }
+    }
+    
+    func findActiveDevices() {
+        let realm = try! Realm(configuration: configUser)
+        
+        devices = realm.objects(Device.self).filter("active = %@", true).toArray()
+    }
+    
+    func findDevicesInPlace(placeID: Int) {
+        let realm = try! Realm(configuration: configUser)
+        
+        let groupsInPlace = realm.objects(GroupPerspective.self).filter("placeID = %@", placeID)
+        
+        for group in groupsInPlace {
+            
+            let controlsInGroup = realm.objects(DeviceControl.self).filter("groupID = %@", group.groupID)
+            
+            for control in controlsInGroup {
+                checkControlAndAdd(control: control)
+            }
+        }
+        
+    }
+    
+    func checkControlAndAdd(control: DeviceControl) {
+        for device in devices {
+            if control.deviceID == device.deviceID {
+                return
+            }
+        }
+        
+        let realm = try! Realm(configuration: configUser)
+        
+        if let device = realm.object(ofType: Device.self, forPrimaryKey: control.deviceID) {
+            
+            devices.append(device)
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -28,7 +86,8 @@ class DeviceTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "All Local Devices"
+        
+        self.title = tableTitle
         
         self.initRealmNotifications()
         
@@ -214,7 +273,7 @@ class DeviceTableViewController: UITableViewController {
             
             switch changes {
             case .update:
-                
+                self.findDevices()
                 self.tableView.reloadData()
                 
                 break
