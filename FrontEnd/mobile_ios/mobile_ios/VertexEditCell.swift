@@ -449,6 +449,8 @@ extension VertexEditCell {
         
         if tag == 0 {
             
+            if thisGroup.selectedControl == 0 { return }
+            
             if let controlView = self.viewWithTag(thisGroup.selectedControl)  {
                 translateSpritePosition(gesture: gesture, controlView: controlView, uniqueID: thisGroup.selectedControl)
             }
@@ -999,15 +1001,32 @@ extension VertexEditCell {
         
         let realm = try! Realm(configuration: configUser)
         
-        try! realm.write {
+        if editY < 0 {
+            print("REMOVING THIS DEVICE FROM THE GROUP")
             
-            control.rotation = rotation
-            control.scale = scale
-            control.editX = editX
-            control.editY = editY
+            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
             
-            thisGroup.selectedControl = control.uniqueID
+            try! realm.write {
+                
+                control.groupID = 0
+                thisGroup.selectedControl = 0
+            }
+            
+            
+        } else {
+            
+            try! realm.write {
+                
+                control.rotation = rotation
+                control.scale = scale
+                control.editX = editX
+                control.editY = editY
+                
+                thisGroup.selectedControl = control.uniqueID
+            }
         }
+        
+        
         
     }
     
@@ -1037,6 +1056,7 @@ extension VertexEditCell {
         infoButton.transform = applyDetailTransform()
         return infoButton
     }
+    
     
     func applyDetailTransform(scale: CGFloat = 0) -> CGAffineTransform {
         let realm = try! Realm(configuration: configUser)
