@@ -131,11 +131,11 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         
         setContextImage()
         
-        addControlsAndVertices()
-        
         if !thisGroup.UILocked  {
-            addSelectedControlGesturesUnlocked(sprite: cell)
+            addSelectedControlGesturesUnlocked()
         }
+        
+        addControlsAndVertices()
         
         return cell
     }
@@ -174,20 +174,28 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         }
     }
     
-    func addSelectedControlGesturesUnlocked(sprite: UIView) {
+    func addSelectedControlGesturesUnlocked() {
         
         self.collectionView.isScrollEnabled =  false
+        
+        let gestureSubview = UIView(frame: cellView.bounds)
         
         let pinch = UIPinchGestureRecognizer(target: self,
                                              action: #selector(handlePinch))
         let rotate = UIRotationGestureRecognizer(target: self,
                                                  action: #selector(handleRotation))
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
         
         pinch.delegate = self
         rotate.delegate = self
+        pan.delegate = self
         
-        sprite.addGestureRecognizer(pinch)
-        sprite.addGestureRecognizer(rotate)
+        gestureSubview.addGestureRecognizer(pinch)
+        gestureSubview.addGestureRecognizer(rotate)
+        gestureSubview.addGestureRecognizer(pan)
+        
+        gestureSubview.addSubview(addDetailButton())
+        cellView.addSubview(gestureSubview)
     }
 
     
@@ -446,21 +454,34 @@ extension VertexEditCell {
 extension VertexEditCell {
     
     func handlePan(gesture: UIPanGestureRecognizer) {
-        if !thisGroup.UILocked {
-            translateSpritePosition(gesture: gesture)
-        }
-    }
-    
-    func translateSpritePosition(gesture: UIPanGestureRecognizer) {
-        guard let tag = gesture.view?.tag else {
-            print("View doesn't have a tag")
-            return
+        
+        if thisGroup.UILocked { return }
+        
+        if let tag = gesture.view?.tag {
+            print("TAG: \(tag)")
+            if tag == 0 {
+                
+                guard let controlView = self.viewWithTag(thisGroup.selectedControl) else {
+                    return
+                }
+                
+                translateSpritePosition(gesture: gesture, controlView: controlView)
+                
+            } else {
+                
+                if let controlView = self.viewWithTag(tag) {
+                    translateSpritePosition(gesture: gesture, controlView: controlView)
+                    
+                }
+            }
         }
         
-        guard let controlView = self.viewWithTag(tag) else {
-            print("No control selected translate")
-            return
-        }
+        
+        
+        
+    }
+    
+    func translateSpritePosition(gesture: UIPanGestureRecognizer, controlView: UIView) {
         
         let translation = gesture.translation(in: self)
         
@@ -866,13 +887,11 @@ extension VertexEditCell {
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress) )
         let pan = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
-        pan.delegate = self
         
         spriteContainer.addGestureRecognizer(longPress)
         spriteContainer.addGestureRecognizer(tap)
         spriteContainer.addGestureRecognizer(pan)
         
-        spriteContainer.addSubview(addDetailButton())
         
         return spriteContainer
     }
