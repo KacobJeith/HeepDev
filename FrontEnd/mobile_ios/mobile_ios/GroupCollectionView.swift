@@ -252,7 +252,9 @@ extension GroupCollectionView {
     func openDeviceTable() {
         print("Open Device Table View")
         
-        let seeAllDevicesInPlace = DeviceTableViewController(placeID: placeID)
+        let tableTitle = placeName + " Devices"
+        
+        let seeAllDevicesInPlace = DeviceTableViewController(title: tableTitle, placeID: placeID)
         navigationController?.pushViewController(seeAllDevicesInPlace, animated: true)
     }
     

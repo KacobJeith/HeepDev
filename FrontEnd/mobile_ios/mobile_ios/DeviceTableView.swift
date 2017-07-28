@@ -12,21 +12,33 @@ import RealmSwift
 class DeviceTableViewController: UITableViewController {
     //MARK: Properties
     
+    var activeOnly = false
+    var placeID = 0
+    var tableTitle = "Currently Active"
+    
     var notificationToken: NotificationToken!
     var devices = [Device]()
     var controlTags = [IndexPath]()
     let realm = try! Realm(configuration: configUser)
     
-    init(placeID: Int = 0, activeOnly: Bool = false) {
+    init(title: String = "Currently Active", placeID: Int = 0, activeOnly: Bool = false) {
         super.init(style: UITableViewStyle.plain)
+        self.placeID = placeID
+        self.activeOnly = activeOnly
+        self.tableTitle = title
         
-        if activeOnly {
+        findDevices()
+    }
+    
+    func findDevices() {
+        
+        if self.activeOnly {
             
             self.findActiveDevices()
             
         } else {
             
-            self.findDevicesInPlace(placeID: placeID)
+            self.findDevicesInPlace(placeID: self.placeID)
             
         }
     }
@@ -74,7 +86,8 @@ class DeviceTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "All Local Devices"
+        
+        self.title = tableTitle
         
         self.initRealmNotifications()
         
@@ -260,7 +273,7 @@ class DeviceTableViewController: UITableViewController {
             
             switch changes {
             case .update:
-                
+                self.findDevices()
                 self.tableView.reloadData()
                 
                 break
