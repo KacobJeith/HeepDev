@@ -233,7 +233,6 @@ extension VertexEditCell {
     
     func commitDeleteVertex() {
         
-        print(vertexDictToDelete)
         let realm = try! Realm(configuration: configUser)
         
         for vertex in vertexDictToDelete {
@@ -306,8 +305,6 @@ extension VertexEditCell {
     func checkVertexPositionAndResolve(gesture: UITapGestureRecognizer, sublayer: CALayer, vertexName: String) {
         
         let position = gesture.location(in: collectionView)
-        print("Position: \(position)")
-        print("Path: \(sublayer.accessibilityPath!)")
         
         if let check = sublayer.accessibilityPath?.contains(position) {
             if check == true {
