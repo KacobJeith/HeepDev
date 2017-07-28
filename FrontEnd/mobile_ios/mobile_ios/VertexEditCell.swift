@@ -180,19 +180,20 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         
         let gestureSubview = UIView(frame: cellView.bounds)
         
-        let pinch = UIPinchGestureRecognizer(target: self,
-                                             action: #selector(handlePinch))
-        let rotate = UIRotationGestureRecognizer(target: self,
-                                                 action: #selector(handleRotation))
+        let pinch = UIPinchGestureRecognizer(target: self, action: #selector(handlePinch))
+        let rotate = UIRotationGestureRecognizer(target: self, action: #selector(handleRotation))
         let pan = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
+        let doubleTap = UITapGestureRecognizer(target: self, action: #selector(handleDeleteVertexTap))
         
         pinch.delegate = self
         rotate.delegate = self
         pan.delegate = self
+        doubleTap.numberOfTapsRequired = 2
         
         gestureSubview.addGestureRecognizer(pinch)
         gestureSubview.addGestureRecognizer(rotate)
         gestureSubview.addGestureRecognizer(pan)
+        gestureSubview.addGestureRecognizer(doubleTap)
         
         gestureSubview.addSubview(addDetailButton())
         cellView.addSubview(gestureSubview)
@@ -221,34 +222,18 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
 
 extension VertexEditCell {
     
-    func handleDeleteVertexPan(gesture: UIPanGestureRecognizer) {
-        searchSublayersForNameToRemove(names: ["circle"])
+    func handleDeleteVertexTap(gesture: UITapGestureRecognizer) {
+        print("Enter Tap")
+        resetVertexDictToDelete()
+        catchVertexCollisions(gesture: gesture)
+        commitDeleteVertex()
         
-        cellView.layer.addSublayer(drawCircle(center: gesture.location(in: cellView),
-                                              radius: 35,
-                                              name: "circle",
-                                              modeColor: getModeColor(thisGroup: thisGroup, highlight: false)))
-        
-        switch gesture.state {
-            
-        case .began , .changed :
-            
-            catchVertexCollisions(gesture: gesture)
-    
-        case .ended :
-            
-            commitDeleteVertex()
-            searchSublayersForNameToRemove(names: ["circle"])
-            
-        default : break
-            
-        }
         
     }
     
     func commitDeleteVertex() {
         
-        
+        print(vertexDictToDelete)
         let realm = try! Realm(configuration: configUser)
         
         for vertex in vertexDictToDelete {
@@ -298,14 +283,14 @@ extension VertexEditCell {
     }
     
     
-    func catchVertexCollisions(gesture: UIPanGestureRecognizer)  {
+    func catchVertexCollisions(gesture: UITapGestureRecognizer)  {
         
         for sublayer in cellView.layer.sublayers! {
             if let sublayerName = sublayer.name {
                 
                 for vertexName in vertexDictToDelete.keys {
                     
-                    if sublayerName == vertexName && vertexDictToDelete[vertexName] != true {
+                    if sublayerName == vertexName && vertexDictToDelete[vertexName] == false {
                         
                         checkVertexPositionAndResolve(gesture: gesture,
                                                       sublayer: sublayer,
@@ -318,9 +303,11 @@ extension VertexEditCell {
         }
     }
     
-    func checkVertexPositionAndResolve(gesture: UIPanGestureRecognizer, sublayer: CALayer, vertexName: String) {
+    func checkVertexPositionAndResolve(gesture: UITapGestureRecognizer, sublayer: CALayer, vertexName: String) {
         
         let position = gesture.location(in: collectionView)
+        print("Position: \(position)")
+        print("Path: \(sublayer.accessibilityPath!)")
         
         if let check = sublayer.accessibilityPath?.contains(position) {
             if check == true {
@@ -506,12 +493,7 @@ extension VertexEditCell {
     
     func resolveConnectedVertices(control: DeviceControl) {
         
-        searchSublayersForNameToRemove(names: [String(thisGroup.selectedControl)])
-        
-        let realm = try! Realm(configuration: configUser)
-        guard let control = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl) else {
-            return
-        }
+        searchSublayersForNameToRemove(names: [String(control.uniqueID)])
         
         for eachControl in controls {
             for vertex in eachControl.vertexList {
@@ -537,7 +519,7 @@ extension VertexEditCell {
         var start = CGPoint(x: controlView.center.x, y: controlView.center.y)
         var finish = CGPoint(x: rxX, y: rxY)
         
-        if control.controlDirection == 1 {
+        if control.controlDirection == 0 {
             start = CGPoint(x: txX, y: txY)
             finish = CGPoint(x: controlView.center.x, y: controlView.center.y)
         }
