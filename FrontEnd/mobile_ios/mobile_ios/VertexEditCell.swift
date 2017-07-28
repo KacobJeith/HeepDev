@@ -547,6 +547,7 @@ extension VertexEditCell {
     
     func handlePinch(gesture: UIPinchGestureRecognizer) {
         
+        
         guard let myView = self.viewWithTag(thisGroup.selectedControl) else {
             print("No view for control selected pinch")
             return
@@ -559,10 +560,11 @@ extension VertexEditCell {
             return
         }
         
-        myView.transform = CGAffineTransform(scaleX: control.scale * gesture.scale,
-                                             y: control.scale * gesture.scale).rotated(by: CGFloat(atan2f(Float(CGFloat(myView.transform.b)),Float(myView.transform.a))))
-        
         switch gesture.state {
+        case .changed :
+            
+            myView.transform = CGAffineTransform(scaleX: control.scale * gesture.scale,
+                                                 y: control.scale * gesture.scale).rotated(by: CGFloat(atan2f(Float(CGFloat(myView.transform.b)),Float(myView.transform.a))))
         case .ended :
             
             saveSelectedSprite(control: control)
