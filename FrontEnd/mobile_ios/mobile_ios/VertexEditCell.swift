@@ -133,6 +133,10 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         
         addControlsAndVertices()
         
+        if !thisGroup.UILocked  {
+            addSelectedControlGesturesUnlocked(sprite: cell)
+        }
+        
         return cell
     }
     
@@ -174,17 +178,16 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         
         self.collectionView.isScrollEnabled =  false
         
-        let pan = UIPanGestureRecognizer(target: self,
-                                         action: #selector(handlePan))
         let pinch = UIPinchGestureRecognizer(target: self,
                                              action: #selector(handlePinch))
         let rotate = UIRotationGestureRecognizer(target: self,
                                                  action: #selector(handleRotation))
         
-        sprite.addGestureRecognizer(pan)
+        pinch.delegate = self
+        rotate.delegate = self
+        
         sprite.addGestureRecognizer(pinch)
         sprite.addGestureRecognizer(rotate)
-        sprite.addSubview(addDetailButton())
     }
 
     
@@ -450,7 +453,7 @@ extension VertexEditCell {
     
     func translateSpritePosition(gesture: UIPanGestureRecognizer) {
         guard let tag = gesture.view?.tag else {
-            print("Selected view not tagged")
+            print("View doesn't have a tag")
             return
         }
         
@@ -467,14 +470,21 @@ extension VertexEditCell {
         resolveConnectedVertices(controlView: controlView)
         
         gesture.setTranslation(CGPoint(), in: self)
-//        
-//        switch gesture.state {
-//        case .ended :
-//            
-//            saveSelectedSprite()
-//            
-//        default : break
-//        }
+        
+        switch gesture.state {
+        case .ended :
+            
+            let realm = try! Realm(configuration: configUser)
+            
+            guard let control = realm.object(ofType: DeviceControl.self, forPrimaryKey: tag) else {
+                print("Couldn't save control from translate")
+                return
+            }
+            
+            saveSelectedSprite(control: control)
+            
+        default : break
+        }
     }
     
     func resolveConnectedVertices(controlView: UIView) {
@@ -520,19 +530,15 @@ extension VertexEditCell {
     
     
     func handlePinch(gesture: UIPinchGestureRecognizer) {
-        guard let tag = gesture.view?.tag else {
-            print("View not tagged")
-            return
-        }
         
-        guard let myView = self.viewWithTag(tag) else {
+        guard let myView = self.viewWithTag(thisGroup.selectedControl) else {
             print("No view for control selected pinch")
             return
         }
         
         let realm = try! Realm(configuration: configUser)
         
-        guard let control = realm.object(ofType: DeviceControl.self, forPrimaryKey: tag) else {
+        guard let control = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl) else {
             print("Could not grab control")
             return
         }
@@ -551,23 +557,30 @@ extension VertexEditCell {
     
     func handleRotation(gesture: UIRotationGestureRecognizer) {
         
-//        guard let myView = self.viewWithTag(thisGroup.selectedControl) else {
-//            print("No control selected rotation")
-//            return
-//        }
-//        
-//        myView.transform = myView.transform.rotated(by: gesture.rotation * 3)
-//        
-//        myView.subviews[0].transform = myView.subviews[0].transform.rotated(by: -gesture.rotation * 3)
-//        
-//        
-//        switch gesture.state {
-//        case .ended :
-//            saveSelectedSprite(control: )
-//        default : break
-//        }
-//        
-//        gesture.rotation = 0
+        guard let myView = self.viewWithTag(thisGroup.selectedControl) else {
+            print("No control selected rotation")
+            return
+        }
+        
+        let realm = try! Realm(configuration: configUser)
+        
+        guard let control = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl) else {
+            print("Could not find control rotation")
+            return
+        }
+        
+        myView.transform = myView.transform.rotated(by: gesture.rotation * 3)
+        
+        myView.subviews[0].transform = myView.subviews[0].transform.rotated(by: -gesture.rotation * 3)
+        
+        
+        switch gesture.state {
+        case .ended :
+            saveSelectedSprite(control: control)
+        default : break
+        }
+        
+        gesture.rotation = 0
     }
     
     func handleLongPress(gesture: UILongPressGestureRecognizer) {
@@ -850,15 +863,16 @@ extension VertexEditCell {
         
         spriteContainer.transform = CGAffineTransform(scaleX: thisControl.scale, y: thisControl.scale).rotated(by: thisControl.rotation)
         
-        let tap = UITapGestureRecognizer(target: self, action: #selector(tapToggle))
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress) )
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
+        pan.delegate = self
         
         spriteContainer.addGestureRecognizer(longPress)
         spriteContainer.addGestureRecognizer(tap)
+        spriteContainer.addGestureRecognizer(pan)
         
-        if !thisGroup.UILocked  {
-            addSelectedControlGesturesUnlocked(sprite: spriteContainer)
-        }
+        spriteContainer.addSubview(addDetailButton())
         
         return spriteContainer
     }
@@ -914,14 +928,13 @@ extension VertexEditCell {
         return currentRangeContainer
     }
     
-    func tapToggle(gesture: UITapGestureRecognizer){
-        
-        if(!thisGroup.UILocked) { return }
+    func handleTap(gesture: UITapGestureRecognizer){
         
         guard let tappedID = gesture.view?.tag else {
             print ("no tag on gesture")
             return
         }
+        
         toggleOnOff(controlUniqueID: tappedID)
         
     }
@@ -929,8 +942,6 @@ extension VertexEditCell {
     func toggleOnOff(controlUniqueID: Int) {
         
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-        
-        print(controlUniqueID)
         
         let realm = try! Realm(configuration: configUser)
         guard let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: controlUniqueID) else {
@@ -942,10 +953,9 @@ extension VertexEditCell {
             HeepConnections().sendValueToHeepDevice(uniqueID: controlUniqueID)
         }
         
-        
-        
         try! realm.write{
             thisControl.valueCurrent = toggleDevice(control: thisControl)
+            thisGroup.selectedControl = thisControl.uniqueID
         }
         
         
@@ -970,6 +980,8 @@ extension VertexEditCell {
             control.scale = scale
             control.editX = editX
             control.editY = editY
+            
+            thisGroup.selectedControl = control.uniqueID
         }
         
     }
