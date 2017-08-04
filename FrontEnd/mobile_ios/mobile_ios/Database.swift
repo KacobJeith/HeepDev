@@ -9,13 +9,12 @@
 import Foundation
 
 class database {
-    let interface = "realm"
+    let interface = "both"
     
     func getDevice(deviceID: Int) -> Device? {
         
         switch interface {
         default :
-            
             return databaseRealm().getDevice(deviceID: deviceID)
         }
         
@@ -25,6 +24,10 @@ class database {
     func writeDevice(device: Device) {
         
         switch interface {
+        case "both" :
+            databaseRealm().writeDevice(device: device)
+            databaseFirebase().writeDevice(device: device)
+            
         default :
             databaseRealm().writeDevice(device: device)
         }
@@ -41,6 +44,9 @@ class database {
     
     func updateDeviceControl(control: DeviceControl) {
         switch interface {
+        case "both" :
+            databaseFirebase().updateDeviceControl(control: control)
+            databaseRealm().updateDeviceControl(control: control)
         default :
             databaseRealm().updateDeviceControl(control: control)
         }
@@ -67,6 +73,10 @@ class database {
     
     func writeVertex(vertex: Vertex) {
         switch interface {
+        case "both" :
+            databaseRealm().writeVertex(vertex: vertex)
+            databaseFirebase().writeVertex(vertex: vertex)
+            
         default :
             databaseRealm().writeVertex(vertex: vertex)
         }
@@ -93,6 +103,14 @@ class database {
     func updateDeviceNameAndIcon(device: Device, deviceName: String, iconName: String) {
         
         switch interface {
+        case "both" :
+            databaseFirebase().updateDeviceNameAndIcon(device: device,
+                                                       deviceName: deviceName,
+                                                       iconName: iconName)
+            
+            databaseRealm().updateDeviceNameAndIcon(device: device,
+                                                    deviceName: deviceName,
+                                                    iconName: iconName)
         default :
             databaseRealm().updateDeviceNameAndIcon(device: device,
                                                     deviceName: deviceName,

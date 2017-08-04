@@ -20,6 +20,7 @@ let digitalOceanHTTP = "http://" + digitalOceanIP
 let digitalOceanRealm = "realm://" + digitalOceanIP
 let digitalOceamUserRealm = digitalOceanRealm + "/~/heepzone"
 let dititalOceanPublicRealm = digitalOceanRealm + "/" + publicUserKey + "/userDirectory"
+var ref: DatabaseReference! = Database.database().reference()
 
 var configGuest = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
 var configUser = configGuest

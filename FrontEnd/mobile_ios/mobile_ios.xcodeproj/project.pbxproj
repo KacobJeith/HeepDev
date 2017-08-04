@@ -36,6 +36,7 @@
 		B0F6B8421F06EEF40054E07D /* UserCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F6B8411F06EEF40054E07D /* UserCard.swift */; };
 		B0FA832F1F34FC3500608C96 /* Database_Realm.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FA832E1F34FC3500608C96 /* Database_Realm.swift */; };
 		B0FA83311F35196B00608C96 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FA83301F35196B00608C96 /* Database.swift */; };
+		B0FA83331F351CB900608C96 /* Database_Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FA83321F351CB900608C96 /* Database_Firebase.swift */; };
 		D7A8C048C69A2C379A20948F /* Pods_mobile_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 321E9915FF90A4E39B163211 /* Pods_mobile_ios.framework */; };
 		E7ACBFC81EE4BE1400EFB21E /* HeepBeacon.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7ACBFC71EE4BE1400EFB21E /* HeepBeacon.swift */; };
 		EEA944211EAA7D880022588B /* HAPIMemoryParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEA944201EAA7D880022588B /* HAPIMemoryParser.swift */; };
@@ -99,6 +100,7 @@
 		B0F6B8411F06EEF40054E07D /* UserCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCard.swift; sourceTree = "<group>"; };
 		B0FA832E1F34FC3500608C96 /* Database_Realm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Database_Realm.swift; path = ../Database_Realm.swift; sourceTree = "<group>"; };
 		B0FA83301F35196B00608C96 /* Database.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
+		B0FA83321F351CB900608C96 /* Database_Firebase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Database_Firebase.swift; sourceTree = "<group>"; };
 		B7918E77C7C5DB9DEBC8629A /* Pods-mobile_iosUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mobile_iosUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-mobile_iosUITests/Pods-mobile_iosUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		E1962A9C5DE87696544789AE /* Pods-mobile_iosTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mobile_iosTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-mobile_iosTests/Pods-mobile_iosTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E4A427428745AEB7A4877647 /* Pods-mobile_ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mobile_ios.release.xcconfig"; path = "Pods/Target Support Files/Pods-mobile_ios/Pods-mobile_ios.release.xcconfig"; sourceTree = "<group>"; };
@@ -185,6 +187,7 @@
 				EEA944201EAA7D880022588B /* HAPIMemoryParser.swift */,
 				B0FA83301F35196B00608C96 /* Database.swift */,
 				B0FA832E1F34FC3500608C96 /* Database_Realm.swift */,
+				B0FA83321F351CB900608C96 /* Database_Firebase.swift */,
 				101D2F711EA968230074D807 /* Info.plist */,
 				B0DAF18A1F32922800A2CA69 /* GoogleService-Info.plist */,
 				1067B93C1EACE35D00E7607E /* BridgingHeader.h */,
@@ -532,6 +535,7 @@
 				101D2F6B1EA968230074D807 /* mobile_ios.xcdatamodeld in Sources */,
 				100821FC1EC49BDF0079E6F5 /* PlacesView.swift in Sources */,
 				1005B8DC1ECB47CD00414F8E /* EditRoomTableView.swift in Sources */,
+				B0FA83331F351CB900608C96 /* Database_Firebase.swift in Sources */,
 				B010B6051F0448A200363CAB /* AccountUtilities.swift in Sources */,
 				103FE2851EC373830033D021 /* DeviceSummaryView.swift in Sources */,
 				EEA944231EAA93950022588B /* HeepConnections.swift in Sources */,

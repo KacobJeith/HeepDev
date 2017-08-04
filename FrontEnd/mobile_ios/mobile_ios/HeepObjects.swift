@@ -172,5 +172,23 @@ extension Object {
     func propertyNames() -> [String] {
         return Mirror(reflecting: self).children.flatMap { $0.label }
     }
+    
+    func toDict() -> Dictionary<String, Any> {
+        let props = self.propertyNames()
+        var dict = Dictionary<String, Any>()
+        
+        for key in props {
+            if let value = self.value(forKey: key) {
+                if key.range(of: "List") == nil {
+                    
+                    dict[key] = value
+                }
+            
+            }
+            
+        }
+        
+        return dict
+    }
 }
 
