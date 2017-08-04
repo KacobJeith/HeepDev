@@ -10,7 +10,7 @@ import Foundation
 import Realm
 import RealmSwift
 
-class database {
+class databaseRealm {
     let realm = try! Realm(configuration: configUser)
     
     func getDevice(deviceID: Int) -> Device? {
