@@ -11,8 +11,6 @@ import RealmSwift
 
 class HAPIMemoryParser {
     
-    let realm = try! Realm(configuration: configUser)
-    
     public func BuildIsHeepDeviceCOP() -> [UInt8] {
         
         return packageCOP(COP: UInt8(0x09), packet: [UInt8]())
@@ -66,8 +64,13 @@ class HAPIMemoryParser {
         let txControlID = (vertex.tx?.controlID)!
         let rxControlID = (vertex.rx?.controlID)!
         
-        let rxDevice = realm.object(ofType: Device.self, forPrimaryKey: (vertex.rx?.deviceID)!)
-        let rxIPAddress = IPStringToByteArray(IPString: (rxDevice?.ipAddress)!)
+        guard let rxDevice = database().getDevice(deviceID: (vertex.rx?.deviceID)!) else {
+            print("could not find rx device")
+            return [UInt8]()
+            
+        }
+        
+        let rxIPAddress = IPStringToByteArray(IPString: rxDevice.ipAddress)
         
         packet.append(contentsOf: txDeviceID)
         packet.append(contentsOf: rxDeviceID)
