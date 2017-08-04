@@ -8,6 +8,14 @@ target 'mobile_ios' do
   # Pods for mobile_ios
   pod 'SwiftSocket'
   pod 'RealmSwift'
+  pod 'Firebase'
+  
+  
+  pod 'FirebaseUI/Database', '~> 4.0'
+  pod 'FirebaseUI/Storage', '~> 4.0'
+  pod 'FirebaseUI/Auth', '~> 4.0'
+  
+
   pod 'FacebookCore', '~> 0.2'
   pod 'FacebookLogin', '~> 0.2'
   pod 'FacebookShare', '~> 0.2'

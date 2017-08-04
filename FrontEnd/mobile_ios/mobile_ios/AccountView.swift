@@ -516,6 +516,8 @@ extension AccountView {
                                email: email,
                                password: password)
             
+            registerNewFirebaseUser(email: email, password: password)
+            
             self.submitLogin()
             
         } else {

@@ -8,6 +8,7 @@
 
 import Foundation
 import RealmSwift
+import Firebase
 
 func initializeApp() {
     print("Initializing")
@@ -99,6 +100,19 @@ func registerNewSyncRealm(username: String, password: String, newUser: User = Us
                     
     })
       
+}
+
+func registerNewFirebaseUser(email: String, password: String) {
+    print("ATTEMPTING FIREBASE AUTH")
+    
+    Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
+        // ...
+        if (error != nil) {
+            print("ERROR: \(String(describing: error))")
+        }
+        
+        print("USER: \(user)")
+    }
 }
 
 

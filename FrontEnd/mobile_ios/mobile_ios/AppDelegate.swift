@@ -12,6 +12,7 @@ import RealmSwift
 import UserNotifications
 import CoreLocation
 import FacebookCore
+import Firebase
 
 let digitalOceanIP = "45.55.249.217:9080"
 let publicUserKey = "3236896a34becbac18c96a9a24c55de9"
@@ -50,6 +51,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //logoutOfAllRealmUsers()
         //loginToPublicRealm()
+        
+        // Use Firebase library to configure APIs
+        FirebaseApp.configure()
         
         return true
     }
