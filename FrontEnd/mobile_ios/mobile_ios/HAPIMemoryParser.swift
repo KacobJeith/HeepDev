@@ -210,10 +210,7 @@ class HAPIMemoryParser {
         newDevice.ipAddress = ipAddress
         newDevice.active = true
         
-        try! realm.write {
-            realm.add(newDevice, update: true)
-        }
-        
+        database().writeDevice(device: newDevice)
         
     }
     

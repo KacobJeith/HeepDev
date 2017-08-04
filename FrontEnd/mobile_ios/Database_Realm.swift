@@ -15,6 +15,15 @@ class database {
     
     func getDevice(deviceID: Int) -> Device? {
         return realm.object(ofType: Device.self, forPrimaryKey: deviceID)
+    
+    }
+    
+    func writeDevice(device: Device) {
+        
+        try! realm.write {
+            realm.add(device, update: true)
+        }
+        
     }
     
     
