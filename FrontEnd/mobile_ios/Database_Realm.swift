@@ -65,14 +65,14 @@ class database {
         }
     }
     
-    func updateVertexList(txUniqueID: Int) {
+    func updateVertexList(tx: DeviceControl) {
         
-        let txVertices = realm.objects(Vertex.self).filter("tx == %@", txUniqueID)
+        let txVertices = realm.objects(Vertex.self).filter("tx == %@", tx)
         
         try! realm.write {
             
             realm.create(DeviceControl.self,
-                         value: ["uniqueID": txUniqueID,
+                         value: ["uniqueID": tx.uniqueID,
                                  "vertexList": txVertices],
                          update: true)
         }

@@ -262,7 +262,7 @@ class HAPIMemoryParser {
         }
         
         if txControl != nil {
-            database().updateVertexList(txUniqueID: (txControl?.uniqueID)!)
+            database().updateVertexList(tx: txControl!)
         }
     }
     
