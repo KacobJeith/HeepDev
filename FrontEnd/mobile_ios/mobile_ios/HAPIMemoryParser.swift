@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import RealmSwift
 
 class HAPIMemoryParser {
     
@@ -108,6 +107,7 @@ class HAPIMemoryParser {
     }
     
     public func ParseROP(dump: [UInt8], ipAddress: String) {
+        print("Parsing...")
         
         if (dump[0] == 0x0F){
             // Memory Dump
@@ -134,7 +134,7 @@ class HAPIMemoryParser {
     }
     
     public func ParseMemoryDump(dump: [UInt8], ipAddress: String) {
-        print(dump)
+        print("DUMP: \(dump)")
         let header = ParseDeviceID(dump: dump, index: 1)
         let packet = CalculateNumberOfBytes(dump: dump, index: header.index)
         var index = packet.index
@@ -244,20 +244,15 @@ class HAPIMemoryParser {
         let txControlID = dump[index + 4]
         let rxControlID = dump[index + 5]
         
-        let realm = try! Realm(configuration: configUser)
-        let txControl = realm.object(ofType: DeviceControl.self,
-                                     forPrimaryKey: generateUniqueControlID(deviceID: txDeviceID,
-                                                                            controlID: txControlID))
-        let rxControl = realm.object(ofType: DeviceControl.self,
-                                     forPrimaryKey: generateUniqueControlID(deviceID: rxDeviceID,
-                                                                            controlID: rxControlID))
+        let txControl = database().getDeviceControl(uniqueID: generateUniqueControlID(deviceID: txDeviceID, controlID: txControlID))
+        let rxControl = database().getDeviceControl(uniqueID: generateUniqueControlID(deviceID: rxDeviceID, controlID: rxControlID))
         
         let newVertex = Vertex()
         newVertex.rx = rxControl
         newVertex.tx = txControl
         newVertex.vertexID = nameVertex(tx: txControl, rx: rxControl)
         
-        let existingVertexCheck = realm.object(ofType: Vertex.self, forPrimaryKey: newVertex.vertexID)
+        let existingVertexCheck = database().getVertex(vertexID: newVertex.vertexID)
         
         if existingVertexCheck == nil && txControl != nil && rxControl != nil {
             
@@ -267,7 +262,7 @@ class HAPIMemoryParser {
         }
         
         if txControl != nil {
-            database().updateVertexList(txUniqueID: txControl?.uniqueID)
+            database().updateVertexList(txUniqueID: (txControl?.uniqueID)!)
         }
     }
     

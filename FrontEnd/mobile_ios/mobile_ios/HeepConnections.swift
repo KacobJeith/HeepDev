@@ -108,22 +108,28 @@ class HeepConnections {
         
         switch client.connect(timeout:1){
         case .success:
-            print("success")
+            print("successfully Connected")
             
             switch client.send(data: message) {
                 
             case .success:
-                guard let data = client.read(1024*10) else { return }
+                print("Successfully sent")
+                
+                guard let data = client.read(1024*10) else {
+                    print("Received nothing")
+                    return
+                }
+                
                 HAPIMemoryParser().ParseROP(dump: data, ipAddress: ipAddress)
-                client.close()
+                //client.close()
             case .failure(let error):
                 if (printErrors) {
-                    print(error)
+                    print("ERROR \(error)")
                 }
             }
         case .failure(let error):
             if (printErrors) {
-                print(error)
+                print("Actually errored...\(error)")
             }
         }
         

@@ -53,6 +53,10 @@ class database {
         }
     }
     
+    func getVertex(vertexID: String) -> Vertex? {
+        return realm.object(ofType: Vertex.self, forPrimaryKey: vertexID)
+    }
+    
     func writeVertex(vertex: Vertex) {
         
         try! realm.write {
