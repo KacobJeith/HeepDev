@@ -94,6 +94,10 @@ class database {
     func flushControlVertices(controlUniqueID: Int) {
         
         switch interface {
+        case "both" :
+            databaseRealm().flushControlVertices(controlUniqueID: controlUniqueID)
+            databaseFirebase().flushControlVertices(controlUniqueID: controlUniqueID)
+            
         default :
             databaseRealm().flushControlVertices(controlUniqueID: controlUniqueID)
         }

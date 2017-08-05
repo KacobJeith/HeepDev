@@ -38,6 +38,17 @@ class databaseFirebase {
         
     }
     
+    func flushControlVertices(controlUniqueID: Int) {
+        
+        
+        ref.child("vertices").queryOrdered(byChild:"txID").queryEqual(toValue: controlUniqueID).observe(.value, with: { snapshot in
+            
+            print("SNAPSHOT: \(snapshot)")
+            snapshot.ref.removeValue()
+            
+        })
+    }
+    
     
 }
 

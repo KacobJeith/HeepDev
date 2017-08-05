@@ -236,10 +236,12 @@ extension VertexEditCell {
                 if let thisVertex = realm.object(ofType: Vertex.self, forPrimaryKey: vertex.key) {
                     
                     HeepConnections().sendDeleteVertexToHeepDevice(activeVertex: thisVertex)
+                    database().flushControlVertices(controlUniqueID: (thisVertex.tx?.uniqueID)!)
                     
                     try! realm.write {
                         realm.delete(thisVertex)
                     }
+                    
                     
                 } else {
                     print("Could not identify vertex")
