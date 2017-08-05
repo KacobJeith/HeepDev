@@ -105,7 +105,7 @@ class databaseRealm {
         
     }
     
-    func createNewPlace() {
+    func createNewPlace() -> Int {
         
         let placeID = randomNumber(inRange: 0...4000000000)
         
@@ -130,7 +130,7 @@ class databaseRealm {
             realmUser.add(newPlacePerspective, update: true)
         }
         
-        
+        return placeID
     }
     
     func registerNewUser(name: String = "Jacob Keith",
@@ -180,7 +180,19 @@ class databaseRealm {
         
        openRealmAsync(config: getPlaceConfiguration(path: realmPath), callback: callback)
     
+    }
     
+    func getPlaceContext(id: Int) -> PlacePerspective? {
+        
+        return realm.object(ofType: PlacePerspective.self, forPrimaryKey: id)
+        
+    }
+    
+    func updatePlaceContext(placeContext: PlacePerspective) {
+        
+        try! realm.write{
+            realm.add(placeContext, update: true)
+        }
         
     }
     

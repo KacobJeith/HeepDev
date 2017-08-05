@@ -98,6 +98,7 @@ class PlacesView: UIViewController {
     }
     
     func addPlaceToDatabase() {
+        
         database().createNewPlace()
         
     }
@@ -173,14 +174,27 @@ class PlacesView: UIViewController {
             
             if activelyPanning != Int(){
                 
-                let realm = try! Realm(configuration: configUser)
-                let thisPlace = realm.object(ofType: PlacePerspective.self, forPrimaryKey: gesture.view?.tag)
                 
-                try! realm.write {
-                    thisPlace?.x = (thisPlace?.x)! + gesture.translation(in: self.view).x
-                    thisPlace?.y = (thisPlace?.y)! + gesture.translation(in: self.view).y
+                guard let tag = gesture.view?.tag else {
+                    print("Couldn't get view tag")
+                    return
                 }
                 
+                guard let thisPlace = database().getPlaceContext(id: tag) else {
+                    print("Failed to pull Place Context")
+                    return
+                }
+                
+                let newContext = PlacePerspective()
+                newContext.x = thisPlace.x + gesture.translation(in: self.view).x
+                newContext.y = thisPlace.y + gesture.translation(in: self.view).y
+                
+                newContext.numDevices = thisPlace.numDevices
+                newContext.placeID = thisPlace.placeID
+                newContext.radius = thisPlace.radius
+                newContext.realmPath = thisPlace.realmPath
+                
+                database().updatePlaceContext(placeContext: newContext)
                 
                 self.reloadView()
                 

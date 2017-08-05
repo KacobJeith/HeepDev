@@ -49,8 +49,7 @@ class databaseFirebase {
         })
     }
     
-    func createNewPlace() {
-        let placeID = randomNumber(inRange: 0...4000000000)
+    func createNewPlace(placeID: Int = randomNumber(inRange: 0...4000000000)) {
         
         let newPlace = Place()
         newPlace.name = "New Place"
@@ -59,13 +58,19 @@ class databaseFirebase {
         let newPlacePerspective = PlacePerspective()
         newPlacePerspective.placeID = placeID
         
+        ref.child("places").child(String(describing: newPlace.placeID)).setValue(newPlace.toDict())
+        updatePlaceContext(placeContext: newPlacePerspective)
+        
+    }
+    
+    func updatePlaceContext(placeContext: PlacePerspective) {
+        
         guard let userID = Auth.auth().currentUser?.uid else {
             print("No Firebase User Logged In")
             return
         }
         
-        ref.child("places").child(String(describing: newPlace.placeID)).setValue(newPlace.toDict())
-        ref.child("users/\(String(describing: userID))/places/\(newPlace.placeID)").setValue(newPlacePerspective.toDict())
+        ref.child("users/\(String(describing: userID))/places/\(placeContext.placeID)").setValue(placeContext.toDict())
         
     }
     

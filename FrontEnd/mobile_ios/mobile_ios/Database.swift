@@ -24,7 +24,26 @@ class database {
         
     }
     
+    func getPlaceContext(id: Int) -> PlacePerspective? {
+        
+        switch interface {
+        default :
+            return databaseRealm().getPlaceContext(id: id)
+        }
+    }
     
+    func updatePlaceContext(placeContext: PlacePerspective) {
+        
+        switch interface {
+        case "firebase" :
+            databaseFirebase().updatePlaceContext(placeContext: placeContext)
+        case "realm" :
+            databaseRealm().updatePlaceContext(placeContext: placeContext)
+        default :
+            databaseFirebase().updatePlaceContext(placeContext: placeContext)
+            databaseRealm().updatePlaceContext(placeContext: placeContext)
+        }
+    }
     
     func updateDeviceControl(control: DeviceControl) {
         switch interface {
@@ -104,8 +123,8 @@ class database {
         case "firebase" :
             databaseFirebase().createNewPlace()
         case "both" :
-            databaseRealm().createNewPlace()
-            databaseFirebase().createNewPlace()
+            let id = databaseRealm().createNewPlace()
+            databaseFirebase().createNewPlace(placeID: id)
         default :
             databaseRealm().createNewPlace()
         }
