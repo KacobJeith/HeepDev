@@ -49,6 +49,23 @@ class databaseFirebase {
         })
     }
     
+    func createNewPlace() {
+        let placeID = randomNumber(inRange: 0...4000000000)
+        
+        let newPlace = Place()
+        newPlace.name = "New Place"
+        newPlace.placeID = placeID
+        
+        let newPlacePerspective = PlacePerspective()
+        newPlacePerspective.placeID = placeID
+        
+        let userID = Auth.auth().currentUser?.uid
+        
+        ref.child("places").child(String(describing: newPlace.placeID)).setValue(newPlace.toDict())
+        ref.child("users/\(String(describing: userID))/places/\(newPlace.placeID)").setValue(newPlacePerspective.toDict())
+        
+    }
+    
     
 }
 

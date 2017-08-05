@@ -31,7 +31,7 @@ class PlacesView: UIViewController {
         self.view.backgroundColor = .white
         self.navigationController?.isToolbarHidden = false
         
-        let addPlace = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addPlaceToRealm))
+        let addPlace = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addPlaceToDatabase))
         
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         
@@ -75,12 +75,6 @@ class PlacesView: UIViewController {
     func addPlaces() {
         let realm = try! Realm(configuration: configUser)
         
-//        let currentWifi = currentWifiInfo()
-//        let thisWifiCheck = realm.objects(Place.self).filter("bssid == %s", currentWifi.bssid)
-//        if (thisWifiCheck.count == 0) {
-//            addPlaceToRealm()
-//        }
-        
         let perspectives = realm.objects(PlacePerspective.self)
         
         for perspective in perspectives {
@@ -113,8 +107,8 @@ class PlacesView: UIViewController {
     }
     
     
-    func addPlaceToRealm() {
-        createPlaceRealm()
+    func addPlaceToDatabase() {
+        database().createNewPlace()
         
     }
  

@@ -101,5 +101,37 @@ class databaseRealm {
         }
     }
     
+    func addNotificationBlock() {
+        
+    }
+    
+    func createNewPlace() {
+        
+        let placeID = randomNumber(inRange: 0...4000000000)
+        
+        let urlString = digitalOceanRealm + "/~/place/" + String(placeID)
+        
+        let realmPlace = try! Realm(configuration: getPlaceConfiguration(path: urlString))
+        let realmUser = try! Realm(configuration: configUser)
+        
+        let newPlace = Place()
+        newPlace.name = "New Place"
+        newPlace.placeID = placeID
+        
+        let newPlacePerspective = PlacePerspective()
+        newPlacePerspective.placeID = placeID
+        newPlacePerspective.realmPath = urlString
+        
+        try! realmPlace.write {
+            realmPlace.add(newPlace, update: true)
+        }
+        
+        try! realmUser.write {
+            realmUser.add(newPlacePerspective, update: true)
+        }
+        
+        
+    }
+    
     
 }

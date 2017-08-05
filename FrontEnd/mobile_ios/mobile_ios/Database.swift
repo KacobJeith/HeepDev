@@ -123,5 +123,18 @@ class database {
         
     }
     
+    func createNewPlace() {
+        
+        switch interface {
+        case "firebase" :
+            databaseFirebase().createNewPlace()
+        case "both" :
+            databaseRealm().createNewPlace()
+            databaseFirebase().createNewPlace()
+        default :
+            databaseRealm().createNewPlace()
+        }
+    }
+    
     
 }
