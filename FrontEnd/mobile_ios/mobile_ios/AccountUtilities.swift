@@ -8,7 +8,6 @@
 
 import Foundation
 import RealmSwift
-import Firebase
 
 func initializeApp() {
     print("Initializing")
@@ -17,13 +16,15 @@ func initializeApp() {
     if SyncUser.all.count == 0 {
         
         print("Logging out")
-        logoutOfAllRealmUsers()
+        database().signOut()
+        
         configUser = configGuest
         
     } else if SyncUser.all.first?.key == publicUserKey {
         
         print("Logging out")
-        logoutOfAllRealmUsers()
+        database().signOut()
+        
         configUser = configGuest
         
     } else {
@@ -32,13 +33,6 @@ func initializeApp() {
         
     }
     
-}
-
-func logoutOfAllRealmUsers() {
-    for user in SyncUser.all {
-        debugPrint("user: \(user.key) - \(user.value)")
-        user.value.logOut()
-    }
 }
 
 func registerNewSyncRealm(username: String, password: String, newUser: User = User(), callback: @escaping () -> Void = {}) {

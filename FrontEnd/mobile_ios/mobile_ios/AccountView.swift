@@ -72,7 +72,8 @@ class AccountView: UIViewController {
     }
     
     func logoutUser() {
-        logoutOfAllRealmUsers()
+        
+        database().signOut()
         reloadView()
         
     }

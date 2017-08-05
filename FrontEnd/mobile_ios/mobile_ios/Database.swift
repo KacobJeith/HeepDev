@@ -149,5 +149,18 @@ class database {
         }
     }
     
+    func signOut() {
+        
+        switch interface {
+        case "firebase" :
+            databaseFirebase().signOut()
+        case "both" :
+            databaseRealm().signOut()
+            databaseFirebase().signOut()
+        default :
+            databaseRealm().signOut()
+        }
+    }
+    
     
 }

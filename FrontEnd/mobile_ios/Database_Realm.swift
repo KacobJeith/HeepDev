@@ -159,5 +159,12 @@ class databaseRealm {
         
     }
     
+    func signOut() {
+        for user in SyncUser.all {
+            debugPrint("user: \(user.key) - \(user.value)")
+            user.value.logOut()
+        }
+    }
+    
     
 }
