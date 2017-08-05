@@ -74,37 +74,28 @@ class PlacesView: UIViewController {
 
     func addPlaces() {
         
-        let perspectives = database().getMyPlaces()
-        
-        for perspective in perspectives {
+        for perspective in database().getMyPlaces() {
             
-            let thisPlaceRealm = try! Realm(configuration: getPlaceConfiguration(path: perspective.realmPath))
-            
-            if let place = thisPlaceRealm.objects(Place.self).first {
+            if let place = database().getPlace(realmPath: perspective.realmPath) {
                 
                 self.drawPlace(place: place, perspective: perspective)
                 
             } else {
-                
-                asyncOpenPlace(perspective: perspective)
                 print("Could not find any places at this realm config")
+                
+                database().getPlaceAsync(realmPath: perspective.realmPath, callback: {
+                    
+                    if let place = database().getPlace(realmPath: perspective.realmPath) {
+                        
+                        self.drawPlace(place: place, perspective: perspective)
+                                        
+                    }
+                })
+                
             }
         
         }
     }
-    
-    func asyncOpenPlace(perspective: PlacePerspective) {
-        openRealmAsync(config: getPlaceConfiguration(path: perspective.realmPath), callback: {
-            let thisPlaceRealm = try! Realm(configuration: getPlaceConfiguration(path: perspective.realmPath))
-            
-            if let place = thisPlaceRealm.objects(Place.self).first {
-                
-                self.drawPlace(place: place, perspective: perspective)
-                
-            }
-        })
-    }
-    
     
     func addPlaceToDatabase() {
         database().createNewPlace()

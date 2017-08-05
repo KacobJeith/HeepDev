@@ -170,5 +170,19 @@ class databaseRealm {
         return realm.objects(PlacePerspective.self).toArray()
     }
     
+    func getPlace(realmPath: String) -> Place? {
+        let thisPlaceRealm = try! Realm(configuration: getPlaceConfiguration(path: realmPath))
+        
+        return thisPlaceRealm.objects(Place.self).first         
+    }
+    
+    func getPlaceAsync(realmPath: String, callback: @escaping () -> Void = {}) {
+        
+       openRealmAsync(config: getPlaceConfiguration(path: realmPath), callback: callback)
+    
+    
+        
+    }
+    
     
 }

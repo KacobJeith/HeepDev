@@ -145,6 +145,23 @@ class database {
         }
     }
     
+    func getPlace(realmPath: String) -> Place? {
+        
+        switch interface {
+        default :
+            return databaseRealm().getPlace(realmPath: realmPath)
+        }
+        
+    }
+    
+    func getPlaceAsync(realmPath: String, callback: @escaping () -> Void = {}) {
+        
+        switch interface {
+        default :
+            databaseRealm().getPlaceAsync(realmPath: realmPath, callback: callback)
+        }
+    }
+    
     func getDevice(deviceID: Int) -> Device? {
         
         switch interface {
