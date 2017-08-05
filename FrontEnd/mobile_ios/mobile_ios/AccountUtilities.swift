@@ -41,32 +41,6 @@ func logoutOfAllRealmUsers() {
     }
 }
 
-func seedNewUserAccount(name: String = "Jacob Keith",
-                        imageURL: String = "https://lorempixel.com/400/400/",
-                        heepID: Int = randomNumber(inRange: 1...1000000),
-                        email: String = "",
-                        password: String = "",
-                        repair: Bool = false,
-                        callback: @escaping () -> Void = {}) {
-    
-    
-    let newUser = User()
-    
-    newUser.heepID = heepID
-    newUser.name = name
-    newUser.iconURL = imageURL
-    newUser.email = email
-    newUser.icon = getUserIcon(iconURL: newUser.iconURL)
-    
-    if repair {
-        addNewUserToPublicRealm(newUser: newUser, callback: callback)
-    } else {
-        registerNewSyncRealm(username: email, password: password, newUser: newUser, callback: callback )
-        
-    }
-    
-}
-
 func registerNewSyncRealm(username: String, password: String, newUser: User = User(), callback: @escaping () -> Void = {}) {
     let url = URL(string: digitalOceanHTTP)!
     
@@ -100,19 +74,6 @@ func registerNewSyncRealm(username: String, password: String, newUser: User = Us
                     
     })
       
-}
-
-func registerNewFirebaseUser(email: String, password: String) {
-    print("ATTEMPTING FIREBASE AUTH")
-    
-    Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
-        // ...
-        if (error != nil) {
-            print("ERROR: \(String(describing: error))")
-        }
-        
-        print("USER: \(user)")
-    }
 }
 
 

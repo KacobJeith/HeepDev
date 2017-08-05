@@ -66,6 +66,16 @@ class databaseFirebase {
         
     }
     
-    
+    func registerNewUser(email: String, password: String) {
+        
+        Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
+            // ...
+            if (error != nil) {
+                print("ERROR: \(String(describing: error))")
+            }
+            
+            print("USER: \(user)")
+        }
+    }
 }
 

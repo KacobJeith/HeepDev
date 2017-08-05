@@ -512,11 +512,10 @@ extension AccountView {
                               callback: {self.reloadView()}),
                     animated: false, completion: nil)
             
-            seedNewUserAccount(name: name,
-                               email: email,
-                               password: password)
+            database().registerNewUser(name: name,
+                                       email: email,
+                                       password: password)
             
-            registerNewFirebaseUser(email: email, password: password)
             
             self.submitLogin()
             

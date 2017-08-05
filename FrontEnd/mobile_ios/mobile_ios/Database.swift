@@ -136,5 +136,18 @@ class database {
         }
     }
     
+    func registerNewUser(name: String, email: String, password: String) {
+        
+        switch interface {
+        case "firebase" :
+            databaseFirebase().registerNewUser(email: email, password: password)
+        case "both" :
+            databaseRealm().registerNewUser(name: name, email: email, password: password)
+            databaseFirebase().registerNewUser(email: email, password: password)
+        default :
+            databaseRealm().registerNewUser(name: name, email: email, password: password)
+        }
+    }
+    
     
 }

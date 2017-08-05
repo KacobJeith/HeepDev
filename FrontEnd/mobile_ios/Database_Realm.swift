@@ -133,5 +133,31 @@ class databaseRealm {
         
     }
     
+    func registerNewUser(name: String = "Jacob Keith",
+                            imageURL: String = "https://lorempixel.com/400/400/",
+                            heepID: Int = randomNumber(inRange: 1...1000000),
+                            email: String = "",
+                            password: String = "",
+                            repair: Bool = false,
+                            callback: @escaping () -> Void = {}) {
+        
+        
+        let newUser = User()
+        
+        newUser.heepID = heepID
+        newUser.name = name
+        newUser.iconURL = imageURL
+        newUser.email = email
+        newUser.icon = getUserIcon(iconURL: newUser.iconURL)
+        
+        if repair {
+            addNewUserToPublicRealm(newUser: newUser, callback: callback)
+        } else {
+            registerNewSyncRealm(username: email, password: password, newUser: newUser, callback: callback )
+            
+        }
+        
+    }
+    
     
 }
