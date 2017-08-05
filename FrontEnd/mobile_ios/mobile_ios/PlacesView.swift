@@ -73,9 +73,8 @@ class PlacesView: UIViewController {
     
 
     func addPlaces() {
-        let realm = try! Realm(configuration: configUser)
         
-        let perspectives = realm.objects(PlacePerspective.self)
+        let perspectives = database().getMyPlaces()
         
         for perspective in perspectives {
             

@@ -166,5 +166,9 @@ class databaseRealm {
         }
     }
     
+    func getMyPlaces() -> [PlacePerspective] {
+        return realm.objects(PlacePerspective.self).toArray()
+    }
+    
     
 }

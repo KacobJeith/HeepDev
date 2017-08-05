@@ -11,16 +11,6 @@ import Foundation
 class database {
     let interface = "both"
     
-    func getDevice(deviceID: Int) -> Device? {
-        
-        switch interface {
-        default :
-            return databaseRealm().getDevice(deviceID: deviceID)
-        }
-        
-        
-    }
-    
     func writeDevice(device: Device) {
         
         switch interface {
@@ -34,13 +24,7 @@ class database {
         
     }
     
-    func getDeviceControl(uniqueID: Int) -> DeviceControl? {
-        
-        switch interface {
-        default :
-            return databaseRealm().getDeviceControl(uniqueID: uniqueID)
-        }
-    }
+    
     
     func updateDeviceControl(control: DeviceControl) {
         switch interface {
@@ -58,15 +42,6 @@ class database {
         switch interface {
         default :
             databaseRealm().updateDeviceControlList(deviceID: deviceID)
-        }
-        
-    }
-    
-    func getVertex(vertexID: String) -> Vertex? {
-        
-        switch interface {
-        default :
-            return databaseRealm().getVertex(vertexID: vertexID)
         }
         
     }
@@ -161,6 +136,42 @@ class database {
             databaseRealm().signOut()
         }
     }
+    
+    func getMyPlaces() -> [PlacePerspective] {
+        
+        switch interface {
+        default :
+            return databaseRealm().getMyPlaces()
+        }
+    }
+    
+    func getDevice(deviceID: Int) -> Device? {
+        
+        switch interface {
+        default :
+            return databaseRealm().getDevice(deviceID: deviceID)
+        }
+        
+        
+    }
+    
+    func getDeviceControl(uniqueID: Int) -> DeviceControl? {
+        
+        switch interface {
+        default :
+            return databaseRealm().getDeviceControl(uniqueID: uniqueID)
+        }
+    }
+    
+    func getVertex(vertexID: String) -> Vertex? {
+        
+        switch interface {
+        default :
+            return databaseRealm().getVertex(vertexID: vertexID)
+        }
+        
+    }
+    
     
     
 }

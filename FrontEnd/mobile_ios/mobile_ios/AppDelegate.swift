@@ -43,6 +43,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         SDKApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
         
+        // Use Firebase library to configure APIs
+        FirebaseApp.configure()
+        
         flushApp()
         checkForNewRealmPermissions()
         //logoutOfAllRealmUsers()
@@ -53,8 +56,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //logoutOfAllRealmUsers()
         //loginToPublicRealm()
         
-        // Use Firebase library to configure APIs
-        FirebaseApp.configure()
         
         return true
     }

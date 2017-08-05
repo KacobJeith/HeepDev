@@ -59,7 +59,10 @@ class databaseFirebase {
         let newPlacePerspective = PlacePerspective()
         newPlacePerspective.placeID = placeID
         
-        let userID = Auth.auth().currentUser?.uid
+        guard let userID = Auth.auth().currentUser?.uid else {
+            print("No Firebase User Logged In")
+            return
+        }
         
         ref.child("places").child(String(describing: newPlace.placeID)).setValue(newPlace.toDict())
         ref.child("users/\(String(describing: userID))/places/\(newPlace.placeID)").setValue(newPlacePerspective.toDict())
@@ -73,8 +76,11 @@ class databaseFirebase {
             if (error != nil) {
                 print("ERROR: \(String(describing: error))")
             }
+            let heepID = randomNumber(inRange: 1...1000000)
             
-            print("USER: \(user)")
+            ref.child("users").child(String(describing: (user?.uid)!)).setValue(["heepID": heepID])
+            
+            print("USER: \(String(describing: user))")
         }
     }
     
@@ -83,6 +89,7 @@ class databaseFirebase {
         let firebaseAuth = Auth.auth()
         
         do {
+            
             try firebaseAuth.signOut()
             
         } catch let signOutError as NSError {
