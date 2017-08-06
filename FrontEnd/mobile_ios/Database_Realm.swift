@@ -465,5 +465,14 @@ class databaseRealm {
             
     }
     
+    func resetActiveDevices() {
+        
+        let devices = realm.objects(Device.self)
+        
+        try! realm.write {
+            devices.setValue(false, forKey: "active")
+        }
+        
+    }
     
 }

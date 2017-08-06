@@ -424,6 +424,15 @@ class database {
         
     }
     
+    func resetActiveDevices() {
+        
+        switch interface {
+        default :
+            return databaseRealm().resetActiveDevices()
+        }
+        
+    }
+    
     
     
 }

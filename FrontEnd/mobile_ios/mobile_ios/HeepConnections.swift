@@ -7,14 +7,13 @@
 //
 
 import SwiftSocket
-import RealmSwift
 import Foundation
 
 class HeepConnections {
     
     public func SearchForHeepDeviecs() {
         
-        resetActiveDevices()
+        database().resetActiveDevices()
         
         let gateway = getWiFiGateway()
         
@@ -34,21 +33,25 @@ class HeepConnections {
     public func sendValueToHeepDevice(uniqueID: Int, currentValue: Int = -1) {
     
         var newVal = -1
-        let realm = try! Realm(configuration: configUser)
-        let activeControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: uniqueID)
-        let thisDevice = realm.object(ofType: Device.self, forPrimaryKey: activeControl?.deviceID)
-        let thisDeviceIP = thisDevice?.ipAddress
-        let thisControl = activeControl?.controlID
         
+        guard let activeControl = database().getDeviceControl(uniqueID: uniqueID) else {
+            print("Failed to get activeControl to send value")
+            return
+        }
+        
+        let thisDevice = database().getDevice(deviceID: activeControl.deviceID)
+        
+        let thisDeviceIP = thisDevice?.ipAddress
+        let thisControl = activeControl.controlID
         
         if currentValue == -1 {
-            newVal = (activeControl?.valueCurrent)!
+            newVal = activeControl.valueCurrent
         }
         else{
             newVal = currentValue
         }
         
-        let message = HAPIMemoryParser().BuildSetValueCOP(controlID: thisControl!, newValue: newVal)
+        let message = HAPIMemoryParser().BuildSetValueCOP(controlID: thisControl, newValue: newVal)
         print("Sending: \(message) to Heep Device at to \(thisDeviceIP!)")
         ConnectToHeepDevice(ipAddress: thisDeviceIP!, printErrors: false, message: message)
         
@@ -58,31 +61,36 @@ class HeepConnections {
     
     public func sendSetVertexToHeepDevice(activeVertex: Vertex) {
         
-        let realm = try! Realm(configuration: configUser)
-        let thisDevice = realm.object(ofType: Device.self, forPrimaryKey: activeVertex.tx?.deviceID)
-        let thisDeviceIP = thisDevice?.ipAddress
+        guard let thisDevice = database().getDevice(deviceID: (activeVertex.tx?.deviceID)!) else {
+            print("Failed to get this Device to send Vertex")
+            return
+        }
+        
+        let thisDeviceIP = thisDevice.ipAddress
         let message = HAPIMemoryParser().BuildSetVertexCOP(vertex: activeVertex)
         
-        print("Sending: \(message) to Heep Device at \(thisDeviceIP!)")
+        print("Sending: \(message) to Heep Device at \(thisDeviceIP)")
         
-        ConnectToHeepDevice(ipAddress: thisDeviceIP!, printErrors: false, message: message)
+        ConnectToHeepDevice(ipAddress: thisDeviceIP, printErrors: false, message: message)
     }
     
     public func sendDeleteVertexToHeepDevice(activeVertex: Vertex) {
         
-        let realm = try! Realm(configuration: configUser)
+        guard let thisDevice = database().getDevice(deviceID: (activeVertex.tx?.deviceID)!) else {
+            print("Failed to get this Device to send Vertex")
+            return
+        }
         
-        let thisDevice = realm.object(ofType: Device.self, forPrimaryKey: activeVertex.tx?.deviceID)
-        let thisDeviceIP = thisDevice?.ipAddress
+        let thisDeviceIP = thisDevice.ipAddress
         let message = HAPIMemoryParser().BuildDeleteVertexCOP(vertex: activeVertex)
-        print("Sending: \(message) to Heep Device at \(thisDeviceIP!)")
+        print("Sending: \(message) to Heep Device at \(thisDeviceIP)")
         
-        ConnectToHeepDevice(ipAddress: thisDeviceIP!, printErrors: false, message: message)
+        ConnectToHeepDevice(ipAddress: thisDeviceIP, printErrors: false, message: message)
     }
     
     public func sendAssignAdminToHeepDevice(deviceID: Int) {
         
-        guard let adminID = SyncUser.current else {
+        guard let adminID = database().getMyHeepID() else {
             return
         }
         
@@ -186,15 +194,6 @@ class HeepConnections {
         return gateway + "." + String(ip)
     }
     
-    public func resetActiveDevices() {
-        let realm = try! Realm(configuration: configUser)
-        let devices = realm.objects(Device.self)
-        
-        try! realm.write {
-            devices.setValue(false, forKey: "active")
-        }
-        
-    }
     
     
 }
