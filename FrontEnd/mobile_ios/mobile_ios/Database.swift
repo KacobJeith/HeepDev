@@ -152,8 +152,13 @@ class database {
     func updateGroupContext(update: GroupPerspective) {
         
         switch interface {
+        case "firebase" :
+            databaseFirebase().updateGroupContext(context: update)
+        case "realm" :
+            databaseRealm().updateGroupContext(update: update)
         default :
-            return databaseRealm().updateGroupContext(update: update)
+            databaseRealm().updateGroupContext(update: update)
+            databaseFirebase().updateGroupContext(context: update)
         }
     }
     
