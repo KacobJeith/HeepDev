@@ -537,11 +537,11 @@ class databaseRealm {
     }
     
     
-    func loginToUserRealmSync(username: String, password: String, callback: @escaping () -> Void = {}) {
+    func loginUser(email: String, password: String, callback: @escaping () -> Void = {}) {
         
         let url = URL(string: digitalOceanHTTP)!
         
-        let credentials = SyncCredentials.usernamePassword(username: username,
+        let credentials = SyncCredentials.usernamePassword(username: email,
                                                            password: password,
                                                            register: false)
         
@@ -551,6 +551,7 @@ class databaseRealm {
                         if user == nil {
                             print("No User Account Found")
                             callback()
+                            
                         } else {
                             
                             configUser =  getUserConfiguration(user: user!, path: digitalOceamUserRealm)

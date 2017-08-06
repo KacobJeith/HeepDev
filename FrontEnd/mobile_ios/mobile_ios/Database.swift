@@ -433,6 +433,19 @@ class database {
         
     }
     
+    func loginUser(email: String, password: String, callback: @escaping () -> Void = {}) {
+        
+        switch interface {
+        case "firebase" :
+            databaseFirebase().loginUser(email: email, password: password, callback: callback)
+        case "realm" :
+            databaseRealm().loginUser(email: email, password: password, callback: callback)
+        default :
+            databaseRealm().loginUser(email: email, password: password, callback: callback)
+            databaseFirebase().loginUser(email: email, password: password, callback: callback)
+        }
+    }
+    
     
     
 }

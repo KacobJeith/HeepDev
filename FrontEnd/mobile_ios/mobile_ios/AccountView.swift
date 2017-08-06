@@ -281,12 +281,10 @@ extension AccountView{
                 
             }
             
-            databaseRealm().loginToUserRealmSync(username: email,
-                                            password: password,
-                                            callback: {
-                                                print("Executing Callback")
-                                                loginGroup.leave()
-                                            })
+            database().loginUser(email: email, password: password) {
+                print("Executing Callback")
+                loginGroup.leave()
+            }
             
         }
         

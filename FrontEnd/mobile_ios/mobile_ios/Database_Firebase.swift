@@ -130,6 +130,21 @@ class databaseFirebase {
         }
     }
     
+    func loginUser(email: String, password: String, callback: @escaping () -> Void = {}) {
+        
+        Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
+            // ...
+            if error != nil {
+                print("Firebase Login Error")
+            } else {
+                print("Successfully logged in user to firebase \(String(describing: user))")
+            }
+            
+            //callback()
+        }
+        
+    }
+    
     func signOut() {
         
         let firebaseAuth = Auth.auth()
