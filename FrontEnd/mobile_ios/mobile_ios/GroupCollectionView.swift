@@ -40,22 +40,19 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
     func initRealmNotifications() {
         groups = []
         
-        let realm = try! Realm(configuration: configUser)
-        
-        let groupPerspectives = realm.objects(GroupPerspective.self).filter("placeID = %@", placeID).toArray()
+        let groupPerspectives = database().getGroupContextsForPlace(placeID: placeID)
         
         for perspective in groupPerspectives {
             
-            let thisGroupRealm = try! Realm(configuration: getGroupConfiguration(path: perspective.realmPath))
-            
-            if let thisGroup = thisGroupRealm.objects(Group.self).first {
+            if let thisGroup = database().getGroup(context: perspective) {
                 
                 initGroupNotification(group: thisGroup)
                 
             } else {
                 
-                asyncOpenGroup(perspective: perspective)
                 print("Could not find any groups at this realm config")
+                asyncOpenGroup(perspective: perspective)
+                
             }
             
         }
@@ -63,15 +60,16 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
     }
     
     func asyncOpenGroup(perspective: GroupPerspective) {
-        openRealmAsync(config: getGroupConfiguration(path: perspective.realmPath), callback: {
-            let thisGroupRealm = try! Realm(configuration: getGroupConfiguration(path: perspective.realmPath))
-            
-            if let thisGroup = thisGroupRealm.objects(Group.self).first {
+        
+        database().getGroupAsync(context: perspective) {
+            if let thisGroup = database().getGroup(context: perspective) {
                 
                 self.initGroupNotification(group: thisGroup)
+                
             }
+            
             self.reloadView()
-        })
+        }
     }
 
     

@@ -175,21 +175,46 @@ class database {
         }
     }
     
-    func getPlace(realmPath: String) -> Place? {
+    func getPlace(context: PlacePerspective) -> Place? {
         
         switch interface {
         default :
-            return databaseRealm().getPlace(realmPath: realmPath)
+            return databaseRealm().getPlace(realmPath: context.realmPath)
         }
         
     }
     
-    func getPlaceAsync(realmPath: String, callback: @escaping () -> Void = {}) {
+    func getPlaceAsync(context: PlacePerspective, callback: @escaping () -> Void = {}) {
         
         switch interface {
         default :
-            databaseRealm().getPlaceAsync(realmPath: realmPath, callback: callback)
+            databaseRealm().getPlaceAsync(realmPath: context.realmPath, callback: callback)
         }
+    }
+    
+    func getGroup(context: GroupPerspective) -> Group? {
+        
+        switch interface {
+        default :
+            return databaseRealm().getGroup(path: context.realmPath)
+        }
+    }
+    
+    func getGroupAsync(context: GroupPerspective, callback: @escaping () -> Void = {}) {
+        
+        switch interface {
+        default :
+            databaseRealm().getGroupAsync(realmPath: context.realmPath, callback: callback)
+        }
+    }
+    
+    func getGroupContextsForPlace(placeID: Int) -> [GroupPerspective] {
+        
+        switch interface {
+        default :
+            return databaseRealm().getGroupContextsForPlace(placeID: placeID)
+        }
+        
     }
     
     func getDevice(deviceID: Int) -> Device? {
@@ -234,6 +259,8 @@ class database {
             return databaseRealm().getMyHeepID()
         }
     }
+    
+    
     
     
     

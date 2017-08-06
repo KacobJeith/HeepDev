@@ -71,21 +71,20 @@ class PlacesView: UIViewController {
         
     }
     
-
     func addPlaces() {
         
         for perspective in database().getMyPlaces() {
             
-            if let place = database().getPlace(realmPath: perspective.realmPath) {
+            if let place = database().getPlace(context: perspective) {
                 
                 self.drawPlace(place: place, perspective: perspective)
                 
             } else {
                 print("Could not find any places at this realm config")
                 
-                database().getPlaceAsync(realmPath: perspective.realmPath, callback: {
+                database().getPlaceAsync(context: perspective, callback: {
                     
-                    if let place = database().getPlace(realmPath: perspective.realmPath) {
+                    if let place = database().getPlace(context: perspective) {
                         
                         self.drawPlace(place: place, perspective: perspective)
                                         
@@ -254,13 +253,7 @@ extension PlacesView {
     func getActiveUserIcon() -> UIBarButtonItem {
         let myID = database().getMyHeepID()
         
-        var userImage = #imageLiteral(resourceName: "female")
-        
-        if myID != nil {
-            
-            userImage = database().getUserIcon(heepID: myID)
-            
-        }        
+        let userImage = database().getUserIcon(heepID: myID)
         
         let userButton = UIButton(frame: CGRect(x: 0, y: 0,
                                                 width: (navigationController?.navigationBar.bounds.height)!,

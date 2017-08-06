@@ -172,6 +172,24 @@ class databaseRealm {
     
     }
     
+    func getGroup(path: String) -> Group? {
+        let thisGroupRealm = try! Realm(configuration: getGroupConfiguration(path: path))
+        
+        return thisGroupRealm.objects(Group.self).first
+        
+    }
+    
+    func getGroupAsync(realmPath: String, callback: @escaping () -> Void = {}) {
+        
+        openRealmAsync(config: getGroupConfiguration(path: realmPath), callback: callback)
+        
+    }
+    
+    func getGroupContextsForPlace(placeID: Int) -> [GroupPerspective] {
+        
+        return realm.objects(GroupPerspective.self).filter("placeID = %@", placeID).toArray()
+    }
+    
     func getPlaceContext(id: Int) -> PlacePerspective? {
         
         return realm.object(ofType: PlacePerspective.self, forPrimaryKey: id)
