@@ -9,18 +9,8 @@
 import UIKit
 import Foundation
 import SystemConfiguration.CaptiveNetwork
-import RealmSwift
 //import CommonCrypto.CommonCrypto
 var userKey = String()
-
-func flushApp() {
-    
-    let realmGuest = try! Realm(configuration: configGuest)
-    try! realmGuest.write {
-        realmGuest.deleteAll()
-    }
-    
-}
 
 func SuggestIconFromName(name: String, state: Int = -1, lowVal: Int = 0) -> String {
     var suggestion = "switch"
@@ -265,17 +255,4 @@ func convertArrayToInt(byteArray: [UInt8], reverse: Bool = false) -> Int {
     return integer
 }
 
-extension Results {
-    
-    func toArray() -> [T] {
-        return self.map{$0}
-    }
-}
-
-extension RealmSwift.List {
-    
-    func toArray() -> [T] {
-        return self.map{$0}
-    }
-}
 

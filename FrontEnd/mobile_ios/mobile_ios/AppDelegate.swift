@@ -46,7 +46,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use Firebase library to configure APIs
         FirebaseApp.configure()
         
-        flushApp()
+        //flushApp()
         checkForNewRealmPermissions()
         //logoutOfAllRealmUsers()
         initializeApp()
