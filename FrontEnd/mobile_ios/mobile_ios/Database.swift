@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import RealmSwift
 
 class database {
     let interface = "both"
@@ -23,14 +24,6 @@ class database {
             databaseRealm().writeDevice(device: device)
         }
         
-    }
-    
-    func getPlaceContext(id: Int) -> PlacePerspective? {
-        
-        switch interface {
-        default :
-            return databaseRealm().getPlaceContext(id: id)
-        }
     }
     
     func updatePlaceContext(placeContext: PlacePerspective) {
@@ -157,11 +150,28 @@ class database {
         }
     }
     
+    
+    func getPlaceContext(id: Int) -> PlacePerspective? {
+        
+        switch interface {
+        default :
+            return databaseRealm().getPlaceContext(id: id)
+        }
+    }
+    
     func getMyPlaces() -> [PlacePerspective] {
         
         switch interface {
         default :
             return databaseRealm().getMyPlaces()
+        }
+    }
+    
+    func watchPlaces(callback: @escaping () -> Void = {}) -> NotificationToken {
+        
+        switch interface {
+        default :
+            return databaseRealm().watchPlaces(callback: callback)
         }
     }
     

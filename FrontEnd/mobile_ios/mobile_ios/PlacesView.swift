@@ -240,26 +240,10 @@ extension PlacesView {
     }
     
     func initRealmNotification() {
-        let realm = try! Realm(configuration: configUser)
-        let places = realm.objects(PlacePerspective.self)
         
-        notificationToken = places.addNotificationBlock { [weak self] (changes: RealmCollectionChange) in
-            
-            switch changes {
-            case .update:
-                
-                self?.reloadView()
-                break
-                
-            case .error(let error):
-                
-                fatalError("\(error)")
-                break
-                
-            default: break
-            }
+        notificationToken = database().watchPlaces() {
+            self.reloadView()
         }
-        
 
     }
     

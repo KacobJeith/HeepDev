@@ -202,5 +202,27 @@ class databaseRealm {
         return realm.objects(User.self).first?.heepID
     }
     
+    func watchPlaces(callback: @escaping () -> Void = {}) -> NotificationToken {
+        
+        return realm.objects(PlacePerspective.self).addNotificationBlock { [weak self] (changes: RealmCollectionChange) in
+            
+            switch changes {
+            case .update:
+                
+                callback()
+                
+                break
+                
+            case .error(let error):
+                
+                fatalError("\(error)")
+                break
+                
+            default: break
+            }
+        }
+        
+    }
+    
     
 }
