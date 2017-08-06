@@ -11,7 +11,6 @@ import RealmSwift
 
 class EditRoomView: UITableViewController {
     var notificationTokenList = [NotificationToken]()
-    let realm = try! Realm(configuration: configUser)
     
     var thisBSSID: String = ""
     var thisGroup: GroupPerspective
@@ -35,7 +34,7 @@ class EditRoomView: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.initRealmNotification()
+        self.initNotifications()
         
         self.navigationController?.isToolbarHidden = false
         tableView.alwaysBounceVertical = false
@@ -68,7 +67,7 @@ class EditRoomView: UITableViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.initRealmNotification()
+        self.initNotifications()
     }
     
     
@@ -214,10 +213,12 @@ extension EditRoomView {
     }    
     
     func toggleVertexEditState() {
+        
         print("Toggle Lock Icon")
-        try! realm.write {
-            thisGroup.UILocked = !thisGroup.UILocked
-        }
+        let update = GroupPerspective(value: thisGroup)
+        update.UILocked = !thisGroup.UILocked
+        
+        database().updateGroupContext(update: update)
         
     }
     
@@ -233,9 +234,8 @@ extension EditRoomView {
         
     }
     
-    
-    func initRealmNotification() {
-        
+    func initNotifications() {
+        let realm = try! Realm(configuration: configUser) 
         let watchControls = realm.objects(DeviceControl.self)
 
         let notificationTokenControls = watchControls.addNotificationBlock {  [weak self] (changes: RealmCollectionChange) in

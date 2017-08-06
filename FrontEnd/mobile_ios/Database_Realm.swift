@@ -175,6 +175,14 @@ class databaseRealm {
         
     }
     
+    func updateGroupContext(update: GroupPerspective) {
+        
+        try! realm.write {
+            realm.add(update, update: true)
+        }
+        
+    }
+    
     func registerNewUser(user: User,
                         email: String = "",
                         password: String = "",

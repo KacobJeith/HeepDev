@@ -124,6 +124,8 @@ class database {
         }
     }
     
+    
+    
     func createNewGroup(placeID: Int) {
         
         switch interface {
@@ -136,6 +138,23 @@ class database {
             databaseFirebase().createNewGroup(placeID: placeID, groupID: id)
         }
         
+    }
+    
+    func updateGroup(update: Group) {
+        
+        switch interface {
+        default :
+            return databaseRealm().updateGroup(update: update)
+        }
+        
+    }
+    
+    func updateGroupContext(update: GroupPerspective) {
+        
+        switch interface {
+        default :
+            return databaseRealm().updateGroupContext(update: update)
+        }
     }
     
     func registerNewUser(user: User, email: String, password: String) {
@@ -237,15 +256,6 @@ class database {
         default :
             return databaseRealm().watchGroup(groupID: groupID, callback: callback)
         }
-    }
-    
-    func updateGroup(update: Group) {
-        
-        switch interface {
-        default :
-            return databaseRealm().updateGroup(update: update)
-        }
-        
     }
     
     func getGroupContextsForPlace(placeID: Int) -> [GroupPerspective] {
