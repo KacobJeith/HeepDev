@@ -326,5 +326,66 @@ class databaseRealm {
         return realm.object(ofType: GroupPerspective.self, forPrimaryKey: groupID)
     }
     
+    func watchGroupContext(groupID: Int, callback: @escaping () -> Void = {}) -> NotificationToken? {
+        guard let context = getGroupContext(groupID: groupID) else {
+            print("Couldn't find context for group")
+            return nil
+        }
+        
+        return context.addNotificationBlock { changes in
+            
+            switch changes {
+            case .change:
+                
+                callback()
+                
+                break
+                
+            case .error(let error):
+                
+                fatalError("\(error)")
+                break
+                
+            default: break
+            }
+        }
+    }
+    
+    func watchVertices(callback: @escaping () -> Void = {}) -> NotificationToken? {
+        
+        return realm.objects(Vertex.self).addNotificationBlock {  [weak self] (changes: RealmCollectionChange) in
+            
+            switch changes {
+            case .update:
+                
+                callback()
+                break
+            case .error(let error):
+                fatalError("\(error)")
+                break
+            default: break
+                
+            }
+        }
+    }
+    
+    func watchControls(callback: @escaping () -> Void = {}) -> NotificationToken? {
+        
+        return realm.objects(DeviceControl.self).addNotificationBlock {  [weak self] (changes: RealmCollectionChange) in
+            
+            switch changes {
+            case .update:
+                
+                callback()
+                break
+            case .error(let error):
+                fatalError("\(error)")
+                break
+            default: break
+                
+            }
+        }
+    }
+    
     
 }

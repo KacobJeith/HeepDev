@@ -10,7 +10,7 @@ import UIKit
 import RealmSwift
 
 class EditRoomView: UITableViewController {
-    var notificationTokenList = [NotificationToken]()
+    var notificationTokenList = [NotificationToken?]()
     
     var thisBSSID: String = ""
     var thisGroup: GroupPerspective
@@ -56,13 +56,13 @@ class EditRoomView: UITableViewController {
     
     deinit{
         for token in notificationTokenList {
-            token.stop()
+            token?.stop()
         }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         for token in notificationTokenList {
-            token.stop()
+            token?.stop()
         }
     }
     
@@ -235,78 +235,24 @@ extension EditRoomView {
     }
     
     func initNotifications() {
-        let realm = try! Realm(configuration: configUser) 
-        let watchControls = realm.objects(DeviceControl.self)
-
-        let notificationTokenControls = watchControls.addNotificationBlock {  [weak self] (changes: RealmCollectionChange) in
-            
-                switch changes {
-                case .update:
-                    
-                    self?.tableView.reloadData()
-                    break
-                case .error(let error):
-                    fatalError("\(error)")
-                    break
-                default: break
-                    
-                }
+        let notificationTokenControls = database().watchControls {
+            self.tableView.reloadData()
         }
         
-        let watchVertices = realm.objects(Vertex.self)
-        
-        let notificationTokenVertices = watchVertices.addNotificationBlock {  [weak self] (changes: RealmCollectionChange) in
-            
-            switch changes {
-            case .update:
-                
-                self?.tableView.reloadData()
-                break
-            case .error(let error):
-                fatalError("\(error)")
-                break
-            default: break
-                
-            }
+        let notificationTokenVertices = database().watchVertices {
+            self.tableView.reloadData()
         }
         
-        let watchGroupPerspective = realm.object(ofType: GroupPerspective.self, forPrimaryKey: thisGroup.groupID)!
-        
-        let notificationTokenGroupPerspective = watchGroupPerspective.addNotificationBlock { changes in
-            /* results available asynchronously here */
-            
-            switch changes {
-            case .change:
-                
-                self.tableView.reloadData()
-                break
-            case .error(let error):
-                fatalError("\(error)")
-                break
-            default: break
-            }
+        let notificationTokenGroupContext = database().watchGroupCotext(groupID: thisGroup.groupID) {
+            self.tableView.reloadData()
         }
         
-        let realmGroup = try! Realm(configuration: getGroupConfiguration(path: thisGroup.realmPath))
-        let watchGroup = realmGroup.object(ofType: Group.self, forPrimaryKey: thisGroup.groupID)!
-        
-        let notificationTokenGroup = watchGroup.addNotificationBlock { changes in
-            /* results available asynchronously here */
-            
-            switch changes {
-            case .change:
-                
-                self.tableView.reloadData()
-                break
-            case .error(let error):
-                fatalError("\(error)")
-                break
-            default: break
-            }
+        let notificationTokenGroup = database().watchGroup(groupID: thisGroup.groupID) {
+            self.tableView.reloadData()
         }
         
         notificationTokenList.append(notificationTokenGroup)
-        notificationTokenList.append(notificationTokenGroupPerspective)
+        notificationTokenList.append(notificationTokenGroupContext)
         notificationTokenList.append(notificationTokenControls)
         notificationTokenList.append(notificationTokenVertices)
         

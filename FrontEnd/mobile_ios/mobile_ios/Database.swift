@@ -263,6 +263,32 @@ class database {
         }
     }
     
+    func watchGroupCotext(groupID: Int, callback: @escaping () -> Void = {}) -> NotificationToken? {
+        
+        switch interface {
+        default :
+            return databaseRealm().watchGroupContext(groupID: groupID, callback: callback)
+        }
+    }
+    
+    func watchVertices(callback: @escaping () -> Void = {}) -> NotificationToken? {
+        
+        switch interface {
+        default :
+            return databaseRealm().watchVertices(callback: callback)
+        }
+    }
+    
+    func watchControls(callback: @escaping () -> Void = {}) -> NotificationToken? {
+        
+        switch interface {
+        default :
+            return databaseRealm().watchControls(callback: callback)
+        }
+        
+    }
+    
+    
     func getGroupContextsForPlace(placeID: Int) -> [GroupPerspective] {
         
         switch interface {
