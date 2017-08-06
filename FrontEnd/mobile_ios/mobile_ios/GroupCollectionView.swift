@@ -11,7 +11,7 @@ import RealmSwift
 
 
 class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
-    var notificationTokenList = [NotificationToken]()
+    var notificationTokenList = [NotificationToken?]()
     var collectionView: UICollectionView!
     
     var placeName: String = "placeholder"
@@ -77,27 +77,9 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
         
         groups.append(group)
         
-        print(groups)
-        
-        let notificationToken = group.addNotificationBlock { changes in
-
-                switch changes {
-                case .change:
-                    
-                    self.reloadView()
-                    
-                    break
-                    
-                case .error(let error):
-                    
-                    fatalError("\(error)")
-                    break
-                    
-                default: break
-                }
-        }
-        
-        notificationTokenList.append(notificationToken)
+        notificationTokenList.append(database().watchGroup(groupID: group.groupID) {
+            self.reloadView()
+        })
         
         
     }
@@ -142,7 +124,7 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
     
     deinit{
         for token in notificationTokenList {
-            token.stop()
+            token?.stop()
         }
     }
     
@@ -150,7 +132,7 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
     override func viewWillDisappear(_ animated: Bool) {
         
         for token in notificationTokenList {
-            token.stop()
+            token?.stop()
         }
         
         self.title = ""

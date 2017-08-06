@@ -208,6 +208,14 @@ class database {
         }
     }
     
+    func watchGroup(groupID: Int, callback: @escaping () -> Void = {}) -> NotificationToken? {
+        
+        switch interface {
+        default :
+            return databaseRealm().watchGroup(groupID: groupID, callback: callback)
+        }
+    }
+    
     func getGroupContextsForPlace(placeID: Int) -> [GroupPerspective] {
         
         switch interface {

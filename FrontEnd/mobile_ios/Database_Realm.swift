@@ -242,5 +242,39 @@ class databaseRealm {
         
     }
     
+    func watchGroup(groupID: Int, callback: @escaping () -> Void = {}) -> NotificationToken? {
+        guard let context = getGroupContext(groupID: groupID) else {
+            print("Couldn't find context for group")
+            return nil
+        }
+        
+        guard let group = getGroup(path: context.realmPath) else {
+            print("Couldn't grab group")
+            return nil
+        }
+        
+        return group.addNotificationBlock { changes in
+            
+            switch changes {
+            case .change:
+                
+                callback()
+                
+                break
+                
+            case .error(let error):
+                
+                fatalError("\(error)")
+                break
+                
+            default: break
+            }
+        }
+    }
+    
+    func getGroupContext(groupID: Int) -> GroupPerspective? {
+        return realm.object(ofType: GroupPerspective.self, forPrimaryKey: groupID)
+    }
+    
     
 }
