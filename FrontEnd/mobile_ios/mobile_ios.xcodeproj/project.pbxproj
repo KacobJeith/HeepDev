@@ -27,7 +27,6 @@
 		70DC641C8DFD5145B3E2F178 /* Pods_mobile_iosUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9455865AC2AC2771C588F666 /* Pods_mobile_iosUITests.framework */; };
 		AFBAEC1B382B06E54E70DAC7 /* Pods_mobile_iosTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 629528E8C86E48C60E29C454 /* Pods_mobile_iosTests.framework */; };
 		B010B6011F01428D00363CAB /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B010B6001F01428D00363CAB /* AccountView.swift */; };
-		B010B6051F0448A200363CAB /* AccountUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B010B6041F0448A200363CAB /* AccountUtilities.swift */; };
 		B010B6071F057C0B00363CAB /* PermissionUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B010B6061F057C0B00363CAB /* PermissionUtilities.swift */; };
 		B010B6091F06D9CC00363CAB /* UserSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = B010B6081F06D9CA00363CAB /* UserSearch.swift */; };
 		B06DE4431EEA2B2E00680A35 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B06DE4421EEA2B2E00680A35 /* Security.framework */; };
@@ -91,7 +90,6 @@
 		76BE85D99FD14F073F5556A1 /* Pods-mobile_iosUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mobile_iosUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-mobile_iosUITests/Pods-mobile_iosUITests.release.xcconfig"; sourceTree = "<group>"; };
 		9455865AC2AC2771C588F666 /* Pods_mobile_iosUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_mobile_iosUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B010B6001F01428D00363CAB /* AccountView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
-		B010B6041F0448A200363CAB /* AccountUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountUtilities.swift; sourceTree = "<group>"; };
 		B010B6061F057C0B00363CAB /* PermissionUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PermissionUtilities.swift; sourceTree = "<group>"; };
 		B010B6081F06D9CA00363CAB /* UserSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSearch.swift; sourceTree = "<group>"; };
 		B06DE4421EEA2B2E00680A35 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -181,7 +179,6 @@
 				101D2F6C1EA968230074D807 /* Assets.xcassets */,
 				EEA944221EAA93950022588B /* HeepConnections.swift */,
 				104C18101EC8FA0C000A75D7 /* Utilities.swift */,
-				B010B6041F0448A200363CAB /* AccountUtilities.swift */,
 				1005B8EA1ECE2A8A00414F8E /* UIUtilities.swift */,
 				B010B6061F057C0B00363CAB /* PermissionUtilities.swift */,
 				EEA944201EAA7D880022588B /* HAPIMemoryParser.swift */,
@@ -536,7 +533,6 @@
 				100821FC1EC49BDF0079E6F5 /* PlacesView.swift in Sources */,
 				1005B8DC1ECB47CD00414F8E /* EditRoomTableView.swift in Sources */,
 				B0FA83331F351CB900608C96 /* Database_Firebase.swift in Sources */,
-				B010B6051F0448A200363CAB /* AccountUtilities.swift in Sources */,
 				103FE2851EC373830033D021 /* DeviceSummaryView.swift in Sources */,
 				EEA944231EAA93950022588B /* HeepConnections.swift in Sources */,
 				1005B8E71ECDB99100414F8E /* GroupCollectionView.swift in Sources */,

@@ -475,4 +475,184 @@ class databaseRealm {
         
     }
     
+    func initializeApp() {
+        print("Initializing")
+        SyncManager.shared.logLevel = .off
+        
+        if SyncUser.all.count == 0 {
+            
+            print("Logging out")
+            database().signOut()
+            
+            configUser = configGuest
+            
+        } else if SyncUser.all.first?.key == publicUserKey {
+            
+            print("Logging out")
+            database().signOut()
+            
+            configUser = configGuest
+            
+        } else {
+            
+            configUser =  getUserConfiguration(user: SyncUser.current!, path: digitalOceamUserRealm)
+            
+        }
+        
+    }
+    
+    func registerNewSyncRealm(username: String, password: String, newUser: User = User(), callback: @escaping () -> Void = {}) {
+        let url = URL(string: digitalOceanHTTP)!
+        
+        
+        let registerCredentials =  SyncCredentials.usernamePassword(username: username, password: password, register: true)
+        
+        SyncUser.logIn(with: registerCredentials,
+                       server: url,
+                       onCompletion: { user, error in
+                        
+                        if let userUnwrapped = user {
+                            
+                            self.setNewPublicSyncUser(newUser: userUnwrapped)
+                            
+                            configUser =  getUserConfiguration(user: userUnwrapped, path: digitalOceamUserRealm)
+                            
+                            self.addNewUserToUserRealm(newUser: newUser)
+                            
+                            if let identity = userUnwrapped.identity {
+                                print("NOT NIL: \(identity)")
+                                newUser.realmKey = identity
+                                self.addNewUserToPublicRealm(newUser: newUser)
+                            } else {
+                                print("NEW REALM RETURNED NIL")
+                            }
+                            
+                        } else {
+                            print("ERROR: \(String(describing: error))")
+                            return
+                        }
+                        
+        })
+        
+    }
+    
+    
+    func loginToUserRealmSync(username: String, password: String, callback: @escaping () -> Void = {}) {
+        
+        let url = URL(string: digitalOceanHTTP)!
+        
+        let credentials = SyncCredentials.usernamePassword(username: username,
+                                                           password: password,
+                                                           register: false)
+        
+        SyncUser.logIn(with: credentials,
+                       server: url,
+                       onCompletion: { user, error in
+                        if user == nil {
+                            print("No User Account Found")
+                            callback()
+                        } else {
+                            
+                            configUser =  getUserConfiguration(user: user!, path: digitalOceamUserRealm)
+                            
+                            checkForNewRealmPermissions()
+                            self.openRealmAsync(config: configUser)
+                            self.openRealmAsync(config: configPublicSync)
+                            
+                            callback()
+                        }
+                        
+        })
+        
+    }
+    
+    func openRealmAsync(config: Realm.Configuration, callback: @escaping () -> Void = {}) {
+        Realm.asyncOpen(configuration: config) { realm, error in
+            if let realm = realm {
+                // Realm successfully opened, with migration applied on background thread
+                print("REALM OPEN: \(realm)")
+                callback()
+            } else if let error = error {
+                // Handle error that occurred while opening the Realm
+                print(error)
+            }
+        }
+    }
+    
+    func setDefaultPermissionToPublic(publicUser: SyncUser) {
+        let permission = SyncPermissionValue(realmPath: "/" + publicUserKey + "/userDirectory",
+                                             userID: "*",
+                                             accessLevel: .write)
+        
+        print("TRYING PERMISSION")
+        publicUser.applyPermission(permission) { error in
+            print("ENTER?")
+            if let error = error {
+                // handle error
+                print("PERMISSION UNSUCCESSFUL \(error)")
+                return
+            }
+        }
+    }
+    
+    func loginToPublicRealm() {
+        let url = URL(string: digitalOceanHTTP)!
+        
+        let credentials = SyncCredentials.usernamePassword(username: "public@heep.io",
+                                                           password: "public",
+                                                           register: false)
+        
+        SyncUser.logIn(with: credentials,
+                       server: url,
+                       onCompletion: { user, error in
+                        if user == nil {
+                            print("No User Account Found")
+                            
+                        } else {
+                            
+                            let firstUser = User()
+                            self.addNewUserToPublicRealm(newUser: firstUser)
+                            print("Found existing: \(String(describing: user))")
+                            self.setDefaultPermissionToPublic(publicUser: user!)
+                            
+                        }
+                        
+        })
+    }
+    
+    func addNewUserToPublicRealm(newUser: User, callback: @escaping () -> Void = {}) {
+        let realm = try! Realm(configuration: configPublicSync)
+        
+        try! realm.write {
+            realm.add(newUser,
+                      update: true)
+        }
+        
+        print("ADDED NEW USER TO PUBLIC REALM")
+        let allUsers = realm.objects(User.self)
+        
+        print("All Users: \(allUsers)")
+        callback()
+        
+    }
+    
+    func addNewUserToUserRealm(newUser: User) {
+        let realm = try! Realm(configuration: configUser)
+        
+        try! realm.write {
+            realm.create(User.self,
+                         value: ["heepID": newUser.heepID],
+                         update: true)
+        }
+        
+    }
+    
+    func setNewPublicSyncUser(newUser: SyncUser) {
+        configPublicSync =  Realm.Configuration(syncConfiguration: SyncConfiguration(user: newUser,
+                                                                                     realmURL: URL(string: dititalOceanPublicRealm)!),
+                                                objectTypes: [User.self])
+        
+    }
+
+    
 }

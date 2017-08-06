@@ -49,7 +49,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //flushApp()
         checkForNewRealmPermissions()
         //logoutOfAllRealmUsers()
-        initializeApp()
+        
+        databaseRealm().initializeApp()
+        
+        
         setupAppNavigation()
         startMonitoringBeacon()
         

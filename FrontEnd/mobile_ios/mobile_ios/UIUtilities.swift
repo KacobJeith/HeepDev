@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import RealmSwift
 
 func createControlPuck(thisControl: DeviceControl, cellSize: CGRect) -> UIView {
     
