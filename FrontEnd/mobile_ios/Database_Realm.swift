@@ -32,6 +32,10 @@ class databaseRealm {
         
     }
     
+    func getDeviceControlInGroup(groupID: Int) -> [DeviceControl] {
+        return realm.objects(DeviceControl.self).filter("groupID = 0").toArray()
+    }
+    
     func updateDeviceControl(control: DeviceControl) {
         
         try! realm.write {
@@ -386,6 +390,5 @@ class databaseRealm {
             }
         }
     }
-    
     
 }

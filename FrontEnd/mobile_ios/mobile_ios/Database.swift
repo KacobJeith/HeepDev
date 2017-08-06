@@ -316,6 +316,14 @@ class database {
         }
     }
     
+    func getDeviceControlsInGroup(groupID: Int) -> [DeviceControl] {
+        
+        switch interface {
+        default :
+            return databaseRealm().getDeviceControlInGroup(groupID: groupID)
+        }
+    }
+    
     func getVertex(vertexID: String) -> Vertex? {
         
         switch interface {

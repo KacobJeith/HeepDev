@@ -1,5 +1,4 @@
 import UIKit
-import RealmSwift
 
 class UnassignedControlCollection: UITableViewCell, UICollectionViewDataSource, UICollectionViewDelegate {
     
@@ -16,12 +15,11 @@ class UnassignedControlCollection: UITableViewCell, UICollectionViewDataSource, 
     }
     
     func setControlsAndGroup(groupID: Int) {
-        let realm = try! Realm(configuration: configUser)
         
-        self.controls = realm.objects(DeviceControl.self).filter("groupID = 0").toArray()
+        self.controls = database().getDeviceControlsInGroup(groupID: groupID)
         
-        guard let group = realm.object(ofType: GroupPerspective.self, forPrimaryKey: groupID) else {
-            print("Failed to find perspective for unassigned")
+        guard let group = database().getGroupContext(groupID: groupID) else {
+            print("Failed to find context for unassigned")
             return
         }
     
@@ -97,21 +95,27 @@ class UnassignedControlCollection: UITableViewCell, UICollectionViewDataSource, 
 extension UnassignedControlCollection {
     
     func selectControl(sender: UIButton) {
-        let realm = try! Realm(configuration: configUser)
         
-        if let place = realm.object(ofType: PlacePerspective.self, forPrimaryKey: thisGroup.placeID) {
-            try! realm.write {
-                place.numDevices += 1
-            }
+        if let place = database().getPlaceContext(id: thisGroup.placeID) {
+            
+            let update = PlacePerspective(value: place)
+            update.numDevices += 1
+            
+            database().updatePlaceContext(placeContext: update)
         }
         
-        print(realm.object(ofType: DeviceControl.self, forPrimaryKey: controls[sender.tag].uniqueID)!)
-
-        try! realm.write {
-            controls[sender.tag].groupID = thisGroup.groupID
-            thisGroup.selectedControl = controls[sender.tag].uniqueID
-            thisGroup.unassignedOffsetX = collectionView.contentOffset.x
-        }
+        let controlUpdate = DeviceControl(value: controls[sender.tag])
+        controlUpdate.groupID = thisGroup.groupID
+        
+        database().updateDeviceControl(control: controlUpdate)
+        
+        
+        let groupUpdate = GroupPerspective(value: thisGroup)
+        groupUpdate.selectedControl = controls[sender.tag].uniqueID
+        groupUpdate.unassignedOffsetX = collectionView.contentOffset.x
+        
+        database().updateGroupContext(update: groupUpdate)
+        
         
     }
     
@@ -119,23 +123,22 @@ extension UnassignedControlCollection {
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         
-        let realm = try! Realm(configuration: configUser)
+        updateScrollOffset(offsetX: collectionView.contentOffset.x)
         
-        try! realm.write {
-            thisGroup.unassignedOffsetX = collectionView.contentOffset.x
-        }
     }
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate {
-            
-            let realm = try! Realm(configuration: configUser)
-            
-            try! realm.write {
-                thisGroup.unassignedOffsetX = collectionView.contentOffset.x
-            }
+            updateScrollOffset(offsetX: collectionView.contentOffset.x)
         }
         
+    }
+    
+    func updateScrollOffset(offsetX: CGFloat) {
+        let groupUpdate = GroupPerspective(value: thisGroup)
+        groupUpdate.unassignedOffsetX = offsetX
+        
+        database().updateGroupContext(update: groupUpdate)
     }
     
 
