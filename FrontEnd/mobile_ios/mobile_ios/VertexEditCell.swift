@@ -292,10 +292,11 @@ extension VertexEditCell {
                 print("ACTUAL: TRUE")
                 
                 vertexDictToDelete[vertexName] = true
-                let realm = try! Realm(configuration: configUser)
                 
-                let thisVertex = realm.object(ofType: Vertex.self,
-                                              forPrimaryKey: vertexName)!
+                guard let thisVertex = database().getVertex(vertexID: vertexName) else {
+                    print("Failed to find vertex")
+                    return
+                }
                 
                 let generator = UIImpactFeedbackGenerator(style: .medium)
                 generator.impactOccurred()
@@ -468,9 +469,8 @@ extension VertexEditCell {
     }
     
     func translateSpritePosition(gesture: UIPanGestureRecognizer, controlView: UIView, uniqueID: Int) {
-        let realm = try! Realm(configuration: configUser)
         
-        guard let control = realm.object(ofType: DeviceControl.self, forPrimaryKey: uniqueID) else {
+        guard let control = database().getDeviceControl(uniqueID: uniqueID) else {
             print("Couldn't save control from translate")
             return
         }
@@ -541,9 +541,7 @@ extension VertexEditCell {
             return
         }
         
-        let realm = try! Realm(configuration: configUser)
-        
-        guard let control = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl) else {
+        guard let control = database().getDeviceControl(uniqueID: thisGroup.selectedControl) else {
             print("Could not grab control")
             return
         }
@@ -573,9 +571,7 @@ extension VertexEditCell {
             return
         }
         
-        let realm = try! Realm(configuration: configUser)
-        
-        guard let control = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl) else {
+        guard let control = database().getDeviceControl(uniqueID: thisGroup.selectedControl) else {
             print("Could not find control rotation")
             return
         }
@@ -596,8 +592,7 @@ extension VertexEditCell {
     
     func handleLongPress(gesture: UILongPressGestureRecognizer) {
         
-        let realm = try! Realm(configuration: configUser)
-        guard let control = realm.object(ofType: DeviceControl.self, forPrimaryKey: gesture.view?.tag) else {
+        guard let control = database().getDeviceControl(uniqueID: (gesture.view?.tag)!) else {
             print("Failed to retrieve the control with tag \(String(describing: gesture.view?.tag)) from realm handleLongPress")
             return
         }
@@ -732,26 +727,25 @@ extension VertexEditCell {
     }
     
     func finalizeLongPress(control: DeviceControl, ratio: CGFloat) {
-        let realm = try! Realm(configuration: configUser)
-        
         let controlUniqueID = control.uniqueID
         let currentValue = Int(ratio * CGFloat(control.valueHigh - control.valueLow))
         
-        try! realm.write {
-            
-            if currentValue > (control.valueLow) {
-                control.lastOnValue = currentValue
-            }
-            
-            control.valueCurrent = currentValue
+        let updateControl = DeviceControl(value: control)
+        
+        if currentValue > (control.valueLow) {
+            updateControl.lastOnValue = currentValue
         }
+        
+        updateControl.valueCurrent = currentValue
+        
+        database().updateDeviceControl(control: updateControl)
         
         DispatchQueue.global().async {
             HeepConnections().sendValueToHeepDevice(uniqueID: controlUniqueID)
         }
         
         
-        saveSelectedSprite(control: control)
+        saveSelectedSprite(control: updateControl)
         
         // delay for 0.1 seconds to prevent sprite translation from kicking in
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
@@ -767,23 +761,24 @@ extension VertexEditCell {
 extension VertexEditCell {
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         
-        let realm = try! Realm(configuration: configUser)
+        let updateContext = GroupPerspective(value: thisGroup)
         
-        try! realm.write {
-            thisGroup.contentOffsetX = collectionView.contentOffset.x
-            thisGroup.contentOffsetY = collectionView.contentOffset.y
-        }
+        updateContext.contentOffsetX = collectionView.contentOffset.x
+        updateContext.contentOffsetY = collectionView.contentOffset.y
+        
+        database().updateGroupContext(update: updateContext)
+        
     }
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate {
             
-            let realm = try! Realm(configuration: configUser)
+            let updateContext = GroupPerspective(value: thisGroup)
             
-            try! realm.write {
-                thisGroup.contentOffsetX = collectionView.contentOffset.x
-                thisGroup.contentOffsetY = collectionView.contentOffset.y
-            }
+            updateContext.contentOffsetX = collectionView.contentOffset.x
+            updateContext.contentOffsetY = collectionView.contentOffset.y
+            
+            database().updateGroupContext(update: updateContext)
         }
         
     }
@@ -846,14 +841,13 @@ extension VertexEditCell {
     }
     
     func getContextImage() -> UIImage? {
-        let groupRealm = try! Realm(configuration: getGroupConfiguration(path: thisGroup.realmPath))
         
-        guard let groupContext = groupRealm.objects(Group.self).first else {
+        guard let group = database().getGroup(context: thisGroup) else {
             print("Could not retrieve shared group realm to grab the image")
             return nil
         }
         
-        return UIImage(data: groupContext.imageData as Data)
+        return UIImage(data: group.imageData as Data)
     }
     
     func addControlSprite(thisControl: DeviceControl, applyTransform: Bool = true) -> UIView {
@@ -947,9 +941,11 @@ extension VertexEditCell {
             
         } else {
             
-            try! Realm(configuration: configUser).write {
-                thisGroup.selectedControl = tappedID
-            }
+            let updateGroup = GroupPerspective(value: thisGroup)
+            updateGroup.selectedControl = tappedID
+            
+            database().updateGroupContext(update: updateGroup)
+            
         }
         
     }
@@ -958,9 +954,9 @@ extension VertexEditCell {
         
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         
-        let realm = try! Realm(configuration: configUser)
-        guard let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: controlUniqueID) else {
-            print("Could not retrieve the control from realm")
+        
+        guard let thisControl = database().getDeviceControl(uniqueID: controlUniqueID) else {
+            print("Could not retrieve the control from database")
             return
         }
         
@@ -968,11 +964,14 @@ extension VertexEditCell {
             HeepConnections().sendValueToHeepDevice(uniqueID: controlUniqueID)
         }
         
-        try! realm.write{
-            thisControl.valueCurrent = toggleDevice(control: thisControl)
-            thisGroup.selectedControl = thisControl.uniqueID
-        }
+        let updateControl = DeviceControl(value: thisControl)
+        updateControl.valueCurrent = toggleDevice(control: thisControl)
         
+        let updateGroup = GroupPerspective(value: thisGroup)
+        updateGroup.selectedControl = thisControl.uniqueID
+        
+        database().updateGroupContext(update: updateGroup)
+        database().updateDeviceControl(control: updateControl)
         
     }
     
@@ -982,37 +981,34 @@ extension VertexEditCell {
             return
         }
         
-        let rotation = CGFloat(atan2f(Float(CGFloat(myView.transform.b)),Float(myView.transform.a)))
-        let scale = sqrt(pow(myView.transform.a,2) + pow(myView.transform.b, 2))
-        let editX = myView.frame.origin.x + myView.frame.width/2
+        let updateControl = DeviceControl(value: control)
+        let updateGroup = GroupPerspective(value: thisGroup)
+        
         let editY = myView.frame.origin.y + myView.frame.height/2
         
-        let realm = try! Realm(configuration: configUser)
         
         if editY < 0 {
             print("REMOVING THIS DEVICE FROM THE GROUP")
             
             UIImpactFeedbackGenerator(style: .medium).impactOccurred()
             
-            try! realm.write {
-                
-                control.groupID = 0
-                thisGroup.selectedControl = 0
-            }
+            updateControl.groupID = 0
+            updateGroup.selectedControl = 0
             
             
         } else {
             
-            try! realm.write {
-                
-                control.rotation = rotation
-                control.scale = scale
-                control.editX = editX
-                control.editY = editY
-                
-                thisGroup.selectedControl = control.uniqueID
-            }
+            updateControl.rotation = CGFloat(atan2f(Float(CGFloat(myView.transform.b)),Float(myView.transform.a)))
+            updateControl.scale = sqrt(pow(myView.transform.a,2) + pow(myView.transform.b, 2))
+            updateControl.editX = myView.frame.origin.x + myView.frame.width/2
+            updateControl.editY = editY
+            
+            updateGroup.selectedControl = control.uniqueID
+            
         }
+        
+        database().updateDeviceControl(control: updateControl)
+        database().updateGroupContext(update: updateGroup)
         
         
         
@@ -1047,9 +1043,8 @@ extension VertexEditCell {
     
     
     func applyDetailTransform(scale: CGFloat = 0) -> CGAffineTransform {
-        let realm = try! Realm(configuration: configUser)
         
-        guard let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl) else {
+        guard let thisControl = database().getDeviceControl(uniqueID: thisGroup.selectedControl) else {
             return CGAffineTransform()
         }
         
@@ -1066,14 +1061,13 @@ extension VertexEditCell {
     }
     
     func displayDeviceSummary() {
-        let realm = try! Realm(configuration: configUser)
         
-        guard let control = realm.object(ofType: DeviceControl.self, forPrimaryKey: thisGroup.selectedControl) else {
+        guard let control = database().getDeviceControl(uniqueID: thisGroup.selectedControl) else {
             print("Could not retrieve control")
             return
         }
         
-        guard let device = realm.object(ofType: Device.self, forPrimaryKey: control.deviceID) else {
+        guard let device = database().getDevice(deviceID: control.deviceID) else {
             print("Could not retrieve device")
             return
         }
