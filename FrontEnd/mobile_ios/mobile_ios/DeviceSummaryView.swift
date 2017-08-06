@@ -21,8 +21,7 @@ class DeviceSummaryViewController: UITableViewController {
     init(device: Device) {
         print("Starting with...\(device)")
         
-        let realm = try! Realm(configuration: configUser)
-        if let pullDevice = realm.object(ofType: Device.self, forPrimaryKey: device.deviceID) {
+        if let pullDevice = database().getDevice(deviceID: device.deviceID) {
             thisDevice = pullDevice
             print("ending with \(thisDevice)")
         }
@@ -214,9 +213,11 @@ class DeviceSummaryViewController: UITableViewController {
                 cell.addSubview(addNewUserCell())
                 
             default:
+                
                 let realm = try! Realm(configuration: configPublicSync)
                 print(indexPath.row)
                 print(userRealmKeys)
+                
                 if let heepID = realm.objects(User.self).filter("realmKey = %@", userRealmKeys[indexPath.row - 1]).first?.heepID {
                     
                     cell.addSubview(addUserCell(userID: heepID, initialOffset: 60))
@@ -306,13 +307,13 @@ class DeviceSummaryViewController: UITableViewController {
         //HeepConnections().sendAssignAdminToHeepDevice(deviceID: thisDevice.deviceID)
         createDeviceRealm(deviceID: thisDevice.deviceID)
         
-        let realm = try! Realm(configuration: configUser)
         
-        if let myID = realm.objects(User.self).first?.heepID {
+        if let myID = database().getMyHeepID() {
             
-            try! realm.write {
-                thisDevice.humanAdmin = myID
-            }
+            let updateDevice = Device(value: thisDevice)
+            updateDevice.humanAdmin = myID
+            
+            database().updateDevice(device: updateDevice)
             
         } else {
             
@@ -328,38 +329,23 @@ class DeviceSummaryViewController: UITableViewController {
     }
     
     func initRealmNotification() {
-        let realm = try! Realm(configuration: configUser)
-        if let watchThisDevice = realm.object(ofType: Device.self, forPrimaryKey: thisDevice.deviceID) {
+        
+        notificationToken = database().watchDevice(deviceID: thisDevice.deviceID) {
             
-            notificationToken = watchThisDevice.addNotificationBlock {  changes in
+            self.thisDevice = database().getDevice(deviceID: self.thisDevice.deviceID)!
+            self.cells = [[String]]()
+            
+            self.prepareUserData()
+            self.prepareDeviceData()
+            self.prepareControls()
+            
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
                 
-                switch changes {
-                case .change:
-                    
-                    print(watchThisDevice)
-                    
-                    self.thisDevice = watchThisDevice
-                    self.cells = [[String]]()
-                    
-                    self.prepareUserData()
-                    self.prepareDeviceData()
-                    self.prepareControls()
-                    
-                    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
-                        
-                        self.tableView.reloadData()
-                    }
-                    
-                    break
-                case .error(let error):
-                    fatalError("\(error)")
-                    break
-                default: break
-                }
+                self.tableView.reloadData()
             }
-        } else {
-            print("REALM WATCHING FAILED")
         }
+        
+        
     }
     
     func reloadView() {

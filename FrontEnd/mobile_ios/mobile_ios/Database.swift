@@ -39,6 +39,18 @@ class database {
         }
     }
     
+    func updateDevice(device: Device) {
+        switch interface {
+        case "firebase" :
+            databaseFirebase().writeDevice(device: device)
+        case "realm" :
+            databaseRealm().writeDevice(device: device)
+        default :
+            databaseFirebase().writeDevice(device: device)
+            databaseRealm().writeDevice(device: device)
+        }
+    }
+    
     func updateDeviceControl(control: DeviceControl) {
         switch interface {
         case "both" :
@@ -298,6 +310,15 @@ class database {
         switch interface {
         default :
             return databaseRealm().watchControls(callback: callback)
+        }
+        
+    }
+    
+    func watchDevice(deviceID: Int, callback: @escaping () -> Void = {}) -> NotificationToken? {
+        
+        switch interface {
+        default :
+            return databaseRealm().watchDevice(deviceID: deviceID, callback: callback)
         }
         
     }

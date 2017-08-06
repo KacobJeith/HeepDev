@@ -404,6 +404,31 @@ class databaseRealm {
         }
     }
     
+    func watchDevice(deviceID: Int, callback: @escaping () -> Void = {}) -> NotificationToken? {
+        
+        if let watchThisDevice = realm.object(ofType: Device.self, forPrimaryKey: deviceID) {
+            
+            return watchThisDevice.addNotificationBlock {  changes in
+                
+                switch changes {
+                case .change:
+                    
+                    callback()
+                    
+                    break
+                case .error(let error):
+                    fatalError("\(error)")
+                    break
+                default: break
+                }
+            }
+        } else {
+            print("REALM WATCHING FAILED")
+            return nil
+        }
+        
+    }
+    
     func watchDevices(callback: @escaping () -> Void = {}) -> NotificationToken? {
     
         return realm.objects(Device.self).addNotificationBlock { changes in
