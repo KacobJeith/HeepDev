@@ -100,8 +100,8 @@ class database {
         case "realm" :
             databaseRealm().deleteVertex(vertex: vertex)
         default :
-            databaseRealm().deleteVertex(vertex: vertex)
             databaseFirebase().deleteVertex(vertex: vertex)
+            databaseRealm().deleteVertex(vertex: vertex)
             
         }
     }

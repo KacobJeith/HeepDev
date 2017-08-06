@@ -51,12 +51,8 @@ class databaseFirebase {
     
     func deleteVertex(vertex: Vertex) {
         
-        ref.child("vertices").queryOrdered(byChild:"vertexID").queryEqual(toValue: vertex.vertexID).observe(.value, with: { snapshot in
-            
-            print("SNAPSHOT: \(snapshot)")
-            snapshot.ref.removeValue()
-            
-        })
+        ref.child("vertices").child(vertex.vertexID).removeValue()
+    
     }
     
     func createNewPlace(placeID: Int = randomNumber(inRange: 0...4000000000)) {
