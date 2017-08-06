@@ -96,6 +96,13 @@ class databaseRealm {
         
     }
     
+    func deleteVertex(vertex: Vertex) {
+        
+        try! realm.write {
+            realm.delete(vertex)
+        }
+    }
+    
     func updateDeviceNameAndIcon(device: Device, deviceName: String, iconName: String) {
         
         try! realm.write {

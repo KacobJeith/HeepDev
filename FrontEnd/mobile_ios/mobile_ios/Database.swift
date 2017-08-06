@@ -92,6 +92,20 @@ class database {
         
     }
     
+    func deleteVertex(vertex: Vertex) {
+        
+        switch interface {
+        case "firebase" :
+            databaseFirebase().deleteVertex(vertex: vertex)
+        case "realm" :
+            databaseRealm().deleteVertex(vertex: vertex)
+        default :
+            databaseRealm().deleteVertex(vertex: vertex)
+            databaseFirebase().deleteVertex(vertex: vertex)
+            
+        }
+    }
+    
     func updateDeviceNameAndIcon(device: Device, deviceName: String, iconName: String) {
         
         switch interface {

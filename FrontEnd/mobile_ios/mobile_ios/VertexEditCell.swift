@@ -223,20 +223,13 @@ extension VertexEditCell {
     
     func commitDeleteVertex() {
         
-        let realm = try! Realm(configuration: configUser)
-        
         for vertex in vertexDictToDelete {
             if vertex.value == true {
                 
-                if let thisVertex = realm.object(ofType: Vertex.self, forPrimaryKey: vertex.key) {
+                if let thisVertex = database().getVertex(vertexID: vertex.key) {
                     
                     HeepConnections().sendDeleteVertexToHeepDevice(activeVertex: thisVertex)
-                    database().flushControlVertices(controlUniqueID: (thisVertex.tx?.uniqueID)!)
-                    
-                    try! realm.write {
-                        realm.delete(thisVertex)
-                    }
-                    
+                    database().deleteVertex(vertex: thisVertex)
                     
                 } else {
                     print("Could not identify vertex")
@@ -260,14 +253,10 @@ extension VertexEditCell {
             return
         }
         
-        let realm = try! Realm(configuration: configUser)
-        
         activeVertex.vertexID = nameVertex(tx: tx, rx: rx)
         
-        try! realm.write {
-            realm.add(activeVertex, update: true)
-            activeVertex.tx?.vertexList.append(activeVertex)
-        }
+        database().writeVertex(vertex: activeVertex)
+        database().updateVertexList(tx: tx)
         
         HeepConnections().sendSetVertexToHeepDevice(activeVertex: activeVertex)
         
