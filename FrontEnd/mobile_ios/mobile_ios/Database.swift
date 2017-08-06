@@ -415,6 +415,15 @@ class database {
         }
     }
     
+    func getUserProfile(heepID: Int) -> User? {
+        
+        switch interface {
+        default :
+            return databaseRealm().getUserProfile(heepID: heepID)
+        }
+        
+    }
+    
     
     
 }

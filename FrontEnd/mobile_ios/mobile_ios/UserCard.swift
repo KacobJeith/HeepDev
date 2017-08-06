@@ -7,11 +7,9 @@
 //
 
 import UIKit
-import RealmSwift
 
 func generateUserCard(frame: CGRect, userID: Int) -> UIView {
     let userAccountView = UIView()
-    
     
     let iconView = userIconView(startingframe: frame, userID: userID)
     let nameView = userNameView(frame: iconView.frame, userID: userID)
@@ -50,7 +48,7 @@ func userIconView(startingframe: CGRect, userID: Int) -> (view: UIView, frame: C
 
 func myImage(userID: Int) -> UIImage {
     
-    if let profile = retrieveUserProfile(userID: userID) {
+    if let profile = database().getUserProfile(heepID: userID) {
         return UIImage(data: profile.icon as Data)!
     } else {
         return #imageLiteral(resourceName: "male")
@@ -80,7 +78,7 @@ func userNameView(frame: CGRect, userID: Int, textAlignment: NSTextAlignment = .
 }
 
 func myName(userID: Int) -> String {
-    let myProfile = retrieveUserProfile(userID: userID)
+    let myProfile = database().getUserProfile(heepID: userID)
     
     if let name = myProfile?.name {
         return name
@@ -89,15 +87,6 @@ func myName(userID: Int) -> String {
     }
     
 }
-
-func retrieveUserProfile(userID: Int) -> User? {
-    
-    let publicRealm = try! Realm(configuration: configPublicSync)
-    let profile = publicRealm.object(ofType: User.self, forPrimaryKey: userID) 
-    
-    return profile
-}
-
 
 func userEmailView(frame: CGRect, userID: Int, textAlignment: NSTextAlignment = .center, calculateFrame: Bool = true) -> (view: UIView, frame: CGRect) {
     var nextFrame = frame
@@ -120,7 +109,7 @@ func userEmailView(frame: CGRect, userID: Int, textAlignment: NSTextAlignment = 
 }
 
 func myEmail(userID: Int) -> String {
-    if let profile = retrieveUserProfile(userID: userID) {
+    if let profile = database().getUserProfile(heepID: userID) {
         
         return profile.email
     } else {

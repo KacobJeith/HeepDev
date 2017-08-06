@@ -459,5 +459,11 @@ class databaseRealm {
         return try! Realm(configuration: configPublicSync).objects(User.self).toArray()
     }
     
+    func getUserProfile(heepID: Int) -> User? {
+        
+        return try! Realm(configuration: configPublicSync).object(ofType: User.self, forPrimaryKey: heepID)
+            
+    }
+    
     
 }
