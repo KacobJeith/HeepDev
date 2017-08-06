@@ -11,7 +11,6 @@ import RealmSwift
 
 class EditRoomView: UITableViewController {
     var notificationTokenList = [NotificationToken]()
-    
     let realm = try! Realm(configuration: configUser)
     
     var thisBSSID: String = ""
@@ -19,10 +18,12 @@ class EditRoomView: UITableViewController {
     
     init(groupID: Int, groupName: String) {
         
-        
-        thisGroup = realm.object(ofType: GroupPerspective.self, forPrimaryKey: groupID)!
-        print(thisGroup)
-        
+        if let context = database().getGroupContext(groupID: groupID) {
+            thisGroup = context
+        } else {
+            print("FAILED TO LOAD CONTEXT")
+            thisGroup = GroupPerspective()
+        }
         
         super.init(style: UITableViewStyle.plain)
     }
@@ -145,18 +146,16 @@ extension EditRoomView: UIImagePickerControllerDelegate, UINavigationControllerD
     
     
     func saveImageToGroup(image: UIImage) {
-        print("Saving Image")
-        let imageData = UIImageJPEGRepresentation(image, 0.5)
-        let groupRealm = try! Realm(configuration: getGroupConfiguration(path: thisGroup.realmPath))
         
-        guard let groupContext = groupRealm.objects(Group.self).first else {
-            print("Could not retrieve shared group realm to save the image")
+        guard let groupOriginal = database().getGroup(context: thisGroup) else {
+            print("Failed to load original group before saving image")
             return
         }
-            
-        try! groupRealm.write {
-            groupContext.imageData = imageData! as NSData
-        }
+        
+        let groupUpdate = Group(value: groupOriginal)
+        groupUpdate.imageData = UIImageJPEGRepresentation(image, 0.5)! as NSData
+        
+        database().updateGroup(update: groupUpdate)
             
     }
     

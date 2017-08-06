@@ -161,6 +161,19 @@ class databaseRealm {
         return groupID
     }
 
+    func updateGroup(update: Group) {
+        guard let context = realm.object(ofType: GroupPerspective.self, forPrimaryKey: update.groupID) else {
+            print("Failed to find realm path")
+            return
+        }
+        
+        let groupRealm = try! Realm(configuration: getGroupConfiguration(path: context.realmPath))
+        
+        try! groupRealm.write {
+            groupRealm.add(update, update: true)
+        }
+        
+    }
     
     func registerNewUser(user: User,
                         email: String = "",

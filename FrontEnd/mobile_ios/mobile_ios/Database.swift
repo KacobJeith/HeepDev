@@ -214,6 +214,15 @@ class database {
         }
     }
     
+    func getGroupContext(groupID: Int) -> GroupPerspective? {
+        
+        switch interface {
+        default :
+            return databaseRealm().getGroupContext(groupID: groupID)
+        }
+        
+    }
+    
     func getGroupAsync(context: GroupPerspective, callback: @escaping () -> Void = {}) {
         
         switch interface {
@@ -228,6 +237,15 @@ class database {
         default :
             return databaseRealm().watchGroup(groupID: groupID, callback: callback)
         }
+    }
+    
+    func updateGroup(update: Group) {
+        
+        switch interface {
+        default :
+            return databaseRealm().updateGroup(update: update)
+        }
+        
     }
     
     func getGroupContextsForPlace(placeID: Int) -> [GroupPerspective] {
