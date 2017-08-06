@@ -302,6 +302,14 @@ class database {
         
     }
     
+    func watchDevices(callback: @escaping () -> Void = {}) -> NotificationToken? {
+        
+        switch interface {
+        default :
+            return databaseRealm().watchDevices(callback: callback)
+        }
+        
+    }
     
     func getGroupContextsForPlace(placeID: Int) -> [GroupPerspective] {
         
@@ -318,8 +326,14 @@ class database {
         default :
             return databaseRealm().getDevice(deviceID: deviceID)
         }
+    }
+    
+    func getActiveDevices() -> [Device] {
         
-        
+        switch interface {
+        default :
+            return databaseRealm().getActiveDevices()
+        }
     }
     
     func getDeviceControl(uniqueID: Int) -> DeviceControl? {

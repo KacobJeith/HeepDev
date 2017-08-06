@@ -26,6 +26,12 @@ class databaseRealm {
         
     }
     
+    func getActiveDevices() -> [Device] {
+        
+        return realm.objects(Device.self).filter("active = %@", true).toArray()
+        
+    }
+    
     func getDeviceControl(uniqueID: Int) -> DeviceControl? {
         
         return realm.object(ofType: DeviceControl.self, forPrimaryKey: uniqueID)
@@ -397,5 +403,25 @@ class databaseRealm {
             }
         }
     }
+    
+    func watchDevices(callback: @escaping () -> Void = {}) -> NotificationToken? {
+    
+        return realm.objects(Device.self).addNotificationBlock { changes in
+            
+            switch changes {
+            case .update:
+                
+                callback()
+                
+                break
+            case .error(let error):
+                fatalError("\(error)")
+                break
+            default: break
+            }
+        }
+        
+    }
+    
     
 }

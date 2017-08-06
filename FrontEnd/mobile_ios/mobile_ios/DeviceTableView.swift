@@ -19,7 +19,6 @@ class DeviceTableViewController: UITableViewController {
     var notificationToken: NotificationToken!
     var devices = [Device]()
     var controlTags = [IndexPath]()
-    let realm = try! Realm(configuration: configUser)
     
     init(title: String = "Currently Active", placeID: Int = 0, activeOnly: Bool = false) {
         super.init(style: UITableViewStyle.plain)
@@ -44,19 +43,17 @@ class DeviceTableViewController: UITableViewController {
     }
     
     func findActiveDevices() {
-        let realm = try! Realm(configuration: configUser)
         
-        devices = realm.objects(Device.self).filter("active = %@", true).toArray()
+        devices = database().getActiveDevices()
     }
     
     func findDevicesInPlace(placeID: Int) {
-        let realm = try! Realm(configuration: configUser)
         
-        let groupsInPlace = realm.objects(GroupPerspective.self).filter("placeID = %@", placeID)
+        let groupsInPlace = database().getGroupContextsForPlace(placeID: placeID)
         
         for group in groupsInPlace {
             
-            let controlsInGroup = realm.objects(DeviceControl.self).filter("groupID = %@", group.groupID)
+            let controlsInGroup = database().getDeviceControlsInGroup(groupID: group.groupID)
             
             for control in controlsInGroup {
                 checkControlAndAdd(control: control)
@@ -72,9 +69,7 @@ class DeviceTableViewController: UITableViewController {
             }
         }
         
-        let realm = try! Realm(configuration: configUser)
-        
-        if let device = realm.object(ofType: Device.self, forPrimaryKey: control.deviceID) {
+        if let device = database().getDevice(deviceID: control.deviceID) {
             
             devices.append(device)
         }
@@ -89,7 +84,7 @@ class DeviceTableViewController: UITableViewController {
         
         self.title = tableTitle
         
-        self.initRealmNotifications()
+        self.initNotifications()
         
         self.navigationController?.isToolbarHidden = false
         
@@ -203,7 +198,6 @@ class DeviceTableViewController: UITableViewController {
     
     func toggle(sender: UISwitch) {
         
-        let realm = try! Realm(configuration: configUser)
         let thisIndexPath = controlTags[sender.tag]
         let thisControlUniqueID = devices[thisIndexPath.section].controlList[thisIndexPath.row].uniqueID
         
@@ -213,12 +207,14 @@ class DeviceTableViewController: UITableViewController {
             newValue = 1
         }
         
-        try! realm.write {
-            realm.create(DeviceControl.self,
-                        value: ["uniqueID": thisControlUniqueID,
-                                "valueCurrent": newValue],
-                        update: true)
+        guard let originalControl = database().getDeviceControl(uniqueID: thisControlUniqueID) else {
+            print("Failed to grab device control")
+            return
         }
+        
+        let updateControl = DeviceControl(value: originalControl)
+        updateControl.valueCurrent = newValue
+        database().updateDeviceControl(control: updateControl)
         
         DispatchQueue.global().async {
             HeepConnections().sendValueToHeepDevice(uniqueID: thisControlUniqueID)
@@ -228,18 +224,20 @@ class DeviceTableViewController: UITableViewController {
     
     func sliderUpdate(sender: UISlider) {
         
-        let realm = try! Realm(configuration: configUser)
         let thisIndexPath = controlTags[sender.tag]
         let thisControlUniqueID = devices[thisIndexPath.section].controlList[thisIndexPath.row].uniqueID
         
         let newValue = Int(round(sender.value))
         
-        try! realm.write {
-            realm.create(DeviceControl.self,
-                         value: ["uniqueID": thisControlUniqueID,
-                                 "valueCurrent": newValue],
-                         update: true)
+        guard let originalControl = database().getDeviceControl(uniqueID: thisControlUniqueID) else {
+            print("Failed to grab device control")
+            return
         }
+        
+        let updateControl = DeviceControl(value: originalControl)
+        updateControl.valueCurrent = newValue
+        
+        database().updateDeviceControl(control: updateControl)
         
         DispatchQueue.global().async {
             HeepConnections().sendValueToHeepDevice(uniqueID: thisControlUniqueID)
@@ -265,24 +263,13 @@ class DeviceTableViewController: UITableViewController {
         
     }
 
-    
-    func initRealmNotifications() {
-        let watchDevices = realm.objects(Device.self)
+    func initNotifications() {
         
-        notificationToken = watchDevices.addNotificationBlock { changes in
-            
-            switch changes {
-            case .update:
-                self.findDevices()
-                self.tableView.reloadData()
-                
-                break
-            case .error(let error):
-                fatalError("\(error)")
-                break
-            default: break
-            }
+        notificationToken = database().watchDevices {
+            self.findDevices()
+            self.tableView.reloadData()
         }
+        
     }
 
 }
