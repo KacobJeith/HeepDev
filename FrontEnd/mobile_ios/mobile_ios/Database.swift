@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 class database {
     let interface = "both"
@@ -126,20 +127,20 @@ class database {
             let id = databaseRealm().createNewPlace()
             databaseFirebase().createNewPlace(placeID: id)
         default :
-            databaseRealm().createNewPlace()
+            _ = databaseRealm().createNewPlace()
         }
     }
     
-    func registerNewUser(name: String, email: String, password: String) {
+    func registerNewUser(user: User, email: String, password: String) {
         
         switch interface {
         case "firebase" :
-            databaseFirebase().registerNewUser(email: email, password: password)
-        case "both" :
-            databaseRealm().registerNewUser(name: name, email: email, password: password)
-            databaseFirebase().registerNewUser(email: email, password: password)
+            databaseFirebase().registerNewUser(newUser: user, email: email, password: password)
+        case "realm" :
+            databaseRealm().registerNewUser(user: user, email: email, password: password)
         default :
-            databaseRealm().registerNewUser(name: name, email: email, password: password)
+            databaseRealm().registerNewUser(user: user, email: email, password: password)
+            databaseFirebase().registerNewUser(newUser: user, email: email, password: password)
         }
     }
     
@@ -206,6 +207,22 @@ class database {
             return databaseRealm().getVertex(vertexID: vertexID)
         }
         
+    }
+    
+    func getUserIcon(heepID: Int?) -> UIImage {
+        
+        switch interface {
+        default :
+            return databaseRealm().getUserIcon(heepID: heepID)
+        }
+    }
+    
+    func getMyHeepID() -> Int? {
+        
+        switch interface {
+        default :
+            return databaseRealm().getMyHeepID()
+        }
     }
     
     

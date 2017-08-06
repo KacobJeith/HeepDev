@@ -513,7 +513,15 @@ extension AccountView {
                               callback: {self.reloadView()}),
                     animated: false, completion: nil)
             
-            database().registerNewUser(name: name,
+            
+            let newUser = User()
+            newUser.heepID = randomNumber(inRange: 1...1000000)
+            newUser.name = name
+            newUser.iconURL = "https://lorempixel.com/400/400/"
+            newUser.email = email
+            newUser.icon = getUserIcon(iconURL: newUser.iconURL)
+            
+            database().registerNewUser(user: newUser,
                                        email: email,
                                        password: password)
             

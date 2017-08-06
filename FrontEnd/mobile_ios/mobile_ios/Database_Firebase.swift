@@ -70,20 +70,26 @@ class databaseFirebase {
             return
         }
         
-        ref.child("users/\(String(describing: userID))/places/\(placeContext.placeID)").setValue(placeContext.toDict())
+        ref.child("users/\(userID)/places/\(placeContext.placeID)").setValue(placeContext.toDict())
         
     }
     
-    func registerNewUser(email: String, password: String) {
+    func registerNewUser(newUser: User, email: String, password: String) {
         
         Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
             // ...
             if (error != nil) {
                 print("ERROR: \(String(describing: error))")
             }
-            let heepID = randomNumber(inRange: 1...1000000)
             
-            ref.child("users").child(String(describing: (user?.uid)!)).setValue(["heepID": heepID])
+            guard let userID = user?.uid else {
+                print("Couldn't grab userID")
+                return
+            }
+            
+            ref.child("users/\(userID)/profile").setValue(["heepID": newUser.heepID,
+                                                           "name": newUser.name,
+                                                           "email": email])
             
             print("USER: \(String(describing: user))")
         }

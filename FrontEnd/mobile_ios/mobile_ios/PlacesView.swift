@@ -223,19 +223,6 @@ class PlacesView: UIViewController {
             
         }
     }
-    
-    func deleteAll() {
-        print("Deleting all Devices")
-        let realm = try! Realm(configuration: configUser)
-        try! realm.write {
-         
-            realm.deleteAll()
-            
-         }
-        
-        self.loadView()
-        self.viewDidLoad()
-    }
 }
 
 extension PlacesView {
@@ -281,14 +268,14 @@ extension PlacesView {
     }
     
     func getActiveUserIcon() -> UIBarButtonItem {
-        let realm = try! Realm(configuration: configUser)
-        let myID = realm.objects(User.self).first?.heepID
+        let myID = database().getMyHeepID()
         
         var userImage = #imageLiteral(resourceName: "female")
         
         if myID != nil {
             
-            userImage = myImage(userID: myID!)
+            userImage = database().getUserIcon(heepID: myID)
+            
         }        
         
         let userButton = UIButton(frame: CGRect(x: 0, y: 0,
