@@ -408,6 +408,13 @@ class database {
         }
     }
     
+    func getAllUsers() -> [User] {
+        switch interface {
+        default :
+            return databaseRealm().getAllUsers()
+        }
+    }
+    
     
     
 }

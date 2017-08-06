@@ -454,5 +454,10 @@ class databaseRealm {
         
     }
     
+    func getAllUsers() -> [User] {
+        
+        return try! Realm(configuration: configPublicSync).objects(User.self).toArray()
+    }
+    
     
 }
