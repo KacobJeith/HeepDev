@@ -37,7 +37,7 @@ class DeviceSummaryViewController: UITableViewController {
         self.tableView.separatorStyle = .none
         
         retrieveDeviceUsers(deviceID: thisDevice.deviceID)
-        self.initRealmNotification()
+        self.initNotifications()
         self.prepareUserData()
         self.prepareDeviceData()
         self.prepareControls()
@@ -214,11 +214,7 @@ class DeviceSummaryViewController: UITableViewController {
                 
             default:
                 
-                let realm = try! Realm(configuration: configPublicSync)
-                print(indexPath.row)
-                print(userRealmKeys)
-                
-                if let heepID = realm.objects(User.self).filter("realmKey = %@", userRealmKeys[indexPath.row - 1]).first?.heepID {
+                if let heepID = database().getUserHeepID(realmKey: userRealmKeys[indexPath.row - 1]) {
                     
                     cell.addSubview(addUserCell(userID: heepID, initialOffset: 60))
                 }
@@ -328,7 +324,7 @@ class DeviceSummaryViewController: UITableViewController {
         present(modalViewController, animated: false) {}
     }
     
-    func initRealmNotification() {
+    func initNotifications() {
         
         notificationToken = database().watchDevice(deviceID: thisDevice.deviceID) {
             

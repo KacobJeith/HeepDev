@@ -398,7 +398,15 @@ class database {
         }
     }
     
-    
+    func getUserHeepID(realmKey: String) -> Int? {
+        
+        switch interface {
+        case "realm" :
+            return databaseRealm().getUserHeepID(realmKey: realmKey)
+        default :
+            return databaseRealm().getUserHeepID(realmKey: realmKey)
+        }
+    }
     
     
     

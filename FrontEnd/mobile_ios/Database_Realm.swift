@@ -448,5 +448,11 @@ class databaseRealm {
         
     }
     
+    func getUserHeepID(realmKey: String) -> Int? {
+        
+        return try! Realm(configuration: configPublicSync).objects(User.self).filter("realmKey = %@", realmKey).first?.heepID
+        
+    }
+    
     
 }

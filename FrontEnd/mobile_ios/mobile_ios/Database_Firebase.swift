@@ -124,6 +124,8 @@ class databaseFirebase {
                                                            "name": newUser.name,
                                                            "email": email])
             
+            ref.child("userDirectory/").setValue([String(describing: newUser.heepID): userID])
+            
             print("USER: \(String(describing: user))")
         }
     }
