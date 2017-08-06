@@ -16,7 +16,7 @@ class UnassignedControlCollection: UITableViewCell, UICollectionViewDataSource, 
     
     func setControlsAndGroup(groupID: Int) {
         
-        self.controls = database().getDeviceControlsInGroup(groupID: groupID)
+        self.controls = database().getDeviceControlsInGroup(groupID: 0)
         
         guard let group = database().getGroupContext(groupID: groupID) else {
             print("Failed to find context for unassigned")

@@ -1,5 +1,4 @@
 import UIKit
-import RealmSwift
 
 class GroupControlEdit: UITableViewCell, UICollectionViewDataSource, UICollectionViewDelegate {
     
@@ -10,11 +9,9 @@ class GroupControlEdit: UITableViewCell, UICollectionViewDataSource, UICollectio
     convenience init(groupID: Int) {
         self.init()
         
-        let realm = try! Realm(configuration: configUser)
+        self.controls = database().getDeviceControlsInGroup(groupID: groupID)
         
-        self.controls = realm.objects(DeviceControl.self).filter("groupID = %@", groupID).toArray()
-        
-        if let perspective = realm.object(ofType: GroupPerspective.self, forPrimaryKey: groupID) {
+        if let perspective = database().getGroupContext(groupID: groupID) {
             self.thisGroup = perspective
         } else {
             print("Could not find perspective with this groupID")
@@ -97,43 +94,43 @@ extension GroupControlEdit {
     func selectControl(sender: UIButton) {
         print("Selected \(controls[sender.tag].controlName)")
         
-        let realm = try! Realm(configuration: configUser)
+        let updateContext = GroupPerspective(value: thisGroup)
         
-        try! realm.write {
-            if thisGroup.selectedControl == controls[sender.tag].uniqueID {
-                thisGroup.selectedControl = 0
-            } else {
-                thisGroup.selectedControl = controls[sender.tag].uniqueID
-            }
-            thisGroup.assignedOffsetX = collectionView.contentOffset.x
+        if thisGroup.selectedControl == controls[sender.tag].uniqueID {
             
+            updateContext.selectedControl = 0
+            
+        } else {
+            
+            updateContext.selectedControl = controls[sender.tag].uniqueID
         }
         
-        print(thisGroup.selectedControl)
+        updateContext.assignedOffsetX = collectionView.contentOffset.x
+        
+        database().updateGroupContext(update: updateContext)
+        
+        print(updateContext.selectedControl)
         
     }
     
-    // Scrolling Functions  (thisGroup.selectedControl == 0)
-    
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         
-        let realm = try! Realm(configuration: configUser)
+        updateScrollOffset(offsetX: collectionView.contentOffset.x)
         
-        try! realm.write {
-            thisGroup.assignedOffsetX = collectionView.contentOffset.x
-        }
     }
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate {
-            
-            let realm = try! Realm(configuration: configUser)
-            
-            try! realm.write {
-                thisGroup.assignedOffsetX = collectionView.contentOffset.x
-            }
+            updateScrollOffset(offsetX: collectionView.contentOffset.x)
         }
         
+    }
+    
+    func updateScrollOffset(offsetX: CGFloat) {
+        let groupUpdate = GroupPerspective(value: thisGroup)
+        groupUpdate.assignedOffsetX = offsetX
+        
+        database().updateGroupContext(update: groupUpdate)
     }
     
 }

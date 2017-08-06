@@ -33,7 +33,7 @@ class databaseRealm {
     }
     
     func getDeviceControlInGroup(groupID: Int) -> [DeviceControl] {
-        return realm.objects(DeviceControl.self).filter("groupID = 0").toArray()
+        return realm.objects(DeviceControl.self).filter("groupID = %@", groupID).toArray()
     }
     
     func updateDeviceControl(control: DeviceControl) {
