@@ -1,5 +1,4 @@
 import UIKit
-import RealmSwift
 
 class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionViewDelegate {
     
@@ -35,11 +34,9 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     }
     
     func setupGroupAndControls(groupID: Int) {
-        let realm = try! Realm(configuration: configUser)
+        self.controls = database().getDeviceControlsInGroup(groupID: groupID)
         
-        self.controls = realm.objects(DeviceControl.self).filter("groupID = %@", groupID).toArray()
-        
-        if let perspective = realm.object(ofType: GroupPerspective.self, forPrimaryKey: groupID) {
+        if let perspective = database().getGroupContext(groupID: groupID) {
             self.thisGroup = perspective
         } else {
             print("Could not find perspective with this groupID")
@@ -141,9 +138,7 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
                                                   width: cellView.bounds.width,
                                                   height: cellView.bounds.height))
         
-        let groupRealm = try! Realm(configuration: getGroupConfiguration(path: thisGroup.realmPath))
-        
-        guard let groupContext = groupRealm.objects(Group.self).first else {
+        guard let groupContext = database().getGroup(context: thisGroup) else {
             print("Could not retrieve shared group realm to grab the image")
             return
         }
