@@ -9,7 +9,6 @@
 import UIKit
 import RealmSwift
 
-
 class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     var notificationTokenList = [NotificationToken?]()
     var collectionView: UICollectionView!
@@ -239,7 +238,8 @@ extension GroupCollectionView {
     }
     
     func addGroupFromButton() {
-        createGroupRealm(placeID: placeID)
+        database().createNewGroup(placeID: placeID)
+        
         self.reloadView()
     }
     

@@ -74,6 +74,33 @@ class databaseFirebase {
         
     }
     
+    func createNewGroup(placeID: Int, groupID: Int = randomNumber(inRange: 0...4000000000)) {
+    
+        let newGroup = Group()
+        newGroup.groupID = groupID
+        newGroup.placeID = placeID
+        
+        let newGroupContext = GroupPerspective()
+        newGroupContext.groupID = groupID
+        newGroupContext.placeID = placeID
+        
+        ref.child("groups").child(String(describing: newGroup.groupID)).setValue(["groupID": newGroup.groupID,
+                                                                                  "placeID": newGroup.placeID,
+                                                                                  "name": newGroup.name])
+        updateGroupContext(context: newGroupContext)
+    }
+    
+    func updateGroupContext(context: GroupPerspective) {
+        
+        guard let userID = Auth.auth().currentUser?.uid else {
+            print("No Firebase User Logged In")
+            return
+        }
+        
+        ref.child("users/\(userID)/groups/\(context.groupID)").setValue(context.toDict())
+        
+    }
+    
     func registerNewUser(newUser: User, email: String, password: String) {
         
         Auth.auth().createUser(withEmail: email, password: password) { (user, error) in

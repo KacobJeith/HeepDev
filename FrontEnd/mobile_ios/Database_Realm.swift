@@ -133,6 +133,35 @@ class databaseRealm {
         return placeID
     }
     
+    func createNewGroup(placeID: Int) -> Int {
+        
+        let groupID = randomNumber(inRange: 0...4000000000)
+        let urlString = digitalOceanRealm + "/~/group/" + String(groupID)
+        
+        let realmGroup = try! Realm(configuration: getGroupConfiguration(path: urlString))
+        let realmUser = try! Realm(configuration: configUser)
+        
+        let newGroup = Group()
+        newGroup.groupID = groupID
+        newGroup.placeID = placeID
+        
+        let newGroupPerspective = GroupPerspective()
+        newGroupPerspective.groupID = groupID
+        newGroupPerspective.placeID = placeID
+        newGroupPerspective.realmPath = urlString
+        
+        try! realmGroup.write {
+            realmGroup.add(newGroup, update: true)
+        }
+        
+        try! realmUser.write {
+            realmUser.add(newGroupPerspective, update: true)
+        }
+        
+        return groupID
+    }
+
+    
     func registerNewUser(user: User,
                         email: String = "",
                         password: String = "",

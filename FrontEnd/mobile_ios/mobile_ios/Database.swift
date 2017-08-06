@@ -116,12 +116,26 @@ class database {
         switch interface {
         case "firebase" :
             databaseFirebase().createNewPlace()
-        case "both" :
+        case "realm" :
+            _ = databaseRealm().createNewPlace()
+        default :
             let id = databaseRealm().createNewPlace()
             databaseFirebase().createNewPlace(placeID: id)
-        default :
-            _ = databaseRealm().createNewPlace()
         }
+    }
+    
+    func createNewGroup(placeID: Int) {
+        
+        switch interface {
+        case "firebase" :
+            databaseFirebase().createNewGroup(placeID: placeID)
+        case "realm" :
+            _ = databaseRealm().createNewGroup(placeID: placeID)
+        default :
+            let id = databaseRealm().createNewGroup(placeID: placeID)
+            databaseFirebase().createNewGroup(placeID: placeID, groupID: id)
+        }
+        
     }
     
     func registerNewUser(user: User, email: String, password: String) {
