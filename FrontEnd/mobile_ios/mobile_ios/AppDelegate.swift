@@ -8,26 +8,13 @@
 
 import UIKit
 import CoreData
-import RealmSwift
 import UserNotifications
 import CoreLocation
 import FacebookCore
 import Firebase
 
-let digitalOceanIP = "45.55.249.217:9080"
-let publicUserKey = "3236896a34becbac18c96a9a24c55de9"
-let digitalOceanHTTP = "http://" + digitalOceanIP
-let digitalOceanRealm = "realm://" + digitalOceanIP
-let digitalOceamUserRealm = digitalOceanRealm + "/~/heepzone"
-let dititalOceanPublicRealm = digitalOceanRealm + "/" + publicUserKey + "/userDirectory"
+
 var ref: DatabaseReference! = Database.database().reference()
-
-var configGuest = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
-var configUser = configGuest
-var configPublicSync =  Realm.Configuration(syncConfiguration: SyncConfiguration(user: SyncUser.current!,
-                                                                                 realmURL: URL(string: dititalOceanPublicRealm)!),
-                                            objectTypes: [User.self])
-
 var SuccessROPReceived = true
 
 protocol AddBeacon {

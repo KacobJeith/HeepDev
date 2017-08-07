@@ -27,7 +27,6 @@
 		70DC641C8DFD5145B3E2F178 /* Pods_mobile_iosUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9455865AC2AC2771C588F666 /* Pods_mobile_iosUITests.framework */; };
 		AFBAEC1B382B06E54E70DAC7 /* Pods_mobile_iosTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 629528E8C86E48C60E29C454 /* Pods_mobile_iosTests.framework */; };
 		B010B6011F01428D00363CAB /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B010B6001F01428D00363CAB /* AccountView.swift */; };
-		B010B6071F057C0B00363CAB /* PermissionUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B010B6061F057C0B00363CAB /* PermissionUtilities.swift */; };
 		B010B6091F06D9CC00363CAB /* UserSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = B010B6081F06D9CA00363CAB /* UserSearch.swift */; };
 		B06DE4431EEA2B2E00680A35 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B06DE4421EEA2B2E00680A35 /* Security.framework */; };
 		B0DAF1871F32899F00A2CA69 /* FirebaseAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DAF1861F32899F00A2CA69 /* FirebaseAuth.swift */; };
@@ -90,7 +89,6 @@
 		76BE85D99FD14F073F5556A1 /* Pods-mobile_iosUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mobile_iosUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-mobile_iosUITests/Pods-mobile_iosUITests.release.xcconfig"; sourceTree = "<group>"; };
 		9455865AC2AC2771C588F666 /* Pods_mobile_iosUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_mobile_iosUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B010B6001F01428D00363CAB /* AccountView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
-		B010B6061F057C0B00363CAB /* PermissionUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PermissionUtilities.swift; sourceTree = "<group>"; };
 		B010B6081F06D9CA00363CAB /* UserSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSearch.swift; sourceTree = "<group>"; };
 		B06DE4421EEA2B2E00680A35 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		B0DAF1861F32899F00A2CA69 /* FirebaseAuth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseAuth.swift; sourceTree = "<group>"; };
@@ -180,7 +178,6 @@
 				EEA944221EAA93950022588B /* HeepConnections.swift */,
 				104C18101EC8FA0C000A75D7 /* Utilities.swift */,
 				1005B8EA1ECE2A8A00414F8E /* UIUtilities.swift */,
-				B010B6061F057C0B00363CAB /* PermissionUtilities.swift */,
 				EEA944201EAA7D880022588B /* HAPIMemoryParser.swift */,
 				B0FA83301F35196B00608C96 /* Database.swift */,
 				B0FA832E1F34FC3500608C96 /* Database_Realm.swift */,
@@ -523,7 +520,6 @@
 				1005B8E31ECB7C5B00414F8E /* UnassignedControlCollection.swift in Sources */,
 				B010B6091F06D9CC00363CAB /* UserSearch.swift in Sources */,
 				E7ACBFC81EE4BE1400EFB21E /* HeepBeacon.swift in Sources */,
-				B010B6071F057C0B00363CAB /* PermissionUtilities.swift in Sources */,
 				B0FA83311F35196B00608C96 /* Database.swift in Sources */,
 				EEA944271EAA9EF40022588B /* DeviceTableView.swift in Sources */,
 				EEA944211EAA7D880022588B /* HAPIMemoryParser.swift in Sources */,
