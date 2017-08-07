@@ -152,13 +152,27 @@ class databaseFirebase {
             
             ref.child("userDirectory/").setValue([String(describing: newUser.heepID): userID])
             
+            self.updateUserIcon(profile: newUser)
+            
             print("USER: \(String(describing: user))")
         }
     }
     
-    func updateUserIcon(image: NSData?) {
-        if image == nil {
+    func updateUserIcon(profile: User) {
+        if profile.icon != NSData() {
             
+            let profileReference = Storage.storage().reference().child("users/\(String(describing: profile.heepID))/profile.jpg")
+            let data = profile.icon as Data
+            
+            profileReference.putData(data, metadata: nil) { (metadata, error) in
+                guard let metadata = metadata else {
+                    print("Uh-oh, an upload error occurred: \(String(describing: error))")
+                    return
+                }
+                
+                print("Metadata: \(metadata)")
+                
+            }
         }
     }
     
