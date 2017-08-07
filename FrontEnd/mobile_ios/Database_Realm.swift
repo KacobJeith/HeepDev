@@ -264,7 +264,9 @@ class databaseRealm {
     }
     
     func getMyPlaces() -> [PlacePerspective] {
-        return realm.objects(PlacePerspective.self).toArray()
+        let places = realm.objects(PlacePerspective.self).toArray()
+        print(places)
+        return places
     }
     
     func getPlace(realmPath: String) -> Place? {

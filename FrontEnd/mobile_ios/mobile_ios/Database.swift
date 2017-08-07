@@ -211,20 +211,29 @@ class database {
         switch interface {
         case "firebase" :
             databaseFirebase().signOut()
-        case "both" :
+        case "realm" :
             databaseRealm().signOut()
-            databaseFirebase().signOut()
         default :
+            databaseFirebase().signOut()
             databaseRealm().signOut()
         }
     }
     
     
-    func getPlaceContext(id: Int) -> PlacePerspective? {
+    func getPlaceContext(id: Int, completion: @escaping (PlacePerspective?) -> () ) {
+        
         
         switch interface {
+        case "realm" :
+            
+            completion(databaseRealm().getPlaceContext(id: id))
+            
+        case "firebase" :
+            databaseFirebase().getPlaceContext(id: id, completion: completion)
+            
         default :
-            return databaseRealm().getPlaceContext(id: id)
+            databaseFirebase().getPlaceContext(id: id, completion: completion)
+            
         }
     }
     

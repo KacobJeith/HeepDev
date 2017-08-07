@@ -179,23 +179,26 @@ class PlacesView: UIViewController {
                     return
                 }
                 
-                guard let thisPlace = database().getPlaceContext(id: tag) else {
-                    print("Failed to pull Place Context")
-                    return
+                database().getPlaceContext(id: tag) { (context) in
+                    
+                    guard let thisPlace = context else {
+                        print("Failed to get placeContext")
+                        return
+                    }
+                    
+                    let newContext = PlacePerspective()
+                    newContext.x = thisPlace.x + gesture.translation(in: self.view).x
+                    newContext.y = thisPlace.y + gesture.translation(in: self.view).y
+                    
+                    newContext.numDevices = thisPlace.numDevices
+                    newContext.placeID = thisPlace.placeID
+                    newContext.radius = thisPlace.radius
+                    newContext.realmPath = thisPlace.realmPath
+                    
+                    database().updatePlaceContext(placeContext: newContext)
+                    
+                    self.reloadView()
                 }
-                
-                let newContext = PlacePerspective()
-                newContext.x = thisPlace.x + gesture.translation(in: self.view).x
-                newContext.y = thisPlace.y + gesture.translation(in: self.view).y
-                
-                newContext.numDevices = thisPlace.numDevices
-                newContext.placeID = thisPlace.placeID
-                newContext.radius = thisPlace.radius
-                newContext.realmPath = thisPlace.realmPath
-                
-                database().updatePlaceContext(placeContext: newContext)
-                
-                self.reloadView()
                 
             }
             

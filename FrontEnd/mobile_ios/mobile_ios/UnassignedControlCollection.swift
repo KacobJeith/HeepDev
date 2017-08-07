@@ -96,13 +96,19 @@ extension UnassignedControlCollection {
     
     func selectControl(sender: UIButton) {
         
-        if let place = database().getPlaceContext(id: thisGroup.placeID) {
+        database().getPlaceContext(id: thisGroup.placeID) { (context) in
+            
+            guard let place = context else {
+                print("Failed to get placeContext")
+                return
+            }
             
             let update = PlacePerspective(value: place)
             update.numDevices += 1
             
             database().updatePlaceContext(placeContext: update)
         }
+        
         
         let controlUpdate = DeviceControl(value: controls[sender.tag])
         controlUpdate.groupID = thisGroup.groupID

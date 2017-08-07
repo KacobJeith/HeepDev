@@ -203,5 +203,32 @@ class databaseFirebase {
             print ("Error signing out: %@", signOutError)
         }
     }
+    
+    func getPlaceContext(id: Int, completion: @escaping (PlacePerspective?) -> () ) {
+        
+        guard let userID = Auth.auth().currentUser?.uid else {
+            print("You must be logged in to perform this action")
+            return
+        }
+        
+        ref.child("users/\(userID)/places/\(String(describing: id))").observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            let value = snapshot.value as? NSDictionary
+            let context = PlacePerspective()
+            context.numDevices = value?["numDevices"] as? Int ?? 0
+            context.placeID = value?["placeID"] as? Int ?? 0
+            context.radius = value?["radius"] as? Int ?? 0
+            context.realmPath = value?["realmPath"] as? String ?? "empty"
+            context.x = value?["x"] as? CGFloat ?? 0
+            context.y = value?["y"] as? CGFloat ?? 0
+            
+            completion(context)
+            
+        }) { (error) in
+            print(error)
+            return
+        }
+        
+    }
 }
 

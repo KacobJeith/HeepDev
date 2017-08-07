@@ -31,7 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Use Firebase library to configure APIs
         FirebaseApp.configure()
-        
+//        database().signOut()
         database().checkForPermissionUpdates()
         database().initializeApp()
         
