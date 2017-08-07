@@ -486,6 +486,13 @@ class database {
         
     }
     
+    func checkIfLoggedIn() -> Int {
+        switch interface {
+        default :
+            return databaseRealm().checkIfLoggedIn()
+        }
+    }
+    
     
     
 }

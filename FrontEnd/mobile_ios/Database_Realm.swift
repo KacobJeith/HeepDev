@@ -21,7 +21,7 @@ class databaseRealm {
     
     var configGuest = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
     var configUser: Realm.Configuration
-    var configPublicSync: Realm.Configuration
+    var configPublicSync: Realm.Configuration? = nil
     
     var realm: Realm
 
@@ -32,7 +32,6 @@ class databaseRealm {
         self.digitalOceanUserRealm = digitalOceanRealm + "/~/heepzone"
         self.dititalOceanPublicRealm =  digitalOceanRealm + "/" + publicUserKey + "/userDirectory"
         
-        
         if let loggedInUser = SyncUser.all.first?.value {
             self.configUser = Realm.Configuration(syncConfiguration: SyncConfiguration(user: loggedInUser, realmURL: URL(string: digitalOceanUserRealm)!), objectTypes: [User.self,
                                                         PlacePerspective.self,
@@ -40,11 +39,14 @@ class databaseRealm {
                                                         Device.self,
                                                         DeviceControl.self,
                                                         Vertex.self])
+            
+            self.configPublicSync = Realm.Configuration(syncConfiguration: SyncConfiguration(user: loggedInUser, realmURL: URL(string: self.dititalOceanPublicRealm)!), objectTypes: [User.self])
+            
         } else {
             self.configUser = configGuest
+            
         }
         
-        self.configPublicSync = Realm.Configuration(syncConfiguration: SyncConfiguration(user: SyncUser.current!, realmURL: URL(string: self.dititalOceanPublicRealm)!), objectTypes: [User.self])
         
         self.realm = try! Realm(configuration: configUser)
         
@@ -487,19 +489,31 @@ class databaseRealm {
     }
     
     func getUserHeepID(realmKey: String) -> Int? {
+        guard let access = configPublicSync else {
+            print("You must log in to see this data")
+            return nil
+        }
         
-        return try! Realm(configuration: configPublicSync).objects(User.self).filter("realmKey = %@", realmKey).first?.heepID
+        return try! Realm(configuration: access).objects(User.self).filter("realmKey = %@", realmKey).first?.heepID
         
     }
     
     func getAllUsers() -> [User] {
+        guard let access = configPublicSync else {
+            print("You must log in to see this data")
+            return [User]()
+        }
         
-        return try! Realm(configuration: configPublicSync).objects(User.self).toArray()
+        return try! Realm(configuration: access).objects(User.self).toArray()
     }
     
     func getUserProfile(heepID: Int) -> User? {
+        guard let access = configPublicSync else {
+            print("You must log in to see this data")
+            return nil
+        }
         
-        return try! Realm(configuration: configPublicSync).object(ofType: User.self, forPrimaryKey: heepID)
+        return try! Realm(configuration: access).object(ofType: User.self, forPrimaryKey: heepID)
             
     }
     
@@ -592,11 +606,12 @@ class databaseRealm {
                             
                         } else {
                             
-                            self.configUser = self.getUserConfiguration(user: user!, path: self.digitalOceanUserRealm)
+                            self.configUser = self.getUserConfiguration(user: user, path: self.digitalOceanUserRealm)
+                            self.setPublicConfiguration(user: user)
                             
                             self.checkForNewRealmPermissions()
                             self.openRealmAsync(config: self.configUser)
-                            self.openRealmAsync(config: self.configPublicSync)
+                            self.openRealmAsync(config: self.configPublicSync!)
                             
                             callback()
                         }
@@ -660,15 +675,21 @@ class databaseRealm {
     }
     
     func addNewUserToPublicRealm(newUser: User, callback: @escaping () -> Void = {}) {
-        let realm = try! Realm(configuration: configPublicSync)
         
-        try! realm.write {
-            realm.add(newUser,
+        guard let access = configPublicSync else {
+            print("You must log in for this action")
+            return
+        }
+        
+        let realmPub = try! Realm(configuration: access)
+        
+        try! realmPub.write {
+            realmPub.add(newUser,
                       update: true)
         }
         
         print("ADDED NEW USER TO PUBLIC REALM")
-        let allUsers = realm.objects(User.self)
+        let allUsers = realmPub.objects(User.self)
         
         print("All Users: \(allUsers)")
         callback()
@@ -714,7 +735,13 @@ class databaseRealm {
     }
     
     func grantPermissionToOtherUser(deviceID: Int, userID: Int) {
-        let realmPublic = try! Realm(configuration: configPublicSync)
+        
+        guard let access = configPublicSync else {
+            print("You must be logged in to complete this action")
+            return
+        }
+        
+        let realmPublic = try! Realm(configuration: access)
         
         guard let userToGrant = realmPublic.object(ofType: User.self, forPrimaryKey: userID)?.realmKey else {
             print("Could not find the realm path for this user. Exiting Grant.")
@@ -906,6 +933,16 @@ class databaseRealm {
                                                   Vertex.self])
     }
     
+    func setPublicConfiguration(user: SyncUser? = SyncUser.all.first?.value) {
+        
+        guard let unwrappedUser = user else {
+            print("No user logged in")
+            return
+        }
+        
+         self.configPublicSync = Realm.Configuration(syncConfiguration: SyncConfiguration(user: unwrappedUser, realmURL: URL(string: self.dititalOceanPublicRealm)!), objectTypes: [User.self])
+    }
+    
     func extractRelativeRealmPath(realmPath: String) -> String {
         let separatedPath = realmPath.components(separatedBy: "/")
         let count = separatedPath.count
@@ -1006,6 +1043,10 @@ class databaseRealm {
         }
     }
 
-
+    func checkIfLoggedIn() -> Int {
+        print("Current User: \(String(describing: SyncUser.all))")
+        
+        return SyncUser.all.count 
+    }
     
 }

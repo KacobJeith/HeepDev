@@ -7,10 +7,9 @@
 //
 
 import UIKit
-import RealmSwift
 
 class AccountView: UIViewController {
-    var notificationToken: NotificationToken? = nil
+    
     var subviewFrame = CGRect()
     var startFrame = CGRect()
     var registeringNewAccount: Bool = false
@@ -53,9 +52,8 @@ class AccountView: UIViewController {
     }
     
     func isUserLoggedIn() {
-        print("Current User: \(String(describing: SyncUser.current))")
         
-        if SyncUser.current == nil {
+        if database().checkIfLoggedIn() == 0 {
             if registeringNewAccount {
                 self.title = "Register New Account"
                 self.view.addSubview(registerView())
@@ -85,9 +83,8 @@ class AccountView: UIViewController {
     }
     
     func attemptToRender() {
-        let realm = try! Realm(configuration: configUser)
         
-        if let myID = realm.objects(User.self).first?.heepID {
+        if let myID = database().getMyHeepID() {
             
             print("GOT AN ID: \(myID)")
             self.view.addSubview(alreadyLoggedInView())
@@ -124,8 +121,8 @@ extension AccountView {
     
     func userIconView() -> (view: UIView, frame: CGRect) {
         let iconDiameter = self.view.frame.width / 5
-        let realm = try! Realm(configuration: configUser)
-        let myID = realm.objects(User.self).first?.heepID
+        
+        let myID = database().getMyHeepID()
 
         let frame = CGRect(x: (self.view.frame.width / 2) - (iconDiameter / 2),
                            y: (iconDiameter / 4),
@@ -174,11 +171,10 @@ extension AccountView {
     
     func retrieveUserProfile() -> User? {
         
-        let publicRealm = try! Realm(configuration: configPublicSync)
-        let userRealm = try! Realm(configuration: configUser)
         
-        if let myId = userRealm.objects(User.self).first?.heepID {
-            if let profile = publicRealm.object(ofType: User.self, forPrimaryKey: myId) {
+        if let myId = database().getMyHeepID() {
+            
+            if let profile = database().getUserProfile(heepID: myId) {
                 return profile
                 
             } else {
@@ -190,7 +186,6 @@ extension AccountView {
             return nil
         }
         
-            
         
     }
     
@@ -301,12 +296,12 @@ extension AccountView{
     }
     
     func validateUser() {
-        if SyncUser.all.count > 1 {
+        if database().checkIfLoggedIn() > 1 {
             
             print("Logging out of public")
             validateUser()
         } else {
-            if SyncUser.current != nil {
+            if database().checkIfLoggedIn() > 0 {
                 
                 present(easyAlert(message: "Login Successful!",
                                   callback: { self.reloadView()}),
