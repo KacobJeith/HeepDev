@@ -469,6 +469,15 @@ class database {
         }
     }
     
+    func assignDeviceAdmin(deviceID: Int) {
+        
+        switch interface {
+        default :
+            databaseRealm().createDeviceRealm(deviceID: deviceID)
+        }
+        
+    }
+    
     
     
 }

@@ -899,10 +899,10 @@ class databaseRealm {
             
             for permission in allRealms {
                 
-                if parseTypeFromRealmPath(type: "place", realmPath: permission.path) {
+                if self.parseTypeFromRealmPath(type: "place", realmPath: permission.path) {
                     allPlaces.append(permission.path)
                     
-                } else if parseTypeFromRealmPath(type: "group", realmPath: permission.path) {
+                } else if self.parseTypeFromRealmPath(type: "group", realmPath: permission.path) {
                     allGroups.append(permission.path)
                 }
             }
