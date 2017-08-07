@@ -139,7 +139,7 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
                                                   height: cellView.bounds.height))
         
         guard let groupContext = database().getGroup(context: thisGroup) else {
-            print("Could not retrieve shared group realm to grab the image")
+            print("Could not retrieve shared group context to grab the image")
             return
         }
         
@@ -593,7 +593,7 @@ extension VertexEditCell {
     func handleLongPress(gesture: UILongPressGestureRecognizer) {
         
         guard let control = database().getDeviceControl(uniqueID: (gesture.view?.tag)!) else {
-            print("Failed to retrieve the control with tag \(String(describing: gesture.view?.tag)) from realm handleLongPress")
+            print("Failed to retrieve the control with tag \(String(describing: gesture.view?.tag)) from handleLongPress")
             return
         }
         
@@ -843,7 +843,7 @@ extension VertexEditCell {
     func getContextImage() -> UIImage? {
         
         guard let group = database().getGroup(context: thisGroup) else {
-            print("Could not retrieve shared group realm to grab the image")
+            print("Could not retrieve shared group to grab the image")
             return nil
         }
         

@@ -30,13 +30,13 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
         
         self.title = placeName
         
-        self.initRealmNotifications()
+        self.initNotifications()
         self.setupCollectionView()
         self.setupNavBar()
         
     }
     
-    func initRealmNotifications() {
+    func initNotifications() {
         groups = []
         
         let groupPerspectives = database().getGroupContextsForPlace(placeID: placeID)
@@ -49,7 +49,7 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
                 
             } else {
                 
-                print("Could not find any groups at this realm config")
+                print("Could not find any groups at this database config")
                 asyncOpenGroup(perspective: perspective)
                 
             }

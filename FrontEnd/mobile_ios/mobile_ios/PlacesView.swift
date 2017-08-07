@@ -20,7 +20,7 @@ class PlacesView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.initRealmNotification()
+        self.initNotification()
         self.setupNavBar()
         
         addPlaces()
@@ -66,7 +66,7 @@ class PlacesView: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         self.title = "My Heep Zones"
-        self.initRealmNotification()
+        self.initNotification()
         self.reloadView()
         
     }
@@ -80,7 +80,7 @@ class PlacesView: UIViewController {
                 self.drawPlace(place: place, perspective: perspective)
                 
             } else {
-                print("Could not find any places at this realm config")
+                print("Could not find any places at this config")
                 
                 database().getPlaceAsync(context: perspective, callback: {
                     
@@ -238,7 +238,7 @@ extension PlacesView {
         
     }
     
-    func initRealmNotification() {
+    func initNotification() {
         
         notificationToken = database().watchPlaces() {
             self.reloadView()

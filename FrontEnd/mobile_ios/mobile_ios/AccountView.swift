@@ -90,7 +90,7 @@ class AccountView: UIViewController {
             self.view.addSubview(alreadyLoggedInView())
             
         } else {
-            print("Couldn't grab ID from logged in realm.... logging out")
+            print("Couldn't grab ID from logged in database.... logging out")
             //logoutUser()
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1, execute: {
                 print("Trying... \(DispatchTime.now())")
