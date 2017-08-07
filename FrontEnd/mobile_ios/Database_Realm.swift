@@ -815,8 +815,6 @@ class databaseRealm {
         
         let uniqueUsers = Array(Set(matchingUsers))
         
-        let realm = try! Realm(configuration: configUser)
-        
         if let device = realm.object(ofType: Device.self, forPrimaryKey: deviceID) {
             try! realm.write {
                 device.authorizedUsers = uniqueUsers.joined(separator: "/")

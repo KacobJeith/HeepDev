@@ -36,7 +36,8 @@ class DeviceSummaryViewController: UITableViewController {
         self.title = thisDevice.name
         self.tableView.separatorStyle = .none
         
-        retrieveDeviceUsers(deviceID: thisDevice.deviceID)
+        database().updateDeviceUserList(deviceID: thisDevice.deviceID)
+        
         self.initNotifications()
         self.prepareUserData()
         self.prepareDeviceData()

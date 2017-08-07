@@ -446,6 +446,29 @@ class database {
         }
     }
     
+    func updateDeviceUserList(deviceID: Int) {
+        
+        switch interface {
+        default :
+            databaseRealm().retrieveDeviceUsers(deviceID: deviceID)
+        }
+    }
+    
+    func checkForPermissionUpdates() {
+        
+        switch interface {
+        default :
+            databaseRealm().checkForNewRealmPermissions()
+        }
+    }
+    
+    func initializeApp() {
+        switch interface {
+        default:
+            databaseRealm().initializeApp()
+        }
+    }
+    
     
     
 }

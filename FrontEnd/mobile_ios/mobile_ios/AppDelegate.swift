@@ -13,7 +13,6 @@ import CoreLocation
 import FacebookCore
 import Firebase
 
-
 var ref: DatabaseReference! = Database.database().reference()
 var SuccessROPReceived = true
 
@@ -33,19 +32,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use Firebase library to configure APIs
         FirebaseApp.configure()
         
-        //flushApp()
-        checkForNewRealmPermissions()
-        //logoutOfAllRealmUsers()
-        
-        databaseRealm().initializeApp()
+        database().checkForPermissionUpdates()
+        database().initializeApp()
         
         
         setupAppNavigation()
         startMonitoringBeacon()
-        
-        //logoutOfAllRealmUsers()
-        //loginToPublicRealm()
-        
         
         return true
     }
