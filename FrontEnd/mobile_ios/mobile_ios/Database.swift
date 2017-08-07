@@ -169,8 +169,13 @@ class database {
     func updateGroup(update: Group) {
         
         switch interface {
+        case "firebase" :
+            databaseFirebase().updateGroup(group: update)
+        case "realm" :
+            databaseRealm().updateGroup(update: update)
         default :
-            return databaseRealm().updateGroup(update: update)
+            databaseRealm().updateGroup(update: update)
+            databaseFirebase().updateGroup(group: update)
         }
         
     }

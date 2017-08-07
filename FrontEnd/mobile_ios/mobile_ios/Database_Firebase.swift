@@ -90,9 +90,7 @@ class databaseFirebase {
         newGroupContext.groupID = groupID
         newGroupContext.placeID = placeID
         
-        ref.child("groups").child(String(describing: newGroup.groupID)).setValue(["groupID": newGroup.groupID,
-                                                                                  "placeID": newGroup.placeID,
-                                                                                  "name": newGroup.name])
+        updateGroup(group: newGroup)
         updateGroupContext(context: newGroupContext)
     }
     
@@ -105,6 +103,34 @@ class databaseFirebase {
         
         ref.child("users/\(userID)/groups/\(context.groupID)").setValue(context.toDict())
         
+    }
+    
+    func updateGroup(group: Group) {
+        
+        ref.child("groups").child(String(describing: group.groupID)).setValue(["groupID": group.groupID,
+                                                                               "placeID": group.placeID,
+                                                                               "name": group.name])
+        
+        updateGroupImage(group: group)
+    }
+    
+    func updateGroupImage(group: Group) {
+        if group.imageData != NSData() {
+            
+            let groupReference = Storage.storage().reference().child("groups/\(String(describing: group.groupID))/background.jpg")
+            let data = group.imageData as Data
+            
+            groupReference.putData(data, metadata: nil) { (metadata, error) in
+                guard let metadata = metadata else {
+                    print("Uh-oh, an upload error occurred: \(error)")
+                    return
+                }
+                
+                print("Metadata: \(metadata)")
+                
+            }
+            
+        }
     }
     
     func registerNewUser(newUser: User, email: String, password: String) {
@@ -127,6 +153,12 @@ class databaseFirebase {
             ref.child("userDirectory/").setValue([String(describing: newUser.heepID): userID])
             
             print("USER: \(String(describing: user))")
+        }
+    }
+    
+    func updateUserIcon(image: NSData?) {
+        if image == nil {
+            
         }
     }
     
