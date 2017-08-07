@@ -126,7 +126,9 @@ extension UserSearch: UICollectionViewDataSource, UICollectionViewDelegate {
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { action in
             print("ADD")
             
-            grantPermissionToOtherUser(deviceID: self.thisDevice.deviceID, userID: (gesture.view?.tag)!)
+            database().grantUserAccessToDevice(deviceID: self.thisDevice.deviceID,
+                                               userID: (gesture.view?.tag)!)
+            
             self.exitSearch()
         }))
         

@@ -304,7 +304,6 @@ class DeviceSummaryViewController: UITableViewController {
         //HeepConnections().sendAssignAdminToHeepDevice(deviceID: thisDevice.deviceID)
         database().assignDeviceAdmin(deviceID: thisDevice.deviceID)
         
-        
         if let myID = database().getMyHeepID() {
             
             let updateDevice = Device(value: thisDevice)

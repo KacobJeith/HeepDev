@@ -13,19 +13,43 @@ import RealmSwift
 class databaseRealm {
     let digitalOceanIP = "45.55.249.217:9080"
     let publicUserKey = "3236896a34becbac18c96a9a24c55de9"
-    let digitalOceanHTTP = "http://" + digitalOceanIP
-    let digitalOceanRealm = "realm://" + digitalOceanIP
-    let digitalOceamUserRealm = digitalOceanRealm + "/~/heepzone"
-    let dititalOceanPublicRealm = digitalOceanRealm + "/" + publicUserKey + "/userDirectory"
+    
+    let digitalOceanHTTP: String
+    let digitalOceanRealm: String
+    let digitalOceanUserRealm: String
+    let dititalOceanPublicRealm: String
     
     var configGuest = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
-    var configUser = configGuest
-    var configPublicSync =  Realm.Configuration(syncConfiguration: SyncConfiguration(user: SyncUser.current!,
-                                                                                     realmURL: URL(string: dititalOceanPublicRealm)!),
-                                                objectTypes: [User.self])
-
+    var configUser: Realm.Configuration
+    var configPublicSync: Realm.Configuration
     
-    let realm = try! Realm(configuration: configUser)
+    var realm: Realm
+
+    init() {
+        
+        self.digitalOceanHTTP = "http://" + digitalOceanIP
+        self.digitalOceanRealm = "realm://" + digitalOceanIP
+        self.digitalOceanUserRealm = digitalOceanRealm + "/~/heepzone"
+        self.dititalOceanPublicRealm =  digitalOceanRealm + "/" + publicUserKey + "/userDirectory"
+        
+        
+        if let loggedInUser = SyncUser.all.first?.value {
+            self.configUser = Realm.Configuration(syncConfiguration: SyncConfiguration(user: loggedInUser, realmURL: URL(string: digitalOceanUserRealm)!), objectTypes: [User.self,
+                                                        PlacePerspective.self,
+                                                        GroupPerspective.self,
+                                                        Device.self,
+                                                        DeviceControl.self,
+                                                        Vertex.self])
+        } else {
+            self.configUser = configGuest
+        }
+        
+        self.configPublicSync = Realm.Configuration(syncConfiguration: SyncConfiguration(user: SyncUser.current!, realmURL: URL(string: self.dititalOceanPublicRealm)!), objectTypes: [User.self])
+        
+        self.realm = try! Realm(configuration: configUser)
+        
+    }
+    
     
     func getDevice(deviceID: Int) -> Device? {
         return realm.object(ofType: Device.self, forPrimaryKey: deviceID)
@@ -509,7 +533,7 @@ class databaseRealm {
             
         } else {
             
-            configUser =  getUserConfiguration(user: SyncUser.current!, path: digitalOceamUserRealm)
+            configUser =  getUserConfiguration(user: SyncUser.current!, path: digitalOceanUserRealm)
             
         }
         
@@ -529,7 +553,7 @@ class databaseRealm {
                             
                             self.setNewPublicSyncUser(newUser: userUnwrapped)
                             
-                            configUser =  getUserConfiguration(user: userUnwrapped, path: digitalOceamUserRealm)
+                            self.configUser =  self.getUserConfiguration(user: userUnwrapped, path: self.digitalOceanUserRealm)
                             
                             self.addNewUserToUserRealm(newUser: newUser)
                             
@@ -568,11 +592,11 @@ class databaseRealm {
                             
                         } else {
                             
-                            configUser =  getUserConfiguration(user: user!, path: digitalOceamUserRealm)
+                            self.configUser = self.getUserConfiguration(user: user!, path: self.digitalOceanUserRealm)
                             
-                            checkForNewRealmPermissions()
-                            self.openRealmAsync(config: configUser)
-                            self.openRealmAsync(config: configPublicSync)
+                            self.checkForNewRealmPermissions()
+                            self.openRealmAsync(config: self.configUser)
+                            self.openRealmAsync(config: self.configPublicSync)
                             
                             callback()
                         }
@@ -710,8 +734,8 @@ class databaseRealm {
             
             print("Successfully added permission to new user")
             
-            addNewUserToAuthorizedList(deviceID: deviceID, newUser: userToGrant)
-            grantDeviceContextAccessToNewUser(deviceID: deviceID, newUser: userToGrant)
+            self.addNewUserToAuthorizedList(deviceID: deviceID, newUser: userToGrant)
+            self.grantDeviceContextAccessToNewUser(deviceID: deviceID, newUser: userToGrant)
             
             return
         }
@@ -866,8 +890,14 @@ class databaseRealm {
         
     }
     
-    func getUserConfiguration(user: SyncUser, path: String) -> Realm.Configuration {
-        return  Realm.Configuration(syncConfiguration: SyncConfiguration(user: user, realmURL: URL(string: path)!),
+    func getUserConfiguration(user: SyncUser? = SyncUser.all.first?.value, path: String) -> Realm.Configuration {
+        
+        guard let unwrappedUser = user else {
+            print("No user logged in")
+            return configGuest
+        }
+        
+        return  Realm.Configuration(syncConfiguration: SyncConfiguration(user: unwrappedUser, realmURL: URL(string: path)!),
                                     objectTypes: [User.self,
                                                   PlacePerspective.self,
                                                   GroupPerspective.self,
@@ -917,8 +947,6 @@ class databaseRealm {
     
     func findNewPlaces(places: [String]) {
         
-        let realm = try! Realm(configuration: configUser)
-        
         for placePath in places {
             let fullPlacePath = digitalOceanRealm + placePath
             let realmPlace = try! Realm(configuration: getPlaceConfiguration(path: fullPlacePath))
@@ -934,8 +962,6 @@ class databaseRealm {
     }
     
     func findNewGroups(groups: [String]) {
-        
-        let realm = try! Realm(configuration: configUser)
         
         for groupPath in groups {
             let fullGroupPath = digitalOceanRealm + groupPath
@@ -953,14 +979,13 @@ class databaseRealm {
     
     func createNewPlace(placeID: Int, realmPath: String) {
         DispatchQueue.global().async {
-            let realm = try! Realm(configuration: configUser)
             
             let newPlacePerspective = PlacePerspective()
             newPlacePerspective.placeID = placeID
             newPlacePerspective.realmPath = realmPath
             
-            try! realm.write {
-                realm.add(newPlacePerspective, update: true)
+            try! self.realm.write {
+                self.realm.add(newPlacePerspective, update: true)
             }
             
         }
@@ -968,15 +993,14 @@ class databaseRealm {
     
     func createNewGroup(groupID: Int, realmPath: String, placeID: Int) {
         DispatchQueue.global().async {
-            let realm = try! Realm(configuration: configUser)
             
             let newGroupPerspective = GroupPerspective()
             newGroupPerspective.groupID = groupID
             newGroupPerspective.placeID = placeID
             newGroupPerspective.realmPath = realmPath
             
-            try! realm.write {
-                realm.add(newGroupPerspective, update: true)
+            try! self.realm.write {
+                self.realm.add(newGroupPerspective, update: true)
             }
             
         }

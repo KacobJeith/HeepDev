@@ -475,6 +475,14 @@ class database {
         default :
             databaseRealm().createDeviceRealm(deviceID: deviceID)
         }
+    }
+    
+    func grantUserAccessToDevice(deviceID: Int, userID: Int) {
+        
+        switch interface {
+        default :
+            databaseRealm().grantPermissionToOtherUser(deviceID: deviceID, userID: userID)
+        }
         
     }
     
