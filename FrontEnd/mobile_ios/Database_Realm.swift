@@ -162,7 +162,7 @@ class databaseRealm {
         
     }
     
-    func createNewPlace() -> Int {
+    func createNewPlace() -> PlacePerspective {
         
         let placeID = randomNumber(inRange: 0...4000000000)
         
@@ -187,7 +187,7 @@ class databaseRealm {
             realmUser.add(newPlacePerspective, update: true)
         }
         
-        return placeID
+        return newPlacePerspective
     }
     
     func createNewGroup(placeID: Int) -> Int {

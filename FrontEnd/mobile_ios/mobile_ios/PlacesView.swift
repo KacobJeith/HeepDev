@@ -7,23 +7,30 @@
 //
 
 import UIKit
-import RealmSwift
+import Firebase
 
 class PlacesView: UIViewController {
-    var notificationToken: NotificationToken? = nil
     
     var activelyPanning = Int()
     var searchTimeout = 4
     var colors = [UIColor]()
     var placeNames = [Int : String]()
+    var places = [Place]()
+    
+    init() {
+        super.init(nibName: nil, bundle: nil)
+        self.initNotification()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.initNotification()
+        print("VIEWDIDLOAD")
+        self.addPlaces()
         self.setupNavBar()
-        
-        addPlaces()
     }
     
     func setupNavBar() {
@@ -51,7 +58,9 @@ class PlacesView: UIViewController {
     
     
     deinit{
-        notificationToken?.stop()
+        
+        ref.child("users/\((Auth.auth().currentUser?.uid)!)/places").removeAllObservers()
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -60,40 +69,34 @@ class PlacesView: UIViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        notificationToken?.stop()
+        
+        ref.child("users/\((Auth.auth().currentUser?.uid)!)/places").removeAllObservers()
+        
         self.title = ""
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.title = "My Heep Zones"
-        self.initNotification()
-        self.reloadView()
+        //self.addPlaces()
         
     }
     
     func addPlaces() {
         
-        for perspective in database().getMyPlaces() {
+        database().getPlaceContexts(completion: { (context) in
             
-            if let place = database().getPlace(context: perspective) {
+            database().getPlace(context: context, completion: { (place) in
                 
-                self.drawPlace(place: place, perspective: perspective)
-                
-            } else {
-                print("Could not find any places at this config")
-                
-                database().getPlaceAsync(context: perspective, callback: {
-                    
-                    if let place = database().getPlace(context: perspective) {
-                        
-                        self.drawPlace(place: place, perspective: perspective)
-                                        
-                    }
-                })
-                
-            }
-        
-        }
+                self.drawPlace(place: place, perspective: context)
+            })
+        })
+        print("=========================")
+    }
+    
+    func initNotification() {
+        database().watchPlaces(completion: {
+            self.reloadView()
+        })
     }
     
     func addPlaceToDatabase() {
@@ -103,6 +106,11 @@ class PlacesView: UIViewController {
     }
  
     func drawPlace(place: Place, perspective: PlacePerspective) {
+        
+        if let viewWithTag = self.view.viewWithTag(place.placeID) {
+            
+            viewWithTag.removeFromSuperview()
+        }
         
         placeNames[place.placeID] = place.name
         
@@ -120,6 +128,8 @@ class PlacesView: UIViewController {
         button.setTitleColor(UIColor.white, for: UIControlState.normal)
         button.titleLabel?.adjustsFontSizeToFitWidth = true
         button.tag = place.placeID
+        
+        print(button.tag)
         
         self.view.addSubview(button)
         
@@ -197,7 +207,6 @@ class PlacesView: UIViewController {
                     
                     database().updatePlaceContext(placeContext: newContext)
                     
-                    self.reloadView()
                 }
                 
             }
@@ -225,28 +234,18 @@ class PlacesView: UIViewController {
             
         }
     }
+    
+    func reloadView() {
+        
+        self.viewDidLoad()
+    }
 }
 
 extension PlacesView {
     
-    func reloadView() {
-        
-        print("Ran reloadView")
-        self.loadView()
-        self.viewDidLoad()
-    }
-    
     func searchForHeepDevices() {
         HeepConnections().SearchForHeepDeviecs()
         
-    }
-    
-    func initNotification() {
-        
-        notificationToken = database().watchPlaces() {
-            self.reloadView()
-        }
-
     }
     
     func userLogin() {

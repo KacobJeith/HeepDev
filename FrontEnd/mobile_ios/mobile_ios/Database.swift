@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import RealmSwift
+import Firebase
 
 class database {
     let interface = "both"
@@ -35,7 +36,6 @@ class database {
             databaseRealm().updatePlaceContext(placeContext: placeContext)
         default :
             databaseFirebase().updatePlaceContext(placeContext: placeContext)
-            databaseRealm().updatePlaceContext(placeContext: placeContext)
         }
     }
     
@@ -145,8 +145,8 @@ class database {
         case "realm" :
             _ = databaseRealm().createNewPlace()
         default :
-            let id = databaseRealm().createNewPlace()
-            databaseFirebase().createNewPlace(placeID: id)
+            let newPlace = databaseRealm().createNewPlace()
+            databaseFirebase().createNewPlace(place: newPlace)
         }
     }
     
@@ -245,6 +245,13 @@ class database {
         }
     }
     
+    func getPlaceContexts(completion: @escaping (PlacePerspective) -> ()) {
+        switch interface {
+        default :
+            databaseFirebase().getPlaceContexts(completion: completion)
+        }
+    }
+    
     func watchPlaces(callback: @escaping () -> Void = {}) -> NotificationToken {
         
         switch interface {
@@ -253,11 +260,23 @@ class database {
         }
     }
     
-    func getPlace(context: PlacePerspective) -> Place? {
+    func watchPlaces(completion: @escaping () -> ()) {
         
         switch interface {
         default :
-            return databaseRealm().getPlace(realmPath: context.realmPath)
+            databaseFirebase().watchPlaces(completion: completion)
+        }
+    }
+    
+    func getPlace(context: PlacePerspective, completion: @escaping (Place) -> () ) {
+        
+        switch interface {
+        case "realm" :
+            if let place = databaseRealm().getPlace(realmPath: context.realmPath) {
+                completion(place)
+            }
+        default :
+            databaseFirebase().getPlace(context: context, completion: completion)
         }
         
     }

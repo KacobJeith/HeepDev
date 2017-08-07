@@ -13,7 +13,7 @@ import CoreLocation
 import FacebookCore
 import Firebase
 
-var ref: DatabaseReference! = Database.database().reference()
+
 var SuccessROPReceived = true
 
 protocol AddBeacon {
@@ -32,6 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use Firebase library to configure APIs
         FirebaseApp.configure()
 //        database().signOut()
+        Database.database().isPersistenceEnabled = true
         database().checkForPermissionUpdates()
         database().initializeApp()
         

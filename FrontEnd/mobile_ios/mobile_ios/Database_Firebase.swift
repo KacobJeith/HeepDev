@@ -9,6 +9,9 @@
 import Foundation
 import Firebase
 
+
+var ref: DatabaseReference! = Database.database().reference()
+
 class databaseFirebase {
     
     func writeDevice(device: Device) {
@@ -55,17 +58,14 @@ class databaseFirebase {
     
     }
     
-    func createNewPlace(placeID: Int = randomNumber(inRange: 0...4000000000)) {
+    func createNewPlace(place: PlacePerspective = PlacePerspective()) {
         
         let newPlace = Place()
         newPlace.name = "New Place"
-        newPlace.placeID = placeID
-        
-        let newPlacePerspective = PlacePerspective()
-        newPlacePerspective.placeID = placeID
+        newPlace.placeID = place.placeID
         
         ref.child("places").child(String(describing: newPlace.placeID)).setValue(newPlace.toDict())
-        updatePlaceContext(placeContext: newPlacePerspective)
+        updatePlaceContext(placeContext: place)
         
     }
     
@@ -228,7 +228,73 @@ class databaseFirebase {
             print(error)
             return
         }
+    }
+    
+    func getPlaceContexts(completion: @escaping (PlacePerspective) -> () ) {
+        guard let userID = Auth.auth().currentUser?.uid else {
+            print("You must be logged in to perform this action")
+            return
+        }
         
+        ref.child("users/\(userID)/places").observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            let enumerator = snapshot.children
+            print("NUM: \(snapshot.childrenCount)")
+            
+            while let child = enumerator.nextObject() as? DataSnapshot {
+                
+                let value = child.value as? NSDictionary
+                
+                let context = PlacePerspective()
+                context.numDevices = value?["numDevices"] as? Int ?? 0
+                context.placeID = value?["placeID"] as? Int ?? 0
+                context.radius = value?["radius"] as? Int ?? 0
+                context.realmPath = value?["realmPath"] as? String ?? "empty"
+                context.x = value?["x"] as? CGFloat ?? 0
+                context.y = value?["y"] as? CGFloat ?? 0
+                
+                completion(context)
+            }
+            
+            
+        }) { (error) in
+            print(error)
+            return
+        }
+    }
+    
+    func watchPlaces(completion: @escaping () -> () ) {
+        guard let userID = Auth.auth().currentUser?.uid else {
+            print("You must be logged in to perform this action")
+            return
+        }
+        
+        ref.child("users/\(userID)/places").observe(.value, with: { (snapshot) in
+            completion()
+            
+        }) { (error) in
+            print(error)
+            return
+        }
+    }
+    
+    
+    
+    func getPlace(context: PlacePerspective, completion: @escaping (Place) -> () ) {
+        
+        ref.child("places/\(String(describing: context.placeID))").observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            let value = snapshot.value as? NSDictionary
+            let place = Place()
+            place.placeID = value?["placeID"] as? Int ?? 0
+            place.name = value?["name"] as? String ?? ""
+            
+            completion(place)
+            
+        }) { (error) in
+            print(error)
+            return
+        }
     }
 }
 
