@@ -332,7 +332,24 @@ class databaseFirebase {
                 
             }
         }
+    }
+    
+    func getMyHeepID(completion: @escaping (Int?) -> () ) {
         
+        guard let userID = Auth.auth().currentUser?.uid else {
+            print("You must be logged in to perform this action")
+            return
+        }
+        
+        ref.child("users/\(userID)/profile").observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            let value = snapshot.value as? NSDictionary
+            completion(value?["heepID"] as? Int? ?? nil)
+            
+        }) { (error) in
+            print(error)
+            return
+        }
     }
 }
 

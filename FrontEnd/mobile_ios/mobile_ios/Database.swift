@@ -435,6 +435,12 @@ class database {
         }
     }
     
+    func getHeepID(completion: @escaping (Int?) -> ()) {
+        
+        databaseFirebase().getMyHeepID(completion: completion)
+        
+    }
+    
     func getUserHeepID(realmKey: String) -> Int? {
         
         switch interface {

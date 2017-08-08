@@ -252,14 +252,17 @@ extension PlacesView {
     }
     
     func getActiveUserIcon() -> UIBarButtonItem {
-        let myID = database().getMyHeepID()
+        
+        database().getHeepID() { heepID in
+            
+            database().getUserIcon(heepID: heepID) {
+                print("DONE DOWNLOADING")
+                self.reloadView()
+            }
+        }
         
         let userImage = openLocalIcon()
         
-        database().getUserIcon(heepID: myID) {
-            print("DONE DOWNLOADING")
-            self.reloadView()
-        }
         
         let userButton = UIButton(frame: CGRect(x: 0, y: 0,
                                                 width: (navigationController?.navigationBar.bounds.height)!,
