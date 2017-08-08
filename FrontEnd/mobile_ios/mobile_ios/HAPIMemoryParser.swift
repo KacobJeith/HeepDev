@@ -232,7 +232,7 @@ class HAPIMemoryParser {
         newControl.valueCurrent = Int(dump[index + 5])
         newControl.controlName = controlName
         
-        database().updateDeviceControl(control: newControl)
+        database().writeDeviceControl(control: newControl)
         database().updateDeviceControlList(deviceID: deviceID)
     }
     

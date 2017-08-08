@@ -24,8 +24,9 @@ class database {
         default :
             databaseRealm().writeDevice(device: device)
         }
-        
     }
+    
+    
     
     func updatePlaceContext(placeContext: PlacePerspective) {
         
@@ -60,6 +61,12 @@ class database {
             databaseRealm().updateDeviceControl(control: control)
         }
         
+    }
+    
+    func writeDeviceControl(control: DeviceControl) {
+        
+        databaseFirebase().writeDeviceControl(control: control)
+        databaseRealm().updateDeviceControl(control: control)
     }
     
     func updateDeviceControlList(deviceID: Int) {

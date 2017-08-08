@@ -51,8 +51,29 @@ class EditRoomView: UITableViewController {
         self.toolbarItems = [spacer, search, spacer]
     }
     
-    
-    
+    func initNotifications() {
+        let notificationTokenControls = database().watchControls {
+            self.tableView.reloadData()
+        }
+        
+        let notificationTokenVertices = database().watchVertices {
+            self.tableView.reloadData()
+        }
+        
+        let notificationTokenGroupContext = database().watchGroupCotext(groupID: thisGroup.groupID) {
+            self.tableView.reloadData()
+        }
+        
+        let notificationTokenGroup = database().watchGroup(groupID: thisGroup.groupID) {
+            self.tableView.reloadData()
+        }
+        
+        notificationTokenList.append(notificationTokenGroup)
+        notificationTokenList.append(notificationTokenGroupContext)
+        notificationTokenList.append(notificationTokenControls)
+        notificationTokenList.append(notificationTokenVertices)
+        
+    }
     
     deinit{
         for token in notificationTokenList {
@@ -234,27 +255,5 @@ extension EditRoomView {
         
     }
     
-    func initNotifications() {
-        let notificationTokenControls = database().watchControls {
-            self.tableView.reloadData()
-        }
-        
-        let notificationTokenVertices = database().watchVertices {
-            self.tableView.reloadData()
-        }
-        
-        let notificationTokenGroupContext = database().watchGroupCotext(groupID: thisGroup.groupID) {
-            self.tableView.reloadData()
-        }
-        
-        let notificationTokenGroup = database().watchGroup(groupID: thisGroup.groupID) {
-            self.tableView.reloadData()
-        }
-        
-        notificationTokenList.append(notificationTokenGroup)
-        notificationTokenList.append(notificationTokenGroupContext)
-        notificationTokenList.append(notificationTokenControls)
-        notificationTokenList.append(notificationTokenVertices)
-        
-    }
+    
 }

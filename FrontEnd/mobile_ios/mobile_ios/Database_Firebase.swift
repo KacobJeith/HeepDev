@@ -19,9 +19,25 @@ class databaseFirebase {
         
     }
     
+    func writeDeviceControl(control:DeviceControl) {
+        
+        guard let userID = Auth.auth().currentUser?.uid else {
+            print("No Firebase User Logged In")
+            return
+        }
+        
+        let controlID = String(describing: control.uniqueID)
+        ref.child("users/\(userID)/controls/\(controlID)").setValue([controlID: true])
+        
+        updateDeviceControl(control: control)
+    }
+    
     func updateDeviceControl(control: DeviceControl) {
         
-        ref.child("controls").child(String(describing: control.uniqueID)).setValue(control.toDict())
+        let controlID = String(describing: control.uniqueID)
+        
+        ref.child("controls").child(controlID).setValue(control.toDict())
+        
     }
     
     func writeVertex(vertex: Vertex) {
