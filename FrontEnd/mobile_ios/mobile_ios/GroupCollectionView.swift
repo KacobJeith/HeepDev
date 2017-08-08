@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import RealmSwift
 
 class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     var referenceList = [String?]()
@@ -38,66 +37,19 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
     
     func initNotifications() {
         
-        print("INIT NOTIFICATIONS")
-        groups = []
-        
         self.referenceList.append(database().watchGroupPerspectivesForPlace(placeID: placeID, reset: {
             self.groups = []
-            print("Reset groups to empty")
             
         }) { (context) in
             
-            print(context)
-            
             self.referenceList.append(database().watchGroup(context: context) { (thisGroup) in
-                print(thisGroup)
                 
                 self.groups.append(thisGroup)
                 self.reloadView()
             })
         })
         
-//        for perspective in groupPerspectives {
-//            
-//            if let thisGroup = database().getGroup(context: perspective) {
-//                
-//                initGroupNotification(group: thisGroup)
-//                
-//            } else {
-//                
-//                print("Could not find any groups at this database config")
-//                asyncOpenGroup(perspective: perspective)
-//                
-//            }
-//            
-//        }
-        
     }
-    
-//    func asyncOpenGroup(perspective: GroupPerspective) {
-//        
-//        database().getGroupAsync(context: perspective) {
-//            if let thisGroup = database().getGroup(context: perspective) {
-//                
-//                self.initGroupNotification(group: thisGroup)
-//                
-//            }
-//            
-//            self.reloadView()
-//        }
-//    }
-
-    
-//    func initGroupNotification(group: Group) {
-//        
-//        groups.append(group)
-//        
-//        notificationTokenList.append(database().watchGroup(groupID: group.groupID) {
-//            self.reloadView()
-//        })
-//        
-//        
-//    }
     
     func setupNavBar() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
@@ -241,7 +193,6 @@ extension GroupCollectionView {
             print("Could not retrieve group")
             return
         }
-        
         
         let editRoomView = EditRoomView(groupID: groups[index].groupID, groupName: groups[index].name)
         

@@ -160,10 +160,8 @@ class database {
         case "realm" :
             _ = databaseRealm().createNewGroup(placeID: placeID)
         default :
-            let id = databaseRealm().createNewGroup(placeID: placeID)
-            databaseFirebase().createNewGroup(placeID: placeID, groupID: id)
+            databaseFirebase().createNewGroup(placeID: placeID)
         }
-        
     }
     
     func updateGroup(update: Group) {
