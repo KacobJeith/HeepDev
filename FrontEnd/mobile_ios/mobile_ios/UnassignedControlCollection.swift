@@ -3,27 +3,18 @@ import UIKit
 class UnassignedControlCollection: UITableViewCell, UICollectionViewDataSource, UICollectionViewDelegate {
     
     var collectionView: UICollectionView!
-    var controls: [DeviceControl] = []
+    var controls = [Int: DeviceControl]()
     var thisGroup = GroupPerspective()
+    var controlKeys = [Int]()
     
-    convenience init(groupID: Int) {
+    convenience init(groupContext: GroupPerspective, unassignedControls: [Int: DeviceControl]) {
         self.init()
         
-        setControlsAndGroup(groupID: groupID)
+        self.thisGroup = groupContext
+        self.controls = unassignedControls
+        self.controlKeys = [Int](unassignedControls.keys)
+        
         setupCollectionView()
-        
-    }
-    
-    func setControlsAndGroup(groupID: Int) {
-        
-        self.controls = database().getDeviceControlsInGroup(groupID: 0)
-        
-        guard let group = database().getGroupContext(groupID: groupID) else {
-            print("Failed to find context for unassigned")
-            return
-        }
-    
-        self.thisGroup = group
         
     }
     
@@ -74,12 +65,17 @@ class UnassignedControlCollection: UITableViewCell, UICollectionViewDataSource, 
         bigWhiteBackground.backgroundColor = .white
         bigWhiteBackground.frame = cell.bounds
         
-        let basicPuck = createControlPuck(thisControl: controls[indexPath.row], cellSize: cell.bounds)
+        guard let thisControl = controls[controlKeys[indexPath.row]] else {
+            print("Failed to grab this index")
+            return cell
+        }
+        
+        let basicPuck = createControlPuck(thisControl: thisControl, cellSize: cell.bounds)
         
         let bigButton = UIButton()
         bigButton.frame = cell.bounds
         bigButton.backgroundColor = UIColor.clear
-        bigButton.tag = indexPath.row
+        bigButton.tag = thisControl.uniqueID
         
         bigButton.addTarget(self,action: #selector(selectControl),for: [UIControlEvents.primaryActionTriggered])
         
@@ -96,6 +92,22 @@ extension UnassignedControlCollection {
     
     func selectControl(sender: UIButton) {
         
+        guard let selectedControl = controls[sender.tag] else {
+            print("Could not find control for tag \(sender.tag)")
+            return
+        }
+        
+        let controlUpdate = DeviceControl(value: selectedControl)
+        controlUpdate.groupID = thisGroup.groupID
+        
+        database().updateDeviceControl(control: controlUpdate)
+        
+        let groupUpdate = GroupPerspective(value: thisGroup)
+        groupUpdate.selectedControl = selectedControl.uniqueID
+        groupUpdate.unassignedOffsetX = collectionView.contentOffset.x
+        
+        database().updateGroupContext(update: groupUpdate)
+        
         database().getPlaceContext(id: thisGroup.placeID) { (context) in
             
             guard let place = context else {
@@ -108,20 +120,6 @@ extension UnassignedControlCollection {
             
             database().updatePlaceContext(placeContext: update)
         }
-        
-        
-        let controlUpdate = DeviceControl(value: controls[sender.tag])
-        controlUpdate.groupID = thisGroup.groupID
-        
-        database().updateDeviceControl(control: controlUpdate)
-        
-        
-        let groupUpdate = GroupPerspective(value: thisGroup)
-        groupUpdate.selectedControl = controls[sender.tag].uniqueID
-        groupUpdate.unassignedOffsetX = collectionView.contentOffset.x
-        
-        database().updateGroupContext(update: groupUpdate)
-        
         
     }
     

@@ -138,7 +138,7 @@ class databaseFirebase {
             
             groupReference.putData(data, metadata: nil) { (metadata, error) in
                 guard let metadata = metadata else {
-                    print("Uh-oh, an upload error occurred: \(error)")
+                    print("Uh-oh, an upload error occurred: \(String(describing: error))")
                     return
                 }
                 
@@ -394,6 +394,12 @@ class databaseFirebase {
                     let context = GroupPerspective()
                     context.placeID = value?["placeID"] as? Int ?? 0
                     context.groupID = value?["groupID"] as? Int ?? 0
+                    context.UILocked = value?["UILocked"] as? Bool ?? true
+                    context.unassignedOffsetX = value? ["unassignedOffsetX"] as? CGFloat ?? 0
+                    context.assignedOffsetX = value? ["assignedOffsetX"] as? CGFloat ?? 0
+                    context.contentOffsetX = value? ["contextOffsetX"] as? CGFloat ?? 0
+                    context.contentOffsetY = value? ["contextOffsetY"] as? CGFloat ?? 0
+                    context.selectedControl = value? ["selectedControl"] as? Int ?? 0
                     
                     completion(context)
                 }
@@ -407,6 +413,43 @@ class databaseFirebase {
         
         return refPath
 
+    }
+    
+    func watchGroupContext(groupID: Int, completion: @escaping (GroupPerspective) -> ()) -> String? {
+        
+        guard let userID = Auth.auth().currentUser?.uid else {
+            print("You must be logged in to perform this action")
+            return nil
+        }
+        
+        let refPath = "users/\(userID)/groups/\(String(describing: groupID))"
+        
+        ref.child(refPath).observe(.value, with: { (snapshot) in
+            
+            
+            let value = snapshot.value as? NSDictionary
+            
+            let context = GroupPerspective()
+            
+            context.placeID = value?["placeID"] as? Int ?? 0
+            context.groupID = value?["groupID"] as? Int ?? 0
+            context.UILocked = value?["UILocked"] as? Bool ?? true
+            context.unassignedOffsetX = value? ["unassignedOffsetX"] as? CGFloat ?? 0
+            context.assignedOffsetX = value? ["assignedOffsetX"] as? CGFloat ?? 0
+            context.contentOffsetX = value? ["contextOffsetX"] as? CGFloat ?? 0
+            context.contentOffsetY = value? ["contextOffsetY"] as? CGFloat ?? 0
+            context.selectedControl = value? ["selectedControl"] as? Int ?? 0
+            
+            completion(context)
+            
+            
+        }) { (error) in
+            print(error)
+            return
+        }
+        
+        return refPath
+        
     }
     
     func getGroup(context: GroupPerspective, completion: @escaping (Group) -> () ) {
@@ -441,6 +484,73 @@ class databaseFirebase {
             group.groupID = value?["groupID"] as? Int ?? 0
             
             completion(group)
+            
+        }) { (error) in
+            print(error)
+            return
+        }
+        
+        return refPath
+    }
+    
+    func watchAllMyControls(completion: @escaping (Int) -> () ) -> String? {
+        
+        guard let userID = Auth.auth().currentUser?.uid else {
+            print("You must be logged in to perform this action")
+            return nil
+        }
+        
+        let refPath = "users/\(userID)/controls"
+        
+        ref.child(refPath).observe(.value, with: { (snapshot) in
+            
+            let enumerator = snapshot.children
+            
+            while let child = enumerator.nextObject() as? DataSnapshot {
+                
+                if let id = Int(child.key) {
+                    completion(id)
+                }
+            }
+            
+            
+        }) { (error) in
+            print(error)
+            return
+        }
+        
+        return refPath
+    }
+    
+    func watchControl(controlID: Int, completion: @escaping (DeviceControl) -> () ) -> String? {
+        
+        let refPath = "controls/\(String(describing: controlID))"
+        
+        ref.child(refPath).observe(.value, with: { (snapshot) in
+            
+            let value = snapshot.value as? NSDictionary
+            let control = DeviceControl()
+            
+            control.groupID = value?["groupID"] as? Int ?? 0
+            if control.groupID == 0 || control.groupID == controlID {
+                
+                control.controlDirection = value?["controlDirection"] as? Int ?? 0
+                control.controlID = value?["controlID"] as? Int ?? 0
+                control.controlName = value?["controlName"] as? String ?? ""
+                control.controlType = value?["controlType"] as? Int ?? 0
+                control.deviceID = value?["deviceID"] as? Int ?? 0
+                control.editX = value?["editX"] as? CGFloat ?? 0
+                control.editY = value?["editY"] as? CGFloat ?? 0
+                control.lastOnValue = value?["lastOnValue"] as? Int ?? 0
+                control.rotation = value?["rotation"] as? CGFloat ?? 0
+                control.scale = value?["scale"] as? CGFloat ?? 0
+                control.uniqueID = value?["uniqueID"] as? Int ?? 0
+                control.valueCurrent = value?["lastOnValue"] as? Int ?? 0
+                control.valueLow = value?["valueLow"] as? Int ?? 0
+                control.valueHigh = value?["valueHigh"] as? Int ?? 0
+                
+                completion(control)
+            }
             
         }) { (error) in
             print(error)

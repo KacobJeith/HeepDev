@@ -11,20 +11,19 @@ import RealmSwift
 
 class EditRoomView: UITableViewController {
     var notificationTokenList = [NotificationToken?]()
+    var referenceList = [String?]()
     
     var thisBSSID: String = ""
-    var thisGroup: GroupPerspective
+    var thisGroup = GroupPerspective()
+    var thisGroupControls = [Int: DeviceControl]()
+    var unassignedControls = [Int: DeviceControl]()
     
     init(groupID: Int, groupName: String) {
         
-        if let context = database().getGroupContext(groupID: groupID) {
-            thisGroup = context
-        } else {
-            print("FAILED TO LOAD CONTEXT")
-            thisGroup = GroupPerspective()
-        }
-        
         super.init(style: UITableViewStyle.plain)
+        
+        self.initNotifications(groupID: groupID)
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -34,7 +33,6 @@ class EditRoomView: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.initNotifications()
         
         self.navigationController?.isToolbarHidden = false
         tableView.alwaysBounceVertical = false
@@ -51,44 +49,54 @@ class EditRoomView: UITableViewController {
         self.toolbarItems = [spacer, search, spacer]
     }
     
-    func initNotifications() {
-        let notificationTokenControls = database().watchControls {
-            self.tableView.reloadData()
-        }
+    func initNotifications(groupID: Int) {
         
-        let notificationTokenVertices = database().watchVertices {
-            self.tableView.reloadData()
-        }
         
-        let notificationTokenGroupContext = database().watchGroupCotext(groupID: thisGroup.groupID) {
-            self.tableView.reloadData()
-        }
+        //Group Context
+        self.referenceList.append(database().watchGroupContext(groupID: groupID) { (context) in
+            self.reloadView()
+            self.thisGroup = context
+            
+            self.referenceList.append(database().watchGroup(context: context) { (thisGroup) in
+                
+                self.reloadView()
+            })
+        })
         
-        let notificationTokenGroup = database().watchGroup(groupID: thisGroup.groupID) {
-            self.tableView.reloadData()
-        }
-        
-        notificationTokenList.append(notificationTokenGroup)
-        notificationTokenList.append(notificationTokenGroupContext)
-        notificationTokenList.append(notificationTokenControls)
-        notificationTokenList.append(notificationTokenVertices)
+        //Control Notifications
+        self.referenceList.append(database().watchAllMyControls() { controlID in
+            
+            self.referenceList.append(database().watchControl(controlID: controlID) { control in
+                
+                if control.groupID == self.thisGroup.groupID {
+                    self.thisGroupControls[control.uniqueID] = control
+                } else if control.groupID == 0 {
+                    self.unassignedControls[control.uniqueID] = control
+                }
+                
+            })
+        })
         
     }
     
     deinit{
-        for token in notificationTokenList {
-            token?.stop()
+        for reference in referenceList {
+            if let refPath = reference {
+                database().detachObserver(referencePath: refPath)
+            }
         }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        for token in notificationTokenList {
-            token?.stop()
+        for reference in referenceList {
+            if let refPath = reference {
+                database().detachObserver(referencePath: refPath)
+            }
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.initNotifications()
+        self.initNotifications(groupID: thisGroup.groupID)
     }
     
     
@@ -102,7 +110,7 @@ class EditRoomView: UITableViewController {
         switch indexPath.row {
         case 0 :
             
-            return UnassignedControlCollection(groupID: thisGroup.groupID)
+            return UnassignedControlCollection(groupContext: thisGroup, unassignedControls: unassignedControls)
             
         case 1 :
             

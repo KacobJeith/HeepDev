@@ -328,16 +328,20 @@ class database {
         }
     }
     
-    func watchGroup(context: GroupPerspective, completion: @escaping (Group) -> () ) -> String {
-        return databaseFirebase().watchGroup(context: context, completion: completion)
-    }
-    
     func watchGroupCotext(groupID: Int, callback: @escaping () -> Void = {}) -> NotificationToken? {
         
         switch interface {
         default :
             return databaseRealm().watchGroupContext(groupID: groupID, callback: callback)
         }
+    }
+    
+    func watchGroup(context: GroupPerspective, completion: @escaping (Group) -> () ) -> String {
+        return databaseFirebase().watchGroup(context: context, completion: completion)
+    }
+    
+    func watchGroupContext(groupID: Int, completion: @escaping (GroupPerspective) -> () ) -> String? {
+        return databaseFirebase().watchGroupContext(groupID: groupID, completion: completion)
     }
     
     func watchVertices(callback: @escaping () -> Void = {}) -> NotificationToken? {
@@ -355,6 +359,14 @@ class database {
             return databaseRealm().watchControls(callback: callback)
         }
         
+    }
+    
+    func watchAllMyControls(completion: @escaping (Int) -> () ) -> String? {
+        return databaseFirebase().watchAllMyControls(completion: completion) 
+    }
+    
+    func watchControl(controlID: Int, completion: @escaping (DeviceControl) -> () ) -> String? {
+        return databaseFirebase().watchControl(controlID: controlID, completion: completion)
     }
     
     func watchDevice(deviceID: Int, callback: @escaping () -> Void = {}) -> NotificationToken? {
