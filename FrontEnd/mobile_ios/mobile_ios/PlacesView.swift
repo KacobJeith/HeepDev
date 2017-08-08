@@ -90,7 +90,6 @@ class PlacesView: UIViewController {
                 self.drawPlace(place: place, perspective: context)
             })
         })
-        print("=========================")
     }
     
     func initNotification() {
@@ -255,7 +254,12 @@ extension PlacesView {
     func getActiveUserIcon() -> UIBarButtonItem {
         let myID = database().getMyHeepID()
         
-        let userImage = database().getUserIcon(heepID: myID)
+        let userImage = openLocalIcon()
+        
+        database().getUserIcon(heepID: myID) {
+            print("DONE DOWNLOADING")
+            self.reloadView()
+        }
         
         let userButton = UIButton(frame: CGRect(x: 0, y: 0,
                                                 width: (navigationController?.navigationBar.bounds.height)!,

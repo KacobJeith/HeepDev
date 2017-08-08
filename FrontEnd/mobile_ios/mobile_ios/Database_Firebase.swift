@@ -117,7 +117,7 @@ class databaseFirebase {
     func updateGroupImage(group: Group) {
         if group.imageData != NSData() {
             
-            let groupReference = Storage.storage().reference().child("groups/\(String(describing: group.groupID))/background.jpg")
+            let groupReference = Storage.storage().reference().child("groups/\(String(describing: group.groupID))/background.png")
             let data = group.imageData as Data
             
             groupReference.putData(data, metadata: nil) { (metadata, error) in
@@ -161,7 +161,7 @@ class databaseFirebase {
     func updateUserIcon(profile: User) {
         if profile.icon != NSData() {
             
-            let profileReference = Storage.storage().reference().child("users/\(String(describing: profile.heepID))/profile.jpg")
+            let profileReference = Storage.storage().reference().child("users/\(String(describing: profile.heepID))/profile.png")
             let data = profile.icon as Data
             
             profileReference.putData(data, metadata: nil) { (metadata, error) in
@@ -295,6 +295,44 @@ class databaseFirebase {
             print(error)
             return
         }
+    }
+    
+    func getUserIcon(heepID: Int?, completion: @escaping () -> () ) {
+        
+        guard let id = heepID else {
+            print("Must be logged in for this")
+            return
+        }
+        print("START DOWNLOAD")
+        
+        Storage.storage().reference().child("users/\(String(describing: id))/profile.jpg").getData(maxSize: 3 * 1024 * 1024) { data, error in
+            if let error = error {
+                print("ERROR DOWNLOADING \(error)")
+            } else {
+                
+                let documentsDirectoryURL = try! FileManager().url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+                
+                let fileURL = documentsDirectoryURL.appendingPathComponent("profilePicture.jpg")
+                
+                let image = UIImage(data: data!)
+                
+                if !FileManager.default.fileExists(atPath: fileURL.path) {
+                    do {
+                        try UIImagePNGRepresentation(image!)!.write(to: fileURL)
+                        print("Image Added Successfully")
+                        completion()
+                    } catch {
+                        print(error)
+                    }
+                } else {
+                    print("Image Not Added")
+                }
+                
+                
+                
+            }
+        }
+        
     }
 }
 

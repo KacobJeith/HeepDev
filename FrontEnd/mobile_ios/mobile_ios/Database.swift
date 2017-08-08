@@ -415,11 +415,15 @@ class database {
         
     }
     
-    func getUserIcon(heepID: Int?) -> UIImage {
+    func getUserIcon(heepID: Int?, completion: @escaping () -> ()) {
         
         switch interface {
+//        case "realm" :
+//            completion(databaseRealm().getUserIcon(heepID: heepID))
+        case "firebase" :
+            databaseFirebase().getUserIcon(heepID: heepID, completion: completion)
         default :
-            return databaseRealm().getUserIcon(heepID: heepID)
+            databaseFirebase().getUserIcon(heepID: heepID, completion: completion)
         }
     }
     

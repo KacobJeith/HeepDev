@@ -400,6 +400,28 @@ extension UIColor {
     
 }
 
+func openLocalIcon() -> UIImage {
+    print("GRABBING LOCAL")
+    
+    guard let id = database().getMyHeepID() else {
+        return #imageLiteral(resourceName: "male")
+    }
+    
+    let documentsDirectoryURL = try! FileManager().url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+
+    let fileURL = documentsDirectoryURL.appendingPathComponent("profilePicture.jpg")
+    
+    guard let data = NSData(contentsOf: fileURL) else {
+        return #imageLiteral(resourceName: "male")
+    }
+    
+    if let image = UIImage(data: data as Data) {
+        return image
+    } else {
+        return #imageLiteral(resourceName: "male")
+    }
+}
+
 
 
 
