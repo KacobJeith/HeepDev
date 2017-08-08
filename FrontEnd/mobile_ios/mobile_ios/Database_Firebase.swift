@@ -263,22 +263,24 @@ class databaseFirebase {
         }
     }
     
-    func watchPlaces(completion: @escaping () -> () ) {
+    func watchPlaces(completion: @escaping () -> () ) -> String? {
         guard let userID = Auth.auth().currentUser?.uid else {
             print("You must be logged in to perform this action")
-            return
+            return nil
         }
         
-        ref.child("users/\(userID)/places").observe(.value, with: { (snapshot) in
+        let refPath = "users/\(userID)/places"
+        
+        ref.child(refPath).observe(.value, with: { (snapshot) in
             completion()
             
         }) { (error) in
             print(error)
             return
         }
+        
+        return refPath
     }
-    
-    
     
     func getPlace(context: PlacePerspective, completion: @escaping (Place) -> () ) {
         
@@ -303,20 +305,19 @@ class databaseFirebase {
             print("Must be logged in for this")
             return
         }
-        print("START DOWNLOAD")
         
-        Storage.storage().reference().child("users/\(String(describing: id))/profile.jpg").getData(maxSize: 3 * 1024 * 1024) { data, error in
-            if let error = error {
-                print("ERROR DOWNLOADING \(error)")
-            } else {
-                
-                let documentsDirectoryURL = try! FileManager().url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-                
-                let fileURL = documentsDirectoryURL.appendingPathComponent("profilePicture.jpg")
-                
-                let image = UIImage(data: data!)
-                
-                if !FileManager.default.fileExists(atPath: fileURL.path) {
+        let documentsDirectoryURL = try! FileManager().url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+        let fileURL = documentsDirectoryURL.appendingPathComponent("profilePicture.jpg")
+
+        if !FileManager.default.fileExists(atPath: fileURL.path) {
+            
+            Storage.storage().reference().child("users/\(String(describing: id))/profile.jpg").getData(maxSize: 3 * 1024 * 1024) { data, error in
+                if let error = error {
+                    print("ERROR DOWNLOADING \(error)")
+                } else {
+                    
+                    let image = UIImage(data: data!)
+                    
                     do {
                         try UIImagePNGRepresentation(image!)!.write(to: fileURL)
                         print("Image Added Successfully")
@@ -324,15 +325,12 @@ class databaseFirebase {
                     } catch {
                         print(error)
                     }
-                } else {
-                    print("Image Not Added")
                 }
-                
-                
-                
             }
         }
     }
+    
+            
     
     func getMyHeepID(completion: @escaping (Int?) -> () ) {
         
@@ -350,6 +348,11 @@ class databaseFirebase {
             print(error)
             return
         }
+    }
+    
+    func detachObserver(referencePath: String) {
+        let thisReference = ref.child(referencePath)
+        thisReference.removeAllObservers()
     }
 }
 

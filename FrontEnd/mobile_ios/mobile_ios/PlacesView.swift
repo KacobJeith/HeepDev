@@ -7,10 +7,10 @@
 //
 
 import UIKit
-import Firebase
 
 class PlacesView: UIViewController {
     
+    var referencePath: String? = nil
     var activelyPanning = Int()
     var searchTimeout = 4
     var colors = [UIColor]()
@@ -59,7 +59,9 @@ class PlacesView: UIViewController {
     
     deinit{
         
-        ref.child("users/\((Auth.auth().currentUser?.uid)!)/places").removeAllObservers()
+        if let refPath = referencePath {
+            database().detachObserver(referencePath: refPath)
+        }
         
     }
 
@@ -70,14 +72,16 @@ class PlacesView: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         
-        ref.child("users/\((Auth.auth().currentUser?.uid)!)/places").removeAllObservers()
+        if let refPath = referencePath {
+            database().detachObserver(referencePath: refPath)
+        }
         
         self.title = ""
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.title = "My Heep Zones"
-        //self.addPlaces()
+        self.initNotification()
         
     }
     
@@ -93,9 +97,11 @@ class PlacesView: UIViewController {
     }
     
     func initNotification() {
-        database().watchPlaces(completion: {
+        
+        referencePath = database().watchPlaces(completion: {
             self.reloadView()
         })
+        
     }
     
     func addPlaceToDatabase() {
@@ -128,10 +134,7 @@ class PlacesView: UIViewController {
         button.titleLabel?.adjustsFontSizeToFitWidth = true
         button.tag = place.placeID
         
-        print(button.tag)
-        
         self.view.addSubview(button)
-        
         
         let pan = UIPanGestureRecognizer(target: self,
                                          action: #selector(drag))
@@ -195,6 +198,8 @@ class PlacesView: UIViewController {
                         return
                     }
                     
+                    print(thisPlace)
+                    
                     let newContext = PlacePerspective()
                     newContext.x = thisPlace.x + gesture.translation(in: self.view).x
                     newContext.y = thisPlace.y + gesture.translation(in: self.view).y
@@ -253,7 +258,7 @@ extension PlacesView {
     
     func getActiveUserIcon() -> UIBarButtonItem {
         
-        database().getHeepID() { heepID in
+        database().getMyHeepID() { heepID in
             
             database().getUserIcon(heepID: heepID) {
                 print("DONE DOWNLOADING")

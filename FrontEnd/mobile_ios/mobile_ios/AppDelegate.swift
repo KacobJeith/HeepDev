@@ -33,8 +33,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FirebaseApp.configure()
 //        database().signOut()
         Database.database().isPersistenceEnabled = true
-        database().checkForPermissionUpdates()
-        database().initializeApp()
+        //database().checkForPermissionUpdates()
+        //database().initializeApp()
         
         
         setupAppNavigation()

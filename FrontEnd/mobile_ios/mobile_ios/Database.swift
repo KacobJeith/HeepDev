@@ -260,11 +260,11 @@ class database {
         }
     }
     
-    func watchPlaces(completion: @escaping () -> ()) {
+    func watchPlaces(completion: @escaping () -> ()) -> String? {
         
         switch interface {
         default :
-            databaseFirebase().watchPlaces(completion: completion)
+            return databaseFirebase().watchPlaces(completion: completion)
         }
     }
     
@@ -429,13 +429,12 @@ class database {
     
     func getMyHeepID() -> Int? {
         
-        switch interface {
-        default :
-            return databaseRealm().getMyHeepID()
-        }
+        //Realm
+        return databaseRealm().getMyHeepID()
+        
     }
     
-    func getHeepID(completion: @escaping (Int?) -> ()) {
+    func getMyHeepID(completion: @escaping (Int?) -> ()) {
         
         databaseFirebase().getMyHeepID(completion: completion)
         
@@ -534,6 +533,11 @@ class database {
         default :
             return databaseRealm().checkIfLoggedIn()
         }
+    }
+    
+    func detachObserver(referencePath: String) {
+        
+        databaseFirebase().detachObserver(referencePath: referencePath)
     }
     
     
