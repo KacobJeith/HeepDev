@@ -224,7 +224,7 @@ extension EditRoomView {
     
     func reloadView() {
         
-        self.loadView()
+//        self.loadView()
         self.viewDidLoad()
     }
     

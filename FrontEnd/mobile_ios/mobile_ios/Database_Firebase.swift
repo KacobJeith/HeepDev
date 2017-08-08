@@ -354,5 +354,84 @@ class databaseFirebase {
         let thisReference = ref.child(referencePath)
         thisReference.removeAllObservers()
     }
+    
+    func watchGroupPerspectivesForPlace(placeID: Int, reset: @escaping () -> (), completion: @escaping (GroupPerspective) -> ()) -> String? {
+        
+        guard let userID = Auth.auth().currentUser?.uid else {
+            print("You must be logged in to perform this action")
+            return nil
+        }
+        
+        let refPath = "users/\(userID)/groups"
+        
+        ref.child(refPath).observe(.value, with: { (snapshot) in
+            
+            reset()
+            
+            let enumerator = snapshot.children
+            while let child = enumerator.nextObject() as? DataSnapshot {
+                
+                let value = child.value as? NSDictionary
+                
+                if value?["placeID"] as? Int ?? 0 == placeID {
+                    
+                    let context = GroupPerspective()
+                    context.placeID = value?["placeID"] as? Int ?? 0
+                    context.groupID = value?["groupID"] as? Int ?? 0
+                    
+                    completion(context)
+                }
+            }
+            
+            
+        }) { (error) in
+            print(error)
+            return
+        }
+        
+        return refPath
+
+    }
+    
+    func getGroup(context: GroupPerspective, completion: @escaping (Group) -> () ) {
+        
+        
+        ref.child("groups/\(String(describing:context.groupID))").observe(.value, with: { (snapshot) in
+            
+            let value = snapshot.value as? NSDictionary
+            let group = Group()
+            group.placeID = value?["placeID"] as? Int ?? 0
+            group.name = value?["name"] as? String ?? "empty"
+            group.groupID = value?["groupID"] as? Int ?? 0
+            
+            completion(group)
+            
+        }) { (error) in
+            print(error)
+            return
+        }
+    }
+    
+    func watchGroup(context: GroupPerspective, completion: @escaping (Group) -> () ) -> String {
+        
+        let refPath = "groups/\(String(describing:context.groupID))"
+        
+        ref.child(refPath).observe(.value, with: { (snapshot) in
+            
+            let value = snapshot.value as? NSDictionary
+            let group = Group()
+            group.placeID = value?["placeID"] as? Int ?? 0
+            group.name = value?["name"] as? String ?? "empty"
+            group.groupID = value?["groupID"] as? Int ?? 0
+            
+            completion(group)
+            
+        }) { (error) in
+            print(error)
+            return
+        }
+        
+        return refPath
+    }
 }
 

@@ -10,7 +10,7 @@ import UIKit
 import RealmSwift
 
 class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
-    var notificationTokenList = [NotificationToken?]()
+    var referenceList = [String?]()
     var collectionView: UICollectionView!
     
     var placeName: String = "placeholder"
@@ -23,6 +23,7 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
         self.init()
         self.placeName = placeName
         self.placeID = placeID
+        self.initNotifications()
     }
     
     override func viewDidLoad() {
@@ -30,58 +31,73 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
         
         self.title = placeName
         
-        self.initNotifications()
         self.setupCollectionView()
         self.setupNavBar()
         
     }
     
     func initNotifications() {
+        
+        print("INIT NOTIFICATIONS")
         groups = []
         
-        let groupPerspectives = database().getGroupContextsForPlace(placeID: placeID)
-        
-        for perspective in groupPerspectives {
+        self.referenceList.append(database().watchGroupPerspectivesForPlace(placeID: placeID, reset: {
+            self.groups = []
+            print("Reset groups to empty")
             
-            if let thisGroup = database().getGroup(context: perspective) {
-                
-                initGroupNotification(group: thisGroup)
-                
-            } else {
-                
-                print("Could not find any groups at this database config")
-                asyncOpenGroup(perspective: perspective)
-                
-            }
+        }) { (context) in
             
-        }
-        
-    }
-    
-    func asyncOpenGroup(perspective: GroupPerspective) {
-        
-        database().getGroupAsync(context: perspective) {
-            if let thisGroup = database().getGroup(context: perspective) {
-                
-                self.initGroupNotification(group: thisGroup)
-                
-            }
+            print(context)
             
-            self.reloadView()
-        }
-    }
-
-    
-    func initGroupNotification(group: Group) {
-        
-        groups.append(group)
-        
-        notificationTokenList.append(database().watchGroup(groupID: group.groupID) {
-            self.reloadView()
+            self.referenceList.append(database().watchGroup(context: context) { (thisGroup) in
+                print(thisGroup)
+                
+                self.groups.append(thisGroup)
+                self.reloadView()
+            })
         })
         
+//        for perspective in groupPerspectives {
+//            
+//            if let thisGroup = database().getGroup(context: perspective) {
+//                
+//                initGroupNotification(group: thisGroup)
+//                
+//            } else {
+//                
+//                print("Could not find any groups at this database config")
+//                asyncOpenGroup(perspective: perspective)
+//                
+//            }
+//            
+//        }
         
     }
+    
+//    func asyncOpenGroup(perspective: GroupPerspective) {
+//        
+//        database().getGroupAsync(context: perspective) {
+//            if let thisGroup = database().getGroup(context: perspective) {
+//                
+//                self.initGroupNotification(group: thisGroup)
+//                
+//            }
+//            
+//            self.reloadView()
+//        }
+//    }
+
+    
+//    func initGroupNotification(group: Group) {
+//        
+//        groups.append(group)
+//        
+//        notificationTokenList.append(database().watchGroup(groupID: group.groupID) {
+//            self.reloadView()
+//        })
+//        
+//        
+//    }
     
     func setupNavBar() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
@@ -122,16 +138,20 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
     }
     
     deinit{
-        for token in notificationTokenList {
-            token?.stop()
+        for reference in referenceList {
+            if let refPath = reference {
+                database().detachObserver(referencePath: refPath)
+            }
         }
     }
     
     
     override func viewWillDisappear(_ animated: Bool) {
         
-        for token in notificationTokenList {
-            token?.stop()
+        for reference in referenceList {
+            if let refPath = reference {
+                database().detachObserver(referencePath: refPath)
+            }
         }
         
         self.title = ""

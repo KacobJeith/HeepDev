@@ -222,7 +222,6 @@ class database {
     
     func getPlaceContext(id: Int, completion: @escaping (PlacePerspective?) -> () ) {
         
-        
         switch interface {
         case "realm" :
             
@@ -291,10 +290,12 @@ class database {
     
     func getGroup(context: GroupPerspective) -> Group? {
         
-        switch interface {
-        default :
-            return databaseRealm().getGroup(path: context.realmPath)
-        }
+        return databaseRealm().getGroup(path: context.realmPath)
+        
+    }
+    
+    func getGroup(context: GroupPerspective, completion: @escaping (Group) -> () ) {
+        databaseFirebase().getGroup(context: context, completion: completion)
     }
     
     func getGroupContext(groupID: Int) -> GroupPerspective? {
@@ -320,6 +321,10 @@ class database {
         default :
             return databaseRealm().watchGroup(groupID: groupID, callback: callback)
         }
+    }
+    
+    func watchGroup(context: GroupPerspective, completion: @escaping (Group) -> () ) -> String {
+        return databaseFirebase().watchGroup(context: context, completion: completion)
     }
     
     func watchGroupCotext(groupID: Int, callback: @escaping () -> Void = {}) -> NotificationToken? {
@@ -366,11 +371,15 @@ class database {
     }
     
     func getGroupContextsForPlace(placeID: Int) -> [GroupPerspective] {
+        //Realm
+        return databaseRealm().getGroupContextsForPlace(placeID: placeID)
         
-        switch interface {
-        default :
-            return databaseRealm().getGroupContextsForPlace(placeID: placeID)
-        }
+    }
+    
+    func watchGroupPerspectivesForPlace(placeID: Int, reset: @escaping () -> (), completion: @escaping (GroupPerspective) -> () ) -> String? {
+        
+        //Firebase
+        return databaseFirebase().watchGroupPerspectivesForPlace(placeID: placeID, reset: reset, completion: completion)
         
     }
     
