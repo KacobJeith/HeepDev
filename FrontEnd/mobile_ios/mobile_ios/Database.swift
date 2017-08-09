@@ -443,6 +443,15 @@ class database {
         
     }
     
+    func getVertex(vertexID: String, completion: @escaping (Vertex) -> () ) {
+        databaseFirebase().getVertex(vertexID: vertexID, completion: completion)
+    }
+    
+    func getTheseVertices(controlIDCheckList: [Int], completion: @escaping (Vertex) -> () ) {
+        databaseFirebase().getTheseVertices(controlIDCheckList: controlIDCheckList, completion: completion)
+        
+    }
+    
     func getUserIcon(heepID: Int?, completion: @escaping () -> ()) {
         
         switch interface {

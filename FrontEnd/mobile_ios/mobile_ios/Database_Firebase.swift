@@ -558,5 +558,110 @@ class databaseFirebase {
         
         return refPath
     }
+    
+    func getControl(controlID: Int, completion: @escaping (DeviceControl) -> () ) {
+        
+        let refPath = "controls/\(String(describing: controlID))"
+        
+        ref.child(refPath).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            let value = snapshot.value as? NSDictionary
+            let control = DeviceControl()
+            
+            control.groupID = value?["groupID"] as? Int ?? 0
+            control.controlDirection = value?["controlDirection"] as? Int ?? 0
+            control.controlID = value?["controlID"] as? Int ?? 0
+            control.controlName = value?["controlName"] as? String ?? ""
+            control.controlType = value?["controlType"] as? Int ?? 0
+            control.deviceID = value?["deviceID"] as? Int ?? 0
+            control.editX = value?["editX"] as? CGFloat ?? 0
+            control.editY = value?["editY"] as? CGFloat ?? 0
+            control.lastOnValue = value?["lastOnValue"] as? Int ?? 0
+            control.rotation = value?["rotation"] as? CGFloat ?? 0
+            control.scale = value?["scale"] as? CGFloat ?? 0
+            control.groupID = value?["groupID"] as? Int ?? 0
+            control.uniqueID = value?["uniqueID"] as? Int ?? 0
+            control.valueCurrent = value?["lastOnValue"] as? Int ?? 0
+            control.valueLow = value?["valueLow"] as? Int ?? 0
+            control.valueHigh = value?["valueHigh"] as? Int ?? 0
+            
+            completion(control)
+            
+            
+        }) { (error) in
+            print(error)
+            return
+        }
+        
+    }
+
+    
+    func getVertex(vertexID: String, completion: @escaping (Vertex) -> () ) {
+        
+        let refPath = "vertices/\(vertexID)"
+        
+        ref.child(refPath).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            let value = snapshot.value as? NSDictionary
+            let vertex = Vertex()
+            vertex.vertexID = value?["vertexID"] as? String ?? ""
+            
+            let tx = value?["txID"] as? Int ?? 0
+            let rx = value?["rxID"] as? Int ?? 0
+            
+            self.getControl(controlID: tx) { txControl in
+                
+                vertex.tx = txControl
+                
+                self.getControl(controlID: rx) { rxControl in
+                    
+                    vertex.rx = rxControl
+                    print(vertex)
+                    
+                    completion(vertex)
+                }
+            }
+            
+            
+        })
+    }
+    
+    func getTheseVertices(controlIDCheckList: [Int], completion: @escaping (Vertex) -> () ) {
+        
+        let refPath = "vertices"
+        
+        ref.child(refPath).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            let enumerator = snapshot.children
+            
+            while let child = enumerator.nextObject() as? DataSnapshot {
+                
+                let value = child.value as? NSDictionary
+                let vertex = Vertex()
+                vertex.vertexID = value?["vertexID"] as? String ?? ""
+                
+                let tx = value?["txID"] as? Int ?? 0
+                let rx = value?["rxID"] as? Int ?? 0
+                
+                if controlIDCheckList.contains(tx) {
+                    self.getControl(controlID: tx) { txControl in
+                        
+                        vertex.tx = txControl
+                        
+                        self.getControl(controlID: rx) { rxControl in
+                            
+                            vertex.rx = rxControl
+                            print(vertex)
+                            
+                            completion(vertex)
+                        }
+                    }
+                }
+                
+            }
+            
+            
+        })
+    }
 }
 

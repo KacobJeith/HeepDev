@@ -128,7 +128,9 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
                                                   y: 0,
                                                   width: cellView.bounds.width,
                                                   height: cellView.bounds.height))
+        
         return
+        
         guard let groupContext = database().getGroup(context: thisGroup) else {
             print("Could not retrieve shared group context to grab the image")
             return
@@ -145,13 +147,13 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         
         for (controlUniqueID, eachControl) in controls {
             
-            for eachVertex in eachControl.vertexList {
-                
-                cellView.layer.addSublayer(drawVertex(vertex: eachVertex))
-            }
-            
             cellView.addSubview(addControlSprite(thisControl: eachControl))
             
+        }
+        
+        database().getTheseVertices(controlIDCheckList: [Int](controls.keys)) { eachVertex in
+            
+            self.cellView.layer.addSublayer(self.drawVertex(vertex: eachVertex))
         }
     }
     
@@ -217,13 +219,11 @@ extension VertexEditCell {
         for vertex in vertexDictToDelete {
             if vertex.value == true {
                 
-                if let thisVertex = database().getVertex(vertexID: vertex.key) {
+                database().getVertex(vertexID: vertex.key) { thisVertex in
                     
                     HeepConnections().sendDeleteVertexToHeepDevice(activeVertex: thisVertex)
                     database().deleteVertex(vertex: thisVertex)
                     
-                } else {
-                    print("Could not identify vertex")
                 }
                 
             }
@@ -284,17 +284,15 @@ extension VertexEditCell {
                 
                 vertexDictToDelete[vertexName] = true
                 
-                guard let thisVertex = database().getVertex(vertexID: vertexName) else {
-                    print("Failed to find vertex")
-                    return
+                database().getVertex(vertexID: vertexName) { thisVertex in
+                    
+                    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                    
+                    self.cellView.layer.addSublayer(self.drawVertex(vertex: thisVertex,
+                                                          highlight: true,
+                                                          name: "toDelete"))
                 }
                 
-                let generator = UIImpactFeedbackGenerator(style: .medium)
-                generator.impactOccurred()
-                
-                cellView.layer.addSublayer(drawVertex(vertex: thisVertex,
-                                                      highlight: true,
-                                                      name: "toDelete"))
                 
             }
         }
