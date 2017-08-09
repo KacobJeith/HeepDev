@@ -9,7 +9,7 @@ class UnassignedControlCollection: UITableViewCell, UICollectionViewDataSource, 
     
     convenience init(groupContext: GroupPerspective, unassignedControls: [Int: DeviceControl]) {
         self.init()
-        
+        print(unassignedControls)
         self.thisGroup = groupContext
         self.controls = unassignedControls
         self.controlKeys = [Int](unassignedControls.keys)

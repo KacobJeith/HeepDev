@@ -33,6 +33,10 @@ class EditRoomView: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.setupNavBar()
+    }
+    
+    func setupNavBar() {
         
         self.navigationController?.isToolbarHidden = false
         tableView.alwaysBounceVertical = false
@@ -68,11 +72,23 @@ class EditRoomView: UITableViewController {
             
             self.referenceList.append(database().watchControl(controlID: controlID) { control in
                 
-                if control.groupID == self.thisGroup.groupID {
+                if control.groupID == groupID {
+                    
+                    self.unassignedControls.removeValue(forKey: control.uniqueID)
                     self.thisGroupControls[control.uniqueID] = control
+                    
                 } else if control.groupID == 0 {
+                    
                     self.unassignedControls[control.uniqueID] = control
+                    
+                } else {
+                    
+                    self.thisGroupControls.removeValue(forKey: control.uniqueID)
+                    self.unassignedControls.removeValue(forKey: control.uniqueID)
+                    
                 }
+                
+                self.reloadView()
                 
             })
         })
@@ -109,11 +125,11 @@ class EditRoomView: UITableViewController {
         
         switch indexPath.row {
         case 0 :
-            
+            print("UNASSSSSSSSSSIGNED: \(unassignedControls)")
             return UnassignedControlCollection(groupContext: thisGroup, unassignedControls: unassignedControls)
             
         case 1 :
-            
+            print("EDITTTTTT: \(thisGroupControls)")
             let bounds = self.navigationController!.navigationBar.bounds
             
             let editFrame = CGRect(x: 0,
@@ -122,8 +138,9 @@ class EditRoomView: UITableViewController {
                                    height: self.view.frame.height - 200 - bounds.height)
             
             let cell = VertexEditCell(cellFrame: editFrame,
-                                      groupID: thisGroup.groupID)
-            
+                                      groupContext: thisGroup,
+                                      assignedControls: thisGroupControls)
+                                                  
             cell.parentTable = self
             
             cell.addSubview(drawVertexToggleButton())
@@ -253,8 +270,9 @@ extension EditRoomView {
     
     func reloadView() {
         
-//        self.loadView()
+        //        self.loadView()
         self.viewDidLoad()
+        self.tableView.reloadData()
     }
     
     func searchForHeepDevices() {

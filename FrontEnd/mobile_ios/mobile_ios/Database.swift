@@ -59,6 +59,7 @@ class database {
             databaseRealm().updateDeviceControl(control: control)
         default :
             databaseRealm().updateDeviceControl(control: control)
+            databaseFirebase().updateDeviceControl(control: control)
         }
         
     }

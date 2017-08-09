@@ -4,7 +4,7 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     
     var parentTable = UITableViewController()
     var collectionView: UICollectionView!
-    var controls = [DeviceControl]()
+    var controls = [Int : DeviceControl]()
     
     var cellView = UICollectionViewCell()
     var thisGroup = GroupPerspective()
@@ -24,23 +24,14 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     
     var vertexDictToDelete = [String : Bool]()
     
-    convenience init(cellFrame: CGRect,
-                     groupID: Int) {
+    convenience init(cellFrame: CGRect, groupContext: GroupPerspective, assignedControls: [Int: DeviceControl]) {
         self.init()
+        print(assignedControls)
+        self.controls = assignedControls
+        self.thisGroup = groupContext
         
-        setupGroupAndControls(groupID: groupID)
         setupCollectionView(cellFrame: cellFrame)
         
-    }
-    
-    func setupGroupAndControls(groupID: Int) {
-        self.controls = database().getDeviceControlsInGroup(groupID: groupID)
-        
-        if let perspective = database().getGroupContext(groupID: groupID) {
-            self.thisGroup = perspective
-        } else {
-            print("Could not find perspective with this groupID")
-        }
     }
     
     func setupCollectionView(cellFrame: CGRect) {
@@ -53,22 +44,22 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         let screenWidth = screenSize.width
         let editSpaceHeight = cellFrame.height
         
-        if let tryImage = getContextImage() {
+        if false { //let tryImage = getContextImage() {
             
-            let naturalWidth = tryImage.size.width
-            let naturalHeight = tryImage.size.height
-            
-            let aspectRatio = naturalWidth / naturalHeight
-            
-            if aspectRatio < 1 {
-                
-                layout.itemSize = CGSize(width: screenWidth,
-                                         height: editSpaceHeight)
-            } else {
-                
-                layout.itemSize = CGSize(width: editSpaceHeight * aspectRatio,
-                                         height: editSpaceHeight)
-            }
+//            let naturalWidth = tryImage.size.width
+//            let naturalHeight = tryImage.size.height
+//            
+//            let aspectRatio = naturalWidth / naturalHeight
+//            
+//            if aspectRatio < 1 {
+//                
+//                layout.itemSize = CGSize(width: screenWidth,
+//                                         height: editSpaceHeight)
+//            } else {
+//                
+//                layout.itemSize = CGSize(width: editSpaceHeight * aspectRatio,
+//                                         height: editSpaceHeight)
+//            }
             
         } else {
             
@@ -137,7 +128,7 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
                                                   y: 0,
                                                   width: cellView.bounds.width,
                                                   height: cellView.bounds.height))
-        
+        return
         guard let groupContext = database().getGroup(context: thisGroup) else {
             print("Could not retrieve shared group context to grab the image")
             return
@@ -152,7 +143,7 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     
     func addControlsAndVertices() {
         
-        for eachControl in controls {
+        for (controlUniqueID, eachControl) in controls {
             
             for eachVertex in eachControl.vertexList {
                 
@@ -401,11 +392,11 @@ extension VertexEditCell {
     
     func touchingControlSprite(gesture: UILongPressGestureRecognizer) -> DeviceControl? {
         
-        for control in controls {
+        for (controlUniqueID, control) in controls {
             
             let position = gesture.location(in: collectionView)
             
-            if self.viewWithTag(control.uniqueID)!.frame.contains(position) {
+            if self.viewWithTag(controlUniqueID)!.frame.contains(position) {
                 return control
             }
         }
@@ -470,7 +461,7 @@ extension VertexEditCell {
     
     func translateSpritePosition(gesture: UIPanGestureRecognizer, controlView: UIView, uniqueID: Int) {
         
-        guard let control = database().getDeviceControl(uniqueID: uniqueID) else {
+        guard let control = controls[uniqueID] else {
             print("Couldn't save control from translate")
             return
         }
@@ -491,7 +482,7 @@ extension VertexEditCell {
         
         searchSublayersForNameToRemove(names: [String(control.uniqueID)])
         
-        for eachControl in controls {
+        for (controlUniqueID, eachControl) in controls {
             for vertex in eachControl.vertexList {
                 if (vertex.rx)! == control || (vertex.tx)! == control {
                     translateConnectedVertex(control: control, vertex: vertex)
@@ -541,7 +532,7 @@ extension VertexEditCell {
             return
         }
         
-        guard let control = database().getDeviceControl(uniqueID: thisGroup.selectedControl) else {
+        guard let control = controls[thisGroup.selectedControl] else {
             print("Could not grab control")
             return
         }
@@ -571,7 +562,7 @@ extension VertexEditCell {
             return
         }
         
-        guard let control = database().getDeviceControl(uniqueID: thisGroup.selectedControl) else {
+        guard let control = controls[thisGroup.selectedControl] else {
             print("Could not find control rotation")
             return
         }
@@ -592,7 +583,7 @@ extension VertexEditCell {
     
     func handleLongPress(gesture: UILongPressGestureRecognizer) {
         
-        guard let control = database().getDeviceControl(uniqueID: (gesture.view?.tag)!) else {
+        guard let control = controls[(gesture.view?.tag)!] else {
             print("Failed to retrieve the control with tag \(String(describing: gesture.view?.tag)) from handleLongPress")
             return
         }
@@ -955,7 +946,7 @@ extension VertexEditCell {
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         
         
-        guard let thisControl = database().getDeviceControl(uniqueID: controlUniqueID) else {
+        guard let thisControl = controls[controlUniqueID] else {
             print("Could not retrieve the control from database")
             return
         }
@@ -1016,7 +1007,7 @@ extension VertexEditCell {
     
     func resetVertexDictToDelete() {
         vertexDictToDelete = [:]
-        for control in controls {
+        for (controlUniqueID, control) in controls {
             for vertex in control.vertexList {
                 vertexDictToDelete[vertex.vertexID] = false
             }
@@ -1044,7 +1035,7 @@ extension VertexEditCell {
     
     func applyDetailTransform(scale: CGFloat = 0) -> CGAffineTransform {
         
-        guard let thisControl = database().getDeviceControl(uniqueID: thisGroup.selectedControl) else {
+        guard let thisControl = controls[thisGroup.selectedControl] else {
             return CGAffineTransform()
         }
         
@@ -1062,7 +1053,7 @@ extension VertexEditCell {
     
     func displayDeviceSummary() {
         
-        guard let control = database().getDeviceControl(uniqueID: thisGroup.selectedControl) else {
+        guard let control = controls[thisGroup.selectedControl] else {
             print("Could not retrieve control")
             return
         }

@@ -532,25 +532,24 @@ class databaseFirebase {
             let control = DeviceControl()
             
             control.groupID = value?["groupID"] as? Int ?? 0
-            if control.groupID == 0 || control.groupID == controlID {
-                
-                control.controlDirection = value?["controlDirection"] as? Int ?? 0
-                control.controlID = value?["controlID"] as? Int ?? 0
-                control.controlName = value?["controlName"] as? String ?? ""
-                control.controlType = value?["controlType"] as? Int ?? 0
-                control.deviceID = value?["deviceID"] as? Int ?? 0
-                control.editX = value?["editX"] as? CGFloat ?? 0
-                control.editY = value?["editY"] as? CGFloat ?? 0
-                control.lastOnValue = value?["lastOnValue"] as? Int ?? 0
-                control.rotation = value?["rotation"] as? CGFloat ?? 0
-                control.scale = value?["scale"] as? CGFloat ?? 0
-                control.uniqueID = value?["uniqueID"] as? Int ?? 0
-                control.valueCurrent = value?["lastOnValue"] as? Int ?? 0
-                control.valueLow = value?["valueLow"] as? Int ?? 0
-                control.valueHigh = value?["valueHigh"] as? Int ?? 0
-                
-                completion(control)
-            }
+            control.controlDirection = value?["controlDirection"] as? Int ?? 0
+            control.controlID = value?["controlID"] as? Int ?? 0
+            control.controlName = value?["controlName"] as? String ?? ""
+            control.controlType = value?["controlType"] as? Int ?? 0
+            control.deviceID = value?["deviceID"] as? Int ?? 0
+            control.editX = value?["editX"] as? CGFloat ?? 0
+            control.editY = value?["editY"] as? CGFloat ?? 0
+            control.lastOnValue = value?["lastOnValue"] as? Int ?? 0
+            control.rotation = value?["rotation"] as? CGFloat ?? 0
+            control.scale = value?["scale"] as? CGFloat ?? 0
+            control.groupID = value?["groupID"] as? Int ?? 0
+            control.uniqueID = value?["uniqueID"] as? Int ?? 0
+            control.valueCurrent = value?["lastOnValue"] as? Int ?? 0
+            control.valueLow = value?["valueLow"] as? Int ?? 0
+            control.valueHigh = value?["valueHigh"] as? Int ?? 0
+            
+            completion(control)
+            
             
         }) { (error) in
             print(error)
