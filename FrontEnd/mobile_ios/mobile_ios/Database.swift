@@ -54,8 +54,9 @@ class database {
     
     func updateDeviceControl(control: DeviceControl) {
         switch interface {
-        case "both" :
+        case "firebase" :
             databaseFirebase().updateDeviceControl(control: control)
+        case "realm" :
             databaseRealm().updateDeviceControl(control: control)
         default :
             databaseRealm().updateDeviceControl(control: control)

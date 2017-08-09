@@ -3,19 +3,16 @@ import UIKit
 class GroupControlEdit: UITableViewCell, UICollectionViewDataSource, UICollectionViewDelegate {
     
     var collectionView: UICollectionView!
-    var controls = [DeviceControl]()
+    var controls = [Int : DeviceControl]()
+    var controlKeys = [Int]()
     var thisGroup = GroupPerspective()
     
-    convenience init(groupID: Int) {
+    convenience init(groupContext: GroupPerspective, controlsInGroup: [Int: DeviceControl]) {
         self.init()
         
-        self.controls = database().getDeviceControlsInGroup(groupID: groupID)
-        
-        if let perspective = database().getGroupContext(groupID: groupID) {
-            self.thisGroup = perspective
-        } else {
-            print("Could not find perspective with this groupID")
-        }
+        self.controls = controlsInGroup
+        self.thisGroup = groupContext
+        self.controlKeys = [Int](controlsInGroup.keys)
         
         setupCollectionView()
     }
@@ -62,7 +59,14 @@ class GroupControlEdit: UITableViewCell, UICollectionViewDataSource, UICollectio
         
         let cell: UICollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath as IndexPath) as UICollectionViewCell
         
-        let basicPuck = createControlPuck(thisControl: controls[indexPath.row],
+        let controlKey = controlKeys[indexPath.row]
+        
+        guard let thisControl = controls[controlKey] else {
+            print("Failed to get this control with key")
+            return cell
+        }
+        
+        let basicPuck = createControlPuck(thisControl: thisControl,
                                           cellSize: cell.bounds)
         
         cell.layer.borderWidth = 1
@@ -71,11 +75,11 @@ class GroupControlEdit: UITableViewCell, UICollectionViewDataSource, UICollectio
         let bigButton = UIButton()
         bigButton.frame = cell.bounds
         bigButton.backgroundColor = UIColor.clear
-        bigButton.tag = indexPath.row
+        bigButton.tag = thisControl.uniqueID
         
         bigButton.addTarget(self,action: #selector(selectControl),for: [UIControlEvents.primaryActionTriggered])
         
-        if (thisGroup.selectedControl == controls[indexPath.row].uniqueID) {
+        if (thisGroup.selectedControl == thisControl.uniqueID) {
             
             cell.layer.borderColor =  UIColor.blue.cgColor
         }
@@ -92,17 +96,22 @@ class GroupControlEdit: UITableViewCell, UICollectionViewDataSource, UICollectio
 extension GroupControlEdit {
     
     func selectControl(sender: UIButton) {
-        print("Selected \(controls[sender.tag].controlName)")
+        guard let thisControl = controls[sender.tag] else {
+            print("Could not select")
+            return
+        }
+        
+        print("Selected \(String(describing: thisControl.controlName))")
         
         let updateContext = GroupPerspective(value: thisGroup)
         
-        if thisGroup.selectedControl == controls[sender.tag].uniqueID {
+        if thisGroup.selectedControl == thisControl.uniqueID {
             
             updateContext.selectedControl = 0
             
         } else {
             
-            updateContext.selectedControl = controls[sender.tag].uniqueID
+            updateContext.selectedControl = thisControl.uniqueID
         }
         
         updateContext.assignedOffsetX = collectionView.contentOffset.x

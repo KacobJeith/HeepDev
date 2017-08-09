@@ -12,7 +12,7 @@ import RealmSwift
 class EditRoomView: UITableViewController {
     var notificationTokenList = [NotificationToken?]()
     var referenceList = [String?]()
-    
+    var groupID = 0
     var thisBSSID: String = ""
     var thisGroup = GroupPerspective()
     var thisGroupControls = [Int: DeviceControl]()
@@ -22,7 +22,8 @@ class EditRoomView: UITableViewController {
         
         super.init(style: UITableViewStyle.plain)
         
-        self.initNotifications(groupID: groupID)
+        self.groupID = groupID
+        self.initNotifications()
         
     }
     
@@ -53,7 +54,7 @@ class EditRoomView: UITableViewController {
         self.toolbarItems = [spacer, search, spacer]
     }
     
-    func initNotifications(groupID: Int) {
+    func initNotifications() {
         
         
         //Group Context
@@ -72,13 +73,14 @@ class EditRoomView: UITableViewController {
             
             self.referenceList.append(database().watchControl(controlID: controlID) { control in
                 
-                if control.groupID == groupID {
+                if control.groupID == self.groupID {
                     
                     self.unassignedControls.removeValue(forKey: control.uniqueID)
                     self.thisGroupControls[control.uniqueID] = control
                     
                 } else if control.groupID == 0 {
                     
+                    self.thisGroupControls.removeValue(forKey: control.uniqueID)
                     self.unassignedControls[control.uniqueID] = control
                     
                 } else {
@@ -112,7 +114,8 @@ class EditRoomView: UITableViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.initNotifications(groupID: thisGroup.groupID)
+        
+        self.initNotifications()
     }
     
     
@@ -125,11 +128,11 @@ class EditRoomView: UITableViewController {
         
         switch indexPath.row {
         case 0 :
-            print("UNASSSSSSSSSSIGNED: \(unassignedControls)")
+            
             return UnassignedControlCollection(groupContext: thisGroup, unassignedControls: unassignedControls)
             
         case 1 :
-            print("EDITTTTTT: \(thisGroupControls)")
+            
             let bounds = self.navigationController!.navigationBar.bounds
             
             let editFrame = CGRect(x: 0,
@@ -149,7 +152,7 @@ class EditRoomView: UITableViewController {
             
         case 2 :
             
-            return GroupControlEdit(groupID: thisGroup.groupID)
+            return GroupControlEdit(groupContext: thisGroup, controlsInGroup: thisGroupControls)
             
         default : break
         }
