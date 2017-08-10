@@ -5,6 +5,7 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     var parentTable = UITableViewController()
     var collectionView: UICollectionView!
     var controls = [Int : DeviceControl]()
+    var vertexList = [Vertex]()
     
     var cellView = UICollectionViewCell()
     var thisGroup = GroupPerspective()
@@ -26,7 +27,7 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     
     convenience init(cellFrame: CGRect, groupContext: GroupPerspective, assignedControls: [Int: DeviceControl]) {
         self.init()
-        print(assignedControls)
+        
         self.controls = assignedControls
         self.thisGroup = groupContext
         
@@ -151,9 +152,13 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
             
         }
         
+        self.vertexList = []
+        
         database().getTheseVertices(controlIDCheckList: [Int](controls.keys)) { eachVertex in
             
+            self.vertexList.append(eachVertex)
             self.cellView.layer.addSublayer(self.drawVertex(vertex: eachVertex))
+            
         }
     }
     
@@ -480,14 +485,14 @@ extension VertexEditCell {
         
         searchSublayersForNameToRemove(names: [String(control.uniqueID)])
         
-        for (controlUniqueID, eachControl) in controls {
-            for vertex in eachControl.vertexList {
-                if (vertex.rx)! == control || (vertex.tx)! == control {
-                    translateConnectedVertex(control: control, vertex: vertex)
-                    
-                }
+        for vertex in vertexList {
+            
+            if (vertex.rx?.uniqueID)! == control.uniqueID || (vertex.tx?.uniqueID)! == control.uniqueID {
+                translateConnectedVertex(control: control, vertex: vertex)
+                
             }
         }
+        
     }
     
     func translateConnectedVertex(control: DeviceControl, vertex: Vertex) {
