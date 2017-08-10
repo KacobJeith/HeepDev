@@ -717,6 +717,7 @@ class databaseFirebase {
     }
     
     func watchDevice(deviceID: Int,
+                     reset: @escaping () -> (), 
                      identity: @escaping (Device) -> (),
                      controls: @escaping (DeviceControl) -> (),
                      vertices: @escaping (Vertex) -> ()) -> String {
@@ -725,6 +726,7 @@ class databaseFirebase {
         
         ref.child(refPath).observe(.value, with: { (snapshot) in
             
+            reset()
             
             let enumerator = snapshot.children
             

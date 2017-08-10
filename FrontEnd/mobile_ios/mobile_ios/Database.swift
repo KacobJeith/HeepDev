@@ -383,11 +383,12 @@ class database {
     
     
     func watchDevice(deviceID: Int,
+                     reset: @escaping () -> (),
                      identity: @escaping (Device) -> (),
                      controls: @escaping (DeviceControl) -> (),
                      vertices: @escaping (Vertex) -> () ) -> String {
         
-        return databaseFirebase().watchDevice(deviceID: deviceID, identity: identity, controls: controls, vertices: vertices)
+        return databaseFirebase().watchDevice(deviceID: deviceID, reset: reset, identity: identity, controls: controls, vertices: vertices)
     }
     
     func watchDevices(callback: @escaping () -> Void = {}) -> NotificationToken? {

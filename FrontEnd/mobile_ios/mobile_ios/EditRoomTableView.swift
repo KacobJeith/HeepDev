@@ -70,9 +70,9 @@ class EditRoomView: UITableViewController {
         //Control Notifications
         self.referenceList.append(database().watchAllMyDevices() { deviceID in
             
-            self.referenceList.append(database().watchDevice(deviceID: deviceID, identity: { device in
+            self.referenceList.append(database().watchDevice(deviceID: deviceID, reset: {}, identity: { device in
                 
-                print(device)
+                //print(device)
                 
             }, controls: { control in
                 
@@ -97,7 +97,7 @@ class EditRoomView: UITableViewController {
                 
             }, vertices: { vertex in
                 
-                print(vertex)
+                //print(vertex)
                 
             }))
         

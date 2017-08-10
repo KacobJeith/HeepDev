@@ -15,25 +15,20 @@ class DeviceSummaryViewController: UITableViewController {
     
     var sections: [String]!
     var cells: [[String]]!
+    
     var thisDevice = Device()
     var controls = [DeviceControl]()
+    var vertices = [Vertex]()
+    
     var userIds: [Int] = []
     var userRealmKeys: [String] = []
     var deviceID: Int = 0
     
     
-    func resetForControlUpdate() {
+    func resetEverything() {
         sections = []
-        cells = [[]]
+        cells = []
         controls = []
-        userIds = []
-        userRealmKeys = []
-        
-    }
-    
-    func resetForDeviceUpdate() {
-        sections = []
-        cells = [[]]
         userIds = []
         userRealmKeys = []
         
@@ -43,10 +38,22 @@ class DeviceSummaryViewController: UITableViewController {
         
         super.init(style: UITableViewStyle.plain)
         self.deviceID = deviceID
-        self.cells = []
+        self.resetEverything()
         self.initNotifications()
         
     }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.title = thisDevice.name
+        self.tableView.separatorStyle = .none
+        
+        //database().updateDeviceUserList(deviceID: thisDevice.deviceID)
+        
+        self.prepareEverything()
+    }
+
     
     deinit{
         for reference in referenceList {
@@ -72,34 +79,31 @@ class DeviceSummaryViewController: UITableViewController {
     
     func initNotifications() {
         
-//        self.referenceList.append(database().watchDevice(deviceID: deviceID) { device in
-//            
-//            self.thisDevice = device
-//            self.resetForDeviceUpdate()
-//            
-//            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
-//                
-//                self.tableView.reloadData()
-//                self.viewDidLoad()
-//            }
-//        })
-        
-        //Control Notifications
-        self.referenceList.append(database().watchControlsForDevice(deviceID: deviceID, reset: {
-            self.resetForControlUpdate()
+        self.referenceList.append(database().watchDevice(deviceID: deviceID, reset: {
+            self.resetEverything()
             
-        }) { control in
+        }, identity: { device in
             
-            print("FOUND A CONTROL \(control)")
+            print(device)
+            self.thisDevice = device
+            self.updateView()
+            
+        }, controls: { control in
             
             self.controls.append(control)
+            self.updateView()
             
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
-                
-                self.tableView.reloadData()
-                self.viewDidLoad()
-            }
-        })
+        }, vertices: { vertex in
+            
+            print(vertex)
+            
+        }))
+    }
+    
+    func updateView() {
+        self.prepareEverything()
+        self.tableView.reloadData()
+        self.viewDidLoad()
     }
     
     func prepareEverything() {
@@ -115,17 +119,6 @@ class DeviceSummaryViewController: UITableViewController {
             prepareControlData(control: control)
             
         }
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        self.title = thisDevice.name
-        self.tableView.separatorStyle = .none
-        
-        database().updateDeviceUserList(deviceID: thisDevice.deviceID)
-        
-        self.prepareEverything()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -170,7 +163,7 @@ class DeviceSummaryViewController: UITableViewController {
             humanData.append("claimDevice")
         }
         
-        self.cells.append(humanData)
+        self.cells = [humanData]
     }
     
     func prepareDeviceData() {
@@ -265,7 +258,7 @@ class DeviceSummaryViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return 1//self.cells[section].count
+        return self.cells[section].count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

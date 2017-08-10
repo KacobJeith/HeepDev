@@ -1065,13 +1065,13 @@ extension VertexEditCell {
     
     func displayDeviceSummary() {
         
-//        guard let control = controls[thisGroup.selectedControl] else {
-//            print("Could not retrieve control")
-//            return
-//        }
-//        
-//        let summaryView = DeviceSummaryViewController(deviceID: control.deviceID)
-//        parentTable.navigationController?.pushViewController(summaryView, animated: true)
+        guard let control = controls[thisGroup.selectedControl] else {
+            print("Could not retrieve control")
+            return
+        }
+        
+        let summaryView = DeviceSummaryViewController(deviceID: control.deviceID)
+        parentTable.navigationController?.pushViewController(summaryView, animated: true)
 
     }
     
