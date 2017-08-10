@@ -11,23 +11,110 @@ import RealmSwift
 
 class DeviceSummaryViewController: UITableViewController {
     
-    var notificationToken: NotificationToken? = nil
+    var referenceList = [String?]()
+    
     var sections: [String]!
     var cells: [[String]]!
     var thisDevice = Device()
+    var controls = [DeviceControl]()
     var userIds: [Int] = []
     var userRealmKeys: [String] = []
+    var deviceID: Int = 0
     
-    init(device: Device) {
-        print("Starting with...\(device)")
+    
+    func resetForControlUpdate() {
+        sections = []
+        cells = [[]]
+        controls = []
+        userIds = []
+        userRealmKeys = []
         
-        if let pullDevice = database().getDevice(deviceID: device.deviceID) {
-            thisDevice = pullDevice
-            print("ending with \(thisDevice)")
-        }
+    }
+    
+    func resetForDeviceUpdate() {
+        sections = []
+        cells = [[]]
+        userIds = []
+        userRealmKeys = []
         
-        self.cells = []
+    }
+    
+    init(deviceID: Int) {
+        
         super.init(style: UITableViewStyle.plain)
+        self.deviceID = deviceID
+        self.cells = []
+        self.initNotifications()
+        
+    }
+    
+    deinit{
+        for reference in referenceList {
+            if let refPath = reference {
+                database().detachObserver(referencePath: refPath)
+            }
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        for reference in referenceList {
+            if let refPath = reference {
+                database().detachObserver(referencePath: refPath)
+            }
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
+        self.initNotifications()
+    }
+    
+    
+    func initNotifications() {
+        
+        self.referenceList.append(database().watchDevice(deviceID: deviceID) { device in
+            
+            self.thisDevice = device
+            self.resetForDeviceUpdate()
+            
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
+                
+                self.tableView.reloadData()
+                self.viewDidLoad()
+            }
+        })
+        
+        //Control Notifications
+        self.referenceList.append(database().watchControlsForDevice(deviceID: deviceID, reset: {
+            self.resetForControlUpdate()
+            
+        }) { control in
+            
+            print("FOUND A CONTROL \(control)")
+            
+            self.controls.append(control)
+            
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
+                
+                self.tableView.reloadData()
+                self.viewDidLoad()
+            }
+        })
+    }
+    
+    func prepareEverything() {
+        
+        self.prepareUserData()
+        self.prepareDeviceData()
+        self.prepareControls()
+    }
+    
+    func prepareControls() {
+        
+        for control in controls {
+            prepareControlData(control: control)
+            
+        }
     }
     
     override func viewDidLoad() {
@@ -38,12 +125,7 @@ class DeviceSummaryViewController: UITableViewController {
         
         database().updateDeviceUserList(deviceID: thisDevice.deviceID)
         
-        self.initNotifications()
-        self.prepareUserData()
-        self.prepareDeviceData()
-        self.prepareControls()
-        
-        
+        self.prepareEverything()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -117,17 +199,6 @@ class DeviceSummaryViewController: UITableViewController {
         
     }
     
-    func prepareControls() {
-        
-        for control in thisDevice.controlList {
-            prepareControlData(control: control)
-            
-            for vertex in control.vertexList {
-                prepareVertex(vertex: vertex)
-                
-            }
-        }
-    }
     
     func prepareControlData(control: DeviceControl) {
         
@@ -324,25 +395,6 @@ class DeviceSummaryViewController: UITableViewController {
         present(modalViewController, animated: false) {}
     }
     
-    func initNotifications() {
-        
-        notificationToken = database().watchDevice(deviceID: thisDevice.deviceID) {
-            
-            self.thisDevice = database().getDevice(deviceID: self.thisDevice.deviceID)!
-            self.cells = [[String]]()
-            
-            self.prepareUserData()
-            self.prepareDeviceData()
-            self.prepareControls()
-            
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
-                
-                self.tableView.reloadData()
-            }
-        }
-        
-        
-    }
     
     func reloadView() {
         

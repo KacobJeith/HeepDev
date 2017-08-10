@@ -7,10 +7,9 @@
 //
 
 import UIKit
-import RealmSwift
 
 class EditRoomView: UITableViewController {
-    var notificationTokenList = [NotificationToken?]()
+    
     var referenceList = [String?]()
     var groupID = 0
     var thisBSSID: String = ""

@@ -367,17 +367,22 @@ class database {
         return databaseFirebase().watchAllMyControls(completion: completion) 
     }
     
+    func watchControlsForDevice(deviceID: Int, reset: @escaping () -> (), completion: @escaping (DeviceControl) -> ()) -> String? {
+        return databaseFirebase().watchControlsForDevice(deviceID: deviceID, reset: reset, completion: completion)
+    }
+    
     func watchControl(controlID: Int, completion: @escaping (DeviceControl) -> () ) -> String? {
         return databaseFirebase().watchControl(controlID: controlID, completion: completion)
     }
     
     func watchDevice(deviceID: Int, callback: @escaping () -> Void = {}) -> NotificationToken? {
         
-        switch interface {
-        default :
-            return databaseRealm().watchDevice(deviceID: deviceID, callback: callback)
-        }
+        return databaseRealm().watchDevice(deviceID: deviceID, callback: callback)
         
+    }
+    
+    func watchDevice(deviceID: Int, completion: @escaping (Device) -> () ) -> String {
+        return databaseFirebase().watchDevice(deviceID: deviceID, completion: completion)
     }
     
     func watchDevices(callback: @escaping () -> Void = {}) -> NotificationToken? {
@@ -404,10 +409,8 @@ class database {
     
     func getDevice(deviceID: Int) -> Device? {
         
-        switch interface {
-        default :
-            return databaseRealm().getDevice(deviceID: deviceID)
-        }
+        return databaseRealm().getDevice(deviceID: deviceID)
+        
     }
     
     func getActiveDevices() -> [Device] {

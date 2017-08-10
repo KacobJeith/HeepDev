@@ -1070,12 +1070,7 @@ extension VertexEditCell {
             return
         }
         
-        guard let device = database().getDevice(deviceID: control.deviceID) else {
-            print("Could not retrieve device")
-            return
-        }
-        
-        let summaryView = DeviceSummaryViewController(device: device)
+        let summaryView = DeviceSummaryViewController(deviceID: control.deviceID)
         parentTable.navigationController?.pushViewController(summaryView, animated: true)
 
     }

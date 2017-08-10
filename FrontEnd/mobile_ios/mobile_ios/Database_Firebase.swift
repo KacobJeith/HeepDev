@@ -15,43 +15,46 @@ var ref: DatabaseReference! = Database.database().reference()
 class databaseFirebase {
     
     func writeDevice(device: Device) {
-        ref.child("devices").child(String(describing: device.deviceID)).setValue(device.toDict())
-        
-    }
-    
-    func writeDeviceControl(control:DeviceControl) {
         
         guard let userID = Auth.auth().currentUser?.uid else {
             print("No Firebase User Logged In")
             return
         }
         
+        ref.child("devices/\(String(describing: device.deviceID))/identity").setValue(device.toDict())
+        ref.child("users/\(userID)/devices").setValue([String(describing: device.deviceID): true])
+        
+    }
+    
+    func writeDeviceControl(control:DeviceControl) {
+        
+        
         let controlID = String(describing: control.uniqueID)
-        ref.child("users/\(userID)/controls/\(controlID)").setValue([controlID: true])
+        //ref.child("users/\(userID)/controls/\(controlID)").setValue([controlID: true])
         
         updateDeviceControl(control: control)
     }
     
     func updateDeviceControl(control: DeviceControl) {
         
-        let controlID = String(describing: control.uniqueID)
+        //let controlID = String(describing: control.uniqueID)
         
-        ref.child("controls").child(controlID).setValue(control.toDict())
+        ref.child("devices/\(String(describing: control.deviceID))/controls/\(String(describing: control.controlID))").setValue(control.toDict())
         
     }
     
     func writeVertex(vertex: Vertex) {
         
-        ref.child("vertices").child(String(describing: vertex.vertexID)).setValue(["vertexID": vertex.vertexID,
-                                                                                   "txID": (vertex.tx?.uniqueID)!,
-                                                                                   "rxID": (vertex.rx?.uniqueID)!])
+        let txDeviceID = vertex.tx?.deviceID
+        
+        ref.child("devices/\(String(describing: txDeviceID))/vertices/\(String(describing: vertex.vertexID))").setValue(["vertexID": vertex.vertexID,"txID": (vertex.tx?.uniqueID)!,"rxID": (vertex.rx?.uniqueID)!])
     }
     
     func updateDeviceNameAndIcon(device: Device, deviceName: String, iconName: String) {
         print("Updating name and icon")
         
-        let updates = ["/devices/\(device.deviceID)/name": deviceName,
-                       "/devices/\(device.deviceID)/iconName": iconName]
+        let updates = ["/devices/\(device.deviceID)/identity/name": deviceName,
+                       "/devices/\(device.deviceID)/identity/iconName": iconName]
         
         ref.updateChildValues(updates)
         
@@ -522,6 +525,57 @@ class databaseFirebase {
         return refPath
     }
     
+    func watchControlsForDevice(deviceID: Int, reset: @escaping () -> (), completion: @escaping (DeviceControl) -> ()) -> String? {
+        
+        guard let userID = Auth.auth().currentUser?.uid else {
+            print("You must be logged in to perform this action")
+            return nil
+        }
+        
+        let refPath = "devices/\(String(describing: deviceID))/controls"
+        
+        ref.child(refPath).observe(.value, with: { (snapshot) in
+            
+            reset()
+            
+            let enumerator = snapshot.children
+            
+            while let child = enumerator.nextObject() as? DataSnapshot {
+                
+                let value = child.value as? NSDictionary
+                
+                let control = DeviceControl()
+                
+                control.groupID = value?["groupID"] as? Int ?? 0
+                control.controlDirection = value?["controlDirection"] as? Int ?? 0
+                control.controlID = value?["controlID"] as? Int ?? 0
+                control.controlName = value?["controlName"] as? String ?? ""
+                control.controlType = value?["controlType"] as? Int ?? 0
+                control.deviceID = value?["deviceID"] as? Int ?? 0
+                control.editX = value?["editX"] as? CGFloat ?? 0
+                control.editY = value?["editY"] as? CGFloat ?? 0
+                control.lastOnValue = value?["lastOnValue"] as? Int ?? 0
+                control.rotation = value?["rotation"] as? CGFloat ?? 0
+                control.scale = value?["scale"] as? CGFloat ?? 0
+                control.groupID = value?["groupID"] as? Int ?? 0
+                control.uniqueID = value?["uniqueID"] as? Int ?? 0
+                control.valueCurrent = value?["lastOnValue"] as? Int ?? 0
+                control.valueLow = value?["valueLow"] as? Int ?? 0
+                control.valueHigh = value?["valueHigh"] as? Int ?? 0
+                
+                completion(control)
+
+            }
+            
+            
+        }) { (error) in
+            print(error)
+            return
+        }
+        
+        return refPath
+    }
+    
     func watchControl(controlID: Int, completion: @escaping (DeviceControl) -> () ) -> String? {
         
         let refPath = "controls/\(String(describing: controlID))"
@@ -659,9 +713,34 @@ class databaseFirebase {
                 }
                 
             }
+        })
+    }
+    
+    func watchDevice(deviceID: Int, completion: @escaping (Device) -> ()) -> String {
+        
+        let refPath = "devices/\(String(describing: deviceID))"
+        
+        ref.child(refPath).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            let value = snapshot.value as? NSDictionary
+            let device = Device()
+            device.deviceID = value?["deviceID"] as? Int ?? 0
+            device.active = value?["active"] as? Bool ?? false
+            device.authorizedUsers = value?["authorizedUsers"] as? String ?? ""
+            device.humanAdmin = value?["humanAdmin"] as? Int ?? 0
+            device.iconName = value?["iconName"] as? String ?? ""
+            device.ipAddress = value?["ipAddress"] as? String ?? ""
+            device.name = value?["name"] as? String ?? ""
+            device.version = value?["version"] as? Int ?? 0
+            
+            completion(device)
             
             
         })
+        
+        return refPath
     }
+    
+    
 }
 

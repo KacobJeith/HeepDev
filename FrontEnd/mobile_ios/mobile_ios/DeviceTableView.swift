@@ -253,8 +253,8 @@ class DeviceTableViewController: UITableViewController {
     
     func displayDeviceSummary(sender: UIButton) {
         print("Display device summary for: \(String(describing: devices[sender.tag].deviceID))")
-        let summaryView = DeviceSummaryViewController(device: devices[sender.tag])
-        navigationController?.pushViewController(summaryView, animated: true)
+//        let summaryView = DeviceSummaryViewController(device: devices[sender.tag])
+//        navigationController?.pushViewController(summaryView, animated: true)
     }
     
     func searchForHeepDevices() {
