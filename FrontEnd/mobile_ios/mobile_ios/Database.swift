@@ -453,11 +453,11 @@ class database {
     }
     
     func getVertex(vertexID: String, completion: @escaping (Vertex) -> () ) {
-        databaseFirebase().getVertex(vertexID: vertexID, completion: completion)
+        //databaseFirebase().getVertex(vertexID: vertexID, completion: completion)
     }
     
     func getTheseVertices(controlIDCheckList: [Int], completion: @escaping (Vertex) -> () ) {
-        databaseFirebase().getTheseVertices(controlIDCheckList: controlIDCheckList, completion: completion)
+        //databaseFirebase().getTheseVertices(controlIDCheckList: controlIDCheckList, completion: completion)
         
     }
     

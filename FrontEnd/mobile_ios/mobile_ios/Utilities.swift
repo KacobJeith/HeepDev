@@ -217,8 +217,6 @@ func getUserIcon(iconURL: String) -> NSData {
 }
 
 
-
-
 func convertIntToByteArray(integer: Int) -> [UInt8] {
     var byteArray = [UInt8]()
     for index in 0...(calcNumBytes(integer: integer) - 1) {

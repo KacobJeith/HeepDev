@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import RealmSwift
 
 class DeviceSummaryViewController: UITableViewController {
     
@@ -96,6 +95,8 @@ class DeviceSummaryViewController: UITableViewController {
         }, vertices: { vertex in
             
             print(vertex)
+            self.vertices.append(vertex)
+            self.updateView()
             
         }))
     }
@@ -111,6 +112,7 @@ class DeviceSummaryViewController: UITableViewController {
         self.prepareUserData()
         self.prepareDeviceData()
         self.prepareControls()
+        self.prepareVertices()
     }
     
     func prepareControls() {
@@ -118,6 +120,12 @@ class DeviceSummaryViewController: UITableViewController {
         for control in controls {
             prepareControlData(control: control)
             
+        }
+    }
+    
+    func prepareVertices() {
+        for vertex in vertices {
+            prepareVertex(vertex: vertex)
         }
     }
     

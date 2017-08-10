@@ -5,7 +5,7 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     var parentTable = UITableViewController()
     var collectionView: UICollectionView!
     var controls = [Int : DeviceControl]()
-    var vertexList = [Vertex]()
+    var vertexList = [String: Vertex]()
     
     var cellView = UICollectionViewCell()
     var thisGroup = GroupPerspective()
@@ -25,11 +25,15 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     
     var vertexDictToDelete = [String : Bool]()
     
-    convenience init(cellFrame: CGRect, groupContext: GroupPerspective, assignedControls: [Int: DeviceControl]) {
+    convenience init(cellFrame: CGRect,
+                     groupContext: GroupPerspective,
+                     assignedControls: [Int: DeviceControl],
+                     vertices: [String: Vertex]) {
         self.init()
         
         self.controls = assignedControls
         self.thisGroup = groupContext
+        self.vertexList = vertices
         
         setupCollectionView(cellFrame: cellFrame)
         
@@ -156,13 +160,12 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     }
     
     func initVertices() {
-        self.vertexList = []
+        //self.vertexList = [:]
         resetVertexDictToDelete()
         
-        database().getTheseVertices(controlIDCheckList: [Int](controls.keys)) { eachVertex in
+        for (vertexID, vertex) in vertexList {
             
-            self.vertexList.append(eachVertex)
-            self.cellView.layer.addSublayer(self.drawVertex(vertex: eachVertex))
+            self.cellView.layer.addSublayer(self.drawVertex(vertex: vertex))
             
         }
     }
@@ -229,8 +232,8 @@ extension VertexEditCell {
         for vertex in vertexDictToDelete {
             if vertex.value == true {
                 
-                database().getVertex(vertexID: vertex.key) { thisVertex in
-                    
+                if let thisVertex = vertexList[vertex.key] {
+            
                     HeepConnections().sendDeleteVertexToHeepDevice(activeVertex: thisVertex)
                     database().deleteVertex(vertex: thisVertex)
                     self.parentTable.viewDidLoad()
@@ -298,7 +301,7 @@ extension VertexEditCell {
                 
                 vertexDictToDelete[vertexName] = true
                 
-                database().getVertex(vertexID: vertexName) { thisVertex in
+                if let thisVertex = vertexList[vertexName] {
                     
                     UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                     
@@ -494,7 +497,7 @@ extension VertexEditCell {
         
         searchSublayersForNameToRemove(names: [String(control.uniqueID)])
         
-        for vertex in vertexList {
+        for (vertexID, vertex) in vertexList {
             
             if (vertex.rx?.uniqueID)! == control.uniqueID || (vertex.tx?.uniqueID)! == control.uniqueID {
                 translateConnectedVertex(control: control, vertex: vertex)
@@ -795,10 +798,10 @@ extension VertexEditCell {
         let shapeLayer = CAShapeLayer()
         let curve = UIBezierPath()
         
-        guard let txX = vertex.tx?.editX else { return CAShapeLayer()}
-        guard let txY = vertex.tx?.editY else { return CAShapeLayer()}
-        guard let rxX = vertex.rx?.editX else { return CAShapeLayer()}
-        guard let rxY = vertex.rx?.editY else { return CAShapeLayer()}
+        guard let txX = controls[(vertex.tx?.uniqueID)!]?.editX else { return CAShapeLayer()}
+        guard let txY = controls[(vertex.tx?.uniqueID)!]?.editY else { return CAShapeLayer()}
+        guard let rxX = controls[(vertex.rx?.uniqueID)!]?.editX else { return CAShapeLayer()}
+        guard let rxY = controls[(vertex.rx?.uniqueID)!]?.editY else { return CAShapeLayer()}
         
         let startPoint = CGPoint(x: txX, y: txY)
         let finishPoint = CGPoint(x: rxX, y: rxY)
@@ -1020,8 +1023,8 @@ extension VertexEditCell {
     func resetVertexDictToDelete() {
         vertexDictToDelete = [:]
         for (controlUniqueID, control) in controls {
-            for vertex in vertexList {
-                vertexDictToDelete[vertex.vertexID] = false
+            for (vertexID, vertex) in vertexList {
+                vertexDictToDelete[vertexID] = false
             }
         }
     }

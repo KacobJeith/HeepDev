@@ -16,6 +16,7 @@ class EditRoomView: UITableViewController {
     var thisGroup = GroupPerspective()
     var thisGroupControls = [Int: DeviceControl]()
     var unassignedControls = [Int: DeviceControl]()
+    var vertices = [String: Vertex]()
     
     init(groupID: Int, groupName: String) {
         
@@ -97,7 +98,13 @@ class EditRoomView: UITableViewController {
                 
             }, vertices: { vertex in
                 
-                //print(vertex)
+                if vertex.tx?.groupID == self.groupID {
+                    if vertex.rx?.groupID == self.groupID {
+                        
+                        self.vertices[vertex.vertexID] = vertex
+                        self.reloadView()
+                    }
+                }
                 
             }))
         
@@ -149,7 +156,8 @@ class EditRoomView: UITableViewController {
             
             let cell = VertexEditCell(cellFrame: editFrame,
                                       groupContext: thisGroup,
-                                      assignedControls: thisGroupControls)
+                                      assignedControls: thisGroupControls,
+                                      vertices: self.vertices)
                                                   
             cell.parentTable = self
             

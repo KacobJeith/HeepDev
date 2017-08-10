@@ -18,6 +18,7 @@ class DeviceTableViewController: UITableViewController {
     
     var notificationToken: NotificationToken!
     var devices = [Device]()
+    var controls = [[DeviceControl]]()
     var controlTags = [IndexPath]()
     
     init(title: String = "Currently Active", placeID: Int = 0, activeOnly: Bool = false) {

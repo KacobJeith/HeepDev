@@ -26,18 +26,12 @@ class databaseFirebase {
         
     }
     
-    func writeDeviceControl(control:DeviceControl) {
-        
-        
-        let controlID = String(describing: control.uniqueID)
-        //ref.child("users/\(userID)/controls/\(controlID)").setValue([controlID: true])
+    func writeDeviceControl(control: DeviceControl) {
         
         updateDeviceControl(control: control)
     }
     
     func updateDeviceControl(control: DeviceControl) {
-        
-        //let controlID = String(describing: control.uniqueID)
         
         ref.child("devices/\(String(describing: control.deviceID))/controls/\(String(describing: control.controlID))").setValue(control.toDict())
         
@@ -45,9 +39,18 @@ class databaseFirebase {
     
     func writeVertex(vertex: Vertex) {
         
-        let txDeviceID = vertex.tx?.deviceID
+        guard let txDeviceID = vertex.tx?.deviceID else {
+            print("no tx set")
+            return
+        }
         
-        ref.child("devices/\(String(describing: txDeviceID))/vertices/\(String(describing: vertex.vertexID))").setValue(["vertexID": vertex.vertexID,"txID": (vertex.tx?.uniqueID)!,"rxID": (vertex.rx?.uniqueID)!])
+        ref.child("devices/\(String(describing: txDeviceID))/vertices/\(String(describing: vertex.vertexID))").setValue(
+            ["vertexID": vertex.vertexID,
+             "txDeviceID": (vertex.tx?.deviceID)!,
+             "txControlID": (vertex.tx?.controlID)!,
+             "rxDeviceID": (vertex.rx?.deviceID)!,
+             "rxControlID": (vertex.rx?.controlID)!]
+        )
     }
     
     func updateDeviceNameAndIcon(device: Device, deviceName: String, iconName: String) {
@@ -544,24 +547,7 @@ class databaseFirebase {
                 
                 let value = child.value as? NSDictionary
                 
-                let control = DeviceControl()
-                
-                control.groupID = value?["groupID"] as? Int ?? 0
-                control.controlDirection = value?["controlDirection"] as? Int ?? 0
-                control.controlID = value?["controlID"] as? Int ?? 0
-                control.controlName = value?["controlName"] as? String ?? ""
-                control.controlType = value?["controlType"] as? Int ?? 0
-                control.deviceID = value?["deviceID"] as? Int ?? 0
-                control.editX = value?["editX"] as? CGFloat ?? 0
-                control.editY = value?["editY"] as? CGFloat ?? 0
-                control.lastOnValue = value?["lastOnValue"] as? Int ?? 0
-                control.rotation = value?["rotation"] as? CGFloat ?? 0
-                control.scale = value?["scale"] as? CGFloat ?? 0
-                control.groupID = value?["groupID"] as? Int ?? 0
-                control.uniqueID = value?["uniqueID"] as? Int ?? 0
-                control.valueCurrent = value?["lastOnValue"] as? Int ?? 0
-                control.valueLow = value?["valueLow"] as? Int ?? 0
-                control.valueHigh = value?["valueHigh"] as? Int ?? 0
+                let control = self.interpretControl(controlDict: value)
                 
                 completion(control)
 
@@ -583,24 +569,8 @@ class databaseFirebase {
         ref.child(refPath).observe(.value, with: { (snapshot) in
             
             let value = snapshot.value as? NSDictionary
-            let control = DeviceControl()
             
-            control.groupID = value?["groupID"] as? Int ?? 0
-            control.controlDirection = value?["controlDirection"] as? Int ?? 0
-            control.controlID = value?["controlID"] as? Int ?? 0
-            control.controlName = value?["controlName"] as? String ?? ""
-            control.controlType = value?["controlType"] as? Int ?? 0
-            control.deviceID = value?["deviceID"] as? Int ?? 0
-            control.editX = value?["editX"] as? CGFloat ?? 0
-            control.editY = value?["editY"] as? CGFloat ?? 0
-            control.lastOnValue = value?["lastOnValue"] as? Int ?? 0
-            control.rotation = value?["rotation"] as? CGFloat ?? 0
-            control.scale = value?["scale"] as? CGFloat ?? 0
-            control.groupID = value?["groupID"] as? Int ?? 0
-            control.uniqueID = value?["uniqueID"] as? Int ?? 0
-            control.valueCurrent = value?["lastOnValue"] as? Int ?? 0
-            control.valueLow = value?["valueLow"] as? Int ?? 0
-            control.valueHigh = value?["valueHigh"] as? Int ?? 0
+            let control = self.interpretControl(controlDict: value)
             
             completion(control)
             
@@ -613,31 +583,34 @@ class databaseFirebase {
         return refPath
     }
     
-    func getControl(controlID: Int, completion: @escaping (DeviceControl) -> () ) {
-        
-        let refPath = "controls/\(String(describing: controlID))"
+//    func getControl(controlID: Int, completion: @escaping (DeviceControl) -> () ) {
+//        
+//        let refPath = "controls/\(String(describing: controlID))"
+//        
+//        ref.child(refPath).observeSingleEvent(of: .value, with: { (snapshot) in
+//            
+//            let value = snapshot.value as? NSDictionary
+//            
+//            let control = self.interpretControl(controlDict: value)
+//            
+//            completion(control)
+//            
+//            
+//        }) { (error) in
+//            print(error)
+//            return
+//        }
+//        
+//    }
+    
+    func getControl(deviceID: Int, controlID: Int, completion: @escaping(DeviceControl) -> () ) {
+        let refPath = "devices/\(String(describing: deviceID))/controls/\(String(describing: controlID))"
         
         ref.child(refPath).observeSingleEvent(of: .value, with: { (snapshot) in
             
             let value = snapshot.value as? NSDictionary
-            let control = DeviceControl()
-            
-            control.groupID = value?["groupID"] as? Int ?? 0
-            control.controlDirection = value?["controlDirection"] as? Int ?? 0
-            control.controlID = value?["controlID"] as? Int ?? 0
-            control.controlName = value?["controlName"] as? String ?? ""
-            control.controlType = value?["controlType"] as? Int ?? 0
-            control.deviceID = value?["deviceID"] as? Int ?? 0
-            control.editX = value?["editX"] as? CGFloat ?? 0
-            control.editY = value?["editY"] as? CGFloat ?? 0
-            control.lastOnValue = value?["lastOnValue"] as? Int ?? 0
-            control.rotation = value?["rotation"] as? CGFloat ?? 0
-            control.scale = value?["scale"] as? CGFloat ?? 0
-            control.groupID = value?["groupID"] as? Int ?? 0
-            control.uniqueID = value?["uniqueID"] as? Int ?? 0
-            control.valueCurrent = value?["lastOnValue"] as? Int ?? 0
-            control.valueLow = value?["valueLow"] as? Int ?? 0
-            control.valueHigh = value?["valueHigh"] as? Int ?? 0
+            print(snapshot)
+            let control = self.interpretControl(controlDict: value)
             
             completion(control)
             
@@ -646,76 +619,75 @@ class databaseFirebase {
             print(error)
             return
         }
-        
     }
 
     
-    func getVertex(vertexID: String, completion: @escaping (Vertex) -> () ) {
-        
-        let refPath = "vertices/\(vertexID)"
-        
-        ref.child(refPath).observeSingleEvent(of: .value, with: { (snapshot) in
-            
-            let value = snapshot.value as? NSDictionary
-            let vertex = Vertex()
-            vertex.vertexID = value?["vertexID"] as? String ?? ""
-            
-            let tx = value?["txID"] as? Int ?? 0
-            let rx = value?["rxID"] as? Int ?? 0
-            
-            self.getControl(controlID: tx) { txControl in
-                
-                vertex.tx = txControl
-                
-                self.getControl(controlID: rx) { rxControl in
-                    
-                    vertex.rx = rxControl
-                    print(vertex)
-                    
-                    completion(vertex)
-                }
-            }
-            
-            
-        })
-    }
-    
-    func getTheseVertices(controlIDCheckList: [Int], completion: @escaping (Vertex) -> () ) {
-        
-        let refPath = "vertices"
-        
-        ref.child(refPath).observeSingleEvent(of: .value, with: { (snapshot) in
-            
-            let enumerator = snapshot.children
-            
-            while let child = enumerator.nextObject() as? DataSnapshot {
-                
-                let value = child.value as? NSDictionary
-                let vertex = Vertex()
-                vertex.vertexID = value?["vertexID"] as? String ?? ""
-                
-                let tx = value?["txID"] as? Int ?? 0
-                let rx = value?["rxID"] as? Int ?? 0
-                
-                if controlIDCheckList.contains(tx) {
-                    self.getControl(controlID: tx) { txControl in
-                        
-                        vertex.tx = txControl
-                        
-                        self.getControl(controlID: rx) { rxControl in
-                            
-                            vertex.rx = rxControl
-                            print(vertex)
-                            
-                            completion(vertex)
-                        }
-                    }
-                }
-                
-            }
-        })
-    }
-    
+//    func getVertex(vertexID: String, completion: @escaping (Vertex) -> () ) {
+//        
+//        let refPath = "vertices/\(vertexID)"
+//        
+//        ref.child(refPath).observeSingleEvent(of: .value, with: { (snapshot) in
+//            
+//            let value = snapshot.value as? NSDictionary
+//            let vertex = Vertex()
+//            vertex.vertexID = value?["vertexID"] as? String ?? ""
+//            
+//            let tx = value?["txID"] as? Int ?? 0
+//            let rx = value?["rxID"] as? Int ?? 0
+//            
+//            self.getControl(controlID: tx) { txControl in
+//                
+//                vertex.tx = txControl
+//                
+//                self.getControl(controlID: rx) { rxControl in
+//                    
+//                    vertex.rx = rxControl
+//                    print(vertex)
+//                    
+//                    completion(vertex)
+//                }
+//            }
+//            
+//            
+//        })
+//    }
+//    
+//    func getTheseVertices(controlIDCheckList: [Int], completion: @escaping (Vertex) -> () ) {
+//        
+//        let refPath = "vertices"
+//        
+//        ref.child(refPath).observeSingleEvent(of: .value, with: { (snapshot) in
+//            
+//            let enumerator = snapshot.children
+//            
+//            while let child = enumerator.nextObject() as? DataSnapshot {
+//                
+//                let value = child.value as? NSDictionary
+//                let vertex = Vertex()
+//                vertex.vertexID = value?["vertexID"] as? String ?? ""
+//                
+//                let tx = value?["txID"] as? Int ?? 0
+//                let rx = value?["rxID"] as? Int ?? 0
+//                
+//                if controlIDCheckList.contains(tx) {
+//                    self.getControl(controlID: tx) { txControl in
+//                        
+//                        vertex.tx = txControl
+//                        
+//                        self.getControl(controlID: rx) { rxControl in
+//                            
+//                            vertex.rx = rxControl
+//                            print(vertex)
+//                            
+//                            completion(vertex)
+//                        }
+//                    }
+//                }
+//                
+//            }
+//        })
+//    }
+
     func watchDevice(deviceID: Int,
                      reset: @escaping () -> (), 
                      identity: @escaping (Device) -> (),
@@ -735,15 +707,7 @@ class databaseFirebase {
                     
                     let identityDictionary = child.value as? NSDictionary
                     
-                    let device = Device()
-                    device.deviceID = identityDictionary?["deviceID"] as? Int ?? 0
-                    device.active = identityDictionary?["active"] as? Bool ?? false
-                    device.authorizedUsers = identityDictionary?["authorizedUsers"] as? String ?? ""
-                    device.humanAdmin = identityDictionary?["humanAdmin"] as? Int ?? 0
-                    device.iconName = identityDictionary?["iconName"] as? String ?? ""
-                    device.ipAddress = identityDictionary?["ipAddress"] as? String ?? ""
-                    device.name = identityDictionary?["name"] as? String ?? ""
-                    device.version = identityDictionary?["version"] as? Int ?? 0
+                    let device = self.interpretDevice(identityDictionary: identityDictionary)
                     
                     identity(device)
                     
@@ -754,24 +718,7 @@ class databaseFirebase {
                     while let controlChild = controlEnumerator.nextObject() as? DataSnapshot {
                         let controlDict = controlChild.value as? NSDictionary
                         
-                        let control = DeviceControl()
-                        
-                        control.groupID = controlDict?["groupID"] as? Int ?? 0
-                        control.controlDirection = controlDict?["controlDirection"] as? Int ?? 0
-                        control.controlID = controlDict?["controlID"] as? Int ?? 0
-                        control.controlName = controlDict?["controlName"] as? String ?? ""
-                        control.controlType = controlDict?["controlType"] as? Int ?? 0
-                        control.deviceID = controlDict?["deviceID"] as? Int ?? 0
-                        control.editX = controlDict?["editX"] as? CGFloat ?? 0
-                        control.editY = controlDict?["editY"] as? CGFloat ?? 0
-                        control.lastOnValue = controlDict?["lastOnValue"] as? Int ?? 0
-                        control.rotation = controlDict?["rotation"] as? CGFloat ?? 0
-                        control.scale = controlDict?["scale"] as? CGFloat ?? 0
-                        control.groupID = controlDict?["groupID"] as? Int ?? 0
-                        control.uniqueID = controlDict?["uniqueID"] as? Int ?? 0
-                        control.valueCurrent = controlDict?["lastOnValue"] as? Int ?? 0
-                        control.valueLow = controlDict?["valueLow"] as? Int ?? 0
-                        control.valueHigh = controlDict?["valueHigh"] as? Int ?? 0
+                        let control = self.interpretControl(controlDict: controlDict)
                         
                         controls(control)
                     }
@@ -786,17 +733,18 @@ class databaseFirebase {
                         let vertex = Vertex()
                         vertex.vertexID = value?["vertexID"] as? String ?? ""
                         
-                        let tx = value?["txID"] as? Int ?? 0
-                        let rx = value?["rxID"] as? Int ?? 0
+                        let txDeviceID = value?["txDeviceID"] as? Int ?? 0
+                        let txControlID = value?["txControlID"] as? Int ?? 0
+                        let rxDeviceID = value?["rxDeviceID"] as? Int ?? 0
+                        let rxControlID = value?["rxControlID"] as? Int ?? 0
                         
-                        self.getControl(controlID: tx) { txControl in
+                        self.getControl(deviceID: txDeviceID, controlID: txControlID) { txControl in
                             
                             vertex.tx = txControl
                             
-                            self.getControl(controlID: rx) { rxControl in
+                            self.getControl(deviceID: rxDeviceID, controlID: rxControlID) { rxControl in
                                 
                                 vertex.rx = rxControl
-                                print(vertex)
                                 
                                 vertices(vertex)
                             }
@@ -809,6 +757,43 @@ class databaseFirebase {
         return refPath
     }
     
+    func interpretDevice(identityDictionary: NSDictionary?) -> Device {
+        
+        let device = Device()
+        device.deviceID = identityDictionary?["deviceID"] as? Int ?? 0
+        device.active = identityDictionary?["active"] as? Bool ?? false
+        device.authorizedUsers = identityDictionary?["authorizedUsers"] as? String ?? ""
+        device.humanAdmin = identityDictionary?["humanAdmin"] as? Int ?? 0
+        device.iconName = identityDictionary?["iconName"] as? String ?? ""
+        device.ipAddress = identityDictionary?["ipAddress"] as? String ?? ""
+        device.name = identityDictionary?["name"] as? String ?? ""
+        device.version = identityDictionary?["version"] as? Int ?? 0
+        
+        return device
+    }
+    
+    func interpretControl(controlDict: NSDictionary? ) -> DeviceControl {
+        let control = DeviceControl()
+        
+        control.groupID = controlDict?["groupID"] as? Int ?? 0
+        control.controlDirection = controlDict?["controlDirection"] as? Int ?? 0
+        control.controlID = controlDict?["controlID"] as? Int ?? 0
+        control.controlName = controlDict?["controlName"] as? String ?? ""
+        control.controlType = controlDict?["controlType"] as? Int ?? 0
+        control.deviceID = controlDict?["deviceID"] as? Int ?? 0
+        control.editX = controlDict?["editX"] as? CGFloat ?? 0
+        control.editY = controlDict?["editY"] as? CGFloat ?? 0
+        control.lastOnValue = controlDict?["lastOnValue"] as? Int ?? 0
+        control.rotation = controlDict?["rotation"] as? CGFloat ?? 0
+        control.scale = controlDict?["scale"] as? CGFloat ?? 0
+        control.groupID = controlDict?["groupID"] as? Int ?? 0
+        control.uniqueID = controlDict?["uniqueID"] as? Int ?? 0
+        control.valueCurrent = controlDict?["lastOnValue"] as? Int ?? 0
+        control.valueLow = controlDict?["valueLow"] as? Int ?? 0
+        control.valueHigh = controlDict?["valueHigh"] as? Int ?? 0
+        
+        return control
+    }
     
 }
 
