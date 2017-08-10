@@ -69,7 +69,7 @@ class databaseFirebase {
     }
     
     func deleteVertex(vertex: Vertex) {
-        
+        print("Firebase Deleting Vertex")
         ref.child("vertices").child(vertex.vertexID).removeValue()
     
     }

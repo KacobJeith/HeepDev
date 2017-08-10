@@ -122,7 +122,7 @@ class database {
             databaseRealm().deleteVertex(vertex: vertex)
         default :
             databaseFirebase().deleteVertex(vertex: vertex)
-            databaseRealm().deleteVertex(vertex: vertex)
+            //databaseRealm().deleteVertex(vertex: vertex)
             
         }
     }

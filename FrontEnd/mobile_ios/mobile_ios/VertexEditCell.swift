@@ -152,7 +152,12 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
             
         }
         
+        initVertices()
+    }
+    
+    func initVertices() {
         self.vertexList = []
+        resetVertexDictToDelete()
         
         database().getTheseVertices(controlIDCheckList: [Int](controls.keys)) { eachVertex in
             
@@ -228,7 +233,8 @@ extension VertexEditCell {
                     
                     HeepConnections().sendDeleteVertexToHeepDevice(activeVertex: thisVertex)
                     database().deleteVertex(vertex: thisVertex)
-                    
+                    self.parentTable.viewDidLoad()
+                    self.parentTable.tableView.reloadData()
                 }
                 
             }
@@ -256,6 +262,9 @@ extension VertexEditCell {
         
         HeepConnections().sendSetVertexToHeepDevice(activeVertex: activeVertex)
         
+        self.parentTable.viewDidLoad()
+        self.parentTable.tableView.reloadData()
+        
     }
     
     
@@ -265,7 +274,7 @@ extension VertexEditCell {
             if let sublayerName = sublayer.name {
                 
                 for vertexName in vertexDictToDelete.keys {
-                    
+                    print(vertexName)
                     if sublayerName == vertexName && vertexDictToDelete[vertexName] == false {
                         
                         checkVertexPositionAndResolve(gesture: gesture,
@@ -1011,7 +1020,7 @@ extension VertexEditCell {
     func resetVertexDictToDelete() {
         vertexDictToDelete = [:]
         for (controlUniqueID, control) in controls {
-            for vertex in control.vertexList {
+            for vertex in vertexList {
                 vertexDictToDelete[vertex.vertexID] = false
             }
         }
