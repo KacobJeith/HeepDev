@@ -68,9 +68,13 @@ class EditRoomView: UITableViewController {
         })
         
         //Control Notifications
-        self.referenceList.append(database().watchAllMyControls() { controlID in
+        self.referenceList.append(database().watchAllMyDevices() { deviceID in
             
-            self.referenceList.append(database().watchControl(controlID: controlID) { control in
+            self.referenceList.append(database().watchDevice(deviceID: deviceID, identity: { device in
+                
+                print(device)
+                
+            }, controls: { control in
                 
                 if control.groupID == self.groupID {
                     
@@ -91,9 +95,13 @@ class EditRoomView: UITableViewController {
                 
                 self.reloadView()
                 
-            })
-        })
+            }, vertices: { vertex in
+                
+                print(vertex)
+                
+            }))
         
+        })
     }
     
     deinit{

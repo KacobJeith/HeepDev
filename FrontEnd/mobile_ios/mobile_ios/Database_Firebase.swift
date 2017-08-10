@@ -22,7 +22,7 @@ class databaseFirebase {
         }
         
         ref.child("devices/\(String(describing: device.deviceID))/identity").setValue(device.toDict())
-        ref.child("users/\(userID)/devices").setValue([String(describing: device.deviceID): true])
+        ref.child("users/\(userID)/devices/\(String(describing: device.deviceID))").setValue([String(describing: device.deviceID): true])
         
     }
     
@@ -496,14 +496,14 @@ class databaseFirebase {
         return refPath
     }
     
-    func watchAllMyControls(completion: @escaping (Int) -> () ) -> String? {
+    func watchAllMyDevices(completion: @escaping (Int) -> () ) -> String? {
         
         guard let userID = Auth.auth().currentUser?.uid else {
             print("You must be logged in to perform this action")
             return nil
         }
         
-        let refPath = "users/\(userID)/controls"
+        let refPath = "users/\(userID)/devices"
         
         ref.child(refPath).observe(.value, with: { (snapshot) in
             
@@ -716,26 +716,92 @@ class databaseFirebase {
         })
     }
     
-    func watchDevice(deviceID: Int, completion: @escaping (Device) -> ()) -> String {
+    func watchDevice(deviceID: Int,
+                     identity: @escaping (Device) -> (),
+                     controls: @escaping (DeviceControl) -> (),
+                     vertices: @escaping (Vertex) -> ()) -> String {
         
         let refPath = "devices/\(String(describing: deviceID))"
         
-        ref.child(refPath).observeSingleEvent(of: .value, with: { (snapshot) in
-            
-            let value = snapshot.value as? NSDictionary
-            let device = Device()
-            device.deviceID = value?["deviceID"] as? Int ?? 0
-            device.active = value?["active"] as? Bool ?? false
-            device.authorizedUsers = value?["authorizedUsers"] as? String ?? ""
-            device.humanAdmin = value?["humanAdmin"] as? Int ?? 0
-            device.iconName = value?["iconName"] as? String ?? ""
-            device.ipAddress = value?["ipAddress"] as? String ?? ""
-            device.name = value?["name"] as? String ?? ""
-            device.version = value?["version"] as? Int ?? 0
-            
-            completion(device)
+        ref.child(refPath).observe(.value, with: { (snapshot) in
             
             
+            let enumerator = snapshot.children
+            
+            while let child = enumerator.nextObject() as? DataSnapshot {
+                if child.key == "identity" {
+                    
+                    let identityDictionary = child.value as? NSDictionary
+                    
+                    let device = Device()
+                    device.deviceID = identityDictionary?["deviceID"] as? Int ?? 0
+                    device.active = identityDictionary?["active"] as? Bool ?? false
+                    device.authorizedUsers = identityDictionary?["authorizedUsers"] as? String ?? ""
+                    device.humanAdmin = identityDictionary?["humanAdmin"] as? Int ?? 0
+                    device.iconName = identityDictionary?["iconName"] as? String ?? ""
+                    device.ipAddress = identityDictionary?["ipAddress"] as? String ?? ""
+                    device.name = identityDictionary?["name"] as? String ?? ""
+                    device.version = identityDictionary?["version"] as? Int ?? 0
+                    
+                    identity(device)
+                    
+                } else if child.key == "controls" {
+                    
+                    let controlEnumerator = child.children
+                    
+                    while let controlChild = controlEnumerator.nextObject() as? DataSnapshot {
+                        let controlDict = controlChild.value as? NSDictionary
+                        
+                        let control = DeviceControl()
+                        
+                        control.groupID = controlDict?["groupID"] as? Int ?? 0
+                        control.controlDirection = controlDict?["controlDirection"] as? Int ?? 0
+                        control.controlID = controlDict?["controlID"] as? Int ?? 0
+                        control.controlName = controlDict?["controlName"] as? String ?? ""
+                        control.controlType = controlDict?["controlType"] as? Int ?? 0
+                        control.deviceID = controlDict?["deviceID"] as? Int ?? 0
+                        control.editX = controlDict?["editX"] as? CGFloat ?? 0
+                        control.editY = controlDict?["editY"] as? CGFloat ?? 0
+                        control.lastOnValue = controlDict?["lastOnValue"] as? Int ?? 0
+                        control.rotation = controlDict?["rotation"] as? CGFloat ?? 0
+                        control.scale = controlDict?["scale"] as? CGFloat ?? 0
+                        control.groupID = controlDict?["groupID"] as? Int ?? 0
+                        control.uniqueID = controlDict?["uniqueID"] as? Int ?? 0
+                        control.valueCurrent = controlDict?["lastOnValue"] as? Int ?? 0
+                        control.valueLow = controlDict?["valueLow"] as? Int ?? 0
+                        control.valueHigh = controlDict?["valueHigh"] as? Int ?? 0
+                        
+                        controls(control)
+                    }
+                    
+                } else if child.key == "vertices" {
+                    
+                    let vertexEnumerator = child.children
+                    
+                    while let vertexChild = vertexEnumerator.nextObject() as? DataSnapshot {
+                        let value = vertexChild.value as? NSDictionary
+                        
+                        let vertex = Vertex()
+                        vertex.vertexID = value?["vertexID"] as? String ?? ""
+                        
+                        let tx = value?["txID"] as? Int ?? 0
+                        let rx = value?["rxID"] as? Int ?? 0
+                        
+                        self.getControl(controlID: tx) { txControl in
+                            
+                            vertex.tx = txControl
+                            
+                            self.getControl(controlID: rx) { rxControl in
+                                
+                                vertex.rx = rxControl
+                                print(vertex)
+                                
+                                vertices(vertex)
+                            }
+                        }
+                    }
+                }
+            }
         })
         
         return refPath

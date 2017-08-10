@@ -72,17 +72,17 @@ class DeviceSummaryViewController: UITableViewController {
     
     func initNotifications() {
         
-        self.referenceList.append(database().watchDevice(deviceID: deviceID) { device in
-            
-            self.thisDevice = device
-            self.resetForDeviceUpdate()
-            
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
-                
-                self.tableView.reloadData()
-                self.viewDidLoad()
-            }
-        })
+//        self.referenceList.append(database().watchDevice(deviceID: deviceID) { device in
+//            
+//            self.thisDevice = device
+//            self.resetForDeviceUpdate()
+//            
+//            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
+//                
+//                self.tableView.reloadData()
+//                self.viewDidLoad()
+//            }
+//        })
         
         //Control Notifications
         self.referenceList.append(database().watchControlsForDevice(deviceID: deviceID, reset: {
@@ -265,7 +265,7 @@ class DeviceSummaryViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return self.cells[section].count
+        return 1//self.cells[section].count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
