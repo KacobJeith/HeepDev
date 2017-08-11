@@ -30,22 +30,13 @@ class HeepConnections {
         }
     }
     
-    public func sendValueToHeepDevice(deviceID: Int, controlID: Int, currentValue: Int = -1) {
+    public func sendValueToHeepDevice(deviceID: Int, controlID: Int, currentValue: Int) {
     
-        var newVal = -1
-       
         database().getDeviceIdentity(deviceID: deviceID) { thisDevice in
             
             let thisDeviceIP = thisDevice.ipAddress
             
-//            if currentValue == -1 {
-//                newVal = activeControl.valueCurrent
-//            }
-//            else{
-//                newVal = currentValue
-//            }
-//            
-            let message = HAPIMemoryParser().BuildSetValueCOP(controlID: controlID, newValue: newVal)
+            let message = HAPIMemoryParser().BuildSetValueCOP(controlID: controlID, newValue: currentValue)
             print("Sending: \(message) to Heep Device at to \(thisDeviceIP)")
             self.ConnectToHeepDevice(ipAddress: thisDeviceIP, printErrors: false, message: message)
             

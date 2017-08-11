@@ -966,13 +966,22 @@ extension VertexEditCell {
             print("Could not retrieve the control from database")
             return
         }
+        
+        var newValue = 0
+        
+        if (thisControl.valueCurrent == 0) {
+            newValue = 1
+        }
+        
         let updateControl = DeviceControl(value: thisControl)
-        updateControl.valueCurrent = toggleDevice(control: thisControl)
+        updateControl.valueCurrent = newValue
+        
+        print("Current: \(thisControl.valueCurrent), New: \(updateControl.valueCurrent)")
         
         DispatchQueue.global().async {
             HeepConnections().sendValueToHeepDevice(deviceID: thisControl.deviceID,
                                                     controlID: thisControl.controlID,
-                                                    currentValue: toggleDevice(control: thisControl))
+                                                    currentValue: updateControl.valueCurrent)
         }
         
         let updateGroup = GroupPerspective(value: thisGroup)

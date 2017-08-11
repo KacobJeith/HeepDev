@@ -102,7 +102,7 @@ func toggleDevice(control: DeviceControl ) -> Int{
     print(control)
     
     //If control type is a switch or binary on/off
-    if control.controlType == 0{
+    if control.controlType == 0 {
         return 1 - control.valueCurrent
     }
     
@@ -215,6 +215,8 @@ func getUserIcon(iconURL: String) -> NSData {
     
     return data! as NSData
 }
+
+
 
 
 func convertIntToByteArray(integer: Int) -> [UInt8] {

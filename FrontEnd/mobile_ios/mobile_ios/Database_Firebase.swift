@@ -32,7 +32,7 @@ class databaseFirebase {
     }
     
     func updateDeviceControl(control: DeviceControl) {
-        
+        print("UPDATING WITH: \(control)")
         ref.child("devices/\(String(describing: control.deviceID))/controls/\(String(describing: control.controlID))").setValue(control.toDict())
         
     }
