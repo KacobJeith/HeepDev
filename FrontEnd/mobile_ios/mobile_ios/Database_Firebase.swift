@@ -8,7 +8,7 @@
 
 import Foundation
 import Firebase
-
+import FirebaseStorageUI
 
 var ref: DatabaseReference! = Database.database().reference()
 
@@ -564,11 +564,6 @@ class databaseFirebase {
     
     func watchControlsForDevice(deviceID: Int, reset: @escaping () -> (), completion: @escaping (DeviceControl) -> ()) -> String? {
         
-        guard let userID = Auth.auth().currentUser?.uid else {
-            print("You must be logged in to perform this action")
-            return nil
-        }
-        
         let refPath = "devices/\(String(describing: deviceID))/controls"
         
         ref.child(refPath).observe(.value, with: { (snapshot) in
@@ -844,6 +839,28 @@ class databaseFirebase {
         control.valueCurrent = controlDict?["valueCurrent"] as? Int ?? 0
         
         return control
+    }
+    
+    func downloadImage(storagePath: String) -> UIImageView {
+        
+        let reference = Storage.storage().reference().child(storagePath)
+        let imageView = UIImageView()
+        imageView.sd_setImage(with: reference, placeholderImage: #imageLiteral(resourceName: "female"))
+        print("FIREBASE REF: \(reference)")
+        return imageView
+    }
+    
+    func downloadMyProfileImage() -> UIImageView {
+        
+        guard let userID = Auth.auth().currentUser?.uid else {
+            print("You must be logged in to perform this action")
+            return UIImageView()
+        }
+        
+        let reference = Storage.storage().reference().child("users/\(userID)/profile.png")
+        let imageView = UIImageView()
+        imageView.sd_setImage(with: reference, placeholderImage: #imageLiteral(resourceName: "female"))
+        return imageView
     }
     
 }

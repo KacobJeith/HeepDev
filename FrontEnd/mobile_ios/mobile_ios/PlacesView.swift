@@ -16,9 +16,11 @@ class PlacesView: UIViewController {
     var colors = [UIColor]()
     var placeNames = [Int : String]()
     var places = [Place]()
+    var userButton = UIBarButtonItem()
     
     init() {
         super.init(nibName: nil, bundle: nil)
+        self.getActiveUserIcon()
         self.initNotification()
     }
     
@@ -34,6 +36,7 @@ class PlacesView: UIViewController {
     }
     
     func setupNavBar() {
+        
         self.title = "My Heep Zones"
         self.view.backgroundColor = .white
         self.navigationController?.isToolbarHidden = false
@@ -51,7 +54,7 @@ class PlacesView: UIViewController {
                                    target: self,
                                    action: #selector(openDeviceTable))
         
-        self.navigationItem.rightBarButtonItem = getActiveUserIcon()
+        self.navigationItem.rightBarButtonItem = self.userButton
         
         self.toolbarItems = [addPlace, spacer, search, spacer, info]
     }
@@ -256,37 +259,32 @@ extension PlacesView {
         navigationController?.pushViewController(AccountView(), animated: false)
     }
     
-    func getActiveUserIcon() -> UIBarButtonItem {
+    func getActiveUserIcon() {
         
         database().getMyHeepID() { heepID in
             
-            database().getUserIcon(heepID: heepID) {
-                print("DONE DOWNLOADING")
-                self.reloadView()
-            }
+            let tap = UITapGestureRecognizer(target: self, action: #selector(self.userLogin))
+            
+            let userButton = database().downloadImage(storagePath: "users/\(String(describing: heepID!))/profile.png")
+                
+            userButton.frame = CGRect(x: 0, y: 0,
+                                      width: (self.navigationController?.navigationBar.bounds.height)!,
+                                      height: (self.navigationController?.navigationBar.bounds.height)!)
+            
+    
+            userButton.layer.borderWidth = 1
+            userButton.layer.borderColor = UIColor.white.cgColor
+            userButton.layer.shadowColor = UIColor.lightGray.cgColor
+            userButton.layer.shadowOffset = CGSize(width: 1, height: 1)
+            userButton.layer.shadowRadius = 2
+            userButton.layer.cornerRadius = 0.5 * userButton.bounds.size.width
+            userButton.clipsToBounds = true
+            userButton.addGestureRecognizer(tap)
+            
+            self.userButton = UIBarButtonItem(customView: userButton)
+            
+            self.reloadView()
         }
-        
-        let userImage = openLocalIcon()
-        
-        
-        let userButton = UIButton(frame: CGRect(x: 0, y: 0,
-                                                width: (navigationController?.navigationBar.bounds.height)!,
-                                                height: (navigationController?.navigationBar.bounds.height)!))
-        
-        userButton.imageView?.contentMode = .scaleAspectFit
-        userButton.setImage(userImage, for: .normal)
-        userButton.layer.borderWidth = 1
-        userButton.layer.borderColor = UIColor.white.cgColor
-        userButton.layer.shadowColor = UIColor.lightGray.cgColor
-        userButton.layer.shadowOffset = CGSize(width: 1, height: 1)
-        userButton.layer.shadowRadius = 2
-        userButton.layer.cornerRadius = 0.5 * userButton.bounds.size.width
-        userButton.clipsToBounds = true
-        userButton.addTarget(self,
-                             action: #selector(userLogin),
-                             for: .primaryActionTriggered)
-        
-        return UIBarButtonItem(customView: userButton)
         
     }
     

@@ -531,6 +531,9 @@ class database {
         databaseFirebase().detachObserver(referencePath: referencePath)
     }
     
-    
+    func downloadImage(storagePath: String) -> UIImageView {
+        
+        return databaseFirebase().downloadImage(storagePath: storagePath)
+    }
     
 }
