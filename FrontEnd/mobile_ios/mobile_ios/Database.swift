@@ -17,12 +17,13 @@ class database {
     func writeDevice(device: Device) {
         
         switch interface {
-        case "both" :
-            databaseRealm().writeDevice(device: device)
+        case "firebase" :
             databaseFirebase().writeDevice(device: device)
             
-        default :
+        case "realm" :
             databaseRealm().writeDevice(device: device)
+        default :
+            databaseFirebase().writeDevice(device: device)
         }
     }
     
@@ -48,7 +49,7 @@ class database {
             databaseRealm().writeDevice(device: device)
         default :
             databaseFirebase().writeDevice(device: device)
-            databaseRealm().writeDevice(device: device)
+//            databaseRealm().writeDevice(device: device)
         }
     }
     
@@ -59,7 +60,6 @@ class database {
         case "realm" :
             databaseRealm().updateDeviceControl(control: control)
         default :
-            databaseRealm().updateDeviceControl(control: control)
             databaseFirebase().updateDeviceControl(control: control)
         }
         
@@ -68,36 +68,36 @@ class database {
     func writeDeviceControl(control: DeviceControl) {
         
         databaseFirebase().writeDeviceControl(control: control)
-        databaseRealm().updateDeviceControl(control: control)
+        //databaseRealm().updateDeviceControl(control: control)
     }
     
     func updateDeviceControlList(deviceID: Int) {
         
-        switch interface {
-        default :
-            databaseRealm().updateDeviceControlList(deviceID: deviceID)
-        }
+//        switch interface {
+//        default :
+//            databaseRealm().updateDeviceControlList(deviceID: deviceID)
+//        }
         
     }
     
     func writeVertex(vertex: Vertex) {
         switch interface {
-        case "both" :
+        case "realm" :
             databaseRealm().writeVertex(vertex: vertex)
+        case "firebase" :
             databaseFirebase().writeVertex(vertex: vertex)
-            
         default :
-            databaseRealm().writeVertex(vertex: vertex)
+            databaseFirebase().writeVertex(vertex: vertex)
         }
         
     }
     
     func updateVertexList(tx: DeviceControl) {
-        
-        switch interface {
-        default :
-            databaseRealm().updateVertexList(tx: tx)
-        }
+//        
+//        switch interface {
+//        default :
+//            databaseRealm().updateVertexList(tx: tx)
+//        }
     }
     
     func flushControlVertices(controlUniqueID: Int) {
@@ -114,6 +114,7 @@ class database {
     }
     
     func deleteVertex(vertex: Vertex) {
+        print("DECIDING")
         
         switch interface {
         case "firebase" :
@@ -130,18 +131,19 @@ class database {
     func updateDeviceNameAndIcon(device: Device, deviceName: String, iconName: String) {
         
         switch interface {
-        case "both" :
+        case "firebase" :
             databaseFirebase().updateDeviceNameAndIcon(device: device,
                                                        deviceName: deviceName,
                                                        iconName: iconName)
+        case "realm" :
             
             databaseRealm().updateDeviceNameAndIcon(device: device,
                                                     deviceName: deviceName,
                                                     iconName: iconName)
         default :
-            databaseRealm().updateDeviceNameAndIcon(device: device,
-                                                    deviceName: deviceName,
-                                                    iconName: iconName)
+            databaseFirebase().updateDeviceNameAndIcon(device: device,
+                                                       deviceName: deviceName,
+                                                       iconName: iconName)
         }
         
     }
@@ -181,7 +183,7 @@ class database {
         case "realm" :
             databaseRealm().updateGroup(update: update)
         default :
-            databaseRealm().updateGroup(update: update)
+//            databaseRealm().updateGroup(update: update)
             databaseFirebase().updateGroup(group: update)
         }
         
@@ -195,7 +197,7 @@ class database {
         case "realm" :
             databaseRealm().updateGroupContext(update: update)
         default :
-            databaseRealm().updateGroupContext(update: update)
+//            databaseRealm().updateGroupContext(update: update)
             databaseFirebase().updateGroupContext(context: update)
         }
     }
@@ -258,14 +260,6 @@ class database {
         }
     }
     
-    func watchPlaces(callback: @escaping () -> Void = {}) -> NotificationToken {
-        
-        switch interface {
-        default :
-            return databaseRealm().watchPlaces(callback: callback)
-        }
-    }
-    
     func watchPlaces(completion: @escaping () -> ()) -> String? {
         
         switch interface {
@@ -287,14 +281,6 @@ class database {
         
     }
     
-    func getPlaceAsync(context: PlacePerspective, callback: @escaping () -> Void = {}) {
-        
-        switch interface {
-        default :
-            databaseRealm().getPlaceAsync(realmPath: context.realmPath, callback: callback)
-        }
-    }
-    
     func getGroup(context: GroupPerspective) -> Group? {
         
         return databaseRealm().getGroup(path: context.realmPath)
@@ -305,39 +291,7 @@ class database {
         databaseFirebase().getGroup(context: context, completion: completion)
     }
     
-    func getGroupContext(groupID: Int) -> GroupPerspective? {
-        
-        switch interface {
-        default :
-            return databaseRealm().getGroupContext(groupID: groupID)
-        }
-        
-    }
-    
-    func getGroupAsync(context: GroupPerspective, callback: @escaping () -> Void = {}) {
-        
-        switch interface {
-        default :
-            databaseRealm().getGroupAsync(realmPath: context.realmPath, callback: callback)
-        }
-    }
-    
-    func watchGroup(groupID: Int, callback: @escaping () -> Void = {}) -> NotificationToken? {
-        
-        switch interface {
-        default :
-            return databaseRealm().watchGroup(groupID: groupID, callback: callback)
-        }
-    }
-    
-    func watchGroupCotext(groupID: Int, callback: @escaping () -> Void = {}) -> NotificationToken? {
-        
-        switch interface {
-        default :
-            return databaseRealm().watchGroupContext(groupID: groupID, callback: callback)
-        }
-    }
-    
+
     func watchGroup(context: GroupPerspective, completion: @escaping (Group) -> () ) -> String {
         return databaseFirebase().watchGroup(context: context, completion: completion)
     }
@@ -346,33 +300,10 @@ class database {
         return databaseFirebase().watchGroupContext(groupID: groupID, completion: completion)
     }
     
-    func watchVertices(callback: @escaping () -> Void = {}) -> NotificationToken? {
-        
-        switch interface {
-        default :
-            return databaseRealm().watchVertices(callback: callback)
-        }
-    }
-    
-    func watchControls(callback: @escaping () -> Void = {}) -> NotificationToken? {
-        
-        switch interface {
-        default :
-            return databaseRealm().watchControls(callback: callback)
-        }
-        
-    }
-    
     func watchAllMyDevices(completion: @escaping (Int) -> () ) -> String? {
         return databaseFirebase().watchAllMyDevices(completion: completion)
     }
-    
-    func watchDevice(deviceID: Int, callback: @escaping () -> Void = {}) -> NotificationToken? {
-        
-        return databaseRealm().watchDevice(deviceID: deviceID, callback: callback)
-        
-    }
-    
+
     func watchControlsForDevice(deviceID: Int, reset: @escaping () -> (), completion: @escaping (DeviceControl) -> ()) -> String? {
         return databaseFirebase().watchControlsForDevice(deviceID: deviceID, reset: reset, completion: completion)
     }
@@ -428,6 +359,10 @@ class database {
         
     }
     
+    func getDeviceIdentity(deviceID: Int, identity: @escaping (Device) -> () ) {
+        databaseFirebase().getDeviceIdentity(deviceID: deviceID, identity: identity)
+    }
+    
     func getActiveDevices() -> [Device] {
         
         switch interface {
@@ -442,6 +377,12 @@ class database {
         default :
             return databaseRealm().getDeviceControl(uniqueID: uniqueID)
         }
+    }
+    
+    func getControl(deviceID: Int, controlID: Int, completion: @escaping(DeviceControl) -> () ) {
+        
+        databaseFirebase().getControl(deviceID: deviceID, controlID: controlID, completion: completion )
+        
     }
     
     func getDeviceControlsInGroup(groupID: Int) -> [DeviceControl] {
@@ -522,12 +463,7 @@ class database {
     }
     
     func resetActiveDevices() {
-        
-        switch interface {
-        default :
-            return databaseRealm().resetActiveDevices()
-        }
-        
+        databaseFirebase().resetActiveDevices()
     }
     
     func loginUser(email: String, password: String, callback: @escaping () -> Void = {}) {

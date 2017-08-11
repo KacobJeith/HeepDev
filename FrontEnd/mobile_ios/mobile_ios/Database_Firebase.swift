@@ -68,16 +68,22 @@ class databaseFirebase {
         
         ref.child("vertices").queryOrdered(byChild:"txID").queryEqual(toValue: controlUniqueID).observe(.value, with: { snapshot in
             
-            print("SNAPSHOT: \(snapshot)")
+            
             snapshot.ref.removeValue()
             
         })
     }
     
     func deleteVertex(vertex: Vertex) {
-        print("Firebase Deleting Vertex")
-        ref.child("vertices").child(vertex.vertexID).removeValue()
-    
+        guard let txDeviceID = vertex.tx?.deviceID else {
+            print("Failed to grab tx device ")
+            return
+        }
+        
+        let path = "devices/\(String(describing: txDeviceID))/vertices/\(vertex.vertexID)"
+        
+        ref.child(path).removeValue()
+        
     }
     
     func createNewPlace(place: PlacePerspective = PlacePerspective()) {
@@ -528,6 +534,34 @@ class databaseFirebase {
         return refPath
     }
     
+    func getAllMyDevices(completion: @escaping (Int) -> () ) {
+        
+        guard let userID = Auth.auth().currentUser?.uid else {
+            print("You must be logged in to perform this action")
+            return
+        }
+        
+        let refPath = "users/\(userID)/devices"
+        
+        ref.child(refPath).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            let enumerator = snapshot.children
+            
+            while let child = enumerator.nextObject() as? DataSnapshot {
+                
+                if let id = Int(child.key) {
+                    completion(id)
+                }
+            }
+            
+            
+        }) { (error) in
+            print(error)
+            return
+        }
+        
+    }
+    
     func watchControlsForDevice(deviceID: Int, reset: @escaping () -> (), completion: @escaping (DeviceControl) -> ()) -> String? {
         
         guard let userID = Auth.auth().currentUser?.uid else {
@@ -600,6 +634,24 @@ class databaseFirebase {
             return
         }
     }
+    
+    func resetActiveDevices() {
+        print("Resetting active")
+        
+        self.getAllMyDevices(completion: { deviceID in
+            
+            self.getDevice(deviceID: deviceID, reset: { }, identity: { device in
+                print(device)
+                
+                let updateDevice = Device(value: device)
+                updateDevice.active = false
+                
+                self.writeDevice(device: updateDevice)
+                
+            }, controls: {_ in }, vertices: {_ in })
+        
+        })
+    }
 
     func getDevice(deviceID: Int,
                      reset: @escaping () -> (), 
@@ -668,6 +720,20 @@ class databaseFirebase {
         })
         
         return refPath
+    }
+    
+    func getDeviceIdentity(deviceID: Int, identity: @escaping (Device) -> ()) {
+        let refPath = "devices/\(String(describing: deviceID))/identity"
+        
+        ref.child(refPath).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            let identityDictionary = snapshot.value as? NSDictionary
+            
+            let device = self.interpretDevice(identityDictionary: identityDictionary)
+            
+            identity(device)
+            
+        })
     }
     
     func watchDevice(deviceID: Int,

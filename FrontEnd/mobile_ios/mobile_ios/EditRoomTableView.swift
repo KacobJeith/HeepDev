@@ -16,7 +16,7 @@ class EditRoomView: UITableViewController {
     var thisGroup = GroupPerspective()
     var thisGroupControls = [Int: DeviceControl]()
     var unassignedControls = [Int: DeviceControl]()
-    var vertices = [String: Vertex]()
+    var vertices = [Int: [String: Vertex]]()
     
     init(groupID: Int, groupName: String) {
         
@@ -71,9 +71,11 @@ class EditRoomView: UITableViewController {
         //Control Notifications
         self.referenceList.append(database().watchAllMyDevices() { deviceID in
             
-            self.referenceList.append(database().watchDevice(deviceID: deviceID, reset: {}, identity: { device in
+            self.referenceList.append(database().watchDevice(deviceID: deviceID, reset: {
                 
-                //print(device)
+                self.vertices[deviceID] = [:]
+                
+            }, identity: { device in
                 
             }, controls: { control in
                 
@@ -101,7 +103,7 @@ class EditRoomView: UITableViewController {
                 if vertex.tx?.groupID == self.groupID {
                     if vertex.rx?.groupID == self.groupID {
                         
-                        self.vertices[vertex.vertexID] = vertex
+                        self.vertices[deviceID]?[vertex.vertexID] = vertex
                         self.reloadView()
                     }
                 }
@@ -147,6 +149,14 @@ class EditRoomView: UITableViewController {
             
         case 1 :
             
+            var flattenedVertices = [String : Vertex]()
+            
+            for (_, thisDeviceVertexList) in vertices {
+                for (thisVertexKey, thisVertex) in thisDeviceVertexList {
+                    flattenedVertices[thisVertexKey] = thisVertex
+                }
+            }
+            
             let bounds = self.navigationController!.navigationBar.bounds
             
             let editFrame = CGRect(x: 0,
@@ -157,7 +167,7 @@ class EditRoomView: UITableViewController {
             let cell = VertexEditCell(cellFrame: editFrame,
                                       groupContext: thisGroup,
                                       assignedControls: thisGroupControls,
-                                      vertices: self.vertices)
+                                      vertices: flattenedVertices)
                                                   
             cell.parentTable = self
             

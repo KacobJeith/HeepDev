@@ -28,16 +28,16 @@ class HAPIMemoryParser {
         return entireArray
     }
     
-    public func BuildSetVertexCOP(vertex: Vertex) -> [UInt8] {
+    public func BuildSetVertexCOP(vertex: Vertex, ipAddress: String) -> [UInt8] {
         let COP = UInt8(0x0C)
-        let packet = prepareVertexPacket(vertex: vertex)
+        let packet = prepareVertexPacket(vertex: vertex, ipAddress: ipAddress)
         let entireArray = packageCOP(COP: COP, packet: packet)
         return entireArray
     }
     
-    public func BuildDeleteVertexCOP(vertex: Vertex) -> [UInt8] {
+    public func BuildDeleteVertexCOP(vertex: Vertex, ipAddress: String) -> [UInt8] {
         let COP = UInt8(0x0D)
-        let packet = prepareVertexPacket(vertex: vertex)
+        let packet = prepareVertexPacket(vertex: vertex, ipAddress: ipAddress)
         let entireArray = packageCOP(COP: COP, packet: packet)
         return entireArray
     }
@@ -55,7 +55,7 @@ class HAPIMemoryParser {
         return entireArray
     }
     
-    func prepareVertexPacket(vertex: Vertex) -> [UInt8] {
+    func prepareVertexPacket(vertex: Vertex, ipAddress: String) -> [UInt8] {
         
         var packet = [UInt8]()
         let txDeviceID = GetDeviceIDBytesFromInt(deviceID: (vertex.tx?.deviceID)!)
@@ -63,13 +63,7 @@ class HAPIMemoryParser {
         let txControlID = (vertex.tx?.controlID)!
         let rxControlID = (vertex.rx?.controlID)!
         
-        guard let rxDevice = database().getDevice(deviceID: (vertex.rx?.deviceID)!) else {
-            print("could not find rx device")
-            return [UInt8]()
-            
-        }
-        
-        let rxIPAddress = IPStringToByteArray(IPString: rxDevice.ipAddress)
+        let rxIPAddress = IPStringToByteArray(IPString: ipAddress)
         
         packet.append(contentsOf: txDeviceID)
         packet.append(contentsOf: rxDeviceID)
@@ -244,29 +238,21 @@ class HAPIMemoryParser {
         let txControlID = dump[index + 4]
         let rxControlID = dump[index + 5]
         
-        let txControl = database().getDeviceControl(uniqueID: generateUniqueControlID(deviceID: txDeviceID, controlID: txControlID))
-        let rxControl = database().getDeviceControl(uniqueID: generateUniqueControlID(deviceID: rxDeviceID, controlID: rxControlID))
-        
-        let newVertex = Vertex()
-        newVertex.rx = rxControl
-        newVertex.tx = txControl
-        newVertex.vertexID = nameVertex(tx: txControl, rx: rxControl)
-        
-        let existingVertexCheck = database().getVertex(vertexID: newVertex.vertexID)
-        
-        if existingVertexCheck == nil && txControl != nil && rxControl != nil {
+        database().getControl(deviceID: txDeviceID, controlID: Int(txControlID)) { txControl in
             
-            database().writeVertex(vertex: newVertex)
-            
-            
+            database().getControl(deviceID: rxDeviceID, controlID: Int(txControlID)) { rxControl in
+                
+                let newVertex = Vertex()
+                newVertex.rx = rxControl
+                newVertex.tx = txControl
+                newVertex.vertexID = nameVertex(tx: txControl, rx: rxControl)
+                
+                database().writeVertex(vertex: newVertex)
+                
+            }
         }
         
-        if txControl != nil {
-            database().updateVertexList(tx: txControl!)
-        }
     }
-    
-    
     
     func readIPAddress(dump: [UInt8], index: Int) -> String {
         return String(Int(dump[index])) + "." + String(Int(dump[index + 1])) + "." + String(Int(dump[index + 2])) + "." + String(Int(dump[index + 3]))
@@ -281,14 +267,13 @@ class HAPIMemoryParser {
         let deviceName = GetStringFromByteArrayIndices(dump: dump, indexStart: index, indexFinish: index + packetSize - 1)
         
         // Resolve Addition to device array (masterState)
-        guard let thisDevice = database().getDevice(deviceID: deviceID) else {
-            print("We haven't seen this device yet...")
-            return
+        database().getDeviceIdentity(deviceID: deviceID) { thisDevice in
+            
+            database().updateDeviceNameAndIcon(device: thisDevice,
+                                               deviceName: deviceName,
+                                               iconName: SuggestIconFromName(name: deviceName))
+
         }
-        
-        database().updateDeviceNameAndIcon(device: thisDevice,
-                                           deviceName: deviceName,
-                                           iconName: SuggestIconFromName(name: deviceName))
         
         
     }    

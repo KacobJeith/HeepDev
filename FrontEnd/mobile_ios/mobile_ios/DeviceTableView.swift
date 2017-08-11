@@ -65,7 +65,7 @@ class DeviceTableViewController: UITableViewController {
     }
     
     func reloadView() {
-        print("RELOADING")
+        
         self.viewDidLoad()
         self.tableView.reloadData()
     }

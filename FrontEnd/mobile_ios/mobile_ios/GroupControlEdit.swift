@@ -118,8 +118,6 @@ extension GroupControlEdit {
         
         database().updateGroupContext(update: updateContext)
         
-        print(updateContext.selectedControl)
-        
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {

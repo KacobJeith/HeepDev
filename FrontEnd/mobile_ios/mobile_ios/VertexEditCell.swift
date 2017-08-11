@@ -136,16 +136,16 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         
         return
         
-        guard let groupContext = database().getGroup(context: thisGroup) else {
-            print("Could not retrieve shared group context to grab the image")
-            return
-        }
+//        guard let groupContext = database().getGroup(context: thisGroup) else {
+//            print("Could not retrieve shared group context to grab the image")
+//            return
+//        }
         
-        imageView.image = UIImage(data: groupContext.imageData as Data)
-        imageView.contentMode = .scaleAspectFit
-        imageView.tag = 0
-        cellView.addSubview(imageView)
-        
+//        imageView.image = UIImage(data: groupContext.imageData as Data)
+//        imageView.contentMode = .scaleAspectFit
+//        imageView.tag = 0
+//        cellView.addSubview(imageView)
+//        
     }
     
     func addControlsAndVertices() {
@@ -233,7 +233,7 @@ extension VertexEditCell {
             if vertex.value == true {
                 
                 if let thisVertex = vertexList[vertex.key] {
-            
+                    
                     HeepConnections().sendDeleteVertexToHeepDevice(activeVertex: thisVertex)
                     database().deleteVertex(vertex: thisVertex)
                     self.parentTable.viewDidLoad()
@@ -277,7 +277,7 @@ extension VertexEditCell {
             if let sublayerName = sublayer.name {
                 
                 for vertexName in vertexDictToDelete.keys {
-                    print(vertexName)
+                    
                     if sublayerName == vertexName && vertexDictToDelete[vertexName] == false {
                         
                         checkVertexPositionAndResolve(gesture: gesture,
@@ -297,7 +297,6 @@ extension VertexEditCell {
         
         if let check = sublayer.accessibilityPath?.contains(position) {
             if check == true {
-                print("ACTUAL: TRUE")
                 
                 vertexDictToDelete[vertexName] = true
                 
@@ -434,7 +433,6 @@ extension VertexEditCell {
             print("No Tag")
             return
         }
-        
         
         if tag == 0 {
             
@@ -699,7 +697,8 @@ extension VertexEditCell {
         if ( SuccessROPReceived || !lessThanTimeInterval(start: lastSendTime, end: DispatchTime.now(), timeInterval: 10_000_000) ) && slidingValue != lastSlidingValue {
             
             DispatchQueue.global().async(){
-                HeepConnections().sendValueToHeepDevice(uniqueID: passControlID,
+                HeepConnections().sendValueToHeepDevice(deviceID: control.deviceID,
+                                                        controlID: control.controlID,
                                                         currentValue: slidingValue )
             }
             
@@ -747,7 +746,9 @@ extension VertexEditCell {
         database().updateDeviceControl(control: updateControl)
         
         DispatchQueue.global().async {
-            HeepConnections().sendValueToHeepDevice(uniqueID: controlUniqueID)
+            HeepConnections().sendValueToHeepDevice(deviceID: control.deviceID,
+                                                    controlID: control.controlID,
+                                                    currentValue: currentValue)
         }
         
         
@@ -848,12 +849,12 @@ extension VertexEditCell {
     
     func getContextImage() -> UIImage? {
         
-        guard let group = database().getGroup(context: thisGroup) else {
-            print("Could not retrieve shared group to grab the image")
-            return nil
-        }
-        
-        return UIImage(data: group.imageData as Data)
+//        guard let group = database().getGroup(context: thisGroup) else {
+//            print("Could not retrieve shared group to grab the image")
+//            return nil
+//        }
+//        
+        return nil//UIImage(data: group.imageData as Data)
     }
     
     func addControlSprite(thisControl: DeviceControl, applyTransform: Bool = true) -> UIView {
@@ -965,13 +966,14 @@ extension VertexEditCell {
             print("Could not retrieve the control from database")
             return
         }
-        
-        DispatchQueue.global().async {
-            HeepConnections().sendValueToHeepDevice(uniqueID: controlUniqueID)
-        }
-        
         let updateControl = DeviceControl(value: thisControl)
         updateControl.valueCurrent = toggleDevice(control: thisControl)
+        
+        DispatchQueue.global().async {
+            HeepConnections().sendValueToHeepDevice(deviceID: thisControl.deviceID,
+                                                    controlID: thisControl.controlID,
+                                                    currentValue: toggleDevice(control: thisControl))
+        }
         
         let updateGroup = GroupPerspective(value: thisGroup)
         updateGroup.selectedControl = thisControl.uniqueID
