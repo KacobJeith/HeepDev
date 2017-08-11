@@ -34,7 +34,7 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         self.controls = assignedControls
         self.thisGroup = groupContext
         self.vertexList = vertices
-        
+        print("INITIALIZING")
         setupCollectionView(cellFrame: cellFrame)
         
     }
@@ -969,14 +969,8 @@ extension VertexEditCell {
         
         var newValue = 0
         
-        if (thisControl.valueCurrent == 0) {
-            newValue = 1
-        }
-        
         let updateControl = DeviceControl(value: thisControl)
-        updateControl.valueCurrent = newValue
-        
-        print("Current: \(thisControl.valueCurrent), New: \(updateControl.valueCurrent)")
+        updateControl.valueCurrent = toggleDevice(control: thisControl)
         
         DispatchQueue.global().async {
             HeepConnections().sendValueToHeepDevice(deviceID: thisControl.deviceID,
@@ -987,8 +981,8 @@ extension VertexEditCell {
         let updateGroup = GroupPerspective(value: thisGroup)
         updateGroup.selectedControl = thisControl.uniqueID
         
-        database().updateGroupContext(update: updateGroup)
         database().updateDeviceControl(control: updateControl)
+        database().updateGroupContext(update: updateGroup)
         
     }
     

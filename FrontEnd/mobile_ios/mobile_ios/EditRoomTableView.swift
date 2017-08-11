@@ -83,7 +83,7 @@ class EditRoomView: UITableViewController {
                     
                     self.unassignedControls.removeValue(forKey: control.uniqueID)
                     self.thisGroupControls[control.uniqueID] = control
-                    
+
                 } else if control.groupID == 0 {
                     
                     self.thisGroupControls.removeValue(forKey: control.uniqueID)

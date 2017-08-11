@@ -32,7 +32,7 @@ class databaseFirebase {
     }
     
     func updateDeviceControl(control: DeviceControl) {
-        print("UPDATING WITH: \(control)")
+        
         ref.child("devices/\(String(describing: control.deviceID))/controls/\(String(describing: control.controlID))").setValue(control.toDict())
         
     }
@@ -841,6 +841,7 @@ class databaseFirebase {
         control.valueCurrent = controlDict?["lastOnValue"] as? Int ?? 0
         control.valueLow = controlDict?["valueLow"] as? Int ?? 0
         control.valueHigh = controlDict?["valueHigh"] as? Int ?? 0
+        control.valueCurrent = controlDict?["valueCurrent"] as? Int ?? 0
         
         return control
     }
