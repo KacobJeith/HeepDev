@@ -601,8 +601,77 @@ class databaseFirebase {
         }
     }
 
-    func watchDevice(deviceID: Int,
+    func getDevice(deviceID: Int,
                      reset: @escaping () -> (), 
+                     identity: @escaping (Device) -> (),
+                     controls: @escaping (DeviceControl) -> (),
+                     vertices: @escaping (Vertex) -> ()) -> String {
+        
+        let refPath = "devices/\(String(describing: deviceID))"
+        
+        ref.child(refPath).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            reset()
+            
+            let enumerator = snapshot.children
+            
+            while let child = enumerator.nextObject() as? DataSnapshot {
+                if child.key == "identity" {
+                    
+                    let identityDictionary = child.value as? NSDictionary
+                    
+                    let device = self.interpretDevice(identityDictionary: identityDictionary)
+                    
+                    identity(device)
+                    
+                } else if child.key == "controls" {
+                    
+                    let controlEnumerator = child.children
+                    
+                    while let controlChild = controlEnumerator.nextObject() as? DataSnapshot {
+                        let controlDict = controlChild.value as? NSDictionary
+                        
+                        let control = self.interpretControl(controlDict: controlDict)
+                        
+                        controls(control)
+                    }
+                    
+                } else if child.key == "vertices" {
+                    
+                    let vertexEnumerator = child.children
+                    
+                    while let vertexChild = vertexEnumerator.nextObject() as? DataSnapshot {
+                        let value = vertexChild.value as? NSDictionary
+                        
+                        let vertex = Vertex()
+                        vertex.vertexID = value?["vertexID"] as? String ?? ""
+                        
+                        let txDeviceID = value?["txDeviceID"] as? Int ?? 0
+                        let txControlID = value?["txControlID"] as? Int ?? 0
+                        let rxDeviceID = value?["rxDeviceID"] as? Int ?? 0
+                        let rxControlID = value?["rxControlID"] as? Int ?? 0
+                        
+                        self.getControl(deviceID: txDeviceID, controlID: txControlID) { txControl in
+                            
+                            vertex.tx = txControl
+                            
+                            self.getControl(deviceID: rxDeviceID, controlID: rxControlID) { rxControl in
+                                
+                                vertex.rx = rxControl
+                                
+                                vertices(vertex)
+                            }
+                        }
+                    }
+                }
+            }
+        })
+        
+        return refPath
+    }
+    
+    func watchDevice(deviceID: Int,
+                     reset: @escaping () -> (),
                      identity: @escaping (Device) -> (),
                      controls: @escaping (DeviceControl) -> (),
                      vertices: @escaping (Vertex) -> ()) -> String {
@@ -669,6 +738,8 @@ class databaseFirebase {
         
         return refPath
     }
+    
+    
     
     func interpretDevice(identityDictionary: NSDictionary?) -> Device {
         

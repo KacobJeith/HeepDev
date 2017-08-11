@@ -391,6 +391,15 @@ class database {
         return databaseFirebase().watchDevice(deviceID: deviceID, reset: reset, identity: identity, controls: controls, vertices: vertices)
     }
     
+    func getDevice(deviceID: Int,
+                     reset: @escaping () -> (),
+                     identity: @escaping (Device) -> (),
+                     controls: @escaping (DeviceControl) -> (),
+                     vertices: @escaping (Vertex) -> () ) -> String {
+        
+        return databaseFirebase().getDevice(deviceID: deviceID, reset: reset, identity: identity, controls: controls, vertices: vertices)
+    }
+    
     func watchDevices(callback: @escaping () -> Void = {}) -> NotificationToken? {
         
         switch interface {

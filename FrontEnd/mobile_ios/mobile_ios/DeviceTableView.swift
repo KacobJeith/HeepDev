@@ -37,7 +37,7 @@ class DeviceTableViewController: UITableViewController {
             self.controls[deviceID] = [Int: DeviceControl]()
             self.controlTags = [:]
             
-            self.referenceList.append(database().watchDevice(deviceID: deviceID, reset: {
+            self.referenceList.append(database().getDevice(deviceID: deviceID, reset: {
                 
             }, identity: { device in
                 
@@ -49,7 +49,6 @@ class DeviceTableViewController: UITableViewController {
                 
             }, controls: { control in
                 
-                print(control.controlName)
                 
                 self.controls[control.deviceID]?[control.controlID] = control
                 
@@ -66,7 +65,7 @@ class DeviceTableViewController: UITableViewController {
     }
     
     func reloadView() {
-        
+        print("RELOADING")
         self.viewDidLoad()
         self.tableView.reloadData()
     }
@@ -244,22 +243,7 @@ class DeviceTableViewController: UITableViewController {
     }
     
     func toggle(sender: UISwitch) {
-        
-        guard let thisIndexPath = controlTags[sender.tag] else {
-            return
-        }
-        
-        let keyList = [Int](controls.keys)
-        print(keyList)
-        
-        if thisIndexPath.section > keyList.count {
-            return
-        }
-        
-        let thisKey = keyList[thisIndexPath.section]
-        
-        guard let originalControl = controls[thisKey]?[thisIndexPath.row] else {
-            print("couldnt grab control")
+        guard let originalControl = getControlFromTag(tag: sender.tag) else {
             return
         }
         
@@ -276,31 +260,49 @@ class DeviceTableViewController: UITableViewController {
         database().updateDeviceControl(control: updateControl)
         
         DispatchQueue.global().async {
-            HeepConnections().sendValueToHeepDevice(uniqueID: originalControl.uniqueID)
+            //HeepConnections().sendValueToHeepDevice(uniqueID: originalControl.uniqueID)
         }
         
     }
     
+    func getControlFromTag(tag: Int) -> DeviceControl? {
+        guard let thisIndexPath = controlTags[tag] else {
+            return nil
+        }
+        
+        let keyList = [Int](controls.keys)
+        print(keyList)
+        
+        if thisIndexPath.section > keyList.count {
+            return nil
+        }
+        
+        let thisKey = keyList[thisIndexPath.section]
+        
+        guard let originalControl = controls[thisKey]?[thisIndexPath.row] else {
+            print("couldnt grab control")
+            return nil
+        }
+        
+        return originalControl
+        
+    }
+    
     func sliderUpdate(sender: UISlider) {
-//        
-//        let thisIndexPath = controlTags[sender.tag]
-//        let thisControlUniqueID = devices[thisIndexPath.section].controlList[thisIndexPath.row].uniqueID
-//        
-//        let newValue = Int(round(sender.value))
-//        
-//        guard let originalControl = database().getDeviceControl(uniqueID: thisControlUniqueID) else {
-//            print("Failed to grab device control")
-//            return
-//        }
-//        
-//        let updateControl = DeviceControl(value: originalControl)
-//        updateControl.valueCurrent = newValue
-//        
-//        database().updateDeviceControl(control: updateControl)
-//        
-//        DispatchQueue.global().async {
-//            HeepConnections().sendValueToHeepDevice(uniqueID: thisControlUniqueID)
-//        }
+        
+        guard let originalControl = getControlFromTag(tag: sender.tag) else {
+            return
+        }
+        
+        let newValue = Int(round(sender.value))
+        let updateControl = DeviceControl(value: originalControl)
+        updateControl.valueCurrent = newValue
+        
+        database().updateDeviceControl(control: updateControl)
+        
+        DispatchQueue.global().async {
+            //HeepConnections().sendValueToHeepDevice(uniqueID: originalControl.uniqueID)
+        }
         
     }
     
