@@ -6,6 +6,7 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     var collectionView: UICollectionView!
     var controls = [Int : DeviceControl]()
     var vertexList = [String: Vertex]()
+    var groupBackground = UIImageView()
     
     var cellView = UICollectionViewCell()
     var thisGroup = GroupPerspective()
@@ -28,13 +29,15 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     convenience init(cellFrame: CGRect,
                      groupContext: GroupPerspective,
                      assignedControls: [Int: DeviceControl],
-                     vertices: [String: Vertex]) {
+                     vertices: [String: Vertex],
+                     groupBackground: UIImageView) {
         self.init()
         
         self.controls = assignedControls
         self.thisGroup = groupContext
         self.vertexList = vertices
-        print("INITIALIZING")
+        self.groupBackground = groupBackground
+        
         setupCollectionView(cellFrame: cellFrame)
         
     }
@@ -49,22 +52,36 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
         let screenWidth = screenSize.width
         let editSpaceHeight = cellFrame.height
         
-        if false { //let tryImage = getContextImage() {
+        
+        if groupBackground != UIImageView() {
             
-//            let naturalWidth = tryImage.size.width
-//            let naturalHeight = tryImage.size.height
-//            
-//            let aspectRatio = naturalWidth / naturalHeight
-//            
-//            if aspectRatio < 1 {
-//                
-//                layout.itemSize = CGSize(width: screenWidth,
-//                                         height: editSpaceHeight)
-//            } else {
-//                
-//                layout.itemSize = CGSize(width: editSpaceHeight * aspectRatio,
-//                                         height: editSpaceHeight)
-//            }
+            if let naturalWidth = groupBackground.image?.size.width {
+                
+                if let naturalHeight = groupBackground.image?.size.height {
+                    
+                    let aspectRatio = naturalWidth / naturalHeight
+                    
+                    if aspectRatio < 1 {
+                        
+                        layout.itemSize = CGSize(width: screenWidth,
+                                                 height: editSpaceHeight)
+                    } else {
+                        
+                        layout.itemSize = CGSize(width: editSpaceHeight * aspectRatio,
+                                                 height: editSpaceHeight)
+                    }
+                } else {
+                    
+                    layout.itemSize = CGSize(width: screenWidth,
+                                             height: editSpaceHeight)
+                    
+                }
+            } else {
+                
+                layout.itemSize = CGSize(width: screenWidth,
+                                         height: editSpaceHeight)
+                
+            }
             
         } else {
             
@@ -129,23 +146,16 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     }
     
     func setContextImage() {
-        let imageView = UIImageView(frame: CGRect(x: 0,
-                                                  y: 0,
-                                                  width: cellView.bounds.width,
-                                                  height: cellView.bounds.height))
-        
-        return
-        
-//        guard let groupContext = database().getGroup(context: thisGroup) else {
-//            print("Could not retrieve shared group context to grab the image")
-//            return
-//        }
-        
-//        imageView.image = UIImage(data: groupContext.imageData as Data)
-//        imageView.contentMode = .scaleAspectFit
-//        imageView.tag = 0
-//        cellView.addSubview(imageView)
-//        
+        let imageView = groupBackground
+        imageView.frame = CGRect(x: 0,
+                                  y: 0,
+                                  width: cellView.bounds.width,
+                                  height: cellView.bounds.height)
+    
+        imageView.contentMode = .scaleAspectFit
+        imageView.tag = 0
+        cellView.addSubview(imageView)
+
     }
     
     func addControlsAndVertices() {

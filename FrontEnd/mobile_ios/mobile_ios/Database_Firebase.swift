@@ -409,8 +409,8 @@ class databaseFirebase {
                     context.UILocked = value?["UILocked"] as? Bool ?? true
                     context.unassignedOffsetX = value? ["unassignedOffsetX"] as? CGFloat ?? 0
                     context.assignedOffsetX = value? ["assignedOffsetX"] as? CGFloat ?? 0
-                    context.contentOffsetX = value? ["contextOffsetX"] as? CGFloat ?? 0
-                    context.contentOffsetY = value? ["contextOffsetY"] as? CGFloat ?? 0
+                    context.contentOffsetX = value? ["contentOffsetX"] as? CGFloat ?? 0
+                    context.contentOffsetY = value? ["contentOffsetY"] as? CGFloat ?? 0
                     context.selectedControl = value? ["selectedControl"] as? Int ?? 0
                     
                     completion(context)
@@ -448,8 +448,8 @@ class databaseFirebase {
             context.UILocked = value?["UILocked"] as? Bool ?? true
             context.unassignedOffsetX = value? ["unassignedOffsetX"] as? CGFloat ?? 0
             context.assignedOffsetX = value? ["assignedOffsetX"] as? CGFloat ?? 0
-            context.contentOffsetX = value? ["contextOffsetX"] as? CGFloat ?? 0
-            context.contentOffsetY = value? ["contextOffsetY"] as? CGFloat ?? 0
+            context.contentOffsetX = value? ["contentOffsetX"] as? CGFloat ?? 0
+            context.contentOffsetY = value? ["contentOffsetY"] as? CGFloat ?? 0
             context.selectedControl = value? ["selectedControl"] as? Int ?? 0
             
             completion(context)
@@ -854,6 +854,8 @@ class databaseFirebase {
         
         let reference = Storage.storage().reference().child("groups/\(String(describing: groupID))/background.png")
         let imageView = UIImageView()
+        imageView.sd_setShowActivityIndicatorView(true)
+        imageView.sd_setIndicatorStyle(.gray)
         imageView.sd_setImage(with: reference)
         
         return imageView

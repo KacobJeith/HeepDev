@@ -17,12 +17,15 @@ class EditRoomView: UITableViewController {
     var thisGroupControls = [Int: DeviceControl]()
     var unassignedControls = [Int: DeviceControl]()
     var vertices = [Int: [String: Vertex]]()
+    var groupBackground = UIImageView()
     
-    init(groupID: Int, groupName: String) {
+    init(groupID: Int, groupName: String, groupBackground: UIImageView) {
         
         super.init(style: UITableViewStyle.plain)
         
         self.groupID = groupID
+        self.groupBackground = groupBackground
+        
         self.initNotifications()
         
     }
@@ -167,7 +170,8 @@ class EditRoomView: UITableViewController {
             let cell = VertexEditCell(cellFrame: editFrame,
                                       groupContext: thisGroup,
                                       assignedControls: thisGroupControls,
-                                      vertices: flattenedVertices)
+                                      vertices: flattenedVertices,
+                                      groupBackground: self.groupBackground)
                                                   
             cell.parentTable = self
             

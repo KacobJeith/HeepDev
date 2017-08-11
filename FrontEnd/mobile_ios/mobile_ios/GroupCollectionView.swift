@@ -15,6 +15,7 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
     var placeName: String = "placeholder"
     var placeID: Int = 0
     var groups = [Group]()
+    var backgrounds = [Int: UIImageView]()
     
     private let reuseIdentifier = "Cell"
     
@@ -156,9 +157,12 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
         title.backgroundColor = .clear
         
         let imageView = database().downloadGroupImage(groupID: groups[indexPath.row].groupID)
+        self.backgrounds[indexPath.row] = imageView
+        
         imageView.contentMode = .scaleAspectFit
         imageView.frame = cell.bounds
         cell.addSubview(imageView)
+        
         
         let overlay = UIView()
         overlay.backgroundColor = UIColor.black
@@ -185,7 +189,9 @@ extension GroupCollectionView {
             return
         }
         
-        let editRoomView = EditRoomView(groupID: groups[index].groupID, groupName: groups[index].name)
+        let editRoomView = EditRoomView(groupID: groups[index].groupID,
+                                        groupName: groups[index].name,
+                                        groupBackground: backgrounds[index]!)
         
         navigationController?.pushViewController(editRoomView, animated: true)
     }
