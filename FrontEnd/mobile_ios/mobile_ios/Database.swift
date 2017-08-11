@@ -281,12 +281,6 @@ class database {
         
     }
     
-    func getGroup(context: GroupPerspective) -> Group? {
-        
-        return databaseRealm().getGroup(path: context.realmPath)
-        
-    }
-    
     func getGroup(context: GroupPerspective, completion: @escaping (Group) -> () ) {
         databaseFirebase().getGroup(context: context, completion: completion)
     }
@@ -311,7 +305,6 @@ class database {
     func watchControl(controlID: Int, completion: @escaping (DeviceControl) -> () ) -> String? {
         return databaseFirebase().watchControl(controlID: controlID, completion: completion)
     }
-    
     
     func watchDevice(deviceID: Int,
                      reset: @escaping () -> (),
@@ -534,6 +527,10 @@ class database {
     func downloadImage(storagePath: String) -> UIImageView {
         
         return databaseFirebase().downloadImage(storagePath: storagePath)
+    }
+    
+    func downloadGroupImage(groupID: Int) -> UIImageView {
+        return databaseFirebase().downloadGroupImage(groupID: groupID)
     }
     
 }

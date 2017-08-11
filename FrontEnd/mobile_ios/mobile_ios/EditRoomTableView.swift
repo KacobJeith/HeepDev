@@ -220,16 +220,15 @@ extension EditRoomView: UIImagePickerControllerDelegate, UINavigationControllerD
     
     func saveImageToGroup(image: UIImage) {
         
-        guard let groupOriginal = database().getGroup(context: thisGroup) else {
-            print("Failed to load original group before saving image")
-            return
+       database().getGroup(context: thisGroup) { groupOriginal in
+        
+            let groupUpdate = Group(value: groupOriginal)
+            groupUpdate.imageData = UIImageJPEGRepresentation(image, 0.5)! as NSData
+            
+            database().updateGroup(update: groupUpdate)
         }
         
-        let groupUpdate = Group(value: groupOriginal)
-        groupUpdate.imageData = UIImageJPEGRepresentation(image, 0.5)! as NSData
         
-        database().updateGroup(update: groupUpdate)
-            
     }
     
 }

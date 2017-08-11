@@ -153,25 +153,16 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
         let tap = UITapGestureRecognizer(target: self, action: #selector(openGroupView))
         tap.numberOfTapsRequired = 1
         title.addGestureRecognizer(tap)
+        title.backgroundColor = .clear
         
-        let thisImageData = groups[indexPath.row].imageData
+        let imageView = database().downloadGroupImage(groupID: groups[indexPath.row].groupID)
+        imageView.contentMode = .scaleAspectFit
+        imageView.frame = cell.bounds
+        cell.addSubview(imageView)
         
-        if (thisImageData == NSData()) {
-            
-            title.backgroundColor = getRandomColor()
-            
-        } else {
-            title.backgroundColor = .clear
-            let image = UIImage(data: thisImageData as Data)
-            let imageView = UIImageView(image: image)
-            imageView.contentMode = .scaleAspectFit
-            imageView.frame = cell.bounds
-            cell.addSubview(imageView)
-            let overlay = UIView()
-            overlay.backgroundColor = UIColor.black
-            overlay.alpha = 0.1
-            
-        }
+        let overlay = UIView()
+        overlay.backgroundColor = UIColor.black
+        overlay.alpha = 0.1
         
         
         cell.addSubview(title)

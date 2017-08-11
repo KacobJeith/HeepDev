@@ -850,6 +850,15 @@ class databaseFirebase {
         return imageView
     }
     
+    func downloadGroupImage(groupID: Int) -> UIImageView {
+        
+        let reference = Storage.storage().reference().child("groups/\(String(describing: groupID))/background.png")
+        let imageView = UIImageView()
+        imageView.sd_setImage(with: reference)
+        
+        return imageView
+    }
+    
     func downloadMyProfileImage() -> UIImageView {
         
         guard let userID = Auth.auth().currentUser?.uid else {
@@ -862,6 +871,7 @@ class databaseFirebase {
         imageView.sd_setImage(with: reference, placeholderImage: #imageLiteral(resourceName: "female"))
         return imageView
     }
+    
     
 }
 
