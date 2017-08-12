@@ -378,6 +378,30 @@ class databaseFirebase {
         }
     }
     
+    func getMyProfile(completion: @escaping (User) -> ()) {
+        
+        guard let userID = Auth.auth().currentUser?.uid else {
+            print("You must be logged in to perform this action")
+            return
+        }
+        
+        ref.child("users/\(userID)/profile").observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            let value = snapshot.value as? NSDictionary
+            let profile = User()
+            
+            profile.heepID = value?["heepID"] as? Int ?? 0
+            profile.email = value?["email"] as? String ?? ""
+            profile.name = value?["name"] as? String ?? ""
+            
+            completion(profile)
+            
+        }) { (error) in
+            print(error)
+            return
+        }
+    }
+    
     func detachObserver(referencePath: String) {
         let thisReference = ref.child(referencePath)
         thisReference.removeAllObservers()
@@ -861,14 +885,9 @@ class databaseFirebase {
         return imageView
     }
     
-    func downloadMyProfileImage() -> UIImageView {
+    func downloadMyProfileImage(heepID: Int) -> UIImageView {
         
-        guard let userID = Auth.auth().currentUser?.uid else {
-            print("You must be logged in to perform this action")
-            return UIImageView()
-        }
-        
-        let reference = Storage.storage().reference().child("users/\(userID)/profile.png")
+        let reference = Storage.storage().reference().child("users/\(String(describing: heepID))/profile.png")
         let imageView = UIImageView()
         imageView.sd_setImage(with: reference, placeholderImage: #imageLiteral(resourceName: "female"))
         return imageView

@@ -59,7 +59,6 @@ class PHY: Object {
     override static func primaryKey() -> String? {
         return "bssid"
     }
-    
 }
 
 // User Realm

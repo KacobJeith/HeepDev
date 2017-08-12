@@ -87,7 +87,7 @@ class AccountView: UIViewController {
         if let myID = database().getMyHeepID() {
             
             print("GOT AN ID: \(myID)")
-            self.view.addSubview(alreadyLoggedInView())
+            alreadyLoggedInView()
             
         } else {
             print("Couldn't grab ID from logged in database.... logging out")
@@ -105,25 +105,29 @@ class AccountView: UIViewController {
 // Already Logged in View
 
 extension AccountView {
-    func alreadyLoggedInView() -> UIView {
-        let userAccountView = UIView()
+    func alreadyLoggedInView() {
         
-        let iconView = userIconView()
-        let nameView = userNameView(frame: iconView.frame)
-        let emailView = userEmailView(frame: nameView.frame)
+        database().getMyProfile() { myProfile in
+            
+            let userAccountView = UIView()
+            
+            let iconView = self.userIconView(profile: myProfile)
+            let nameView = self.userNameView(profile: myProfile, frame: iconView.frame)
+            let emailView = self.userEmailView(profile: myProfile, frame: nameView.frame)
+            
+            userAccountView.addSubview(iconView.view)
+            userAccountView.addSubview(nameView.view)
+            userAccountView.addSubview(emailView.view)
+            
+            self.view.addSubview(userAccountView)
+        }
         
-        userAccountView.addSubview(iconView.view)
-        userAccountView.addSubview(nameView.view)
-        userAccountView.addSubview(emailView.view)
-        
-        return userAccountView
     }
     
-    func userIconView() -> (view: UIView, frame: CGRect) {
+    func userIconView(profile: User) -> (view: UIView, frame: CGRect) {
         let iconDiameter = self.view.frame.width / 5
         
-        let myID = database().getMyHeepID()
-
+        
         let frame = CGRect(x: (self.view.frame.width / 2) - (iconDiameter / 2),
                            y: (iconDiameter / 4),
                            width: iconDiameter,
@@ -135,8 +139,11 @@ extension AccountView {
         containerView.layer.borderColor = UIColor.lightGray.cgColor
         containerView.layer.borderWidth = 1
         
-        let iconView = UIImageView(frame: containerView.bounds)
-        iconView.image = myImage(userID: myID!)
+        let iconView = database().downloadMyProfileImage(heepID: profile.heepID)
+        iconView.frame = CGRect(x: 0, y: 0,
+                                width: iconDiameter,
+                                height: iconDiameter)
+
         iconView.contentMode = .scaleAspectFit
         
         containerView.addSubview(iconView)
@@ -144,14 +151,14 @@ extension AccountView {
         return (view: containerView, frame: frame)
     }
     
-    func userNameView(frame: CGRect)  -> (view: UIView, frame: CGRect) {
+    func userNameView(profile: User, frame: CGRect)  -> (view: UIView, frame: CGRect) {
         let nextFrame = CGRect(x: 0,
                                y: frame.maxY + 10,
                                width: self.view.frame.width,
                                height: frame.height / 3)
         
         let userNameView = UILabel(frame: nextFrame)
-        userNameView.text = myName()
+        userNameView.text = profile.name
         userNameView.adjustsFontSizeToFitWidth = true
         userNameView.textColor = .darkGray
         userNameView.textAlignment = .center
@@ -160,59 +167,20 @@ extension AccountView {
         return (view: userNameView, frame: nextFrame)
     }
     
-    func myName() -> String {
-        if let myProfile = retrieveUserProfile() {
-            
-            return myProfile.name
-        } else {
-            return "nil"
-        }
-    }
-    
-    func retrieveUserProfile() -> User? {
-        
-        
-        if let myId = database().getMyHeepID() {
-            
-            if let profile = database().getUserProfile(heepID: myId) {
-                return profile
-                
-            } else {
-                
-                return nil
-            }
-        } else {
-            print("Could not find ID")
-            return nil
-        }
-        
-        
-    }
-    
-    
-    func userEmailView(frame: CGRect) -> (view: UIView, frame: CGRect) {
+    func userEmailView(profile: User, frame: CGRect) -> (view: UIView, frame: CGRect) {
         let nextFrame = CGRect(x: 0,
                                y: frame.maxY,
                                width: self.view.frame.width,
                                height: frame.height)
         
         let emailView = UILabel(frame: nextFrame)
-        emailView.text = myEmail()
+        emailView.text = profile.email
         emailView.adjustsFontSizeToFitWidth = true
         emailView.textColor = .lightGray
         emailView.textAlignment = .center
         emailView.contentMode = .top
         
         return (view: emailView, frame: nextFrame)
-    }
-    
-    func myEmail() -> String {
-        if let myProfile = retrieveUserProfile() {
-            
-            return myProfile.email
-        } else {
-            return "nil"
-        }
     }
 }
 

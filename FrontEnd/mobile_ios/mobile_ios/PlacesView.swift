@@ -271,7 +271,6 @@ extension PlacesView {
                                       width: (self.navigationController?.navigationBar.bounds.height)!,
                                       height: (self.navigationController?.navigationBar.bounds.height)!)
             
-    
             userButton.layer.borderWidth = 1
             userButton.layer.borderColor = UIColor.white.cgColor
             userButton.layer.shadowColor = UIColor.lightGray.cgColor
@@ -280,7 +279,7 @@ extension PlacesView {
             userButton.layer.cornerRadius = 0.5 * userButton.bounds.size.width
             userButton.clipsToBounds = true
             userButton.addGestureRecognizer(tap)
-            
+
             self.userButton = UIBarButtonItem(customView: userButton)
             
             self.reloadView()

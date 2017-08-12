@@ -533,4 +533,12 @@ class database {
         return databaseFirebase().downloadGroupImage(groupID: groupID)
     }
     
+    func getMyProfile(completion: @escaping (User) -> () ) {
+        databaseFirebase().getMyProfile(completion: completion)
+    }
+    
+    func downloadMyProfileImage(heepID: Int) -> UIImageView {
+        return databaseFirebase().downloadMyProfileImage(heepID: heepID)
+    }
+    
 }

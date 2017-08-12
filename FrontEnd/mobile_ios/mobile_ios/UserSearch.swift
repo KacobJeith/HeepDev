@@ -39,7 +39,6 @@ class UserSearch: UIViewController {
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(exitSearch))
         self.view.addGestureRecognizer(tap)
-
     }
     
     func setupSearchSection() {
