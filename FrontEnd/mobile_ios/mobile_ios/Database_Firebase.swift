@@ -400,6 +400,7 @@ class databaseFirebase {
             print(error)
             return
         }
+        
     }
     
     func detachObserver(referencePath: String) {
@@ -893,6 +894,12 @@ class databaseFirebase {
         return imageView
     }
     
-    
+    func checkIfLoggedIn() -> Bool {
+        if let userID = Auth.auth().currentUser?.uid  {
+            return true
+        } else {
+            return false
+        }
+    }
 }
 

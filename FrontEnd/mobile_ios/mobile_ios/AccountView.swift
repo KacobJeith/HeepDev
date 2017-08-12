@@ -53,7 +53,7 @@ class AccountView: UIViewController {
     
     func isUserLoggedIn() {
         
-        if database().checkIfLoggedIn() == 0 {
+        if database().checkIfLoggedIn() {
             if registeringNewAccount {
                 self.title = "Register New Account"
                 self.view.addSubview(registerView())
@@ -84,43 +84,31 @@ class AccountView: UIViewController {
     
     func attemptToRender() {
         
-        if let myID = database().getMyHeepID() {
+        database().getMyProfile() { myProfile in
             
-            print("GOT AN ID: \(myID)")
-            alreadyLoggedInView()
+            self.alreadyLoggedInView(myProfile: myProfile)
             
-        } else {
-            print("Couldn't grab ID from logged in database.... logging out")
-            //logoutUser()
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1, execute: {
-                print("Trying... \(DispatchTime.now())")
-                self.reloadView()
-                return
-            })
         }
-        
     }
 }
 
 // Already Logged in View
 
 extension AccountView {
-    func alreadyLoggedInView() {
+    func alreadyLoggedInView(myProfile: User) {
         
-        database().getMyProfile() { myProfile in
-            
-            let userAccountView = UIView()
-            
-            let iconView = self.userIconView(profile: myProfile)
-            let nameView = self.userNameView(profile: myProfile, frame: iconView.frame)
-            let emailView = self.userEmailView(profile: myProfile, frame: nameView.frame)
-            
-            userAccountView.addSubview(iconView.view)
-            userAccountView.addSubview(nameView.view)
-            userAccountView.addSubview(emailView.view)
-            
-            self.view.addSubview(userAccountView)
-        }
+        let userAccountView = UIView()
+        
+        let iconView = self.userIconView(profile: myProfile)
+        let nameView = self.userNameView(profile: myProfile, frame: iconView.frame)
+        let emailView = self.userEmailView(profile: myProfile, frame: nameView.frame)
+        
+        userAccountView.addSubview(iconView.view)
+        userAccountView.addSubview(nameView.view)
+        userAccountView.addSubview(emailView.view)
+        
+        self.view.addSubview(userAccountView)
+        
         
     }
     

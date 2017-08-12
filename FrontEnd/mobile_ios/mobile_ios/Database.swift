@@ -512,11 +512,9 @@ class database {
         
     }
     
-    func checkIfLoggedIn() -> Int {
-        switch interface {
-        default :
-            return databaseRealm().checkIfLoggedIn()
-        }
+    func checkIfLoggedIn() -> Bool {
+        return databaseFirebase().checkIfLoggedIn()
+        
     }
     
     func detachObserver(referencePath: String) {
@@ -525,7 +523,6 @@ class database {
     }
     
     func downloadImage(storagePath: String) -> UIImageView {
-        
         return databaseFirebase().downloadImage(storagePath: storagePath)
     }
     
