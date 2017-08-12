@@ -86,14 +86,19 @@ class databaseFirebase {
         
     }
     
-    func createNewPlace(place: PlacePerspective = PlacePerspective()) {
-        
+    func createNewPlace() {
+        let placeID = randomNumber(inRange: 0...4000000000)
+
         let newPlace = Place()
         newPlace.name = "New Place"
-        newPlace.placeID = place.placeID
+        newPlace.placeID = placeID
         
-        ref.child("places").child(String(describing: newPlace.placeID)).setValue(newPlace.toDict())
-        updatePlaceContext(placeContext: place)
+        ref.child("places").child(String(describing: placeID)).setValue(newPlace.toDict())
+        
+        let newPlacePerspective = PlacePerspective()
+        newPlacePerspective.placeID = placeID
+        
+        updatePlaceContext(placeContext: newPlacePerspective)
         
     }
     
@@ -395,6 +400,35 @@ class databaseFirebase {
             profile.name = value?["name"] as? String ?? ""
             
             completion(profile)
+            
+        }) { (error) in
+            print(error)
+            return
+        }
+        
+    }
+    
+    func getUserProfile(heepID: Int, completion: @escaping (User) -> ()) {
+        
+        ref.child("userDirectory/\(String(describing: heepID))").observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            let firebaseID = snapshot.value as? String
+            
+            ref.child("users/\(firebaseID!)/profile").observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                let value = snapshot.value as? NSDictionary
+                let profile = User()
+                
+                profile.heepID = value?["heepID"] as? Int ?? 0
+                profile.email = value?["email"] as? String ?? ""
+                profile.name = value?["name"] as? String ?? ""
+                
+                completion(profile)
+                
+            }) { (error) in
+                print(error)
+                return
+            }
             
         }) { (error) in
             print(error)
@@ -886,16 +920,17 @@ class databaseFirebase {
         return imageView
     }
     
-    func downloadMyProfileImage(heepID: Int) -> UIImageView {
+    func downloadMyProfileImage(heepID: Int, handleError: @escaping () -> () = {}) -> UIImageView {
         
         let reference = Storage.storage().reference().child("users/\(String(describing: heepID))/profile.png")
         let imageView = UIImageView()
         imageView.sd_setImage(with: reference, placeholderImage: #imageLiteral(resourceName: "female"))
         return imageView
+        
     }
     
     func checkIfLoggedIn() -> Bool {
-        if let userID = Auth.auth().currentUser?.uid  {
+        if (Auth.auth().currentUser?.uid) != nil  {
             return true
         } else {
             return false

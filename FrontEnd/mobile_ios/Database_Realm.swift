@@ -313,18 +313,6 @@ class databaseRealm {
         
     }
     
-    func getUserIcon(heepID: Int?) -> UIImage {
-        
-        var userImage = #imageLiteral(resourceName: "female")
-        
-        if heepID != nil {
-            
-            userImage = myImage(userID: heepID!)
-        }
-        
-        return userImage
-    }
-    
     func getMyHeepID() -> Int? {
         return realm.objects(User.self).first?.heepID
     }

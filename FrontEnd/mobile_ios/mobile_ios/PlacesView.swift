@@ -20,8 +20,8 @@ class PlacesView: UIViewController {
     
     init() {
         super.init(nibName: nil, bundle: nil)
-        self.getActiveUserIcon()
         self.initNotification()
+        self.getActiveUserIcon()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -30,9 +30,10 @@ class PlacesView: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("VIEWDIDLOAD")
-        self.addPlaces()
+        self.view.backgroundColor = .white
+        
         self.setupNavBar()
+        self.addPlaces()
     }
     
     func setupNavBar() {
@@ -84,8 +85,9 @@ class PlacesView: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         self.title = "My Heep Zones"
+        self.setupNavBar()
+        self.getActiveUserIcon()
         self.initNotification()
-        
     }
     
     func addPlaces() {
@@ -119,6 +121,7 @@ class PlacesView: UIViewController {
             
             viewWithTag.removeFromSuperview()
         }
+        print(place) 
         
         placeNames[place.placeID] = place.name
         
@@ -260,31 +263,37 @@ extension PlacesView {
     }
     
     func getActiveUserIcon() {
+        let emptyView = UIImageView(image: #imageLiteral(resourceName: "female"))
+        drawAccountPuck(userButton: emptyView)
         
         database().getMyHeepID() { heepID in
             
-            let tap = UITapGestureRecognizer(target: self, action: #selector(self.userLogin))
+            let userButton = database().downloadMyProfileImage(heepID: heepID!)
+            self.drawAccountPuck(userButton: userButton)
             
-            let userButton = database().downloadImage(storagePath: "users/\(String(describing: heepID!))/profile.png")
-                
-            userButton.frame = CGRect(x: 0, y: 0,
-                                      width: (self.navigationController?.navigationBar.bounds.height)!,
-                                      height: (self.navigationController?.navigationBar.bounds.height)!)
-            
-            userButton.layer.borderWidth = 1
-            userButton.layer.borderColor = UIColor.white.cgColor
-            userButton.layer.shadowColor = UIColor.lightGray.cgColor
-            userButton.layer.shadowOffset = CGSize(width: 1, height: 1)
-            userButton.layer.shadowRadius = 2
-            userButton.layer.cornerRadius = 0.5 * userButton.bounds.size.width
-            userButton.clipsToBounds = true
-            userButton.addGestureRecognizer(tap)
-
-            self.userButton = UIBarButtonItem(customView: userButton)
-            
-            self.reloadView()
         }
+    }
+    
+    func drawAccountPuck(userButton: UIImageView) {
         
+        userButton.frame = CGRect(x: 0, y: 0,
+                                  width: 45,
+                                  height: 45)
+        
+        userButton.layer.borderWidth = 1
+        userButton.layer.borderColor = UIColor.white.cgColor
+        userButton.layer.shadowColor = UIColor.lightGray.cgColor
+        userButton.layer.shadowOffset = CGSize(width: 1, height: 1)
+        userButton.layer.shadowRadius = 2
+        userButton.layer.cornerRadius = 0.5 * userButton.bounds.size.width
+        userButton.clipsToBounds = true
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.userLogin))
+        userButton.addGestureRecognizer(tap)
+        
+        self.userButton = UIBarButtonItem(customView: userButton)
+        
+        self.reloadView()
     }
     
     func openDeviceTable() {

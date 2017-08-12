@@ -54,6 +54,11 @@ class AccountView: UIViewController {
     func isUserLoggedIn() {
         
         if database().checkIfLoggedIn() {
+            self.title = "My Account"
+            setupNavigation()
+            attemptToRender()
+            
+        } else {            
             if registeringNewAccount {
                 self.title = "Register New Account"
                 self.view.addSubview(registerView())
@@ -61,11 +66,6 @@ class AccountView: UIViewController {
                 self.title = "Login to Heep"
                 self.view.addSubview(loginView())
             }
-            
-        } else {
-            self.title = "My Account"
-            setupNavigation()
-            attemptToRender()
         }
     }
     
@@ -252,12 +252,13 @@ extension AccountView{
     }
     
     func validateUser() {
-        if database().checkIfLoggedIn() > 1 {
+        if database().checkIfLoggedIn() {
             
             print("Logging out of public")
             validateUser()
+            
         } else {
-            if database().checkIfLoggedIn() > 0 {
+            if database().checkIfLoggedIn() {
                 
                 present(easyAlert(message: "Login Successful!",
                                   callback: { self.reloadView()}),

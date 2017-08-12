@@ -104,7 +104,10 @@ extension UserSearch: UICollectionViewDataSource, UICollectionViewDelegate {
         bigWhiteBackground.frame = cell.bounds
         
         cell.addSubview(bigWhiteBackground)
-        cell.addSubview(generateUserCard(frame: cell.bounds, userID: allUsers[indexPath.row].heepID))
+        
+        database().getUserProfile(heepID: allUsers[indexPath.row].heepID) { profile in
+            cell.addSubview(generateUserCard(frame: cell.bounds, profile: profile))
+        }
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(selectUser))
         cell.addGestureRecognizer(tap)

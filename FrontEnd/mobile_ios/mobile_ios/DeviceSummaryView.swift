@@ -21,6 +21,7 @@ class DeviceSummaryViewController: UITableViewController {
     
     var userIds: [Int] = []
     var userRealmKeys: [String] = []
+    var authorizedUsers = [Int : User]()
     var deviceID: Int = 0
     
     
@@ -157,6 +158,14 @@ class DeviceSummaryViewController: UITableViewController {
         
         if thisDevice.humanAdmin != 0 {
             userIds.append(thisDevice.humanAdmin)
+            
+            if self.authorizedUsers[0] == nil {
+                database().getUserProfile(heepID: thisDevice.humanAdmin) { profile in
+                    self.authorizedUsers[0] = profile
+                    self.updateView()
+                }
+            }
+            
             humanData.append("admin")
             userRealmKeys = thisDevice.authorizedUsers.components(separatedBy: "/")
             
@@ -276,9 +285,10 @@ class DeviceSummaryViewController: UITableViewController {
         if indexPath.section == 0 {
             switch self.cells[indexPath.section][indexPath.row] {
             case "admin" :
+                if let adminProfile = authorizedUsers[0] {
+                    cell.addSubview(self.addUserCell(profile: adminProfile, initialOffset: 15))
+                }
                 
-                cell.addSubview(addUserCell(userID: userIds[indexPath.row], initialOffset: 15))
-             
             case "claimDevice" :
                 cell.addSubview(addClaimDeviceCell())
                 
@@ -287,11 +297,9 @@ class DeviceSummaryViewController: UITableViewController {
                 
             default:
                 
-                if let heepID = database().getUserHeepID(realmKey: userRealmKeys[indexPath.row - 1]) {
-                    
-                    cell.addSubview(addUserCell(userID: heepID, initialOffset: 60))
+                database().getUserProfile(heepID: userIds[indexPath.row]) { profile in
+                    cell.addSubview(self.addUserCell(profile: profile, initialOffset: 60))
                 }
-                
                 
             }
             
@@ -308,7 +316,9 @@ class DeviceSummaryViewController: UITableViewController {
         return cell
     }
     
-    func addUserCell(userID: Int, initialOffset: CGFloat = 60) -> UIView {
+    func addUserCell(profile: User, initialOffset: CGFloat = 60) -> UIView {
+        print(profile)
+        
         let userView = UIView(frame: CGRect(x: 0 + initialOffset,
                                             y: 0,
                                             width: tableView.frame.size.width,
@@ -318,16 +328,17 @@ class DeviceSummaryViewController: UITableViewController {
                                                           y: 0,
                                                           width: 45,
                                                           height: 45),
-                                    userID: userID)
+                                    userID: profile.heepID)
+        
         userView.addSubview(userIcon.view)
         
         let userName = userNameView(frame: CGRect(x: userIcon.frame.maxX + 10,
                                                    y: 0,
                                                    width: (tableView.frame.size.width - userIcon.frame.maxX) / 5,
                                                    height: 45),
-                                     userID: userID,
-                                     textAlignment: .left,
-                                     calculateFrame: false)
+                                    name: profile.name,
+                                    textAlignment: .left,
+                                    calculateFrame: false)
         
         
         userView.addSubview(userName.view)
@@ -336,9 +347,9 @@ class DeviceSummaryViewController: UITableViewController {
                                                    y: 0,
                                                    width: tableView.frame.size.width - userIcon.frame.maxX,
                                                    height: 45),
-                                     userID: userID,
-                                     textAlignment: .left,
-                                     calculateFrame: false)
+                                      email: profile.email,
+                                      textAlignment: .left,
+                                      calculateFrame: false)
         
         userView.addSubview(userEmail.view)
         
@@ -374,18 +385,14 @@ class DeviceSummaryViewController: UITableViewController {
     
     func claimDevice() {
         //HeepConnections().sendAssignAdminToHeepDevice(deviceID: thisDevice.deviceID)
-        database().assignDeviceAdmin(deviceID: thisDevice.deviceID)
         
-        if let myID = database().getMyHeepID() {
+        database().getMyHeepID() { heepID in
             
-            let updateDevice = Device(value: thisDevice)
-            updateDevice.humanAdmin = myID
+            let updateDevice = Device(value: self.thisDevice)
+            updateDevice.humanAdmin = heepID!
             
             database().updateDevice(device: updateDevice)
             
-        } else {
-            
-            print("I am not assigned a Heep ID for some reason....going to have issues")
         }
         
     }

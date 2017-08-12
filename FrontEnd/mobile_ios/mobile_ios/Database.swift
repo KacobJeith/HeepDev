@@ -104,7 +104,7 @@ class database {
         
         switch interface {
         case "both" :
-            databaseRealm().flushControlVertices(controlUniqueID: controlUniqueID)
+            //databaseRealm().flushControlVertices(controlUniqueID: controlUniqueID)
             databaseFirebase().flushControlVertices(controlUniqueID: controlUniqueID)
             
         default :
@@ -156,8 +156,7 @@ class database {
         case "realm" :
             _ = databaseRealm().createNewPlace()
         default :
-            let newPlace = databaseRealm().createNewPlace()
-            databaseFirebase().createNewPlace(place: newPlace)
+            databaseFirebase().createNewPlace()
         }
     }
     
@@ -210,7 +209,7 @@ class database {
         case "realm" :
             databaseRealm().registerNewUser(user: user, email: email, password: password)
         default :
-            databaseRealm().registerNewUser(user: user, email: email, password: password)
+            //databaseRealm().registerNewUser(user: user, email: email, password: password)
             databaseFirebase().registerNewUser(newUser: user, email: email, password: password)
         }
     }
@@ -224,7 +223,7 @@ class database {
             databaseRealm().signOut()
         default :
             databaseFirebase().signOut()
-            databaseRealm().signOut()
+            //databaseRealm().signOut()
         }
     }
     
@@ -467,7 +466,7 @@ class database {
         case "realm" :
             databaseRealm().loginUser(email: email, password: password, callback: callback)
         default :
-            databaseRealm().loginUser(email: email, password: password, callback: callback)
+            //databaseRealm().loginUser(email: email, password: password, callback: callback)
             databaseFirebase().loginUser(email: email, password: password, callback: callback)
         }
     }
@@ -495,12 +494,9 @@ class database {
         }
     }
     
-    func assignDeviceAdmin(deviceID: Int) {
+    func assignDeviceAdmin(device: Device) {
         
-        switch interface {
-        default :
-            databaseRealm().createDeviceRealm(deviceID: deviceID)
-        }
+        databaseFirebase().writeDevice(device: device)
     }
     
     func grantUserAccessToDevice(deviceID: Int, userID: Int) {
@@ -536,6 +532,10 @@ class database {
     
     func downloadMyProfileImage(heepID: Int) -> UIImageView {
         return databaseFirebase().downloadMyProfileImage(heepID: heepID)
+    }
+    
+    func getUserProfile(heepID: Int, completion: @escaping (User) -> () ) {
+        databaseFirebase().getUserProfile(heepID: heepID, completion: completion)
     }
     
 }
