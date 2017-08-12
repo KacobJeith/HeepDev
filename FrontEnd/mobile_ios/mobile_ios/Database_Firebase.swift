@@ -437,6 +437,34 @@ class databaseFirebase {
         
     }
     
+    func getAllUsers(completion: @escaping (User) -> () ) {
+        
+        ref.child("userDirectory").observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            let enumerator = snapshot.children
+            while let child = enumerator.nextObject() as? DataSnapshot {
+                
+                let firebaseID = child.value as? String
+                
+                ref.child("users/\(firebaseID!)/profile").observeSingleEvent(of: .value, with: { (snapshot) in
+                    
+                    let value = snapshot.value as? NSDictionary
+                    let profile = User()
+                    
+                    profile.heepID = value?["heepID"] as? Int ?? 0
+                    profile.email = value?["email"] as? String ?? ""
+                    profile.name = value?["name"] as? String ?? ""
+                    
+                    
+                    completion(profile)
+                    
+                })
+                
+            }
+            
+        })
+    }
+    
     func detachObserver(referencePath: String) {
         let thisReference = ref.child(referencePath)
         thisReference.removeAllObservers()
@@ -936,5 +964,7 @@ class databaseFirebase {
             return false
         }
     }
+    
+    
 }
 

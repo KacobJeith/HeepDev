@@ -438,11 +438,8 @@ class database {
         }
     }
     
-    func getAllUsers() -> [User] {
-        switch interface {
-        default :
-            return databaseRealm().getAllUsers()
-        }
+    func getAllUsers(completion: @escaping (User) -> () ){
+        databaseFirebase().getAllUsers(completion: completion)
     }
     
     func getUserProfile(heepID: Int) -> User? {

@@ -29,9 +29,23 @@ class UserSearch: UIViewController {
     }
     
     func populateAllUsers() {
+        database().getMyHeepID() { myHeepID in
+            
+            database().getAllUsers() { user in
+                if user.heepID != myHeepID {
+                    
+                    self.allUsers.append(user)
+                    self.reloadView()
+                }
+            }
+        }
         
-        allUsers = database().getAllUsers()
+    }
+    
+    func reloadView() {
         
+        self.loadView()
+        self.viewDidLoad()
     }
     
     func setupModalViewBackdrop() {
@@ -85,19 +99,13 @@ extension UserSearch: UICollectionViewDataSource, UICollectionViewDelegate {
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return database().getAllUsers().count
+        return self.allUsers.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell: UICollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath as IndexPath) as UICollectionViewCell
         
-        let myID = database().getMyHeepID()
-        
-        if allUsers[indexPath.row].heepID == myID {
-            cell.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
-            return cell
-        }
         
         let bigWhiteBackground = UIView()
         bigWhiteBackground.backgroundColor = .white
@@ -105,9 +113,7 @@ extension UserSearch: UICollectionViewDataSource, UICollectionViewDelegate {
         
         cell.addSubview(bigWhiteBackground)
         
-        database().getUserProfile(heepID: allUsers[indexPath.row].heepID) { profile in
-            cell.addSubview(generateUserCard(frame: cell.bounds, profile: profile))
-        }
+        cell.addSubview(generateUserCard(frame: cell.bounds, profile: allUsers[indexPath.row]))
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(selectUser))
         cell.addGestureRecognizer(tap)
