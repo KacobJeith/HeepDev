@@ -183,7 +183,7 @@ class databaseFirebase {
                                                            "name": newUser.name,
                                                            "email": email])
             
-            ref.child("userDirectory/").setValue([String(describing: newUser.heepID): userID])
+            ref.child("userDirectory/\(String(describing: newUser.heepID))").setValue(userID)
             
             self.updateUserIcon(profile: newUser)
             
@@ -413,8 +413,19 @@ class databaseFirebase {
         ref.child("userDirectory/\(String(describing: heepID))").observeSingleEvent(of: .value, with: { (snapshot) in
             
             let firebaseID = snapshot.value as? String
+            self.getUserProfileWithFirebaseID(firebaseID: firebaseID, completion: completion)
             
-            ref.child("users/\(firebaseID!)/profile").observeSingleEvent(of: .value, with: { (snapshot) in
+        }) { (error) in
+            print(error)
+            return
+        }
+        
+    }
+    
+    func getUserProfileWithFirebaseID(firebaseID: String?, completion: @escaping (User) -> () ) {
+        
+        if let fireID = firebaseID {
+            ref.child("users/\(fireID)/profile").observeSingleEvent(of: .value, with: { (snapshot) in
                 
                 let value = snapshot.value as? NSDictionary
                 let profile = User()
@@ -429,10 +440,6 @@ class databaseFirebase {
                 print(error)
                 return
             }
-            
-        }) { (error) in
-            print(error)
-            return
         }
         
     }
@@ -445,24 +452,41 @@ class databaseFirebase {
             while let child = enumerator.nextObject() as? DataSnapshot {
                 
                 let firebaseID = child.value as? String
-                
-                ref.child("users/\(firebaseID!)/profile").observeSingleEvent(of: .value, with: { (snapshot) in
-                    
-                    let value = snapshot.value as? NSDictionary
-                    let profile = User()
-                    
-                    profile.heepID = value?["heepID"] as? Int ?? 0
-                    profile.email = value?["email"] as? String ?? ""
-                    profile.name = value?["name"] as? String ?? ""
-                    
-                    
-                    completion(profile)
-                    
-                })
+                self.getUserProfileWithFirebaseID(firebaseID: firebaseID, completion: completion)
                 
             }
             
         })
+    }
+    
+    func getAuthorizedUsers(deviceID: Int, completion: @escaping (User) -> () ) {
+        
+        ref.child("devices/\(String(describing: deviceID))/users").observeSingleEvent(of: .value, with: { (snapshot) in
+            let enumerator = snapshot.children
+            
+            while let child = enumerator.nextObject() as? DataSnapshot {
+                let heepID = child.key
+                
+                self.getUserProfile(heepID: Int(heepID)!, completion: completion)
+                
+            }
+            
+        })
+    }
+    
+    func getUsersInList(heepIDList: [Int], completion: @escaping (User) -> () ) {
+        
+        for heepID in heepIDList {
+            print(heepID)
+            ref.child("userDirectory").queryEqual(toValue: String(describing:heepID)).observeSingleEvent(of: .value, with: { (snapshot) in
+                print(snapshot)
+                
+                let firebaseID = snapshot.value as? String
+                self.getUserProfileWithFirebaseID(firebaseID: firebaseID, completion: completion)
+                
+            })
+        }
+        
     }
     
     func detachObserver(referencePath: String) {
@@ -965,6 +989,11 @@ class databaseFirebase {
         }
     }
     
+    func grantUserAccessToDevice(deviceID: Int, userID: Int) {
+        
+        ref.child("devices/\(String(describing: deviceID))/users/\(String(describing: userID))").setValue(true)
+        
+    }
     
 }
 

@@ -498,11 +498,7 @@ class database {
     
     func grantUserAccessToDevice(deviceID: Int, userID: Int) {
         
-        switch interface {
-        default :
-            databaseRealm().grantPermissionToOtherUser(deviceID: deviceID, userID: userID)
-        }
-        
+        databaseFirebase().grantUserAccessToDevice(deviceID: deviceID, userID: userID)
     }
     
     func checkIfLoggedIn() -> Bool {
@@ -533,6 +529,10 @@ class database {
     
     func getUserProfile(heepID: Int, completion: @escaping (User) -> () ) {
         databaseFirebase().getUserProfile(heepID: heepID, completion: completion)
+    }
+    
+    func getAuthorizedUsers(deviceID: Int, completion: @escaping (User) -> () ) {
+        databaseFirebase().getAuthorizedUsers(deviceID: deviceID, completion: completion)
     }
     
 }

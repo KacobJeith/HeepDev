@@ -21,6 +21,7 @@ class DeviceSummaryViewController: UITableViewController {
     
     var userIds: [Int] = []
     var userRealmKeys: [String] = []
+    var adminUser: User? = nil
     var authorizedUsers = [Int : User]()
     var deviceID: Int = 0
     
@@ -159,18 +160,29 @@ class DeviceSummaryViewController: UITableViewController {
         if thisDevice.humanAdmin != 0 {
             userIds.append(thisDevice.humanAdmin)
             
-            if self.authorizedUsers[0] == nil {
+            if self.adminUser == nil {
+                database().getAuthorizedUsers(deviceID: thisDevice.deviceID){ profile in
+                    print(profile)
+                    self.authorizedUsers[profile.heepID] = profile
+                    self.updateView()
+                }
+            }
+            
+            if self.adminUser == nil {
                 database().getUserProfile(heepID: thisDevice.humanAdmin) { profile in
-                    self.authorizedUsers[0] = profile
+                    
+                    self.adminUser = profile
                     self.updateView()
                 }
             }
             
             humanData.append("admin")
-            userRealmKeys = thisDevice.authorizedUsers.components(separatedBy: "/")
             
-            if userRealmKeys.count > 1 {
-                humanData.append(contentsOf: userRealmKeys)
+            if self.adminUser == nil {
+                database().getAuthorizedUsers(deviceID: thisDevice.deviceID){ profile in
+                    self.authorizedUsers[profile.heepID] = profile
+                    self.updateView()
+                }
             }
             
             humanData.append("addNewUser")
@@ -285,7 +297,7 @@ class DeviceSummaryViewController: UITableViewController {
         if indexPath.section == 0 {
             switch self.cells[indexPath.section][indexPath.row] {
             case "admin" :
-                if let adminProfile = authorizedUsers[0] {
+                if let adminProfile = self.adminUser {
                     cell.addSubview(self.addUserCell(profile: adminProfile, initialOffset: 15))
                 }
                 
@@ -296,9 +308,12 @@ class DeviceSummaryViewController: UITableViewController {
                 cell.addSubview(addNewUserCell())
                 
             default:
-                
-                database().getUserProfile(heepID: userIds[indexPath.row]) { profile in
-                    cell.addSubview(self.addUserCell(profile: profile, initialOffset: 60))
+                let authUserKeys = [Int](self.authorizedUsers.keys)
+                let thisKey = authUserKeys[indexPath.row]
+                print("KEY: \(thisKey)")
+                if let thisUser = self.authorizedUsers[thisKey] {
+                    print("NEXT USER: \(thisUser)")
+                    cell.addSubview(self.addUserCell(profile: thisUser, initialOffset: 60))
                 }
                 
             }
