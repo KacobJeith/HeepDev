@@ -11,8 +11,6 @@ import CoreData
 import UserNotifications
 import CoreLocation
 import FacebookCore
-import Firebase
-
 
 var SuccessROPReceived = true
 
@@ -29,13 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         SDKApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
         
-        // Use Firebase library to configure APIs
-        FirebaseApp.configure()
-//        database().signOut()
-        Database.database().isPersistenceEnabled = true
-        //database().checkForPermissionUpdates()
-        //database().initializeApp()
-        
+        database().initializeApp()
         
         setupAppNavigation()
         startMonitoringBeacon()

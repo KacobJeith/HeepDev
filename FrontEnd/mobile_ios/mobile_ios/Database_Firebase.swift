@@ -14,6 +14,12 @@ var ref: DatabaseReference! = Database.database().reference()
 
 class database {
     
+    func initializeApp() {
+        
+        FirebaseApp.configure()
+        Database.database().isPersistenceEnabled = true
+    }
+    
     func writeDevice(device: Device) {
         
         guard let userID = Auth.auth().currentUser?.uid else {
