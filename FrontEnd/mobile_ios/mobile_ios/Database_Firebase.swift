@@ -12,7 +12,7 @@ import FirebaseStorageUI
 
 var ref: DatabaseReference! = Database.database().reference()
 
-class databaseFirebase {
+class database {
     
     func writeDevice(device: Device) {
         
@@ -24,6 +24,10 @@ class databaseFirebase {
         ref.child("devices/\(String(describing: device.deviceID))/identity").setValue(device.toDict())
         ref.child("users/\(userID)/devices/\(String(describing: device.deviceID))").setValue([String(describing: device.deviceID): true])
         
+    }
+    
+    func updateDevice(device: Device) {
+        self.writeDevice(device: device)
     }
     
     func writeDeviceControl(control: DeviceControl) {

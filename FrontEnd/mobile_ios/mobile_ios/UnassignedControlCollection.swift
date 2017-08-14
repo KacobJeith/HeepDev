@@ -106,7 +106,7 @@ extension UnassignedControlCollection {
         groupUpdate.selectedControl = selectedControl.uniqueID
         groupUpdate.unassignedOffsetX = collectionView.contentOffset.x
         
-        database().updateGroupContext(update: groupUpdate)
+        database().updateGroupContext(context: groupUpdate)
         
         database().getPlaceContext(id: thisGroup.placeID) { (context) in
             
@@ -142,7 +142,7 @@ extension UnassignedControlCollection {
         let groupUpdate = GroupPerspective(value: thisGroup)
         groupUpdate.unassignedOffsetX = offsetX
         
-        database().updateGroupContext(update: groupUpdate)
+        database().updateGroupContext(context: groupUpdate)
     }
     
 

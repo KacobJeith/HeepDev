@@ -229,7 +229,7 @@ extension EditRoomView: UIImagePickerControllerDelegate, UINavigationControllerD
             let groupUpdate = Group(value: groupOriginal)
             groupUpdate.imageData = UIImageJPEGRepresentation(image, 0.5)! as NSData
             
-            database().updateGroup(update: groupUpdate)
+            database().updateGroup(group: groupUpdate)
         }
         
         
@@ -295,7 +295,7 @@ extension EditRoomView {
         let update = GroupPerspective(value: thisGroup)
         update.UILocked = !thisGroup.UILocked
         
-        database().updateGroupContext(update: update)
+        database().updateGroupContext(context: update)
         
     }
     

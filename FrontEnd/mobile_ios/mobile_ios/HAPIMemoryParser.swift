@@ -227,7 +227,6 @@ class HAPIMemoryParser {
         newControl.controlName = controlName
         
         database().writeDeviceControl(control: newControl)
-        database().updateDeviceControlList(deviceID: deviceID)
     }
     
     func parseVertexMOP(dump: [UInt8], index: Int, packetSize: Int, deviceID: Int) {

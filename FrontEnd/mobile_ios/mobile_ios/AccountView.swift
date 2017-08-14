@@ -455,7 +455,7 @@ extension AccountView {
             newUser.email = email
             newUser.icon = getUserIcon(iconURL: newUser.iconURL)
             
-            database().registerNewUser(user: newUser,
+            database().registerNewUser(newUser: newUser,
                                        email: email,
                                        password: password)
             

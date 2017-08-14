@@ -116,7 +116,7 @@ extension GroupControlEdit {
         
         updateContext.assignedOffsetX = collectionView.contentOffset.x
         
-        database().updateGroupContext(update: updateContext)
+        database().updateGroupContext(context: updateContext)
         
     }
     
@@ -137,7 +137,7 @@ extension GroupControlEdit {
         let groupUpdate = GroupPerspective(value: thisGroup)
         groupUpdate.assignedOffsetX = offsetX
         
-        database().updateGroupContext(update: groupUpdate)
+        database().updateGroupContext(context: groupUpdate)
     }
     
 }

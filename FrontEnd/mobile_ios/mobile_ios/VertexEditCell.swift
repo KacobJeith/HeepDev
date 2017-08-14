@@ -271,7 +271,6 @@ extension VertexEditCell {
         activeVertex.vertexID = nameVertex(tx: tx, rx: rx)
         
         database().writeVertex(vertex: activeVertex)
-        database().updateVertexList(tx: tx)
         
         HeepConnections().sendSetVertexToHeepDevice(activeVertex: activeVertex)
         
@@ -783,7 +782,7 @@ extension VertexEditCell {
         updateContext.contentOffsetX = collectionView.contentOffset.x
         updateContext.contentOffsetY = collectionView.contentOffset.y
         
-        database().updateGroupContext(update: updateContext)
+        database().updateGroupContext(context: updateContext)
         
     }
     
@@ -795,7 +794,7 @@ extension VertexEditCell {
             updateContext.contentOffsetX = collectionView.contentOffset.x
             updateContext.contentOffsetY = collectionView.contentOffset.y
             
-            database().updateGroupContext(update: updateContext)
+            database().updateGroupContext(context: updateContext)
         }
         
     }
@@ -961,7 +960,7 @@ extension VertexEditCell {
             let updateGroup = GroupPerspective(value: thisGroup)
             updateGroup.selectedControl = tappedID
             
-            database().updateGroupContext(update: updateGroup)
+            database().updateGroupContext(context: updateGroup)
             
         }
         
@@ -992,7 +991,7 @@ extension VertexEditCell {
         updateGroup.selectedControl = thisControl.uniqueID
         
         database().updateDeviceControl(control: updateControl)
-        database().updateGroupContext(update: updateGroup)
+        database().updateGroupContext(context: updateGroup)
         
     }
     
@@ -1029,7 +1028,7 @@ extension VertexEditCell {
         }
         
         database().updateDeviceControl(control: updateControl)
-        database().updateGroupContext(update: updateGroup)
+        database().updateGroupContext(context: updateGroup)
         
         
         
