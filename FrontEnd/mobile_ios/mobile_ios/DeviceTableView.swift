@@ -260,7 +260,9 @@ class DeviceTableViewController: UITableViewController {
         database().updateDeviceControl(control: updateControl)
         
         DispatchQueue.global().async {
-            //HeepConnections().sendValueToHeepDevice(uniqueID: originalControl.uniqueID)
+            HeepConnections().sendValueToHeepDevice(deviceID: originalControl.deviceID,
+                                                    controlID: originalControl.controlID,
+                                                    currentValue: updateControl.valueCurrent)
         }
         
     }
@@ -301,7 +303,9 @@ class DeviceTableViewController: UITableViewController {
         database().updateDeviceControl(control: updateControl)
         
         DispatchQueue.global().async {
-            //HeepConnections().sendValueToHeepDevice(uniqueID: originalControl.uniqueID)
+            HeepConnections().sendValueToHeepDevice(deviceID: originalControl.deviceID,
+                                                    controlID: originalControl.controlID,
+                                                    currentValue: updateControl.valueCurrent)
         }
         
     }
