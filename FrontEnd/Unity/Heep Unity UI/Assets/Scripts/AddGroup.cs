@@ -8,7 +8,6 @@ public class AddGroup : MonoBehaviour, IPointerDownHandler {
 
 	public GameObject prefab;
 	public GameObject canvas;
-	public Button yourButton;
 
 	#region IPointerDownHandler implementation
 
