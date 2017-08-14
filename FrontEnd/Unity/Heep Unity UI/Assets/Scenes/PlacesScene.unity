@@ -700,7 +700,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NumPlaceData: {fileID: 1501985863}
-  GlobalStore: {fileID: 1733378487}
+  GlobalStore: {fileID: 0}
 --- !u!1 &1528791384
 GameObject:
   m_ObjectHideFlags: 0
@@ -826,47 +826,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 1035053735463684, guid: cbd25f3a15f9a1b42b64b71e99db2165, type: 2}
   canvas: {fileID: 201115541}
-  GlobalStore: {fileID: 1733378487}
---- !u!1 &1733378487
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1733378488}
-  - component: {fileID: 1733378489}
-  m_Layer: 0
-  m_Name: GlobalHeepData
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1733378488
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1733378487}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 796.2373, y: 321.8552, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1733378489
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1733378487}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 548d45efecffa8e408939cf3e996e1ee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1821750769
 GameObject:
   m_ObjectHideFlags: 0

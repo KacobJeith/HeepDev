@@ -15,7 +15,6 @@ public class NumPlacesDebugData : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		GlobalDataStore GData = GlobalStore.GetComponent<GlobalDataStore> ();
-		NumPlaceData.text = "NumPlaces: " + GData.places.Count;
+		NumPlaceData.text = "NumPlaces: " + GlobalDataStore.places.Count;
 	}
 }
