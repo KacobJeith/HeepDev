@@ -7,24 +7,27 @@
 //
 
 import UIKit
-import RealmSwift
 
 class EditRoomView: UITableViewController {
-    var notificationTokenList = [NotificationToken]()
     
-    let realm = try! Realm(configuration: configUser)
-    
+    var referenceList = [String?]()
+    var groupID = 0
     var thisBSSID: String = ""
-    var thisGroup: GroupPerspective
+    var thisGroup = GroupPerspective()
+    var thisGroupControls = [Int: DeviceControl]()
+    var unassignedControls = [Int: DeviceControl]()
+    var vertices = [Int: [String: Vertex]]()
+    var groupBackground = UIImageView()
     
-    init(groupID: Int, groupName: String) {
-        
-        
-        thisGroup = realm.object(ofType: GroupPerspective.self, forPrimaryKey: groupID)!
-        print(thisGroup)
-        
+    init(groupID: Int, groupName: String, groupBackground: UIImageView) {
         
         super.init(style: UITableViewStyle.plain)
+        
+        self.groupID = groupID
+        self.groupBackground = groupBackground
+        
+        self.initNotifications()
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -34,7 +37,10 @@ class EditRoomView: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.initRealmNotification()
+        self.setupNavBar()
+    }
+    
+    func setupNavBar() {
         
         self.navigationController?.isToolbarHidden = false
         tableView.alwaysBounceVertical = false
@@ -51,23 +57,84 @@ class EditRoomView: UITableViewController {
         self.toolbarItems = [spacer, search, spacer]
     }
     
-    
-    
+    func initNotifications() {
+        
+        
+        //Group Context
+        self.referenceList.append(database().watchGroupContext(groupID: groupID) { (context) in
+            self.reloadView()
+            self.thisGroup = context
+            
+            self.referenceList.append(database().watchGroup(context: context) { (thisGroup) in
+                
+                self.reloadView()
+            })
+        })
+        
+        //Control Notifications
+        self.referenceList.append(database().watchAllMyDevices() { deviceID in
+            
+            self.referenceList.append(database().watchDevice(deviceID: deviceID, reset: {
+                
+                self.vertices[deviceID] = [:]
+                
+            }, identity: { device in
+                
+            }, controls: { control in
+                
+                if control.groupID == self.groupID {
+                    
+                    self.unassignedControls.removeValue(forKey: control.uniqueID)
+                    self.thisGroupControls[control.uniqueID] = control
+
+                } else if control.groupID == 0 {
+                    
+                    self.thisGroupControls.removeValue(forKey: control.uniqueID)
+                    self.unassignedControls[control.uniqueID] = control
+                    
+                } else {
+                    
+                    self.thisGroupControls.removeValue(forKey: control.uniqueID)
+                    self.unassignedControls.removeValue(forKey: control.uniqueID)
+                    
+                }
+                
+                self.reloadView()
+                
+            }, vertices: { vertex in
+                
+                if vertex.tx?.groupID == self.groupID {
+                    if vertex.rx?.groupID == self.groupID {
+                        
+                        self.vertices[deviceID]?[vertex.vertexID] = vertex
+                        self.reloadView()
+                    }
+                }
+                
+            }))
+        
+        })
+    }
     
     deinit{
-        for token in notificationTokenList {
-            token.stop()
+        for reference in referenceList {
+            if let refPath = reference {
+                database().detachObserver(referencePath: refPath)
+            }
         }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        for token in notificationTokenList {
-            token.stop()
+        for reference in referenceList {
+            if let refPath = reference {
+                database().detachObserver(referencePath: refPath)
+            }
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.initRealmNotification()
+        
+        self.initNotifications()
     }
     
     
@@ -81,9 +148,17 @@ class EditRoomView: UITableViewController {
         switch indexPath.row {
         case 0 :
             
-            return UnassignedControlCollection(groupID: thisGroup.groupID)
+            return UnassignedControlCollection(groupContext: thisGroup, unassignedControls: unassignedControls)
             
         case 1 :
+            
+            var flattenedVertices = [String : Vertex]()
+            
+            for (_, thisDeviceVertexList) in vertices {
+                for (thisVertexKey, thisVertex) in thisDeviceVertexList {
+                    flattenedVertices[thisVertexKey] = thisVertex
+                }
+            }
             
             let bounds = self.navigationController!.navigationBar.bounds
             
@@ -93,8 +168,11 @@ class EditRoomView: UITableViewController {
                                    height: self.view.frame.height - 200 - bounds.height)
             
             let cell = VertexEditCell(cellFrame: editFrame,
-                                      groupID: thisGroup.groupID)
-            
+                                      groupContext: thisGroup,
+                                      assignedControls: thisGroupControls,
+                                      vertices: flattenedVertices,
+                                      groupBackground: self.groupBackground)
+                                                  
             cell.parentTable = self
             
             cell.addSubview(drawVertexToggleButton())
@@ -103,7 +181,7 @@ class EditRoomView: UITableViewController {
             
         case 2 :
             
-            return GroupControlEdit(groupID: thisGroup.groupID)
+            return GroupControlEdit(groupContext: thisGroup, controlsInGroup: thisGroupControls)
             
         default : break
         }
@@ -145,19 +223,16 @@ extension EditRoomView: UIImagePickerControllerDelegate, UINavigationControllerD
     
     
     func saveImageToGroup(image: UIImage) {
-        print("Saving Image")
-        let imageData = UIImageJPEGRepresentation(image, 0.5)
-        let groupRealm = try! Realm(configuration: getGroupConfiguration(path: thisGroup.realmPath))
         
-        guard let groupContext = groupRealm.objects(Group.self).first else {
-            print("Could not retrieve shared group realm to save the image")
-            return
-        }
+       database().getGroup(context: thisGroup) { groupOriginal in
+        
+            let groupUpdate = Group(value: groupOriginal)
+            groupUpdate.imageData = UIImageJPEGRepresentation(image, 0.5)! as NSData
             
-        try! groupRealm.write {
-            groupContext.imageData = imageData! as NSData
+            database().updateGroup(group: groupUpdate)
         }
-            
+        
+        
     }
     
 }
@@ -215,17 +290,20 @@ extension EditRoomView {
     }    
     
     func toggleVertexEditState() {
+        
         print("Toggle Lock Icon")
-        try! realm.write {
-            thisGroup.UILocked = !thisGroup.UILocked
-        }
+        let update = GroupPerspective(value: thisGroup)
+        update.UILocked = !thisGroup.UILocked
+        
+        database().updateGroupContext(context: update)
         
     }
     
     func reloadView() {
         
-        self.loadView()
+        //        self.loadView()
         self.viewDidLoad()
+        self.tableView.reloadData()
     }
     
     func searchForHeepDevices() {
@@ -235,81 +313,4 @@ extension EditRoomView {
     }
     
     
-    func initRealmNotification() {
-        
-        let watchControls = realm.objects(DeviceControl.self)
-
-        let notificationTokenControls = watchControls.addNotificationBlock {  [weak self] (changes: RealmCollectionChange) in
-            
-                switch changes {
-                case .update:
-                    
-                    self?.tableView.reloadData()
-                    break
-                case .error(let error):
-                    fatalError("\(error)")
-                    break
-                default: break
-                    
-                }
-        }
-        
-        let watchVertices = realm.objects(Vertex.self)
-        
-        let notificationTokenVertices = watchVertices.addNotificationBlock {  [weak self] (changes: RealmCollectionChange) in
-            
-            switch changes {
-            case .update:
-                
-                self?.tableView.reloadData()
-                break
-            case .error(let error):
-                fatalError("\(error)")
-                break
-            default: break
-                
-            }
-        }
-        
-        let watchGroupPerspective = realm.object(ofType: GroupPerspective.self, forPrimaryKey: thisGroup.groupID)!
-        
-        let notificationTokenGroupPerspective = watchGroupPerspective.addNotificationBlock { changes in
-            /* results available asynchronously here */
-            
-            switch changes {
-            case .change:
-                
-                self.tableView.reloadData()
-                break
-            case .error(let error):
-                fatalError("\(error)")
-                break
-            default: break
-            }
-        }
-        
-        let realmGroup = try! Realm(configuration: getGroupConfiguration(path: thisGroup.realmPath))
-        let watchGroup = realmGroup.object(ofType: Group.self, forPrimaryKey: thisGroup.groupID)!
-        
-        let notificationTokenGroup = watchGroup.addNotificationBlock { changes in
-            /* results available asynchronously here */
-            
-            switch changes {
-            case .change:
-                
-                self.tableView.reloadData()
-                break
-            case .error(let error):
-                fatalError("\(error)")
-                break
-            default: break
-            }
-        }
-        
-        notificationTokenList.append(notificationTokenGroup)
-        notificationTokenList.append(notificationTokenGroupPerspective)
-        notificationTokenList.append(notificationTokenControls)
-        notificationTokenList.append(notificationTokenVertices)
-        
-    }
 }

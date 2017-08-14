@@ -7,14 +7,13 @@
 //
 
 import SwiftSocket
-import RealmSwift
 import Foundation
 
 class HeepConnections {
     
     public func SearchForHeepDeviecs() {
-        
-        resetActiveDevices()
+        print("Need to reset...")
+        database().resetActiveDevices()
         
         let gateway = getWiFiGateway()
         
@@ -31,75 +30,72 @@ class HeepConnections {
         }
     }
     
-    public func sendValueToHeepDevice(uniqueID: Int, currentValue: Int = -1) {
+    public func sendValueToHeepDevice(deviceID: Int, controlID: Int, currentValue: Int) {
     
-        var newVal = -1
-        let realm = try! Realm(configuration: configUser)
-        let activeControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: uniqueID)
-        let thisDevice = realm.object(ofType: Device.self, forPrimaryKey: activeControl?.deviceID)
-        let thisDeviceIP = thisDevice?.ipAddress
-        let thisControl = activeControl?.controlID
-        
-        
-        if currentValue == -1 {
-            newVal = (activeControl?.valueCurrent)!
+        database().getDeviceIdentity(deviceID: deviceID) { thisDevice in
+            
+            let thisDeviceIP = thisDevice.ipAddress
+            
+            let message = HAPIMemoryParser().BuildSetValueCOP(controlID: controlID, newValue: currentValue)
+            print("Sending: \(message) to Heep Device at to \(thisDeviceIP)")
+            self.ConnectToHeepDevice(ipAddress: thisDeviceIP, printErrors: false, message: message)
+            
         }
-        else{
-            newVal = currentValue
-        }
-        
-        let message = HAPIMemoryParser().BuildSetValueCOP(controlID: thisControl!, newValue: newVal)
-        print("Sending: \(message) to Heep Device at to \(thisDeviceIP!)")
-        ConnectToHeepDevice(ipAddress: thisDeviceIP!, printErrors: false, message: message)
-        
-        
     }
     
     
     public func sendSetVertexToHeepDevice(activeVertex: Vertex) {
         
-        let realm = try! Realm(configuration: configUser)
-        let thisDevice = realm.object(ofType: Device.self, forPrimaryKey: activeVertex.tx?.deviceID)
-        let thisDeviceIP = thisDevice?.ipAddress
-        let message = HAPIMemoryParser().BuildSetVertexCOP(vertex: activeVertex)
-        
-        print("Sending: \(message) to Heep Device at \(thisDeviceIP!)")
-        
-        ConnectToHeepDevice(ipAddress: thisDeviceIP!, printErrors: false, message: message)
+        database().getDeviceIdentity(deviceID: (activeVertex.tx?.deviceID)!) { txDevice in
+            
+            database().getDeviceIdentity(deviceID: (activeVertex.rx?.deviceID)!) { rxDevice in
+                
+                let message = HAPIMemoryParser().BuildSetVertexCOP(vertex: activeVertex, ipAddress: rxDevice.ipAddress)
+                
+                print("Sending: \(message) to Heep Device at \(txDevice.ipAddress)")
+                
+                self.ConnectToHeepDevice(ipAddress: txDevice.ipAddress, printErrors: false, message: message)
+                
+            }
+        }
     }
     
     public func sendDeleteVertexToHeepDevice(activeVertex: Vertex) {
         
-        let realm = try! Realm(configuration: configUser)
-        
-        let thisDevice = realm.object(ofType: Device.self, forPrimaryKey: activeVertex.tx?.deviceID)
-        let thisDeviceIP = thisDevice?.ipAddress
-        let message = HAPIMemoryParser().BuildDeleteVertexCOP(vertex: activeVertex)
-        print("Sending: \(message) to Heep Device at \(thisDeviceIP!)")
-        
-        ConnectToHeepDevice(ipAddress: thisDeviceIP!, printErrors: false, message: message)
+        database().getDeviceIdentity(deviceID: (activeVertex.tx?.deviceID)!) { txDevice in
+            
+            database().getDeviceIdentity(deviceID: (activeVertex.rx?.deviceID)!) { rxDevice in
+                
+                let message = HAPIMemoryParser().BuildDeleteVertexCOP(vertex: activeVertex, ipAddress: rxDevice.ipAddress)
+                
+                print("Sending: \(message) to Heep Device at \(txDevice.ipAddress)")
+                
+                self.ConnectToHeepDevice(ipAddress: txDevice.ipAddress, printErrors: false, message: message)
+                
+            }
+        }
     }
     
     public func sendAssignAdminToHeepDevice(deviceID: Int) {
         
-        guard let adminID = SyncUser.current else {
-            return
+        database().getMyHeepID() { heepID in
+            print("Admin's HeepID: \(String(describing: heepID))")
+            
+            /*
+             let realm = try! Realm(configuration: configUser)
+             let thisDevice = realm.object(ofType: Device.self, forPrimaryKey: deviceID)
+             let thisDeviceIP = thisDevice?.ipAddress
+             
+             let MOP = HAPIMemoryParser().BuildAdminMOP(deviceID: deviceID, adminID: adminID!)
+             let message = HAPIMemoryParser().BuildStoreMOPCOP(byteArray: MOP)
+             
+             print("Sending: \(message) to Heep Device at \(thisDeviceIP!)")
+             
+             ConnectToHeepDevice(ipAddress: thisDeviceIP!, printErrors: false, message: message)
+             */
         }
         
-        print("AdminRealmID: \(adminID)")
         
-        /*
-        let realm = try! Realm(configuration: configUser)
-        let thisDevice = realm.object(ofType: Device.self, forPrimaryKey: deviceID)
-        let thisDeviceIP = thisDevice?.ipAddress
-        
-        let MOP = HAPIMemoryParser().BuildAdminMOP(deviceID: deviceID, adminID: adminID!)
-        let message = HAPIMemoryParser().BuildStoreMOPCOP(byteArray: MOP)
-        
-        print("Sending: \(message) to Heep Device at \(thisDeviceIP!)")
-        
-        ConnectToHeepDevice(ipAddress: thisDeviceIP!, printErrors: false, message: message)
-        */
     }
     
     func ConnectToHeepDevice(ipAddress: String, printErrors: Bool, message: [UInt8]) {
@@ -108,22 +104,28 @@ class HeepConnections {
         
         switch client.connect(timeout:1){
         case .success:
-            print("success")
+            print("successfully Connected")
             
             switch client.send(data: message) {
                 
             case .success:
-                guard let data = client.read(1024*10) else { return }
+                print("Successfully sent")
+                
+                guard let data = client.read(1024*10) else {
+                    print("Received nothing")
+                    return
+                }
+                
                 HAPIMemoryParser().ParseROP(dump: data, ipAddress: ipAddress)
                 client.close()
             case .failure(let error):
                 if (printErrors) {
-                    print(error)
+                    print("ERROR \(error)")
                 }
             }
         case .failure(let error):
             if (printErrors) {
-                print(error)
+                print("Actually errored...\(error)")
             }
         }
         
@@ -180,15 +182,6 @@ class HeepConnections {
         return gateway + "." + String(ip)
     }
     
-    public func resetActiveDevices() {
-        let realm = try! Realm(configuration: configUser)
-        let devices = realm.objects(Device.self)
-        
-        try! realm.write {
-            devices.setValue(false, forKey: "active")
-        }
-        
-    }
     
     
 }

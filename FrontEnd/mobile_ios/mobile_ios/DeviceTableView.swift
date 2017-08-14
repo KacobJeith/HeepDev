@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import RealmSwift
 
 class DeviceTableViewController: UITableViewController {
     //MARK: Properties
@@ -16,10 +15,11 @@ class DeviceTableViewController: UITableViewController {
     var placeID = 0
     var tableTitle = "Currently Active"
     
-    var notificationToken: NotificationToken!
-    var devices = [Device]()
-    var controlTags = [IndexPath]()
-    let realm = try! Realm(configuration: configUser)
+    var referenceList = [String?]()
+    
+    var devices = [Int: Device]()
+    var controls = [Int: [Int: DeviceControl]]()
+    var controlTags = [Int: IndexPath]()
     
     init(title: String = "Currently Active", placeID: Int = 0, activeOnly: Bool = false) {
         super.init(style: UITableViewStyle.plain)
@@ -27,57 +27,47 @@ class DeviceTableViewController: UITableViewController {
         self.activeOnly = activeOnly
         self.tableTitle = title
         
-        findDevices()
+        self.initNotifications()
     }
     
-    func findDevices() {
+    func initNotifications() {
         
-        if self.activeOnly {
+        self.referenceList.append(database().watchAllMyDevices() { deviceID in
             
-            self.findActiveDevices()
+            self.controls[deviceID] = [Int: DeviceControl]()
+            self.controlTags = [:]
             
-        } else {
+            self.referenceList.append(database().getDevice(deviceID: deviceID, reset: {
+                
+            }, identity: { device in
+                
+                if device.active {
+                    self.devices[device.deviceID] = device
+                    self.reloadView()
+                }
+                
+                
+            }, controls: { control in
+                
+                
+                self.controls[control.deviceID]?[control.controlID] = control
+                
+                self.reloadView()
+
+                
+            }, vertices: { vertex in
+                
+                
+            }))
             
-            self.findDevicesInPlace(placeID: self.placeID)
-            
-        }
+        })
+        
     }
     
-    func findActiveDevices() {
-        let realm = try! Realm(configuration: configUser)
+    func reloadView() {
         
-        devices = realm.objects(Device.self).filter("active = %@", true).toArray()
-    }
-    
-    func findDevicesInPlace(placeID: Int) {
-        let realm = try! Realm(configuration: configUser)
-        
-        let groupsInPlace = realm.objects(GroupPerspective.self).filter("placeID = %@", placeID)
-        
-        for group in groupsInPlace {
-            
-            let controlsInGroup = realm.objects(DeviceControl.self).filter("groupID = %@", group.groupID)
-            
-            for control in controlsInGroup {
-                checkControlAndAdd(control: control)
-            }
-        }
-        
-    }
-    
-    func checkControlAndAdd(control: DeviceControl) {
-        for device in devices {
-            if control.deviceID == device.deviceID {
-                return
-            }
-        }
-        
-        let realm = try! Realm(configuration: configUser)
-        
-        if let device = realm.object(ofType: Device.self, forPrimaryKey: control.deviceID) {
-            
-            devices.append(device)
-        }
+        self.viewDidLoad()
+        self.tableView.reloadData()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -88,8 +78,6 @@ class DeviceTableViewController: UITableViewController {
         super.viewDidLoad()
         
         self.title = tableTitle
-        
-        self.initRealmNotifications()
         
         self.navigationController?.isToolbarHidden = false
         
@@ -115,15 +103,31 @@ class DeviceTableViewController: UITableViewController {
         super.didReceiveMemoryWarning()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        notificationToken?.stop()
+    deinit{
+        for reference in referenceList {
+            if let refPath = reference {
+                database().detachObserver(referencePath: refPath)
+            }
+        }
     }
-
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        for reference in referenceList {
+            if let refPath = reference {
+                database().detachObserver(referencePath: refPath)
+            }
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
+        self.initNotifications()
+    }
     
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         
-        return devices.count
+        return [Int](devices.keys).count
 
     }
     
@@ -131,20 +135,33 @@ class DeviceTableViewController: UITableViewController {
         let view = UIView()
         view.backgroundColor = UIColor.white
         
-        let image = UIImage(named: (devices[section].iconName))
+        let keyList = [Int](devices.keys)
+        
+        if section > [Int](devices.keys).count {
+            return nil
+        }
+        
+        let thisKey = keyList[section]
+        
+        guard let thisDevice = devices[thisKey] else {
+            print("Failed to grab device")
+            return nil
+        }
+        
+        let image = UIImage(named: thisDevice.iconName)
         let imageView = UIImageView(image: image)
         imageView.frame = CGRect(x: 5, y: 5, width: 35, height: 35)
         imageView.contentMode = .scaleAspectFit
         view.addSubview(imageView)
         
         let label = UILabel()
-        label.text = devices[section].name
+        label.text = thisDevice.name
         label.frame = CGRect(x: 45, y: 5, width: tableView.frame.size.width, height: 35)
         view.addSubview(label)
         
         let summary = UIButton(type: .detailDisclosure)
         summary.frame = CGRect(x: tableView.frame.size.width - 60, y: 5, width: 60, height: 40)
-        summary.tag = section
+        summary.tag = thisKey
         summary.addTarget(self, action: #selector(displayDeviceSummary), for: UIControlEvents.primaryActionTriggered)
         
         view.addSubview(summary)
@@ -155,7 +172,18 @@ class DeviceTableViewController: UITableViewController {
     
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let numControls = devices[section].controlList.count
+        
+        let keyList = [Int](controls.keys)
+        
+        if section > keyList.count {
+            return 0
+        }
+        let thisKey = keyList[section]
+        
+        guard let numControls = controls[thisKey]?.count else {
+            return 0
+        }
+        
         return numControls
     }
     
@@ -163,36 +191,49 @@ class DeviceTableViewController: UITableViewController {
         
         let cell = UITableViewCell()
         
-        if (devices[indexPath.section].controlList[indexPath.row].controlDirection == 0){
+        let keyList = [Int](controls.keys)
+        
+        if indexPath.section > keyList.count {
+            return cell
+        }
+        
+        let thisKey = keyList[indexPath.section]
+        
+        guard let thisControl = controls[thisKey]?[indexPath.row] else {
+            print("couldnt grab control")
+            return cell
+        }
+        
+        if (thisControl.controlDirection == 0){
             cell.backgroundColor = UIColor(white: 0.85, alpha: 1.0)
         } else {
             cell.backgroundColor = UIColor(white: 0.95, alpha: 1.0)
         }
         
         let label = UILabel()
-        label.text = devices[indexPath.section].controlList[indexPath.row].controlName
+        label.text = thisControl.controlName
         label.frame = CGRect(x: 60, y: 5, width: tableView.frame.size.width, height: 35)
         cell.addSubview(label)
         
-        controlTags.append(indexPath)
+        controlTags[thisControl.uniqueID] = indexPath
         
         
-        if (devices[indexPath.section].controlList[indexPath.row].controlType == 0){
+        if (thisControl.controlType == 0){
             let buttonSwitch = UISwitch()
-            let thisSwitchState = devices[indexPath.section].controlList[indexPath.row].valueCurrent == 1
-            buttonSwitch.tag = controlTags.count - 1
+            let thisSwitchState = thisControl.valueCurrent == 1
+            buttonSwitch.tag = thisControl.uniqueID
             buttonSwitch.frame = CGRect(x: tableView.frame.size.width - 60, y: 5, width: 100, height: 35)
             buttonSwitch.setOn(thisSwitchState, animated: false)
-            buttonSwitch.addTarget(self, action: #selector(DeviceTableViewController.toggle), for: UIControlEvents.valueChanged)
+            buttonSwitch.addTarget(self, action: #selector(toggle), for: UIControlEvents.valueChanged)
             cell.addSubview(buttonSwitch)
         } else {
             let slider = UISlider()
-            slider.tag = controlTags.count - 1
-            slider.minimumValue = Float(devices[indexPath.section].controlList[indexPath.row].valueLow)
-            slider.maximumValue = Float(devices[indexPath.section].controlList[indexPath.row].valueHigh)
-            slider.setValue(Float(devices[indexPath.section].controlList[indexPath.row].valueCurrent), animated: false)
+            slider.tag = thisControl.uniqueID
+            slider.minimumValue = Float(thisControl.valueLow)
+            slider.maximumValue = Float(thisControl.valueHigh)
+            slider.setValue(Float(thisControl.valueCurrent), animated: false)
             slider.frame = CGRect(x: tableView.frame.size.width - 160, y: 5, width: 150, height: 35)
-            slider.addTarget(self, action: #selector(DeviceTableViewController.sliderUpdate), for: UIControlEvents.valueChanged)
+            slider.addTarget(self, action: #selector(sliderUpdate), for: UIControlEvents.valueChanged)
             
             cell.addSubview(slider)
             
@@ -202,10 +243,9 @@ class DeviceTableViewController: UITableViewController {
     }
     
     func toggle(sender: UISwitch) {
-        
-        let realm = try! Realm(configuration: configUser)
-        let thisIndexPath = controlTags[sender.tag]
-        let thisControlUniqueID = devices[thisIndexPath.section].controlList[thisIndexPath.row].uniqueID
+        guard let originalControl = getControlFromTag(tag: sender.tag) else {
+            return
+        }
         
         var newValue = 0
         
@@ -213,36 +253,59 @@ class DeviceTableViewController: UITableViewController {
             newValue = 1
         }
         
-        try! realm.write {
-            realm.create(DeviceControl.self,
-                        value: ["uniqueID": thisControlUniqueID,
-                                "valueCurrent": newValue],
-                        update: true)
-        }
+        let updateControl = DeviceControl(value: originalControl)
+        
+        updateControl.valueCurrent = newValue
+        
+        database().updateDeviceControl(control: updateControl)
         
         DispatchQueue.global().async {
-            HeepConnections().sendValueToHeepDevice(uniqueID: thisControlUniqueID)
+            HeepConnections().sendValueToHeepDevice(deviceID: originalControl.deviceID,
+                                                    controlID: originalControl.controlID,
+                                                    currentValue: updateControl.valueCurrent)
         }
+        
+    }
+    
+    func getControlFromTag(tag: Int) -> DeviceControl? {
+        guard let thisIndexPath = controlTags[tag] else {
+            return nil
+        }
+        
+        let keyList = [Int](controls.keys)
+        print(keyList)
+        
+        if thisIndexPath.section > keyList.count {
+            return nil
+        }
+        
+        let thisKey = keyList[thisIndexPath.section]
+        
+        guard let originalControl = controls[thisKey]?[thisIndexPath.row] else {
+            print("couldnt grab control")
+            return nil
+        }
+        
+        return originalControl
         
     }
     
     func sliderUpdate(sender: UISlider) {
         
-        let realm = try! Realm(configuration: configUser)
-        let thisIndexPath = controlTags[sender.tag]
-        let thisControlUniqueID = devices[thisIndexPath.section].controlList[thisIndexPath.row].uniqueID
-        
-        let newValue = Int(round(sender.value))
-        
-        try! realm.write {
-            realm.create(DeviceControl.self,
-                         value: ["uniqueID": thisControlUniqueID,
-                                 "valueCurrent": newValue],
-                         update: true)
+        guard let originalControl = getControlFromTag(tag: sender.tag) else {
+            return
         }
         
+        let newValue = Int(round(sender.value))
+        let updateControl = DeviceControl(value: originalControl)
+        updateControl.valueCurrent = newValue
+        
+        database().updateDeviceControl(control: updateControl)
+        
         DispatchQueue.global().async {
-            HeepConnections().sendValueToHeepDevice(uniqueID: thisControlUniqueID)
+            HeepConnections().sendValueToHeepDevice(deviceID: originalControl.deviceID,
+                                                    controlID: originalControl.controlID,
+                                                    currentValue: updateControl.valueCurrent)
         }
         
     }
@@ -254,8 +317,8 @@ class DeviceTableViewController: UITableViewController {
     }
     
     func displayDeviceSummary(sender: UIButton) {
-        print("Display device summary for: \(String(describing: devices[sender.tag].deviceID))")
-        let summaryView = DeviceSummaryViewController(device: devices[sender.tag])
+        print("Display device summary for: \(String(describing: sender.tag))")
+        let summaryView = DeviceSummaryViewController(deviceID: sender.tag)
         navigationController?.pushViewController(summaryView, animated: true)
     }
     
@@ -264,25 +327,4 @@ class DeviceTableViewController: UITableViewController {
         HeepConnections().SearchForHeepDeviecs()
         
     }
-
-    
-    func initRealmNotifications() {
-        let watchDevices = realm.objects(Device.self)
-        
-        notificationToken = watchDevices.addNotificationBlock { changes in
-            
-            switch changes {
-            case .update:
-                self.findDevices()
-                self.tableView.reloadData()
-                
-                break
-            case .error(let error):
-                fatalError("\(error)")
-                break
-            default: break
-            }
-        }
-    }
-
 }

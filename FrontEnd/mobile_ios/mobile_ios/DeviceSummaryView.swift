@@ -7,28 +7,41 @@
 //
 
 import UIKit
-import RealmSwift
 
 class DeviceSummaryViewController: UITableViewController {
     
-    var notificationToken: NotificationToken? = nil
+    var referenceList = [String?]()
+    
     var sections: [String]!
     var cells: [[String]]!
+    
     var thisDevice = Device()
+    var controls = [DeviceControl]()
+    var vertices = [Vertex]()
+    
     var userIds: [Int] = []
     var userRealmKeys: [String] = []
+    var adminUser: User? = nil
+    var authorizedUsers = [Int : User]()
+    var deviceID: Int = 0
     
-    init(device: Device) {
-        print("Starting with...\(device)")
+    
+    func resetEverything() {
+        sections = []
+        cells = []
+        controls = []
+        userIds = []
+        userRealmKeys = []
         
-        let realm = try! Realm(configuration: configUser)
-        if let pullDevice = realm.object(ofType: Device.self, forPrimaryKey: device.deviceID) {
-            thisDevice = pullDevice
-            print("ending with \(thisDevice)")
-        }
+    }
+    
+    init(deviceID: Int) {
         
-        self.cells = []
         super.init(style: UITableViewStyle.plain)
+        self.deviceID = deviceID
+        self.resetEverything()
+        self.initNotifications()
+        
     }
     
     override func viewDidLoad() {
@@ -37,13 +50,85 @@ class DeviceSummaryViewController: UITableViewController {
         self.title = thisDevice.name
         self.tableView.separatorStyle = .none
         
-        retrieveDeviceUsers(deviceID: thisDevice.deviceID)
-        self.initRealmNotification()
+        //database().updateDeviceUserList(deviceID: thisDevice.deviceID)
+        
+        self.prepareEverything()
+    }
+
+    
+    deinit{
+        for reference in referenceList {
+            if let refPath = reference {
+                database().detachObserver(referencePath: refPath)
+            }
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        for reference in referenceList {
+            if let refPath = reference {
+                database().detachObserver(referencePath: refPath)
+            }
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
+        self.initNotifications()
+    }
+    
+    
+    func initNotifications() {
+        
+        self.referenceList.append(database().watchDevice(deviceID: deviceID, reset: {
+            self.resetEverything()
+            
+        }, identity: { device in
+            
+            print(device)
+            self.thisDevice = device
+            self.updateView()
+            
+        }, controls: { control in
+            
+            self.controls.append(control)
+            self.updateView()
+            
+        }, vertices: { vertex in
+            
+            print(vertex)
+            self.vertices.append(vertex)
+            self.updateView()
+            
+        }))
+    }
+    
+    func updateView() {
+        self.prepareEverything()
+        self.tableView.reloadData()
+        self.viewDidLoad()
+    }
+    
+    func prepareEverything() {
+        
         self.prepareUserData()
         self.prepareDeviceData()
         self.prepareControls()
+        self.prepareVertices()
+    }
+    
+    func prepareControls() {
         
-        
+        for control in controls {
+            prepareControlData(control: control)
+            
+        }
+    }
+    
+    func prepareVertices() {
+        for vertex in vertices {
+            prepareVertex(vertex: vertex)
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -74,11 +159,30 @@ class DeviceSummaryViewController: UITableViewController {
         
         if thisDevice.humanAdmin != 0 {
             userIds.append(thisDevice.humanAdmin)
-            humanData.append("admin")
-            userRealmKeys = thisDevice.authorizedUsers.components(separatedBy: "/")
             
-            if userRealmKeys.count > 1 {
-                humanData.append(contentsOf: userRealmKeys)
+            if self.adminUser == nil {
+                database().getAuthorizedUsers(deviceID: thisDevice.deviceID){ profile in
+                    print(profile)
+                    self.authorizedUsers[profile.heepID] = profile
+                    self.updateView()
+                }
+            }
+            
+            if self.adminUser == nil {
+                database().getUserProfile(heepID: thisDevice.humanAdmin) { profile in
+                    
+                    self.adminUser = profile
+                    self.updateView()
+                }
+            }
+            
+            humanData.append("admin")
+            
+            if self.adminUser == nil {
+                database().getAuthorizedUsers(deviceID: thisDevice.deviceID){ profile in
+                    self.authorizedUsers[profile.heepID] = profile
+                    self.updateView()
+                }
             }
             
             humanData.append("addNewUser")
@@ -88,7 +192,7 @@ class DeviceSummaryViewController: UITableViewController {
             humanData.append("claimDevice")
         }
         
-        self.cells.append(humanData)
+        self.cells = [humanData]
     }
     
     func prepareDeviceData() {
@@ -117,17 +221,6 @@ class DeviceSummaryViewController: UITableViewController {
         
     }
     
-    func prepareControls() {
-        
-        for control in thisDevice.controlList {
-            prepareControlData(control: control)
-            
-            for vertex in control.vertexList {
-                prepareVertex(vertex: vertex)
-                
-            }
-        }
-    }
     
     func prepareControlData(control: DeviceControl) {
         
@@ -204,9 +297,10 @@ class DeviceSummaryViewController: UITableViewController {
         if indexPath.section == 0 {
             switch self.cells[indexPath.section][indexPath.row] {
             case "admin" :
+                if let adminProfile = self.adminUser {
+                    cell.addSubview(self.addUserCell(profile: adminProfile, initialOffset: 15))
+                }
                 
-                cell.addSubview(addUserCell(userID: userIds[indexPath.row], initialOffset: 15))
-             
             case "claimDevice" :
                 cell.addSubview(addClaimDeviceCell())
                 
@@ -214,14 +308,13 @@ class DeviceSummaryViewController: UITableViewController {
                 cell.addSubview(addNewUserCell())
                 
             default:
-                let realm = try! Realm(configuration: configPublicSync)
-                print(indexPath.row)
-                print(userRealmKeys)
-                if let heepID = realm.objects(User.self).filter("realmKey = %@", userRealmKeys[indexPath.row - 1]).first?.heepID {
-                    
-                    cell.addSubview(addUserCell(userID: heepID, initialOffset: 60))
+                let authUserKeys = [Int](self.authorizedUsers.keys)
+                let thisKey = authUserKeys[indexPath.row]
+                print("KEY: \(thisKey)")
+                if let thisUser = self.authorizedUsers[thisKey] {
+                    print("NEXT USER: \(thisUser)")
+                    cell.addSubview(self.addUserCell(profile: thisUser, initialOffset: 60))
                 }
-                
                 
             }
             
@@ -238,7 +331,9 @@ class DeviceSummaryViewController: UITableViewController {
         return cell
     }
     
-    func addUserCell(userID: Int, initialOffset: CGFloat = 60) -> UIView {
+    func addUserCell(profile: User, initialOffset: CGFloat = 60) -> UIView {
+        print(profile)
+        
         let userView = UIView(frame: CGRect(x: 0 + initialOffset,
                                             y: 0,
                                             width: tableView.frame.size.width,
@@ -248,16 +343,17 @@ class DeviceSummaryViewController: UITableViewController {
                                                           y: 0,
                                                           width: 45,
                                                           height: 45),
-                                    userID: userID)
+                                    userID: profile.heepID)
+        
         userView.addSubview(userIcon.view)
         
         let userName = userNameView(frame: CGRect(x: userIcon.frame.maxX + 10,
                                                    y: 0,
                                                    width: (tableView.frame.size.width - userIcon.frame.maxX) / 5,
                                                    height: 45),
-                                     userID: userID,
-                                     textAlignment: .left,
-                                     calculateFrame: false)
+                                    name: profile.name,
+                                    textAlignment: .left,
+                                    calculateFrame: false)
         
         
         userView.addSubview(userName.view)
@@ -266,9 +362,9 @@ class DeviceSummaryViewController: UITableViewController {
                                                    y: 0,
                                                    width: tableView.frame.size.width - userIcon.frame.maxX,
                                                    height: 45),
-                                     userID: userID,
-                                     textAlignment: .left,
-                                     calculateFrame: false)
+                                      email: profile.email,
+                                      textAlignment: .left,
+                                      calculateFrame: false)
         
         userView.addSubview(userEmail.view)
         
@@ -304,19 +400,14 @@ class DeviceSummaryViewController: UITableViewController {
     
     func claimDevice() {
         //HeepConnections().sendAssignAdminToHeepDevice(deviceID: thisDevice.deviceID)
-        createDeviceRealm(deviceID: thisDevice.deviceID)
         
-        let realm = try! Realm(configuration: configUser)
-        
-        if let myID = realm.objects(User.self).first?.heepID {
+        database().getMyHeepID() { heepID in
             
-            try! realm.write {
-                thisDevice.humanAdmin = myID
-            }
+            let updateDevice = Device(value: self.thisDevice)
+            updateDevice.humanAdmin = heepID!
             
-        } else {
+            database().updateDevice(device: updateDevice)
             
-            print("I am not assigned a Heep ID for some reason....going to have issues")
         }
         
     }
@@ -327,40 +418,6 @@ class DeviceSummaryViewController: UITableViewController {
         present(modalViewController, animated: false) {}
     }
     
-    func initRealmNotification() {
-        let realm = try! Realm(configuration: configUser)
-        if let watchThisDevice = realm.object(ofType: Device.self, forPrimaryKey: thisDevice.deviceID) {
-            
-            notificationToken = watchThisDevice.addNotificationBlock {  changes in
-                
-                switch changes {
-                case .change:
-                    
-                    print(watchThisDevice)
-                    
-                    self.thisDevice = watchThisDevice
-                    self.cells = [[String]]()
-                    
-                    self.prepareUserData()
-                    self.prepareDeviceData()
-                    self.prepareControls()
-                    
-                    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
-                        
-                        self.tableView.reloadData()
-                    }
-                    
-                    break
-                case .error(let error):
-                    fatalError("\(error)")
-                    break
-                default: break
-                }
-            }
-        } else {
-            print("REALM WATCHING FAILED")
-        }
-    }
     
     func reloadView() {
         
