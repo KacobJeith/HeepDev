@@ -214,34 +214,23 @@ extension AccountView{
         extractInputValues()
         print("submitting \(String(describing: email))")
         
-        let loginGroup = DispatchGroup()
-        loginGroup.enter()
+        guard let email = email else {
+            present(easyAlert(message: "Please input your email!", callback: {self.reloadView()}), animated: false, completion: nil)
+            
+            return
+        }
         
-        DispatchQueue.global(qos: .default).sync {
-            guard let email = email else {
-                
-                present(easyAlert(message: "Please input your email!", callback: {self.reloadView()}), animated: false, completion: nil)
-                loginGroup.leave()
-                return
-            }
+        guard let password = password else {
+            present(easyAlert(message: "Please input your password!", callback: {self.reloadView()}), animated: false, completion: nil)
             
-            guard let password = password else {
-                present(easyAlert(message: "Please input your password!", callback: {self.reloadView()}), animated: false, completion: nil)
-                loginGroup.leave()
-                return
-                
-            }
-            
-            database().loginUser(email: email, password: password) {
-                print("Executing Callback")
-                loginGroup.leave()
-            }
+            return
             
         }
         
-        loginGroup.wait()
-        
-        self.validateUser()
+        database().loginUser(email: email, password: password) {
+            print("Executing Callback")
+            self.validateUser()
+        }
         
     }
     
@@ -254,21 +243,16 @@ extension AccountView{
     func validateUser() {
         if database().checkIfLoggedIn() {
             
-            print("Logging out of public")
-            validateUser()
+            present(easyAlert(message: "Login Successful!",
+                              callback: { self.reloadView()}),
+                    animated: false, completion: nil)
             
         } else {
-            if database().checkIfLoggedIn() {
-                
-                present(easyAlert(message: "Login Successful!",
-                                  callback: { self.reloadView()}),
-                        animated: false, completion: nil)
-            } else {
-                
-                present(easyAlert(message: "Try Again. Email or Password invalid.", callback: {self.reloadView()}),
+            
+            present(easyAlert(message: "Try Again. Email or Password invalid.", callback: {self.reloadView()}),
                         animated: false,
                         completion: nil)
-            }
+            
         }
         
     }

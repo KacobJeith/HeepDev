@@ -84,10 +84,17 @@ class PlacesView: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        self.resetPlaces()
         self.title = "My Heep Zones"
         self.setupNavBar()
         self.getActiveUserIcon()
         self.initNotification()
+    }
+    
+    func resetPlaces() {
+        self.placeNames = [Int : String]()
+        self.places = [Place]()
+        self.view = UIView(frame: self.view.frame)
     }
     
     func addPlaces() {

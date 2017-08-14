@@ -216,10 +216,10 @@ class databaseFirebase {
             if error != nil {
                 print("Firebase Login Error")
             } else {
-                print("Successfully logged in user to firebase \(String(describing: user))")
+                print("Successfully logged in user to firebase \(String(describing: user?.uid))")
             }
             
-            //callback()
+            callback()
         }
         
     }
