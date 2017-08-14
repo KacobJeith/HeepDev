@@ -8,6 +8,25 @@ using System.Net.Sockets;
 using System;
 using System.IO;
 using System.Text;
+using System.Threading;
+
+public class ThreadedDeviceSearch
+{
+	public ThreadedDeviceSearch(int n, ManualResetEvent doneEvent)
+	{
+		_n = n;
+		_doneEvent = doneEvent;
+	}
+
+	public void Callback(object threadContext)
+	{
+		Debug.Log ("My thread is " + _n);
+		_doneEvent.Set ();
+	}
+
+	private int _n;
+	private ManualResetEvent _doneEvent;
+}
 
 public class SearchForDevices : MonoBehaviour, IPointerDownHandler {
 
@@ -16,6 +35,21 @@ public class SearchForDevices : MonoBehaviour, IPointerDownHandler {
 	public void OnPointerDown (PointerEventData eventData)
 	{
 		Debug.Log("You have clicked the button!");
+
+		int IPsToSearch = 250;
+		ManualResetEvent[] doneEvents = new ManualResetEvent[IPsToSearch];
+		ThreadedDeviceSearch[] deviceSearchArr = new ThreadedDeviceSearch[IPsToSearch];
+
+		for (int i = 0; i < IPsToSearch; i++) {
+			doneEvents [i] = new ManualResetEvent (false);
+			ThreadedDeviceSearch mySearch = new ThreadedDeviceSearch (i, doneEvents [i]);
+			deviceSearchArr [i] = mySearch;
+
+			ThreadPool.QueueUserWorkItem (mySearch.Callback, i);
+		}
+
+		//WaitHandle.WaitAll (doneEvents);
+		Debug.Log ("All Done");
 
 		//
 		//		byte[] bytes = new byte[1024];  
