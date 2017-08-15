@@ -17,7 +17,6 @@ public class PlaceData : MonoBehaviour {
 	}
 
 	void LoadPlaceLocation(){
-		PlaceLocation.x = gameObject.transform.position.x;
-		PlaceLocation.y = gameObject.transform.position.y;
+		PlaceLocation = GetComponent<RectTransform> ().anchoredPosition;
 	}
 }
