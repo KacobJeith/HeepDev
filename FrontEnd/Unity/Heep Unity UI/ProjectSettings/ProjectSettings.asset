@@ -460,7 +460,8 @@ PlayerSettings:
   XboxOneAllowedProductIds: []
   XboxOnePersistentLocalStorageSize: 0
   vrEditorSettings: {}
-  cloudServicesEnabled: {}
+  cloudServicesEnabled:
+    UNet: 1
   cloudProjectId: 67547a28-4593-4eb4-8fda-eb4fafdaeec5
   projectName: Heep Unity UI
   organizationId: dylan-1971652
