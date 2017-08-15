@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import RealmSwift
 
 func createControlPuck(thisControl: DeviceControl, cellSize: CGRect) -> UIView {
     
@@ -398,6 +397,26 @@ extension UIColor {
         }
         
     }
+    
+}
+
+func openLocalIcon() -> UIImage {
+    print("GRABBING LOCAL")
+    
+    let documentsDirectoryURL = try! FileManager().url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+    
+    let fileURL = documentsDirectoryURL.appendingPathComponent("profilePicture.jpg")
+    
+    guard let data = NSData(contentsOf: fileURL) else {
+        return #imageLiteral(resourceName: "male")
+    }
+    
+    if let image = UIImage(data: data as Data) {
+        return image
+    } else {
+        return #imageLiteral(resourceName: "male")
+    }
+    
     
 }
 

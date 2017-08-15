@@ -7,10 +7,9 @@
 //
 
 import UIKit
-import RealmSwift
 
 class AccountView: UIViewController {
-    var notificationToken: NotificationToken? = nil
+    
     var subviewFrame = CGRect()
     var startFrame = CGRect()
     var registeringNewAccount: Bool = false
@@ -53,9 +52,13 @@ class AccountView: UIViewController {
     }
     
     func isUserLoggedIn() {
-        print("Current User: \(String(describing: SyncUser.current))")
         
-        if SyncUser.current == nil {
+        if database().checkIfLoggedIn() {
+            self.title = "My Account"
+            setupNavigation()
+            attemptToRender()
+            
+        } else {            
             if registeringNewAccount {
                 self.title = "Register New Account"
                 self.view.addSubview(registerView())
@@ -63,16 +66,12 @@ class AccountView: UIViewController {
                 self.title = "Login to Heep"
                 self.view.addSubview(loginView())
             }
-            
-        } else {
-            self.title = "My Account"
-            setupNavigation()
-            attemptToRender()
         }
     }
     
     func logoutUser() {
-        logoutOfAllRealmUsers()
+        
+        database().signOut()
         reloadView()
         
     }
@@ -84,48 +83,39 @@ class AccountView: UIViewController {
     }
     
     func attemptToRender() {
-        let realm = try! Realm(configuration: configUser)
         
-        if let myID = realm.objects(User.self).first?.heepID {
+        database().getMyProfile() { myProfile in
             
-            print("GOT AN ID: \(myID)")
-            self.view.addSubview(alreadyLoggedInView())
+            self.alreadyLoggedInView(myProfile: myProfile)
             
-        } else {
-            print("Couldn't grab ID from logged in realm.... logging out")
-            //logoutUser()
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1, execute: {
-                print("Trying... \(DispatchTime.now())")
-                self.reloadView()
-                return
-            })
         }
-        
     }
 }
 
 // Already Logged in View
 
 extension AccountView {
-    func alreadyLoggedInView() -> UIView {
+    func alreadyLoggedInView(myProfile: User) {
+        
         let userAccountView = UIView()
         
-        let iconView = userIconView()
-        let nameView = userNameView(frame: iconView.frame)
-        let emailView = userEmailView(frame: nameView.frame)
+        let iconView = self.userIconView(profile: myProfile)
+        let nameView = self.userNameView(profile: myProfile, frame: iconView.frame)
+        let emailView = self.userEmailView(profile: myProfile, frame: nameView.frame)
         
         userAccountView.addSubview(iconView.view)
         userAccountView.addSubview(nameView.view)
         userAccountView.addSubview(emailView.view)
         
-        return userAccountView
+        self.view.addSubview(userAccountView)
+        
+        
     }
     
-    func userIconView() -> (view: UIView, frame: CGRect) {
+    func userIconView(profile: User) -> (view: UIView, frame: CGRect) {
         let iconDiameter = self.view.frame.width / 5
-        let realm = try! Realm(configuration: configUser)
-        let myID = realm.objects(User.self).first?.heepID
-
+        
+        
         let frame = CGRect(x: (self.view.frame.width / 2) - (iconDiameter / 2),
                            y: (iconDiameter / 4),
                            width: iconDiameter,
@@ -137,8 +127,11 @@ extension AccountView {
         containerView.layer.borderColor = UIColor.lightGray.cgColor
         containerView.layer.borderWidth = 1
         
-        let iconView = UIImageView(frame: containerView.bounds)
-        iconView.image = myImage(userID: myID!)
+        let iconView = database().downloadMyProfileImage(heepID: profile.heepID)
+        iconView.frame = CGRect(x: 0, y: 0,
+                                width: iconDiameter,
+                                height: iconDiameter)
+
         iconView.contentMode = .scaleAspectFit
         
         containerView.addSubview(iconView)
@@ -146,14 +139,14 @@ extension AccountView {
         return (view: containerView, frame: frame)
     }
     
-    func userNameView(frame: CGRect)  -> (view: UIView, frame: CGRect) {
+    func userNameView(profile: User, frame: CGRect)  -> (view: UIView, frame: CGRect) {
         let nextFrame = CGRect(x: 0,
                                y: frame.maxY + 10,
                                width: self.view.frame.width,
                                height: frame.height / 3)
         
         let userNameView = UILabel(frame: nextFrame)
-        userNameView.text = myName()
+        userNameView.text = profile.name
         userNameView.adjustsFontSizeToFitWidth = true
         userNameView.textColor = .darkGray
         userNameView.textAlignment = .center
@@ -162,61 +155,20 @@ extension AccountView {
         return (view: userNameView, frame: nextFrame)
     }
     
-    func myName() -> String {
-        if let myProfile = retrieveUserProfile() {
-            
-            return myProfile.name
-        } else {
-            return "nil"
-        }
-    }
-    
-    func retrieveUserProfile() -> User? {
-        
-        let publicRealm = try! Realm(configuration: configPublicSync)
-        let userRealm = try! Realm(configuration: configUser)
-        
-        if let myId = userRealm.objects(User.self).first?.heepID {
-            if let profile = publicRealm.object(ofType: User.self, forPrimaryKey: myId) {
-                return profile
-                
-            } else {
-                
-                return nil
-            }
-        } else {
-            print("Could not find ID")
-            return nil
-        }
-        
-            
-        
-    }
-    
-    
-    func userEmailView(frame: CGRect) -> (view: UIView, frame: CGRect) {
+    func userEmailView(profile: User, frame: CGRect) -> (view: UIView, frame: CGRect) {
         let nextFrame = CGRect(x: 0,
                                y: frame.maxY,
                                width: self.view.frame.width,
                                height: frame.height)
         
         let emailView = UILabel(frame: nextFrame)
-        emailView.text = myEmail()
+        emailView.text = profile.email
         emailView.adjustsFontSizeToFitWidth = true
         emailView.textColor = .lightGray
         emailView.textAlignment = .center
         emailView.contentMode = .top
         
         return (view: emailView, frame: nextFrame)
-    }
-    
-    func myEmail() -> String {
-        if let myProfile = retrieveUserProfile() {
-            
-            return myProfile.email
-        } else {
-            return "nil"
-        }
     }
 }
 
@@ -262,36 +214,23 @@ extension AccountView{
         extractInputValues()
         print("submitting \(String(describing: email))")
         
-        let loginGroup = DispatchGroup()
-        loginGroup.enter()
+        guard let email = email else {
+            present(easyAlert(message: "Please input your email!", callback: {self.reloadView()}), animated: false, completion: nil)
+            
+            return
+        }
         
-        DispatchQueue.global(qos: .default).sync {
-            guard let email = email else {
-                
-                present(easyAlert(message: "Please input your email!", callback: {self.reloadView()}), animated: false, completion: nil)
-                loginGroup.leave()
-                return
-            }
+        guard let password = password else {
+            present(easyAlert(message: "Please input your password!", callback: {self.reloadView()}), animated: false, completion: nil)
             
-            guard let password = password else {
-                present(easyAlert(message: "Please input your password!", callback: {self.reloadView()}), animated: false, completion: nil)
-                loginGroup.leave()
-                return
-                
-            }
-            
-            loginToUserRealmSync(username: email,
-                                 password: password,
-                                 callback: {
-                                    print("Executing Callback")
-                                    loginGroup.leave()
-            })
+            return
             
         }
         
-        loginGroup.wait()
-        
-        self.validateUser()
+        database().loginUser(email: email, password: password) {
+            print("Executing Callback")
+            self.validateUser()
+        }
         
     }
     
@@ -302,22 +241,18 @@ extension AccountView{
     }
     
     func validateUser() {
-        if SyncUser.all.count > 1 {
+        if database().checkIfLoggedIn() {
             
-            print("Logging out of public")
-            validateUser()
+            present(easyAlert(message: "Login Successful!",
+                              callback: { self.reloadView()}),
+                    animated: false, completion: nil)
+            
         } else {
-            if SyncUser.current != nil {
-                
-                present(easyAlert(message: "Login Successful!",
-                                  callback: { self.reloadView()}),
-                        animated: false, completion: nil)
-            } else {
-                
-                present(easyAlert(message: "Try Again. Email or Password invalid.", callback: {self.reloadView()}),
+            
+            present(easyAlert(message: "Try Again. Email or Password invalid.", callback: {self.reloadView()}),
                         animated: false,
                         completion: nil)
-            }
+            
         }
         
     }
@@ -512,9 +447,18 @@ extension AccountView {
                               callback: {self.reloadView()}),
                     animated: false, completion: nil)
             
-            seedNewUserAccount(name: name,
-                               email: email,
-                               password: password)
+            
+            let newUser = User()
+            newUser.heepID = randomNumber(inRange: 1...1000000)
+            newUser.name = name
+            newUser.iconURL = "https://lorempixel.com/400/400/"
+            newUser.email = email
+            newUser.icon = getUserIcon(iconURL: newUser.iconURL)
+            
+            database().registerNewUser(newUser: newUser,
+                                       email: email,
+                                       password: password)
+            
             
             self.submitLogin()
             

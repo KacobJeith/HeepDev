@@ -7,15 +7,13 @@
 //
 
 import UIKit
-import RealmSwift
 
-func generateUserCard(frame: CGRect, userID: Int) -> UIView {
+func generateUserCard(frame: CGRect, profile: User) -> UIView {
     let userAccountView = UIView()
     
-    
-    let iconView = userIconView(startingframe: frame, userID: userID)
-    let nameView = userNameView(frame: iconView.frame, userID: userID)
-    let emailView = userEmailView(frame: nameView.frame, userID: userID)
+    let iconView = userIconView(startingframe: frame, userID: profile.heepID)
+    let nameView = userNameView(frame: iconView.frame, name: profile.name)
+    let emailView = userEmailView(frame: nameView.frame, email: profile.email)
     
     userAccountView.addSubview(iconView.view)
     userAccountView.addSubview(nameView.view)
@@ -39,8 +37,11 @@ func userIconView(startingframe: CGRect, userID: Int) -> (view: UIView, frame: C
     containerView.layer.borderWidth = 1
     containerView.clipsToBounds = true
     
-    let iconView = UIImageView(frame: containerView.bounds)
-    iconView.image = myImage(userID: userID)
+    let iconView = database().downloadMyProfileImage(heepID: userID)
+    iconView.frame = CGRect(x: 0, y: 0,
+                            width: iconDiameter,
+                            height: iconDiameter)
+    
     iconView.contentMode = .scaleAspectFit
     
     containerView.addSubview(iconView)
@@ -48,17 +49,7 @@ func userIconView(startingframe: CGRect, userID: Int) -> (view: UIView, frame: C
     return (view: containerView, frame: frame)
 }
 
-func myImage(userID: Int) -> UIImage {
-    
-    if let profile = retrieveUserProfile(userID: userID) {
-        return UIImage(data: profile.icon as Data)!
-    } else {
-        return #imageLiteral(resourceName: "male")
-    }
-    
-}
-
-func userNameView(frame: CGRect, userID: Int, textAlignment: NSTextAlignment = .center, calculateFrame: Bool = true)  -> (view: UIView, frame: CGRect) {
+func userNameView(frame: CGRect, name: String, textAlignment: NSTextAlignment = .center, calculateFrame: Bool = true)  -> (view: UIView, frame: CGRect) {
     var nextFrame = frame
     
     if calculateFrame {
@@ -70,7 +61,7 @@ func userNameView(frame: CGRect, userID: Int, textAlignment: NSTextAlignment = .
     
     
     let userNameView = UILabel(frame: nextFrame)
-    userNameView.text = myName(userID: userID)
+    userNameView.text = name
     userNameView.font = userNameView.font.withSize(12)
     userNameView.textColor = .darkGray
     userNameView.textAlignment = textAlignment
@@ -79,27 +70,7 @@ func userNameView(frame: CGRect, userID: Int, textAlignment: NSTextAlignment = .
     return (view: userNameView, frame: nextFrame)
 }
 
-func myName(userID: Int) -> String {
-    let myProfile = retrieveUserProfile(userID: userID)
-    
-    if let name = myProfile?.name {
-        return name
-    } else {
-        return "nil"
-    }
-    
-}
-
-func retrieveUserProfile(userID: Int) -> User? {
-    
-    let publicRealm = try! Realm(configuration: configPublicSync)
-    let profile = publicRealm.object(ofType: User.self, forPrimaryKey: userID) 
-    
-    return profile
-}
-
-
-func userEmailView(frame: CGRect, userID: Int, textAlignment: NSTextAlignment = .center, calculateFrame: Bool = true) -> (view: UIView, frame: CGRect) {
+func userEmailView(frame: CGRect, email: String, textAlignment: NSTextAlignment = .center, calculateFrame: Bool = true) -> (view: UIView, frame: CGRect) {
     var nextFrame = frame
     
     if calculateFrame {
@@ -110,7 +81,7 @@ func userEmailView(frame: CGRect, userID: Int, textAlignment: NSTextAlignment = 
     }
     
     let emailView = UILabel(frame: nextFrame)
-    emailView.text = myEmail(userID: userID)
+    emailView.text = email
     emailView.font = emailView.font.withSize(12)
     emailView.textColor = .lightGray
     emailView.textAlignment = textAlignment
@@ -119,11 +90,3 @@ func userEmailView(frame: CGRect, userID: Int, textAlignment: NSTextAlignment = 
     return (view: emailView, frame: nextFrame)
 }
 
-func myEmail(userID: Int) -> String {
-    if let profile = retrieveUserProfile(userID: userID) {
-        
-        return profile.email
-    } else {
-        return "nil"
-    }
-}

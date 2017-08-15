@@ -7,16 +7,15 @@
 //
 
 import UIKit
-import RealmSwift
-
 
 class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
-    var notificationTokenList = [NotificationToken]()
+    var referenceList = [String?]()
     var collectionView: UICollectionView!
     
     var placeName: String = "placeholder"
     var placeID: Int = 0
     var groups = [Group]()
+    var backgrounds = [Int: UIImageView]()
     
     private let reuseIdentifier = "Cell"
     
@@ -24,6 +23,7 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
         self.init()
         self.placeName = placeName
         self.placeID = placeID
+        self.initNotifications()
     }
     
     override func viewDidLoad() {
@@ -31,76 +31,24 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
         
         self.title = placeName
         
-        self.initRealmNotifications()
         self.setupCollectionView()
         self.setupNavBar()
         
     }
     
-    func initRealmNotifications() {
-        groups = []
+    func initNotifications() {
         
-        let realm = try! Realm(configuration: configUser)
-        
-        let groupPerspectives = realm.objects(GroupPerspective.self).filter("placeID = %@", placeID).toArray()
-        
-        for perspective in groupPerspectives {
+        self.referenceList.append(database().watchGroupPerspectivesForPlace(placeID: placeID, reset: {
+            self.groups = []
             
-            let thisGroupRealm = try! Realm(configuration: getGroupConfiguration(path: perspective.realmPath))
+        }) { (context) in
             
-            if let thisGroup = thisGroupRealm.objects(Group.self).first {
+            self.referenceList.append(database().watchGroup(context: context) { (thisGroup) in
                 
-                initGroupNotification(group: thisGroup)
-                
-            } else {
-                
-                asyncOpenGroup(perspective: perspective)
-                print("Could not find any groups at this realm config")
-            }
-            
-        }
-        
-    }
-    
-    func asyncOpenGroup(perspective: GroupPerspective) {
-        openRealmAsync(config: getGroupConfiguration(path: perspective.realmPath), callback: {
-            let thisGroupRealm = try! Realm(configuration: getGroupConfiguration(path: perspective.realmPath))
-            
-            if let thisGroup = thisGroupRealm.objects(Group.self).first {
-                
-                self.initGroupNotification(group: thisGroup)
-            }
-            self.reloadView()
+                self.groups.append(thisGroup)
+                self.reloadView()
+            })
         })
-    }
-
-    
-    func initGroupNotification(group: Group) {
-        
-        groups.append(group)
-        
-        print(groups)
-        
-        let notificationToken = group.addNotificationBlock { changes in
-
-                switch changes {
-                case .change:
-                    
-                    self.reloadView()
-                    
-                    break
-                    
-                case .error(let error):
-                    
-                    fatalError("\(error)")
-                    break
-                    
-                default: break
-                }
-        }
-        
-        notificationTokenList.append(notificationToken)
-        
         
     }
     
@@ -143,16 +91,20 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
     }
     
     deinit{
-        for token in notificationTokenList {
-            token.stop()
+        for reference in referenceList {
+            if let refPath = reference {
+                database().detachObserver(referencePath: refPath)
+            }
         }
     }
     
     
     override func viewWillDisappear(_ animated: Bool) {
         
-        for token in notificationTokenList {
-            token.stop()
+        for reference in referenceList {
+            if let refPath = reference {
+                database().detachObserver(referencePath: refPath)
+            }
         }
         
         self.title = ""
@@ -202,25 +154,19 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
         let tap = UITapGestureRecognizer(target: self, action: #selector(openGroupView))
         tap.numberOfTapsRequired = 1
         title.addGestureRecognizer(tap)
+        title.backgroundColor = .clear
         
-        let thisImageData = groups[indexPath.row].imageData
+        let imageView = database().downloadGroupImage(groupID: groups[indexPath.row].groupID)
+        self.backgrounds[indexPath.row] = imageView
         
-        if (thisImageData == NSData()) {
-            
-            title.backgroundColor = getRandomColor()
-            
-        } else {
-            title.backgroundColor = .clear
-            let image = UIImage(data: thisImageData as Data)
-            let imageView = UIImageView(image: image)
-            imageView.contentMode = .scaleAspectFit
-            imageView.frame = cell.bounds
-            cell.addSubview(imageView)
-            let overlay = UIView()
-            overlay.backgroundColor = UIColor.black
-            overlay.alpha = 0.1
-            
-        }
+        imageView.contentMode = .scaleAspectFit
+        imageView.frame = cell.bounds
+        cell.addSubview(imageView)
+        
+        
+        let overlay = UIView()
+        overlay.backgroundColor = UIColor.black
+        overlay.alpha = 0.1
         
         
         cell.addSubview(title)
@@ -243,8 +189,9 @@ extension GroupCollectionView {
             return
         }
         
-        
-        let editRoomView = EditRoomView(groupID: groups[index].groupID, groupName: groups[index].name)
+        let editRoomView = EditRoomView(groupID: groups[index].groupID,
+                                        groupName: groups[index].name,
+                                        groupBackground: backgrounds[index]!)
         
         navigationController?.pushViewController(editRoomView, animated: true)
     }
@@ -252,14 +199,15 @@ extension GroupCollectionView {
     func openDeviceTable() {
         print("Open Device Table View")
         
-        let tableTitle = placeName + " Devices"
+        let tableTitle = "Currently Active"
         
         let seeAllDevicesInPlace = DeviceTableViewController(title: tableTitle, placeID: placeID)
         navigationController?.pushViewController(seeAllDevicesInPlace, animated: true)
     }
     
     func addGroupFromButton() {
-        createGroupRealm(placeID: placeID)
+        database().createNewGroup(placeID: placeID)
+        
         self.reloadView()
     }
     

@@ -7,8 +7,6 @@
 //
 
 import UIKit
-import RealmSwift
-
 
 class UserSearch: UIViewController {
     
@@ -31,10 +29,23 @@ class UserSearch: UIViewController {
     }
     
     func populateAllUsers() {
+        database().getMyHeepID() { myHeepID in
+            
+            database().getAllUsers() { user in
+                if user.heepID != myHeepID {
+                    
+                    self.allUsers.append(user)
+                    self.reloadView()
+                }
+            }
+        }
         
-        let realm = try! Realm(configuration: configPublicSync)
-        allUsers = realm.objects(User.self).toArray()
+    }
+    
+    func reloadView() {
         
+        self.loadView()
+        self.viewDidLoad()
     }
     
     func setupModalViewBackdrop() {
@@ -42,7 +53,6 @@ class UserSearch: UIViewController {
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(exitSearch))
         self.view.addGestureRecognizer(tap)
-
     }
     
     func setupSearchSection() {
@@ -89,29 +99,21 @@ extension UserSearch: UICollectionViewDataSource, UICollectionViewDelegate {
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let realm = try! Realm(configuration: configPublicSync)
-        
-        return realm.objects(User.self).count
+        return self.allUsers.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell: UICollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath as IndexPath) as UICollectionViewCell
         
-        let realm = try! Realm(configuration: configUser)
-        let myID = realm.objects(User.self).first?.heepID
-        
-        if allUsers[indexPath.row].heepID == myID {
-            cell.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
-            return cell
-        }
         
         let bigWhiteBackground = UIView()
         bigWhiteBackground.backgroundColor = .white
         bigWhiteBackground.frame = cell.bounds
         
         cell.addSubview(bigWhiteBackground)
-        cell.addSubview(generateUserCard(frame: cell.bounds, userID: allUsers[indexPath.row].heepID))
+        
+        cell.addSubview(generateUserCard(frame: cell.bounds, profile: allUsers[indexPath.row]))
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(selectUser))
         cell.addGestureRecognizer(tap)
@@ -132,7 +134,9 @@ extension UserSearch: UICollectionViewDataSource, UICollectionViewDelegate {
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { action in
             print("ADD")
             
-            grantPermissionToOtherUser(deviceID: self.thisDevice.deviceID, userID: (gesture.view?.tag)!)
+            database().grantUserAccessToDevice(deviceID: self.thisDevice.deviceID,
+                                               userID: (gesture.view?.tag)!)
+            
             self.exitSearch()
         }))
         
@@ -144,18 +148,6 @@ extension UserSearch: UICollectionViewDataSource, UICollectionViewDelegate {
         present(alert, animated: false, completion: nil)
 
         
-        
-    }
-    
-    
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        
-    }
-    
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if !decelerate {
-            
-        }
         
     }
     

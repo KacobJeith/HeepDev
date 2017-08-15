@@ -1,31 +1,20 @@
 import UIKit
-import RealmSwift
 
 class UnassignedControlCollection: UITableViewCell, UICollectionViewDataSource, UICollectionViewDelegate {
     
     var collectionView: UICollectionView!
-    var controls: [DeviceControl] = []
+    var controls = [Int: DeviceControl]()
     var thisGroup = GroupPerspective()
+    var controlKeys = [Int]()
     
-    convenience init(groupID: Int) {
+    convenience init(groupContext: GroupPerspective, unassignedControls: [Int: DeviceControl]) {
         self.init()
         
-        setControlsAndGroup(groupID: groupID)
+        self.thisGroup = groupContext
+        self.controls = unassignedControls
+        self.controlKeys = [Int](unassignedControls.keys)
+        
         setupCollectionView()
-        
-    }
-    
-    func setControlsAndGroup(groupID: Int) {
-        let realm = try! Realm(configuration: configUser)
-        
-        self.controls = realm.objects(DeviceControl.self).filter("groupID = 0").toArray()
-        
-        guard let group = realm.object(ofType: GroupPerspective.self, forPrimaryKey: groupID) else {
-            print("Failed to find perspective for unassigned")
-            return
-        }
-    
-        self.thisGroup = group
         
     }
     
@@ -76,12 +65,17 @@ class UnassignedControlCollection: UITableViewCell, UICollectionViewDataSource, 
         bigWhiteBackground.backgroundColor = .white
         bigWhiteBackground.frame = cell.bounds
         
-        let basicPuck = createControlPuck(thisControl: controls[indexPath.row], cellSize: cell.bounds)
+        guard let thisControl = controls[controlKeys[indexPath.row]] else {
+            print("Failed to grab this index")
+            return cell
+        }
+        
+        let basicPuck = createControlPuck(thisControl: thisControl, cellSize: cell.bounds)
         
         let bigButton = UIButton()
         bigButton.frame = cell.bounds
         bigButton.backgroundColor = UIColor.clear
-        bigButton.tag = indexPath.row
+        bigButton.tag = thisControl.uniqueID
         
         bigButton.addTarget(self,action: #selector(selectControl),for: [UIControlEvents.primaryActionTriggered])
         
@@ -97,20 +91,34 @@ class UnassignedControlCollection: UITableViewCell, UICollectionViewDataSource, 
 extension UnassignedControlCollection {
     
     func selectControl(sender: UIButton) {
-        let realm = try! Realm(configuration: configUser)
         
-        if let place = realm.object(ofType: PlacePerspective.self, forPrimaryKey: thisGroup.placeID) {
-            try! realm.write {
-                place.numDevices += 1
-            }
+        guard let selectedControl = controls[sender.tag] else {
+            print("Could not find control for tag \(sender.tag)")
+            return
         }
         
-        print(realm.object(ofType: DeviceControl.self, forPrimaryKey: controls[sender.tag].uniqueID)!)
-
-        try! realm.write {
-            controls[sender.tag].groupID = thisGroup.groupID
-            thisGroup.selectedControl = controls[sender.tag].uniqueID
-            thisGroup.unassignedOffsetX = collectionView.contentOffset.x
+        let controlUpdate = DeviceControl(value: selectedControl)
+        controlUpdate.groupID = thisGroup.groupID
+        
+        database().updateDeviceControl(control: controlUpdate)
+        
+        let groupUpdate = GroupPerspective(value: thisGroup)
+        groupUpdate.selectedControl = selectedControl.uniqueID
+        groupUpdate.unassignedOffsetX = collectionView.contentOffset.x
+        
+        database().updateGroupContext(context: groupUpdate)
+        
+        database().getPlaceContext(id: thisGroup.placeID) { (context) in
+            
+            guard let place = context else {
+                print("Failed to get placeContext")
+                return
+            }
+            
+            let update = PlacePerspective(value: place)
+            update.numDevices += 1
+            
+            database().updatePlaceContext(placeContext: update)
         }
         
     }
@@ -119,23 +127,22 @@ extension UnassignedControlCollection {
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         
-        let realm = try! Realm(configuration: configUser)
+        updateScrollOffset(offsetX: collectionView.contentOffset.x)
         
-        try! realm.write {
-            thisGroup.unassignedOffsetX = collectionView.contentOffset.x
-        }
     }
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate {
-            
-            let realm = try! Realm(configuration: configUser)
-            
-            try! realm.write {
-                thisGroup.unassignedOffsetX = collectionView.contentOffset.x
-            }
+            updateScrollOffset(offsetX: collectionView.contentOffset.x)
         }
         
+    }
+    
+    func updateScrollOffset(offsetX: CGFloat) {
+        let groupUpdate = GroupPerspective(value: thisGroup)
+        groupUpdate.unassignedOffsetX = offsetX
+        
+        database().updateGroupContext(context: groupUpdate)
     }
     
 

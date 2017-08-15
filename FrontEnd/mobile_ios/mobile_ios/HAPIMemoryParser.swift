@@ -7,11 +7,8 @@
 //
 
 import UIKit
-import RealmSwift
 
 class HAPIMemoryParser {
-    
-    let realm = try! Realm(configuration: configUser)
     
     public func BuildIsHeepDeviceCOP() -> [UInt8] {
         
@@ -31,16 +28,16 @@ class HAPIMemoryParser {
         return entireArray
     }
     
-    public func BuildSetVertexCOP(vertex: Vertex) -> [UInt8] {
+    public func BuildSetVertexCOP(vertex: Vertex, ipAddress: String) -> [UInt8] {
         let COP = UInt8(0x0C)
-        let packet = prepareVertexPacket(vertex: vertex)
+        let packet = prepareVertexPacket(vertex: vertex, ipAddress: ipAddress)
         let entireArray = packageCOP(COP: COP, packet: packet)
         return entireArray
     }
     
-    public func BuildDeleteVertexCOP(vertex: Vertex) -> [UInt8] {
+    public func BuildDeleteVertexCOP(vertex: Vertex, ipAddress: String) -> [UInt8] {
         let COP = UInt8(0x0D)
-        let packet = prepareVertexPacket(vertex: vertex)
+        let packet = prepareVertexPacket(vertex: vertex, ipAddress: ipAddress)
         let entireArray = packageCOP(COP: COP, packet: packet)
         return entireArray
     }
@@ -58,7 +55,7 @@ class HAPIMemoryParser {
         return entireArray
     }
     
-    func prepareVertexPacket(vertex: Vertex) -> [UInt8] {
+    func prepareVertexPacket(vertex: Vertex, ipAddress: String) -> [UInt8] {
         
         var packet = [UInt8]()
         let txDeviceID = GetDeviceIDBytesFromInt(deviceID: (vertex.tx?.deviceID)!)
@@ -66,8 +63,7 @@ class HAPIMemoryParser {
         let txControlID = (vertex.tx?.controlID)!
         let rxControlID = (vertex.rx?.controlID)!
         
-        let rxDevice = realm.object(ofType: Device.self, forPrimaryKey: (vertex.rx?.deviceID)!)
-        let rxIPAddress = IPStringToByteArray(IPString: (rxDevice?.ipAddress)!)
+        let rxIPAddress = IPStringToByteArray(IPString: ipAddress)
         
         packet.append(contentsOf: txDeviceID)
         packet.append(contentsOf: rxDeviceID)
@@ -105,6 +101,7 @@ class HAPIMemoryParser {
     }
     
     public func ParseROP(dump: [UInt8], ipAddress: String) {
+        print("Parsing...")
         
         if (dump[0] == 0x0F){
             // Memory Dump
@@ -131,7 +128,7 @@ class HAPIMemoryParser {
     }
     
     public func ParseMemoryDump(dump: [UInt8], ipAddress: String) {
-        print(dump)
+        print("DUMP: \(dump)")
         let header = ParseDeviceID(dump: dump, index: 1)
         let packet = CalculateNumberOfBytes(dump: dump, index: header.index)
         var index = packet.index
@@ -207,10 +204,7 @@ class HAPIMemoryParser {
         newDevice.ipAddress = ipAddress
         newDevice.active = true
         
-        try! realm.write {
-            realm.add(newDevice, update: true)
-        }
-        
+        database().writeDevice(device: newDevice)
         
     }
     
@@ -219,55 +213,20 @@ class HAPIMemoryParser {
         
         let controlName = GetStringFromByteArrayIndices(dump: dump, indexStart: index + 6, indexFinish: index + packetSize)
         
-        let currentWifi = currentWifiInfo()
         let uniqueID = generateUniqueControlID(deviceID: deviceID, controlID: dump[index])
-        let existingControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: uniqueID)
-        //print("\(controlName): \(Int(dump[index + 5]))")
-        if existingControl != nil {
-            flushControlVertices(controlUniqueID: uniqueID)
-            
-            try! realm.write {
-                existingControl?.deviceID = deviceID
-                existingControl?.controlID = Int(dump[index])
-                existingControl?.controlType = Int(dump[index + 1])
-                existingControl?.controlDirection = Int(dump[index + 2])
-                existingControl?.valueLow = Int(dump[index + 3])
-                existingControl?.valueHigh = Int(dump[index + 4])
-                existingControl?.valueCurrent = Int(dump[index + 5])
-                existingControl?.controlName = controlName
-            }
-        } else {
-            
-            let newControl = DeviceControl()
-            newControl.deviceID = deviceID
-            newControl.controlID = Int(dump[index])
-            newControl.uniqueID = uniqueID
-            newControl.controlType = Int(dump[index + 1])
-            newControl.controlDirection = Int(dump[index + 2])
-            newControl.valueLow = Int(dump[index + 3])
-            newControl.valueHigh = Int(dump[index + 4])
-            newControl.valueCurrent = Int(dump[index + 5])
-            newControl.controlName = controlName
-            
-            try! realm.write {
-                
-                realm.add(newControl, update: true)
-                
-            }
-        }
         
+        let newControl = DeviceControl()
+        newControl.deviceID = deviceID
+        newControl.controlID = Int(dump[index])
+        newControl.uniqueID = uniqueID
+        newControl.controlType = Int(dump[index + 1])
+        newControl.controlDirection = Int(dump[index + 2])
+        newControl.valueLow = Int(dump[index + 3])
+        newControl.valueHigh = Int(dump[index + 4])
+        newControl.valueCurrent = Int(dump[index + 5])
+        newControl.controlName = controlName
         
-        
-        // Resolve Addition to device array (masterState)
-        let thisDevicesControls = realm.objects(DeviceControl.self).filter("deviceID == %d", deviceID)
-        
-        try! realm.write {
-            realm.create(Device.self,
-                         value: ["deviceID": deviceID,
-                                 "controlList": thisDevicesControls],
-                         update: true)
-        }
-        
+        database().writeDeviceControl(control: newControl)
     }
     
     func parseVertexMOP(dump: [UInt8], index: Int, packetSize: Int, deviceID: Int) {
@@ -278,55 +237,21 @@ class HAPIMemoryParser {
         let txControlID = dump[index + 4]
         let rxControlID = dump[index + 5]
         
-        let realm = try! Realm(configuration: configUser)
-        let txControl = realm.object(ofType: DeviceControl.self,
-                                     forPrimaryKey: generateUniqueControlID(deviceID: txDeviceID,
-                                                                            controlID: txControlID))
-        let rxControl = realm.object(ofType: DeviceControl.self,
-                                     forPrimaryKey: generateUniqueControlID(deviceID: rxDeviceID,
-                                                                            controlID: rxControlID))
-        
-        let newVertex = Vertex()
-        newVertex.rx = rxControl
-        newVertex.tx = txControl
-        newVertex.vertexID = nameVertex(tx: txControl, rx: rxControl)
-        
-        let existingVertexCheck = realm.object(ofType: Vertex.self, forPrimaryKey: newVertex.vertexID)
-        
-        if existingVertexCheck == nil && txControl != nil && rxControl != nil {
+        database().getControl(deviceID: txDeviceID, controlID: Int(txControlID)) { txControl in
             
-            try! realm.write {
+            database().getControl(deviceID: rxDeviceID, controlID: Int(txControlID)) { rxControl in
                 
-                realm.add(newVertex, update: true)
-            }
-            
-            
-        }
-        
-        if txControl != nil {
-            let txVertices = realm.objects(Vertex.self).filter("tx == %@", txControl!)
-            
-            try! realm.write {
+                let newVertex = Vertex()
+                newVertex.rx = rxControl
+                newVertex.tx = txControl
+                newVertex.vertexID = nameVertex(tx: txControl, rx: rxControl)
                 
-                realm.create(DeviceControl.self,
-                             value: ["uniqueID": (txControl?.uniqueID)!,
-                                     "vertexList": txVertices],
-                             update: true)
+                database().writeVertex(vertex: newVertex)
+                
             }
-        }
-    }
-    
-    func flushControlVertices(controlUniqueID: Int) {
-        let realm = try! Realm(configuration: configUser)
-        let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: controlUniqueID)
-        try! realm.write {
-            
-            realm.delete((thisControl?.vertexList)!)
         }
         
     }
-    
-    
     
     func readIPAddress(dump: [UInt8], index: Int) -> String {
         return String(Int(dump[index])) + "." + String(Int(dump[index + 1])) + "." + String(Int(dump[index + 2])) + "." + String(Int(dump[index + 3]))
@@ -341,20 +266,14 @@ class HAPIMemoryParser {
         let deviceName = GetStringFromByteArrayIndices(dump: dump, indexStart: index, indexFinish: index + packetSize - 1)
         
         // Resolve Addition to device array (masterState)
-        let thisDevice = realm.object(ofType: Device.self, forPrimaryKey: deviceID)
-        if thisDevice != nil {
-            //print("Adding Device Name \(deviceName) to device \(deviceID)")
+        database().getDeviceIdentity(deviceID: deviceID) { thisDevice in
             
-            try! realm.write {
-                
-                thisDevice?.name = deviceName
-                thisDevice?.iconName = SuggestIconFromName(name: deviceName)
-                
-            }
-            
-        } else {
-            print("We haven't seen this device yet...")
+            database().updateDeviceNameAndIcon(device: thisDevice,
+                                               deviceName: deviceName,
+                                               iconName: SuggestIconFromName(name: deviceName))
+
         }
+        
         
     }    
     
