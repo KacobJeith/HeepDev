@@ -13,9 +13,10 @@ public class CreatePlacesRoomFromData : MonoBehaviour {
 	void Start () {
 
 		for (int i = 0; i < GlobalDataStore.places.Count; i++) {
-			//GameObject newPlace = Instantiate(prefab, GlobalDataStore.places[i].PlaceLocation, Quaternion.identity) as GameObject;
-			GameObject newPlace = Instantiate(prefab, new Vector3(GlobalDataStore.places[i].PlaceLocation.x, GlobalDataStore.places[i].PlaceLocation.y, 0), Quaternion.identity) as GameObject;
+			GameObject newPlace = Instantiate(prefab, GlobalDataStore.places[i].placePosition, Quaternion.identity) as GameObject;
 			newPlace.transform.SetParent (canvas.transform, false);
+			GlobalDataStore.places [i].placePrefab = newPlace;
+			GlobalDataStore.places [i].CreatePlaceCallback (i);
 		}
 	}
 }
