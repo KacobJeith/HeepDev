@@ -18,14 +18,34 @@ namespace Heep
 		{
 			
 		}
+
+		public DeviceID GetDeviceID()
+		{
+			return myID;
+		}
+
+		public void SetDeviceID(DeviceID newID)
+		{
+			myID = newID;
+		}
 	}
 
-	class DeviceID
+	public class DeviceID
 	{
 		int [] theID;
 		public DeviceID(int numBytes)
 		{
 			theID = new int[numBytes];
+		}
+
+		public int[] GetIDArray()
+		{
+			return theID;
+		}
+
+		public void SetIDArray(int [] newID)
+		{
+			theID = newID;
 		}
 	}
 
