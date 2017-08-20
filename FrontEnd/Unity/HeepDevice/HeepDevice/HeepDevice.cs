@@ -6,12 +6,13 @@ namespace Heep
 {
 	public class HeepDevice
 	{
-		private int FirmwareVersion = 1;
+		private const int FirmwareVersion = 1;
+		private const int DeviceIDSize = 4;
 
 		private List<Vertex> vertices = new List<Vertex>(); 
 		private List<Control> controls = new List<Control>();
 
-		private DeviceID myID = new DeviceID();
+		private DeviceID myID = new DeviceID(DeviceIDSize);
 
 		public HeepDevice ()
 		{
@@ -21,9 +22,10 @@ namespace Heep
 
 	class DeviceID
 	{
-		public DeviceID()
+		int [] theID;
+		public DeviceID(int numBytes)
 		{
-
+			theID = new int[numBytes];
 		}
 	}
 
