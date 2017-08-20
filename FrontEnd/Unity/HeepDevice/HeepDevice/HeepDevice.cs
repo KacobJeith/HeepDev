@@ -36,6 +36,15 @@ namespace Heep
 			newControl.SetID (controls.Count);
 			controls.Add (newControl);
 		}
+
+		public void SetControlByID(int ID, int newValue)
+		{
+			for (int i = 0; i < controls.Count; i++) {
+				if (controls [i].GetID () == ID) {
+					controls[i].SetCurValue(newValue);
+				}
+			}
+		}
 	}
 
 	public class DeviceID
@@ -112,6 +121,11 @@ namespace Heep
 			_controlID = controlID;
 		}
 
+		public int GetID()
+		{
+			return _controlID;
+		}
+
 		public static Control CreateControl (CtrlInputOutput controlDirection, CtrlType controlType, String controlName, int highValue, int lowValue, int curValue)
 		{
 			return new Control (0, controlDirection, controlType, highValue, lowValue, curValue, controlName);
@@ -122,6 +136,10 @@ namespace Heep
 			return CreateControl (controlDirection, controlType, controlName, 1, 0, 0);
 		}
 
+		public void SetCurValue(int value)
+		{
+			_curValue = value;
+		}
 	}
 }
 
