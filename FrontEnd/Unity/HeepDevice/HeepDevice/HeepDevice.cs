@@ -30,6 +30,12 @@ namespace Heep
 		{
 			myID = newID;
 		}
+
+		public void AddControl(Control newControl)
+		{
+			newControl.SetID (controls.Count);
+			controls.Add (newControl);
+		}
 	}
 
 	public class DeviceID
@@ -77,7 +83,7 @@ namespace Heep
 		}
 	}
 
-	class Control
+	public class Control
 	{
 		int _controlID;
 		int _controlDirection;
@@ -85,20 +91,37 @@ namespace Heep
 		int _highValue;
 		int _lowValue;
 		int _curValue;
-		int _controlFlags;
 		String _controlName;
 
-		public Control(int controlID, int controlDirection, int controlType, int highValue, int lowValue, int curValue, int controlFlags, String ControlName)
+		public enum CtrlInputOutput : int {input = 0, output = 1}; 
+		public enum CtrlType : int {OnOff = 0, range = 1};
+
+		public Control(int controlID, CtrlInputOutput controlDirection, CtrlType controlType, int highValue, int lowValue, int curValue, String ControlName)
 		{
 			_controlID = controlID;
-			_controlDirection = controlDirection;
-			_controlType = controlType;
+			_controlDirection = (int)controlDirection;
+			_controlType = (int)controlType;
 			_highValue = highValue;
 			_lowValue = lowValue;
 			_curValue = curValue;
-			_controlFlags = controlFlags;
 			_controlName = ControlName;
 		}
+
+		public void SetID(int controlID)
+		{
+			_controlID = controlID;
+		}
+
+		public static Control CreateControl (CtrlInputOutput controlDirection, CtrlType controlType, String controlName, int highValue, int lowValue, int curValue)
+		{
+			return new Control (0, controlDirection, controlType, highValue, lowValue, curValue, controlName);
+		}
+
+		public static Control CreateControl(CtrlInputOutput controlDirection, CtrlType controlType, String controlName)
+		{
+			return CreateControl (controlDirection, controlType, controlName, 1, 0, 0);
+		}
+
 	}
 }
 
