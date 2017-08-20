@@ -16,9 +16,9 @@ namespace Heep
 
 		private DeviceID myID = new DeviceID();
 
-		public HeepDevice ()
+		public HeepDevice (DeviceID theID)
 		{
-			
+			SetDeviceID (theID);
 		}
 
 		public DeviceID GetDeviceID()

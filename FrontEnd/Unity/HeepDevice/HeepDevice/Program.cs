@@ -7,7 +7,8 @@ namespace MainProgram
 	{
 		public static void Main (string[] args)
 		{
-			HeepDevice myDevice = new HeepDevice ();
+			DeviceID theID = new DeviceID ();
+			HeepDevice myDevice = new HeepDevice (theID);
 			Console.WriteLine ("Hello World!");
 		}
 			
