@@ -1,1 +1,14 @@
-﻿<Properties StartupItem="HeepDevice/HeepDevice.csproj" />
+﻿<Properties StartupItem="HeepDevice/HeepDevice.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="HeepDevice/HeepLanguage.cs">
+    <Files>
+      <File FileName="HeepDevice/Program.cs" Line="23" Column="54" />
+      <File FileName="HeepDevice/HeepDevice.cs" Line="12" Column="3" />
+      <File FileName="HeepDevice/HeepLanguage.cs" Line="58" Column="3" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
