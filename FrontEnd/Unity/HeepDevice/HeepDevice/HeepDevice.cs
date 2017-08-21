@@ -10,7 +10,7 @@ namespace Heep
 	{
 		private const int FirmwareVersion = 1;
 
-
+		private List<Byte> deviceMemory = new List<Byte> ();
 		private List<Vertex> vertices = new List<Vertex>(); 
 		private List<Control> controls = new List<Control>();
 
@@ -49,19 +49,19 @@ namespace Heep
 
 	public class DeviceID
 	{
-		int [] theID;
+		byte [] theID;
 		private const int DeviceIDSize = 4;
 
 		public DeviceID()
 		{
 		}
 
-		public int[] GetIDArray()
+		public byte[] GetIDArray()
 		{
 			return theID;
 		}
 
-		public void SetIDArray(int [] newID)
+		public void SetIDArray(byte [] newID)
 		{
 			theID = newID;
 		}

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Heep
 {
@@ -34,6 +36,24 @@ namespace Heep
 
 		public HeepLanguage ()
 		{
+		}
+
+		public static void AddDeviceIDToMemory(List <byte> dynMem, DeviceID deviceID)
+		{
+			for (int i = 0; i < deviceID.GetDeviceIDSize (); i++) {
+				dynMem.Add (deviceID.GetIDArray () [i]);
+			}
+		}
+
+		public static void AddNameToMemory(List <byte> dynMem, DeviceID deviceID, String deviceName)
+		{
+			dynMem.Add (DeviceNameOpCode);
+			AddDeviceIDToMemory (dynMem, deviceID);
+
+			dynMem.Add ((byte)deviceName.Length);
+			for (int i = 0; i < deviceName.Length; i++) {
+				dynMem.Add ((byte)deviceName [i]);
+			}
 		}
 	}
 }
