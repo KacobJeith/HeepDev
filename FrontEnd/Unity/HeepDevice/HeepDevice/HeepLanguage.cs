@@ -86,6 +86,12 @@ namespace Heep
 
 			// Control Data
 			AddControlDataToBuffer(buffer, controlList, deviceID);
+
+			// Dynamic memory size
+			buffer.Add(DynamicMemorySizeOpCode);
+			AddDeviceIDToMemory (buffer, deviceID);
+			buffer.Add (0x01);
+			buffer.Add ((byte)dynamicMemorySize);
 		}
 	}
 }
