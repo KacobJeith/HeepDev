@@ -41,36 +41,36 @@ public class ObserveProfileData : MonoBehaviour, IPointerDownHandler {
 
 			writeNewUser (uid, name, email);
 
-//			user.TokenAsync(true).ContinueWith(task => {
-//				if (task.IsCanceled) {
-//					Debug.LogError("TokenAsync was canceled.");
-//					return;
-//				}
-//
-//				if (task.IsFaulted) {
-//					Debug.LogError("TokenAsync encountered an error: " + task.Exception);
-//					return;
-//				}
-//
-//				string idToken = task.Result;
-//
-//				Debug.Log("Read token: " + idToken);
-//
-//				FirebaseDatabase.DefaultInstance
-//					.GetReference ("userDirectory")
-//					.GetValueAsync ().ContinueWith (taskRead => {
-//						if (taskRead.IsFaulted) {
-//							// Handle the error...
-//							Debug.Log("Ran into some error...");
-//
-//						} else if (taskRead.IsCompleted) {
-//							DataSnapshot snapshot = taskRead.Result;
-//							// Do something with snapshot...
-//							Debug.Log ("Successfully read path");
-//							Debug.Log (snapshot);
-//						}
-//					});
-//			});
+			user.TokenAsync(true).ContinueWith(task => {
+				if (task.IsCanceled) {
+					Debug.LogError("TokenAsync was canceled.");
+					return;
+				}
+
+				if (task.IsFaulted) {
+					Debug.LogError("TokenAsync encountered an error: " + task.Exception);
+					return;
+				}
+
+				string idToken = task.Result;
+
+				Debug.Log("Read token: " + idToken);
+
+				FirebaseDatabase.DefaultInstance
+					.GetReference ("userDirectory")
+					.GetValueAsync ().ContinueWith (taskRead => {
+						if (taskRead.IsFaulted) {
+							// Handle the error...
+							Debug.Log("Ran into some error...");
+
+						} else if (taskRead.IsCompleted) {
+							DataSnapshot snapshot = taskRead.Result;
+							// Do something with snapshot...
+							Debug.Log ("Successfully read path");
+							Debug.Log (snapshot.GetRawJsonValue());
+						}
+					});
+			});
 
 
 		} else {

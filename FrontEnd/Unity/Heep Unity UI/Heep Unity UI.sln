@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Heep Unity UI", "Assembly-CSharp.csproj", "{EF218739-69F0-EC3E-F150-30722B04D1DF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Heep Unity UI", "Assembly-CSharp-Editor.csproj", "{2E26B734-59C1-3C3D-AA0D-27F020684687}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EF218739-69F0-EC3E-F150-30722B04D1DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF218739-69F0-EC3E-F150-30722B04D1DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF218739-69F0-EC3E-F150-30722B04D1DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF218739-69F0-EC3E-F150-30722B04D1DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E26B734-59C1-3C3D-AA0D-27F020684687}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E26B734-59C1-3C3D-AA0D-27F020684687}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E26B734-59C1-3C3D-AA0D-27F020684687}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E26B734-59C1-3C3D-AA0D-27F020684687}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal
