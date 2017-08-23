@@ -85,7 +85,7 @@ namespace Heep
 			buffer.Add((byte)firmwareVersion);
 
 			// Control Data
-			AddCoreMemoryToBuffer(buffer, controlList, deviceID);
+			AddControlDataToBuffer(buffer, controlList, deviceID);
 		}
 	}
 }
