@@ -55,6 +55,38 @@ namespace Heep
 				dynMem.Add ((byte)deviceName [i]);
 			}
 		}
+
+		public static void AddControlDataToBuffer(List <byte> buffer, List <Control> controlList, DeviceID deviceID)
+		{
+			for (int i = 0; i < controlList.Count; i++) {
+				buffer.Add (ControlOpCode);
+				AddDeviceIDToMemory (buffer, deviceID);
+				int dataSize = controlList [i].GetName ().Length + 6;
+				byte numBytes = (byte)dataSize;
+				buffer.Add (numBytes);
+				buffer.Add ((byte)controlList [i].GetID ());
+				buffer.Add ((byte)controlList [i].GetControlType ());
+				buffer.Add ((byte)controlList [i].GetLowValue ());
+				buffer.Add ((byte)controlList [i].GetHighValue ());
+				buffer.Add ((byte)controlList [i].GetCurValue ());
+
+				for (int j = 0; j < controlList [i].GetName ().Length; j++) {
+					buffer.Add ((byte)controlList [i].GetName () [j]);
+				}
+			}
+		}
+
+		public static void AddCoreMemoryToBuffer(List <byte> buffer, DeviceID deviceID, int firmwareVersion, List <Control> controlList, int dynamicMemorySize)
+		{
+			// Client Data
+			buffer.Add (ClientDataOpCode);
+			AddDeviceIDToMemory (buffer, deviceID);
+			buffer.Add (0x01); // Num Bytes
+			buffer.Add((byte)firmwareVersion);
+
+			// Control Data
+			AddCoreMemoryToBuffer(buffer, controlList, deviceID);
+		}
 	}
 }
 

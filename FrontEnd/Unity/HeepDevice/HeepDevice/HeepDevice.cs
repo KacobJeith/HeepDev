@@ -140,6 +140,31 @@ namespace Heep
 		{
 			_curValue = value;
 		}
+
+		public int GetCurValue()
+		{
+			return _curValue;
+		}
+
+		public int GetHighValue()
+		{
+			return _highValue;
+		}
+
+		public int GetLowValue()
+		{
+			return _lowValue;
+		}
+
+		public String GetName()
+		{
+			return _controlName;
+		}
+
+		public int GetControlType()
+		{
+			return _controlType;
+		}
 	}
 }
 
