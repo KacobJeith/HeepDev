@@ -93,6 +93,29 @@ namespace Heep
 			buffer.Add (0x01);
 			buffer.Add ((byte)dynamicMemorySize);
 		}
+
+		public static void AddBufferToBuffer(List <byte> buffer, List <byte> bufferToAdd)
+		{
+			for (int i = 0; i < bufferToAdd.Count; i++) {
+				buffer.Add (bufferToAdd [i]);
+			}
+		}
+
+		public static void GetMemoryDump(List <byte> buffer, DeviceID deviceID, int firmwareVersion, List <Control> controlList, List <byte> dynMem, int dynMemSize)
+		{
+			List <byte> coreMemoryBuffer = new List<Byte> ();
+			AddCoreMemoryToBuffer (coreMemoryBuffer, deviceID, firmwareVersion, controlList, dynMemSize);
+
+			int totalMemory = coreMemoryBuffer.Count + dynMem.Count;
+
+			buffer.Add (MemoryDumpOpCode);
+			AddDeviceIDToMemory (buffer, deviceID);
+			buffer.Add ((byte)totalMemory);
+
+			AddBufferToBuffer (buffer, coreMemoryBuffer);
+			AddBufferToBuffer (buffer, dynMem);
+
+		}
 	}
 }
 
