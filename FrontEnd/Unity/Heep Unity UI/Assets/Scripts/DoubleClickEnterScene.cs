@@ -7,8 +7,8 @@ using UnityEngine.SceneManagement;
 public class DoubleClickEnterScene : MonoBehaviour, IPointerDownHandler {
 
 	public string nextSceneName;
+	public int numClicks = 0;
 
-	int numClicks = 0;
 	float clickOnetime = 0;
 	float doubleClickDelay = 0.4f;
 

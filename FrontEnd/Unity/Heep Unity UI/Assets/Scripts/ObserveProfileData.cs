@@ -38,8 +38,10 @@ public class ObserveProfileData : MonoBehaviour, IPointerDownHandler {
 			string uid = user.UserId;
 			Debug.Log ("Email: " + email);
 			Debug.Log ("UID: " + uid);
-
+			Debug.Log (user.ToString());
 			writeNewUser (uid, name, email);
+
+
 
 			user.TokenAsync(true).ContinueWith(task => {
 				if (task.IsCanceled) {
@@ -91,6 +93,8 @@ public class ObserveProfileData : MonoBehaviour, IPointerDownHandler {
 
 		reference.Child("unity").SetRawJsonValueAsync(json);
 	}
+
+
 }
 
 public class User {
