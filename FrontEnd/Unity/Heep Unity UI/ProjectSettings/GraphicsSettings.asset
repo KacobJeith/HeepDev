@@ -43,6 +43,15 @@ GraphicsSettings:
   m_CustomRenderPipeline: {fileID: 0}
   m_TransparencySortMode: 0
   m_TransparencySortAxis: {x: 0, y: 0, z: 1}
+  m_TierSettings_Tier1:
+    renderingPath: 1
+    useCascadedShadowMaps: 0
+  m_TierSettings_Tier2:
+    renderingPath: 1
+    useCascadedShadowMaps: 0
+  m_TierSettings_Tier3:
+    renderingPath: 1
+    useCascadedShadowMaps: 0
   m_DefaultRenderingPath: 1
   m_DefaultMobileRenderingPath: 1
   m_TierSettings: []

@@ -17,7 +17,9 @@ public class AddPlace : MonoBehaviour, IPointerDownHandler {
 
 		GameObject enemy = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
 		enemy.transform.SetParent (canvas.transform, false);
-		PlaceData myPlace = enemy.GetComponent<PlaceData> ();
+		PlaceData myPlace = new PlaceData ();
+		myPlace.placePrefab = enemy;
+		myPlace.CreatePlaceCallback (GlobalDataStore.places.Count);
 		GlobalDataStore.AddPlaceToList (myPlace);
 	}
 

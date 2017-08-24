@@ -23,7 +23,6 @@ GameObject:
   - component: {fileID: 114409936459931778}
   - component: {fileID: 114973048107278932}
   - component: {fileID: 114845826936412366}
-  - component: {fileID: 114130242613839494}
   m_Layer: 5
   m_Name: Place
   m_TagString: Untagged
@@ -31,18 +30,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &114130242613839494
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1035053735463684}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47b186b15ed73004c981cdf90164c6b0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PlaceLocation: {x: 0, y: 0}
 --- !u!114 &114409936459931778
 MonoBehaviour:
   m_ObjectHideFlags: 1

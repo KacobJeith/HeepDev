@@ -21,6 +21,7 @@ public class DoubleClickEnterScene : MonoBehaviour, IPointerDownHandler {
 
 		if ((Time.time - clickOnetime) > doubleClickDelay) {
 			clickOnetime = Time.time;
+			numClicks = 1;
 		}
 
 		if (numClicks > 1 && (Time.time - clickOnetime) < doubleClickDelay) {

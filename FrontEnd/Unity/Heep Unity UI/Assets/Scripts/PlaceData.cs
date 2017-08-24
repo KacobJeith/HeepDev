@@ -2,22 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlaceData : MonoBehaviour {
+public class PlaceData {
 
-	public Vector2 PlaceLocation;
+	public GameObject placePrefab;
+	public Vector2 placePosition;
 
-	// Use this for initialization
-	void Start () {
-		LoadPlaceLocation ();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		LoadPlaceLocation ();
+	public void CreatePlaceCallback(int placeID)
+	{
+		placePrefab.AddComponent<PlaceCallback> ();
+		placePrefab.GetComponent<PlaceCallback> ().SetPlaceID(placeID);
 	}
 
-	void LoadPlaceLocation(){
-		PlaceLocation.x = gameObject.transform.position.x;
-		PlaceLocation.y = gameObject.transform.position.y;
+	public void SetPosition(Vector2 position)
+	{
+		placePosition = position;
 	}
+
 }
