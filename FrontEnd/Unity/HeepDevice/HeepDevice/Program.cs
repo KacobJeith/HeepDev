@@ -9,21 +9,36 @@ namespace MainProgram
 	{
 		public static void Main (string[] args)
 		{
-			DeviceID theID = new DeviceID ();
 			Console.WriteLine (HeepLanguage.AddMOPOpCode);
 			HeepLanguage language = new HeepLanguage ();
-			HeepDevice myDevice = new HeepDevice (theID);
+
 			Console.WriteLine ("Hello World!");
 
-			byte[] ID = { 1, 2, 3, 4 };
-			DeviceID myID = new DeviceID();
-			myID.SetIDArray (ID);
+			List <byte> ID = new List<byte>();
+			for(byte i = 0; i < 4; i++)
+			{
+				ID.Add(i);
+			}
+
+			DeviceID myID = new DeviceID(ID);
+			HeepDevice myDevice = new HeepDevice (myID);
 			List <byte> myMem = new List<Byte> ();
 			Console.WriteLine (myMem.Count);
 			HeepLanguage.AddNameToMemory (myMem, myID, "Twilio");
 			Console.WriteLine (myMem.Count);
 			for (int i = 0; i < myMem.Count; i++) {
 				Console.Write (myMem [i] + " ");
+			}
+			Console.WriteLine ();
+
+
+			Control theControl = Control.CreateControl (Control.CtrlInputOutput.input, Control.CtrlType.OnOff, "Good");
+			myDevice.AddControl (theControl);
+
+			List<byte> newOutput = myDevice.GetMemoryDump ();
+
+			for (int i = 0; i < newOutput.Count; i++) {
+				Console.Write (newOutput [i] + " ");
 			}
 			Console.WriteLine ();
 		}

@@ -14,7 +14,9 @@ namespace Heep
 		private List<Vertex> vertices = new List<Vertex>(); 
 		private List<Control> controls = new List<Control>();
 
-		private DeviceID myID = new DeviceID();
+		private const int deviceMemorySize = 200;
+
+		private DeviceID myID;
 
 		public HeepDevice (DeviceID theID)
 		{
@@ -45,25 +47,34 @@ namespace Heep
 				}
 			}
 		}
+
+		public List <byte> GetMemoryDump()
+		{
+			List <byte> memDumpOutput = new List<byte>();
+			HeepLanguage.GetMemoryDump (memDumpOutput, myID, FirmwareVersion, controls, deviceMemory, deviceMemorySize);
+
+			return memDumpOutput;
+		}
 	}
 
 	public class DeviceID
 	{
-		byte [] theID;
+		List<byte> theID;
 		private const int DeviceIDSize = 4;
 
-		public DeviceID()
+		public DeviceID(List <byte> newID)
 		{
+			theID = newID;
 		}
 
-		public byte[] GetIDArray()
+		public List<byte> GetIDArray()
 		{
 			return theID;
 		}
 
-		public void SetIDArray(byte [] newID)
+		public void SetIDArray(List <byte> idArray)
 		{
-			theID = newID;
+			theID = idArray;
 		}
 
 		public int GetDeviceIDSize()

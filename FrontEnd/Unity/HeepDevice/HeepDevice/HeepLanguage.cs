@@ -39,7 +39,7 @@ namespace Heep
 		}
 
 		public static void AddDeviceIDToMemory(List <byte> dynMem, DeviceID deviceID)
-		{
+		{ 
 			for (int i = 0; i < deviceID.GetDeviceIDSize (); i++) {
 				dynMem.Add (deviceID.GetIDArray () [i]);
 			}
@@ -104,6 +104,7 @@ namespace Heep
 		public static void GetMemoryDump(List <byte> buffer, DeviceID deviceID, int firmwareVersion, List <Control> controlList, List <byte> dynMem, int dynMemSize)
 		{
 			List <byte> coreMemoryBuffer = new List<Byte> ();
+
 			AddCoreMemoryToBuffer (coreMemoryBuffer, deviceID, firmwareVersion, controlList, dynMemSize);
 
 			int totalMemory = coreMemoryBuffer.Count + dynMem.Count;
