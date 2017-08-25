@@ -54,6 +54,22 @@ namespace Heep
 			}
 		}
 
+		public void SetControlByName(String controlName, int newValue)
+		{
+			for (int i = 0; i < controls.Count; i++) {
+				if (controls [i].GetName () == controlName) {
+					controls [i].SetCurValue (newValue);
+					SendOutput (controls [i]);
+				}
+			}
+		}
+
+		private void SendOutput(Control toSend)
+		{
+			// Send the current value of the control
+
+		}
+
 		public List <byte> GetMemoryDump()
 		{
 			List <byte> memDumpOutput = new List<byte>();
