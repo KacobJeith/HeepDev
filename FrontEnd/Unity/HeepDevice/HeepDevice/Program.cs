@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Heep;
+using System.Net;
 
 namespace MainProgram
 {
@@ -41,6 +42,14 @@ namespace MainProgram
 				Console.Write (newOutput [i] + " ");
 			}
 			Console.WriteLine ();
+
+			byte [] IPAddrArray = {192, 168, 1, 100};
+			IPAddress theAddr = new IPAddress(IPAddrArray);
+			byte [] theArr = theAddr.GetAddressBytes ();
+			Console.WriteLine (theAddr.ToString ());
+			for (int i = 0; i < theArr.Length; i++) {
+				Console.Write (theArr [i]+".");
+			}
 		}
 			
 	}

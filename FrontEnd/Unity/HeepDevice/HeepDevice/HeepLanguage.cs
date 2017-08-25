@@ -56,6 +56,21 @@ namespace Heep
 			}
 		}
 
+		public static void AddVertexToMemory(List <byte> dynMem, Vertex theVertex)
+		{
+			int totalMemory = theVertex.GetTXID().GetDeviceIDSize () + 6;
+			dynMem.Add (VertexOpCode);
+			AddDeviceIDToMemory (dynMem, theVertex.GetTXID ());
+			dynMem.Add ((byte)totalMemory);
+			AddDeviceIDToMemory (dynMem, theVertex.GetRXID ());
+			dynMem.Add ((byte)theVertex.GetTXControlID ());
+			dynMem.Add ((byte)theVertex.GetRXControlID ());
+
+			for (int i = 0; i < theVertex.GetDestIP ().GetAddressBytes ().Length; i++) {
+				dynMem.Add (theVertex.GetDestIP ().GetAddressBytes () [i]);
+			}
+		}
+
 		public static void AddControlDataToBuffer(List <byte> buffer, List <Control> controlList, DeviceID deviceID)
 		{
 			for (int i = 0; i < controlList.Count; i++) {

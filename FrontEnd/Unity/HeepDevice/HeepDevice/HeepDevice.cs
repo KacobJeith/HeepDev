@@ -83,7 +83,7 @@ namespace Heep
 		}
 	}
 
-	class Vertex
+	public class Vertex
 	{
 
 		DeviceID _rxID;
@@ -100,6 +100,31 @@ namespace Heep
 			_rxControlID = rxControlID;
 			_txControlID = txControlID;
 			_destIP = destIP;
+		}
+
+		public DeviceID GetTXID()
+		{
+			return _txID;
+		}
+
+		public DeviceID GetRXID()
+		{
+			return _rxID;
+		}
+
+		public int GetRXControlID()
+		{
+			return _rxControlID;
+		}
+
+		public int GetTXControlID()
+		{
+			return _txControlID;
+		}
+
+		public IPAddress GetDestIP()
+		{
+			return _destIP;
 		}
 	}
 
