@@ -39,6 +39,12 @@ namespace Heep
 			controls.Add (newControl);
 		}
 
+		public void AddVertex(Vertex newVertex)
+		{
+			vertices.Add (newVertex);
+			HeepLanguage.AddVertexToMemory (deviceMemory, newVertex);
+		}
+
 		public void SetControlByID(int ID, int newValue)
 		{
 			for (int i = 0; i < controls.Count; i++) {
