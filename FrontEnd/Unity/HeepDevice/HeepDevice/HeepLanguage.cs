@@ -81,6 +81,7 @@ namespace Heep
 				buffer.Add (numBytes);
 				buffer.Add ((byte)controlList [i].GetID ());
 				buffer.Add ((byte)controlList [i].GetControlType ());
+				buffer.Add ((byte)controlList [i].GetControlDirection ());
 				buffer.Add ((byte)controlList [i].GetLowValue ());
 				buffer.Add ((byte)controlList [i].GetHighValue ());
 				buffer.Add ((byte)controlList [i].GetCurValue ());

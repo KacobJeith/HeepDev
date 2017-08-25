@@ -50,6 +50,7 @@ namespace Heep
 			for (int i = 0; i < controls.Count; i++) {
 				if (controls [i].GetID () == ID) {
 					controls[i].SetCurValue(newValue);
+					SendOutput (controls [i]);
 				}
 			}
 		}
@@ -67,7 +68,9 @@ namespace Heep
 		private void SendOutput(Control toSend)
 		{
 			// Send the current value of the control
-
+			if (toSend.GetControlDirection () == (int)Control.CtrlInputOutput.output) {
+			
+			}
 		}
 
 		public List <byte> GetMemoryDump()
@@ -222,6 +225,11 @@ namespace Heep
 		public int GetControlType()
 		{
 			return _controlType;
+		}
+
+		public int GetControlDirection()
+		{
+			return _controlDirection;
 		}
 	}
 }
