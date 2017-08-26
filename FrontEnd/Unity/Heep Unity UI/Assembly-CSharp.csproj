@@ -53,6 +53,8 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\AddGroup.cs" />
      <Compile Include="Assets\Scripts\AddPlace.cs" />
+     <Compile Include="Assets\Scripts\ButtonToScene.cs" />
+     <Compile Include="Assets\Scripts\CreatePlacesRoomFromData.cs" />
      <Compile Include="Assets\Scripts\Database.cs" />
      <Compile Include="Assets\Scripts\DoubleClickEnterScene.cs" />
      <Compile Include="Assets\Scripts\Draggable.cs" />
@@ -61,6 +63,7 @@
      <Compile Include="Assets\Scripts\LoginToFirebase.cs" />
      <Compile Include="Assets\Scripts\NumPlacesDebugData.cs" />
      <Compile Include="Assets\Scripts\ObserveProfileData.cs" />
+     <Compile Include="Assets\Scripts\PlaceCallback.cs" />
      <Compile Include="Assets\Scripts\PlaceData.cs" />
      <Compile Include="Assets\Scripts\SearchForDevices.cs" />
      <None Include="Assets\Firebase\Editor\FirebaseDatabase_v4.0.3_manifest.txt" />
