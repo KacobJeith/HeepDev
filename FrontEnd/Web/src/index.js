@@ -17,7 +17,7 @@ var loadDevicesFromServer = (url) => {
     cache: false,
     success: (data) => {
 
-      data.url = window.location.protocol.concat('//', window.location.hostname);
+      data.url = window.location.protocol.concat('//', window.location.hostname, ':3001');
 
       var immutableMap = Immutable.Map(data);
       const store = createStore(heepApp, data, applyMiddleware(thunk));
@@ -36,6 +36,6 @@ var loadDevicesFromServer = (url) => {
     });
 }
 
-loadDevicesFromServer(window.location.protocol.concat('//', window.location.hostname).concat('/api/findDevices'));
+loadDevicesFromServer(window.location.protocol.concat('//', window.location.hostname, ':3001').concat('/api/findDevices'));
 
 
