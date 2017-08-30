@@ -38,6 +38,7 @@
     <Compile Include="HeepDevice.cs" />
     <Compile Include="HeepLanguage.cs" />
     <Compile Include="HeepParser.cs" />
+    <Compile Include="HeepCommunications.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
