@@ -82,6 +82,11 @@ namespace Heep
 			}
 		}
 
+		public void SetDeviceName(String name)
+		{
+			HeepLanguage.AddNameToMemory (deviceMemory, myID, name);
+		}
+
 		public List <byte> GetMemoryDump()
 		{
 			List <byte> memDumpOutput = new List<byte>();

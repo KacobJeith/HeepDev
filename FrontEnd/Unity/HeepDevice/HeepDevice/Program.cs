@@ -51,6 +51,7 @@ namespace MainProgram
 				Console.Write (theArr [i]+".");
 			}
 
+			myDevice.SetDeviceName ("UNITY");
 			HeepCommunications.StartListening (myDevice);
 		}
 			
