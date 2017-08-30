@@ -50,6 +50,8 @@ namespace MainProgram
 			for (int i = 0; i < theArr.Length; i++) {
 				Console.Write (theArr [i]+".");
 			}
+
+			HeepCommunications.StartListening ();
 		}
 			
 	}
