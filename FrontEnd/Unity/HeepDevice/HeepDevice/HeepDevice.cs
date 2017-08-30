@@ -23,6 +23,11 @@ namespace Heep
 			SetDeviceID (theID);
 		}
 
+		public int GetFirmwareVersion()
+		{
+			return FirmwareVersion;
+		}
+
 		public DeviceID GetDeviceID()
 		{
 			return myID;

@@ -9,7 +9,7 @@ namespace Heep
 		public static List<byte> ParseCommand(List <byte> commandBuffer, HeepDevice theDevice)
 		{
 			if (commandBuffer [0] == HeepLanguage.IsHeepDeviceOpCode) {
-				// CALL IS HEEP DEVICE PARSER
+				return ParseIsHeepDeviceCommand (commandBuffer, theDevice);
 			} else if (commandBuffer [0] == HeepLanguage.SetValueOpCode) {
 				// CALL SET VAL PARSER
 			}
@@ -19,6 +19,11 @@ namespace Heep
 		}
 
 		public static List<byte> ParseIsHeepDeviceCommand(List <byte> commandBuffer, HeepDevice theDevice)
+		{
+			return theDevice.GetMemoryDump ();
+		}
+
+		public static List<byte> ParseSetValueCommand(List <byte> commandBuffer, HeepDevice theDevice)
 		{
 			List <byte> outputBuf = new List<byte>();
 			return outputBuf;
