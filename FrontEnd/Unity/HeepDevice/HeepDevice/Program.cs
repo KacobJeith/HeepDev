@@ -51,7 +51,7 @@ namespace MainProgram
 				Console.Write (theArr [i]+".");
 			}
 
-			HeepCommunications.StartListening ();
+			HeepCommunications.StartListening (myDevice);
 		}
 			
 	}

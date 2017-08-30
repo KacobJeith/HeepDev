@@ -2,6 +2,8 @@
 using System.Net;  
 using System.Net.Sockets;  
 using System.Text;  
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Heep
 {
@@ -11,7 +13,7 @@ namespace Heep
 		// Incoming data from the client.  
 		public static string data = null;  
 
-		public static void StartListening() {  
+		public static void StartListening(HeepDevice device) {  
 			// Data buffer for incoming data.  
 			byte[] bytes = new Byte[1024];  
 
@@ -50,8 +52,22 @@ namespace Heep
 					// Show the data on the console.  
 					Console.WriteLine( "Text received : {0}", data);  
 
+					List <byte> commandData = new List<byte> ();
+					for(int i = 0; i < bytesRec; i++)
+					{
+						commandData.Add(bytes[i]);
+					}
+
 					// Echo the data back to the client.  
-					byte[] msg = Encoding.ASCII.GetBytes(data);  
+//					byte[] msg = Encoding.ASCII.GetBytes(data); 
+					byte[] msg = new byte[200];
+					List <byte> fromparser = HeepParser.ParseCommand(commandData, device);
+
+					for(int i = 0; i < fromparser.Count; i++)
+					{
+						msg[i] = fromparser[i];
+					}
+
 
 					handler.Send(msg);  
 					handler.Shutdown(SocketShutdown.Both);  
