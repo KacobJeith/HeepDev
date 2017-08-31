@@ -17,11 +17,6 @@ namespace Heep
 			// Data buffer for incoming data.  
 			byte[] bytes = new Byte[1024];  
 
-			// Establish the local endpoint for the socket.  
-			// Dns.GetHostName returns the name of the   
-			// host running the application.  
-			IPHostEntry ipHostInfo = Dns.GetHostEntry("localhost");  
-			Console.WriteLine ("here");
 			byte [] IPAddrArray = {0, 0, 0, 0};
 			IPAddress theAddr = new IPAddress(IPAddrArray);
 			Console.WriteLine ("here");
