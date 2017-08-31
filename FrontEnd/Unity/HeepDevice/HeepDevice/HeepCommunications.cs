@@ -19,21 +19,16 @@ namespace Heep
 
 			byte [] IPAddrArray = {0, 0, 0, 0};
 			IPAddress theAddr = new IPAddress(IPAddrArray);
-			Console.WriteLine ("here");
 			IPEndPoint localEndPoint = new IPEndPoint(theAddr, 5000);  
-			Console.WriteLine ("here");
 
 			// Create a TCP/IP socket.  
 			Socket listener = new Socket(AddressFamily.InterNetwork,  
 				SocketType.Stream, ProtocolType.Tcp );  
-			Console.WriteLine ("here4");
-			Console.WriteLine (theAddr.ToString ());
 
 			// Bind the socket to the local endpoint and   
 			// listen for incoming connections.  
 			try {  
 				listener.Bind(localEndPoint);  
-				Console.WriteLine ("Frr");
 				listener.Listen(10);  
 
 				// Start listening for connections.  
