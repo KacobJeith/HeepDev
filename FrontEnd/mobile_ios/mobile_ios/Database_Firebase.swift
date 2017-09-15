@@ -982,9 +982,12 @@ class database {
         return imageView
     }
     
-    func downloadMyProfileImage(heepID: Int, handleError: @escaping () -> () = {}) -> UIImageView {
+    func downloadMyProfileImage(heepID: Int?, handleError: @escaping () -> () = {}) -> UIImageView {
+        guard let id = heepID else {
+            return UIImageView(image: #imageLiteral(resourceName: "female"))
+        }
         
-        let reference = Storage.storage().reference().child("users/\(String(describing: heepID))/profile.png")
+        let reference = Storage.storage().reference().child("users/\(String(describing: id))/profile.png")
         let imageView = UIImageView()
         imageView.sd_setImage(with: reference, placeholderImage: #imageLiteral(resourceName: "female"))
         return imageView

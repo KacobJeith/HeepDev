@@ -23,7 +23,7 @@ public class LoginToFirebase : MonoBehaviour, IPointerDownHandler {
 		//
 		//		InitializeFirebase ();
 
-		Database db = new Database ();
+//		Database db = new Database ();
 		//db.GET ("https://heep-3cddb.firebaseio/userDirectory.json");
 	}
 
@@ -92,21 +92,21 @@ public class LoginToFirebase : MonoBehaviour, IPointerDownHandler {
 	}
 
 	#endregion
-
-	// Display user information.
-	void DisplayUserInfo(Firebase.Auth.IUserInfo userInfo, int indentLevel) {
-		string indent = new String(' ', indentLevel * 2);
-		var userProperties = new Dictionary<string, string> {
-			{"Display Name", userInfo.DisplayName},
-			{"Email", userInfo.Email},
-			{"Photo URL", userInfo.PhotoUrl != null ? userInfo.PhotoUrl.ToString() : null},
-			{"Provider ID", userInfo.ProviderId},
-			{"User ID", userInfo.UserId}
-		};
-		foreach (var property in userProperties) {
-			if (!String.IsNullOrEmpty(property.Value)) {
-				Debug.Log(String.Format("{0}{1}: {2}", indent, property.Key, property.Value));
-			}
-		}
-	}
+//
+//	// Display user information.
+//	void DisplayUserInfo(Firebase.Auth.IUserInfo userInfo, int indentLevel) {
+//		string indent = new String(' ', indentLevel * 2);
+//		var userProperties = new Dictionary<string, string> {
+//			{"Display Name", userInfo.DisplayName},
+//			{"Email", userInfo.Email},
+//			{"Photo URL", userInfo.PhotoUrl != null ? userInfo.PhotoUrl.ToString() : null},
+//			{"Provider ID", userInfo.ProviderId},
+//			{"User ID", userInfo.UserId}
+//		};
+//		foreach (var property in userProperties) {
+//			if (!String.IsNullOrEmpty(property.Value)) {
+//				Debug.Log(String.Format("{0}{1}: {2}", indent, property.Key, property.Value));
+//			}
+//		}
+//	}
 }

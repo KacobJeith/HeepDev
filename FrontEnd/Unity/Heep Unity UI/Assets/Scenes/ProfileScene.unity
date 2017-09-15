@@ -529,8 +529,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d70cbc4ddf7ff4444b3cf88a465a51b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextSceneName: PlacesScene
-  numClicks: 1
+  nextSceneName: 
+  numClicks: 0
 --- !u!114 &1350096092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -686,7 +686,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d396380b7f54e4c769344e2b374ffd47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  userUID: {fileID: 1985479266}
+  userUID: {fileID: 0}
 --- !u!1 &1470009379
 GameObject:
   m_ObjectHideFlags: 0
@@ -1269,7 +1269,7 @@ GameObject:
   - component: {fileID: 1909326252}
   - component: {fileID: 1909326251}
   m_Layer: 5
-  m_Name: Button
+  m_Name: LoginButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1305,8 +1305,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 759622dcf64f74bf5941d856942be62f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  emailObject: {fileID: 1545317240}
-  passwordObject: {fileID: 1703404507}
+  emailObject: {fileID: 1028112042}
+  passwordObject: {fileID: 1978658150}
 --- !u!114 &1909326252
 MonoBehaviour:
   m_ObjectHideFlags: 0

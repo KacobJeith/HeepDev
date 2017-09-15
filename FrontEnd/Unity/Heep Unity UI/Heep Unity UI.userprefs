@@ -1,11 +1,13 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/LoginToFirebase.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="../../../../Learning/Unity/New Unity Project 1/Assets/Plugins/WebGL/ExternalJS.jslib">
     <Files>
-      <File FileName="Assets/Scripts/LoginToFirebase.cs" Line="27" Column="28" />
-      <File FileName="Assets/Scripts/ObserveProfileData.cs" Line="6" Column="3" />
-      <File FileName="Assets/Scripts/Database.cs" Line="3" Column="34" />
-      <File FileName="Assets/Scripts/GlobalDataStore.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Database.cs" Line="10" Column="26" />
+      <File FileName="Assets/Scripts/LoginToFirebase.cs" Line="95" Column="3" />
+      <File FileName="Assets/Scripts/ObserveProfileData.cs" Line="94" Column="57" />
+      <File FileName="Assets/Scripts/GlobalDataStore.cs" Line="17" Column="31" />
+      <File FileName="Assets/Scripts/FillUserInfo.cs" Line="17" Column="44" />
+      <File FileName="../../../../Learning/Unity/New Unity Project 1/Assets/Plugins/WebGL/ExternalJS.jslib" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

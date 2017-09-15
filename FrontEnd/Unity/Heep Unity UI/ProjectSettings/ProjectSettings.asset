@@ -516,6 +516,7 @@ PlayerSettings:
   additionalIl2CppArgs: 
   scriptingRuntimeVersion: 0
   apiCompatibilityLevelPerPlatform:
+    Standalone: 1
     WebGL: 1
     iOS: 1
   m_RenderingPath: 1

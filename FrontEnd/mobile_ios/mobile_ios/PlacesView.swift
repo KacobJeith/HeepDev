@@ -275,7 +275,7 @@ extension PlacesView {
         
         database().getMyHeepID() { heepID in
             
-            let userButton = database().downloadMyProfileImage(heepID: heepID!)
+            let userButton = database().downloadMyProfileImage(heepID: heepID)
             self.drawAccountPuck(userButton: userButton)
             
         }
