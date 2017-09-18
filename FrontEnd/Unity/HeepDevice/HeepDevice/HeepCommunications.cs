@@ -57,8 +57,8 @@ namespace Heep
 
 					// Echo the data back to the client.  
 //					byte[] msg = Encoding.ASCII.GetBytes(data); 
-					byte[] msg = new byte[200];
 					List <byte> fromparser = HeepParser.ParseCommand(commandData, device);
+					byte[] msg = new byte[fromparser.Count];
 
 					for(int i = 0; i < fromparser.Count; i++)
 					{
