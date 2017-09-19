@@ -11,7 +11,6 @@ namespace MainProgram
 		public static void Main (string[] args)
 		{
 			Console.WriteLine (HeepLanguage.AddMOPOpCode);
-			HeepLanguage language = new HeepLanguage ();
 
 			Console.WriteLine ("Hello World!");
 
