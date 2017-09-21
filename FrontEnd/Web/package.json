@@ -14,7 +14,7 @@
   },
   "scripts": {
     "tests": "mocha-webpack --webpack-config webpack.config-test.js \"src/**/*.test.js\"",
-    "build": "webpack", 
+    "build": "webpack",
     "dev": "webpack-dev-server --progress --inline --hot",
     "start": "babel-node src/server.js",
     "tbs": "npm run test && npm run bs",
