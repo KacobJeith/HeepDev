@@ -88,6 +88,25 @@ namespace Heep
 
 		}  
 
+		public static void SendBufferToIP(List <byte> buffer, IPAddress theAddr)
+		{
+			Socket soc = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+			System.Net.IPEndPoint remoteEP = new IPEndPoint(theAddr, 5000);
+			soc.Connect(remoteEP);
+
+			//Start sending stuf..
+			soc.Send(buffer.ToArray());
+
+			byte[] receiveBuffer = new byte[1024];
+			int iRx = soc.Receive(receiveBuffer);
+			char[] chars = new char[iRx];
+
+			System.Text.Decoder d = System.Text.Encoding.UTF8.GetDecoder();
+			int charLen = d.GetChars(receiveBuffer, 0, iRx, chars, 0);
+			System.String recv = new System.String(chars);
+			Console.WriteLine (recv);
+		}
+
 		public HeepCommunications ()
 		{
 		}
