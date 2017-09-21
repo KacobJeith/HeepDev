@@ -4,11 +4,19 @@ using System.Net.Sockets;
 using System.Text;  
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Heep
 {
 	public class HeepCommunications
 	{
+
+		public static void StartHeepServer(HeepDevice device)
+		{
+			Thread t = new Thread (() => StartListening (device));
+			t.Start();
+		}
+
 
 		// Incoming data from the client.  
 		public static string data = null;  

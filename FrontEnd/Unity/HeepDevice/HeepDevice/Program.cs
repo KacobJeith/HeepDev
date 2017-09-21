@@ -1,8 +1,11 @@
 ﻿using System;
+
+
 using System.Collections;
 using System.Collections.Generic;
 using Heep;
 using System.Net;
+using System.Threading;
 
 namespace MainProgram
 {
@@ -49,9 +52,15 @@ namespace MainProgram
 			for (int i = 0; i < theArr.Length; i++) {
 				Console.Write (theArr [i]+".");
 			}
+			Console.WriteLine ();
 
 			myDevice.SetDeviceName ("UNITY");
-			HeepCommunications.StartListening (myDevice);
+			HeepCommunications.StartHeepServer (myDevice);
+
+			while (true) {
+				Console.WriteLine ("helr");
+				Thread.Sleep (1000);
+			}
 		}
 			
 	}
