@@ -57,8 +57,25 @@ namespace MainProgram
 			myDevice.SetDeviceName ("UNITY");
 			HeepCommunications.StartHeepServer (myDevice);
 
+			byte value = 0;
 			while (true) {
 				Console.WriteLine ("helr");
+				byte [] IPAddrArraya = {192, 168, 0, 37};
+				IPAddress theAddra = new IPAddress(IPAddrArraya);
+				List<byte> newBuf = new List<byte>();
+				newBuf.Add (0x0A);
+				newBuf.Add (0x02);
+				newBuf.Add (0x00);
+				newBuf.Add (value);
+				HeepCommunications.SendBufferToIP (newBuf, theAddra);
+
+				if (value == 0) {
+					value = 1;
+				}
+				else{
+					value = 0;
+				}
+
 				Thread.Sleep (1000);
 			}
 		}

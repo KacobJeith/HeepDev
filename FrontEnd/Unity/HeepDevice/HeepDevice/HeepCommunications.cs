@@ -92,17 +92,21 @@ namespace Heep
 		{
 			Socket soc = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 			System.Net.IPEndPoint remoteEP = new IPEndPoint(theAddr, 5000);
+
+			Console.WriteLine ("about to connect");
 			soc.Connect(remoteEP);
+			Console.WriteLine ("Connected");
 
 			//Start sending stuf..
 			soc.Send(buffer.ToArray());
+
+			Console.WriteLine ("Sending");
 
 			byte[] receiveBuffer = new byte[1024];
 			int iRx = soc.Receive(receiveBuffer);
 			char[] chars = new char[iRx];
 
 			System.Text.Decoder d = System.Text.Encoding.UTF8.GetDecoder();
-			int charLen = d.GetChars(receiveBuffer, 0, iRx, chars, 0);
 			System.String recv = new System.String(chars);
 			Console.WriteLine (recv);
 		}
