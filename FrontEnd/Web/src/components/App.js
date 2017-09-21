@@ -51,7 +51,7 @@ class App extends React.Component {
       }
     }
     
-    this.props.storeURL(window.location.protocol.concat('//', window.location.hostname));
+    this.props.storeURL(window.location.protocol.concat('//', window.location.hostname,':3001'));
 
     return (<div>
               <h1 {...inputs.header}> Heep Device Portal <hr></hr></h1>
