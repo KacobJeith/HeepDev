@@ -28,3 +28,8 @@ export const updateScrollPosition = (positionY) =>  ({
 	type: 'SCROLL',
 	positionY
 })
+
+export const updateWebGLStatus = (status) => ({
+	type: 'UPDATE_WEBGL_STATUS',
+	status
+})

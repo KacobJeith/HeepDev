@@ -6,7 +6,8 @@ import * as database from './firebase'
 
 const initialState = Immutable.Map({
   shopify: {},
-  scrollPosition: 0
+  scrollPosition: 0,
+  webGLStatus: false
 })
 
 export default function(state = initialState, action) {
@@ -22,6 +23,8 @@ export default function(state = initialState, action) {
       return Immutable.Map(state).set('shopify', newState).toJS()
     case 'SCROLL':
       return Immutable.Map(state).set('scrollPosition', action.positionY).toJS()
+    case 'UPDATE_WEBGL_STATUS':
+      return Immutable.Map(state).set('webGLStatus', action.status).toJS()
     case 'LOGOUT':
 
       database.logout();

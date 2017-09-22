@@ -12,21 +12,26 @@
 
   <body>
     <div id="root"></div>
+
+    <div class="webgl-content" style="display:none;" id="webgl">
+      <div id="gameContainer" style="width: 960px; height: 600px; top: 50px; left:50px"></div>
+      
+    </div>
   </body>
 
   <script src="src/WebGL/TemplateData/UnityProgress.js"></script>  
   <script src="src/WebGL/Build/UnityLoader.js"></script>
+  
+  <script> 
+
+      var gameInstance = UnityLoader.instantiate("gameContainer", "src/WebGL/Build/testBlank.json", {onProgress: UnityProgress}); 
+
+  </script>
 
   <script>
     function jslibtestold() {
       console.log("JSLIB CALLED ME WOOOOOASDF");
       
-    }
-
-    function instantiateUnity() {
-
-      var gameInstance = UnityLoader.instantiate("gameContainer", "src/WebGL/Build/testBlank.json", {onProgress: UnityProgress});
-
     }
   </script>
 
