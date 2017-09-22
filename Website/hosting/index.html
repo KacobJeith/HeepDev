@@ -7,14 +7,13 @@
     <link href="https://bootswatch.com/lumen/bootstrap.min.css" rel="stylesheet">
     <link href="./googledf65b481e0adc4ad.html">
     <script src='https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js'></script>
-
+    
   </head>
 
   <body>
     <div id="root"></div>
   </body>
 
-  <script src="/dist/bundle.js"></script>
   <script src="src/WebGL/TemplateData/UnityProgress.js"></script>  
   <script src="src/WebGL/Build/UnityLoader.js"></script>
 
@@ -23,6 +22,15 @@
       console.log("JSLIB CALLED ME WOOOOOASDF");
       
     }
+
+    function instantiateUnity() {
+
+      var gameInstance = UnityLoader.instantiate("gameContainer", "src/WebGL/Build/testBlank.json", {onProgress: UnityProgress});
+
+    }
   </script>
+
+
+  <script src="/dist/bundle.js"></script>
 
 </html>

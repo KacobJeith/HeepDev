@@ -13,23 +13,28 @@ var mapStateToProps = (state) => ({
 class Build extends React.Component {
 
   componentDidMount() {
-    var gameInstance = UnityLoader.instantiate("gameContainer", "src/WebGL/Build/testBlank.json", {onProgress: UnityProgress});
 
+    setTimeout(instantiateUnity(), 500);
   }
   
   render() {
     
   	const styles = {
         container : { 
-     		  display: "flex",
-     		  flexDirection: "row",
-     		  flexFlow: "row wrap",
-          position: "relative",
-          top: 70
+          backgroundColor: '#21ea94',
+          justifyContent: "center",
+          height: "100vh - 50px",
+          width: "100vw - 50px",
+          top: 50,
+          left: 50,
+          position: "relative"
         },
         webGL: {
           width: 960,
-          height: 600
+          height: 600,
+          marginLeft: 50,
+          marginTop: 50,
+          position: "absolute"
         }
       };
 
@@ -50,8 +55,10 @@ class Build extends React.Component {
     
     return (
         <div {...inputs.container}>
-		      <div {...inputs.webGLContainer}>
+        <div>
+          <div {...inputs.webGLContainer}>
             <div {...inputs.webGL}/>
+          </div>
           </div>
         </div>
     );

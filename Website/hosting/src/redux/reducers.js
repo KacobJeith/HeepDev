@@ -5,7 +5,8 @@ import * as actions from './actions'
 import * as database from './firebase'
 
 const initialState = Immutable.Map({
-  shopify: {}
+  shopify: {},
+  scrollPosition: 0
 })
 
 export default function(state = initialState, action) {
@@ -19,6 +20,8 @@ export default function(state = initialState, action) {
         }
 
       return Immutable.Map(state).set('shopify', newState).toJS()
+    case 'SCROLL':
+      return Immutable.Map(state).set('scrollPosition', action.positionY).toJS()
     case 'LOGOUT':
 
       database.logout();

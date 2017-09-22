@@ -23,3 +23,8 @@ export const populateShopify = (products) => ({
 export const logout = () => ({
 	type: 'LOGOUT'
 })
+
+export const updateScrollPosition = (positionY) =>  ({
+	type: 'SCROLL',
+	positionY
+})
