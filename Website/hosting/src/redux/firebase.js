@@ -1,4 +1,5 @@
 import firebase from 'firebase'
+import firebaseui from 'firebaseui'
 import * as setup from '../index'
 import * as actions from '../redux/actions'
 
@@ -84,4 +85,58 @@ export const loginUser = () => {
 		.catch(function(error) {
 			console.log(error);
 		});
+}
+
+export const firebaseAuthUI = () => {
+	var uiConfig = {
+        callbacks: {
+          signInSuccess: function(currentUser, credential, redirectUrl) {
+            // Do something.
+            // Return type determines whether we continue the redirect automatically
+            // or whether we leave that to developer to handle.
+            console.log("Login FirebaseUI Success!");
+
+            return true;
+          },
+          uiShown: function() {
+            // The widget is rendered.
+            // Hide the loader.
+            document.getElementById('loader').style.display = 'none';
+          }
+        },
+        credentialHelper: firebaseui.auth.CredentialHelper.ACCOUNT_CHOOSER_COM,
+        // Query parameter name for mode.
+        queryParameterForWidgetMode: 'mode',
+        // Query parameter name for sign in success url.
+        queryParameterForSignInSuccessUrl: 'signInSuccessUrl',
+        // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
+        signInFlow: 'popup',
+        signInSuccessUrl: '/Mission',
+        signInOptions: [
+
+          firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+          firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+          firebase.auth.TwitterAuthProvider.PROVIDER_ID,
+          {
+            provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
+
+            requireDisplayName: true
+          },
+          {
+            provider: firebase.auth.PhoneAuthProvider.PROVIDER_ID,
+
+            recaptchaParameters: {
+              type: 'image',
+              size: 'invisible',
+              badge: 'bottomleft'
+            }
+          }
+        ],
+
+        tosUrl: 'http://smooth.technology'
+      };
+
+      var ui = new firebaseui.auth.AuthUI(firebase.auth());
+
+      ui.start('#firebaseui-auth-container', uiConfig);
 }
