@@ -27,6 +27,11 @@ export const checkLoginStatus = () => {
 	}
 }
 
+export const checkUserProviders = () => {
+
+	return firebase.auth().fetchProvidersForEmail(firebase.auth().currentUser.email);
+}
+
 export const getMyUserImagePath = () => {
 	if  (checkLoginStatus()) {
 		console.log(firebase.auth().currentUser.photoURL);
@@ -35,8 +40,6 @@ export const getMyUserImagePath = () => {
 		console.log(firebase.auth().currentUser.photoURL);
 		return "../src/assets/Happy.jpg"
 	}
-
-	// return firebase.auth().currentUser
 }
 
 export const currentUser = () => {
@@ -96,6 +99,9 @@ export const firebaseAuthUI = () => {
             // or whether we leave that to developer to handle.
             console.log("Login FirebaseUI Success!");
 
+
+            // verifyEmail(currentUser);
+
             return true;
           },
           uiShown: function() {
@@ -139,4 +145,9 @@ export const firebaseAuthUI = () => {
       var ui = new firebaseui.auth.AuthUI(firebase.auth());
 
       ui.start('#firebaseui-auth-container', uiConfig);
+}
+
+const verifyEmail = (user) => {
+
+	user.sendEmailVerification()
 }

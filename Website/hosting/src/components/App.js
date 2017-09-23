@@ -14,6 +14,7 @@ import Build from './Build'
 import Auth from './Auth'
 import Logout from './Logout'
 import Loading from './Loading'
+import UserProfile from './UserProfile'
 
 const mapStateToProps = (state) => ({
 	test: 0
@@ -47,7 +48,8 @@ class App extends React.Component {
 	        container : { 
 	          height: "100%",
 	          width: "100%",
-	          marginTop: 54
+	          marginTop: 70,
+	          display: "block"
 	        }
 	      };
 
@@ -65,7 +67,7 @@ class App extends React.Component {
 				<Route path="/Mission" component={Mission}/>
 				<Route path="/Build" component={Build}/>
 				<Route path="/Shop" component={Store}/>
-				<Route path="/User" component={Loading}/>
+				<Route path="/User" component={UserProfile}/>
 				<Route exact path="/auth" component={Auth}/>
 				<Route exact path="/logout" component={Logout}/>
 				<Route exact path="/" component={Build}/>
