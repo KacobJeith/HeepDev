@@ -26,6 +26,18 @@ export const checkLoginStatus = () => {
 	}
 }
 
+export const getMyUserImagePath = () => {
+	if  (checkLoginStatus()) {
+		console.log(firebase.auth().currentUser.photoURL);
+		return firebase.auth().currentUser.photoURL
+	} else {
+		console.log(firebase.auth().currentUser.photoURL);
+		return "../src/assets/Happy.jpg"
+	}
+
+	// return firebase.auth().currentUser
+}
+
 export const currentUser = () => {
 
 	return firebase.auth().currentUser

@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Navbar, Nav, NavItem, Button } from 'react-bootstrap';
+import { Navbar, Nav, NavItem, Button, Image } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import * as database from '../redux/firebase'
 import { withRouter } from 'react-router-dom'
@@ -23,12 +23,39 @@ class Header extends React.Component {
 	}
 
 	loggedOn() {
+		var userNavElements = [];
+		userNavElements.push(this.profilePicture());
+		userNavElements.push(this.logOffButton());
+  		return userNavElements
+	}
+
+	profilePicture() {
+		var inputs = {
+			profilePicture: {
+				width: 26,
+				height: 26,
+				style: {
+					borderRadius:"50%"
+				},
+				src: database.getMyUserImagePath()
+			}
+		};
+
 		return(
-			<LinkContainer to="/logout" key="User">
-	          <NavItem>
-	          	<Button bsStyle="primary" bsSize="xsmall"> Logout </Button>
-	  		  </NavItem>
-	        </LinkContainer>);
+			<LinkContainer to="/User" key="UserPic">
+				<NavItem>
+      				<img {...inputs.profilePicture}/>
+	  		  	</NavItem>
+  		  	</LinkContainer>)
+	}
+
+	logOffButton() {
+		return(<LinkContainer to="/logout" key="Logout">
+	          	<NavItem>
+	          		<Button bsStyle="primary" bsSize="xsmall"> Logout </Button>
+	  		  	</NavItem>
+	        </LinkContainer>
+	        );
 	}
 
 	render() {
@@ -74,7 +101,7 @@ class Header extends React.Component {
 		if (this.props.loginStatus) {
 			userButton.push(this.loggedOn());
 		} else {
-			userButton.push(this.notLoggedOn());
+			userButton = this.notLoggedOn();
 		}
 
 		return (<div {...inputs.Header}>
