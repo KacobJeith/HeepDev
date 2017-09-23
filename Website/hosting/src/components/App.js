@@ -13,7 +13,7 @@ import Store from './Store'
 import Build from './Build'
 import Auth from './Auth'
 import Logout from './Logout'
-import UserPage from './UserPage'
+import Loading from './Loading'
 
 const mapStateToProps = (state) => ({
 	test: 0
@@ -65,7 +65,7 @@ class App extends React.Component {
 				<Route path="/Mission" component={Mission}/>
 				<Route path="/Build" component={Build}/>
 				<Route path="/Shop" component={Store}/>
-				<Route path="/User" component={UserPage}/>
+				<Route path="/User" component={Loading}/>
 				<Route exact path="/auth" component={Auth}/>
 				<Route exact path="/logout" component={Logout}/>
 				<Route exact path="/" component={Build}/>
