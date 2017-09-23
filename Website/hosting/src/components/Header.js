@@ -1,8 +1,35 @@
 import React, { Component, PropTypes } from 'react';
-import { Navbar, Nav, NavItem } from 'react-bootstrap';
+import { Navbar, Nav, NavItem, Button } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
+import * as database from '../redux/firebase'
+import { withRouter } from 'react-router-dom'
+import { connect } from 'react-redux'
+import * as actions from '../redux/actions'
+import { bindActionCreators } from 'redux'
 
-export default class Header extends React.Component {
+var mapStateToProps = (state) => ({
+	loginStatus: state.loginStatus
+})
+
+class Header extends React.Component {
+
+	notLoggedOn() {
+		return(
+			<LinkContainer to="/auth" key="NoUser">
+	          <NavItem>
+	          	<Button bsStyle="primary" bsSize="xsmall"> Login </Button>
+	  		  </NavItem>
+	        </LinkContainer>);
+	}
+
+	loggedOn() {
+		return(
+			<LinkContainer to="/logout" key="User">
+	          <NavItem>
+	          	<Button bsStyle="primary" bsSize="xsmall"> Logout </Button>
+	  		  </NavItem>
+	        </LinkContainer>);
+	}
 
 	render() {
 
@@ -35,7 +62,19 @@ export default class Header extends React.Component {
 			brandText: {
 				style: styles.brandText
 
+			},
+			login: {
+				bsStyle:"primary",
+				bsSize:"xsmall"
 			}
+		}
+
+		var userButton = [];
+
+		if (this.props.loginStatus) {
+			userButton.push(this.loggedOn());
+		} else {
+			userButton.push(this.notLoggedOn());
 		}
 
 		return (<div {...inputs.Header}>
@@ -62,6 +101,7 @@ export default class Header extends React.Component {
 				        <LinkContainer to="/Mission">
 				          <NavItem>Mission</NavItem>
 				        </LinkContainer>
+				        {userButton}
 				      </Nav>
 				    </Navbar.Collapse>
 				  </Navbar>
@@ -69,3 +109,10 @@ export default class Header extends React.Component {
 		)
 	}
 }
+
+
+var mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(actions, dispatch)
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header))

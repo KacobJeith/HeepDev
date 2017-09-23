@@ -17,6 +17,6 @@ export const InitializeShopify = () => {
 }
 
 const AddProductsToRedux = (products) => {
-  console.log(products);
+  
   setup.store.dispatch(actions.populateShopify(products));
 }

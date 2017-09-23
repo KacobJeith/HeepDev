@@ -7,13 +7,14 @@ import * as database from './firebase'
 const initialState = Immutable.Map({
   shopify: {},
   scrollPosition: 0,
-  webGLStatus: false
+  webGLStatus: false,
+  loginStatus: false
 })
 
 export default function(state = initialState, action) {
   switch (action.type) {
     case 'POPULATE_SHOPIFY' :
-        console.log("IN REDUCER: ", action.products);
+
         var newState = Immutable.Map(state.shopify).toJS();
 
         for (var i = 0; i < action.products.length; i++){
@@ -25,11 +26,14 @@ export default function(state = initialState, action) {
       return Immutable.Map(state).set('scrollPosition', action.positionY).toJS()
     case 'UPDATE_WEBGL_STATUS':
       return Immutable.Map(state).set('webGLStatus', action.status).toJS()
+      
     case 'LOGOUT':
 
       database.logout();
 
       return initialState
+    case 'LOGIN_STATUS' :
+      return Immutable.Map(state).set('loginStatus', action.status).toJS()
     default:
       return state
   }

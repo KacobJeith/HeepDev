@@ -21,14 +21,13 @@
 
   <script src="src/WebGL/TemplateData/UnityProgress.js"></script>  
   <script src="src/WebGL/Build/UnityLoader.js"></script>
-  
-  <script> 
-
-      var gameInstance = UnityLoader.instantiate("gameContainer", "src/WebGL/Build/testBlank.json", {onProgress: UnityProgress}); 
-
-  </script>
 
   <script>
+    function initializeUnity() {
+      console.log("initializing Unity");
+      var gameInstance = UnityLoader.instantiate("gameContainer", "src/WebGL/Build/testBlank.json", {onProgress: UnityProgress});
+    }
+
     function jslibtestold() {
       console.log("JSLIB CALLED ME WOOOOOASDF");
       

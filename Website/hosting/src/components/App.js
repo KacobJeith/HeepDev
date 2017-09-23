@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as Actions from '../redux/actions'
 import ReactGA from 'react-ga'
+import * as database from '../redux/firebase'
 
 import Header from './Header'
 import Landing from './Landing'
@@ -11,6 +12,8 @@ import Mission from './Mission'
 import Contact from './Contact'
 import Store from './Store'
 import Build from './Build'
+import Auth from './Auth'
+import Logout from './Logout'
 
 
 const mapStateToProps = (state) => ({
@@ -63,6 +66,8 @@ class App extends React.Component {
 				<Route path="/Mission" component={Mission}/>
 				<Route path="/Build" component={Build}/>
 				<Route path="/Shop" component={Store}/>
+				<Route exact path="/auth" component={Auth}/>
+				<Route exact path="/logout" component={Logout}/>
 				<Route exact path="/" component={Build}/>
 		    </div>
 		</Router>); 

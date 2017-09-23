@@ -14,6 +14,23 @@ export const logout = () => {
   });
 }
 
+export const checkLoginStatus = () => {
+	console.log("Checking Login...", firebase.auth().currentUser);
+	
+	if ( firebase.auth().currentUser ) {
+
+	  return true
+
+	} else {
+
+	  return false
+	}
+}
+
+export const currentUser = () => {
+
+	return firebase.auth().currentUser
+}
 
 export const initializeFirebase = () => {
 	var config = {
@@ -31,24 +48,26 @@ export const initializeFirebase = () => {
 	  if (user) {
 	    // User is signed in.
 	    console.log("Welcome back, ", user.email);
-	   
+	    setup.store.dispatch(actions.updateLoginStatus(true));
 	    // database.readUserData(user);
 
 	  } else {
 	    // No user is signed in.
 	    console.log("Detected no user signed in");
-	    loginUser();
+	    setup.store.dispatch(actions.updateLoginStatus(false));
+
 	  }
 	});
 
 }
 
-const loginUser = () => {
+export const loginUser = () => {
 	firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
 		.then(function() {
 			
 			var provider = new firebase.auth.GoogleAuthProvider();
 			return firebase.auth().signInWithRedirect(provider);
+			// firebase.auth().signInWithPopup(provider);
 
 		})
 		.catch(function(error) {

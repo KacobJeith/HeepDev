@@ -5,15 +5,28 @@ import { withRouter } from 'react-router-dom'
 import * as actions from '../redux/actions'
 
 var mapStateToProps = (state) => ({
-	webGLStatus: state.webGLStatus
+	webGLStatus: state.webGLStatus,
+  loginStatus: state.loginStatus
 })
 
 class Build extends React.Component {
 
   componentDidMount() {
+    console.log("logged in? ", this.props.loginStatus);
 
-    var webgl = document.getElementById("webgl");
-    webgl.style.display = "inherit";
+    if (this.props.loginStatus) {
+      var webgl = document.getElementById("webgl");
+      webgl.style.display = "inherit";
+
+
+      console.log("webGLStatus? ", this.props.webGLStatus);
+      if (!this.props.webGLStatus) {
+
+        initializeUnity();
+        this.props.updateWebGLStatus(true);
+
+      }
+    }
   }
 
   componentWillUnmount() {
@@ -22,8 +35,15 @@ class Build extends React.Component {
   }
   
   render() {
-    
-    return null
+
+    if (this.props.loginStatus) {
+
+      return null
+
+    } else {
+
+      return <div> Log in or Create an Account to Use Heep </div>
+    }
   }
 }
 

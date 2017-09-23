@@ -84,7 +84,7 @@ class ProductCard extends React.Component {
 
 
     if (useBuyButtonUI) {
-      console.log(this.props.product);
+      
       ShopifyBuildProduct(this.props.product.product_id);
 
       return (<div {...inputs.container}/>);

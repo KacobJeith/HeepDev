@@ -33,3 +33,8 @@ export const updateWebGLStatus = (status) => ({
 	type: 'UPDATE_WEBGL_STATUS',
 	status
 })
+
+export const updateLoginStatus = (status) => ({
+	type: 'LOGIN_STATUS',
+	status
+})
