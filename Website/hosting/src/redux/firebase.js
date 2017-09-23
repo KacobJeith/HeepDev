@@ -27,9 +27,13 @@ export const checkLoginStatus = () => {
 	}
 }
 
-export const checkUserProviders = () => {
+export const loadUserProviders = () => {
+	
+	firebase.auth().currentUser.providerData.forEach((provider) => {
 
-	return firebase.auth().fetchProvidersForEmail(firebase.auth().currentUser.email);
+	    setup.store.dispatch(actions.loadLinkedAccount(provider));
+
+	});
 }
 
 export const getMyUserImagePath = () => {
@@ -64,6 +68,8 @@ export const initializeFirebase = () => {
 	    // User is signed in.
 	    console.log("Welcome back, ", user.email);
 	    setup.store.dispatch(actions.updateLoginStatus(true));
+
+	    loadUserProviders()
 	    // database.readUserData(user);
 
 	  } else {
@@ -117,7 +123,7 @@ export const firebaseAuthUI = () => {
         queryParameterForSignInSuccessUrl: 'signInSuccessUrl',
         // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
         signInFlow: 'popup',
-        signInSuccessUrl: '/Mission',
+        signInSuccessUrl: '/User',
         signInOptions: [
 
           firebase.auth.GoogleAuthProvider.PROVIDER_ID,
@@ -139,7 +145,7 @@ export const firebaseAuthUI = () => {
           }
         ],
 
-        tosUrl: 'http://smooth.technology'
+        tosUrl: '/TermsOfService'
       };
 
       var ui = new firebaseui.auth.AuthUI(firebase.auth());

@@ -4,16 +4,55 @@ import { bindActionCreators } from 'redux'
 import { withRouter } from 'react-router-dom'
 import * as actions from '../redux/actions'
 import * as database from '../redux/firebase'
-import {Grid, Row, Col, Image, PageHeader} from 'react-bootstrap'
+import {Grid, Row, Col, Image, PageHeader, Media} from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import Loading from './Loading'
 
 var mapStateToProps = (state) => ({
-  loginStatus: state.loginStatus
+  loginStatus: state.loginStatus,
+  providers: state.providers
 })
 
 class UserProfile extends React.Component {
   
+  generateProviderCard(providerData) {
+
+    var providerText = providerData.providerId.split('.');
+    var inputs = {
+      section: {
+        key: providerData.providerId,
+        style: {
+          marginTop: 10
+        }
+      },
+      image: {
+        width: 64,
+        height: 64,
+        src: providerData.photoURL,
+        alt: "Image",
+        style: {
+          borderRadius: "50%"
+        }
+      }
+    }
+
+    return (
+<Row {...inputs.section}>
+  <Col xsOffset={1}>
+    <Media >
+     <Media.Left>
+        <img {...inputs.image}/>
+      </Media.Left>
+      <Media.Body>
+        <Media.Heading>{providerText[0]}</Media.Heading>
+        <p>Thanks for linking this account!</p>
+      </Media.Body>
+    </Media>
+  </Col>
+</Row>
+
+);
+  }
   
   loggedIn() {
     var user = database.currentUser();
@@ -22,6 +61,7 @@ class UserProfile extends React.Component {
       profilePicture: {
         src: user.photoURL,
         circle: true,
+        responsive: true,
         style: {
           maxWidth: '100%'
         }
@@ -31,6 +71,12 @@ class UserProfile extends React.Component {
           textIndent: 60
         }
       }
+    }
+
+    var providers = [];
+
+    for (var provider in this.props.providers){
+      providers.push(this.generateProviderCard(this.props.providers[provider]));
     }
 
     return (
@@ -49,6 +95,12 @@ class UserProfile extends React.Component {
           <h1><small>{user.email}</small></h1>
         </Col>
       </Row>
+      <Row> 
+          <PageHeader>Linked Accounts</PageHeader>
+      </Row>
+      
+      {providers}
+        
     </Col>
   </Row>
  
@@ -59,6 +111,7 @@ class UserProfile extends React.Component {
   }
 
   render() {
+
     if (this.props.loginStatus) {
       return this.loggedIn()
     } else {

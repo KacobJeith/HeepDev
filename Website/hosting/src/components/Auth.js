@@ -30,10 +30,6 @@ class Auth extends React.Component {
       return <div>Logged in Success!</div>
 
     } else {
-
-      // setTimeout(()=> {this.checkLoginStatus();}, 5000);
-
-      
     
       return  ( <div> 
                   <div id="firebaseui-auth-container"></div>

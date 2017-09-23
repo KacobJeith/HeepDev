@@ -8,7 +8,8 @@ const initialState = Immutable.Map({
   shopify: {},
   scrollPosition: 0,
   webGLStatus: false,
-  loginStatus: false
+  loginStatus: false,
+  providers: {}
 })
 
 export default function(state = initialState, action) {
@@ -22,9 +23,13 @@ export default function(state = initialState, action) {
         }
 
       return Immutable.Map(state).set('shopify', newState).toJS()
+      
     case 'SCROLL':
+
       return Immutable.Map(state).set('scrollPosition', action.positionY).toJS()
+
     case 'UPDATE_WEBGL_STATUS':
+
       return Immutable.Map(state).set('webGLStatus', action.status).toJS()
       
     case 'LOGOUT':
@@ -32,8 +37,17 @@ export default function(state = initialState, action) {
       database.logout();
 
       return initialState
+
     case 'LOGIN_STATUS' :
+
       return Immutable.Map(state).set('loginStatus', action.status).toJS()
+
+    case 'LOAD_PROVIDER' :
+
+      var newState = Immutable.Map(state.providers).set(action.provider.providerId, action.provider).toJS();
+
+      return Immutable.Map(state).set('providers', newState).toJS()
+
     default:
       return state
   }
