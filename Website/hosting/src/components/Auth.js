@@ -28,7 +28,23 @@ class Auth extends React.Component {
 
       setTimeout(()=> {this.checkLoginStatus();}, 5000);
 
-      return <div>logging in...</div>
+      var inputs = {
+        video: {
+          src: "../src/assets/heepwink3_gradient.mov",
+          loop: true, 
+          autoPlay: true,
+          height: 400,
+          width: 400,
+          style: {
+            position: 'fixed',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)'
+          }
+        }
+      }
+
+      return  <video {...inputs.video}/>
     }
   }
 }

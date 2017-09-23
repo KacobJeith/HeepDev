@@ -49,6 +49,12 @@ module.exports = {
          'file?hash=sha512&digest=hex&name=[hash].[ext]',
          'image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false'
        ]
+      },
+      {
+      test: /\.(mov|mp4)$/,
+      loader: 'file-loader',
+      options: {
+        name: '[name].[ext]'} 
       }
     ],
 
