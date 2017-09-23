@@ -15,8 +15,7 @@ export const logout = () => {
 }
 
 export const checkLoginStatus = () => {
-	console.log("Checking Login...", firebase.auth().currentUser);
-	
+
 	if ( firebase.auth().currentUser ) {
 
 	  return true
