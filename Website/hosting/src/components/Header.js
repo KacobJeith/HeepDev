@@ -62,7 +62,8 @@ class Header extends React.Component {
 
 		var styles = {
 			Header: {
-				opacity: 1
+				opacity: 1,
+				display: "block"
 			},
 			Logo: {
 				marginTop: -10,

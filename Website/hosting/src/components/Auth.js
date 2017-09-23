@@ -11,6 +11,10 @@ var mapStateToProps = (state) => ({
 })
 
 class Auth extends React.Component {
+
+  componentDidMount() {
+    database.firebaseAuthUI();
+  }
   
   checkLoginStatus() {
 
@@ -26,10 +30,11 @@ class Auth extends React.Component {
       return <div>Logged in Success!</div>
 
     } else {
-
-      setTimeout(()=> {this.checkLoginStatus();}, 5000);
-
-      return  <Loading/>
+    
+      return  ( <div> 
+                  <div id="firebaseui-auth-container"></div>
+                  <Loading/>
+                </div>);
     }
   }
 }

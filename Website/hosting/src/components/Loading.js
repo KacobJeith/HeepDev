@@ -20,6 +20,7 @@ class Loading extends React.Component {
         autoPlay: true,
         height: 400,
         width: 400,
+        id: "loader",
         style: {
           position: 'fixed',
           top: '50%',

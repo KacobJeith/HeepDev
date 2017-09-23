@@ -38,3 +38,8 @@ export const updateLoginStatus = (status) => ({
 	type: 'LOGIN_STATUS',
 	status
 })
+
+export const loadLinkedAccount = (provider) => ({
+	type: 'LOAD_PROVIDER',
+	provider
+})
