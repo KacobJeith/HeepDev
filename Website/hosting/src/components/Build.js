@@ -12,14 +12,11 @@ var mapStateToProps = (state) => ({
 class Build extends React.Component {
 
   componentDidMount() {
-    console.log("logged in? ", this.props.loginStatus);
 
     if (this.props.loginStatus) {
       var webgl = document.getElementById("webgl");
       webgl.style.display = "inherit";
 
-
-      console.log("webGLStatus? ", this.props.webGLStatus);
       if (!this.props.webGLStatus) {
 
         initializeUnity();

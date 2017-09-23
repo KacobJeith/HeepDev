@@ -12,14 +12,13 @@ var mapStateToProps = (state) => ({
 class Auth extends React.Component {
   
   checkLoginStatus() {
-    console.log("checking...");
+
     if (!database.checkLoginStatus()) {
       database.loginUser();
     }
   }
 
   render() {
-    console.log("STATUS: ", this.props.loginStatus);
 
     if (this.props.loginStatus) {
 
