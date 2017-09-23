@@ -6,7 +6,7 @@ export const InitializeShopify = () => {
 
   var client = ShopifyBuy.buildClient({
     domain: 'shopheep.myshopify.com',
-    apiKey: 'a444eb17144b5b4e7841eaa1e4cf8698',
+    accessToken: 'a444eb17144b5b4e7841eaa1e4cf8698',
     appId: '6',
   });
 
