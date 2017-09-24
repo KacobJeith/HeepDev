@@ -2,7 +2,7 @@ import { combineReducers } from 'redux'
 import Immutable from 'immutable'
 import 'babel-polyfill'
 import * as actions from './actions'
-import * as database from './firebase'
+import * as auth from './FirebaseAuth'
 
 const initialState = Immutable.Map({
   shopify: {},
@@ -34,7 +34,7 @@ export default function(state = initialState, action) {
       
     case 'LOGOUT':
 
-      database.logout();
+      auth.logout();
 
       return initialState
 
