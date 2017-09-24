@@ -37,6 +37,21 @@ class UserProfile extends React.Component {
 
   generateLinkButton(provider) {
 
+    switch (provider) {
+      case 'google.com': 
+        var imageurl = "https://avatars0.githubusercontent.com/u/1342004?v=4&s=400";
+        break
+      case 'facebook.com' : 
+        var imageurl = "https://upload.wikimedia.org/wikipedia/commons/c/c2/F_icon.svg";
+        break
+      case 'twitter.com': 
+        var imageurl = "https://upload.wikimedia.org/wikipedia/en/9/9f/Twitter_bird_logo_2012.svg";
+        break
+      default : 
+        var imageurl = "";
+        break
+    }
+
     var inputs = {
       section: {
         key: provider,
@@ -52,7 +67,8 @@ class UserProfile extends React.Component {
       image: {
         width: 64,
         height: 64,
-        src: "https://upload.wikimedia.org/wikipedia/commons/c/c2/F_icon.svg"
+        src: imageurl, 
+        alt: "Provider" 
       }
     }
 

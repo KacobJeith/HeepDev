@@ -118,61 +118,58 @@ export const firebaseAuthUI = () => {
 	var uiConfig = {
         callbacks: {
           signInSuccess: function(currentUser, credential, redirectUrl) {
-            // Do something.
-            // Return type determines whether we continue the redirect automatically
-            // or whether we leave that to developer to handle.
-            console.log("Login FirebaseUI Success!");
-
-
-            // verifyEmail(currentUser);
 
             return true;
           },
           uiShown: function() {
-            // The widget is rendered.
-            // Hide the loader.
+
             document.getElementById('loader').style.display = 'none';
           }
         },
         credentialHelper: firebaseui.auth.CredentialHelper.ACCOUNT_CHOOSER_COM,
-        // Query parameter name for mode.
+
         queryParameterForWidgetMode: 'mode',
-        // Query parameter name for sign in success url.
+
         queryParameterForSignInSuccessUrl: 'signInSuccessUrl',
-        // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
+
         signInFlow: 'popup',
         signInSuccessUrl: '/User',
         signInOptions: [
 
-          firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-          firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-          firebase.auth.TwitterAuthProvider.PROVIDER_ID,
           {
             provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
 
             requireDisplayName: true
           },
-          {
-            provider: firebase.auth.PhoneAuthProvider.PROVIDER_ID,
-
-            recaptchaParameters: {
-              type: 'image',
-              size: 'invisible',
-              badge: 'bottomleft'
-            }
-          }
+          firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+          firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+          firebase.auth.TwitterAuthProvider.PROVIDER_ID
         ],
 
         tosUrl: '/TermsOfService'
-      };
+    };
 
-      var ui = new firebaseui.auth.AuthUI(firebase.auth());
 
-      ui.start('#firebaseui-auth-container', uiConfig);
+	var instance = firebaseui.auth.AuthUI.getInstance();
+
+	if (instance != null) {
+
+		instance.delete().then(() => {
+
+			var ui = new firebaseui.auth.AuthUI(firebase.auth());
+			ui.start('#firebaseui-auth-container', uiConfig);
+
+		});
+	} else {
+
+		var ui = new firebaseui.auth.AuthUI(firebase.auth());
+		ui.start('#firebaseui-auth-container', uiConfig);
+	}
+	 
+      	
 }
 
 export const linkAccount = (newProvider) => {
-	console.log("new: ", newProvider);
 
 	switch (newProvider) {
 		case 'google.com': 
@@ -194,7 +191,7 @@ export const linkAccount = (newProvider) => {
 
 
 	firebase.auth().currentUser.linkWithPopup(provider).then(function(result) {
-	  // Accounts successfully linked.
+
 	  var credential = result.credential;
 	  var user = result.user;
 	  loadUserProviders();
@@ -207,13 +204,12 @@ export const linkAccount = (newProvider) => {
 
 export const unlinkAccount = (providerId) => {
 
-
 	firebase.auth().currentUser.unlink(providerId).then(function() {
-	  // Auth provider unlinked from account
+
 	  setup.store.dispatch(actions.unlinkAccount(providerId));
 	
 	}).catch(function(error) {
-	  // An error happened
+
 	  alert(error.message);
 
 	});
@@ -222,6 +218,11 @@ export const unlinkAccount = (providerId) => {
 const verifyEmail = (user) => {
 
 	user.sendEmailVerification()
+}
+
+const launchFirebaseUI = () => {
+
+
 }
 
 
