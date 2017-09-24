@@ -9,7 +9,10 @@ const initialState = Immutable.Map({
   scrollPosition: 0,
   webGLStatus: false,
   loginStatus: false,
-  providers: {}
+  providers: {},
+  devices: {},
+  places: {},
+  groups: {}
 })
 
 export default function(state = initialState, action) {
@@ -52,6 +55,12 @@ export default function(state = initialState, action) {
       var newState = Immutable.Map(state.providers).delete(action.providerId).toJS();
 
       return Immutable.Map(state).set('providers', newState).toJS()
+
+    case 'ADD_DEVICE' : 
+
+      var newState = Immutable.Map(state.devices).set(action.deviceID, action.device).toJS();
+
+      return Immutable.Map(state).set('devices', newState).toJS()
 
     default:
       return state

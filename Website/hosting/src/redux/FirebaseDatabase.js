@@ -10,6 +10,10 @@ export const readUserData = (user) => {
 		retrieveDevices(snapshot);
 	})
 
+	firebase.database().ref('/users/' + user.uid + '/devices').on('value', function(snapshot) {
+		retrieveDevices(snapshot);
+	})
+
 	// firebase.database().ref('/users/' + user.uid + '/places').on('child_added', function(snapshot) {
 		
 	// 	retrievePlaces(snapshot);
@@ -37,10 +41,23 @@ const retrieveDevices = (snapshot) => {
 	});
 }
 
-const readSignal = (signalId) => {
-	let dataFromFirebaseRef = firebase.database().ref('/signals/' + signalId).on('value', function(signalSnapshot) {
-		
-		setup.store.dispatch(actions.addDevice(signalSnapshot.key, signalSnapshot.val()));
+const readDevice = (deviceID) => {
+	let dataFromFirebaseRef = firebase.database().ref('/devices/' + deviceID).on('value', function(deviceSnapshot) {
+
+		setup.store.dispatch(actions.addDevice(deviceSnapshot.key, deviceSnapshot.val()));
+	});
+}
+
+const retrievePlaces = (snapshot) => {
+	snapshot.forEach( function(snapChild){
+		readPlace(snapChild.key);
+	});
+}
+
+const readPlace = (placeID) => {
+	let dataFromFirebaseRef = firebase.database().ref('/places/' + placeID).on('value', function(placeSnapshot) {
+
+		setup.store.dispatch(actions.addPlace(placeSnapshot.key, placeSnapshot.val()));
 	});
 }
 

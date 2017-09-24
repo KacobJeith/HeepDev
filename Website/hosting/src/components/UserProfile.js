@@ -7,6 +7,7 @@ import * as auth from '../redux/FirebaseAuth'
 import {Grid, Row, Col, Image, PageHeader, Media, Button} from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import Loading from './Loading'
+import UserAnalytics from './UserAnalytics'
 
 var mapStateToProps = (state) => ({
   loginStatus: state.loginStatus,
@@ -185,6 +186,7 @@ class UserProfile extends React.Component {
       {providers}
     </Col>
   </Row>
+  <UserAnalytics/>
  
 </Grid>
 

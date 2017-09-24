@@ -1,18 +1,8 @@
 
-export const addSignal = (name) => ({
-  type: 'ADD_SIGNAL',
-  name
-})
-
-export const deleteSignal = (id) => ({
-	type: 'DELETE_SIGNAL', 
-	id
-})
-
-export const populateSignal = (id, content) => ({
-	type: 'POP_SIGNAL',
-	id,
-  	content
+export const addDevice = (deviceID, device) => ({
+  type: 'ADD_DEVICE',
+  deviceID, 
+  device
 })
 
 export const populateShopify = (products) => ({
