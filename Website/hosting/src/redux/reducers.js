@@ -62,6 +62,18 @@ export default function(state = initialState, action) {
 
       return Immutable.Map(state).set('devices', newState).toJS()
 
+    case 'ADD_PLACE' : 
+
+      var newState = Immutable.Map(state.places).set(action.placeID, action.place).toJS();
+
+      return Immutable.Map(state).set('places', newState).toJS()
+
+    case 'ADD_GROUP' : 
+
+      var newState = Immutable.Map(state.groups).set(action.groupID, action.group).toJS();
+
+      return Immutable.Map(state).set('groups', newState).toJS()
+
     default:
       return state
   }

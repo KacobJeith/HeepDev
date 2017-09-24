@@ -5,6 +5,18 @@ export const addDevice = (deviceID, device) => ({
   device
 })
 
+export const addPlace = (placeID, place) => ({
+  type: 'ADD_PLACE',
+  placeID, 
+  place
+})
+
+export const addGroup = (groupID, group) => ({
+  type: 'ADD_GROUP',
+  group, 
+  groupID
+})
+
 export const populateShopify = (products) => ({
 	type: 'POPULATE_SHOPIFY',
 	products
