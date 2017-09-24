@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Navbar, Nav, NavItem, Button, Image } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-import * as database from '../redux/firebase'
+import * as auth from '../redux/FirebaseAuth'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import * as actions from '../redux/actions'
@@ -37,7 +37,7 @@ class Header extends React.Component {
 				style: {
 					borderRadius:"50%"
 				},
-				src: database.getMyUserImagePath()
+				src: auth.getMyUserImagePath()
 			}
 		};
 

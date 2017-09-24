@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { withRouter } from 'react-router-dom'
 import * as actions from '../redux/actions'
-import * as database from '../redux/firebase'
+import * as auth from '../redux/FirebaseAuth'
 import {Grid, Row, Col, Image, PageHeader, Media, Button} from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import Loading from './Loading'
@@ -62,7 +62,7 @@ class UserProfile extends React.Component {
       linkButton: {
         bsStyle: "primary",
         bsSize: "small",
-        onClick: () => {database.linkAccount(provider)}
+        onClick: () => {auth.linkAccount(provider)}
       },
       image: {
         width: 64,
@@ -110,12 +110,12 @@ class UserProfile extends React.Component {
           borderRadius: "50%",
           cursor: "pointer"
         },
-        onClick: () => {database.updateProfilePicture(providerData.photoURL)}
+        onClick: () => {auth.updateProfilePicture(providerData.photoURL)}
       },
       unlinkButton: {
         bsStyle: "primary",
         bsSize: "small",
-        onClick: () => {database.unlinkAccount(providerData.providerId)}
+        onClick: () => {auth.unlinkAccount(providerData.providerId)}
       }
     }
 
@@ -138,7 +138,7 @@ class UserProfile extends React.Component {
   }
   
   loggedIn() {
-    var user = database.currentUser();
+    var user = auth.currentUser();
     
     var inputs = {
       profilePicture: {
