@@ -14,25 +14,25 @@ export const readUserData = (user) => {
 		retrieveDevices(snapshot);
 	})
 
-	// firebase.database().ref('/users/' + user.uid + '/places').on('child_added', function(snapshot) {
+	firebase.database().ref('/users/' + user.uid + '/places').on('child_added', function(snapshot) {
 		
-	// 	retrievePlaces(snapshot);
-	// })
+		retrievePlaces(snapshot);
+	})
 
-	// firebase.database().ref('/users/' + user.uid + '/places').on('value', function(snapshot) {
+	firebase.database().ref('/users/' + user.uid + '/places').on('value', function(snapshot) {
 		
-	// 	retrievePlaces(snapshot);
-	// })
+		retrievePlaces(snapshot);
+	})
 
-	// firebase.database().ref('/users/' + user.uid + '/groups').on('child_added', function(snapshot) {
+	firebase.database().ref('/users/' + user.uid + '/groups').on('child_added', function(snapshot) {
 		
-	// 	retrieveGroups(snapshot);
-	// })
+		retrieveGroups(snapshot);
+	})
 
-	// firebase.database().ref('/users/' + user.uid + '/groups').on('value', function(snapshot) {
+	firebase.database().ref('/users/' + user.uid + '/groups').on('value', function(snapshot) {
 		
-	// 	retrieveGroups(snapshot);
-	// })
+		retrieveGroups(snapshot);
+	})
 }
 
 const retrieveDevices = (snapshot) => {
@@ -58,6 +58,19 @@ const readPlace = (placeID) => {
 	let dataFromFirebaseRef = firebase.database().ref('/places/' + placeID).on('value', function(placeSnapshot) {
 
 		setup.store.dispatch(actions.addPlace(placeSnapshot.key, placeSnapshot.val()));
+	});
+}
+
+const retrieveGroups = (snapshot) => {
+	snapshot.forEach( function(snapChild){
+		readGroup(snapChild.key);
+	});
+}
+
+const readGroup = (groupID) => {
+	let dataFromFirebaseRef = firebase.database().ref('/groups/' + groupID).on('value', function(groupSnapshot) {
+
+		setup.store.dispatch(actions.addGroup(groupSnapshot.key, groupSnapshot.val()));
 	});
 }
 
