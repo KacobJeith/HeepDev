@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 import { withRouter } from 'react-router-dom'
 import * as actions from '../redux/actions'
 import * as database from '../redux/firebase'
-import {Grid, Row, Col, Image, PageHeader, Media} from 'react-bootstrap'
+import {Grid, Row, Col, Image, PageHeader, Media, Button} from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import Loading from './Loading'
 
@@ -14,6 +14,66 @@ var mapStateToProps = (state) => ({
 })
 
 class UserProfile extends React.Component {
+
+  genenerateLinkedAccountsSection() {
+    var providers = [];
+    var providerOptions = ['facebook.com', 'google.com', 'twitter.com'];
+
+    for (var provider in providerOptions){
+      var name = providerOptions[provider];
+
+      if (this.props.providers.hasOwnProperty(name)) {
+
+        providers.unshift(this.generateProviderCard(this.props.providers[name]));
+      } else {
+
+        providers.push(this.generateLinkButton(name));
+      }
+
+    }
+
+    return providers
+  }
+
+  generateLinkButton(provider) {
+
+    var inputs = {
+      section: {
+        key: provider,
+        style: {
+          marginTop: 10
+        }
+      },
+      linkButton: {
+        bsStyle: "primary",
+        bsSize: "small",
+        onClick: () => {database.linkAccount(provider)}
+      },
+      image: {
+        width: 64,
+        height: 64,
+        src: "https://upload.wikimedia.org/wikipedia/commons/c/c2/F_icon.svg"
+      }
+    }
+
+    var providerText = provider.split('.');
+
+    return (
+<Row {...inputs.section}>
+  <Col xsOffset={1}>
+    <Media >
+     <Media.Left>
+        <img {...inputs.image}/>
+      </Media.Left>
+      <Media.Body>
+        <Media.Heading>{providerText[0]}</Media.Heading>
+        <Button {...inputs.linkButton}>Link {providerText[0]}</Button>
+      </Media.Body>
+    </Media>
+  </Col>
+</Row>
+      )
+  }
   
   generateProviderCard(providerData) {
 
@@ -31,8 +91,15 @@ class UserProfile extends React.Component {
         src: providerData.photoURL,
         alt: "Image",
         style: {
-          borderRadius: "50%"
-        }
+          borderRadius: "50%",
+          cursor: "pointer"
+        },
+        onClick: () => {database.updateProfilePicture(providerData.photoURL)}
+      },
+      unlinkButton: {
+        bsStyle: "primary",
+        bsSize: "small",
+        onClick: () => {database.unlinkAccount(providerData.providerId)}
       }
     }
 
@@ -45,7 +112,7 @@ class UserProfile extends React.Component {
       </Media.Left>
       <Media.Body>
         <Media.Heading>{providerText[0]}</Media.Heading>
-        <p>Thanks for linking this account!</p>
+        <Button {...inputs.unlinkButton}>Unlink {providerText[0]}</Button>
       </Media.Body>
     </Media>
   </Col>
@@ -63,7 +130,8 @@ class UserProfile extends React.Component {
         circle: true,
         responsive: true,
         style: {
-          maxWidth: '100%'
+          maxWidth: '100%',
+          width: '100%'
         }
       },
       indented: {
@@ -73,11 +141,9 @@ class UserProfile extends React.Component {
       }
     }
 
-    var providers = [];
+    var providers = this.genenerateLinkedAccountsSection();
 
-    for (var provider in this.props.providers){
-      providers.push(this.generateProviderCard(this.props.providers[provider]));
-    }
+    
 
     return (
 
@@ -86,7 +152,7 @@ class UserProfile extends React.Component {
     <Col md={3} xsOffset={1}>
       <Image {...inputs.profilePicture} />
     </Col>
-    <Col md={8}>
+    <Col md={4}>
       <Row> 
           <PageHeader> {user.displayName}</PageHeader>
       </Row>
@@ -95,12 +161,12 @@ class UserProfile extends React.Component {
           <h1><small>{user.email}</small></h1>
         </Col>
       </Row>
+    </Col>
+    <Col md={4}>
       <Row> 
           <PageHeader>Linked Accounts</PageHeader>
       </Row>
-      
       {providers}
-        
     </Col>
   </Row>
  

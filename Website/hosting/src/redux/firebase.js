@@ -36,6 +36,24 @@ export const loadUserProviders = () => {
 	});
 }
 
+export const updateProfilePicture = (newURL) => {
+	var user = firebase.auth().currentUser;
+	console.log("Updating Image");
+
+	user.updateProfile({
+	  photoURL: newURL
+	}).then(function() {
+	  // Update successful.
+	  setup.store.dispatch(actions.updateLoginStatus(false));
+	  setup.store.dispatch(actions.updateLoginStatus(true));
+
+	}).catch(function(error) {
+	  // An error happened.
+	  console.log("Failed to Update");
+
+	});
+}
+
 export const getMyUserImagePath = () => {
 	if  (checkLoginStatus()) {
 		console.log(firebase.auth().currentUser.photoURL);
@@ -153,7 +171,57 @@ export const firebaseAuthUI = () => {
       ui.start('#firebaseui-auth-container', uiConfig);
 }
 
+export const linkAccount = (newProvider) => {
+	console.log("new: ", newProvider);
+
+	switch (newProvider) {
+		case 'google.com': 
+			var provider = new firebase.auth.GoogleAuthProvider();
+			break
+		case 'facebook.com' : 
+			var provider = new firebase.auth.FacebookAuthProvider();
+			break
+		case 'twitter.com': 
+			var provider = new firebase.auth.TwitterAuthProvider();
+			break
+		case 'github.com': 
+			var provider = new firebase.auth.GithubAuthProvider();
+			break
+		default : 
+			console.log("Please select a provider");
+			return
+	}
+
+
+	firebase.auth().currentUser.linkWithPopup(provider).then(function(result) {
+	  // Accounts successfully linked.
+	  var credential = result.credential;
+	  var user = result.user;
+	  loadUserProviders();
+
+	}).catch(function(error) {
+
+	  alert(error.message);
+	});
+}
+
+export const unlinkAccount = (providerId) => {
+
+
+	firebase.auth().currentUser.unlink(providerId).then(function() {
+	  // Auth provider unlinked from account
+	  setup.store.dispatch(actions.unlinkAccount(providerId));
+	
+	}).catch(function(error) {
+	  // An error happened
+	  alert(error.message);
+
+	});
+}
+
 const verifyEmail = (user) => {
 
 	user.sendEmailVerification()
 }
+
+

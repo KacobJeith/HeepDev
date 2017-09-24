@@ -43,3 +43,8 @@ export const loadLinkedAccount = (provider) => ({
 	type: 'LOAD_PROVIDER',
 	provider
 })
+
+export const unlinkAccount = (providerId) => ({
+	type: 'UNLINK_PROVIDER',
+	providerId
+})

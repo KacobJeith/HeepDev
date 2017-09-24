@@ -47,6 +47,11 @@ export default function(state = initialState, action) {
       var newState = Immutable.Map(state.providers).set(action.provider.providerId, action.provider).toJS();
 
       return Immutable.Map(state).set('providers', newState).toJS()
+    case 'UNLINK_PROVIDER' :
+
+      var newState = Immutable.Map(state.providers).delete(action.providerId).toJS();
+
+      return Immutable.Map(state).set('providers', newState).toJS()
 
     default:
       return state
