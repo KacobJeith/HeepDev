@@ -1,12 +1,12 @@
 ﻿<Properties StartupItem="HeepDevice/HeepDevice.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="HeepDevice/HeepCommunications.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="HeepDevice/HeepDevice.cs">
     <Files>
-      <File FileName="HeepDevice/Program.cs" Line="1" Column="1" />
-      <File FileName="HeepDevice/HeepDevice.cs" Line="1" Column="1" />
-      <File FileName="HeepDevice/HeepLanguage.cs" Line="7" Column="27" />
+      <File FileName="HeepDevice/Program.cs" Line="67" Column="23" />
+      <File FileName="HeepDevice/HeepDevice.cs" Line="23" Column="24" />
+      <File FileName="HeepDevice/HeepLanguage.cs" Line="43" Column="36" />
       <File FileName="HeepDevice/HeepParser.cs" Line="26" Column="66" />
-      <File FileName="HeepDevice/HeepCommunications.cs" Line="23" Column="4" />
+      <File FileName="HeepDevice/HeepCommunications.cs" Line="120" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
