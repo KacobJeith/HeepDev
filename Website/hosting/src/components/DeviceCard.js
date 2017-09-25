@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux'
 import { withRouter } from 'react-router-dom'
 import * as actions from '../redux/actions'
 import {Grid, Row, Col, Image, PageHeader, Media, Button} from 'react-bootstrap'
+import "../assets/light_off.png"
 
 var mapStateToProps = (state, ownProps) => ({
   device: state.devices[ownProps.deviceID]
@@ -25,12 +26,29 @@ class DeviceCard extends React.Component {
         bsSize: "small",
         onClick: () => {}
       },
-      image: {
+      primary: {
         width: 64,
         height: 64,
-        src: "http://www.iconhot.com/icon/png/devine-icons-part-2/256/device-and-hardware.png", 
-        alt: "DevicePic" 
+        type:"image/svg+xml",
+        data: "../src/assets/" + this.props.device.identity.iconName + ".svg"
+      },
+      backup: {
+        width: 64,
+        height: 64,
+        src: "../src/assets/light_off.png" //"../src/assets/" + this.props.device.identity.iconName + ".png"
       }
+    }
+
+    var svgs = ['light-bulb-LED', 'cuckoo-clock', 'none', 'outlet', 'power-button', 'switch'];
+
+    if (svgs.indexOf(this.props.device.identity.iconName) != -1) { 
+
+      var icon = <object {...inputs.primary}/>
+
+    } else {
+
+      var icon = <img {...inputs.backup} />;
+
     }
     
     return (
@@ -38,7 +56,7 @@ class DeviceCard extends React.Component {
   <Col xsOffset={1}>
     <Media >
      <Media.Left>
-        <img {...inputs.image}/>
+        {icon}
       </Media.Left>
       <Media.Body>
         <h1><small>{this.props.device.identity.name}</small></h1>
