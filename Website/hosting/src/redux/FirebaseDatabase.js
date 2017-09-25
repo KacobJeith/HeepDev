@@ -5,29 +5,29 @@ import * as actions from './actions'
 
 export const readUserData = (user) => {
 
-	firebase.database().ref('/users/' + user.uid + '/devices').on('child_added', function(snapshot) {
+	// firebase.database().ref('/users/' + user.uid + '/devices').on('child_added', function(snapshot) {
 		
-		retrieveDevices(snapshot);
-	})
+	// 	retrieveDevices(snapshot);
+	// })
 
 	firebase.database().ref('/users/' + user.uid + '/devices').on('value', function(snapshot) {
 		retrieveDevices(snapshot);
 	})
 
-	firebase.database().ref('/users/' + user.uid + '/places').on('child_added', function(snapshot) {
+	// firebase.database().ref('/users/' + user.uid + '/places').on('child_added', function(snapshot) {
 		
-		retrievePlaces(snapshot);
-	})
+	// 	// retrievePlaces(snapshot);
+	// })
 
 	firebase.database().ref('/users/' + user.uid + '/places').on('value', function(snapshot) {
 		
 		retrievePlaces(snapshot);
 	})
 
-	firebase.database().ref('/users/' + user.uid + '/groups').on('child_added', function(snapshot) {
+	// firebase.database().ref('/users/' + user.uid + '/groups').on('child_added', function(snapshot) {
 		
-		retrieveGroups(snapshot);
-	})
+	// 	retrieveGroups(snapshot);
+	// })
 
 	firebase.database().ref('/users/' + user.uid + '/groups').on('value', function(snapshot) {
 		
@@ -49,7 +49,8 @@ const readDevice = (deviceID) => {
 }
 
 const retrievePlaces = (snapshot) => {
-	snapshot.forEach( function(snapChild){
+
+	snapshot.forEach( function(snapChild) {
 		readPlace(snapChild.key);
 	});
 }
@@ -71,6 +72,17 @@ const readGroup = (groupID) => {
 	let dataFromFirebaseRef = firebase.database().ref('/groups/' + groupID).on('value', function(groupSnapshot) {
 
 		setup.store.dispatch(actions.addGroup(groupSnapshot.key, groupSnapshot.val()));
+	});
+}
+
+export const downloadGroupImage = (groupID) => {
+	firebase.storage().ref("groups").child(String(groupID) + '/background.png').getDownloadURL().then(function(url) {
+		
+		document.getElementById(String(groupID)).src = url;
+
+	}).catch(function(error) {
+		
+		console.log("Could not find this image");
 	});
 }
 
