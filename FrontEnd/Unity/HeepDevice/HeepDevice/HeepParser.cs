@@ -11,7 +11,7 @@ namespace Heep
 			if (commandBuffer [0] == HeepLanguage.IsHeepDeviceOpCode) {
 				return ParseIsHeepDeviceCommand (commandBuffer, theDevice);
 			} else if (commandBuffer [0] == HeepLanguage.SetValueOpCode) {
-				// CALL SET VAL PARSER
+				return ParseSetValueCommand (commandBuffer, theDevice);
 			}
 
 			List<byte> defaultRet = new List<byte> ();
@@ -25,7 +25,29 @@ namespace Heep
 
 		public static List<byte> ParseSetValueCommand(List <byte> commandBuffer, HeepDevice theDevice)
 		{
+			
+
+			int controlID = commandBuffer [2];
+			int controlValue = commandBuffer [3];
+			theDevice.SetControlByID (controlID, controlValue);
+
+			return AddSuccessMessageToBuffer ("Successfully Set Value", theDevice);
+		}
+
+		private static List<byte> AddSuccessMessageToBuffer(String message, HeepDevice theDevice)
+		{
 			List <byte> outputBuf = new List<byte>();
+
+			outputBuf.Add (HeepLanguage.SuccessOpCode);
+			HeepLanguage.AddDeviceIDToMemory (outputBuf, theDevice.GetDeviceID ());
+
+			byte stringLength = (byte)message.Length;
+			outputBuf.Add (stringLength);
+
+			for (int i = 0; i < message.Length; i++) {
+				outputBuf.Add ((byte)message [i]);
+			}
+
 			return outputBuf;
 		}
 	}
