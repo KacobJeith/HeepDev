@@ -33,9 +33,21 @@ class DeviceCard extends React.Component {
         data: "../src/assets/" + this.props.device.identity.iconName + ".svg"
       },
       backup: {
-        width: 64,
-        height: 64,
-        src: "../src/assets/light_off.png" //"../src/assets/" + this.props.device.identity.iconName + ".png"
+        width: "auto",
+        height: "auto",
+        style: {
+          maxWidth: 64,
+          maxHeight: 64,
+          margin: "auto",
+          display: "block"
+        },
+        src: "../src/assets/" + this.props.device.identity.iconName + ".png" //"../src/assets/" + this.props.device.identity.iconName + ".png"
+      },
+      imageContainer: {
+        style: {
+          width: 64,
+          height: 64
+        }
       }
     }
 
@@ -47,7 +59,7 @@ class DeviceCard extends React.Component {
 
     } else {
 
-      var icon = <img {...inputs.backup} />;
+      var icon = <div {...inputs.imageContainer}> <img {...inputs.backup} /></div>;
 
     }
     
