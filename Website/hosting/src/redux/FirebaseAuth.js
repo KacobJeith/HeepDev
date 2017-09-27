@@ -37,28 +37,17 @@ export const loadUserProviders = () => {
 	});
 }
 
-export const updateProfilePicture = (newURL) => {
-	var user = firebase.auth().currentUser;
-	console.log("Updating Image");
-
-	user.updateProfile({
-	  photoURL: newURL
-	}).then(function() {
-	  // Update successful.
-	  setup.store.dispatch(actions.updateLoginStatus(false));
-	  setup.store.dispatch(actions.updateLoginStatus(true));
-
-	}).catch(function(error) {
-	  // An error happened.
-	  console.log("Failed to Update");
-
-	});
-}
-
 export const getMyUserImagePath = () => {
 	if  (checkLoginStatus()) {
 		
-		return firebase.auth().currentUser.photoURL
+		if (firebase.auth().currentUser.photoURL == null) {
+
+			database.downloadLegacyProfilePicture(firebase.auth().currentUser.uid);
+
+		} else {
+			return firebase.auth().currentUser.photoURL
+		}
+
 	} else {
 		console.log(firebase.auth().currentUser.photoURL);
 		return "../src/assets/Happy.jpg"
@@ -88,6 +77,7 @@ export const initializeFirebase = () => {
 	    console.log("Welcome back, ", user.email);
 	    setup.store.dispatch(actions.updateLoginStatus(true));
 	    database.readUserData(user);
+	    validateUser()
 
 	    loadUserProviders()
 
@@ -221,9 +211,27 @@ const verifyEmail = (user) => {
 	user.sendEmailVerification()
 }
 
-const launchFirebaseUI = () => {
+const validateUser = () => {
+	if (firebase.auth().currentUser.displayName == null) {
+		database.associateLegacyProfileName(firebase.auth().currentUser.uid)
+	} 
 
+	if (firebase.auth().currentUser.photoURL == null) {
+		database.downloadLegacyProfilePicture(firebase.auth().currentUser.uid);
+	}  
+}
 
+export const updateUserProfile = (newData) => {
+	firebase.auth().currentUser.updateProfile(newData).then(() => {
+
+	  setup.store.dispatch(actions.updateLoginStatus(false));
+	  setup.store.dispatch(actions.updateLoginStatus(true));
+
+	}).catch(function(error) {
+
+	  console.log("Failed to Update");
+
+	});
 }
 
 

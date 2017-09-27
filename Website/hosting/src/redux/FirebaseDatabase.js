@@ -1,4 +1,5 @@
 import firebase from 'firebase'
+import * as firebaseAuth from './FirebaseAuth'
 import * as setup from '../index'
 import * as actions from './actions'
 
@@ -86,3 +87,31 @@ export const downloadGroupImage = (groupID) => {
 	});
 }
 
+export const downloadLegacyProfilePicture = (uid, terminal = false, ext = '.png') => {
+
+	firebase.database().ref('/users/' + uid + '/profile/heepID').once('value', function(snapshot) {
+
+		firebase.storage().ref("users").child(String(snapshot.val()) + '/profile' + ext).getDownloadURL().then(function(url) {
+			
+			firebaseAuth.updateUserProfile({photoURL: url});
+
+		}).catch(function(error) {
+			
+			if (terminal) {
+				console.log("Could not find this image");
+			} else {
+				downloadLegacyProfilePicture(uid, true, '.jpg');
+			}
+		});
+
+	});
+}
+
+export const associateLegacyProfileName = (uid) => {
+
+	firebase.database().ref('/users/' + uid + '/profile/name').once('value', function(snapshot) {
+
+		firebaseAuth.updateUserProfile({displayName: snapshot.val()});
+
+	});
+}
