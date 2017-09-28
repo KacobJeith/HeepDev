@@ -12,7 +12,7 @@ class DeviceTableViewController: UITableViewController {
     //MARK: Properties
     
     var activeOnly = false
-    var placeID = 0
+    var placeID = "_"
     var tableTitle = "Currently Active"
     
     var referenceList = [String?]()
@@ -21,7 +21,7 @@ class DeviceTableViewController: UITableViewController {
     var controls = [Int: [Int: DeviceControl]]()
     var controlTags = [Int: IndexPath]()
     
-    init(title: String = "Currently Active", placeID: Int = 0, activeOnly: Bool = false) {
+    init(title: String = "Currently Active", placeID: String = "_", activeOnly: Bool = false) {
         super.init(style: UITableViewStyle.plain)
         self.placeID = placeID
         self.activeOnly = activeOnly

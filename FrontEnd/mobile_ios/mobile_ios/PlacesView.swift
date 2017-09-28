@@ -17,23 +17,25 @@ class PlacesView: UIViewController {
     var placeNames = [String : String]()
     var places = [Place]()
     var userButton = UIBarButtonItem()
+    var placeTags = [String : Int]()
     
     init() {
         super.init(nibName: nil, bundle: nil)
         self.initNotification()
         self.getActiveUserIcon()
+        self.addPlaces()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         
         self.setupNavBar()
-        self.addPlaces()
     }
     
     func setupNavBar() {
@@ -98,11 +100,14 @@ class PlacesView: UIViewController {
     }
     
     func addPlaces() {
+        print("ADDING");
         
         database().getPlaceContexts(completion: { (context) in
             
             database().getPlace(context: context, completion: { (place) in
                 
+                print(self.placeTags)
+                self.addPlaceTag(placeID: place.placeID)
                 self.drawPlace(place: place, perspective: context)
             })
         })
@@ -124,10 +129,11 @@ class PlacesView: UIViewController {
  
     func drawPlace(place: Place, perspective: PlacePerspective) {
         
-        if let viewWithTag = self.view.viewWithTag(place.placeID) {
+        if let viewWithTag = self.view.viewWithTag(getPlaceTag(placeID: place.placeID)) {
             
             viewWithTag.removeFromSuperview()
         }
+        
         print(place) 
         
         placeNames[place.placeID] = place.name
@@ -145,7 +151,10 @@ class PlacesView: UIViewController {
         button.setTitle("  " + place.name + "  ", for: [])
         button.setTitleColor(UIColor.white, for: UIControlState.normal)
         button.titleLabel?.adjustsFontSizeToFitWidth = true
-        button.tag = place.placeID
+        button.tag = getPlaceTag(placeID: place.placeID)
+        print(place.placeID)
+        print(placeTags[place.placeID])
+        print(getPlaceTag(placeID: place.placeID))
         
         self.view.addSubview(button)
         
@@ -161,15 +170,16 @@ class PlacesView: UIViewController {
     
     func enterPlace(sender: UIButton) {
         
+        let placeID = findPlaceWithTag(tag: sender.tag);
         
-        guard let name = placeNames[sender.tag] else {
+        guard let name = placeNames[placeID] else {
             print("Bouncing...couldn't find the name")
             return
         }
         
         print("entering \(name)")
         
-        let groupView = GroupCollectionView(placeID: sender.tag,
+        let groupView = GroupCollectionView(placeID: placeID,
                                             placeName: name)
         
         navigationController?.pushViewController(groupView, animated: false)
@@ -204,7 +214,7 @@ class PlacesView: UIViewController {
                     return
                 }
                 
-                database().getPlaceContext(id: tag) { (context) in
+                database().getPlaceContext(id: findPlaceWithTag(tag: tag)) { (context) in
                     
                     guard let thisPlace = context else {
                         print("Failed to get placeContext")
@@ -239,7 +249,7 @@ class PlacesView: UIViewController {
     func findPanningPlace(gesture: UIPanGestureRecognizer) {
         for key in placeNames.keys {
             
-            let activelyPanningPlace = self.view.viewWithTag(key)
+            let activelyPanningPlace = self.view.viewWithTag(getPlaceTag(placeID: key))
             let gestureLocation = gesture.location(in: self.view)
             
             if activelyPanningPlace != nil {
@@ -255,6 +265,29 @@ class PlacesView: UIViewController {
     func reloadView() {
         
         self.viewDidLoad()
+    }
+    
+    func addPlaceTag(placeID: String) {
+        placeTags[placeID] = placeTags.count + 10
+        print(placeTags)
+    }
+    
+    func getPlaceTag(placeID: String) -> Int {
+        guard let tag =  placeTags[placeID] else {
+            return -1
+        }
+        
+        return tag
+    }
+    
+    func findPlaceWithTag(tag: Int) -> String {
+        for key in placeTags.keys {
+            if (getPlaceTag(placeID: key) == tag) {
+                return key
+            }
+        }
+        
+        return ""
     }
 }
 
@@ -275,8 +308,9 @@ extension PlacesView {
         
         database().getMyHeepID() { heepID in
             
-            let userButton = database().downloadMyProfileImage(heepID: heepID!)
-            self.drawAccountPuck(userButton: userButton)
+            //let userButton = database().downloadMyProfileImage(heepID: heepID!)
+            
+            self.drawAccountPuck(userButton: UIImageView(image: #imageLiteral(resourceName: "female")))
             
         }
     }

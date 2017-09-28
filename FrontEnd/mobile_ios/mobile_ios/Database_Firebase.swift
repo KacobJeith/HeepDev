@@ -98,7 +98,7 @@ class database {
     
     func createNewPlace() {
 
-        let newPlaceRef = ref.childByAutoId();
+        let newPlaceRef = ref.child("places").childByAutoId();
         
         let newPlace = Place();
         newPlace.name = "New Place";
@@ -296,6 +296,7 @@ class database {
                 context.realmPath = value?["realmPath"] as? String ?? "empty"
                 context.x = value?["x"] as? CGFloat ?? 0
                 context.y = value?["y"] as? CGFloat ?? 0
+
                 
                 completion(context)
             }
@@ -327,7 +328,7 @@ class database {
     }
     
     func getPlace(context: PlacePerspective, completion: @escaping (Place) -> () ) {
-        
+        print(context);
         ref.child("places/\(String(describing: context.placeID))").observeSingleEvent(of: .value, with: { (snapshot) in
             
             let value = snapshot.value as? NSDictionary
@@ -505,7 +506,7 @@ class database {
         thisReference.removeAllObservers()
     }
     
-    func watchGroupPerspectivesForPlace(placeID: Int, reset: @escaping () -> (), completion: @escaping (GroupPerspective) -> ()) -> String? {
+    func watchGroupPerspectivesForPlace(placeID: String, reset: @escaping () -> (), completion: @escaping (GroupPerspective) -> ()) -> String? {
         
         guard let userID = Auth.auth().currentUser?.uid else {
             print("You must be logged in to perform this action")
@@ -523,7 +524,7 @@ class database {
                 
                 let value = child.value as? NSDictionary
                 
-                if value?["placeID"] as? Int ?? 0 == placeID {
+                if value?["placeID"] as? String ?? "_" == placeID {
                     
                     let context = GroupPerspective()
                     context.placeID = value?["placeID"] as? String ?? "__"
