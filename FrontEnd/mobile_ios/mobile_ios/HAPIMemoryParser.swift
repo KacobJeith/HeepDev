@@ -254,7 +254,12 @@ class HAPIMemoryParser {
     }
     
     func readIPAddress(dump: [UInt8], index: Int) -> String {
-        return String(Int(dump[index])) + "." + String(Int(dump[index + 1])) + "." + String(Int(dump[index + 2])) + "." + String(Int(dump[index + 3]))
+        let ip1 = String(Int(dump[index]));
+        let ip2 = String(Int(dump[index + 1]));
+        let ip3 = String(Int(dump[index + 2]))
+        let ip4 = String(Int(dump[index + 3]))
+        
+        return  ip1 + "." + ip2 + "." + ip3 + "." + ip4
     }
     
     func generateUniqueControlID(deviceID: Int, controlID: UInt8) -> Int {
