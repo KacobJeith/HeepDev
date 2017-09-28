@@ -97,16 +97,17 @@ class database {
     }
     
     func createNewPlace() {
-        let placeID = randomNumber(inRange: 0...4000000000)
 
-        let newPlace = Place()
-        newPlace.name = "New Place"
-        newPlace.placeID = placeID
+        let newPlaceRef = ref.childByAutoId();
         
-        ref.child("places").child(String(describing: placeID)).setValue(newPlace.toDict())
+        let newPlace = Place();
+        newPlace.name = "New Place";
+        newPlace.placeID = newPlaceRef.key;
+        
+        newPlaceRef.setValue(newPlace.toDict());
         
         let newPlacePerspective = PlacePerspective()
-        newPlacePerspective.placeID = placeID
+        newPlacePerspective.placeID = newPlaceRef.key
         
         updatePlaceContext(placeContext: newPlacePerspective)
         
