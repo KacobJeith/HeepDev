@@ -382,7 +382,7 @@ class database {
         }
         
         ref.child("users/\(userID)/profile").observeSingleEvent(of: .value, with: { (snapshot) in
-            
+
             let value = snapshot.value as? NSDictionary
             completion(value?["heepID"] as? Int? ?? nil)
             

@@ -34,7 +34,7 @@ class PlacesView: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         
-        self.resetPlaces()
+//        self.resetPlaces()
         self.setupNavBar()
         self.addPlaces()
     }
@@ -303,10 +303,14 @@ extension PlacesView {
         
         database().getMyHeepID() { heepID in
             
-            //let userButton = database().downloadMyProfileImage(heepID: heepID!)
             
-            self.drawAccountPuck(userButton: UIImageView(image: #imageLiteral(resourceName: "female")))
-            
+            if let heepID = heepID {
+                let userButton = database().downloadMyProfileImage(heepID: heepID)
+                self.drawAccountPuck(userButton: userButton)
+            } else {
+                self.drawAccountPuck(userButton: UIImageView(image: #imageLiteral(resourceName: "female")))
+                
+            }
         }
     }
     
