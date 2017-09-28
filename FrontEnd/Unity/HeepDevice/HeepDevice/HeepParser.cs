@@ -50,6 +50,23 @@ namespace Heep
 
 			return outputBuf;
 		}
+
+		private static List<byte> AddErrorMessageToBuffer(String message, HeepDevice theDevice)
+		{
+			List <byte> outputBuf = new List<byte>();
+
+			outputBuf.Add (HeepLanguage.ErrorOpCode);
+			HeepLanguage.AddDeviceIDToMemory (outputBuf, theDevice.GetDeviceID ());
+
+			byte stringLength = (byte)message.Length;
+			outputBuf.Add (stringLength);
+
+			for (int i = 0; i < message.Length; i++) {
+				outputBuf.Add ((byte)message [i]);
+			}
+
+			return outputBuf;
+		} 
 	}
 }
 
