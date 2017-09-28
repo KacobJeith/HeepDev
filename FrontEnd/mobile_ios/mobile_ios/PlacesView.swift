@@ -14,7 +14,7 @@ class PlacesView: UIViewController {
     var activelyPanning = Int()
     var searchTimeout = 4
     var colors = [UIColor]()
-    var placeNames = [Int : String]()
+    var placeNames = [String : String]()
     var places = [Place]()
     var userButton = UIBarButtonItem()
     
@@ -92,7 +92,7 @@ class PlacesView: UIViewController {
     }
     
     func resetPlaces() {
-        self.placeNames = [Int : String]()
+        self.placeNames = [String : String]()
         self.places = [Place]()
         self.view = UIView(frame: self.view.frame)
     }

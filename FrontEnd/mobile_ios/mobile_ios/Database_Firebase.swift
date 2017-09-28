@@ -124,7 +124,7 @@ class database {
         
     }
     
-    func createNewGroup(placeID: Int, groupID: Int = randomNumber(inRange: 0...4000000000)) {
+    func createNewGroup(placeID: String, groupID: Int = randomNumber(inRange: 0...4000000000)) {
     
         let newGroup = Group()
         newGroup.groupID = groupID
@@ -248,7 +248,7 @@ class database {
         }
     }
     
-    func getPlaceContext(id: Int, completion: @escaping (PlacePerspective?) -> () ) {
+    func getPlaceContext(id: String, completion: @escaping (PlacePerspective?) -> () ) {
         
         guard let userID = Auth.auth().currentUser?.uid else {
             print("You must be logged in to perform this action")
@@ -260,7 +260,7 @@ class database {
             let value = snapshot.value as? NSDictionary
             let context = PlacePerspective()
             context.numDevices = value?["numDevices"] as? Int ?? 0
-            context.placeID = value?["placeID"] as? Int ?? 0
+            context.placeID = value?["placeID"] as? String ?? "__"
             context.radius = value?["radius"] as? Int ?? 0
             context.realmPath = value?["realmPath"] as? String ?? "empty"
             context.x = value?["x"] as? CGFloat ?? 0
@@ -291,7 +291,7 @@ class database {
                 
                 let context = PlacePerspective()
                 context.numDevices = value?["numDevices"] as? Int ?? 0
-                context.placeID = value?["placeID"] as? Int ?? 0
+                context.placeID = value?["placeID"] as? String ?? "__"
                 context.radius = value?["radius"] as? Int ?? 0
                 context.realmPath = value?["realmPath"] as? String ?? "empty"
                 context.x = value?["x"] as? CGFloat ?? 0
@@ -332,7 +332,7 @@ class database {
             
             let value = snapshot.value as? NSDictionary
             let place = Place()
-            place.placeID = value?["placeID"] as? Int ?? 0
+            place.placeID = value?["placeID"] as? String ?? ""
             place.name = value?["name"] as? String ?? ""
             
             completion(place)
@@ -526,7 +526,7 @@ class database {
                 if value?["placeID"] as? Int ?? 0 == placeID {
                     
                     let context = GroupPerspective()
-                    context.placeID = value?["placeID"] as? Int ?? 0
+                    context.placeID = value?["placeID"] as? String ?? "__"
                     context.groupID = value?["groupID"] as? Int ?? 0
                     context.UILocked = value?["UILocked"] as? Bool ?? true
                     context.unassignedOffsetX = value? ["unassignedOffsetX"] as? CGFloat ?? 0
@@ -565,7 +565,7 @@ class database {
             
             let context = GroupPerspective()
             
-            context.placeID = value?["placeID"] as? Int ?? 0
+            context.placeID = value?["placeID"] as? String ?? "__"
             context.groupID = value?["groupID"] as? Int ?? 0
             context.UILocked = value?["UILocked"] as? Bool ?? true
             context.unassignedOffsetX = value? ["unassignedOffsetX"] as? CGFloat ?? 0
@@ -593,7 +593,7 @@ class database {
             
             let value = snapshot.value as? NSDictionary
             let group = Group()
-            group.placeID = value?["placeID"] as? Int ?? 0
+            group.placeID = value?["placeID"] as? String ?? "__"
             group.name = value?["name"] as? String ?? "empty"
             group.groupID = value?["groupID"] as? Int ?? 0
             
@@ -613,7 +613,7 @@ class database {
             
             let value = snapshot.value as? NSDictionary
             let group = Group()
-            group.placeID = value?["placeID"] as? Int ?? 0
+            group.placeID = value?["placeID"] as? String ?? "__"
             group.name = value?["name"] as? String ?? "empty"
             group.groupID = value?["groupID"] as? Int ?? 0
             
