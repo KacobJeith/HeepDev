@@ -223,7 +223,6 @@ class PlacesView: UIViewController {
                     newContext.numDevices = thisPlace.numDevices
                     newContext.placeID = thisPlace.placeID
                     newContext.radius = thisPlace.radius
-                    newContext.realmPath = thisPlace.realmPath
                     
                     database().updatePlaceContext(placeContext: newContext)
                     

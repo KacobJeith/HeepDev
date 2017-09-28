@@ -13,7 +13,6 @@ import RealmSwift
 class User: Object {
     
     dynamic var heepID: Int = 0
-    dynamic var realmKey: String = ""
     dynamic var facebookID: Int = 0
     dynamic var name: String = "guest"
     dynamic var email: String = ""
@@ -65,7 +64,6 @@ class PHY: Object {
 class PlacePerspective: Object {
     
     dynamic var placeID: String = ""
-    dynamic var realmPath: String = ""
     dynamic var x: CGFloat = 100
     dynamic var y: CGFloat = 100
     dynamic var radius: Int = 100
@@ -94,7 +92,6 @@ class GroupPerspective: Object {
     
     dynamic var groupID: Int = 0
     dynamic var placeID: String = "" // Sync with global group realm as often as possible. This is just for easy querying
-    dynamic var realmPath: String = ""
     dynamic var selectedControl: Int = 0
     dynamic var UILocked: Bool = true
     dynamic var unassignedOffsetX: CGFloat = 0

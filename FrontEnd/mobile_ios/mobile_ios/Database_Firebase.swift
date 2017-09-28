@@ -262,7 +262,6 @@ class database {
             context.numDevices = value?["numDevices"] as? Int ?? 0
             context.placeID = value?["placeID"] as? String ?? "__"
             context.radius = value?["radius"] as? Int ?? 0
-            context.realmPath = value?["realmPath"] as? String ?? "empty"
             context.x = value?["x"] as? CGFloat ?? 0
             context.y = value?["y"] as? CGFloat ?? 0
             
@@ -292,7 +291,6 @@ class database {
                 context.numDevices = value?["numDevices"] as? Int ?? 0
                 context.placeID = value?["placeID"] as? String ?? "__"
                 context.radius = value?["radius"] as? Int ?? 0
-                context.realmPath = value?["realmPath"] as? String ?? "empty"
                 context.x = value?["x"] as? CGFloat ?? 0
                 context.y = value?["y"] as? CGFloat ?? 0
 
