@@ -72,11 +72,12 @@ namespace Heep
 
 		private void SendOutput(Control toSend)
 		{
+			
 			// Send the current value of the control
 			if (toSend.GetControlDirection () == (int)Control.CtrlInputOutput.output) {
 				for (int i = 0; i < vertices.Count; i++) {
 					if (vertices [i].GetTXControlID() == toSend.GetID ()) {
-						// SEND DATA HERE
+						HeepCommunications.SendBufferToIP(HeepLanguage.GetSetValCOPBuffer( vertices[i].GetRXControlID(), toSend.GetCurValue()), vertices[i].GetDestIP());
 					}
 				}
 			}

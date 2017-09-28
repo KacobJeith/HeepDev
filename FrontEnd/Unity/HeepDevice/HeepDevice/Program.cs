@@ -60,6 +60,7 @@ namespace MainProgram
 			byte value = 0;
 			while (true) {
 				Console.WriteLine ("helr");
+
 //				byte [] IPAddrArraya = {192, 168, 0, 37};
 //				IPAddress theAddra = new IPAddress(IPAddrArraya);
 //				List<byte> newBuf = new List<byte>();

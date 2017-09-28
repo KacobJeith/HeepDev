@@ -133,6 +133,18 @@ namespace Heep
 			AddBufferToBuffer (buffer, dynMem);
 
 		}
+
+		public static List<byte> GetSetValCOPBuffer(int controlID, int value)
+		{
+			List <byte> setValBuffer = new List<byte> ();
+
+			setValBuffer.Add (HeepLanguage.SetValueOpCode);
+			setValBuffer.Add ((byte)0x02);
+			setValBuffer.Add ((byte)controlID);
+			setValBuffer.Add ((byte)value);
+
+			return setValBuffer;
+		}
 	}
 }
 
