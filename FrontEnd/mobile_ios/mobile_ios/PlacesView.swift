@@ -23,7 +23,6 @@ class PlacesView: UIViewController {
         super.init(nibName: nil, bundle: nil)
         self.initNotification()
         self.getActiveUserIcon()
-        self.addPlaces()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -35,7 +34,9 @@ class PlacesView: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         
+        self.resetPlaces()
         self.setupNavBar()
+        self.addPlaces()
     }
     
     func setupNavBar() {
@@ -86,7 +87,7 @@ class PlacesView: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.resetPlaces()
+        
         self.title = "My Heep Zones"
         self.setupNavBar()
         self.getActiveUserIcon()
@@ -94,19 +95,18 @@ class PlacesView: UIViewController {
     }
     
     func resetPlaces() {
+        self.placeTags = [String : Int]()
         self.placeNames = [String : String]()
         self.places = [Place]()
         self.view = UIView(frame: self.view.frame)
     }
     
     func addPlaces() {
-        print("ADDING");
         
         database().getPlaceContexts(completion: { (context) in
             
             database().getPlace(context: context, completion: { (place) in
                 
-                print(self.placeTags)
                 self.addPlaceTag(placeID: place.placeID)
                 self.drawPlace(place: place, perspective: context)
             })
@@ -134,8 +134,6 @@ class PlacesView: UIViewController {
             viewWithTag.removeFromSuperview()
         }
         
-        print(place) 
-        
         placeNames[place.placeID] = place.name
         
         let diameter = CGFloat(100 + 10*perspective.numDevices)
@@ -152,9 +150,6 @@ class PlacesView: UIViewController {
         button.setTitleColor(UIColor.white, for: UIControlState.normal)
         button.titleLabel?.adjustsFontSizeToFitWidth = true
         button.tag = getPlaceTag(placeID: place.placeID)
-        print(place.placeID)
-        print(placeTags[place.placeID])
-        print(getPlaceTag(placeID: place.placeID))
         
         self.view.addSubview(button)
         
@@ -221,8 +216,6 @@ class PlacesView: UIViewController {
                         return
                     }
                     
-                    print(thisPlace)
-                    
                     let newContext = PlacePerspective()
                     newContext.x = thisPlace.x + gesture.translation(in: self.view).x
                     newContext.y = thisPlace.y + gesture.translation(in: self.view).y
@@ -268,8 +261,11 @@ class PlacesView: UIViewController {
     }
     
     func addPlaceTag(placeID: String) {
-        placeTags[placeID] = placeTags.count + 10
-        print(placeTags)
+        
+        if placeTags[placeID] == nil {
+            placeTags[placeID] = placeTags.count + 10
+        }
+        
     }
     
     func getPlaceTag(placeID: String) -> Int {

@@ -283,7 +283,6 @@ class database {
         ref.child("users/\(userID)/places").observeSingleEvent(of: .value, with: { (snapshot) in
             
             let enumerator = snapshot.children
-            print("NUM: \(snapshot.childrenCount)")
             
             while let child = enumerator.nextObject() as? DataSnapshot {
                 
@@ -328,7 +327,7 @@ class database {
     }
     
     func getPlace(context: PlacePerspective, completion: @escaping (Place) -> () ) {
-        print(context);
+        
         ref.child("places/\(String(describing: context.placeID))").observeSingleEvent(of: .value, with: { (snapshot) in
             
             let value = snapshot.value as? NSDictionary
