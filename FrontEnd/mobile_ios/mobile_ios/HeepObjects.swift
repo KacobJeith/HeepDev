@@ -77,7 +77,7 @@ class PlacePerspective: Object {
 // Group Realm
 class Group: Object {
     
-    dynamic var groupID: Int = 0
+    dynamic var groupID: String = ""
     dynamic var placeID: String = ""
     dynamic var name: String = "Unassigned"
     dynamic var imageData: NSData = NSData()
@@ -90,8 +90,8 @@ class Group: Object {
 // User Realm
 class GroupPerspective: Object {
     
-    dynamic var groupID: Int = 0
-    dynamic var placeID: String = "" // Sync with global group realm as often as possible. This is just for easy querying
+    dynamic var groupID: String = ""
+    dynamic var placeID: String = ""
     dynamic var selectedControl: Int = 0
     dynamic var UILocked: Bool = true
     dynamic var unassignedOffsetX: CGFloat = 0
@@ -130,7 +130,7 @@ class DeviceControl: Object {
     dynamic var deviceID: Int = 0
     dynamic var controlID: Int = 0
     dynamic var uniqueID: Int = 0
-    dynamic var groupID: Int = 0
+    dynamic var groupID: string = ""
     dynamic var controlType: Int = 0
     dynamic var controlDirection: Int = 0
     dynamic var valueLow: Int = 0
