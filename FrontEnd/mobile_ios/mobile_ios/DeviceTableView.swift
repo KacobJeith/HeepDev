@@ -37,15 +37,14 @@ class DeviceTableViewController: UITableViewController {
             self.controls[deviceID] = [Int: DeviceControl]()
             self.controlTags = [:]
             
-            self.referenceList.append(database().getDevice(deviceID: deviceID, reset: {
+            self.referenceList.append(database().watchDevice(deviceID: deviceID, reset: {
                 
             }, identity: { device in
                 
-                print(device)
-                
                 if device.active {
-                    print("ACTIVE")
+                    
                     self.devices[device.deviceID] = device
+                    
                     self.reloadView()
                 }
                 
@@ -176,14 +175,16 @@ class DeviceTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        let keyList = [Int](controls.keys)
+        let keyList = [Int](devices.keys)
         
         if section > keyList.count {
             return 0
         }
+        
         let thisKey = keyList[section]
         
         guard let numControls = controls[thisKey]?.count else {
+            print("Decided 0")
             return 0
         }
         
@@ -194,7 +195,7 @@ class DeviceTableViewController: UITableViewController {
         
         let cell = UITableViewCell()
         
-        let keyList = [Int](controls.keys)
+        let keyList = [Int](devices.keys)
         
         if indexPath.section > keyList.count {
             return cell
@@ -275,7 +276,7 @@ class DeviceTableViewController: UITableViewController {
             return nil
         }
         
-        let keyList = [Int](controls.keys)
+        let keyList = [Int](devices.keys)
         print(keyList)
         
         if thisIndexPath.section > keyList.count {
