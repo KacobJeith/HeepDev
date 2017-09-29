@@ -56,7 +56,6 @@ class DeviceTableViewController: UITableViewController {
                 
                 self.reloadView()
 
-                
             }, vertices: { vertex in
                 
                 

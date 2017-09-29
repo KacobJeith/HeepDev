@@ -764,7 +764,11 @@ class database {
                 
                 self.writeDevice(device: updateDevice)
                 
-            }, controls: {_ in }, vertices: {_ in })
+            }, controls: {_ in }, vertices: {vertex in
+                
+                database().deleteVertex(vertex: vertex)
+                
+            })
         
         })
     }

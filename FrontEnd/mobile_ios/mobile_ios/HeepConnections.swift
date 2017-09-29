@@ -20,7 +20,7 @@ class HeepConnections {
         
         let message = HAPIMemoryParser().BuildIsHeepDeviceCOP()
         print(message)
-        for ip in 30...255 {
+        for ip in 1...255 {
             let thisAddress = getAddress(gateway: gateway, ip: ip)
             DispatchQueue.global().async {
                 
@@ -38,7 +38,7 @@ class HeepConnections {
             let thisDeviceIP = thisDevice.ipAddress
             
             let message = HAPIMemoryParser().BuildSetValueCOP(controlID: controlID, newValue: currentValue)
-            print("Sending: \(message) to Heep Device at to \(thisDeviceIP)")
+            print("Sending: \(message.map { String(format: "%02hhx", $0) }) to Heep Device at to \(thisDeviceIP)")
             self.ConnectToHeepDevice(ipAddress: thisDeviceIP, printErrors: false, message: message)
             
         }
@@ -134,7 +134,7 @@ class HeepConnections {
             if let _ = try? socket.connect(to: ipAddress, port: Int32(5000), timeout: 1000) {
                 print("connected to \(ipAddress)")
                 
-                if let string = String(bytes: message, encoding: .utf8) {
+                if let string = String(bytes: message, encoding: .ascii) {
                     
                     try! socket.write(from: string)
                     
@@ -142,6 +142,7 @@ class HeepConnections {
                     data.count = 0
                     
                     if let _ = try? socket.read(into: &data) {
+                        print(data.map { String(format: "%02hhx", $0) })
                         HAPIMemoryParser().ParseROP(dump: data.map{$0}, ipAddress: ipAddress)
                     }
                     
