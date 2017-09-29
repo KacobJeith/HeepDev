@@ -7220,7 +7220,7 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <part name="R22" library="SparkFun-Passives" deviceset="RESISTOR" device="0603-RES" value="51"/>
 <part name="GND30" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="GND33" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
-<part name="Y2" library="SparkFun-Clocks" deviceset="CRYSTAL-GROUNDED" device="SMD-3.2X2.5"/>
+<part name="25MHZ" library="SparkFun-Clocks" deviceset="CRYSTAL-GROUNDED" device="SMD-3.2X2.5"/>
 <part name="GND36" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="C9" library="SparkFun-Passives" deviceset="CAP" device="0603-CAP" value="0.1uF"/>
 <part name="C10" library="SparkFun-Passives" deviceset="CAP" device="0603-CAP" value="0.1uF"/>
@@ -7378,7 +7378,7 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <instance part="R22" gate="G$1" x="139.7" y="15.24" rot="R90"/>
 <instance part="GND30" gate="1" x="142.24" y="-5.08"/>
 <instance part="GND33" gate="1" x="210.82" y="58.42"/>
-<instance part="Y2" gate="G$1" x="236.22" y="116.84" rot="R90"/>
+<instance part="25MHZ" gate="G$1" x="236.22" y="116.84" rot="R90"/>
 <instance part="GND36" gate="1" x="246.38" y="116.84" rot="R90"/>
 <instance part="C9" gate="G$1" x="243.84" y="68.58"/>
 <instance part="C10" gate="G$1" x="233.68" y="68.58"/>
@@ -7614,7 +7614,7 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <pinref part="C11" gate="G$1" pin="2"/>
 </segment>
 <segment>
-<pinref part="Y2" gate="G$1" pin="3"/>
+<pinref part="25MHZ" gate="G$1" pin="3"/>
 <pinref part="GND36" gate="1" pin="GND"/>
 <wire x1="243.84" y1="116.84" x2="241.3" y2="116.84" width="0.1524" layer="91"/>
 </segment>
@@ -8152,7 +8152,7 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <pinref part="U4" gate="G$1" pin="XO"/>
 <pinref part="C35" gate="G$1" pin="1"/>
 <wire x1="187.96" y1="121.92" x2="236.22" y2="121.92" width="0.1524" layer="91"/>
-<pinref part="Y2" gate="G$1" pin="2"/>
+<pinref part="25MHZ" gate="G$1" pin="2"/>
 <wire x1="236.22" y1="121.92" x2="248.92" y2="121.92" width="0.1524" layer="91"/>
 <wire x1="236.22" y1="119.38" x2="236.22" y2="121.92" width="0.1524" layer="91"/>
 <junction x="236.22" y="121.92"/>
@@ -8161,7 +8161,7 @@ This footprint was designed to help hold the alignment of a through-hole compone
 <net name="N$26" class="0">
 <segment>
 <pinref part="C36" gate="G$1" pin="1"/>
-<pinref part="Y2" gate="G$1" pin="1"/>
+<pinref part="25MHZ" gate="G$1" pin="1"/>
 <wire x1="248.92" y1="109.22" x2="236.22" y2="109.22" width="0.1524" layer="91"/>
 <wire x1="236.22" y1="109.22" x2="236.22" y2="114.3" width="0.1524" layer="91"/>
 <wire x1="236.22" y1="109.22" x2="228.6" y2="109.22" width="0.1524" layer="91"/>

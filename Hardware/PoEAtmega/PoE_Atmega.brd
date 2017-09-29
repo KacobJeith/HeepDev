@@ -1766,7 +1766,7 @@ design rules under a new name.</description>
 <attribute name="NAME" x="24.640459375" y="53.50225625" size="0.4064" layer="25" font="vector"/>
 <attribute name="VALUE" x="24.513459375" y="51.59725625" size="0.4064" layer="27" font="vector"/>
 </element>
-<element name="Y2" library="SparkFun-Clocks" package="CRYSTAL-SMD-3.2X2.5MM" value="CRYSTAL-GROUNDEDSMD-3.2X2.5" x="41.223525" y="40.122140625" smashed="yes" rot="R90">
+<element name="25MHZ" library="SparkFun-Clocks" package="CRYSTAL-SMD-3.2X2.5MM" value="CRYSTAL-GROUNDEDSMD-3.2X2.5" x="41.223525" y="40.122140625" smashed="yes" rot="R90">
 <attribute name="NAME" x="39.699525" y="40.122140625" size="0.6096" layer="25" font="vector" ratio="20" rot="R90" align="bottom-center"/>
 <attribute name="VALUE" x="42.747525" y="40.122140625" size="0.6096" layer="27" font="vector" ratio="20" rot="R90" align="top-center"/>
 </element>
@@ -2047,8 +2047,8 @@ design rules under a new name.</description>
 <contactref element="C9" pad="2"/>
 <contactref element="C10" pad="2"/>
 <contactref element="C11" pad="2"/>
-<contactref element="Y2" pad="2"/>
-<contactref element="Y2" pad="4"/>
+<contactref element="25MHZ" pad="2"/>
+<contactref element="25MHZ" pad="4"/>
 <contactref element="X3" pad="SPRT@2"/>
 <contactref element="X3" pad="BASE@1"/>
 <contactref element="X3" pad="SPRT@3"/>
@@ -2709,7 +2709,7 @@ design rules under a new name.</description>
 <signal name="N$25">
 <contactref element="U4" pad="31"/>
 <contactref element="C35" pad="1"/>
-<contactref element="Y2" pad="3"/>
+<contactref element="25MHZ" pad="3"/>
 <wire x1="39.280675" y1="41.297140625" x2="38.687509375" y2="40.703975" width="0.1524" layer="1"/>
 <wire x1="39.280675" y1="41.297140625" x2="40.348525" y2="41.297140625" width="0.1524" layer="1"/>
 <wire x1="38.687509375" y1="40.703975" x2="38.189165625" y2="41.20231875" width="0.1524" layer="1"/>
@@ -2723,7 +2723,7 @@ design rules under a new name.</description>
 </signal>
 <signal name="N$26">
 <contactref element="C36" pad="1"/>
-<contactref element="Y2" pad="1"/>
+<contactref element="25MHZ" pad="1"/>
 <contactref element="U4" pad="30"/>
 <wire x1="43.639953125" y1="38.947140625" x2="42.098525" y2="38.947140625" width="0.1524" layer="1"/>
 <wire x1="43.639953125" y1="38.947140625" x2="43.746240625" y2="39.053428125" width="0.1524" layer="1"/>
