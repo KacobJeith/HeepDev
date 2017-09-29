@@ -134,10 +134,14 @@ class HeepConnections {
             if let _ = try? socket.connect(to: ipAddress, port: Int32(5000), timeout: 1000) {
                 print("connected to \(ipAddress)")
                 
-                if let string = String(bytes: message, encoding: .ascii) {
-                    
-                    try! socket.write(from: string)
-                    
+//                if let string = String(bytes: message, encoding: .utf16) {
+//                    print("Actually Sending: \(string)")
+////                    try! socket.write(from: string)
+                    let messageData = NSData(bytes: message, length: message.count)
+                    try! socket.write(from: messageData)
+                
+                    print(messageData)
+                
                     var data = Data()
                     data.count = 0
                     
@@ -146,9 +150,9 @@ class HeepConnections {
                         HAPIMemoryParser().ParseROP(dump: data.map{$0}, ipAddress: ipAddress)
                     }
                     
-                } else {
-                    print("not a valid UTF-8 sequence")
-                }
+//                } else {
+//                    print("not a valid UTF-8 sequence")
+//                }
                 
                 socket.close()
                 
