@@ -549,7 +549,7 @@ class database {
 
     }
     
-    func watchGroupContext(groupID: Int, completion: @escaping (GroupPerspective) -> ()) -> String? {
+    func watchGroupContext(groupID: String, completion: @escaping (GroupPerspective) -> ()) -> String? {
         
         guard let userID = Auth.auth().currentUser?.uid else {
             print("You must be logged in to perform this action")
@@ -972,7 +972,7 @@ class database {
         return imageView
     }
     
-    func downloadGroupImage(groupID: Int) -> UIImageView {
+    func downloadGroupImage(groupID: String) -> UIImageView {
         
         let reference = Storage.storage().reference().child("groups/\(String(describing: groupID))/background.png")
         let imageView = UIImageView()
