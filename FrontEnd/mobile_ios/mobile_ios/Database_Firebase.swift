@@ -527,7 +527,7 @@ class database {
                     
                     let context = GroupPerspective()
                     context.placeID = value?["placeID"] as? String ?? "__"
-                    context.groupID = value?["groupID"] as? String ?? "__"
+                    context.groupID = value?["groupID"] as? String ?? "null"
                     context.UILocked = value?["UILocked"] as? Bool ?? true
                     context.unassignedOffsetX = value? ["unassignedOffsetX"] as? CGFloat ?? 0
                     context.assignedOffsetX = value? ["assignedOffsetX"] as? CGFloat ?? 0
@@ -566,7 +566,7 @@ class database {
             let context = GroupPerspective()
             
             context.placeID = value?["placeID"] as? String ?? "__"
-            context.groupID = value?["groupID"] as? String ?? "__"
+            context.groupID = value?["groupID"] as? String ?? "null"
             context.UILocked = value?["UILocked"] as? Bool ?? true
             context.unassignedOffsetX = value? ["unassignedOffsetX"] as? CGFloat ?? 0
             context.assignedOffsetX = value? ["assignedOffsetX"] as? CGFloat ?? 0
@@ -595,7 +595,7 @@ class database {
             let group = Group()
             group.placeID = value?["placeID"] as? String ?? "__"
             group.name = value?["name"] as? String ?? "empty"
-            group.groupID = value?["groupID"] as? String ?? "__"
+            group.groupID = value?["groupID"] as? String ?? "null"
             
             completion(group)
             
@@ -615,7 +615,7 @@ class database {
             let group = Group()
             group.placeID = value?["placeID"] as? String ?? "__"
             group.name = value?["name"] as? String ?? "empty"
-            group.groupID = value?["groupID"] as? String ?? "__"
+            group.groupID = value?["groupID"] as? String ?? "null"
             
             completion(group)
             
@@ -758,7 +758,6 @@ class database {
         self.getAllMyDevices(completion: { deviceID in
             
             self.getDevice(deviceID: deviceID, reset: { }, identity: { device in
-                print(device)
                 
                 let updateDevice = Device(value: device)
                 updateDevice.active = false
@@ -942,7 +941,7 @@ class database {
     func interpretControl(controlDict: NSDictionary? ) -> DeviceControl {
         let control = DeviceControl()
         
-        control.groupID = controlDict?["groupID"] as? String ?? "__"
+        control.groupID = controlDict?["groupID"] as? String ?? "null"
         control.controlDirection = controlDict?["controlDirection"] as? Int ?? 0
         control.controlID = controlDict?["controlID"] as? Int ?? 0
         control.controlName = controlDict?["controlName"] as? String ?? ""
@@ -953,7 +952,6 @@ class database {
         control.lastOnValue = controlDict?["lastOnValue"] as? Int ?? 0
         control.rotation = controlDict?["rotation"] as? CGFloat ?? 0
         control.scale = controlDict?["scale"] as? CGFloat ?? 0
-        control.groupID = controlDict?["groupID"] as? String ?? "__"
         control.uniqueID = controlDict?["uniqueID"] as? Int ?? 0
         control.valueCurrent = controlDict?["lastOnValue"] as? Int ?? 0
         control.valueLow = controlDict?["valueLow"] as? Int ?? 0

@@ -41,7 +41,10 @@ class DeviceTableViewController: UITableViewController {
                 
             }, identity: { device in
                 
+                print(device)
+                
                 if device.active {
+                    print("ACTIVE")
                     self.devices[device.deviceID] = device
                     self.reloadView()
                 }
