@@ -22,12 +22,7 @@ class HeepConnections {
         print(message)
         for ip in 1...255 {
             let thisAddress = getAddress(gateway: gateway, ip: ip)
-            DispatchQueue.global().async {
-                
-                self.ConnectToHeepDevice(ipAddress: thisAddress, printErrors: false, message: message)
-                
-            }
-            
+            self.ConnectToHeepDevice(ipAddress: thisAddress, printErrors: false, message: message)
         }
     }
     
@@ -100,64 +95,30 @@ class HeepConnections {
     }
     
     func ConnectToHeepDevice(ipAddress: String, printErrors: Bool, message: [UInt8]) {
-        
-//        let client = TCPClient(address: ipAddress, port:5000)
-//
-//        switch client.connect(timeout: 1){
-//        case .success:
-//            print("successfully Connected to \(ipAddress). Sending: \(message)")
-//
-//            switch client.send(data: message) {
-//
-//            case .success:
-//                print("Successfully sent")
-//
-//                guard let data = client.read(1024*10) else {
-//                    print("Received nothing")
-//                    return
-//                }
-//
-//                HAPIMemoryParser().ParseROP(dump: data, ipAddress: ipAddress)
-//                client.close()
-//            case .failure(let error):
-//                if (printErrors) {
-//                    print("ERROR \(error)")
-//                }
-//            }
-//        case .failure(let error):
-//            if (printErrors) {
-//                print("Actually errored...\(error)")
-//            }
-//        }
-        if let socket = try? Socket.create(family: .inet) {
+        DispatchQueue.global().async {
             
-            if let _ = try? socket.connect(to: ipAddress, port: Int32(5000), timeout: 1000) {
-                print("connected to \(ipAddress)")
+            if let socket = try? Socket.create(family: .inet) {
                 
-//                if let string = String(bytes: message, encoding: .utf16) {
-//                    print("Actually Sending: \(string)")
-////                    try! socket.write(from: string)
+                if let _ = try? socket.connect(to: ipAddress, port: Int32(5000), timeout: 1000) {
+                    print("connected to \(ipAddress)")
+                    
                     let messageData = NSData(bytes: message, length: message.count)
                     try! socket.write(from: messageData)
-                
-                    print(messageData)
                 
                     var data = Data()
                     data.count = 0
                     
                     if let _ = try? socket.read(into: &data) {
-                        print(data.map { String(format: "%02hhx", $0) })
                         HAPIMemoryParser().ParseROP(dump: data.map{$0}, ipAddress: ipAddress)
                     }
                     
-//                } else {
-//                    print("not a valid UTF-8 sequence")
-//                }
+                    
+                    socket.close()
+                    
+                } else {
+                    socket.close()
+                }
                 
-                socket.close()
-                
-            } else {
-                socket.close()
             }
             
         }
