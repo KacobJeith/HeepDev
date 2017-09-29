@@ -951,11 +951,11 @@ class database {
         control.controlName = controlDict?["controlName"] as? String ?? ""
         control.controlType = controlDict?["controlType"] as? Int ?? 0
         control.deviceID = controlDict?["deviceID"] as? Int ?? 0
-        control.editX = controlDict?["editX"] as? CGFloat ?? 0
-        control.editY = controlDict?["editY"] as? CGFloat ?? 0
+        control.editX = controlDict?["editX"] as? CGFloat ?? 100
+        control.editY = controlDict?["editY"] as? CGFloat ?? 100
         control.lastOnValue = controlDict?["lastOnValue"] as? Int ?? 0
         control.rotation = controlDict?["rotation"] as? CGFloat ?? 0
-        control.scale = controlDict?["scale"] as? CGFloat ?? 0
+        control.scale = controlDict?["scale"] as? CGFloat ?? 1
         control.uniqueID = controlDict?["uniqueID"] as? Int ?? 0
         control.valueCurrent = controlDict?["lastOnValue"] as? Int ?? 0
         control.valueLow = controlDict?["valueLow"] as? Int ?? 0
