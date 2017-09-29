@@ -11,11 +11,34 @@ namespace MainProgram
 {
 	class MainClass
 	{
+
+		public static void TestGetNumberFromBuffer()
+		{
+			List <byte> buffer = new List <byte> ();
+			int randoNum = 2120;
+			buffer = HeepLanguage.AddNumberToBufferWithSpecifiedBytes (buffer, randoNum, 2);
+
+			Console.Write ("BUFFER: ");
+
+			for (int i = 0; i < buffer.Count; i++) {
+				Console.Write (buffer[i]);
+				Console.Write (" ");
+			}
+			Console.WriteLine ();
+
+			int foundNum = HeepLanguage.GetNumberFromBuffer (buffer, 0, 2);
+			Console.Write ("Found Num: ");
+			Console.WriteLine (foundNum);
+
+		}
+
 		public static void Main (string[] args)
 		{
 			Console.WriteLine (HeepLanguage.AddMOPOpCode);
 
 			Console.WriteLine ("Hello World!");
+
+			TestGetNumberFromBuffer ();
 
 			List <byte> ID = new List<byte>();
 			for(byte i = 0; i < 4; i++)

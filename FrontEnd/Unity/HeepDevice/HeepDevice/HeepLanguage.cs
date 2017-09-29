@@ -145,6 +145,31 @@ namespace Heep
 
 			return setValBuffer;
 		}
+
+		public static List<byte> AddNumberToBufferWithSpecifiedBytes(List <byte> buffer, int number, int numBytes)
+		{
+			for(int i = 0; i < numBytes; i++)
+			{
+				int numToAdd = (number >> 8*( (numBytes-1) - i))%256;
+				buffer.Add ((byte)numToAdd);
+			}
+
+			return buffer;
+		}
+
+		public static int GetNumberFromBuffer(List <byte> buffer, int position, int length)
+		{
+			int number = 0;
+
+			for(int i = 0; i < length; i++)
+			{
+				int curNum = buffer[position + i];
+
+				number += curNum << (8 * (length-i-1));
+			}
+
+			return number;
+		}
 	}
 }
 

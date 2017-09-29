@@ -25,13 +25,20 @@ namespace Heep
 
 		public static List<byte> ParseSetValueCommand(List <byte> commandBuffer, HeepDevice theDevice)
 		{
-			
-
 			int controlID = commandBuffer [2];
 			int controlValue = commandBuffer [3];
 			theDevice.SetControlByID (controlID, controlValue);
 
 			return AddSuccessMessageToBuffer ("Successfully Set Value", theDevice);
+		}
+
+		public static List<byte> ParseSetVertexCommand(List <byte> commandBuffer, HeepDevice theDevice)
+		{
+			List <byte> ROPBuffer = new List<byte>();
+
+
+
+			return ROPBuffer;
 		}
 
 		private static List<byte> AddSuccessMessageToBuffer(String message, HeepDevice theDevice)
@@ -67,6 +74,7 @@ namespace Heep
 
 			return outputBuf;
 		} 
+			
 	}
 }
 
