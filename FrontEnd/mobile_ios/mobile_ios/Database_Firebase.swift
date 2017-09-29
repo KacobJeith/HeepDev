@@ -124,14 +124,16 @@ class database {
         
     }
     
-    func createNewGroup(placeID: String, groupID: Int = randomNumber(inRange: 0...4000000000)) {
-    
+    func createNewGroup(placeID: String) {
+        
+        let newGroupRef = ref.child("groups").childByAutoId();
+        
         let newGroup = Group()
-        newGroup.groupID = groupID
+        newGroup.groupID = newGroupRef.key
         newGroup.placeID = placeID
         
         let newGroupContext = GroupPerspective()
-        newGroupContext.groupID = groupID
+        newGroupContext.groupID = newGroupRef.key
         newGroupContext.placeID = placeID
         
         updateGroup(group: newGroup)

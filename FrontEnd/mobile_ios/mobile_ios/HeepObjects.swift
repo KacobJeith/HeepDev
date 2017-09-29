@@ -130,7 +130,7 @@ class DeviceControl: Object {
     dynamic var deviceID: Int = 0
     dynamic var controlID: Int = 0
     dynamic var uniqueID: Int = 0
-    dynamic var groupID: string = ""
+    dynamic var groupID: String = ""
     dynamic var controlType: Int = 0
     dynamic var controlDirection: Int = 0
     dynamic var valueLow: Int = 0
