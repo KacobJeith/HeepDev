@@ -160,8 +160,6 @@ class VertexEditCell: UITableViewCell, UICollectionViewDataSource, UICollectionV
     
     func addControlsAndVertices() {
         
-        print(controls)
-        
         for (controlUniqueID, eachControl) in controls {
             
             cellView.addSubview(addControlSprite(thisControl: eachControl))
@@ -892,7 +890,6 @@ extension VertexEditCell {
         spriteContainer.addGestureRecognizer(tap)
         spriteContainer.addGestureRecognizer(pan)
         
-        print("Adding Control: \(thisControl)")
         return spriteContainer
     }
     
