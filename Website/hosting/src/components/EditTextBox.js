@@ -21,7 +21,7 @@ class EditTextBox extends React.Component {
       text: change.target.value
     });
 
-    this.props.onChange(this.state.text)
+    this.props.onChange(change.target.value)
   }
 
 
