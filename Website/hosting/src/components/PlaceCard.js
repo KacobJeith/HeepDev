@@ -34,7 +34,7 @@ class PlaceCard extends React.Component {
       },
       editableText: {
         text: this.props.place.name,
-        onChange: (change) => {console.log("Editing")}
+        onChange: (change) => {database.updatePlaceName(this.props.place.placeID, change)}
       }
     }
     

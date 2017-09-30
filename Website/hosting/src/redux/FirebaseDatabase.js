@@ -115,3 +115,15 @@ export const associateLegacyProfileName = (uid) => {
 
 	});
 }
+
+export const updatePlaceName = (placeID, name) => {
+
+	firebase.database().ref('places/' + placeID + '/name').set(name);
+}
+
+export const updateGroupName = (groupID, name) => {
+
+	firebase.database().ref('groups/' + groupID + '/name').set(name);
+}
+
+

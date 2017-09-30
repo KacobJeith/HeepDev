@@ -37,7 +37,7 @@ class RoomCard extends React.Component {
       },
       editableText: {
         text: this.props.group.name,
-        onChange: (change) => {console.log("Editing")}
+        onChange: (change) => {database.updateGroupName(this.props.group.groupID, change)}
       }
     }
 
