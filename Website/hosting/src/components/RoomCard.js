@@ -6,6 +6,7 @@ import * as actions from '../redux/actions'
 import * as database from '../redux/FirebaseDatabase'
 import {Grid, Row, Col, Image, PageHeader, Media, Button} from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
+import EditTextBox from './EditTextBox'
 
 var mapStateToProps = (state, ownProps) => ({
   group: state.groups[ownProps.groupID]
@@ -33,6 +34,10 @@ class RoomCard extends React.Component {
         src: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Lost_or_Unknown.svg/1000px-Lost_or_Unknown.svg.png", 
         id: String(this.props.group.groupID),
         alt: "RoomPic" 
+      },
+      editableText: {
+        text: this.props.group.name,
+        onChange: (change) => {console.log("Editing")}
       }
     }
 
@@ -46,7 +51,9 @@ class RoomCard extends React.Component {
         <img {...inputs.image}/>
       </Media.Left>
       <Media.Body>
-        <h1><small>{this.props.group.groupID}</small></h1>
+        <h1><small>
+          <EditTextBox {...inputs.editableText}/>
+        </small></h1>
       </Media.Body>
     </Media>
   </Col>

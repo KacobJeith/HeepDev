@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux'
 import { withRouter } from 'react-router-dom'
 import * as actions from '../redux/actions'
 import {Grid, Row, Col, Image, PageHeader, Media, Button} from 'react-bootstrap'
+import EditTextBox from './EditTextBox'
 
 var mapStateToProps = (state, ownProps) => ({
   place: state.places[ownProps.placeID]
@@ -30,6 +31,10 @@ class PlaceCard extends React.Component {
         height: 64,
         src: "https://www.misskatecuttables.com/uploads/shopping_cart/7903/med_house.png", 
         alt: "PlacePic" 
+      },
+      editableText: {
+        text: this.props.place.name,
+        onChange: (change) => {console.log("Editing")}
       }
     }
     
@@ -41,7 +46,9 @@ class PlaceCard extends React.Component {
         <img {...inputs.image}/>
       </Media.Left>
       <Media.Body>
-        <h1><small>{this.props.place.placeID}</small></h1>
+        <h1><small>
+          <EditTextBox {...inputs.editableText}/>
+        </small></h1>
       </Media.Body>
     </Media>
   </Col>
