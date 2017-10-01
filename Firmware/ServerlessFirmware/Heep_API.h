@@ -71,6 +71,11 @@ void SendOutputByID(unsigned char controlID, unsigned int value)
 	}
 }
 
+void HandlePointersOnMemoryChange()
+{
+	FillVertexListFromMemory();
+}
+
 enum Tasks {Defragment = 0, saveMemory = 1};
 void SetupHeepTasks()
 {
@@ -84,6 +89,8 @@ void CommitMemory()
 	{
 		SaveMemory(controlRegister, deviceMemory, curFilledMemory);
 		memoryChanged = 0;
+
+		HandlePointersOnMemoryChange();
 	}
 }
 

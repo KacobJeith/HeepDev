@@ -14,9 +14,10 @@ class PlacesView: UIViewController {
     var activelyPanning = Int()
     var searchTimeout = 4
     var colors = [UIColor]()
-    var placeNames = [Int : String]()
+    var placeNames = [String : String]()
     var places = [Place]()
     var userButton = UIBarButtonItem()
+    var placeTags = [String : Int]()
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -28,10 +29,12 @@ class PlacesView: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         
+//        self.resetPlaces()
         self.setupNavBar()
         self.addPlaces()
     }
@@ -84,7 +87,7 @@ class PlacesView: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.resetPlaces()
+        
         self.title = "My Heep Zones"
         self.setupNavBar()
         self.getActiveUserIcon()
@@ -92,7 +95,8 @@ class PlacesView: UIViewController {
     }
     
     func resetPlaces() {
-        self.placeNames = [Int : String]()
+        self.placeTags = [String : Int]()
+        self.placeNames = [String : String]()
         self.places = [Place]()
         self.view = UIView(frame: self.view.frame)
     }
@@ -103,6 +107,7 @@ class PlacesView: UIViewController {
             
             database().getPlace(context: context, completion: { (place) in
                 
+                self.addPlaceTag(placeID: place.placeID)
                 self.drawPlace(place: place, perspective: context)
             })
         })
@@ -124,11 +129,10 @@ class PlacesView: UIViewController {
  
     func drawPlace(place: Place, perspective: PlacePerspective) {
         
-        if let viewWithTag = self.view.viewWithTag(place.placeID) {
+        if let viewWithTag = self.view.viewWithTag(getPlaceTag(placeID: place.placeID)) {
             
             viewWithTag.removeFromSuperview()
         }
-        print(place) 
         
         placeNames[place.placeID] = place.name
         
@@ -145,7 +149,7 @@ class PlacesView: UIViewController {
         button.setTitle("  " + place.name + "  ", for: [])
         button.setTitleColor(UIColor.white, for: UIControlState.normal)
         button.titleLabel?.adjustsFontSizeToFitWidth = true
-        button.tag = place.placeID
+        button.tag = getPlaceTag(placeID: place.placeID)
         
         self.view.addSubview(button)
         
@@ -161,15 +165,16 @@ class PlacesView: UIViewController {
     
     func enterPlace(sender: UIButton) {
         
+        let placeID = findPlaceWithTag(tag: sender.tag);
         
-        guard let name = placeNames[sender.tag] else {
+        guard let name = placeNames[placeID] else {
             print("Bouncing...couldn't find the name")
             return
         }
         
         print("entering \(name)")
         
-        let groupView = GroupCollectionView(placeID: sender.tag,
+        let groupView = GroupCollectionView(placeID: placeID,
                                             placeName: name)
         
         navigationController?.pushViewController(groupView, animated: false)
@@ -204,14 +209,12 @@ class PlacesView: UIViewController {
                     return
                 }
                 
-                database().getPlaceContext(id: tag) { (context) in
+                database().getPlaceContext(id: findPlaceWithTag(tag: tag)) { (context) in
                     
                     guard let thisPlace = context else {
                         print("Failed to get placeContext")
                         return
                     }
-                    
-                    print(thisPlace)
                     
                     let newContext = PlacePerspective()
                     newContext.x = thisPlace.x + gesture.translation(in: self.view).x
@@ -220,7 +223,6 @@ class PlacesView: UIViewController {
                     newContext.numDevices = thisPlace.numDevices
                     newContext.placeID = thisPlace.placeID
                     newContext.radius = thisPlace.radius
-                    newContext.realmPath = thisPlace.realmPath
                     
                     database().updatePlaceContext(placeContext: newContext)
                     
@@ -239,7 +241,7 @@ class PlacesView: UIViewController {
     func findPanningPlace(gesture: UIPanGestureRecognizer) {
         for key in placeNames.keys {
             
-            let activelyPanningPlace = self.view.viewWithTag(key)
+            let activelyPanningPlace = self.view.viewWithTag(getPlaceTag(placeID: key))
             let gestureLocation = gesture.location(in: self.view)
             
             if activelyPanningPlace != nil {
@@ -255,6 +257,32 @@ class PlacesView: UIViewController {
     func reloadView() {
         
         self.viewDidLoad()
+    }
+    
+    func addPlaceTag(placeID: String) {
+        
+        if placeTags[placeID] == nil {
+            placeTags[placeID] = placeTags.count + 10
+        }
+        
+    }
+    
+    func getPlaceTag(placeID: String) -> Int {
+        guard let tag =  placeTags[placeID] else {
+            return -1
+        }
+        
+        return tag
+    }
+    
+    func findPlaceWithTag(tag: Int) -> String {
+        for key in placeTags.keys {
+            if (getPlaceTag(placeID: key) == tag) {
+                return key
+            }
+        }
+        
+        return ""
     }
 }
 
@@ -275,9 +303,14 @@ extension PlacesView {
         
         database().getMyHeepID() { heepID in
             
-            let userButton = database().downloadMyProfileImage(heepID: heepID!)
-            self.drawAccountPuck(userButton: userButton)
             
+            if let heepID = heepID {
+                let userButton = database().downloadMyProfileImage(heepID: heepID)
+                self.drawAccountPuck(userButton: userButton)
+            } else {
+                self.drawAccountPuck(userButton: UIImageView(image: #imageLiteral(resourceName: "female")))
+                
+            }
         }
     }
     

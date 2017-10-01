@@ -890,7 +890,6 @@ extension VertexEditCell {
         spriteContainer.addGestureRecognizer(tap)
         spriteContainer.addGestureRecognizer(pan)
         
-        
         return spriteContainer
     }
     
@@ -1012,7 +1011,7 @@ extension VertexEditCell {
             
             UIImpactFeedbackGenerator(style: .medium).impactOccurred()
             
-            updateControl.groupID = 0
+            updateControl.groupID = "null"
             updateGroup.selectedControl = 0
             
             

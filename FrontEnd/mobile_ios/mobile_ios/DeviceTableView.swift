@@ -12,7 +12,7 @@ class DeviceTableViewController: UITableViewController {
     //MARK: Properties
     
     var activeOnly = false
-    var placeID = 0
+    var placeID = "_"
     var tableTitle = "Currently Active"
     
     var referenceList = [String?]()
@@ -21,7 +21,7 @@ class DeviceTableViewController: UITableViewController {
     var controls = [Int: [Int: DeviceControl]]()
     var controlTags = [Int: IndexPath]()
     
-    init(title: String = "Currently Active", placeID: Int = 0, activeOnly: Bool = false) {
+    init(title: String = "Currently Active", placeID: String = "_", activeOnly: Bool = false) {
         super.init(style: UITableViewStyle.plain)
         self.placeID = placeID
         self.activeOnly = activeOnly
@@ -37,12 +37,14 @@ class DeviceTableViewController: UITableViewController {
             self.controls[deviceID] = [Int: DeviceControl]()
             self.controlTags = [:]
             
-            self.referenceList.append(database().getDevice(deviceID: deviceID, reset: {
+            self.referenceList.append(database().watchDevice(deviceID: deviceID, reset: {
                 
             }, identity: { device in
                 
                 if device.active {
+                    
                     self.devices[device.deviceID] = device
+                    
                     self.reloadView()
                 }
                 
@@ -54,7 +56,6 @@ class DeviceTableViewController: UITableViewController {
                 
                 self.reloadView()
 
-                
             }, vertices: { vertex in
                 
                 
@@ -173,14 +174,16 @@ class DeviceTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        let keyList = [Int](controls.keys)
+        let keyList = [Int](devices.keys)
         
         if section > keyList.count {
             return 0
         }
+        
         let thisKey = keyList[section]
         
         guard let numControls = controls[thisKey]?.count else {
+            print("Decided 0")
             return 0
         }
         
@@ -191,7 +194,7 @@ class DeviceTableViewController: UITableViewController {
         
         let cell = UITableViewCell()
         
-        let keyList = [Int](controls.keys)
+        let keyList = [Int](devices.keys)
         
         if indexPath.section > keyList.count {
             return cell
@@ -272,7 +275,7 @@ class DeviceTableViewController: UITableViewController {
             return nil
         }
         
-        let keyList = [Int](controls.keys)
+        let keyList = [Int](devices.keys)
         print(keyList)
         
         if thisIndexPath.section > keyList.count {

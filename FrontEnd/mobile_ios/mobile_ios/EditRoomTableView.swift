@@ -11,7 +11,7 @@ import UIKit
 class EditRoomView: UITableViewController {
     
     var referenceList = [String?]()
-    var groupID = 0
+    var groupID = "null"
     var thisBSSID: String = ""
     var thisGroup = GroupPerspective()
     var thisGroupControls = [Int: DeviceControl]()
@@ -19,7 +19,7 @@ class EditRoomView: UITableViewController {
     var vertices = [Int: [String: Vertex]]()
     var groupBackground = UIImageView()
     
-    init(groupID: Int, groupName: String, groupBackground: UIImageView) {
+    init(groupID: String, groupName: String, groupBackground: UIImageView) {
         
         super.init(style: UITableViewStyle.plain)
         
@@ -87,7 +87,7 @@ class EditRoomView: UITableViewController {
                     self.unassignedControls.removeValue(forKey: control.uniqueID)
                     self.thisGroupControls[control.uniqueID] = control
 
-                } else if control.groupID == 0 {
+                } else if control.groupID == "null" {
                     
                     self.thisGroupControls.removeValue(forKey: control.uniqueID)
                     self.unassignedControls[control.uniqueID] = control
