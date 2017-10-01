@@ -3,6 +3,7 @@ import firebaseui from 'firebaseui'
 import * as setup from '../index'
 import * as actions from '../redux/actions'
 import * as database from './FirebaseDatabase'
+import $ from 'jquery'
 
 export const logout = () => {
   
@@ -128,17 +129,14 @@ export const firebaseAuthUI = () => {
         queryParameterForSignInSuccessUrl: 'signInSuccessUrl',
 
         signInFlow: 'popup',
-        signInSuccessUrl: '/User',
+        signInSuccessUrl: signinSuccessURL(),
         signInOptions: [
 
           {
             provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
-
             requireDisplayName: true
           },
-          firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-          firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-          firebase.auth.TwitterAuthProvider.PROVIDER_ID
+          firebase.auth.GoogleAuthProvider.PROVIDER_ID
         ],
 
         tosUrl: '/TermsOfService'
@@ -160,8 +158,6 @@ export const firebaseAuthUI = () => {
 		var ui = new firebaseui.auth.AuthUI(firebase.auth());
 		ui.start('#firebaseui-auth-container', uiConfig);
 	}
-	 
-      	
 }
 
 export const linkAccount = (newProvider) => {
@@ -240,17 +236,43 @@ export const updateUserProfile = (newData) => {
 
 const VerifyUser = (user) => {
 
-    var sPageURL = window.location.search.substring(1);
+    let actionsUID = searchURL("actionsUID") 
+    console.log("UID: ", actionsUID);
+
+    $.get("/verifyUser" + "?actionsUID=" + actionsUID + "&uid=" + user.uid + "&email=" + user.email);
+    
+}
+
+const signinSuccessURL = () => {
+
+    let successRoute = searchURL("successRoute") 
+    console.log("Success Route: ", successRoute)
+
+    if (successRoute) {
+
+		return '/' + successRoute
+
+    } else {
+
+    	return '/User'
+    }
+}
+
+const searchURL = (parameter) => {
+
+	var sPageURL = window.location.search.substring(1);
 
     var sURLVariables = sPageURL.split('&');
 
     for (var i = 0; i < sURLVariables.length; i++) {
         var sParameterName = sURLVariables[i].split('=');
 
-        if (sParameterName[0] == "actionsUID") {
-            $.get("https://heep-3cddb.firebaseapp.com/verifyUser" + "?actionsUID=" + sParameterName[1] + "&uid=" + user.uid + "&email=" + user.email);
+        if (sParameterName[0] == parameter) {
+            return sParameterName[1];
         };
     };
+
+    return null
 }
 
 

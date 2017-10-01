@@ -27,7 +27,7 @@ class Auth extends React.Component {
 
     if (this.props.loginStatus) {
 
-      return <div>Logged in Success!</div>
+      return <Loading/>
 
     } else {
     
