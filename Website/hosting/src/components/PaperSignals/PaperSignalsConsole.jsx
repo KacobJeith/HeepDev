@@ -31,8 +31,18 @@ class PaperSignalsConsole extends React.Component {
       },
       footer: {
         style: styles.footer
+      },
+      iframe: {
+        style: {
+          width: "100vw",
+          height: "100vh",
+          borderColor: "transparent"
+        },
+        src: "https://papersignals.firebaseapp.com/" 
       }
     }
+
+
     
     var signals = [];
 
@@ -41,9 +51,7 @@ class PaperSignalsConsole extends React.Component {
 	}
 
     return (<div {...inputs.container}>
-    		      {signals}
-              <AddSignal/>
-              <div {...inputs.footer}/>
+    		      <iframe {...inputs.iframe}></iframe>
             </div>
     );
   }
