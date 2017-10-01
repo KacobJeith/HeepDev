@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux'
 import * as Actions from '../../redux/actions'
 import AddSignal from './AddSignal'
 import Signals from './Signals'
-import Logout from './Logout'
 
 var mapStateToProps = (state) => ({
 	signalArray: state.signals
@@ -44,7 +43,6 @@ class PaperSignalsConsole extends React.Component {
     return (<div {...inputs.container}>
     		      {signals}
               <AddSignal/>
-              <Logout/>
               <div {...inputs.footer}/>
             </div>
     );
