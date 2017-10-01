@@ -212,21 +212,27 @@ class HAPIMemoryParser {
         //print("Adding Control to device: \(deviceID)")
         
         let controlName = GetStringFromByteArrayIndices(dump: dump, indexStart: index + 6, indexFinish: index + packetSize)
-        
         let uniqueID = generateUniqueControlID(deviceID: deviceID, controlID: dump[index])
+        let controlID = Int(dump[index]);
         
-        let newControl = DeviceControl()
-        newControl.deviceID = deviceID
-        newControl.controlID = Int(dump[index])
-        newControl.uniqueID = uniqueID
-        newControl.controlType = Int(dump[index + 1])
-        newControl.controlDirection = Int(dump[index + 2])
-        newControl.valueLow = Int(dump[index + 3])
-        newControl.valueHigh = Int(dump[index + 4])
-        newControl.valueCurrent = Int(dump[index + 5])
-        newControl.controlName = controlName
+        database().getControl(deviceID: deviceID, controlID: controlID) { control in
+            
+            let newControl = DeviceControl(value: control)
+            
+            newControl.deviceID = deviceID
+            newControl.controlID = Int(dump[index])
+            newControl.uniqueID = uniqueID
+            newControl.controlType = Int(dump[index + 1])
+            newControl.controlDirection = Int(dump[index + 2])
+            newControl.valueLow = Int(dump[index + 3])
+            newControl.valueHigh = Int(dump[index + 4])
+            newControl.valueCurrent = Int(dump[index + 5])
+            newControl.controlName = controlName
+            
+            database().writeDeviceControl(control: newControl)
+            
+        }
         
-        database().writeDeviceControl(control: newControl)
     }
     
     func parseVertexMOP(dump: [UInt8], index: Int, packetSize: Int, deviceID: Int) {
@@ -254,7 +260,12 @@ class HAPIMemoryParser {
     }
     
     func readIPAddress(dump: [UInt8], index: Int) -> String {
-        return String(Int(dump[index])) + "." + String(Int(dump[index + 1])) + "." + String(Int(dump[index + 2])) + "." + String(Int(dump[index + 3]))
+        let ip1 = String(Int(dump[index]));
+        let ip2 = String(Int(dump[index + 1]));
+        let ip3 = String(Int(dump[index + 2]))
+        let ip4 = String(Int(dump[index + 3]))
+        
+        return  ip1 + "." + ip2 + "." + ip3 + "." + ip4
     }
     
     func generateUniqueControlID(deviceID: Int, controlID: UInt8) -> Int {

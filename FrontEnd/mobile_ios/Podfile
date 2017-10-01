@@ -6,7 +6,7 @@ target 'mobile_ios' do
   use_frameworks!
 
   # Pods for mobile_ios
-  pod 'SwiftSocket', '2.0.1’
+  pod 'BlueSocket'
   pod 'RealmSwift'
   pod 'FacebookCore', '~> 0.2'
   

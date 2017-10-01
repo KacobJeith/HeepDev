@@ -13,7 +13,6 @@ import RealmSwift
 class User: Object {
     
     dynamic var heepID: Int = 0
-    dynamic var realmKey: String = ""
     dynamic var facebookID: Int = 0
     dynamic var name: String = "guest"
     dynamic var email: String = ""
@@ -40,7 +39,7 @@ class Key: Object {
 // Place Realm
 class Place: Object {
     
-    dynamic var placeID: Int = 0
+    dynamic var placeID: String = ""
     dynamic var name: String = "unnamed"
     let PHYList = List<PHY>()
     
@@ -64,8 +63,7 @@ class PHY: Object {
 // User Realm
 class PlacePerspective: Object {
     
-    dynamic var placeID: Int = 0
-    dynamic var realmPath: String = ""
+    dynamic var placeID: String = ""
     dynamic var x: CGFloat = 100
     dynamic var y: CGFloat = 100
     dynamic var radius: Int = 100
@@ -79,8 +77,8 @@ class PlacePerspective: Object {
 // Group Realm
 class Group: Object {
     
-    dynamic var groupID: Int = 0
-    dynamic var placeID: Int = 0
+    dynamic var groupID: String = ""
+    dynamic var placeID: String = ""
     dynamic var name: String = "Unassigned"
     dynamic var imageData: NSData = NSData()
     
@@ -92,9 +90,8 @@ class Group: Object {
 // User Realm
 class GroupPerspective: Object {
     
-    dynamic var groupID: Int = 0
-    dynamic var placeID: Int = 0 // Sync with global group realm as often as possible. This is just for easy querying
-    dynamic var realmPath: String = ""
+    dynamic var groupID: String = ""
+    dynamic var placeID: String = ""
     dynamic var selectedControl: Int = 0
     dynamic var UILocked: Bool = true
     dynamic var unassignedOffsetX: CGFloat = 0
@@ -133,7 +130,7 @@ class DeviceControl: Object {
     dynamic var deviceID: Int = 0
     dynamic var controlID: Int = 0
     dynamic var uniqueID: Int = 0
-    dynamic var groupID: Int = 0
+    dynamic var groupID: String = "null"
     dynamic var controlType: Int = 0
     dynamic var controlDirection: Int = 0
     dynamic var valueLow: Int = 0
