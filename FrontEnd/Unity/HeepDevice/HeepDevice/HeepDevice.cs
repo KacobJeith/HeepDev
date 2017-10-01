@@ -85,6 +85,17 @@ namespace Heep
 			}
 		}
 
+		public int GetControlValueByID(int ID)
+		{
+			for (int i = 0; i < controls.Count; i++) {
+				if (controls [i].GetID () == ID) {
+					return controls[i].GetCurValue();
+				}
+			}
+
+			return -1;
+		}
+
 		public void SetDeviceName(String name)
 		{
 			HeepLanguage.AddNameToMemory (deviceMemory, myID, name);
