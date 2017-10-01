@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;  
 
 namespace Heep
 {
@@ -12,10 +13,11 @@ namespace Heep
 				return ParseIsHeepDeviceCommand (commandBuffer, theDevice);
 			} else if (commandBuffer [0] == HeepLanguage.SetValueOpCode) {
 				return ParseSetValueCommand (commandBuffer, theDevice);
+			} else if (commandBuffer [0] == HeepLanguage.SetVertexOpCode) {
+				return ParseSetVertexCommand (commandBuffer, theDevice);
 			}
 
-			List<byte> defaultRet = new List<byte> ();
-			return defaultRet;
+			return AddErrorMessageToBuffer ("Invalid Command", theDevice);
 		}
 
 		public static List<byte> ParseIsHeepDeviceCommand(List <byte> commandBuffer, HeepDevice theDevice)
@@ -34,11 +36,24 @@ namespace Heep
 
 		public static List<byte> ParseSetVertexCommand(List <byte> commandBuffer, HeepDevice theDevice)
 		{
-			List <byte> ROPBuffer = new List<byte>();
+			int counter = 1;
+			int numBytes = HeepLanguage.GetNumberFromBuffer (commandBuffer, counter, 1);
+			counter++;
+			DeviceID txID = HeepLanguage.GetDeviceIDFromBuffer (commandBuffer, counter);
+			counter += txID.GetDeviceIDSize ();
+			DeviceID rxID = HeepLanguage.GetDeviceIDFromBuffer (commandBuffer, counter);
+			counter += rxID.GetDeviceIDSize ();
+			int txControl = HeepLanguage.GetNumberFromBuffer (commandBuffer, counter, 1);
+			counter++;
+			int rxControl = HeepLanguage.GetNumberFromBuffer (commandBuffer, counter, 1);
+			counter++;
+			IPAddress destIP = HeepLanguage.GetIPAddrFromBuffer (commandBuffer, 4);
 
+			Vertex newVertex = new Vertex (rxID, txID, rxControl, txControl, destIP);
 
+			theDevice.AddVertex (newVertex);
 
-			return ROPBuffer;
+			return AddSuccessMessageToBuffer ("Vertex Set", theDevice);;
 		}
 
 		private static List<byte> AddSuccessMessageToBuffer(String message, HeepDevice theDevice)

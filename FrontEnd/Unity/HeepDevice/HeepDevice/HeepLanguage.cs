@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;  
 
 namespace Heep
 {
@@ -169,6 +170,33 @@ namespace Heep
 			}
 
 			return number;
+		}
+
+		public static DeviceID GetDeviceIDFromBuffer(List<byte> buffer, int position)
+		{
+			List <byte> deviceBytes = new List<byte> ();
+
+			int numBytesInID = 4; // This will be read dynamically once we have dynamic iDs
+
+			for (int i = position; i < position + numBytesInID; i++) {
+				deviceBytes.Add (buffer [i]);
+			}
+
+			DeviceID retID = new DeviceID (deviceBytes);
+			return retID;
+		}
+
+		public static IPAddress GetIPAddrFromBuffer(List <byte> buffer, int position)
+		{
+			List<byte> IPBytes = new List<byte> ();
+
+			for (int i = position; i < position + 4; i++) {
+				IPBytes.Add (buffer [i]);
+			}
+
+			IPAddress theIP = new IPAddress (IPBytes.ToArray());
+
+			return theIP;
 		}
 	}
 }

@@ -100,7 +100,7 @@ namespace Heep
 	public class DeviceID
 	{
 		List<byte> theID;
-		private const int DeviceIDSize = 4;
+		private int DeviceIDSize = 4;
 
 		public DeviceID(List <byte> newID)
 		{
@@ -121,6 +121,7 @@ namespace Heep
 		{
 			return DeviceIDSize;
 		}
+
 	}
 
 	public class Vertex
