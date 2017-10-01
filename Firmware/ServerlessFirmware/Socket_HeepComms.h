@@ -101,11 +101,11 @@ void CheckServerForInputs()
 
 int Write3CharactersFromValue(unsigned char value, char* IPString, int startPoint)
 {
-  IPString[startPoint] = (value/100)%10;
+  IPString[startPoint] = (value/100)%10 + '0';
   startPoint++;
-  IPString[startPoint] = (value/10)%10;
+  IPString[startPoint] = (value/10)%10 + '0';
   startPoint++;
-  IPString[startPoint] = (value%10);
+  IPString[startPoint] = (value%10) + '0';
   startPoint++;
   return startPoint;
 }
