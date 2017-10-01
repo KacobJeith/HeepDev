@@ -131,7 +131,8 @@ export const updateGroupName = (groupID, name) => {
 /* <-------------------------------------------------------Paper Signals---------------------------------------------------------------------->*/
 
 
-export const readUserSignals = (user) => {
+export const readUserSignals = () => {
+	let user = firebase.auth().currentUser
 
 	firebase.database().ref('/users/' + user.uid + '/signals').on('value', function(snapshot) {
 		

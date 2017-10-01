@@ -80,10 +80,6 @@ export const initializeFirebase = () => {
 	    database.readUserData(user);
 	    validateUser()
 
-	    VerifyUser(user)
-	    database.readUserSignals(user)
-	    database.downloadAssets()
-
 	    loadUserProviders()
 
 	  } else {
@@ -234,7 +230,8 @@ export const updateUserProfile = (newData) => {
 	});
 }
 
-const VerifyUser = (user) => {
+export const VerifyUser = () => {
+	let user = firebase.auth().currentUser
 
     let actionsUID = searchURL("actionsUID") 
     console.log("UID: ", actionsUID);

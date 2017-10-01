@@ -51,6 +51,10 @@ export const unlinkAccount = (providerId) => ({
 	providerId
 })
 
+export const initPaperSignals = () => ({
+	type: 'INIT_PAPER_SIGNALS'
+})
+
 
 
 /* <-------------------------------------------------------Paper Signals---------------------------------------------------------------------->*/

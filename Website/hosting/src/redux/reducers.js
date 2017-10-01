@@ -67,7 +67,13 @@ export default function(state = initialState, action) {
       return Immutable.Map(state).set('groups', newState).toJS()
 
 /* <-------------------------------------------------------Paper Signals---------------------------------------------------------------------->*/
+    case 'INIT_PAPER_SIGNALS' :
 
+      setTimeout(() => {auth.VerifyUser()}, 50);
+      setTimeout(() => {database.readUserSignals()}, 50);
+      setTimeout(() => {database.downloadAssets()}, 50);
+
+      return state
     case 'ADD_SIGNAL':
 
       setTimeout(() => {database.addSignal(action.name, action.intent)}, 50);

@@ -10,6 +10,10 @@ var mapStateToProps = (state) => ({
 })
 
 class PaperSignalsConsole extends React.Component {
+
+  componentWillMount() {
+    this.props.initPaperSignals();
+  }
   
   render() {
 
