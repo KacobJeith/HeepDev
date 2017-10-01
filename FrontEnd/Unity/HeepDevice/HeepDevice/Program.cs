@@ -61,6 +61,9 @@ namespace MainProgram
 			Control theControl = Control.CreateControl (Control.CtrlInputOutput.input, Control.CtrlType.OnOff, "Good");
 			myDevice.AddControl (theControl);
 
+			Control outputControl = Control.CreateControl (Control.CtrlInputOutput.output, Control.CtrlType.OnOff, "UnityOut");
+			myDevice.AddControl (outputControl);
+
 			List<byte> newOutput = myDevice.GetMemoryDump ();
 
 			for (int i = 0; i < newOutput.Count; i++) {
@@ -82,9 +85,18 @@ namespace MainProgram
 
 			byte value = 0;
 			while (true) {
-				Console.WriteLine ("helr");
+				Console.Write ("Enter something to send stuff: ");
+				String newRead = Console.ReadLine ();
+				Console.WriteLine (newRead);
 
-//				byte [] IPAddrArraya = {192, 168, 0, 37};
+				myDevice.SetControlByID (1, value);
+
+				if (value == 0)
+					value = 1;
+				else
+					value = 0;
+
+//				byte [] IPAddrArraya = {192, 168, 0, 103};
 //				IPAddress theAddra = new IPAddress(IPAddrArraya);
 //				List<byte> newBuf = new List<byte>();
 //				newBuf.Add (0x0A);
@@ -100,7 +112,6 @@ namespace MainProgram
 //					value = 0;
 //				}
 
-				Thread.Sleep (1000);
 			}
 		}
 			

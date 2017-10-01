@@ -47,7 +47,7 @@ namespace Heep
 			counter++;
 			int rxControl = HeepLanguage.GetNumberFromBuffer (commandBuffer, counter, 1);
 			counter++;
-			IPAddress destIP = HeepLanguage.GetIPAddrFromBuffer (commandBuffer, 4);
+			IPAddress destIP = HeepLanguage.GetIPAddrFromBuffer (commandBuffer, counter);
 
 			Vertex newVertex = new Vertex (rxID, txID, rxControl, txControl, destIP);
 
