@@ -24,18 +24,12 @@ class Auth extends React.Component {
   }
 
   render() {
-
-    if (this.props.loginStatus) {
-
-      return <Loading/>
-
-    } else {
     
       return  ( <div> 
                   <div id="firebaseui-auth-container"></div>
                   <Loading/>
                 </div>);
-    }
+    
   }
 }
 
