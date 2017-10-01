@@ -46,6 +46,17 @@ const readDevice = (deviceID) => {
 	let dataFromFirebaseRef = firebase.database().ref('/devices/' + deviceID).on('value', function(deviceSnapshot) {
 
 		setup.store.dispatch(actions.addDevice(deviceSnapshot.key, deviceSnapshot.val()));
+
+		deviceSnapshot.val().controls.forEach((control) => {
+			
+			console.log(control.controlName + " : " + control.groupID);
+
+			if (control.groupID != "null") {
+
+				checkGroupID(control.groupID);
+			}
+		})
+
 	});
 }
 
@@ -124,6 +135,35 @@ export const updatePlaceName = (placeID, name) => {
 export const updateGroupName = (groupID, name) => {
 
 	firebase.database().ref('groups/' + groupID + '/name').set(name);
+}
+
+const checkGroupID = (groupID) => {
+
+	let user = firebase.auth().currentUser;
+
+	firebase.database().ref('/users/' + user.uid + '/groups/' + groupID).once('value', function(snapshot) {
+
+		if (snapshot.val() == null) {
+			let defaultGroup = {
+				UILocked: true,
+				assignedOffsetX: 0,
+				contentOffsetX: 0,
+				contentOffsetY: 0,
+				groupID: groupID,
+				placeID: "_",
+				selectedControl: "null",
+				unassignedOffsetX: 0
+			}
+
+			console.log("Associating a default group context to ", groupID);
+
+			firebase.database().ref('/users/' + user.uid + '/groups/' + groupID).set(defaultGroup);
+
+		} else {
+			console.log("Already have group ", groupID, snapshot.val());
+		}
+
+	});
 }
 
 
