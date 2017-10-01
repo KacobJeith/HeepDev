@@ -1,19 +1,10 @@
 import { combineReducers } from 'redux'
 import Immutable from 'immutable'
 import 'babel-polyfill'
+import { initialState } from '../index'
 import * as actions from './actions'
 import * as auth from './FirebaseAuth'
-
-const initialState = Immutable.Map({
-  shopify: {},
-  scrollPosition: 0,
-  webGLStatus: false,
-  loginStatus: false,
-  providers: {},
-  devices: {},
-  places: {},
-  groups: {}
-})
+import * as database from './FirebaseDatabase'
 
 export default function(state = initialState, action) {
   switch (action.type) {
@@ -50,6 +41,7 @@ export default function(state = initialState, action) {
       var newState = Immutable.Map(state.providers).set(action.provider.providerId, action.provider).toJS();
 
       return Immutable.Map(state).set('providers', newState).toJS()
+
     case 'UNLINK_PROVIDER' :
 
       var newState = Immutable.Map(state.providers).delete(action.providerId).toJS();
@@ -73,6 +65,59 @@ export default function(state = initialState, action) {
       var newState = Immutable.Map(state.groups).set(action.groupID, action.group).toJS();
 
       return Immutable.Map(state).set('groups', newState).toJS()
+
+/* <-------------------------------------------------------Paper Signals---------------------------------------------------------------------->*/
+
+    case 'ADD_SIGNAL':
+
+      setTimeout(() => {database.addSignal(action.name, action.intent)}, 50);
+
+      return state
+
+    case 'UPDATE_NAME':
+      setTimeout(() => {database.updateName(action.signalId, action.name)}, 50);
+
+      return state
+
+    case 'DELETE_SIGNAL':
+    
+      setTimeout(() => {database.deleteSignal(action.id)}, 1000);
+
+      var newState = Immutable.Map(state.signals).delete(action.id).toJS();
+
+      return Immutable.Map(state).set('signals', newState).toJS()
+
+    case 'POP_SIGNAL':
+
+      var newSignal = {
+        id: action.id,
+        content: action.content
+      }
+
+      var newState = Immutable.Map(state.signals).toJS();
+      newState[action.id] = newSignal;
+
+      return Immutable.Map(state).set('signals', newState).toJS()
+    case 'STORE_FILE':
+
+      var newState = Immutable.Map(state.files).toJS();
+      newState[action.filename] = action.blob;
+
+      return Immutable.Map(state).set('files', newState).toJS()
+
+    case 'STORE_ICONURL':
+
+      var newState = Immutable.Map(state.iconURLs).toJS();
+      newState[action.iconName] = action.url;
+
+      return Immutable.Map(state).set('iconURLs', newState).toJS()
+  
+    case 'STORE_INTENT_BACKGROUND_URL':
+
+      var newState = Immutable.Map(state.intentBackgrounds).toJS();
+      newState[action.intent] = action.url;
+
+      return Immutable.Map(state).set('intentBackgrounds', newState).toJS()
 
     default:
       return state

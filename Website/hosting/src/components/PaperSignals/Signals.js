@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import * as Actions from '../redux/actions'
+import * as Actions from '../../redux/actions'
 import DownloadConfig from './DownloadConfig'
 
 var mapStateToProps = (state, ownProps) => ({

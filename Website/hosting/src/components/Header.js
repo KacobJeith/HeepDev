@@ -131,6 +131,9 @@ class Header extends React.Component {
 				    </Navbar.Header>
 				    <Navbar.Collapse>
 				      <Nav pullRight>
+				      	<LinkContainer to="/PaperSignals">
+				      		<NavItem>Paper Signals</NavItem>
+				      	</LinkContainer>
 				        <LinkContainer to="/Shop">
 				          <NavItem>Shop</NavItem>
 				        </LinkContainer>

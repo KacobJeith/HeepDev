@@ -33,6 +33,7 @@
     "history": "^4.7.2",
     "immutable": "^3.8.1",
     "jquery": "^3.1.1",
+    "jszip": "^3.1.4",
     "normalizr": "^3.1.0",
     "react": "^15.3.2",
     "react-addons-update": "^15.3.2",

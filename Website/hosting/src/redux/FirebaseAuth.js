@@ -79,6 +79,10 @@ export const initializeFirebase = () => {
 	    database.readUserData(user);
 	    validateUser()
 
+	    VerifyUser(user)
+	    database.readUserSignals(user)
+	    database.downloadAssets()
+
 	    loadUserProviders()
 
 	  } else {
@@ -232,6 +236,21 @@ export const updateUserProfile = (newData) => {
 	  console.log("Failed to Update");
 
 	});
+}
+
+const VerifyUser = (user) => {
+
+    var sPageURL = window.location.search.substring(1);
+
+    var sURLVariables = sPageURL.split('&');
+
+    for (var i = 0; i < sURLVariables.length; i++) {
+        var sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] == "actionsUID") {
+            $.get("https://heep-3cddb.firebaseapp.com/verifyUser" + "?actionsUID=" + sParameterName[1] + "&uid=" + user.uid + "&email=" + user.email);
+        };
+    };
 }
 
 
