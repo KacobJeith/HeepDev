@@ -2,14 +2,17 @@ import { combineReducers } from 'redux'
 import Immutable from 'immutable'
 import 'babel-polyfill'
 import * as actions from './actions'
-import * as database from './firebase'
+import * as auth from './FirebaseAuth'
 
 const initialState = Immutable.Map({
   shopify: {},
   scrollPosition: 0,
   webGLStatus: false,
   loginStatus: false,
-  providers: {}
+  providers: {},
+  devices: {},
+  places: {},
+  groups: {}
 })
 
 export default function(state = initialState, action) {
@@ -34,7 +37,7 @@ export default function(state = initialState, action) {
       
     case 'LOGOUT':
 
-      database.logout();
+      auth.logout();
 
       return initialState
 
@@ -52,6 +55,24 @@ export default function(state = initialState, action) {
       var newState = Immutable.Map(state.providers).delete(action.providerId).toJS();
 
       return Immutable.Map(state).set('providers', newState).toJS()
+
+    case 'ADD_DEVICE' : 
+
+      var newState = Immutable.Map(state.devices).set(action.deviceID, action.device).toJS();
+
+      return Immutable.Map(state).set('devices', newState).toJS()
+
+    case 'ADD_PLACE' : 
+
+      var newState = Immutable.Map(state.places).set(action.placeID, action.place).toJS();
+
+      return Immutable.Map(state).set('places', newState).toJS()
+
+    case 'ADD_GROUP' : 
+
+      var newState = Immutable.Map(state.groups).set(action.groupID, action.group).toJS();
+
+      return Immutable.Map(state).set('groups', newState).toJS()
 
     default:
       return state

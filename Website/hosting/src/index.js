@@ -6,14 +6,14 @@ import { createStore, applyMiddleware } from 'redux'
 import reducers from './redux/reducers'
 import App from './components/App'
 import thunk from 'redux-thunk'
-import * as database from './redux/firebase'
+import * as auth from './redux/FirebaseAuth'
 import * as shopify from './redux/Shopify'
 
 import loading from './assets/heepwink3_gradient.mov';
 
 export const store = createStore(reducers, applyMiddleware(thunk));
 
-database.initializeFirebase();
+auth.initializeFirebase();
 shopify.InitializeShopify();
 
 render(

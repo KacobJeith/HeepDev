@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { withRouter } from 'react-router-dom'
 import * as actions from '../redux/actions'
-import * as database from '../redux/firebase'
+import * as auth from '../redux/FirebaseAuth'
 
 var mapStateToProps = (state) => ({
   loginStatus: state.loginStatus
@@ -14,7 +14,7 @@ class Logout extends React.Component {
 
   componentDidMount() {
 
-    database.logout();
+    auth.logout();
   }
 
   render() {
