@@ -231,19 +231,19 @@ export const updateUserProfile = (newData) => {
 }
 
 export const VerifyUser = () => {
-	let user = firebase.auth().currentUser
 
     let actionsUID = searchURL("actionsUID") 
-    console.log("UID: ", actionsUID);
 
-    $.get("/verifyUser" + "?actionsUID=" + actionsUID + "&uid=" + user.uid + "&email=" + user.email);
+    if (actionsUID) {
+		let user = firebase.auth().currentUser
+    	$.get("/verifyUser" + "?actionsUID=" + actionsUID + "&uid=" + user.uid + "&email=" + user.email);
+    }
     
 }
 
 const signinSuccessURL = () => {
 
     let successRoute = searchURL("successRoute") 
-    console.log("Success Route: ", successRoute)
 
     if (successRoute) {
 
