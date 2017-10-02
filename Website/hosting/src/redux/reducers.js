@@ -8,6 +8,11 @@ import * as database from './FirebaseDatabase'
 
 export default function(state = initialState, action) {
   switch (action.type) {
+    case 'LOGIN' :
+
+      setTimeout(() => {auth.handleLogin()}, 100);
+
+      return state
     case 'POPULATE_SHOPIFY' :
 
         var newState = Immutable.Map(state.shopify).toJS();
@@ -69,9 +74,9 @@ export default function(state = initialState, action) {
 /* <-------------------------------------------------------Paper Signals---------------------------------------------------------------------->*/
     case 'INIT_PAPER_SIGNALS' :
 
-      setTimeout(() => {auth.VerifyUser()}, 50);
-      setTimeout(() => {database.readUserSignals()}, 50);
-      setTimeout(() => {database.downloadAssets()}, 50);
+      // setTimeout(() => {auth.VerifyUser()}, 50);
+      // setTimeout(() => {database.readUserSignals()}, 50);
+      // setTimeout(() => {database.downloadAssets()}, 50);
 
       return state
     case 'ADD_SIGNAL':

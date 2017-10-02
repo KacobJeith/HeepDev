@@ -27,7 +27,7 @@ export const requestLogin = (app, user) => {
 		    .addSimpleResponse('Welcome to Paper Signals! Please log in using the link.')
 		    .addBasicCard(app.buildBasicCard(`Log in on your Paper Signals Battle Station`)
 		    .setTitle('Welcome to Paper Signals')
-		      .addButton('Take me to Paper Signals!', 'https://heep-3cddb.firebaseapp.com/auth' + '?actionsUID=' + user.userId + '&successRoute=PaperSignals')
+		      .addButton('Take me to Paper Signals!', 'https://heep-3cddb.firebaseapp.com/PaperSignals' + '?actionsUID=' + user.userId + '&successRoute=PaperSignals')
 		    )
 		);
 	} else {

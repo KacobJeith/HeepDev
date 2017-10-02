@@ -15,7 +15,7 @@ export const readUserData = (user) => {
 		retrieveDevices(snapshot);
 	})
 
-	// firebase.database().ref('/users/' + user.uid + '/places').on('child_added', function(snapshot) {
+	// firebase.database().ref('/users/' + user.readUserSignalsuid + '/places').on('child_added', function(snapshot) {
 		
 	// 	// retrievePlaces(snapshot);
 	// })
@@ -134,15 +134,18 @@ export const updateGroupName = (groupID, name) => {
 export const readUserSignals = () => {
 	let user = firebase.auth().currentUser
 
-	firebase.database().ref('/users/' + user.uid + '/signals').on('value', function(snapshot) {
+	if (user) {
+		firebase.database().ref('/users/' + user.uid + '/signals').on('value', function(snapshot) {
 		
-		retrieveSignals(snapshot);
-	})
+			retrieveSignals(snapshot);
+		})
 
-	firebase.database().ref('/users/' + user.uid + '/signals').on('child_added', function(snapshot) {
-		
-		retrieveSignals(snapshot);
-	})
+		firebase.database().ref('/users/' + user.uid + '/signals').on('child_added', function(snapshot) {
+			
+			retrieveSignals(snapshot);
+		})
+	}
+	
 }
 
 

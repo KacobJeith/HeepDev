@@ -79,6 +79,10 @@ export const initializeFirebase = () => {
 	    setup.store.dispatch(actions.updateLoginStatus(true));
 	    database.readUserData(user);
 	    validateUser()
+	    
+	    VerifyUser()
+      	database.readUserSignals();
+      	database.downloadAssets();
 
 	    loadUserProviders()
 
@@ -87,18 +91,26 @@ export const initializeFirebase = () => {
 	    console.log("Detected no user signed in");
 	    setup.store.dispatch(actions.updateLoginStatus(false));
 
+	    checkIfInbound();
+
 	  }
 	});
 
 }
 
 export const loginUser = () => {
+	var afterLoginRoute = signinSuccessURL();
+
 	firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
 		.then(function() {
 			
 			var provider = new firebase.auth.GoogleAuthProvider();
+
+			provider.setCustomParameters({
+		        prompt: 'select_account'
+		    });
+
 			return firebase.auth().signInWithRedirect(provider);
-			// firebase.auth().signInWithPopup(provider);
 
 		})
 		.catch(function(error) {
@@ -124,7 +136,7 @@ export const firebaseAuthUI = () => {
 
         queryParameterForSignInSuccessUrl: 'signInSuccessUrl',
 
-        signInFlow: 'popup',
+        signInFlow: 'redirect',
         signInSuccessUrl: signinSuccessURL(),
         signInOptions: [
 
@@ -132,7 +144,13 @@ export const firebaseAuthUI = () => {
             provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
             requireDisplayName: true
           },
-          firebase.auth.GoogleAuthProvider.PROVIDER_ID
+          {
+		      provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+		      customParameters: {
+		        prompt: 'select_account'
+		      }
+		  }
+
         ],
 
         tosUrl: '/TermsOfService'
@@ -154,6 +172,34 @@ export const firebaseAuthUI = () => {
 		var ui = new firebaseui.auth.AuthUI(firebase.auth());
 		ui.start('#firebaseui-auth-container', uiConfig);
 	}
+}
+
+export const handleLogin = () => {
+	// if (checkMobileSafari()) {
+	// 	loginUser()
+	// } else {
+		firebaseAuthUI()
+	// }
+}
+
+const checkSafari = () => {
+
+	if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1) {
+		return true
+	} else {
+		return false
+	}
+}
+
+const checkMobileSafari = () => {
+
+	var ua = window.navigator.userAgent;
+	console.log(ua);
+	var iOS = !!ua.match(/iPad/i) || !!ua.match(/iPhone/i);
+	var webkit = !!ua.match(/WebKit/i);
+	var iOSSafari = iOS && webkit && !ua.match(/CriOS/i);
+
+	return iOSSafari
 }
 
 export const linkAccount = (newProvider) => {
@@ -270,6 +316,14 @@ const searchURL = (parameter) => {
     };
 
     return null
+}
+
+export const checkIfInbound = () => {
+
+	if (!!searchURL("actionsUID")) {
+		console.log("INBOUND");
+		loginUser()
+	}
 }
 
 
