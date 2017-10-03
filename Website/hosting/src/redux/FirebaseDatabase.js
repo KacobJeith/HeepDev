@@ -144,7 +144,7 @@ const checkGroupID = (groupID) => {
 	firebase.database().ref('/users/' + user.uid + '/groups/' + groupID).once('value', function(snapshot) {
 
 		if (snapshot.val() == null) {
-			let defaultGroup = {
+			var defaultGroup = {
 				UILocked: true,
 				assignedOffsetX: 0,
 				contentOffsetX: 0,
@@ -159,11 +159,53 @@ const checkGroupID = (groupID) => {
 
 			firebase.database().ref('/users/' + user.uid + '/groups/' + groupID).set(defaultGroup);
 
+			addPlaceIDToGroupContext(defaultGroup)
+
 		} else {
 			console.log("Already have group ", groupID, snapshot.val());
 		}
 
 	});
+}
+
+const addPlaceIDToGroupContext = (newGroupContext) => {
+	let user = firebase.auth().currentUser;
+
+	firebase.database().ref('/groups/' + newGroupContext.groupID).once('value', function(snapshot) {
+
+		if (snapshot.val() != null) {
+			newGroupContext['placeID'] = snapshot.val().placeID
+
+			console.log("adding placeID to group context", snapshot.val().placeID);
+
+			firebase.database().ref('/users/' + user.uid + '/groups/' + newGroupContext.groupID).set(newGroupContext);
+
+			addPlaceContext(snapshot.val().placeID)
+
+		} else {
+			console.log("failed to grab placeID", newGroupContext.groupID, snapshot.val());
+		}
+
+	});
+}
+
+const addPlaceContext = (placeID) => {
+
+	let user = firebase.auth().currentUser;
+
+	var defaultPlaceContext = {
+		numDevices: 0,
+		placeID: placeID,
+		radius: "100",
+		x: 100,
+		y: 100
+	}
+
+	console.log("adding place Context for", placeID);
+
+	firebase.database().ref('/users/' + user.uid + '/places/' + placeID).set(defaultPlaceContext);
+
+
 }
 
 
