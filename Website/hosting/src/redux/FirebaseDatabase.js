@@ -161,7 +161,8 @@ export const addSignal = (newName, intent) => {
   		parameters: {
   			location: {
   				city: "New York City"
-  			}
+  			},
+  			Crypto: "Bitcoin"
   		},
   		resolvedQuery: "Try chatting with me from your Google Assistant!"
   	}

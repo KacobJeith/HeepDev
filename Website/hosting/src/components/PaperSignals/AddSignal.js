@@ -123,7 +123,7 @@ class AddSignal extends React.Component {
           backgroundColor: this.state.Weather ? "#999" : "rgba(255,255,255,0)"},
         onMouseEnter: () => this.setState({Weather: true}),
         onMouseLeave: () => this.setState({Weather: false}),
-        onClick: () => {this.handleSubmit("Paper Weather", "Weather")},
+        onClick: () => {this.handleSubmit("Weather Signal", "Weather")},
         key: "WeatherContainer"
       },
       ShortsOrPantsContainer: {
@@ -131,7 +131,7 @@ class AddSignal extends React.Component {
           backgroundColor: this.state.ShortsOrPants ? "#999" : "rgba(255,255,255,0)"},
         onMouseEnter: () => this.setState({ShortsOrPants: true}),
         onMouseLeave: () => this.setState({ShortsOrPants: false}),
-        onClick: () => {this.handleSubmit("Paper Pants", "ShortsOrPants");},
+        onClick: () => {this.handleSubmit("Pants Signal", "ShortsOrPants");},
         key: "ShortsOrPantsContainer"
       },
       UmbrellaContainer: {
@@ -139,7 +139,7 @@ class AddSignal extends React.Component {
           backgroundColor: this.state.Umbrella ? "#999" : "rgba(255,255,255,0)"},
         onMouseEnter: () => this.setState({Umbrella: true}),
         onMouseLeave: () => this.setState({Umbrella: false}),
-        onClick: () => {this.handleSubmit("Paper Umbrella", "Umbrella")},
+        onClick: () => {this.handleSubmit("Umbrella Signal", "Umbrella")},
         key: "UmbrellaContainer"
       },
       TimerContainer: {
@@ -147,7 +147,7 @@ class AddSignal extends React.Component {
           backgroundColor: this.state.Timer ? "#999" : "rgba(255,255,255,0)"},
         onMouseEnter: () => this.setState({Timer: true}),
         onMouseLeave: () => this.setState({Timer: false}),
-        onClick: () => {this.handleSubmit("Paper Timer", "Timer")},
+        onClick: () => {this.handleSubmit("Timer Signal", "Timer")},
         key: "TimerContainer"
       },
       CryptoCurrencyContainer: {
@@ -155,7 +155,7 @@ class AddSignal extends React.Component {
           backgroundColor: this.state.CryptoCurrency ? "#999" : "rgba(255,255,255,0)"},
         onMouseEnter: () => this.setState({CryptoCurrency: true}),
         onMouseLeave: () => this.setState({CryptoCurrency: false}),
-        onClick: () => {this.handleSubmit("Paper Coin", "CryptoCurrency")},
+        onClick: () => {this.handleSubmit("Arrow Signal", "CryptoCurrency")},
         key: "CryptoCurrencyContainer"
       },
       NFLContainer: {
@@ -163,7 +163,7 @@ class AddSignal extends React.Component {
           backgroundColor: this.state.NFL ? "#999" : "rgba(255,255,255,0)"},
         onMouseEnter: () => this.setState({NFL: true}),
         onMouseLeave: () => this.setState({NFL: false}),
-        onClick: () => {this.handleSubmit("Paper Football", "NFL")},
+        onClick: () => {this.handleSubmit("Football Signal", "NFL")},
         key: "NFLContainer"
       },
       RocketLaunchContainer: {
@@ -171,7 +171,7 @@ class AddSignal extends React.Component {
           backgroundColor: this.state.RocketLaunch ? "#999" : "rgba(255,255,255,0)"},
         onMouseEnter: () => this.setState({RocketLaunch: true}),
         onMouseLeave: () => this.setState({RocketLaunch: false}),
-        onClick: () => {this.handleSubmit("Paper Rocket", "RocketLaunch")},
+        onClick: () => {this.handleSubmit("Rocket Signal", "RocketLaunch")},
         key: "RocketLaunchContainer"
       },
       Weather: {
