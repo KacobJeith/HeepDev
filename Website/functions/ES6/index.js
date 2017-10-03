@@ -61,7 +61,7 @@ exports.verifyUser = functions.https.onRequest((request, response) => {
 
 const processRequest = (app, uid, body) => {
 
-	switch (apiResult.metadata.intentName) {
+	switch (body.result.metadata.intentName) {
 		case "AddSignal" :
 			addSignal(app, uid, body.result);
 			break
