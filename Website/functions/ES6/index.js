@@ -14,8 +14,8 @@ exports.incoming = functions.https.onRequest((request, response) => {
 	const app = new ApiAiApp({request: request, response: response});
 	const user = app.getUser();
 
-	var apiResult = request.body.result;
-	console.log("Result: ", apiResult);
+	var body = request.body;
+	console.log("Request Body: ", body);
 
 	if (user) {
 		admin.database().ref("googleAssistantUsers/" + user.userId).once("value", function(directorySnapshot) {
@@ -23,7 +23,7 @@ exports.incoming = functions.https.onRequest((request, response) => {
 
 			if (uid) {
 
-				processRequest(app, uid, apiResult, response);
+				processRequest(app, uid, body);
 
 			} else {
 				
@@ -59,11 +59,11 @@ exports.verifyUser = functions.https.onRequest((request, response) => {
 });
 
 
-const processRequest = (app, uid, apiResult, response) => {
+const processRequest = (app, uid, body) => {
 
 	switch (apiResult.metadata.intentName) {
 		case "AddSignal" :
-			addSignal(app, uid, apiResult, response);
+			addSignal(app, uid, body.result);
 			break
 
 		case "Default Welcome Intent" :
@@ -79,14 +79,14 @@ const processRequest = (app, uid, apiResult, response) => {
 
 		default :
 
-			saveResultToSignal(app, uid, apiResult, response);
+			saveResultToSignal(app, uid, body);
 
 			break
 	}
 }
 
-const saveResultToSignal = (app, uid, apiResult, response) => {
-
+const saveResultToSignal = (app, uid, body) => {
+	var apiResult = body.result;
 	var presentSignals = [];
 	var foundFlag = false;
 	
@@ -113,6 +113,7 @@ const saveResultToSignal = (app, uid, apiResult, response) => {
 					admin.database().ref('signals/'+ signalId + "/result/parameters").set(apiResult.parameters);
 					admin.database().ref('signals/'+ signalId + "/result/metadata").set(apiResult.metadata);
 					admin.database().ref('signals/'+ signalId + "/result/resolvedQuery").set(apiResult.resolvedQuery);
+					admin.database().ref('signals/'+ signalId + "/result/timestamp").set(body.timestamp);
 
 				} else {
 
@@ -164,7 +165,7 @@ const getAllMySignals = (uid, callback) => {
 	});
 }
 
-const addSignal = (app, uid, apiResult, response) => {
+const addSignal = (app, uid, apiResult) => {
 
 	var dataToPush = {
 	  	name: apiResult.parameters.signal,
