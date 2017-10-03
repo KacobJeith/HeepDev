@@ -144,24 +144,31 @@ const getAllMySignals = (uid, callback) => {
 	
 	admin.database().ref("users/" + uid + "/signals").once("value", function(userSnapshot) {
 
-		userSnapshot.forEach( (snapChild, index, map) => {
+		if (userSnapshot.val()) {
+			
+			userSnapshot.forEach( (snapChild, index, map) => {
 
-			let signalId = snapChild.key;
+				let signalId = snapChild.key;
 
-			admin.database().ref('/signals/' + signalId).once('value').then( function(signalSnapshot) {
-				let signalFinally = signalSnapshot.val();
+				admin.database().ref('/signals/' + signalId).once('value').then( function(signalSnapshot) {
+					let signalFinally = signalSnapshot.val();
 
-				presentSignals.push(signalFinally.name);
-				
-				if (userSnapshot.numChildren() == presentSignals.length ) {
+					presentSignals.push(signalFinally.name);
+					
+					if (userSnapshot.numChildren() == presentSignals.length ) {
 
-					console.log("Found: ", presentSignals);
+						console.log("Found: ", presentSignals);
 
-					callback(presentSignals);
-				}
+						callback(presentSignals);
+					}
 
+				});
 			});
-		});
+			
+		} else {
+			callback([]);
+		}
+		
 	});
 }
 
