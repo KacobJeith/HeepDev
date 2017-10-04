@@ -97,7 +97,7 @@ export const sendParamterConfirmation = (app, apiResult, signalId) => {
 			break
 			
 		case "RocketLaunch" :
-			var customResponse = responseMessage + "Counting down to Launch!"
+			var customResponse = responseMessage + "Now tracking " + apiResult.parameters.SpaceAgency + " launches!"
 			break
 			
 		default :
