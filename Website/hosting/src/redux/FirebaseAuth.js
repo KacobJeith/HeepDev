@@ -81,8 +81,6 @@ export const initializeFirebase = () => {
 	    validateUser()
 	    
 	    VerifyUser()
-      	database.readUserSignals();
-      	database.downloadAssets();
 
 	    loadUserProviders()
 
