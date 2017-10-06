@@ -21,7 +21,7 @@ class MessageCard extends React.Component {
   }
 
   componentDidUpdate() {
-    this.image = findDOMNode(this.refs.image).getBoundingClientRect();
+    // this.image = findDOMNode(this.refs.image).getBoundingClientRect();
   }
   
   calculateParallax() {
@@ -35,13 +35,13 @@ class MessageCard extends React.Component {
 
   render() {
 
-  	var inputs = {
+    var inputs = {
       container: {
         style: {
           width: '100%',
           position: 'relative',
           backgroundColor: this.props.backgroundColor,
-          height: window.innerHeight
+          height: window.innerHeight*0.6
         }
       },
       textCard: {
@@ -52,8 +52,8 @@ class MessageCard extends React.Component {
           height: window.innerHeight*0.6
         }
       },
-  		message: {
-  			style: {
+      header: {
+        style: {
           display: 'block',
           position: 'absolute',
           top:'50%',
@@ -66,7 +66,10 @@ class MessageCard extends React.Component {
           color: '.secondary',
           font: '400 22px/45px Roboto,sans-serif',
         }
-  		},
+      },
+      headerText: {
+        font: '400 40px/90px Roboto,sans-serif'
+      },
       imageCard: {
         style: {
           backgroundImage: `url(${this.props.imagepath})`,
@@ -75,13 +78,15 @@ class MessageCard extends React.Component {
           backgroundPositionY: this.calculateParallax()
         }
       }
-  	}
+    }
 
-	return (<div {...inputs.container}>
+  return (<div {...inputs.container}>
             <div {...inputs.textCard}>
-              <div {...inputs.message}> {this.props.message} </div>
+              <div {...inputs.header}>
+                <h1 > {this.props.header}</h1>
+                <small > {this.props.message} </small>
+              </div>
             </div>
-            <div ref='image' {...inputs.imageCard}/>
           </div>
     );
   }
