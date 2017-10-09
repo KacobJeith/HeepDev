@@ -39,14 +39,17 @@ public class LoginToFirebase : MonoBehaviour, IPointerDownHandler {
 	// Track state changes of the auth object.
 	void AuthStateChanged(object sender, System.EventArgs eventArgs) {
 		if (auth.CurrentUser != user) {
+			
 			bool signedIn = user != auth.CurrentUser && auth.CurrentUser != null;
+
 			if (!signedIn && user != null) {
 				Debug.Log("Signed out " + user.UserId);
 			}
 			user = auth.CurrentUser;
+
 			if (signedIn) {
 				Debug.Log("Signed in " + user.UserId);
-//				GlobalDataStore.SetUserUID (user);
+				GlobalDataStore.SetUserUID (user.UserId);
 			}
 		}
 	}

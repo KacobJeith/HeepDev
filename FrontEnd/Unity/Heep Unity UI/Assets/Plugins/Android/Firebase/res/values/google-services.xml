@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+  <string name="firebase_database_url" translatable="false">https://heep-3cddb.firebaseio.com</string>
+  <string name="gcm_defaultSenderId" translatable="false">832186256119</string>
+  <string name="google_storage_bucket" translatable="false">heep-3cddb.appspot.com</string>
+  <string name="project_id" translatable="false">heep-3cddb</string>
+  <string name="google_api_key" translatable="false">AIzaSyCBOvg2VoAtWvsmjDeWR6Go5RmgSrDm-bU</string>
+  <string name="google_crash_reporting_api_key" translatable="false">AIzaSyCBOvg2VoAtWvsmjDeWR6Go5RmgSrDm-bU</string>
+  <string name="google_app_id" translatable="false">1:832186256119:android:498271cd954efd35</string>
+  <string name="default_web_client_id" translatable="false">832186256119-tacltnn4h4onb61bnsi1g9bf8oucvl0a.apps.googleusercontent.com</string>
+</resources>

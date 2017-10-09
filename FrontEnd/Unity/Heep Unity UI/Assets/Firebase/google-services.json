@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "832186256119",
+    "firebase_url": "https://heep-3cddb.firebaseio.com",
+    "project_id": "heep-3cddb",
+    "storage_bucket": "heep-3cddb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:832186256119:android:498271cd954efd35",
+        "android_client_info": {
+          "package_name": "com.Heep.Flow"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "832186256119-tacltnn4h4onb61bnsi1g9bf8oucvl0a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBOvg2VoAtWvsmjDeWR6Go5RmgSrDm-bU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
