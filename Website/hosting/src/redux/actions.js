@@ -1,18 +1,20 @@
 
-export const addSignal = (name) => ({
-  type: 'ADD_SIGNAL',
-  name
+export const addDevice = (deviceID, device) => ({
+  type: 'ADD_DEVICE',
+  deviceID, 
+  device
 })
 
-export const deleteSignal = (id) => ({
-	type: 'DELETE_SIGNAL', 
-	id
+export const addPlace = (placeID, place) => ({
+  type: 'ADD_PLACE',
+  placeID, 
+  place
 })
 
-export const populateSignal = (id, content) => ({
-	type: 'POP_SIGNAL',
-	id,
-  	content
+export const addGroup = (groupID, group) => ({
+  type: 'ADD_GROUP',
+  group, 
+  groupID
 })
 
 export const populateShopify = (products) => ({

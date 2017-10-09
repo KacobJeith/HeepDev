@@ -13,13 +13,13 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
     var collectionView: UICollectionView!
     
     var placeName: String = "placeholder"
-    var placeID: Int = 0
+    var placeID: String = "_"
     var groups = [Group]()
     var backgrounds = [Int: UIImageView]()
     
     private let reuseIdentifier = "Cell"
     
-    convenience init(placeID: Int, placeName: String) {
+    convenience init(placeID: String, placeName: String) {
         self.init()
         self.placeName = placeName
         self.placeID = placeID

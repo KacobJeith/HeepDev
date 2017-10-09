@@ -6,8 +6,9 @@
 //  Copyright © 2017 Heep. All rights reserved.
 //
 
-import SwiftSocket
+//import SwiftSocket
 import Foundation
+import Socket
 
 class HeepConnections {
     
@@ -18,15 +19,10 @@ class HeepConnections {
         let gateway = getWiFiGateway()
         
         let message = HAPIMemoryParser().BuildIsHeepDeviceCOP()
-        
+        print(message)
         for ip in 1...255 {
             let thisAddress = getAddress(gateway: gateway, ip: ip)
-            DispatchQueue.global().async {
-                
-                self.ConnectToHeepDevice(ipAddress: thisAddress, printErrors: false, message: message)
-                
-            }
-            
+            self.ConnectToHeepDevice(ipAddress: thisAddress, printErrors: false, message: message)
         }
     }
     
@@ -37,7 +33,7 @@ class HeepConnections {
             let thisDeviceIP = thisDevice.ipAddress
             
             let message = HAPIMemoryParser().BuildSetValueCOP(controlID: controlID, newValue: currentValue)
-            print("Sending: \(message) to Heep Device at to \(thisDeviceIP)")
+            print("Sending: \(message.map { String(format: "%02hhx", $0) }) to Heep Device at to \(thisDeviceIP)")
             self.ConnectToHeepDevice(ipAddress: thisDeviceIP, printErrors: false, message: message)
             
         }
@@ -99,44 +95,64 @@ class HeepConnections {
     }
     
     func ConnectToHeepDevice(ipAddress: String, printErrors: Bool, message: [UInt8]) {
-        
-        let client = TCPClient(address: ipAddress, port:5000)
-        
-        switch client.connect(timeout:1){
-        case .success:
-            print("successfully Connected")
+        DispatchQueue.global().async {
             
-            switch client.send(data: message) {
+            if let socket = try? Socket.create(family: .inet) {
                 
-            case .success:
-                print("Successfully sent")
+                if let _ = try? socket.connect(to: ipAddress, port: Int32(5000), timeout: 1000) {
+                    print("connected to \(ipAddress)")
+                    
+                    let messageData = NSData(bytes: message, length: message.count)
+                    try! socket.write(from: messageData)
                 
-                guard let data = client.read(1024*10) else {
-                    print("Received nothing")
-                    return
+                    var data = Data()
+                    data.count = 0
+                    
+                    if let _ = try? socket.read(into: &data) {
+                        HAPIMemoryParser().ParseROP(dump: data.map{$0}, ipAddress: ipAddress)
+                    }
+                    
+                    
+                    socket.close()
+                    
+                } else {
+                    socket.close()
                 }
                 
-                HAPIMemoryParser().ParseROP(dump: data, ipAddress: ipAddress)
-                client.close()
-            case .failure(let error):
-                if (printErrors) {
-                    print("ERROR \(error)")
-                }
             }
-        case .failure(let error):
-            if (printErrors) {
-                print("Actually errored...\(error)")
+            
+        }
+    }
+    
+    func readAndPrint(socket: Socket, data: inout Data) throws -> String? {
+        print("Trying to read")
+        
+        data.count = 0
+        let bytesRead = try socket.read(into: &data)
+        print(bytesRead)
+        
+        if bytesRead > 0 {
+            
+            print("Read \(bytesRead) from socket...")
+            
+            guard let response = NSString(data: data as Data, encoding: String.Encoding.utf8.rawValue) else {
+                
+                print("Error accessing received data...")
+                
+                return nil
             }
+            
+            print("Response:\n\(response)")
+            return String(describing: response)
         }
         
-
+        return nil
     }
     
     // Return IP address of WiFi interface (en0) as a String, or `nil`
     func getWiFiGateway() -> String {
         var address = "10.0.0.1"
         var gateway = "10.0.0"
-        
         
         // Get list of all interfaces on the local machine:
         var ifaddr : UnsafeMutablePointer<ifaddrs>?
@@ -153,7 +169,7 @@ class HeepConnections {
                 
                 // Check interface name:
                 let name = String(cString: interface.ifa_name)
-
+                
                 if  name == "en0" {
                     
                     // Convert interface address to a human readable string:
@@ -162,16 +178,22 @@ class HeepConnections {
                     getnameinfo(&addr, socklen_t(interface.ifa_addr.pointee.sa_len),
                                 &hostname, socklen_t(hostname.count),
                                 nil, socklen_t(0), NI_NUMERICHOST)
+                    
                     address = String(cString: hostname)
+                    
+                    let gatewayArray = address.characters.split(separator: ".").map(String.init)
+                    
+                    if (gatewayArray.count == 4) {
+                        gateway = gatewayArray[0...2].joined(separator: ".")
+                        break
+                    }
+                    
                 }
             }
         }
         freeifaddrs(ifaddr)
         
-        
-        let gatewayArray = address.characters.split(separator: ".").map(String.init)
-        gateway = gatewayArray[0...2].joined(separator: ".")
-        
+        print("GATEWAY: \(gateway)")
         return gateway
     }
     

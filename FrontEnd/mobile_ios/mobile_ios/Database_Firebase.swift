@@ -97,16 +97,17 @@ class database {
     }
     
     func createNewPlace() {
-        let placeID = randomNumber(inRange: 0...4000000000)
 
-        let newPlace = Place()
-        newPlace.name = "New Place"
-        newPlace.placeID = placeID
+        let newPlaceRef = ref.child("places").childByAutoId();
         
-        ref.child("places").child(String(describing: placeID)).setValue(newPlace.toDict())
+        let newPlace = Place();
+        newPlace.name = "New Place";
+        newPlace.placeID = newPlaceRef.key;
+        
+        newPlaceRef.setValue(newPlace.toDict());
         
         let newPlacePerspective = PlacePerspective()
-        newPlacePerspective.placeID = placeID
+        newPlacePerspective.placeID = newPlaceRef.key
         
         updatePlaceContext(placeContext: newPlacePerspective)
         
@@ -123,14 +124,16 @@ class database {
         
     }
     
-    func createNewGroup(placeID: Int, groupID: Int = randomNumber(inRange: 0...4000000000)) {
-    
+    func createNewGroup(placeID: String) {
+        
+        let newGroupRef = ref.child("groups").childByAutoId();
+        
         let newGroup = Group()
-        newGroup.groupID = groupID
+        newGroup.groupID = newGroupRef.key
         newGroup.placeID = placeID
         
         let newGroupContext = GroupPerspective()
-        newGroupContext.groupID = groupID
+        newGroupContext.groupID = newGroupRef.key
         newGroupContext.placeID = placeID
         
         updateGroup(group: newGroup)
@@ -247,7 +250,7 @@ class database {
         }
     }
     
-    func getPlaceContext(id: Int, completion: @escaping (PlacePerspective?) -> () ) {
+    func getPlaceContext(id: String, completion: @escaping (PlacePerspective?) -> () ) {
         
         guard let userID = Auth.auth().currentUser?.uid else {
             print("You must be logged in to perform this action")
@@ -259,9 +262,8 @@ class database {
             let value = snapshot.value as? NSDictionary
             let context = PlacePerspective()
             context.numDevices = value?["numDevices"] as? Int ?? 0
-            context.placeID = value?["placeID"] as? Int ?? 0
+            context.placeID = value?["placeID"] as? String ?? "__"
             context.radius = value?["radius"] as? Int ?? 0
-            context.realmPath = value?["realmPath"] as? String ?? "empty"
             context.x = value?["x"] as? CGFloat ?? 0
             context.y = value?["y"] as? CGFloat ?? 0
             
@@ -282,7 +284,6 @@ class database {
         ref.child("users/\(userID)/places").observeSingleEvent(of: .value, with: { (snapshot) in
             
             let enumerator = snapshot.children
-            print("NUM: \(snapshot.childrenCount)")
             
             while let child = enumerator.nextObject() as? DataSnapshot {
                 
@@ -290,11 +291,11 @@ class database {
                 
                 let context = PlacePerspective()
                 context.numDevices = value?["numDevices"] as? Int ?? 0
-                context.placeID = value?["placeID"] as? Int ?? 0
+                context.placeID = value?["placeID"] as? String ?? "__"
                 context.radius = value?["radius"] as? Int ?? 0
-                context.realmPath = value?["realmPath"] as? String ?? "empty"
                 context.x = value?["x"] as? CGFloat ?? 0
                 context.y = value?["y"] as? CGFloat ?? 0
+
                 
                 completion(context)
             }
@@ -331,7 +332,7 @@ class database {
             
             let value = snapshot.value as? NSDictionary
             let place = Place()
-            place.placeID = value?["placeID"] as? Int ?? 0
+            place.placeID = value?["placeID"] as? String ?? ""
             place.name = value?["name"] as? String ?? ""
             
             completion(place)
@@ -383,7 +384,7 @@ class database {
         }
         
         ref.child("users/\(userID)/profile").observeSingleEvent(of: .value, with: { (snapshot) in
-            
+
             let value = snapshot.value as? NSDictionary
             completion(value?["heepID"] as? Int? ?? nil)
             
@@ -504,7 +505,7 @@ class database {
         thisReference.removeAllObservers()
     }
     
-    func watchGroupPerspectivesForPlace(placeID: Int, reset: @escaping () -> (), completion: @escaping (GroupPerspective) -> ()) -> String? {
+    func watchGroupPerspectivesForPlace(placeID: String, reset: @escaping () -> (), completion: @escaping (GroupPerspective) -> ()) -> String? {
         
         guard let userID = Auth.auth().currentUser?.uid else {
             print("You must be logged in to perform this action")
@@ -522,11 +523,11 @@ class database {
                 
                 let value = child.value as? NSDictionary
                 
-                if value?["placeID"] as? Int ?? 0 == placeID {
+                if value?["placeID"] as? String ?? "_" == placeID {
                     
                     let context = GroupPerspective()
-                    context.placeID = value?["placeID"] as? Int ?? 0
-                    context.groupID = value?["groupID"] as? Int ?? 0
+                    context.placeID = value?["placeID"] as? String ?? "__"
+                    context.groupID = value?["groupID"] as? String ?? "null"
                     context.UILocked = value?["UILocked"] as? Bool ?? true
                     context.unassignedOffsetX = value? ["unassignedOffsetX"] as? CGFloat ?? 0
                     context.assignedOffsetX = value? ["assignedOffsetX"] as? CGFloat ?? 0
@@ -548,7 +549,7 @@ class database {
 
     }
     
-    func watchGroupContext(groupID: Int, completion: @escaping (GroupPerspective) -> ()) -> String? {
+    func watchGroupContext(groupID: String, completion: @escaping (GroupPerspective) -> ()) -> String? {
         
         guard let userID = Auth.auth().currentUser?.uid else {
             print("You must be logged in to perform this action")
@@ -564,8 +565,8 @@ class database {
             
             let context = GroupPerspective()
             
-            context.placeID = value?["placeID"] as? Int ?? 0
-            context.groupID = value?["groupID"] as? Int ?? 0
+            context.placeID = value?["placeID"] as? String ?? "__"
+            context.groupID = value?["groupID"] as? String ?? "null"
             context.UILocked = value?["UILocked"] as? Bool ?? true
             context.unassignedOffsetX = value? ["unassignedOffsetX"] as? CGFloat ?? 0
             context.assignedOffsetX = value? ["assignedOffsetX"] as? CGFloat ?? 0
@@ -592,9 +593,9 @@ class database {
             
             let value = snapshot.value as? NSDictionary
             let group = Group()
-            group.placeID = value?["placeID"] as? Int ?? 0
+            group.placeID = value?["placeID"] as? String ?? "__"
             group.name = value?["name"] as? String ?? "empty"
-            group.groupID = value?["groupID"] as? Int ?? 0
+            group.groupID = value?["groupID"] as? String ?? "null"
             
             completion(group)
             
@@ -612,9 +613,9 @@ class database {
             
             let value = snapshot.value as? NSDictionary
             let group = Group()
-            group.placeID = value?["placeID"] as? Int ?? 0
+            group.placeID = value?["placeID"] as? String ?? "__"
             group.name = value?["name"] as? String ?? "empty"
-            group.groupID = value?["groupID"] as? Int ?? 0
+            group.groupID = value?["groupID"] as? String ?? "null"
             
             completion(group)
             
@@ -757,14 +758,17 @@ class database {
         self.getAllMyDevices(completion: { deviceID in
             
             self.getDevice(deviceID: deviceID, reset: { }, identity: { device in
-                print(device)
                 
                 let updateDevice = Device(value: device)
                 updateDevice.active = false
                 
                 self.writeDevice(device: updateDevice)
                 
-            }, controls: {_ in }, vertices: {_ in })
+            }, controls: {_ in }, vertices: {vertex in
+                
+                database().deleteVertex(vertex: vertex)
+                
+            })
         
         })
     }
@@ -941,18 +945,17 @@ class database {
     func interpretControl(controlDict: NSDictionary? ) -> DeviceControl {
         let control = DeviceControl()
         
-        control.groupID = controlDict?["groupID"] as? Int ?? 0
+        control.groupID = controlDict?["groupID"] as? String ?? "null"
         control.controlDirection = controlDict?["controlDirection"] as? Int ?? 0
         control.controlID = controlDict?["controlID"] as? Int ?? 0
         control.controlName = controlDict?["controlName"] as? String ?? ""
         control.controlType = controlDict?["controlType"] as? Int ?? 0
         control.deviceID = controlDict?["deviceID"] as? Int ?? 0
-        control.editX = controlDict?["editX"] as? CGFloat ?? 0
-        control.editY = controlDict?["editY"] as? CGFloat ?? 0
+        control.editX = controlDict?["editX"] as? CGFloat ?? 100
+        control.editY = controlDict?["editY"] as? CGFloat ?? 100
         control.lastOnValue = controlDict?["lastOnValue"] as? Int ?? 0
         control.rotation = controlDict?["rotation"] as? CGFloat ?? 0
-        control.scale = controlDict?["scale"] as? CGFloat ?? 0
-        control.groupID = controlDict?["groupID"] as? Int ?? 0
+        control.scale = controlDict?["scale"] as? CGFloat ?? 1
         control.uniqueID = controlDict?["uniqueID"] as? Int ?? 0
         control.valueCurrent = controlDict?["lastOnValue"] as? Int ?? 0
         control.valueLow = controlDict?["valueLow"] as? Int ?? 0
@@ -971,7 +974,7 @@ class database {
         return imageView
     }
     
-    func downloadGroupImage(groupID: Int) -> UIImageView {
+    func downloadGroupImage(groupID: String) -> UIImageView {
         
         let reference = Storage.storage().reference().child("groups/\(String(describing: groupID))/background.png")
         let imageView = UIImageView()
