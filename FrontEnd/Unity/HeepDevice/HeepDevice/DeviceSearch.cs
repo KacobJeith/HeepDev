@@ -33,7 +33,8 @@ namespace Heep
 			Buffer.Add ((byte)0x09);
 
 			try{
-				HeepCommunications.SendBufferToIP (Buffer, (IPAddress)currentIP);
+				List<byte> returnedCode = HeepCommunications.SendBufferToIP (Buffer, (IPAddress)currentIP);
+				HeepParser.ParseROP(returnedCode);
 			}
 			catch(Exception e) {
 				Console.Write ("FAILED: ");

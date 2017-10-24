@@ -20,6 +20,13 @@ namespace Heep
 			return AddErrorMessageToBuffer ("Invalid Command", theDevice);
 		}
 
+		public static void ParseROP(List <byte> ROPBuffer)
+		{
+			if (ROPBuffer [0] == HeepLanguage.MemoryDumpOpCode) {
+				Console.WriteLine ("MEMORY DUMP!!!");
+			}
+		}
+
 		public static List<byte> ParseIsHeepDeviceCommand(List <byte> commandBuffer, HeepDevice theDevice)
 		{
 			return theDevice.GetMemoryDump ();
