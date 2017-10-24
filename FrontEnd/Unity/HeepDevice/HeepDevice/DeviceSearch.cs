@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.NetworkInformation; 
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Heep
 {
@@ -27,21 +28,38 @@ namespace Heep
 		private static void DeviceSearchWorker(object currentIP)
 		{
 			Console.WriteLine ((IPAddress) currentIP);
+
+			List <byte> Buffer = new List<byte>();
+			Buffer.Add ((byte)0x09);
+
+			try{
+				HeepCommunications.SendBufferToIP (Buffer, (IPAddress)currentIP);
+			}
+			catch(Exception e) {
+				Console.Write (e.Data);
+			}
 		}
 
 		public static void SearchForDevices()
 		{
 			IPAddress defaultGateway = GetDefaultGateway ();
 
-			ThreadPool.SetMaxThreads (255, 255);
+//			for (var i = 2; i <= 255; i++) {
+//				byte[] IPAddrArray = defaultGateway.GetAddressBytes ();
+//				IPAddrArray [3] = (byte)i;
+//				IPAddress theAddr = new IPAddress(IPAddrArray);
+//				Task.Factory.StartNew (() => DeviceSearchWorker (theAddr));
+//			}
 
-			for (var i = 2; i <= 255; i++) {
+			Parallel.For (2, 255, i => {
 				byte[] IPAddrArray = defaultGateway.GetAddressBytes ();
 				IPAddrArray [3] = (byte)i;
-				IPAddress theAddr = new IPAddress(IPAddrArray);
-				ThreadPool.QueueUserWorkItem (new WaitCallback(DeviceSearchWorker), theAddr);
-			}
+				IPAddress theAddr = new IPAddress (IPAddrArray);
+				DeviceSearchWorker (theAddr);
+//				Task.Factory.StartNew (() => DeviceSearchWorker (theAddr));
+			});
 		}
+			
 	}
 }
 
