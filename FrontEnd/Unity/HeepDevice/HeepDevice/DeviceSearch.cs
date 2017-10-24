@@ -36,6 +36,7 @@ namespace Heep
 				HeepCommunications.SendBufferToIP (Buffer, (IPAddress)currentIP);
 			}
 			catch(Exception e) {
+				Console.Write ("FAILED: ");
 				Console.Write (e.Data);
 			}
 		}
@@ -44,20 +45,13 @@ namespace Heep
 		{
 			IPAddress defaultGateway = GetDefaultGateway ();
 
-//			for (var i = 2; i <= 255; i++) {
-//				byte[] IPAddrArray = defaultGateway.GetAddressBytes ();
-//				IPAddrArray [3] = (byte)i;
-//				IPAddress theAddr = new IPAddress(IPAddrArray);
-//				Task.Factory.StartNew (() => DeviceSearchWorker (theAddr));
-//			}
-
-			Parallel.For (2, 255, i => {
+			for (var i = 200; i <= 220; i++) {
 				byte[] IPAddrArray = defaultGateway.GetAddressBytes ();
 				IPAddrArray [3] = (byte)i;
-				IPAddress theAddr = new IPAddress (IPAddrArray);
-				DeviceSearchWorker (theAddr);
-//				Task.Factory.StartNew (() => DeviceSearchWorker (theAddr));
-			});
+				IPAddress theAddr = new IPAddress(IPAddrArray);
+				Task.Factory.StartNew (() => DeviceSearchWorker(theAddr));
+			}
+				
 		}
 			
 	}

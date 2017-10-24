@@ -35,87 +35,91 @@ namespace MainProgram
 		public static void Main (string[] args)
 		{
 			DeviceSearch.SearchForDevices ();
-			
 
-			Console.WriteLine (HeepLanguage.AddMOPOpCode);
-
-			Console.WriteLine ("Hello World!");
-
-			TestGetNumberFromBuffer ();
-
-			List <byte> ID = new List<byte>();
-			for(byte i = 0; i < 4; i++)
-			{
-				ID.Add(i);
-			}
-
-			DeviceID myID = new DeviceID(ID);
-			HeepDevice myDevice = new HeepDevice (myID);
-			List <byte> myMem = new List<Byte> ();
-			Console.WriteLine (myMem.Count);
-			HeepLanguage.AddNameToMemory (myMem, myID, "Twilio");
-			Console.WriteLine (myMem.Count);
-			for (int i = 0; i < myMem.Count; i++) {
-				Console.Write (myMem [i] + " ");
-			}
-			Console.WriteLine ();
-
-
-			Control theControl = Control.CreateControl (Control.CtrlInputOutput.input, Control.CtrlType.OnOff, "Good");
-			myDevice.AddControl (theControl);
-
-			Control outputControl = Control.CreateControl (Control.CtrlInputOutput.output, Control.CtrlType.OnOff, "UnityOut");
-			myDevice.AddControl (outputControl);
-
-			List<byte> newOutput = myDevice.GetMemoryDump ();
-
-			for (int i = 0; i < newOutput.Count; i++) {
-				Console.Write (newOutput [i] + " ");
-			}
-			Console.WriteLine ();
-
-			byte [] IPAddrArray = {192, 168, 1, 100};
-			IPAddress theAddr = new IPAddress(IPAddrArray);
-			byte [] theArr = theAddr.GetAddressBytes ();
-			Console.WriteLine (theAddr.ToString ());
-			for (int i = 0; i < theArr.Length; i++) {
-				Console.Write (theArr [i]+".");
-			}
-			Console.WriteLine ();
-
-			myDevice.SetDeviceName ("UNITY");
-			HeepCommunications.StartHeepServer (myDevice);
-
-			byte value = 0;
 			while (true) {
-				Console.Write ("Enter something to send stuff: ");
-				String newRead = Console.ReadLine ();
-				Console.WriteLine (newRead);
-
-				myDevice.SetControlByID (1, value);
-
-				if (value == 0)
-					value = 1;
-				else
-					value = 0;
-
-//				byte [] IPAddrArraya = {192, 168, 0, 103};
-//				IPAddress theAddra = new IPAddress(IPAddrArraya);
-//				List<byte> newBuf = new List<byte>();
-//				newBuf.Add (0x0A);
-//				newBuf.Add (0x02);
-//				newBuf.Add (0x00);
-//				newBuf.Add (value);
-//				HeepCommunications.SendBufferToIP (newBuf, theAddra);
-//
-//				if (value == 0) {
-//					value = 1;
-//				}
-//				else{
-//					value = 0;
-//				}
-
+				Thread.Sleep (1000);
+				Console.WriteLine ("Still running!");
 			}
+//
+//			Console.WriteLine (HeepLanguage.AddMOPOpCode);
+//
+//			Console.WriteLine ("Hello World!");
+//
+//			TestGetNumberFromBuffer ();
+//
+//			List <byte> ID = new List<byte>();
+//			for(byte i = 0; i < 4; i++)
+//			{
+//				ID.Add(i);
+//			}
+//
+//			DeviceID myID = new DeviceID(ID);
+//			HeepDevice myDevice = new HeepDevice (myID);
+//			List <byte> myMem = new List<Byte> ();
+//			Console.WriteLine (myMem.Count);
+//			HeepLanguage.AddNameToMemory (myMem, myID, "Twilio");
+//			Console.WriteLine (myMem.Count);
+//			for (int i = 0; i < myMem.Count; i++) {
+//				Console.Write (myMem [i] + " ");
+//			}
+//			Console.WriteLine ();
+//
+//
+//			Control theControl = Control.CreateControl (Control.CtrlInputOutput.input, Control.CtrlType.OnOff, "Good");
+//			myDevice.AddControl (theControl);
+//
+//			Control outputControl = Control.CreateControl (Control.CtrlInputOutput.output, Control.CtrlType.OnOff, "UnityOut");
+//			myDevice.AddControl (outputControl);
+//
+//			List<byte> newOutput = myDevice.GetMemoryDump ();
+//
+//			for (int i = 0; i < newOutput.Count; i++) {
+//				Console.Write (newOutput [i] + " ");
+//			}
+//			Console.WriteLine ();
+//
+//			byte [] IPAddrArray = {192, 168, 1, 100};
+//			IPAddress theAddr = new IPAddress(IPAddrArray);
+//			byte [] theArr = theAddr.GetAddressBytes ();
+//			Console.WriteLine (theAddr.ToString ());
+//			for (int i = 0; i < theArr.Length; i++) {
+//				Console.Write (theArr [i]+".");
+//			}
+//			Console.WriteLine ();
+//
+//			myDevice.SetDeviceName ("UNITY");
+//			HeepCommunications.StartHeepServer (myDevice);
+//
+//			byte value = 0;
+//			while (true) {
+//				Console.Write ("Enter something to send stuff: ");
+//				String newRead = Console.ReadLine ();
+//				Console.WriteLine (newRead);
+//
+//				myDevice.SetControlByID (1, value);
+//
+//				if (value == 0)
+//					value = 1;
+//				else
+//					value = 0;
+//
+////				byte [] IPAddrArraya = {192, 168, 0, 103};
+////				IPAddress theAddra = new IPAddress(IPAddrArraya);
+////				List<byte> newBuf = new List<byte>();
+////				newBuf.Add (0x0A);
+////				newBuf.Add (0x02);
+////				newBuf.Add (0x00);
+////				newBuf.Add (value);
+////				HeepCommunications.SendBufferToIP (newBuf, theAddra);
+////
+////				if (value == 0) {
+////					value = 1;
+////				}
+////				else{
+////					value = 0;
+////				}
+//
+//			}
 		}
 			
 	}

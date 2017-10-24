@@ -40,6 +40,7 @@
     <Compile Include="HeepParser.cs" />
     <Compile Include="HeepCommunications.cs" />
     <Compile Include="DeviceSearch.cs" />
+    <Compile Include="HeepAsyncComms.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
