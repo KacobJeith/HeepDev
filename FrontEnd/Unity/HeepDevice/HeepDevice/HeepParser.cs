@@ -24,6 +24,7 @@ namespace Heep
 		{
 			if (ROPBuffer [0] == HeepLanguage.MemoryDumpOpCode) {
 				Console.WriteLine ("MEMORY DUMP!!!");
+
 			}
 		}
 

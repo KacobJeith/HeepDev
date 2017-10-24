@@ -41,6 +41,7 @@
     <Compile Include="HeepCommunications.cs" />
     <Compile Include="DeviceSearch.cs" />
     <Compile Include="HeepAsyncComms.cs" />
+    <Compile Include="HeepGlobalData.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
