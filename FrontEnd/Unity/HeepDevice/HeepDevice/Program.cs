@@ -34,6 +34,9 @@ namespace MainProgram
 
 		public static void Main (string[] args)
 		{
+			DeviceSearch.SearchForDevices ();
+			
+
 			Console.WriteLine (HeepLanguage.AddMOPOpCode);
 
 			Console.WriteLine ("Hello World!");
