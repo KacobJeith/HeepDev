@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Net;  
 using System.Net.NetworkInformation; 
 using System.Linq;
+using System.Threading;
 
 namespace Heep
 {
@@ -23,13 +24,23 @@ namespace Heep
 				.FirstOrDefault();
 		}
 
+		private static void DeviceSearchWorker(object currentIP)
+		{
+			Console.WriteLine ((IPAddress) currentIP);
+		}
+
 		public static void SearchForDevices()
 		{
-			Console.WriteLine (GetDefaultGateway ());
-//			List <byte> searchBuffer;
-			//searchBuffer.Add (0x09);
+			IPAddress defaultGateway = GetDefaultGateway ();
 
-//			HeepCommunications.SendBufferToIP(searchBuffer, 
+			ThreadPool.SetMaxThreads (255, 255);
+
+			for (var i = 2; i <= 255; i++) {
+				byte[] IPAddrArray = defaultGateway.GetAddressBytes ();
+				IPAddrArray [3] = (byte)i;
+				IPAddress theAddr = new IPAddress(IPAddrArray);
+				ThreadPool.QueueUserWorkItem (new WaitCallback(DeviceSearchWorker), theAddr);
+			}
 		}
 	}
 }
