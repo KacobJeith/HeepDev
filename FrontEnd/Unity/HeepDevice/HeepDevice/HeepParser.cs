@@ -24,8 +24,66 @@ namespace Heep
 		{
 			if (ROPBuffer [0] == HeepLanguage.MemoryDumpOpCode) {
 				Console.WriteLine ("MEMORY DUMP!!!");
-
+				ParseMemoryDump (ROPBuffer);
 			}
+		}
+
+		public static void ParseMemoryDump(List <byte> buffer)
+		{
+			int counter = 1;
+
+			DeviceID newDeviceID = HeepLanguage.GetDeviceIDFromBuffer (buffer, counter);
+			counter += newDeviceID.GetDeviceIDSize ();
+			int numBytes = HeepLanguage.GetNumberFromBuffer (buffer, counter, 1);
+			counter++;
+
+			int firmwareVersion = 0;
+
+			string deviceName = "";
+
+			List <Control> controlList;
+			List <Vertex> vertexList;
+
+			while (counter < buffer.Count) {
+				
+				if (buffer [counter] == HeepLanguage.ClientDataOpCode) {
+					
+					firmwareVersion = parseClientDataOpCode (buffer, ref counter);
+					Console.WriteLine ("Firmware Version: " + firmwareVersion);
+
+				} else if (buffer [counter] == HeepLanguage.ControlOpCode) {
+
+				} else {
+					counter++;
+				}
+			
+			}
+		}
+
+//		public static Control parseControlOpCode(List <byte> buffer, ref int counter)
+//		{
+//			Control newControl = new Control();
+//
+//			DeviceID newDeviceID = HeepLanguage.GetDeviceIDFromBuffer (buffer, counter);
+//			counter += newDeviceID.GetDeviceIDSize ();
+//			int numBytes = HeepLanguage.GetNumberFromBuffer (buffer, counter, 1);
+//			counter++;
+//
+//			return newControl;
+//		}
+
+		public static int parseClientDataOpCode(List <byte> buffer, ref int counter)
+		{
+			DeviceID newDeviceID = HeepLanguage.GetDeviceIDFromBuffer (buffer, counter);
+			counter += newDeviceID.GetDeviceIDSize ();
+
+			int numBytes = HeepLanguage.GetNumberFromBuffer (buffer, counter, 1);
+			counter++;
+
+			int firmwareversion = HeepLanguage.GetNumberFromBuffer (buffer, counter, 1);
+			counter++;
+
+			return firmwareversion;
 		}
 
 		public static List<byte> ParseIsHeepDeviceCommand(List <byte> commandBuffer, HeepDevice theDevice)
