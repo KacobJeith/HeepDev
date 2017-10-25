@@ -98,7 +98,7 @@ public class DeviceControl {
 	public string deviceID;
 	public string groupID;
 	public string valueCurrent;
-	public string uniqueID;
+	public long uniqueID;
 
 	public DeviceControl(){
 		controlDirection = "0";
@@ -108,6 +108,6 @@ public class DeviceControl {
 		deviceID = "0";
 		groupID = "empty";
 		valueCurrent = "0";
-		uniqueID = "empty";
+		uniqueID = 0;
 	}
 }

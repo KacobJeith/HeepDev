@@ -9,7 +9,7 @@ public class DevicePrefabController : MonoBehaviour {
 
 	public void loadData(DeviceControl control) {
 
-		gameObject.name = control.uniqueID;
+		gameObject.name = control.uniqueID.ToString();
 
 		Text namefield = gameObject.GetComponentsInChildren<Text> ()[0] as Text;
 		namefield.text = control.controlName;
