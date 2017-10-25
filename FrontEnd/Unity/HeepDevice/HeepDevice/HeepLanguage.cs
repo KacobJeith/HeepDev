@@ -190,15 +190,18 @@ namespace Heep
 			return bufferString;
 		}
 
-		public static DeviceID GetDeviceIDFromBuffer(List<byte> buffer, int position)
+		public static DeviceID GetDeviceIDFromBuffer(List<byte> buffer, ref int position)
 		{
 			List <byte> deviceBytes = new List<byte> ();
 
 			int numBytesInID = 4; // This will be read dynamically once we have dynamic iDs
 
 			for (int i = position; i < position + numBytesInID; i++) {
+				Console.WriteLine (deviceBytes.ToString ());
 				deviceBytes.Add (buffer [i]);
 			}
+
+			position += numBytesInID;
 
 			DeviceID retID = new DeviceID (deviceBytes);
 			return retID;

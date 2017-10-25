@@ -33,14 +33,13 @@ namespace Heep
 		{
 			int counter = 1;
 
-			DeviceID newDeviceID = HeepLanguage.GetDeviceIDFromBuffer (buffer, counter);
-			counter += newDeviceID.GetDeviceIDSize ();
+			DeviceID newDeviceID = HeepLanguage.GetDeviceIDFromBuffer (buffer, ref counter);
 			int numBytes = HeepLanguage.GetNumberFromBuffer (buffer, ref counter, 1);
 
 			int firmwareVersion = 0;
 
 			List <Control> controlList = new List<Control>();
-			//List <Vertex> vertexList = new List<Vertex>();
+			List <Vertex> vertexList = new List<Vertex>();
 
 			while (counter < buffer.Count) {
 				
@@ -59,22 +58,27 @@ namespace Heep
 					Control newControl = parseControlMOP (buffer, ref counter);
 					controlList.Add(newControl);
 
+				} else if (nextMOP == HeepLanguage.VertexOpCode) {
+					Vertex newVertex = parseVertexMOP (buffer, ref counter);
+					vertexList.Add (newVertex);
+
 				} else {
-					int numUnparsedBytes = UnwrapMOPHeader (buffer, ref counter);
-					counter += numUnparsedBytes;
+					MOPHeader header = UnwrapMOPHeader (buffer, ref counter);
+					counter += header.numBytes;
 				}
 			
 			}
 		}
 
-		public static int UnwrapMOPHeader(List <byte> buffer, ref int counter)
+		public static MOPHeader UnwrapMOPHeader(List <byte> buffer, ref int counter)
 		{
-			DeviceID newDeviceID = HeepLanguage.GetDeviceIDFromBuffer (buffer, counter);
+			DeviceID newDeviceID = HeepLanguage.GetDeviceIDFromBuffer (buffer, ref counter);
 
-			counter += newDeviceID.GetDeviceIDSize ();
 			int numBytes = HeepLanguage.GetNumberFromBuffer (buffer, ref counter, 1);
 
-			return numBytes;
+			MOPHeader header = new MOPHeader (numBytes, newDeviceID);
+
+			return header;
 		}
 
 		public static void PrintDeviceID(DeviceID deviceID) {
@@ -87,7 +91,7 @@ namespace Heep
 
 		public static Control parseControlMOP(List <byte> buffer, ref int counter)
 		{
-			int numBytes = UnwrapMOPHeader (buffer, ref counter);
+			MOPHeader header = UnwrapMOPHeader (buffer, ref counter);
 
 			int controlID = HeepLanguage.GetNumberFromBuffer (buffer, ref counter, 1);
 			int controlType = HeepLanguage.GetNumberFromBuffer (buffer, ref counter, 1);
@@ -95,12 +99,29 @@ namespace Heep
 			int lowValue = HeepLanguage.GetNumberFromBuffer (buffer, ref counter, 1);
 			int highValue = HeepLanguage.GetNumberFromBuffer (buffer, ref counter, 1);
 			int curValue = HeepLanguage.GetNumberFromBuffer (buffer, ref counter, 1);
-			string controlName = HeepLanguage.GetStringFromBuffer (buffer, ref counter, numBytes - 6);
+			string controlName = HeepLanguage.GetStringFromBuffer (buffer, ref counter, header.numBytes - 6);
 
 			Control newControl = new Control(controlID, (Heep.Control.CtrlInputOutput) controlDirection, (Heep.Control.CtrlType) controlType, highValue, lowValue, curValue, controlName);
 			Console.WriteLine ("Adding a control named: " + controlName);
 
 			return newControl;
+		}
+
+		public static Vertex parseVertexMOP(List <byte> buffer, ref int counter)
+		{
+			MOPHeader header = UnwrapMOPHeader (buffer, ref counter);
+			
+			DeviceID txID = header.deviceID;
+			DeviceID rxID = HeepLanguage.GetDeviceIDFromBuffer (buffer, ref counter);
+			int txControlID = HeepLanguage.GetNumberFromBuffer (buffer, ref counter, 1);
+			int rxControlID = HeepLanguage.GetNumberFromBuffer (buffer, ref counter, 1);
+			IPAddress rxIPAddress = HeepLanguage.GetIPAddrFromBuffer (buffer, counter);
+			counter += 4;
+
+			Vertex newVertex = new Vertex (rxID, txID, rxControlID, txControlID, rxIPAddress);
+			Console.WriteLine ("Adding a vertex named: " + newVertex.GetDestIP());
+
+			return newVertex;
 		}
 
 		public static int parseClientDataOpCode(List <byte> buffer, ref int counter)
@@ -131,10 +152,10 @@ namespace Heep
 		{
 			int counter = 1;
 			HeepLanguage.GetNumberFromBuffer (commandBuffer, ref counter, 1);
-			DeviceID txID = HeepLanguage.GetDeviceIDFromBuffer (commandBuffer, counter);
-			counter += txID.GetDeviceIDSize ();
-			DeviceID rxID = HeepLanguage.GetDeviceIDFromBuffer (commandBuffer, counter);
-			counter += rxID.GetDeviceIDSize ();
+			DeviceID txID = HeepLanguage.GetDeviceIDFromBuffer (commandBuffer, ref counter);
+//			counter += txID.GetDeviceIDSize ();
+			DeviceID rxID = HeepLanguage.GetDeviceIDFromBuffer (commandBuffer, ref counter);
+//			counter += rxID.GetDeviceIDSize ();
 			int txControl = HeepLanguage.GetNumberFromBuffer (commandBuffer, ref counter, 1);
 
 			int rxControl = HeepLanguage.GetNumberFromBuffer (commandBuffer, ref counter, 1);
@@ -182,6 +203,16 @@ namespace Heep
 			return outputBuf;
 		} 
 			
+	}
+
+	public class MOPHeader {
+		public int numBytes;
+		public DeviceID deviceID;
+
+		public MOPHeader(int numBytes, DeviceID deviceID) {
+
+		}
+
 	}
 }
 
