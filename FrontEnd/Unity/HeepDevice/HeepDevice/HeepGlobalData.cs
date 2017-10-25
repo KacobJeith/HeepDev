@@ -12,7 +12,7 @@ namespace Heep
 		public List<Place> places = new List<Place>();
 		public List<Group> groups = new List<Group>();
 		public List<HeepDevice> devices = new List<HeepDevice>();
-		public List<Control> controls = new List<Control> ();
+		public List<UnityControl> controls = new List<UnityControl> ();
 
 		public string activePlace = "null";
 		public string activeGroup = "null";
@@ -45,6 +45,19 @@ namespace Heep
 			placeID = "empty";
 			groupID = "empty";
 		}
+	}
+
+	public class UnityControl : Control {
+
+		public string groupID;
+		public string deviceID;
+
+		public UnityControl(int controlID, CtrlInputOutput controlDirection, CtrlType controlType, int highValue, int lowValue, int curValue, String ControlName) 
+			: base(controlID, controlDirection, controlType, highValue, lowValue, curValue, ControlName) 
+		{
+			
+		}
+
 	}
 }
 

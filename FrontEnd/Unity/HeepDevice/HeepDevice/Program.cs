@@ -26,7 +26,9 @@ namespace MainProgram
 			}
 			Console.WriteLine ();
 
-			int foundNum = HeepLanguage.GetNumberFromBuffer (buffer, 0, 2);
+			int position = 0;
+
+			int foundNum = HeepLanguage.GetNumberFromBuffer (buffer, ref position, 2);
 			Console.Write ("Found Num: ");
 			Console.WriteLine (foundNum);
 

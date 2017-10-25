@@ -158,7 +158,7 @@ namespace Heep
 			return buffer;
 		}
 
-		public static int GetNumberFromBuffer(List <byte> buffer, int position, int length)
+		public static int GetNumberFromBuffer(List <byte> buffer, ref int position, int length)
 		{
 			int number = 0;
 
@@ -167,7 +167,10 @@ namespace Heep
 				int curNum = buffer[position + i];
 
 				number += curNum << (8 * (length-i-1));
+
 			}
+
+			position += length;
 
 			return number;
 		}

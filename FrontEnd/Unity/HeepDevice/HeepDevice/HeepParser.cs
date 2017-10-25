@@ -34,15 +34,14 @@ namespace Heep
 
 			DeviceID newDeviceID = HeepLanguage.GetDeviceIDFromBuffer (buffer, counter);
 			counter += newDeviceID.GetDeviceIDSize ();
-			int numBytes = HeepLanguage.GetNumberFromBuffer (buffer, counter, 1);
-			counter++;
+			int numBytes = HeepLanguage.GetNumberFromBuffer (buffer, ref counter, 1);
 
 			int firmwareVersion = 0;
 
 			string deviceName = "";
 
-			List <Control> controlList;
-			List <Vertex> vertexList;
+			List <Control> controlList = new List<Control>();
+			List <Vertex> vertexList = new List<Vertex>();
 
 			while (counter < buffer.Count) {
 				
@@ -53,6 +52,9 @@ namespace Heep
 
 				} else if (buffer [counter] == HeepLanguage.ControlOpCode) {
 
+					parseControlOpCode (buffer, ref counter);
+					//controlList.Add(newControl);
+
 				} else {
 					counter++;
 				}
@@ -60,28 +62,30 @@ namespace Heep
 			}
 		}
 
-//		public static Control parseControlOpCode(List <byte> buffer, ref int counter)
-//		{
-//			Control newControl = new Control();
-//
-//			DeviceID newDeviceID = HeepLanguage.GetDeviceIDFromBuffer (buffer, counter);
-//			counter += newDeviceID.GetDeviceIDSize ();
-//			int numBytes = HeepLanguage.GetNumberFromBuffer (buffer, counter, 1);
-//			counter++;
-//
-//			return newControl;
-//		}
-
-		public static int parseClientDataOpCode(List <byte> buffer, ref int counter)
+		public static int UnwrapMOPHeader(List <byte> buffer, ref int counter)
 		{
 			DeviceID newDeviceID = HeepLanguage.GetDeviceIDFromBuffer (buffer, counter);
 			counter += newDeviceID.GetDeviceIDSize ();
+			int numBytes = HeepLanguage.GetNumberFromBuffer (buffer, ref counter, 1);
 
-			int numBytes = HeepLanguage.GetNumberFromBuffer (buffer, counter, 1);
-			counter++;
+			return numBytes;
+		}
 
-			int firmwareversion = HeepLanguage.GetNumberFromBuffer (buffer, counter, 1);
-			counter++;
+		public static void parseControlOpCode(List <byte> buffer, ref int counter)
+		{
+			//Control newControl = new Control();
+			int numBytes = UnwrapMOPHeader (buffer, ref counter);
+			int controlID = HeepLanguage.GetNumberFromBuffer (buffer, ref counter, 1);
+
+			//return newControl;
+		}
+
+		public static int parseClientDataOpCode(List <byte> buffer, ref int counter)
+		{
+
+			int numBytes = UnwrapMOPHeader (buffer, ref counter);
+
+			int firmwareversion = HeepLanguage.GetNumberFromBuffer (buffer, ref counter, 1);
 
 			return firmwareversion;
 		}
@@ -103,16 +107,15 @@ namespace Heep
 		public static List<byte> ParseSetVertexCommand(List <byte> commandBuffer, HeepDevice theDevice)
 		{
 			int counter = 1;
-			int numBytes = HeepLanguage.GetNumberFromBuffer (commandBuffer, counter, 1);
-			counter++;
+			int numBytes = HeepLanguage.GetNumberFromBuffer (commandBuffer, ref counter, 1);
 			DeviceID txID = HeepLanguage.GetDeviceIDFromBuffer (commandBuffer, counter);
 			counter += txID.GetDeviceIDSize ();
 			DeviceID rxID = HeepLanguage.GetDeviceIDFromBuffer (commandBuffer, counter);
 			counter += rxID.GetDeviceIDSize ();
-			int txControl = HeepLanguage.GetNumberFromBuffer (commandBuffer, counter, 1);
-			counter++;
-			int rxControl = HeepLanguage.GetNumberFromBuffer (commandBuffer, counter, 1);
-			counter++;
+			int txControl = HeepLanguage.GetNumberFromBuffer (commandBuffer, ref counter, 1);
+
+			int rxControl = HeepLanguage.GetNumberFromBuffer (commandBuffer, ref counter, 1);
+
 			IPAddress destIP = HeepLanguage.GetIPAddrFromBuffer (commandBuffer, counter);
 
 			Vertex newVertex = new Vertex (rxID, txID, rxControl, txControl, destIP);
