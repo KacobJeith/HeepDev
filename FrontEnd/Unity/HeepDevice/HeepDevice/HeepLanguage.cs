@@ -175,6 +175,21 @@ namespace Heep
 			return number;
 		}
 
+		public static string GetStringFromBuffer(List <byte> buffer, ref int position, int length)
+		{
+			char[] chars = new char[length];
+
+			for(int i = 0; i < length; i++)
+			{
+				chars[i] = (char) buffer[position + i];
+			}
+
+			string bufferString = new string (chars);
+			position += length;
+
+			return bufferString;
+		}
+
 		public static DeviceID GetDeviceIDFromBuffer(List<byte> buffer, int position)
 		{
 			List <byte> deviceBytes = new List<byte> ();

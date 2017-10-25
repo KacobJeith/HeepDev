@@ -52,8 +52,8 @@ namespace Heep
 
 				} else if (buffer [counter] == HeepLanguage.ControlOpCode) {
 
-					parseControlOpCode (buffer, ref counter);
-					//controlList.Add(newControl);
+					Control newControl = parseControlOpCode (buffer, ref counter);
+					controlList.Add(newControl);
 
 				} else {
 					counter++;
@@ -71,13 +71,21 @@ namespace Heep
 			return numBytes;
 		}
 
-		public static void parseControlOpCode(List <byte> buffer, ref int counter)
+		public static Control parseControlOpCode(List <byte> buffer, ref int counter)
 		{
-			//Control newControl = new Control();
 			int numBytes = UnwrapMOPHeader (buffer, ref counter);
-			int controlID = HeepLanguage.GetNumberFromBuffer (buffer, ref counter, 1);
 
-			//return newControl;
+			int controlID = HeepLanguage.GetNumberFromBuffer (buffer, ref counter, 1);
+			int controlType = HeepLanguage.GetNumberFromBuffer (buffer, ref counter, 1);
+			int controlDirection = HeepLanguage.GetNumberFromBuffer (buffer, ref counter, 1);
+			int lowValue = HeepLanguage.GetNumberFromBuffer (buffer, ref counter, 1);
+			int highValue = HeepLanguage.GetNumberFromBuffer (buffer, ref counter, 1);
+			int curValue = HeepLanguage.GetNumberFromBuffer (buffer, ref counter, 1);
+			string controlName = HeepLanguage.GetStringFromBuffer (buffer, ref counter, numBytes - 6);
+
+			Control newControl = new Control(controlID, (Heep.Control.CtrlInputOutput) controlDirection, (Heep.Control.CtrlType) controlType, highValue, lowValue, curValue, controlName);
+
+			return newControl;
 		}
 
 		public static int parseClientDataOpCode(List <byte> buffer, ref int counter)
