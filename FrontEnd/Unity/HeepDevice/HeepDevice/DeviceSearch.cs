@@ -46,7 +46,7 @@ namespace Heep
 		{
 			IPAddress defaultGateway = GetDefaultGateway ();
 
-			for (var i = 20; i <= 31; i++) {
+			for (var i = 28; i <= 31; i++) {
 				byte[] IPAddrArray = defaultGateway.GetAddressBytes ();
 				IPAddrArray [3] = (byte)i;
 				IPAddress theAddr = new IPAddress(IPAddrArray);

@@ -197,13 +197,14 @@ namespace Heep
 			int numBytesInID = 4; // This will be read dynamically once we have dynamic iDs
 
 			for (int i = position; i < position + numBytesInID; i++) {
-				Console.WriteLine (deviceBytes.ToString ());
+				
 				deviceBytes.Add (buffer [i]);
 			}
 
 			position += numBytesInID;
 
 			DeviceID retID = new DeviceID (deviceBytes);
+
 			return retID;
 		}
 

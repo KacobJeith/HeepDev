@@ -33,9 +33,7 @@ namespace Heep
 		{
 			int counter = 1;
 
-			DeviceID newDeviceID = HeepLanguage.GetDeviceIDFromBuffer (buffer, ref counter);
-			int numBytes = HeepLanguage.GetNumberFromBuffer (buffer, ref counter, 1);
-
+			MOPHeader memoryDumpHeader = UnwrapMOPHeader (buffer, ref counter);
 			int firmwareVersion = 0;
 
 			List <Control> controlList = new List<Control>();
@@ -75,7 +73,6 @@ namespace Heep
 			DeviceID newDeviceID = HeepLanguage.GetDeviceIDFromBuffer (buffer, ref counter);
 
 			int numBytes = HeepLanguage.GetNumberFromBuffer (buffer, ref counter, 1);
-
 			MOPHeader header = new MOPHeader (numBytes, newDeviceID);
 
 			return header;
@@ -99,6 +96,7 @@ namespace Heep
 			int lowValue = HeepLanguage.GetNumberFromBuffer (buffer, ref counter, 1);
 			int highValue = HeepLanguage.GetNumberFromBuffer (buffer, ref counter, 1);
 			int curValue = HeepLanguage.GetNumberFromBuffer (buffer, ref counter, 1);
+
 			string controlName = HeepLanguage.GetStringFromBuffer (buffer, ref counter, header.numBytes - 6);
 
 			Control newControl = new Control(controlID, (Heep.Control.CtrlInputOutput) controlDirection, (Heep.Control.CtrlType) controlType, highValue, lowValue, curValue, controlName);
@@ -153,9 +151,7 @@ namespace Heep
 			int counter = 1;
 			HeepLanguage.GetNumberFromBuffer (commandBuffer, ref counter, 1);
 			DeviceID txID = HeepLanguage.GetDeviceIDFromBuffer (commandBuffer, ref counter);
-//			counter += txID.GetDeviceIDSize ();
 			DeviceID rxID = HeepLanguage.GetDeviceIDFromBuffer (commandBuffer, ref counter);
-//			counter += rxID.GetDeviceIDSize ();
 			int txControl = HeepLanguage.GetNumberFromBuffer (commandBuffer, ref counter, 1);
 
 			int rxControl = HeepLanguage.GetNumberFromBuffer (commandBuffer, ref counter, 1);
@@ -209,8 +205,9 @@ namespace Heep
 		public int numBytes;
 		public DeviceID deviceID;
 
-		public MOPHeader(int numBytes, DeviceID deviceID) {
-
+		public MOPHeader(int _numBytes, DeviceID _deviceID) {
+			numBytes = _numBytes;
+			deviceID = _deviceID;
 		}
 
 	}
