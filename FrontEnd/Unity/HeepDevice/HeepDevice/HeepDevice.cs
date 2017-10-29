@@ -48,6 +48,7 @@ namespace Heep
 		{
 			vertices.Add (newVertex);
 			HeepLanguage.AddVertexToMemory (deviceMemory, newVertex);
+			NonVolatileData.WriteMemoryToFile (deviceMemory);
 		}
 
 		public void SetControlByID(int ID, int newValue)
@@ -99,6 +100,7 @@ namespace Heep
 		public void SetDeviceName(String name)
 		{
 			HeepLanguage.AddNameToMemory (deviceMemory, myID, name);
+			NonVolatileData.WriteMemoryToFile (deviceMemory);
 		}
 
 		public List <byte> GetMemoryDump()

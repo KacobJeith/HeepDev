@@ -89,7 +89,7 @@ namespace MainProgram
 
 			myDevice.SetDeviceName ("UNITY");
 
-			NonVolatileData.WriteMemoryToFile (myDevice.GetMemoryDump ());
+			//NonVolatileData.WriteMemoryToFile (myDevice.GetMemoryDump ());
 			List <Byte> curMemory = NonVolatileData.ReadMemoryFromFile ();
 
 			List <Byte> MemDump = myDevice.GetMemoryDump ();
