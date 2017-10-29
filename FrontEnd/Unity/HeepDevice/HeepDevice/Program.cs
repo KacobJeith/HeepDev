@@ -90,6 +90,21 @@ namespace MainProgram
 			myDevice.SetDeviceName ("UNITY");
 
 			NonVolatileData.WriteMemoryToFile (myDevice.GetMemoryDump ());
+			List <Byte> curMemory = NonVolatileData.ReadMemoryFromFile ();
+
+			List <Byte> MemDump = myDevice.GetMemoryDump ();
+
+			for (int i = 0; i < MemDump.Count; i++) {
+				Console.Write (MemDump [i]);
+				Console.Write (" ");
+			}
+			Console.WriteLine ();
+
+			for (int i = 0; i < curMemory.Count; i++) {
+				Console.Write (curMemory [i]);
+				Console.Write (" ");
+			}
+			Console.WriteLine ();
 
 //			HeepCommunications.StartHeepServer (myDevice);
 //
