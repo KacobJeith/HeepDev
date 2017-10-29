@@ -10,12 +10,12 @@ namespace Heep
 		public static void WriteMemoryToFile(List<Byte> memory)
 		{
 			// Create a file to write to.
-			File.WriteAllBytes ("", memory.ToArray ());
+			File.WriteAllBytes ("DeviceMemory.bin", memory.ToArray ());
 		}
 
 		public static List<Byte> ReadMemoryFromFile()
 		{
-			byte [] memArr = File.ReadAllBytes ("");
+			byte [] memArr = File.ReadAllBytes ("DeviceMemory.bin");
 			return new List<Byte> (memArr);
 		}
 	}
