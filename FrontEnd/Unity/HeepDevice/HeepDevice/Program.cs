@@ -34,16 +34,16 @@ namespace MainProgram
 
 		public static void Main (string[] args)
 		{
-			DeviceSearch.SearchForDevices ();
-
-			while (true) {
-				Thread.Sleep (1000);
-				Console.WriteLine ("Still running!");
-			}
+//			DeviceSearch.SearchForDevices ();
+//
+//			while (true) {
+//				Thread.Sleep (1000);
+//				Console.WriteLine ("Still running!");
+//			}
 //
 //			Console.WriteLine (HeepLanguage.AddMOPOpCode);
 //
-//			Console.WriteLine ("Hello World!");
+			Console.WriteLine ("Hello World!");
 //
 //			TestGetNumberFromBuffer ();
 //
