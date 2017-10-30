@@ -191,13 +191,13 @@ namespace Heep
 
 	public class Control
 	{
-		int _controlID;
-		int _controlDirection;
-		int _controlType;
-		int _highValue;
-		int _lowValue;
-		int _curValue;
-		String _controlName;
+		protected int _controlID;
+		protected int _controlDirection;
+		protected int _controlType;
+		protected int _highValue;
+		protected int _lowValue;
+		protected int _curValue;
+		protected String _controlName;
 
 		public enum CtrlInputOutput : int {input = 0, output = 1}; 
 		public enum CtrlType : int {OnOff = 0, range = 1};

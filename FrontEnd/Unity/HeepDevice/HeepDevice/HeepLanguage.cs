@@ -158,7 +158,7 @@ namespace Heep
 			return buffer;
 		}
 
-		public static int GetNumberFromBuffer(List <byte> buffer, int position, int length)
+		public static int GetNumberFromBuffer(List <byte> buffer, ref int position, int length)
 		{
 			int number = 0;
 
@@ -167,22 +167,44 @@ namespace Heep
 				int curNum = buffer[position + i];
 
 				number += curNum << (8 * (length-i-1));
+
 			}
+
+			position += length;
 
 			return number;
 		}
 
-		public static DeviceID GetDeviceIDFromBuffer(List<byte> buffer, int position)
+		public static string GetStringFromBuffer(List <byte> buffer, ref int position, int length)
+		{
+			char[] chars = new char[length];
+
+			for(int i = 0; i < length; i++)
+			{
+				chars[i] = (char) buffer[position + i];
+			}
+
+			string bufferString = new string (chars);
+			position += length;
+
+			return bufferString;
+		}
+
+		public static DeviceID GetDeviceIDFromBuffer(List<byte> buffer, ref int position)
 		{
 			List <byte> deviceBytes = new List<byte> ();
 
 			int numBytesInID = 4; // This will be read dynamically once we have dynamic iDs
 
 			for (int i = position; i < position + numBytesInID; i++) {
+				
 				deviceBytes.Add (buffer [i]);
 			}
 
+			position += numBytesInID;
+
 			DeviceID retID = new DeviceID (deviceBytes);
+
 			return retID;
 		}
 
