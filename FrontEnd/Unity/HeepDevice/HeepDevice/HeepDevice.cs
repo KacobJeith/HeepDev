@@ -110,6 +110,11 @@ namespace Heep
 
 			return memDumpOutput;
 		}
+
+		public void LoadDeviceMemoryFromFile()
+		{
+			deviceMemory = NonVolatileData.ReadMemoryFromFile ();
+		}
 	}
 
 	public class DeviceID
