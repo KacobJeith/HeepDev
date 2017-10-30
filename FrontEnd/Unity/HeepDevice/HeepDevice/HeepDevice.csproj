@@ -43,6 +43,7 @@
     <Compile Include="HeepAsyncComms.cs" />
     <Compile Include="HeepGlobalData.cs" />
     <Compile Include="NonVolatileData.cs" />
+    <Compile Include="HeepUnitTests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
