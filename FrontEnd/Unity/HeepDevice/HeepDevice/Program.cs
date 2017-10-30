@@ -108,6 +108,9 @@ namespace MainProgram
 			}
 			Console.WriteLine ();
 
+			int counter = 1;
+			Console.WriteLine(HeepParser.parseDeviceNameMOP(curMemory, ref counter));
+
 //			HeepCommunications.StartHeepServer (myDevice);
 //
 //			byte value = 0;

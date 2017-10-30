@@ -36,6 +36,7 @@ namespace Heep
 			MOPHeader memoryDumpHeader = UnwrapMOPHeader (buffer, ref counter);
 			int firmwareVersion = 0;
 
+			String Devicename = "";
 			List <Control> controlList = new List<Control>();
 			List <Vertex> vertexList = new List<Vertex>();
 
@@ -54,13 +55,16 @@ namespace Heep
 				} else if (nextMOP == HeepLanguage.ControlOpCode) {
 
 					Control newControl = parseControlMOP (buffer, ref counter);
-					controlList.Add(newControl);
+					controlList.Add (newControl);
 
 				} else if (nextMOP == HeepLanguage.VertexOpCode) {
 					Vertex newVertex = parseVertexMOP (buffer, ref counter);
 					vertexList.Add (newVertex);
 
-				} else {
+				} else if (nextMOP == HeepLanguage.DeviceNameOpCode) {
+					Devicename = parseDeviceNameMOP (buffer, ref counter);
+				}
+				else {
 					MOPHeader header = UnwrapMOPHeader (buffer, ref counter);
 					counter += header.numBytes;
 				}
@@ -84,6 +88,13 @@ namespace Heep
 				Console.Write (deviceID.GetIDArray () [i] + " ");
 			}
 			Console.WriteLine ();
+		}
+
+		public static String parseDeviceNameMOP(List <byte> buffer, ref int counter)
+		{
+			MOPHeader header = UnwrapMOPHeader (buffer, ref counter);
+			Console.WriteLine (header.numBytes);
+			return HeepLanguage.GetStringFromBuffer(buffer, ref counter, header.numBytes);
 		}
 
 		public static Control parseControlMOP(List <byte> buffer, ref int counter)
