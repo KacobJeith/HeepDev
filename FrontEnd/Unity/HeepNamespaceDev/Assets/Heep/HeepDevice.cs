@@ -149,6 +149,25 @@ namespace Heep
 			return defaultIDSize;
 		}
 
+		public static bool operator ==(DeviceID id1, DeviceID id2)
+		{
+			if (id1.GetDeviceIDSize () != id2.GetDeviceIDSize ()) {
+				return false;
+			}
+
+			for (int i = 0; i < id1.GetDeviceIDSize (); i++) {
+				if (id1.GetIDArray () [i] != id2.GetIDArray () [i])
+					return false;
+			}
+
+			return true;
+		}
+
+		public static bool operator !=(DeviceID id1, DeviceID id2)
+		{
+			return !(id1 == id2);
+		}
+
 	}
 
 	public class Vertex

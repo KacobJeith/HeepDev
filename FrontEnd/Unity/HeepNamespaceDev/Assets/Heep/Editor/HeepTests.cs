@@ -100,7 +100,7 @@ public class HeepTests  {
 		DeviceID rxID = new DeviceID (rxIDArray);
 
 		List <byte> txIDArray = new List<byte> ();
-		for (int i = 0; i < DeviceID.GetDefaultIDSize (); i++) {
+		for (int i = 10; i < DeviceID.GetDefaultIDSize () + 10; i++) {
 			txIDArray.Add ((byte)i);
 		}
 		DeviceID txID = new DeviceID (txIDArray);
@@ -122,6 +122,24 @@ public class HeepTests  {
 
 		Assert.AreEqual (rxAddr, parsedVertex.GetDestIP ());
 
+	}
+
+	[Test]
+	public static void TestDeviceIDEqualOperator()
+	{
+		List <byte> idArr1 = new List<byte> ();
+		for (int i = 0; i < DeviceID.GetDefaultIDSize (); i++) {
+			idArr1.Add ((byte)i);
+		}
+		DeviceID id1 = new DeviceID (idArr1);
+
+		List <byte> idArr2 = new List<byte> ();
+		for (int i = 0; i < DeviceID.GetDefaultIDSize (); i++) {
+			idArr2.Add ((byte)i);
+		}
+		DeviceID id2 = new DeviceID (idArr2);
+
+		Assert.IsTrue (id1 == id2);
 	}
 
 }
