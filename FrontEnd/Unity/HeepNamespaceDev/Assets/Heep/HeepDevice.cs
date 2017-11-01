@@ -75,7 +75,7 @@ namespace Heep
 		{
 			
 			// Send the current value of the control
-			if (toSend.GetControlDirection () == (int)Control.CtrlInputOutput.output) {
+			if (toSend.GetControlDirection () == Control.CtrlInputOutput.output) {
 				for (int i = 0; i < vertices.Count; i++) {
 					if (vertices [i].GetTXControlID() == toSend.GetID ()) {
 						List <byte> sendBuffer = HeepLanguage.GetSetValCOPBuffer (vertices [i].GetRXControlID (), toSend.GetCurValue ());
@@ -191,22 +191,22 @@ namespace Heep
 
 	public class Control
 	{
+		public enum CtrlInputOutput : int {input = 0, output = 1}; 
+		public enum CtrlType : int {OnOff = 0, range = 1};
+
 		protected int _controlID;
-		protected int _controlDirection;
-		protected int _controlType;
+		protected CtrlInputOutput _controlDirection;
+		protected CtrlType _controlType;
 		protected int _highValue;
 		protected int _lowValue;
 		protected int _curValue;
 		protected String _controlName;
 
-		public enum CtrlInputOutput : int {input = 0, output = 1}; 
-		public enum CtrlType : int {OnOff = 0, range = 1};
-
 		public Control(int controlID, CtrlInputOutput controlDirection, CtrlType controlType, int highValue, int lowValue, int curValue, String ControlName)
 		{
 			_controlID = controlID;
-			_controlDirection = (int)controlDirection;
-			_controlType = (int)controlType;
+			_controlDirection = controlDirection;
+			_controlType = controlType;
 			_highValue = highValue;
 			_lowValue = lowValue;
 			_curValue = curValue;
@@ -258,12 +258,12 @@ namespace Heep
 			return _controlName;
 		}
 
-		public int GetControlType()
+		public CtrlType GetControlType()
 		{
 			return _controlType;
 		}
 
-		public int GetControlDirection()
+		public CtrlInputOutput GetControlDirection()
 		{
 			return _controlDirection;
 		}

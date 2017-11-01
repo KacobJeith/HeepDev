@@ -57,4 +57,36 @@ public class HeepTests  {
 		Assert.AreEqual (11, counter);
 	}
 
+	[Test]
+	public static void TestParseControl()
+	{
+		List <byte> controlTest = new List<byte> ();
+		controlTest.Add (0x02);
+		controlTest.Add (0x01);
+		controlTest.Add (0x02);
+		controlTest.Add (0x03);
+		controlTest.Add (0x04);
+		controlTest.Add (0x09); // Num Bytes
+		controlTest.Add (0xEA); // Control ID
+		controlTest.Add ((byte)Control.CtrlType.range); // Control Type
+		controlTest.Add ((byte)Control.CtrlInputOutput.output); // Control Direction
+		controlTest.Add (0x02); // Low Value
+		controlTest.Add (0x10); // High Value
+		controlTest.Add (0x06); // Current Value
+		controlTest.Add ((byte)'F'); // Name
+		controlTest.Add ((byte)'u'); // Name
+		controlTest.Add ((byte)'n'); // Name
+
+		int counter = 1;
+		Control newControl = HeepParser.parseControlMOP (controlTest, ref counter);
+
+		Assert.AreEqual ("Fun", newControl.GetName ());
+		Assert.AreEqual (0x02, newControl.GetLowValue ());
+		Assert.AreEqual (0x10, newControl.GetHighValue ());
+		Assert.AreEqual (0x06, newControl.GetCurValue ());
+		Assert.AreEqual (Control.CtrlType.range, newControl.GetControlType ());
+		Assert.AreEqual (Control.CtrlInputOutput.output, newControl.GetControlDirection ());
+		Assert.AreEqual (0xEA, newControl.GetID ());
+	}
+
 }
