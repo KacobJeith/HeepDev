@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
+using System.Net;
 
 using Heep;
 
@@ -87,6 +88,40 @@ public class HeepTests  {
 		Assert.AreEqual (Control.CtrlType.range, newControl.GetControlType ());
 		Assert.AreEqual (Control.CtrlInputOutput.output, newControl.GetControlDirection ());
 		Assert.AreEqual (0xEA, newControl.GetID ());
+	}
+
+	[Test]
+	public static void TestParseVertex()
+	{
+		List <byte> rxIDArray = new List<byte> ();
+		for (int i = 0; i < DeviceID.GetDefaultIDSize (); i++) {
+			rxIDArray.Add ((byte)i);
+		}
+		DeviceID rxID = new DeviceID (rxIDArray);
+
+		List <byte> txIDArray = new List<byte> ();
+		for (int i = 0; i < DeviceID.GetDefaultIDSize (); i++) {
+			txIDArray.Add ((byte)i);
+		}
+		DeviceID txID = new DeviceID (txIDArray);
+
+		byte [] IPArray = {192, 168, 1, 102};
+		IPAddress rxAddr = new IPAddress (IPArray);
+
+		List <byte> vertexTest = new List<byte> ();
+		vertexTest.Add (HeepLanguage.VertexOpCode);
+		HeepLanguage.AddDeviceIDToMemory (vertexTest, txID);
+		vertexTest.Add (0x0A);
+		HeepLanguage.AddDeviceIDToMemory (vertexTest, rxID);
+		vertexTest.Add (0x0F); // Control ID TX
+		vertexTest.Add (0xa2); // Control ID RX
+		HeepLanguage.AddIPAddressToBuffer (vertexTest, rxAddr);
+
+		int counter = 1;
+		Vertex parsedVertex = HeepParser.parseVertexMOP (vertexTest, ref counter);
+
+		Assert.AreEqual (rxAddr, parsedVertex.GetDestIP ());
+
 	}
 
 }

@@ -122,6 +122,8 @@ namespace Heep
 		List<byte> theID;
 		private int DeviceIDSize = 4;
 
+		private static int defaultIDSize = 4;
+
 		public DeviceID(List <byte> newID)
 		{
 			theID = newID;
@@ -140,6 +142,11 @@ namespace Heep
 		public int GetDeviceIDSize()
 		{
 			return DeviceIDSize;
+		}
+
+		public static int GetDefaultIDSize()
+		{
+			return defaultIDSize;
 		}
 
 	}
