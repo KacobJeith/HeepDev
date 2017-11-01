@@ -121,7 +121,10 @@ public class HeepTests  {
 		Vertex parsedVertex = HeepParser.parseVertexMOP (vertexTest, ref counter);
 
 		Assert.AreEqual (rxAddr, parsedVertex.GetDestIP ());
-
+		Assert.AreEqual (0x0F, parsedVertex.GetTXControlID ());
+		Assert.AreEqual (0xa2, parsedVertex.GetRXControlID ());
+		Assert.IsTrue (parsedVertex.GetRXID () == rxID);
+		Assert.IsTrue (parsedVertex.GetTXID () == txID);
 	}
 
 	[Test]
