@@ -220,6 +220,13 @@ namespace Heep
 
 			return theIP;
 		}
+
+		public static void AddIPAddressToBuffer(List <byte> buffer, IPAddress address)
+		{
+			for (int i = 0; i < 4; i++) {
+				buffer.Add (address.GetAddressBytes()[i]);
+			}
+		}
 	}
 }
 

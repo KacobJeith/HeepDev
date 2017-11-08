@@ -114,31 +114,31 @@
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
  </Reference>
  <Reference Include="Firebase.Analytics">
- <HintPath>/Users/dylan/Documents/Heep/UnityExperiments/DevicesScene/Assets/FirebaseAssetPackage/Firebase/Plugins/Firebase.Analytics.dll</HintPath>
+ <HintPath>/Users/dylan/Documents/Heep/heepdev/FrontEnd/Unity/DevicesScene/Assets/FirebaseAssetPackage/Firebase/Plugins/Firebase.Analytics.dll</HintPath>
  </Reference>
  <Reference Include="Firebase.App">
- <HintPath>/Users/dylan/Documents/Heep/UnityExperiments/DevicesScene/Assets/FirebaseAssetPackage/Firebase/Plugins/Firebase.App.dll</HintPath>
+ <HintPath>/Users/dylan/Documents/Heep/heepdev/FrontEnd/Unity/DevicesScene/Assets/FirebaseAssetPackage/Firebase/Plugins/Firebase.App.dll</HintPath>
  </Reference>
  <Reference Include="Firebase.Auth">
- <HintPath>/Users/dylan/Documents/Heep/UnityExperiments/DevicesScene/Assets/FirebaseAssetPackage/Firebase/Plugins/Firebase.Auth.dll</HintPath>
+ <HintPath>/Users/dylan/Documents/Heep/heepdev/FrontEnd/Unity/DevicesScene/Assets/FirebaseAssetPackage/Firebase/Plugins/Firebase.Auth.dll</HintPath>
  </Reference>
  <Reference Include="Firebase.Database">
- <HintPath>/Users/dylan/Documents/Heep/UnityExperiments/DevicesScene/Assets/FirebaseAssetPackage/Firebase/Plugins/Firebase.Database.dll</HintPath>
+ <HintPath>/Users/dylan/Documents/Heep/heepdev/FrontEnd/Unity/DevicesScene/Assets/FirebaseAssetPackage/Firebase/Plugins/Firebase.Database.dll</HintPath>
  </Reference>
  <Reference Include="Firebase.Storage">
- <HintPath>/Users/dylan/Documents/Heep/UnityExperiments/DevicesScene/Assets/FirebaseAssetPackage/Firebase/Plugins/Firebase.Storage.dll</HintPath>
+ <HintPath>/Users/dylan/Documents/Heep/heepdev/FrontEnd/Unity/DevicesScene/Assets/FirebaseAssetPackage/Firebase/Plugins/Firebase.Storage.dll</HintPath>
  </Reference>
  <Reference Include="Google.MiniJson">
- <HintPath>/Users/dylan/Documents/Heep/UnityExperiments/DevicesScene/Assets/FirebaseAssetPackage/Firebase/Plugins/Google.MiniJson.dll</HintPath>
+ <HintPath>/Users/dylan/Documents/Heep/heepdev/FrontEnd/Unity/DevicesScene/Assets/FirebaseAssetPackage/Firebase/Plugins/Google.MiniJson.dll</HintPath>
  </Reference>
  <Reference Include="Google.Sharpen">
- <HintPath>/Users/dylan/Documents/Heep/UnityExperiments/DevicesScene/Assets/FirebaseAssetPackage/Firebase/Plugins/Google.Sharpen.dll</HintPath>
+ <HintPath>/Users/dylan/Documents/Heep/heepdev/FrontEnd/Unity/DevicesScene/Assets/FirebaseAssetPackage/Firebase/Plugins/Google.Sharpen.dll</HintPath>
  </Reference>
  <Reference Include="Unity.Compat">
- <HintPath>/Users/dylan/Documents/Heep/UnityExperiments/DevicesScene/Assets/FirebaseAssetPackage/Parse/Plugins/Unity.Compat.dll</HintPath>
+ <HintPath>/Users/dylan/Documents/Heep/heepdev/FrontEnd/Unity/DevicesScene/Assets/FirebaseAssetPackage/Parse/Plugins/Unity.Compat.dll</HintPath>
  </Reference>
  <Reference Include="Unity.Tasks">
- <HintPath>/Users/dylan/Documents/Heep/UnityExperiments/DevicesScene/Assets/FirebaseAssetPackage/Parse/Plugins/Unity.Tasks.dll</HintPath>
+ <HintPath>/Users/dylan/Documents/Heep/heepdev/FrontEnd/Unity/DevicesScene/Assets/FirebaseAssetPackage/Parse/Plugins/Unity.Tasks.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.Analytics">
  <HintPath>/Users/dylan/Library/Unity/cache/packages/packages.unity.com/com.unity.analytics@1.0.1/UnityEngine.Analytics.dll</HintPath>

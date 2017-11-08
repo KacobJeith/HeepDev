@@ -256,7 +256,10 @@ public class FirebaseInterface : MonoBehaviour {
 			} else if (item.Key.Equals ("valueCurrent")) {
 				newControl.valueCurrent = item.Value as string;
 			} else if (item.Key.Equals ("uniqueID")) {
-				newControl.valueCurrent = item.Value as string;
+				object itemValue = item.Value as object;
+				long itemValInt = Convert.ToInt64 (itemValue);
+				newControl.uniqueID = itemValInt;
+				Debug.Log ("As Object " + itemValue + " done.... INT: " + itemValInt + " Done...");
 			}
 
 		}

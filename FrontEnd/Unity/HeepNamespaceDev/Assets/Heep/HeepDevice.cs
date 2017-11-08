@@ -75,7 +75,7 @@ namespace Heep
 		{
 			
 			// Send the current value of the control
-			if (toSend.GetControlDirection () == (int)Control.CtrlInputOutput.output) {
+			if (toSend.GetControlDirection () == Control.CtrlInputOutput.output) {
 				for (int i = 0; i < vertices.Count; i++) {
 					if (vertices [i].GetTXControlID() == toSend.GetID ()) {
 						List <byte> sendBuffer = HeepLanguage.GetSetValCOPBuffer (vertices [i].GetRXControlID (), toSend.GetCurValue ());
@@ -122,6 +122,8 @@ namespace Heep
 		List<byte> theID;
 		private int DeviceIDSize = 4;
 
+		private static int defaultIDSize = 4;
+
 		public DeviceID(List <byte> newID)
 		{
 			theID = newID;
@@ -140,6 +142,30 @@ namespace Heep
 		public int GetDeviceIDSize()
 		{
 			return DeviceIDSize;
+		}
+
+		public static int GetDefaultIDSize()
+		{
+			return defaultIDSize;
+		}
+
+		public static bool operator ==(DeviceID id1, DeviceID id2)
+		{
+			if (id1.GetDeviceIDSize () != id2.GetDeviceIDSize ()) {
+				return false;
+			}
+
+			for (int i = 0; i < id1.GetDeviceIDSize (); i++) {
+				if (id1.GetIDArray () [i] != id2.GetIDArray () [i])
+					return false;
+			}
+
+			return true;
+		}
+
+		public static bool operator !=(DeviceID id1, DeviceID id2)
+		{
+			return !(id1 == id2);
 		}
 
 	}
@@ -191,22 +217,22 @@ namespace Heep
 
 	public class Control
 	{
+		public enum CtrlInputOutput : int {input = 0, output = 1}; 
+		public enum CtrlType : int {OnOff = 0, range = 1};
+
 		protected int _controlID;
-		protected int _controlDirection;
-		protected int _controlType;
+		protected CtrlInputOutput _controlDirection;
+		protected CtrlType _controlType;
 		protected int _highValue;
 		protected int _lowValue;
 		protected int _curValue;
 		protected String _controlName;
 
-		public enum CtrlInputOutput : int {input = 0, output = 1}; 
-		public enum CtrlType : int {OnOff = 0, range = 1};
-
 		public Control(int controlID, CtrlInputOutput controlDirection, CtrlType controlType, int highValue, int lowValue, int curValue, String ControlName)
 		{
 			_controlID = controlID;
-			_controlDirection = (int)controlDirection;
-			_controlType = (int)controlType;
+			_controlDirection = controlDirection;
+			_controlType = controlType;
 			_highValue = highValue;
 			_lowValue = lowValue;
 			_curValue = curValue;
@@ -258,12 +284,12 @@ namespace Heep
 			return _controlName;
 		}
 
-		public int GetControlType()
+		public CtrlType GetControlType()
 		{
 			return _controlType;
 		}
 
-		public int GetControlDirection()
+		public CtrlInputOutput GetControlDirection()
 		{
 			return _controlDirection;
 		}

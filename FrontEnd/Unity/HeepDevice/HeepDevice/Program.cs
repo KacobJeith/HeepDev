@@ -26,7 +26,9 @@ namespace MainProgram
 			}
 			Console.WriteLine ();
 
-			int foundNum = HeepLanguage.GetNumberFromBuffer (buffer, 0, 2);
+			int position = 0;
+
+			int foundNum = HeepLanguage.GetNumberFromBuffer (buffer, ref position, 2);
 			Console.Write ("Found Num: ");
 			Console.WriteLine (foundNum);
 
@@ -34,8 +36,15 @@ namespace MainProgram
 
 		public static void Main (string[] args)
 		{
-			Console.WriteLine (HeepLanguage.AddMOPOpCode);
-
+//			DeviceSearch.SearchForDevices ();
+//
+//			while (true) {
+//				Thread.Sleep (1000);
+//				Console.WriteLine ("Still running!");
+//			}
+//
+//			Console.WriteLine (HeepLanguage.AddMOPOpCode);
+//
 			Console.WriteLine ("Hello World!");
 
 			TestGetNumberFromBuffer ();
@@ -81,38 +90,59 @@ namespace MainProgram
 			Console.WriteLine ();
 
 			myDevice.SetDeviceName ("UNITY");
-			HeepCommunications.StartHeepServer (myDevice);
 
-			byte value = 0;
-			while (true) {
-				Console.Write ("Enter something to send stuff: ");
-				String newRead = Console.ReadLine ();
-				Console.WriteLine (newRead);
+			//NonVolatileData.WriteMemoryToFile (myDevice.GetMemoryDump ());
+			List <Byte> curMemory = NonVolatileData.ReadMemoryFromFile ();
 
-				myDevice.SetControlByID (1, value);
+			List <Byte> MemDump = myDevice.GetMemoryDump ();
 
-				if (value == 0)
-					value = 1;
-				else
-					value = 0;
-
-//				byte [] IPAddrArraya = {192, 168, 0, 103};
-//				IPAddress theAddra = new IPAddress(IPAddrArraya);
-//				List<byte> newBuf = new List<byte>();
-//				newBuf.Add (0x0A);
-//				newBuf.Add (0x02);
-//				newBuf.Add (0x00);
-//				newBuf.Add (value);
-//				HeepCommunications.SendBufferToIP (newBuf, theAddra);
-//
-//				if (value == 0) {
-//					value = 1;
-//				}
-//				else{
-//					value = 0;
-//				}
-
+			for (int i = 0; i < MemDump.Count; i++) {
+				Console.Write (MemDump [i]);
+				Console.Write (" ");
 			}
+			Console.WriteLine ();
+
+			for (int i = 0; i < curMemory.Count; i++) {
+				Console.Write (curMemory [i]);
+				Console.Write (" ");
+			}
+			Console.WriteLine ();
+
+			int counter = 1;
+			Console.WriteLine(HeepParser.parseDeviceNameMOP(curMemory, ref counter));
+
+//			HeepCommunications.StartHeepServer (myDevice);
+//
+//			byte value = 0;
+//			while (true) {
+//				Console.Write ("Enter something to send stuff: ");
+//				String newRead = Console.ReadLine ();
+//				Console.WriteLine (newRead);
+//
+//				myDevice.SetControlByID (1, value);
+//
+//				if (value == 0)
+//					value = 1;
+//				else
+//					value = 0;
+//
+////				byte [] IPAddrArraya = {192, 168, 0, 103};
+////				IPAddress theAddra = new IPAddress(IPAddrArraya);
+////				List<byte> newBuf = new List<byte>();
+////				newBuf.Add (0x0A);
+////				newBuf.Add (0x02);
+////				newBuf.Add (0x00);
+////				newBuf.Add (value);
+////				HeepCommunications.SendBufferToIP (newBuf, theAddra);
+////
+////				if (value == 0) {
+////					value = 1;
+////				}
+////				else{
+////					value = 0;
+////				}
+//
+//			}
 		}
 			
 	}
