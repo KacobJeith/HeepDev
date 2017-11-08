@@ -135,46 +135,46 @@
  <HintPath>/Applications/Unity/Unity.app/Contents/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll</HintPath>
  </Reference>
  <Reference Include="Firebase.Editor">
- <HintPath>/Users/dylan/Documents/Heep/UnityExperiments/DevicesScene/Assets/FirebaseAssetPackage/Firebase/Editor/Firebase.Editor.dll</HintPath>
+ <HintPath>/Users/dylan/Documents/Heep/heepdev/FrontEnd/Unity/DevicesScene/Assets/FirebaseAssetPackage/Firebase/Editor/Firebase.Editor.dll</HintPath>
  </Reference>
  <Reference Include="Firebase.Analytics">
- <HintPath>/Users/dylan/Documents/Heep/UnityExperiments/DevicesScene/Assets/FirebaseAssetPackage/Firebase/Plugins/Firebase.Analytics.dll</HintPath>
+ <HintPath>/Users/dylan/Documents/Heep/heepdev/FrontEnd/Unity/DevicesScene/Assets/FirebaseAssetPackage/Firebase/Plugins/Firebase.Analytics.dll</HintPath>
  </Reference>
  <Reference Include="Firebase.App">
- <HintPath>/Users/dylan/Documents/Heep/UnityExperiments/DevicesScene/Assets/FirebaseAssetPackage/Firebase/Plugins/Firebase.App.dll</HintPath>
+ <HintPath>/Users/dylan/Documents/Heep/heepdev/FrontEnd/Unity/DevicesScene/Assets/FirebaseAssetPackage/Firebase/Plugins/Firebase.App.dll</HintPath>
  </Reference>
  <Reference Include="Firebase.Auth">
- <HintPath>/Users/dylan/Documents/Heep/UnityExperiments/DevicesScene/Assets/FirebaseAssetPackage/Firebase/Plugins/Firebase.Auth.dll</HintPath>
+ <HintPath>/Users/dylan/Documents/Heep/heepdev/FrontEnd/Unity/DevicesScene/Assets/FirebaseAssetPackage/Firebase/Plugins/Firebase.Auth.dll</HintPath>
  </Reference>
  <Reference Include="Firebase.Database">
- <HintPath>/Users/dylan/Documents/Heep/UnityExperiments/DevicesScene/Assets/FirebaseAssetPackage/Firebase/Plugins/Firebase.Database.dll</HintPath>
+ <HintPath>/Users/dylan/Documents/Heep/heepdev/FrontEnd/Unity/DevicesScene/Assets/FirebaseAssetPackage/Firebase/Plugins/Firebase.Database.dll</HintPath>
  </Reference>
  <Reference Include="Firebase.Storage">
- <HintPath>/Users/dylan/Documents/Heep/UnityExperiments/DevicesScene/Assets/FirebaseAssetPackage/Firebase/Plugins/Firebase.Storage.dll</HintPath>
+ <HintPath>/Users/dylan/Documents/Heep/heepdev/FrontEnd/Unity/DevicesScene/Assets/FirebaseAssetPackage/Firebase/Plugins/Firebase.Storage.dll</HintPath>
  </Reference>
  <Reference Include="Google.MiniJson">
- <HintPath>/Users/dylan/Documents/Heep/UnityExperiments/DevicesScene/Assets/FirebaseAssetPackage/Firebase/Plugins/Google.MiniJson.dll</HintPath>
+ <HintPath>/Users/dylan/Documents/Heep/heepdev/FrontEnd/Unity/DevicesScene/Assets/FirebaseAssetPackage/Firebase/Plugins/Google.MiniJson.dll</HintPath>
  </Reference>
  <Reference Include="Google.Sharpen">
- <HintPath>/Users/dylan/Documents/Heep/UnityExperiments/DevicesScene/Assets/FirebaseAssetPackage/Firebase/Plugins/Google.Sharpen.dll</HintPath>
+ <HintPath>/Users/dylan/Documents/Heep/heepdev/FrontEnd/Unity/DevicesScene/Assets/FirebaseAssetPackage/Firebase/Plugins/Google.Sharpen.dll</HintPath>
  </Reference>
  <Reference Include="Unity.Compat">
- <HintPath>/Users/dylan/Documents/Heep/UnityExperiments/DevicesScene/Assets/FirebaseAssetPackage/Parse/Plugins/Unity.Compat.dll</HintPath>
+ <HintPath>/Users/dylan/Documents/Heep/heepdev/FrontEnd/Unity/DevicesScene/Assets/FirebaseAssetPackage/Parse/Plugins/Unity.Compat.dll</HintPath>
  </Reference>
  <Reference Include="Unity.Tasks">
- <HintPath>/Users/dylan/Documents/Heep/UnityExperiments/DevicesScene/Assets/FirebaseAssetPackage/Parse/Plugins/Unity.Tasks.dll</HintPath>
+ <HintPath>/Users/dylan/Documents/Heep/heepdev/FrontEnd/Unity/DevicesScene/Assets/FirebaseAssetPackage/Parse/Plugins/Unity.Tasks.dll</HintPath>
  </Reference>
  <Reference Include="Google.IOSResolver_v1.2.53.0">
- <HintPath>/Users/dylan/Documents/Heep/UnityExperiments/DevicesScene/Assets/FirebaseAssetPackage/PlayServicesResolver/Editor/Google.IOSResolver_v1.2.53.0.dll</HintPath>
+ <HintPath>/Users/dylan/Documents/Heep/heepdev/FrontEnd/Unity/DevicesScene/Assets/FirebaseAssetPackage/PlayServicesResolver/Editor/Google.IOSResolver_v1.2.53.0.dll</HintPath>
  </Reference>
  <Reference Include="Google.JarResolver_v1.2.53.0">
- <HintPath>/Users/dylan/Documents/Heep/UnityExperiments/DevicesScene/Assets/FirebaseAssetPackage/PlayServicesResolver/Editor/Google.JarResolver_v1.2.53.0.dll</HintPath>
+ <HintPath>/Users/dylan/Documents/Heep/heepdev/FrontEnd/Unity/DevicesScene/Assets/FirebaseAssetPackage/PlayServicesResolver/Editor/Google.JarResolver_v1.2.53.0.dll</HintPath>
  </Reference>
  <Reference Include="Google.VersionHandler">
- <HintPath>/Users/dylan/Documents/Heep/UnityExperiments/DevicesScene/Assets/FirebaseAssetPackage/PlayServicesResolver/Editor/Google.VersionHandler.dll</HintPath>
+ <HintPath>/Users/dylan/Documents/Heep/heepdev/FrontEnd/Unity/DevicesScene/Assets/FirebaseAssetPackage/PlayServicesResolver/Editor/Google.VersionHandler.dll</HintPath>
  </Reference>
  <Reference Include="Google.VersionHandlerImpl_v1.2.53.0">
- <HintPath>/Users/dylan/Documents/Heep/UnityExperiments/DevicesScene/Assets/FirebaseAssetPackage/PlayServicesResolver/Editor/Google.VersionHandlerImpl_v1.2.53.0.dll</HintPath>
+ <HintPath>/Users/dylan/Documents/Heep/heepdev/FrontEnd/Unity/DevicesScene/Assets/FirebaseAssetPackage/PlayServicesResolver/Editor/Google.VersionHandlerImpl_v1.2.53.0.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.Advertisements">
  <HintPath>/Users/dylan/Library/Unity/cache/packages/packages.unity.com/com.unity.ads@1.0.7/Editor/UnityEditor.Advertisements.dll</HintPath>

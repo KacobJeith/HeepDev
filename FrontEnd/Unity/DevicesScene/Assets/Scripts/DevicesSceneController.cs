@@ -41,7 +41,7 @@ public class DevicesSceneController : MonoBehaviour {
 		float position = 0f - (4 * (controlsInThisGroup.Count - 1))/2;
 
 		foreach (DeviceControl control in controlsInThisGroup) {
-			GameObject.Destroy (GameObject.Find (control.uniqueID));
+			GameObject.Destroy (GameObject.Find (control.uniqueID.ToString()));
 
 			var newDeviceObject = Instantiate (devicePrefab);
 			newDeviceObject.GetComponent<DevicePrefabController> ().loadData(control);
