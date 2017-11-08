@@ -35,7 +35,6 @@ namespace Heep
 					recData = client.Receive(ref anyIP);
 					List <byte> commandData = new List<byte>(recData);
 					List <byte> fromparser = HeepParser.ParseCommand(commandData, device);
-					anyIP.Port = 5000;
 
 					Debug.Log("IP Address: " + anyIP.Address + " Port: " + anyIP.Port);
 					Debug.Log("UDP Data Received: " + Encoding.ASCII.GetString(commandData.ToArray(),0,commandData.Count));
@@ -48,6 +47,7 @@ namespace Heep
 					Debug.Log("Sending: " + printableReturn);
 
 					UdpClient udpClientB = new UdpClient();
+					anyIP.Port = PORT;
 					udpClientB.Send(fromparser.ToArray(), fromparser.Count, anyIP);
 
 				}
