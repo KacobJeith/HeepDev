@@ -59,6 +59,7 @@
      <Compile Include="Assets\Heep\HeepLanguage.cs" />
      <Compile Include="Assets\Heep\HeepParser.cs" />
      <Compile Include="Assets\Heep\NonVolatileData.cs" />
+     <Compile Include="Assets\Scripts\FakeDevice.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
