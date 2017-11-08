@@ -1,9 +1,10 @@
-import net from 'net'
 import os from 'os' 
 import * as HAPIParser from './HAPIMemoryParser'
 import * as iconUtils from '../utilities/iconUtilities'
 import * as generalUtils from '../utilities/generalUtilities'
 import * as byteUtils from '../utilities/byteUtilities'
+const dgram = require('dgram');
+const udpServer = dgram.createSocket('udp4');
 
 var masterState = {
   devices: {deviceArray: []},
@@ -147,23 +148,36 @@ export var findGateway = () => {
 
 var ConnectToHeepDevice = (IPAddress, port, message) => {
 
-  var sock = new net.Socket();
-  sock.connect({host: IPAddress, port: port}, () => {
-    sock.write(message);
-  });
+  console.log(message);
 
-  sock.on('data', (data) => {
-    ConsumeHeepResponse(data, IPAddress, port);
-
-    sock.end();
-  });
-
-  sock.on('end', () => {});
-
-  sock.on('error', () => {
-    mostRecentSearch[IPAddress] = false;
+  var client = dgram.createSocket('udp4');
+  console.log("About to Send " + IPAddress);
+  client.send(message, heepPort, IPAddress, (err) => {
+    client.close();
   });
 }
+
+udpServer.on('error', (err) => {
+  console.log(`server error:\n${err.stack}`);
+  udpServer.close();
+});
+
+udpServer.on('message', (msg, rinfo) => {
+  ConsumeHeepResponse(msg, rinfo.address, rinfo.port);
+  console.log(`server got: ${msg} from ${rinfo.address}:${rinfo.port}`);
+});
+
+udpServer.on('listening', () => {
+  const address = udpServer.address();
+  console.log(`server listening ${address.address}:${address.port}`);
+});
+
+console.log("About to bind");
+udpServer.bind(heepPort);
+console.log("Done binding");
+
+
+
 
 var ConsumeHeepResponse = (data, IPAddress, port) => {
   console.log('Device found at address: ', IPAddress + ':' + port.toString());
