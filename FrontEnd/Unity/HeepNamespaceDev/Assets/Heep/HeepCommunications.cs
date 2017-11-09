@@ -34,6 +34,9 @@ namespace Heep
 					IPEndPoint anyIP = new IPEndPoint(IPAddress.Any, 0);
 					recData = client.Receive(ref anyIP);
 					List <byte> commandData = new List<byte>(recData);
+
+					if(HeepParser.isROP(commandData)) return;
+
 					List <byte> fromparser = HeepParser.ParseCommand(commandData, device);
 
 					Debug.Log("IP Address: " + anyIP.Address + " Port: " + anyIP.Port);

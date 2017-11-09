@@ -8,6 +8,16 @@ namespace Heep
 {
 	public static class HeepParser
 	{
+		public static bool isROP(List <byte> commandBuffer)
+		{
+			if (commandBuffer [0] == HeepLanguage.MemoryDumpOpCode
+			   || commandBuffer [0] == HeepLanguage.SuccessOpCode
+			   || commandBuffer [0] == HeepLanguage.ErrorOpCode) {
+				return true;
+			}
+			return false;
+		}
+
 		public static List<byte> ParseCommand(List <byte> commandBuffer, HeepDevice theDevice)
 		{
 			if (commandBuffer [0] == HeepLanguage.IsHeepDeviceOpCode) {
