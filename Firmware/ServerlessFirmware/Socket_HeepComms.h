@@ -125,6 +125,12 @@ void CheckServerForInputs()
             die("socket");
         }
 
+        for(int i = 0; i < outputBufferLastByte; i++)
+        {
+          cout << outputBuffer[i] << " ";
+        }
+        cout << endl;
+
         //now reply the client with the same data
         if (sendto(s, outputBuffer, outputBufferLastByte, 0, (struct sockaddr*) &si_other, slen) == -1)
         {
