@@ -11,7 +11,7 @@ EthernetUDP Udp;
 
 void CreateInterruptServer()
 {
-  Ethernet.begin(mac, ip);
+  Ethernet.begin(mac);
   Udp.begin(localPort);
 
   IPAddress localIP = Ethernet.localIP();
@@ -46,7 +46,7 @@ void CheckServerForInputs()
     Serial.println();
     
     if(IsROP()) return;
-    
+
     ExecuteControlOpCodes();
 
     for(int i = 0; i < outputBufferLastByte; i++)
