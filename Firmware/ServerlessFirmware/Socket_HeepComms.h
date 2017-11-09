@@ -13,7 +13,7 @@
 #include <sys/socket.h>
 
 #include <iostream>
-using namespace std;
+// using namespace std;
 
 struct sockaddr_in si_me, si_other;
 int lastConnectFd = -1;
@@ -55,7 +55,8 @@ void CreateServer(int portno)
     si_me.sin_addr.s_addr = htonl(INADDR_ANY);
      
     //bind socket to port
-    if( bind(s , (struct sockaddr*)&si_me, sizeof(si_me) ) == -1)
+    // bind(s , (struct sockaddr*)&si_me, sizeof(si_me) ) ;
+    if( bind(s , (struct sockaddr*)&si_me, sizeof(si_me) ) )
     {
         die("bind");
     }
@@ -89,7 +90,7 @@ int TCP_PORT = 5000;
 
 void ServerThread()
 { 
-    cout << "Begin Server" << endl;
+    std::cout << "Begin Server" << std::endl;
     CreateServer(TCP_PORT);
 }
 
@@ -105,7 +106,7 @@ void CheckServerForInputs()
     if(respondedToLastConnect == 0)
     {
       si_other.sin_port = htons(5000);
-      cout << "Time to respond to " << inet_ntoa(si_other.sin_addr) << " " << ntohs(si_other.sin_port) << endl;
+      std::cout << "Time to respond to " << inet_ntoa(si_other.sin_addr) << " " << ntohs(si_other.sin_port) << std::endl;
 
         int n = 0;
 
@@ -127,9 +128,9 @@ void CheckServerForInputs()
 
         for(int i = 0; i < outputBufferLastByte; i++)
         {
-          cout << outputBuffer[i] << " ";
+          std::cout << outputBuffer[i] << " ";
         }
-        cout << endl;
+        std::cout << std::endl;
 
         //now reply the client with the same data
         if (sendto(s, outputBuffer, outputBufferLastByte, 0, (struct sockaddr*) &si_other, slen) == -1)
