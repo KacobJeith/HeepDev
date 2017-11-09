@@ -397,6 +397,18 @@ void ExecuteAddMOPOpCode()
 
 }
 
+boolean IsROP()
+{
+	if(inputBuffer[0] == MemoryDumpOpCode 
+		|| inputBuffer[0] == SuccessOpCode
+		|| inputBuffer[0] == ErrorOpCode)
+	{
+		return true;
+	}
+
+	return false;
+}
+
 void ExecuteControlOpCodes()
 {
 	unsigned char ReceivedOpCode = inputBuffer[0];
