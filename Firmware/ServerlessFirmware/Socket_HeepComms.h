@@ -174,33 +174,39 @@ void SendOutputBufferToIP(HeepIPAddress destIP)
     int sockfd, n;
     struct sockaddr_in serv_addr;
     struct hostent *server;
+    socklen_t slen = sizeof(si_other);
 
-    sockfd = socket(AF_INET, SOCK_STREAM, 0);
-    if (sockfd < 0) 
-        error("ERROR opening socket");
+    int s;
+
     server = gethostbyname(IP);
     if (server == NULL) {
         fprintf(stderr,"ERROR, no such host\n");
         exit(0);
     }
-
     bzero((char *) &serv_addr, sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
     bcopy((char *)server->h_addr, 
          (char *)&serv_addr.sin_addr.s_addr,
          server->h_length);
     serv_addr.sin_port = htons(TCP_PORT);
-    if (connect(sockfd,(struct sockaddr *) &serv_addr,sizeof(serv_addr)) < 0) 
-        error("ERROR connecting");
 
-    n = write(sockfd,outputBuffer,outputBufferLastByte);
-    if (n < 0) 
-         error("ERROR writing to socket");
+    //create a UDP socket
+    if ((s=socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1)
+    {
+        die("socket");
+    }
 
-    bzero(inputBuffer,200);
-    n = read(sockfd,inputBuffer,200);
-    if (n < 0) 
-         error("ERROR reading from socket");
-    printf("%s\n",inputBuffer);
-    close(sockfd);
+    for(int i = 0; i < outputBufferLastByte; i++)
+    {
+      std::cout << outputBuffer[i] << " ";
+    }
+    std::cout << std::endl;
+
+    //now reply the client with the same data
+    if (sendto(s, outputBuffer, outputBufferLastByte, 0, (struct sockaddr*) &serv_addr, slen) == -1)
+    {
+        die("sendto()");
+    }
+
+    close(s);
 }
