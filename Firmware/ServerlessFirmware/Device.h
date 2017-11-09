@@ -86,6 +86,8 @@ int DeleteVertex(struct Vertex_Byte myVertex)
 
 void FillVertexListFromMemory()
 {
+	numberOfVertices = 0;
+
 	unsigned int pointer = 0;
 	unsigned int counter = 0;
 

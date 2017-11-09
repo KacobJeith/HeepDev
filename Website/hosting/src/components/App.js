@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as Actions from '../redux/actions'
 import ReactGA from 'react-ga'
-import * as database from '../redux/firebase'
 
 import Header from './Header'
 import Landing from './Landing'
@@ -17,7 +16,7 @@ import Loading from './Loading'
 import UserProfile from './UserProfile'
 
 const mapStateToProps = (state) => ({
-	test: 0
+	loginStatus: state.loginStatus,
 })
 
 class App extends React.Component {
@@ -58,21 +57,26 @@ class App extends React.Component {
 	        style: styles.container
 	      }
 	    }
-		
 
-		return(
-		<Router >
-	    	<div {...inputs.container}>
-				<Route path="/" component={Header}/>
-				<Route path="/Mission" component={Mission}/>
-				<Route path="/Build" component={Build}/>
-				<Route path="/Shop" component={Store}/>
-				<Route path="/User" component={UserProfile}/>
-				<Route exact path="/auth" component={Auth}/>
-				<Route exact path="/logout" component={Logout}/>
-				<Route exact path="/" component={Build}/>
-		    </div>
-		</Router>); 
+	    var loggedInRoutes = [];
+
+	    if (this.props.loginStatus) {
+	    	loggedInRoutes.push(<Route path="/Build" component={Build} key="build"/>);
+	    	loggedInRoutes.push(<Route path="/User" component={UserProfile} key="user"/>);
+	    }
+
+	    return(
+			<Router >
+		    	<div {...inputs.container}>
+					<Route path="/" component={Header}/>
+					<Route exact path="/" component={Mission}/>
+					<Route path="/Mission" component={Mission}/>
+					<Route path="/Shop" component={Store}/>
+					<Route exact path="/auth" component={Auth}/>
+					{loggedInRoutes}
+			    </div>
+			</Router>);
+	    
 	}
 }
 

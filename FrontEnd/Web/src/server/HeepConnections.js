@@ -136,6 +136,7 @@ export var findGateway = () => {
         var address = activeAddress.split('.');
         var myIp = address.pop();
         
+        console.log('Searching on gateway: ', address);
         
         return address
       }

@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Navbar, Nav, NavItem, Button, Image } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-import * as database from '../redux/firebase'
+import * as auth from '../redux/FirebaseAuth'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import * as actions from '../redux/actions'
@@ -24,8 +24,13 @@ class Header extends React.Component {
 
 	loggedOn() {
 		var userNavElements = [];
+		userNavElements.push(	<LinkContainer to="/Build" key="build">
+						          <NavItem>Build</NavItem>
+						        </LinkContainer>);
+		
 		userNavElements.push(this.profilePicture());
 		userNavElements.push(this.logOffButton());
+
   		return userNavElements
 	}
 
@@ -37,7 +42,7 @@ class Header extends React.Component {
 				style: {
 					borderRadius:"50%"
 				},
-				src: database.getMyUserImagePath()
+				src: auth.getMyUserImagePath()
 			}
 		};
 
@@ -50,11 +55,17 @@ class Header extends React.Component {
 	}
 
 	logOffButton() {
-		return(<LinkContainer to="/logout" key="Logout">
-	          	<NavItem>
-	          		<Button bsStyle="primary" bsSize="xsmall"> Logout </Button>
+		var inputs = {
+			logout: {
+				onClick: () => {auth.logout()},
+				bsStyle:"primary",
+				bsSize:"xsmall"
+			}
+		}
+
+		return(<NavItem>
+	          		<Button {...inputs.logout}> Logout </Button>
 	  		  	</NavItem>
-	        </LinkContainer>
 	        );
 	}
 
@@ -97,12 +108,12 @@ class Header extends React.Component {
 			}
 		}
 
-		var userButton = [];
+		var loggedInNavs = [];
 
 		if (this.props.loginStatus) {
-			userButton.push(this.loggedOn());
+			loggedInNavs.push(this.loggedOn());
 		} else {
-			userButton = this.notLoggedOn();
+			loggedInNavs = this.notLoggedOn();
 		}
 
 		return (<div {...inputs.Header}>
@@ -120,16 +131,13 @@ class Header extends React.Component {
 				    </Navbar.Header>
 				    <Navbar.Collapse>
 				      <Nav pullRight>
-				        <LinkContainer to="/Build">
-				          <NavItem>Build</NavItem>
-				        </LinkContainer>
 				        <LinkContainer to="/Shop">
 				          <NavItem>Shop</NavItem>
 				        </LinkContainer>
 				        <LinkContainer to="/Mission">
 				          <NavItem>Mission</NavItem>
 				        </LinkContainer>
-				        {userButton}
+				        {loggedInNavs}
 				      </Nav>
 				    </Navbar.Collapse>
 				  </Navbar>

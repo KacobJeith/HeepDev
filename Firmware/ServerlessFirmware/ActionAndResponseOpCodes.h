@@ -428,6 +428,11 @@ void ExecuteControlOpCodes()
 	{
 		ExecuteDeleteMOPOpCode();
 	}
+	else
+	{
+		char errorMessage [] = "Invalid COP Received";
+		FillOutputBufferWithError(errorMessage, strlen(errorMessage));
+	}
 }
 
 #endif

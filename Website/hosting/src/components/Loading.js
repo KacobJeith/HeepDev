@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { withRouter } from 'react-router-dom'
 import * as actions from '../redux/actions'
-import * as database from '../redux/firebase'
 
 var mapStateToProps = (state) => ({
   
