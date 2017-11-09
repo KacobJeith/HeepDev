@@ -9,6 +9,9 @@
 #include <netinet/in.h>
 #include <netdb.h>
 
+#include <arpa/inet.h>
+#include <sys/socket.h>
+
 #include <iostream>
 using namespace std;
 
@@ -16,49 +19,71 @@ int lastConnectFd = -1;
 char recvBuffer[1500];
 char respondedToLastConnect = 1;
 
+#define BUFLEN 512  //Max length of buffer
+
 void error(const char *msg)
 {
     perror(msg);
     exit(1);
 }
 
+void die(char *s)
+{
+    perror(s);
+    exit(1);
+}
+
 void CreateServer(int portno)
 {
-    int sockfd, newsockfd;
-    socklen_t clilen;
-
-    struct sockaddr_in serv_addr, cli_addr;
-    int n;
-
-    sockfd = socket(AF_INET, SOCK_STREAM, 0);
-     if (sockfd < 0) 
-        error("ERROR opening socket");
-     bzero((char *) &serv_addr, sizeof(serv_addr));
-
-     serv_addr.sin_family = AF_INET;
-     serv_addr.sin_addr.s_addr = INADDR_ANY;
-     serv_addr.sin_port = htons(portno);
-     if (bind(sockfd, (struct sockaddr *) &serv_addr,
-              sizeof(serv_addr)) < 0) 
-              error("ERROR on binding");
-     listen(sockfd,5);
-     clilen = sizeof(cli_addr);
-
-     while(1)
-     {
-        lastConnectFd = accept(sockfd, 
-                 (struct sockaddr *) &cli_addr, 
-                 &clilen);
-         if (lastConnectFd < 0) 
-              error("ERROR on accept");
-         bzero(recvBuffer,1500);
-         n = read(lastConnectFd,recvBuffer,1500);
-         if (n < 0) error("ERROR reading from socket");
-         printf("Here is the message: %s\n",recvBuffer);
-         respondedToLastConnect = 0;
-     }
+    struct sockaddr_in si_me, si_other;
      
-     close(sockfd);
+    int s, i, recv_len;
+    socklen_t slen = sizeof(si_other);
+    char buf[BUFLEN];
+     
+    //create a UDP socket
+    if ((s=socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1)
+    {
+        die("socket");
+    }
+     
+    // zero out the structure
+    memset((char *) &si_me, 0, sizeof(si_me));
+     
+    si_me.sin_family = AF_INET;
+    si_me.sin_port = htons(portno);
+    si_me.sin_addr.s_addr = htonl(INADDR_ANY);
+     
+    //bind socket to port
+    if( bind(s , (struct sockaddr*)&si_me, sizeof(si_me) ) == -1)
+    {
+        die("bind");
+    }
+     
+    //keep listening for data
+    while(1)
+    {
+        printf("Waiting for data...");
+        fflush(stdout);
+         
+        //try to receive some data, this is a blocking call
+        if ((recv_len = recvfrom(s, buf, BUFLEN, 0, (struct sockaddr *) &si_other, &slen)) == -1)
+        {
+            die("recvfrom()");
+        }
+         
+        //print details of the client/peer and the data received
+        printf("Received packet from %s:%d\n", inet_ntoa(si_other.sin_addr), ntohs(si_other.sin_port));
+        printf("Data: %s\n" , buf);
+         
+        //now reply the client with the same data
+        if (sendto(s, buf, recv_len, 0, (struct sockaddr*) &si_other, slen) == -1)
+        {
+            die("sendto()");
+        }
+    }
+ 
+    close(s);
 }
 
 
