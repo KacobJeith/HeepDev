@@ -45,6 +45,8 @@ void CheckServerForInputs()
     }
     Serial.println();
     
+    if(IsROP()) return;
+    
     ExecuteControlOpCodes();
 
     for(int i = 0; i < outputBufferLastByte; i++)
@@ -71,36 +73,8 @@ void SendOutputBufferToIP(HeepIPAddress destIP)
 
   Serial.println(clientIP);
 
-//  if (client.connect(clientIP,TCP_PORT))
-//  {
-//        client.write(outputBuffer, outputBufferLastByte);
-//        next = millis() + 200;
-//        while(client.available()==0)
-//         {
-//          long curTimeSigned = millis();
-//            if (next - curTimeSigned < 0)
-//            {
-//              Serial.println("PastTimeout");
-//              goto pastTimeout;
-//            }
-           
-//         }
-
-//        int size;
-//        while((size = client.available()) > 0)
-//        {
-//            uint8_t* msg = (uint8_t*)malloc(size);
-//            size = client.read(msg,size);
-
-//            for(int i = 0; i < size; i++)
-//            {
-//              inputBuffer[i] = msg[i];
-//            }
-
-//        free(msg);
-//        }
-// pastTimeout:
-//       client.stop();
-//     }
+  Udp.beginPacket(clientIP, localPort);
+  Udp.write(outputBuffer, outputBufferLastByte);
+  Udp.endPacket();
 
 }
