@@ -397,16 +397,16 @@ void ExecuteAddMOPOpCode()
 
 }
 
-boolean IsROP()
+unsigned char IsROP()
 {
 	if(inputBuffer[0] == MemoryDumpOpCode 
 		|| inputBuffer[0] == SuccessOpCode
 		|| inputBuffer[0] == ErrorOpCode)
 	{
-		return true;
+		return 1;
 	}
 
-	return false;
+	return 0;
 }
 
 void ExecuteControlOpCodes()
