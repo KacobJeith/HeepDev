@@ -61,33 +61,14 @@ namespace Heep
 
 		public static List <byte> SendBufferToIP(List <byte> buffer, IPAddress theAddr)
 		{
-			Socket soc = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+			UdpClient udpClient = new UdpClient();
 
 			System.Net.IPEndPoint remoteEP = new IPEndPoint(theAddr, 5000);
 
-			Console.WriteLine ("about to connect");
-			soc.Connect(remoteEP);
-			Console.WriteLine ("Connected");
-
 			//Start sending stuff..
-			soc.Send(buffer.ToArray());
-
-			Console.WriteLine ("Sending");
-
-			byte[] receiveBuffer = new byte[1024];
-			int iRx = soc.Receive(receiveBuffer);
+			udpClient.Send(buffer.ToArray(), buffer.Count, remoteEP);
 
 			List <byte> retBuffer = new List<byte> ();
-			for (int i = 0; i < iRx; i++) {
-				retBuffer.Add (receiveBuffer [i]);
-			}
-
-			for (int i = 0; i < retBuffer.Count; i++) {
-				
-				Console.Write(retBuffer[i] + " ");
-			}
-			Console.WriteLine ();
-
 			return retBuffer;
 		}
 

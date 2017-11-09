@@ -20,17 +20,34 @@ public class FakeDevice : MonoBehaviour {
 
 		Control theControl = Control.CreateControl (Control.CtrlInputOutput.input, Control.CtrlType.OnOff, "First");
 		myDevice.AddControl (theControl);
-		Control newControl = Control.CreateControl (Control.CtrlInputOutput.input, Control.CtrlType.OnOff, "Second");
+		Control newControl = Control.CreateControl (Control.CtrlInputOutput.output, Control.CtrlType.OnOff, "Second");
 		myDevice.AddControl (newControl);
 		myDevice.SetDeviceName ("Unity");
 		HeepCommunications.StartHeepServer (myDevice);
 	}
 
+	IEnumerator setControlsOnTimer()
+	{
+		int curValue = 0;
+
+		while (true) {
+			Debug.Log ("Setting to " + curValue);
+			myDevice.SetControlByID (1, curValue);
+			yield return new WaitForSeconds (2);
+
+			if (curValue == 0)
+				curValue = 1;
+			else
+				curValue = 0;
+		}
+	}
+
 	// Use this for initialization
 	void Start () {
 		CreateHeepDevice ();
+		StartCoroutine (setControlsOnTimer());
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		
