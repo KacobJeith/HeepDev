@@ -30,6 +30,11 @@ module.exports = {
       { test: /\.jsx?$/, 
         loaders: ['babel-loader'], 
         exclude: /node_modules/ 
+      },
+      {
+        test: /\.(h|py)$/,
+        loader: 'raw-loader',
+        exclude: /node_modules/ 
       }
     ],
 
