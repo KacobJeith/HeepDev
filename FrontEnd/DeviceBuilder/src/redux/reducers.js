@@ -15,7 +15,7 @@ export default function(state = initialState, action) {
 
     	if (controls.length < action.num) {
     		for (var i = controls.length; i < action.num; i++) {
-    			controls.push(initialControlState);
+    			controls.push(initialControlState());
     		}
     	}
 
@@ -50,7 +50,7 @@ export default function(state = initialState, action) {
     		controlDirection = 1;
     	}
 
-    	var newState = Immutable.List(state.controls)).toJS();
+    	var newState = Immutable.List(state.controls).toJS();
 		newState[controlID]['controlDirection'] = controlDirection;
 
 		console.log(newState[controlID]);
@@ -92,7 +92,8 @@ export default function(state = initialState, action) {
   }
 }
 
-const initialControlState = {
+
+const initialControlState = () => ({
     controlName: 'default',
     controlID: 0,
     controlDirection: 0,
@@ -100,4 +101,4 @@ const initialControlState = {
     highValue: 100,
     lowValue: 0,
     curValue: 0
-}
+})
