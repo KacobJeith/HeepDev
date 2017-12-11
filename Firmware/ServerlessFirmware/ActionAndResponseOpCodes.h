@@ -397,6 +397,18 @@ void ExecuteAddMOPOpCode()
 
 }
 
+unsigned char IsROP()
+{
+	if(inputBuffer[0] == MemoryDumpOpCode 
+		|| inputBuffer[0] == SuccessOpCode
+		|| inputBuffer[0] == ErrorOpCode)
+	{
+		return 1;
+	}
+
+	return 0;
+}
+
 void ExecuteControlOpCodes()
 {
 	unsigned char ReceivedOpCode = inputBuffer[0];
@@ -427,6 +439,11 @@ void ExecuteControlOpCodes()
 	else if(ReceivedOpCode == DeleteMOPOpCode)
 	{
 		ExecuteDeleteMOPOpCode();
+	}
+	else
+	{
+		char errorMessage [] = "Invalid COP Received";
+		FillOutputBufferWithError(errorMessage, strlen(errorMessage));
 	}
 }
 
