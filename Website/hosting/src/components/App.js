@@ -15,6 +15,8 @@ import Logout from './Logout'
 import Loading from './Loading'
 import UserProfile from './UserProfile'
 
+import PaperSignalsConsole from './PaperSignals/PaperSignalsConsole'
+
 const mapStateToProps = (state) => ({
 	loginStatus: state.loginStatus,
 })
@@ -73,6 +75,7 @@ class App extends React.Component {
 					<Route path="/Mission" component={Mission}/>
 					<Route path="/Shop" component={Store}/>
 					<Route exact path="/auth" component={Auth}/>
+					<Route exact path="/PaperSignals" component={PaperSignalsConsole}/>
 					{loggedInRoutes}
 			    </div>
 			</Router>);

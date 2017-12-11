@@ -50,3 +50,55 @@ export const unlinkAccount = (providerId) => ({
 	type: 'UNLINK_PROVIDER',
 	providerId
 })
+
+export const initPaperSignals = () => ({
+	type: 'INIT_PAPER_SIGNALS'
+})
+
+
+
+/* <-------------------------------------------------------Paper Signals---------------------------------------------------------------------->*/
+
+
+
+
+export const addSignal = (name, intent) => ({
+  type: 'ADD_SIGNAL',
+  name,
+  intent
+})
+
+export const deleteSignal = (id) => ({
+	type: 'DELETE_SIGNAL', 
+	id
+})
+
+export const populateSignal = (id, content) => ({
+	type: 'POP_SIGNAL',
+	id,
+  	content
+})
+
+export const storeFile = (filename, blob) => ({
+	type: 'STORE_FILE',
+	filename,
+	blob
+})
+
+export const updateName = (signalId, name) => ({
+	type: 'UPDATE_NAME',
+	signalId, 
+	name
+})
+
+export const storeIconURL = (iconName, url) => ({
+	type: 'STORE_ICONURL',
+	iconName, 
+	url
+})
+
+export const storeIntentBackgroundURL = (intent, url) => ({
+	type: 'STORE_INTENT_BACKGROUND_URL',
+	intent, 
+	url
+})

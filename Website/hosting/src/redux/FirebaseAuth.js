@@ -3,6 +3,7 @@ import firebaseui from 'firebaseui'
 import * as setup from '../index'
 import * as actions from '../redux/actions'
 import * as database from './FirebaseDatabase'
+import $ from 'jquery'
 
 export const logout = () => {
   
@@ -78,6 +79,10 @@ export const initializeFirebase = () => {
 	    setup.store.dispatch(actions.updateLoginStatus(true));
 	    database.readUserData(user);
 	    validateUser()
+	    
+	    VerifyUser()
+      	database.readUserSignals();
+      	database.downloadAssets();
 
 	    loadUserProviders()
 
@@ -86,18 +91,26 @@ export const initializeFirebase = () => {
 	    console.log("Detected no user signed in");
 	    setup.store.dispatch(actions.updateLoginStatus(false));
 
+	    checkIfInbound();
+
 	  }
 	});
 
 }
 
 export const loginUser = () => {
+	var afterLoginRoute = signinSuccessURL();
+
 	firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
 		.then(function() {
 			
 			var provider = new firebase.auth.GoogleAuthProvider();
+
+			provider.setCustomParameters({
+		        prompt: 'select_account'
+		    });
+
 			return firebase.auth().signInWithRedirect(provider);
-			// firebase.auth().signInWithPopup(provider);
 
 		})
 		.catch(function(error) {
@@ -123,18 +136,21 @@ export const firebaseAuthUI = () => {
 
         queryParameterForSignInSuccessUrl: 'signInSuccessUrl',
 
-        signInFlow: 'popup',
-        signInSuccessUrl: '/User',
+        signInFlow: 'redirect',
+        signInSuccessUrl: signinSuccessURL(),
         signInOptions: [
 
           {
             provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
-
             requireDisplayName: true
           },
-          firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-          firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-          firebase.auth.TwitterAuthProvider.PROVIDER_ID
+          {
+		      provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+		      customParameters: {
+		        prompt: 'select_account'
+		      }
+		  }
+
         ],
 
         tosUrl: '/TermsOfService'
@@ -156,8 +172,34 @@ export const firebaseAuthUI = () => {
 		var ui = new firebaseui.auth.AuthUI(firebase.auth());
 		ui.start('#firebaseui-auth-container', uiConfig);
 	}
-	 
-      	
+}
+
+export const handleLogin = () => {
+	// if (checkMobileSafari()) {
+	// 	loginUser()
+	// } else {
+		firebaseAuthUI()
+	// }
+}
+
+const checkSafari = () => {
+
+	if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1) {
+		return true
+	} else {
+		return false
+	}
+}
+
+const checkMobileSafari = () => {
+
+	var ua = window.navigator.userAgent;
+	console.log(ua);
+	var iOS = !!ua.match(/iPad/i) || !!ua.match(/iPhone/i);
+	var webkit = !!ua.match(/WebKit/i);
+	var iOSSafari = iOS && webkit && !ua.match(/CriOS/i);
+
+	return iOSSafari
 }
 
 export const linkAccount = (newProvider) => {
@@ -232,6 +274,56 @@ export const updateUserProfile = (newData) => {
 	  console.log("Failed to Update");
 
 	});
+}
+
+export const VerifyUser = () => {
+
+    let actionsUID = searchURL("actionsUID") 
+
+    if (actionsUID) {
+		let user = firebase.auth().currentUser
+    	$.get("/verifyUser" + "?actionsUID=" + actionsUID + "&uid=" + user.uid + "&email=" + user.email);
+    }
+    
+}
+
+const signinSuccessURL = () => {
+
+    let successRoute = searchURL("successRoute") 
+
+    if (successRoute) {
+
+		return '/' + successRoute
+
+    } else {
+
+    	return '/User'
+    }
+}
+
+const searchURL = (parameter) => {
+
+	var sPageURL = window.location.search.substring(1);
+
+    var sURLVariables = sPageURL.split('&');
+
+    for (var i = 0; i < sURLVariables.length; i++) {
+        var sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] == parameter) {
+            return sParameterName[1];
+        };
+    };
+
+    return null
+}
+
+export const checkIfInbound = () => {
+
+	if (!!searchURL("actionsUID")) {
+		console.log("INBOUND");
+		loginUser()
+	}
 }
 
 

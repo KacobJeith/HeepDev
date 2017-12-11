@@ -6,7 +6,7 @@ import * as actions from '../redux/actions'
 import * as database from '../redux/FirebaseDatabase'
 import {Grid, Row, Col, Image, PageHeader, Media, Button} from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
-import EditTextBox from './EditTextBox'
+import EditTextBox from './utilities/EditTextBox'
 
 var mapStateToProps = (state, ownProps) => ({
   group: state.groups[ownProps.groupID]
