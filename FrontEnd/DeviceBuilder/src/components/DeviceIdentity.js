@@ -31,7 +31,7 @@ class DeviceIdentity extends React.Component {
       },
       deviceName: {
         title: "Device Name",
-        placeholder: "DefaultName",
+        defaultValue: "DefaultName",
         onChange: (value) => {this.props.updateDeviceName(value)}
       },
       systemType: {

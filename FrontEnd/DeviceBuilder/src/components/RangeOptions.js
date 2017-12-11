@@ -9,7 +9,7 @@ var mapStateToProps = (state, ownProps) => ({
   isRange: state.controls[ownProps.controlID]["controlType"] == 1,
   controlID: ownProps.controlID,
   currentMax: state.controls[ownProps.controlID]["highValue"],
-  currentLow: state.controls[ownProps.controlID]["lowValue"]
+  currentMin: state.controls[ownProps.controlID]["lowValue"]
 })
 
 class RangeOptions extends React.Component {
@@ -22,12 +22,12 @@ class RangeOptions extends React.Component {
     const inputs = {
       high: {
         title: "Range Max",
-        placeholder: this.props.currentMax,
+        defaultValue: this.props.currentMax,
         onChange: (value) => {this.props.updateControlMax(this.props.controlID, value)}
       },
       low: {
         title: "Range Min",
-        placeholder: this.props.currentMin,
+        defaultValue: this.props.currentMin,
         onChange: (value) => {this.props.updateControlMin(this.props.controlID, value)}
       }
     }

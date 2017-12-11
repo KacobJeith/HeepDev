@@ -83,14 +83,14 @@ export default function(state = initialState, action) {
     case 'UPDATE_CONTROL_MAX' :
 
     	var newState = Immutable.List(state.controls).toJS();
-		newState[action.controlID]['highValue'] = parseInt(action.controlMax);
+		newState[action.controlID]['highValue'] = parseInteger(action.controlMax);
 
     	return Immutable.Map(state).set('controls', newState).toJS()
 
     case 'UPDATE_CONTROL_MIN' :
 
     	var newState = Immutable.List(state.controls).toJS();
-		newState[action.controlID]['lowValue'] = parseInt(action.controlMin);
+		newState[action.controlID]['lowValue'] = parseInteger(action.controlMin);
 
     	return Immutable.Map(state).set('controls', newState).toJS()
 
@@ -109,3 +109,13 @@ const initialControlState = () => ({
     lowValue: 0,
     curValue: 0
 })
+
+const parseInteger = (input) => {
+	var setInt = parseInt(input);
+    	
+	if (isNaN(setInt)) {
+		return 0;
+	} else {
+		return setInt
+	}
+}
