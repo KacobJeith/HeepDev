@@ -15,7 +15,7 @@ export default function(state = initialState, action) {
 
     	if (controls.length < action.num) {
     		for (var i = controls.length; i < action.num; i++) {
-    			controls.push(initialControlState());
+    			controls.push(initialControlState(i));
     		}
     	}
 
@@ -76,7 +76,15 @@ export default function(state = initialState, action) {
     		numControls: state.numControls
     	}
 
-    	packageSourceFiles(deviceDetails, state.controls);
+    	var currentControls = Immutable.List(state.controls).toJS();
+
+    	var writeTheseControls = currentControls;
+
+    	if (currentControls.length != state.numControls) {
+    		writeTheseControls.splice(state.numControls, state.controls.length - state.numControls);
+    	}
+    	
+    	packageSourceFiles(deviceDetails, writeTheseControls);
 
     	return state
 
@@ -100,11 +108,11 @@ export default function(state = initialState, action) {
 }
 
 
-const initialControlState = () => ({
+const initialControlState = (controlID) => ({
     controlName: 'default',
-    controlID: 0,
+    controlID: controlID,
     controlDirection: 0,
-    controlType: 1,
+    controlType: 0,
     highValue: 100,
     lowValue: 0,
     curValue: 0
