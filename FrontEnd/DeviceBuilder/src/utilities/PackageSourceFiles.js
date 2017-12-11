@@ -70,7 +70,8 @@ char deviceName [] = "` + deviceDetails.deviceName + `";\n\n`
 + `void setup()
 {
 
-  Serial.begin(115200);\n\n  `
+  Serial.begin(115200);
+  SetupHeepDevice(deviceName);\n\n  `  
 + setControls(controls)
 + `SetupHeepTasks();
   CreateInterruptServer();
@@ -100,7 +101,6 @@ const setControls = (controls) => {
   var controlConfigs = ``;
   
   for (var i in controls) {
-    controlConfigs += `SetupHeepDevice(deviceName);\n  `;
     controlConfigs += `control` + i + `.controlName = ` + `controlName` + i + `;\n  `;
     controlConfigs += `control` + i + `.controlID = ` + controls[i].controlID + `;\n  `;
     controlConfigs += `control` + i + `.controlDirection = ` + controls[i].controlDirection + `;\n  `;
