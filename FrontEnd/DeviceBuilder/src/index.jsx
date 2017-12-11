@@ -18,7 +18,7 @@ const startState = {
     controlName: 'default',
     controlID: 0,
     controlDirection: 0,
-    controlType: 1,
+    controlType: 0,
     highValue: 100,
     lowValue: 0,
     curValue: 0

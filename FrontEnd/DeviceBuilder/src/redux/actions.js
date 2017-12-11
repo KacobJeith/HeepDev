@@ -34,3 +34,15 @@ export const updateControlType = (controlID, controlType) => ({
 export const packageSourceFiles = () => ({
 	type: 'PACKAGE_SOURCE_FILES'
 })
+
+export const updateControlMax = (controlID, controlMax) => ({
+	type: 'UPDATE_CONTROL_MAX',
+	controlID, 
+	controlMax
+})
+
+export const updateControlMin = (controlID, controlMin) => ({
+	type: 'UPDATE_CONTROL_MIN',
+	controlID, 
+	controlMin
+})

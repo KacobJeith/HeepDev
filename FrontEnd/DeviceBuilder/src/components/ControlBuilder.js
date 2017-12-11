@@ -7,6 +7,7 @@ import {ButtonGroup, ControlLabel, FormGroup, FormControl, HelpBlock, option} fr
 
 import GenericSelect from './GenericSelect'
 import GenericTextInput from './GenericTextInput'
+import RangeOptions from './RangeOptions'
 
 var mapStateToProps = (state) => ({
   numControls: state.numControls
@@ -49,6 +50,9 @@ class ControlBuilder extends React.Component {
         defaultValue: "input",
         onChange: (value) => {this.props.updateControlDirection(controlIndex, value)}
       },
+      rangeOptions: {
+        controlID: controlIndex - 1
+      }
     }
 
     return (<div {...inputs.controlSection}>
@@ -57,6 +61,7 @@ class ControlBuilder extends React.Component {
                   <GenericTextInput {...inputs.controlName}/>
                   <GenericSelect {...inputs.controlDirection}/>
                   <GenericSelect {...inputs.controlType}/>
+                  <RangeOptions {...inputs.rangeOptions}/>
                 </form>
               </div>
             </div>

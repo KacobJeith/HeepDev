@@ -80,6 +80,20 @@ export default function(state = initialState, action) {
 
     	return state
 
+    case 'UPDATE_CONTROL_MAX' :
+
+    	var newState = Immutable.List(state.controls).toJS();
+		newState[action.controlID]['highValue'] = parseInt(action.controlMax);
+
+    	return Immutable.Map(state).set('controls', newState).toJS()
+
+    case 'UPDATE_CONTROL_MIN' :
+
+    	var newState = Immutable.List(state.controls).toJS();
+		newState[action.controlID]['lowValue'] = parseInt(action.controlMin);
+
+    	return Immutable.Map(state).set('controls', newState).toJS()
+
     default:
       return state
   }
