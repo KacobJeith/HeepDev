@@ -17,6 +17,8 @@ exports.incoming = functions.https.onRequest((request, response) => {
 	var body = request.body;
 	console.log("Request Body: ", body);
 
+	checkForSelection(app, body);
+
 	if (user) {
 		admin.database().ref("googleAssistantUsers/" + user.userId).once("value", function(directorySnapshot) {
 			var uid = directorySnapshot.val()
@@ -57,6 +59,15 @@ exports.verifyUser = functions.https.onRequest((request, response) => {
 	  });
 
 });
+
+const checkForSelection = (app, body) => {
+
+	var selection = app.getContextArgument('actions_intent_option','OPTION')
+
+	if (selection) {
+		console.log("Selection: ", selection.value)
+	} 
+}
 
 
 const processRequest = (app, uid, body) => {
@@ -164,7 +175,7 @@ const getAllMySignals = (uid, callback) => {
 
 				});
 			});
-			
+
 		} else {
 			callback([]);
 		}
