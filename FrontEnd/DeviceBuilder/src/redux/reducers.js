@@ -41,10 +41,17 @@ export default function(state = initialState, action) {
 
     case 'UPDATE_CONTROL_DIRECTION' :
     	console.log("Control " + action.controlID + " " + action.direction);
+
 		var controlID = action.controlID - 1;
 
-    	var newState = Immutable.List(state.controls).toJS();
-		newState[controlID]['controlDirection'] = action.direction;
+		var controlDirection = 0;
+
+    	if (action.direction == "output") {
+    		controlDirection = 1;
+    	}
+
+    	var newState = Immutable.List(state.controls)).toJS();
+		newState[controlID]['controlDirection'] = controlDirection;
 
 		console.log(newState[controlID]);
 
@@ -54,9 +61,14 @@ export default function(state = initialState, action) {
 
     	console.log("Control " + action.controlID + " " + action.controlType);
     	var controlID = action.controlID - 1;
+    	var controlType = 0;
+
+    	if (action.controlType == "Range") {
+    		controlType = 1;
+    	}
 
     	var newState = Immutable.List(state.controls).toJS();
-		newState[controlID]['controlType'] = action.controlType;
+		newState[controlID]['controlType'] = controlType;
 
 		console.log(newState[controlID]);
 		console.log(newState);
