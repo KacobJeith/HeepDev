@@ -14,6 +14,7 @@ import Auth from './Auth'
 import Logout from './Logout'
 import Loading from './Loading'
 import UserProfile from './UserProfile'
+import DeviceBuilder from './DeviceBuilder'
 
 import PaperSignalsConsole from './PaperSignals/PaperSignalsConsole'
 
@@ -64,6 +65,7 @@ class App extends React.Component {
 
 	    if (this.props.loginStatus) {
 	    	loggedInRoutes.push(<Route path="/Build" component={Build} key="build"/>);
+	    	loggedInRoutes.push(<Route path="/DeviceBuilder" component={DeviceBuilder} key="DeviceBuilder"/>)
 	    	loggedInRoutes.push(<Route path="/User" component={UserProfile} key="user"/>);
 	    }
 

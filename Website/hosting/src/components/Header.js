@@ -27,6 +27,9 @@ class Header extends React.Component {
 		userNavElements.push(	<LinkContainer to="/Build" key="build">
 						          <NavItem>Build</NavItem>
 						        </LinkContainer>);
+		userNavElements.push(	<LinkContainer to="/DeviceBuilder" key="DeviceBuilder">
+						          <NavItem>Device Builder</NavItem>
+						        </LinkContainer>);
 		
 		userNavElements.push(this.profilePicture());
 		userNavElements.push(this.logOffButton());
