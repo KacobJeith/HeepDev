@@ -100,7 +100,7 @@ const packageArduinoFiles = (deviceDetails, controls, zip) => {
 
   zip.file('ESP8266_HeepComms.h', ESP8266_HeepComms);
   zip.file('ArduinoW5100_HeepComms.h', ArduinoW5100_HeepComms);
-  zip.file('Arduino_EEPROM.h', Arduino_EEPROM);
+  zip.file('Simulation_NonVolatileMemory.h', Simulation_NonVolatileMemory);
   zip.file('Arduino_Timer.h', Arduino_Timer);
 
   return zip
