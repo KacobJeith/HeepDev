@@ -243,13 +243,11 @@ const setIDAndMAC = (launchDownloadCallback) => {
 }
 
 const generateAutoInfoFile = (deviceIDarray, MACAddressArray) => {
-  console.log(deviceIDarray);
-  console.log(MACAddressArray);
-  
-  var deviceIDstring = convertIntToHex(deviceIDarray);
-  var MACstring = convertIntToHex(MACAddressArray);
 
-  console.log("Complete DeviceID Hex: ", convertIntToHex(deviceIDarray));
+  return `#include "globalDefines.h"
+
+heepByte deviceIDByte [STANDARD_ID_SIZE] = {` + convertIntToHex(deviceIDarray) + `};
+uint8_t mac[6] = {` + convertIntToHex(MACAddressArray) + `};\n`
 
 }
 
@@ -265,7 +263,7 @@ const convertIntToHex = (array) => {
     }
   }
 
-  console.log("Final Hex: ", commaString);
+  console.log("Hex Generated: ", commaString);
 
   return commaString
 }
