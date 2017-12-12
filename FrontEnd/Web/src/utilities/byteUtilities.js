@@ -15,7 +15,7 @@ export var GetDeviceIDAsByteArray = (value) => {
 }
 
 export var GetValueAsFixedSizeByteArray = (value, size) => {
-  var valueBytes = GetByteArrayFromValue(value);
+  var valueBytes = GetByteArrayFromValue(value, size);
   var backfill = size - valueBytes.length;
   for (var i = 0; i < backfill; i++){
     valueBytes.unshift(0x00);
@@ -24,9 +24,8 @@ export var GetValueAsFixedSizeByteArray = (value, size) => {
   return valueBytes
 }
 
-export var GetByteArrayFromValue = (value) => {
+export var GetByteArrayFromValue = (value, numBytes = GetNecessaryBytes(value)) => {
   var byteArray = [];
-  var numBytes = GetNecessaryBytes(value);
 
   for (var i = 0; i < numBytes; i++){ 
     var hexVal = value % 256;
