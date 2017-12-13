@@ -1,4 +1,5 @@
 #include "ActionAndResponseOpCodes.h"
+#include "Scheduler.h"
 
 // Prototypes
 void CommitMemory();

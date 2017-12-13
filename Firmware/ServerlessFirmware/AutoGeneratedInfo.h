@@ -23,10 +23,6 @@
 #define SYSTEM_TASK_INTERVAL 1000 // Time in ms
 #define NUMBER_OF_TASKS 4
 
-#ifndef ON_ARDUINO
-#include <string.h>
-#endif
-
 // Indexed IDs are a form of compression that can be used
 // on memory limited devices. These are particularly useful
 // When using IDs that are very long strings
@@ -40,16 +36,6 @@
 #define ID_SIZE STANDARD_ID_SIZE
 #endif
 
-// The heepByte is our standard 8bit unit that we will work with
-typedef unsigned char heepByte;
-
-// Define the input and output buffers for global accessibility
-unsigned char outputBuffer [OUTPUT_BUFFER_SIZE];
-unsigned int outputBufferLastByte = 0;
-
-unsigned char inputBuffer [INPUT_BUFFER_SIZE];
-unsigned int inputBufferLastByte = 0;
-
 // Include the standard Heep Data Types
 #include "CommonDataTypes.h"
 
@@ -62,6 +48,7 @@ unsigned int inputBufferLastByte = 0;
 #endif
 
 #ifdef ON_ESP8266
+#include <string.h>
 #include "ESP8266_HEEPComms.h"
 #include "Simulation_NonVolatileMemory"
 #include "Arduino_Timer.h"
@@ -70,12 +57,14 @@ String Password = "YOUR_WIFI_PASSWORD";
 #endif
 
 #ifdef ON_ARDUINO
+#include <string.h>
 #include "ENC28j60_HeepComms.h"
 #include "Arduino_EEPROM.h"
 #include "Arduino_Timer.h"
 #endif
 
 #ifdef SIMULATION
+#include <string.h>
 #include "Simulation_HeepComms.h"
 #include "Simulation_NonVolatileMemory.h"
 #include "Simulation_Timer.h"
@@ -86,10 +75,6 @@ String Password = "YOUR_WIFI_PASSWORD";
 #include "PICW5500_NonVolatileMemory.h"
 #include "PICW5500_Timer.h"
 #endif
-
-// The scheduler depends on the Timer, so it is included after the physical description
-// is created
-#include "Scheduler.h"
 
 // Device ID and MAC Address used for all Heep Communication
 heepByte deviceIDByte [STANDARD_ID_SIZE] = {0x01, 0x02, 0x03, 0x04};
