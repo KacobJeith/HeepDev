@@ -56,3 +56,14 @@ export const updatePhysicalLayer = (physicalLayer) => ({
 	type: 'UPDATE_PHYSICAL_LAYER',
 	physicalLayer
 })
+
+export const updateSSID = (ssid) => ({
+	type: 'UPDATE_SSID',
+	ssid
+})
+
+export const updateSSIDPassword = (ssidPassword) => ({
+	type: 'UPDATE_SSID_PASSWORD',
+	ssidPassword
+})
+

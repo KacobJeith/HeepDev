@@ -10,6 +10,7 @@ import GenericTextInput from './GenericTextInput'
 
 var mapStateToProps = (state, ownProps) => ({
   deviceName: state.deviceName,
+  physicalLayer: state.physicalLayer,
   controls: state.controls
 })
 
@@ -41,7 +42,26 @@ class DeviceIdentity extends React.Component {
         defaultValue: "W5500",
         options: ['W5100', 'W5500', 'ESP8266'],
         onChange: (value) => {this.props.updatePhysicalLayer(value)}
+      },
+      ssid: {
+        key: 'ssid',
+        title: "Enter WiFi SSID",
+        defaultValue: '',
+        onChange: (value) => {this.props.updateSSID(value)}
+      },
+      ssidPassword: {
+        key: 'ssidpwd',
+        title: "Enter WiFi Password",
+        defaultValue: '',
+        onChange: (value) => {this.props.updateSSIDPassword(value)}
       }
+    }
+
+    var optionalInputs = [];
+
+    if (this.props.physicalLayer == 'ESP8266') {
+      optionalInputs.push(<GenericTextInput {...inputs.ssid}/>)
+      optionalInputs.push(<GenericTextInput {...inputs.ssidPassword}/>)
     }
 
     return (
@@ -49,6 +69,7 @@ class DeviceIdentity extends React.Component {
             <GenericTextInput {...inputs.deviceName}/>
             <GenericSelect {...inputs.systemType}/>
             <GenericSelect {...inputs.physicalLayer}/>
+            {optionalInputs}
           </form>  
     );
   }

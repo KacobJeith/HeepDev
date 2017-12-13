@@ -11,10 +11,12 @@ import reducers from './redux/reducers.js'
 import DeviceBuilder from './components/DeviceBuilder'
 
 const startState = {
-  deviceName: "DefaultDevice",
+  deviceName: 'DefaultDevice',
   numControls: 0,
-  physicalLayer: "W5500",
-  systemType: "Arduino",
+  physicalLayer: 'W5500',
+  ssid: 'your_ssid_here',
+  ssidPassword: 'your_ssid_pwd',
+  systemType: 'Arduino',
   controls: []
 }
 

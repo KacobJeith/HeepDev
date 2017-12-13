@@ -123,6 +123,14 @@ export default function(state = initialState, action) {
 
         return Immutable.Map(state).set('physicalLayer', action.physicalLayer).toJS()
 
+    case 'UPDATE_SSID' : 
+
+        return Immutable.Map(state).set('ssid', action.ssid).toJS()
+
+    case 'UPDATE_SSID_PASSWORD' :
+        
+        return Immutable.Map(state).set('ssidPassword', action.ssidPassword).toJS()
+
     default:
       return state
   }
