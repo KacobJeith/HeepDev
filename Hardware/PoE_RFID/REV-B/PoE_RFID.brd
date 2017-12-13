@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="8.4.3">
+<eagle version="8.5.0">
 <drawing>
 <settings>
 <setting alwaysvectorfont="yes"/>
 <setting keepoldvectorfont="yes"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.15875" unitdist="mm" unit="mm" style="lines" multiple="1" display="no" altdistance="0.025" altunitdist="inch" altunit="mm"/>
+<grid distance="0.3175" unitdist="mm" unit="mm" style="lines" multiple="1" display="no" altdistance="0.025" altunitdist="inch" altunit="mm"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="2" name="Route2" color="1" fill="3" visible="no" active="no"/>
@@ -24,18 +24,18 @@
 <layer number="13" name="Route13" color="4" fill="5" visible="no" active="no"/>
 <layer number="14" name="Route14" color="1" fill="6" visible="no" active="no"/>
 <layer number="15" name="Route15" color="4" fill="6" visible="no" active="no"/>
-<layer number="16" name="Bottom" color="1" fill="1" visible="no" active="yes"/>
+<layer number="16" name="Bottom" color="1" fill="1" visible="yes" active="yes"/>
 <layer number="17" name="Pads" color="2" fill="1" visible="yes" active="yes"/>
 <layer number="18" name="Vias" color="2" fill="1" visible="yes" active="yes"/>
-<layer number="19" name="Unrouted" color="11" fill="4" visible="no" active="yes"/>
-<layer number="20" name="Dimension" color="15" fill="1" visible="no" active="yes"/>
-<layer number="21" name="tPlace" color="6" fill="1" visible="no" active="yes"/>
+<layer number="19" name="Unrouted" color="11" fill="4" visible="yes" active="yes"/>
+<layer number="20" name="Dimension" color="15" fill="1" visible="yes" active="yes"/>
+<layer number="21" name="tPlace" color="6" fill="1" visible="yes" active="yes"/>
 <layer number="22" name="bPlace" color="7" fill="1" visible="no" active="yes"/>
-<layer number="23" name="tOrigins" color="15" fill="1" visible="no" active="yes"/>
+<layer number="23" name="tOrigins" color="15" fill="1" visible="yes" active="yes"/>
 <layer number="24" name="bOrigins" color="15" fill="1" visible="no" active="yes"/>
 <layer number="25" name="tNames" color="7" fill="1" visible="no" active="yes"/>
 <layer number="26" name="bNames" color="7" fill="1" visible="no" active="yes"/>
-<layer number="27" name="tValues" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="27" name="tValues" color="7" fill="1" visible="no" active="yes"/>
 <layer number="28" name="bValues" color="7" fill="1" visible="no" active="yes"/>
 <layer number="29" name="tStop" color="7" fill="3" visible="no" active="yes"/>
 <layer number="30" name="bStop" color="7" fill="6" visible="no" active="yes"/>
@@ -53,13 +53,13 @@
 <layer number="42" name="bRestrict" color="1" fill="10" visible="no" active="yes"/>
 <layer number="43" name="vRestrict" color="2" fill="10" visible="no" active="yes"/>
 <layer number="44" name="Drills" color="7" fill="1" visible="no" active="yes"/>
-<layer number="45" name="Holes" color="7" fill="1" visible="no" active="yes"/>
-<layer number="46" name="Milling" color="3" fill="1" visible="no" active="yes"/>
+<layer number="45" name="Holes" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="46" name="Milling" color="3" fill="1" visible="yes" active="yes"/>
 <layer number="47" name="Measures" color="7" fill="1" visible="no" active="yes"/>
 <layer number="48" name="Document" color="7" fill="1" visible="no" active="yes"/>
 <layer number="49" name="Reference" color="7" fill="1" visible="no" active="yes"/>
 <layer number="50" name="dxf" color="7" fill="1" visible="no" active="yes"/>
-<layer number="51" name="tDocu" color="7" fill="1" visible="no" active="yes"/>
+<layer number="51" name="tDocu" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="52" name="bDocu" color="7" fill="1" visible="no" active="yes"/>
 <layer number="53" name="tGND_GNDA" color="7" fill="9" visible="no" active="no"/>
 <layer number="54" name="bGND_GNDA" color="1" fill="9" visible="no" active="no"/>
@@ -157,12 +157,12 @@
 </layers>
 <board>
 <plain>
-<wire x1="3" y1="0" x2="98.9975" y2="0" width="0" layer="20"/>
-<wire x1="102.0125" y1="3" x2="102.0125" y2="59.15" width="0" layer="20"/>
-<wire x1="98.9975" y1="62.15" x2="3" y2="62.15" width="0" layer="20"/>
+<wire x1="3" y1="0" x2="96.14" y2="0" width="0" layer="20"/>
+<wire x1="99.155" y1="3" x2="99.155" y2="59.15" width="0" layer="20"/>
+<wire x1="96.14" y1="62.15" x2="3" y2="62.15" width="0" layer="20"/>
 <wire x1="0" y1="59.15" x2="0" y2="3" width="0" layer="20"/>
-<wire x1="102.0125" y1="3" x2="98.9975" y2="0" width="0" layer="20" curve="-90.003801"/>
-<wire x1="102.0125" y1="59.15" x2="98.9975" y2="62.15" width="0" layer="20" curve="90.003801"/>
+<wire x1="99.155" y1="3" x2="96.14" y2="0" width="0" layer="20" curve="-90.003801"/>
+<wire x1="99.155" y1="59.15" x2="96.14" y2="62.15" width="0" layer="20" curve="90.003801"/>
 <wire x1="3" y1="0" x2="0" y2="3" width="0" layer="20" curve="-90"/>
 <wire x1="3" y1="62.15" x2="0" y2="59.15" width="0" layer="20" curve="90"/>
 <text x="54.864" y="33.02" size="1.27" layer="25">TX2</text>
@@ -251,8 +251,6 @@
 <text x="19.6871625" y="0.768334375" size="1.778" layer="21">V</text>
 <text x="32.221340625" y="0.813528125" size="1.778" layer="21">GND</text>
 <text x="40.52945625" y="38.5092375" size="1.778" layer="21">PIEZO</text>
-<hole x="99.5" y="2.54" drill="3"/>
-<hole x="99.5" y="59.69" drill="3"/>
 <text x="25.104125" y="7.601421875" size="1.778" layer="21">11</text>
 <text x="47.629165625" y="35.94859375" size="1.778" layer="21">6</text>
 <text x="45.96026875" y="35.04438125" size="1.778" layer="21">~</text>
@@ -3020,6 +3018,7 @@ design rules under a new name.</description>
 <param name="checkFont" value="1"/>
 <param name="checkRestrict" value="0"/>
 <param name="checkStop" value="0"/>
+<param name="checkValues" value="0"/>
 <param name="useDiameter" value="13"/>
 <param name="maxErrors" value="50"/>
 </designrules>
@@ -3483,6 +3482,7 @@ design rules under a new name.</description>
 <attribute name="PROD_ID" value="CONN-09696" x="44.581234375" y="51.054" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="VALUE" x="42.549234375" y="52.324" size="0.6096" layer="27" font="vector" ratio="20" rot="R270"/>
 </element>
+<element name="R18" library="microbuilder" package="0603-NO" value="10K" x="-5.3975" y="-8.5725"/>
 </elements>
 <signals>
 <signal name="GND">
@@ -4653,6 +4653,8 @@ design rules under a new name.</description>
 <wire x1="37.947796875" y1="59.24339375" x2="42.070303125" y2="55.1208875" width="0.6096" layer="1"/>
 <wire x1="42.070303125" y1="55.1208875" x2="42.070303125" y2="51.08306875" width="0.6096" layer="1"/>
 <wire x1="42.070303125" y1="51.08306875" x2="42.041234375" y2="51.054" width="0.6096" layer="1"/>
+<contactref element="R18" pad="2"/>
+<wire x1="-4.5475" y1="-8.5725" x2="26.67" y2="10.16" width="0" layer="19" extent="1-16"/>
 </signal>
 <signal name="13">
 <contactref element="IC2" pad="32"/>
@@ -5124,6 +5126,8 @@ design rules under a new name.</description>
 </signal>
 <signal name="RSTPD_N">
 <contactref element="U1" pad="38"/>
+<contactref element="R18" pad="1"/>
+<wire x1="-6.2475" y1="-8.5725" x2="32.1275" y2="9.474" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="TX1_ANTENNA">
 <contactref element="C5" pad="1"/>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="8.4.3">
+<eagle version="8.5.0">
 <drawing>
 <settings>
 <setting alwaysvectorfont="yes"/>
@@ -13397,6 +13397,8 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <part name="J3" library="SparkFun-Connectors" deviceset="CONN_04" device="1X04_NO_SILK"/>
 <part name="GND5" library="supply1" deviceset="GND" device=""/>
 <part name="+3V13" library="supply1" deviceset="+3V3" device=""/>
+<part name="R18" library="microbuilder" deviceset="RESISTOR" device="_0603_NOOUT" value="10K"/>
+<part name="+3V14" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -14669,6 +14671,8 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <instance part="+3V5" gate="G$1" x="246.38" y="139.7" rot="R270"/>
 <instance part="+3V12" gate="G$1" x="162.56" y="203.2"/>
 <instance part="+3V11" gate="G$1" x="83.82" y="66.04"/>
+<instance part="R18" gate="G$1" x="180.34" y="228.6" rot="R90"/>
+<instance part="+3V14" gate="G$1" x="180.34" y="236.22"/>
 </instances>
 <busses>
 </busses>
@@ -15049,9 +15053,10 @@ You are welcome to use this library for commercial purposes. For attribution, we
 </net>
 <net name="RSTPD_N" class="0">
 <segment>
-<wire x1="180.34" y1="175.26" x2="180.34" y2="187.96" width="0.1524" layer="91"/>
 <label x="180.34" y="177.8" size="1.778" layer="95" rot="R90"/>
 <pinref part="U1" gate="G$1" pin="RSTPD_N"/>
+<pinref part="R18" gate="G$1" pin="1"/>
+<wire x1="180.34" y1="223.52" x2="180.34" y2="175.26" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="TX1_ANTENNA" class="0">
@@ -15204,6 +15209,10 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <pinref part="R7" gate="G$1" pin="2"/>
 <wire x1="83.82" y1="63.5" x2="83.82" y2="58.42" width="0.1524" layer="91"/>
 <pinref part="+3V11" gate="G$1" pin="+3V3"/>
+</segment>
+<segment>
+<pinref part="R18" gate="G$1" pin="2"/>
+<pinref part="+3V14" gate="G$1" pin="+3V3"/>
 </segment>
 </net>
 </nets>
