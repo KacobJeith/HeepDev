@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-dom'
 import {ButtonGroup, ControlLabel, FormGroup, FormControl, HelpBlock, option} from 'react-bootstrap';
 
 import GenericSelect from './GenericSelect'
+import ControlledSelect from './ControlledSelect'
 import GenericTextInput from './GenericTextInput'
 import RangeOptions from './RangeOptions'
 
@@ -15,6 +16,13 @@ var mapStateToProps = (state) => ({
 })
 
 class ControlBuilder extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      selection: "Select..."
+    }
+  }
 
   buildControl (controlIndex) {
 
@@ -81,6 +89,12 @@ class ControlBuilder extends React.Component {
           width: "100%",
           margin: "auto"
         }
+      },
+      addNewControl: {
+        title: "Add New Control",
+        value: this.state.selection,
+        options: ["Custom", "Servo", "LED", "Select..."],
+        onChange: (value) => {this.setState({selection: "Select..."}); this.props.addNewControl(value); },
       }
     }
 
@@ -91,9 +105,12 @@ class ControlBuilder extends React.Component {
     }
 
     return (
+      <div >
         <div {...inputs.fieldInputs}>
-          {controlInputs}
+          {controlInputs}  
         </div>
+        <ControlledSelect {...inputs.addNewControl}/>
+      </div>
          
     );
   }

@@ -22,6 +22,12 @@ export default class DeviceBuilder extends React.Component {
           fontFamily: "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
         }
       },
+      contents: {
+        style: {
+          width: "80%",
+          margin: "auto",
+        }
+      },
       spacer: {
         style: {
           height: 70
@@ -31,13 +37,13 @@ export default class DeviceBuilder extends React.Component {
 
     return (
       <div {...inputs.builder}>
-        <div {...inputs.spacer}/>
-        
-        <DeviceIdentity/>
-        <ControlBuilder/>
-        <DownloadSource/>
-
-        <div {...inputs.spacer}/>
+        <div {...inputs.contents}>
+          <div {...inputs.spacer}/>
+          <DeviceIdentity/>
+          <ControlBuilder/>
+          <DownloadSource/>
+          <div {...inputs.spacer}/>
+        </div>
      </div>
     );
   }
