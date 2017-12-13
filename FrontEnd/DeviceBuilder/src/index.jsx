@@ -13,16 +13,8 @@ import DeviceBuilder from './components/DeviceBuilder'
 const startState = {
   deviceName: "DefaultDevice",
   systemType: "Arduino",
-  numControls: 1,
-  controls: [{
-    controlName: 'default',
-    controlID: 0,
-    controlDirection: 0,
-    controlType: 0,
-    highValue: 100,
-    lowValue: 0,
-    curValue: 0
-  }]
+  numControls: 0,
+  controls: []
 }
 
 export const initialState = Immutable.Map(startState)

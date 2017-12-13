@@ -102,6 +102,20 @@ export default function(state = initialState, action) {
 
     	return Immutable.Map(state).set('controls', newState).toJS()
 
+    case 'ADD_NEW_CONTROL' :
+
+        var controls = Immutable.List(state.controls).toJS();
+        controls.push(initialControlState(controls.length));
+
+        var newMaster = Immutable.Map(state)
+        .set('numControls', state.numControls + 1)
+        .set('controls', controls)
+        .toJS()
+
+        console.log(newMaster.controls);
+
+        return newMaster
+
     default:
       return state
   }

@@ -46,3 +46,8 @@ export const updateControlMin = (controlID, controlMin) => ({
 	controlID, 
 	controlMin
 })
+
+export const addNewControl = (controlConfig) => ({
+	type: 'ADD_NEW_CONTROL',
+	controlConfig
+})

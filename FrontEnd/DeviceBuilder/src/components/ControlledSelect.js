@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import * as Actions from '../redux/actions'
 import {FormGroup, FormControl, ControlLabel, option} from 'react-bootstrap';
 
-export default class GenericSelect extends React.Component {
+export default class ControlledSelect extends React.Component {
 	
 	constructor(props) {
 		super(props);
@@ -26,7 +26,7 @@ export default class GenericSelect extends React.Component {
 	              <ControlLabel style={{color:"white"}}>{this.props.title}</ControlLabel>
 	              <FormControl 
 	                componentClass="select" 
-	                defaultValue={this.props.defaultValue}
+	                value={this.props.value}
 	                onChange={
 	                  (change) => {this.props.onChange(change.target.value);}
 	                }>

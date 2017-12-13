@@ -10,12 +10,15 @@ import GenericTextInput from './GenericTextInput'
 import RangeOptions from './RangeOptions'
 
 var mapStateToProps = (state) => ({
-  numControls: state.numControls
+  numControls: state.numControls,
+  controls: state.controls
 })
 
 class ControlBuilder extends React.Component {
 
   buildControl (controlIndex) {
+
+
 
     var inputs = {
       controlSection: {
@@ -35,23 +38,23 @@ class ControlBuilder extends React.Component {
       },
       controlName: {
         title: "Control Name",
-        defaultValue: "default",
+        defaultValue: this.props.controls[controlIndex].controlName,
         onChange: (value) => {this.props.updateControlName(controlIndex, value)}
       },
       controlType: {
         title: "Control Type",
         options: ["OnOff", "Range"],
-        defaultValue: "On/Off",
+        defaultValue: this.props.controls[controlIndex].controlType,
         onChange: (value) => {this.props.updateControlType(controlIndex, value)}
       },
       controlDirection: {
         title: "Control Direction",
         options: ["input", "output"],
-        defaultValue: "input",
+        defaultValue: this.props.controls[controlIndex].controlDirection,
         onChange: (value) => {this.props.updateControlDirection(controlIndex, value)}
       },
       rangeOptions: {
-        controlID: controlIndex - 1
+        controlID: controlIndex
       }
     }
 
@@ -70,6 +73,8 @@ class ControlBuilder extends React.Component {
 
   render () {
 
+    console.log("Re-rendering Control Builder: ", this.props.numControls);
+
     var inputs = {
       fieldInputs: {
         style: {
@@ -81,7 +86,7 @@ class ControlBuilder extends React.Component {
 
     var controlInputs = [];
 
-    for (var i = 1; i <= this.props.numControls; i++) {
+    for (var i = 0; i <= this.props.numControls - 1; i++) {
       controlInputs.push(this.buildControl(i));
     }
 

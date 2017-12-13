@@ -6,15 +6,25 @@ import { withRouter } from 'react-router-dom'
 import {ButtonGroup, ControlLabel, FormGroup, FormControl, HelpBlock, option} from 'react-bootstrap';
 
 import GenericSelect from './GenericSelect'
+import ControlledSelect from './ControlledSelect'
 import GenericTextInput from './GenericTextInput'
 
 var mapStateToProps = (state, ownProps) => ({
-  deviceName: state.deviceName
+  deviceName: state.deviceName,
+  controls: state.controls
 })
 
 class DeviceIdentity extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      selection: "Select..."
+    }
+  }
+
   render () {
+
 
     var inputs = {
       fieldInputs: {
@@ -39,16 +49,37 @@ class DeviceIdentity extends React.Component {
         defaultValue: "Arduino",
         options: ["Arduino", "Linux Based", "PIC", "Simulation"],
         onChange: (value) => {this.props.updateSystemType(value)},
+      },
+      addNewControl: {
+        title: "Add New Control",
+        value: this.state.selection,
+        options: ["Custom", "Servo", "LED", "Select..."],
+        onChange: (value) => {this.setState({selection: "Select..."}); this.props.addNewControl(value); },
+      },
+      controlPlaceholder: {
+        title: "Control",
+        defaultValue: "Custom",
+        options: ["Custom"],
+        onChange: (value) => {console.log("can't change")},
+        key: "default"
       }
+    }
+
+    var existingControls = [];
+
+    for (var i in this.props.controls) {
+      inputs.controlPlaceholder.key = "placeholder" + i;
+
+      existingControls.push(<GenericSelect {...inputs.controlPlaceholder}/>)
     }
 
     return (
         <div {...inputs.fieldInputs}>
           <form>
-
             <GenericTextInput {...inputs.deviceName}/>
             <GenericSelect {...inputs.systemType}/>
-            <GenericSelect {...inputs.numControls}/>
+            {existingControls}
+            <ControlledSelect {...inputs.addNewControl}/>
 
           </form>
         </div>
