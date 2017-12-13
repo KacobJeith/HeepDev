@@ -50,7 +50,7 @@
 #ifdef ON_ESP8266
 #include <string.h>
 #include "ESP8266_HEEPComms.h"
-#include "Simulation_NonVolatileMemory"
+#include "Simulation_NonVolatileMemory.h"
 #include "Arduino_Timer.h"
 String SSID = "YOUR_SSID";
 String Password = "YOUR_WIFI_PASSWORD";
