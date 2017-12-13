@@ -2,9 +2,6 @@
 #include <ESP8266WiFi.h>
 #include <WiFiUdp.h>
 
-String SSID = "FiOS-DE77K";
-String Password = "deer843fog5213glen";
-
 unsigned int localPort = 5000;  
 int UDP_PORT = 5000;
 // An EthernetUDP instance to let us send and receive packets over UDP
