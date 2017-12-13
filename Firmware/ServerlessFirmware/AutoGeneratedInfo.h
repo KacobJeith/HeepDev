@@ -1,15 +1,25 @@
 #pragma once
 
+// Overall Version of the Firmware. This is reported so that
+// front Ends are able to translate or determine that they don't
+// understand a certain device
 #define FIRMWARE_VERSION 1
 
+// Pin that will clear all memory on the device so that only core 
+// memory remains
 #define FACTORY_RESET_PIN 4
 
-#define MAX_MEMORY 255
-#define NUM_VERTICES 100
-#define NUM_CONTROLS 100
-#define OUTPUT_BUFFER_SIZE 200
-#define INPUT_BUFFER_SIZE 200
+// Memory Allocation. These numbers are actually device specific, 
+// but they require more research to nail down the exact numbers
+// for each device
+#define MAX_MEMORY 255			// Bytes
+#define NUM_VERTICES 100		// Vertex Pointers
+#define NUM_CONTROLS 100		// Control Pointers
+#define OUTPUT_BUFFER_SIZE 200	// Bytes
+#define INPUT_BUFFER_SIZE 200	// Bytes
 
+// Heep OS Task Scheduling System
+// Determine how frequently a task is run and how many tasks can be made
 #define SYSTEM_TASK_INTERVAL 1000 // Time in ms
 #define NUMBER_OF_TASKS 4
 
@@ -17,6 +27,9 @@
 #include <string.h>
 #endif
 
+// Indexed IDs are a form of compression that can be used
+// on memory limited devices. These are particularly useful
+// When using IDs that are very long strings
 //#define USE_INDEXED_IDS
 
 #define STANDARD_ID_SIZE 4
@@ -27,16 +40,21 @@
 #define ID_SIZE STANDARD_ID_SIZE
 #endif
 
+// The heepByte is our standard 8bit unit that we will work with
 typedef unsigned char heepByte;
 
+// Define the input and output buffers for global accessibility
 unsigned char outputBuffer [OUTPUT_BUFFER_SIZE];
 unsigned int outputBufferLastByte = 0;
 
 unsigned char inputBuffer [INPUT_BUFFER_SIZE];
 unsigned int inputBufferLastByte = 0;
 
+// Include the standard Heep Data Types
 #include "CommonDataTypes.h"
 
+// Only one of these blocks is necessary. It will determine
+// which physical system is being used
 #ifdef ON_PC
 #include "Socket_HeepComms.h"
 #include "Simulation_NonVolatileMemory.h"
@@ -69,7 +87,10 @@ String Password = "YOUR_WIFI_PASSWORD";
 #include "PICW5500_Timer.h"
 #endif
 
+// The scheduler depends on the Timer, so it is included after the physical description
+// is created
 #include "Scheduler.h"
 
+// Device ID and MAC Address used for all Heep Communication
 heepByte deviceIDByte [STANDARD_ID_SIZE] = {0x01, 0x02, 0x03, 0x04};
 uint8_t mac[6] = {0x01,0x02,0x03,0x04,0x05,0x06};
