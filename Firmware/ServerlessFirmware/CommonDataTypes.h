@@ -1,3 +1,6 @@
+unsigned char IsROP();
+void ExecuteControlOpCodes();
+
 // The heepByte is our standard 8bit unit that we will work with
 typedef unsigned char heepByte;
 
