@@ -31,10 +31,16 @@ class DeviceIdentity extends React.Component {
         onChange: (value) => {this.props.updateDeviceName(value)}
       },
       systemType: {
-        title: "Enter System Type",
+        title: "Select System Type",
         defaultValue: "Arduino",
         options: ["Arduino", "Linux Based", "PIC", "Simulation"],
-        onChange: (value) => {this.props.updateSystemType(value)},
+        onChange: (value) => {this.props.updateSystemType(value)}
+      },
+      physicalLayer: {
+        title: "Select Physical Layer",
+        defaultValue: "W5500",
+        options: ['W5100', 'W5500', 'ESP8266'],
+        onChange: (value) => {this.props.updatePhysicalLayer(value)}
       }
     }
 
@@ -42,6 +48,7 @@ class DeviceIdentity extends React.Component {
           <form>
             <GenericTextInput {...inputs.deviceName}/>
             <GenericSelect {...inputs.systemType}/>
+            <GenericSelect {...inputs.physicalLayer}/>
           </form>  
     );
   }

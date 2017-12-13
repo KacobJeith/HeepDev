@@ -12,8 +12,9 @@ import DeviceBuilder from './components/DeviceBuilder'
 
 const startState = {
   deviceName: "DefaultDevice",
-  systemType: "Arduino",
   numControls: 0,
+  physicalLayer: "W5500",
+  systemType: "Arduino",
   controls: []
 }
 

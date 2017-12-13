@@ -51,3 +51,8 @@ export const addNewControl = (controlConfig) => ({
 	type: 'ADD_NEW_CONTROL',
 	controlConfig
 })
+
+export const updatePhysicalLayer = (physicalLayer) => ({
+	type: 'UPDATE_PHYSICAL_LAYER',
+	physicalLayer
+})

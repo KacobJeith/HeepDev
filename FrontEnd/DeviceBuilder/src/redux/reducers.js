@@ -119,11 +119,14 @@ export default function(state = initialState, action) {
 
         return newMaster
 
+    case 'UPDATE_PHYSICAL_LAYER' : 
+
+        return Immutable.Map(state).set('physicalLayer', action.physicalLayer).toJS()
+
     default:
       return state
   }
 }
-
 
 const initialControlState = (controlID) => ({
     controlName: 'default',
