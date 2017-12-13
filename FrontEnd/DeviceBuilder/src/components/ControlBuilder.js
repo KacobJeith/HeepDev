@@ -95,6 +95,11 @@ class ControlBuilder extends React.Component {
         value: this.state.selection,
         options: ["Custom", "Servo", "LED", "Select..."],
         onChange: (value) => {this.setState({selection: "Select..."}); this.props.addNewControl(value); },
+      },
+      spacer: {
+        style: {
+          height: 20
+        }
       }
     }
 
@@ -109,6 +114,7 @@ class ControlBuilder extends React.Component {
         <div {...inputs.fieldInputs}>
           {controlInputs}  
         </div>
+        <div {...inputs.spacer}/>
         <ControlledSelect {...inputs.addNewControl}/>
       </div>
          

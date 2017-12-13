@@ -30,7 +30,7 @@ export default class DeviceBuilder extends React.Component {
       },
       spacer: {
         style: {
-          height: 70
+          height: 20
         }
       }
     }

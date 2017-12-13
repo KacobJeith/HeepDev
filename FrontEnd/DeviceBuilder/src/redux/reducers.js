@@ -56,15 +56,18 @@ export default function(state = initialState, action) {
     	return Immutable.Map(state).set('controls', newState).toJS()
 
     case 'UPDATE_CONTROL_TYPE' :
-    	var controlID = action.controlID - 1;
     	var controlType = 0;
+
+        console.log(action);
 
     	if (action.controlType == "Range") {
     		controlType = 1;
     	}
 
     	var newState = Immutable.List(state.controls).toJS();
-		newState[controlID]['controlType'] = controlType;
+        console.log(newState);
+
+		newState[action.controlID]['controlType'] = controlType;
 
     	return Immutable.Map(state).set('controls', newState).toJS()
 
