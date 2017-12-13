@@ -1,7 +1,6 @@
 #include <SPI.h> 
 #include <ESP8266WiFi.h>
 #include <WiFiUdp.h>
-#include "ActionAndResponseOpCodes.h"
 
 String SSID = "FiOS-DE77K";
 String Password = "deer843fog5213glen";

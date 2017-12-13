@@ -1,3 +1,5 @@
+#pragma once
+
 #define FIRMWARE_VERSION 1
 
 #define FACTORY_RESET_PIN 4
@@ -29,3 +31,49 @@
 #endif
 
 typedef unsigned char heepByte;
+
+unsigned char outputBuffer [OUTPUT_BUFFER_SIZE];
+unsigned int outputBufferLastByte = 0;
+
+unsigned char inputBuffer [INPUT_BUFFER_SIZE];
+unsigned int inputBufferLastByte = 0;
+
+#include "CommonDataTypes.h"
+
+#ifdef ON_PC
+#include "Socket_HeepComms.h"
+#include "Simulation_NonVolatileMemory.h"
+#endif
+
+#ifdef ON_ARDUINO
+#include "ENC28j60_HeepComms.h"
+#include "Arduino_EEPROM.h"
+#endif
+
+#ifdef SIMULATION
+#include "Simulation_HeepComms.h"
+#include "Simulation_NonVolatileMemory.h"
+#endif
+
+#ifdef ON_PIC
+#include "PICW5500_HeepComms.h"
+#include "PICW5500_NonVolatileMemory.h"
+#endif
+
+#ifdef ON_PC
+#include "Simulation_Timer.h"
+#endif
+
+#ifdef ON_ARDUINO
+#include "Arduino_Timer.h"
+#endif
+
+#ifdef SIMULATION
+#include "Simulation_Timer.h"
+#endif
+
+#ifdef ON_PIC
+#include "PICW5500_Timer.h"
+#endif
+
+#include "Scheduler.h"
