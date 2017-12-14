@@ -1,5 +1,4 @@
 #include <UIPEthernet.h>
-#include "ActionAndResponseOpCodes.h"
 
 int TCP_PORT = 5000;
 EthernetServer server = EthernetServer(TCP_PORT);

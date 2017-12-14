@@ -1,7 +1,6 @@
 #include <SPI.h> 
 #include <Ethernet.h>
 #include <EthernetUdp.h> 
-#include "ActionAndResponseOpCodes.h"
 
 IPAddress ip(192, 168, 1, 177);
 unsigned int localPort = 5000;  
