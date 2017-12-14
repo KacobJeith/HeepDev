@@ -363,8 +363,8 @@ const getIncludes_Linux = (deviceDetails) => {
 
 const getIncludes_ESP8266 = (deviceDetails) => {
   return `#ifdef ON_ESP8266
-String SSID = "YOUR_SSID";
-String Password = "YOUR_WIFI_PASSWORD";
+String SSID = "` + deviceDetails.ssid + `";
+String Password = "` + deviceDetails.ssidPassword + `";
 #include <string.h>
 #include "` + getCommsFileName(deviceDetails) + `"
 #include "Simulation_NonVolatileMemory.h"
