@@ -6,8 +6,8 @@ export const sys_phy_files = {
 		socket: 'Socket_HeepComms.h'
 	},
 	Arduino: {
-		W5100: 'ArduinoW5100_HeepComms.h',
 		W5500: 'ArduinoW5500_HeepComms.h',
+		W5100: 'ArduinoW5100_HeepComms.h',
 		ENC28J60: 'ENC28j60_HeepComms.h'
 	},
 	PIC: {

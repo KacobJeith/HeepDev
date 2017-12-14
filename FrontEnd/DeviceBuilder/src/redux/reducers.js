@@ -31,7 +31,7 @@ export default function(state = initialState, action) {
 
     	return Immutable.Map(state)
         .set('systemType', action.system)
-        .set('physicalLayer', sys_phy_files[action.system][0])
+        .set('physicalLayer', Object.keys(sys_phy_files[action.system])[0])
         .toJS()
 
     case 'UPDATE_CONTROL_NAME' :
@@ -77,11 +77,7 @@ export default function(state = initialState, action) {
 
     case 'PACKAGE_SOURCE_FILES' :
 
-    	var deviceDetails = {
-    		deviceName: state.deviceName,
-    		systemType: state.systemType,
-    		numControls: state.numControls
-    	}
+    	var deviceDetails = Immutable.Map(state).delete("controls").toJS();
 
     	var currentControls = Immutable.List(state.controls).toJS();
 
