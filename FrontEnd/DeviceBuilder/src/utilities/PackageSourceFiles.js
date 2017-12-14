@@ -12,7 +12,6 @@ import Device                       from '../../../../Firmware/ServerlessFirmwar
 import DeviceMemory                 from '../../../../Firmware/ServerlessFirmware/DeviceMemory.h'
 import ENC28J60_HeepComms           from '../../../../Firmware/ServerlessFirmware/ENC28J60_HeepComms.h'
 import ESP8266_HeepComms            from '../../../../Firmware/ServerlessFirmware/ESP8266_HeepComms.h'
-import globalDefines                from '../../../../Firmware/ServerlessFirmware/globalDefines.h'
 import Heep_API                     from '../../../../Firmware/ServerlessFirmware/Heep_API.h'
 import MemoryUtilities              from '../../../../Firmware/ServerlessFirmware/MemoryUtilities.h'
 import PICW5500_HeepComms           from '../../../../Firmware/ServerlessFirmware/PICW5500_HeepComms.h'
@@ -70,7 +69,6 @@ const packageUniversalFiles = () => {
   zip.file('CreateUniqueID.py', CreateUniqueID);
   zip.file('Device.h', Device);
   zip.file('DeviceMemory.h', DeviceMemory);
-  zip.file('globalDefines.h', globalDefines);
   zip.file('Heep_API.h', Heep_API);
   zip.file('MemoryUtilities.h', MemoryUtilities);
   zip.file('Scheduler.h', Scheduler);
@@ -242,7 +240,7 @@ const setIDAndMAC = (launchDownloadCallback) => {
 
 const generateAutoInfoFile = (deviceIDarray, MACAddressArray) => {
 
-  return `#include "globalDefines.h"
+  return `#pragma once
 
 heepByte deviceIDByte [STANDARD_ID_SIZE] = {` + convertIntToHex(deviceIDarray) + `};
 uint8_t mac[6] = {` + convertIntToHex(MACAddressArray) + `};\n`
