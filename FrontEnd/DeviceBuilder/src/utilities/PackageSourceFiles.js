@@ -6,6 +6,7 @@ import ActionAndResponseOpCodes     from '../../../../Firmware/ServerlessFirmwar
 import Arduino_EEPROM               from '../../../../Firmware/ServerlessFirmware/Arduino_EEPROM.h'
 import Arduino_Timer                from '../../../../Firmware/ServerlessFirmware/Arduino_Timer.h'
 import ArduinoW5100_HeepComms       from '../../../../Firmware/ServerlessFirmware/ArduinoW5100_HeepComms.h'
+// import ArduinoW5500_HeepComms       from '../../../../Firmware/ServerlessFirmware/ArduinoW5500_HeepComms.h'
 import CommonDataTypes              from '../../../../Firmware/ServerlessFirmware/CommonDataTypes.h'
 import Device                       from '../../../../Firmware/ServerlessFirmware/Device.h'
 import DeviceMemory                 from '../../../../Firmware/ServerlessFirmware/DeviceMemory.h'
@@ -29,6 +30,7 @@ var sourceFiles = {
   Arduino_EEPROM: Arduino_EEPROM,
   Arduino_Timer: Arduino_Timer,
   ArduinoW5100_HeepComms: ArduinoW5100_HeepComms,
+  // ArduinoW5500_HeepComms: ArduinoW5500_HeepComms,
   CommonDataTypes: CommonDataTypes,
   Device: Device,
   DeviceMemory: DeviceMemory,
@@ -161,7 +163,11 @@ const getPHYforSys = (sys, phy, zip) => {
 
   var physicalLayerFilename = sys_phy_files[sys][phy];
   var sourceRef = physicalLayerFilename.split('.')[0];
-  return zip.file(physicalLayerFilename, sourceRef);
+  console.log("DIRECT: ", ENC28J60_HeepComms);
+  console.log(sourceRef);
+  console.log(sourceFiles[sourceRef]);
+
+  return zip.file(physicalLayerFilename, sourceFiles[sourceRef]);
 }
 
 const composeInoFile = (deviceDetails, controls) => {
