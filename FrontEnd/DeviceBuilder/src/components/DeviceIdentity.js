@@ -5,11 +5,13 @@ import * as Actions from '../redux/actions'
 import { withRouter } from 'react-router-dom'
 import {ButtonGroup, ControlLabel, FormGroup, FormControl, HelpBlock, option} from 'react-bootstrap';
 
+import { sys_phy_files } from '../utilities/SystemPHYCompatibilities'
 import GenericSelect from './GenericSelect'
 import GenericTextInput from './GenericTextInput'
 
 var mapStateToProps = (state, ownProps) => ({
   deviceName: state.deviceName,
+  systemType: state.systemType,
   physicalLayer: state.physicalLayer,
   controls: state.controls
 })
@@ -17,7 +19,6 @@ var mapStateToProps = (state, ownProps) => ({
 class DeviceIdentity extends React.Component {
 
   render () {
-
 
     var inputs = {
       numControls: {
@@ -34,13 +35,13 @@ class DeviceIdentity extends React.Component {
       systemType: {
         title: "Select System Type",
         defaultValue: "Arduino",
-        options: ["Arduino", "Linux Based", "PIC", "Simulation"],
+        options: Object.keys(sys_phy_files),
         onChange: (value) => {this.props.updateSystemType(value)}
       },
       physicalLayer: {
         title: "Select Physical Layer",
-        defaultValue: "W5500",
-        options: ['W5100', 'W5500', 'ESP8266'],
+        defaultValue: sys_phy_files[this.props.systemType][0],
+        options: Object.keys(sys_phy_files[this.props.systemType]),
         onChange: (value) => {this.props.updatePhysicalLayer(value)}
       },
       ssid: {

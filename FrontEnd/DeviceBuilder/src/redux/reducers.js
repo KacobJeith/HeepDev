@@ -2,6 +2,7 @@ import { combineReducers } from 'redux'
 import Immutable from 'immutable'
 import { initialState } from '../index.jsx'
 import {packageSourceFiles} from '../utilities/PackageSourceFiles'
+import { sys_phy_files } from '../utilities/SystemPHYCompatibilities'
 
 export default function(state = initialState, action) {
   switch (action.type) {
@@ -28,7 +29,10 @@ export default function(state = initialState, action) {
 
     case 'UPDATE_SYSTEM_TYPE' :
 
-    	return Immutable.Map(state).set('systemType', action.system).toJS()
+    	return Immutable.Map(state)
+        .set('systemType', action.system)
+        .set('physicalLayer', sys_phy_files[action.system][0])
+        .toJS()
 
     case 'UPDATE_CONTROL_NAME' :
 
