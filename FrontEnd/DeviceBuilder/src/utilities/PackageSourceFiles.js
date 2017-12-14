@@ -346,9 +346,16 @@ const convertIntToHex = (array) => {
   return commaString
 }
 
+const getCommsFileName = (deviceDetails) => {
+  var sys = deviceDetails.systemType;
+  var phy = deviceDetails.physicalLayer;
+
+  return sys_phy_files[sys][phy]
+}
+
 const getIncludes_Linux = (deviceDetails) => {
   return `#ifdef ON_PC
-#include "Socket_HeepComms.h"
+#include "` + getCommsFileName(deviceDetails) + `"
 #include "Simulation_NonVolatileMemory.h"
 #include "Simulation_Timer.h"
 #endif`
@@ -359,7 +366,7 @@ const getIncludes_ESP8266 = (deviceDetails) => {
 String SSID = "YOUR_SSID";
 String Password = "YOUR_WIFI_PASSWORD";
 #include <string.h>
-#include "ESP8266_HEEPComms.h"
+#include "` + getCommsFileName(deviceDetails) + `"
 #include "Simulation_NonVolatileMemory.h"
 #include "Arduino_Timer.h"
 #endif`
@@ -368,7 +375,7 @@ String Password = "YOUR_WIFI_PASSWORD";
 const getIncludes_Arduino = (deviceDetails) => {
   return `#ifdef ON_ARDUINO
 #include <string.h>
-#include "ENC28j60_HeepComms.h"
+#include "` + getCommsFileName(deviceDetails) + `"
 #include "Arduino_EEPROM.h"
 #include "Arduino_Timer.h"
 #endif`
@@ -377,7 +384,7 @@ const getIncludes_Arduino = (deviceDetails) => {
 const getIncludes_Simulation = (deviceDetails) => {
   return `#ifdef SIMULATION
 #include <string.h>
-#include "Simulation_HeepComms.h"
+#include "` + getCommsFileName(deviceDetails) + `"
 #include "Simulation_NonVolatileMemory.h"
 #include "Simulation_Timer.h"
 #endif`
@@ -385,7 +392,7 @@ const getIncludes_Simulation = (deviceDetails) => {
 
 const getIncludes_PIC = (deviceDetails) => {
   return `#ifdef ON_PIC
-#include "PICW5500_HeepComms.h"
+#include "` + getCommsFileName(deviceDetails) + `"
 #include "PICW5500_NonVolatileMemory.h"
 #include "PICW5500_Timer.h"
 #endif`
