@@ -168,7 +168,6 @@ const getPHYforSys = (sys, phy, zip) => {
 const composeInoFile = (deviceDetails, controls) => {
 
     var fileContent = `
-#define ON_ARDUINO
 #include "Heep_API.h"
 
 char deviceName [] = "` + deviceDetails.deviceName + `";\n\n`
@@ -357,47 +356,38 @@ const getCommsFileName = (deviceDetails) => {
 }
 
 const getIncludes_Linux = (deviceDetails) => {
-  return `#ifdef ON_PC
-#include "` + getCommsFileName(deviceDetails) + `"
+  return `#include "` + getCommsFileName(deviceDetails) + `"
 #include "Simulation_NonVolatileMemory.h"
-#include "Simulation_Timer.h"
-#endif`
+#include "Simulation_Timer.h"`
 }
 
 const getIncludes_ESP8266 = (deviceDetails) => {
-  return `#ifdef ON_ESP8266
-String SSID = "` + deviceDetails.ssid + `";
+  return `String SSID = "` + deviceDetails.ssid + `";
 String Password = "` + deviceDetails.ssidPassword + `";
 #include <string.h>
 #include "` + getCommsFileName(deviceDetails) + `"
 #include "Simulation_NonVolatileMemory.h"
-#include "Arduino_Timer.h"
-#endif`
+#include "Arduino_Timer.h"`
 }
 
 const getIncludes_Arduino = (deviceDetails) => {
-  return `#ifdef ON_ARDUINO
-#include <string.h>
+  return `#include <string.h>
 #include "` + getCommsFileName(deviceDetails) + `"
 #include "Arduino_EEPROM.h"
 #include "Arduino_Timer.h"
-#endif`
+`
 }
 
 const getIncludes_Simulation = (deviceDetails) => {
-  return `#ifdef SIMULATION
-#include <string.h>
+  return `#include <string.h>
 #include "` + getCommsFileName(deviceDetails) + `"
 #include "Simulation_NonVolatileMemory.h"
-#include "Simulation_Timer.h"
-#endif`
+#include "Simulation_Timer.h"`
 }
 
 const getIncludes_PIC = (deviceDetails) => {
-  return `#ifdef ON_PIC
-#include "` + getCommsFileName(deviceDetails) + `"
+  return `#include "` + getCommsFileName(deviceDetails) + `"
 #include "PICW5500_NonVolatileMemory.h"
-#include "PICW5500_Timer.h"
-#endif`
+#include "PICW5500_Timer.h"`
 }
 
