@@ -158,14 +158,9 @@ const packageSimulationFiles = (deviceDetails, controls, zip) => {
 }
 
 const getPHYforSys = (sys, phy, zip) => {
-  console.log(sys);
-  console.log(phy);
 
   var physicalLayerFilename = sys_phy_files[sys][phy];
   var sourceRef = physicalLayerFilename.split('.')[0];
-  console.log("DIRECT: ", ENC28J60_HeepComms);
-  console.log(sourceRef);
-  console.log(sourceFiles[sourceRef]);
 
   return zip.file(physicalLayerFilename, sourceFiles[sourceRef]);
 }
