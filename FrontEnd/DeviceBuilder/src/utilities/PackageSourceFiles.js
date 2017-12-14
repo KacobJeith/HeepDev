@@ -123,7 +123,7 @@ const packageArduinoFiles = (deviceDetails, controls, zip) => {
 
   zip.file(deviceDetails.deviceName + ".ino", composeInoFile(deviceDetails, controls));
 
-  zip.file('Simulation_NonVolatileMemory.h', Simulation_NonVolatileMemory);
+  zip.file('Arduino_EEPROM.h', Arduino_EEPROM);
   zip.file('Arduino_Timer.h', Arduino_Timer);
 
   return zip
@@ -135,6 +135,8 @@ const packageESP8266Files = (deviceDetails, controls, zip) => {
   // zip.file('ESP8266_HeepComms.h', ESP8266_HeepComms);
   zip.file('Simulation_NonVolatileMemory.h', Simulation_NonVolatileMemory);
   zip.file('Arduino_Timer.h', Arduino_Timer);
+
+  return zip
 }
 
 const packagePICFiles = (deviceDetails, controls, zip) => {

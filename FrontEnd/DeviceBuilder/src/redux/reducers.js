@@ -36,7 +36,7 @@ export default function(state = initialState, action) {
 
     case 'UPDATE_CONTROL_NAME' :
 
-    	var controlID = action.controlID - 1;
+    	var controlID = action.controlID;
 
     	var newState = Immutable.List(state.controls).toJS();
 		newState[controlID]['controlName'] = action.name;
@@ -45,7 +45,7 @@ export default function(state = initialState, action) {
 
     case 'UPDATE_CONTROL_DIRECTION' :
 
-		var controlID = action.controlID - 1;
+		var controlID = action.controlID;
 
 		var controlDirection = 0;
 

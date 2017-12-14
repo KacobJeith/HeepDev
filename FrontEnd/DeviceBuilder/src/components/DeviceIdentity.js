@@ -60,7 +60,7 @@ class DeviceIdentity extends React.Component {
 
     var optionalInputs = [];
 
-    if (this.props.physicalLayer == 'ESP8266') {
+    if (this.props.physicalLayer == 'wifi') {
       optionalInputs.push(<GenericTextInput {...inputs.ssid}/>)
       optionalInputs.push(<GenericTextInput {...inputs.ssidPassword}/>)
     }
