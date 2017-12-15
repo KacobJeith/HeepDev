@@ -167,6 +167,12 @@
 <vertex x="-1.27" y="2.54"/>
 <vertex x="3.81" y="2.54"/>
 </polygon>
+<polygon width="0.1524" layer="21">
+<vertex x="0.635" y="4.445"/>
+<vertex x="1.5875" y="4.445"/>
+<vertex x="1.5875" y="3.4925"/>
+<vertex x="0.635" y="3.4925"/>
+</polygon>
 </package>
 <package name="AG9800M">
 <smd name="V+1" x="0" y="0" dx="1.25" dy="4" layer="1" rot="R180"/>
@@ -293,11 +299,11 @@ Source: www.pulseeng.com .. PulseJack-J402.pdf</description>
 <pad name="P$8" x="50.83" y="2.3" drill="1" shape="octagon"/>
 <pad name="P$9" x="53.37" y="2.3" drill="1" shape="octagon"/>
 <pad name="P$10" x="55.91" y="2.3" drill="1" shape="octagon"/>
-<wire x1="0" y1="0" x2="24.3" y2="0" width="0.127" layer="21"/>
-<wire x1="24.3" y1="0" x2="24.3" y2="-8.4" width="0.127" layer="21"/>
-<wire x1="24.3" y1="-8.4" x2="43.3" y2="-8.4" width="0.127" layer="21"/>
-<wire x1="43.3" y1="-8.4" x2="43.3" y2="0" width="0.127" layer="21"/>
-<wire x1="43.3" y1="0" x2="57.3" y2="0" width="0.127" layer="21"/>
+<wire x1="0" y1="0" x2="26.3" y2="0" width="0.127" layer="21"/>
+<wire x1="26.3" y1="0" x2="26.3" y2="-8.4" width="0.127" layer="21"/>
+<wire x1="26.3" y1="-8.4" x2="41.3" y2="-8.4" width="0.127" layer="21"/>
+<wire x1="41.3" y1="-8.4" x2="41.3" y2="0" width="0.127" layer="21"/>
+<wire x1="41.3" y1="0" x2="57.3" y2="0" width="0.127" layer="21"/>
 <wire x1="57.3" y1="0" x2="57.3" y2="9.6" width="0.127" layer="21"/>
 <wire x1="57.3" y1="9.6" x2="0" y2="9.6" width="0.127" layer="21"/>
 <wire x1="0" y1="9.6" x2="0" y2="0" width="0.127" layer="21"/>
@@ -7996,18 +8002,18 @@ http://www.national.com/dt/lmv_qual.pdf</description>
 <package name="FCI_10103594-0001LF">
 <text x="-4.36683125" y="4.316640625" size="0.501934375" layer="25">&gt;NAME</text>
 <text x="-4.352690625" y="-2.601609375" size="0.5003125" layer="27">&gt;VALUE</text>
-<wire x1="-2.725" y1="0.6" x2="-3.075" y2="0.25" width="0.01" layer="46" curve="90"/>
-<wire x1="-3.075" y1="0.25" x2="-3.075" y2="-0.25" width="0.01" layer="46"/>
-<wire x1="-3.075" y1="-0.25" x2="-2.725" y2="-0.6" width="0.01" layer="46" curve="90"/>
-<wire x1="-2.725" y1="-0.6" x2="-2.375" y2="-0.25" width="0.01" layer="46" curve="90"/>
-<wire x1="-2.375" y1="-0.25" x2="-2.375" y2="0.25" width="0.01" layer="46"/>
-<wire x1="-2.375" y1="0.25" x2="-2.725" y2="0.6" width="0.01" layer="46" curve="90"/>
-<wire x1="2.725" y1="0.6" x2="3.075" y2="0.25" width="0.01" layer="46" curve="-90"/>
-<wire x1="3.075" y1="0.25" x2="3.075" y2="-0.25" width="0.01" layer="46"/>
-<wire x1="3.075" y1="-0.25" x2="2.725" y2="-0.6" width="0.01" layer="46" curve="-90"/>
-<wire x1="2.725" y1="-0.6" x2="2.375" y2="-0.25" width="0.01" layer="46" curve="-90"/>
-<wire x1="2.375" y1="-0.25" x2="2.375" y2="0.25" width="0.01" layer="46"/>
-<wire x1="2.375" y1="0.25" x2="2.725" y2="0.6" width="0.01" layer="46" curve="-90"/>
+<wire x1="-2.725" y1="0.525" x2="-2.9" y2="0.25" width="0.01" layer="46" curve="90"/>
+<wire x1="-2.9" y1="0.25" x2="-2.9" y2="-0.25" width="0.01" layer="46"/>
+<wire x1="-2.9" y1="-0.25" x2="-2.725" y2="-0.525" width="0.01" layer="46" curve="90"/>
+<wire x1="-2.725" y1="-0.525" x2="-2.55" y2="-0.25" width="0.01" layer="46" curve="90"/>
+<wire x1="-2.55" y1="-0.25" x2="-2.55" y2="0.25" width="0.01" layer="46"/>
+<wire x1="-2.55" y1="0.25" x2="-2.725" y2="0.525" width="0.01" layer="46" curve="90"/>
+<wire x1="2.725" y1="0.525" x2="2.9" y2="0.25" width="0.01" layer="46" curve="-90"/>
+<wire x1="2.9" y1="0.25" x2="2.9" y2="-0.25" width="0.01" layer="46"/>
+<wire x1="2.9" y1="-0.25" x2="2.725" y2="-0.525" width="0.01" layer="46" curve="-90"/>
+<wire x1="2.725" y1="-0.525" x2="2.55" y2="-0.25" width="0.01" layer="46" curve="-90"/>
+<wire x1="2.55" y1="-0.25" x2="2.55" y2="0.25" width="0.01" layer="46"/>
+<wire x1="2.55" y1="0.25" x2="2.725" y2="0.525" width="0.01" layer="46" curve="-90"/>
 <polygon width="0" layer="1">
 <vertex x="-2.725" y="0.605"/>
 <vertex x="-2.725" y="1.35"/>
@@ -8015,13 +8021,8 @@ http://www.national.com/dt/lmv_qual.pdf</description>
 <vertex x="-2.075" y="-0.66" curve="-90"/>
 <vertex x="-2.315" y="-0.9"/>
 <vertex x="-2.725" y="-0.9"/>
-<vertex x="-2.725" y="-0.605" curve="90"/>
-<vertex x="-2.37" y="-0.25"/>
-<vertex x="-2.37" y="0"/>
-<vertex x="-2.37" y="0.25" curve="90"/>
 </polygon>
 <polygon width="0" layer="1">
-<vertex x="-2.725" y="-0.605"/>
 <vertex x="-2.725" y="-0.9"/>
 <vertex x="-3.135" y="-0.9"/>
 <vertex x="-3.145" y="-0.9" curve="-90"/>
@@ -8030,10 +8031,6 @@ http://www.national.com/dt/lmv_qual.pdf</description>
 <vertex x="-3.145" y="1.35"/>
 <vertex x="-3.14" y="1.35"/>
 <vertex x="-2.725" y="1.35"/>
-<vertex x="-2.725" y="0.605" curve="90"/>
-<vertex x="-3.08" y="0.25"/>
-<vertex x="-3.08" y="0"/>
-<vertex x="-3.08" y="-0.25" curve="90"/>
 </polygon>
 <polygon width="0" layer="1">
 <vertex x="-3.375" y="1.12"/>
@@ -8042,19 +8039,13 @@ http://www.national.com/dt/lmv_qual.pdf</description>
 <vertex x="-3.135" y="1.12"/>
 </polygon>
 <polygon width="0" layer="1">
-<vertex x="2.725" y="0.605"/>
 <vertex x="2.725" y="1.35"/>
 <vertex x="3.375" y="1.35"/>
 <vertex x="3.375" y="-0.66" curve="-90"/>
 <vertex x="3.135" y="-0.9"/>
 <vertex x="2.725" y="-0.9"/>
-<vertex x="2.725" y="-0.605" curve="90"/>
-<vertex x="3.08" y="-0.25"/>
-<vertex x="3.08" y="0"/>
-<vertex x="3.08" y="0.25" curve="90"/>
 </polygon>
 <polygon width="0" layer="1">
-<vertex x="2.725" y="-0.605"/>
 <vertex x="2.725" y="-0.9"/>
 <vertex x="2.315" y="-0.9"/>
 <vertex x="2.305" y="-0.9" curve="-90"/>
@@ -8063,10 +8054,6 @@ http://www.national.com/dt/lmv_qual.pdf</description>
 <vertex x="2.305" y="1.35"/>
 <vertex x="2.31" y="1.35"/>
 <vertex x="2.725" y="1.35"/>
-<vertex x="2.725" y="0.605" curve="90"/>
-<vertex x="2.37" y="0.25"/>
-<vertex x="2.37" y="0"/>
-<vertex x="2.37" y="-0.25" curve="90"/>
 </polygon>
 <polygon width="0" layer="1">
 <vertex x="2.075" y="1.12"/>
@@ -8078,28 +8065,24 @@ http://www.national.com/dt/lmv_qual.pdf</description>
 <rectangle x1="1.98043125" y1="-1.00275" x2="3.475" y2="1.25" layer="29"/>
 <rectangle x1="-3.38121875" y1="-0.90165625" x2="-2.075" y2="1.35" layer="31"/>
 <rectangle x1="2.07675" y1="-0.900759375" x2="3.375" y2="1.35" layer="31"/>
-<wire x1="-2.425" y1="3.555" x2="-2.1" y2="3.23" width="0.01" layer="46" curve="-90"/>
-<wire x1="-2.1" y1="3.23" x2="-2.1" y2="2.83" width="0.01" layer="46"/>
-<wire x1="-2.1" y1="2.83" x2="-2.425" y2="2.505" width="0.01" layer="46" curve="-90"/>
-<wire x1="-2.425" y1="2.505" x2="-2.75" y2="2.83" width="0.01" layer="46" curve="-90"/>
-<wire x1="-2.75" y1="2.83" x2="-2.75" y2="3.23" width="0.01" layer="46"/>
-<wire x1="-2.75" y1="3.23" x2="-2.425" y2="3.555" width="0.01" layer="46" curve="-90"/>
-<wire x1="2.425" y1="3.555" x2="2.1" y2="3.23" width="0.01" layer="46" curve="90"/>
-<wire x1="2.1" y1="3.23" x2="2.1" y2="2.83" width="0.01" layer="46"/>
-<wire x1="2.1" y1="2.83" x2="2.425" y2="2.505" width="0.01" layer="46" curve="90"/>
-<wire x1="2.425" y1="2.505" x2="2.75" y2="2.83" width="0.01" layer="46" curve="90"/>
-<wire x1="2.75" y1="2.83" x2="2.75" y2="3.23" width="0.01" layer="46"/>
-<wire x1="2.75" y1="3.23" x2="2.425" y2="3.555" width="0.01" layer="46" curve="90"/>
+<wire x1="-2.425" y1="3.555" x2="-2.225" y2="3.23" width="0.01" layer="46" curve="-90"/>
+<wire x1="-2.225" y1="3.23" x2="-2.225" y2="2.83" width="0.01" layer="46"/>
+<wire x1="-2.225" y1="2.83" x2="-2.425" y2="2.505" width="0.01" layer="46" curve="-90"/>
+<wire x1="-2.425" y1="2.505" x2="-2.625" y2="2.83" width="0.01" layer="46" curve="-90"/>
+<wire x1="-2.625" y1="2.83" x2="-2.625" y2="3.23" width="0.01" layer="46"/>
+<wire x1="-2.625" y1="3.23" x2="-2.425" y2="3.555" width="0.01" layer="46" curve="-90"/>
+<wire x1="2.425" y1="3.555" x2="2.225" y2="3.23" width="0.01" layer="46" curve="90"/>
+<wire x1="2.225" y1="3.23" x2="2.225" y2="2.83" width="0.01" layer="46"/>
+<wire x1="2.225" y1="2.83" x2="2.425" y2="2.505" width="0.01" layer="46" curve="90"/>
+<wire x1="2.425" y1="2.505" x2="2.625" y2="2.83" width="0.01" layer="46" curve="90"/>
+<wire x1="2.625" y1="2.83" x2="2.625" y2="3.23" width="0.01" layer="46"/>
+<wire x1="2.625" y1="3.23" x2="2.425" y2="3.555" width="0.01" layer="46" curve="90"/>
 <polygon width="0" layer="1">
 <vertex x="-2.425" y="3.56"/>
 <vertex x="-2.425" y="3.76"/>
 <vertex x="-1.9" y="3.76"/>
 <vertex x="-1.9" y="2.3"/>
 <vertex x="-2.425" y="2.3"/>
-<vertex x="-2.425" y="2.5" curve="90"/>
-<vertex x="-2.095" y="2.83"/>
-<vertex x="-2.095" y="3.03"/>
-<vertex x="-2.095" y="3.23" curve="90"/>
 </polygon>
 <polygon width="0" layer="1">
 <vertex x="-2.425" y="3.56"/>
@@ -8107,10 +8090,6 @@ http://www.national.com/dt/lmv_qual.pdf</description>
 <vertex x="-3.9" y="3.76"/>
 <vertex x="-3.9" y="2.3"/>
 <vertex x="-2.425" y="2.3"/>
-<vertex x="-2.425" y="2.5" curve="-90"/>
-<vertex x="-2.755" y="2.83"/>
-<vertex x="-2.755" y="3.03"/>
-<vertex x="-2.755" y="3.23" curve="-90"/>
 </polygon>
 <polygon width="0" layer="1">
 <vertex x="2.425" y="2.5"/>
@@ -8118,31 +8097,18 @@ http://www.national.com/dt/lmv_qual.pdf</description>
 <vertex x="1.9" y="2.3"/>
 <vertex x="1.9" y="3.76"/>
 <vertex x="2.425" y="3.76"/>
-<vertex x="2.425" y="3.56" curve="90"/>
-<vertex x="2.095" y="3.23"/>
-<vertex x="2.095" y="3.03"/>
-<vertex x="2.095" y="2.83" curve="90"/>
 </polygon>
 <polygon width="0" layer="1">
-<vertex x="2.425" y="2.5"/>
 <vertex x="2.425" y="2.3"/>
 <vertex x="3.9" y="2.3"/>
 <vertex x="3.9" y="3.76"/>
 <vertex x="2.425" y="3.76"/>
-<vertex x="2.425" y="3.56" curve="-90"/>
-<vertex x="2.755" y="3.23"/>
-<vertex x="2.755" y="3.03"/>
-<vertex x="2.755" y="2.83" curve="-90"/>
 </polygon>
 <rectangle x1="-4.01205" y1="2.20663125" x2="-1.8" y2="3.85" layer="29"/>
 <rectangle x1="1.8032" y1="2.20391875" x2="4" y2="3.85" layer="29"/>
 <rectangle x1="-3.91033125" y1="2.306090625" x2="-1.9" y2="3.76" layer="31"/>
 <rectangle x1="1.905540625" y1="2.306709375" x2="3.9" y2="3.76" layer="31"/>
 <wire x1="-4.02" y1="-1.7" x2="4.02" y2="-1.7" width="0.127" layer="21"/>
-<wire x1="-4.25" y1="4.25" x2="4.25" y2="4.25" width="0.127" layer="39"/>
-<wire x1="4.25" y1="4.25" x2="4.25" y2="-2" width="0.127" layer="39"/>
-<wire x1="4.25" y1="-2" x2="-4.25" y2="-2" width="0.127" layer="39"/>
-<wire x1="-4.25" y1="-2" x2="-4.25" y2="4.25" width="0.127" layer="39"/>
 <circle x="-1.7" y="4.1" radius="0.127" width="0" layer="21"/>
 <smd name="1" x="-1.3" y="2.825" dx="1.75" dy="0.4" layer="1" rot="R90"/>
 <smd name="2" x="-0.65" y="2.825" dx="1.75" dy="0.4" layer="1" rot="R90"/>
@@ -8151,14 +8117,14 @@ http://www.national.com/dt/lmv_qual.pdf</description>
 <smd name="5" x="1.3" y="2.825" dx="1.75" dy="0.4" layer="1" rot="R90"/>
 <smd name="P5" x="-0.963" y="-0.25" dx="2.5" dy="1.425" layer="1" rot="R90"/>
 <smd name="P6" x="0.963" y="-0.25" dx="2.5" dy="1.425" layer="1" rot="R90"/>
-<hole x="-2.725" y="0" drill="0.7"/>
-<hole x="2.725" y="0" drill="0.7"/>
 <smd name="P3" x="-2.9875" y="1.7" dx="1.825" dy="0.7" layer="1"/>
 <smd name="P4" x="2.9875" y="1.7" dx="1.825" dy="0.7" layer="1"/>
-<hole x="-2.425" y="3.03" drill="0.65"/>
-<hole x="2.425" y="3.03" drill="0.65"/>
 <smd name="P1" x="-3.7" y="3" dx="0.1" dy="0.1" layer="1" stop="no" cream="no"/>
 <smd name="P2" x="3.7" y="3" dx="0.1" dy="0.1" layer="1" stop="no" cream="no"/>
+<smd name="P$1" x="-2.73115625" y="-0.0256" dx="1.75" dy="1.25" layer="16" rot="R90"/>
+<smd name="P$2" x="2.726446875" y="-0.017775" dx="1.75" dy="1.25" layer="16" rot="R90"/>
+<smd name="P$3" x="-2.422034375" y="3.111415625" dx="1.25" dy="1" layer="16" rot="R90"/>
+<smd name="P$4" x="2.426896875" y="3.0782" dx="1.25" dy="1" layer="16" rot="R90"/>
 </package>
 </packages>
 <symbols>
@@ -9774,35 +9740,48 @@ http://www.national.com/dt/lmv_qual.pdf</description>
 <pinref part="GND4" gate="1" pin="GND"/>
 </segment>
 </net>
-<net name="5" class="0">
+<net name="EN1" class="0">
 <segment>
 <pinref part="U8" gate="G$1" pin="IN2"/>
-<wire x1="375.92" y1="215.9" x2="353.06" y2="215.9" width="0.1524" layer="91"/>
+<wire x1="375.92" y1="215.9" x2="365.76" y2="215.9" width="0.1524" layer="91"/>
 <pinref part="J2" gate="G$1" pin="1"/>
+<label x="360.68" y="215.9" size="1.778" layer="95"/>
+<pinref part="D1" gate="G$1" pin="A"/>
+<wire x1="365.76" y1="215.9" x2="353.06" y2="215.9" width="0.1524" layer="91"/>
+<junction x="365.76" y="215.9"/>
 </segment>
 </net>
-<net name="10" class="0">
+<net name="EN2" class="0">
 <segment>
 <pinref part="U8" gate="G$1" pin="IN1"/>
-<wire x1="375.92" y1="213.36" x2="353.06" y2="213.36" width="0.1524" layer="91"/>
+<wire x1="375.92" y1="213.36" x2="365.76" y2="213.36" width="0.1524" layer="91"/>
 <label x="360.68" y="213.36" size="1.778" layer="95"/>
 <pinref part="J4" gate="G$1" pin="1"/>
+<pinref part="D2" gate="G$1" pin="A"/>
+<wire x1="365.76" y1="213.36" x2="353.06" y2="213.36" width="0.1524" layer="91"/>
+<junction x="365.76" y="213.36"/>
 </segment>
 </net>
-<net name="9" class="0">
+<net name="EN3" class="0">
 <segment>
 <pinref part="U9" gate="G$1" pin="IN2"/>
-<wire x1="373.38" y1="167.64" x2="347.98" y2="167.64" width="0.1524" layer="91"/>
+<wire x1="373.38" y1="167.64" x2="358.14" y2="167.64" width="0.1524" layer="91"/>
 <label x="360.68" y="167.64" size="1.778" layer="95"/>
 <pinref part="J3" gate="G$1" pin="1"/>
+<pinref part="D3" gate="G$1" pin="A"/>
+<wire x1="358.14" y1="167.64" x2="347.98" y2="167.64" width="0.1524" layer="91"/>
+<junction x="358.14" y="167.64"/>
 </segment>
 </net>
-<net name="6" class="0">
+<net name="EN4" class="0">
 <segment>
 <pinref part="U9" gate="G$1" pin="IN1"/>
-<wire x1="373.38" y1="165.1" x2="347.98" y2="165.1" width="0.1524" layer="91"/>
+<wire x1="373.38" y1="165.1" x2="358.14" y2="165.1" width="0.1524" layer="91"/>
 <label x="360.68" y="165.1" size="1.778" layer="95"/>
 <pinref part="J5" gate="G$1" pin="1"/>
+<pinref part="D4" gate="G$1" pin="A"/>
+<wire x1="358.14" y1="165.1" x2="347.98" y2="165.1" width="0.1524" layer="91"/>
+<junction x="358.14" y="165.1"/>
 </segment>
 </net>
 <net name="VBAT" class="0">
