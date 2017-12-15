@@ -1,24 +1,5 @@
+#include "ActionAndResponseOpCodes.h"
 #include "Scheduler.h"
-
-#ifdef ON_PC
-#include "Socket_HeepComms.h"
-#include "Simulation_NonVolatileMemory.h"
-#endif
-
-#ifdef ON_ARDUINO
-#include "ENC28j60_HeepComms.h"
-#include "Arduino_EEPROM.h"
-#endif
-
-#ifdef SIMULATION
-#include "Simulation_HeepComms.h"
-#include "Simulation_NonVolatileMemory.h"
-#endif
-
-#ifdef ON_PIC
-#include "PICW5500_HeepComms.h"
-#include "PICW5500_NonVolatileMemory.h"
-#endif
 
 // Prototypes
 void CommitMemory();
