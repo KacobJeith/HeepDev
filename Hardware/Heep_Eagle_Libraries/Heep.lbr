@@ -7,7 +7,7 @@
 <setting keepoldvectorfont="yes"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<grid distance="50" unitdist="mil" unit="mm" style="lines" multiple="1" display="yes" altdistance="5" altunitdist="mil" altunit="mm"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="16" name="Bottom" color="1" fill="1" visible="yes" active="yes"/>
@@ -7230,14 +7230,34 @@ Source: http://www.nxp.com/acrobat_download/datasheets/PH7030L_4.pdf</descriptio
 <pad name="P$8" x="50.83" y="2.3" drill="1" shape="octagon"/>
 <pad name="P$9" x="53.37" y="2.3" drill="1" shape="octagon"/>
 <pad name="P$10" x="55.91" y="2.3" drill="1" shape="octagon"/>
-<wire x1="0" y1="0" x2="24.3" y2="0" width="0.127" layer="21"/>
-<wire x1="24.3" y1="0" x2="24.3" y2="-8.4" width="0.127" layer="21"/>
-<wire x1="24.3" y1="-8.4" x2="43.3" y2="-8.4" width="0.127" layer="21"/>
-<wire x1="43.3" y1="-8.4" x2="43.3" y2="0" width="0.127" layer="21"/>
-<wire x1="43.3" y1="0" x2="57.3" y2="0" width="0.127" layer="21"/>
+<wire x1="0" y1="0" x2="26.3" y2="0" width="0.127" layer="21"/>
+<wire x1="26.3" y1="0" x2="26.3" y2="-8.4" width="0.127" layer="21"/>
+<wire x1="26.3" y1="-8.4" x2="41.3" y2="-8.4" width="0.127" layer="21"/>
+<wire x1="41.3" y1="-8.4" x2="41.3" y2="0" width="0.127" layer="21"/>
+<wire x1="41.3" y1="0" x2="57.3" y2="0" width="0.127" layer="21"/>
 <wire x1="57.3" y1="0" x2="57.3" y2="9.6" width="0.127" layer="21"/>
 <wire x1="57.3" y1="9.6" x2="0" y2="9.6" width="0.127" layer="21"/>
 <wire x1="0" y1="9.6" x2="0" y2="0" width="0.127" layer="21"/>
+</package>
+<package name="QFN-16">
+<smd name="PAD" x="0" y="0" dx="1.7" dy="1.7" layer="1" rot="R270"/>
+<smd name="P3" x="-1.45" y="-0.25" dx="0.3" dy="0.8" layer="1" roundness="100" rot="R270"/>
+<smd name="P7" x="0.25" y="-1.45" dx="0.3" dy="0.8" layer="1" roundness="100"/>
+<smd name="P10" x="1.45" y="-0.25" dx="0.3" dy="0.8" layer="1" roundness="100" rot="R90"/>
+<smd name="P2" x="-1.45" y="0.25" dx="0.3" dy="0.8" layer="1" roundness="100" rot="R270"/>
+<smd name="P1" x="-1.45" y="0.75" dx="0.3" dy="0.8" layer="1" roundness="100" rot="R270"/>
+<smd name="P4" x="-1.45" y="-0.75" dx="0.3" dy="0.8" layer="1" roundness="100" rot="R270"/>
+<smd name="P9" x="1.45" y="-0.75" dx="0.3" dy="0.8" layer="1" roundness="100" rot="R90"/>
+<smd name="P11" x="1.45" y="0.25" dx="0.3" dy="0.8" layer="1" roundness="100" rot="R90"/>
+<smd name="P12" x="1.45" y="0.75" dx="0.3" dy="0.8" layer="1" roundness="100" rot="R90"/>
+<smd name="P8" x="0.75" y="-1.45" dx="0.3" dy="0.8" layer="1" roundness="100"/>
+<smd name="P6" x="-0.25" y="-1.45" dx="0.3" dy="0.8" layer="1" roundness="100"/>
+<smd name="P5" x="-0.75" y="-1.45" dx="0.3" dy="0.8" layer="1" roundness="100"/>
+<smd name="P14" x="0.25" y="1.45" dx="0.3" dy="0.8" layer="1" roundness="100"/>
+<smd name="P13" x="0.75" y="1.45" dx="0.3" dy="0.8" layer="1" roundness="100"/>
+<smd name="P15" x="-0.25" y="1.45" dx="0.3" dy="0.8" layer="1" roundness="100"/>
+<smd name="P16" x="-0.75" y="1.45" dx="0.3" dy="0.8" layer="1" roundness="100"/>
+<circle x="-1.45" y="1.45" radius="0.130365625" width="0.3048" layer="21"/>
 </package>
 </packages>
 <symbols>
@@ -7521,6 +7541,29 @@ Source: http://www.nxp.com/acrobat_download/datasheets/PH7030L_4.pdf</descriptio
 <pin name="VIN-" x="-10.16" y="-7.62" length="middle"/>
 <pin name="ADJ" x="0" y="15.24" length="middle" rot="R270"/>
 <pin name="AT_DET" x="0" y="-15.24" length="middle" rot="R90"/>
+</symbol>
+<symbol name="TS30042">
+<wire x1="-5.08" y1="12.7" x2="5.08" y2="12.7" width="0.254" layer="94"/>
+<wire x1="5.08" y1="12.7" x2="5.08" y2="-10.16" width="0.254" layer="94"/>
+<wire x1="5.08" y1="-10.16" x2="-5.08" y2="-10.16" width="0.254" layer="94"/>
+<wire x1="-5.08" y1="-10.16" x2="-5.08" y2="12.7" width="0.254" layer="94"/>
+<pin name="VCC" x="-7.62" y="7.62" visible="pad" length="short"/>
+<pin name="EN" x="-7.62" y="-5.08" visible="pad" length="short"/>
+<pin name="GND" x="-2.54" y="-12.7" visible="pad" length="short" rot="R90"/>
+<pin name="PGND" x="2.54" y="-12.7" visible="pad" length="short" rot="R90"/>
+<pin name="PG" x="7.62" y="-5.08" visible="pad" length="short" rot="R180"/>
+<pin name="FB" x="7.62" y="0" visible="pad" length="short" rot="R180"/>
+<pin name="VSW" x="7.62" y="5.08" visible="pad" length="short" rot="R180"/>
+<pin name="BST" x="7.62" y="10.16" visible="pad" length="short" rot="R180"/>
+<text x="-4.330684375" y="7.41643125" size="1.27" layer="94">VCC</text>
+<text x="-4.511128125" y="-5.3362125" size="1.27" layer="94">EN</text>
+<text x="-0.901784375" y="-8.22954375" size="1.27" layer="94" rot="R180">GND</text>
+<text x="4.603121875" y="-8.32065" size="1.27" layer="94" rot="R180">PGND</text>
+<text x="4.240459375" y="0.814" size="1.27" layer="94" rot="R180">FB</text>
+<text x="4.240459375" y="5.969321875" size="1.27" layer="94" rot="R180">VSW</text>
+<text x="4.330684375" y="10.8533125" size="1.27" layer="94" rot="R180">BST</text>
+<text x="3.87956875" y="15.1946375" size="1.27" layer="94" rot="R180">TS30042</text>
+<text x="4.33068125" y="-4.341321875" size="1.27" layer="94" rot="R180">PG</text>
 </symbol>
 </symbols>
 <devicesets>
@@ -7868,6 +7911,28 @@ Updated  by  Dan Xu 2014-07-08&lt;br&gt;
 <connect gate="G$1" pin="AT_DET" pad="P$3"/>
 <connect gate="G$1" pin="VIN+" pad="P$1"/>
 <connect gate="G$1" pin="VIN-" pad="P$2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="BUCK_CONVERTER">
+<gates>
+<gate name="G$1" symbol="TS30042" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="QFN-16">
+<connects>
+<connect gate="G$1" pin="BST" pad="P10"/>
+<connect gate="G$1" pin="EN" pad="P9"/>
+<connect gate="G$1" pin="FB" pad="P5"/>
+<connect gate="G$1" pin="GND" pad="P4"/>
+<connect gate="G$1" pin="PG" pad="P8"/>
+<connect gate="G$1" pin="PGND" pad="P14 P15 PAD" route="any"/>
+<connect gate="G$1" pin="VCC" pad="P2 P3 P11"/>
+<connect gate="G$1" pin="VSW" pad="P1 P12 P13 P16"/>
 </connects>
 <technologies>
 <technology name=""/>
