@@ -2,6 +2,7 @@ import { combineReducers } from 'redux'
 import Immutable from 'immutable'
 import { initialState } from '../index.jsx'
 import {packageSourceFiles} from '../utilities/PackageSourceFiles'
+import { sys_phy_files } from '../utilities/SystemPHYCompatibilities'
 
 export default function(state = initialState, action) {
   switch (action.type) {
@@ -28,11 +29,14 @@ export default function(state = initialState, action) {
 
     case 'UPDATE_SYSTEM_TYPE' :
 
-    	return Immutable.Map(state).set('systemType', action.system).toJS()
+    	return Immutable.Map(state)
+        .set('systemType', action.system)
+        .set('physicalLayer', Object.keys(sys_phy_files[action.system])[0])
+        .toJS()
 
     case 'UPDATE_CONTROL_NAME' :
 
-    	var controlID = action.controlID - 1;
+    	var controlID = action.controlID;
 
     	var newState = Immutable.List(state.controls).toJS();
 		newState[controlID]['controlName'] = action.name;
@@ -41,7 +45,7 @@ export default function(state = initialState, action) {
 
     case 'UPDATE_CONTROL_DIRECTION' :
 
-		var controlID = action.controlID - 1;
+		var controlID = action.controlID;
 
 		var controlDirection = 0;
 
@@ -56,25 +60,24 @@ export default function(state = initialState, action) {
     	return Immutable.Map(state).set('controls', newState).toJS()
 
     case 'UPDATE_CONTROL_TYPE' :
-    	var controlID = action.controlID - 1;
     	var controlType = 0;
+
+        console.log(action);
 
     	if (action.controlType == "Range") {
     		controlType = 1;
     	}
 
     	var newState = Immutable.List(state.controls).toJS();
-		newState[controlID]['controlType'] = controlType;
+        console.log(newState);
+
+		newState[action.controlID]['controlType'] = controlType;
 
     	return Immutable.Map(state).set('controls', newState).toJS()
 
     case 'PACKAGE_SOURCE_FILES' :
 
-    	var deviceDetails = {
-    		deviceName: state.deviceName,
-    		systemType: state.systemType,
-    		numControls: state.numControls
-    	}
+    	var deviceDetails = Immutable.Map(state).delete("controls").toJS();
 
     	var currentControls = Immutable.List(state.controls).toJS();
 
@@ -102,11 +105,36 @@ export default function(state = initialState, action) {
 
     	return Immutable.Map(state).set('controls', newState).toJS()
 
+    case 'ADD_NEW_CONTROL' :
+
+        var controls = Immutable.List(state.controls).toJS();
+        controls.push(initialControlState(controls.length));
+
+        var newMaster = Immutable.Map(state)
+        .set('numControls', state.numControls + 1)
+        .set('controls', controls)
+        .toJS()
+
+        console.log(newMaster.controls);
+
+        return newMaster
+
+    case 'UPDATE_PHYSICAL_LAYER' : 
+
+        return Immutable.Map(state).set('physicalLayer', action.physicalLayer).toJS()
+
+    case 'UPDATE_SSID' : 
+
+        return Immutable.Map(state).set('ssid', action.ssid).toJS()
+
+    case 'UPDATE_SSID_PASSWORD' :
+        
+        return Immutable.Map(state).set('ssidPassword', action.ssidPassword).toJS()
+
     default:
       return state
   }
 }
-
 
 const initialControlState = (controlID) => ({
     controlName: 'default',

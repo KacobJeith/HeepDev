@@ -11,18 +11,13 @@ import reducers from './redux/reducers.js'
 import DeviceBuilder from './components/DeviceBuilder'
 
 const startState = {
-  deviceName: "DefaultDevice",
-  systemType: "Arduino",
-  numControls: 1,
-  controls: [{
-    controlName: 'default',
-    controlID: 0,
-    controlDirection: 0,
-    controlType: 0,
-    highValue: 100,
-    lowValue: 0,
-    curValue: 0
-  }]
+  deviceName: 'DefaultDevice',
+  numControls: 0,
+  physicalLayer: 'W5500',
+  ssid: 'your_ssid_here',
+  ssidPassword: 'your_ssid_pwd',
+  systemType: 'Arduino',
+  controls: []
 }
 
 export const initialState = Immutable.Map(startState)

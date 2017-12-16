@@ -5,11 +5,15 @@ import * as Actions from '../redux/actions'
 import { withRouter } from 'react-router-dom'
 import {ButtonGroup, ControlLabel, FormGroup, FormControl, HelpBlock, option} from 'react-bootstrap';
 
+import { sys_phy_files } from '../utilities/SystemPHYCompatibilities'
 import GenericSelect from './GenericSelect'
 import GenericTextInput from './GenericTextInput'
 
 var mapStateToProps = (state, ownProps) => ({
-  deviceName: state.deviceName
+  deviceName: state.deviceName,
+  systemType: state.systemType,
+  physicalLayer: state.physicalLayer,
+  controls: state.controls
 })
 
 class DeviceIdentity extends React.Component {
@@ -17,12 +21,6 @@ class DeviceIdentity extends React.Component {
   render () {
 
     var inputs = {
-      fieldInputs: {
-        style: {
-          width: "80%",
-          margin: "auto"
-        }
-      },
       numControls: {
         defaultValue: 1,
         onChange: (value) => {this.props.updateNumControls(value)},
@@ -35,24 +33,45 @@ class DeviceIdentity extends React.Component {
         onChange: (value) => {this.props.updateDeviceName(value)}
       },
       systemType: {
-        title: "Enter System Type",
+        title: "Select System Type",
         defaultValue: "Arduino",
-        options: ["Arduino", "Linux Based", "PIC", "Simulation"],
-        onChange: (value) => {this.props.updateSystemType(value)},
+        options: Object.keys(sys_phy_files),
+        onChange: (value) => {this.props.updateSystemType(value)}
+      },
+      physicalLayer: {
+        title: "Select Physical Layer",
+        defaultValue: sys_phy_files[this.props.systemType][0],
+        options: Object.keys(sys_phy_files[this.props.systemType]),
+        onChange: (value) => {this.props.updatePhysicalLayer(value)}
+      },
+      ssid: {
+        key: 'ssid',
+        title: "Enter WiFi SSID",
+        defaultValue: '',
+        onChange: (value) => {this.props.updateSSID(value)}
+      },
+      ssidPassword: {
+        key: 'ssidpwd',
+        title: "Enter WiFi Password",
+        defaultValue: '',
+        onChange: (value) => {this.props.updateSSIDPassword(value)}
       }
     }
 
-    return (
-        <div {...inputs.fieldInputs}>
-          <form>
+    var optionalInputs = [];
 
+    if (this.props.physicalLayer == 'wifi') {
+      optionalInputs.push(<GenericTextInput {...inputs.ssid}/>)
+      optionalInputs.push(<GenericTextInput {...inputs.ssidPassword}/>)
+    }
+
+    return (
+          <form>
             <GenericTextInput {...inputs.deviceName}/>
             <GenericSelect {...inputs.systemType}/>
-            <GenericSelect {...inputs.numControls}/>
-
-          </form>
-        </div>
-         
+            <GenericSelect {...inputs.physicalLayer}/>
+            {optionalInputs}
+          </form>  
     );
   }
 }
