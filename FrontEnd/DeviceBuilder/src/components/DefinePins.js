@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as Actions from '../redux/actions'
+import {Checkbox} from 'react-bootstrap';
 
 import GenericSelect from './GenericSelect'
 
@@ -23,6 +24,13 @@ class DefinePins extends React.Component {
         options: Array.from(Array(30).keys()),
         defaultValue: 0,
         onChange: (value) => {console.log("Update pin to: ", value)} //this.props.updateControlDirection(controlIndex, value)}
+      },
+      negativeLogic: {
+        style: {
+          color: 'white'
+        },
+        title: 'Use Negative Logic',
+        onChange: (e) => {console.log("checked: ", e.target.checked)}
       }
     }
     
@@ -30,6 +38,7 @@ class DefinePins extends React.Component {
 
       return (<div>
         <GenericSelect {...inputs.pins}/>
+        <Checkbox {...inputs.negativeLogic}> Use Negative Logic </Checkbox>
         </div>)
 
     } else {
