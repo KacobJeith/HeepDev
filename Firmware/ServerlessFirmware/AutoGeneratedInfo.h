@@ -76,6 +76,12 @@ String Password = "YOUR_WIFI_PASSWORD";
 #include "PICW5500_Timer.h"
 #endif
 
+#ifdef ON_POE32U4
+#include "POE32u4W5500_HeepComms.h"
+#include "Arduino_EEPROM.h"
+#include "Arduino_Timer.h"
+#endif
+
 // Device ID and MAC Address used for all Heep Communication
 heepByte deviceIDByte [STANDARD_ID_SIZE] = {0x01, 0x02, 0x03, 0x04};
 uint8_t mac[6] = {0x01,0x02,0x03,0x04,0x05,0x06};
