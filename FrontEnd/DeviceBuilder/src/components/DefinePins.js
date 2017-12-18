@@ -30,7 +30,7 @@ class DefinePins extends React.Component {
           color: 'white'
         },
         title: 'Use Negative Logic',
-        onChange: (e) => {console.log(e.target.checked); this.props.updateControlPinPolarity(this.props.controlID, e.target.checked); }
+        onChange: (e) => {this.props.updateControlPinPolarity(this.props.controlID, e.target.checked)}
       }
     }
     
