@@ -140,6 +140,15 @@ export default function(state = initialState, action) {
 
         return Immutable.Map(state).set('controls', newState).toJS()
 
+    case 'UPDATE_CONTROL_PIN_POLARITY' :
+
+        var newState = Immutable.List(state.controls).toJS();
+        newState[action.controlID]['pinNegativeLogic'] = action.polarity;
+
+        console.log("Updated control pin: ", newState[action.controlID]);
+
+        return Immutable.Map(state).set('controls', newState).toJS()
+
     default:
       return state
   }
