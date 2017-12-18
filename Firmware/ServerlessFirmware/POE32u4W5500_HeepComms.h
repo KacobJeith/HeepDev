@@ -1,6 +1,5 @@
 #include <SPI.h> 
 #include <Ethernet2.h>
-#include <EthernetUdp.h> 
 
 unsigned int localPort = 5000;  
 // An EthernetUDP instance to let us send and receive packets over UDP
@@ -12,11 +11,11 @@ EthernetUDP Udp;
 void ResetW5500()
 {
   pinMode(WIZ_RESET_PIN, OUTPUT);
-  digitalWrite(WIZ_RESET, HIGH);
+  digitalWrite(WIZ_RESET_PIN, HIGH);
   delay(1000);
-  digitalWrite(WIZ_RESET, LOW);
+  digitalWrite(WIZ_RESET_PIN, LOW);
   delay(1000);
-  digitalWrite(WIZ_RESET, HIGH);
+  digitalWrite(WIZ_RESET_PIN, HIGH);
 }
 
 void CreateInterruptServer()

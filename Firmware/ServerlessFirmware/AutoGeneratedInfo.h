@@ -39,6 +39,10 @@
 // Include the standard Heep Data Types
 #include "CommonDataTypes.h"
 
+// Device ID and MAC Address used for all Heep Communication
+heepByte deviceIDByte [STANDARD_ID_SIZE] = {0x01, 0x02, 0x03, 0x04};
+uint8_t mac[6] = {0x01,0x02,0x03,0x04,0x05,0x06};
+
 // Only one of these blocks is necessary. It will determine
 // which physical system is being used
 #ifdef ON_PC
@@ -81,7 +85,3 @@ String Password = "YOUR_WIFI_PASSWORD";
 #include "Arduino_EEPROM.h"
 #include "Arduino_Timer.h"
 #endif
-
-// Device ID and MAC Address used for all Heep Communication
-heepByte deviceIDByte [STANDARD_ID_SIZE] = {0x01, 0x02, 0x03, 0x04};
-uint8_t mac[6] = {0x01,0x02,0x03,0x04,0x05,0x06};
