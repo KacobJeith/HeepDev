@@ -173,6 +173,8 @@ const composeInoFile = (deviceDetails, controls) => {
 char deviceName [] = "` + deviceDetails.deviceName + `";\n\n`
 + initializeControls(controls)
 + createHardwareControlFunctionsArduinoSyntax(controls)
++ CreateHardwareReadFunctions(controls)
++ CreateHardwareWriteFunctions(controls)
 + `void setup()
 {
 
@@ -193,12 +195,12 @@ void loop()
 }
 
 var getPinDefineName = (control) => {
-  var pinDefineStr = control.controlName.toUpperCase() + `_PIN `;
+  var pinDefineStr = control.controlName.toUpperCase() + `_PIN`;
   return pinDefineStr;
 }
 
 var getPinDefine = (control) => {
-  var pinDefineStr = `\n#define `+ getPinDefineName(control) + control.pinNumber;
+  var pinDefineStr = `\n#define `+ getPinDefineName(control) + ` ` + control.pinNumber;
   return pinDefineStr;
 }
 
@@ -223,6 +225,48 @@ var createHardwareControlFunctionsArduinoSyntax = (controls) => {
   hardwareInitializations += `\n}\n\n`;
 
   return hardwareInitializations;
+}
+
+// TODO: Make this function handle control types that are not just pin reads
+var CreateHardwareReadFunctions = (controls) => {
+  var hardwareReadFunctions = ``;
+
+  // output == 1, input == 0 
+  // TODO: Make control direction into an enum with defined numbers just like Unity
+  for (var i in controls) {
+
+    // Only react to outputs. Heep Outputs are Hardware Inputs
+    if(controls[i].controlDirection == 1){
+      hardwareReadFunctions += `int Read` + controls[i].controlName + `{\n`
+        + GetTabCharacter() + `int currentSetting = digitalRead(` + getPinDefineName(controls[i]) + `);\n`
+        + GetTabCharacter() + `SendOutputByID(` + controls[i].controlID + `,currentSetting);\n`
+        + `}\n\n`;
+    }
+  }
+
+  return hardwareReadFunctions;
+
+}
+
+// TODO: Make this function handle control types that are not just pin writes
+var CreateHardwareWriteFunctions = (controls) => {
+  var hardwareWriteFunctions = ``;
+
+  // output == 1, input == 0 
+  // TODO: Make control direction into an enum with defined numbers just like Unity
+  for (var i in controls) {
+
+    // Only react to inputs. Heep inputs are Hardware Outputs
+    if(controls[i].controlDirection == 0){
+      hardwareWriteFunctions += `int Write` + controls[i].controlName + `{\n`
+        + GetTabCharacter() + `int currentSetting = GetControlValueByID(` + controls[i].controlID + `);\n`
+        + GetTabCharacter() + `digitalWrite(` + getPinDefineName(controls[i]) + `,currentSetting);\n`
+        + `}\n\n`;
+    }
+  }
+
+  return hardwareWriteFunctions;
+
 }
 
 const initializeControls = (controls) => {
