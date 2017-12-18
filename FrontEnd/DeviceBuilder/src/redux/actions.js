@@ -67,3 +67,14 @@ export const updateSSIDPassword = (ssidPassword) => ({
 	ssidPassword
 })
 
+export const updateControlPin = (controlID, pinNumber) => ({
+	type: 'UPDATE_CONTROL_PIN',
+	controlID,
+	pinNumber
+})
+
+export const updateControlPinPolarity = (controlID, polarity) => ({
+	type: 'UPDATE_CONTROL_PIN_POLARITY',
+	controlID,
+	polarity
+})

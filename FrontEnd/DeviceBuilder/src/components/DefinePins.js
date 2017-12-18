@@ -23,7 +23,7 @@ class DefinePins extends React.Component {
         title: "Select Pin",
         options: Array.from(Array(30).keys()),
         defaultValue: 0,
-        onChange: (value) => {console.log("Update pin to: ", value)} //this.props.updateControlDirection(controlIndex, value)}
+        onChange: (value) => {this.props.updateControlPin(this.props.controlID, value)} 
       },
       negativeLogic: {
         style: {
