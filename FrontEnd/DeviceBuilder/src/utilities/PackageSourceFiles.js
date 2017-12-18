@@ -172,6 +172,7 @@ const composeInoFile = (deviceDetails, controls) => {
 
 char deviceName [] = "` + deviceDetails.deviceName + `";\n\n`
 + initializeControls(controls)
++ createHardwareControlFunctionsArduinoSyntax(controls)
 + `void setup()
 {
 
@@ -191,11 +192,44 @@ void loop()
   return fileContent
 }
 
+var getPinDefineName = (control) => {
+  var pinDefineStr = control.controlName.toUpperCase() + `_PIN `;
+  return pinDefineStr;
+}
+
+var getPinDefine = (control) => {
+  var pinDefineStr = `\n#define `+ getPinDefineName(control) + control.pinNumber;
+  return pinDefineStr;
+}
+
+var GetTabCharacter = () => {
+  return `  `;
+}
+
+var createHardwareControlFunctionsArduinoSyntax = (controls) => {
+  var hardwareInitializations = `\nvoid InitializeControlHardware(){`;
+
+  // output == 1, input == 0 
+  // TODO: Make control direction into an enum with defined numbers just like Unity
+  for (var i in controls) {
+    var arduinoDirection = "INPUT";
+    if(controls[i].controlDirection == 1){
+      arduinoDirection = "OUTPUT";
+    }
+
+    hardwareInitializations += `\n` + GetTabCharacter() + `pinMode(` + getPinDefineName(controls[i]) + `,` + arduinoDirection + `);`;
+  }
+
+  hardwareInitializations += `\n}\n\n`;
+
+  return hardwareInitializations;
+}
+
 const initializeControls = (controls) => {
 
   var controlDefs = ``;
   for (var i in controls) {
-    controlDefs += `char controlName` + i + ` [] = "` + controls[i].controlName + `";\nControl control` + i + `;\n\n`
+    controlDefs += `char controlName` + i + ` [] = "` + controls[i].controlName + `";\nControl control` + i + `;` + getPinDefine(controls[i]) + `\n\n`
   }
 
   return controlDefs
