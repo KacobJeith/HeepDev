@@ -172,6 +172,9 @@ const composeInoFile = (deviceDetails, controls) => {
 
 char deviceName [] = "` + deviceDetails.deviceName + `";\n\n`
 + initializeControls(controls)
++ createHardwareControlFunctionsArduinoSyntax(controls)
++ CreateHardwareReadFunctions(controls)
++ CreateHardwareWriteFunctions(controls)
 + `void setup()
 {
 
@@ -179,23 +182,146 @@ char deviceName [] = "` + deviceDetails.deviceName + `";\n\n`
   SetupHeepDevice(deviceName);\n\n  `  
 + setControls(controls)
 + `SetupHeepTasks();
-  CreateInterruptServer();
+  InitializeControlHardware();
+  CreateInterruptServer(); 
 }
 
 void loop()
 {
-  PerformHeepTasks();
-  
-}`
+  PerformHeepTasks();\n`
++ GetReadWriteFunctionCalls(controls)
++ `\n}`
 
   return fileContent
+}
+
+var getPinDefineName = (control) => {
+  var pinDefineStr = control.controlName.toUpperCase() + `_PIN`;
+  return pinDefineStr;
+}
+
+var getPinDefine = (control) => {
+  var pinDefineStr = `\n#define `+ getPinDefineName(control) + ` ` + control.pinNumber;
+  return pinDefineStr;
+}
+
+var GetTabCharacter = () => {
+  return `  `;
+}
+
+var GetReadFunctionName = (control) => {
+  var ReadFunctionName = `Read` + control.controlName;
+  return ReadFunctionName;
+}
+
+var GetWriteFunctionName = (control) => {
+  var WriteFunctionName = `Write` + control.controlName;
+  return WriteFunctionName;
+}
+
+var createHardwareControlFunctionsArduinoSyntax = (controls) => {
+  var hardwareInitializations = `\nvoid InitializeControlHardware(){`;
+
+  // output == 1, input == 0 
+  // TODO: Make control direction into an enum with defined numbers just like Unity
+  for (var i in controls) {
+    var arduinoDirection = "OUTPUT";
+    if(controls[i].controlDirection == 1){
+      arduinoDirection = "INPUT";
+    }
+
+    hardwareInitializations += `\n` + GetTabCharacter() + `pinMode(` + getPinDefineName(controls[i]) + `,` + arduinoDirection + `);`;
+  }
+
+  hardwareInitializations += `\n}\n\n`;
+
+  return hardwareInitializations;
+}
+
+// TODO: Make this function handle control types that are not just pin reads
+var CreateHardwareReadFunctions = (controls) => {
+  var hardwareReadFunctions = ``;
+
+  // output == 1, input == 0 
+  // TODO: Make control direction into an enum with defined numbers just like Unity
+  for (var i in controls) {
+
+    var notSign = ``;
+    if(controls[i].pinNegativeLogic){
+      notSign = `!`;
+    }
+
+    // Only react to outputs. Heep Outputs are Hardware Inputs
+    if(controls[i].controlDirection == 1){
+      hardwareReadFunctions += `int ` + GetReadFunctionName(controls[i]) + `(){\n`
+        + GetTabCharacter() + `int currentSetting = ` + notSign + `digitalRead(` + getPinDefineName(controls[i]) + `);\n`
+        + GetTabCharacter() + `SendOutputByID(` + controls[i].controlID + `,currentSetting);\n`
+        + GetTabCharacter() + `return currentSetting;\n`
+        + `}\n\n`;
+    }
+  }
+
+  return hardwareReadFunctions;
+
+}
+
+// TODO: Make this function handle control types that are not just pin writes
+var CreateHardwareWriteFunctions = (controls) => {
+  var hardwareWriteFunctions = ``;
+
+  // output == 1, input == 0 
+  // TODO: Make control direction into an enum with defined numbers just like Unity
+  for (var i in controls) {
+
+    var notSign = ``;
+    if(controls[i].pinNegativeLogic){
+      notSign = `!`;
+    }
+
+    // Only react to inputs. Heep inputs are Hardware Outputs
+    if(controls[i].controlDirection == 0){
+      hardwareWriteFunctions += `int ` + GetWriteFunctionName(controls[i]) + `(){\n`
+        + GetTabCharacter() + `int currentSetting = GetControlValueByID(` + controls[i].controlID + `);\n`
+        + GetTabCharacter() + `digitalWrite(` + getPinDefineName(controls[i]) + `,` + notSign + `currentSetting);\n`
+        + GetTabCharacter() + `return currentSetting;\n`
+        + `}\n\n`;
+    }
+  }
+
+  return hardwareWriteFunctions;
+
+}
+
+var GetReadWriteFunctionCalls = (controls) => {
+  var readWriteFunctions = ``;
+
+  console.log("Enter readwrite function calls");
+
+  // output == 1, input == 0 
+  // TODO: Make control direction into an enum with defined numbers just like Unity
+  for (var i in controls) {
+    console.log("Readwrite " + i);
+
+    if(controls[i].controlDirection == 1){
+      readWriteFunctions += GetTabCharacter() + GetReadFunctionName(controls[i]) + `();`;
+    }
+    else{
+      readWriteFunctions += GetTabCharacter() + GetWriteFunctionName(controls[i]) + `();`;
+    }
+
+    readWriteFunctions += `\n`;
+  }
+
+  console.log(readWriteFunctions);
+
+  return readWriteFunctions;
 }
 
 const initializeControls = (controls) => {
 
   var controlDefs = ``;
   for (var i in controls) {
-    controlDefs += `char controlName` + i + ` [] = "` + controls[i].controlName + `";\nControl control` + i + `;\n\n`
+    controlDefs += `char controlName` + i + ` [] = "` + controls[i].controlName + `";\nControl control` + i + `;` + getPinDefine(controls[i]) + `\n\n`
   }
 
   return controlDefs

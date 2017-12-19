@@ -9,6 +9,7 @@ import GenericSelect from './GenericSelect'
 import ControlledSelect from './ControlledSelect'
 import GenericTextInput from './GenericTextInput'
 import RangeOptions from './RangeOptions'
+import DefinePins from './DefinePins'
 
 var mapStateToProps = (state) => ({
   numControls: state.numControls,
@@ -63,6 +64,9 @@ class ControlBuilder extends React.Component {
       },
       rangeOptions: {
         controlID: controlIndex
+      },
+      pinOptions: {
+        controlID: controlIndex
       }
     }
 
@@ -73,6 +77,7 @@ class ControlBuilder extends React.Component {
                   <GenericSelect {...inputs.controlDirection}/>
                   <GenericSelect {...inputs.controlType}/>
                   <RangeOptions {...inputs.rangeOptions}/>
+                  <DefinePins {...inputs.pinOptions}/>
                 </form>
               </div>
             </div>

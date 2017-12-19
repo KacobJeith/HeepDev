@@ -131,6 +131,20 @@ export default function(state = initialState, action) {
         
         return Immutable.Map(state).set('ssidPassword', action.ssidPassword).toJS()
 
+    case 'UPDATE_CONTROL_PIN' :
+
+        var newState = Immutable.List(state.controls).toJS();
+        newState[action.controlID]['pinNumber'] = parseInteger(action.pinNumber);
+
+        return Immutable.Map(state).set('controls', newState).toJS()
+
+    case 'UPDATE_CONTROL_PIN_POLARITY' :
+
+        var newState = Immutable.List(state.controls).toJS();
+        newState[action.controlID]['pinNegativeLogic'] = action.polarity;
+
+        return Immutable.Map(state).set('controls', newState).toJS()
+
     default:
       return state
   }
@@ -143,7 +157,9 @@ const initialControlState = (controlID) => ({
     controlType: 0,
     highValue: 100,
     lowValue: 0,
-    curValue: 0
+    curValue: 0,
+    pinNumber: 0,
+    pinNegativeLogic: false
 })
 
 const parseInteger = (input) => {
