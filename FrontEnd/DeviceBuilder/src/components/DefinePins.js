@@ -8,7 +8,8 @@ import GenericSelect from './GenericSelect'
 
 var mapStateToProps = (state, ownProps) => ({
   controlID: ownProps.controlID,
-  systemType: state.systemType
+  systemType: state.systemType,
+  controlType: state.controls[ownProps.controlID]['controlType']
 })
 
 class DefinePins extends React.Component {
@@ -33,12 +34,18 @@ class DefinePins extends React.Component {
         onChange: (e) => {this.props.updateControlPinPolarity(this.props.controlID, e.target.checked)}
       }
     }
+
+    var polarityBox = <div/>;
+
+    if (this.props.controlType == 0) {
+      polarityBox = <Checkbox {...inputs.negativeLogic}> Use Negative Logic </Checkbox>;
+    }
     
     if (this.props.systemType == "Arduino" || this.props.systemType == "ESP8266") {
 
       return (<div>
         <GenericSelect {...inputs.pins}/>
-        <Checkbox {...inputs.negativeLogic}> Use Negative Logic </Checkbox>
+        {polarityBox}
         </div>)
 
     } else {
