@@ -246,10 +246,15 @@ var CreateHardwareReadFunctions = (controls) => {
   // TODO: Make control direction into an enum with defined numbers just like Unity
   for (var i in controls) {
 
+    var notSign = ``;
+    if(controls[i].pinNegativeLogic){
+      notSign = `!`;
+    }
+
     // Only react to outputs. Heep Outputs are Hardware Inputs
     if(controls[i].controlDirection == 1){
       hardwareReadFunctions += `int ` + GetReadFunctionName(controls[i]) + `(){\n`
-        + GetTabCharacter() + `int currentSetting = digitalRead(` + getPinDefineName(controls[i]) + `);\n`
+        + GetTabCharacter() + `int currentSetting = ` + notSign + `digitalRead(` + getPinDefineName(controls[i]) + `);\n`
         + GetTabCharacter() + `SendOutputByID(` + controls[i].controlID + `,currentSetting);\n`
         + GetTabCharacter() + `return currentSetting;\n`
         + `}\n\n`;
@@ -268,11 +273,16 @@ var CreateHardwareWriteFunctions = (controls) => {
   // TODO: Make control direction into an enum with defined numbers just like Unity
   for (var i in controls) {
 
+    var notSign = ``;
+    if(controls[i].pinNegativeLogic){
+      notSign = `!`;
+    }
+
     // Only react to inputs. Heep inputs are Hardware Outputs
     if(controls[i].controlDirection == 0){
       hardwareWriteFunctions += `int ` + GetWriteFunctionName(controls[i]) + `(){\n`
         + GetTabCharacter() + `int currentSetting = GetControlValueByID(` + controls[i].controlID + `);\n`
-        + GetTabCharacter() + `digitalWrite(` + getPinDefineName(controls[i]) + `,currentSetting);\n`
+        + GetTabCharacter() + `digitalWrite(` + getPinDefineName(controls[i]) + `,` + notSign + `currentSetting);\n`
         + GetTabCharacter() + `return currentSetting;\n`
         + `}\n\n`;
     }
