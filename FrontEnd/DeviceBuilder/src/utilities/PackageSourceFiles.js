@@ -182,14 +182,15 @@ char deviceName [] = "` + deviceDetails.deviceName + `";\n\n`
   SetupHeepDevice(deviceName);\n\n  `  
 + setControls(controls)
 + `SetupHeepTasks();
-  CreateInterruptServer();
+  InitializeControlHardware();
+  CreateInterruptServer(); 
 }
 
 void loop()
 {
-  PerformHeepTasks();
-  
-}`
+  PerformHeepTasks();\n`
++ GetReadWriteFunctionCalls(controls)
++ `\n}`
 
   return fileContent
 }
@@ -206,6 +207,16 @@ var getPinDefine = (control) => {
 
 var GetTabCharacter = () => {
   return `  `;
+}
+
+var GetReadFunctionName = (control) => {
+  var ReadFunctionName = `Read` + control.controlName;
+  return ReadFunctionName;
+}
+
+var GetWriteFunctionName = (control) => {
+  var WriteFunctionName = `Write` + control.controlName;
+  return WriteFunctionName;
 }
 
 var createHardwareControlFunctionsArduinoSyntax = (controls) => {
@@ -237,9 +248,10 @@ var CreateHardwareReadFunctions = (controls) => {
 
     // Only react to outputs. Heep Outputs are Hardware Inputs
     if(controls[i].controlDirection == 1){
-      hardwareReadFunctions += `int Read` + controls[i].controlName + `{\n`
+      hardwareReadFunctions += `int ` + GetReadFunctionName(controls[i]) + `{\n`
         + GetTabCharacter() + `int currentSetting = digitalRead(` + getPinDefineName(controls[i]) + `);\n`
         + GetTabCharacter() + `SendOutputByID(` + controls[i].controlID + `,currentSetting);\n`
+        + GetTabCharacter() + `return currentSetting;\n`
         + `}\n\n`;
     }
   }
@@ -258,15 +270,41 @@ var CreateHardwareWriteFunctions = (controls) => {
 
     // Only react to inputs. Heep inputs are Hardware Outputs
     if(controls[i].controlDirection == 0){
-      hardwareWriteFunctions += `int Write` + controls[i].controlName + `{\n`
+      hardwareWriteFunctions += `int ` + GetWriteFunctionName(controls[i]) + `{\n`
         + GetTabCharacter() + `int currentSetting = GetControlValueByID(` + controls[i].controlID + `);\n`
         + GetTabCharacter() + `digitalWrite(` + getPinDefineName(controls[i]) + `,currentSetting);\n`
+        + GetTabCharacter() + `return currentSetting;\n`
         + `}\n\n`;
     }
   }
 
   return hardwareWriteFunctions;
 
+}
+
+var GetReadWriteFunctionCalls = (controls) => {
+  var readWriteFunctions = ``;
+
+  console.log("Enter readwrite function calls");
+
+  // output == 1, input == 0 
+  // TODO: Make control direction into an enum with defined numbers just like Unity
+  for (var i in controls) {
+    console.log("Readwrite " + i);
+
+    if(controls[i].controlDirection == 1){
+      readWriteFunctions += GetReadFunctionName(controls[i]) + `();`;
+    }
+    else{
+      readWriteFunctions += GetWriteFunctionName(controls[i]) + `();`;
+    }
+
+    readWriteFunctions += `\n`;
+  }
+
+  console.log(readWriteFunctions);
+
+  return readWriteFunctions;
 }
 
 const initializeControls = (controls) => {
