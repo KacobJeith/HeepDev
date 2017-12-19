@@ -225,9 +225,9 @@ var createHardwareControlFunctionsArduinoSyntax = (controls) => {
   // output == 1, input == 0 
   // TODO: Make control direction into an enum with defined numbers just like Unity
   for (var i in controls) {
-    var arduinoDirection = "INPUT";
+    var arduinoDirection = "OUTPUT";
     if(controls[i].controlDirection == 1){
-      arduinoDirection = "OUTPUT";
+      arduinoDirection = "INPUT";
     }
 
     hardwareInitializations += `\n` + GetTabCharacter() + `pinMode(` + getPinDefineName(controls[i]) + `,` + arduinoDirection + `);`;
@@ -248,7 +248,7 @@ var CreateHardwareReadFunctions = (controls) => {
 
     // Only react to outputs. Heep Outputs are Hardware Inputs
     if(controls[i].controlDirection == 1){
-      hardwareReadFunctions += `int ` + GetReadFunctionName(controls[i]) + `{\n`
+      hardwareReadFunctions += `int ` + GetReadFunctionName(controls[i]) + `(){\n`
         + GetTabCharacter() + `int currentSetting = digitalRead(` + getPinDefineName(controls[i]) + `);\n`
         + GetTabCharacter() + `SendOutputByID(` + controls[i].controlID + `,currentSetting);\n`
         + GetTabCharacter() + `return currentSetting;\n`
@@ -270,7 +270,7 @@ var CreateHardwareWriteFunctions = (controls) => {
 
     // Only react to inputs. Heep inputs are Hardware Outputs
     if(controls[i].controlDirection == 0){
-      hardwareWriteFunctions += `int ` + GetWriteFunctionName(controls[i]) + `{\n`
+      hardwareWriteFunctions += `int ` + GetWriteFunctionName(controls[i]) + `(){\n`
         + GetTabCharacter() + `int currentSetting = GetControlValueByID(` + controls[i].controlID + `);\n`
         + GetTabCharacter() + `digitalWrite(` + getPinDefineName(controls[i]) + `,currentSetting);\n`
         + GetTabCharacter() + `return currentSetting;\n`
@@ -293,10 +293,10 @@ var GetReadWriteFunctionCalls = (controls) => {
     console.log("Readwrite " + i);
 
     if(controls[i].controlDirection == 1){
-      readWriteFunctions += GetReadFunctionName(controls[i]) + `();`;
+      readWriteFunctions += GetTabCharacter() + GetReadFunctionName(controls[i]) + `();`;
     }
     else{
-      readWriteFunctions += GetWriteFunctionName(controls[i]) + `();`;
+      readWriteFunctions += GetTabCharacter() + GetWriteFunctionName(controls[i]) + `();`;
     }
 
     readWriteFunctions += `\n`;
