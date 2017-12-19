@@ -11,7 +11,7 @@ export const sys_phy_files = {
 	},
 	PoE: {
 		W5500: 'POE32u4W5500_HeepComms.h'
-	}
+	},
 	PIC: {
 		W5500: 'PICW5500_HeepComms.h'
 	},

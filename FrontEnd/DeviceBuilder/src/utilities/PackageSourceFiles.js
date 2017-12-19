@@ -59,6 +59,7 @@ export const packageSourceFiles = (deviceDetails, controls) => {
   switch (deviceDetails.systemType) {
 
     case "Arduino" : 
+    case "PoE" :
       zip = packageArduinoFiles(deviceDetails, controls, zip);
       autoGenIncludes = getIncludes_Arduino(deviceDetails);
       break

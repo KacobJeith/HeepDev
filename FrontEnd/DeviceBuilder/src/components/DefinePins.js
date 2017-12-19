@@ -41,14 +41,17 @@ class DefinePins extends React.Component {
       polarityBox = <Checkbox {...inputs.negativeLogic}> Use Negative Logic </Checkbox>;
     }
     
-    if (this.props.systemType == "Arduino" || this.props.systemType == "ESP8266") {
+    switch (this.props.systemType) {
+      case "Arduino" :
+      case "ESP8266" :
+      case "PoE" :
 
-      return (<div>
-        <GenericSelect {...inputs.pins}/>
-        {polarityBox}
-        </div>)
+        return (<div>
+          <GenericSelect {...inputs.pins}/>
+          {polarityBox}
+          </div>)
 
-    } else {
+    default :
       return (<div/>)
     }
     
