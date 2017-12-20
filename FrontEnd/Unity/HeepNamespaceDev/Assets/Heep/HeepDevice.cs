@@ -56,6 +56,10 @@ namespace Heep
 			for (int i = 0; i < controls.Count; i++) {
 				if (controls [i].GetID () == ID) {
 					controls[i].SetCurValue(newValue);
+
+					HeepDeviceAnalytics deviceAnalytics = new HeepDeviceAnalytics (ID, newValue);
+					deviceAnalytics.GetBytes (myID);
+
 					SendOutput (controls [i]);
 				}
 			}
@@ -66,6 +70,10 @@ namespace Heep
 			for (int i = 0; i < controls.Count; i++) {
 				if (controls [i].GetName () == controlName) {
 					controls [i].SetCurValue (newValue);
+
+					HeepDeviceAnalytics deviceAnalytics = new HeepDeviceAnalytics (controls[i].GetID(), newValue);
+					deviceAnalytics.GetBytes (myID);
+
 					SendOutput (controls [i]);
 				}
 			}

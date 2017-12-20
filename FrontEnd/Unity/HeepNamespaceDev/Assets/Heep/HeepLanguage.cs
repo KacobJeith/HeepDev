@@ -35,6 +35,8 @@ namespace Heep
 		public const byte DeleteMOPOpCode 			= 0x15;
 		public const byte LocalDeviceIDOpCode 		= 0x16;
 
+		public const byte AnalyticsData 			= 0x1F;
+
 		public HeepLanguage ()
 		{
 		}
