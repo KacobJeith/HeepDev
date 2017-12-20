@@ -229,6 +229,17 @@ namespace Heep
 				buffer.Add (address.GetAddressBytes()[i]);
 			}
 		}
+
+		public static int GetNumBytesRequiredForULong(ulong number)
+		{
+			int bytesRequired = 0;
+			while (number > 0) {
+				number = number >> 8;
+				bytesRequired++;
+			}
+
+			return bytesRequired;
+		}
 	}
 }
 

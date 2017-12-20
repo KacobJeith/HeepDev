@@ -25,7 +25,7 @@ namespace Heep
 			HeepLanguage.AddDeviceIDToMemory (byteArray, theID);
 
 			double seconds = (curTime - startTime).TotalSeconds;
-			long fixedPointSeconds = (long)seconds;
+			ulong fixedPointSeconds = (ulong)seconds;
 			Debug.Log ("Seconds from " + startTime + " to now is " + fixedPointSeconds);
 
 			return byteArray;
