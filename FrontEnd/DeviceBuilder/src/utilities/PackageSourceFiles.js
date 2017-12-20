@@ -6,7 +6,6 @@ import ActionAndResponseOpCodes     from '../../../../Firmware/ServerlessFirmwar
 import Arduino_EEPROM               from '../../../../Firmware/ServerlessFirmware/Arduino_EEPROM.h'
 import Arduino_Timer                from '../../../../Firmware/ServerlessFirmware/Arduino_Timer.h'
 import ArduinoW5100_HeepComms       from '../../../../Firmware/ServerlessFirmware/ArduinoW5100_HeepComms.h'
-// import ArduinoW5500_HeepComms       from '../../../../Firmware/ServerlessFirmware/ArduinoW5500_HeepComms.h'
 import CommonDataTypes              from '../../../../Firmware/ServerlessFirmware/CommonDataTypes.h'
 import Device                       from '../../../../Firmware/ServerlessFirmware/Device.h'
 import DeviceMemory                 from '../../../../Firmware/ServerlessFirmware/DeviceMemory.h'
@@ -14,6 +13,7 @@ import ENC28J60_HeepComms           from '../../../../Firmware/ServerlessFirmwar
 import ESP8266_HeepComms            from '../../../../Firmware/ServerlessFirmware/ESP8266_HeepComms.h'
 import Heep_API                     from '../../../../Firmware/ServerlessFirmware/Heep_API.h'
 import MemoryUtilities              from '../../../../Firmware/ServerlessFirmware/MemoryUtilities.h'
+import POE32u4W5500_HeepComms       from '../../../../Firmware/ServerlessFirmware/POE32u4W5500_HeepComms.h'
 import PICW5500_HeepComms           from '../../../../Firmware/ServerlessFirmware/PICW5500_HeepComms.h'
 import PICW5500_NonVolatileMemory   from '../../../../Firmware/ServerlessFirmware/PICW5500_NonVolatileMemory.h'
 import PICW5500_Timer               from '../../../../Firmware/ServerlessFirmware/PICW5500_Timer.h'
@@ -30,7 +30,7 @@ var sourceFiles = {
   Arduino_EEPROM: Arduino_EEPROM,
   Arduino_Timer: Arduino_Timer,
   ArduinoW5100_HeepComms: ArduinoW5100_HeepComms,
-  // ArduinoW5500_HeepComms: ArduinoW5500_HeepComms,
+  POE32u4W5500_HeepComms: POE32u4W5500_HeepComms,
   CommonDataTypes: CommonDataTypes,
   Device: Device,
   DeviceMemory: DeviceMemory,
@@ -59,6 +59,7 @@ export const packageSourceFiles = (deviceDetails, controls) => {
   switch (deviceDetails.systemType) {
 
     case "Arduino" : 
+    case "PoE" :
       zip = packageArduinoFiles(deviceDetails, controls, zip);
       autoGenIncludes = getIncludes_Arduino(deviceDetails);
       break
