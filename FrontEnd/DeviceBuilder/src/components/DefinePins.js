@@ -32,6 +32,12 @@ class DefinePins extends React.Component {
         },
         title: 'Use Negative Logic',
         onChange: (e) => {this.props.updateControlPinPolarity(this.props.controlID, e.target.checked)}
+      },
+      digitalOrAnalog: {
+        title: "Digital or Analog",
+        options: ["Digital", "Analog"],
+        defaultValue: "Digital",
+        onChange: (value) => {console.log("Changing analog or digital: ", value)} 
       }
     }
 
@@ -48,6 +54,7 @@ class DefinePins extends React.Component {
 
         return (<div>
           <GenericSelect {...inputs.pins}/>
+          <GenericSelect {...inputs.digitalOrAnalog}/>
           {polarityBox}
           </div>)
 
