@@ -51,14 +51,20 @@ namespace Heep
 			NonVolatileData.WriteMemoryToFile (deviceMemory);
 		}
 
+		private void AddNewAnalyticsDataToDeviceMemory(int ID, int Value)
+		{
+			HeepDeviceAnalytics deviceAnalytics = new HeepDeviceAnalytics (ID, Value);
+			List <byte> analyticsBuffer = deviceAnalytics.GetBytes (myID);
+			HeepLanguage.AddBufferToBuffer (deviceMemory, analyticsBuffer);
+		}
+
 		public void SetControlByID(int ID, int newValue)
 		{
 			for (int i = 0; i < controls.Count; i++) {
 				if (controls [i].GetID () == ID) {
 					controls[i].SetCurValue(newValue);
 
-					HeepDeviceAnalytics deviceAnalytics = new HeepDeviceAnalytics (ID, newValue);
-					deviceAnalytics.GetBytes (myID);
+					AddNewAnalyticsDataToDeviceMemory (ID, newValue);
 
 					SendOutput (controls [i]);
 				}
@@ -71,8 +77,7 @@ namespace Heep
 				if (controls [i].GetName () == controlName) {
 					controls [i].SetCurValue (newValue);
 
-					HeepDeviceAnalytics deviceAnalytics = new HeepDeviceAnalytics (controls[i].GetID(), newValue);
-					deviceAnalytics.GetBytes (myID);
+					AddNewAnalyticsDataToDeviceMemory (controls[i].GetID(), newValue);
 
 					SendOutput (controls [i]);
 				}
