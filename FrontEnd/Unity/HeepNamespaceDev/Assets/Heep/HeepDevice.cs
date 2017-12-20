@@ -51,11 +51,13 @@ namespace Heep
 			NonVolatileData.WriteMemoryToFile (deviceMemory);
 		}
 
-		private void AddNewAnalyticsDataToDeviceMemory(int ID, int Value)
+		private void AddNewAnalyticsDataToDeviceMemory(Control changedControl)
 		{
-			HeepDeviceAnalytics deviceAnalytics = new HeepDeviceAnalytics (ID, Value);
-			List <byte> analyticsBuffer = deviceAnalytics.GetBytes (myID);
-			HeepLanguage.AddBufferToBuffer (deviceMemory, analyticsBuffer);
+			if (changedControl.ShouldKeepAnalytics ()) {
+				HeepDeviceAnalytics deviceAnalytics = new HeepDeviceAnalytics (changedControl.GetID (), changedControl.GetCurValue ());
+				List <byte> analyticsBuffer = deviceAnalytics.GetBytes (myID);
+				HeepLanguage.AddBufferToBuffer (deviceMemory, analyticsBuffer);
+			}
 		}
 
 		public void SetControlByID(int ID, int newValue)
@@ -64,7 +66,7 @@ namespace Heep
 				if (controls [i].GetID () == ID) {
 					controls[i].SetCurValue(newValue);
 
-					AddNewAnalyticsDataToDeviceMemory (ID, newValue);
+					AddNewAnalyticsDataToDeviceMemory (controls[i]);
 
 					SendOutput (controls [i]);
 				}
@@ -77,7 +79,7 @@ namespace Heep
 				if (controls [i].GetName () == controlName) {
 					controls [i].SetCurValue (newValue);
 
-					AddNewAnalyticsDataToDeviceMemory (controls[i].GetID(), newValue);
+					AddNewAnalyticsDataToDeviceMemory (controls[i]);
 
 					SendOutput (controls [i]);
 				}
@@ -240,8 +242,9 @@ namespace Heep
 		protected int _lowValue;
 		protected int _curValue;
 		protected String _controlName;
+		protected bool _KeepAnalytics;
 
-		public Control(int controlID, CtrlInputOutput controlDirection, CtrlType controlType, int highValue, int lowValue, int curValue, String ControlName)
+		public Control(int controlID, CtrlInputOutput controlDirection, CtrlType controlType, int highValue, int lowValue, int curValue, String ControlName, bool KeepAnalytics)
 		{
 			_controlID = controlID;
 			_controlDirection = controlDirection;
@@ -250,6 +253,7 @@ namespace Heep
 			_lowValue = lowValue;
 			_curValue = curValue;
 			_controlName = ControlName;
+			_KeepAnalytics = KeepAnalytics;
 		}
 
 		public void SetID(int controlID)
@@ -262,14 +266,14 @@ namespace Heep
 			return _controlID;
 		}
 
-		public static Control CreateControl (CtrlInputOutput controlDirection, CtrlType controlType, String controlName, int highValue, int lowValue, int curValue)
+		public static Control CreateControl (CtrlInputOutput controlDirection, CtrlType controlType, String controlName, int highValue, int lowValue, int curValue, bool KeepAnalytics = true)
 		{
-			return new Control (0, controlDirection, controlType, highValue, lowValue, curValue, controlName);
+			return new Control (0, controlDirection, controlType, highValue, lowValue, curValue, controlName, KeepAnalytics);
 		}
 
-		public static Control CreateControl(CtrlInputOutput controlDirection, CtrlType controlType, String controlName)
+		public static Control CreateControl(CtrlInputOutput controlDirection, CtrlType controlType, String controlName, bool KeepAnalytics = true)
 		{
-			return CreateControl (controlDirection, controlType, controlName, 1, 0, 0);
+			return CreateControl (controlDirection, controlType, controlName, 1, 0, 0, KeepAnalytics);
 		}
 
 		public void SetCurValue(int value)
@@ -305,6 +309,11 @@ namespace Heep
 		public CtrlInputOutput GetControlDirection()
 		{
 			return _controlDirection;
+		}
+
+		public bool ShouldKeepAnalytics()
+		{
+			return _KeepAnalytics;
 		}
 	}
 }
