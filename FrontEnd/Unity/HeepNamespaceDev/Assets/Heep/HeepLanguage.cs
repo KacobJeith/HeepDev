@@ -240,6 +240,17 @@ namespace Heep
 
 			return bytesRequired;
 		}
+
+		public static List <byte> GetByteArrayFromULong(ulong number)
+		{
+			List <byte> byteBuffer = new List<byte> ();
+			while (number > 0) {
+				byteBuffer.Add( (byte)(number & 0xFF) );
+				number = number >> 8;
+			}
+
+			return byteBuffer;
+		}
 	}
 }
 
