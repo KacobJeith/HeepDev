@@ -145,6 +145,13 @@ export default function(state = initialState, action) {
 
         return Immutable.Map(state).set('controls', newState).toJS()
 
+    case 'UPDATE_CONTROL_ANALOG_DIGITAL' :
+
+        var newState = Immutable.List(state.controls).toJS();
+        newState[action.controlID]['analogOrDigital'] = action.analogOrDigital;
+
+        return Immutable.Map(state).set('controls', newState).toJS()
+
     default:
       return state
   }
@@ -159,6 +166,7 @@ const initialControlState = (controlID) => ({
     lowValue: 0,
     curValue: 0,
     pinNumber: 0,
+    analogOrDigital: "digital",
     pinNegativeLogic: false
 })
 

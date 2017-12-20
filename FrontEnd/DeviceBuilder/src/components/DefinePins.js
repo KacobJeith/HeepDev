@@ -35,9 +35,9 @@ class DefinePins extends React.Component {
       },
       digitalOrAnalog: {
         title: "Digital or Analog",
-        options: ["Digital", "Analog"],
-        defaultValue: "Digital",
-        onChange: (value) => {console.log("Changing analog or digital: ", value)} 
+        options: ["digital", "analog"],
+        defaultValue: "digital",
+        onChange: (value) => {this.props.updateControlAnalogOrDigital(this.props.controlID, value)} 
       }
     }
 

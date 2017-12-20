@@ -78,3 +78,9 @@ export const updateControlPinPolarity = (controlID, polarity) => ({
 	controlID,
 	polarity
 })
+
+export const updateControlAnalogOrDigital = (controlID, analogOrDigital) => ({
+	type: 'UPDATE_CONTROL_ANALOG_DIGITAL',
+	controlID,
+	analogOrDigital
+})
