@@ -160,6 +160,8 @@ const packageSimulationFiles = (deviceDetails, controls, zip) => {
 
 const getPHYforSys = (sys, phy, zip) => {
 
+  console.log(physicalLayerFilename);
+
   var physicalLayerFilename = sys_phy_files[sys][phy];
   var sourceRef = physicalLayerFilename.split('.')[0];
 
