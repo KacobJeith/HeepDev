@@ -160,8 +160,6 @@ const packageSimulationFiles = (deviceDetails, controls, zip) => {
 
 const getPHYforSys = (sys, phy, zip) => {
 
-  console.log(physicalLayerFilename);
-
   var physicalLayerFilename = sys_phy_files[sys][phy];
   var sourceRef = physicalLayerFilename.split('.')[0];
 
@@ -257,7 +255,7 @@ var CreateHardwareReadFunctions = (controls) => {
     // Only react to outputs. Heep Outputs are Hardware Inputs
     if(controls[i].controlDirection == 1){
       hardwareReadFunctions += `int ` + GetReadFunctionName(controls[i]) + `(){\n`
-        + GetTabCharacter() + `int currentSetting = ` + notSign + `digitalRead(` + getPinDefineName(controls[i]) + `);\n`
+        + GetTabCharacter() + `int currentSetting = ` + notSign + controls[i]['analogOrDigital'] + `Read(` + getPinDefineName(controls[i]) + `);\n`
         + GetTabCharacter() + `SendOutputByID(` + controls[i].controlID + `,currentSetting);\n`
         + GetTabCharacter() + `return currentSetting;\n`
         + `}\n\n`;
@@ -285,7 +283,7 @@ var CreateHardwareWriteFunctions = (controls) => {
     if(controls[i].controlDirection == 0){
       hardwareWriteFunctions += `int ` + GetWriteFunctionName(controls[i]) + `(){\n`
         + GetTabCharacter() + `int currentSetting = GetControlValueByID(` + controls[i].controlID + `);\n`
-        + GetTabCharacter() + `digitalWrite(` + getPinDefineName(controls[i]) + `,` + notSign + `currentSetting);\n`
+        + GetTabCharacter() + controls[i]['analogOrDigital'] + `Write(` + getPinDefineName(controls[i]) + `,` + notSign + `currentSetting);\n`
         + GetTabCharacter() + `return currentSetting;\n`
         + `}\n\n`;
     }
