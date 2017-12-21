@@ -7,7 +7,7 @@ export default function(state = initialState, action) {
   switch (action.type) {
     case 'ADD_MEMORY_DUMP' :
 
-      console.log("Adding data to redux: ", action.data);
+      //console.log("Adding data to redux: ", action.data);
 
       return Immutable.Map(state).set('data', action.data).toJS();
 
