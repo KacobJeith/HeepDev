@@ -5,11 +5,11 @@ import { initialState } from '../index.jsx'
 
 export default function(state = initialState, action) {
   switch (action.type) {
-    case 'EXAMPLE' :
+    case 'ADD_MEMORY_DUMP' :
 
-      console.log("Ran Example Reducer");
+      console.log("Adding data to redux: ", action.data);
 
-      return state
+      return Immutable.Map(state).set('data', action.data).toJS();
 
     default:
       return state
