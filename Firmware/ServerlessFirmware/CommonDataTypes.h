@@ -45,7 +45,7 @@ struct Control
 {
 	unsigned char controlID;
 	unsigned char controlDirection;
-	unsigned char controlType;
+	unsigned char controlType; // 0 = OnOff, 1 = Range, 2 = Buffer
 	unsigned char highValue;   // Maximum value of a range, or the highest index in a buffer
 	unsigned char lowValue; 
 	unsigned char curValue;

@@ -64,6 +64,19 @@ void FillOutputBufferWithSetValCOP(unsigned char controlID, unsigned char value)
 	AddNewCharToOutputBuffer(value);
 }
 
+void FillOutputBufferWithSetValCOPBuffer(unsigned char controlID, heepByte* buffer, int bufferLength)
+{
+	ClearOutputBuffer();
+	AddNewCharToOutputBuffer(SetValueOpCode);
+	AddNewCharToOutputBuffer(bufferLength + 1);
+	AddNewCharToOutputBuffer(controlID);
+
+	for(int i = 0; i < bufferLength; i++)
+	{
+		AddNewCharToOutputBuffer(buffer[i]);
+	}
+}
+
 // Updated
 void FillOutputBufferWithControlData()
 {

@@ -121,9 +121,35 @@ int SetControlValueByID(unsigned char controlID, unsigned int value, unsigned ch
 	return 1;
 }	
 
+int SetControlValueByIDBuffer(unsigned char controlID, heepByte* buffer, int bufferLength, unsigned char setFromNetwork)
+{
+	for(int i = 0; i < numberOfControls; i++)
+	{
+		if(controlList[i].controlID == controlID)
+		{
+			for(int j = 0; j < bufferLength; j++)
+			{
+				controlList[i].controlBuffer[j] = buffer[j];
+			}
+
+			if(setFromNetwork)
+				controlList[i].controlFlags = 0x01;
+
+			return 0;
+		}
+	}
+
+	return 1;
+}
+
 int SetControlValueByIDFromNetwork(unsigned char controlID, unsigned int value)
 {
 	return SetControlValueByID(controlID, value, 1);
+}
+
+int SetControlValueByIDFromNetworkBuffer(unsigned char controlID, heepByte* buffer, int bufferLength)
+{
+	return SetControlValueByIDBuffer(controlID, buffer, bufferLength, 1);
 }
 
 int GetControlValueByID(unsigned controlID)
