@@ -42,10 +42,24 @@ public class FakeDevice : MonoBehaviour {
 		}
 	}
 
+	IEnumerator sendAnalyticsToFirebaseOnTimer()
+	{
+		
+		while (true) {
+			
+			List<byte> memoryDump = myDevice.GetMemoryDump ();
+			FirebaseInterface.store.SendDataDumpToFirebase (memoryDump);
+			yield return new WaitForSeconds (5);
+
+		}
+
+	}
+
 	// Use this for initialization
 	void Start () {
 		CreateHeepDevice ();
 		StartCoroutine (setControlsOnTimer());
+		StartCoroutine (sendAnalyticsToFirebaseOnTimer());
 	}
 
 	// Update is called once per frame

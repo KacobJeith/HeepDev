@@ -11,7 +11,6 @@ using Firebase;
 using Firebase.Database;
 using Firebase.Unity.Editor;
 
-
 public class FirebaseInterface : MonoBehaviour {
 
 	public static FirebaseInterface store;
@@ -88,15 +87,36 @@ public class FirebaseInterface : MonoBehaviour {
 
 	public void SendDataDumpToFirebase(List <byte> dataDump) {
 		DatabaseReference reference = FirebaseDatabase.DefaultInstance.RootReference;
-		string dataDumpString = Encoding.ASCII.GetString (dataDump.ToArray (), 0, dataDump.Count);
+//		string dataDumpString = Encoding.ASCII.GetString (dataDump.ToArray (), 0, dataDump.Count);
+//
+//		int[] bytesAsInts = dataDump.Select(x => (int)x).ToArray();
+//		Debug.Log("Sending Data Dump to Firebase: " + bytesAsInts);
+//		
+		Debug.Log("ANALYTICS FIREBASE");
 
-		int[] bytesAsInts = dataDump.Select(x => (int)x).ToArray();
-		Debug.Log("Sending Data Dump to Firebase: " + bytesAsInts);
+//		DataDump trying = new DataDump(dataDump);
+//		string json = JsonUtility.ToJson(trying);
+//		Debug.Log (json);
 
-		reference.Child("data").SetValueAsync(bytesAsInts);
+		string base64 = Convert.ToBase64String(dataDump.ToArray());
+
+		reference.Child("data").SetValueAsync(base64);
+//		string fireurl = "https://firestore.googleapis.com/v1beta1/projects/heep-analytics/databases/(default)/documents/cities/LA";
+//		using (WWW www = new WWW(url));
 
 	}
 
 }
 
+
+public class DataDump {
+	public List<byte> byteArray;
+
+	public DataDump() {
+	}
+
+	public DataDump(List<byte> byteArray) {
+		this.byteArray = byteArray;
+	}
+}
 
