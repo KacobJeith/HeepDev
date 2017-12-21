@@ -54,7 +54,7 @@ void SendOutputByID(unsigned char controlID, unsigned int value)
 
 void SendOutputByIDBuffer(unsigned char controlID, heepByte* buffer, int bufferLength)
 {
-	SetControlValueByIDBuffer(controlID, buffer, bufferLength, 0);
+	SetControlValueByIDBuffer(controlID, buffer, 0, bufferLength, 0);
 
 	struct Vertex_Byte newVertex;
 
@@ -66,7 +66,7 @@ void SendOutputByIDBuffer(unsigned char controlID, heepByte* buffer, int bufferL
 		{
 			if(CheckBufferEquality(newVertex.txID, newVertex.rxID, STANDARD_ID_SIZE))
 			{
-				SetControlValueByIDBuffer(newVertex.rxControlID, buffer, bufferLength, 0);
+				SetControlValueByIDBuffer(newVertex.rxControlID, buffer, 0, bufferLength, 0);
 			}
 			else
 			{

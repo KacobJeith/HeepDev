@@ -189,9 +189,21 @@ void ExecuteSetValOpCode()
 	unsigned int counter = 1;
 	unsigned char numBytes = inputBuffer[counter++];
 	unsigned char controlID = inputBuffer[counter++];
-	unsigned int value = GetNumberFromBuffer(inputBuffer, &counter, numBytes - 1);
 
-	int success = SetControlValueByIDFromNetwork(controlID, value);
+	heepByte controlType = GetControlTypeFromControlID(controlID);
+
+	int success = 1;
+	if(controlType == 2)
+	{
+		success = SetControlValueByIDFromNetworkBuffer(controlID, inputBuffer, counter, numBytes - 1);
+	}
+	else
+	{
+		unsigned int value = GetNumberFromBuffer(inputBuffer, &counter, numBytes - 1);
+		success = SetControlValueByIDFromNetwork(controlID, value);
+	}
+
+	
 
 	if(success == 0)
 	{
