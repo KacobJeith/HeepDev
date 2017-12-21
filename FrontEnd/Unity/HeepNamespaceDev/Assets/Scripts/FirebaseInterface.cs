@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Text;  
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
@@ -82,6 +84,17 @@ public class FirebaseInterface : MonoBehaviour {
 				Debug.Log("Signed in " + user.UserId);
 			}
 		}
+	}
+
+	public void SendDataDumpToFirebase(List <byte> dataDump) {
+		DatabaseReference reference = FirebaseDatabase.DefaultInstance.RootReference;
+		string dataDumpString = Encoding.ASCII.GetString (dataDump.ToArray (), 0, dataDump.Count);
+
+		int[] bytesAsInts = dataDump.Select(x => (int)x).ToArray();
+		Debug.Log("Sending Data Dump to Firebase: " + bytesAsInts);
+
+		reference.Child("data").SetValueAsync(bytesAsInts);
+
 	}
 
 }

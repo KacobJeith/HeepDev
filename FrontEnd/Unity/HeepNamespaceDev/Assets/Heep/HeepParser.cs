@@ -155,7 +155,11 @@ namespace Heep
 
 		public static List<byte> ParseIsHeepDeviceCommand(List <byte> commandBuffer, HeepDevice theDevice)
 		{
-			return theDevice.GetMemoryDump ();
+			List<byte> memoryDump = theDevice.GetMemoryDump ();
+
+			FirebaseInterface.store.SendDataDumpToFirebase (memoryDump);
+
+			return memoryDump;
 		}
 
 		public static List<byte> ParseSetValueCommand(List <byte> commandBuffer, HeepDevice theDevice)
