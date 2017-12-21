@@ -38,7 +38,34 @@ void TestSchedulerRolloverProtection()
 	CheckResults(TestName, valueList, 3);
 }
 
+void TestBufferControlType()
+{
+	std::string TestName = "Test Buffer Control Type";
+
+	heepByte bufferControl [10];
+	Control theControl;
+	theControl.highValue = 10;
+	theControl.controlBuffer = bufferControl;
+
+	for(int i = 0; i < theControl.highValue; i++)
+	{
+		theControl.controlBuffer[i] = i;
+	}
+
+	ExpectedValue valueList [10];
+
+	for(int i = 0; i < 10; i++)
+	{
+		valueList[i].valueName = std::string("Value at position ") + std::to_string(i);
+		valueList[i].expectedValue = i;
+		valueList[i].actualValue = theControl.controlBuffer[i];
+	}
+
+	CheckResults(TestName, valueList, 10);
+}
+
 void TestHeepAPI()
 {
 	TestSchedulerRolloverProtection();
+	TestBufferControlType();
 }
