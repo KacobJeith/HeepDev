@@ -52,6 +52,31 @@ void SendOutputByID(unsigned char controlID, unsigned int value)
 	}
 }
 
+void SendOutputByIDBuffer(unsigned char controlID, heepByte* buffer, int bufferLength)
+{
+	SetControlValueByIDBuffer(controlID, buffer, bufferLength, 0);
+
+	struct Vertex_Byte newVertex;
+
+	for(int i = 0; i < numberOfVertices; i++)
+	{
+		GetVertexAtPointer_Byte(vertexPointerList[i], &newVertex);
+
+		if(CheckBufferEquality(newVertex.txID, deviceIDByte, STANDARD_ID_SIZE) && newVertex.txControlID == controlID)
+		{
+			if(CheckBufferEquality(newVertex.txID, newVertex.rxID, STANDARD_ID_SIZE))
+			{
+				SetControlValueByIDBuffer(newVertex.rxControlID, buffer, bufferLength, 0);
+			}
+			else
+			{
+				FillOutputBufferWithSetValCOPBuffer(newVertex.rxControlID, buffer, bufferLength);
+				SendOutputBufferToIP(newVertex.rxIPAddress);
+			}
+		}
+	}
+}
+
 void HandlePointersOnMemoryChange()
 {
 	FillVertexListFromMemory();
