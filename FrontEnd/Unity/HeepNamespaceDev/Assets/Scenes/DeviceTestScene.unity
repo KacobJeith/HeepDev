@@ -201,6 +201,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1840213131}
   - component: {fileID: 1840213132}
+  - component: {fileID: 1840213133}
   m_Layer: 0
   m_Name: FakeDevice
   m_TagString: Untagged
@@ -227,8 +228,23 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1840213130}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 17f344094aeb049a1adb36d6c8283bf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1840213133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1840213130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4aa8d28d6a62e8a4d9e13379ae296d3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  editorTesting: 1
+  analyticsCredential: Heep-Analytics-ba59624ad931.p12
+  analyticsURL: https://heep-analytics.firebaseio.com
+  analyticsServiceAccountID: unity-user@heep-analytics.iam.gserviceaccount.com
