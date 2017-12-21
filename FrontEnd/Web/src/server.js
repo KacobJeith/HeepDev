@@ -2,6 +2,8 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import * as heepConnect from './server/HeepConnections'
 
+import { simulationDevice } from './assets/simulationHeepDevice.js'
+
 var app = express();
 
 app.set('port', (process.env.PORT || 3001));
@@ -21,8 +23,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.get('/api/findDevices', (req, res) => {
-  heepConnect.SearchForHeepDevices(); 
-  res.json(heepConnect.GetCurrentMasterState());  
+  let simulation = false;
+  
+  if (simulation) {
+    res.json(simulationDevice);
+  } else {
+    heepConnect.SearchForHeepDevices(); 
+    res.json(heepConnect.GetCurrentMasterState());
+  }
+    
 });
 
 app.post('/api/setValue', (req, res) => {
