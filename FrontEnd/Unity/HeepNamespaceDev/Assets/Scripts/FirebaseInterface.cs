@@ -91,7 +91,7 @@ public class FirebaseInterface : MonoBehaviour {
 //
 //		int[] bytesAsInts = dataDump.Select(x => (int)x).ToArray();
 //		Debug.Log("Sending Data Dump to Firebase: " + bytesAsInts);
-//		
+
 		Debug.Log("ANALYTICS FIREBASE");
 
 //		DataDump trying = new DataDump(dataDump);
