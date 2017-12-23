@@ -1,3 +1,5 @@
+import * as byteUtils from '../utilities/byteUtilities.js'
+
 export var ReadHeepResponse = (buffer) => {
   var it = 0;
   var packetBytes = ReadSizeOfPacket(buffer, it);
@@ -108,8 +110,15 @@ var GetNextBlock = (buffer, it) => {
   } else if (thisBlock.op == 0x12) {
     //Fragment 
 
-  } else {
+  } else if (thisBlock.op == 0x14) {
+    //Dynamic Memory Size
     
+  } else if (thisBlock.op == 0x1F) {
+    //Analytics
+    thisBlock.analytics = ReadAnalyticsData(thisBlockData);
+
+  } else {
+
   }
 
   it += CalculateNextIterator(byteIndicatorBytes, thisBlock.packetBytes);
@@ -202,6 +211,31 @@ export var ReadControl = (thisBlockData) => { // OP 2
   };
 
   return thisVertex
+ }
+
+ var ReadAnalyticsData = (thisBlockData) => {
+
+  console.log(thisBlockData);
+
+  var date = new Date(Date.UTC(2017, 12, 20, 0, 0, 0));
+  var controlValNumBytes = thisBlockData[2];
+  var controlValBytes = thisBlockData.slice(3, 3 + controlValNumBytes);
+  var controlValue = byteUtils.GetIntFromByteArray(controlValBytes); 
+  var timeStampNumBytes = thisBlockData[3 + controlValNumBytes + 1];
+  var timeInMillis = byteUtils.GetIntFromByteArray(thisBlockData.slice(3 + controlValNumBytes + 1));
+  var timestampMillis = date.getTime() + timeInMillis;
+
+  var timestamp = new Date(timestampMillis);
+
+  var thisAnalytics = {
+    controlID: thisBlockData[1],
+    controlValue: controlValue,
+    timeStamp: timestamp
+  }
+
+  console.log(controlValue);
+
+  return thisAnalytics
  }
 
 
