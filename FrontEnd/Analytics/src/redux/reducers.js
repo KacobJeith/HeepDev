@@ -7,9 +7,12 @@ export default function(state = initialState, action) {
   switch (action.type) {
     case 'ADD_MEMORY_DUMP' :
 
-      //console.log("Adding data to redux: ", action.data);
+    	var pushPacket = action.MOP.analytics;
+      pushPacket.deviceID = action.deviceID;
 
-      return Immutable.Map(state).set('data', action.data).toJS();
+      var analyticsList = Immutable.List(state.data).push(pushPacket).toJS();
+
+      return Immutable.Map(state).set('data', analyticsList).toJS();
 
     default:
       return state

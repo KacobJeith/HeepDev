@@ -42,7 +42,6 @@ export var ReadAsText = (buffer) => {
 export var MemoryCrawler = (buffer) => {
   var it = 0;
   var data = [];
-  console.log('CRAWLING: ', buffer)
 
   while (it < buffer.length) {
     var nextBlock = GetNextBlock(buffer, it);
@@ -215,9 +214,7 @@ export var ReadControl = (thisBlockData) => { // OP 2
 
  var ReadAnalyticsData = (thisBlockData) => {
 
-  console.log(thisBlockData);
-
-  var date = new Date(Date.UTC(2017, 12, 20, 0, 0, 0));
+  var date = new Date(Date.UTC(2017, 11, 19, 0, 0, 0));
   var controlValNumBytes = thisBlockData[2];
   var controlValBytes = thisBlockData.slice(3, 3 + controlValNumBytes);
   var controlValue = byteUtils.GetIntFromByteArray(controlValBytes); 
@@ -232,8 +229,6 @@ export var ReadControl = (thisBlockData) => { // OP 2
     controlValue: controlValue,
     timeStamp: timestamp
   }
-
-  console.log(controlValue);
 
   return thisAnalytics
  }

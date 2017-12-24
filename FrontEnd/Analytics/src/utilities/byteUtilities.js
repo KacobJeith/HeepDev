@@ -56,7 +56,5 @@ export var GetIntFromByteArray = (buffer) => {
     integer += (buffer[buffer.length - i - 1] <<  8*i) >>> 0;
   }
 
-  console.log(buffer + " -> " + integer);
-
   return integer
 }

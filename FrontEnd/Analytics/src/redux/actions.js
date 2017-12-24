@@ -1,5 +1,6 @@
-export const addMemoryDump = (deviceID, data) => ({
+export const addMemoryDump = (deviceID, controlID, MOP) => ({
 	type: 'ADD_MEMORY_DUMP',
 	deviceID,
-	data
+	controlID, 
+	MOP
 })

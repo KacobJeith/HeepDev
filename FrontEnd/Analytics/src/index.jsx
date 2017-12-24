@@ -8,11 +8,11 @@ import {HashRouter as Router, Route} from 'react-router-dom'
 
 import * as auth from './firebase/FirebaseAuth.js'
 import reducers from './redux/reducers.js'
-import BarChart from './components/BarChart.jsx'
+import AnalyticsMain from './components/AnalyticsMain.js'
 
 
 const startState = {
-	data: ""
+	data: []
 };
 
 console.log(startState);
@@ -25,7 +25,7 @@ auth.initializeFirebase();
 render(
   <Provider store={store}>
     <Router >
-		<Route path="/" component={BarChart}/>
+		<Route path="/" component={AnalyticsMain}/>
 	</Router>
   </Provider>,
 
