@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Heep;
@@ -48,7 +49,14 @@ public class FakeDevice : MonoBehaviour {
 		while (true) {
 			
 			List<byte> memoryDump = myDevice.GetMemoryDump ();
-			FirebaseInterface.store.SendDataDumpToFirebase (memoryDump);
+
+			DeviceID deviceID = myDevice.GetDeviceID ();
+			List<byte> idByteArray = deviceID.GetIDArray ();
+			int counter = 0;
+			int idAsNum = HeepLanguage.GetNumberFromBuffer (idByteArray, ref counter , deviceID.GetDeviceIDSize());
+			string idAsString = idAsNum.ToString ();
+
+			FirebaseInterface.store.SendDataDumpToFirebase (idAsString, memoryDump);
 			yield return new WaitForSeconds (5);
 
 		}
