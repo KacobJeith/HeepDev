@@ -31,29 +31,29 @@ export var ResetMasterState = () => {
 }
 
 export var ConsumeMemoryDump = (data) => {
-  console.log('Stringified Data: ', data.toString());
-  console.log('Raw inbound Data: ', data);
   
   var HeepResponse = HAPIParser.ReadHeepResponse(data);
 
-  if (HeepResponse != false){
-    if (HeepResponse.op == 0x0F) {
-      //Memory Dump
-      AddMemoryChunksToMasterState(HeepResponse.memory);
+  return HeepResponse
 
-    } else if ( HeepResponse.op == 0x10) {
-      //Success
-      console.log('Heep Device SUCCESS with a HAPI message: ', HeepResponse.message);
+  // if (HeepResponse != false){
+  //   if (HeepResponse.op == 0x0F) {
+  //     //Memory Dump
+  //     AddMemoryChunksToMasterState(HeepResponse.memory);
 
-    } else if (HeepResponse.op == 0x11){
-      //Error 
-      console.log('Heep Device ERROR with an unHAPI message: ', HeepResponse.message);
-    } else {
-      console.error('Did not receive a known Response Code from Heep Device');
-    }
-  } else {
-    console.error('Heep Response Invalid');
-  }
+  //   } else if ( HeepResponse.op == 0x10) {
+  //     //Success
+  //     console.log('Heep Device SUCCESS with a HAPI message: ', HeepResponse.message);
+
+  //   } else if (HeepResponse.op == 0x11){
+  //     //Error 
+  //     console.log('Heep Device ERROR with an unHAPI message: ', HeepResponse.message);
+  //   } else {
+  //     console.error('Did not receive a known Response Code from Heep Device');
+  //   }
+  // } else {
+  //   console.error('Heep Response Invalid');
+  // }
 }
 
 var AddMemoryChunksToMasterState = (heepChunks) => {
@@ -90,6 +90,7 @@ var AddMemoryChunksToMasterState = (heepChunks) => {
     }
     
   }
+
 }
 
 var AddDevice = (heepChunk, IPAddress) => {

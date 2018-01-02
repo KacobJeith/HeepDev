@@ -7,9 +7,20 @@ export default function(state = initialState, action) {
   switch (action.type) {
     case 'ADD_MEMORY_DUMP' :
 
-      //console.log("Adding data to redux: ", action.data);
+    	var pushPacket = action.MOP.analytics;
+      pushPacket.deviceID = action.deviceID;
 
-      return Immutable.Map(state).set('data', action.data).toJS();
+      var analyticsList = Immutable.List(state.data).push(pushPacket).toJS();
+
+      return Immutable.Map(state).set('data', analyticsList).toJS();
+
+    case 'SET_MAX_TIME_RANGE' :
+
+    	return Immutable.Map(state).set('maxTime', action.time).toJS();
+
+    case 'SET_MIN_TIME_RANGE' :
+
+    	return Immutable.Map(state).set('mInTime', action.time).toJS();
 
     default:
       return state

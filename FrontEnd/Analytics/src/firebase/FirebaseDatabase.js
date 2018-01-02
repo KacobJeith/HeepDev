@@ -22,12 +22,19 @@ const readDeviceData = (deviceID) => {
 
 	firebase.database().ref('/devices/' + deviceID).on('value', function(snapshot) {
 
-		console.log("Read: ", snapshot.val());
-
 		var buffer = base64ToArrayBuffer(snapshot.val());
 		var data = HAPI.ConsumeMemoryDump(buffer);
 		
-		setup.store.dispatch(actions.addMemoryDump(snapshot.key, buffer));
+		var analytics = {};
+
+		for (var i = 0; i < data.memory.length; i++) {
+			var MOP = data.memory[i];
+
+			if (MOP.op == 31) { 
+
+				setup.store.dispatch(actions.addMemoryDump(MOP.deviceID, MOP.analytics.controlID, MOP));
+			}
+		}
 
 	})
 }
