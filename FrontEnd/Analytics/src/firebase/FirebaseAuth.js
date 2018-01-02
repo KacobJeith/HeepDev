@@ -12,6 +12,6 @@ export const initializeFirebase = () => {
 	};
 
 	firebase.initializeApp(config);
-	database.readDeviceData();
+	database.retrieveAnalyticData();
 
 }

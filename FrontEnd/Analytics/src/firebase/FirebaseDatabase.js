@@ -5,10 +5,22 @@ import * as actions from '../redux/actions'
 import * as HAPI from '../heep/HeepConnections.js'
 
 
-export const readDeviceData = () => {
+export const retrieveAnalyticData = () => {
 	console.log("Reading Data")
 
-	firebase.database().ref('/data').on('value', function(snapshot) {
+	var userID = 'waxjVMMDemMCfPrKKnXKMlhRofo1';
+
+	firebase.database().ref('/users/' + userID + '/devices').on('value', (snapshot) => {
+
+		snapshot.forEach((childSnapshot) => {
+	      readDeviceData(childSnapshot.key);
+  		});
+	});
+}
+
+const readDeviceData = (deviceID) => {
+
+	firebase.database().ref('/devices/' + deviceID).on('value', function(snapshot) {
 
 		console.log("Read: ", snapshot.val());
 
@@ -18,7 +30,6 @@ export const readDeviceData = () => {
 		setup.store.dispatch(actions.addMemoryDump(snapshot.key, buffer));
 
 	})
-
 }
 
 const base64ToArrayBuffer = (base64) => {
