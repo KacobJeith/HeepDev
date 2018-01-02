@@ -14,6 +14,14 @@ export default function(state = initialState, action) {
 
       return Immutable.Map(state).set('data', analyticsList).toJS();
 
+    case 'SET_MAX_TIME_RANGE' :
+
+    	return Immutable.Map(state).set('maxTime', action.time).toJS();
+
+    case 'SET_MIN_TIME_RANGE' :
+
+    	return Immutable.Map(state).set('mInTime', action.time).toJS();
+
     default:
       return state
   }

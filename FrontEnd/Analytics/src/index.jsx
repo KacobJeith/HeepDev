@@ -10,9 +10,12 @@ import * as auth from './firebase/FirebaseAuth.js'
 import reducers from './redux/reducers.js'
 import AnalyticsMain from './components/AnalyticsMain.js'
 
+var now = new Date();
 
 const startState = {
-	data: []
+	data: [],
+	minTime: now.toString(),
+	maxTime: now.toString()
 };
 
 console.log(startState);
