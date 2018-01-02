@@ -47,17 +47,19 @@ export default withRouter(connect(mapStateToProps, mapDispatchToProps)(LineChart
 
 const filterData = (state, ownProps) => {
 
-  if (ownProps.filterQuery == 'timeStamp') {
+  // if (ownProps.filterQuery == 'timeStamp') {
     
-    console.log(new Date(Date.parse(state.minTime)));
+  //   console.log(new Date(Date.parse(state.minTime)));
 
-    return state.data.filter((element) => ((element['timeStamp'] >= Date(state.minTime)) && (element['timeStamp'] <= Date(state.maxTime))))
+  //   return state.data.filter((element) => ((element['timeStamp'] >= Date(state.minTime)) && (element['timeStamp'] <= Date(state.maxTime))))
   
-  } else {
+  // } else {
       
-    return state.data.filter((element) => (element[ownProps.filterQuery] == ownProps[ownProps.filterQuery]))
+  //   return state.data.filter((element) => (element[ownProps.filterQuery] == ownProps[ownProps.filterQuery]))
   
-  }
+  // }
+
+  return state.data
 
 }
 

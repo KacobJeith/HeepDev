@@ -13,7 +13,7 @@ import AnalyticsMain from './components/AnalyticsMain.js'
 var now = new Date();
 
 const startState = {
-	data: [],
+	devices: {},
 	minTime: now.toString(),
 	maxTime: now.toString()
 };

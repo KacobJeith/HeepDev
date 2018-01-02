@@ -7,12 +7,29 @@ export default function(state = initialState, action) {
   switch (action.type) {
     case 'ADD_MEMORY_DUMP' :
 
+
+      var newData = Immutable.Map(state.devices).toJS();//.set('data', analyticsList).toJS();
+
     	var pushPacket = action.MOP.analytics;
       pushPacket.deviceID = action.deviceID;
+      var thisDeviceData = newData[action.deviceID];
 
-      var analyticsList = Immutable.List(state.data).push(pushPacket).toJS();
+      if (thisDeviceData != undefined) {
 
-      return Immutable.Map(state).set('data', analyticsList).toJS();
+        var analyticsList = Immutable.List(thisDeviceData).push(pushPacket).toJS();
+
+      } else {
+        console.log("Start device");
+
+        var analyticsList = Immutable.List([]).push(pushPacket).toJS();
+        
+      }
+
+      console.log("reducer: ", state);
+
+      var newDeviceData = Immutable.Map(state.devices).set(action.deviceID, analyticsList).toJS();
+
+      return Immutable.Map(state).set('devices', newDeviceData)
 
     case 'SET_MAX_TIME_RANGE' :
 
