@@ -13,7 +13,7 @@ import DeviceBuilder from './components/DeviceBuilder'
 const startState = {
   deviceName: 'DefaultDevice',
   numControls: 0,
-  physicalLayer: 'W5500',
+  physicalLayer: 'W5100',
   ssid: 'your_ssid_here',
   ssidPassword: 'your_ssid_pwd',
   systemType: 'Arduino',
