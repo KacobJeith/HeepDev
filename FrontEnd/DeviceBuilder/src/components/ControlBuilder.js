@@ -27,8 +27,6 @@ class ControlBuilder extends React.Component {
 
   buildControl (controlIndex) {
 
-
-
     var inputs = {
       controlSection: {
         style: {

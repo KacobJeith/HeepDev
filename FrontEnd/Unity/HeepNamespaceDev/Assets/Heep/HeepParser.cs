@@ -120,7 +120,7 @@ namespace Heep
 
 			string controlName = HeepLanguage.GetStringFromBuffer (buffer, ref counter, header.numBytes - 6);
 
-			Control newControl = new Control(controlID, (Heep.Control.CtrlInputOutput) controlDirection, (Heep.Control.CtrlType) controlType, highValue, lowValue, curValue, controlName);
+			Control newControl = new Control(controlID, (Heep.Control.CtrlInputOutput) controlDirection, (Heep.Control.CtrlType) controlType, highValue, lowValue, curValue, controlName, false);
 			Console.WriteLine ("Adding a control named: " + controlName);
 
 			return newControl;

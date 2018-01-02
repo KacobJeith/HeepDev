@@ -53,7 +53,7 @@ namespace Heep
 		public string deviceID;
 
 		public UnityControl(int controlID, CtrlInputOutput controlDirection, CtrlType controlType, int highValue, int lowValue, int curValue, String ControlName) 
-			: base(controlID, controlDirection, controlType, highValue, lowValue, curValue, ControlName) 
+			: base(controlID, controlDirection, controlType, highValue, lowValue, curValue, ControlName, false) 
 		{
 			
 		}

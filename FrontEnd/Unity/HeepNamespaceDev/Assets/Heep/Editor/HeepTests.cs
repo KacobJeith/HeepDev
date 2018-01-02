@@ -145,4 +145,38 @@ public class HeepTests  {
 		Assert.IsTrue (id1 == id2);
 	}
 
+	[Test]
+	public static void TestGetNumBytesForNumber()
+	{
+		ulong number = 100;
+		int bytes = HeepLanguage.GetNumBytesRequiredForULong (number);
+
+		Assert.IsTrue (bytes == 1);
+
+		number = 1000;
+		bytes = HeepLanguage.GetNumBytesRequiredForULong (number);
+
+		Assert.IsTrue (bytes == 2);
+
+		number = 1000000;
+		bytes = HeepLanguage.GetNumBytesRequiredForULong (number);
+
+		Assert.IsTrue (bytes == 3);
+
+		number = 1000000;
+		bytes = HeepLanguage.GetNumBytesRequiredForULong (number);
+
+		Assert.IsTrue (bytes == 3);
+
+		number = 1000000000;
+		bytes = HeepLanguage.GetNumBytesRequiredForULong (number);
+
+		Assert.IsTrue (bytes == 4);
+
+		number = 1000000000000;
+		bytes = HeepLanguage.GetNumBytesRequiredForULong (number);
+
+		Assert.IsTrue (bytes == 5);
+	}
+
 }
