@@ -3447,7 +3447,7 @@ design rules under a new name.</description>
 <attribute name="VALUE" x="63.8175" y="31.115" size="0.8128" layer="27" rot="R180"/>
 </element>
 <element name="U$19" library="Heep" package="QFN-16" value="BUCK_CONVERTER" x="53.0225" y="16.1925"/>
-<element name="C4" library="microbuilder" package="0603-MINI" value="10µF 50V" x="48.5775" y="18.0975" rot="R180"/>
+<element name="C4" library="microbuilder" package="0603-MINI" value="10µF 25V" x="48.5775" y="18.0975" rot="R180"/>
 <element name="C12" library="microbuilder" package="0603-MINI" value="22uF 10V" x="46.99" y="21.9075" rot="R270"/>
 <element name="C13" library="microbuilder" package="0603-MINI" value="22uF 10V" x="48.895" y="21.9075" rot="R270"/>
 <element name="L1" library="microbuilder" package="INDUCTOR_5X5MM_TDK_VLC5045" value="4.7uH" x="53.0225" y="22.225" rot="R90"/>
@@ -3462,12 +3462,12 @@ design rules under a new name.</description>
 <attribute name="PROD_ID" value="CONN-09696" x="62.23" y="23.8125" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
 <element name="U8" library="microbuilder" package="HSOP8" value="DRV8871" x="80.01" y="34.925" rot="R270"/>
-<element name="C53" library="microbuilder" package="0603-NO" value="0.1uF/50V" x="80.225" y="30.48" rot="R180"/>
+<element name="C53" library="microbuilder" package="0603-NO" value="0.1uF/25V" x="80.225" y="30.48" rot="R180"/>
 <element name="C54" library="microbuilder" package="PANASONIC_D" value="22uF/63V" x="80.01" y="25.4"/>
 <element name="R31" library="adafruit" package="0805-THM" value="30K" x="68.8975" y="30.7975" rot="R90"/>
 <element name="X3" library="microbuilder" package="TERMBLOCK_1X2-3.5MM" value="DCMOTOR" x="88.5825" y="30.48" rot="R90"/>
 <element name="U9" library="microbuilder" package="HSOP8" value="DRV8871" x="79.375" y="17.78" rot="R270"/>
-<element name="C55" library="microbuilder" package="0603-NO" value="0.1uF/50V" x="79.375" y="13.335" rot="R180"/>
+<element name="C55" library="microbuilder" package="0603-NO" value="0.1uF/25V" x="79.375" y="13.335" rot="R180"/>
 <element name="C56" library="microbuilder" package="PANASONIC_D" value="22uF/63V" x="80.01" y="8.255"/>
 <element name="R32" library="adafruit" package="0805-THM" value="30K" x="68.8975" y="15.24" rot="R90"/>
 <element name="X4" library="microbuilder" package="TERMBLOCK_1X2-3.5MM" value="DCMOTOR" x="88.5825" y="14.605" rot="R90"/>

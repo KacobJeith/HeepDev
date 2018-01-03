@@ -8448,7 +8448,7 @@ Switches electronic signals</description>
 <part name="+3V5" library="supply1" deviceset="+3V3" device=""/>
 <part name="P+2" library="supply1" deviceset="+5V" device=""/>
 <part name="U$19" library="Heep" deviceset="BUCK_CONVERTER" device=""/>
-<part name="C4" library="microbuilder" deviceset="CAP_CERAMIC" device="0603MINI" value="10µF 50V"/>
+<part name="C4" library="microbuilder" deviceset="CAP_CERAMIC" device="0603MINI" value="10µF 25V"/>
 <part name="U$20" library="microbuilder" deviceset="GND" device=""/>
 <part name="U$22" library="microbuilder" deviceset="GND" device=""/>
 <part name="U$23" library="microbuilder" deviceset="GND" device=""/>

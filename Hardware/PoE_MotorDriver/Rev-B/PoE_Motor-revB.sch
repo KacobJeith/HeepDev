@@ -8296,7 +8296,7 @@ http://www.national.com/dt/lmv_qual.pdf</description>
 <part name="+3V5" library="supply1" deviceset="+3V3" device=""/>
 <part name="P+2" library="supply1" deviceset="+5V" device=""/>
 <part name="U$19" library="Heep" deviceset="BUCK_CONVERTER" device=""/>
-<part name="C4" library="microbuilder" deviceset="CAP_CERAMIC" device="0603MINI" value="10µF 50V"/>
+<part name="C4" library="microbuilder" deviceset="CAP_CERAMIC" device="0603MINI" value="10µF 25V"/>
 <part name="U$20" library="microbuilder" deviceset="GND" device=""/>
 <part name="U$22" library="microbuilder" deviceset="GND" device=""/>
 <part name="U$23" library="microbuilder" deviceset="GND" device=""/>
@@ -8314,7 +8314,7 @@ http://www.national.com/dt/lmv_qual.pdf</description>
 <part name="GND10" library="supply1" deviceset="GND" device=""/>
 <part name="+3V13" library="supply1" deviceset="+3V3" device=""/>
 <part name="U8" library="microbuilder" deviceset="DRV8871" device="" value="DRV8871"/>
-<part name="C53" library="microbuilder" deviceset="CAP_CERAMIC" device="0603_NO" value="0.1uF/50V"/>
+<part name="C53" library="microbuilder" deviceset="CAP_CERAMIC" device="0603_NO" value="0.1uF/25V"/>
 <part name="C54" library="microbuilder" deviceset="CAP_ELECTROLYTIC" device="PANASONIC_D" value="22uF/63V"/>
 <part name="U$50" library="microbuilder" deviceset="GND" device=""/>
 <part name="U$51" library="microbuilder" deviceset="GND" device=""/>
@@ -8325,7 +8325,7 @@ http://www.national.com/dt/lmv_qual.pdf</description>
 <part name="X3" library="microbuilder" deviceset="TERMBLOCK_1X2" device="" value="DCMOTOR"/>
 <part name="U$55" library="microbuilder" deviceset="VBAT" device=""/>
 <part name="U9" library="microbuilder" deviceset="DRV8871" device="" value="DRV8871"/>
-<part name="C55" library="microbuilder" deviceset="CAP_CERAMIC" device="0603_NO" value="0.1uF/50V"/>
+<part name="C55" library="microbuilder" deviceset="CAP_CERAMIC" device="0603_NO" value="0.1uF/25V"/>
 <part name="C56" library="microbuilder" deviceset="CAP_ELECTROLYTIC" device="PANASONIC_D" value="22uF/63V"/>
 <part name="U$56" library="microbuilder" deviceset="GND" device=""/>
 <part name="U$57" library="microbuilder" deviceset="GND" device=""/>
