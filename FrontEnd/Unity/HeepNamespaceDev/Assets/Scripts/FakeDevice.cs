@@ -30,7 +30,6 @@ public class FakeDevice : MonoBehaviour {
 		myDevice.AddControl (newControl);
 		myDevice.SetDeviceName ("Unity");
 		myDevice.StartListening ();
-//		HeepCommunications.StartHeepServer (myDevice);
 	}
 
 	IEnumerator setControlsOnTimer()
