@@ -40,7 +40,11 @@ namespace Heep
 					Debug.Log("Received");
 					List <byte> commandData = new List<byte>(recData);
 
-					if(HeepParser.isROP(commandData)) return;
+					if(HeepParser.isROP(commandData))
+					{
+						Debug.Log("Was ROP");
+						continue;
+					}
 
 					List <byte> fromparser = HeepParser.ParseCommand(commandData, device);
 
