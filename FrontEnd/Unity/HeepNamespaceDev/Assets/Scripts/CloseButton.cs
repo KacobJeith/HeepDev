@@ -21,6 +21,7 @@ public class CloseButton : MonoBehaviour, IPointerClickHandler{
 	public void OnPointerClick (PointerEventData eventData)
 	{
 		Debug.Log ("Clicked Close");
+		Application.Quit();
 	}
 
 	#endregion
