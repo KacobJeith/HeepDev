@@ -29,6 +29,8 @@ public class FakeDevice : MonoBehaviour {
 		DeviceID myID = new DeviceID(ID);
 		myDevice = new HeepDevice (myID);
 
+		myDevice.LoadDeviceMemoryFromFile ();
+
 		Control theControl = Control.CreateControl (Control.CtrlInputOutput.input, Control.CtrlType.OnOff, "First");
 		myDevice.AddControl (theControl);
 		Control newControl = Control.CreateControl (Control.CtrlInputOutput.output, Control.CtrlType.OnOff, "Second");

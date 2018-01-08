@@ -142,6 +142,8 @@ namespace Heep
 		public void LoadDeviceMemoryFromFile()
 		{
 			deviceMemory = NonVolatileData.ReadMemoryFromFile ();
+
+			vertices = HeepParser.GetVerticesFromBuffer (deviceMemory);
 		}
 	}
 
