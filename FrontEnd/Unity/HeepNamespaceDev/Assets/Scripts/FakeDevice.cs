@@ -7,6 +7,12 @@ public class FakeDevice : MonoBehaviour {
 
 	HeepDevice myDevice;
 
+	void OnApplicationQuit()
+	{
+		Debug.Log("Application ending after " + Time.time + " seconds");
+		myDevice.CloseDevice ();
+	}
+
 	void CreateHeepDevice()
 	{
 		List <byte> ID = new List<byte>();
@@ -23,7 +29,8 @@ public class FakeDevice : MonoBehaviour {
 		Control newControl = Control.CreateControl (Control.CtrlInputOutput.output, Control.CtrlType.OnOff, "Second");
 		myDevice.AddControl (newControl);
 		myDevice.SetDeviceName ("Unity");
-		HeepCommunications.StartHeepServer (myDevice);
+		myDevice.StartListening ();
+//		HeepCommunications.StartHeepServer (myDevice);
 	}
 
 	IEnumerator setControlsOnTimer()
