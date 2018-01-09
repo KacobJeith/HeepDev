@@ -11,6 +11,7 @@ using Firebase;
 using Firebase.Database;
 using Firebase.Unity.Editor;
 
+using Heep;
 
 public class FirebaseInterface : MonoBehaviour {
 
@@ -86,17 +87,16 @@ public class FirebaseInterface : MonoBehaviour {
 		}
 	}
 
-	public void SendDataDumpToFirebase(List <byte> dataDump) {
+	public void SendDataDumpToFirebase(string deviceID, List <byte> dataDump) {
 		DatabaseReference reference = FirebaseDatabase.DefaultInstance.RootReference;
-		string dataDumpString = Encoding.ASCII.GetString (dataDump.ToArray (), 0, dataDump.Count);
 
-		int[] bytesAsInts = dataDump.Select(x => (int)x).ToArray();
-		Debug.Log("Sending Data Dump to Firebase: " + bytesAsInts);
+		Debug.Log("ANALYTICS FIREBASE");
 
-		reference.Child("data").SetValueAsync(bytesAsInts);
+		string base64 = Convert.ToBase64String(dataDump.ToArray());
+
+
+		reference.Child("devices/" + deviceID).SetValueAsync(base64);
 
 	}
-
 }
-
 
