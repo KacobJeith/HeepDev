@@ -35,12 +35,13 @@ namespace Heep
 			int numBytesForTime = HeepLanguage.GetNumBytesRequiredForULong (fixedPointMilliSeconds);
 			List <byte> milliSecondByteArray = HeepLanguage.GetByteArrayFromULong (fixedPointMilliSeconds);
 
-			byte numBytes = (byte)(numBytesForTime + 4);
+			byte numBytes = (byte)(numBytesForTime + 5);
 
 			byteArray.Add (numBytes);
 			byteArray.Add (controlID);
 			byteArray.Add (1); // Only support 1 byte control values with this right now
 			byteArray.Add(controlValue);
+			byteArray.Add (1); // Unity is only running on absolute time for the moment
 			byteArray.Add ((byte)numBytesForTime);
 
 			for (int i = 0; i < numBytesForTime; i++) {
