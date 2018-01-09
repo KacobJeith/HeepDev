@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
+using UnityEngine;
 
 namespace Heep
 {
@@ -70,6 +71,9 @@ namespace Heep
 				HeepDeviceAnalytics deviceAnalytics = new HeepDeviceAnalytics (changedControl.GetID (), changedControl.GetCurValue ());
 				List <byte> analyticsBuffer = deviceAnalytics.GetBytes (myID);
 				HeepLanguage.AddBufferToBuffer (deviceMemory, analyticsBuffer);
+
+				HeepCommunications.SendAnalytics (deviceMemory);
+
 			}
 		}
 

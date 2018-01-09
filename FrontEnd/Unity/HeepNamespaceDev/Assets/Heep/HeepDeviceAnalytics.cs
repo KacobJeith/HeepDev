@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Heep
 {
-	public class HeepDeviceAnalytics
+	public class HeepDeviceAnalytics 
 	{
 		DateTime startTime;
 		DateTime curTime;
