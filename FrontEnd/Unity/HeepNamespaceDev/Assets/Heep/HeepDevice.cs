@@ -125,6 +125,13 @@ namespace Heep
 			return -1;
 		}
 
+		public void SetDeviceNameStartup(String name)
+		{
+			if (!HeepParser.DeviceNameOpCodeAlreadySet (deviceMemory)) {
+				SetDeviceName (name);
+			}
+		}
+
 		public void SetDeviceName(String name)
 		{
 			HeepLanguage.AddNameToMemory (deviceMemory, myID, name);

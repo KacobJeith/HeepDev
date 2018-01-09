@@ -66,6 +66,26 @@ namespace Heep
 			return vertexList;
 		}
 
+		public static bool DeviceNameOpCodeAlreadySet(List <byte> buffer)
+		{
+			int counter = 0;
+
+			while (counter < buffer.Count) {
+
+				byte nextMOP = buffer [counter];
+				counter += 1;
+
+				if (nextMOP == HeepLanguage.DeviceNameOpCode) {
+					return true;
+				}
+
+				MOPHeader header = UnwrapMOPHeader (buffer, ref counter);
+				counter += header.numBytes;
+			}
+
+			return false;
+		}
+
 		public static void ParseMemoryDump(List <byte> buffer)
 		{
 			int counter = 1;
