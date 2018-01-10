@@ -90,15 +90,13 @@ namespace Heep
 			return retBuffer;
 		}
 
-		public static void SendAnalytics(List<byte> memoryDump)
+		public static void SendAnalytics(DeviceID deviceID, List<byte> memoryDump)
 		{
-			Debug.Log ("FIREBASE: " + memoryDump.ToString ());
-			string url = "https://heep-analytics.firebaseio.com/devices/test.json";
-			string dumpString = "";
+			List<byte> deviceIDList = deviceID.GetIDArray ();
+			string base64deviceID = Convert.ToBase64String(deviceIDList.ToArray());
 
-			for (int i = 0; i < memoryDump.Count; i++) {
-				dumpString += memoryDump [i];
-			}
+			Debug.Log ("Saving Analytics for " + base64deviceID);
+			string url = "https://heep-3cddb.firebaseio.com/analytics/" + base64deviceID + ".json";
 
 			string base64 = Convert.ToBase64String(memoryDump.ToArray());
 			string data = "\""+ base64 + "\"";

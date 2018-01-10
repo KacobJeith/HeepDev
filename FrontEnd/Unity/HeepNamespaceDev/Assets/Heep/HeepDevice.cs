@@ -72,7 +72,7 @@ namespace Heep
 				List <byte> analyticsBuffer = deviceAnalytics.GetBytes (myID);
 				HeepLanguage.AddBufferToBuffer (deviceMemory, analyticsBuffer);
 
-				HeepCommunications.SendAnalytics (deviceMemory);
+				HeepCommunications.SendAnalytics (myID, deviceMemory);
 
 			}
 		}
