@@ -73,26 +73,28 @@ namespace Heep
 			}
 		}
 
-		public void SetControlByID(int ID, int newValue)
+		public void SetControlByID(int ID, int newValue, bool trackAnalytics = true)
 		{
 			for (int i = 0; i < controls.Count; i++) {
 				if (controls [i].GetID () == ID) {
 					controls[i].SetCurValue(newValue);
 
-					AddNewAnalyticsDataToDeviceMemory (controls[i]);
+					if(trackAnalytics)
+						AddNewAnalyticsDataToDeviceMemory (controls[i]);
 
 					SendOutput (controls [i]);
 				}
 			}
 		}
 
-		public void SetControlByName(String controlName, int newValue)
+		public void SetControlByName(String controlName, int newValue, bool trackAnalytics = true)
 		{
 			for (int i = 0; i < controls.Count; i++) {
 				if (controls [i].GetName () == controlName) {
 					controls [i].SetCurValue (newValue);
 
-					AddNewAnalyticsDataToDeviceMemory (controls[i]);
+					if(trackAnalytics)
+						AddNewAnalyticsDataToDeviceMemory (controls[i]);
 
 					SendOutput (controls [i]);
 				}
