@@ -36,7 +36,7 @@ public class FakeDevice : MonoBehaviour {
 		myDevice.AddControl (theControl);
 		Control newControl = Control.CreateControl (Control.CtrlInputOutput.output, Control.CtrlType.OnOff, "Second", sendAnalytics);
 		myDevice.AddControl (newControl);
-		myDevice.SetDeviceName ("Unity");
+		myDevice.SetDeviceNameStartup ("Unity");
 		myDevice.StartListening ();
 	}
 
