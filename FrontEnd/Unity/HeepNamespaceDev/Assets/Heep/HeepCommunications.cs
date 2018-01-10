@@ -101,7 +101,7 @@ namespace Heep
 			string base64 = Convert.ToBase64String(memoryDump.ToArray());
 			string data = "\""+ base64 + "\"";
 
-			POST(url, data);
+			ThreadPool.QueueUserWorkItem (o => POST (url, data));
 		}
 
 		static void POST(string url, string jsonContent) 
