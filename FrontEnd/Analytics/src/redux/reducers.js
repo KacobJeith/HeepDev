@@ -8,11 +8,11 @@ export default function(state = initialState, action) {
     case 'ADD_MEMORY_DUMP' :
 
 
-      var newData = Immutable.Map(state.devices).toJS();//.set('data', analyticsList).toJS();
-
+      var newData = Immutable.Map(state.devices).toJS();
     	var pushPacket = action.MOP.analytics;
       pushPacket.deviceID = action.deviceID;
-      var thisDeviceData = newData[action.deviceID];
+      var thisDeviceData = newData[action.deviceID.toString()];
+
 
       if (thisDeviceData != undefined) {
 
@@ -25,11 +25,9 @@ export default function(state = initialState, action) {
         
       }
 
-      console.log("reducer: ", state);
+      var newDeviceData = Immutable.Map(state.devices).set(action.deviceID.toString(), analyticsList).toJS();
 
-      var newDeviceData = Immutable.Map(state.devices).set(action.deviceID, analyticsList).toJS();
-
-      return Immutable.Map(state).set('devices', newDeviceData)
+      return Immutable.Map(state).set('devices', newDeviceData).toJS();
 
     case 'SET_MAX_TIME_RANGE' :
 
@@ -37,7 +35,7 @@ export default function(state = initialState, action) {
 
     case 'SET_MIN_TIME_RANGE' :
 
-    	return Immutable.Map(state).set('mInTime', action.time).toJS();
+    	return Immutable.Map(state).set('minTime', action.time).toJS();
 
     default:
       return state
