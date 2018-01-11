@@ -3,12 +3,12 @@ import * as database from './FirebaseDatabase'
 
 export const initializeFirebase = () => {
 	var config = {
-	    apiKey: "AIzaSyCcIyrnqQlM2jX2T4ZujRVhqtjFvoV1JrM",
-	    authDomain: "heep-analytics.firebaseapp.com",
-	    databaseURL: "https://heep-analytics.firebaseio.com",
-	    projectId: "heep-analytics",
-	    storageBucket: "heep-analytics.appspot.com",
-	    messagingSenderId: "695915635915"
+		apiKey: "AIzaSyBR81Af8kOY1A1c1JDypaehxkeM89chtLU",
+		authDomain: "heep-3cddb.firebaseapp.com",
+		databaseURL: "https://heep-3cddb.firebaseio.com",
+		projectId: "heep-3cddb",
+		storageBucket: "heep-3cddb.appspot.com",
+		messagingSenderId: "832186256119"
 	};
 
 	firebase.initializeApp(config);

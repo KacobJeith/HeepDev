@@ -28,7 +28,7 @@ export var ReadHeepResponse = (buffer) => {
     thisResponse.message = ReadAsText(dataPacket);
 
   } else {
-    return false
+    return MemoryCrawler(buffer)
   }
 
   return thisResponse
@@ -214,7 +214,7 @@ export var ReadControl = (thisBlockData) => { // OP 2
 
  var ReadAnalyticsData = (thisBlockData) => {
 
-  var date = new Date(Date.UTC(2017, 11, 19, 0, 0, 0));
+  var date = new Date(Date.UTC(2018, 0, 1, 0, 0, 0));
   var controlValNumBytes = thisBlockData[2];
   var controlValBytes = thisBlockData.slice(3, 3 + controlValNumBytes);
   var controlValue = byteUtils.GetIntFromByteArray(controlValBytes); 

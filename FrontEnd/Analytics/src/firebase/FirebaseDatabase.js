@@ -8,7 +8,7 @@ import * as HAPI from '../heep/HeepConnections.js'
 export const retrieveAnalyticData = () => {
 	console.log("Reading Data")
 
-	var userID = 'waxjVMMDemMCfPrKKnXKMlhRofo1';
+	var userID = 'testing';
 
 	firebase.database().ref('/users/' + userID + '/devices').on('value', (snapshot) => {
 
@@ -20,15 +20,17 @@ export const retrieveAnalyticData = () => {
 
 const readDeviceData = (deviceID) => {
 
-	firebase.database().ref('/devices/' + deviceID).on('value', function(snapshot) {
+	console.log("Reading: ", deviceID);
+
+	firebase.database().ref('/analytics/' + deviceID).on('value', function(snapshot) {
 
 		var buffer = base64ToArrayBuffer(snapshot.val());
 		var data = HAPI.ConsumeMemoryDump(buffer);
 		
 		var analytics = {};
 
-		for (var i = 0; i < data.memory.length; i++) {
-			var MOP = data.memory[i];
+		for (var i = 0; i < data.length; i++) {
+			var MOP = data[i];
 
 			if (MOP.op == 31) { 
 

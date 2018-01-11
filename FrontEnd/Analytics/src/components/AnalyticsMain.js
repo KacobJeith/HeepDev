@@ -34,19 +34,16 @@ export default class AnalyticsMain extends React.Component {
       lineChart: {
         deviceID: 66051,
         filterQuery: 'timeStamp',
-        timeStamp: new Date(Date.UTC(2017, 11, 20, 13, 29, 4))
+        timeStamp: new Date(Date.UTC(2018, 1, 1, 0, 0, 0))
       }
     }
 
-    console.log("Filtering by: ", inputs.lineChart.timeStamp);
 
     return (
       <div {...inputs.builder}>
         <div {...inputs.contents}>
-          <div {...inputs.spacers}/>
-          <FilterOptions />
           <div {...inputs.spacer}/>
-          <LineChart {...inputs.lineChart}/>
+          <div {...inputs.spacer}/>
           <div {...inputs.spacer}/>
         </div>
      </div>

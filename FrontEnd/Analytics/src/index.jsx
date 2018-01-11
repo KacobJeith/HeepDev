@@ -5,6 +5,7 @@ import Immutable from 'immutable'
 import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import {HashRouter as Router, Route} from 'react-router-dom'
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 import * as auth from './firebase/FirebaseAuth.js'
 import reducers from './redux/reducers.js'
@@ -21,7 +22,7 @@ const startState = {
 console.log(startState);
 
 export const initialState = Immutable.Map(startState)
-export const store = createStore(reducers, startState, applyMiddleware(thunk));
+export const store = createStore(reducers, startState, composeWithDevTools(applyMiddleware(thunk)));
 
 auth.initializeFirebase();
 
