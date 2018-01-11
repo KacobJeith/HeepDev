@@ -3,8 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as Actions from '../redux/actions'
 
-import LineChart from './LineChart'
-import FilterOptions from './FilterOptions'
+import AnalyticsList from './AnalyticsList'
 
 export default class AnalyticsMain extends React.Component {
   constructor(props) {
@@ -35,6 +34,9 @@ export default class AnalyticsMain extends React.Component {
         deviceID: 66051,
         filterQuery: 'timeStamp',
         timeStamp: new Date(Date.UTC(2018, 1, 1, 0, 0, 0))
+      },
+      displayAnalytics: {
+        deviceID: 66051
       }
     }
 
@@ -43,7 +45,7 @@ export default class AnalyticsMain extends React.Component {
       <div {...inputs.builder}>
         <div {...inputs.contents}>
           <div {...inputs.spacer}/>
-          <div {...inputs.spacer}/>
+          <AnalyticsList {...inputs.displayAnalytics}/>
           <div {...inputs.spacer}/>
         </div>
      </div>
