@@ -8,7 +8,7 @@ import * as HAPI from '../heep/HeepConnections.js'
 export const retrieveAnalyticData = () => {
 	console.log("Reading Data")
 
-	var userID = 'testing';
+	var userID = 'escapetheroom';
 
 	firebase.database().ref('/users/' + userID + '/devices').on('value', (snapshot) => {
 

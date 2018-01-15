@@ -1,16 +1,29 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { withRouter } from 'react-router-dom'
 import * as Actions from '../redux/actions'
 
 import AnalyticsList from './AnalyticsList'
 
-export default class AnalyticsMain extends React.Component {
+const mapStateToProps = (state) => ({
+  devices: state.devices
+}) 
+
+class AnalyticsMain extends React.Component {
   constructor(props) {
     super(props);
   }
 
   render () {
+
+
+    var deviceIDs = Object.keys(this.props.devices);
+
+
+    if (deviceIDs.length == 0) {
+      return <div/>
+    }
 
     var inputs = {
       builder: {
@@ -31,15 +44,14 @@ export default class AnalyticsMain extends React.Component {
         }
       },
       lineChart: {
-        deviceID: 66051,
+        deviceID: deviceIDs[0],
         filterQuery: 'timeStamp',
         timeStamp: new Date(Date.UTC(2018, 1, 1, 0, 0, 0))
       },
       displayAnalytics: {
-        deviceID: 66051
+        deviceID: deviceIDs[0]
       }
     }
-
 
     return (
       <div {...inputs.builder}>
@@ -52,4 +64,11 @@ export default class AnalyticsMain extends React.Component {
     );
   }
 }
+
+var mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(Actions, dispatch)
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AnalyticsMain))
+
 
