@@ -55,10 +55,12 @@
      <Compile Include="Assets\Heep\HeepAsyncComms.cs" />
      <Compile Include="Assets\Heep\HeepCommunications.cs" />
      <Compile Include="Assets\Heep\HeepDevice.cs" />
+     <Compile Include="Assets\Heep\HeepDeviceAnalytics.cs" />
      <Compile Include="Assets\Heep\HeepGlobalData.cs" />
      <Compile Include="Assets\Heep\HeepLanguage.cs" />
      <Compile Include="Assets\Heep\HeepParser.cs" />
      <Compile Include="Assets\Heep\NonVolatileData.cs" />
+     <Compile Include="Assets\Scripts\CloseButton.cs" />
      <Compile Include="Assets\Scripts\FakeDevice.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

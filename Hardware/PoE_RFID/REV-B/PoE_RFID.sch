@@ -14011,7 +14011,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <part name="P+1" library="microbuilder" deviceset="VCC" device=""/>
 <part name="P+2" library="microbuilder" deviceset="VCC" device=""/>
 <part name="P+3" library="microbuilder" deviceset="VCC" device=""/>
-<part name="D1" library="microbuilder" deviceset="DIODE" device="SOD-123"/>
+<part name="D1" library="microbuilder" deviceset="DIODE" device="SOD-123" value="MBR120"/>
 <part name="P+5" library="supply1" deviceset="+5V" device=""/>
 <part name="P+6" library="supply1" deviceset="+5V" device=""/>
 <part name="P+7" library="supply1" deviceset="+5V" device=""/>

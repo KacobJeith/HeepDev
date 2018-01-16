@@ -3437,7 +3437,7 @@ design rules under a new name.</description>
 <attribute name="VALUE" x="63.8175" y="31.115" size="0.8128" layer="27" rot="R180"/>
 </element>
 <element name="U$19" library="Heep" package="QFN-16" value="BUCK_CONVERTER" x="53.0225" y="16.1925"/>
-<element name="C4" library="microbuilder" package="0603-MINI" value="10µF 50V" x="48.5775" y="18.0975" rot="R180"/>
+<element name="C4" library="microbuilder" package="0603-MINI" value="10µF 25V" x="48.5775" y="18.0975" rot="R180"/>
 <element name="C12" library="microbuilder" package="0603-MINI" value="22uF 10V" x="46.99" y="21.9075" rot="R270"/>
 <element name="C13" library="microbuilder" package="0603-MINI" value="22uF 10V" x="48.895" y="21.9075" rot="R270"/>
 <element name="L1" library="microbuilder" package="INDUCTOR_5X5MM_TDK_VLC5045" value="4.7uH" x="53.0225" y="22.225" rot="R90"/>

@@ -39,6 +39,53 @@ namespace Heep
 			}
 		}
 
+		public static List<Vertex> GetVerticesFromBuffer(List <byte> buffer)
+		{
+			int counter = 0;
+
+			List <Vertex> vertexList = new List<Vertex>();
+
+			while (counter < buffer.Count) {
+
+				byte nextMOP = buffer [counter];
+				counter += 1;
+
+				Console.WriteLine ("Next MOP: " + nextMOP);
+
+				if (nextMOP == HeepLanguage.VertexOpCode) {
+					Vertex newVertex = parseVertexMOP (buffer, ref counter);
+					vertexList.Add (newVertex);
+				}
+				else {
+					MOPHeader header = UnwrapMOPHeader (buffer, ref counter);
+					counter += header.numBytes;
+				}
+
+			}
+
+			return vertexList;
+		}
+
+		public static bool DeviceNameOpCodeAlreadySet(List <byte> buffer)
+		{
+			int counter = 0;
+
+			while (counter < buffer.Count) {
+
+				byte nextMOP = buffer [counter];
+				counter += 1;
+
+				if (nextMOP == HeepLanguage.DeviceNameOpCode) {
+					return true;
+				}
+
+				MOPHeader header = UnwrapMOPHeader (buffer, ref counter);
+				counter += header.numBytes;
+			}
+
+			return false;
+		}
+
 		public static void ParseMemoryDump(List <byte> buffer)
 		{
 			int counter = 1;
@@ -120,7 +167,7 @@ namespace Heep
 
 			string controlName = HeepLanguage.GetStringFromBuffer (buffer, ref counter, header.numBytes - 6);
 
-			Control newControl = new Control(controlID, (Heep.Control.CtrlInputOutput) controlDirection, (Heep.Control.CtrlType) controlType, highValue, lowValue, curValue, controlName);
+			Control newControl = new Control(controlID, (Heep.Control.CtrlInputOutput) controlDirection, (Heep.Control.CtrlType) controlType, highValue, lowValue, curValue, controlName, false);
 			Console.WriteLine ("Adding a control named: " + controlName);
 
 			return newControl;

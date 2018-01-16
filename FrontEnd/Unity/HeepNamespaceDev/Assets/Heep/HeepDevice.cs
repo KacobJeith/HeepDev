@@ -14,6 +14,8 @@ namespace Heep
 		private List<Vertex> vertices = new List<Vertex>(); 
 		private List<Control> controls = new List<Control>();
 
+		UdpClient interruptServer;
+
 		private const int deviceMemorySize = 200;
 
 		private DeviceID myID;
@@ -21,6 +23,17 @@ namespace Heep
 		public HeepDevice (DeviceID theID)
 		{
 			SetDeviceID (theID);
+			interruptServer = HeepCommunications.GetHeepInterruptServer ();
+		}
+
+		public void StartListening()
+		{
+			HeepCommunications.StartHeepServer (this, interruptServer);
+		}	
+
+		public void CloseDevice()
+		{
+			interruptServer.Close ();
 		}
 
 		public int GetFirmwareVersion()
@@ -51,21 +64,38 @@ namespace Heep
 			NonVolatileData.WriteMemoryToFile (deviceMemory);
 		}
 
-		public void SetControlByID(int ID, int newValue)
+		private void AddNewAnalyticsDataToDeviceMemory(Control changedControl)
+		{
+			if (changedControl.ShouldKeepAnalytics ()) {
+				HeepDeviceAnalytics deviceAnalytics = new HeepDeviceAnalytics (changedControl.GetID (), changedControl.GetCurValue ());
+				List <byte> analyticsBuffer = deviceAnalytics.GetBytes (myID);
+				HeepLanguage.AddBufferToBuffer (deviceMemory, analyticsBuffer);
+			}
+		}
+
+		public void SetControlByID(int ID, int newValue, bool trackAnalytics = true)
 		{
 			for (int i = 0; i < controls.Count; i++) {
 				if (controls [i].GetID () == ID) {
 					controls[i].SetCurValue(newValue);
+
+					if(trackAnalytics)
+						AddNewAnalyticsDataToDeviceMemory (controls[i]);
+
 					SendOutput (controls [i]);
 				}
 			}
 		}
 
-		public void SetControlByName(String controlName, int newValue)
+		public void SetControlByName(String controlName, int newValue, bool trackAnalytics = true)
 		{
 			for (int i = 0; i < controls.Count; i++) {
 				if (controls [i].GetName () == controlName) {
 					controls [i].SetCurValue (newValue);
+
+					if(trackAnalytics)
+						AddNewAnalyticsDataToDeviceMemory (controls[i]);
+
 					SendOutput (controls [i]);
 				}
 			}
@@ -97,6 +127,13 @@ namespace Heep
 			return -1;
 		}
 
+		public void SetDeviceNameStartup(String name)
+		{
+			if (!HeepParser.DeviceNameOpCodeAlreadySet (deviceMemory)) {
+				SetDeviceName (name);
+			}
+		}
+
 		public void SetDeviceName(String name)
 		{
 			HeepLanguage.AddNameToMemory (deviceMemory, myID, name);
@@ -114,6 +151,8 @@ namespace Heep
 		public void LoadDeviceMemoryFromFile()
 		{
 			deviceMemory = NonVolatileData.ReadMemoryFromFile ();
+
+			vertices = HeepParser.GetVerticesFromBuffer (deviceMemory);
 		}
 	}
 
@@ -227,8 +266,9 @@ namespace Heep
 		protected int _lowValue;
 		protected int _curValue;
 		protected String _controlName;
+		protected bool _KeepAnalytics;
 
-		public Control(int controlID, CtrlInputOutput controlDirection, CtrlType controlType, int highValue, int lowValue, int curValue, String ControlName)
+		public Control(int controlID, CtrlInputOutput controlDirection, CtrlType controlType, int highValue, int lowValue, int curValue, String ControlName, bool KeepAnalytics)
 		{
 			_controlID = controlID;
 			_controlDirection = controlDirection;
@@ -237,6 +277,7 @@ namespace Heep
 			_lowValue = lowValue;
 			_curValue = curValue;
 			_controlName = ControlName;
+			_KeepAnalytics = KeepAnalytics;
 		}
 
 		public void SetID(int controlID)
@@ -249,14 +290,14 @@ namespace Heep
 			return _controlID;
 		}
 
-		public static Control CreateControl (CtrlInputOutput controlDirection, CtrlType controlType, String controlName, int highValue, int lowValue, int curValue)
+		public static Control CreateControl (CtrlInputOutput controlDirection, CtrlType controlType, String controlName, int highValue, int lowValue, int curValue, bool KeepAnalytics = true)
 		{
-			return new Control (0, controlDirection, controlType, highValue, lowValue, curValue, controlName);
+			return new Control (0, controlDirection, controlType, highValue, lowValue, curValue, controlName, KeepAnalytics);
 		}
 
-		public static Control CreateControl(CtrlInputOutput controlDirection, CtrlType controlType, String controlName)
+		public static Control CreateControl(CtrlInputOutput controlDirection, CtrlType controlType, String controlName, bool KeepAnalytics = true)
 		{
-			return CreateControl (controlDirection, controlType, controlName, 1, 0, 0);
+			return CreateControl (controlDirection, controlType, controlName, 1, 0, 0, KeepAnalytics);
 		}
 
 		public void SetCurValue(int value)
@@ -292,6 +333,11 @@ namespace Heep
 		public CtrlInputOutput GetControlDirection()
 		{
 			return _controlDirection;
+		}
+
+		public bool ShouldKeepAnalytics()
+		{
+			return _KeepAnalytics;
 		}
 	}
 

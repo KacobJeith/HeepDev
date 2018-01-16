@@ -13,29 +13,38 @@ namespace Heep
 	{
 		public static int PORT = 5000;
 
-		public static void StartHeepServer(HeepDevice device)
+		public static void StartHeepServer(HeepDevice device, UdpClient client)
 		{
-			Thread t = new Thread (() => StartListening (device));
+			Thread t = new Thread (() => StartListening (device, client));
 			t.Start();
 		}
-
 
 		// Incoming data from the client.  
 		public static string data = null;  
 
-		public static void StartListening(HeepDevice device) {  
+		public static UdpClient GetHeepInterruptServer()
+		{
+			return new UdpClient (PORT);
+		}
 
-			UdpClient client = new UdpClient(PORT);
+		public static void StartListening(HeepDevice device, UdpClient client) {  
+
 			byte[] recData;
 			while (true)
 			{
 				try
 				{
 					IPEndPoint anyIP = new IPEndPoint(IPAddress.Any, 0);
+					Debug.Log("About to receive");
 					recData = client.Receive(ref anyIP);
+					Debug.Log("Received");
 					List <byte> commandData = new List<byte>(recData);
 
-					if(HeepParser.isROP(commandData)) return;
+					if(HeepParser.isROP(commandData))
+					{
+						Debug.Log("Was ROP");
+						continue;
+					}
 
 					List <byte> fromparser = HeepParser.ParseCommand(commandData, device);
 
@@ -54,9 +63,14 @@ namespace Heep
 					udpClientB.Send(fromparser.ToArray(), fromparser.Count, anyIP);
 
 				}
+				catch (ObjectDisposedException) {
+					Debug.Log ("Server disposed");
+					return;
+				}
 				catch (Exception err)
 				{
 					Debug.Log("UDP Exception: " + err.ToString());
+
 				}
 			}
 

@@ -1,11 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Heep;
 
 public class FakeDevice : MonoBehaviour {
 
 	HeepDevice myDevice;
+
+	public GameObject theImage;
+	public Button OutputOnBtn;
+	public Button OutputOffBtn;
+
+	void OnApplicationQuit()
+	{
+		Debug.Log("Application ending after " + Time.time + " seconds");
+		myDevice.CloseDevice ();
+	}
 
 	void CreateHeepDevice()
 	{
@@ -18,12 +29,14 @@ public class FakeDevice : MonoBehaviour {
 		DeviceID myID = new DeviceID(ID);
 		myDevice = new HeepDevice (myID);
 
+		myDevice.LoadDeviceMemoryFromFile ();
+
 		Control theControl = Control.CreateControl (Control.CtrlInputOutput.input, Control.CtrlType.OnOff, "First");
 		myDevice.AddControl (theControl);
 		Control newControl = Control.CreateControl (Control.CtrlInputOutput.output, Control.CtrlType.OnOff, "Second");
 		myDevice.AddControl (newControl);
-		myDevice.SetDeviceName ("Unity");
-		HeepCommunications.StartHeepServer (myDevice);
+		myDevice.SetDeviceNameStartup ("Unity");
+		myDevice.StartListening ();
 	}
 
 	IEnumerator setControlsOnTimer()
@@ -42,14 +55,34 @@ public class FakeDevice : MonoBehaviour {
 		}
 	}
 
+	public void SetOutputOn()
+	{
+		myDevice.SetControlByID (1, 1);
+	}
+
+	public void SetOutputOff()
+	{
+		myDevice.SetControlByID (1, 0);
+	}
+
 	// Use this for initialization
 	void Start () {
 		CreateHeepDevice ();
-		StartCoroutine (setControlsOnTimer());
+		//StartCoroutine (setControlsOnTimer());
+		OutputOnBtn.onClick.AddListener(SetOutputOn);
+		OutputOffBtn.onClick.AddListener(SetOutputOff);
 	}
 
 	// Update is called once per frame
 	void Update () {
-		
+		if (Input.GetKey("escape"))
+			Application.Quit();
+
+		if (myDevice.GetControlValueByID (0) == 0) {
+			theImage.GetComponent<Image> ().color = Color.red;
+		} else {
+			theImage.GetComponent<Image> ().color = Color.blue;
+		}
+			
 	}
 }

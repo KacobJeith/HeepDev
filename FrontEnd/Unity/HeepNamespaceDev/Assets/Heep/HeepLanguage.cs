@@ -35,6 +35,8 @@ namespace Heep
 		public const byte DeleteMOPOpCode 			= 0x15;
 		public const byte LocalDeviceIDOpCode 		= 0x16;
 
+		public const byte AnalyticsData 			= 0x1F;
+
 		public HeepLanguage ()
 		{
 		}
@@ -226,6 +228,28 @@ namespace Heep
 			for (int i = 0; i < 4; i++) {
 				buffer.Add (address.GetAddressBytes()[i]);
 			}
+		}
+
+		public static int GetNumBytesRequiredForULong(ulong number)
+		{
+			int bytesRequired = 0;
+			while (number > 0) {
+				number = number >> 8;
+				bytesRequired++;
+			}
+
+			return bytesRequired;
+		}
+
+		public static List <byte> GetByteArrayFromULong(ulong number)
+		{
+			List <byte> byteBuffer = new List<byte> ();
+			while (number > 0) {
+				byteBuffer.Add( (byte)(number & 0xFF) );
+				number = number >> 8;
+			}
+
+			return byteBuffer;
 		}
 	}
 }
