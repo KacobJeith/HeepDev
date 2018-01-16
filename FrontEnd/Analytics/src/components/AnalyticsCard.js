@@ -22,7 +22,7 @@ class AnalyticsCard extends React.Component {
 
   chooseColor(controlVal) {
     if (controlVal != 0) {
-      return "#858585"
+      return "#ededed"
     } else {
       return "#004a8f"
     }
@@ -40,35 +40,34 @@ class AnalyticsCard extends React.Component {
           backgroundColor: this.state.selected ? "#dbdfdf" : "white",
           color: "white",
           position: "relative",
-          // flexDirection: "row",
-          // alignItems: "center"
+
         },
         onMouseEnter: () => this.setState({selected: true}),
         onMouseLeave: () => this.setState({selected: false})
       },
       controlIDBox: {
         style: {
-          left: 100 + 10*this.props.MOP.controlID,
+          left: 50 + 10*this.props.MOP.controlID,
           width: multiplier * 10,
           height: multiplier * 10,
           borderRadius: multiplier *  5,
           backgroundColor: this.chooseColor(this.props.MOP.controlValue),
-          borderWidth: 1,
-          borderColor: "#353535",
-          position: "absolute"
+          border: "2px solid #004a8f",
+          //borderWidth: 2,
+          //borderColor: "#004a8f",
+          //borderStyle: "solid",
+          position: "absolute",
         }
       },
       numberLabel: {
         style: {
-          fontSize: 10,
+          fontSize: 12,
           left: 10,
           position: "absolute",
-          //left: 10,
-          color: "black",
-          top: -2,
+          color: "#414141",
+          top: -3,
         }
-      }
-
+      },
     }
 
     var dateFormatted = dateFormat(this.props.MOP.timeStamp, "dddd, mmmm dS, yyyy, h:MM:ss TT");
