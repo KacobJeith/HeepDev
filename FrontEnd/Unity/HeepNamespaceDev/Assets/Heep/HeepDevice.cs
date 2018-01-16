@@ -343,8 +343,8 @@ namespace Heep
 
 	public class BufferControl : Control
 	{
-		public BufferControl(int controlID, CtrlInputOutput controlDirection, CtrlType controlType, int highValue, int lowValue, int curValue, String ControlName)
-			: base (controlID, controlDirection, controlType, highValue, lowValue, curValue, ControlName)
+		public BufferControl(int controlID, CtrlInputOutput controlDirection, CtrlType controlType, int highValue, int lowValue, int curValue, String ControlName, bool sendAnalytics)
+			: base (controlID, controlDirection, controlType, highValue, lowValue, curValue, ControlName, sendAnalytics)
 		{
 		}
 	}
