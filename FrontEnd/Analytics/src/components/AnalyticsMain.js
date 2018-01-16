@@ -8,7 +8,7 @@ import AnalyticsList from './AnalyticsList'
 
 const mapStateToProps = (state) => ({
   devices: state.devices
-}) 
+})
 
 class AnalyticsMain extends React.Component {
   constructor(props) {
@@ -35,7 +35,7 @@ class AnalyticsMain extends React.Component {
       contents: {
         style: {
           width: "80%",
-          margin: "auto",
+          margin: 0,
         }
       },
       spacer: {
@@ -70,5 +70,3 @@ var mapDispatchToProps = (dispatch) => {
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AnalyticsMain))
-
-

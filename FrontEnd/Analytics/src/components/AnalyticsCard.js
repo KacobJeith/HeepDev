@@ -7,41 +7,48 @@ import dateFormat from 'dateformat'
 
 
 const mapStateToProps = (state, ownProps) => ({
-  MOP: state.devices[ownProps.deviceID][ownProps.element]
+  MOP: state.devices[ownProps.deviceID][ownProps.element],
+  numLabel: ownProps.element
 })
 
 class AnalyticsCard extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      selected: false
+    }
   }
 
   chooseColor(controlVal) {
     if (controlVal != 0) {
-      return "#004a8f"
+      return "#858585"
     } else {
-      return "#e2e2e2"
+      return "#004a8f"
     }
   }
 
   render () {
     var multiplier = 1.2;
-    
+
     var inputs = {
       container: {
         style: {
           width: 1000,
           height: multiplier * 10,
           margin: 1,
-          backgroundColor: "white" ,
+          backgroundColor: this.state.selected ? "#dbdfdf" : "white",
           color: "white",
           position: "relative",
           // flexDirection: "row",
           // alignItems: "center"
-        }
+        },
+        onMouseEnter: () => this.setState({selected: true}),
+        onMouseLeave: () => this.setState({selected: false})
       },
       controlIDBox: {
         style: {
-          left: 10*this.props.MOP.controlID,
+          left: 100 + 10*this.props.MOP.controlID,
           width: multiplier * 10,
           height: multiplier * 10,
           borderRadius: multiplier *  5,
@@ -51,17 +58,26 @@ class AnalyticsCard extends React.Component {
           position: "absolute"
         }
       },
-      dateBox: {
+      numberLabel: {
         style: {
+          fontSize: 10,
+          left: 10,
+          position: "absolute",
+          //left: 10,
+          color: "black",
+          top: -2,
         }
       }
-      
+
     }
 
     var dateFormatted = dateFormat(this.props.MOP.timeStamp, "dddd, mmmm dS, yyyy, h:MM:ss TT");
 
     return (
       <div {...inputs.container}>
+        <div {...inputs.numberLabel}>
+          {this.props.numLabel}
+        </div>
         <div {...inputs.controlIDBox}/>
       </div>
     );
@@ -74,4 +90,3 @@ var mapDispatchToProps = (dispatch) => {
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AnalyticsCard))
-
