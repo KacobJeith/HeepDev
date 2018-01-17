@@ -343,9 +343,21 @@ namespace Heep
 
 	public class BufferControl : Control
 	{
+		protected List <byte> curBuffer;
+
 		public BufferControl(int controlID, CtrlInputOutput controlDirection, CtrlType controlType, int highValue, int lowValue, int curValue, String ControlName, bool sendAnalytics)
 			: base (controlID, controlDirection, controlType, highValue, lowValue, curValue, ControlName, sendAnalytics)
 		{
+		}
+
+		public List<byte> GetBuffer()
+		{
+			return curBuffer;
+		}
+
+		public void SetBuffer(List <byte> newBuffer)
+		{
+			curBuffer = newBuffer;
 		}
 	}
 }
