@@ -102,6 +102,26 @@ namespace Heep
 			}
 		}
 
+		public void SetControlBufferByID(int ID, List<byte> buffer, bool trackAnalytics = true)
+		{
+			for (int i = 0; i < controls.Count; i++) {
+				if (controls [i].GetID () == ID) {
+
+					if (controls [i].GetType ().Equals (typeof(BufferControl))) {
+						BufferControl myCtrlPtr = (BufferControl)controls [i];
+						myCtrlPtr.SetBuffer(buffer);
+					} else {
+						Debug.Log ("Control is Incorrect Type");
+					}
+
+					if(trackAnalytics)
+						AddNewAnalyticsDataToDeviceMemory (controls[i]);
+
+					SendOutput (controls [i]);
+				}
+			}
+		}
+
 		private void SendOutput(Control toSend)
 		{
 			
