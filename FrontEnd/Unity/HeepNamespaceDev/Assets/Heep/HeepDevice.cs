@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
+using UnityEngine;
 
 namespace Heep
 {
@@ -125,6 +126,25 @@ namespace Heep
 			}
 
 			return -1;
+		}
+
+		public List<byte> GetControlBufferByID(int ID)
+		{
+			for (int i = 0; i < controls.Count; i++) {
+				if (controls [i].GetID () == ID) {
+					
+					if (controls [i].GetType ().Equals (typeof(BufferControl))) {
+						BufferControl myCtrlPtr = (BufferControl)controls [i];
+						return myCtrlPtr.GetBuffer ();
+					} else {
+						Debug.Log ("Control is Incorrect Type");
+						return new List<byte>();
+					}
+
+				}
+			}
+
+			return new List<byte>();
 		}
 
 		public void SetDeviceNameStartup(String name)
