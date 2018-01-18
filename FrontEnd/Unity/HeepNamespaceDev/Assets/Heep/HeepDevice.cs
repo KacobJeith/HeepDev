@@ -129,7 +129,14 @@ namespace Heep
 			if (toSend.GetControlDirection () == Control.CtrlInputOutput.output) {
 				for (int i = 0; i < vertices.Count; i++) {
 					if (vertices [i].GetTXControlID() == toSend.GetID ()) {
-						List <byte> sendBuffer = HeepLanguage.GetSetValCOPBuffer (vertices [i].GetRXControlID (), toSend.GetCurValue ());
+
+						List <byte> sendBuffer;
+						if (toSend.GetType ().Equals (typeof(BufferControl))) {
+							sendBuffer = HeepLanguage.GetSetValCOPBufferControlBuffer(vertices[i].GetRXControlID(), ((BufferControl)(toSend)).GetBuffer());
+						} else {
+							sendBuffer = HeepLanguage.GetSetValCOPBuffer (vertices [i].GetRXControlID (), toSend.GetCurValue ());
+						}
+							
 						IPAddress sendIP = vertices [i].GetDestIP ();
 						HeepCommunications.SendBufferToIP (sendBuffer, sendIP);
 					}
