@@ -68,8 +68,7 @@ namespace Heep
 		private void AddNewAnalyticsDataToDeviceMemory(Control changedControl)
 		{
 			if (changedControl.ShouldKeepAnalytics ()) {
-				HeepDeviceAnalytics deviceAnalytics = new HeepDeviceAnalytics (changedControl.GetID (), changedControl.GetCurValue ());
-				List <byte> analyticsBuffer = deviceAnalytics.GetBytes (myID);
+				List <byte> analyticsBuffer = HeepDeviceAnalytics.GetDeviceAnalyticsByteArray(changedControl, myID);
 				HeepLanguage.AddBufferToBuffer (deviceMemory, analyticsBuffer);
 			}
 		}
