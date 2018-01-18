@@ -8,7 +8,9 @@ import reducers from './redux/reducers'
 import App from './components/App'
 import thunk from 'redux-thunk'
 import * as auth from './firebase/FirebaseAuth'
-import $ from 'jquery'
+// import $ from 'jquery'
+
+import loading from './assets/heepwink3_gradient.mov';
 
 const startState = {
   scrollPosition: 0,
