@@ -59,6 +59,15 @@ class AnalyticsCard extends React.Component {
           position: "absolute",
         }
       },
+      date: {
+        style: {
+          fontSize: 12,
+          color: "black",
+          position: "absolute",
+          left: 110,
+          top: -3
+        }
+      },
       numberLabel: {
         style: {
           fontSize: 12,
@@ -70,7 +79,7 @@ class AnalyticsCard extends React.Component {
       },
     }
 
-    var dateFormatted = dateFormat(this.props.MOP.timeStamp, "dddd, mmmm dS, yyyy, h:MM:ss TT");
+    var dateFormatted = dateFormat(this.props.MOP.timeStamp, "UTC:dddd, mmmm dS, h:MM:ss:l TT");
 
     return (
       <div {...inputs.container}>
@@ -78,6 +87,7 @@ class AnalyticsCard extends React.Component {
           {this.props.numLabel}
         </div>
         <div {...inputs.controlIDBox}/>
+        <div {...inputs.date}> {dateFormatted} </div>
       </div>
     );
 
