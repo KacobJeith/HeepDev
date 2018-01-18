@@ -304,7 +304,7 @@ namespace Heep
 	public class Control
 	{
 		public enum CtrlInputOutput : int {input = 0, output = 1}; 
-		public enum CtrlType : int {OnOff = 0, range = 1};
+		public enum CtrlType : int {OnOff = 0, range = 1, buffer = 2};
 
 		protected int _controlID;
 		protected CtrlInputOutput _controlDirection;
