@@ -17,9 +17,15 @@ const startState = {
   webGLStatus: false,
   loginStatus: false,
   providers: {},
-  devices: {},
   places: {},
-  groups: {}
+  groups: {},
+
+  devices: {deviceArray: []},
+  positions: {},
+  controls: {controlStructure:{}, connections: {}},
+  vertexList: {},
+  icons: {},
+  url: ''
 }
 
 export const initialState = Immutable.Map(startState)

@@ -12,6 +12,7 @@ import Logout from './Logout'
 import Loading from './Loading'
 import UserProfile from './UserProfile'
 import DeviceBuilder from './DeviceBuilder'
+import Flowchart from './Classic/Flowchart'
 
 const mapStateToProps = (state) => ({
 	loginStatus: state.loginStatus,
@@ -68,7 +69,7 @@ class App extends React.Component {
 			<Router >
 		    	<div {...inputs.container}>
 					<Route path="/" component={Header}/>
-					<Route exact path="/" component={UserProfile}/>
+					<Route path="/Classic" component={Flowchart} key="Flowchart"/>
 					<Route exact path="/auth" component={Auth}/>
 					{loggedInRoutes}
 			    </div>
