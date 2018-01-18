@@ -10,7 +10,7 @@ import RoomCard from './RoomCard'
 import DeviceCard from './DeviceCard'
 
 var mapStateToProps = (state) => ({
-  devices: state.devices,
+  devices: state.devices_firebase,
   places: state.places,
   groups: state.groups
 })

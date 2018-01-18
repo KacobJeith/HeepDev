@@ -6,7 +6,7 @@ import * as actions from '../redux/actions'
 import {Grid, Row, Col, Image, PageHeader, Media, Button} from 'react-bootstrap'
 
 var mapStateToProps = (state, ownProps) => ({
-  device: state.devices[ownProps.deviceID]
+  device: state.devices_firebase[ownProps.deviceID]
 })
 
 class DeviceCard extends React.Component {

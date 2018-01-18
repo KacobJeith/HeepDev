@@ -17,6 +17,7 @@ const startState = {
   webGLStatus: false,
   loginStatus: false,
   providers: {},
+  devices_firebase:{},
   places: {},
   groups: {},
 

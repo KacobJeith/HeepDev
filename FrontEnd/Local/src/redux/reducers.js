@@ -13,15 +13,6 @@ export default function(state = initialState, action) {
       setTimeout(() => {auth.handleLogin()}, 100);
 
       return state
-    case 'POPULATE_SHOPIFY' :
-
-        var newState = Immutable.Map(state.shopify).toJS();
-
-        for (var i = 0; i < action.products.length; i++){
-          newState[action.products[i].id] = action.products[i].attrs;
-        }
-
-      return Immutable.Map(state).set('shopify', newState).toJS()
       
     case 'SCROLL':
 
@@ -55,9 +46,9 @@ export default function(state = initialState, action) {
 
     case 'ADD_DEVICE' : 
 
-      var newState = Immutable.Map(state.devices).set(action.deviceID, action.device).toJS();
+      var newState = Immutable.Map(state.devices_firebase).set(action.deviceID, action.device).toJS();
 
-      return Immutable.Map(state).set('devices', newState).toJS()
+      return Immutable.Map(state).set('devices_firebase', newState).toJS()
 
     case 'ADD_PLACE' : 
 
