@@ -11,6 +11,8 @@ public class FakeDevice : MonoBehaviour {
 	public GameObject theImage;
 	public Button OutputOnBtn;
 	public Button OutputOffBtn;
+	public Button SendBufferBtn;
+	public InputField bufferField;
 
 	void OnApplicationQuit()
 	{
@@ -35,6 +37,8 @@ public class FakeDevice : MonoBehaviour {
 		myDevice.AddControl (theControl);
 		Control newControl = Control.CreateControl (Control.CtrlInputOutput.output, Control.CtrlType.OnOff, "Second");
 		myDevice.AddControl (newControl);
+		Control bufferControl = new BufferControl (0, Control.CtrlInputOutput.output, Control.CtrlType.buffer, 10, 0, 0, "Buffer", true);
+		myDevice.AddControl (bufferControl);
 		myDevice.SetDeviceNameStartup ("Unity");
 		myDevice.StartListening ();
 	}
@@ -65,12 +69,26 @@ public class FakeDevice : MonoBehaviour {
 		myDevice.SetControlByID (1, 0);
 	}
 
+	public void SendBuffer()
+	{
+		string bufferData = bufferField.text;
+		Debug.Log (bufferData);
+
+		List<byte> bufferList = new List<byte> ();
+		bufferList.Add ((byte)bufferData.Length);
+		for (int i = 0; i < bufferData.Length; i++) {
+			bufferList.Add ((byte)bufferData [i]);
+		}
+		myDevice.SetControlBufferByID (2, bufferList);
+	}
+
 	// Use this for initialization
 	void Start () {
 		CreateHeepDevice ();
 		//StartCoroutine (setControlsOnTimer());
 		OutputOnBtn.onClick.AddListener(SetOutputOn);
 		OutputOffBtn.onClick.AddListener(SetOutputOff);
+		SendBufferBtn.onClick.AddListener (SendBuffer);
 	}
 
 	// Update is called once per frame
