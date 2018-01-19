@@ -76,10 +76,10 @@ public class FakeDevice : MonoBehaviour {
 		Debug.Log (bufferData);
 
 		List<byte> bufferList = new List<byte> ();
-		bufferList.Add ((byte)bufferData.Length);
 		for (int i = 0; i < bufferData.Length; i++) {
 			bufferList.Add ((byte)bufferData [i]);
 		}
+
 		myDevice.SetControlBufferByID (2, bufferList);
 	}
 
