@@ -105,7 +105,7 @@ class Device extends React.Component {
 			},
 			iconContainer: {
 				display: 'inline-flex',
-				width: 100,
+				width: 90,
 				height: (this.cardWorkspace - 25)*0.85,
 				textAlign: 'center',
 				verticalAlign: 'center'
