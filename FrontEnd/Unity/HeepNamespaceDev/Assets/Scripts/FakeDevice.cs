@@ -9,6 +9,7 @@ public class FakeDevice : MonoBehaviour {
 	HeepDevice myDevice;
 
 	public GameObject theImage;
+	public bool sendAnalytics;
 	public Button OutputOnBtn;
 	public Button OutputOffBtn;
 	public Button SendBufferBtn;
@@ -33,9 +34,9 @@ public class FakeDevice : MonoBehaviour {
 
 		myDevice.LoadDeviceMemoryFromFile ();
 
-		Control theControl = Control.CreateControl (Control.CtrlInputOutput.input, Control.CtrlType.OnOff, "First");
+		Control theControl = Control.CreateControl (Control.CtrlInputOutput.input, Control.CtrlType.OnOff, "First", sendAnalytics);
 		myDevice.AddControl (theControl);
-		Control newControl = Control.CreateControl (Control.CtrlInputOutput.output, Control.CtrlType.OnOff, "Second");
+		Control newControl = Control.CreateControl (Control.CtrlInputOutput.output, Control.CtrlType.OnOff, "Second", sendAnalytics);
 		myDevice.AddControl (newControl);
 		Control bufferControl = new BufferControl (0, Control.CtrlInputOutput.output, Control.CtrlType.buffer, 10, 0, 0, "Buffer", true);
 		myDevice.AddControl (bufferControl);

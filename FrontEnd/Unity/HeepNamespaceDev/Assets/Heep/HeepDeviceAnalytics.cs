@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Heep
 {
-	public class HeepDeviceAnalytics
+	public class HeepDeviceAnalytics 
 	{
 		public static List <byte> GetDeviceAnalyticsByteArray (Control controlToSend, DeviceID theID)
 		{

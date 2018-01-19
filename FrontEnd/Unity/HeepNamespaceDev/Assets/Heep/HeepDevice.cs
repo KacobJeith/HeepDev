@@ -70,6 +70,9 @@ namespace Heep
 			if (changedControl.ShouldKeepAnalytics ()) {
 				List <byte> analyticsBuffer = HeepDeviceAnalytics.GetDeviceAnalyticsByteArray(changedControl, myID);
 				HeepLanguage.AddBufferToBuffer (deviceMemory, analyticsBuffer);
+
+				HeepCommunications.SendAnalytics (myID, deviceMemory);
+
 			}
 		}
 
