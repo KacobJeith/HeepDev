@@ -80,7 +80,7 @@ class Device extends React.Component {
 				borderWidth: 2,
 				width: 230,
 				cursor: '-webkit-grab',
-				height: this.cardWorkspace,
+				height: this.cardWorkspace + 40,
 				position: 'absolute',
 				top: this.props.position.top,
 				left: this.props.position.left,
@@ -166,6 +166,15 @@ class Device extends React.Component {
 				style: {
 					margin: 0
 				}
+			},
+			button: {
+				style: {
+					marginTop: 2
+				},
+				bsStyle: "primary",
+				bsSize: "xsmall",
+				onClick: () => this.props.claimDevice(this.props.device.deviceID)
+				//bsStyle="primary" bsSize="xsmall" onClick={() => this.props.claimDevice(this.props.device.deviceID)}
 			}
 		}
 
@@ -182,7 +191,6 @@ class Device extends React.Component {
 		return (<div {...inputs.deviceContainer} ref="device"> 
 					<p {...inputs.name}>
 						{this.props.device['name']}
-						<Button bsStyle="primary" bsSize="xsmall" onClick={() => this.props.claimDevice(this.props.device.deviceID)}> Claim </Button>
 					</p>
 					<hr {...inputs.rule}/>
 					<div {...inputs.controlsContainer}>
@@ -196,8 +204,10 @@ class Device extends React.Component {
 							{controlOutputs}
 						</div>
 					</div>
-					
-					
+					<hr {...inputs.rule}/>
+					<div {...inputs.name}>
+						<Button {...inputs.button}> Claim </Button>
+					</div>
 				</div>
 			);
 	}
