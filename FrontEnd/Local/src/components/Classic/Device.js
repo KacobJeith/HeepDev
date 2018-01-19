@@ -167,14 +167,16 @@ class Device extends React.Component {
 					margin: 0
 				}
 			},
-			button: {
+			ruleBottom: {
 				style: {
-					marginTop: 2
-				},
+					marginBottom: 2,
+					marginTop: 0
+				}
+			},
+			button: {
 				bsStyle: "primary",
 				bsSize: "xsmall",
 				onClick: () => this.props.claimDevice(this.props.device.deviceID)
-				//bsStyle="primary" bsSize="xsmall" onClick={() => this.props.claimDevice(this.props.device.deviceID)}
 			}
 		}
 
@@ -204,7 +206,7 @@ class Device extends React.Component {
 							{controlOutputs}
 						</div>
 					</div>
-					<hr {...inputs.rule}/>
+					<hr {...inputs.ruleBottom}/>
 					<div {...inputs.name}>
 						<Button {...inputs.button}> Claim </Button>
 					</div>
