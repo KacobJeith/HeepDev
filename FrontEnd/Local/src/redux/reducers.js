@@ -109,7 +109,7 @@ export default function(state = initialState, action) {
 
       //CONTROL CHANGES
       var newStateControls = Immutable.Map(state.controls).toJS();
-      var txName = utils.nameControl(newStateControls.selectedOutput.txDeviceID, newStateControls.selectedOutput.txControlID);
+      var txName = utils.nameControl(state.vertexList.selectedOutput.txDeviceID, state.vertexList.selectedOutput.txControlID);
       var rxName = utils.nameControl(action.rxDeviceID, action.rxControlID);
 
       newStateControls.connections[txName].push(rxName);
