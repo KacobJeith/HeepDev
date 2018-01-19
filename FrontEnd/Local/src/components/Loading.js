@@ -10,7 +10,6 @@ var mapStateToProps = (state) => ({
 
 class Loading extends React.Component {
   
-  
   render() {
     var inputs = {
       video: {

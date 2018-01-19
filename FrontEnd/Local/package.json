@@ -64,6 +64,7 @@
     "mocha-webpack": "^0.7.0",
     "node-sass": "^4.5.0",
     "react-hot-loader": "^3.0.0-beta.6",
+    "redux-devtools-extension": "^2.13.2",
     "sass-loader": "^4.0.2",
     "style-loader": "^0.13.1",
     "webpack": "^1.13.2",
