@@ -6,7 +6,6 @@ import * as Actions from '../redux/actions'
 import ReactGA from 'react-ga'
 
 import Header from './Header'
-import Build from './Build'
 import Auth from './Auth'
 import Logout from './Logout'
 import Loading from './Loading'
@@ -60,7 +59,6 @@ class App extends React.Component {
 	    var loggedInRoutes = [];
 
 	    if (this.props.loginStatus) {
-	    	loggedInRoutes.push(<Route path="/Build" component={Build} key="build"/>);
 	    	loggedInRoutes.push(<Route path="/DeviceBuilder" component={DeviceBuilder} key="DeviceBuilder"/>)
 	    	loggedInRoutes.push(<Route path="/User" component={UserProfile} key="user"/>);
 	    }

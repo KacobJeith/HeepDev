@@ -24,9 +24,6 @@ class Header extends React.Component {
 
 	loggedOn() {
 		var userNavElements = [];
-		userNavElements.push(	<LinkContainer to="/Build" key="build">
-						          <NavItem>Build</NavItem>
-						        </LinkContainer>);
 		userNavElements.push(	<LinkContainer to="/DeviceBuilder" key="DeviceBuilder">
 						          <NavItem>Device Builder</NavItem>
 						        </LinkContainer>);
