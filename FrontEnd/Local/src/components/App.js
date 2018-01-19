@@ -67,6 +67,7 @@ class App extends React.Component {
 			<Router >
 		    	<div {...inputs.container}>
 					<Route path="/" component={Header}/>
+					<Route exact path="/" component={Flowchart} key="Flow"/>
 					<Route path="/Classic" component={Flowchart} key="Flowchart"/>
 					<Route exact path="/auth" component={Auth}/>
 					{loggedInRoutes}
