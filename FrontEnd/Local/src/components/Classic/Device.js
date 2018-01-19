@@ -1,7 +1,9 @@
 import React from 'react'
+import { Button } from 'react-bootstrap';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as Actions from '../../redux/actions_classic'
+import * as newActions from '../../redux/actions'
 import Control from './Controls';
 import DynamicIcon from './DynamicIcon';
 
@@ -43,7 +45,7 @@ class Device extends React.Component {
 
 	onDrag(event) {
 		this.calculateDragOffset(event);
-		this.props.positionDevice(this.props.device.DeviceID, this.runningOffset);
+		this.props.positionDevice(this.props.device.deviceID, this.runningOffset);
 	}
 
 	calculateDragOffset(event) {
@@ -62,7 +64,7 @@ class Device extends React.Component {
 
 	sendPositionToServer() {
 
-		this.props.sendPositionToServer(this.props.device.DeviceID);
+		this.props.sendPositionToServer(this.props.device.deviceID);
 	}
 
 	render() {
@@ -151,7 +153,7 @@ class Device extends React.Component {
 				onTouchEnd: (event) => {this.sendPositionToServer()},
 			},
 			icon: {
-				deviceID: this.props.device['DeviceID'],
+				deviceID: this.props.device['deviceID'],
 				controlID: this.props.controlInputs.length == 0 ? this.props.controlOutputs[0] : this.props.controlInputs[0] ,
 				width: styles.iconContainer.width,
 				height: styles.iconContainer.height,
@@ -169,17 +171,18 @@ class Device extends React.Component {
 
 		var controlInputs = [];
 	    for (var i = 0; i < this.props.controlInputs.length; i++) {
-	      controlInputs.push(<Control key={i} deviceID={this.props.device['DeviceID']} controlID={this.props.controlInputs[i]}/>);
+	      controlInputs.push(<Control key={i} deviceID={this.props.device['deviceID']} controlID={this.props.controlInputs[i]}/>);
 	    }
 
 	    var controlOutputs = [];
 	    for (var i = 0; i < this.props.controlOutputs.length; i++) {
-	      controlOutputs.push(<Control key={i} deviceID={this.props.device['DeviceID']} controlID={this.props.controlOutputs[i]}/>);
+	      controlOutputs.push(<Control key={i} deviceID={this.props.device['deviceID']} controlID={this.props.controlOutputs[i]}/>);
 	    }
 
 		return (<div {...inputs.deviceContainer} ref="device"> 
 					<p {...inputs.name}>
-						{this.props.device['DeviceName']}
+						{this.props.device['name']}
+						<Button bsStyle="primary" bsSize="xsmall" onClick={() => this.props.claimDevice(this.props.device.deviceID)}> Claim </Button>
 					</p>
 					<hr {...inputs.rule}/>
 					<div {...inputs.controlsContainer}>

@@ -56,7 +56,7 @@ export var SendPositionToHeepDevice = (deviceID, position) => {
 
   SetDevicePositionFromBrowser(deviceID, position);
 
-  var IPAddress = masterState.devices[deviceID].IPAddress;
+  var IPAddress = masterState.devices[deviceID].ipAddress;
   var xPosition = byteUtils.GetValueAsFixedSizeByteArray(position.left, 2);
   var yPosition = byteUtils.GetValueAsFixedSizeByteArray(position.top, 2);
   var packet = xPosition.concat(yPosition);
@@ -71,7 +71,7 @@ export var SendPositionToHeepDevice = (deviceID, position) => {
 
 export var SendValueToHeepDevice = (deviceID, controlID, newValue) => {
   if (CheckIfNewValueAndSet(deviceID, controlID, newValue)){
-    var IPAddress = masterState.devices[deviceID].IPAddress;
+    var IPAddress = masterState.devices[deviceID].ipAddress;
     var controlByteArray = byteUtils.GetByteArrayFromValue(controlID);
     var valueByteArray = byteUtils.GetByteArrayFromValue(newValue);
     var numBytes = [controlByteArray.length + valueByteArray.length];
@@ -85,7 +85,7 @@ export var SendValueToHeepDevice = (deviceID, controlID, newValue) => {
 export var SendVertexToHeepDevices = (vertex) => {
   console.log('Received the following vertex to send to HeepDevice: ', vertex)
 
-  var IPAddress = masterState.devices[vertex.txDeviceID].IPAddress;
+  var IPAddress = masterState.devices[vertex.txDeviceID].ipAddress;
   AddVertex(vertex);
   var messageBuffer = PrepVertexForCOP(vertex, 0x0C);
 
@@ -98,7 +98,7 @@ export var SendVertexToHeepDevices = (vertex) => {
 export var SendDeleteVertexToHeepDevices = (vertex) => {
   console.log('Received the following vertex to delete from HeepDevice: ', vertex)
 
-  var IPAddress = masterState.devices[vertex.txDeviceID].IPAddress;
+  var IPAddress = masterState.devices[vertex.txDeviceID].ipAddress;
   var messageBuffer = PrepVertexForCOP(vertex, 0x0D);
   DeleteVertex(vertex);
 
@@ -255,9 +255,12 @@ var AddDevice = (heepChunk, IPAddress) => {
   iconUtils.SetDeviceIconFromString(deviceID, deviceName, iconName);
 
   masterState.devices[deviceID] = {
-    DeviceID: deviceID,
-    IPAddress: IPAddress,
-    DeviceName: deviceName
+    deviceID: deviceID,
+    ipAddress: IPAddress,
+    name: deviceName,
+    active: false,
+    iconName: "light_on",
+    version: 0
   }
 
   if( masterState.devices.deviceArray.indexOf(deviceID) == -1){
@@ -270,7 +273,7 @@ var AddDevice = (heepChunk, IPAddress) => {
 }
 
 var SetDeviceName = (heepChunk) => {
-  masterState.devices[heepChunk.deviceID].DeviceName = heepChunk.deviceName;
+  masterState.devices[heepChunk.deviceID].name = heepChunk.deviceName;
   if ((heepChunk.deviceID in masterState.icons)){
     var currentIcon = masterState.icons[heepChunk.deviceID];
   } 
@@ -283,12 +286,12 @@ var SetDeviceName = (heepChunk) => {
 
 var AddControl = (heepChunk) => {
   // Transition this to use new ControlID throughout frontend 
-  var tempCtrlName = generalUtils.nameControl(heepChunk.deviceID, heepChunk.control.ControlID) 
+  var tempCtrlName = generalUtils.nameControl(heepChunk.deviceID, heepChunk.control.controlID) 
   masterState.controls[tempCtrlName] = heepChunk.control;
   masterState.controls[tempCtrlName].deviceID = heepChunk.deviceID;
   var currentIndex = SetControlStructure(heepChunk.deviceID, tempCtrlName)
 
-  masterState.positions[heepChunk.deviceID][tempCtrlName] = SetControlPosition(heepChunk.deviceID, currentIndex, heepChunk.control.ControlDirection);
+  masterState.positions[heepChunk.deviceID][tempCtrlName] = SetControlPosition(heepChunk.deviceID, currentIndex, heepChunk.control.controlDirection);
   masterState.controls.connections[tempCtrlName] = [];
 }
 
@@ -340,7 +343,7 @@ var RecalculateControlPositions = (deviceID) => {
 var UpdateControlPosition = (deviceID, controlName) => {
   var devicePosition = masterState.positions[deviceID].device;
   var thisPosition = masterState.positions[deviceID][controlName];
-  var direction = masterState.controls[controlName].ControlDirection;
+  var direction = masterState.controls[controlName].controlDirection;
 
   thisPosition.top = devicePosition['top'] + 45 + 1.5 + 25/2 + 55*(thisPosition.index - 1), 
   thisPosition.left = direction == 0 ? devicePosition['left'] + 10 : devicePosition['left'] + 250;
@@ -361,7 +364,7 @@ var SetControlPosition = (deviceID, index, direction) => {
 
 var SetControlStructure = (deviceID, controlID) => {
 
-  if ( masterState.controls[controlID]['ControlDirection'] == 0){
+  if ( masterState.controls[controlID]['controlDirection'] == 0){
     var inputs = masterState.controls.controlStructure[deviceID].inputs;
     inputs.push(controlID);
     return inputs.length

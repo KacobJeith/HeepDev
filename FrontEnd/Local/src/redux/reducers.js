@@ -64,6 +64,40 @@ export default function(state = initialState, action) {
 
       return Immutable.Map(state).set('groups', newState).toJS()
 
+    case 'CLAIM_DEVICE' :
+
+      var deviceIdentity = Immutable.Map(state.devices[action.deviceID]).toJS();
+      var deviceControlStruct = state.controls.controlStructure[action.deviceID];
+      var controls = [];
+
+      for (var i = 0; i < deviceControlStruct.inputs.length; i++) {
+        var controlKey = deviceControlStruct.inputs[i];
+        var thisControl = Immutable.Map(state.controls[controlKey]).toJS();
+        controls.push(thisControl);
+      }
+
+      for (var i = 0; i < deviceControlStruct.outputs.length; i++) {
+        var controlKey = deviceControlStruct.outputs[i];
+        var thisControl = Immutable.Map(state.controls[controlKey]).toJS();
+        controls.push(thisControl);
+      }
+
+      var device = {
+        controls: controls,
+        identity: deviceIdentity
+      }
+
+      console.log("DEVICE TO WRITE: ", device);
+
+      setTimeout(() => {database.associateDeviceWithAccount(device)}, 100);
+
+      return state
+
+
+
+
+
+
 //<----------------------------------------------------------------------------------------------------------------------------------->
 
     case 'OVERWRITE_WITH_SERVER_DATA':
@@ -167,14 +201,14 @@ export default function(state = initialState, action) {
 
       var newState = Immutable.Map(state.controls).toJS();
       var identifier = utils.nameControl(action.deviceID, action.controlID);
-      newState[identifier]['CurCtrlValue'] = action.newValue;
+      newState[identifier]['valueCurrent'] = action.newValue;
       async.sendValueToServer(action.deviceID, action.controlID, action.newValue);
 
       var connectedControl = '';
       for (var i = 0; i < newState.connections[identifier].length; i++){
         connectedControl = newState.connections[identifier][i];
-        newState[connectedControl]['CurCtrlValue'] = action.newValue;
-        async.sendValueToServer(newState[connectedControl].deviceID, newState[connectedControl].ControlID, action.newValue);
+        newState[connectedControl]['valueCurrent'] = action.newValue;
+        async.sendValueToServer(newState[connectedControl].deviceID, newState[connectedControl].controlID, action.newValue);
       }
 
       return Immutable.Map(state).set('controls', newState).toJS()

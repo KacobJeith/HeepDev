@@ -9,8 +9,8 @@ var mapStateToProps = (state, ownProps) => ({
   control: state.controls[ownProps.controlID],
   deviceID: ownProps.deviceID,
   controlID: ownProps.controlID,
-  value: state.controls[ownProps.controlID]['CurCtrlValue'],
-  ip: state.devices[ownProps.deviceID]['IPAddress']
+  value: state.controls[ownProps.controlID]['valueCurrent'],
+  ip: state.devices[ownProps.deviceID]['ipAddress']
 })
 
 
@@ -23,19 +23,19 @@ class Control extends React.Component {
 		}
 
 
-		this.direction = this.props.control['ControlDirection'];
+		this.direction = this.props.control['controlDirection'];
 		this.leftIndent = this.direction == 0 ? 10 : 250;
 	}
 
 	selectInputVertex(event) {
 		this.props.addVertex(this.props.deviceID,
-							 this.props.control['ControlID'],
+							 this.props.control['controlID'],
 							 this.props.ip);
 	}
 
 	selectOutputVertex(event) {
 		this.props.selectOutput(this.props.deviceID,
-								this.props.control['ControlID']);
+								this.props.control['controlID']);
 	}
 
 	render() {
@@ -123,11 +123,11 @@ class Control extends React.Component {
 		}
 
 		var controller = [];
-		if (this.props.control['ControlValueType'] == 0){
+		if (this.props.control['controlType'] == 0){
 			controller.push(<OnOffContainer {...inputs.controller}/>);
 			inputs.controller.key++;
 		}
-		else if (this.props.control['ControlValueType'] == 1){
+		else if (this.props.control['controlType'] == 1){
 			controller.push(<RangeContainer {...inputs.controller}/>);
 			inputs.controller.key++;
 		}
@@ -141,7 +141,7 @@ class Control extends React.Component {
 						</div>}
 					<div {...inputs.background}>
 						<text {...inputs.controlTitle}>
-								{this.props.control['ControlName']}
+								{this.props.control['controlName']}
 						</text>
 						<div {...inputs.controlContainer}>
 							{controller}

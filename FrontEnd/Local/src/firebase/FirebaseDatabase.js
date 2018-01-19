@@ -6,29 +6,15 @@ import * as actions from '../redux/actions'
 
 export const readUserData = (user) => {
 
-	// firebase.database().ref('/users/' + user.uid + '/devices').on('child_added', function(snapshot) {
-		
-	// 	retrieveDevices(snapshot);
-	// })
-
 	firebase.database().ref('/users/' + user.uid + '/devices').on('value', function(snapshot) {
 		retrieveDevices(snapshot);
 	})
-
-	// firebase.database().ref('/users/' + user.readUserSignalsuid + '/places').on('child_added', function(snapshot) {
-		
-	// 	// retrievePlaces(snapshot);
-	// })
 
 	firebase.database().ref('/users/' + user.uid + '/places').on('value', function(snapshot) {
 		
 		retrievePlaces(snapshot);
 	})
 
-	// firebase.database().ref('/users/' + user.uid + '/groups').on('child_added', function(snapshot) {
-		
-	// 	retrieveGroups(snapshot);
-	// })
 
 	firebase.database().ref('/users/' + user.uid + '/groups').on('value', function(snapshot) {
 		
@@ -124,6 +110,16 @@ export const updatePlaceName = (placeID, name) => {
 export const updateGroupName = (groupID, name) => {
 
 	firebase.database().ref('groups/' + groupID + '/name').set(name);
+}
+
+export const associateDeviceWithAccount = (deviceData) => {
+	firebase.database().ref('devices/' + deviceData.identity.deviceID).set(deviceData);
+
+	var user = firebaseAuth.currentUser();
+	var userDeviceObj = {};
+	userDeviceObj[deviceData.identity.deviceID] = true;
+
+	firebase.database().ref('users/' + user.uid + '/devices/' + deviceData.identity.deviceID).set(userDeviceObj);
 }
 
 

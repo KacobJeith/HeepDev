@@ -5,8 +5,8 @@ import * as Actions from '../../redux/actions_classic'
 
 var mapStateToProps = (state, ownProps) => ({
   control: state.controls[ownProps.thisControl],
-  controlID: state.controls[ownProps.thisControl]['ControlID'],
-  value: state.controls[ownProps.thisControl]['CurCtrlValue'],
+  controlID: state.controls[ownProps.thisControl]['controlID'],
+  value: state.controls[ownProps.thisControl]['valueCurrent'],
   DeviceID: ownProps.DeviceID
 })
 
@@ -30,12 +30,12 @@ class RangeController extends React.Component {
 		this.runningOffset = {top:  0,
 							  left: 0};
 
-		this.lastSentControlValue = this.props.control['CurCtrlValue'];
-		this.newControlValue = this.props.control['CurCtrlValue'];
+		this.lastSentControlValue = this.props.control['valueCurrent'];
+		this.newControlValue = this.props.control['valueCurrent'];
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (this.props.control['CurCtrlValue'] != this.lastSentControlValue) {
+		if (this.props.control['valueCurrent'] != this.lastSentControlValue) {
 
 			this.setState({x: this.convertCtrlVal()});
 			
@@ -43,7 +43,7 @@ class RangeController extends React.Component {
 	}
 
 	convertCtrlVal() {
-		return this.displayMin + (this.displayMax-this.displayMin)*(this.props.control['CurCtrlValue']/(this.props.control['HighValue']-this.props.control['LowValue']))
+		return this.displayMin + (this.displayMax-this.displayMin)*(this.props.control['valueCurrent']/(this.props.control['HighValue']-this.props.control['LowValue']))
 
 	}
 	
@@ -180,7 +180,7 @@ class RangeController extends React.Component {
 						<line {...inputs.unselected}/>
 						<line {...inputs.selected}/>
 						<circle {...inputs.dragDot} ref='dragDot'/>
-						<text {...inputs.text}> {this.props.control['CurCtrlValue']} </text>
+						<text {...inputs.text}> {this.props.control['valueCurrent']} </text>
 					</svg>
 				</div>
             	

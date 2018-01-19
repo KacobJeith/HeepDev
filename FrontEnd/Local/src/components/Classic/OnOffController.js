@@ -6,9 +6,9 @@ import Icon from '../../assets/icons'
 import {ICONS} from '../../assets/iconConstants'
 
 const mapStateToProps = (state, ownProps) => ({
-  controlID: state.controls[ownProps.thisControl]['ControlID'],
+  controlID: state.controls[ownProps.thisControl]['controlID'],
   DeviceID: ownProps.DeviceID,
-  value: state.controls[ownProps.thisControl]['CurCtrlValue']
+  value: state.controls[ownProps.thisControl]['valueCurrent']
 })
 
 

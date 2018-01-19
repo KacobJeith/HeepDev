@@ -11,6 +11,8 @@ export var sendVertexToServer = (vertex) => {
 
   const messagePacket = {vertex: vertex};
 
+  console.log(messagePacket);
+
   performAJAX(url, messagePacket);
 };
 

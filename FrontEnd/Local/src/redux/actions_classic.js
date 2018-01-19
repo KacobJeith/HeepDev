@@ -58,3 +58,7 @@ export const overwriteFromServer = (fromServer) => ({
   fromServer
 })
 
+export const claimDevice = (deviceID) => ({
+  type: 'CLAIM_DEVICE',
+  deviceID
+})

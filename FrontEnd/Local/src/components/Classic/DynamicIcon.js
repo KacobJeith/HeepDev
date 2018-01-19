@@ -5,8 +5,8 @@ import * as Actions from '../../redux/actions_classic'
 import $ from 'jquery'
 
 var mapStateToProps = (state, ownProps) => ({
-  value: state.controls[ownProps.controlID]['CurCtrlValue'],
-  highValue: state.controls[ownProps.controlID]['HighValue'],
+  value: state.controls[ownProps.controlID]['valueCurrent'],
+  highValue: state.controls[ownProps.controlID]['valueHigh'],
   icon: state.icons[state.icons[ownProps.deviceID]],
   defaultIcon: state.icons['none'],
   height: ownProps.height,
