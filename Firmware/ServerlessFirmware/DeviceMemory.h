@@ -29,6 +29,8 @@
 #define DeleteMOPOpCode 			0x15
 #define LocalDeviceIDOpCode 		0x16
 
+#define AnalyticsOpCode				0x1F
+
 unsigned char deviceMemory [MAX_MEMORY];
 unsigned int curFilledMemory = 0; // Indicate the curent filled memory. 
 						 // Also serve as a place holder to 
@@ -158,6 +160,24 @@ void SetIconDataInMemory_Byte(char* iconData, int numCharacters, heepByte* devic
 	{
 		AddNewCharToMemory(iconData[i]);
 	}
+}
+
+void SetAnalyticsDataControlValueInMemory_Byte(heepByte controlID, int controlValue, heepByte *deviceID)
+{
+	// Get Time (Absolute or Relative to Device Start)
+	// Set absolute byte to indicate 
+
+	PerformPreOpCodeProcessing_Byte(deviceID);
+
+	AddNewCharToMemory(AnalyticsOpCode);
+	AddIndexOrDeviceIDToMemory_Byte(deviceID);
+	// Add num bytes
+	AddNewCharToMemory(controlID);
+	AddNewCharToMemory(1); // 1 byte control values
+	AddNewCharToMemory((heepByte)controlValue);
+	// Add absolute time indicator
+	// Add Num Bytes Milliseconds
+	// Add Milliseconds from device start or 1/1/2018
 }
 
 unsigned int ParseXYOpCode_Byte(int *x, int *y, heepByte* deviceID, unsigned int counter)
