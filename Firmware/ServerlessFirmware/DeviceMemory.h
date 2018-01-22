@@ -167,18 +167,19 @@ void SetAnalyticsDataControlValueInMemory_Byte(heepByte controlID, int controlVa
 	// Get Time (Absolute or Relative to Device Start)
 	// Set absolute byte to indicate 
 
+	heepByte numBytesForTime = GetNumBytes64Bit(GetAnalyticsTime());
+
 	PerformPreOpCodeProcessing_Byte(deviceID);
 
 	AddNewCharToMemory(AnalyticsOpCode);
 	AddIndexOrDeviceIDToMemory_Byte(deviceID);
-	// Add num bytes
+	AddNewCharToMemory(numBytesForTime + 5);
 	AddNewCharToMemory(controlID);
 	AddNewCharToMemory(1); // 1 byte control values
 	AddNewCharToMemory((heepByte)controlValue);
 	AddNewCharToMemory(IsAbsoluteTime());
-	
-	// Add Num Bytes Milliseconds
-	// Add Milliseconds from device start or 1/1/2018
+	AddNewCharToMemory(numBytesForTime);
+	curFilledMemory = AddNumberToBufferWithSpecifiedBytes64Bit(deviceMemory, GetAnalyticsTime(), curFilledMemory, numBytesForTime);
 }
 
 unsigned int ParseXYOpCode_Byte(int *x, int *y, heepByte* deviceID, unsigned int counter)
