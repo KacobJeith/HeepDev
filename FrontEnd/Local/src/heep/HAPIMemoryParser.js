@@ -109,15 +109,12 @@ var GetNextBlock = (buffer, it) => {
   } else if (thisBlock.op == 0x12) {
     //Fragment 
 
-  } else if (thisBlock.op == 0x14) {
-    //Dynamic Memory Size
-    
   } else if (thisBlock.op == 0x1F) {
     //Analytics
     thisBlock.analytics = ReadAnalyticsData(thisBlockData);
 
   } else {
-
+    
   }
 
   it += CalculateNextIterator(byteIndicatorBytes, thisBlock.packetBytes);
@@ -152,13 +149,13 @@ export var ReadFirmwareVersion = (thisBlockData) => { // OP 1
 export var ReadControl = (thisBlockData) => { // OP 2
 
   var thisControl = {
-    ControlID: thisBlockData[1],
-    ControlValueType: thisBlockData[2],
-    ControlDirection: thisBlockData[3],
-    LowValue: thisBlockData[4],
-    HighValue: thisBlockData[5],
-    CurCtrlValue: thisBlockData[6],
-    ControlName: thisBlockData.slice(7).toString('ascii')
+    controlID: thisBlockData[1],
+    controlType: thisBlockData[2],
+    controlDirection: thisBlockData[3],
+    valueLow: thisBlockData[4],
+    valueHigh: thisBlockData[5],
+    valueCurrent: thisBlockData[6],
+    controlName: thisBlockData.slice(7).toString('ascii')
   }
 
   return thisControl
@@ -212,6 +209,7 @@ export var ReadControl = (thisBlockData) => { // OP 2
   return thisVertex
  }
 
+
  var ReadAnalyticsData = (thisBlockData) => {
 
   var date = new Date(Date.UTC(2018, 0, 1, 0, 0, 0));
@@ -232,5 +230,3 @@ export var ReadControl = (thisBlockData) => { // OP 2
 
   return thisAnalytics
  }
-
-
