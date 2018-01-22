@@ -91,9 +91,36 @@ void TestAnalyticsMillisecondsBytes()
 	CheckResults(TestName, valueList, 3);
 }
 
+void TestAddBufferToBuffer64Bit()
+{
+	std::string TestName = "Test Add Buffer to Buffer 64 Bit";
+
+	heepByte myBuffer[20];
+	simMillis =  0x01020304050607;
+
+	unsigned long counter = 0;
+
+	counter = AddNumberToBufferWithSpecifiedBytes64Bit(myBuffer, simMillis, counter, GetNumBytesForCurrentTime());
+
+	ExpectedValue valueList [8];
+	valueList[0].valueName = "Counter";
+	valueList[0].expectedValue = 7;
+	valueList[0].actualValue = counter;
+
+	for(int i = 1; i < 8; i++)
+	{
+		valueList[i].valueName = std::string("Byte ") + std::to_string(i);
+		valueList[i].expectedValue = i;
+		valueList[i].actualValue = myBuffer[i-1];
+	}
+
+	CheckResults(TestName, valueList, 8);
+}
+
 void TestHeepAPI()
 {
 	TestSchedulerRolloverProtection();
 	TestBufferControlType();
 	TestAnalyticsMillisecondsBytes();
+	TestAddBufferToBuffer64Bit();
 }

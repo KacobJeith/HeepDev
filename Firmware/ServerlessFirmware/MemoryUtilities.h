@@ -85,6 +85,17 @@ unsigned long AddNumberToBufferWithSpecifiedBytes(unsigned char* buffer, unsigne
 	return startPoint;
 }
 
+unsigned long AddNumberToBufferWithSpecifiedBytes64Bit(unsigned char* buffer, uint64_t number, unsigned long startPoint, int numBytes)
+{
+	for(int i = 0; i < numBytes; i++)
+	{
+		char numToAdd = (number >> 8*( (numBytes-1) - i))%256;
+		startPoint = AddCharToBuffer(buffer, startPoint, numToAdd);
+	}
+
+	return startPoint;
+}
+
 void AddBufferToBuffer(heepByte* rxBuffer, heepByte* txBuffer, heepByte size, unsigned int *rxCounter, unsigned int *txCounter)
 {
 	for(int i = 0; i < size; i++)
