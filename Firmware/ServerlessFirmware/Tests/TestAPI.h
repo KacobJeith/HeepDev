@@ -69,11 +69,11 @@ void TestAnalyticsMillisecondsBytes()
 	std::string TestName = "Test Analytics Time Keeping";
 
 	simMillis = 200;
-	int numBytesShouldBe1 = GetNumBytesForCurrentTime();
+	int numBytesShouldBe1 = GetNumBytes64Bit(GetAnalyticsTime());
 	simMillis = 400;
-	int numBytesShouldBe2 = GetNumBytesForCurrentTime();
+	int numBytesShouldBe2 = GetNumBytes64Bit(GetAnalyticsTime());
 	simMillis =  1125899906842624;
-	int numBytesShouldBe7 = GetNumBytesForCurrentTime();
+	int numBytesShouldBe7 = GetNumBytes64Bit(GetAnalyticsTime());
 
 	ExpectedValue valueList [3];
 	valueList[0].valueName = "One Byte Number";
@@ -100,7 +100,7 @@ void TestAddBufferToBuffer64Bit()
 
 	unsigned long counter = 0;
 
-	counter = AddNumberToBufferWithSpecifiedBytes64Bit(myBuffer, simMillis, counter, GetNumBytesForCurrentTime());
+	counter = AddNumberToBufferWithSpecifiedBytes64Bit(myBuffer, simMillis, counter, GetNumBytes64Bit(GetAnalyticsTime()));
 
 	ExpectedValue valueList [8];
 	valueList[0].valueName = "Counter";

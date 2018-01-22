@@ -7,13 +7,21 @@ unsigned long GetMillis()
 	return simMillis;
 }
 
-heepByte GetNumBytesForCurrentTime()
+// No absolute time yet
+heepByte IsAbsoluteTime()
 {
-	heepByte numBytes = 0;
-	while( (simMillis >> numBytes*8) > 0)
-	{
-		numBytes++;
-	}
+	return 0;
+}
 
-	return numBytes;
+uint64_t GetAnalyticsTime()
+{
+	if(IsAbsoluteTime())
+	{
+		// Calculate Analytics Time
+		return 0;
+	}
+	else
+	{
+		return simMillis;
+	}
 }

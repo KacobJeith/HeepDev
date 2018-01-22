@@ -175,7 +175,8 @@ void SetAnalyticsDataControlValueInMemory_Byte(heepByte controlID, int controlVa
 	AddNewCharToMemory(controlID);
 	AddNewCharToMemory(1); // 1 byte control values
 	AddNewCharToMemory((heepByte)controlValue);
-	// Add absolute time indicator
+	AddNewCharToMemory(IsAbsoluteTime());
+	
 	// Add Num Bytes Milliseconds
 	// Add Milliseconds from device start or 1/1/2018
 }

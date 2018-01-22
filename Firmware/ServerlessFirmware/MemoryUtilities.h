@@ -96,6 +96,17 @@ unsigned long AddNumberToBufferWithSpecifiedBytes64Bit(unsigned char* buffer, ui
 	return startPoint;
 }
 
+heepByte GetNumBytes64Bit(uint64_t number)
+{
+	heepByte numBytes = 0;
+	while( (number >> numBytes*8) > 0)
+	{
+		numBytes++;
+	}
+
+	return numBytes;
+}
+
 void AddBufferToBuffer(heepByte* rxBuffer, heepByte* txBuffer, heepByte size, unsigned int *rxCounter, unsigned int *txCounter)
 {
 	for(int i = 0; i < size; i++)
