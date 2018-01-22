@@ -89,6 +89,29 @@ export default function(state = initialState, action) {
 
       return state
 
+    case 'ADD_MEMORY_DUMP' :
+
+      var newData = Immutable.Map(state.analytics).toJS();
+      var pushPacket = action.MOP.analytics;
+      pushPacket.deviceID = action.deviceID;
+      var thisDeviceData = newData[action.deviceID.toString()];
+
+
+      if (thisDeviceData != undefined) {
+
+        var analyticsList = Immutable.List(thisDeviceData).push(pushPacket).toJS();
+
+      } else {
+        console.log("Start analytics device");
+
+        var analyticsList = Immutable.List([]).push(pushPacket).toJS();
+        
+      }
+
+      var newDeviceData = Immutable.Map(state.analytics).set(action.deviceID.toString(), analyticsList).toJS();
+
+      return Immutable.Map(state).set('analytics', newDeviceData).toJS();
+
 
 
 

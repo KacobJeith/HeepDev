@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { withRouter } from 'react-router-dom'
-import * as Actions from '../redux/actions'
+import * as Actions from '../../redux/actions'
 
 import AnalyticsCard from './AnalyticsCard'
 
@@ -53,9 +53,9 @@ export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Analytics
 
 const countMOPS = (state, ownProps) => {
 
-  if ("devices" in state) { 
-    if (ownProps.deviceID.toString() in state.devices) {
-      return state.devices[ownProps.deviceID].length
+  if ("analytics" in state) { 
+    if (ownProps.deviceID.toString() in state.analytics) {
+      return state.analytics[ownProps.deviceID].length
     }
 
   }

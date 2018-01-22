@@ -2,12 +2,12 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { withRouter } from 'react-router-dom'
-import * as Actions from '../redux/actions'
+import * as Actions from '../../redux/actions'
 import dateFormat from 'dateformat'
 
 
 const mapStateToProps = (state, ownProps) => ({
-  MOP: state.devices[ownProps.deviceID][ownProps.element],
+  MOP: state.analytics[ownProps.deviceID][ownProps.element],
   numLabel: ownProps.element
 })
 

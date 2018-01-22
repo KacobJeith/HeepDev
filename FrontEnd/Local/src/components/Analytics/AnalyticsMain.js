@@ -2,12 +2,12 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { withRouter } from 'react-router-dom'
-import * as Actions from '../redux/actions'
+import * as Actions from '../../redux/actions'
 
 import AnalyticsList from './AnalyticsList'
 
 const mapStateToProps = (state) => ({
-  devices: state.devices
+  analytics: state.analytics
 })
 
 class AnalyticsMain extends React.Component {
@@ -18,7 +18,7 @@ class AnalyticsMain extends React.Component {
   render () {
 
 
-    var deviceIDs = Object.keys(this.props.devices);
+    var deviceIDs = Object.keys(this.props.analytics);
 
 
     if (deviceIDs.length == 0) {

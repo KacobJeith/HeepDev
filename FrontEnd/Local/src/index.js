@@ -28,7 +28,8 @@ const startState = {
   controls: {controlStructure:{}, connections: {}},
   vertexList: {},
   icons: {},
-  url: ''
+  url: '',
+  analytics: {}
 }
 
 export const initialState = Immutable.Map(startState)
