@@ -21,7 +21,6 @@ class App extends React.Component {
 	constructor(props) {
 		super(props);
 		ReactGA.initialize('UA-93098480-1');
-		this.handleScroll = this.handleScroll.bind(this)
 	}
 
 
@@ -29,14 +28,6 @@ class App extends React.Component {
 	  ReactGA.set({ page: window.location.pathname });
 	  ReactGA.pageview(window.location.pathname);
 	}
-
-	componentDidMount() {
-		window.addEventListener('scroll', this.handleScroll);
-    }
-
-    handleScroll() {
-        this.props.updateScrollPosition(window.scrollY)
-    }
 
 	render() {
 		this.logPageView();

@@ -15,10 +15,6 @@ export default function(state = initialState, action) {
       setTimeout(() => {auth.handleLogin()}, 100);
 
       return state
-      
-    case 'SCROLL':
-
-      return Immutable.Map(state).set('scrollPosition', action.positionY).toJS()
 
     case 'UPDATE_WEBGL_STATUS':
 
