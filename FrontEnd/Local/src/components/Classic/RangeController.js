@@ -43,7 +43,7 @@ class RangeController extends React.Component {
 	}
 
 	convertCtrlVal() {
-		return this.displayMin + (this.displayMax-this.displayMin)*(this.props.control['valueCurrent']/(this.props.control['HighValue']-this.props.control['LowValue']))
+		return this.displayMin + (this.displayMax-this.displayMin)*(this.props.control['valueCurrent']/(this.props.control['valueHigh']-this.props.control['valueLow']))
 
 	}
 	
@@ -53,7 +53,7 @@ class RangeController extends React.Component {
 	}
 
 	calcNewControlValue() {//15
-		var newVal = Math.round((this.state['x'] - this.displayMin)/(this.displayMax-this.displayMin)*(this.props.control['HighValue']-this.props.control['LowValue']) + this.props.control['LowValue']);
+		var newVal = Math.round((this.state['x'] - this.displayMin)/(this.displayMax-this.displayMin)*(this.props.control['valueHigh']-this.props.control['valueLow']) + this.props.control['valueLow']);
 		this.lastSentControlValue = newVal;
 		return newVal
 	}
