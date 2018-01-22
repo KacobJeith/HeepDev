@@ -64,8 +64,36 @@ void TestBufferControlType()
 	CheckResults(TestName, valueList, 10);
 }
 
+void TestAnalyticsMillisecondsBytes()
+{
+	std::string TestName = "Test Analytics Time Keeping";
+
+	simMillis = 200;
+	int numBytesShouldBe1 = GetNumBytesForCurrentTime();
+	simMillis = 400;
+	int numBytesShouldBe2 = GetNumBytesForCurrentTime();
+	simMillis =  1125899906842624;
+	int numBytesShouldBe7 = GetNumBytesForCurrentTime();
+
+	ExpectedValue valueList [3];
+	valueList[0].valueName = "One Byte Number";
+	valueList[0].expectedValue = 1;
+	valueList[0].actualValue = numBytesShouldBe1;
+
+	valueList[1].valueName = "Two Byte Number";
+	valueList[1].expectedValue = 2;
+	valueList[1].actualValue = numBytesShouldBe2;
+
+	valueList[2].valueName = "Seven Byte Number";
+	valueList[2].expectedValue = 7;
+	valueList[2].actualValue = numBytesShouldBe7;
+
+	CheckResults(TestName, valueList, 3);
+}
+
 void TestHeepAPI()
 {
 	TestSchedulerRolloverProtection();
 	TestBufferControlType();
+	TestAnalyticsMillisecondsBytes();
 }
