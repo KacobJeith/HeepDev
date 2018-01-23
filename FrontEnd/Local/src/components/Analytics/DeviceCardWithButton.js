@@ -28,12 +28,12 @@ class DeviceCardWithButton extends React.Component {
       thisDevice: {
         deviceID: this.props.thisDeviceID,
         key: this.props.thisDeviceID,
-        zoom: 0.35,
+        zoom: 0.5,
         textColor: "white"
       },
       button: {
         style: {
-          border: (this.state.selected || this.props.displayingAnalytics == this.props.thisDeviceID) ? "2px solid #dbdfdf" : "2px solid inherit",
+          border: (this.state.selected || this.props.displayingAnalytics == this.props.thisDeviceID) ? "2px solid #dbdfdf" : "2px solid #004a8f",
           cursor: "pointer"
         },
         onClick: () => {this.props.selectDeviceToDisplay(this.props.thisDeviceID)},

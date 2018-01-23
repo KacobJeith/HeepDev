@@ -112,7 +112,7 @@ export default function(state = initialState, action) {
         analyticsDeviceList.push(action.MOP.deviceID.toString());
         var newDeviceData = Immutable.Map(state.analytics).set(action.deviceID.toString(), analyticsList).toJS();
 
-        return Immutable.Map(state).set('analytics', newDeviceData).set('analyticsDeviceList', analyticsDeviceList).toJS();
+        return Immutable.Map(state).set('analytics', newDeviceData).set('analyticsDeviceList', analyticsDeviceList).set('displayingAnalytics', action.deviceID.toString()).toJS();
 
       }
 

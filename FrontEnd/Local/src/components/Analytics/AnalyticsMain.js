@@ -8,7 +8,7 @@ import AnalyticsList from './AnalyticsList'
 import SideBar from './SideBar'
 
 const mapStateToProps = (state) => ({
-  analytics: state.analytics
+  deviceID: state.displayingAnalytics
 })
 
 class AnalyticsMain extends React.Component {
@@ -19,12 +19,8 @@ class AnalyticsMain extends React.Component {
   render () {
 
 
-    var deviceIDs = Object.keys(this.props.analytics);
 
-
-    if (deviceIDs.length == 0) {
-      return <div/>
-    }
+    
 
     var inputs = {
       builder: {
@@ -46,20 +42,28 @@ class AnalyticsMain extends React.Component {
         }
       },
       lineChart: {
-        deviceID: deviceIDs[0],
+        deviceID: this.props.deviceID,
         filterQuery: 'timeStamp',
         timeStamp: new Date(Date.UTC(2018, 1, 1, 0, 0, 0))
       },
       displayAnalytics: {
-        deviceID: deviceIDs[0]
+        deviceID: this.props.deviceID
       }
+    }
+
+    var data = [];
+
+    if (this.props.deviceID == "") {
+      data = <div/>
+    } else {
+      data = <AnalyticsList {...inputs.displayAnalytics}/>
     }
 
     return (
       <div {...inputs.builder}>
         <SideBar/>
         <div {...inputs.contents}>
-          <AnalyticsList {...inputs.displayAnalytics}/>
+          {data}
           <div {...inputs.spacer}/>
         </div>
      </div>

@@ -57,7 +57,8 @@ class DeviceCard extends React.Component {
       },
       text: {
         style: {
-          color: this.props.textColor
+          color: this.props.textColor,
+          fontSize: 24
         }
       }
     }
