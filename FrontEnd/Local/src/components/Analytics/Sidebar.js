@@ -4,10 +4,10 @@ import { bindActionCreators } from 'redux'
 import * as Actions from '../../redux/actions'
 import { NavLink, withRouter } from 'react-router-dom';
 
-import DeviceCard from '../DeviceCard'
+import DeviceCardWithButton from './DeviceCardWithButton';
 
 var mapStateToProps = (state) => ({
-  analytics: Object.keys(state.analytics)
+  analytics: state.analyticsDeviceList
 })
 
 class Sidebar extends React.Component {
@@ -17,9 +17,9 @@ class Sidebar extends React.Component {
 
     for (var deviceID in analytics) {
       var id = analytics[deviceID];
-      console.log("Trying to create a card for: ", id);
+      console.log("Trying to render... ", id);
 
-      devices.push(<DeviceCard deviceID={id} key={id} zoom={0.35} textColor={"white"}/>)
+      <DeviceCardWithButton thisDeviceID={id} key={id}/>
     }
 
     return devices

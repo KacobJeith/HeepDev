@@ -29,7 +29,8 @@ const startState = {
   vertexList: {},
   icons: {},
   url: '',
-  analytics: {}
+  analytics: {},
+  analyticsDeviceList: []
 }
 
 export const initialState = Immutable.Map(startState)

@@ -95,22 +95,28 @@ export default function(state = initialState, action) {
       var pushPacket = action.MOP.analytics;
       pushPacket.deviceID = action.deviceID;
       var thisDeviceData = newData[action.deviceID.toString()];
-
+      var analyticsDeviceList = Immutable.List(state.analyticsDeviceList).toJS();
 
       if (thisDeviceData != undefined) {
 
         var analyticsList = Immutable.List(thisDeviceData).push(pushPacket).toJS();
+        var newDeviceData = Immutable.Map(state.analytics).set(action.deviceID.toString(), analyticsList).toJS();
+
+        return Immutable.Map(state).set('analytics', newDeviceData).toJS();
+
 
       } else {
         console.log("Start analytics device");
 
         var analyticsList = Immutable.List([]).push(pushPacket).toJS();
-        
+        analyticsDeviceList.push(action.MOP.deviceID.toString());
+        var newDeviceData = Immutable.Map(state.analytics).set(action.deviceID.toString(), analyticsList).toJS();
+
+        return Immutable.Map(state).set('analytics', newDeviceData).set('analyticsDeviceList', analyticsDeviceList).toJS();
+
       }
 
-      var newDeviceData = Immutable.Map(state.analytics).set(action.deviceID.toString(), analyticsList).toJS();
-
-      return Immutable.Map(state).set('analytics', newDeviceData).toJS();
+      
 
 
 

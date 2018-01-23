@@ -59,3 +59,8 @@ export var GetIntFromByteArray = (buffer) => {
 
   return integer
 }
+
+export const ByteArrayToBase64String = (arrayBuffer) => {
+  let base64String = new Buffer(arrayBuffer).toString('base64');
+  return base64String
+}
