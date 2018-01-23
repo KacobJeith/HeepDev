@@ -52,6 +52,11 @@ export const addMemoryDump = (deviceID, controlID, MOP) => ({
 	MOP
 })
 
+export const selectDeviceToDisplay = (deviceID) => ({
+	type: 'SELECT_DEVICE_FOR_ANALYTICS',
+	deviceID
+})
+
 
 
 

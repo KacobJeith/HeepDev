@@ -30,7 +30,8 @@ const startState = {
   icons: {},
   url: '',
   analytics: {},
-  analyticsDeviceList: []
+  analyticsDeviceList: [],
+  displayingAnalytics: ''
 }
 
 export const initialState = Immutable.Map(startState)

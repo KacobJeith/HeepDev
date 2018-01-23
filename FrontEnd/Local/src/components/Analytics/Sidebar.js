@@ -19,7 +19,7 @@ class Sidebar extends React.Component {
       var id = analytics[deviceID];
       console.log("Trying to render... ", id);
 
-      <DeviceCardWithButton thisDeviceID={id} key={id}/>
+      devices.push(<DeviceCardWithButton thisDeviceID={id} key={id}/>);
     }
 
     return devices

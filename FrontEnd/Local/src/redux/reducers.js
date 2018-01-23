@@ -116,6 +116,10 @@ export default function(state = initialState, action) {
 
       }
 
+    case 'SELECT_DEVICE_FOR_ANALYTICS' :
+
+      return Immutable.Map(state).set('displayingAnalytics', action.deviceID).toJS()
+
       
 
 
