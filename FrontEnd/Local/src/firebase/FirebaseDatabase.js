@@ -150,7 +150,7 @@ const readDeviceData = (deviceID) => {
 
 			if (MOP.op == 31) { 
 
-				setup.store.dispatch(actions.addMemoryDump(MOP.deviceID, MOP.analytics.controlID, MOP));
+				setup.store.dispatch(actions.addMemoryDump(deviceID, MOP.analytics.controlID, MOP));
 			}
 		}
 

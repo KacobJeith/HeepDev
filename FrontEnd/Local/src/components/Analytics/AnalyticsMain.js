@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom'
 import * as Actions from '../../redux/actions'
 
 import AnalyticsList from './AnalyticsList'
+import SideBar from './SideBar'
 
 const mapStateToProps = (state) => ({
   analytics: state.analytics
@@ -34,8 +35,9 @@ class AnalyticsMain extends React.Component {
       },
       contents: {
         style: {
-          width: "80%",
-          margin: 0,
+          position: "relative",
+          width: window.innerWidth - 162.5,
+          left: 162.5
         }
       },
       spacer: {
@@ -55,8 +57,8 @@ class AnalyticsMain extends React.Component {
 
     return (
       <div {...inputs.builder}>
+        <SideBar/>
         <div {...inputs.contents}>
-          <div {...inputs.spacer}/>
           <AnalyticsList {...inputs.displayAnalytics}/>
           <div {...inputs.spacer}/>
         </div>
