@@ -33,7 +33,7 @@ class DeviceCardWithButton extends React.Component {
       },
       button: {
         style: {
-          border: (this.state.selected || this.props.displayingAnalytics == this.props.thisDeviceID) ? "2px solid #dbdfdf" : "none",
+          border: (this.state.selected || this.props.displayingAnalytics == this.props.thisDeviceID) ? "2px solid #dbdfdf" : "2px solid inherit",
           cursor: "pointer"
         },
         onClick: () => {this.props.selectDeviceToDisplay(this.props.thisDeviceID)},
