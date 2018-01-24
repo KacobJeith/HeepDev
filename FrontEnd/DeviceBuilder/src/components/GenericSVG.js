@@ -34,16 +34,6 @@ var mapStateToProps = (state, ownProps) => ({
 
 class GenericSVG extends React.Component {
 
-	constructor(props) {
-		super(props);
-
-		var dummydiv = document.createElement('div');
-		dummydiv.innerHTML = iconStrings[this.props.icon];
-
-		this.icon = $(dummydiv).find('svg')[0];
-		this.setDimensions();
-	}
-
 	setDimensions() {
 
 		this.icon.setAttribute("height", String(this.props.height).concat('px'));
@@ -51,6 +41,12 @@ class GenericSVG extends React.Component {
 	}
 
 	render() {
+
+		var dummydiv = document.createElement('div');
+		dummydiv.innerHTML = iconStrings[this.props.icon];
+
+		this.icon = $(dummydiv).find('svg')[0];
+		this.setDimensions();
 
 		var inputs = {
 			icon: {

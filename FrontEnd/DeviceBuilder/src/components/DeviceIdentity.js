@@ -24,6 +24,8 @@ class DeviceIdentity extends React.Component {
 
   render () {
 
+    console.log("display icon: ", iconMappings[this.props.icon]);
+
     var inputs = {
       numControls: {
         defaultValue: 1,
@@ -90,7 +92,6 @@ class DeviceIdentity extends React.Component {
 
     return (
           <form>
-          
           <IconSVGSelect />
           <Grid>
             <Row>
