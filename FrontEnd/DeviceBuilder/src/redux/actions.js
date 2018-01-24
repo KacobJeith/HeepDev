@@ -84,3 +84,8 @@ export const updateControlAnalogOrDigital = (controlID, analogOrDigital) => ({
 	controlID,
 	analogOrDigital
 })
+
+export const selectIcon = (iconID) => ({
+	type: 'SELECT_ICON',
+	iconID
+})

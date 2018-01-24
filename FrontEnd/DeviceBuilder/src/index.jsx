@@ -6,6 +6,7 @@ import Immutable from 'immutable'
 import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import {HashRouter as Router, Route} from 'react-router-dom'
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 import reducers from './redux/reducers.js'
 import DeviceBuilder from './components/DeviceBuilder'
@@ -17,11 +18,12 @@ const startState = {
   ssid: 'your_ssid_here',
   ssidPassword: 'your_ssid_pwd',
   systemType: 'Arduino',
+  iconSelected: 1,
   controls: []
 }
 
 export const initialState = Immutable.Map(startState)
-export const store = createStore(reducers, startState, applyMiddleware(thunk));
+export const store = createStore(reducers, startState, composeWithDevTools(applyMiddleware(thunk)));
 
 render(
   <Provider store={store}>

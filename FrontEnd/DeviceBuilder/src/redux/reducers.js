@@ -152,6 +152,10 @@ export default function(state = initialState, action) {
 
         return Immutable.Map(state).set('controls', newState).toJS()
 
+    case 'SELECT_ICON' :
+
+        return Immutable.Map(state).set('iconSelected', parseInt(action.iconID)).toJS();
+
     default:
       return state
   }

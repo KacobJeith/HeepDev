@@ -8,6 +8,7 @@ import {ButtonGroup, ControlLabel, FormGroup, FormControl, HelpBlock, option} fr
 import { sys_phy_files } from '../utilities/SystemPHYCompatibilities'
 import GenericSelect from './GenericSelect'
 import GenericTextInput from './GenericTextInput'
+import IconSVGSelect from './IconSVGSelect'
 
 var mapStateToProps = (state, ownProps) => ({
   deviceName: state.deviceName,
@@ -68,6 +69,7 @@ class DeviceIdentity extends React.Component {
     return (
           <form>
             <GenericTextInput {...inputs.deviceName}/>
+            <IconSVGSelect />
             <GenericSelect {...inputs.systemType}/>
             <GenericSelect {...inputs.physicalLayer}/>
             {optionalInputs}

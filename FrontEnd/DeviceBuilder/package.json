@@ -32,6 +32,7 @@
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
+    "file-loader": "^1.1.6",
     "immutable": "^3.8.2",
     "jquery": "^3.2.1",
     "js-file-download": "^0.4.1",
@@ -45,6 +46,7 @@
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "redux": "^3.7.2",
+    "redux-devtools-extension": "^2.13.2",
     "redux-thunk": "^2.2.0",
     "webpack": "^3.8.1"
   },
