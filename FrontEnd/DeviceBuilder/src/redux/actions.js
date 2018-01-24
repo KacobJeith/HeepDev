@@ -89,3 +89,11 @@ export const selectIcon = (iconID) => ({
 	type: 'SELECT_ICON',
 	iconID
 })
+
+export const closeIconModal = () => ({
+	type: 'CLOSE_ICON_MODAL'
+})
+
+export const openIconModal = () => ({
+	type: 'OPEN_ICON_MODAL'
+})

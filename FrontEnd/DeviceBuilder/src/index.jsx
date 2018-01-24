@@ -19,6 +19,7 @@ const startState = {
   ssidPassword: 'your_ssid_pwd',
   systemType: 'Arduino',
   iconSelected: 1,
+  selectingIcon: false,
   controls: []
 }
 

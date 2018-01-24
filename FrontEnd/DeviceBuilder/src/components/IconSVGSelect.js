@@ -1,41 +1,39 @@
 import React from 'react'
-import {HashRouter as Router, Route} from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as Actions from '../redux/actions'
 import {Modal, Button} from 'react-bootstrap';
+import {iconMappings} from '../assets/iconMappings'
 
 import IconSelectWrapper from './IconSelectWrapper'
 
-export default class IconSVGSelect extends React.Component {
-	
-	constructor(props) {
-		super(props);
-	}
+var mapStateToProps = (state) => ({
+	selectingIcon: state.selectingIcon
+})
+
+class IconSVGSelect extends React.Component {
 
 	render() {
+
+		console.log("Rendering Modal: ", this.props.selectingIcon)
+
+		if (!this.props.selectingIcon) {
+
+			return <div/>
+		}
+
+
 		
 	    var options = [];
 
-	    var iconOptions = [
-	    	'none', 
-	    	'lightbulb',
-	    	'lightswitch',
-	    	'outlet',
-	    	'powerButton',
-	    	'cuckooClock',
-	    	'maglock',
-	    	'rfid',
-	    	'motor'
-	    ]
-
-	    for (var i in iconOptions) {
+	    for (var i in iconMappings) {
 
 	    	var inputs = {
 	    		wrapper: {
 	    			iconID: i,
-	    			key: iconOptions[i] + '_key',
-	    			iconName: iconOptions[i]
+	    			key: iconMappings[i] + '_key',
+	    			iconName: iconMappings[i]
 	    		}
 	    	}
 
@@ -67,11 +65,17 @@ export default class IconSVGSelect extends React.Component {
 					</Modal.Body>
 
 					<Modal.Footer>
-						<Button>Close</Button>
-						<Button bsStyle="primary">Save changes</Button>
+						<Button onClick={() => {console.log("closing..."); this.props.closeIconModal()}}>Close</Button>
+						<Button bsStyle="primary" onClick={()=> {console.log("saving..."); this.props.closeIconModal()}}>Save changes</Button>
 					</Modal.Footer>
 				</Modal.Dialog>
 			</div>);
 	    
 	}
 }
+
+var mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(Actions, dispatch)
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(IconSVGSelect))

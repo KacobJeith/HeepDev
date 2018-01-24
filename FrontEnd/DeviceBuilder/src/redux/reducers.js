@@ -156,6 +156,13 @@ export default function(state = initialState, action) {
 
         return Immutable.Map(state).set('iconSelected', parseInt(action.iconID)).toJS();
 
+    case 'CLOSE_ICON_MODAL': 
+        console.log("setting modal to ...", false)
+        return Immutable.Map(state).set('selectingIcon', false).toJS();
+
+    case 'OPEN_ICON_MODAL': 
+        return Immutable.Map(state).set('selectingIcon', true).toJS();
+
     default:
       return state
   }
