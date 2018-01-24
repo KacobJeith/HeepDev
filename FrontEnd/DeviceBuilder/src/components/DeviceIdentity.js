@@ -72,7 +72,12 @@ class DeviceIdentity extends React.Component {
           backgroundColor: "white",
           border: "10px solid white",
           borderRadius: 5,
-          cursor: "pointer"
+          cursor: "pointer",
+          display: "flex",
+          justifyContent: "center",
+          width: 170,
+          height: 170,
+          margin: "auto"
         },
         onClick: () => {this.props.openIconModal()}
       },
