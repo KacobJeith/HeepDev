@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
+using UnityEngine;
 
 namespace Heep
 {
@@ -67,32 +68,56 @@ namespace Heep
 		private void AddNewAnalyticsDataToDeviceMemory(Control changedControl)
 		{
 			if (changedControl.ShouldKeepAnalytics ()) {
-				HeepDeviceAnalytics deviceAnalytics = new HeepDeviceAnalytics (changedControl.GetID (), changedControl.GetCurValue ());
-				List <byte> analyticsBuffer = deviceAnalytics.GetBytes (myID);
+				List <byte> analyticsBuffer = HeepDeviceAnalytics.GetDeviceAnalyticsByteArray(changedControl, myID);
 				HeepLanguage.AddBufferToBuffer (deviceMemory, analyticsBuffer);
+
+				HeepCommunications.SendAnalytics (myID, deviceMemory);
+
 			}
 		}
 
-		public void SetControlByID(int ID, int newValue)
+		public void SetControlByID(int ID, int newValue, bool trackAnalytics = true)
 		{
 			for (int i = 0; i < controls.Count; i++) {
 				if (controls [i].GetID () == ID) {
 					controls[i].SetCurValue(newValue);
 
-					AddNewAnalyticsDataToDeviceMemory (controls[i]);
+					if(trackAnalytics)
+						AddNewAnalyticsDataToDeviceMemory (controls[i]);
 
 					SendOutput (controls [i]);
 				}
 			}
 		}
 
-		public void SetControlByName(String controlName, int newValue)
+		public void SetControlByName(String controlName, int newValue, bool trackAnalytics = true)
 		{
 			for (int i = 0; i < controls.Count; i++) {
 				if (controls [i].GetName () == controlName) {
 					controls [i].SetCurValue (newValue);
 
-					AddNewAnalyticsDataToDeviceMemory (controls[i]);
+					if(trackAnalytics)
+						AddNewAnalyticsDataToDeviceMemory (controls[i]);
+
+					SendOutput (controls [i]);
+				}
+			}
+		}
+
+		public void SetControlBufferByID(int ID, List<byte> buffer, bool trackAnalytics = true)
+		{
+			for (int i = 0; i < controls.Count; i++) {
+				if (controls [i].GetID () == ID) {
+
+					if (controls [i].GetType ().Equals (typeof(BufferControl))) {
+						BufferControl myCtrlPtr = (BufferControl)controls [i];
+						myCtrlPtr.SetBuffer(buffer);
+					} else {
+						Debug.Log ("Control is Incorrect Type");
+					}
+
+					if(trackAnalytics)
+						AddNewAnalyticsDataToDeviceMemory (controls[i]);
 
 					SendOutput (controls [i]);
 				}
@@ -106,7 +131,14 @@ namespace Heep
 			if (toSend.GetControlDirection () == Control.CtrlInputOutput.output) {
 				for (int i = 0; i < vertices.Count; i++) {
 					if (vertices [i].GetTXControlID() == toSend.GetID ()) {
-						List <byte> sendBuffer = HeepLanguage.GetSetValCOPBuffer (vertices [i].GetRXControlID (), toSend.GetCurValue ());
+
+						List <byte> sendBuffer;
+						if (toSend.GetType ().Equals (typeof(BufferControl))) {
+							sendBuffer = HeepLanguage.GetSetValCOPBufferControlBuffer(vertices[i].GetRXControlID(), ((BufferControl)(toSend)).GetBuffer());
+						} else {
+							sendBuffer = HeepLanguage.GetSetValCOPBuffer (vertices [i].GetRXControlID (), toSend.GetCurValue ());
+						}
+							
 						IPAddress sendIP = vertices [i].GetDestIP ();
 						HeepCommunications.SendBufferToIP (sendBuffer, sendIP);
 					}
@@ -123,6 +155,32 @@ namespace Heep
 			}
 
 			return -1;
+		}
+
+		public List<byte> GetControlBufferByID(int ID)
+		{
+			for (int i = 0; i < controls.Count; i++) {
+				if (controls [i].GetID () == ID) {
+					
+					if (controls [i].GetType ().Equals (typeof(BufferControl))) {
+						BufferControl myCtrlPtr = (BufferControl)controls [i];
+						return myCtrlPtr.GetBuffer ();
+					} else {
+						Debug.Log ("Control is Incorrect Type");
+						return new List<byte>();
+					}
+
+				}
+			}
+
+			return new List<byte>();
+		}
+
+		public void SetDeviceNameStartup(String name)
+		{
+			if (!HeepParser.DeviceNameOpCodeAlreadySet (deviceMemory)) {
+				SetDeviceName (name);
+			}
 		}
 
 		public void SetDeviceName(String name)
@@ -142,6 +200,8 @@ namespace Heep
 		public void LoadDeviceMemoryFromFile()
 		{
 			deviceMemory = NonVolatileData.ReadMemoryFromFile ();
+
+			vertices = HeepParser.GetVerticesFromBuffer (deviceMemory);
 		}
 	}
 
@@ -246,7 +306,7 @@ namespace Heep
 	public class Control
 	{
 		public enum CtrlInputOutput : int {input = 0, output = 1}; 
-		public enum CtrlType : int {OnOff = 0, range = 1};
+		public enum CtrlType : int {OnOff = 0, range = 1, buffer = 2};
 
 		protected int _controlID;
 		protected CtrlInputOutput _controlDirection;
@@ -327,6 +387,26 @@ namespace Heep
 		public bool ShouldKeepAnalytics()
 		{
 			return _KeepAnalytics;
+		}
+	}
+
+	public class BufferControl : Control
+	{
+		protected List <byte> curBuffer;
+
+		public BufferControl(int controlID, CtrlInputOutput controlDirection, CtrlType controlType, int highValue, int lowValue, int curValue, String ControlName, bool sendAnalytics)
+			: base (controlID, controlDirection, controlType, highValue, lowValue, curValue, ControlName, sendAnalytics)
+		{
+		}
+
+		public List<byte> GetBuffer()
+		{
+			return curBuffer;
+		}
+
+		public void SetBuffer(List <byte> newBuffer)
+		{
+			curBuffer = newBuffer;
 		}
 	}
 }

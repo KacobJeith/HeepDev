@@ -64,6 +64,19 @@ void FillOutputBufferWithSetValCOP(unsigned char controlID, unsigned char value)
 	AddNewCharToOutputBuffer(value);
 }
 
+void FillOutputBufferWithSetValCOPBuffer(unsigned char controlID, heepByte* buffer, int bufferLength)
+{
+	ClearOutputBuffer();
+	AddNewCharToOutputBuffer(SetValueOpCode);
+	AddNewCharToOutputBuffer(bufferLength + 1);
+	AddNewCharToOutputBuffer(controlID);
+
+	for(int i = 0; i < bufferLength; i++)
+	{
+		AddNewCharToOutputBuffer(buffer[i]);
+	}
+}
+
 // Updated
 void FillOutputBufferWithControlData()
 {
@@ -176,9 +189,21 @@ void ExecuteSetValOpCode()
 	unsigned int counter = 1;
 	unsigned char numBytes = inputBuffer[counter++];
 	unsigned char controlID = inputBuffer[counter++];
-	unsigned int value = GetNumberFromBuffer(inputBuffer, &counter, numBytes - 1);
 
-	int success = SetControlValueByIDFromNetwork(controlID, value);
+	heepByte controlType = GetControlTypeFromControlID(controlID);
+
+	int success = 1;
+	if(controlType == 2)
+	{
+		success = SetControlValueByIDFromNetworkBuffer(controlID, inputBuffer, counter, numBytes - 1);
+	}
+	else
+	{
+		unsigned int value = GetNumberFromBuffer(inputBuffer, &counter, numBytes - 1);
+		success = SetControlValueByIDFromNetwork(controlID, value);
+	}
+
+	
 
 	if(success == 0)
 	{
