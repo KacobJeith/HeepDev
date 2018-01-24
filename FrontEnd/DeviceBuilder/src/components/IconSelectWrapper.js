@@ -29,7 +29,9 @@ class IconSelectWrapper extends React.Component {
 				style: {
 					backgroundColor: this.props.actualSelected == parseInt(this.props.iconID) ? "#00FEA4" : (this.state.hover ? "#E6E6E6" : "white"),
 					cursor: "pointer",
-					margin: 5
+					margin: 5,
+					height: 100,
+					width: 100
 				},
 				onMouseEnter: () => {this.setState({hover: true})},
 				onMouseLeave: () => {this.setState({hover: false})},
