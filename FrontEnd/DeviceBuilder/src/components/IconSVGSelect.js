@@ -16,8 +16,6 @@ class IconSVGSelect extends React.Component {
 
 	render() {
 
-		console.log("Rendering Modal: ", this.props.selectingIcon)
-
 		if (!this.props.selectingIcon) {
 
 			return <div/>
