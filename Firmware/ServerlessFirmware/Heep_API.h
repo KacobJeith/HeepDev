@@ -5,12 +5,13 @@
 void CommitMemory();
 
 unsigned char clearMemory = 1;
-void SetupHeepDevice(char* deviceName)
+void SetupHeepDevice(char* deviceName, char deviceIcon)
 {	
 	if(clearMemory)
 	{
 		ClearMemory();
 		SetDeviceName(deviceName);
+		SetDeviceIcon(deviceIcon);
 		CommitMemory();
 	}
 	else
