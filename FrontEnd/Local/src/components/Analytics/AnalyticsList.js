@@ -9,6 +9,8 @@ import AnalyticsCard from './AnalyticsCard'
 
 const mapStateToProps = (state, ownProps) => ({
   numberElements: countMOPS(state, ownProps) ,
+  controlIDSeries: getAnalyticsSeries(state, ownProps, 'controlID'),
+  timeSeries: getAnalyticsSeries(state, ownProps, 'timeStamp'),
   deviceID: ownProps.deviceID.toString()
 })
 
@@ -61,4 +63,14 @@ const countMOPS = (state, ownProps) => {
   }
 
   return 0
+}
+
+const getAnalyticsSeries = (state, ownProps, key) => {
+  if ("analytics" in state) {
+    if (ownProps.deviceID.toString() in state.analytics) {
+      return Array.from(state.analytics[ownProps.deviceID], x => x[key])
+    }
+  }
+
+  return []
 }

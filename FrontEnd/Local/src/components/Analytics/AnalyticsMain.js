@@ -18,10 +18,6 @@ class AnalyticsMain extends React.Component {
 
   render () {
 
-
-
-    
-
     var inputs = {
       builder: {
         style: {
