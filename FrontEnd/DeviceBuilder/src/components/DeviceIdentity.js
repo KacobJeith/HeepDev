@@ -90,11 +90,12 @@ class DeviceIdentity extends React.Component {
 
     return (
           <form>
+          
+          <IconSVGSelect />
           <Grid>
             <Row>
               <Col md={4} >
                 <div {...inputs.iconContainer}>
-                  <IconSVGSelect />
                   <GenericSVG {...inputs.iconSVG}/>
                 </div>
               </Col>
