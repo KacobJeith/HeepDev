@@ -4,11 +4,33 @@ import { bindActionCreators } from 'redux'
 import * as Actions from '../../redux/actions_classic'
 import $ from 'jquery'
 
+import none from '../../assets/svg/none.svg'
+import lightbulb from '../../assets/svg/lightbulb.svg'
+import lightswitch from '../../assets/svg/lightswitch.svg'
+import outlet from '../../assets/svg/outlet.svg'
+import powerButton from '../../assets/svg/powerButton.svg'
+import cuckooClock from '../../assets/svg/cuckooClock.svg'
+import maglock from '../../assets/svg/maglock.svg'
+import rfid from '../../assets/svg/rfid.svg'
+import motor from '../../assets/svg/motor.svg'
+
+var iconStrings = {
+	none: none,
+	lightbulb: lightbulb,
+	lightswitch: lightswitch,
+	outlet: outlet,
+	powerButton: powerButton,
+	cuckooClock: cuckooClock,
+	maglock: maglock,
+	rfid: rfid,
+	motor: motor
+}
+
 var mapStateToProps = (state, ownProps) => ({
   value: state.controls[ownProps.controlID]['valueCurrent'],
   highValue: state.controls[ownProps.controlID]['valueHigh'],
-  icon: state.icons[state.icons[ownProps.deviceID]],
-  defaultIcon: state.icons['none'],
+  icon: state.devices[ownProps.deviceID]['iconName'],
+  defaultIcon: 'none',
   height: ownProps.height,
   width: ownProps.width
 })
@@ -20,10 +42,10 @@ class DynamicIcon extends React.Component {
 		super(props);
 
 		var dummydiv = document.createElement('div');
-		dummydiv.innerHTML = this.props.icon;
+		dummydiv.innerHTML = iconStrings[props.icon];
 
 		if ($(dummydiv).find('svg')[0] == null){
-			dummydiv.innerHTML = this.props.defaultIcon
+			dummydiv.innerHTML = props.defaultIcon
 		}
 
 		this.icon = $(dummydiv).find('svg')[0];

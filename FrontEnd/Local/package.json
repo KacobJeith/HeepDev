@@ -63,6 +63,7 @@
     "mocha": "^3.2.0",
     "mocha-webpack": "^0.7.0",
     "node-sass": "^4.5.0",
+    "raw-loader": "^0.5.1",
     "react-hot-loader": "^3.0.0-beta.6",
     "redux-devtools-extension": "^2.13.2",
     "sass-loader": "^4.0.2",
@@ -87,10 +88,9 @@
   ],
   "babel": {
     "presets": [
-    "react",
-    "es2015",
-    "stage-0"
+      "react",
+      "es2015",
+      "stage-0"
     ]
   }
-
 }

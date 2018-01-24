@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux'
 import { withRouter } from 'react-router-dom'
 import * as actions from '../redux/actions'
 import {Grid, Row, Col, Image, PageHeader, Media, Button} from 'react-bootstrap'
+import {iconMappings} from '../assets/svg/iconMappings.js'
 
 var mapStateToProps = (state, ownProps) => ({
   device: state.devices_firebase[ownProps.deviceID]
@@ -29,7 +30,7 @@ class DeviceCard extends React.Component {
         width: 64,
         height: 64,
         type:"image/svg+xml",
-        data: '../assets/' + this.props.device.identity.iconName + ".svg"
+        data: '../assets/svg/' + this.props.device.identity.iconName + ".svg"
       },
       backup: {
         width: "auto",
@@ -50,9 +51,7 @@ class DeviceCard extends React.Component {
       }
     }
 
-    var svgs = ['light-bulb-LED', 'cuckoo-clock', 'none', 'outlet', 'power-button', 'switch'];
-
-    if (svgs.indexOf(this.props.device.identity.iconName) != -1) { 
+    if (iconMappings.indexOf(this.props.device.identity.iconName) != -1) { 
 
       var icon = <object {...inputs.primary}/>
 
