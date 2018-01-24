@@ -14,6 +14,8 @@ namespace Heep
 		private List<Vertex> vertices = new List<Vertex>(); 
 		private List<Control> controls = new List<Control>();
 
+		UdpClient interruptServer;
+
 		private const int deviceMemorySize = 200;
 
 		private DeviceID myID;
@@ -21,6 +23,17 @@ namespace Heep
 		public HeepDevice (DeviceID theID)
 		{
 			SetDeviceID (theID);
+			interruptServer = HeepCommunications.GetHeepInterruptServer ();
+		}
+
+		public void StartListening()
+		{
+			HeepCommunications.StartHeepServer (this, interruptServer);
+		}	
+
+		public void CloseDevice()
+		{
+			interruptServer.Close ();
 		}
 
 		public int GetFirmwareVersion()
