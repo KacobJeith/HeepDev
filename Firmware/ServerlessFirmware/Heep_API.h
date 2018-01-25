@@ -27,7 +27,7 @@ void FactoryReset(char* deviceName)
 	clearMemory = 0;
 }
 
-void SendOutputByID(unsigned char controlID, unsigned int value)
+void SendOutputByIDNoAnalytics(unsigned char controlID, unsigned int value)
 {
 	SetControlValueByID(controlID, value, 0);
 
@@ -50,6 +50,13 @@ void SendOutputByID(unsigned char controlID, unsigned int value)
 			}
 		}
 	}
+}
+
+void SendOutputByID(unsigned char controlID, unsigned int value)
+{
+	SendOutputByIDNoAnalytics(controlID, value);
+
+	SetAnalyticsDataControlValueInMemory_Byte(controlID, value, deviceIDByte);
 }
 
 void SendOutputByIDBuffer(unsigned char controlID, heepByte* buffer, int bufferLength)
