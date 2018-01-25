@@ -15,10 +15,6 @@ export default function(state = initialState, action) {
       setTimeout(() => {auth.handleLogin()}, 100);
 
       return state
-      
-    case 'SCROLL':
-
-      return Immutable.Map(state).set('scrollPosition', action.positionY).toJS()
 
     case 'UPDATE_WEBGL_STATUS':
 
@@ -92,6 +88,39 @@ export default function(state = initialState, action) {
       setTimeout(() => {database.associateDeviceWithAccount(device)}, 100);
 
       return state
+
+    case 'ADD_MEMORY_DUMP' :
+
+      var newData = Immutable.Map(state.analytics).toJS();
+      var pushPacket = action.MOP.analytics;
+      pushPacket.deviceID = action.deviceID;
+      var thisDeviceData = newData[action.deviceID.toString()];
+      var analyticsDeviceList = Immutable.List(state.analyticsDeviceList).toJS();
+
+      if (thisDeviceData != undefined) {
+
+        var analyticsList = Immutable.List(thisDeviceData).push(pushPacket).toJS();
+        var newDeviceData = Immutable.Map(state.analytics).set(action.deviceID.toString(), analyticsList).toJS();
+
+        return Immutable.Map(state).set('analytics', newDeviceData).toJS();
+
+
+      } else {
+        console.log("Start analytics device");
+
+        var analyticsList = Immutable.List([]).push(pushPacket).toJS();
+        analyticsDeviceList.push(action.MOP.deviceID.toString());
+        var newDeviceData = Immutable.Map(state.analytics).set(action.deviceID.toString(), analyticsList).toJS();
+
+        return Immutable.Map(state).set('analytics', newDeviceData).set('analyticsDeviceList', analyticsDeviceList).set('displayingAnalytics', action.deviceID.toString()).toJS();
+
+      }
+
+    case 'SELECT_DEVICE_FOR_ANALYTICS' :
+
+      return Immutable.Map(state).set('displayingAnalytics', action.deviceID).toJS()
+
+      
 
 
 

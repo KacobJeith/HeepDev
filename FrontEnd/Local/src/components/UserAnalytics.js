@@ -46,7 +46,7 @@ class UserAnalytics extends React.Component {
 
     for (var deviceID in this.props.devices) {
 
-      devices.push(<DeviceCard deviceID={deviceID} key={deviceID}/>)
+      devices.push(<DeviceCard deviceID={deviceID} key={deviceID} zoom={1} textColor={"lightGray"}/>)
     }
 
     return devices
