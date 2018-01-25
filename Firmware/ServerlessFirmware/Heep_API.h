@@ -21,10 +21,10 @@ void SetupHeepDevice(char* deviceName, char deviceIcon)
 	}
 }
 
-void FactoryReset(char* deviceName)
+void FactoryReset(char* deviceName, char iconEnum)
 {
 	clearMemory = 1;
-	SetupHeepDevice(deviceName);
+	SetupHeepDevice(deviceName, iconEnum);
 	clearMemory = 0;
 }
 
