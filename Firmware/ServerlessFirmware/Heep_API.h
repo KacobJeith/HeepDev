@@ -5,12 +5,13 @@
 void CommitMemory();
 
 unsigned char clearMemory = 1;
-void SetupHeepDevice(char* deviceName)
+void SetupHeepDevice(char* deviceName, char deviceIcon)
 {	
 	if(clearMemory)
 	{
 		ClearMemory();
 		SetDeviceName(deviceName);
+		SetDeviceIcon(deviceIcon);
 		CommitMemory();
 	}
 	else
@@ -20,10 +21,10 @@ void SetupHeepDevice(char* deviceName)
 	}
 }
 
-void FactoryReset(char* deviceName)
+void FactoryReset(char* deviceName, char iconEnum)
 {
 	clearMemory = 1;
-	SetupHeepDevice(deviceName);
+	SetupHeepDevice(deviceName, iconEnum);
 	clearMemory = 0;
 }
 
@@ -46,6 +47,31 @@ void SendOutputByID(unsigned char controlID, unsigned int value)
 			else
 			{
 				FillOutputBufferWithSetValCOP(newVertex.rxControlID, value);
+				SendOutputBufferToIP(newVertex.rxIPAddress);
+			}
+		}
+	}
+}
+
+void SendOutputByIDBuffer(unsigned char controlID, heepByte* buffer, int bufferLength)
+{
+	SetControlValueByIDBuffer(controlID, buffer, 0, bufferLength, 0);
+
+	struct Vertex_Byte newVertex;
+
+	for(int i = 0; i < numberOfVertices; i++)
+	{
+		GetVertexAtPointer_Byte(vertexPointerList[i], &newVertex);
+
+		if(CheckBufferEquality(newVertex.txID, deviceIDByte, STANDARD_ID_SIZE) && newVertex.txControlID == controlID)
+		{
+			if(CheckBufferEquality(newVertex.txID, newVertex.rxID, STANDARD_ID_SIZE))
+			{
+				SetControlValueByIDBuffer(newVertex.rxControlID, buffer, 0, bufferLength, 0);
+			}
+			else
+			{
+				FillOutputBufferWithSetValCOPBuffer(newVertex.rxControlID, buffer, bufferLength);
 				SendOutputBufferToIP(newVertex.rxIPAddress);
 			}
 		}

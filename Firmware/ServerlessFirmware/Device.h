@@ -103,6 +103,11 @@ void SetDeviceName(char* deviceName)
 	SetDeviceNameInMemory_Byte(deviceName, deviceNameLength, deviceIDByte);
 }
 
+void SetDeviceIcon(char deviceIcon)
+{
+	SetIconIDInMemory_Byte(deviceIcon, deviceIDByte);
+}
+
 int SetControlValueByID(unsigned char controlID, unsigned int value, unsigned char setFromNetwork)
 {
 	for(int i = 0; i < numberOfControls; i++)
@@ -121,9 +126,48 @@ int SetControlValueByID(unsigned char controlID, unsigned int value, unsigned ch
 	return 1;
 }	
 
+heepByte GetControlTypeFromControlID(heepByte controlID)
+{
+	for(int i = 0; i < numberOfControls; i++)
+	{
+		if(controlList[i].controlID == controlID)
+		{
+			return controlList[i].controlType;
+		}
+	}
+
+	return 0; // ToDo: Make return something invalid
+}
+
+int SetControlValueByIDBuffer(unsigned char controlID, heepByte* buffer, int bufferStartPoint, int bufferLength, unsigned char setFromNetwork)
+{
+	for(int i = 0; i < numberOfControls; i++)
+	{
+		if(controlList[i].controlID == controlID)
+		{
+			for(int j = 0; j < bufferLength; j++)
+			{
+				controlList[i].controlBuffer[j] = buffer[j + bufferStartPoint];
+			}
+
+			if(setFromNetwork)
+				controlList[i].controlFlags = 0x01;
+
+			return 0;
+		}
+	}
+
+	return 1;
+}
+
 int SetControlValueByIDFromNetwork(unsigned char controlID, unsigned int value)
 {
 	return SetControlValueByID(controlID, value, 1);
+}
+
+int SetControlValueByIDFromNetworkBuffer(unsigned char controlID, heepByte* buffer, int bufferStartPoint, int bufferLength)
+{
+	return SetControlValueByIDBuffer(controlID, buffer, bufferStartPoint, bufferLength, 1);
 }
 
 int GetControlValueByID(unsigned controlID)

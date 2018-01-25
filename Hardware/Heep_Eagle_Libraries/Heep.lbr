@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="8.4.3">
+<eagle version="8.5.0">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -7773,8 +7773,8 @@ Source: www.pulseeng.com .. PulseJack-J402.pdf</description>
 <connect gate="G$1" pin="GND" pad="M2"/>
 <connect gate="G$1" pin="GRN-A" pad="P14"/>
 <connect gate="G$1" pin="GRN-C" pad="P13"/>
-<connect gate="G$1" pin="POE+" pad="P7 P10"/>
-<connect gate="G$1" pin="POE-" pad="P8 P9"/>
+<connect gate="G$1" pin="POE+" pad="P8 P10"/>
+<connect gate="G$1" pin="POE-" pad="P7 P9"/>
 <connect gate="G$1" pin="RD+" pad="P4"/>
 <connect gate="G$1" pin="RD-" pad="P5"/>
 <connect gate="G$1" pin="TD+" pad="P1"/>

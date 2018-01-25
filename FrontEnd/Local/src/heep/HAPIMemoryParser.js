@@ -182,15 +182,21 @@ export var ReadControl = (thisBlockData) => { // OP 2
  export var ReadIconID = (thisBlockData) => {
   var iconName = 'none';
   if (thisBlockData[1] == 1){
-    iconName = 'light-bulb';
+    iconName = 'lightbulb';
   } else if (thisBlockData[1] == 2) {
     iconName = 'switch';
   } else if (thisBlockData[1] == 3) {
     iconName = 'outlet';
   } else if (thisBlockData[1] == 4) {
-    iconName = 'power-button';
+    iconName = 'powerButton';
   } else if (thisBlockData[1] == 5) {
-    iconName = 'cuckoo-clock';
+    iconName = 'cuckooClock';
+  } else if (thisBlockData[1] == 6) {
+    iconName = 'maglock';
+  } else if (thisBlockData[1] == 7) {
+    iconName = 'rfid';
+  } else if (thisBlockData[1] == 8) {
+    iconName = 'motor';
   }
 
   return iconName;

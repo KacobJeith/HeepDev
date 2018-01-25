@@ -149,6 +149,21 @@ namespace Heep
 			return setValBuffer;
 		}
 
+		public static List<byte> GetSetValCOPBufferControlBuffer(int controlID, List<byte> bufferToSend)
+		{
+			List <byte> setValBuffer = new List<byte> ();
+
+			setValBuffer.Add (HeepLanguage.SetValueOpCode);
+			setValBuffer.Add ((byte)(bufferToSend.Count + 1));
+			setValBuffer.Add ((byte)controlID);
+
+			for (int i = 0; i < bufferToSend.Count; i++) {
+				setValBuffer.Add (bufferToSend [i]);
+			}
+
+			return setValBuffer;
+		}
+
 		public static List<byte> AddNumberToBufferWithSpecifiedBytes(List <byte> buffer, int number, int numBytes)
 		{
 			for(int i = 0; i < numBytes; i++)
