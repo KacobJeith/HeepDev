@@ -7,7 +7,9 @@ import {Grid, Row, Col, Image, PageHeader, Media, Button} from 'react-bootstrap'
 import {iconMappings} from '../assets/svg/iconMappings.js'
 
 var mapStateToProps = (state, ownProps) => ({
-  device: state.devices_firebase[ownProps.deviceID]
+  device: state.devices_firebase[ownProps.deviceID],
+  zoom: ownProps.zoom,
+  textColor: ownProps.textColor
 })
 
 class DeviceCard extends React.Component {
@@ -15,6 +17,11 @@ class DeviceCard extends React.Component {
   render() {
 
     var inputs = {
+      container: {
+        style: {
+          zoom: this.props.zoom
+        }
+      },
       section: {
         key: this.props.device.identity.deviceID,
         style: {
@@ -48,6 +55,12 @@ class DeviceCard extends React.Component {
           width: 64,
           height: 64
         }
+      },
+      text: {
+        style: {
+          color: this.props.textColor,
+          fontSize: 24
+        }
       }
     }
 
@@ -62,6 +75,7 @@ class DeviceCard extends React.Component {
     }
     
     return (
+      <div {...inputs.container}>
 <Row {...inputs.section}>
   <Col xsOffset={1}>
     <Media >
@@ -69,11 +83,12 @@ class DeviceCard extends React.Component {
         {icon}
       </Media.Left>
       <Media.Body>
-        <h1><small>{this.props.device.identity.name}</small></h1>
+        <h1 {...inputs.text}>{this.props.device.identity.name}</h1>
       </Media.Body>
     </Media>
   </Col>
-</Row>);
+</Row>
+</div>);
 
   }
 }

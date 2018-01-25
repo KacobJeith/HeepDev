@@ -12,6 +12,7 @@ import Loading from './Loading'
 import UserProfile from './UserProfile'
 import DeviceBuilder from './DeviceBuilder'
 import Flowchart from './Classic/Flowchart'
+import Analytics from './Analytics/AnalyticsMain'
 
 const mapStateToProps = (state) => ({
 	loginStatus: state.loginStatus,
@@ -21,7 +22,6 @@ class App extends React.Component {
 	constructor(props) {
 		super(props);
 		ReactGA.initialize('UA-93098480-1');
-		this.handleScroll = this.handleScroll.bind(this)
 	}
 
 
@@ -29,14 +29,6 @@ class App extends React.Component {
 	  ReactGA.set({ page: window.location.pathname });
 	  ReactGA.pageview(window.location.pathname);
 	}
-
-	componentDidMount() {
-		window.addEventListener('scroll', this.handleScroll);
-    }
-
-    handleScroll() {
-        this.props.updateScrollPosition(window.scrollY)
-    }
 
 	render() {
 		this.logPageView();
@@ -61,6 +53,7 @@ class App extends React.Component {
 	    if (this.props.loginStatus) {
 	    	loggedInRoutes.push(<Route path="/DeviceBuilder" component={DeviceBuilder} key="DeviceBuilder"/>)
 	    	loggedInRoutes.push(<Route path="/User" component={UserProfile} key="user"/>);
+	    	loggedInRoutes.push(<Route path="/Analytics" component={Analytics} key="Analytics"/>);
 	    }
 
 	    return(

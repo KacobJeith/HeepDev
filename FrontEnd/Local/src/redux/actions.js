@@ -21,11 +21,6 @@ export const logout = () => ({
 	type: 'LOGOUT'
 })
 
-export const updateScrollPosition = (positionY) =>  ({
-	type: 'SCROLL',
-	positionY
-})
-
 export const updateWebGLStatus = (status) => ({
 	type: 'UPDATE_WEBGL_STATUS',
 	status
@@ -48,6 +43,18 @@ export const unlinkAccount = (providerId) => ({
 
 export const initPaperSignals = () => ({
 	type: 'INIT_PAPER_SIGNALS'
+})
+
+export const addMemoryDump = (deviceID, controlID, MOP) => ({
+	type: 'ADD_MEMORY_DUMP',
+	deviceID,
+	controlID, 
+	MOP
+})
+
+export const selectDeviceToDisplay = (deviceID) => ({
+	type: 'SELECT_DEVICE_FOR_ANALYTICS',
+	deviceID
 })
 
 
