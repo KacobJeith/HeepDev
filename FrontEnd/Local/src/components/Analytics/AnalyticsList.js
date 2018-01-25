@@ -47,6 +47,8 @@ class AnalyticsList extends React.Component {
     //   </div>
     // );
 
+    console.log(this.props.timeSeries);
+
     var data = [
       {
         x: this.props.timeSeries,
@@ -68,22 +70,29 @@ class AnalyticsList extends React.Component {
       startTime = this.props.timeSeries[this.props.timeSeries.length - 30];
     } 
     // startTime.setHours(lastDataTime.getHours() - 3);
+    var layout = {
+        yaxis: {
+          range: [-20, 20]
+        },
+        width: 700,
+        height: 400,
+        title: 'EscapeTheRoom Nuclear'
+      }
+
+    try {
+      layout.xaxis = {
+          range: [lastDataTime.getTime(),
+                  startTime.getTime()]
+        }
+    } catch (err) {
+      console.log("No date defined");
+    }
 
     return (
     <Plot
       data={data} 
 
-      layout={{
-        yaxis: {
-          range: [-20, 20]
-        },
-        xaxis: {
-          range: [startTime.toString(), lastDataTime.toString()]
-        },
-        width: 700,
-        height: 400,
-        title: 'EscapeTheRoom Nuclear'
-      }}
+      layout={layout}
     />
   );
 
@@ -124,7 +133,12 @@ const getHoverText = (state, ownProps) => {
   var controlIDs = getAnalyticsSeries(state, ownProps, 'controlID');
   var hoverText = [];
   for (var i in controlIDs) {
-    hoverText.push(state.devices_firebase[ownProps.deviceID].controls[controlIDs[i]].controlName)
+    try {
+      hoverText.push(state.devices_firebase[ownProps.deviceID].controls[controlIDs[i]].controlName)
+    } catch (err) {
+      hoverText.push("unnamed");
+    }
+    
   }
   console.log("Set hoverText");
 
