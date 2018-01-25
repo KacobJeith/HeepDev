@@ -69,8 +69,6 @@ class Device extends React.Component {
 
 	render() {
 
-		console.log(this.props.device);
-
 		const styles = {
 			deviceContainer: {
 				backgroundColor: 'white',

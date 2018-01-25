@@ -54,8 +54,6 @@ class DynamicIcon extends React.Component {
 
 	setDimensions() {
 
-		console.log(this.icon);
-
 		this.icon.setAttribute("height", String(this.props.height).concat('px'));
 		this.icon.setAttribute("width", String(this.props.width).concat('px'));
 	}

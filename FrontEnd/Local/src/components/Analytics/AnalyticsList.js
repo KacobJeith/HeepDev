@@ -67,22 +67,22 @@ class AnalyticsList extends React.Component {
     var startTime = this.props.timeSeries[0];
 
     if (this.props.timeSeries.length > 32) {
-      startTime = this.props.timeSeries[this.props.timeSeries.length - 30];
+      startTime = this.props.timeSeries[this.props.timeSeries.length - 15];
     } 
     // startTime.setHours(lastDataTime.getHours() - 3);
     var layout = {
         yaxis: {
-          range: [-20, 20]
+          range: [-15, 15]
         },
-        width: 700,
+        width: 900,
         height: 400,
-        title: 'EscapeTheRoom Nuclear'
+        title: 'Heep Generalized Control Analytics'
       }
 
     try {
       layout.xaxis = {
-          range: [lastDataTime.getTime(),
-                  startTime.getTime()]
+          range: [startTime.getTime(),
+                  lastDataTime.getTime()]
         }
     } catch (err) {
       console.log("No date defined");
@@ -119,7 +119,6 @@ const countMOPS = (state, ownProps) => {
 
 const getAnalyticsSeries = (state, ownProps, key) => {
 
-  console.log("Seting Series: ", key);
   if ("analytics" in state) {
     if (ownProps.deviceID.toString() in state.analytics) {
       return Array.from(state.analytics[ownProps.deviceID], x => x[key])
@@ -140,7 +139,6 @@ const getHoverText = (state, ownProps) => {
     }
     
   }
-  console.log("Set hoverText");
 
   return hoverText
 }
