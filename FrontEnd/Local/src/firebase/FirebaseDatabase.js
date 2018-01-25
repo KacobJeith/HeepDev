@@ -154,7 +154,10 @@ const readDeviceData = (deviceID) => {
 			}
 		}
 
-		setup.store.dispatch(actions.addMemoryDumpBatch(deviceID, analytics));
+		if (analytics.length > 0) {
+			setup.store.dispatch(actions.addMemoryDumpBatch(deviceID, analytics))
+		}
+		;
 
 	})
 }
