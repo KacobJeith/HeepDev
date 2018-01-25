@@ -29,8 +29,8 @@ var iconStrings = {
 var mapStateToProps = (state, ownProps) => ({
   value: state.controls[ownProps.controlID]['valueCurrent'],
   highValue: state.controls[ownProps.controlID]['valueHigh'],
-  icon: state.devices[ownProps.deviceID]['iconName'],
-  defaultIcon: 'none',
+  icon: state.icons[ownProps.deviceID],
+  defaultIcon: iconStrings.none,
   height: ownProps.height,
   width: ownProps.width
 })
@@ -54,6 +54,8 @@ class DynamicIcon extends React.Component {
 
 	setDimensions() {
 
+		console.log(this.icon);
+
 		this.icon.setAttribute("height", String(this.props.height).concat('px'));
 		this.icon.setAttribute("width", String(this.props.width).concat('px'));
 	}
@@ -72,7 +74,7 @@ class DynamicIcon extends React.Component {
 
 	render() {
 		
-		this.updateColor();
+		// this.updateColor();
 
 		var inputs = {
 			icon: {
