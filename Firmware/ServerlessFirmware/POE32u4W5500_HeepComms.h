@@ -12,9 +12,9 @@ void ResetW5500()
 {
   pinMode(WIZ_RESET_PIN, OUTPUT);
   digitalWrite(WIZ_RESET_PIN, HIGH);
-  delay(1000);
+  delay(100);
   digitalWrite(WIZ_RESET_PIN, LOW);
-  delay(1000);
+  delay(100);
   digitalWrite(WIZ_RESET_PIN, HIGH);
 }
 

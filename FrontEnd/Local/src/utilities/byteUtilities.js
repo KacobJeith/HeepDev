@@ -47,3 +47,20 @@ export var GetNecessaryBytes = (value) => {
 
   return numBytes
 }
+
+
+export var GetIntFromByteArray = (buffer) => {
+  
+  var integer = 0;
+
+  for (var i = 0; i < buffer.length; i++) {
+    integer += (buffer[buffer.length - i - 1] <<  8*i) >>> 0;
+  }
+
+  return integer
+}
+
+export const ByteArrayToBase64String = (arrayBuffer) => {
+  let base64String = new Buffer(arrayBuffer).toString('base64');
+  return base64String
+}

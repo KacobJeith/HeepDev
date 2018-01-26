@@ -163,23 +163,22 @@ class UserProfile extends React.Component {
     
 
     return (
-
-<Grid>
+<Grid >
   <Row>
-    <Col md={3} xsOffset={1}>
+    <Col md={3} xsOffset={1} xs={4}>
       <Image {...inputs.profilePicture} />
     </Col>
-    <Col md={4}>
+    <Col md={4} xs={4}>
       <Row> 
           <PageHeader> {user.displayName}</PageHeader>
       </Row>
       <Row>
-        <Col xsOffset={1}>
+        <Col xsOffset={1} xs={4}>
           <h1><small>{user.email}</small></h1>
         </Col>
       </Row>
     </Col>
-    <Col md={4}>
+    <Col md={4} xs={8}>
       <Row> 
           <PageHeader>Linked Accounts</PageHeader>
       </Row>
@@ -189,7 +188,6 @@ class UserProfile extends React.Component {
   <UserAnalytics/>
  
 </Grid>
-
 
     );  
   }

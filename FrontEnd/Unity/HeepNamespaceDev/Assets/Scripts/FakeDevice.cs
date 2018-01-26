@@ -9,8 +9,11 @@ public class FakeDevice : MonoBehaviour {
 	HeepDevice myDevice;
 
 	public GameObject theImage;
+	public bool sendAnalytics;
 	public Button OutputOnBtn;
 	public Button OutputOffBtn;
+	public Button SendBufferBtn;
+	public InputField bufferField;
 
 	void OnApplicationQuit()
 	{
@@ -29,11 +32,15 @@ public class FakeDevice : MonoBehaviour {
 		DeviceID myID = new DeviceID(ID);
 		myDevice = new HeepDevice (myID);
 
-		Control theControl = Control.CreateControl (Control.CtrlInputOutput.input, Control.CtrlType.OnOff, "First");
+		myDevice.LoadDeviceMemoryFromFile ();
+
+		Control theControl = Control.CreateControl (Control.CtrlInputOutput.input, Control.CtrlType.OnOff, "First", sendAnalytics);
 		myDevice.AddControl (theControl);
-		Control newControl = Control.CreateControl (Control.CtrlInputOutput.output, Control.CtrlType.OnOff, "Second");
+		Control newControl = Control.CreateControl (Control.CtrlInputOutput.output, Control.CtrlType.OnOff, "Second", sendAnalytics);
 		myDevice.AddControl (newControl);
-		myDevice.SetDeviceName ("Unity");
+		Control bufferControl = new BufferControl (0, Control.CtrlInputOutput.output, Control.CtrlType.buffer, 10, 0, 0, "Buffer", true);
+		myDevice.AddControl (bufferControl);
+		myDevice.SetDeviceNameStartup ("Unity");
 		myDevice.StartListening ();
 	}
 
@@ -63,12 +70,26 @@ public class FakeDevice : MonoBehaviour {
 		myDevice.SetControlByID (1, 0);
 	}
 
+	public void SendBuffer()
+	{
+		string bufferData = bufferField.text;
+		Debug.Log (bufferData);
+
+		List<byte> bufferList = new List<byte> ();
+		for (int i = 0; i < bufferData.Length; i++) {
+			bufferList.Add ((byte)bufferData [i]);
+		}
+
+		myDevice.SetControlBufferByID (2, bufferList);
+	}
+
 	// Use this for initialization
 	void Start () {
 		CreateHeepDevice ();
 		//StartCoroutine (setControlsOnTimer());
 		OutputOnBtn.onClick.AddListener(SetOutputOn);
 		OutputOffBtn.onClick.AddListener(SetOutputOff);
+		SendBufferBtn.onClick.AddListener (SendBuffer);
 	}
 
 	// Update is called once per frame

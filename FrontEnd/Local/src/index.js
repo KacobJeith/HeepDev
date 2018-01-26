@@ -16,7 +16,6 @@ import * as actions_classic from './redux/actions_classic'
 import loading from './assets/heepwink3_gradient.mov';
 
 const startState = {
-  scrollPosition: 0,
   webGLStatus: false,
   loginStatus: false,
   providers: {},
@@ -29,7 +28,10 @@ const startState = {
   controls: {controlStructure:{}, connections: {}},
   vertexList: {},
   icons: {},
-  url: ''
+  url: '',
+  analytics: {},
+  analyticsDeviceList: [],
+  displayingAnalytics: ''
 }
 
 export const initialState = Immutable.Map(startState)
@@ -51,16 +53,18 @@ var loadDevicesFromServer = (url) => {
     url: url,
     cache: false,
     success: (data) => {
-      console.log(data);
-      console.log(window.location.origin);
 
-      data.url = window.location.origin;
+      try {
+        data.url = window.location.origin;
+        var immutableMap = Immutable.Map(data);
+        store.dispatch(actions_classic.overwriteFromServer(data));
 
-      var immutableMap = Immutable.Map(data);
+      } 
+      catch (err) {
+        console.log("Running on Dev server, cannot update url or feed classic data");
+      }
 
-      console.log(data);
-
-      store.dispatch(actions_classic.overwriteFromServer(data));
+      
 
       
     },

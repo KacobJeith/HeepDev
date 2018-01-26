@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Net;  
 using System.Net.Sockets;  
+using System.IO;
 using System.Text;  
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using System.Security.Cryptography.X509Certificates;
+using System.Net.Security;
 
 namespace Heep
 {
@@ -89,9 +92,79 @@ namespace Heep
 			return retBuffer;
 		}
 
+		public static void SendAnalytics(DeviceID deviceID, List<byte> memoryDump)
+		{
+			List<byte> deviceIDList = deviceID.GetIDArray ();
+			string base64deviceID = Convert.ToBase64String(deviceIDList.ToArray());
+
+			Debug.Log ("Saving Analytics for " + base64deviceID);
+			string url = "https://heep-3cddb.firebaseio.com/analytics/" + base64deviceID + ".json";
+
+			string base64 = Convert.ToBase64String(memoryDump.ToArray());
+			string data = "\""+ base64 + "\"";
+
+			POST(url, data);
+		}
+
+		static void POST(string url, string jsonContent) 
+		{
+			HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+			request.Method = "PUT";
+			ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
+
+			System.Text.UTF8Encoding encoding = new System.Text.UTF8Encoding();
+			Byte[] byteArray = encoding.GetBytes(jsonContent);
+
+			request.ContentLength = byteArray.Length;
+			request.ContentType = @"application/json";
+
+			using (Stream dataStream = request.GetRequestStream()) {
+				dataStream.Write(byteArray, 0, byteArray.Length);
+			}
+			long length = 0;
+			try {
+				using (HttpWebResponse response = (HttpWebResponse)request.GetResponse()) {
+					length = response.ContentLength;
+				}
+			}
+			catch (WebException ex) {
+				Debug.LogException(ex);
+			}
+		}
+
+		static bool MyRemoteCertificateValidationCallback(System.Object sender,
+			X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
+		{
+			bool isOk = true;
+			// If there are errors in the certificate chain,
+			// look at each error to determine the cause.
+			if (sslPolicyErrors != SslPolicyErrors.None) {
+				for (int i=0; i<chain.ChainStatus.Length; i++) {
+					if (chain.ChainStatus[i].Status == X509ChainStatusFlags.RevocationStatusUnknown) {
+						continue;
+					}
+					chain.ChainPolicy.RevocationFlag = X509RevocationFlag.EntireChain;
+					chain.ChainPolicy.RevocationMode = X509RevocationMode.Online;
+					chain.ChainPolicy.UrlRetrievalTimeout = new TimeSpan (0, 1, 0);
+					chain.ChainPolicy.VerificationFlags = X509VerificationFlags.AllFlags;
+					bool chainIsValid = chain.Build ((X509Certificate2)certificate);
+					if (!chainIsValid) {
+						isOk = false;
+						break;
+					}
+				}
+			}
+			return isOk;
+		}
+
+
 		public HeepCommunications ()
 		{
 		}
+
+
 	}
+
+
 }
 
