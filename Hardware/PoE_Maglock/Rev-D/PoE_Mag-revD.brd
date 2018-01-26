@@ -3237,7 +3237,7 @@ design rules under a new name.</description>
 </element>
 <element name="D6" library="microbuilder" package="SOD-123" value="PMEG4030ER" x="15.176853125" y="10.643746875" rot="R90"/>
 <element name="D7" library="microbuilder" package="SOD-123" value="PMEG4030ER" x="10.682984375" y="12.3671" rot="R90"/>
-<element name="C1" library="microbuilder" package="PANASONIC_D" value="" x="14.9225" y="42.2275"/>
+<element name="C1" library="microbuilder" package="PANASONIC_D" value="100uF 25V" x="14.9225" y="42.2275"/>
 <element name="D8" library="microbuilder" package="SOD-123" value="" x="57.353796875" y="23.35" rot="R180"/>
 <element name="D9" library="microbuilder" package="SOD-123" value="" x="57.4125" y="14.1831125" rot="R180"/>
 <element name="D10" library="microbuilder" package="SOD-123" value="" x="57.4125" y="4.6581125" rot="R180"/>

@@ -7562,7 +7562,7 @@ Switches electronic signals</description>
 <part name="U$26" library="microbuilder" deviceset="VBUS" device=""/>
 <part name="U$1" library="microbuilder" deviceset="VBAT" device=""/>
 <part name="GND18" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
-<part name="C1" library="microbuilder" deviceset="CAP_ELECTROLYTIC" device="PANASONIC_D"/>
+<part name="C1" library="microbuilder" deviceset="CAP_ELECTROLYTIC" device="PANASONIC_D" value="100uF 25V"/>
 <part name="U$2" library="microbuilder" deviceset="VBAT" device=""/>
 <part name="GND24" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="D8" library="microbuilder" deviceset="DIODE" device="SOD-123"/>
