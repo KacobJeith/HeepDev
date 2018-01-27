@@ -22,7 +22,6 @@ class DailyActivityGraph extends React.Component {
       {
         x: Object.keys(this.props.dailyActivity),
         y: Object.values(this.props.dailyActivity),
-        // mode: 'lines+markers',
         type: 'bar',
         marker: {
           color: Object.values(this.props.dailyActivity),
@@ -31,30 +30,11 @@ class DailyActivityGraph extends React.Component {
       }
     ];
 
-    // var lastDataTime = this.props.timeSeries[this.props.timeSeries.length - 1];
-    // var startTime = this.props.timeSeries[0];
-
-    // if (this.props.timeSeries.length > 32) {
-    //   startTime = this.props.timeSeries[this.props.timeSeries.length - 15];
-    // } 
-
     var layout = {
-        yaxis: {
-          range: [0, 100]
-        },
-        width: 900,
-        height: 400,
+        width: 700,
+        height: 300,
         title: 'Daily Activity'
       }
-
-    try {
-      // layout.xaxis = {
-      //     range: [startTime.getTime(),
-      //             lastDataTime.getTime()]
-      //   }
-    } catch (err) {
-      console.log("No date defined");
-    }
 
     return (
     <Plot
@@ -93,8 +73,6 @@ const getDailyActivity = (state, ownProps) => {
   for (var i in allTimes) {
     var key = allTimes[i].toDateString();
 
-    console.log(key)
-
     if (key in dateCounters) {
       dateCounters[key] += 1;
     } else {
@@ -102,8 +80,6 @@ const getDailyActivity = (state, ownProps) => {
     }
 
   }
-
-  console.log("Activity: ", dateCounters);
 
   return dateCounters
 }

@@ -69,7 +69,7 @@ var GetNextBlock = (buffer, it) => {
   };
 
 
-  console.log('Encountered OP: ', buffer[it]);
+  // console.log('Encountered OP: ', buffer[it]);
 
   it += 5;
   var thisBlockData = buffer.slice(it, it + buffer[it] + 1);

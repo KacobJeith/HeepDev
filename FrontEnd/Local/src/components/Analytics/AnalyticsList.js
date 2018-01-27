@@ -65,16 +65,16 @@ class AnalyticsList extends React.Component {
     var lastDataTime = this.props.timeSeries[this.props.timeSeries.length - 1];
     var startTime = this.props.timeSeries[0];
 
-    if (this.props.timeSeries.length > 32) {
-      startTime = this.props.timeSeries[this.props.timeSeries.length - 15];
+    if (this.props.timeSeries.length > 50) {
+      startTime = this.props.timeSeries[this.props.timeSeries.length - 50];
     } 
     // startTime.setHours(lastDataTime.getHours() - 3);
     var layout = {
         yaxis: {
           range: [-15, 15]
         },
-        width: 900,
-        height: 400,
+        width: 700,
+        height: 300,
         title: 'Heep Generalized Control Analytics'
       }
 
