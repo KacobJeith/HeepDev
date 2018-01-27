@@ -6,6 +6,7 @@ import * as Actions from '../../redux/actions'
 
 import AnalyticsList from './AnalyticsList'
 import SideBar from './SideBar'
+import DailyActivityGraph from './DailyActivityGraph'
 
 const mapStateToProps = (state) => ({
   deviceID: state.displayingAnalytics
@@ -52,7 +53,7 @@ class AnalyticsMain extends React.Component {
     if (this.props.deviceID == "") {
       data = <div/>
     } else {
-      data = <AnalyticsList {...inputs.displayAnalytics}/>
+      data = <div> <AnalyticsList {...inputs.displayAnalytics}/> <DailyActivityGraph {...inputs.displayAnalytics}/> </div>    
     }
 
     return (

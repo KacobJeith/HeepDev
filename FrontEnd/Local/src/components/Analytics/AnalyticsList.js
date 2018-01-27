@@ -47,7 +47,6 @@ class AnalyticsList extends React.Component {
     //   </div>
     // );
 
-    console.log(this.props.timeSeries);
 
     var data = [
       {
