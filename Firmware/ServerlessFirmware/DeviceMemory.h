@@ -182,6 +182,25 @@ void SetAnalyticsDataControlValueInMemory_Byte(heepByte controlID, int controlVa
 	curFilledMemory = AddNumberToBufferWithSpecifiedBytes64Bit(deviceMemory, GetAnalyticsTime(), curFilledMemory, numBytesForTime);
 }
 
+int GetNextAnalyticsDataPointer(int startingPointer)
+{
+	unsigned int counter = startingPointer;
+
+	while(counter < curFilledMemory)
+	{
+		if(deviceMemory[counter] == AnalyticsOpCode)
+		{
+			return counter;
+		}
+		else
+		{
+			counter = SkipOpCode(counter);
+		}
+	}
+
+	return -1;
+}
+
 unsigned int ParseXYOpCode_Byte(int *x, int *y, heepByte* deviceID, unsigned int counter)
 {
 	counter ++;

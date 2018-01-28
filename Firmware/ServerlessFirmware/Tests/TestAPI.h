@@ -117,10 +117,65 @@ void TestAddBufferToBuffer64Bit()
 	CheckResults(TestName, valueList, 8);
 }
 
+void TestCaptureAnalyticsToggle()
+{
+	std::string TestName = "Test Capture Analytics Toggle";
+
+	ClearDeviceMemory();
+
+	simMillis = 1;
+
+	int firstAnalyticsPointer = GetNextAnalyticsDataPointer(0);
+
+	SendOutputByID(0,1);
+
+	int afterAddingAnalyticsPointer = GetNextAnalyticsDataPointer(0);
+
+	SendOutputByIDNoAnalytics(0, 0);
+
+	int afterNoAnalyticsAdd = GetNextAnalyticsDataPointer(SkipOpCode(GetNextAnalyticsDataPointer(0)));
+
+#ifdef USE_INDEXED_IDS
+	int expectedAfterAddingPointer = SkipOpCode(0);
+#else
+	int expectedAfterAddingPointer = 0;
+#endif
+
+	SendOutputByID(0,0);
+
+	int afterSecondAnalyticsAdded = GetNextAnalyticsDataPointer(SkipOpCode(GetNextAnalyticsDataPointer(0)));
+
+#ifdef USE_INDEXED_IDS
+	int expectedAfterSecondAddingPointer = SkipOpCode(SkipOpCode(0));
+#else
+	int expectedAfterSecondAddingPointer = SkipOpCode(0);
+#endif
+
+	ExpectedValue valueList [4];
+	valueList[0].valueName = "Before Analytics Added";
+	valueList[0].expectedValue = -1;
+	valueList[0].actualValue = firstAnalyticsPointer;
+
+	valueList[1].valueName = "After Analytics Added";
+	valueList[1].expectedValue = expectedAfterAddingPointer;
+	valueList[1].actualValue = afterAddingAnalyticsPointer;
+
+	valueList[2].valueName = "After No Analytics Added";
+	valueList[2].expectedValue = -1;
+	valueList[2].actualValue = afterNoAnalyticsAdd;
+
+	valueList[3].valueName = "After Second Analytics Added";
+	valueList[3].expectedValue = expectedAfterSecondAddingPointer;
+	valueList[3].actualValue = afterSecondAnalyticsAdded;
+
+	CheckResults(TestName, valueList, 4);
+}
+
 void TestHeepAPI()
 {
 	TestSchedulerRolloverProtection();
 	TestBufferControlType();
 	TestAnalyticsMillisecondsBytes();
 	TestAddBufferToBuffer64Bit();
+	TestCaptureAnalyticsToggle();
 }
