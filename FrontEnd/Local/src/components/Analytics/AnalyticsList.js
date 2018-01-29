@@ -71,7 +71,7 @@ class AnalyticsList extends React.Component {
     // startTime.setHours(lastDataTime.getHours() - 3);
     var layout = {
         yaxis: {
-          range: [-15, 15]
+          range: [-1, 5]
         },
         width: 700,
         height: 300,

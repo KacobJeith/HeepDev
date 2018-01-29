@@ -184,7 +184,7 @@ export var ReadControl = (thisBlockData) => { // OP 2
   if (thisBlockData[1] == 1){
     iconName = 'lightbulb';
   } else if (thisBlockData[1] == 2) {
-    iconName = 'switch';
+    iconName = 'lightswitch';
   } else if (thisBlockData[1] == 3) {
     iconName = 'outlet';
   } else if (thisBlockData[1] == 4) {
