@@ -7,6 +7,8 @@ void CommitMemory();
 unsigned char clearMemory = 1;
 void SetupHeepDevice(char* deviceName)
 {	
+	base64_encode_Heep(deviceIDByte);
+	
 	if(clearMemory)
 	{
 		ClearMemory();
