@@ -481,7 +481,13 @@ void TestGetAnalyticsString()
 	valueList[1].expectedValue = 1;
 	valueList[1].actualValue = curFilledMemory < 20; // Memory reduced from when analytics were being captured
 
-	CheckResults(TestName, valueList, 2);
+	AddAnalyticsStringToOutputBufferAndDeleteMOPs();
+
+	valueList[2].valueName = "Analytics String After Delete";
+	valueList[2].expectedValue = 0;
+	valueList[2].actualValue = outputBufferLastByte;
+
+	CheckResults(TestName, valueList, 3);
 }
 
 void TestActionAndResponseOpCodes()
