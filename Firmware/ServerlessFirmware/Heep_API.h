@@ -91,11 +91,12 @@ void HandlePointersOnMemoryChange()
 	FillVertexListFromMemory();
 }
 
-enum Tasks {Defragment = 0, saveMemory = 1};
+enum Tasks {Defragment = 0, saveMemory = 1, PostData = 2};
 void SetupHeepTasks()
 {
 	ScheduleTask(Defragment);
 	ScheduleTask(saveMemory);
+	ScheduleTask(PostData);
 }	
 
 void CommitMemory()
@@ -106,6 +107,16 @@ void CommitMemory()
 		memoryChanged = 0;
 
 		HandlePointersOnMemoryChange();
+	}
+}
+
+void PostDataToFirebase()
+{
+	AddAnalyticsStringToOutputBufferAndDeleteMOPs();
+
+	if(outputBufferLastByte > 0)
+	{
+		SendDataToFirebase(outputBuffer, outputBufferLastByte, base64DeviceIDByte, STANDARD_ID_SIZE_BASE_64);
 	}
 }
 
@@ -135,6 +146,10 @@ void PerformHeepTasks()
 		else if(curTask == saveMemory)
 		{
 			CommitMemory();
+		}
+		else if(curTask == PostData)
+		{
+			PostDataToFirebase();
 		}
 	}
 
