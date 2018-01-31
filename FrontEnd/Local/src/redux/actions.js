@@ -52,6 +52,12 @@ export const addMemoryDump = (deviceID, controlID, MOP) => ({
 	MOP
 })
 
+export const addMemoryDumpBatch = (deviceID, MOParray) => ({
+	type: 'ADD_MEMORY_DUMP_BATCH',
+	deviceID,
+	MOParray
+})
+
 export const selectDeviceToDisplay = (deviceID) => ({
 	type: 'SELECT_DEVICE_FOR_ANALYTICS',
 	deviceID

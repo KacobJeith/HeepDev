@@ -103,6 +103,11 @@ void SetDeviceName(char* deviceName)
 	SetDeviceNameInMemory_Byte(deviceName, deviceNameLength, deviceIDByte);
 }
 
+void SetDeviceIcon(char deviceIcon)
+{
+	SetIconIDInMemory_Byte(deviceIcon, deviceIDByte);
+}
+
 int SetControlValueByID(unsigned char controlID, unsigned int value, unsigned char setFromNetwork)
 {
 	for(int i = 0; i < numberOfControls; i++)

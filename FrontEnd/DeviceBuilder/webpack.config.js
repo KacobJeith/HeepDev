@@ -32,7 +32,7 @@ module.exports = {
         exclude: /node_modules/ 
       },
       {
-        test: /\.(h|py)$/,
+        test: /\.(h|py|svg)$/,
         loader: 'raw-loader',
         exclude: /node_modules/ 
       }

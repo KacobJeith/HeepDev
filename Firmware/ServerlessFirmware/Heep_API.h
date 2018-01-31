@@ -5,7 +5,7 @@
 void CommitMemory();
 
 unsigned char clearMemory = 1;
-void SetupHeepDevice(char* deviceName)
+void SetupHeepDevice(char* deviceName, char deviceIcon)
 {	
 	base64_encode_Heep(deviceIDByte);
 	
@@ -13,6 +13,7 @@ void SetupHeepDevice(char* deviceName)
 	{
 		ClearMemory();
 		SetDeviceName(deviceName);
+		SetDeviceIcon(deviceIcon);
 		CommitMemory();
 	}
 	else
@@ -22,10 +23,10 @@ void SetupHeepDevice(char* deviceName)
 	}
 }
 
-void FactoryReset(char* deviceName)
+void FactoryReset(char* deviceName, char iconEnum)
 {
 	clearMemory = 1;
-	SetupHeepDevice(deviceName);
+	SetupHeepDevice(deviceName, iconEnum);
 	clearMemory = 0;
 }
 

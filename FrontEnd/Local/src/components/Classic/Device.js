@@ -153,7 +153,7 @@ class Device extends React.Component {
 				onTouchEnd: (event) => {this.sendPositionToServer()},
 			},
 			icon: {
-				deviceID: this.props.device['deviceID'],
+				deviceID: this.props.device.deviceID,
 				controlID: this.props.controlInputs.length == 0 ? this.props.controlOutputs[0] : this.props.controlInputs[0] ,
 				width: styles.iconContainer.width,
 				height: styles.iconContainer.height,
