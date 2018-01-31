@@ -99,7 +99,7 @@ void SendDataToFirebase(heepByte *buffer, int length, heepByte* base64IDBuffer, 
     String analyticsDataString = "";
     for(int i = 0; i < length; i++)
     {
-      analyticsDataString += buffer[i];
+      analyticsDataString += (char)buffer[i];
     }
 
     String analyticsString = "{\"AnalyticsString\" : \"" + analyticsDataString + "\"}";
@@ -107,7 +107,7 @@ void SendDataToFirebase(heepByte *buffer, int length, heepByte* base64IDBuffer, 
 
     String base64DeviceID = "";
     for(int i = 0; i < base64IDLength; i++)
-      base64DeviceID += base64IDBuffer[i];
+      base64DeviceID += (char)base64IDBuffer[i];
 
     String host = "heep-3cddb.firebaseio.com";
     String url = "/analytics/" + base64DeviceID + ".json";
