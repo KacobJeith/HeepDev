@@ -23,7 +23,7 @@ void AddDeviceIDToOutputBuffer_Byte(heepByte* deviceID)
 	outputBufferLastByte = AddDeviceIDToBuffer_Byte(outputBuffer, deviceID, outputBufferLastByte);
 }
 
-void AddAnalyticsStringToOutputBufferAndDelete()
+void AddAnalyticsStringToOutputBufferAndDeleteMOPs()
 {
   ClearOutputBuffer();
   int AnalyticsPointer = 0;
@@ -31,11 +31,11 @@ void AddAnalyticsStringToOutputBufferAndDelete()
   {
       AnalyticsPointer = GetNextAnalyticsDataPointer(AnalyticsPointer);
 
-      if(AnalyticsPointer > 0)
+      if(AnalyticsPointer >= 0)
       {
-        int numBytes = deviceMemory[AnalyticsPointer + STANDARD_ID_SIZE + 1];
+        int numBytes = deviceMemory[AnalyticsPointer + ID_SIZE + 1];
         
-        for(int i = AnalyticsPointer; i < AnalyticsPointer + numBytes + STANDARD_ID_SIZE + 1; i++)
+        for(int i = AnalyticsPointer; i < AnalyticsPointer + numBytes + STANDARD_ID_SIZE + 2; i++)
         {
           AddNewCharToOutputBuffer(deviceMemory[i]);
         }
