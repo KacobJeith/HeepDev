@@ -23,6 +23,15 @@ void AddDeviceIDToOutputBuffer_Byte(heepByte* deviceID)
 	outputBufferLastByte = AddDeviceIDToBuffer_Byte(outputBuffer, deviceID, outputBufferLastByte);
 }
 
+void AddDeviceIDOrIndexToOutputBuffer_Byte(heepByte* deviceID)
+{
+	unsigned int counter = 0;
+	heepByte copyDeviceID [STANDARD_ID_SIZE];
+	CopyDeviceID(deviceID, copyDeviceID);
+	GetIndexedDeviceID_Byte(copyDeviceID);
+	AddBufferToBuffer(outputBuffer, copyDeviceID, ID_SIZE, &outputBufferLastByte, &counter);
+}
+
 void AddAnalyticsStringToOutputBufferAndDeleteMOPs()
 {
   ClearOutputBuffer();
@@ -34,8 +43,11 @@ void AddAnalyticsStringToOutputBufferAndDeleteMOPs()
       if(AnalyticsPointer >= 0)
       {
         int numBytes = deviceMemory[AnalyticsPointer + ID_SIZE + 1];
+
+        AddNewCharToOutputBuffer(deviceMemory[AnalyticsPointer]);
+        AddDeviceIDToOutputBuffer_Byte(deviceIDByte);
         
-        for(int i = AnalyticsPointer; i < AnalyticsPointer + numBytes + STANDARD_ID_SIZE + 2; i++)
+        for(int i = AnalyticsPointer + ID_SIZE + 1; i < AnalyticsPointer + numBytes + ID_SIZE + 2; i++)
         {
           AddNewCharToOutputBuffer(deviceMemory[i]);
         }
@@ -44,15 +56,6 @@ void AddAnalyticsStringToOutputBufferAndDeleteMOPs()
       }
 
   }while(AnalyticsPointer != -1);
-}
-
-void AddDeviceIDOrIndexToOutputBuffer_Byte(heepByte* deviceID)
-{
-	unsigned int counter = 0;
-	heepByte copyDeviceID [STANDARD_ID_SIZE];
-	CopyDeviceID(deviceID, copyDeviceID);
-	GetIndexedDeviceID_Byte(copyDeviceID);
-	AddBufferToBuffer(outputBuffer, copyDeviceID, ID_SIZE, &outputBufferLastByte, &counter);
 }
 
 unsigned long CalculateControlDataSize()
