@@ -1,6 +1,7 @@
 #include <SPI.h> 
 #include <ESP8266WiFi.h>
 #include <WiFiUdp.h>
+#include <WiFiClientSecure.h>
 
 unsigned int localPort = 5000;  
 int UDP_PORT = 5000;
@@ -91,7 +92,17 @@ void SendOutputBufferToIP(HeepIPAddress destIP)
 
 void SendDataToFirebase(heepByte *buffer, int length, heepByte* base64IDBuffer, int base64IDLength)
 {
-    String analyticsString = {\"AnalyticsString\" : \"" + GetAnalyticsString() + "\"}";
+    // Use WiFiClientSecure class to create TLS connection
+    WiFiClientSecure client;
+    const int httpsPort = 443;
+
+    String analyticsDataString = "";
+    for(int i = 0; i < length; i++)
+    {
+      analyticsDataString += buffer[i];
+    }
+
+    String analyticsString = "{\"AnalyticsString\" : \"" + analyticsDataString + "\"}";
     String contentLengthString = String(analyticsString.length());
 
     String base64DeviceID = "";
@@ -105,7 +116,6 @@ void SendDataToFirebase(heepByte *buffer, int length, heepByte* base64IDBuffer, 
 
     if (!client.connect(host.c_str(), httpsPort)) {
       Serial.println("connection failed");
-      return "bad";
     }
 
     Serial.print("requesting URL ");
@@ -127,10 +137,6 @@ void SendDataToFirebase(heepByte *buffer, int length, heepByte* base64IDBuffer, 
 
     while (client.connected()) {
       String line = client.readStringUntil('\n');
-      if(line.indexOf("Date") != -1)
-      {
-        mostRecentDateString = line;
-      }
       Serial.println(line);
       if (line == "\r") {
         Serial.println("headers received");
@@ -144,5 +150,4 @@ void SendDataToFirebase(heepByte *buffer, int length, heepByte* base64IDBuffer, 
     Serial.println("==========");
     Serial.println(payload);
     Serial.println("==========");
-    return payload;
 }
