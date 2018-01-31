@@ -89,39 +89,14 @@ void SendOutputBufferToIP(HeepIPAddress destIP)
 
 }
 
-String GetAnalyticsString()
-{
-  String analyticsString = "";
-  int AnalyticsPointer = 0;
-  do
-  {
-      AnalyticsPointer = GetNextAnalyticsDataPointer(AnalyticsPointer);
-
-      if(AnalyticsPointer > 0)
-      {
-        int numBytes = deviceMemory[AnalyticsPointer + STANDARD_ID_SIZE + 1];
-        
-        for(int i = AnalyticsPointer; i < AnalyticsPointer + numBytes + STANDARD_ID_SIZE + 1; i++)
-        {
-          analyticsString += deviceMemory[i];
-        }
-
-        deviceMemory[AnalyticsPointer] = FragmentOpCode;
-      }
-
-  }while(AnalyticsPointer != -1);
-
-  return analyticsString;
-}
-
-void SendDataToFirebase()
+void SendDataToFirebase(heepByte *buffer, int length, heepByte* base64IDBuffer, int base64IDLength)
 {
     String analyticsString = {\"AnalyticsString\" : \"" + GetAnalyticsString() + "\"}";
     String contentLengthString = String(analyticsString.length());
 
     String base64DeviceID = "";
-    for(int i = 0; i < STANDARD_ID_SIZE_BASE_64; i++)
-      base64DeviceID += base64DeviceIDByte[i];
+    for(int i = 0; i < base64IDLength; i++)
+      base64DeviceID += base64IDBuffer[i];
 
     String host = "heep-3cddb.firebaseio.com";
     String url = "/analytics/" + base64DeviceID + ".json";

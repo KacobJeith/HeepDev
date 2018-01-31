@@ -23,6 +23,29 @@ void AddDeviceIDToOutputBuffer_Byte(heepByte* deviceID)
 	outputBufferLastByte = AddDeviceIDToBuffer_Byte(outputBuffer, deviceID, outputBufferLastByte);
 }
 
+void AddAnalyticsStringToOutputBufferAndDelete()
+{
+  ClearOutputBuffer();
+  int AnalyticsPointer = 0;
+  do
+  {
+      AnalyticsPointer = GetNextAnalyticsDataPointer(AnalyticsPointer);
+
+      if(AnalyticsPointer > 0)
+      {
+        int numBytes = deviceMemory[AnalyticsPointer + STANDARD_ID_SIZE + 1];
+        
+        for(int i = AnalyticsPointer; i < AnalyticsPointer + numBytes + STANDARD_ID_SIZE + 1; i++)
+        {
+          AddNewCharToOutputBuffer(deviceMemory[i]);
+        }
+
+        deviceMemory[AnalyticsPointer] = FragmentOpCode;
+      }
+
+  }while(AnalyticsPointer != -1);
+}
+
 void AddDeviceIDOrIndexToOutputBuffer_Byte(heepByte* deviceID)
 {
 	unsigned int counter = 0;
