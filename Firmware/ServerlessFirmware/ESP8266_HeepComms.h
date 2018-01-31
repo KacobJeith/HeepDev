@@ -88,3 +88,86 @@ void SendOutputBufferToIP(HeepIPAddress destIP)
   Udp.endPacket();
 
 }
+
+String GetAnalyticsString()
+{
+  String analyticsString = "";
+  int AnalyticsPointer = 0;
+  do
+  {
+      AnalyticsPointer = GetNextAnalyticsDataPointer(AnalyticsPointer);
+
+      if(AnalyticsPointer > 0)
+      {
+        int numBytes = deviceMemory[AnalyticsPointer + STANDARD_ID_SIZE + 1];
+        
+        for(int i = AnalyticsPointer; i < AnalyticsPointer + numBytes + STANDARD_ID_SIZE + 1; i++)
+        {
+          analyticsString += deviceMemory[i];
+        }
+
+        deviceMemory[AnalyticsPointer] = FragmentOpCode;
+      }
+
+  }while(AnalyticsPointer != -1);
+
+  return analyticsString;
+}
+
+void SendDataToFirebase()
+{
+    String analyticsString = {\"AnalyticsString\" : \"" + GetAnalyticsString() + "\"}";
+    String contentLengthString = String(analyticsString.length());
+
+    String base64DeviceID = "";
+    for(int i = 0; i < STANDARD_ID_SIZE_BASE_64; i++)
+      base64DeviceID += base64DeviceIDByte[i];
+
+    String host = "heep-3cddb.firebaseio.com";
+    String url = "/analytics/" + base64DeviceID + ".json";
+    Serial.print("connecting to ");
+    Serial.println(host);
+
+    if (!client.connect(host.c_str(), httpsPort)) {
+      Serial.println("connection failed");
+      return "bad";
+    }
+
+    Serial.print("requesting URL ");
+    Serial.println(url);
+
+    client.print(String("POST ") + url + " HTTP/1.1\r\n" +
+                 "Host: " + host + "\r\n" +
+                 "Content-Length: " + contentLengthString + "\r\n" +
+                 "Content-Type: application/json\r\n\r\n");
+
+    client.print(analyticsString);
+
+    // client.print(String("GET ") + url + " HTTP/1.1\r\n" +
+    //              "Host: " + host + "\r\n" +
+    //              "User-Agent: BuildFailureDetectorESP8266\r\n" +
+    //              "Connection: close\r\n\r\n");
+
+    Serial.println("request sent");
+
+    while (client.connected()) {
+      String line = client.readStringUntil('\n');
+      if(line.indexOf("Date") != -1)
+      {
+        mostRecentDateString = line;
+      }
+      Serial.println(line);
+      if (line == "\r") {
+        Serial.println("headers received");
+        break;
+      }
+    }
+
+    String payload = client.readString();
+
+    Serial.println("reply was:");
+    Serial.println("==========");
+    Serial.println(payload);
+    Serial.println("==========");
+    return payload;
+}
