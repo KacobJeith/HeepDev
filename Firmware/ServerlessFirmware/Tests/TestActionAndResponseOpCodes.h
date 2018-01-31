@@ -456,7 +456,7 @@ void TestDeleteMOPOpCode()
 
 void TestGetAnalyticsString()
 {
-	// std::string TestName = "Test Analytics MOP";
+	std::string TestName = "Test Analytics Get String and Delete";
 
 	ClearDeviceMemory();
 
@@ -464,38 +464,24 @@ void TestGetAnalyticsString()
 	heepByte deviceID1[STANDARD_ID_SIZE];
 	CreateFakeDeviceID(deviceID1);
 	SetAnalyticsDataControlValueInMemory_Byte(0, 4, deviceID1);
+	char* deviceName = "Jacob";
+	SetDeviceNameInMemory_Byte(deviceName, strlen(deviceName), deviceID1);
+	SetAnalyticsDataControlValueInMemory_Byte(1, 2, deviceID1);
 
 	int counter = GetMemCounterStart();
-
-	cout << "Test Analytics String" << endl;
-	PrintBuffer(deviceMemory, curFilledMemory);
-	
 	AddAnalyticsStringToOutputBufferAndDeleteMOPs();
-
-	cout << "After String Generation" << endl;
-	PrintBuffer(deviceMemory, curFilledMemory);
-
-	cout << "Output Buffer" << endl;
-	PrintOutputBuffer();
-
-	cout << "After Defragment" << endl;
 	DefragmentMemory();
-	PrintBuffer(deviceMemory, curFilledMemory);
 
-	// ExpectedValue valueList [3];
-	// valueList[0].valueName = "Analytics OpCode";
-	// valueList[0].expectedValue = AnalyticsOpCode;
-	// valueList[0].actualValue = deviceMemory[counter];
+	ExpectedValue valueList [3];
+	valueList[0].valueName = "Output Buffer Size";
+	valueList[0].expectedValue = 36;
+	valueList[0].actualValue = outputBufferLastByte;
 
-	// valueList[1].valueName = "Number of Bytes";
-	// valueList[1].expectedValue = 12;
-	// valueList[1].actualValue = deviceMemory[counter + ID_SIZE + 1];
+	valueList[1].valueName = "Cur Filled Memory Defragmented";
+	valueList[1].expectedValue = 1;
+	valueList[1].actualValue = curFilledMemory < 20; // Memory reduced from when analytics were being captured
 
-	// valueList[2].valueName = "Time Bytes";
-	// valueList[2].expectedValue = 7;
-	// valueList[2].actualValue = deviceMemory[counter + ID_SIZE + 6];
-
-	// CheckResults(TestName, valueList, 3);
+	CheckResults(TestName, valueList, 2);
 }
 
 void TestActionAndResponseOpCodes()
