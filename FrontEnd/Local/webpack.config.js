@@ -44,11 +44,16 @@ module.exports = {
         exclude: /node_modules/ 
       },
       {
-      test: /\.(jpe?g|png|gif|svg|mov|mp4)$/,
-      loader: 'file-loader',
-      options: {
-        name: '[name].[ext]'} 
-      }
+        test: /\.(h|py|svg)$/,
+        loader: 'raw-loader',
+        exclude: /node_modules/ 
+      },
+      {
+        test: /\.(jpe?g|png|gif|mov|mp4)$/,
+        loader: 'file-loader',
+        options: {
+          name: '[name].[ext]'} 
+        }
     ],
 
   }

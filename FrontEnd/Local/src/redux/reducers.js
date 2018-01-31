@@ -116,6 +116,20 @@ export default function(state = initialState, action) {
 
       }
 
+    case 'ADD_MEMORY_DUMP_BATCH' :
+
+      var newData = Immutable.Map(state.analytics).toJS();
+
+      newData[action.deviceID] = action.MOParray;
+
+
+      var analyticsDeviceList = Immutable.List(state.analyticsDeviceList).toJS();
+
+      analyticsDeviceList.indexOf(action.deviceID) === -1 ? analyticsDeviceList.push(action.deviceID) : console.log("This item already exists");
+
+      return Immutable.Map(state).set('analytics', newData).set('analyticsDeviceList', analyticsDeviceList).set('displayingAnalytics', action.deviceID.toString()).toJS();
+
+
     case 'SELECT_DEVICE_FOR_ANALYTICS' :
 
       return Immutable.Map(state).set('displayingAnalytics', action.deviceID).toJS()

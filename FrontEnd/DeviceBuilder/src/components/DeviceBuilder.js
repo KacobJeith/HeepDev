@@ -18,7 +18,7 @@ export default class DeviceBuilder extends React.Component {
     var inputs = {
       builder: {
         style: {
-          backgroundColor: "black",
+          backgroundColor: "#272B30",
           fontFamily: "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
         }
       },
