@@ -151,7 +151,7 @@ void SendDataToFirebase(heepByte *buffer, int length, heepByte* base64IDBuffer, 
 
     analyticsDataString = base64_encode(analyticsDataString.c_str(), analyticsDataString.length());
 
-    String analyticsString = "{\"AnalyticsString\" : \"" + analyticsDataString + "\"}";
+    String analyticsString = "{\"Base64\" : \"" + analyticsDataString + "\"}";
     String contentLengthString = String(analyticsString.length());
 
     String base64DeviceID = "";
