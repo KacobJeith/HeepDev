@@ -438,6 +438,7 @@ const generateAutoInfoFile = (deviceIDarray, MACAddressArray, autoGenIncludes) =
 
 //#define USE_INDEXED_IDS
 #define STANDARD_ID_SIZE 4
+#define STANDARD_ID_SIZE_BASE_64 8 // 4 * ceiling(STANDRD_ID_SIZE/3)
 
 #ifdef USE_INDEXED_IDS
 #define ID_SIZE 1
@@ -446,14 +447,13 @@ const generateAutoInfoFile = (deviceIDarray, MACAddressArray, autoGenIncludes) =
 #endif
 
 // Include the standard Heep Data Types
-#include "CommonDataTypes.h"\n\n`;
-
-  autoGenContent += autoGenIncludes;
-
-  autoGenContent += `
+#include "CommonDataTypes.h"\n\n
 
 heepByte deviceIDByte [STANDARD_ID_SIZE] = {` + convertIntToHex(deviceIDarray) + `};
+heepByte base64DeviceIDByte [STANDARD_ID_SIZE_BASE_64];
 uint8_t mac[6] = {` + convertIntToHex(MACAddressArray) + `};\n`
+
+  autoGenContent += autoGenIncludes;
   
   return autoGenContent
 }
