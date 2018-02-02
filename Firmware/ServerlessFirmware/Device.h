@@ -115,6 +115,7 @@ int SetControlValueByID(unsigned char controlID, unsigned int value, unsigned ch
 		if(controlList[i].controlID == controlID)
 		{
 			controlList[i].curValue = value;
+			SetAnalyticsDataControlValueInMemory_Byte(controlID, value, deviceIDByte);
 
 			if(setFromNetwork)
 				controlList[i].controlFlags = 0x01;
