@@ -1,5 +1,6 @@
 import * as functions from 'firebase-functions'
 import * as respond from './responses.js'
+import * as byteUtils from './byteUtilities.js'
 
 const cors = require('cors')({origin: true});
 var request = require('request');
@@ -8,6 +9,20 @@ const ApiAiApp = require('actions-on-google').ApiAiApp;
 const placesAPIKey = "AIzaSyAPJ_y32qzI3O-V9Y7oQoCXhML_gbfmm_8";
 
 admin.initializeApp(functions.config().firebase);
+
+exports.AbsoluteTime = functions.https.onRequest((request, response) => {
+	const date = new Date();
+	const currentTimeMs = date.getTime();
+
+	const dateOrigin = new Date('1/1/2018');
+	const msAtHeepOrigin = dateOrigin.getTime();
+
+	const msSinceHeepOrigin = currentTimeMs - msAtHeepOrigin;
+
+	response.status(200).send({
+		ms: msSinceHeepOrigin
+	});
+});
 
 exports.incoming = functions.https.onRequest((request, response) => {
 	
