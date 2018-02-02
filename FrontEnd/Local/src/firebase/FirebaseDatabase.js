@@ -143,16 +143,21 @@ const readDeviceData = (deviceID) => {
 		var buffer = base64ToArrayBuffer(snapshot.val());
 		var data = HAPI.ReadHeepResponse(buffer);
 		
-		var analytics = {};
+		var analytics = [];
 
 		for (var i = 0; i < data.length; i++) {
 			var MOP = data[i];
 
 			if (MOP.op == 31) { 
 
-				setup.store.dispatch(actions.addMemoryDump(deviceID, MOP.analytics.controlID, MOP));
+				analytics.push(MOP.analytics);
 			}
 		}
+
+		if (analytics.length > 0) {
+			setup.store.dispatch(actions.addMemoryDumpBatch(deviceID, analytics))
+		}
+		;
 
 	})
 }

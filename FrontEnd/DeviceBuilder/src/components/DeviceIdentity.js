@@ -3,22 +3,28 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as Actions from '../redux/actions'
 import { withRouter } from 'react-router-dom'
-import {ButtonGroup, ControlLabel, FormGroup, FormControl, HelpBlock, option} from 'react-bootstrap';
+import {Grid, Row, Col, ButtonGroup, ControlLabel, FormGroup, FormControl, HelpBlock, option} from 'react-bootstrap';
 
 import { sys_phy_files } from '../utilities/SystemPHYCompatibilities'
 import GenericSelect from './GenericSelect'
 import GenericTextInput from './GenericTextInput'
+import IconSVGSelect from './IconSVGSelect'
+import {iconMappings} from '../assets/iconMappings'
+import GenericSVG from './GenericSVG'
 
 var mapStateToProps = (state, ownProps) => ({
   deviceName: state.deviceName,
   systemType: state.systemType,
   physicalLayer: state.physicalLayer,
-  controls: state.controls
+  controls: state.controls,
+  icon: state.iconSelected
 })
 
 class DeviceIdentity extends React.Component {
 
   render () {
+
+    console.log("display icon: ", iconMappings[this.props.icon]);
 
     var inputs = {
       numControls: {
@@ -55,22 +61,58 @@ class DeviceIdentity extends React.Component {
         title: "Enter WiFi Password",
         defaultValue: '',
         onChange: (value) => {this.props.updateSSIDPassword(value)}
+      },
+      iconSVG: {
+        height: 150,
+        width: 150,
+        iconName: iconMappings[this.props.icon]
+      },
+      iconContainer: {
+        style: {
+          backgroundColor: "white",
+          border: "10px solid white",
+          borderRadius: 5,
+          cursor: "pointer",
+          display: "flex",
+          justifyContent: "center",
+          width: 170,
+          height: 170,
+          margin: "auto"
+        },
+        onClick: () => {this.props.openIconModal()}
+      },
+      fullWidth: {
+        style: {
+          width: "100%"
+        }
       }
     }
 
     var optionalInputs = [];
 
     if (this.props.physicalLayer == 'wifi') {
-      optionalInputs.push(<GenericTextInput {...inputs.ssid}/>)
-      optionalInputs.push(<GenericTextInput {...inputs.ssidPassword}/>)
+      optionalInputs.push(<Row> <div {...inputs.fullWidth}> <GenericTextInput {...inputs.ssid}/> </div> </Row>)
+      optionalInputs.push(<Row> <div {...inputs.fullWidth}> <GenericTextInput {...inputs.ssidPassword}/> </div> </Row>)
     }
 
     return (
           <form>
-            <GenericTextInput {...inputs.deviceName}/>
-            <GenericSelect {...inputs.systemType}/>
-            <GenericSelect {...inputs.physicalLayer}/>
-            {optionalInputs}
+          <IconSVGSelect />
+          <Grid>
+            <Row>
+              <Col md={4} >
+                <div {...inputs.iconContainer}>
+                  <GenericSVG {...inputs.iconSVG}/>
+                </div>
+              </Col>
+              <Col md={8}>
+                <Row> <div {...inputs.fullWidth}> <GenericTextInput {...inputs.deviceName}/> </div> </Row>
+                <Row> <div {...inputs.fullWidth}> <GenericSelect {...inputs.systemType}/> </div> </Row>
+                <Row> <div {...inputs.fullWidth}> <GenericSelect {...inputs.physicalLayer}/> </div> </Row>
+                {optionalInputs}
+              </Col>
+            </Row>
+          </Grid>
           </form>  
     );
   }

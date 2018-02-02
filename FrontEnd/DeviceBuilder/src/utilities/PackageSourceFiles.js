@@ -180,7 +180,7 @@ char deviceName [] = "` + deviceDetails.deviceName + `";\n\n`
 {
 
   Serial.begin(115200);
-  SetupHeepDevice(deviceName);\n\n  `  
+  SetupHeepDevice(deviceName, ` + deviceDetails.iconSelected + `);\n\n  `  
 + setControls(controls)
 + `SetupHeepTasks();
   InitializeControlHardware();

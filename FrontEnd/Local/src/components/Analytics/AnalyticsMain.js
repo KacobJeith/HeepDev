@@ -6,6 +6,8 @@ import * as Actions from '../../redux/actions'
 
 import AnalyticsList from './AnalyticsList'
 import SideBar from './SideBar'
+import DailyActivityGraph from './DailyActivityGraph'
+import BusyTimesGraph from './BusyTimesGraph'
 
 const mapStateToProps = (state) => ({
   deviceID: state.displayingAnalytics
@@ -17,10 +19,6 @@ class AnalyticsMain extends React.Component {
   }
 
   render () {
-
-
-
-    
 
     var inputs = {
       builder: {
@@ -56,7 +54,7 @@ class AnalyticsMain extends React.Component {
     if (this.props.deviceID == "") {
       data = <div/>
     } else {
-      data = <AnalyticsList {...inputs.displayAnalytics}/>
+      data = <div> <AnalyticsList {...inputs.displayAnalytics}/> <DailyActivityGraph {...inputs.displayAnalytics}/> <BusyTimesGraph {...inputs.displayAnalytics}/></div>    
     }
 
     return (
