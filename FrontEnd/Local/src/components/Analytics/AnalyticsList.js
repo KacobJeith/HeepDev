@@ -23,31 +23,7 @@ class AnalyticsList extends React.Component {
   }
 
   render () {
-    
-    // var inputs = {
-    //   thisCard: {
-    //     deviceID: this.props.deviceID,
-    //     element: 0,
-    //     key: 0
-    //   }
-      
-    // }
-
-    // var analyticsCards = [];
-
-    // for (var i = 0; i < this.props.numberElements; i++) {
-    //   inputs.thisCard.element = i;
-    //   inputs.thisCard.key = "MOP_" + i.toString();
-    //   analyticsCards.push( <AnalyticsCard {...inputs.thisCard}/>);
-    // }
-
-    // return (
-    //   <div>
-    //     {analyticsCards} 
-    //   </div>
-    // );
-
-
+   
     var data = [
       {
         x: this.props.timeSeries,
@@ -68,7 +44,7 @@ class AnalyticsList extends React.Component {
     if (this.props.timeSeries.length > 50) {
       startTime = this.props.timeSeries[this.props.timeSeries.length - 50];
     } 
-    // startTime.setHours(lastDataTime.getHours() - 3);
+    
     var layout = {
         yaxis: {
           range: [-1, 5]

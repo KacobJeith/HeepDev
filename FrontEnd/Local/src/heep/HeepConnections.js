@@ -227,7 +227,7 @@ var AddMemoryChunksToMasterState = (heepChunks, IPAddress) => {
         AddVertex(heepChunks[i].vertex)
         
       } else if (heepChunks[i].op == 4){
-        SetIconFromID(heepChunks[i]);
+        SetIcon(heepChunks[i]);
 
       } else if (heepChunks[i].op == 5){
         SetCustomIcon(heepChunks[i]);
@@ -274,14 +274,14 @@ var AddDevice = (heepChunk, IPAddress) => {
 
 var SetDeviceName = (heepChunk) => {
   masterState.devices[heepChunk.deviceID].name = heepChunk.deviceName;
-  if ((heepChunk.deviceID in masterState.icons)){
-    var currentIcon = masterState.icons[heepChunk.deviceID];
-  } 
-  else {
-    var currentIcon = 'none';
-  }
-  iconUtils.SetDeviceIconFromString(heepChunk.deviceID, heepChunk.deviceName, currentIcon);
-  masterState.icons = iconUtils.GetIconContent()
+  // if ((heepChunk.deviceID in masterState.icons)){
+  //   var currentIcon = masterState.icons[heepChunk.deviceID];
+  // } 
+  // else {
+  //   var currentIcon = 'none';
+  // }
+  // iconUtils.SetDeviceIconFromString(heepChunk.deviceID, heepChunk.deviceName, currentIcon);
+  // masterState.icons = iconUtils.GetIconContent()
 }
 
 var AddControl = (heepChunk) => {
@@ -295,10 +295,11 @@ var AddControl = (heepChunk) => {
   masterState.controls.connections[tempCtrlName] = [];
 }
 
-var SetIconFromID = (heepChunk) => {
-  var deviceName = masterState.devices[heepChunk.deviceID].deviceName;
-  iconUtils.SetDeviceIconFromString(heepChunk.deviceID, deviceName, heepChunk.iconName);
-  masterState.icons = iconUtils.GetIconContent()
+var SetIcon = (heepChunk) => {
+  // var deviceName = masterState.devices[heepChunk.deviceID].deviceName;
+  // iconUtils.SetDeviceIconFromString(heepChunk.deviceID, deviceName, heepChunk.iconName);
+  // masterState.icons = iconUtils.GetIconContent();
+  masterState.devices[heepChunk.deviceID].iconName = heepChunk.iconName
 }
 
 var SetCustomIcon = (heepChunk) => {

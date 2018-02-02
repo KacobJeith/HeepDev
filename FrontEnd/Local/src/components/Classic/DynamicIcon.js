@@ -29,7 +29,7 @@ var iconStrings = {
 var mapStateToProps = (state, ownProps) => ({
   value: state.controls[ownProps.controlID]['valueCurrent'],
   highValue: state.controls[ownProps.controlID]['valueHigh'],
-  icon: state.icons[ownProps.deviceID],
+  icon: state.devices[ownProps.deviceID].iconName,
   defaultIcon: iconStrings.none,
   height: ownProps.height,
   width: ownProps.width

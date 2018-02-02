@@ -114,13 +114,14 @@ export const updateGroupName = (groupID, name) => {
 }
 
 export const associateDeviceWithAccount = (deviceData) => {
-	firebase.database().ref('devices/' + deviceData.identity.deviceID).set(deviceData);
+	var deviceID = deviceData.identity.deviceID.toString();
+	firebase.database().ref('devices/' + deviceID).set(deviceData);
 
 	var user = firebaseAuth.currentUser();
 	var userDeviceObj = {};
-	userDeviceObj[deviceData.identity.deviceID] = true;
+	userDeviceObj[deviceID] = true;
 
-	firebase.database().ref('users/' + user.uid + '/devices/' + deviceData.identity.deviceID).set(userDeviceObj);
+	firebase.database().ref('users/' + user.uid + '/devices/' + deviceID).set(userDeviceObj);
 }
 
 export const retrieveAnalyticData = (user) => {
@@ -136,29 +137,33 @@ export const retrieveAnalyticData = (user) => {
 
 const readDeviceData = (deviceID) => {
 
-	console.log("Reading: ", deviceID);
+
+	var analytics = [];
 
 	firebase.database().ref('/analytics/' + deviceID).on('value', function(snapshot) {
 
-		var buffer = base64ToArrayBuffer(snapshot.val());
-		var data = HAPI.ReadHeepResponse(buffer);
-		
-		var analytics = [];
+		snapshot.forEach((childSnapshot) => {
 
-		for (var i = 0; i < data.length; i++) {
-			var MOP = data[i];
+	      if ("Base64" in childSnapshot.val()) {
 
-			if (MOP.op == 31) { 
+	      	var buffer = base64ToArrayBuffer(childSnapshot.val()["Base64"]);
+	      	var data = HAPI.ReadHeepResponse(buffer);
+	      	
+	      	for (var i = 0; i < data.length; i++) {
+	      		var MOP = data[i];
 
-				analytics.push(MOP.analytics);
-			}
-		}
+	      		if (MOP.op == 31) { 
 
-		if (analytics.length > 0) {
-			setup.store.dispatch(actions.addMemoryDumpBatch(deviceID, analytics))
-		}
-		;
+	      			analytics.push(MOP.analytics);
+	      		}
+	      	}
+	      }
 
+  		});
+
+  		if (analytics.length > 0) {
+      		setup.store.dispatch(actions.addMemoryDumpBatch(deviceID, analytics));
+      	}
 	})
 }
 
