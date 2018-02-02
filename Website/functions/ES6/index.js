@@ -9,7 +9,7 @@ const placesAPIKey = "AIzaSyAPJ_y32qzI3O-V9Y7oQoCXhML_gbfmm_8";
 
 admin.initializeApp(functions.config().firebase);
 
-exports.msSince2018Jan1br = functions.https.onRequest((request, response) => {
+exports.msSince2018Jan1 = functions.https.onRequest((request, response) => {
 	const date = new Date();
 	const currentTimeMs = date.getTime();
 
@@ -18,7 +18,7 @@ exports.msSince2018Jan1br = functions.https.onRequest((request, response) => {
 
 	var msSinceHeepOrigin = currentTimeMs - msAtHeepOrigin;
 
-	response.status(200).send([msSinceHeepOrigin]);
+	response.status(200).send(msSinceHeepOrigin.toString());
 });
 
 exports.incoming = functions.https.onRequest((request, response) => {
