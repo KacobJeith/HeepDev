@@ -1,6 +1,5 @@
 import * as functions from 'firebase-functions'
 import * as respond from './responses.js'
-import * as byteUtils from './byteUtilities.js'
 
 const cors = require('cors')({origin: true});
 var request = require('request');

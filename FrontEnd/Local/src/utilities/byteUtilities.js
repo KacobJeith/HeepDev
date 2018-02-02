@@ -38,11 +38,11 @@ export var GetByteArrayFromValue = (value, numBytes = GetNecessaryBytes(value)) 
 
 export var GetNecessaryBytes = (value) => {
   var numBytes = 1;
-  value = (value >> 8) >>> 0;
+  value = value >> 8;
 
   while (value > 0) {
     numBytes += 1;
-    value = (value >> 8) >>> 0;
+    value = value >> 8;
   }
 
   return numBytes
