@@ -454,8 +454,8 @@ Source: www.pulseeng.com .. PulseJack-J402.pdf</description>
 <connect gate="G$1" pin="GND" pad="M2"/>
 <connect gate="G$1" pin="GRN-A" pad="P14"/>
 <connect gate="G$1" pin="GRN-C" pad="P13"/>
-<connect gate="G$1" pin="POE+" pad="P8 P10"/>
-<connect gate="G$1" pin="POE-" pad="P7 P9"/>
+<connect gate="G$1" pin="POE+" pad="P10"/>
+<connect gate="G$1" pin="POE-" pad="P9"/>
 <connect gate="G$1" pin="RD+" pad="P4"/>
 <connect gate="G$1" pin="RD-" pad="P5"/>
 <connect gate="G$1" pin="TD+" pad="P1"/>
@@ -7512,7 +7512,7 @@ Switches electronic signals</description>
 <part name="Q3" library="SparkFun-DiscreteSemi" deviceset="MOSFET-NCH" device="-FDD8780" value="35A/25V/8.5mΩ"/>
 <part name="Q5" library="SparkFun-DiscreteSemi" deviceset="MOSFET-NCH" device="-FDD8780" value="35A/25V/8.5mΩ"/>
 <part name="Q6" library="SparkFun-DiscreteSemi" deviceset="MOSFET-NCH" device="-FDD8780" value="35A/25V/8.5mΩ"/>
-<part name="X2" library="Heep" deviceset="J1011F" device="TOP_TAB"/>
+<part name="X2" library="Heep" deviceset="J1011F" device="HY931147C" value="J1011FHY931147C"/>
 <part name="J6" library="10103594-0001LF" deviceset="10103594-0001LF" device=""/>
 <part name="J7" library="SparkFun-Connectors" deviceset="CONN_03X2" device="NO_SILK"/>
 <part name="GND11" library="supply1" deviceset="GND" device=""/>
@@ -7560,7 +7560,6 @@ Switches electronic signals</description>
 <part name="D7" library="microbuilder" deviceset="DIODE" device="SOD-123" value="PMEG4030ER"/>
 <part name="U$21" library="microbuilder" deviceset="VBUS" device=""/>
 <part name="U$26" library="microbuilder" deviceset="VBUS" device=""/>
-<part name="U$1" library="microbuilder" deviceset="VBAT" device=""/>
 <part name="GND18" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="C1" library="microbuilder" deviceset="CAP_ELECTROLYTIC" device="PANASONIC_D" value="100uF 25V"/>
 <part name="U$2" library="microbuilder" deviceset="VBAT" device=""/>
@@ -7569,6 +7568,8 @@ Switches electronic signals</description>
 <part name="D9" library="microbuilder" deviceset="DIODE" device="SOD-123"/>
 <part name="D10" library="microbuilder" deviceset="DIODE" device="SOD-123"/>
 <part name="D11" library="microbuilder" deviceset="DIODE" device="SOD-123"/>
+<part name="R14" library="SparkFun-Passives" deviceset="RESISTOR" device="0603-RES" value="FUSE"/>
+<part name="U$1" library="microbuilder" deviceset="VBAT" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -7721,7 +7722,6 @@ Switches electronic signals</description>
 <instance part="D7" gate="G$1" x="93.98" y="236.22" rot="R270"/>
 <instance part="U$21" gate="G$1" x="93.98" y="246.38"/>
 <instance part="U$26" gate="G$1" x="266.7" y="215.9"/>
-<instance part="U$1" gate="G$1" x="55.88" y="60.96" rot="R270"/>
 <instance part="GND18" gate="1" x="55.88" y="66.04" rot="R90"/>
 <instance part="C1" gate="G$1" x="78.74" y="63.5"/>
 <instance part="U$2" gate="G$1" x="78.74" y="71.12"/>
@@ -7730,6 +7730,8 @@ Switches electronic signals</description>
 <instance part="D9" gate="G$1" x="340.36" y="144.78" rot="R90"/>
 <instance part="D10" gate="G$1" x="340.36" y="129.54" rot="R90"/>
 <instance part="D11" gate="G$1" x="340.36" y="175.26" rot="R90"/>
+<instance part="R14" gate="G$1" x="63.5" y="60.96"/>
+<instance part="U$1" gate="G$1" x="68.58" y="58.42" rot="R180"/>
 </instances>
 <busses>
 </busses>
@@ -8818,13 +8820,12 @@ Switches electronic signals</description>
 <junction x="342.9" y="147.32"/>
 </segment>
 <segment>
-<pinref part="X2" gate="G$1" pin="POE+"/>
-<pinref part="U$1" gate="G$1" pin="VBAT"/>
-<wire x1="45.72" y1="60.96" x2="53.34" y2="60.96" width="0.1524" layer="91"/>
-</segment>
-<segment>
 <pinref part="C1" gate="G$1" pin="+"/>
 <pinref part="U$2" gate="G$1" pin="VBAT"/>
+</segment>
+<segment>
+<pinref part="R14" gate="G$1" pin="2"/>
+<pinref part="U$1" gate="G$1" pin="VBAT"/>
 </segment>
 </net>
 <net name="N$5" class="0">
@@ -8888,6 +8889,13 @@ Switches electronic signals</description>
 <junction x="121.92" y="226.06"/>
 <pinref part="D6" gate="G$1" pin="C"/>
 <wire x1="121.92" y1="223.52" x2="121.92" y2="226.06" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$2" class="0">
+<segment>
+<pinref part="X2" gate="G$1" pin="POE+"/>
+<wire x1="58.42" y1="60.96" x2="45.72" y2="60.96" width="0.1524" layer="91"/>
+<pinref part="R14" gate="G$1" pin="1"/>
 </segment>
 </net>
 </nets>
