@@ -59,7 +59,9 @@ void SendOutputByID(unsigned char controlID, unsigned int value)
 {
 	SendOutputByIDNoAnalytics(controlID, value);
 
+#ifdef USE_ANALYTICS
 	SetAnalyticsDataControlValueInMemory_Byte(controlID, value, deviceIDByte);
+#endif
 }
 
 void SendOutputByIDBuffer(unsigned char controlID, heepByte* buffer, int bufferLength)

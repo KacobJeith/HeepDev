@@ -162,6 +162,8 @@ void SetIconDataInMemory_Byte(char* iconData, int numCharacters, heepByte* devic
 	}
 }
 
+#ifdef USE_ANALYTICS
+
 void SetAnalyticsDataControlValueInMemory_Byte(heepByte controlID, int controlValue, heepByte *deviceID)
 {
 	// Get Time (Absolute or Relative to Device Start)
@@ -200,6 +202,8 @@ int GetNextAnalyticsDataPointer(int startingPointer)
 
 	return -1;
 }
+
+#endif
 
 unsigned int ParseXYOpCode_Byte(int *x, int *y, heepByte* deviceID, unsigned int counter)
 {
