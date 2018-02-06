@@ -32,6 +32,7 @@ void AddDeviceIDOrIndexToOutputBuffer_Byte(heepByte* deviceID)
 	AddBufferToBuffer(outputBuffer, copyDeviceID, ID_SIZE, &outputBufferLastByte, &counter);
 }
 
+#ifdef USE_ANALYTICS
 void AddAnalyticsStringToOutputBufferAndDeleteMOPs()
 {
   ClearOutputBuffer();
@@ -57,6 +58,7 @@ void AddAnalyticsStringToOutputBufferAndDeleteMOPs()
 
   }while(AnalyticsPointer != -1);
 }
+#endif
 
 unsigned long CalculateControlDataSize()
 {

@@ -10,7 +10,7 @@
 #define FACTORY_RESET_PIN 4
 
 // Setting this define will compile the HEEP OS with built-in Analytics
-#define USE_ANALYTICS
+//#define USE_ANALYTICS
 
 // Memory Allocation. These numbers are actually device specific, 
 // but they require more research to nail down the exact numbers
