@@ -13,7 +13,7 @@ class Loading extends React.Component {
   render() {
     var inputs = {
       video: {
-        src: "../src/assets/heepwink3_gradient.mov",
+        src: "../src/serverside/assets/heepwink3_gradient.mov",
         loop: true, 
         autoPlay: true,
         height: 400,

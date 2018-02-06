@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 import { withRouter } from 'react-router-dom'
 import * as actions from '../redux/actions'
 import {Grid, Row, Col, Image, PageHeader, Media, Button} from 'react-bootstrap'
-import {iconMappings} from '../assets/svg/iconMappings.js'
+import {iconMappings} from '../serverside/assets/svg/iconMappings.js'
 
 var mapStateToProps = (state, ownProps) => ({
   device: state.devices_firebase[ownProps.deviceID],

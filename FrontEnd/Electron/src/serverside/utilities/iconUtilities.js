@@ -45,7 +45,7 @@ export var suggestIconForDevice = (deviceName) => {
 }
 
 var SaveIconFromFile = (deviceIconName) => {
-  var filepath = path.join(__dirname, '../assets/', deviceIconName + '.svg');
+  var filepath = path.join(__dirname, '../assets/svg/', deviceIconName + '.svg');
   fs.readFile(filepath, (err, data) => {
     if (err) {
       console.error('SVG failed: ', filepath);
@@ -71,7 +71,7 @@ export var generateIconKeywords = (names) => {
 }
 
 export var getDefaultIcons = () => {
-  var files = fs.readdirSync('./src/assets/');
+  var files = fs.readdirSync('./src/serverside/assets/');
   var svgs = [];
 
   for (var i = 0; i < files.length; i++){

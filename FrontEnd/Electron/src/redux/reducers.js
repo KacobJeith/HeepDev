@@ -4,7 +4,7 @@ import 'babel-polyfill'
 import { initialState } from '../index'
 import * as actions from './actions'
 import * as async from './async'
-import * as utils from '../utilities/generalUtilities'
+import * as utils from '../serverside/utilities/generalUtilities'
 import * as auth from '../firebase/FirebaseAuth'
 import * as database from '../firebase/FirebaseDatabase'
 

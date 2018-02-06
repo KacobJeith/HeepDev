@@ -2,8 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as Actions from '../../redux/actions_classic'
-import Icon from '../../assets/icons'
-import {ICONS} from '../../assets/iconConstants'
+import Icon from '../../serverside/assets/icons'
+import {ICONS} from '../../serverside/assets/iconConstants'
 
 const mapStateToProps = (state, ownProps) => ({
   controlID: state.controls[ownProps.thisControl]['controlID'],

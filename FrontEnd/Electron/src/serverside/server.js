@@ -2,11 +2,11 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import * as heepConnect from './heep/HeepConnections'
 
-import { simulationDevice } from './assets/simulationHeepDevice.js'
+import { simulationDevice } from './simulationHeepDevice.js'
 
 var app = express();
 
-app.set('port', (process.env.PORT || 3002));
+app.set('port', (process.env.PORT || 3003));
 
 //CORS middleware
 var allowCrossDomain = (req, res, next) => {

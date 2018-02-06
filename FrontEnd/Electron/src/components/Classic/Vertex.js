@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as Actions from '../../redux/actions_classic'
-import * as generalUtils from '../../utilities/generalUtilities'
+import * as generalUtils from '../../serverside/utilities/generalUtilities'
 
 var mapStateToProps = (state, ownProps) => (
 {

@@ -2,7 +2,7 @@ import firebase from 'firebase'
 import * as firebaseAuth from './FirebaseAuth'
 import * as setup from '../index'
 import * as actions from '../redux/actions'
-import * as HAPI from '../heep/HAPIMemoryParser.js'
+import * as HAPI from '../serverside/heep/HAPIMemoryParser.js'
 
 
 export const readUserData = (user) => {
