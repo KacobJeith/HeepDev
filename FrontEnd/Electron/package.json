@@ -1,5 +1,5 @@
 {
-  "name": "Heep Desktop",
+  "name": "HeepDesktop",
   "productName": "Heep Desktop",
   "version": "0.0.0",
   "private": false,
@@ -21,7 +21,7 @@
     "tbs": "npm run test && npm run bs",
     "bs": "webpack && npm run start",
     "ts": "npm run test && npm run start",
-    "be": "webpack && babel './src/serverside/' --out-dir './src/dist/' --presets=es2015 --copy-files && electron ."
+    "be": "webpack && babel src/serverside/ --out-dir src/dist/ --presets=es2015 --copy-files && electron ."
   },
   "dependencies": {
     "babel-plugin-transform-object-rest-spread": "^6.22.0",
