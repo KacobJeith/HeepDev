@@ -95,7 +95,7 @@ electronApp.on('ready', function() {
 
   mainWindow.loadURL('http://localhost:' + app.get('port'));
 
-  // mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools()
 
   mainWindow.on('closed', function () {
     mainWindow = null

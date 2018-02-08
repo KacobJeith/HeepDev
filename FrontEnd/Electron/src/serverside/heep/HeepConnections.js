@@ -297,7 +297,6 @@ var AddControl = (heepChunk) => {
   masterState.controls[tempCtrlName].deviceID = heepChunk.deviceID;
   var currentIndex = SetControlStructure(heepChunk.deviceID, tempCtrlName)
 
-  masterState.positions[heepChunk.deviceID][tempCtrlName] = SetControlPosition(heepChunk.deviceID, currentIndex, heepChunk.control.controlDirection);
   masterState.controls.connections[tempCtrlName] = [];
 }
 

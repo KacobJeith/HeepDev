@@ -235,12 +235,6 @@ export default function(state = initialState, action) {
       async.sendPositionToServer(action.deviceID, positionToSend);
 
       return state
-
-    case 'SELECT_OUTPUT':
-
-      var newState = Immutable.Map(state.controls).set('selectedOutput', {txDeviceID: action.txDeviceID, txControlID: action.txControlID}).toJS();
-
-      return Immutable.Map(state).set('controls', newState).toJS();
    
     case 'UPDATE_CONTROL_VALUE':
 
@@ -248,7 +242,8 @@ export default function(state = initialState, action) {
       var identifier = utils.nameControl(action.deviceID, action.controlID);
       newState[identifier]['valueCurrent'] = action.newValue;
       async.sendValueToServer(action.deviceID, action.controlID, action.newValue);
-
+      console.log(newState);
+      
       var connectedControl = '';
       for (var i = 0; i < newState.connections[identifier].length; i++){
         connectedControl = newState.connections[identifier][i];
