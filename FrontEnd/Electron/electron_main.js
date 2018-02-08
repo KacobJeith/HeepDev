@@ -17,7 +17,7 @@ let mainWindow
 
 var app = express();
 
-app.set('port', (process.env.PORT || 3005));
+app.set('port', (process.env.PORT || 3004));
 
 //CORS middleware
 var allowCrossDomain = function(req, res, next) {
@@ -95,7 +95,7 @@ electronApp.on('ready', function() {
 
   mainWindow.loadURL('http://localhost:' + app.get('port'));
 
-  mainWindow.webContents.openDevTools()
+  // mainWindow.webContents.openDevTools()
 
   mainWindow.on('closed', function () {
     mainWindow = null
