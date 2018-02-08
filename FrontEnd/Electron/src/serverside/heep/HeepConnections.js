@@ -4,6 +4,8 @@ import * as iconUtils from '../utilities/iconUtilities'
 import * as generalUtils from '../utilities/generalUtilities'
 import * as byteUtils from '../utilities/byteUtilities'
 const dgram = require('dgram');
+var log = require('electron-log');
+
 const udpServer = dgram.createSocket('udp4');
 
 var masterState = {
@@ -135,7 +137,7 @@ export var findGateway = () => {
 
   for (var interfaces in networkInterfaces) {
     for (var i = 0; i < networkInterfaces[interfaces].length; i++ ) {
-      console.log(networkInterfaces[interfaces][i])
+      // console.log(networkInterfaces[interfaces][i])
       if (networkInterfaces[interfaces][i].netmask == '255.255.255.0' ){
         var activeAddress = networkInterfaces[interfaces][i].address;
         var address = activeAddress.split('.');
@@ -214,13 +216,18 @@ var ConsumeHeepResponse = (data, IPAddress, port) => {
 }
 
 var AddMemoryChunksToMasterState = (heepChunks, IPAddress) => {
-  console.log(heepChunks)
+  console.log(heepChunks);  
+  log.warn(heepChunks);
+
   for (var i = 0; i < heepChunks.length; i++) {
+    log.warn("Master State: ", masterState);
     try {
       if (heepChunks[i].op == 1){
+        log.warn("Adding Device: ", heepChunks[i]);
         AddDevice(heepChunks[i], IPAddress);
 
       } else if (heepChunks[i].op == 2){
+        log.warn("Adding Control: ", heepChunks[i]);
         AddControl(heepChunks[i]);
 
       } else if (heepChunks[i].op == 3){
@@ -233,9 +240,13 @@ var AddMemoryChunksToMasterState = (heepChunks, IPAddress) => {
         SetCustomIcon(heepChunks[i]);
         
       } else if (heepChunks[i].op == 6){
+        log.warn("Adding Device Name: ", heepChunks[i]);
+
         SetDeviceName(heepChunks[i])
 
       } else if (heepChunks[i].op == 7){
+        log.warn("Adding Position: ", heepChunks[i]);
+
         SetDevicePosition(heepChunks[i])
         
       } else if (heepChunks[i].op == 8){

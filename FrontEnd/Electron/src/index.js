@@ -12,8 +12,12 @@ import * as auth from './firebase/FirebaseAuth'
 import $ from 'jquery'
 import { composeWithDevTools } from 'redux-devtools-extension';
 import * as actions_classic from './redux/actions_classic'
+// import log from 'electron-log';
 
 import loading from './serverside/assets/heepwink3_gradient.mov';
+
+
+// log.warn('log from a renderer process');
 
 const startState = {
   webGLStatus: false,
@@ -48,12 +52,13 @@ render(
 )
 
 var loadDevicesFromServer = (url) => {
+  console.log("Loading from server...");
 
   $.ajax({
     url: url,
     cache: false,
     success: (data) => {
-
+      console.log("Data from server: ", data)
       try {
         data.url = window.location.origin;
         var immutableMap = Immutable.Map(data);
@@ -63,9 +68,6 @@ var loadDevicesFromServer = (url) => {
       catch (err) {
         console.log("Running on Dev server, cannot update url or feed classic data");
       }
-
-      
-
       
     },
     error: (xhr, status, err) => {

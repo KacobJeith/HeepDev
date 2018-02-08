@@ -78,7 +78,7 @@ export const initializeFirebase = () => {
 	    console.log("Welcome back, ", user.email);
 	    setup.store.dispatch(actions.updateLoginStatus(true));
 	    database.readUserData(user);	    
-		database.retrieveAnalyticData(user);
+		//database.retrieveAnalyticData(user);
 		
 	    validateUser()
 	    
