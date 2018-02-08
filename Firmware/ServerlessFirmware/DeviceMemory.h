@@ -29,6 +29,8 @@
 #define DeleteMOPOpCode 			0x15
 #define LocalDeviceIDOpCode 		0x16
 
+#define AnalyticsOpCode				0x1F
+
 unsigned char deviceMemory [MAX_MEMORY];
 unsigned int curFilledMemory = 0; // Indicate the curent filled memory. 
 						 // Also serve as a place holder to 
@@ -158,6 +160,45 @@ void SetIconDataInMemory_Byte(char* iconData, int numCharacters, heepByte* devic
 	{
 		AddNewCharToMemory(iconData[i]);
 	}
+}
+
+void SetAnalyticsDataControlValueInMemory_Byte(heepByte controlID, int controlValue, heepByte *deviceID)
+{
+	// Get Time (Absolute or Relative to Device Start)
+	// Set absolute byte to indicate 
+
+	heepByte numBytesForTime = GetNumBytes64Bit(GetAnalyticsTime());
+
+	PerformPreOpCodeProcessing_Byte(deviceID);
+
+	AddNewCharToMemory(AnalyticsOpCode);
+	AddIndexOrDeviceIDToMemory_Byte(deviceID);
+	AddNewCharToMemory(numBytesForTime + 5);
+	AddNewCharToMemory(controlID);
+	AddNewCharToMemory(1); // 1 byte control values
+	AddNewCharToMemory((heepByte)controlValue);
+	AddNewCharToMemory(IsAbsoluteTime());
+	AddNewCharToMemory(numBytesForTime);
+	curFilledMemory = AddNumberToBufferWithSpecifiedBytes64Bit(deviceMemory, GetAnalyticsTime(), curFilledMemory, numBytesForTime);
+}
+
+int GetNextAnalyticsDataPointer(int startingPointer)
+{
+	unsigned int counter = startingPointer;
+
+	while(counter < curFilledMemory)
+	{
+		if(deviceMemory[counter] == AnalyticsOpCode)
+		{
+			return counter;
+		}
+		else
+		{
+			counter = SkipOpCode(counter);
+		}
+	}
+
+	return -1;
 }
 
 unsigned int ParseXYOpCode_Byte(int *x, int *y, heepByte* deviceID, unsigned int counter)

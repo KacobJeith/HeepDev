@@ -7,6 +7,8 @@ void CommitMemory();
 unsigned char clearMemory = 1;
 void SetupHeepDevice(char* deviceName, char deviceIcon)
 {	
+	base64_encode_Heep(deviceIDByte);
+	
 	if(clearMemory)
 	{
 		ClearMemory();
@@ -28,7 +30,7 @@ void FactoryReset(char* deviceName, char iconEnum)
 	clearMemory = 0;
 }
 
-void SendOutputByID(unsigned char controlID, unsigned int value)
+void SendOutputByIDNoAnalytics(unsigned char controlID, unsigned int value)
 {
 	SetControlValueByID(controlID, value, 0);
 
@@ -51,6 +53,13 @@ void SendOutputByID(unsigned char controlID, unsigned int value)
 			}
 		}
 	}
+}
+
+void SendOutputByID(unsigned char controlID, unsigned int value)
+{
+	SendOutputByIDNoAnalytics(controlID, value);
+
+	SetAnalyticsDataControlValueInMemory_Byte(controlID, value, deviceIDByte);
 }
 
 void SendOutputByIDBuffer(unsigned char controlID, heepByte* buffer, int bufferLength)
@@ -83,11 +92,12 @@ void HandlePointersOnMemoryChange()
 	FillVertexListFromMemory();
 }
 
-enum Tasks {Defragment = 0, saveMemory = 1};
+enum Tasks {Defragment = 0, saveMemory = 1, PostData = 2};
 void SetupHeepTasks()
 {
 	ScheduleTask(Defragment);
 	ScheduleTask(saveMemory);
+	ScheduleTask(PostData);
 }	
 
 void CommitMemory()
@@ -98,6 +108,16 @@ void CommitMemory()
 		memoryChanged = 0;
 
 		HandlePointersOnMemoryChange();
+	}
+}
+
+void PostDataToFirebase()
+{
+	AddAnalyticsStringToOutputBufferAndDeleteMOPs();
+
+	if(outputBufferLastByte > 0)
+	{
+		SendDataToFirebase(outputBuffer, outputBufferLastByte, base64DeviceIDByte, STANDARD_ID_SIZE_BASE_64);
 	}
 }
 
@@ -128,8 +148,12 @@ void PerformHeepTasks()
 		{
 			CommitMemory();
 		}
+		else if(curTask == PostData)
+		{
+			PostDataToFirebase();
+		}
 	}
-//
+
 	CheckServerForInputs();
 	ControlDaemon();
 }

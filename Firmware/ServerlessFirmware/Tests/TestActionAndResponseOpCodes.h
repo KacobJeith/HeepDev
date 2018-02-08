@@ -454,6 +454,42 @@ void TestDeleteMOPOpCode()
 	CheckResults(TestName, valueList, 2);
 }
 
+void TestGetAnalyticsString()
+{
+	std::string TestName = "Test Analytics Get String and Delete";
+
+	ClearDeviceMemory();
+
+	simMillis = 0x01020304050607;
+	heepByte deviceID1[STANDARD_ID_SIZE];
+	CreateFakeDeviceID(deviceID1);
+	SetAnalyticsDataControlValueInMemory_Byte(0, 4, deviceID1);
+	char* deviceName = "Jacob";
+	SetDeviceNameInMemory_Byte(deviceName, strlen(deviceName), deviceID1);
+	SetAnalyticsDataControlValueInMemory_Byte(1, 2, deviceID1);
+
+	int counter = GetMemCounterStart();
+	AddAnalyticsStringToOutputBufferAndDeleteMOPs();
+	DefragmentMemory();
+
+	ExpectedValue valueList [3];
+	valueList[0].valueName = "Output Buffer Size";
+	valueList[0].expectedValue = 36;
+	valueList[0].actualValue = outputBufferLastByte;
+
+	valueList[1].valueName = "Cur Filled Memory Defragmented";
+	valueList[1].expectedValue = 1;
+	valueList[1].actualValue = curFilledMemory < 20; // Memory reduced from when analytics were being captured
+
+	AddAnalyticsStringToOutputBufferAndDeleteMOPs();
+
+	valueList[2].valueName = "Analytics String After Delete";
+	valueList[2].expectedValue = 0;
+	valueList[2].actualValue = outputBufferLastByte;
+
+	CheckResults(TestName, valueList, 3);
+}
+
 void TestActionAndResponseOpCodes()
 {
 	TestClearOutputBufferAndAddChar();
@@ -466,4 +502,5 @@ void TestActionAndResponseOpCodes()
 	TestSetVertxCOP();
 	TestAddMOPOpCode();
 	TestDeleteMOPOpCode();
+	TestGetAnalyticsString();
 }

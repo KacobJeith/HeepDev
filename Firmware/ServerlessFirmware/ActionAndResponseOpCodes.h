@@ -32,6 +32,32 @@ void AddDeviceIDOrIndexToOutputBuffer_Byte(heepByte* deviceID)
 	AddBufferToBuffer(outputBuffer, copyDeviceID, ID_SIZE, &outputBufferLastByte, &counter);
 }
 
+void AddAnalyticsStringToOutputBufferAndDeleteMOPs()
+{
+  ClearOutputBuffer();
+  int AnalyticsPointer = 0;
+  do
+  {
+      AnalyticsPointer = GetNextAnalyticsDataPointer(AnalyticsPointer);
+
+      if(AnalyticsPointer >= 0)
+      {
+        int numBytes = deviceMemory[AnalyticsPointer + ID_SIZE + 1];
+
+        AddNewCharToOutputBuffer(deviceMemory[AnalyticsPointer]);
+        AddDeviceIDToOutputBuffer_Byte(deviceIDByte);
+        
+        for(int i = AnalyticsPointer + ID_SIZE + 1; i < AnalyticsPointer + numBytes + ID_SIZE + 2; i++)
+        {
+          AddNewCharToOutputBuffer(deviceMemory[i]);
+        }
+
+        deviceMemory[AnalyticsPointer] = FragmentOpCode;
+      }
+
+  }while(AnalyticsPointer != -1);
+}
+
 unsigned long CalculateControlDataSize()
 {
 	unsigned long controlDataSize = 0;

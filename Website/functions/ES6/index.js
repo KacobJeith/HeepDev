@@ -9,6 +9,18 @@ const placesAPIKey = "AIzaSyAPJ_y32qzI3O-V9Y7oQoCXhML_gbfmm_8";
 
 admin.initializeApp(functions.config().firebase);
 
+exports.msSince2018Jan1 = functions.https.onRequest((request, response) => {
+	const date = new Date();
+	const currentTimeMs = date.getTime();
+
+	const dateOrigin = new Date('1/1/2018');
+	const msAtHeepOrigin = dateOrigin.getTime();
+
+	var msSinceHeepOrigin = currentTimeMs - msAtHeepOrigin;
+
+	response.status(200).send(msSinceHeepOrigin.toString());
+});
+
 exports.incoming = functions.https.onRequest((request, response) => {
 	
 	const app = new ApiAiApp({request: request, response: response});
