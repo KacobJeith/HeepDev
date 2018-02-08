@@ -83,8 +83,6 @@ export default function(state = initialState, action) {
         identity: deviceIdentity
       }
 
-      console.log("DEVICE TO WRITE: ", device);
-
       setTimeout(() => {database.associateDeviceWithAccount(device)}, 100);
 
       return state
@@ -144,8 +142,6 @@ export default function(state = initialState, action) {
 //<----------------------------------------------------------------------------------------------------------------------------------->
 
     case 'OVERWRITE_WITH_SERVER_DATA':
-
-      console.log("Overwriting with data...", action.fromServer);
 
       return Immutable.Map(state).set('devices', action.fromServer.devices)
                                  .set('positions', action.fromServer.positions)
@@ -242,8 +238,7 @@ export default function(state = initialState, action) {
       var identifier = utils.nameControl(action.deviceID, action.controlID);
       newState[identifier]['valueCurrent'] = action.newValue;
       async.sendValueToServer(action.deviceID, action.controlID, action.newValue);
-      console.log(newState);
-      
+
       var connectedControl = '';
       for (var i = 0; i < newState.connections[identifier].length; i++){
         connectedControl = newState.connections[identifier][i];

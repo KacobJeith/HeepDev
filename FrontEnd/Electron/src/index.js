@@ -5,19 +5,14 @@ import { Provider } from 'react-redux'
 import Immutable from 'immutable'
 import { createStore, applyMiddleware } from 'redux'
 import reducers from './redux/reducers'
-// import reducers_classic from './redux/reducers_classic'
 import App from './components/App'
 import thunk from 'redux-thunk'
 import * as auth from './firebase/FirebaseAuth'
 import $ from 'jquery'
 import { composeWithDevTools } from 'redux-devtools-extension';
 import * as actions_classic from './redux/actions_classic'
-// import log from 'electron-log';
 
 import loading from './serverside/assets/heepwink3_gradient.mov';
-
-
-// log.warn('log from a renderer process');
 
 const startState = {
   webGLStatus: false,

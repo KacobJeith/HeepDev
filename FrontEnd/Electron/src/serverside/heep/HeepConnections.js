@@ -297,6 +297,7 @@ var AddControl = (heepChunk) => {
   masterState.controls[tempCtrlName].deviceID = heepChunk.deviceID;
   var currentIndex = SetControlStructure(heepChunk.deviceID, tempCtrlName)
 
+  masterState.positions[heepChunk.deviceID][tempCtrlName] = SetControlPosition(heepChunk.deviceID, currentIndex, heepChunk.control.controlDirection);
   masterState.controls.connections[tempCtrlName] = [];
 }
 
@@ -321,6 +322,7 @@ var SetNullPosition = (deviceID) => {
 
 var SetDevicePosition = (heepChunk) => {
   masterState.positions[heepChunk.deviceID].device = heepChunk.position;
+  RecalculateControlPositions(heepChunk.deviceID);
 }
 
 var SetDevicePositionFromBrowser = (deviceID, position) => {
@@ -330,6 +332,7 @@ var SetDevicePositionFromBrowser = (deviceID, position) => {
   }
 
   masterState.positions[deviceID].device = newPosition;
+  RecalculateControlPositions(deviceID);
 }
 
 var SetControlStructure = (deviceID, controlID) => {
@@ -369,4 +372,36 @@ var DeleteVertex = (vertex) => {
 
 }
 
+var RecalculateControlPositions = (deviceID) => {
+  var startingPositions = masterState.positions[deviceID];
+  for (var controlName in startingPositions){
+    if (controlName == 'device'){ 
+      continue 
+    }
+
+    UpdateControlPosition(deviceID, controlName);
+  }
+}
+
+var UpdateControlPosition = (deviceID, controlName) => {
+  var devicePosition = masterState.positions[deviceID].device;
+  var thisPosition = masterState.positions[deviceID][controlName];
+  var direction = masterState.controls[controlName].controlDirection;
+
+  thisPosition.top = devicePosition['top'] + 45 + 1.5 + 25/2 + 55*(thisPosition.index - 1), 
+  thisPosition.left = direction == 0 ? devicePosition['left'] + 10 : devicePosition['left'] + 240;
+  
+}
+
+var SetControlPosition = (deviceID, index, direction) => {
+  var devicePosition = masterState.positions[deviceID]['device'];
+
+  var position = {
+    top: devicePosition['top'] + 45 + 1.5 + 25/2 + 55*(index - 1), 
+    left: direction == 0 ? devicePosition['left'] + 10 : devicePosition['left'] + 240,
+    index: index
+  }
+  
+  return position;
+}
 
