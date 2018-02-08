@@ -8,14 +8,14 @@ import Vertex from './Vertex'
 
 var mapStateToProps = (state) => ({
   deviceArray: state.devices.deviceArray,
-  vertexList: Object.keys(state.vertexList)
+  vertexList: state.vertexList
 })
 
 
 class Flowchart extends React.Component {
 
 	render() {
-		console.log("Running Flowchart")
+		console.log("Running Flowchart: ", this.props.vertexList)
 
 		const styles = {
 			flowchart: {
@@ -54,9 +54,10 @@ class Flowchart extends React.Component {
 	    }
 
 	    var vertexes = [];
-	    for (var i = 0; i < this.props.vertexList.length; i++) {
-	    	if (this.props.vertexList[i] != 'selectedOutput'){
-	    		var thisVertex = this.props.vertexList[i];
+	    var vertexKeys = Object.keys(this.props.vertexList);
+	    for (var i = 0; i < vertexKeys.length; i++) {
+	    	if (vertexKeys[i] != 'selectedOutput'){
+	    		var thisVertex = vertexKeys[i];
 	      		vertexes.push(<Vertex key={thisVertex} vertexID={thisVertex}/>);
 	    	}
 	    }

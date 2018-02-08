@@ -10,7 +10,8 @@ export var ConvertIPAddressToByteArray = (stringIP) => {
 }
 
 export var GetDeviceIDAsByteArray = (value) => {
-  var deviceID = GetValueAsFixedSizeByteArray(value, 4);
+  var deviceIDbuf = Buffer.from(value, 'base64'); 
+  var deviceID = [...deviceIDbuf];
   return deviceID
 }
 

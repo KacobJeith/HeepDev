@@ -215,6 +215,9 @@ export var ReadControl = (thisBlockData) => { // OP 2
  }
 
  export var ReadVertex = (thisBlockData) => {
+
+  console.log("VERTEX: ", thisBlockData);
+
   var thisVertex = {
     rxDeviceID: ReadDeviceID(thisBlockData.slice(1, 5)),
     txControlID: thisBlockData[5],
