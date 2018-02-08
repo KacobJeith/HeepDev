@@ -47,3 +47,16 @@ sysinfo.txt
 *.b#*
 *.s#*
 *.l#*
+
+# Eagle Gerber Files
+*.gpi
+*.GTL
+*.GBL
+*.GTO
+*.GBO
+*.GBS
+*.GTP
+*.GTS
+*.dri
+*.GBP
+*.GML
