@@ -7,7 +7,9 @@ void CommitMemory();
 unsigned char clearMemory = 1;
 void SetupHeepDevice(char* deviceName, char deviceIcon)
 {	
+#ifdef USE_ANALYTICS
 	base64_encode_Heep(deviceIDByte);
+#endif
 	
 	if(clearMemory)
 	{
@@ -59,7 +61,9 @@ void SendOutputByID(unsigned char controlID, unsigned int value)
 {
 	SendOutputByIDNoAnalytics(controlID, value);
 
+#ifdef USE_ANALYTICS
 	SetAnalyticsDataControlValueInMemory_Byte(controlID, value, deviceIDByte);
+#endif
 }
 
 void SendOutputByIDBuffer(unsigned char controlID, heepByte* buffer, int bufferLength)
@@ -111,6 +115,7 @@ void CommitMemory()
 	}
 }
 
+#ifdef USE_ANALYTICS
 void PostDataToFirebase()
 {
 	AddAnalyticsStringToOutputBufferAndDeleteMOPs();
@@ -120,6 +125,7 @@ void PostDataToFirebase()
 		SendDataToFirebase(outputBuffer, outputBufferLastByte, base64DeviceIDByte, STANDARD_ID_SIZE_BASE_64);
 	}
 }
+#endif
 
 // Control Daemon is untimed
 void ControlDaemon()
@@ -148,10 +154,12 @@ void PerformHeepTasks()
 		{
 			CommitMemory();
 		}
+#ifdef USE_ANALYTICS
 		else if(curTask == PostData)
 		{
 			PostDataToFirebase();
 		}
+#endif
 	}
 
 	CheckServerForInputs();

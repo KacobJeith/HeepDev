@@ -1208,6 +1208,8 @@ void TestGetVertex_Byte()
 
 void TestAnalyticsDataInMemory()
 {
+#ifdef USE_ANALYTICS
+	
 	std::string TestName = "Test Analytics MOP";
 
 	ClearDeviceMemory();
@@ -1233,6 +1235,8 @@ void TestAnalyticsDataInMemory()
 	valueList[2].actualValue = deviceMemory[counter + ID_SIZE + 6];
 
 	CheckResults(TestName, valueList, 3);
+
+#endif
 }
 
 void TestDynamicMemory()

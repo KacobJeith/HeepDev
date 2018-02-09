@@ -90,6 +90,8 @@ void SendOutputBufferToIP(HeepIPAddress destIP)
 
 }
 
+#ifdef USE_ANALYTICS
+
 static const char* base64_chars_esp = 
              "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
              "abcdefghijklmnopqrstuvwxyz"
@@ -200,3 +202,5 @@ void SendDataToFirebase(heepByte *buffer, int length, heepByte* base64IDBuffer, 
     Serial.println(payload);
     Serial.println("==========");
 }
+
+#endif

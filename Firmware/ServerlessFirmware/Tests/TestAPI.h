@@ -66,6 +66,8 @@ void TestBufferControlType()
 
 void TestAnalyticsMillisecondsBytes()
 {
+#ifdef USE_ANALYTICS
+
 	std::string TestName = "Test Analytics Time Keeping";
 
 	simMillis = 200;
@@ -89,6 +91,8 @@ void TestAnalyticsMillisecondsBytes()
 	valueList[2].actualValue = numBytesShouldBe7;
 
 	CheckResults(TestName, valueList, 3);
+
+#endif
 }
 
 void TestAddBufferToBuffer64Bit()
@@ -119,6 +123,8 @@ void TestAddBufferToBuffer64Bit()
 
 void TestCaptureAnalyticsToggle()
 {
+#ifdef USE_ANALYTICS
+
 	std::string TestName = "Test Capture Analytics Toggle";
 
 	ClearDeviceMemory();
@@ -169,8 +175,11 @@ void TestCaptureAnalyticsToggle()
 	valueList[3].actualValue = afterSecondAnalyticsAdded;
 
 	CheckResults(TestName, valueList, 4);
+
+#endif
 }
 
+#ifdef USE_ANALYTICS
 std::string base64_encode(unsigned char const* bytes_to_encode, unsigned int in_len) {
   std::string ret;
   int i = 0;
@@ -212,9 +221,11 @@ std::string base64_encode(unsigned char const* bytes_to_encode, unsigned int in_
   return ret;
 
 }
+#endif
 
 void TestBase64Encode()
 {
+#ifdef USE_ANALYTICS
 	std::string TestName = "Test Base64 Encode";
 
 	heepByte deviceID1[STANDARD_ID_SIZE];
@@ -235,6 +246,7 @@ void TestBase64Encode()
 	}
 
 	CheckResults(TestName, valueList, STANDARD_ID_SIZE_BASE_64);
+#endif
 }
 
 void TestHeepAPI()
