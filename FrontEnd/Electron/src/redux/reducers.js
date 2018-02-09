@@ -197,14 +197,14 @@ export default function(state = initialState, action) {
 
       var newState = Immutable.Map(state.vertexList).delete(action.vertexID).toJS();
 
-
       //CONTROLS
-      var newStateControls = Immutable.Map(state).toJS();
+      var newStateControls = Immutable.Map(state.controls).toJS();
 
       var txName = utils.getTxControlNameFromVertex(action.vertex);
       var rxName = utils.getRxControlNameFromVertex(action.vertex);
 
-      var index = newStateControls.connections[txName].indexOf(rxName)
+      var index = newStateControls.connections[txName].indexOf(rxName);
+
       if ( index != -1) {
         newStateControls.connections[txName].splice(index, 1);
       }
