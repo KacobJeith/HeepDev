@@ -1,4 +1,6 @@
 import $ from 'jquery';
+import * as setup from '../index';
+import * as actions_classic from './actions_classic'
 
 var urlPrefix = '';
 
@@ -58,6 +60,7 @@ export var refreshLocalDeviceState = () => {
 
   performAJAX(url, {}, 'GET', (data) => {
     console.log("Received Data: ", data);
+    setup.store.dispatch(actions_classic.overwriteFromServer(data));
   })
 }
 
