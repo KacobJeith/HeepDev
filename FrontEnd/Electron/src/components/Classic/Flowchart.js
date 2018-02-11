@@ -79,7 +79,10 @@ class Flowchart extends React.Component {
 					cursor: "pointer",
 					position: 'absolute'
 				},
-				onClick: () => console.log("clicked"),
+				onClick: () => {
+					console.log("clicked"); 
+					this.props.refreshFlowchart();
+				},
         		onMouseEnter: () => this.setState({hoverRefresh: true}),
         		onMouseLeave: () => this.setState({hoverRefresh: false})
 			}

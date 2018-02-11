@@ -53,13 +53,22 @@ export var sendDeleteVertexToServer = (vertex) => {
 
 }
 
+export var refreshLocalDeviceState = () => {
+  var url = urlPrefix.concat('/api/refreshLocalDeviceState');
 
-export var performAJAX = (url, messagePacket ) => {
+  performAJAX(url, {}, 'GET', (data) => {
+    console.log("Received Data: ", data);
+  })
+}
+
+
+export var performAJAX = (url, messagePacket, type = 'POST', callback = (data) => {} ) => {
   $.ajax({
     url: url,
-    type: 'POST',
+    type: type,
     data: messagePacket,
     success: (data) => {
+      callback(data)
     },
     error: function(xhr, status, err) {
       console.error(url, status, err.toString());

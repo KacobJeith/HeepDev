@@ -62,3 +62,7 @@ export const claimDevice = (deviceID) => ({
   type: 'CLAIM_DEVICE',
   deviceID
 })
+
+export const refreshFlowchart = () => ({
+  type: 'REFRESH_FLOWCHART'
+})
