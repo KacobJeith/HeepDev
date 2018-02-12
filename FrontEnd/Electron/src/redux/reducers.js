@@ -184,6 +184,8 @@ export default function(state = initialState, action) {
 
       //CONTROL CHANGES
       var newStateControls = Immutable.Map(state.controls).toJS();
+
+      console.log("STATE CONTROLS: ", newStateControls);
       var txName = utils.nameControl(state.vertexList.selectedOutput.txDeviceID, state.vertexList.selectedOutput.txControlID);
       var rxName = utils.nameControl(action.rxDeviceID, action.rxControlID);
 

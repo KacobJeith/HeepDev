@@ -106,16 +106,17 @@ class Flowchart extends React.Component {
 
 
 	return (<div {...inputs.flowchart} ref="flowchart"> 
-				<div {...inputs.refreshContainer}>
-					<object {...inputs.refresh}/>
-					<div {...inputs.refreshButton}/>
-				</div>
-
 				<svg {...inputs.vertexSVGSpace}>
 					{vertexes} 
 				</svg>
 
 				{devices}
+
+				<div {...inputs.refreshContainer}>
+					<object {...inputs.refresh}/>
+					<div {...inputs.refreshButton}/>
+				</div>
+				
 			</div>
 		);
 

@@ -8,7 +8,7 @@ var log = require('electron-log');
 
 const udpServer = dgram.createSocket('udp4');
 
-var masterState = {
+var newMasterState = {
   devices: {deviceArray: []},
   positions: {},
   controls: {controlStructure:{}, connections: {}},
@@ -16,6 +16,8 @@ var masterState = {
   icons: {},
   url: ''
 };
+
+var masterState = newMasterState;
 
 var heepPort = 5000;
 var searchComplete = false;
@@ -42,14 +44,7 @@ export var GetCurrentMasterState = () => {
 }
 
 export var ResetMasterState = () => {
-  masterState = {
-    devices: {deviceArray: []},
-    positions: {},
-    controls: {controlStructure:{}},
-    vertexList: {},
-    icons: {},
-    url: ''
-  };
+  masterState = newMasterState;
 
   return masterState
 }
