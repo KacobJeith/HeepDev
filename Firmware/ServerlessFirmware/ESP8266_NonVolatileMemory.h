@@ -20,9 +20,6 @@ void SaveMemory(unsigned char controlRegister, unsigned char* memoryBuffer, unsi
 	EEPROM.write(0, controlRegister);
 	EEPROM.write(1, bytesToWrite);
 
-  Serial.print("Control Reg: "); Serial.println((int)controlRegister);
-  Serial.print("Bytes to Write: "); Serial.println((int)bytesToWrite);
-
 	for(int i = 2; i < bytesToWrite + 1; i++)
 	{
 		EEPROM.write(i, memoryBuffer[i-2]);
@@ -49,9 +46,6 @@ void ReadMemory(unsigned char* controlRegister, unsigned char* memoryBuffer, uns
 	*controlRegister = EEPROM.read(0); // Address 0 contains control register
 	int numberBytesToRead = EEPROM.read(1); // Address 1 contains number of bytes
 	*bytesRead = numberBytesToRead;
-
-  Serial.print("Control Reg: "); Serial.println((int)*controlRegister);
-  Serial.print("Bytes to Write: "); Serial.println((int)numberBytesToRead);
 
 	for(int i = 2; i < numberBytesToRead + 1; i++)
 	{
