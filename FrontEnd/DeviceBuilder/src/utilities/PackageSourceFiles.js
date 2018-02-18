@@ -11,6 +11,7 @@ import Device                       from '../../../../Firmware/ServerlessFirmwar
 import DeviceMemory                 from '../../../../Firmware/ServerlessFirmware/DeviceMemory.h'
 import ENC28J60_HeepComms           from '../../../../Firmware/ServerlessFirmware/ENC28J60_HeepComms.h'
 import ESP8266_HeepComms            from '../../../../Firmware/ServerlessFirmware/ESP8266_HeepComms.h'
+import ESP8266_NonVolatileMemory    from '../../../../Firmware/ServerlessFirmware/ESP8266_NonVolatileMemory.h'
 import Heep_API                     from '../../../../Firmware/ServerlessFirmware/Heep_API.h'
 import MemoryUtilities              from '../../../../Firmware/ServerlessFirmware/MemoryUtilities.h'
 import POE32u4W5500_HeepComms       from '../../../../Firmware/ServerlessFirmware/POE32u4W5500_HeepComms.h'
@@ -36,6 +37,7 @@ var sourceFiles = {
   DeviceMemory: DeviceMemory,
   ENC28J60_HeepComms: ENC28J60_HeepComms,
   ESP8266_HeepComms: ESP8266_HeepComms,
+  ESP8266_NonVolatileMemory: ESP8266_NonVolatileMemory,
   Heep_API: Heep_API,
   MemoryUtilities: MemoryUtilities,
   PICW5500_HeepComms: PICW5500_HeepComms,
@@ -135,8 +137,7 @@ const packageArduinoFiles = (deviceDetails, controls, zip) => {
 const packageESP8266Files = (deviceDetails, controls, zip) => {
   zip.file(deviceDetails.deviceName + ".ino", composeInoFile(deviceDetails, controls));
 
-  // zip.file('ESP8266_HeepComms.h', ESP8266_HeepComms);
-  zip.file('Simulation_NonVolatileMemory.h', Simulation_NonVolatileMemory);
+  zip.file('ESP8266_NonVolatileMemory.h', Simulation_NonVolatileMemory);
   zip.file('Arduino_Timer.h', Arduino_Timer);
 
   return zip
