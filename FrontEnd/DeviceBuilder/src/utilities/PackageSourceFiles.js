@@ -137,7 +137,7 @@ const packageArduinoFiles = (deviceDetails, controls, zip) => {
 const packageESP8266Files = (deviceDetails, controls, zip) => {
   zip.file(deviceDetails.deviceName + ".ino", composeInoFile(deviceDetails, controls));
 
-  zip.file('ESP8266_NonVolatileMemory.h', Simulation_NonVolatileMemory);
+  zip.file('ESP8266_NonVolatileMemory.h', ESP8266_NonVolatileMemory);
   zip.file('Arduino_Timer.h', Arduino_Timer);
 
   return zip
