@@ -9,11 +9,6 @@ unsigned int outputBufferLastByte = 0;
 unsigned char inputBuffer [INPUT_BUFFER_SIZE];
 unsigned int inputBufferLastByte = 0;
 
-void DefineMemorySymbols()
-{
-	
-}
-
 unsigned long GetDataFromBufferOfSpecifiedSize(heepByte* buffer, heepByte* data, unsigned long size, unsigned long counter)
 {
 	for(int i = 0; i < size; i++)
