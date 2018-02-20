@@ -1,4 +1,4 @@
 CC = gcc
 
 TestC.app : CTest.c
-	$(CC) $(DEFINE_INDEXING) ../../MemoryUtilities.c ../../DeviceMemory.c ../../Device.c $< -o $@
+	$(CC) $(DEFINE_INDEXING) ../../MemoryUtilities.c ../../DeviceMemory.c ../../Device.c ../../ActionAndResponseOpCodes.c $< -o $@
