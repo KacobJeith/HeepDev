@@ -1,5 +1,9 @@
 #pragma once
 
+#include <stdint.h>
+// The heepByte is our standard 8bit unit that we will work with
+typedef unsigned char heepByte;
+
 // Overall Version of the Firmware. This is reported so that
 // front Ends are able to translate or determine that they don't
 // understand a certain device
@@ -44,8 +48,8 @@
 #include "CommonDataTypes.h"
 
 // Device ID and MAC Address used for all Heep Communication
-heepByte deviceIDByte [STANDARD_ID_SIZE] = {0x01, 0x02, 0x03, 0x04};
-uint8_t mac[6] = {0x01,0x02,0x03,0x04,0x05,0x06};
+extern heepByte deviceIDByte [STANDARD_ID_SIZE];
+extern uint8_t mac[6];
 
 #ifdef USE_ANALYTICS
 heepByte base64DeviceIDByte [STANDARD_ID_SIZE_BASE_64];
