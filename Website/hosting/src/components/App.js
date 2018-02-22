@@ -25,14 +25,14 @@ const mapStateToProps = (state) => ({
 class App extends React.Component {
 	constructor(props) {
 		super(props);
-		ReactGA.initialize('UA-93098480-1');
+		// ReactGA.initialize('UA-93098480-1');
 		this.handleScroll = this.handleScroll.bind(this)
 	}
 
 
 	logPageView() {
-	  ReactGA.set({ page: window.location.pathname });
-	  ReactGA.pageview(window.location.pathname);
+	  // ReactGA.set({ page: window.location.pathname });
+	  // ReactGA.pageview(window.location.pathname);
 	}
 
 	componentDidMount() {

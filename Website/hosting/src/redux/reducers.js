@@ -18,10 +18,14 @@ export default function(state = initialState, action) {
         var newState = Immutable.Map(state.shopify).toJS();
 
         for (var i = 0; i < action.products.length; i++){
-          newState[action.products[i].id] = action.products[i].attrs;
+          newState[action.products[i].id] = action.products[i];
         }
 
       return Immutable.Map(state).set('shopify', newState).toJS()
+
+    case 'CREATE_CHECKOUT' :
+
+      return Immutable.Map(state).set('checkoutID', action.checkoutID).toJS()
       
     case 'SCROLL':
 

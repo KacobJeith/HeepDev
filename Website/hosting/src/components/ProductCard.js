@@ -18,20 +18,26 @@ class ProductCard extends React.Component {
 
   render() {
 
-    var useBuyButtonUI = true;
+    var useBuyButtonUI = false;
 
-  	const styles = {
-        container : {
-     		  marginTop: useBuyButtonUI ? 0 : 25,
+    const inputs = {
+      container: {
+        style: {
+          marginTop: useBuyButtonUI ? 0 : 25,
           marginLeft: useBuyButtonUI ? 50 : 25,
           display: "flex",
           alignItems: "center",
           flexDirection: "row",
           justifyContent: "center",
           position: "relative",
-          boxShadow: this.state.hover ? "5px 5px 5px #555" : "" 
+          boxShadow: this.state.hover ? "5px 5px 5px #555" : "" ,
+          width: 300,
+          height: 300
         },
-        addCard : {
+        id: String(this.props.product.id)
+      },
+      addCard: {
+        style: {
           height: 230,
           width: 300,
           backgroundColor: "black", 
@@ -40,13 +46,30 @@ class ProductCard extends React.Component {
           left: 0,
           opacity: 0.3,
           boxShadow: this.state.hover ? "5px 5px 5px #555" : "" 
-        },
-        image: {
-          position: "absolute",
-          left: 0,
-          top: 0
-        },
-        optionsBar: {
+        }
+      },
+      imageContainer: {
+        style: {
+          position: 'relative',
+          height: 230,
+          width: 300,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }
+      },
+      image: {
+        src: this.props.product.images[0].src,
+        style: {
+          // // position: "absolute",
+          // left: 0,
+          // top: 0,
+          maxHeight: "100%",
+          maxWidth: "100%"
+        }
+      },
+      optionsBar: {
+        style: {
           position: "absolute", 
           alignItems: "center",
           display: "flex",
@@ -58,46 +81,27 @@ class ProductCard extends React.Component {
           fontSize: 40,
           width: "100%",
           backgroundColor: "lightGray",
-          color: "black"
+          color: "black",
+          fontSize: 18
         }
-
-      };
-
-    const inputs = {
-      container: {
-        style: styles.container,
-        id: String(this.props.product.product_id)
-      },
-      addCard: {
-        style: styles.addCard,
-      },
-      image: {
-        src: this.props.product.images[0].src,
-        height: 230,
-        width: 300,
-        style: styles.image
-      },
-      optionsBar: {
-        style: styles.optionsBar
       }
     }
 
 
     if (useBuyButtonUI) {
       
-      ShopifyBuildProduct(this.props.product.product_id);
+      setTimeout(ShopifyBuildProduct(this.props.product.id), 200);
 
       return (<div {...inputs.container}/>);
 
     } else {
 
       return (<div {...inputs.container}>
-              <img {...inputs.image}/>
-              <div {...inputs.addCard}> </div>
-              <div {...inputs.optionsBar}> 
-                
+              <div {...inputs.imageContainer}>
+                <img {...inputs.image}/>
+                </div>
+                <div {...inputs.optionsBar}> 
                 {this.props.product.title}
-
               </div>
             </div>
       );
@@ -115,78 +119,88 @@ export default connect(mapStateToProps, mapDispatchToProps)(ProductCard)
 function ShopifyBuildProduct(productID) {
     var client = ShopifyBuy.buildClient({
       domain: 'shopheep.myshopify.com',
-      apiKey: 'a444eb17144b5b4e7841eaa1e4cf8698',
-      appId: '6',
+      storefrontAccessToken: 'a444eb17144b5b4e7841eaa1e4cf8698'
+      // appId: '6',
     });
 
-    ShopifyBuy.UI.onReady(client).then(function (ui) {
-      ui.createComponent('product', {
+    var ui = ShopifyBuy.UI.init(client).createComponent('product', {
         id: [productID],
         node: document.getElementById(String(productID)),
-        moneyFormat: '%24%7B%7Bamount%7D%7D',
         options: {
-          "product": {
-            "variantId": "all",
-            "width": "240px",
-            "contents": {
-              "imgWithCarousel": false,
-              "variantTitle": false,
-              "description": false,
-              "buttonWithQuantity": false,
-              "quantity": false
+            product: {
+              buttonDestination: 'modal'
             },
-            "styles": {
-              "product": {
-                "@media (min-width: 601px)": {
-                  "max-width": "100%",
-                  "margin-left": "0",
-                  "margin-bottom": "50px"
-                }
-              },
-              "compareAt": {
-                "font-size": "12px"
-              }
-            }
-          },
-          "cart": {
-            "contents": {
-              "button": true
-            },
-            "styles": {
-              "footer": {
-                "background-color": "#ffffff"
-              }
-            }
-          },
-          "modalProduct": {
-            "contents": {
-              "img": false,
-              "imgWithCarousel": true,
-              "variantTitle": true,
-              "buttonWithQuantity": true,
-              "button": false,
-              "quantity": true
-            },
-            "styles": {
-              "product": {
-                "@media (min-width: 601px)": {
-                  "max-width": "100%",
-                  "margin-left": "0px",
-                  "margin-bottom": "0px"
-                }
-              }
-            }
-          },
-          "productSet": {
-            "styles": {
-              "products": {
-                "@media (min-width: 601px)": {
-                  "margin-left": "-20px"
-                }
-              }
+            cart: {
+              startOpen: true
             }
           }
-        }
-      });
-    });
+        });
+
+        // node: document.getElementById(String(productID)),
+        // moneyFormat: '%24%7B%7Bamount%7D%7D',
+        // options: {
+        //   "product": {
+        //     "variantId": "all",
+        //     "width": "240px",
+        //     "contents": {
+        //       "imgWithCarousel": false,
+        //       "variantTitle": false,
+        //       "description": false,
+        //       "buttonWithQuantity": false,
+        //       "quantity": false
+        //     },
+        //     "styles": {
+        //       "product": {
+        //         "@media (min-width: 601px)": {
+        //           "max-width": "100%",
+        //           "margin-left": "0",
+        //           "margin-bottom": "50px"
+        //         }
+        //       },
+        //       "compareAt": {
+        //         "font-size": "12px"
+        //       }
+        //     }
+        //   },
+        //   "cart": {
+        //     "contents": {
+        //       "button": true
+        //     },
+        //     "styles": {
+        //       "footer": {
+        //         "background-color": "#ffffff"
+        //       }
+        //     }
+        //   },
+        //   "modalProduct": {
+        //     "contents": {
+        //       "img": false,
+        //       "imgWithCarousel": true,
+        //       "variantTitle": true,
+        //       "buttonWithQuantity": true,
+        //       "button": false,
+        //       "quantity": true
+        //     },
+        //     "styles": {
+        //       "product": {
+        //         "@media (min-width: 601px)": {
+        //           "max-width": "100%",
+        //           "margin-left": "0px",
+        //           "margin-bottom": "0px"
+        //         }
+        //       }
+        //     }
+        //   },
+        //   "productSet": {
+        //     "styles": {
+        //       "products": {
+        //         "@media (min-width: 601px)": {
+        //           "margin-left": "-20px"
+        //         }
+        //       }
+        //     }
+        //   }
+        // }
+      // });
+    // });
   }

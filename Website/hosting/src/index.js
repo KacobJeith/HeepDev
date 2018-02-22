@@ -9,6 +9,8 @@ import App from './components/App'
 import thunk from 'redux-thunk'
 import * as auth from './redux/FirebaseAuth'
 import * as shopify from './redux/Shopify'
+import { composeWithDevTools } from 'redux-devtools-extension';
+import ReactGA from 'react-ga';
 
 import loading from './assets/heepwink3_gradient.mov';
 
@@ -17,6 +19,7 @@ const startState = {
   scrollPosition: 0,
   webGLStatus: false,
   loginStatus: false,
+  checkout: 0,
   providers: {},
   devices: {},
   places: {},
@@ -46,7 +49,7 @@ const startState = {
 
 export const initialState = Immutable.Map(startState)
 
-export const store = createStore(reducers, startState, applyMiddleware(thunk));
+export const store = createStore(reducers, startState,  composeWithDevTools(applyMiddleware(thunk)));
 
 auth.initializeFirebase();
 shopify.InitializeShopify();
