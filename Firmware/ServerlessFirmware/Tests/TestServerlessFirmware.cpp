@@ -1,4 +1,3 @@
-#define SIMULATION
 #include "TestDynamicMemory.h"
 #include "TestActionAndResponseOpCodes.h"
 #include "TestAPI.h"

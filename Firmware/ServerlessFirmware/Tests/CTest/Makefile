@@ -1,4 +1,6 @@
 CC = gcc
 
+DEFINE_SIMULATION = -DSIMULATION
+
 TestC.app : CTest.c
-	$(CC) $(DEFINE_INDEXING) ../../MemoryUtilities.c ../../DeviceMemory.c ../../Device.c ../../ActionAndResponseOpCodes.c $< -o $@
+	$(CC) $(DEFINE_INDEXING) $(DEFINE_SIMULATION) ../../Simulation_HeepComms.c ../../Simulation_NonVolatileMemory.c ../../Scheduler.c ../../MemoryUtilities.c ../../DeviceMemory.c ../../Device.c ../../ActionAndResponseOpCodes.c ../../Simulation_Timer.c $< -o $@

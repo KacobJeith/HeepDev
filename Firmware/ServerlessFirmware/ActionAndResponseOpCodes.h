@@ -1,5 +1,3 @@
-#pragma once
-
 #include "Device.h"
 
 void ClearOutputBuffer();
