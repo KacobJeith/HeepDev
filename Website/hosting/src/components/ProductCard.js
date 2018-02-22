@@ -26,16 +26,16 @@ class ProductCard extends React.Component {
         style: {
           marginTop: useBuyButtonUI ? 0 : 25,
           marginLeft: useBuyButtonUI ? 50 : 25,
-          display: "flex",
-          alignItems: "center",
-          flexDirection: "row",
-          justifyContent: "center",
           position: "relative",
-          boxShadow: this.state.hover ? "5px 5px 5px #555" : "" ,
+          boxShadow: this.state.hover ? "0px 5px 15px #999" : "" ,
           width: 300,
-          height: 300
+          height: 300,
+          transition: "transform 400ms",
+          transform: this.state.hover ? "translate(0px, -5px)" : "translate(0px, 0px)"
         },
-        id: String(this.props.product.id)
+        id: String(this.props.product.id), 
+        onMouseEnter: () => this.setState({hover: true}),
+        onMouseLeave: () => this.setState({hover: false})
       },
       addCard: {
         style: {
@@ -46,7 +46,7 @@ class ProductCard extends React.Component {
           top: 0,
           left: 0,
           opacity: 0.3,
-          boxShadow: this.state.hover ? "5px 5px 5px #555" : "" 
+          boxShadow: this.state.hover ? "5px 5px 5px #111" : "" 
         }
       },
       imageContainer: {
@@ -76,10 +76,10 @@ class ProductCard extends React.Component {
           display: "flex",
           flexDirection: "row",
           justifyContent: "center",
+          top: 230,
           left: 0,
           bottom: 0,
           height: 70,
-          fontSize: 40,
           width: "100%",
           backgroundColor: "lightGray",
           color: "black",
@@ -99,14 +99,16 @@ class ProductCard extends React.Component {
 
     } else {
 
-      return (<div {...inputs.container}>
-              <div {...inputs.imageContainer}>
-                <img {...inputs.image}/>
+      return (
+                <div {...inputs.container}>
+                  <div {...inputs.imageContainer}>
+                    <img {...inputs.image}/>
+                  </div>
+                  <div {...inputs.optionsBar}> 
+                    {this.props.product.title}
+                  </div>
                 </div>
-                <div {...inputs.optionsBar}> 
-                {this.props.product.title}
-              </div>
-            </div>
+              
       );
     }
     
