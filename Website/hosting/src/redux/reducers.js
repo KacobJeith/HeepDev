@@ -5,6 +5,7 @@ import { initialState } from '../index'
 import * as actions from './actions'
 import * as auth from './FirebaseAuth'
 import * as database from './FirebaseDatabase'
+import * as shopify from './Shopify'
 
 export default function(state = initialState, action) {
   switch (action.type) {
@@ -26,6 +27,12 @@ export default function(state = initialState, action) {
     case 'CREATE_CHECKOUT' :
 
       return Immutable.Map(state).set('checkoutID', action.checkoutID).toJS()
+
+    case 'ADD_PRODUCT_TO_CART' :
+
+      shopify.AddProductToCart(state.checkoutID, state.shopify[action.productID]);
+
+      return state
       
     case 'SCROLL':
 

@@ -4,7 +4,8 @@ import { bindActionCreators } from 'redux'
 import * as Actions from '../redux/actions'
 
 var mapStateToProps = (state, ownProps) => ({
-  product: state.shopify[ownProps.productID]
+  product: state.shopify[ownProps.productID],
+  productID: ownProps.productID
 })
 
 class ProductCard extends React.Component {
@@ -82,8 +83,10 @@ class ProductCard extends React.Component {
           width: "100%",
           backgroundColor: "lightGray",
           color: "black",
-          fontSize: 18
-        }
+          fontSize: 18,
+          cursor: 'pointer'
+        },
+        onClick: () => {this.props.addProductToCart(this.props.productID)}
       }
     }
 

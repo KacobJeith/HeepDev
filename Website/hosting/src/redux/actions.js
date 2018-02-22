@@ -60,6 +60,11 @@ export const setCheckout = (checkoutID) => ({
 	checkoutID
 })
 
+export const addProductToCart = (productID) => ({
+	type: 'ADD_PRODUCT_TO_CART',
+	productID
+})
+
 
 
 /* <-------------------------------------------------------Paper Signals---------------------------------------------------------------------->*/

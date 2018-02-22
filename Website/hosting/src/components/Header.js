@@ -137,6 +137,9 @@ class Header extends React.Component {
 				        <LinkContainer to="/Shop">
 				          <NavItem>Shop</NavItem>
 				        </LinkContainer>
+				        <LinkContainer to="/Checkout">
+				          <NavItem>Checkout</NavItem>
+				        </LinkContainer>
 				        <LinkContainer to="/Mission">
 				          <NavItem>Mission</NavItem>
 				        </LinkContainer>
