@@ -21,7 +21,7 @@ class Store extends React.Component {
    		  flexDirection: "row",
    		  flexFlow: "row wrap",
         position: "relative",
-        top: 70
+        top: 0
         }
       };
 

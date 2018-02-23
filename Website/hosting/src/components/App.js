@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import * as Actions from '../redux/actions'
 import ReactGA from 'react-ga'
 
+import AppBar from './AppBar'
 import Header from './Header'
 import Landing from './Landing'
 import Mission from './Mission'
@@ -51,7 +52,7 @@ class App extends React.Component {
 	        container : { 
 	          height: "100%",
 	          width: "100%",
-	          marginTop: 70,
+	          marginTop: 0,
 	          display: "block"
 	        }
 	      };
@@ -73,7 +74,7 @@ class App extends React.Component {
 	    return(
 			<Router >
 		    	<div {...inputs.container}>
-					<Route path="/" component={Header}/>
+					<Route path="/" component={AppBar}/>
 					<Route exact path="/" component={Mission}/>
 					<Route path="/Mission" component={Mission}/>
 					<Route path="/Shop" component={Store}/>
