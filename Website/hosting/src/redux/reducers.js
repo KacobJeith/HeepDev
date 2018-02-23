@@ -3,9 +3,9 @@ import Immutable from 'immutable'
 import 'babel-polyfill'
 import { initialState } from '../index'
 import * as actions from './actions'
-import * as auth from './FirebaseAuth'
-import * as database from './FirebaseDatabase'
-import * as shopify from './Shopify'
+import * as auth from '../firebase/FirebaseAuth'
+import * as database from '../firebase/FirebaseDatabase'
+import * as shopify from '../shopify/Shopify'
 
 export default function(state = initialState, action) {
   switch (action.type) {
