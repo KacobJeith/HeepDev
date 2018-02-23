@@ -12,7 +12,7 @@ import ShoppingCartIcon from 'material-ui-icons/ShoppingCart';
 import Switch from 'material-ui/Switch';
 import { FormControlLabel, FormGroup } from 'material-ui/Form';
 import Menu, { MenuItem } from 'material-ui/Menu';
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { connect } from 'react-redux'
 import * as actions from '../redux/actions'
 import { bindActionCreators } from 'redux'
@@ -45,7 +45,11 @@ const styles = {
   bigAvatar: {
       width: 60,
       height: 60,
-    },
+  },
+  navLink: {
+    textDecoration: 'none',
+    outline: 'none'
+  }
 };
 
 const ShopLink = props => <Link to="/Shop" {...props} style={{ textDecoration: 'none' }}/>
@@ -103,7 +107,7 @@ class MenuAppBar extends React.Component {
           open={Boolean(this.state.anchorEl)}
           onClose={this.handleClose}
         >
-          <NavLink to="/User" style={{textDecoration: 'none', marginRight: 20}}>
+          <NavLink to="/User" style={styles.navLink}>
             <MenuItem onClick={this.handleClose}>Profile</MenuItem>
           </NavLink>
           <MenuItem onClick={this.handleLogout}>Logout</MenuItem>
@@ -113,6 +117,7 @@ class MenuAppBar extends React.Component {
   }
 
   notLoggedOn() {
+
     return (
       <div>
         <IconButton
@@ -137,11 +142,11 @@ class MenuAppBar extends React.Component {
           open={Boolean(this.state.anchorEl)}
           onClose={this.handleClose}
         >
-          <NavLink to="/auth" style={{textDecoration: 'none', margin: 0}}>
+          <NavLink to="/auth" style={styles.navLink}>
             <MenuItem onClick={this.handleClose}>Login</MenuItem>
           </NavLink>
 
-          <NavLink to="/auth" style={{textDecoration: 'none', margin: 0}}>
+          <NavLink to="/auth" style={styles.navLink}>
             <MenuItem onClick={this.handleClose}>Create Account</MenuItem>
           </NavLink>
         </Menu>
