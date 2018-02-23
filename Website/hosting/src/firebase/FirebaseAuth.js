@@ -297,7 +297,7 @@ const signinSuccessURL = () => {
 
     } else {
 
-    	return '#/User'
+    	return '/User'
     }
 }
 

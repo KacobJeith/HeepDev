@@ -19,6 +19,9 @@ import { bindActionCreators } from 'redux'
 import { withRouter } from 'react-router-dom'
 import Badge from 'material-ui/Badge';
 import * as auth from '../firebase/FirebaseAuth'
+import Avatar from 'material-ui/Avatar';
+
+import classNames from 'classnames';
 
 var mapStateToProps = (state) => ({
   loginStatus: state.loginStatus,
@@ -36,6 +39,13 @@ const styles = {
     marginLeft: -12,
     marginRight: 20,
   },
+  avatar: {
+    margin: 10,
+  },
+  bigAvatar: {
+      width: 60,
+      height: 60,
+    },
 };
 
 const ShopLink = props => <Link to="/Shop" {...props} style={{ textDecoration: 'none' }}/>
@@ -59,9 +69,89 @@ class MenuAppBar extends React.Component {
     this.setState({ anchorEl: null });
   };
 
+  handleLogout = () => {
+    auth.logout();
+    this.handleClose();
+  }
+
+  loggedOn() {
+    return (
+      <div style={{marginLeft: 15}}>
+        <IconButton
+          aria-owns={open ? 'menu-appbar' : null}
+          aria-haspopup="true"
+          onClick={this.handleMenu}
+          color="inherit"
+        >
+          <Avatar
+            alt="Adelle Charles"
+            src={auth.getMyUserImagePath()}
+            className={classNames(this.props.avatar, this.props.bigAvatar)}
+          />
+        </IconButton>
+        <Menu
+          id="menu-appbar"
+          anchorEl={this.state.anchorEl}
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
+          open={Boolean(this.state.anchorEl)}
+          onClose={this.handleClose}
+        >
+          <NavLink to="/User" style={{textDecoration: 'none', marginRight: 20}}>
+            <MenuItem onClick={this.handleClose}>Profile</MenuItem>
+          </NavLink>
+          <MenuItem onClick={this.handleLogout}>Logout</MenuItem>
+        </Menu>
+      </div>
+    );
+  }
+
+  notLoggedOn() {
+    return (
+      <div>
+        <IconButton
+          aria-owns={Boolean(this.state.anchorEl) ? 'menu-appbar' : null}
+          aria-haspopup="true"
+          onClick={this.handleMenu}
+          color="inherit"
+        >
+          <AccountCircle />
+        </IconButton>
+        <Menu
+          id="menu-appbar"
+          anchorEl={this.state.anchorEl}
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
+          open={Boolean(this.state.anchorEl)}
+          onClose={this.handleClose}
+        >
+          <NavLink to="/auth" style={{textDecoration: 'none', margin: 0}}>
+            <MenuItem onClick={this.handleClose}>Login</MenuItem>
+          </NavLink>
+
+          <NavLink to="/auth" style={{textDecoration: 'none', margin: 0}}>
+            <MenuItem onClick={this.handleClose}>Create Account</MenuItem>
+          </NavLink>
+        </Menu>
+      </div>
+    );
+  }
+
   render() {
     const { classes } = this.props;
-    const { auth, anchorEl } = this.state;
+    const { authed, anchorEl } = this.state;
     const open = Boolean(anchorEl);
 
     var inputs = {
@@ -78,6 +168,14 @@ class MenuAppBar extends React.Component {
       }
     }
 
+    var loggedInNavs = [];
+
+    if (this.props.loginStatus) {
+      loggedInNavs = this.loggedOn();
+    } else {
+      loggedInNavs = this.notLoggedOn();
+    }
+
     return (
       <div className={classes.root}>
         <AppBar position="static">
@@ -92,7 +190,7 @@ class MenuAppBar extends React.Component {
 
               <IconButton
                   color="inherit"
-                  style={{textDecoration: 'none', marginRight: 20}}>
+                  style={{textDecoration: 'none', marginRight: 50}}>
                 <NavLink to="/" style={{textDecoration: 'none', marginRight: 20}}>
                   <Typography variant="title" style={{color:"white"}}>
                     About  
@@ -102,9 +200,18 @@ class MenuAppBar extends React.Component {
 
               <IconButton
                   color="inherit">
-                <NavLink to="/Shop" style={{textDecoration: 'none', marginRight: 20}}>
+                <NavLink to="/Shop" style={{textDecoration: 'none', marginRight: 90}}>
                   <Typography variant="title" style={{color:"white"}}>
                     Shop
+                  </Typography>
+                </NavLink>
+              </IconButton>
+
+              <IconButton
+                  color="inherit">
+                <NavLink to="/Shop" style={{textDecoration: 'none', marginRight: 40}}>
+                  <Typography variant="title" style={{color:"white"}}>
+                    Develop
                   </Typography>
                 </NavLink>
               </IconButton>
@@ -119,35 +226,8 @@ class MenuAppBar extends React.Component {
                 </IconButton>
               </NavLink>
 
-            {auth && (
-              <div>
-                <IconButton
-                  aria-owns={open ? 'menu-appbar' : null}
-                  aria-haspopup="true"
-                  onClick={this.handleMenu}
-                  color="inherit"
-                >
-                  <AccountCircle />
-                </IconButton>
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  open={open}
-                  onClose={this.handleClose}
-                >
-                  <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-                  <MenuItem onClick={this.handleClose}>My account</MenuItem>
-                </Menu>
-              </div>
-            )}
+              {loggedInNavs}
+            
           </Toolbar>
         </AppBar>
       </div>
