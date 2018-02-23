@@ -45,7 +45,7 @@ const styles = theme => ({
 
 class Store extends React.Component {
   state = {
-    viewMode: 'Grid',
+    viewMode: 'Card',
     age: '',
     open: false
   }

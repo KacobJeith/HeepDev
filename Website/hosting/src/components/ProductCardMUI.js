@@ -16,6 +16,7 @@ import ShareIcon from 'material-ui-icons/Share';
 import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
 import MoreVertIcon from 'material-ui-icons/MoreVert';
 import AddShoppingCartIcon from 'material-ui-icons/AddShoppingCart';
+import Badge from 'material-ui/Badge';
 
 
 var mapStateToProps = (state, ownProps) => ({
@@ -50,7 +51,15 @@ const styles = theme => ({
 });
 
 class RecipeReviewCard extends React.Component {
-  state = { expanded: false };
+  state = { 
+    expanded: false, 
+    countInCart: 0  
+  };
+
+  addToCart() {
+    this.props.addProductToCart(this.props.productID);
+    this.setState({countInCart: this.state.countInCart + 1});
+  }
 
   handleExpandClick = () => {
     this.setState({ expanded: !this.state.expanded });
@@ -58,6 +67,16 @@ class RecipeReviewCard extends React.Component {
 
   render() {
     const { classes } = this.props;
+
+    var cartIcon = [];
+
+    if (this.state.countInCart > 0) { 
+      cartIcon = (<Badge color="secondary" badgeContent={this.state.countInCart} className={classes.margin}>
+        <AddShoppingCartIcon onClick={this.addToCart.bind(this)}/>
+      </Badge>);
+    } else {
+      cartIcon = <AddShoppingCartIcon onClick={this.addToCart.bind(this)}/>;
+    }
 
     return (
       <div>
@@ -88,7 +107,7 @@ class RecipeReviewCard extends React.Component {
           </CardContent>
           <CardActions className={classes.actions} disableActionSpacing>
             <IconButton aria-label="Add to cart">
-              <AddShoppingCartIcon onClick={() => this.props.addProductToCart(this.props.productID)}/>
+              {cartIcon}
             </IconButton>
             <IconButton aria-label="Share">
               <ShareIcon />
