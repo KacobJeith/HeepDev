@@ -2,7 +2,7 @@ import firebase from 'firebase'
 import * as firebaseAuth from './FirebaseAuth'
 import * as setup from '../index'
 import * as actions from '../redux/actions'
-import * as HAPI from '../serverside/heep/HAPIMemoryParser.js'
+// import * as HAPI from '../serverside/heep/HAPIMemoryParser.js'
 
 
 export const readUserData = (user) => {
@@ -141,7 +141,7 @@ const readDeviceData = (deviceID) => {
 	firebase.database().ref('/analytics/' + deviceID).on('value', function(snapshot) {
 
 		var buffer = base64ToArrayBuffer(snapshot.val());
-		var data = HAPI.ReadHeepResponse(buffer);
+		var data = [];//HAPI.ReadHeepResponse(buffer);
 		
 		var analytics = [];
 

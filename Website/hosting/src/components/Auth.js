@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { withRouter } from 'react-router-dom'
 import * as actions from '../redux/actions'
-import * as auth from '../redux/FirebaseAuth'
+import * as auth from '../firebase/FirebaseAuth'
 import Loading from './Loading'
 
 var mapStateToProps = (state) => ({

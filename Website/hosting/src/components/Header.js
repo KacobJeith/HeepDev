@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Navbar, Nav, NavItem, Button, Image } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-import * as auth from '../redux/FirebaseAuth'
+import * as auth from '../firebase/FirebaseAuth'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import * as actions from '../redux/actions'

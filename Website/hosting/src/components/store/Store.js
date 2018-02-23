@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import * as Actions from '../redux/actions'
+import * as Actions from '../../redux/actions'
 import ProductCard from './ProductCard'
 import { withStyles } from 'material-ui/styles';
 import PropTypes from 'prop-types';

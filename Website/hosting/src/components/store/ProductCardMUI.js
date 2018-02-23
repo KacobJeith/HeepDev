@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import * as Actions from '../redux/actions'
+import * as Actions from '../../redux/actions'
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import classnames from 'classnames';
@@ -80,7 +80,7 @@ class RecipeReviewCard extends React.Component {
 
     return (
       <div>
-        <Card className={classes.card} z-index={5} style={{width:500, marginLeft: 25, marginTop: 25}}>
+        <Card className={classes.card} style={{width:500, marginLeft: 25, marginTop: 25}}>
           <CardHeader
             avatar={
               <Avatar aria-label="Recipe" className={classes.avatar}>

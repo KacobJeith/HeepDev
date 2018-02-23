@@ -18,7 +18,7 @@ import * as actions from '../redux/actions'
 import { bindActionCreators } from 'redux'
 import { withRouter } from 'react-router-dom'
 import Badge from 'material-ui/Badge';
-import * as auth from '../redux/FirebaseAuth'
+import * as auth from '../firebase/FirebaseAuth'
 
 var mapStateToProps = (state) => ({
   loginStatus: state.loginStatus,
