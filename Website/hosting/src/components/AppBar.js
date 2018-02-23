@@ -13,9 +13,17 @@ import Switch from 'material-ui/Switch';
 import { FormControlLabel, FormGroup } from 'material-ui/Form';
 import Menu, { MenuItem } from 'material-ui/Menu';
 import { NavLink } from 'react-router-dom'
-import { LinkContainer } from 'react-router-bootstrap';
-
+import { connect } from 'react-redux'
+import * as actions from '../redux/actions'
+import { bindActionCreators } from 'redux'
+import { withRouter } from 'react-router-dom'
 import Badge from 'material-ui/Badge';
+
+var mapStateToProps = (state) => ({
+  loginStatus: state.loginStatus,
+  itemsInCart: state.itemsInCart
+})
+
 const styles = {
   root: {
     flexGrow: 1,
@@ -103,8 +111,8 @@ class MenuAppBar extends React.Component {
 
               <NavLink to="/Checkout" style={{textDecoration: 'none'}}>
                 
-                <IconButton className={classes.button} aria-label="Add to shopping cart" tooltip="Cart">
-                  <Badge color="secondary" badgeContent={4} className={classes.margin}>
+                <IconButton className={classes.button} aria-label="Add to shopping cart">
+                  <Badge color="secondary" badgeContent={this.props.itemsInCart} className={classes.margin}>
                     <ShoppingCartIcon style={{fill:"white"}}/>
                   </Badge>
                 </IconButton>
@@ -150,4 +158,8 @@ MenuAppBar.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(MenuAppBar);
+var mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(actions, dispatch)
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(MenuAppBar)))

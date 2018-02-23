@@ -20,6 +20,7 @@ const startState = {
   webGLStatus: false,
   loginStatus: false,
   checkout: 0,
+  itemsInCart: 0,
   providers: {},
   devices: {},
   places: {},

@@ -32,7 +32,7 @@ export default function(state = initialState, action) {
 
       shopify.AddProductToCart(state.checkoutID, state.shopify[action.productID]);
 
-      return state
+      return Immutable.Map(state).set('itemsInCart', state.itemsInCart += 1).toJS();
       
     case 'SCROLL':
 
