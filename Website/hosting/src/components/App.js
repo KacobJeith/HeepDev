@@ -17,6 +17,7 @@ import Loading from './Loading'
 import UserProfile from './UserProfile'
 import DeviceBuilder from './DeviceBuilder'
 import Checkout from './store/Checkout'
+import ProductDetails from './store/ProductDetails'
 
 import PaperSignalsConsole from './PaperSignals/PaperSignalsConsole'
 
@@ -78,6 +79,7 @@ class App extends React.Component {
 					<Route exact path="/" component={Mission}/>
 					<Route path="/Mission" component={Mission}/>
 					<Route path="/Shop" component={Store}/>
+					<Route path="/product/:productID" component={ProductDetails}/>
 					<Route path="/Checkout" component={Checkout}/>
 					<Route exact path="/auth" component={Auth}/>
 					<Route exact path="/PaperSignals" component={PaperSignalsConsole}/>
