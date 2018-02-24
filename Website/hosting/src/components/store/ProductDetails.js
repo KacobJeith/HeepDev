@@ -15,6 +15,7 @@ var mapStateToProps = (state, ownProps) => ({
 const styles = theme => ({
   root: {
     flexGrow: 1,
+    margin: "20px"
   },
   paper: {
     padding: theme.spacing.unit * 2,
@@ -30,7 +31,7 @@ function ProductDetails(props) {
   console.log("Matched Product: ", props.product);
 
   return (
-    <div className={classes.root}>
+    <div style={{margin: 25, flexGrow: 1}}>
       <Grid container spacing={24}>
         <Grid item xs>
           <Paper className={classes.paper}>xs</Paper>
