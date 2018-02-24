@@ -14,19 +14,15 @@ export const InitializeShopify = () => {
 
   client.collection.fetchAllWithProducts().then((collections) => {
     // Do something with the collections
-    console.log(collections);
-    console.log(collections[0].products);
   });
 
   client.checkout.create().then((checkout) => {
-      console.log("CHECKOUT: ", checkout);
       var checkoutID = checkout.id;
 
       setup.store.dispatch(actions.setCheckout(checkoutID));
   });
 
    client.product.fetchAll().then((products) => {
-    console.log("PRODUCTS: ", products);
     AddProductsToRedux(products);
   }); 
 }

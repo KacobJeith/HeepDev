@@ -17,6 +17,7 @@ import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
 import MoreVertIcon from 'material-ui-icons/MoreVert';
 import AddShoppingCartIcon from 'material-ui-icons/AddShoppingCart';
 import Badge from 'material-ui/Badge';
+import { Link} from 'react-router-dom'
 
 
 var mapStateToProps = (state, ownProps) => ({
@@ -95,11 +96,13 @@ class RecipeReviewCard extends React.Component {
             title={this.props.product.title}
             subheader="September 14, 2016"
           />
-          <CardMedia
-            className={classes.media}
-            image={this.props.product.images[0].src}
-            title="Contemplative Reptile"
-          />
+          <Link to={"/product/" + this.props.productID}>
+            <CardMedia
+              className={classes.media}
+              image={this.props.product.images[0].src}
+              title="Contemplative Reptile"
+            />
+          </Link>
           <CardContent>
             <Typography component="p">
               {this.props.product.description}
@@ -109,9 +112,11 @@ class RecipeReviewCard extends React.Component {
             <IconButton aria-label="Add to cart">
               {cartIcon}
             </IconButton>
-            <IconButton aria-label="Share">
-              <ShareIcon />
-            </IconButton>
+            <Link to={"/product/" + this.props.productID}>
+              <IconButton aria-label="Share">
+                <ShareIcon />
+              </IconButton>
+            </Link>
             <IconButton
               className={classnames(classes.expand, {
                 [classes.expandOpen]: this.state.expanded,
