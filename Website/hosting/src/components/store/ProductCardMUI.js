@@ -112,11 +112,9 @@ class RecipeReviewCard extends React.Component {
             <IconButton aria-label="Add to cart">
               {cartIcon}
             </IconButton>
-            <Link to={"/product/" + this.props.productID}>
-              <IconButton aria-label="Share">
-                <ShareIcon />
-              </IconButton>
-            </Link>
+            <IconButton aria-label="Share">
+              <ShareIcon />
+            </IconButton>
             <IconButton
               className={classnames(classes.expand, {
                 [classes.expandOpen]: this.state.expanded,
