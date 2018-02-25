@@ -10,6 +10,7 @@ import Grid from 'material-ui/Grid';
 import GridList, { GridListTile, GridListTileBar } from 'material-ui/GridList';
 import IconButton from 'material-ui/IconButton';
 import StarBorderIcon from 'material-ui-icons/StarBorder';
+import Typography from 'material-ui/Typography';
 
 var mapStateToProps = (state, ownProps) => ({
   product: state.shopify[ownProps.match.params.productID]
@@ -60,47 +61,84 @@ class ProductDetails extends React.Component {
     } else {
       return (
         <div style={{margin: 25, flexGrow: 1}}>
-          <Grid container spacing={24}>
-            <Grid item xs>
-                <img 
-                  src={this.props.product.images[this.state.viewing].src} 
-                  alt={this.props.product.title} 
-                  style={{maxWidth:400, maxHeight:400}}
-                />
+          <Grid 
+            container 
+            spacing={24}
+            justify={'center'}
+            alignItems={'flex-start'}
+          >
+            <Grid item xs={5}>
+              <Grid 
+                container 
+                direction={'column'}
+                spacing={24}
+                justify={'center'}
+                alignItems={'flex-start'}
+              >
+                <Grid 
+                  item 
+                  xs
+                  style={{
+                    height: 500
+                  }}
+                >
+                    <img 
+                      src={this.props.product.images[this.state.viewing].src} 
+                      alt={this.props.product.title} 
+                      style={{
+                        maxWidth:"100%", 
+                        maxHeight:"100%"
+                      }}
+                    />
+                </Grid>
+
+                <Grid item xs>
+                </Grid>
+              </Grid>
             </Grid>
-            <Grid item xs>
+            <Grid 
+              item 
+              xs
+            >
+              <Typography variant="title" gutterBottom paragraph >
+                {this.props.product.title}
+              </Typography>
+              <Typography variant="body1" gutterBottom paragraph wrap>
+                {this.props.product.description}
+              </Typography>
+              <Typography variant="subheading" gutterBottom paragraph wrap>
+                {"$" + this.props.product.variants[0].price}
+              </Typography>
               
-              <GridList className={classes.gridList} cols={1}>
+            </Grid>
+          </Grid>
+          <Grid container spacing={24}>
+            
                       {this.props.product.images.map((tile, index) => (
-                        <GridListTile key={tile.img}>
+                        <Grid item xs={3} sm={2} md={1.5}>
+                          <Paper 
+                            elevation={this.state.viewing == index ? 10 : 5}
+                            style={{
+                              transition: "transform 400ms",
+                              transform: this.state.viewing == index  ? "translate(0px, -5px)" : "translate(0px, 0px)"
+                            }}
+                          >
                           <img 
                             src={tile.src} 
                             alt={tile.altText} 
                             style={{
-                              cursor: 'pointer'
-                              
+                              cursor: 'pointer',
+                              maxWidth:"100%", 
+                              maxHeight:"100%"
                             }}
-                            onClick={ () => {console.log('clicked: ', index); this.setState({viewing: index})}}
+                            key={tile.id}
+                            onMouseEnter={ () => {this.setState({viewing: index})}}
                           />
-                        </GridListTile>
+                          </Paper>
+                        </Grid>
                       ))}
-                    </GridList>
-             
-            </Grid>
-            <Grid item xs>
-              <Paper className={classes.paper}>xs</Paper>
-            </Grid>
-          </Grid>
-          <Grid container spacing={24}>
-            <Grid item xs>
-              <Paper className={classes.paper}>xs</Paper>
-            </Grid>
-            <Grid item xs={6}>
-              <Paper className={classes.paper}>xs=6</Paper>
-            </Grid>
-            <Grid item xs>
-              <Paper className={classes.paper}>xs</Paper>
-            </Grid>
+            
+            
           </Grid>
         </div>
       );
