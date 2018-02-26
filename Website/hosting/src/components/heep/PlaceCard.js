@@ -2,23 +2,22 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { withRouter } from 'react-router-dom'
-import * as actions from '../redux/actions'
-import * as database from '../firebase/FirebaseDatabase'
+import * as actions from '../../redux/actions'
 import {Grid, Row, Col, Image, PageHeader, Media, Button} from 'react-bootstrap'
-import { LinkContainer } from 'react-router-bootstrap'
-import EditTextBox from './utilities/EditTextBox'
+import EditTextBox from '../utilities/EditTextBox'
+import * as database from '../../firebase/FirebaseDatabase'
 
 var mapStateToProps = (state, ownProps) => ({
-  group: state.groups[ownProps.groupID]
+  place: state.places[ownProps.placeID]
 })
 
-class RoomCard extends React.Component {
+class PlaceCard extends React.Component {
 
   render() {
 
     var inputs = {
       section: {
-        key: this.props.group.groupID,
+        key: this.props.place.placeID,
         style: {
           marginTop: 10
         }
@@ -31,17 +30,14 @@ class RoomCard extends React.Component {
       image: {
         width: 64,
         height: 64,
-        src: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Lost_or_Unknown.svg/1000px-Lost_or_Unknown.svg.png", 
-        id: String(this.props.group.groupID),
-        alt: "RoomPic" 
+        src: "https://www.misskatecuttables.com/uploads/shopping_cart/7903/med_house.png", 
+        alt: "PlacePic" 
       },
       editableText: {
-        text: this.props.group.name,
-        onChange: (change) => {database.updateGroupName(this.props.group.groupID, change)}
+        text: this.props.place.name,
+        onChange: (change) => {database.updatePlaceName(this.props.place.placeID, change)}
       }
     }
-
-    database.downloadGroupImage(this.props.group.groupID);
     
     return (
 <Row {...inputs.section}>
@@ -66,5 +62,5 @@ var mapDispatchToProps = (dispatch) => {
   return bindActionCreators(actions, dispatch)
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(RoomCard))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PlaceCard))
 

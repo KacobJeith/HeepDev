@@ -2,12 +2,12 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { withRouter } from 'react-router-dom'
-import * as actions from '../redux/actions'
-import * as auth from '../firebase/FirebaseAuth'
+import * as actions from '../../redux/actions'
+import * as auth from '../../firebase/FirebaseAuth'
 import {Grid, Row, Col, Image, PageHeader, Media, Button} from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
-import Loading from './Loading'
-import UserAnalytics from './UserAnalytics'
+import Loading from '../Loading'
+import UserAnalytics from '../analytics/UserAnalytics'
 
 var mapStateToProps = (state) => ({
   loginStatus: state.loginStatus,
