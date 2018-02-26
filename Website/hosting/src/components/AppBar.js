@@ -1,27 +1,32 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
-import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar';
-import Typography from 'material-ui/Typography';
-import IconButton from 'material-ui/IconButton';
-import Button from 'material-ui/Button';
-import MenuIcon from 'material-ui-icons/Menu';
-import AccountCircle from 'material-ui-icons/AccountCircle';
-import ShoppingCartIcon from 'material-ui-icons/ShoppingCart';
-import Switch from 'material-ui/Switch';
-import { FormControlLabel, FormGroup } from 'material-ui/Form';
-import Menu, { MenuItem } from 'material-ui/Menu';
-import { Link, NavLink } from 'react-router-dom'
-import { connect } from 'react-redux'
-import * as actions from '../redux/actions'
+import React                  from 'react';
+import { Link, NavLink }      from 'react-router-dom'
+import { connect }            from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { withRouter } from 'react-router-dom'
-import Badge from 'material-ui/Badge';
-import * as auth from '../firebase/FirebaseAuth'
-import Avatar from 'material-ui/Avatar';
+import { withRouter }         from 'react-router-dom'
+import PropTypes              from 'prop-types';
+import classNames             from 'classnames';
 
-import classNames from 'classnames';
+import MenuIcon               from 'material-ui-icons/Menu';
+import AccountCircle          from 'material-ui-icons/AccountCircle';
+import ShoppingCartIcon       from 'material-ui-icons/ShoppingCart';
+
+import * as actions           from '../redux/actions'
+import * as auth              from '../firebase/FirebaseAuth'
+
+import { withStyles }                   from 'material-ui/styles';
+import AppBar                           from 'material-ui/AppBar';
+import Toolbar                          from 'material-ui/Toolbar';
+import Typography                       from 'material-ui/Typography';
+import IconButton                       from 'material-ui/IconButton';
+import Button                           from 'material-ui/Button';
+import Switch                           from 'material-ui/Switch';
+import { FormControlLabel, FormGroup }  from 'material-ui/Form';
+import Menu, { MenuItem }               from 'material-ui/Menu';
+import Badge                            from 'material-ui/Badge';
+import Avatar                           from 'material-ui/Avatar';
+
+
+
 
 var mapStateToProps = (state) => ({
   loginStatus: state.loginStatus,
