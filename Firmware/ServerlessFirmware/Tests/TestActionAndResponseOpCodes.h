@@ -456,6 +456,7 @@ void TestDeleteMOPOpCode()
 
 void TestGetAnalyticsString()
 {
+#ifdef USE_ANALYTICS
 	std::string TestName = "Test Analytics Get String and Delete";
 
 	ClearDeviceMemory();
@@ -488,6 +489,7 @@ void TestGetAnalyticsString()
 	valueList[2].actualValue = outputBufferLastByte;
 
 	CheckResults(TestName, valueList, 3);
+#endif
 }
 
 void TestActionAndResponseOpCodes()

@@ -165,6 +165,14 @@ export var ReadControl = (thisBlockData) => { // OP 2
   thisPosition.left = ((thisBlockData[1] << 8) >>> 0) + thisBlockData[2];
   thisPosition.top = ((thisBlockData[3] << 8) >>> 0) + thisBlockData[4];
 
+  if (thisPosition.left < 0 || thisPosition.left > 2000) {
+    thisPosition.left = 100;
+  }
+
+  if (thisPosition.top < 0 || thisPosition.top > 2000) {
+    thisPosition.top = 100;
+  }
+
   return thisPosition
  }
 
