@@ -11,7 +11,7 @@ import IconButton                                   from 'material-ui/IconButton
 import StarBorderIcon                               from 'material-ui-icons/StarBorder';
 import Typography                                   from 'material-ui/Typography';
 import Button                                       from 'material-ui/Button'
-
+import Hidden                                       from 'material-ui/Hidden';
 
 import FileDownload from 'material-ui-icons/FileDownload';
 
@@ -23,6 +23,10 @@ var mapStateToProps = (state, ownProps) => ({
 
 
 class DownloadPage extends React.Component { 
+
+  checkBreakpoint() {
+
+  }
 
   render() {
     
@@ -38,6 +42,21 @@ class DownloadPage extends React.Component {
           spacing={24}
           justify={'center'}
           alignItems={'center'}>
+          <Hidden smUp>
+            <Grid 
+              item 
+              md={3}
+              lg={2}
+              sm={4}
+              xs={5}>
+              <img 
+                src="../src/assets/Heep_Gradient.png"
+                style={{
+                  maxWidth: '100%',
+                  maxHeight: '100%'
+                }}/>
+            </Grid>
+          </Hidden>
           <Grid 
             item 
             sm={6}
@@ -71,21 +90,22 @@ class DownloadPage extends React.Component {
               />
               Download
             </Button>
-
           </Grid>
-          <Grid 
-            item 
-            md={3}
-            lg={2}
-            sm={4}
-            xs={5}>
-            <img 
-              src="../src/assets/Heep_Gradient.png"
-              style={{
-                maxWidth: '100%',
-                maxHeight: '100%'
-              }}/>
-          </Grid>
+          <Hidden only='xs'>
+            <Grid 
+              item 
+              md={3}
+              lg={2}
+              sm={4}
+              xs={5}>
+              <img 
+                src="../src/assets/Heep_Gradient.png"
+                style={{
+                  maxWidth: '100%',
+                  maxHeight: '100%'
+                }}/>
+            </Grid>
+          </Hidden>
         </Grid>
       </div>
     );

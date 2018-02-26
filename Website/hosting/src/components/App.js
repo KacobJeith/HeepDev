@@ -6,7 +6,6 @@ import * as Actions from '../redux/actions'
 import ReactGA from 'react-ga'
 
 import AppBar from './AppBar'
-import Header from './Header'
 import Landing from './Landing'
 import Mission from './Mission'
 import Store from './store/Store'
