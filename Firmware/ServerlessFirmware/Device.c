@@ -58,7 +58,8 @@ void AddVertex(struct Vertex_Byte myVertex)
 
 void RemoveVertexListEntry(unsigned int pointer)
 {
-	for(int i = pointer; i < numberOfVertices-1; i++)
+	int i;
+	for(i = pointer; i < numberOfVertices-1; i++)
 	{
 		vertexPointerList[i] = vertexPointerList[i+1];
 	}
@@ -68,7 +69,8 @@ void RemoveVertexListEntry(unsigned int pointer)
 
 int DeleteVertex(struct Vertex_Byte myVertex)
 {
-	for(int i = 0; i < numberOfVertices; i++)
+	int i;
+	for(i = 0; i < numberOfVertices; i++)
 	{
 		struct Vertex_Byte newVertex;
 		if(GetVertexAtPointer_Byte(vertexPointerList[i], &newVertex) == 0)
@@ -111,7 +113,8 @@ void SetDeviceIcon(char deviceIcon)
 
 int SetControlValueByID(unsigned char controlID, unsigned int value, unsigned char setFromNetwork)
 {
-	for(int i = 0; i < numberOfControls; i++)
+	int i;
+	for(i = 0; i < numberOfControls; i++)
 	{
 		if(controlList[i].controlID == controlID)
 		{
@@ -133,7 +136,8 @@ int SetControlValueByID(unsigned char controlID, unsigned int value, unsigned ch
 
 heepByte GetControlTypeFromControlID(heepByte controlID)
 {
-	for(int i = 0; i < numberOfControls; i++)
+	int i;
+	for(i = 0; i < numberOfControls; i++)
 	{
 		if(controlList[i].controlID == controlID)
 		{
@@ -146,11 +150,13 @@ heepByte GetControlTypeFromControlID(heepByte controlID)
 
 int SetControlValueByIDBuffer(unsigned char controlID, heepByte* buffer, int bufferStartPoint, int bufferLength, unsigned char setFromNetwork)
 {
-	for(int i = 0; i < numberOfControls; i++)
+	int i;
+	for(i = 0; i < numberOfControls; i++)
 	{
 		if(controlList[i].controlID == controlID)
 		{
-			for(int j = 0; j < bufferLength; j++)
+			int j;
+			for(j = 0; j < bufferLength; j++)
 			{
 				controlList[i].controlBuffer[j] = buffer[j + bufferStartPoint];
 			}
@@ -177,7 +183,8 @@ int SetControlValueByIDFromNetworkBuffer(unsigned char controlID, heepByte* buff
 
 int GetControlValueByID(unsigned controlID)
 {
-	for(int i = 0; i < numberOfControls; i++)
+	int i;
+	for(i = 0; i < numberOfControls; i++)
 	{
 		if(controlList[i].controlID == controlID)
 		{

@@ -34,7 +34,8 @@ void SendOutputByIDNoAnalytics(unsigned char controlID, unsigned int value)
 
 	struct Vertex_Byte newVertex;
 
-	for(int i = 0; i < numberOfVertices; i++)
+	int i;
+	for(i = 0; i < numberOfVertices; i++)
 	{
 		GetVertexAtPointer_Byte(vertexPointerList[i], &newVertex);
 
@@ -68,7 +69,8 @@ void SendOutputByIDBuffer(unsigned char controlID, heepByte* buffer, int bufferL
 
 	struct Vertex_Byte newVertex;
 
-	for(int i = 0; i < numberOfVertices; i++)
+	int i;
+	for(i = 0; i < numberOfVertices; i++)
 	{
 		GetVertexAtPointer_Byte(vertexPointerList[i], &newVertex);
 
@@ -126,7 +128,8 @@ void PostDataToFirebase()
 // Control Daemon is untimed
 void ControlDaemon()
 {
-	for(int i = 0; i < numberOfControls; i++)
+	int i;
+	for(i = 0; i < numberOfControls; i++)
 	{
 		if(controlList[i].controlFlags & 0x01)
 		{

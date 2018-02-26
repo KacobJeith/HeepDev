@@ -98,7 +98,8 @@ void SetDeviceNameInMemory_Byte(char* deviceName, int numCharacters, heepByte* d
 	AddIndexOrDeviceIDToMemory_Byte(deviceID);
 	AddNewCharToMemory((char)numCharacters);
 
-	for(int i = 0; i < numCharacters; i++)
+	int i;
+	for(i = 0; i < numCharacters; i++)
 	{
 		AddNewCharToMemory(deviceName[i]);
 	}
@@ -122,7 +123,8 @@ void SetIconDataInMemory_Byte(char* iconData, int numCharacters, heepByte* devic
 	AddIndexOrDeviceIDToMemory_Byte(deviceID);
 	AddNewCharToMemory((char)numCharacters);
 
-	for(int i = 0; i < numCharacters; i++)
+	int i;
+	for(i = 0; i < numCharacters; i++)
 	{
 		AddNewCharToMemory(iconData[i]);
 	}
@@ -364,7 +366,8 @@ unsigned int GetFragmentFromMemory(int *pointerToFragment, int *numFragementByte
 
 void RemoveUnusedBytesAtPointer(int pointer, int numBytes)
 {
-	for(int i = 0; i < curFilledMemory - numBytes - pointer; i++)
+	int i;
+	for(i = 0; i < curFilledMemory - numBytes - pointer; i++)
 	{
 		deviceMemory[pointer+i] = deviceMemory[pointer+numBytes+i];
 	}

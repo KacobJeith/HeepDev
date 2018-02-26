@@ -11,7 +11,8 @@ unsigned int inputBufferLastByte = 0;
 
 unsigned long GetDataFromBufferOfSpecifiedSize(heepByte* buffer, heepByte* data, unsigned long size, unsigned long counter)
 {
-	for(int i = 0; i < size; i++)
+	int i;
+	for(i = 0; i < size; i++)
 	{
 		data[i] = buffer[counter];
 		counter++;
@@ -32,7 +33,8 @@ unsigned long GetDeviceIDOrLocalIDFromBuffer(unsigned char* buffer, heepByte* de
 
 int CheckBufferEquality(heepByte* buffer1, heepByte* buffer2, int numBytes)
 {
-	for(int i = 0; i < numBytes; i++)
+	int i;
+	for(i = 0; i < numBytes; i++)
 	{
 		if(buffer1[i] != buffer2[i])
 		{
@@ -50,7 +52,8 @@ int CheckDeviceIDEquality(heepByte* deviceID1, heepByte* deviceID2)
 
 unsigned long AddDeviceIDToBuffer_Byte(unsigned char* buffer, heepByte* deviceID, unsigned long counter)
 {
-	for(int i = 0; i < STANDARD_ID_SIZE; i++)
+	int i;
+	for(i = 0; i < STANDARD_ID_SIZE; i++)
 	{
 		buffer[counter] = deviceID[i];
 		counter++;
@@ -68,7 +71,8 @@ unsigned long GetNumberFromBuffer(unsigned char* buffer, unsigned int* counter, 
 {
 	unsigned long number = 0;
 
-	for(int i = 0; i < numBytes; i++)
+	int i;
+	for(i = 0; i < numBytes; i++)
 	{
 		int curNum = buffer[*counter];
 		number += curNum << (8 * (numBytes-i-1));
@@ -87,7 +91,8 @@ unsigned long AddCharToBuffer(unsigned char* buffer, unsigned long startPoint, u
 
 unsigned long AddNumberToBufferWithSpecifiedBytes(unsigned char* buffer, unsigned long number, unsigned long startPoint, int numBytes)
 {
-	for(int i = 0; i < numBytes; i++)
+	int i;
+	for(i = 0; i < numBytes; i++)
 	{
 		char numToAdd = (number >> 8*( (numBytes-1) - i))%256;
 		startPoint = AddCharToBuffer(buffer, startPoint, numToAdd);
@@ -98,7 +103,8 @@ unsigned long AddNumberToBufferWithSpecifiedBytes(unsigned char* buffer, unsigne
 
 unsigned long AddNumberToBufferWithSpecifiedBytes64Bit(unsigned char* buffer, uint64_t number, unsigned long startPoint, int numBytes)
 {
-	for(int i = 0; i < numBytes; i++)
+	int i;
+	for(i = 0; i < numBytes; i++)
 	{
 		char numToAdd = (number >> 8*( (numBytes-1) - i))%256;
 		startPoint = AddCharToBuffer(buffer, startPoint, numToAdd);
@@ -120,7 +126,8 @@ heepByte GetNumBytes64Bit(uint64_t number)
 
 void AddBufferToBuffer(heepByte* rxBuffer, heepByte* txBuffer, heepByte size, unsigned int *rxCounter, unsigned int *txCounter)
 {
-	for(int i = 0; i < size; i++)
+	int i;
+	for(i = 0; i < size; i++)
 	{
 		rxBuffer[*rxCounter] = txBuffer[*txCounter];
 		(*rxCounter)++;

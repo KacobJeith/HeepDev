@@ -63,7 +63,8 @@ unsigned long CalculateControlDataSize()
 {
 	unsigned long controlDataSize = 0;
 
-	for(int i = 0; i < numberOfControls; i++)
+	int i;
+	for(i = 0; i < numberOfControls; i++)
 	{
 		controlDataSize += 12;
 		controlDataSize += strlen(controlList[i].controlName);
@@ -98,7 +99,8 @@ void FillOutputBufferWithSetValCOPBuffer(unsigned char controlID, heepByte* buff
 	AddNewCharToOutputBuffer(bufferLength + 1);
 	AddNewCharToOutputBuffer(controlID);
 
-	for(int i = 0; i < bufferLength; i++)
+	int i;
+	for(i = 0; i < bufferLength; i++)
 	{
 		AddNewCharToOutputBuffer(buffer[i]);
 	}
@@ -107,7 +109,8 @@ void FillOutputBufferWithSetValCOPBuffer(unsigned char controlID, heepByte* buff
 // Updated
 void FillOutputBufferWithControlData()
 {
-	for(int i = 0; i < numberOfControls; i++)
+	int i;
+	for(i = 0; i < numberOfControls; i++)
 	{
 		AddNewCharToOutputBuffer(ControlOpCode);
 		AddDeviceIDOrIndexToOutputBuffer_Byte(deviceIDByte);
@@ -120,7 +123,8 @@ void FillOutputBufferWithControlData()
 		AddNewCharToOutputBuffer(controlList[i].highValue);
 		AddNewCharToOutputBuffer(controlList[i].curValue);
 
-		for(int j = 0; j < strlen(controlList[i].controlName); j++)
+		int j;
+		for(j = 0; j < strlen(controlList[i].controlName); j++)
 		{
 			AddNewCharToOutputBuffer(controlList[i].controlName[j]);
 		}
@@ -164,7 +168,8 @@ void FillOutputBufferWithMemoryDump()
 	FillOutputBufferWithDynamicMemorySize();
 
 	// Add Dynamic Memory
-	for(int i = 0; i<curFilledMemory; i++)
+	int i;
+	for(i = 0; i<curFilledMemory; i++)
 	{
 		AddNewCharToOutputBuffer(deviceMemory[i]);
 	}
@@ -182,7 +187,8 @@ void FillOutputBufferWithSuccess(char* message, int stringLength)
 
 	AddNewCharToOutputBuffer(totalMemory);
 
-	for(int i = 0; i < totalMemory; i++)
+	int i;
+	for(i = 0; i < totalMemory; i++)
 	{
 		AddNewCharToOutputBuffer(message[i]);
 	}
@@ -200,7 +206,8 @@ void FillOutputBufferWithError(char* message, int stringLength)
 
 	AddNewCharToOutputBuffer(totalMemory);
 
-	for(int i = 0; i < totalMemory; i++)
+	int i;
+	for(i = 0; i < totalMemory; i++)
 	{
 		AddNewCharToOutputBuffer(message[i]);
 	}
@@ -349,7 +356,8 @@ int ValidateAndRestructureIncomingMOP(unsigned int MOPStartAddr, unsigned int* n
 	AddBufferToBuffer(inputBuffer, curID, ID_SIZE, &startID, &localCounter);
 	startID = AddCharToBuffer(inputBuffer, startID, bytesOfData);
 
-	for(int i = 0; i < bytesOfData; i++)
+	int i;
+	for(i = 0; i < bytesOfData; i++)
 	{
 		inputBuffer[startID + i] = inputBuffer[startID + i + memDiff];
 	}
@@ -372,7 +380,8 @@ void ExecuteDeleteMOPOpCode()
 
 		while(deviceMemCounter < curFilledMemory)
 		{
-			for(int i = 0; i < numBytes; i++)
+			int i;
+			for(i = 0; i < numBytes; i++)
 			{
 				if(deviceMemory[deviceMemCounter+i] != inputBuffer[counter+i])
 				{
@@ -423,8 +432,9 @@ void ExecuteAddMOPOpCode()
 	int dataError = ValidateAndRestructureIncomingMOP(counter, &numBytes);
 
 	if(dataError == 0)
-	{
-		for(int i = 0; i < numBytes; i++)
+	{	
+		int i;
+		for(i = 0; i < numBytes; i++)
 		{
 			AddNewCharToMemory(inputBuffer[counter]);
 			counter++;
