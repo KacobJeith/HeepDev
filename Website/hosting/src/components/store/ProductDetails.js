@@ -11,12 +11,20 @@ import GridList, { GridListTile, GridListTileBar } from 'material-ui/GridList';
 import IconButton from 'material-ui/IconButton';
 import StarBorderIcon from 'material-ui-icons/StarBorder';
 import Typography from 'material-ui/Typography';
+import Button from 'material-ui/Button'
+import AddShoppingCart from 'material-ui-icons/AddShoppingCart'
 
 var mapStateToProps = (state, ownProps) => ({
   product: state.shopify[ownProps.match.params.productID]
 })
 
 const styles = theme => ({
+  button: {
+    margin: theme.spacing.unit
+  },
+  leftIcon: {
+    marginRight: theme.spacing.unit
+  },
   root: {
     flexGrow: 1,
     margin: "20px"
@@ -52,9 +60,6 @@ class ProductDetails extends React.Component {
 
   render() {
     const { classes } = this.props;
-
-    console.log("MATCH: ", this.props.match);
-    console.log("Matched Product: ", this.props.product);
 
     if (!this.props.product) {
       return (<div> No product found </div>)
@@ -109,13 +114,29 @@ class ProductDetails extends React.Component {
               <Typography variant="subheading" gutterBottom paragraph wrap>
                 {"$" + this.props.product.variants[0].price}
               </Typography>
-              
+
+              <Button 
+                variant='raised'
+                color='primary'
+                className={classes.button}
+                size='small'
+                onClick={()=>{this.props.addProductToCart(this.props.product.id)}}
+              >
+                <AddShoppingCart
+                  className={classes.leftIcon}
+                  style={{
+                    height: 30
+                  }}
+                />
+                Add To Cart
+              </Button>
+
             </Grid>
           </Grid>
           <Grid container spacing={24}>
             
                       {this.props.product.images.map((tile, index) => (
-                        <Grid item xs={3} sm={2} md={1.5}>
+                        <Grid item xs={3} sm={2} md={1}>
                           <Paper 
                             elevation={this.state.viewing == index ? 10 : 5}
                             style={{
