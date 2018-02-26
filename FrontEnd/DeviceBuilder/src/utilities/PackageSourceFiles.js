@@ -11,6 +11,7 @@ import Device                       from '../../../../Firmware/ServerlessFirmwar
 import DeviceMemory                 from '../../../../Firmware/ServerlessFirmware/DeviceMemory.h'
 import ENC28J60_HeepComms           from '../../../../Firmware/ServerlessFirmware/ENC28J60_HeepComms.h'
 import ESP8266_HeepComms            from '../../../../Firmware/ServerlessFirmware/ESP8266_HeepComms.h'
+import ESP8266_NonVolatileMemory    from '../../../../Firmware/ServerlessFirmware/ESP8266_NonVolatileMemory.h'
 import Heep_API                     from '../../../../Firmware/ServerlessFirmware/Heep_API.h'
 import MemoryUtilities              from '../../../../Firmware/ServerlessFirmware/MemoryUtilities.h'
 import POE32u4W5500_HeepComms       from '../../../../Firmware/ServerlessFirmware/POE32u4W5500_HeepComms.h'
@@ -36,6 +37,7 @@ var sourceFiles = {
   DeviceMemory: DeviceMemory,
   ENC28J60_HeepComms: ENC28J60_HeepComms,
   ESP8266_HeepComms: ESP8266_HeepComms,
+  ESP8266_NonVolatileMemory: ESP8266_NonVolatileMemory,
   Heep_API: Heep_API,
   MemoryUtilities: MemoryUtilities,
   PICW5500_HeepComms: PICW5500_HeepComms,
@@ -135,8 +137,7 @@ const packageArduinoFiles = (deviceDetails, controls, zip) => {
 const packageESP8266Files = (deviceDetails, controls, zip) => {
   zip.file(deviceDetails.deviceName + ".ino", composeInoFile(deviceDetails, controls));
 
-  // zip.file('ESP8266_HeepComms.h', ESP8266_HeepComms);
-  zip.file('Simulation_NonVolatileMemory.h', Simulation_NonVolatileMemory);
+  zip.file('ESP8266_NonVolatileMemory.h', ESP8266_NonVolatileMemory);
   zip.file('Arduino_Timer.h', Arduino_Timer);
 
   return zip
@@ -173,8 +174,9 @@ const composeInoFile = (deviceDetails, controls) => {
 
 char deviceName [] = "` + deviceDetails.deviceName + `";\n\n`
 + initializeControls(controls)
++ initializeOnChange()
 + createHardwareControlFunctionsArduinoSyntax(controls)
-+ CreateHardwareReadFunctions(controls)
++ CreateHardwareReadFunctionsOnChange(controls)
 + CreateHardwareWriteFunctions(controls)
 + `void setup()
 {
@@ -204,6 +206,11 @@ var getPinDefineName = (control) => {
 var getPinDefine = (control) => {
   var pinDefineStr = `\n#define `+ getPinDefineName(control) + ` ` + control.pinNumber;
   return pinDefineStr;
+}
+
+var initializeOnChange = () => {
+  var onChangeVariable = `\nunsigned int lastSetting = 0;\n`
+  return onChangeVariable
 }
 
 var GetTabCharacter = () => {
@@ -256,7 +263,36 @@ var CreateHardwareReadFunctions = (controls) => {
     if(controls[i].controlDirection == 1){
       hardwareReadFunctions += `int ` + GetReadFunctionName(controls[i]) + `(){\n`
         + GetTabCharacter() + `int currentSetting = ` + notSign + controls[i]['analogOrDigital'] + `Read(` + getPinDefineName(controls[i]) + `);\n`
-        + GetTabCharacter() + `SendOutputByID(` + controls[i].controlID + `,currentSetting);\n`
+        + GetTabCharacter() + `SendOutputByIDNoAnalytics(` + controls[i].controlID + `,currentSetting);\n`
+        + GetTabCharacter() + `return currentSetting;\n`
+        + `}\n\n`;
+    }
+  }
+
+  return hardwareReadFunctions;
+
+}
+
+var CreateHardwareReadFunctionsOnChange = (controls) => {
+  var hardwareReadFunctions = ``;
+
+  // output == 1, input == 0 
+  // TODO: Make control direction into an enum with defined numbers just like Unity
+  for (var i in controls) {
+
+    var notSign = ``;
+    if(controls[i].pinNegativeLogic){
+      notSign = `!`;
+    }
+
+    // Only react to outputs. Heep Outputs are Hardware Inputs
+    if(controls[i].controlDirection == 1){
+      hardwareReadFunctions += `int ` + GetReadFunctionName(controls[i]) + `(){\n`
+        + GetTabCharacter() + `int currentSetting = ` + notSign + controls[i]['analogOrDigital'] + `Read(` + getPinDefineName(controls[i]) + `);\n`
+        + GetTabCharacter() + `if (currentSetting != lastSetting) {\n`
+        + GetTabCharacter() + GetTabCharacter() + `SendOutputByIDNoAnalytics(` + controls[i].controlID + `,currentSetting);\n`
+        + GetTabCharacter() + GetTabCharacter() + `lastSetting = currentSetting;\n`
+        + GetTabCharacter() + `}\n\n`
         + GetTabCharacter() + `return currentSetting;\n`
         + `}\n\n`;
     }
@@ -493,7 +529,7 @@ const getIncludes_ESP8266 = (deviceDetails) => {
 String Password = "` + deviceDetails.ssidPassword + `";
 #include <string.h>
 #include "` + getCommsFileName(deviceDetails) + `"
-#include "Simulation_NonVolatileMemory.h"
+#include "ESP8266_NonVolatileMemory.h"
 #include "Arduino_Timer.h"`
 }
 
