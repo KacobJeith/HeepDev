@@ -13,6 +13,13 @@ var mapStateToProps = (state) => ({
 
 
 class Flowchart extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			hoverRefresh: false
+		}
+		
+	}
 
 	render() {
 		console.log("Running Flowchart: ", this.props.vertexList)
@@ -43,6 +50,41 @@ class Flowchart extends React.Component {
 			vertexSVG: {
 				key: [],
 				vertex:[]
+			},
+			refresh: {
+			  width: 45,
+			  height: 45,
+			  type:"image/svg+xml",
+			  data: '../assets/svg/refresh.svg',
+			  style: {
+			  	position: 'absolute',
+			  }
+			},
+			refreshContainer: {
+				style: {
+					width: 50,
+					height: 50,
+					top: 2,
+					left: 2,
+					backgroundColor: this.state.hoverRefresh ? "rgba(0,0,0,0.1)" : "rgba(0,0,0,0)",
+					cursor: "pointer",
+					position: 'relative'
+				}
+			},
+			refreshButton: {
+				style: {
+					width: 50,
+					height: 50,
+					backgroundColor: this.state.hoverRefresh ? "rgba(0,0,0,0.1)" : "rgba(0,0,0,0)",
+					cursor: "pointer",
+					position: 'absolute'
+				},
+				onClick: () => {
+					console.log("clicked"); 
+					this.props.refreshFlowchart();
+				},
+        		onMouseEnter: () => this.setState({hoverRefresh: true}),
+        		onMouseLeave: () => this.setState({hoverRefresh: false})
 			}
 		}
 
@@ -67,7 +109,14 @@ class Flowchart extends React.Component {
 				<svg {...inputs.vertexSVGSpace}>
 					{vertexes} 
 				</svg>
+
 				{devices}
+
+				<div {...inputs.refreshContainer}>
+					<object {...inputs.refresh}/>
+					<div {...inputs.refreshButton}/>
+				</div>
+				
 			</div>
 		);
 
