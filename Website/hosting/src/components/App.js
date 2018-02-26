@@ -18,6 +18,7 @@ import UserProfile from './account/UserProfile'
 import DeviceBuilder from './heep/DeviceBuilder'
 import Checkout from './store/Checkout'
 import ProductDetails from './store/ProductDetails'
+import DownloadPage from './heep/DownloadPage'
 
 import PaperSignalsConsole from './PaperSignals/PaperSignalsConsole'
 
@@ -83,6 +84,7 @@ class App extends React.Component {
 					<Route path="/Checkout" component={Checkout}/>
 					<Route exact path="/auth" component={Auth}/>
 					<Route exact path="/PaperSignals" component={PaperSignalsConsole}/>
+					<Route exact path="/Developers" component={DownloadPage}/>
 					{loggedInRoutes}
 			    </div>
 			</Router>);
