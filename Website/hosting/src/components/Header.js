@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Navbar, Nav, NavItem, Button, Image } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-import * as auth from '../redux/FirebaseAuth'
+import * as auth from '../firebase/FirebaseAuth'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import * as actions from '../redux/actions'
@@ -136,6 +136,9 @@ class Header extends React.Component {
 				      <Nav pullRight>
 				        <LinkContainer to="/Shop">
 				          <NavItem>Shop</NavItem>
+				        </LinkContainer>
+				        <LinkContainer to="/Checkout">
+				          <NavItem>Checkout</NavItem>
 				        </LinkContainer>
 				        <LinkContainer to="/Mission">
 				          <NavItem>Mission</NavItem>

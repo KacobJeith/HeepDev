@@ -77,14 +77,14 @@ export const initializeFirebase = () => {
 	    // User is signed in.
 	    console.log("Welcome back, ", user.email);
 	    setup.store.dispatch(actions.updateLoginStatus(true));
-	    database.readUserData(user);
+	    database.readUserData(user);	    
+		//database.retrieveAnalyticData(user);
+		
 	    validateUser()
 	    
 	    VerifyUser()
-      	database.readUserSignals();
-      	database.downloadAssets();
-
 	    loadUserProviders()
+
 
 	  } else {
 	    // No user is signed in.

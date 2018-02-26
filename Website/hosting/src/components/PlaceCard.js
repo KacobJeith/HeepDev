@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom'
 import * as actions from '../redux/actions'
 import {Grid, Row, Col, Image, PageHeader, Media, Button} from 'react-bootstrap'
 import EditTextBox from './utilities/EditTextBox'
-import * as database from '../redux/FirebaseDatabase'
+import * as database from '../firebase/FirebaseDatabase'
 
 var mapStateToProps = (state, ownProps) => ({
   place: state.places[ownProps.placeID]

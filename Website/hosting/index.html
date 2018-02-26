@@ -3,39 +3,23 @@
   <head>
     <meta charset="utf-8">
     <title>Heep!</title>
-    <link rel="stylesheet" href="./index.css">
+    <link rel="stylesheet" href="/index.css">
     <link href="https://bootswatch.com/3/lumen/bootstrap.min.css" rel="stylesheet">
     <link href="./googledf65b481e0adc4ad.html">
-    <script src='https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js'></script> 
     <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/2.3.0/firebaseui.css" />
-    
-    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-93098480-2"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-93098480-2');
+    </script>    
   </head>
 
   <body>
     <div id="root"></div>
-
-    <div class="webgl-content" style="display:none;" id="webgl">
-      <div id="gameContainer" style="width: 960px; height: 600px; top: 50px; left:50px"></div>
-      
-    </div>
   </body>
-
-  <script src="src/WebGL/TemplateData/UnityProgress.js"></script>  
-  <script src="src/WebGL/Build/UnityLoader.js"></script>
-
-  <script>
-    function initializeUnity() {
-      console.log("initializing Unity");
-      var gameInstance = UnityLoader.instantiate("gameContainer", "src/WebGL/Build/testBlank.json", {onProgress: UnityProgress});
-    }
-
-    function jslibtestold() {
-      console.log("JSLIB CALLED ME WOOOOOASDF");
-      
-    }
-  </script>
-
 
   <script src="/dist/bundle.js"></script>
 

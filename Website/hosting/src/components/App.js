@@ -5,16 +5,19 @@ import { connect } from 'react-redux'
 import * as Actions from '../redux/actions'
 import ReactGA from 'react-ga'
 
+import AppBar from './AppBar'
 import Header from './Header'
 import Landing from './Landing'
 import Mission from './Mission'
-import Store from './Store'
+import Store from './store/Store'
 import Build from './Build'
 import Auth from './Auth'
 import Logout from './Logout'
 import Loading from './Loading'
 import UserProfile from './UserProfile'
 import DeviceBuilder from './DeviceBuilder'
+import Checkout from './store/Checkout'
+import ProductDetails from './store/ProductDetails'
 
 import PaperSignalsConsole from './PaperSignals/PaperSignalsConsole'
 
@@ -25,14 +28,14 @@ const mapStateToProps = (state) => ({
 class App extends React.Component {
 	constructor(props) {
 		super(props);
-		ReactGA.initialize('UA-93098480-1');
+		// ReactGA.initialize('UA-93098480-1');
 		this.handleScroll = this.handleScroll.bind(this)
 	}
 
 
 	logPageView() {
-	  ReactGA.set({ page: window.location.pathname });
-	  ReactGA.pageview(window.location.pathname);
+	  // ReactGA.set({ page: window.location.pathname });
+	  // ReactGA.pageview(window.location.pathname);
 	}
 
 	componentDidMount() {
@@ -50,7 +53,7 @@ class App extends React.Component {
 	        container : { 
 	          height: "100%",
 	          width: "100%",
-	          marginTop: 70,
+	          marginTop: 0,
 	          display: "block"
 	        }
 	      };
@@ -72,10 +75,12 @@ class App extends React.Component {
 	    return(
 			<Router >
 		    	<div {...inputs.container}>
-					<Route path="/" component={Header}/>
+					<Route path="/" component={AppBar}/>
 					<Route exact path="/" component={Mission}/>
 					<Route path="/Mission" component={Mission}/>
 					<Route path="/Shop" component={Store}/>
+					<Route path="/product/:productID" component={ProductDetails}/>
+					<Route path="/Checkout" component={Checkout}/>
 					<Route exact path="/auth" component={Auth}/>
 					<Route exact path="/PaperSignals" component={PaperSignalsConsole}/>
 					{loggedInRoutes}
