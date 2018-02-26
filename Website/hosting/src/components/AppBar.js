@@ -170,7 +170,7 @@ class MenuAppBar extends React.Component {
           position: 'absolute',
           maxWidth: "250%"
         }
-      }
+      },
     }
 
     var loggedInNavs = [];
@@ -184,7 +184,7 @@ class MenuAppBar extends React.Component {
     return (
       <div className={classes.root}>
         <AppBar position="static">
-          <Toolbar>
+          <Toolbar {...inputs.toolbar}>
             <NavLink to="/">
               <IconButton >
                   <img {...inputs.Logo}/>
@@ -196,9 +196,9 @@ class MenuAppBar extends React.Component {
               <IconButton
                   color="inherit"
                   style={{textDecoration: 'none', marginRight: 50}}>
-                <NavLink to="/" style={{textDecoration: 'none', marginRight: 20}}>
+                <NavLink to="/About" style={{textDecoration: 'none', marginRight: 20}}>
                   <Typography variant="title" style={{color:"white"}}>
-                    About  
+                    About
                   </Typography>
                 </NavLink>
               </IconButton>
@@ -223,7 +223,7 @@ class MenuAppBar extends React.Component {
 
 
               <NavLink to="/Checkout" style={{textDecoration: 'none'}}>
-                
+
                 <IconButton className={classes.button} aria-label="Add to shopping cart">
                   <Badge color="secondary" badgeContent={this.props.itemsInCart} className={classes.margin}>
                     <ShoppingCartIcon style={{fill:"white"}}/>
@@ -232,7 +232,7 @@ class MenuAppBar extends React.Component {
               </NavLink>
 
               {loggedInNavs}
-            
+
           </Toolbar>
         </AppBar>
       </div>

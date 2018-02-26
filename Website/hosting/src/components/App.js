@@ -9,6 +9,7 @@ import AppBar from './AppBar'
 import Header from './Header'
 import Landing from './Landing'
 import Mission from './Mission'
+import About from './About'
 import Store from './store/Store'
 import Build from './Build'
 import Auth from './Auth'
@@ -20,6 +21,9 @@ import Checkout from './store/Checkout'
 import ProductDetails from './store/ProductDetails'
 
 import PaperSignalsConsole from './PaperSignals/PaperSignalsConsole'
+
+import Theme from './Theme'
+import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
 
 const mapStateToProps = (state) => ({
 	loginStatus: state.loginStatus,
@@ -50,7 +54,7 @@ class App extends React.Component {
 		this.logPageView();
 
 		const styles = {
-	        container : { 
+	        container : {
 	          height: "100%",
 	          width: "100%",
 	          marginTop: 0,
@@ -74,19 +78,22 @@ class App extends React.Component {
 
 	    return(
 			<Router >
-		    	<div {...inputs.container}>
-					<Route path="/" component={AppBar}/>
-					<Route exact path="/" component={Mission}/>
-					<Route path="/Mission" component={Mission}/>
-					<Route path="/Shop" component={Store}/>
-					<Route path="/product/:productID" component={ProductDetails}/>
-					<Route path="/Checkout" component={Checkout}/>
-					<Route exact path="/auth" component={Auth}/>
-					<Route exact path="/PaperSignals" component={PaperSignalsConsole}/>
-					{loggedInRoutes}
-			    </div>
+		    	<MuiThemeProvider theme={Theme}>
+						<div>
+							<Route path="/" component={AppBar}/>
+							<Route exact path="/" component={Mission}/>
+							<Route path="/Mission" component={Mission}/>
+							<Route path="/About" component={About}/>
+							<Route path="/Shop" component={Store}/>
+							<Route path="/product/:productID" component={ProductDetails}/>
+							<Route path="/Checkout" component={Checkout}/>
+							<Route exact path="/auth" component={Auth}/>
+							<Route exact path="/PaperSignals" component={PaperSignalsConsole}/>
+							{loggedInRoutes}
+						</div>
+			    </MuiThemeProvider>
 			</Router>);
-	    
+
 	}
 }
 
@@ -96,4 +103,3 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)
-
