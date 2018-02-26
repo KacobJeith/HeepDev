@@ -6,6 +6,7 @@ import * as Actions from '../redux/actions'
 import ReactGA from 'react-ga'
 
 import AppBar from './AppBar'
+import Footer from './Footer'
 import Landing from './Landing'
 import Mission from './Mission'
 import Store from './store/Store'
@@ -49,18 +50,20 @@ class App extends React.Component {
 	render() {
 		this.logPageView();
 
-		const styles = {
-	        container : { 
-	          height: "100%",
-	          width: "100%",
-	          marginTop: 0,
-	          display: "block"
-	        }
-	      };
-
 	    const inputs = {
 	      container: {
-	        style: styles.container
+	        style: { 
+	          height: "100vh",
+	          width: "100%",
+	          marginTop: 0,
+	          display: "flex",
+	          flexDirection: 'column',
+	        }
+	      },
+	      content: {
+	      	style: {
+	      		flex: '1 0 auto'
+	      	}
 	      }
 	    }
 
@@ -75,6 +78,7 @@ class App extends React.Component {
 	    return(
 			<Router >
 		    	<div {...inputs.container}>
+		    	<div {...inputs.content}>
 					<Route path="/" component={AppBar}/>
 					<Route exact path="/" component={Mission}/>
 					<Route path="/Mission" component={Mission}/>
@@ -85,6 +89,8 @@ class App extends React.Component {
 					<Route exact path="/PaperSignals" component={PaperSignalsConsole}/>
 					<Route exact path="/Developers" component={DownloadPage}/>
 					{loggedInRoutes}
+				</div>
+					<Route path="/" component={Footer}/>
 			    </div>
 			</Router>);
 	    
