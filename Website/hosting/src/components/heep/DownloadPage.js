@@ -40,7 +40,8 @@ class DownloadPage extends React.Component {
           alignItems={'center'}>
           <Grid 
             item 
-            xs={4}>
+            sm={6}
+            xs={10}>
             <Typography
               variant="display2" 
               gutterBottom
@@ -74,7 +75,10 @@ class DownloadPage extends React.Component {
           </Grid>
           <Grid 
             item 
-            xs={3}>
+            md={3}
+            lg={2}
+            sm={4}
+            xs={5}>
             <img 
               src="../src/assets/Heep_Gradient.png"
               style={{
