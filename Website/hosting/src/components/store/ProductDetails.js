@@ -136,7 +136,7 @@ class ProductDetails extends React.Component {
           <Grid container spacing={24}>
             
                       {this.props.product.images.map((tile, index) => (
-                        <Grid item xs={3} sm={2} md={1}>
+                        <Grid item xs={3} sm={2} md={1} key={tile.id}>
                           <Paper 
                             elevation={this.state.viewing == index ? 10 : 5}
                             style={{
