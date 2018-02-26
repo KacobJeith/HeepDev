@@ -10,7 +10,7 @@ const mapStateToProps = (state) => ({
 
 
 class Mission extends React.Component {
-  
+
   render() {
 
   	var inputs = {
@@ -36,13 +36,13 @@ class Mission extends React.Component {
       distribution: {
         backgroundColor: '#ffd400',
         header: 'Welcome to Heep',
-        message: 'Heep designs using distribution over centralization. In the context of applications such as Smart Homes, Heep solutions operate local-first, leveraging the cloud only when necessary and/or desired. This means that Heep devices respond faster, and are more secure than other platforms.',        
+        message: 'Heep designs using distribution over centralization. In the context of applications such as Smart Homes, Heep solutions operate local-first, leveraging the cloud only when necessary and/or desired. This means that Heep devices respond faster, and are more secure than other platforms.',
         image: '../src/assets/relay.png'
       },
       openSource: {
         backgroundColor: '#ffd400',
         header: 'Heep <3 Open Source',
-        message: 'Heep supports and promotes connectivity-driven Open Source projects. Contact us to feature your project here. ',        
+        message: 'Heep supports and promotes connectivity-driven Open Source projects. Contact us to feature your project here. ',
         image: '../src/assets/relay.png'
       },
       human: {
@@ -53,12 +53,8 @@ class Mission extends React.Component {
       }
     }
 
-	return (<div> 
+	return (<div>
             <div {...inputs.container}> 
-                <MessageCard {...inputs.welcome}/>
-                <MessageCard {...inputs.coreValue}/>
-                <MessageCard {...inputs.openSource}/>
-                <MessageCard {...inputs.human}/>
             </div>
           </div>
     );

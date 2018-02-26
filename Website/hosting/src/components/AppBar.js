@@ -197,7 +197,7 @@ class MenuAppBar extends React.Component {
                   color="inherit"
                   style={{textDecoration: 'none', marginRight: 50}}>
                 <NavLink to="/About" style={{textDecoration: 'none', marginRight: 20}}>
-                  <Typography variant="title" style={{color:"white"}}>
+                  <Typography variant="subheading" style={{color:"white"}}>
                     About
                   </Typography>
                 </NavLink>
@@ -206,7 +206,7 @@ class MenuAppBar extends React.Component {
               <IconButton
                   color="inherit">
                 <NavLink to="/Shop" style={{textDecoration: 'none', marginRight: 90}}>
-                  <Typography variant="title" style={{color:"white"}}>
+                  <Typography variant="subheading" style={{color:"white"}}>
                     Shop
                   </Typography>
                 </NavLink>
@@ -215,7 +215,7 @@ class MenuAppBar extends React.Component {
               <IconButton
                   color="inherit">
                 <NavLink to="/Shop" style={{textDecoration: 'none', marginRight: 40}}>
-                  <Typography variant="title" style={{color:"white"}}>
+                  <Typography variant="subheading" style={{color:"white"}}>
                     Develop
                   </Typography>
                 </NavLink>

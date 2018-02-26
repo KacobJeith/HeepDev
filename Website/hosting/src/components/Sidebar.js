@@ -13,7 +13,7 @@ class Sidebar extends React.Component {
 
     var styles = {
       sidebar: {
-        fontSize: 13,
+        //fontSize: 13,
         overflow: "auto",
         position: "fixed",
         height: "100%",
@@ -28,7 +28,7 @@ class Sidebar extends React.Component {
       links: {
         padding: '8px 8px 8px 32px',
         textDecoration: 'none',
-        fontSize: 25,
+        //fontSize: 25,
         color: '#818181',
         display: 'block',
       },

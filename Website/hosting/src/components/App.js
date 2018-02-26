@@ -81,8 +81,8 @@ class App extends React.Component {
 		    	<MuiThemeProvider theme={Theme}>
 						<div>
 							<Route path="/" component={AppBar}/>
-							<Route exact path="/" component={Mission}/>
-							<Route path="/Mission" component={Mission}/>
+							<Route exact path="/" component={Landing}/>
+							<Route path="/Landing" component={Landing}/>
 							<Route path="/About" component={About}/>
 							<Route path="/Shop" component={Store}/>
 							<Route path="/product/:productID" component={ProductDetails}/>
