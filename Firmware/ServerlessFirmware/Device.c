@@ -1,5 +1,6 @@
 #include "Device.h"
 #include <string.h>
+#include "MemoryUtilities.h"
 
 unsigned int firmwareVersion = FIRMWARE_VERSION;
 

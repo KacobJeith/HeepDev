@@ -1,4 +1,5 @@
 #include "DeviceMemory.h"
+#include "MemoryUtilities.h"
 
 unsigned char deviceMemory [MAX_MEMORY];
 unsigned int curFilledMemory = 0; // Indicate the curent filled memory. 

@@ -1,4 +1,5 @@
 #include "Heep_API.h"
+#include "MemoryUtilities.h"
 
 unsigned char clearMemory = 1;
 void SetupHeepDevice(char* deviceName, char deviceIcon)

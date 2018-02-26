@@ -1,5 +1,6 @@
 #include "ActionAndResponseOpCodes.h"
 #include <string.h>
+#include "MemoryUtilities.h"
 
 
 void ClearOutputBuffer()
