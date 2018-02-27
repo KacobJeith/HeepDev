@@ -220,7 +220,7 @@ class MenuAppBar extends React.Component {
               <IconButton
                   color="inherit">
                 <NavLink to="/Developers" style={{textDecoration: 'none', marginRight: 40}}>
-                  <Typography variant="title" style={{color:"white"}}>
+                  <Typography variant="subheading" style={{color:"white"}}>
                     Develop
                   </Typography>
                 </NavLink>
