@@ -47,6 +47,7 @@ class Footer extends React.Component {
   render() {
     const { classes } = this.props;
 
+
     return (
       <footer >
         <div
@@ -77,7 +78,7 @@ class Footer extends React.Component {
                       textDecoration: 'none', 
                       color: this.props.theme.palette.primary.contrastText
                     }}>
-                      <Typography variant="body1" color='inherit'>
+                      <Typography variant="caption" color='inherit'>
                         Account
                       </Typography>
                     </NavLink>
@@ -89,7 +90,7 @@ class Footer extends React.Component {
                       textDecoration: 'none', 
                       color: this.props.theme.palette.primary.contrastText
                     }}>
-                      <Typography variant="body1" color='inherit'>
+                      <Typography variant="caption" color='inherit'>
                         Store
                       </Typography>
                     </NavLink>
@@ -101,7 +102,7 @@ class Footer extends React.Component {
                       textDecoration: 'none', 
                       color: this.props.theme.palette.primary.contrastText
                     }}>
-                      <Typography variant="body1" color='inherit'>
+                      <Typography variant="caption" color='inherit'>
                         Blog
                       </Typography>
                     </NavLink>
@@ -113,7 +114,7 @@ class Footer extends React.Component {
                       textDecoration: 'none', 
                       color: this.props.theme.palette.primary.contrastText
                     }}>
-                      <Typography variant="body1" color='inherit'>
+                      <Typography variant="caption" color='inherit'>
                         Developers
                       </Typography>
                     </NavLink>
@@ -138,14 +139,14 @@ class Footer extends React.Component {
                     textDecoration: 'none', 
                     color: this.props.theme.palette.primary.contrastText
                   }}>
-                    <Typography variant="body1" color='inherit'>
+                    <Typography variant="caption" color='inherit'>
                       About Us
                     </Typography>
                   </NavLink>
                 </Grid>
 
                 <Grid item >
-                  <Typography variant="body1" color='inherit' >
+                  <Typography variant="caption" color='inherit' >
                     Contact Us
                   </Typography>
                 </Grid>
@@ -156,7 +157,7 @@ class Footer extends React.Component {
                       textDecoration: 'none', 
                       color: this.props.theme.palette.primary.contrastText
                     }}>
-                    <Typography variant="body1" color='inherit'>
+                    <Typography variant="caption" color='inherit'>
                       Privacy Policy
                     </Typography>
                   </NavLink>
@@ -168,7 +169,7 @@ class Footer extends React.Component {
                     textDecoration: 'none', 
                     color: this.props.theme.palette.primary.contrastText
                   }}>
-                    <Typography variant="body1" color='inherit'>
+                    <Typography variant="caption" color='inherit'>
                       Terms of Service
                     </Typography>
                   </NavLink>
@@ -207,20 +208,46 @@ class Footer extends React.Component {
                 <Grid 
                   container
                   spacing={8}
-                  justify={'right'}
                   direction='column'
                 >
 
                 <Grid item >
-                  <Typography variant="body1" color='inherit' align='right'>
+                  <Typography variant="caption" color='inherit' align='right'>
                     &#169; 2018 Heep
                   </Typography>
                 </Grid>
 
                 <Grid item >
-                  <Typography variant="body1" color='inherit' align='right'>
+                  <Typography variant="caption" color='inherit' align='right'>
                     Made with <span style={{color: 'red'}}>&#9829;</span> in Brooklyn
                   </Typography>
+                </Grid>
+                <Grid item >
+                  <Typography variant="caption" color='inherit' align='right'>
+                   
+                  </Typography>
+                </Grid>
+
+                <Grid item >
+                  <Grid container spacing={8} 
+                    justify={'center'}
+                    direction='row'
+                  >
+                    {['instagram', 'facebook-box', 'linkedin-box', 'pinterest', 'twitter', 'github-circle'].map((site) => (
+                      <Grid item xs={4} sm={2} key={site}>
+                          <object 
+                            width='100%'
+                            height='100%'
+                            style={{fill:'blue'}}
+                            fill='blue'
+                            type='image/svg+xml'
+                            data={'../src/assets/svg_social/' + site + '.svg'}
+                          />
+                      </Grid>
+                    ))}
+                    
+
+                  </Grid>
                 </Grid>
                 
               </Grid>
