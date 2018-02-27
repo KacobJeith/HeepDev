@@ -30,7 +30,7 @@ class About extends React.Component {
       },
       DeviceParty: {
         title: 'Device Party',
-        path: '../src/assets/CloudLess.svg',
+        path: '../src/assets/DeviceParty.svg',
         alt: 'Device Party',
         description: "Connect your devices and get them to talk with you and other devices. They send and receive commands, provide data, and interact with you. You design and control your environment."
       }
