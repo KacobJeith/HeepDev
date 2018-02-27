@@ -233,16 +233,30 @@ class Footer extends React.Component {
                     justify={'center'}
                     direction='row'
                   >
-                    {['instagram', 'facebook-box', 'linkedin-box', 'pinterest', 'twitter', 'github-circle'].map((site) => (
-                      <Grid item xs={4} sm={2} key={site}>
+                    {[{svg:'instagram',     url:'https://www.instagram.com/heep_inc/'}, 
+                      {svg:'facebook-box',  url:'https://www.facebook.com/heepio/'},
+                      {svg:'linkedin-box',  url:'https://www.linkedin.com/company/heep-inc/'},
+                      {svg:'pinterest',     url:'https://heep.io'},
+                      {svg:'twitter',       url:'https://twitter.com/HeepCo'},
+                      {svg:'github-circle', url:'https://github.com/HeepIO'}].map((social) => (
+                      <Grid item xs={4} sm={2} key={social.svg} style={{position:'relative'}}>
                           <object 
                             width='100%'
                             height='100%'
                             style={{fill:'blue'}}
                             fill='blue'
                             type='image/svg+xml'
-                            data={'../src/assets/svg_social/' + site + '.svg'}
+                            data={'../src/assets/svg_social/' + social.svg + '.svg'}
                           />
+                          <a href={social.url} 
+                             style={{
+                                width:'100%', 
+                                height:'100%',
+                                position:'absolute',
+                                left:0,
+                                top:0
+                              }}>
+                          </a>
                       </Grid>
                     ))}
                     
