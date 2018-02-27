@@ -15,6 +15,12 @@ import IconButton     from 'material-ui/IconButton';
 import Typography     from 'material-ui/Typography';
 import { withStyles, withTheme } from 'material-ui/styles';
 
+
+import Icon from 'material-ui/Icon';
+import DeleteIcon from 'material-ui-icons/Delete';
+import AddShoppingCartIcon from 'material-ui-icons/AddShoppingCart';
+import PhotoCamera from 'material-ui-icons/PhotoCamera';
+
 import * as actions from '../redux/actions'
 
 
@@ -26,6 +32,9 @@ const styles = theme => ({
     backgroundColor:  theme.palette.primary.main,
     color: theme.palette.primary.contrastText
   },
+  button: {
+    margin:1,
+  }
 });
 
 
@@ -36,11 +45,13 @@ class Footer extends React.Component {
   }
 
   render() {
+    const { classes } = this.props;
 
     return (
       <footer >
         <div
             style={{
+                marginTop: 24,
                 padding: 24,
                 flexShrink: 0,
                 backgroundColor: this.props.theme.palette.primary.main,
@@ -53,17 +64,25 @@ class Footer extends React.Component {
               justify={'center'}
               alignItems={'center'}
               >
-              <Grid 
-                item 
-                xs
-                >
+              <Grid item xs>
                 <Grid 
                   container
                   spacing={8}
                   justify={'center'}
-                  alignItems={'left'}
                   direction='column'
                 >
+                  <Grid item >
+                    <NavLink to="/User" 
+                    style={{
+                      textDecoration: 'none', 
+                      color: this.props.theme.palette.primary.contrastText
+                    }}>
+                      <Typography variant="body1" color='inherit'>
+                        Account
+                      </Typography>
+                    </NavLink>
+                  </Grid>
+
                   <Grid item >
                     <NavLink to="/Shop" 
                     style={{
@@ -71,31 +90,150 @@ class Footer extends React.Component {
                       color: this.props.theme.palette.primary.contrastText
                     }}>
                       <Typography variant="body1" color='inherit'>
-                        Shop
+                        Store
                       </Typography>
                     </NavLink>
                   </Grid>
+
                   <Grid item >
-                  <Typography variant="body1" color='inherit'>
-                    &#169; 2018 Heep
-                  </Typography>
+                    <NavLink to="/Blog" 
+                    style={{
+                      textDecoration: 'none', 
+                      color: this.props.theme.palette.primary.contrastText
+                    }}>
+                      <Typography variant="body1" color='inherit'>
+                        Blog
+                      </Typography>
+                    </NavLink>
                   </Grid>
+
                   <Grid item >
-                  <Typography variant="body1" color='inherit'>
-                    Made with <span style={{color: 'red'}}>&#9829;</span> in Brooklyn
-                  </Typography>
+                    <NavLink to="/Developers" 
+                    style={{
+                      textDecoration: 'none', 
+                      color: this.props.theme.palette.primary.contrastText
+                    }}>
+                      <Typography variant="body1" color='inherit'>
+                        Developers
+                      </Typography>
+                    </NavLink>
                   </Grid>
+
+                  
+                  
                 </Grid>
 
               </Grid>
 
-              <Grid 
-                item 
-                xs
+              <Grid item xs>
+                <Grid 
+                  container
+                  spacing={8}
+                  direction='column'
                 >
-                
+
+                <Grid item >
+                  <NavLink to="/About" 
+                  style={{
+                    textDecoration: 'none', 
+                    color: this.props.theme.palette.primary.contrastText
+                  }}>
+                    <Typography variant="body1" color='inherit'>
+                      About Us
+                    </Typography>
+                  </NavLink>
+                </Grid>
+
+                <Grid item >
+                  <Typography variant="body1" color='inherit' >
+                    Contact Us
+                  </Typography>
+                </Grid>
+
+                <Grid item >
+                  <NavLink to="/privacypolicy" 
+                    style={{
+                      textDecoration: 'none', 
+                      color: this.props.theme.palette.primary.contrastText
+                    }}>
+                    <Typography variant="body1" color='inherit'>
+                      Privacy Policy
+                    </Typography>
+                  </NavLink>
+                </Grid>
+
+                <Grid item >
+                  <NavLink to="/tos" 
+                  style={{
+                    textDecoration: 'none', 
+                    color: this.props.theme.palette.primary.contrastText
+                  }}>
+                    <Typography variant="body1" color='inherit'>
+                      Terms of Service
+                    </Typography>
+                  </NavLink>
+                </Grid>
               </Grid>
             </Grid>
+
+              <Grid item xs>
+                <Grid 
+                  container
+                  spacing={8}
+                  justify={'center'}
+                  alignItems={'center'}
+                  direction='column'
+                >
+                  <Grid item xs={6}>
+                    <img 
+                      src="../src/assets/Heep_Gradient.png"
+                      style={{
+                        maxWidth: '100%',
+                        maxHeight: '100%'
+                      }}/>
+                  </Grid>                  
+                </Grid>
+              
+              </Grid>
+              <Grid item xs>
+                <Grid 
+                  container
+                  spacing={8}
+                  direction='column'
+                />
+              </Grid>
+
+              <Grid item xs>
+                <Grid 
+                  container
+                  spacing={8}
+                  justify={'right'}
+                  direction='column'
+                >
+
+                <Grid item >
+                  <Typography variant="body1" color='inherit' align='right'>
+                    &#169; 2018 Heep
+                  </Typography>
+                </Grid>
+
+                <Grid item >
+                  <Typography variant="body1" color='inherit' align='right'>
+                    Made with <span style={{color: 'red'}}>&#9829;</span> in Brooklyn
+                  </Typography>
+                </Grid>
+
+               
+
+                
+              </Grid>
+              
+            </Grid>
+
+
+          </Grid>
+
+
           </div>
       </footer>
     );
