@@ -1,4 +1,4 @@
-#include "Scheduler.h"
+#include "CommonDataTypes.h"
 
 extern unsigned char clearMemory;
 void SetupHeepDevice(char* deviceName, char deviceIcon);

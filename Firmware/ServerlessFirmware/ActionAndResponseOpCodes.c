@@ -1,7 +1,8 @@
 #include "ActionAndResponseOpCodes.h"
 #include <string.h>
 #include "MemoryUtilities.h"
-
+#include "DeviceMemory.h"
+#include "Device.h"
 
 void ClearOutputBuffer()
 {

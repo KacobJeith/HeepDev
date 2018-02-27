@@ -1,4 +1,4 @@
-#include "Device.h"
+#include "CommonDataTypes.h"
 
 void ClearOutputBuffer();
 
