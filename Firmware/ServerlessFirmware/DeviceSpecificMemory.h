@@ -28,3 +28,9 @@
 // on memory limited devices. These are particularly useful
 // When using IDs that are very long strings
 //#define USE_INDEXED_IDS
+
+#ifdef USE_INDEXED_IDS
+#define ID_SIZE 1
+#else 
+#define ID_SIZE STANDARD_ID_SIZE
+#endif

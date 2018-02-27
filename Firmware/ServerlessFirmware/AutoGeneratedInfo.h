@@ -7,12 +7,6 @@ typedef unsigned char heepByte;
 #define STANDARD_ID_SIZE 4
 #define STANDARD_ID_SIZE_BASE_64 8 // 4 * ceiling(STANDRD_ID_SIZE/3)
 
-#ifdef USE_INDEXED_IDS
-#define ID_SIZE 1
-#else 
-#define ID_SIZE STANDARD_ID_SIZE
-#endif
-
 // Include the standard Heep Data Types
 #include "CommonDataTypes.h"
 
