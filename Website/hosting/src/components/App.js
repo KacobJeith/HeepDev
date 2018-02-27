@@ -24,6 +24,7 @@ import PaperSignalsConsole from './PaperSignals/PaperSignalsConsole'
 
 import Theme from './Theme'
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
+import Reboot from 'material-ui/Reboot';
 
 const mapStateToProps = (state) => ({
 	loginStatus: state.loginStatus,
@@ -78,20 +79,22 @@ class App extends React.Component {
 
 	    return(
 			<Router >
-		    	<MuiThemeProvider theme={Theme}>
-						<div>
-							<Route path="/" component={AppBar}/>
-							<Route exact path="/" component={Landing}/>
-							<Route path="/Landing" component={Landing}/>
-							<Route path="/About" component={About}/>
-							<Route path="/Shop" component={Store}/>
-							<Route path="/product/:productID" component={ProductDetails}/>
-							<Route path="/Checkout" component={Checkout}/>
-							<Route exact path="/auth" component={Auth}/>
-							<Route exact path="/PaperSignals" component={PaperSignalsConsole}/>
-							{loggedInRoutes}
-						</div>
-			    </MuiThemeProvider>
+					<Reboot>
+			    	<MuiThemeProvider theme={Theme}>
+							<div>
+								<Route path="/" component={AppBar}/>
+								<Route exact path="/" component={Landing}/>
+								<Route path="/Landing" component={Landing}/>
+								<Route path="/About" component={About}/>
+								<Route path="/Shop" component={Store}/>
+								<Route path="/product/:productID" component={ProductDetails}/>
+								<Route path="/Checkout" component={Checkout}/>
+								<Route exact path="/auth" component={Auth}/>
+								<Route exact path="/PaperSignals" component={PaperSignalsConsole}/>
+								{loggedInRoutes}
+							</div>
+				    </MuiThemeProvider>
+					</Reboot>
 			</Router>);
 
 	}
