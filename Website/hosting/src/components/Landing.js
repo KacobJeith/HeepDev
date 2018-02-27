@@ -10,7 +10,7 @@ const mapStateToProps = (state) => ({
 
 
 class Landing extends React.Component {
-  
+
   render() {
 
   	var styles = {
@@ -32,12 +32,17 @@ class Landing extends React.Component {
       card2: {
         message: 'Testing 2',
         image: '../src/assets/relay.png'
-      }
-  	}
+      },
+      objectSVG: {
+        width: '100%',
+        height: '100%',
+        type: 'image/svg+xml',
+        data: '../src/assets/Bedroom.svg'
+  	   }
+     }
 
-	return (<div {...inputs.container}> 
-              <MessageCard {...inputs.card1}/>
-              <MessageCard {...inputs.card2}/>
+	return (<div>
+            <object {...inputs.objectSVG}/>
           </div>
     );
   }

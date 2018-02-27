@@ -52,9 +52,9 @@ const styles = theme => ({
 });
 
 class RecipeReviewCard extends React.Component {
-  state = { 
-    expanded: false, 
-    countInCart: 0  
+  state = {
+    expanded: false,
+    countInCart: 0
   };
 
   addToCart() {
@@ -71,7 +71,7 @@ class RecipeReviewCard extends React.Component {
 
     var cartIcon = [];
 
-    if (this.state.countInCart > 0) { 
+    if (this.state.countInCart > 0) {
       cartIcon = (<Badge color="secondary" badgeContent={this.state.countInCart} className={classes.margin}>
         <AddShoppingCartIcon onClick={this.addToCart.bind(this)}/>
       </Badge>);
