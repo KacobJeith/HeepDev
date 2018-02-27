@@ -25,9 +25,9 @@ const styles = theme => ({
 class TitlebarGridList extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { 
+    this.state = {
         expanded: false,
-        countInCart: 0 
+        countInCart: 0
     }
   }
 
@@ -41,7 +41,7 @@ class TitlebarGridList extends React.Component {
 
     var cartIcon = [];
 
-    if (this.state.countInCart > 0) { 
+    if (this.state.countInCart > 0) {
       cartIcon = (<Badge color="secondary" badgeContent={this.state.countInCart} className={classes.margin}>
         <AddShoppingCartIcon onClick={this.addToCart.bind(this)}/>
       </Badge>);
@@ -62,7 +62,7 @@ class TitlebarGridList extends React.Component {
                 }
               />
             </GridListTile>
-          
+
       );
     }
 }

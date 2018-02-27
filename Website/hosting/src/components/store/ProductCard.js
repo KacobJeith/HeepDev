@@ -33,7 +33,7 @@ class ProductCard extends React.Component {
           transition: "transform 400ms",
           transform: this.state.hover ? "translate(0px, -5px)" : "translate(0px, 0px)"
         },
-        id: String(this.props.product.id), 
+        id: String(this.props.product.id),
         onMouseEnter: () => this.setState({hover: true}),
         onMouseLeave: () => this.setState({hover: false})
       },
@@ -41,12 +41,12 @@ class ProductCard extends React.Component {
         style: {
           height: 230,
           width: 300,
-          backgroundColor: "black", 
+          backgroundColor: "black",
           position: "absolute",
           top: 0,
           left: 0,
           opacity: 0.3,
-          boxShadow: this.state.hover ? "5px 5px 5px #111" : "" 
+          boxShadow: this.state.hover ? "5px 5px 5px #111" : ""
         }
       },
       imageContainer: {
@@ -71,7 +71,7 @@ class ProductCard extends React.Component {
       },
       optionsBar: {
         style: {
-          position: "absolute", 
+          position: "absolute",
           alignItems: "center",
           display: "flex",
           flexDirection: "row",
@@ -83,7 +83,7 @@ class ProductCard extends React.Component {
           width: "100%",
           backgroundColor: "lightGray",
           color: "black",
-          fontSize: 18,
+          //fontSize: 18,
           cursor: 'pointer'
         },
         onClick: () => {this.props.addProductToCart(this.props.productID)}
@@ -92,7 +92,7 @@ class ProductCard extends React.Component {
 
 
     if (useBuyButtonUI) {
-      
+
       setTimeout(ShopifyBuildProduct(this.props.product.id), 200);
 
       return (<div {...inputs.container}/>);
@@ -104,14 +104,14 @@ class ProductCard extends React.Component {
                   <div {...inputs.imageContainer}>
                     <img {...inputs.image}/>
                   </div>
-                  <div {...inputs.optionsBar}> 
+                  <div {...inputs.optionsBar}>
                     {this.props.product.title}
                   </div>
                 </div>
-              
+
       );
     }
-    
+
   }
 }
 

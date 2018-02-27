@@ -9,6 +9,7 @@ import AppBar from './AppBar'
 import Footer from './Footer'
 import Landing from './Landing'
 import Mission from './Mission'
+import About from './About'
 import Store from './store/Store'
 import Build from './heep/Build'
 import Auth from './account/Auth'
@@ -21,6 +22,10 @@ import ProductDetails from './store/ProductDetails'
 import DownloadPage from './heep/DownloadPage'
 
 import PaperSignalsConsole from './PaperSignals/PaperSignalsConsole'
+
+import Theme from './Theme'
+import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
+import Reboot from 'material-ui/Reboot';
 
 const mapStateToProps = (state) => ({
 	loginStatus: state.loginStatus,
@@ -50,21 +55,22 @@ class App extends React.Component {
 	render() {
 		this.logPageView();
 
-	    const inputs = {
-	      container: {
-	        style: { 
-	          height: "100vh",
-	          width: "100%",
-	          marginTop: 0,
-	          display: "flex",
-	          flexDirection: 'column',
-	        }
-	      },
-	      content: {
-	      	style: {
-	      		flex: '1 0 auto'
-	      	}
-	      }
+		const inputs = {
+			container : {
+				style: {
+					height: "100vh",
+					width: "100%",
+					marginTop: 0,
+					display: "flex",
+					flexDirection: 'column'
+				}
+			  
+			},
+			content: {
+				style: {
+					flex: '1 0 auto'
+				}
+			}
 	    }
 
 	    var loggedInRoutes = [];
@@ -77,23 +83,27 @@ class App extends React.Component {
 
 	    return(
 			<Router >
-		    	<div {...inputs.container}>
-		    	<div {...inputs.content}>
-					<Route path="/" component={AppBar}/>
-					<Route exact path="/" component={Mission}/>
-					<Route path="/Mission" component={Mission}/>
-					<Route path="/Shop" component={Store}/>
-					<Route path="/product/:productID" component={ProductDetails}/>
-					<Route path="/Checkout" component={Checkout}/>
-					<Route exact path="/auth" component={Auth}/>
-					<Route exact path="/PaperSignals" component={PaperSignalsConsole}/>
-					<Route exact path="/Developers" component={DownloadPage}/>
-					{loggedInRoutes}
-				</div>
-					<Route path="/" component={Footer}/>
-			    </div>
+					<Reboot>
+			    	<MuiThemeProvider theme={Theme}>
+							<div {...inputs.container}>
+								<div {...inputs.content}>
+									<Route path="/" component={AppBar}/>
+									<Route exact path="/" component={Landing}/>
+									<Route path="/Landing" component={Landing}/>
+									<Route path="/About" component={About}/>
+									<Route path="/Shop" component={Store}/>
+									<Route path="/product/:productID" component={ProductDetails}/>
+									<Route path="/Checkout" component={Checkout}/>
+									<Route exact path="/auth" component={Auth}/>
+									<Route exact path="/Developers" component={DownloadPage}/>
+									{loggedInRoutes}
+								</div>
+								<Route path="/" component={Footer}/>
+						    </div>
+				    </MuiThemeProvider>
+					</Reboot>
 			</Router>);
-	    
+
 	}
 }
 
@@ -103,4 +113,3 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)
-

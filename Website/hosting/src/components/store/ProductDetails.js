@@ -49,7 +49,7 @@ const styles = theme => ({
   },
 });
 
-class ProductDetails extends React.Component { 
+class ProductDetails extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -66,32 +66,32 @@ class ProductDetails extends React.Component {
     } else {
       return (
         <div style={{margin: 25, flexGrow: 1}}>
-          <Grid 
-            container 
+          <Grid
+            container
             spacing={24}
             justify={'center'}
             alignItems={'flex-start'}
           >
             <Grid item xs={5}>
-              <Grid 
-                container 
+              <Grid
+                container
                 direction={'column'}
                 spacing={24}
                 justify={'center'}
                 alignItems={'flex-start'}
               >
-                <Grid 
-                  item 
+                <Grid
+                  item
                   xs
                   style={{
                     height: 500
                   }}
                 >
-                    <img 
-                      src={this.props.product.images[this.state.viewing].src} 
-                      alt={this.props.product.title} 
+                    <img
+                      src={this.props.product.images[this.state.viewing].src}
+                      alt={this.props.product.title}
                       style={{
-                        maxWidth:"100%", 
+                        maxWidth:"100%",
                         maxHeight:"100%"
                       }}
                     />
@@ -101,8 +101,8 @@ class ProductDetails extends React.Component {
                 </Grid>
               </Grid>
             </Grid>
-            <Grid 
-              item 
+            <Grid
+              item
               xs
             >
               <Typography variant="title" gutterBottom paragraph >
@@ -115,9 +115,9 @@ class ProductDetails extends React.Component {
                 {"$" + this.props.product.variants[0].price}
               </Typography>
 
-              <Button 
+              <Button
                 variant='raised'
-                color='primary'
+                color='secondary'
                 className={classes.button}
                 size='small'
                 onClick={()=>{this.props.addProductToCart(this.props.product.id)}}
@@ -134,22 +134,22 @@ class ProductDetails extends React.Component {
             </Grid>
           </Grid>
           <Grid container spacing={24}>
-            
+
                       {this.props.product.images.map((tile, index) => (
                         <Grid item xs={3} sm={2} md={1} key={tile.id}>
-                          <Paper 
+                          <Paper
                             elevation={this.state.viewing == index ? 10 : 5}
                             style={{
                               transition: "transform 400ms",
                               transform: this.state.viewing == index  ? "translate(0px, -5px)" : "translate(0px, 0px)"
                             }}
                           >
-                          <img 
-                            src={tile.src} 
-                            alt={tile.altText} 
+                          <img
+                            src={tile.src}
+                            alt={tile.altText}
                             style={{
                               cursor: 'pointer',
-                              maxWidth:"100%", 
+                              maxWidth:"100%",
                               maxHeight:"100%"
                             }}
                             key={tile.id}
@@ -158,15 +158,15 @@ class ProductDetails extends React.Component {
                           </Paper>
                         </Grid>
                       ))}
-            
-            
+
+
           </Grid>
         </div>
       );
     }
-    
+
   }
-  
+
 }
 
 ProductDetails.propTypes = {
