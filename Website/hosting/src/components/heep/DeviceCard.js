@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux'
 import { withRouter } from 'react-router-dom'
 import * as actions from '../../redux/actions'
 import {Grid, Row, Col, Image, PageHeader, Media, Button} from 'react-bootstrap'
-import "../../assets/light_off.png"
 
 var mapStateToProps = (state, ownProps) => ({
   device: state.devices[ownProps.deviceID]
@@ -30,7 +29,7 @@ class DeviceCard extends React.Component {
         width: 64,
         height: 64,
         type:"image/svg+xml",
-        data: "../src/assets/" + this.props.device.identity.iconName + ".svg"
+        data: "../src/assets/svg/" + this.props.device.identity.iconName + ".svg"
       },
       backup: {
         width: "auto",
@@ -51,7 +50,7 @@ class DeviceCard extends React.Component {
       }
     }
 
-    var svgs = ['light-bulb-LED', 'cuckoo-clock', 'none', 'outlet', 'power-button', 'switch'];
+    var svgs = ['light-bulb-LED', 'cuckooClock', 'none', 'outlet', 'power-button', 'switch', 'motor', 'rfid', 'lightswitch'];
 
     if (svgs.indexOf(this.props.device.identity.iconName) != -1) { 
 
