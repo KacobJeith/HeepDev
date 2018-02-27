@@ -1,21 +1,22 @@
-import React from 'react'
-import { connect } from 'react-redux'
+import React                  from 'react'
 import { bindActionCreators } from 'redux'
-import * as Actions from '../../redux/actions'
-import ProductCard from './ProductCard'
-import { withStyles } from 'material-ui/styles';
-import PropTypes from 'prop-types';
-import ProductCardMUI from './ProductCardMUI'
-import GridList, { GridListTile, GridListTileBar } from 'material-ui/GridList';
-import Subheader from 'material-ui/List/ListSubheader';
-import ProductGrid from './ProductGrid'
-import { InputLabel } from 'material-ui/Input';
-import { MenuItem } from 'material-ui/Menu';
-import { FormControl } from 'material-ui/Form';
-import Select from 'material-ui/Select';
-import Button from 'material-ui/Button';
+import PropTypes              from 'prop-types'
+import { connect }            from 'react-redux'
+import { withRouter }         from 'react-router-dom'
 
-import { withRouter } from 'react-router-dom'
+import GridList, { GridListTile, GridListTileBar }  from 'material-ui/GridList';
+
+import { Grid, Select, Button }   from 'material-ui';
+import Subheader                  from 'material-ui/List/ListSubheader';
+import { InputLabel }             from 'material-ui/Input';
+import { MenuItem }               from 'material-ui/Menu';
+import { FormControl }            from 'material-ui/Form';
+import { withStyles }             from 'material-ui/styles';
+
+import ProductGrid          from './ProductGrid'
+import * as Actions         from '../../redux/actions'
+import ProductCardMUI       from './ProductCardMUI'
+import ProductCard          from './ProductCard'
 
 var mapStateToProps = (state) => ({
   products: state.shopify
@@ -45,7 +46,7 @@ const styles = theme => ({
 
 class Store extends React.Component {
   state = {
-    viewMode: 'Card',
+    viewMode: 'Classic',
     age: '',
     open: false
   }
@@ -98,57 +99,45 @@ class Store extends React.Component {
 
     if (this.state.viewMode == 'Grid') {
 
-      var products = []
-
-      for (var key in this.props.products) {
-        products.push(<ProductGrid key={key} productID={key}/>);
-      } 
-
-
       return (
         <div>
           
           {selectViewMode}
+
           <div className={classes.root}>
-            <GridList cellHeight={"auto"} className={classes.gridList}>
-              <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }}>
+            <GridList cellHeight={180} className={classes.gridList}>
+              <GridListTile key="Subheader" cols={2} >
                 <Subheader component="div">Viewing Heep Store in {this.state.viewMode} Mode</Subheader>
               </GridListTile>
-            {products}
+            {Object.keys(this.props.products).map((key) => (
+              <ProductGrid key={key} productID={key}/>)
+            )}
             </GridList>
           </div>
         </div>
       );
 
-
     } else if (this.state.viewMode == 'Card') {
-      var products = []
-
-      for (var key in this.props.products) {
-        // products.push(<ProductCard key={key} productID={key}/>);
-        products.push(<ProductCardMUI key={key} productID={key}/>);
-      } 
 
       return (
           <div {...inputs.container}>
 
             {selectViewMode}
-            {products}
+
+            {Object.keys(this.props.products).map((key) => (
+              <ProductCardMUI key={key} productID={key}/>)
+            )}
           </div>
       );
     } else if (this.state.viewMode == 'Classic') {
-      var products = [];
-
-      for (var key in this.props.products) {
-        products.push(<ProductCard key={key} productID={key}/>);
-      } 
-
+      
       return (
-          <div {...inputs.container}>
 
-            {selectViewMode}
-            {products}
-          </div>
+            <Grid container spacing={0} >
+              {Object.keys(this.props.products).map((key) => (
+                <ProductCard key={key} productID={key}/>)
+              )}
+            </Grid>
       );
     }
     

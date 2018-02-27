@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as Actions from '../../redux/actions'
+import { Grid, Typography }   from 'material-ui';
 
 var mapStateToProps = (state, ownProps) => ({
   product: state.shopify[ownProps.productID],
@@ -65,7 +66,7 @@ class ProductCard extends React.Component {
           // // position: "absolute",
           // left: 0,
           // top: 0,
-          maxHeight: "100%",
+          maxHeight: "calc(100vw / 4)",
           maxWidth: "100%"
         }
       },
@@ -90,27 +91,27 @@ class ProductCard extends React.Component {
       }
     }
 
+    return (
+      <Grid item xs={4}>
+        <Grid container alignItems='center' direction='column' spacing={0}>
+          <Grid item >
+            <img {...inputs.image}/>
+          </Grid>
+          <Grid item>
+            <Typography align='center' 
+            style={{
+              backgroundColor:'black',
+              opacity: 0.25,
+              color:'white',
+              width:'100%'
+            }}>
+              {this.props.product.title}
+            </Typography>
+          </Grid>
+        </Grid>
+      </Grid>
 
-    if (useBuyButtonUI) {
-
-      setTimeout(ShopifyBuildProduct(this.props.product.id), 200);
-
-      return (<div {...inputs.container}/>);
-
-    } else {
-
-      return (
-                <div {...inputs.container}>
-                  <div {...inputs.imageContainer}>
-                    <img {...inputs.image}/>
-                  </div>
-                  <div {...inputs.optionsBar}>
-                    {this.props.product.title}
-                  </div>
-                </div>
-
-      );
-    }
+    );
 
   }
 }
@@ -120,92 +121,3 @@ var mapDispatchToProps = (dispatch) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductCard)
-
-function ShopifyBuildProduct(productID) {
-    var client = ShopifyBuy.buildClient({
-      domain: 'shopheep.myshopify.com',
-      storefrontAccessToken: 'a444eb17144b5b4e7841eaa1e4cf8698'
-      // appId: '6',
-    });
-
-    var ui = ShopifyBuy.UI.init(client).createComponent('product', {
-        id: [productID],
-        node: document.getElementById(String(productID)),
-        options: {
-            product: {
-              buttonDestination: 'modal'
-            },
-            cart: {
-              startOpen: true
-            }
-          }
-        });
-
-        // node: document.getElementById(String(productID)),
-        // moneyFormat: '%24%7B%7Bamount%7D%7D',
-        // options: {
-        //   "product": {
-        //     "variantId": "all",
-        //     "width": "240px",
-        //     "contents": {
-        //       "imgWithCarousel": false,
-        //       "variantTitle": false,
-        //       "description": false,
-        //       "buttonWithQuantity": false,
-        //       "quantity": false
-        //     },
-        //     "styles": {
-        //       "product": {
-        //         "@media (min-width: 601px)": {
-        //           "max-width": "100%",
-        //           "margin-left": "0",
-        //           "margin-bottom": "50px"
-        //         }
-        //       },
-        //       "compareAt": {
-        //         "font-size": "12px"
-        //       }
-        //     }
-        //   },
-        //   "cart": {
-        //     "contents": {
-        //       "button": true
-        //     },
-        //     "styles": {
-        //       "footer": {
-        //         "background-color": "#ffffff"
-        //       }
-        //     }
-        //   },
-        //   "modalProduct": {
-        //     "contents": {
-        //       "img": false,
-        //       "imgWithCarousel": true,
-        //       "variantTitle": true,
-        //       "buttonWithQuantity": true,
-        //       "button": false,
-        //       "quantity": true
-        //     },
-        //     "styles": {
-        //       "product": {
-        //         "@media (min-width: 601px)": {
-        //           "max-width": "100%",
-        //           "margin-left": "0px",
-        //           "margin-bottom": "0px"
-        //         }
-        //       }
-        //     }
-        //   },
-        //   "productSet": {
-        //     "styles": {
-        //       "products": {
-        //         "@media (min-width: 601px)": {
-        //           "margin-left": "-20px"
-        //         }
-        //       }
-        //     }
-        //   }
-        // }
-      // });
-    // });
-  }

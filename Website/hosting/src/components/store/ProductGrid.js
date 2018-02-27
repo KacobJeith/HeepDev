@@ -3,12 +3,12 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as Actions from '../../redux/actions'
 import PropTypes from 'prop-types';
+
 import { withStyles } from 'material-ui/styles';
+import { AddShoppingCart } from 'material-ui-icons';
+import { Grid, Badge, IconButton }   from 'material-ui';
 import GridList, { GridListTile, GridListTileBar } from 'material-ui/GridList';
-import IconButton from 'material-ui/IconButton';
-import InfoIcon from 'material-ui-icons/Info';
-import AddShoppingCartIcon from 'material-ui-icons/AddShoppingCart';
-import Badge from 'material-ui/Badge';
+
 
 
 var mapStateToProps = (state, ownProps) => ({
@@ -42,16 +42,23 @@ class TitlebarGridList extends React.Component {
     var cartIcon = [];
 
     if (this.state.countInCart > 0) {
-      cartIcon = (<Badge color="secondary" badgeContent={this.state.countInCart} className={classes.margin}>
-        <AddShoppingCartIcon onClick={this.addToCart.bind(this)}/>
+      cartIcon = (
+      <Badge color="secondary" badgeContent={this.state.countInCart} className={classes.margin}>
+        <AddShoppingCart onClick={this.addToCart.bind(this)}/>
       </Badge>);
+
     } else {
-      cartIcon = <AddShoppingCartIcon onClick={this.addToCart.bind(this)}/>;
+
+      cartIcon = <AddShoppingCart onClick={this.addToCart.bind(this)}/>;
     }
 
     return (
-            <GridListTile key={this.props.product.title}>
-              <img src={this.props.product.images[0].src} alt={this.props.product.title} style={{maxWidth:400, maxHeight:400}}/>
+            <GridListTile key={this.props.product.title} cols={1} style={{width:250, height:250}}>
+              
+              <img  src={this.props.product.images[0].src} 
+                    alt={this.props.product.title}
+                  />
+
               <GridListTileBar
                 title={this.props.product.title}
                 subtitle={<span>by: {this.props.product.vendor}</span>}
