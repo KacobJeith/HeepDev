@@ -40,8 +40,104 @@ const styles = theme => ({
 
 class Footer extends React.Component { 
 
-  checkBreakpoint() {
+  socialLogoLinks() {
+    return(
+      <Grid item xs>
+        <Grid container spacing={8} 
+          justify={'center'}
+          direction='row'
+        >
+          {[{svg:'instagram',     url:'https://www.instagram.com/heep_inc/'}, 
+            {svg:'facebook-box',  url:'https://www.facebook.com/heepio/'},
+            {svg:'linkedin-box',  url:'https://www.linkedin.com/company/heep-inc/'},
+            {svg:'pinterest',     url:'https://heep.io'},
+            {svg:'twitter',       url:'https://twitter.com/HeepCo'},
+            {svg:'github-circle', url:'https://github.com/HeepIO'}].map((social) => (
+            <Grid item xs={4} sm={2} key={social.svg} style={{position:'relative'}}>
+                <object 
+                  width='100%'
+                  height='100%'
+                  style={{fill:'blue'}}
+                  fill='blue'
+                  type='image/svg+xml'
+                  data={'../src/assets/svg_social/' + social.svg + '.svg'}
+                />
+                <a href={social.url} 
+                   style={{
+                      width:'100%', 
+                      height:'100%',
+                      position:'absolute',
+                      left:0,
+                      top:0
+                    }}>
+                </a>
+            </Grid>
+          ))}
+        </Grid>
+      </Grid>
+    )
+  }
 
+  copyrightHeep() {
+    return (
+      <Grid item >
+        <Typography variant="caption" color='inherit'>
+          &#169; 2018 Heep
+        </Typography>
+      </Grid>
+    )
+  }
+
+  madeInBrooklyn() {
+    return(
+      <Grid item >
+        <Typography variant="caption" color='inherit'>
+          Made with <span style={{color: 'red'}}>&#9829;</span> in Brooklyn
+        </Typography>
+      </Grid>
+    )
+  }
+
+  copyrightMadeInBrooklyn() {
+
+    return(
+      <Grid item >
+        <Typography variant="caption" color='inherit'>
+          &#169; 2018 Heep - Made with <span style={{color: 'red'}}>&#9829;</span> in Brooklyn
+        </Typography>
+      </Grid>
+    )
+
+  }
+
+  heepLogo() {
+    return(
+      <Grid item xs={6}>
+        <img 
+          src="../src/assets/Heep_Gradient.png"
+          style={{
+            maxWidth: '100%',
+            maxHeight: '100%'
+          }}/>
+      </Grid>
+    )
+  }
+
+  textNavLink(text, url, align = 'left') {
+
+    return(
+      <Grid item >
+        <NavLink to={url} 
+        style={{
+          textDecoration: 'none', 
+          color: this.props.theme.palette.primary.contrastText
+        }}>
+          <Typography variant="caption" color='inherit' align={align}>
+            {text} 
+          </Typography>
+        </NavLink>
+      </Grid>
+    )
   }
 
   render() {
@@ -72,110 +168,16 @@ class Footer extends React.Component {
                   justify={'center'}
                   direction='column'
                 >
-                  <Grid item >
-                    <NavLink to="/User" 
-                    style={{
-                      textDecoration: 'none', 
-                      color: this.props.theme.palette.primary.contrastText
-                    }}>
-                      <Typography variant="caption" color='inherit'>
-                        Account
-                      </Typography>
-                    </NavLink>
-                  </Grid>
-
-                  <Grid item >
-                    <NavLink to="/Shop" 
-                    style={{
-                      textDecoration: 'none', 
-                      color: this.props.theme.palette.primary.contrastText
-                    }}>
-                      <Typography variant="caption" color='inherit'>
-                        Store
-                      </Typography>
-                    </NavLink>
-                  </Grid>
-
-                  <Grid item >
-                    <NavLink to="/Blog" 
-                    style={{
-                      textDecoration: 'none', 
-                      color: this.props.theme.palette.primary.contrastText
-                    }}>
-                      <Typography variant="caption" color='inherit'>
-                        Blog
-                      </Typography>
-                    </NavLink>
-                  </Grid>
-
-                  <Grid item >
-                    <NavLink to="/Developers" 
-                    style={{
-                      textDecoration: 'none', 
-                      color: this.props.theme.palette.primary.contrastText
-                    }}>
-                      <Typography variant="caption" color='inherit'>
-                        Developers
-                      </Typography>
-                    </NavLink>
-                  </Grid>
-
-                  
+                  {this.textNavLink('Account', '/User')}
+                  {this.textNavLink('Shop', '/Store')}
+                  {this.textNavLink('Blog', '/Blog')}
+                  {this.textNavLink('Developers', '/Developers')}
                   
                 </Grid>
 
               </Grid>
 
-              <Grid item xs>
-                <Grid 
-                  container
-                  spacing={8}
-                  direction='column'
-                >
-
-                <Grid item >
-                  <NavLink to="/About" 
-                  style={{
-                    textDecoration: 'none', 
-                    color: this.props.theme.palette.primary.contrastText
-                  }}>
-                    <Typography variant="caption" color='inherit'>
-                      About Us
-                    </Typography>
-                  </NavLink>
-                </Grid>
-
-                <Grid item >
-                  <Typography variant="caption" color='inherit' >
-                    Contact Us
-                  </Typography>
-                </Grid>
-
-                <Grid item >
-                  <NavLink to="/privacypolicy" 
-                    style={{
-                      textDecoration: 'none', 
-                      color: this.props.theme.palette.primary.contrastText
-                    }}>
-                    <Typography variant="caption" color='inherit'>
-                      Privacy Policy
-                    </Typography>
-                  </NavLink>
-                </Grid>
-
-                <Grid item >
-                  <NavLink to="/tos" 
-                  style={{
-                    textDecoration: 'none', 
-                    color: this.props.theme.palette.primary.contrastText
-                  }}>
-                    <Typography variant="caption" color='inherit'>
-                      Terms of Service
-                    </Typography>
-                  </NavLink>
-                </Grid>
-              </Grid>
-            </Grid>
+              
 
               <Grid item xs>
                 <Grid 
@@ -184,19 +186,29 @@ class Footer extends React.Component {
                   justify={'center'}
                   alignItems={'center'}
                   direction='column'
-                >
-                  <Grid item xs={6}>
-                    <img 
-                      src="../src/assets/Heep_Gradient.png"
-                      style={{
-                        maxWidth: '100%',
-                        maxHeight: '100%'
-                      }}/>
-                  </Grid>                  
+                >                
                 </Grid>
               
               </Grid>
-              <Grid item xs>
+
+              
+
+              <Grid item xs md={2} lg={1}>
+                <Grid 
+                  container
+                  spacing={8}
+                  direction='column'
+                  alignItems='center'
+                  justify='center'
+                >
+                {this.heepLogo()}
+                {this.socialLogoLinks()}
+                
+              </Grid>
+              
+            </Grid>
+
+            <Grid item xs>
                 <Grid 
                   container
                   spacing={8}
@@ -204,72 +216,28 @@ class Footer extends React.Component {
                 />
               </Grid>
 
-              <Grid item xs>
+            <Grid item xs>
                 <Grid 
                   container
                   spacing={8}
                   direction='column'
                 >
-
-                <Grid item >
-                  <Typography variant="caption" color='inherit' align='right'>
-                    &#169; 2018 Heep
-                  </Typography>
-                </Grid>
-
-                <Grid item >
-                  <Typography variant="caption" color='inherit' align='right'>
-                    Made with <span style={{color: 'red'}}>&#9829;</span> in Brooklyn
-                  </Typography>
-                </Grid>
-                <Grid item >
-                  <Typography variant="caption" color='inherit' align='right'>
-                   
-                  </Typography>
-                </Grid>
-
-                <Grid item >
-                  <Grid container spacing={8} 
-                    justify={'center'}
-                    direction='row'
-                  >
-                    {[{svg:'instagram',     url:'https://www.instagram.com/heep_inc/'}, 
-                      {svg:'facebook-box',  url:'https://www.facebook.com/heepio/'},
-                      {svg:'linkedin-box',  url:'https://www.linkedin.com/company/heep-inc/'},
-                      {svg:'pinterest',     url:'https://heep.io'},
-                      {svg:'twitter',       url:'https://twitter.com/HeepCo'},
-                      {svg:'github-circle', url:'https://github.com/HeepIO'}].map((social) => (
-                      <Grid item xs={4} sm={2} key={social.svg} style={{position:'relative'}}>
-                          <object 
-                            width='100%'
-                            height='100%'
-                            style={{fill:'blue'}}
-                            fill='blue'
-                            type='image/svg+xml'
-                            data={'../src/assets/svg_social/' + social.svg + '.svg'}
-                          />
-                          <a href={social.url} 
-                             style={{
-                                width:'100%', 
-                                height:'100%',
-                                position:'absolute',
-                                left:0,
-                                top:0
-                              }}>
-                          </a>
-                      </Grid>
-                    ))}
-                    
-
-                  </Grid>
-                </Grid>
-                
+                  {this.textNavLink('About Us', '/About', 'right')}
+                  {this.textNavLink('Contact Us', '/Contact', 'right')}
+                  {this.textNavLink('Privacy Policy', '/privacypolicy', 'right')}
+                  {this.textNavLink('Terms of Service', '/tos', 'right')}
               </Grid>
-              
             </Grid>
 
 
           </Grid>
+
+          <Grid container alignItems='center' justify='center'>
+            <Grid item>
+
+                {this.copyrightMadeInBrooklyn()}
+                </Grid>
+                </Grid>
 
 
           </div>
