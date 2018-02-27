@@ -1,8 +1,5 @@
 #include "MemoryUtilities.h"
 
-heepByte deviceIDByte [STANDARD_ID_SIZE] = {0x01, 0x02, 0x03, 0x04};
-uint8_t mac[6] = {0x01,0x02,0x03,0x04,0x05,0x06};
-
 unsigned char outputBuffer [OUTPUT_BUFFER_SIZE];
 unsigned int outputBufferLastByte = 0;
 
