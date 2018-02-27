@@ -222,9 +222,6 @@ class Footer extends React.Component {
                     Made with <span style={{color: 'red'}}>&#9829;</span> in Brooklyn
                   </Typography>
                 </Grid>
-
-               
-
                 
               </Grid>
               
