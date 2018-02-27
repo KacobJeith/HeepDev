@@ -189,7 +189,7 @@ class MenuAppBar extends React.Component {
     return (
       <div className={classes.root}>
         <AppBar position="static">
-          <Toolbar {...inputs.toolbar}>
+          <Toolbar>
             <NavLink to="/">
               <IconButton >
                   <img {...inputs.Logo}/>
