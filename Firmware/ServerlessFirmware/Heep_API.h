@@ -12,9 +12,17 @@ void SendOutputByIDBuffer(unsigned char controlID, heepByte* buffer, int bufferL
 
 void HandlePointersOnMemoryChange();
 
+int GetControlValueByID(unsigned controlID);
+
+void AddControl(struct Control myControl);
+
 void SetupHeepTasks();
 
 void CommitMemory();
+
+unsigned char IsROP();
+
+void ExecuteControlOpCodes();
 
 #ifdef USE_ANALYTICS
 void PostDataToFirebase();

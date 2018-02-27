@@ -55,7 +55,3 @@ void ExecuteDeleteMOPOpCode();
 
 void ExecuteAddMOPOpCode();
 
-unsigned char IsROP();
-
-void ExecuteControlOpCodes();
-
