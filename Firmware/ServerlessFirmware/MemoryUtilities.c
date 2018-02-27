@@ -6,6 +6,7 @@ unsigned int outputBufferLastByte = 0;
 
 unsigned char inputBuffer [INPUT_BUFFER_SIZE];
 unsigned int inputBufferLastByte = 0;
+unsigned int inputBufferSize = INPUT_BUFFER_SIZE;
 
 unsigned long GetDataFromBufferOfSpecifiedSize(heepByte* buffer, heepByte* data, unsigned long size, unsigned long counter)
 {

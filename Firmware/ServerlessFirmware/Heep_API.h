@@ -7,6 +7,8 @@ extern unsigned int outputBufferLastByte;
 extern unsigned char inputBuffer [];
 extern unsigned int inputBufferLastByte;
 
+extern unsigned int inputBufferSize;
+
 extern unsigned char clearMemory;
 void SetupHeepDevice(char* deviceName, char deviceIcon);
 void FactoryReset(char* deviceName, char iconEnum);
