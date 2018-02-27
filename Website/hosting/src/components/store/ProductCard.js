@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 import * as Actions from '../../redux/actions'
 import { Grid, Typography, IconButton, Badge }   from 'material-ui';
@@ -44,9 +45,21 @@ class ProductCard extends React.Component {
       <Grid item xs={4}>
         <Grid container alignItems='stretch' direction='column' spacing={0}>
           <Grid item>
-            <Grid container alignItems='center' direction='column' spacing={0}>
-              <Grid item>
-                <img {...inputs.image}/>
+            <Grid container alignItems='center' justify='flex-start' direction='column' spacing={0}>
+              <Grid item >
+                <Link to={"/product/" + this.props.productID} >
+                  <img {...inputs.image}/>
+                  <div style={{
+                      backgroundColor:'white',
+                      opacity: this.state.hover ? 0.3 : 0.0,
+                      height:"calc(25vw - 8px)",
+                      position:'absolute',
+                      width:'100%'
+                    }}
+                    onMouseEnter={()=>{this.setState({hover: true})}}
+                    onMouseLeave={()=>{this.setState({hover: false})}}
+                  />
+                </Link>
               </Grid>
             </Grid>
           </Grid>
@@ -81,7 +94,9 @@ class ProductCard extends React.Component {
           </Grid>
         </Grid>
       </Grid>
+
       </Grid>
+      
 
     );
 
