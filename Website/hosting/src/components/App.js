@@ -6,6 +6,7 @@ import * as Actions from '../redux/actions'
 import ReactGA from 'react-ga'
 
 import AppBar from './AppBar'
+import Footer from './Footer'
 import Landing from './Landing'
 import Mission from './Mission'
 import About from './About'
@@ -54,19 +55,22 @@ class App extends React.Component {
 	render() {
 		this.logPageView();
 
-		const styles = {
-	        container : {
-	          height: "100%",
-	          width: "100%",
-	          marginTop: 0,
-	          display: "block"
-	        }
-	      };
-
-	    const inputs = {
-	      container: {
-	        style: styles.container
-	      }
+		const inputs = {
+			container : {
+				style: {
+					height: "100vh",
+					width: "100%",
+					marginTop: 0,
+					display: "flex",
+					flexDirection: 'column'
+				}
+			  
+			},
+			content: {
+				style: {
+					flex: '1 0 auto'
+				}
+			}
 	    }
 
 	    var loggedInRoutes = [];
@@ -81,18 +85,21 @@ class App extends React.Component {
 			<Router >
 					<Reboot>
 			    	<MuiThemeProvider theme={Theme}>
-							<div>
-								<Route path="/" component={AppBar}/>
-								<Route exact path="/" component={Landing}/>
-								<Route path="/Landing" component={Landing}/>
-								<Route path="/About" component={About}/>
-								<Route path="/Shop" component={Store}/>
-								<Route path="/product/:productID" component={ProductDetails}/>
-								<Route path="/Checkout" component={Checkout}/>
-								<Route exact path="/auth" component={Auth}/>
-								<Route exact path="/Developers" component={DownloadPage}/>
-								{loggedInRoutes}
-							</div>
+							<div {...inputs.container}>
+								<div {...inputs.content}>
+									<Route path="/" component={AppBar}/>
+									<Route exact path="/" component={Landing}/>
+									<Route path="/Landing" component={Landing}/>
+									<Route path="/About" component={About}/>
+									<Route path="/Shop" component={Store}/>
+									<Route path="/product/:productID" component={ProductDetails}/>
+									<Route path="/Checkout" component={Checkout}/>
+									<Route exact path="/auth" component={Auth}/>
+									<Route exact path="/Developers" component={DownloadPage}/>
+									{loggedInRoutes}
+								</div>
+								<Route path="/" component={Footer}/>
+						    </div>
 				    </MuiThemeProvider>
 					</Reboot>
 			</Router>);
