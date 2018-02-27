@@ -1,5 +1,12 @@
 #include "CommonDataTypes.h"
 
+// Define the input and output buffers for global accessibility
+extern unsigned char outputBuffer [];
+extern unsigned int outputBufferLastByte;
+
+extern unsigned char inputBuffer [];
+extern unsigned int inputBufferLastByte;
+
 extern unsigned char clearMemory;
 void SetupHeepDevice(char* deviceName, char deviceIcon);
 void FactoryReset(char* deviceName, char iconEnum);

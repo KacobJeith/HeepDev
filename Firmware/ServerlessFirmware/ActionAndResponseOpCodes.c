@@ -3,6 +3,7 @@
 #include "MemoryUtilities.h"
 #include "DeviceMemory.h"
 #include "Device.h"
+#include "Heep_API.h"
 
 void ClearOutputBuffer()
 {
