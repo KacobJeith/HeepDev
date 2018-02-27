@@ -6,19 +6,19 @@ import * as Actions from '../redux/actions'
 import ReactGA from 'react-ga'
 
 import AppBar from './AppBar'
-import Header from './Header'
 import Landing from './Landing'
 import Mission from './Mission'
 import About from './About'
 import Store from './store/Store'
-import Build from './Build'
-import Auth from './Auth'
-import Logout from './Logout'
+import Build from './heep/Build'
+import Auth from './account/Auth'
+import Logout from './account/Logout'
 import Loading from './Loading'
-import UserProfile from './UserProfile'
-import DeviceBuilder from './DeviceBuilder'
+import UserProfile from './account/UserProfile'
+import DeviceBuilder from './heep/DeviceBuilder'
 import Checkout from './store/Checkout'
 import ProductDetails from './store/ProductDetails'
+import DownloadPage from './heep/DownloadPage'
 
 import PaperSignalsConsole from './PaperSignals/PaperSignalsConsole'
 
@@ -90,7 +90,7 @@ class App extends React.Component {
 								<Route path="/product/:productID" component={ProductDetails}/>
 								<Route path="/Checkout" component={Checkout}/>
 								<Route exact path="/auth" component={Auth}/>
-								<Route exact path="/PaperSignals" component={PaperSignalsConsole}/>
+								<Route exact path="/Developers" component={DownloadPage}/>
 								{loggedInRoutes}
 							</div>
 				    </MuiThemeProvider>

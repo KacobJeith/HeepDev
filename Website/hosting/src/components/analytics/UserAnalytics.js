@@ -2,12 +2,12 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { withRouter } from 'react-router-dom'
-import * as actions from '../redux/actions'
+import * as actions from '../../redux/actions'
 import {Grid, Row, Col, Image, PageHeader, Media, Button} from 'react-bootstrap'
 
-import PlaceCard from './PlaceCard'
-import RoomCard from './RoomCard'
-import DeviceCard from './DeviceCard'
+import PlaceCard from '../heep/PlaceCard'
+import RoomCard from '../heep/RoomCard'
+import DeviceCard from '../heep/DeviceCard'
 
 var mapStateToProps = (state) => ({
   devices: state.devices,

@@ -37,7 +37,7 @@ class DeviceCard extends React.Component {
         width: 64,
         height: 64,
         type:"image/svg+xml",
-        data: '../assets/svg/' + this.props.device.identity.iconName + ".svg"
+        data: '../serverside/assets/svg/' + this.props.device.identity.iconName + ".svg"
       },
       backup: {
         width: "auto",
