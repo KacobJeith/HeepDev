@@ -2,10 +2,10 @@
 
 extern unsigned int firmwareVersion;
 
-extern struct Control controlList [NUM_CONTROLS];
+extern struct Control controlList [];
 extern unsigned int numberOfControls;
 
-extern unsigned int vertexPointerList[NUM_VERTICES];
+extern unsigned int vertexPointerList[];
 extern unsigned int numberOfVertices;
 
 void ClearControls();

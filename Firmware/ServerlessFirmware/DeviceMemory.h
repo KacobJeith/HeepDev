@@ -32,7 +32,7 @@
 
 #define AnalyticsOpCode				0x1F
 
-extern unsigned char deviceMemory[MAX_MEMORY];
+extern unsigned char deviceMemory[];
 extern unsigned int curFilledMemory; // Indicate the curent filled memory. 
 						 // Also serve as a place holder to 
 						 // show the back of allocated memory

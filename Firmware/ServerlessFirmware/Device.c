@@ -3,6 +3,7 @@
 #include <string.h>
 #include "MemoryUtilities.h"
 #include "DeviceMemory.h"
+#include "DeviceSpecificMemory.h"
 
 unsigned int firmwareVersion = FIRMWARE_VERSION;
 

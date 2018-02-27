@@ -1,4 +1,5 @@
 #include "MemoryUtilities.h"
+#include "DeviceSpecificMemory.h"
 
 unsigned char outputBuffer [OUTPUT_BUFFER_SIZE];
 unsigned int outputBufferLastByte = 0;

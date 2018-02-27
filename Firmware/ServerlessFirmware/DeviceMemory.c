@@ -1,4 +1,5 @@
 #include "DeviceMemory.h"
+#include "DeviceSpecificMemory.h"
 #include "MemoryUtilities.h"
 
 unsigned char deviceMemory [MAX_MEMORY];

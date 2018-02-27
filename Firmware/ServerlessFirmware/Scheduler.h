@@ -1,7 +1,7 @@
 #include "ActionAndResponseOpCodes.h"
 
 extern unsigned long lastMillis;
-extern unsigned char tasks[NUMBER_OF_TASKS];
+extern unsigned char tasks[];
 extern unsigned char curNumberOfTasks;
 extern unsigned char curTaskCounter;
  

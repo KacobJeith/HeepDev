@@ -4,6 +4,7 @@
 #include "DeviceMemory.h"
 #include "Device.h"
 #include "Heep_API.h"
+#include "DeviceSpecificMemory.h"
 
 void ClearOutputBuffer()
 {

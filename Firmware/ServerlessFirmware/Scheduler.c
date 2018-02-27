@@ -1,4 +1,5 @@
 #include "Scheduler.h"
+#include "DeviceSpecificMemory.h"
 
 unsigned long lastMillis = 0;
 unsigned char tasks[NUMBER_OF_TASKS];
