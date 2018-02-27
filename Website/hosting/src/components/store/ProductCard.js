@@ -65,22 +65,16 @@ class ProductCard extends React.Component {
                 </Typography>
               </Grid>
               <Grid item xs>
-                <IconButton>
+                <IconButton onClick={() => {
+                              this.props.addProductToCart(this.props.productID);
+                              this.setState({countInCart: this.state.countInCart + 1});
+                            }}>
                     {this.state.countInCart > 0 ? 
                       (<Badge color="secondary" badgeContent={this.state.countInCart} className={this.props.classes.margin}>
-                        <AddShoppingCart 
-                                              nativeColor={this.props.theme.palette.primary.contrastText}
-                                              onClick={() => {
-                                                this.props.addProductToCart(this.props.productID);
-                                                this.setState({countInCart: this.state.countInCart + 1});
-                                              }}/>
+                        <AddShoppingCart nativeColor={this.props.theme.palette.primary.contrastText} />
                       </Badge>)
-                      : <AddShoppingCart 
-                      nativeColor={this.props.theme.palette.primary.contrastText}
-                      onClick={() => {
-                        this.props.addProductToCart(this.props.productID);
-                        this.setState({countInCart: this.state.countInCart + 1});
-                      }}/>}
+                      : <AddShoppingCart nativeColor={this.props.theme.palette.primary.contrastText} />
+                    }
                 </IconButton>
               </Grid>
 
