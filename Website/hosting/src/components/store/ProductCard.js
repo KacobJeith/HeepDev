@@ -7,6 +7,8 @@ import { Grid, Typography, IconButton, Badge, Button, Paper }   from 'material-u
 import { AddShoppingCart } from 'material-ui-icons';
 import { withStyles, withTheme } from 'material-ui/styles';
 
+import SmartBadge from '../utilities/SmartBadge'
+
 var mapStateToProps = (state, ownProps) => ({
   product: state.shopify[ownProps.productID],
   productID: ownProps.productID
@@ -43,10 +45,14 @@ class ProductCard extends React.Component {
       }
     }
 
+    // <SmartBadge count={this.state.countInCart}>
+    //                           <AddShoppingCart nativeColor={this.props.theme.palette.secondary.contrastText} style={{display:'inline-block', margin: this.props.theme.spacing.unit}}/>
+    //                       </SmartBadge>
+
     return (
-      <Grid item >
+      <Grid item xs={12}>
         <Grid container alignItems='stretch' direction='row' spacing={24}>
-          <Grid item xs={12} sm={3}>
+          <Grid item xs={12} sm={3} >
             <Grid container alignItems='stretch' justify='center' direction='row' spacing={16}>
               <Grid item xs>
                 <Link to={"/product/" + this.props.productID} >
@@ -73,8 +79,8 @@ class ProductCard extends React.Component {
               </Grid>
             </Grid>
           </Grid>
-          <Grid item xs={12} sm={9} style={{height:'100%'}}>
-            <Grid container direction='column' justify='flex-end'>
+          <Grid item xs={12} sm={9} >
+            <Grid container alignItems='stretch' direction='column' justify='space-between' style={{width:'100%'}}>
               <Grid item xs>
                 <Link to={"/product/" + this.props.productID} >
                   <Typography align='left' variant="title" gutterBottom paragraph >
@@ -86,31 +92,46 @@ class ProductCard extends React.Component {
                     {this.props.product.description}
                 </Typography>
               </Grid>
-              <Grid item xs={6}>
-                <Grid container direction='row' alignItems='center' justify='left'>
-                  <Grid item xs>
-                    <Button variant="raised" color="secondary" size='large' style={{zoom: 0.5}} onClick={() => {
-                                  this.props.addProductToCart(this.props.productID);
-                                  this.setState({countInCart: this.state.countInCart + 1});
-                                }}>
-                        <Typography variant='caption' style={{marginRight: this.props.theme.spacing.unit * 2, color:this.props.theme.palette.secondary.contrastText}} >
-                          Add to Cart 
-                        </Typography>
-                        {this.state.countInCart > 0 ? 
-                          (<Badge color="secondary" badgeContent={this.state.countInCart} className={this.props.classes.margin}>
-                            <AddShoppingCart nativeColor={this.props.theme.palette.secondary.contrastText} />
-                          </Badge>)
-                          : <AddShoppingCart nativeColor={this.props.theme.palette.secondary.contrastText} />
-                        }
-                    </Button>
+              <Grid item xs>
+                <div >
+                <Grid container alignItems='center'>
+                      <Grid item xs>
+                  <Button 
+                    variant="raised" 
+                    color="secondary" 
+                    size='large' 
+                    style={{
+                      zoom: 0.4, 
+                      margin: this.props.theme.spacing.unit,
+                      justifyContent: 'center',
+                      align:'center',
+                      padding: 0
+                    }} 
+                    onClick={() => {
+                      this.props.addProductToCart(this.props.productID);
+                      this.setState({countInCart: this.state.countInCart + 1});
+                    }}>
+                    
+                          <Typography variant='caption' style={{display:'inline-block', margin: this.props.theme.spacing.unit * 2, color:this.props.theme.palette.secondary.contrastText}} >
+                            Add to Cart 
+                          </Typography>
+                          {SmartBadge(this.state.countInCart,
+                            <AddShoppingCart 
+                              nativeColor={this.props.theme.palette.secondary.contrastText} 
+                              style={{
+                                display:'inline-block', 
+                                margin: this.props.theme.spacing.unit
+                              }}/>)
+                          }
+                            
+                      </Button>
+                      <Typography variant='body1'  style={{display:'inline-block', margin: this.props.theme.spacing.unit}}>
+                          $ {this.props.product.variants[0].price}
+                      </Typography>
+                          
+                    </Grid>
                   </Grid>
-                  <Grid item xs>
-                    <Typography variant='body1'  >
-                      $ {this.props.product.variants[0].price}
-                    </Typography>
-                  </Grid>
-                  
-                </Grid>
+                </div>
               </Grid>
           </Grid>
         </Grid>
@@ -129,3 +150,4 @@ var mapDispatchToProps = (dispatch) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme()(withStyles(styles)(ProductCard)))
+
