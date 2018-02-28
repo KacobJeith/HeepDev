@@ -37,17 +37,13 @@ class ProductCard extends React.Component {
       image: {
         src: this.props.product.images[0].src,
         style: {
-          maxHeight: "100%",//"calc(25vw - 8px)",
+          maxHeight: "100%",
           maxWidth: "100%",
           display: 'block',
           margin: 'auto'
         }
       }
     }
-
-    // <SmartBadge count={this.state.countInCart}>
-    //                           <AddShoppingCart nativeColor={this.props.theme.palette.secondary.contrastText} style={{display:'inline-block', margin: this.props.theme.spacing.unit}}/>
-    //                       </SmartBadge>
 
     return (
       <Grid item xs={12}>
