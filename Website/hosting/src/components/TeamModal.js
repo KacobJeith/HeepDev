@@ -10,7 +10,6 @@ import Grid from 'material-ui/Grid';
 const styles = theme => ({
   paper: {
     position: "absolute",
-    width: theme.spacing.unit * 80,
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
     padding: theme.spacing.unit * 4
