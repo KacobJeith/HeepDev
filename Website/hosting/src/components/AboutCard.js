@@ -36,15 +36,21 @@ class AboutCard extends React.Component {
             />
           </Grid>
         </Grid>
-        <br/>
-        <Typography variant="headline" variant="headline" align="center" color='inherit'>
-          {this.props.title}
-        </Typography>
-        <br/>
-        <Typography component="p" align="center" color='inherit'>
-          {this.props.description}
-        </Typography>
+        <div style={{
+          paddingTop: 16,
+        }}>
+          <Typography variant="headline" variant="headline"
+            align="center" color='inherit'>
+              {this.props.title}
+          </Typography>
+          <Typography style={{
+            paddingTop: 16
+            }} component="p" align="center" color='inherit'>
+              {this.props.description}
+          </Typography>
+        </div>
       </Paper>
+
     )
   }
 }

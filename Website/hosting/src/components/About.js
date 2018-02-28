@@ -47,7 +47,10 @@ class About extends React.Component {
           backgroundColor: '#B0BEC5',
           headerText: 'Our Story',
           subText: 'Heep was founded in February 2017 with the dream of ubiquitous connectivity. We thought long and hard about what the world needs to make that happen. Thus, the Heep operating system was born. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum'
-
+        },
+        ourTeam: {
+          cardHeight: 0.15,
+          headerText: 'The Heep Team',
         }
       }
     }
@@ -76,6 +79,7 @@ class About extends React.Component {
         <SectionCard {...inputs.SectionInputs.aboutUs}/>
       </div>
       <div>
+        <SectionCard {...inputs.SectionInputs.ourTeam}/>
         <TeamModal/>
       </div>
     </div>
