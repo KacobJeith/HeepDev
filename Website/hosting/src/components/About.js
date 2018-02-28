@@ -4,13 +4,13 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import * as Actions from '../redux/actions'
 import SectionCard from './SectionCard'
-
 import AboutCard from './AboutCard'
+
+import { withStyles, withTheme } from 'material-ui/styles';
 import Grid from 'material-ui/Grid';
 
 const mapStateToProps = (state) => ({
 })
-
 
 class About extends React.Component {
   render() {
@@ -33,14 +33,26 @@ class About extends React.Component {
           title: 'Device Party',
           path: '../src/assets/DeviceParty.svg',
           alt: 'Device Party',
-          description: "Connect your devices and get them to talk with you and other devices. They send and receive commands, provide data, and interact with you. You design and control your environment."
+          description: "Connect your devices and get them to talk with you and other devices. They send and receive commands, provide data, and interact with you. Enable your environment."
         }
       },
-      MessageInputs: {
-        welcome: {
+      SectionInputs: {
+        banner: {
           cardHeight: 0.4,
           backgroundColor: '#00adee',
           imagePath: '../src/assets/TestPhoto.jpg'
+        },
+        welcome: {
+          cardHeight:0.15,
+          headerText: 'Connect your world with Heep.',
+          subText: "We built a sophisticated operating system for your smart devices."
+        },
+        aboutUs: {
+          cardHeight: 0.3,
+          backgroundColor: '#B0BEC5',
+          headerText: 'Our Story',
+          subText: 'Heep was founded in February 2017 with the dream of ubiquitous connectivity. We thought long and hard about what the world needs to make that happen. Thus, the Heep operating system was born.'
+
         }
       }
     }
@@ -48,10 +60,12 @@ class About extends React.Component {
 	return (
     <div>
       <div>
-        <SectionCard {...inputs.MessageInputs.welcome}/>
+        <SectionCard {...inputs.SectionInputs.banner}/>
+        <SectionCard {...inputs.SectionInputs.welcome}/>
       </div>
       <div>
-        <Grid container spacing={24} justify='center'>
+        <Grid container style={{maxWidth:'100%'}}
+          spacing={24} justify='center'>
           <Grid item xs={6} sm={3}>
             <AboutCard {...inputs.AboutInputs.PlugAndPlay}/>
           </Grid>
@@ -63,14 +77,12 @@ class About extends React.Component {
           </Grid>
         </Grid>
       </div>
+      <div>
+        <SectionCard {...inputs.SectionInputs.aboutUs}/>
+      </div>
     </div>
     );
   }
 }
 
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(Actions, dispatch)
-}
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(About))
+export default About
