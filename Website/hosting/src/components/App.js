@@ -15,7 +15,7 @@ import Build from './heep/Build'
 import Auth from './account/Auth'
 import Logout from './account/Logout'
 import Loading from './Loading'
-import UserProfile from './account/UserProfile'
+import UserAccount from './account/UserAccount'
 import DeviceBuilder from './heep/DeviceBuilder'
 import Checkout from './store/Checkout'
 import ProductDetails from './store/ProductDetails'
@@ -78,7 +78,7 @@ class App extends React.Component {
 	    if (this.props.loginStatus) {
 	    	loggedInRoutes.push(<Route path="/Build" component={Build} key="build"/>);
 	    	loggedInRoutes.push(<Route path="/DeviceBuilder" component={DeviceBuilder} key="DeviceBuilder"/>)
-	    	loggedInRoutes.push(<Route path="/User" component={UserProfile} key="user"/>);
+	    	loggedInRoutes.push(<Route path="/User" component={UserAccount} key="user"/>);
 	    }
 
 	    return(
