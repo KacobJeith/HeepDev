@@ -26,6 +26,7 @@ import Badge                            from 'material-ui/Badge';
 import Avatar                           from 'material-ui/Avatar';
 
 
+import SmartBadge from './utilities/SmartBadge'
 
 
 var mapStateToProps = (state) => ({
@@ -230,9 +231,11 @@ class MenuAppBar extends React.Component {
               <NavLink to="/Checkout" style={{textDecoration: 'none'}}>
 
                 <IconButton className={classes.button} aria-label="Add to shopping cart">
-                  <Badge color="secondary" badgeContent={this.props.itemsInCart} className={classes.margin}>
-                    <ShoppingCartIcon style={{fill:"white"}}/>
-                  </Badge>
+                  {SmartBadge(
+                            <ShoppingCartIcon style={{fill:"white"}}/>,
+                            this.props.itemsInCart,
+                            'secondary')
+                  }
                 </IconButton>
               </NavLink>
 

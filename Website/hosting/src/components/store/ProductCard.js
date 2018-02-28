@@ -115,13 +115,15 @@ class ProductCard extends React.Component {
                           <Typography variant='caption' style={{display:'inline-block', margin: this.props.theme.spacing.unit * 2, color:this.props.theme.palette.secondary.contrastText}} >
                             Add to Cart 
                           </Typography>
-                          {SmartBadge(this.state.countInCart,
+                          {SmartBadge(
                             <AddShoppingCart 
                               nativeColor={this.props.theme.palette.secondary.contrastText} 
                               style={{
                                 display:'inline-block', 
                                 margin: this.props.theme.spacing.unit
-                              }}/>)
+                              }}/>,
+                            this.state.countInCart,
+                            'primary')
                           }
                             
                       </Button>
