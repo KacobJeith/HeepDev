@@ -30,34 +30,29 @@ class ProductCard extends React.Component {
     }
   }
 
-  render() {
+  productTitle() {
+
+    return (
+      <Link to={'/product/' + this.props.productID}>
+        <Typography align='left' variant="title" gutterBottom paragraph >
+          {this.props.product.title}
+        </Typography>
+      </Link>
+    )
+  }
+
+  productDescription() {
+
+    return (
+      <Typography align='left' variant="caption" gutterBottom paragraph>
+          {this.props.product.description}
+      </Typography>
+    )
+  }
+
+  imageWithOverlay() {
 
     const inputs = {
-      addToCartButton: {
-        variant: "raised",
-        color: "secondary",
-        size: 'large',
-        style: {
-          zoom: 0.4, 
-          margin: this.props.theme.spacing.unit,
-          padding: 0,
-          marginRight: this.props.theme.spacing.unit * 3
-        },
-        onClick: () => {
-          this.props.addProductToCart(this.props.productID);
-          this.setState({countInCart: this.state.countInCart + 1});
-        }
-      },
-      buttonAndPriceContainer: {
-        style: {
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'flex-start'
-        }
-      },
-      link: {
-        to: '/product/' + this.props.productID 
-      },
       image: {
         src: this.props.product.images[0].src,
         style: {
@@ -86,6 +81,43 @@ class ProductCard extends React.Component {
         onMouseEnter: ()=> this.setState({hover: true}),
         onMouseLeave: ()=> this.setState({hover: false})
       },
+    }
+
+    return (
+      <Link to={'/product/' + this.props.productID}>
+        <div {...inputs.imageAndOverlayContainer}> 
+          <img {...inputs.image}/>
+          <div {...inputs.overlay}/>
+        </div>
+      </Link>
+    )
+  }
+
+  buyButtonWithPrice() {
+
+    const inputs = {
+      addToCartButton: {
+        variant: "raised",
+        color: "secondary",
+        size: 'large',
+        style: {
+          zoom: 0.4, 
+          margin: this.props.theme.spacing.unit,
+          padding: 0,
+          marginRight: this.props.theme.spacing.unit * 3
+        },
+        onClick: () => {
+          this.props.addProductToCart(this.props.productID);
+          this.setState({countInCart: this.state.countInCart + 1});
+        }
+      },
+      buttonAndPriceContainer: {
+        style: {
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'flex-start'
+        }
+      },
       shoppingCartIcon: {
         nativeColor: this.props.theme.palette.secondary.contrastText, 
         style: {
@@ -103,49 +135,41 @@ class ProductCard extends React.Component {
     }
 
     return (
+      <div {...inputs.buttonAndPriceContainer}>
+        <Button {...inputs.addToCartButton}>
+          <Typography  {...inputs.typeButton}>
+            Add to Cart 
+          </Typography>
+          {SmartBadge(
+            <AddShoppingCart {...inputs.shoppingCartIcon}/>,
+            this.state.countInCart,
+            'primary')
+          }     
+        </Button>
+        <Typography variant='body1' >
+            ${this.props.product.variants[0].price}
+        </Typography>
+      </div>
+    )
+  }
+
+  render() {
+
+    return (
       <Grid item xs={12}>
         <Grid container alignItems='stretch' direction='row' spacing={24}>
           <Grid item xs={12} sm={3} >
-            <Link {...inputs.link}>
-              <div {...inputs.imageAndOverlayContainer}> 
-                <img {...inputs.image}/>
-                <div {...inputs.overlay}/>
-              </div>
-            </Link>
+            {this.imageWithOverlay()}
           </Grid>
 
           <Grid item xs={12} sm={9} >
-            <Link {...inputs.link}>
-              <Typography align='left' variant="title" gutterBottom paragraph >
-                {this.props.product.title}
-              </Typography>
-            </Link>
-
-            <Typography align='left' variant="caption" gutterBottom paragraph>
-                {this.props.product.description}
-            </Typography>
-            
-            <div {...inputs.buttonAndPriceContainer}>
-              <Button {...inputs.addToCartButton}>
-                
-                <Typography  {...inputs.typeButton}>
-                  Add to Cart 
-                </Typography>
-                {SmartBadge(
-                  <AddShoppingCart {...inputs.shoppingCartIcon}/>,
-                  this.state.countInCart,
-                  'primary')
-                }     
-              </Button>
-              <Typography variant='body1' >
-                  ${this.props.product.variants[0].price}
-              </Typography>
-            </div>
+            {this.productTitle()}
+            {this.productDescription()}
+            {this.buyButtonWithPrice()}
+          </Grid>
         </Grid>
-      </Grid>
      </Grid>
     );
-
   }
 }
 
