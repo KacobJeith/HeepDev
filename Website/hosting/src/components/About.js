@@ -2,6 +2,7 @@ import React from 'react'
 
 import { withStyles, withTheme } from 'material-ui/styles';
 import Grid from 'material-ui/Grid';
+import Typography from "material-ui/Typography";
 
 import SectionCard from './SectionCard'
 import AboutCard from './AboutCard'
@@ -82,20 +83,25 @@ class About extends React.Component {
         </Grid>
       </div>
       <SectionCard {...inputs.SectionInputs.aboutUs}/>
-      <SectionCard {...inputs.SectionInputs.heepTeam}/>
+
+      <Typography style={{
+          paddingTop: 24,
+        }} variant="headline" align="center" color='inherit'>
+          Heep Team
+      </Typography>
 
       <Grid container style={{maxWidth:'100%'}}
-        spacing={0} justify='center'>
-        <Grid item xs={6} sm={3}>
+        spacing={24} justify='center'>
+        <Grid item xs>
           <TeamModal {...inputs.TeamInputs.james}/>
         </Grid>
-        <Grid item xs={6} sm={3}>
+        <Grid item xs>
           <TeamModal {...inputs.TeamInputs.james}/>
         </Grid>
-        <Grid item xs={6} sm={3}>
+        <Grid item xs>
           <TeamModal {...inputs.TeamInputs.james}/>
         </Grid>
-        <Grid item xs={6} sm={3}>
+        <Grid item xs>
           <TeamModal {...inputs.TeamInputs.james}/>
         </Grid>
       </Grid>

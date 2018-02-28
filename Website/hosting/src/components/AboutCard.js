@@ -39,7 +39,7 @@ class AboutCard extends React.Component {
         <div style={{
           paddingTop: 16,
         }}>
-          <Typography variant="headline" variant="headline"
+          <Typography variant="headline" component="headline"
             align="center" color='inherit'>
               {this.props.title}
           </Typography>
