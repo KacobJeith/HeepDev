@@ -24,31 +24,24 @@ class AboutCard extends React.Component {
 
     return (
       <Paper className={classes.root}>
-        <Grid container justify='center'>
-          <Grid item xs={10}>
-            <img
-              src={this.props.imagePath}
-              alt={this.props.alt}
-              style={{
-                maxHeight: 500,
-                maxWidth:'100%',
-              }}
-            />
-          </Grid>
-        </Grid>
-        <div style={{
-          paddingTop: 16,
-        }}>
-          <Typography variant="headline" component="headline"
-            align="center" color='inherit'>
-              {this.props.title}
-          </Typography>
-          <Typography style={{
-            paddingTop: 16
-            }} component="p" align="center" color='inherit'>
-              {this.props.desc}
-          </Typography>
+        <div style={{textAlign: 'center'}}>
+          <img
+            src={this.props.imagePath}
+            style={{
+              maxWidth:'75%',
+              maxHeight: '75%'
+            }}
+          />
         </div>
+        <Typography style={{paddingTop: 16}}
+          variant="headline" component="headline"
+          align="center" color='inherit'>
+            {this.props.title}
+        </Typography>
+        <Typography style={{paddingTop: 16}}
+          component="p" align="center" color='inherit'>
+            {this.props.desc}
+        </Typography>
       </Paper>
 
     )
