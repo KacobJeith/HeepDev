@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 import * as Actions from '../../redux/actions'
-import { Grid, Typography, IconButton, Badge }   from 'material-ui';
+import { Grid, Typography, IconButton, Badge, Button, Paper }   from 'material-ui';
 import { AddShoppingCart } from 'material-ui-icons';
 import { withStyles, withTheme } from 'material-ui/styles';
 
@@ -35,18 +35,20 @@ class ProductCard extends React.Component {
       image: {
         src: this.props.product.images[0].src,
         style: {
-          height: "calc(25vw - 8px)",
-          maxWidth: "100%"
+          maxHeight: "100%",//"calc(25vw - 8px)",
+          maxWidth: "100%",
+          display: 'block',
+          margin: 'auto'
         }
       }
     }
 
     return (
-      <Grid item xs={4}>
-        <Grid container alignItems='stretch' direction='column' spacing={0}>
-          <Grid item>
-            <Grid container alignItems='center' justify='flex-start' direction='column' spacing={0}>
-              <Grid item >
+      <Grid item >
+        <Grid container alignItems='stretch' direction='row' spacing={24}>
+          <Grid item xs={12} sm={3}>
+            <Grid container alignItems='stretch' justify='center' direction='row' spacing={16}>
+              <Grid item xs>
                 <Link to={"/product/" + this.props.productID} >
                   <div style={{
                     height:'100%',
@@ -54,10 +56,11 @@ class ProductCard extends React.Component {
                     position:'relative'
                   }}> 
                     <img {...inputs.image}/>
+                 
                     <div style={{
                         backgroundColor:'white',
                         opacity: this.state.hover ? 0.15 : 0.0,
-                        height:"calc(25vw - 8px)",
+                        height:'100%',
                         position:'absolute',
                         top:0,
                         width:'100%'
@@ -70,34 +73,45 @@ class ProductCard extends React.Component {
               </Grid>
             </Grid>
           </Grid>
-          <Grid item>
-            <Grid container spacing={0} alignItems='center' style={{
-                  backgroundColor: this.props.theme.palette.primary.light
-                }}>
-              <Grid item xs={10}>
-                <Typography align='left' 
-                style={{
-                  color: this.props.theme.palette.primary.contrastText,
-                  paddingLeft: 10,
-                  opacity: 0.8
-                }}>
-                  {this.props.product.title}
+          <Grid item xs={12} sm={9} style={{height:'100%'}}>
+            <Grid container direction='column' justify='flex-end'>
+              <Grid item xs>
+                <Link to={"/product/" + this.props.productID} >
+                  <Typography align='left' variant="title" gutterBottom paragraph >
+                    {this.props.product.title}
+                  </Typography>
+                </Link>
+
+                <Typography align='left' variant="caption" gutterBottom paragraph>
+                    {this.props.product.description}
                 </Typography>
               </Grid>
-              <Grid item xs>
-                <IconButton onClick={() => {
-                              this.props.addProductToCart(this.props.productID);
-                              this.setState({countInCart: this.state.countInCart + 1});
-                            }}>
-                    {this.state.countInCart > 0 ? 
-                      (<Badge color="secondary" badgeContent={this.state.countInCart} className={this.props.classes.margin}>
-                        <AddShoppingCart nativeColor={this.props.theme.palette.primary.contrastText} />
-                      </Badge>)
-                      : <AddShoppingCart nativeColor={this.props.theme.palette.primary.contrastText} />
-                    }
-                </IconButton>
+              <Grid item xs={6}>
+                <Grid container direction='row' alignItems='center' justify='left'>
+                  <Grid item xs>
+                    <Button variant="raised" color="secondary" size='large' style={{zoom: 0.5}} onClick={() => {
+                                  this.props.addProductToCart(this.props.productID);
+                                  this.setState({countInCart: this.state.countInCart + 1});
+                                }}>
+                        <Typography variant='caption' style={{marginRight: this.props.theme.spacing.unit * 2, color:this.props.theme.palette.secondary.contrastText}} >
+                          Add to Cart 
+                        </Typography>
+                        {this.state.countInCart > 0 ? 
+                          (<Badge color="secondary" badgeContent={this.state.countInCart} className={this.props.classes.margin}>
+                            <AddShoppingCart nativeColor={this.props.theme.palette.secondary.contrastText} />
+                          </Badge>)
+                          : <AddShoppingCart nativeColor={this.props.theme.palette.secondary.contrastText} />
+                        }
+                    </Button>
+                  </Grid>
+                  <Grid item xs>
+                    <Typography variant='body1'  >
+                      $ {this.props.product.variants[0].price}
+                    </Typography>
+                  </Grid>
+                  
+                </Grid>
               </Grid>
-
           </Grid>
         </Grid>
       </Grid>

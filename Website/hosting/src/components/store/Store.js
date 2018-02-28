@@ -76,70 +76,19 @@ class Store extends React.Component {
   }
   
   render() {
-    const { classes } = this.props;
-
-  	const styles = {
-        container : { 
-   		  display: "flex",
-   		  flexDirection: "row",
-   		  flexFlow: "row wrap",
-        position: "relative",
-        top: 0
-        }
-      };
-
-    const inputs = {
-      container: {
-        style: styles.container,
-        id: "page-wrap"
-      }
-    }
     
-    var selectViewMode = this.viewModeSelection(classes);
-
-    if (this.state.viewMode == 'Grid') {
-
-      return (
-        <div>
-          
-          {selectViewMode}
-
-          <div className={classes.root}>
-            <GridList cellHeight={180} className={classes.gridList}>
-              <GridListTile key="Subheader" cols={2} >
-                <Subheader component="div">Viewing Heep Store in {this.state.viewMode} Mode</Subheader>
-              </GridListTile>
-            {Object.keys(this.props.products).map((key) => (
-              <ProductGrid key={key} productID={key}/>)
-            )}
-            </GridList>
-          </div>
-        </div>
-      );
-
-    } else if (this.state.viewMode == 'Card') {
-
-      return (
-          <div {...inputs.container}>
-
-            {selectViewMode}
-
-            {Object.keys(this.props.products).map((key) => (
-              <ProductCardMUI key={key} productID={key}/>)
-            )}
-          </div>
-      );
-    } else if (this.state.viewMode == 'Classic') {
-      
-      return (
-
-            <Grid container spacing={0} >
+    return (
+        <Grid container justify='center' style={{marginTop: 20}}>
+          <Grid item xs={10}>
+            <Grid container spacing={0} direction='column' alignItems='stretch' spacing={16}>
               {Object.keys(this.props.products).map((key) => (
                 <ProductCard key={key} productID={key}/>)
               )}
             </Grid>
-      );
-    }
+          </Grid>
+        </Grid>
+    );
+  
     
   }
 }
