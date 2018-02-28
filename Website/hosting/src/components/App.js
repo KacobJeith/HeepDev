@@ -8,7 +8,6 @@ import ReactGA from 'react-ga'
 import AppBar from './AppBar'
 import Footer from './Footer'
 import Landing from './Landing'
-import Mission from './Mission'
 import About from './About'
 import Store from './store/Store'
 import Build from './heep/Build'
@@ -64,7 +63,7 @@ class App extends React.Component {
 					display: "flex",
 					flexDirection: 'column'
 				}
-			  
+
 			},
 			content: {
 				style: {
