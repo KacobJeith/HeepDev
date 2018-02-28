@@ -27,7 +27,7 @@ class AboutCard extends React.Component {
         <Grid container justify='center'>
           <Grid item xs={10}>
             <img
-              src={this.props.path}
+              src={this.props.imagePath}
               alt={this.props.alt}
               style={{
                 maxHeight: 500,
@@ -46,7 +46,7 @@ class AboutCard extends React.Component {
           <Typography style={{
             paddingTop: 16
             }} component="p" align="center" color='inherit'>
-              {this.props.description}
+              {this.props.desc}
           </Typography>
         </div>
       </Paper>
