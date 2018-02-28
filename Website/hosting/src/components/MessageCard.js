@@ -23,7 +23,7 @@ class MessageCard extends React.Component {
   componentDidUpdate() {
     // this.image = findDOMNode(this.refs.image).getBoundingClientRect();
   }
-  
+
   calculateParallax() {
 
     var elementHeight = window.innerHeight*0.4;
@@ -81,7 +81,7 @@ class MessageCard extends React.Component {
   	}
 
 	return (<div {...inputs.container}>
-            <div {...inputs.textCard}>
+            <div {...inputs.messageCard}>
               <div {...inputs.header}>
                 <h1 > {this.props.header}</h1>
                 <small > {this.props.message} </small>

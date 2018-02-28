@@ -39,11 +39,11 @@ class AboutCard extends React.Component {
           </Grid>
         </Grid>
         <br/>
-        <Typography variant="headline" variant="headline" align="center">
+        <Typography variant="headline" variant="headline" align="center" color='inherit'>
           {this.props.title}
         </Typography>
         <br/>
-        <Typography component="p" align="center">
+        <Typography component="p" align="center" color='inherit'>
           {this.props.description}
         </Typography>
       </Paper>
