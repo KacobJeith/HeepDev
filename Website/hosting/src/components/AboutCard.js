@@ -1,11 +1,9 @@
 import React from 'react';
+
 import { withStyles } from 'material-ui/styles';
 import Paper from 'material-ui/Paper';
 import Typography from 'material-ui/Typography';
 import Grid from 'material-ui/Grid';
-
-const mapStateToProps = (state, ownProps) => ({
-})
 
 const styles = theme => ({
   root: theme.mixins.gutters({

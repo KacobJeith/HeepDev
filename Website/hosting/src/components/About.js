@@ -1,16 +1,11 @@
 import React from 'react'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
-import * as Actions from '../redux/actions'
-import SectionCard from './SectionCard'
-import AboutCard from './AboutCard'
 
 import { withStyles, withTheme } from 'material-ui/styles';
 import Grid from 'material-ui/Grid';
 
-const mapStateToProps = (state) => ({
-})
+import SectionCard from './SectionCard'
+import AboutCard from './AboutCard'
+import TeamModal from './TeamModal'
 
 class About extends React.Component {
   render() {
@@ -43,15 +38,15 @@ class About extends React.Component {
           imagePath: '../src/assets/TestPhoto.jpg'
         },
         welcome: {
-          cardHeight:0.15,
+          cardHeight:0.2,
           headerText: 'Connect your world with Heep.',
-          subText: "We built a sophisticated operating system for your smart devices."
+          subText: "We built a sophisticated operating system for your smart devices. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
         },
         aboutUs: {
           cardHeight: 0.3,
           backgroundColor: '#B0BEC5',
           headerText: 'Our Story',
-          subText: 'Heep was founded in February 2017 with the dream of ubiquitous connectivity. We thought long and hard about what the world needs to make that happen. Thus, the Heep operating system was born.'
+          subText: 'Heep was founded in February 2017 with the dream of ubiquitous connectivity. We thought long and hard about what the world needs to make that happen. Thus, the Heep operating system was born. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum'
 
         }
       }
@@ -79,6 +74,9 @@ class About extends React.Component {
       </div>
       <div>
         <SectionCard {...inputs.SectionInputs.aboutUs}/>
+      </div>
+      <div>
+        <TeamModal/>
       </div>
     </div>
     );
