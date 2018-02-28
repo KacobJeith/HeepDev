@@ -48,17 +48,24 @@ class ProductCard extends React.Component {
             <Grid container alignItems='center' justify='flex-start' direction='column' spacing={0}>
               <Grid item >
                 <Link to={"/product/" + this.props.productID} >
-                  <img {...inputs.image}/>
                   <div style={{
-                      backgroundColor:'white',
-                      opacity: this.state.hover ? 0.3 : 0.0,
-                      height:"calc(25vw - 8px)",
-                      position:'absolute',
-                      width:'100%'
-                    }}
-                    onMouseEnter={()=>{this.setState({hover: true})}}
-                    onMouseLeave={()=>{this.setState({hover: false})}}
-                  />
+                    height:'100%',
+                    width:'100%',
+                    position:'relative'
+                  }}> 
+                    <img {...inputs.image}/>
+                    <div style={{
+                        backgroundColor:'white',
+                        opacity: this.state.hover ? 0.15 : 0.0,
+                        height:"calc(25vw - 8px)",
+                        position:'absolute',
+                        top:0,
+                        width:'100%'
+                      }}
+                      onMouseEnter={()=>{this.setState({hover: true})}}
+                      onMouseLeave={()=>{this.setState({hover: false})}}
+                    />
+                  </div>
                 </Link>
               </Grid>
             </Grid>

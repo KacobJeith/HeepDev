@@ -17,7 +17,7 @@ import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
 import MoreVertIcon from 'material-ui-icons/MoreVert';
 import AddShoppingCartIcon from 'material-ui-icons/AddShoppingCart';
 import Badge from 'material-ui/Badge';
-import { Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 
 var mapStateToProps = (state, ownProps) => ({
