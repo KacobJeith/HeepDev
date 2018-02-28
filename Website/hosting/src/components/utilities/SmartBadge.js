@@ -1,7 +1,7 @@
 import React from 'react'
 import {Badge}   from 'material-ui'
 
-const wrapHOC = (WrappedComponent, count, badgeColor='secondary', ) => {
+const wrapHOC = (WrappedComponent, count, badgeColor='secondary') => {
 
 	return (
 		<div>
