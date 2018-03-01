@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom'
 import * as actions from '../../redux/actions'
 import { ListItem, ListItemText, ListItemIcon, ListItemSecondaryAction, IconButton}  from 'material-ui'
 import { withTheme }       from 'material-ui/styles'
-import { Delete }  from 'material-ui-icons'
+import { Visibility }  from 'material-ui-icons'
 
 var mapStateToProps = (state, ownProps) => ({
   device: state.devices[ownProps.deviceID]
@@ -58,7 +58,7 @@ class DeviceCard extends React.Component {
         {(this.state.hover ? 
           <ListItemSecondaryAction>
             <IconButton {...inputs.deleteButton}>
-              <Delete />
+              <Visibility />
             </IconButton>
           </ListItemSecondaryAction> : <ListItemSecondaryAction/> )}
         
