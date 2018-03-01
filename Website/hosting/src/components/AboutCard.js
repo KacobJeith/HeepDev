@@ -1,17 +1,15 @@
 import React from 'react';
+
 import { withStyles } from 'material-ui/styles';
 import Paper from 'material-ui/Paper';
 import Typography from 'material-ui/Typography';
 import Grid from 'material-ui/Grid';
 
-const mapStateToProps = (state, ownProps) => ({
-})
-
 const styles = theme => ({
   root: theme.mixins.gutters({
     paddingTop: 16,
     paddingBottom: 16,
-    marginTop: theme.spacing.unit * 3,
+    marginBottom: theme.spacing.unit * 3,
   }),
 });
 
@@ -26,27 +24,26 @@ class AboutCard extends React.Component {
 
     return (
       <Paper className={classes.root}>
-        <Grid container justify='center'>
-          <Grid item xs={10}>
-            <img
-              src={this.props.path}
-              alt={this.props.alt}
-              style={{
-                maxHeight: 500,
-                maxWidth:'100%',
-              }}
-            />
-          </Grid>
-        </Grid>
-        <br/>
-        <Typography variant="headline" variant="headline" align="center">
-          {this.props.title}
+        <div style={{textAlign: 'center'}}>
+          <img
+            src={this.props.imagePath}
+            style={{
+              maxWidth:'75%',
+              maxHeight: '75%'
+            }}
+          />
+        </div>
+        <Typography style={{paddingTop: 16}}
+          variant="headline" component="headline"
+          align="center" color='inherit'>
+            {this.props.title}
         </Typography>
-        <br/>
-        <Typography component="p" align="center">
-          {this.props.description}
+        <Typography style={{paddingTop: 16}}
+          component="p" align="center" color='inherit'>
+            {this.props.desc}
         </Typography>
       </Paper>
+
     )
   }
 }
