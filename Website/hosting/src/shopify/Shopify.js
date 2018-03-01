@@ -44,7 +44,7 @@ export const AddProductToCart = (checkoutID, productData) => {
  const lineItemsToAdd = [
     {
       variantId: productData.variants[0].id, 
-      quantity: 2
+      quantity: 1
     }
   ];
 
