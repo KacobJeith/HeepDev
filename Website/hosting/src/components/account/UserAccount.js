@@ -58,7 +58,7 @@ class UserAccount extends React.Component {
 
     return (
       <div>
-        <Grid container alignItems='center'>
+        <Grid container alignItems='center' >
           <Grid item xs>
             <Typography variant="title">
               {title}
@@ -113,7 +113,7 @@ class UserAccount extends React.Component {
   render() {
 
     return (
-      <Grid container justify='center' style={{paddingTop: 50}}>
+      <Grid container justify='center' style={{paddingTop: 50, maxWidth:'100%'}}>
         <Grid item xs={10}>
           <Grid container spacing={24} alignItems='center'>
             <Grid item xs={3}>
