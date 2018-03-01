@@ -10,7 +10,8 @@ const Theme = createMuiTheme({
     secondary: blue
   },
   typography: {
-    htmlFontSize: 10,
+    htmlFontSize: 11,
+    fontSize: 10
   }
 });
 
