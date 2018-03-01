@@ -6,8 +6,8 @@ import * as actions           from '../../redux/actions'
 import * as auth              from '../../firebase/FirebaseAuth'
 
 import { withTheme }       from 'material-ui/styles'
-import { Grid, Typography, Avatar, Divider, IconButton, List}  from 'material-ui'
-import { Edit }  from 'material-ui-icons'
+import { Grid, Typography, Avatar, Divider, IconButton, List, ListItem, ListItemText, ListItemIcon}  from 'material-ui'
+import { Edit, Add }  from 'material-ui-icons'
 
 import DeviceCard from '../heep/DeviceCard'
 import PlaceCard from '../heep/PlaceCard'
@@ -87,6 +87,12 @@ class UserAccount extends React.Component {
         {Object.keys(this.props.places).map((placeID) => (
           <PlaceCard placeID={placeID} key={placeID}/>
         ))}
+        <ListItem button color='secondary'>
+          <ListItemIcon>
+            <Add/>
+          </ListItemIcon>
+          <ListItemText inset secondary='Add a New Place' />
+        </ListItem>
       </div>
     )
   }
