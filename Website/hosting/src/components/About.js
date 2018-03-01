@@ -4,7 +4,7 @@ import { withStyles, withTheme } from 'material-ui/styles';
 import Grid from 'material-ui/Grid';
 import Typography from "material-ui/Typography";
 
-import SectionCard from './SectionCard'
+import SectionCard from './utilities/SectionCard'
 import AboutCard from './AboutCard'
 import TeamModal from './TeamModal'
 
