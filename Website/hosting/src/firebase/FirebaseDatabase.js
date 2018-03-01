@@ -104,7 +104,33 @@ export const associateLegacyProfileName = (uid) => {
 }
 
 export const saveNewPlace = (placeName, placeSSID, placeSSIDPassword) => {
-	console.log('Saving: '+ placeName + ' with ' + placeSSID + ': ' + placeSSIDPassword);
+	const placeRef = firebase.database().ref('/places').push();
+
+	const placeObject = {
+		name: placeName,
+		placeID:  placeRef.key,
+		networks: {
+			wifi:{
+				ssid: placeSSID,
+				password: placeSSIDPassword
+			}
+		}
+	}
+
+	const placeUserObject = {
+		numDevices: 0,
+		placeID:  placeRef.key,
+		radius: 100,
+		x: 120,
+		y:120
+	}
+
+	var user = firebaseAuth.currentUser();
+
+	firebase.database().ref('/places/' + placeRef.key).set(placeObject);
+	firebase.database().ref('/users/' + user.uid + '/places/' + placeRef.key).set(placeUserObject);
+
+	console.log('Saved new Place: ', placeName);
 }
 
 export const updatePlaceName = (placeID, name) => {

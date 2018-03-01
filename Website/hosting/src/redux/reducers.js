@@ -84,7 +84,9 @@ export default function(state = initialState, action) {
 
     case 'SAVE_NEW_PLACE' : 
 
-      database.saveNewPlace(action.placeName, action.placeSSID, action.placeSSIDPassword);
+      setTimeout(() => {
+        database.saveNewPlace(action.placeName, action.placeSSID, action.placeSSIDPassword)
+      }, 100);
 
       return state
 
