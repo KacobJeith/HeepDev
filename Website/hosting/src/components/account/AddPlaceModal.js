@@ -1,5 +1,9 @@
 import React from "react";
-import PropTypes from "prop-types";
+import { connect }            from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { withRouter }         from 'react-router-dom'
+import * as actions           from '../../redux/actions'
+import PropTypes              from "prop-types";
 
 import {  withStyles } from "material-ui/styles";
 import {  Typography,
@@ -17,6 +21,10 @@ import {  Typography,
 import { Add }  from 'material-ui-icons'
 
 import VerticalStepper from '../utilities/VerticalStepper'
+
+
+var mapStateToProps = (state) => ({
+})
 
 const styles = theme => ({
   paper: {
@@ -157,7 +165,11 @@ class AddPlaceModal extends React.Component {
                           able to purchase new Heep devices for this place, and bring their own devices seamlessly
                           into this network.`
           }
-        ]
+        ],
+        completionCallback: () => {
+          this.props.saveNewPlace(this.state.name, this.state.ssid, this.state.password);
+          this.handleClose();
+        }
       }
     }
 
@@ -191,4 +203,9 @@ AddPlaceModal.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(AddPlaceModal);
+
+var mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(actions, dispatch)
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(AddPlaceModal)))

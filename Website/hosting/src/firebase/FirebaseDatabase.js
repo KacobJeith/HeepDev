@@ -103,6 +103,10 @@ export const associateLegacyProfileName = (uid) => {
 	});
 }
 
+export const saveNewPlace = (placeName, placeSSID, placeSSIDPassword) => {
+	console.log('Saving: '+ placeName + ' with ' + placeSSID + ': ' + placeSSIDPassword);
+}
+
 export const updatePlaceName = (placeID, name) => {
 
 	firebase.database().ref('places/' + placeID + '/name').set(name);

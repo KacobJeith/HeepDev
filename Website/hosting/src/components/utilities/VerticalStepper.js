@@ -28,9 +28,14 @@ class VerticalLinearStepper extends React.Component {
   };
 
   handleNext = () => {
+    if (this.state.activeStep == this.props.steps.length - 1) {
+      this.props.completionCallback()
+    } 
+
     this.setState({
       activeStep: this.state.activeStep + 1,
     });
+    
   };
 
   handleBack = () => {
