@@ -6,7 +6,7 @@ import * as actions           from '../../redux/actions'
 import * as auth              from '../../firebase/FirebaseAuth'
 
 import { withTheme }       from 'material-ui/styles'
-import { Grid, Typography, Avatar, Divider, IconButton, List, ListItem, ListItemIcon}  from 'material-ui'
+import { Grid, Typography, Avatar, Divider, IconButton, List}  from 'material-ui'
 import { Edit }  from 'material-ui-icons'
 
 import DeviceCard from '../heep/DeviceCard'
@@ -95,9 +95,11 @@ class UserAccount extends React.Component {
     return(
       <div>
         {this.titleEditDivider('Heep Devices', () => console.log('Edit Device Details Remotely'))}
-        {Object.keys(this.props.devices).map((deviceID) => (
-          <DeviceCard deviceID={deviceID} key={deviceID}/>
-        ))}
+        <List dense>
+          {Object.keys(this.props.devices).map((deviceID) => (
+            <DeviceCard deviceID={deviceID} key={deviceID}/>
+          ))}
+        </List>
       </div>
     )
   }

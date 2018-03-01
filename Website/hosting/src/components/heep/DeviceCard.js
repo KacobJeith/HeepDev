@@ -3,78 +3,67 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { withRouter } from 'react-router-dom'
 import * as actions from '../../redux/actions'
-import {Grid, Row, Col, Image, PageHeader, Media, Button} from 'react-bootstrap'
+import { ListItem, ListItemText, ListItemIcon, ListItemSecondaryAction, IconButton}  from 'material-ui'
+import { withTheme }       from 'material-ui/styles'
+import { Delete }  from 'material-ui-icons'
 
 var mapStateToProps = (state, ownProps) => ({
   device: state.devices[ownProps.deviceID]
 })
 
 class DeviceCard extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      hover: false
+    }
+  }
 
   render() {
 
+    var iconName = this.props.device.identity.iconName;
+    var name = (iconName == 'light_on' ? 'lightbulb' : iconName);
+
     var inputs = {
-      section: {
-        key: this.props.device.identity.deviceID,
+      item: {
+        onMouseEnter: () => this.setState({hover: true}),
+        onMouseLeave: () => this.setState({hover: false}),
         style: {
-          marginTop: 10
+          backgroundColor: this.state.hover ?  this.props.theme.palette.background.paper : 'transparent'
         }
-      },
-      linkButton: {
-        bsStyle: "primary",
-        bsSize: "small",
-        onClick: () => {}
       },
       primary: {
-        width: 64,
-        height: 64,
-        type:"image/svg+xml",
-        data: "../src/assets/svg/" + this.props.device.identity.iconName + ".svg"
-      },
-      backup: {
-        width: "auto",
-        height: "auto",
         style: {
-          maxWidth: 64,
-          maxHeight: 64,
-          margin: "auto",
-          display: "block"
+          maxHeight: '100%',
+          maxWidth: '100%'
         },
-        src: "../src/assets/" + this.props.device.identity.iconName + ".png" //"../src/assets/" + this.props.device.identity.iconName + ".png"
+        type:"image/svg+xml",
+        data: "../src/assets/svg/" + name + ".svg"
       },
-      imageContainer: {
-        style: {
-          width: 64,
-          height: 64
-        }
+      deleteButton: {
+        'aria-label': 'Delete',
+        onClick: () => console.log('delete this device'),
+        onMouseEnter: () => this.setState({hover: true}),
+        onMouseLeave: () => this.setState({hover: false}),
       }
     }
 
-    var svgs = ['light-bulb-LED', 'cuckooClock', 'none', 'outlet', 'power-button', 'switch', 'motor', 'rfid', 'lightswitch'];
-
-    if (svgs.indexOf(this.props.device.identity.iconName) != -1) { 
-
-      var icon = <object {...inputs.primary}/>
-
-    } else {
-
-      var icon = <div {...inputs.imageContainer}> <img {...inputs.backup} /></div>;
-
-    }
     
     return (
-<Row {...inputs.section}>
-  <Col xsOffset={1}>
-    <Media >
-     <Media.Left>
-        {icon}
-      </Media.Left>
-      <Media.Body>
-        <h1><small>{this.props.device.identity.name}</small></h1>
-      </Media.Body>
-    </Media>
-  </Col>
-</Row>);
+      <ListItem {...inputs.item}>
+        <ListItemIcon>
+            <object {...inputs.primary}/>
+        </ListItemIcon>
+        <ListItemText secondary={this.props.device.identity.name} />
+        {(this.state.hover ? 
+          <ListItemSecondaryAction>
+            <IconButton {...inputs.deleteButton}>
+              <Delete />
+            </IconButton>
+          </ListItemSecondaryAction> : <ListItemSecondaryAction/> )}
+        
+      </ListItem>
+    )
 
   }
 }
@@ -83,5 +72,5 @@ var mapDispatchToProps = (dispatch) => {
   return bindActionCreators(actions, dispatch)
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(DeviceCard))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withTheme()(DeviceCard)))
 
