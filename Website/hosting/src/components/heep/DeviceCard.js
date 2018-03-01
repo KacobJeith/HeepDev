@@ -77,10 +77,7 @@ class DeviceCard extends React.Component {
         button: true,
         onClick: () => this.setState({view: !this.state.view}),
         onMouseEnter: () => this.setState({hover: true}),
-        onMouseLeave: () => this.setState({hover: false}),
-        style: {
-          backgroundColor: this.state.hover ?  this.props.theme.palette.background.paper : 'transparent'
-        }
+        onMouseLeave: () => this.setState({hover: false})
       },
       primary: {
         style: {
