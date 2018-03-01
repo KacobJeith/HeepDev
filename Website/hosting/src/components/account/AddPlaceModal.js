@@ -5,6 +5,11 @@ import {  withStyles } from "material-ui/styles";
 import {  Typography,
           Modal,
           Grid,
+          FormControl,
+          FormHelperText,
+          Input,
+          InputLabel,
+          TextField,
           Button,
           ListItem,
           ListItemIcon,
@@ -23,12 +28,25 @@ const styles = theme => ({
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)'
-  }
+  },
+  formControl: {
+    margin: theme.spacing.unit,
+    minWidth: 120,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing.unit * 2,
+  },
+  textField: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+    width: 200,
+  },
 });
 
 class AddPlaceModal extends React.Component {
   state = {
-    open: false
+    open: false,
+    name: 'Home'
   };
 
   handleOpen = () => {
@@ -37,6 +55,12 @@ class AddPlaceModal extends React.Component {
 
   handleClose = () => {
     this.setState({ open: false });
+  };
+
+  handleChange = name => event => {
+    this.setState({
+      [name]: event.target.value,
+    });
   };
 
   addPlaceListButton() {
@@ -59,14 +83,34 @@ class AddPlaceModal extends React.Component {
     )
   };
 
+  namePlaceForm() {
+
+    return (
+      <div>
+        <form autoComplete='off'>
+          <TextField
+            id="name"
+            label="Name"
+            className={this.props.classes.textField}
+            value={this.state.name}
+            onChange={this.handleChange('name')}
+            margin="normal"
+          />
+        </form>
+      </div>
+    )
+  }
+
   createPlaceForm() {
+
 
     const inputs = {
       stepper: {
         steps: [
           {
             title: 'Create a new place',
-            description: `Let's create a new place for you. What would you like to name this place?`
+            description: `Let's create a new place for you. What would you like to name this place?`,
+            form: this.namePlaceForm()
           },
           {
             title: 'How should Heep talk when on this network?',

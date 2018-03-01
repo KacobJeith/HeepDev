@@ -50,6 +50,7 @@ class VerticalLinearStepper extends React.Component {
     return (
       <div>
         <Typography>{stepContent.description}</Typography>
+        {stepContent.form}
         <div className={classes.actionsContainer}>
           <div>
             <Button
@@ -96,10 +97,11 @@ class VerticalLinearStepper extends React.Component {
 
     return (
       <div className={classes.root}>
-        <Stepper activeStep={activeStep} orientation="vertical">
+        <Stepper activeStep={activeStep} nonLinear  orientation="vertical">
           {this.props.steps.map((stepContent, index) => {
             return (
               <Step key={stepContent.title}>
+
                 <StepLabel>{stepContent.title}</StepLabel>
                 <StepContent>
                   {this.generateStepContent(classes, activeStep, stepContent)}
