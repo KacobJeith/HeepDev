@@ -61,6 +61,7 @@ class About extends React.Component {
           name: 'James DeVito',
           //imagePath: '../src/assets/CloudLess.svg',
           imagePath: founders.james,
+          imageButtonWidth: '75%',
           desc1: 'James is our hardware whisperer. Prior to Heep, he was an early employee at Adafruit, where he built hardware and engaged with the vast Adafruit community. James is also the founder of Smooth Technology, a group of designer-engineers whose art has been featured on the likes of Taylor Swift & Katy Perry and in the MoMA & Times Square.',
           desc2: 'James is the bassist of chiptune band Anamanaguchi, known for sending pizza into space. He earned a B.S. in Music Technology with a minor in Computer Science from New York University.'
         }

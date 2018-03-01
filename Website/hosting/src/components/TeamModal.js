@@ -29,58 +29,87 @@ class TeamModal extends React.Component {
     this.setState({ open: false });
   };
 
+  bioText(bioText) {
+    return (
+      <Typography style={{
+          paddingTop: 16
+        }} variant="subheading" color="inherit">
+          {bioText}
+      </Typography>
+    )
+  };
+
+  nameSubheading(nameSubheading) {
+    return (
+      <Typography variant="subheading" align='center' color="inherit">
+          {nameSubheading}
+      </Typography>
+    )
+  };
+
+  nameTitle(nameTitle) {
+    return (
+      <Typography variant="title" align="center" color="inherit">
+        {nameTitle}
+      </Typography>
+    )
+  };
+
   render() {
     const { classes } = this.props;
 
+    var inputs = {
+      buttonContainer: {
+        style: {
+          textAlign: 'center'
+        }
+      },
+      buttonImage: {
+        src: this.props.imagePath,
+        style: {
+          maxWidth: this.props.imageButtonWidth,
+        }
+      },
+      modalPosition: {
+        style: {
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)'
+        }
+      },
+      modalImageContainer: {
+        style: {
+          paddingTop: 16,
+          textAlign: 'center'
+        }
+      },
+      modalImage: {
+        src: this.props.imagePath,
+        style: {
+          maxWidth: '100%'
+        }
+      }
+    };
+
     return (
       <div>
-        <div style={{textAlign: 'center'}}>
+        <div {...inputs.buttonContainer}>
           <Button onClick={this.handleOpen}>
-            <img
-              src={this.props.imagePath}
-              style={{
-                maxWidth:'75%',
-              }}
-            />
+            <img {...inputs.buttonImage}/>
           </Button>
         </div>
-
-        <Typography variant="subheading" align='center' color="inherit">
-            {this.props.name}
-        </Typography>
-
+        {this.nameSubheading(this.props.name)}
         <Modal
           open={this.state.open}
           onClose={this.handleClose}
         >
-          <div style={{
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-          }} className={classes.paper}>
-            <Typography variant="title" id="modal-title" align="center" color="inherit">
-              {this.props.name}
-            </Typography>
-            <div style={{
-              paddingTop: 16,
-              textAlign:'center'
-            }}>
-              <img
-                src={this.props.imagePath}
-                style={{
-                  maxWidth:'100%',
-                }}/>
+          <div {...inputs.modalPosition} className={classes.paper}>
+            {this.nameTitle(this.props.name)}
+            <div {...inputs.modalImageContainer}>
+              <img {...inputs.modalImage}/>
             </div>
-            <Typography style={{
-                paddingTop: 16
-              }} variant="subheading" color="inherit">
-                {this.props.desc1}
-            </Typography>
-            <Typography style={{
-                paddingTop: 16
-              }} variant="subheading" color="inherit">
-                {this.props.desc2}
-            </Typography>
+            {this.bioText(this.props.desc1)}
+            {this.bioText(this.props.desc2)}
           </div>
         </Modal>
       </div>
