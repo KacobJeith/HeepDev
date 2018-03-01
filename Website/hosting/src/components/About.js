@@ -1,8 +1,6 @@
 import React from 'react'
 
-import { withStyles, withTheme } from 'material-ui/styles';
-import Grid from 'material-ui/Grid';
-import Typography from "material-ui/Typography";
+import { Grid, Typography } from 'material-ui';
 
 import SectionCard from './utilities/SectionCard'
 import AboutCard from './AboutCard'
@@ -15,7 +13,7 @@ import { svg } from '../assets/remote/SVG'
 class About extends React.Component {
   render() {
 
-  	var inputs = {
+  	const inputs = {
       AboutInputs:{
     		PlugAndPlay: {
           title: 'Easy to Install',

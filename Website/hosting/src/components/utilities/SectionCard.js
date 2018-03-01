@@ -1,28 +1,27 @@
 import React from 'react';
-import Typography from 'material-ui/Typography';
-import Grid from 'material-ui/Grid';
+import { Typography, Grid } from 'material-ui'
 
 class SectionCard extends React.Component {
 
-  headerText(headerText) {
+  headerText() {
     return (
       <Typography variant="headline" align="center" color='inherit'>
-        {headerText}
+        {this.props.headerText}
       </Typography>
     )
-  }
+  };
 
-  subText(subText) {
+  subText() {
     return (
       <Typography style={{paddingTop: 10}} component="p" align="center" color='inherit'>
-        {subText}
+        {this.props.subText}
       </Typography>
     )
-  }
+  };
 
   render() {
 
-    var inputs = {
+    const inputs = {
       outerContainer: {
         style: {
           backgroundColor: this.props.backgroundColor,
@@ -42,8 +41,8 @@ class SectionCard extends React.Component {
       <Grid container {...inputs.outerContainer} direction ='column' justify="center" >
         <Grid container spacing={0} justify="center" >
           <Grid item xs={8}>
-            {this.headerText(this.props.headerText)}
-            {this.subText(this.props.subText)}
+            {this.headerText()}
+            {this.subText()}
           </Grid>
         </Grid>
       </Grid>
