@@ -72,3 +72,8 @@ export const saveNewPlace = (placeName, placeSSID, placeSSIDPassword) => ({
 	placeSSID, 
 	placeSSIDPassword
 })
+
+export const deletePlace = (placeID) => ({
+	type: 'DELETE_PLACE',
+	placeID
+})

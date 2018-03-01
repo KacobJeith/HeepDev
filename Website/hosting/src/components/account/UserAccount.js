@@ -85,10 +85,12 @@ class UserAccount extends React.Component {
     return(
       <div>
         {this.titleEditDivider('Heep Places', () => console.log('Edit Places'))}
-        {Object.keys(this.props.places).map((placeID) => (
-          <PlaceCard placeID={placeID} key={placeID}/>
-        ))}
-        <AddPlaceModal/>
+        <List>
+          {Object.keys(this.props.places).map((placeID) => (
+            <PlaceCard placeID={placeID} key={placeID}/>
+          ))}
+          <AddPlaceModal/>
+        </List>
       </div>
     )
   }
@@ -97,7 +99,7 @@ class UserAccount extends React.Component {
     return(
       <div>
         {this.titleEditDivider('Heep Devices', () => console.log('Edit Device Details Remotely'))}
-        <List dense>
+        <List >
           {Object.keys(this.props.devices).map((deviceID) => (
             <DeviceCard deviceID={deviceID} key={deviceID}/>
           ))}

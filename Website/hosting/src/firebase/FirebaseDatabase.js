@@ -133,6 +133,16 @@ export const saveNewPlace = (placeName, placeSSID, placeSSIDPassword) => {
 	console.log('Saved new Place: ', placeName);
 }
 
+export const deletePlace = (placeID) => {
+
+	var user = firebaseAuth.currentUser();
+
+	firebase.database().ref('/places/' + placeID).remove();
+	firebase.database().ref('/users/' + user.uid + '/places/' + placeID).remove();
+
+	console.log('Deleted Place: ', placeID);
+}
+
 export const updatePlaceName = (placeID, name) => {
 
 	firebase.database().ref('places/' + placeID + '/name').set(name);
