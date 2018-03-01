@@ -25,8 +25,6 @@ class SectionCard extends React.Component {
     var inputs = {
       outerContainer: {
         style: {
-          backgroundImage: this.props.backgroundImage,
-          backgroundSize: 'cover',
           backgroundColor: this.props.backgroundColor,
           maxWidth: '100%',
           paddingTop: this.props.paddingTop,
@@ -37,12 +35,10 @@ class SectionCard extends React.Component {
     }
 
     return (
-      <Grid {...inputs.outerContainer} container direction='column' justify='center'>
-        <Grid container item spacing={0} justify="center" >
-          <Grid item xs={8}>
-            {this.headerText(this.props.headerText)}
-            {this.subText(this.props.subText)}
-          </Grid>
+      <Grid container {...inputs.outerContainer} spacing={0} justify="center" >
+        <Grid item xs={8}>
+          {this.headerText(this.props.headerText)}
+          {this.subText(this.props.subText)}
         </Grid>
       </Grid>
     )
