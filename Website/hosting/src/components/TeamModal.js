@@ -101,8 +101,7 @@ class TeamModal extends React.Component {
         {this.nameSubheading(this.props.name)}
         <Modal
           open={this.state.open}
-          onClose={this.handleClose}
-        >
+          onClose={this.handleClose}>
           <div {...inputs.modalPosition} className={classes.paper}>
             {this.nameTitle(this.props.name)}
             <div {...inputs.modalImageContainer}>
