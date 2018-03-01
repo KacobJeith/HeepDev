@@ -3,8 +3,9 @@ import Immutable from 'immutable'
 import 'babel-polyfill'
 import { initialState } from '../index'
 import * as actions from './actions'
-import * as auth from './FirebaseAuth'
-import * as database from './FirebaseDatabase'
+import * as auth from '../firebase/FirebaseAuth'
+import * as database from '../firebase/FirebaseDatabase'
+import * as shopify from '../shopify/Shopify'
 
 export default function(state = initialState, action) {
   switch (action.type) {
@@ -18,10 +19,20 @@ export default function(state = initialState, action) {
         var newState = Immutable.Map(state.shopify).toJS();
 
         for (var i = 0; i < action.products.length; i++){
-          newState[action.products[i].id] = action.products[i].attrs;
+          newState[action.products[i].id] = action.products[i];
         }
 
       return Immutable.Map(state).set('shopify', newState).toJS()
+
+    case 'CREATE_CHECKOUT' :
+
+      return Immutable.Map(state).set('checkoutID', action.checkoutID).toJS()
+
+    case 'ADD_PRODUCT_TO_CART' :
+
+      shopify.AddProductToCart(state.checkoutID, state.shopify[action.productID]);
+
+      return Immutable.Map(state).set('itemsInCart', state.itemsInCart += 1).toJS();
       
     case 'SCROLL':
 

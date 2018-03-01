@@ -44,6 +44,17 @@ app.get('/api/findDevices', function(req, res) {
     
 });
 
+app.get('/api/refreshLocalDeviceState', (req, res) => {
+  console.log("Refreshing local device state")
+  heepConnect.ResetMasterState(); 
+  heepConnect.SearchForHeepDevices(); 
+
+  setTimeout(() => {
+    res.json(heepConnect.GetCurrentMasterState());
+  }, 2000);
+
+})
+
 app.post('/api/setValue', function(req, res) {
   
   heepConnect.SendValueToHeepDevice(req.body.deviceID, req.body.controlID, req.body.value);
@@ -95,7 +106,7 @@ electronApp.on('ready', function() {
 
   mainWindow.loadURL('http://localhost:' + app.get('port'));
 
-  mainWindow.webContents.openDevTools()
+  // mainWindow.webContents.openDevTools()
 
   mainWindow.on('closed', function () {
     mainWindow = null
