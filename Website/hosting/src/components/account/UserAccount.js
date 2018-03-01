@@ -7,10 +7,11 @@ import * as auth              from '../../firebase/FirebaseAuth'
 
 import { withTheme }       from 'material-ui/styles'
 import { Grid, Typography, Avatar, Divider, IconButton, List, ListItem, ListItemText, ListItemIcon}  from 'material-ui'
-import { Edit, Add }  from 'material-ui-icons'
+import { Edit }  from 'material-ui-icons'
 
 import DeviceCard from '../heep/DeviceCard'
 import PlaceCard from '../heep/PlaceCard'
+import AddPlaceModal from './AddPlaceModal'
 
 var mapStateToProps = (state) => ({
   loginStatus: state.loginStatus,
@@ -83,16 +84,11 @@ class UserAccount extends React.Component {
 
     return(
       <div>
-        {this.titleEditDivider('Heep Places', () => console.log('Add a New Place'))}
+        {this.titleEditDivider('Heep Places', () => console.log('Edit Places'))}
         {Object.keys(this.props.places).map((placeID) => (
           <PlaceCard placeID={placeID} key={placeID}/>
         ))}
-        <ListItem button color='secondary'>
-          <ListItemIcon>
-            <Add/>
-          </ListItemIcon>
-          <ListItemText inset secondary='Add a New Place' />
-        </ListItem>
+        <AddPlaceModal/>
       </div>
     )
   }

@@ -2,10 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import { withStyles } from "material-ui/styles";
-import Typography from "material-ui/Typography";
-import Modal from "material-ui/Modal";
-import Button from "material-ui/Button";
-import Grid from 'material-ui/Grid';
+import {  Typography,
+          Modal, 
+          Button,
+          Grid }           from "material-ui/Typography";
 
 const styles = theme => ({
   paper: {
