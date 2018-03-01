@@ -46,7 +46,9 @@ const styles = theme => ({
 class AddPlaceModal extends React.Component {
   state = {
     open: false,
-    name: 'Home'
+    name: 'Home',
+    ssid: '',
+    password: ''
   };
 
   handleOpen = () => {
@@ -101,6 +103,32 @@ class AddPlaceModal extends React.Component {
     )
   }
 
+  placeCommsForm() {
+
+    return (
+      <div>
+        <form autoComplete='off'>
+          <TextField
+            id="ssid"
+            label="WiFi Network Name"
+            className={this.props.classes.textField}
+            value={this.state.ssid}
+            onChange={this.handleChange('ssid')}
+            margin="normal"
+          />
+          <TextField
+            id="password"
+            label="WiFi Network Password"
+            className={this.props.classes.textField}
+            value={this.state.password}
+            onChange={this.handleChange('password')}
+            margin="normal"
+          />
+        </form>
+      </div>
+    )
+  }
+
   createPlaceForm() {
 
 
@@ -116,7 +144,8 @@ class AddPlaceModal extends React.Component {
             title: 'How should Heep talk when on this network?',
             description: `Not all places have the same network topology. Save your wifi credentials to 
                           your place, and all future Heep Devices will be automatically logged in to your
-                          network - it has never been so easy to install a new device!`
+                          network - it has never been so easy to install a new device!`,
+            form: this.placeCommsForm()
           },
           {
             title: 'Associate devices with this place',
