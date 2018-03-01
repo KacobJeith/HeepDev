@@ -47,6 +47,7 @@ class PlaceListItem extends React.Component {
 
     return (
       <Grid container justify='flex-end' style={{padding:0}}>
+        
         <Grid item xs={3}>
           <Button 
             style={{width:'100%', color: 'red'}}
@@ -72,6 +73,7 @@ class PlaceListItem extends React.Component {
           </Button>
         </Grid>
       </Grid>
+
 
     )
   }
