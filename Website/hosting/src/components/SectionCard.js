@@ -26,6 +26,10 @@ class SectionCard extends React.Component {
       outerContainer: {
         style: {
           backgroundColor: this.props.backgroundColor,
+          backgroundImage: `url(${this.props.imagePath})`,
+          backgroundRepeat: 'no-repeat',
+          backgroundSize:'cover',
+          minHeight: this.props.containerHeight,
           maxWidth: '100%',
           paddingTop: this.props.paddingTop,
           paddingBottom: this.props.paddingBottom,
@@ -35,10 +39,12 @@ class SectionCard extends React.Component {
     }
 
     return (
-      <Grid container {...inputs.outerContainer} spacing={0} justify="center" >
-        <Grid item xs={8}>
-          {this.headerText(this.props.headerText)}
-          {this.subText(this.props.subText)}
+      <Grid container {...inputs.outerContainer} direction ='column' justify="center" >
+        <Grid container spacing={0} justify="center" >
+          <Grid item xs={8}>
+            {this.headerText(this.props.headerText)}
+            {this.subText(this.props.subText)}
+          </Grid>
         </Grid>
       </Grid>
     )
