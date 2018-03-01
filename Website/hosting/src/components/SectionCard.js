@@ -25,10 +25,12 @@ class SectionCard extends React.Component {
     var inputs = {
       outerContainer: {
         style: {
+          backgroundImage: this.props.backgroundImage,
+          backgroundSize: 'cover',
           backgroundColor: this.props.backgroundColor,
           maxWidth: '100%',
           paddingTop: this.props.paddingTop,
-          paddingBottom: this.props.paddingTop,
+          paddingBottom: this.props.paddingBottom,
           margin: 0
         }
       }
