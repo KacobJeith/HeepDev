@@ -3,6 +3,7 @@
 #include <ESP8266WiFi.h>
 #include <WiFiUdp.h>
 #include <WiFiClientSecure.h>
+#include <Heep_API.h>
 
 unsigned int localPort = 5000;  
 int UDP_PORT = 5000;
@@ -48,9 +49,9 @@ void CheckServerForInputs()
     Serial.println(Udp.remotePort());
 
     // read the packet into packetBufffer
-    Udp.read(inputBuffer, INPUT_BUFFER_SIZE);
+    Udp.read(inputBuffer, inputBufferSize);
     Serial.println("Contents:");
-    for(int i = 0; i < INPUT_BUFFER_SIZE; i++)
+    for(int i = 0; i < inputBufferSize; i++)
     {
       Serial.print((int)inputBuffer[i]);
       Serial.print(" ");

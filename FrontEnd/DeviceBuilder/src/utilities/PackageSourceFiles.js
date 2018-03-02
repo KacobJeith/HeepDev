@@ -16,8 +16,8 @@ import ESP8266_NonVolatileMemoryH from '../../../../Firmware/ServerlessFirmware/
 import ESP8266_HeepCommsCPP         from '../../../../Firmware/ServerlessFirmware/ESP8266_HeepComms.cpp'
 import ESP8266_NonVolatileMemoryCPP from '../../../../Firmware/ServerlessFirmware/ESP8266_NonVolatileMemory.cpp'
 
-import ARDUINO_TIMERH             from '../../../../Firmware/ServerlessFirmware/Arduino_Timer.h'
-import ARDUINO_TIMERCPP           from '../../../../Firmware/ServerlessFirmware/Arduino_Timer.cpp'
+import Arduino_TimerH             from '../../../../Firmware/ServerlessFirmware/Arduino_Timer.h'
+import Arduino_TimerCPP           from '../../../../Firmware/ServerlessFirmware/Arduino_Timer.cpp'
 
 
 
@@ -34,8 +34,8 @@ var sourceFiles = {
   ESP8266_HeepCommsCPP: ESP8266_HeepCommsCPP,
   ESP8266_NonVolatileMemoryH: ESP8266_NonVolatileMemoryH,
   ESP8266_NonVolatileMemoryCPP: ESP8266_NonVolatileMemoryCPP,
-  ARDUINO_TIMERH: ARDUINO_TIMERH,
-  ARDUINO_TIMERCPP: ARDUINO_TIMERCPP
+  Arduino_TimerH: Arduino_TimerH,
+  Arduino_TimerCPP: Arduino_TimerCPP
 }
 
 export const packageSourceFiles = (deviceDetails, controls) => {
@@ -48,6 +48,12 @@ export const packageSourceFiles = (deviceDetails, controls) => {
   var zip = new JSZip();
 
   switch (deviceDetails.systemType) {
+    case "ESP8266" :
+
+      packageESP8266Files(deviceDetails, controls, zip);
+      autoGenIncludes = getIncludes_ESP8266(deviceDetails);
+
+      break
 
     case "Simulation" :
 
@@ -76,6 +82,18 @@ export const packageSourceFiles = (deviceDetails, controls) => {
   })
   
 
+}
+
+const packageESP8266Files = (deviceDetails, controls, zip) => {
+
+  zip.file(deviceDetails.deviceName + ".ino", composeInoFile(deviceDetails, controls));
+
+  zip.file('ESP8266_NonVolatileMemory.h', ESP8266_NonVolatileMemoryH);
+  zip.file('Arduino_Timer.h', Arduino_TimerH);
+  zip.file('ESP8266_NonVolatileMemory.cpp', ESP8266_NonVolatileMemoryCPP);
+  zip.file('Arduino_Timer.cpp', Arduino_TimerCPP);
+
+  return zip
 }
 
 const packageSimulationFiles = (deviceDetails, controls, zip) => {
@@ -436,6 +454,14 @@ const getIncludes_Simulation = (deviceDetails) => {
   return `#include "` + getCommsFileName(deviceDetails) + `"
 #include "Simulation_NonVolatileMemory.h"
 #include "Simulation_Timer.h" \n`
+}
+
+const getIncludes_ESP8266 = (deviceDetails) => {
+  return `String SSID = "` + deviceDetails.ssid + `";
+  String Password = "` + deviceDetails.ssidPassword + `";
+  #include "` + getCommsFileName(deviceDetails) + `"
+  #include "ESP8266_NonVolatileMemory.h"
+  #include "Arduino_Timer.h" \n`
 }
 
 

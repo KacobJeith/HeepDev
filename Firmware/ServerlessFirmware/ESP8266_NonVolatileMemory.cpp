@@ -1,4 +1,4 @@
-#include "ESP8266_NonVolatileMemory.cpp"
+#include "ESP8266_NonVolatileMemory.h"
 #include <EEPROM.h>
 
 #define EEPROM_SIZE 512

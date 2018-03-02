@@ -1,3 +1,5 @@
+#include <CommonDataTypes.h>
+
 unsigned long GetMillis();
 
 // No absolute time yet

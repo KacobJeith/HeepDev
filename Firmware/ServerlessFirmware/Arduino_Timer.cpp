@@ -1,4 +1,5 @@
 #include "Arduino_Timer.h"
+#include <Arduino.h>
 
 unsigned long GetMillis()
 {
