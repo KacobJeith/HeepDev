@@ -5,7 +5,7 @@ import { withStyles } from "material-ui/styles";
 import {  Typography,
           Modal, 
           Button,
-          Grid }           from "material-ui/Typography";
+          Grid }           from "material-ui";
 
 const styles = theme => ({
   paper: {
