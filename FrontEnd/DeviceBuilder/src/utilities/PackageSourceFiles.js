@@ -10,6 +10,17 @@ import Simulation_HeepCommsCPP         from '../../../../Firmware/ServerlessFirm
 import Simulation_NonVolatileMemoryCPP from '../../../../Firmware/ServerlessFirmware/Simulation_NonVolatileMemory.cpp'
 import Simulation_TimerCPP           from '../../../../Firmware/ServerlessFirmware/Simulation_Timer.cpp'
 
+import ESP8266_HeepCommsH         from '../../../../Firmware/ServerlessFirmware/ESP8266_HeepComms.h'
+import ESP8266_NonVolatileMemoryH from '../../../../Firmware/ServerlessFirmware/ESP8266_NonVolatileMemory.h'
+
+import ESP8266_HeepCommsCPP         from '../../../../Firmware/ServerlessFirmware/ESP8266_HeepComms.cpp'
+import ESP8266_NonVolatileMemoryCPP from '../../../../Firmware/ServerlessFirmware/ESP8266_NonVolatileMemory.cpp'
+
+import ARDUINO_TIMERH             from '../../../../Firmware/ServerlessFirmware/Arduino_Timer.h'
+import ARDUINO_TIMERCPP           from '../../../../Firmware/ServerlessFirmware/Arduino_Timer.cpp'
+
+
+
 import { sys_phy_files } from '../utilities/SystemPHYCompatibilities'
 
 var sourceFiles = {
@@ -18,7 +29,13 @@ var sourceFiles = {
   Simulation_TimerH: Simulation_TimerH,
   Simulation_HeepCommsCPP: Simulation_HeepCommsCPP,
   Simulation_NonVolatileMemoryCPP: Simulation_NonVolatileMemoryCPP,
-  Simulation_TimerCPP: Simulation_TimerCPP
+  Simulation_TimerCPP: Simulation_TimerCPP,
+  ESP8266_HeepCommsH: ESP8266_HeepCommsH,
+  ESP8266_HeepCommsCPP: ESP8266_HeepCommsCPP,
+  ESP8266_NonVolatileMemoryH: ESP8266_NonVolatileMemoryH,
+  ESP8266_NonVolatileMemoryCPP: ESP8266_NonVolatileMemoryCPP,
+  ARDUINO_TIMERH: ARDUINO_TIMERH,
+  ARDUINO_TIMERCPP: ARDUINO_TIMERCPP
 }
 
 export const packageSourceFiles = (deviceDetails, controls) => {
