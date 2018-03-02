@@ -28,12 +28,16 @@ export const packageSourceFiles = (deviceDetails, controls) => {
   
   var autoGenIncludes = '';
 
+  var zip = new JSZip();
+
   switch (deviceDetails.systemType) {
 
     case "Simulation" :
 
-      zip = packageSimulationFiles(deviceDetails, controls, zip);
+      packageSimulationFiles(deviceDetails, controls, zip);
       autoGenIncludes = getIncludes_Simulation(deviceDetails);
+
+      console.log(autoGenIncludes);
       break
 
     default :
@@ -69,10 +73,17 @@ const packageSimulationFiles = (deviceDetails, controls, zip) => {
 
 const getPHYforSys = (sys, phy, zip) => {
 
-  var physicalLayerFilename = sys_phy_files[sys][phy];
-  var sourceRef = physicalLayerFilename.split('.')[0];
+  var physicalLayerFilenameRefH = sys_phy_files[sys][phy]["HeaderFile"];
+  var physicalLayerFileNameRefCPP = sys_phy_files[sys][phy]["CPPFile"];
 
-  return zip.file(physicalLayerFilename, sourceFiles[sourceRef]);
+  var headerSourceRef = physicalLayerFilenameRefH.split('.')[0] + "H";
+  var cppSourceRef = physicalLayerFileNameRefCPP.split('.')[0] + "CPP";
+
+  console.log(headerSourceRef);
+  console.log(cppSourceRef);
+
+  zip.file(physicalLayerFileNameRefCPP, sourceFiles[cppSourceRef]);
+  return zip.file(physicalLayerFilenameRefH, sourceFiles[physicalLayerFilenameRefH]);
 }
 
 const composeInoFile = (deviceDetails, controls) => {
@@ -423,12 +434,15 @@ const getCommsFileName = (deviceDetails) => {
   var sys = deviceDetails.systemType;
   var phy = deviceDetails.physicalLayer;
 
-  return sys_phy_files[sys][phy]
+  console.log(sys_phy_files);
+  console.log(sys);
+  console.log(phy);
+
+  return sys_phy_files[sys][phy]["HeaderFile"];
 }
 
 const getIncludes_Simulation = (deviceDetails) => {
-  return `#include <string.h>
-#include "` + getCommsFileName(deviceDetails) + `"
+  return `#include "` + getCommsFileName(deviceDetails) + `"
 #include "Simulation_NonVolatileMemory.h"
 #include "Simulation_Timer.h"`
 }

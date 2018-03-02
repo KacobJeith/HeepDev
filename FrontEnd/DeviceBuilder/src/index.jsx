@@ -14,7 +14,7 @@ import DeviceBuilder from './components/DeviceBuilder'
 const startState = {
   deviceName: 'DefaultDevice',
   numControls: 0,
-  physicalLayer: 'SiulationH',
+  physicalLayer: 'Simulation',
   ssid: 'your_ssid_here',
   ssidPassword: 'your_ssid_pwd',
   systemType: 'Simulation',
