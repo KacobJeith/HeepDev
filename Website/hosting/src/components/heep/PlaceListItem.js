@@ -12,9 +12,11 @@ import { List,
          Tooltip,
          Button,
          Divider,
+         CircularProgress,
          Grid,
          Collapse }                 from 'material-ui'
-import { withTheme }                from 'material-ui/styles'
+import { withTheme, withStyles }                from 'material-ui/styles'
+import { red } from 'material-ui/colors';
 import {  ExpandLess, 
           ExpandMore, 
           Home,
@@ -28,12 +30,24 @@ var mapStateToProps = (state, ownProps) => ({
   placeID: ownProps.placeID
 })
 
+const styles = theme => ({
+  buttonProgress: {
+    color: red[900],
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
+  },
+});
+
 class PlaceListItem extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       edit: false,
-      view: false
+      view: false,
+      deleting: false
     }
   }
 
@@ -51,14 +65,19 @@ class PlaceListItem extends React.Component {
         
         <Grid item xs={3}>
           <Button 
-            style={{width:'100%', color: 'red'}}
+            style={{width:'100%', color: red[900]}}
             color='primary'
             variant='flat'
             size='small'
-            onClick={() => this.props.deletePlaceFromAccount(this.props.placeID)}
+            disabled={this.state.deleting}
+            onClick={() => {
+              this.setState({deleting: true});
+              this.props.deletePlaceFromAccount(this.props.placeID);
+            }}
           >
             Delete Place
             <Delete {...inputs.buttonIcon}/>
+            {this.state.deleting && <CircularProgress size={24} className={this.props.classes.buttonProgress} />}
           </Button>
         </Grid>
         <Grid item xs={3}>
@@ -186,5 +205,5 @@ var mapDispatchToProps = (dispatch) => {
   return bindActionCreators(actions, dispatch)
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withTheme()(PlaceListItem)))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withTheme()(withStyles(styles)(PlaceListItem))))
 
