@@ -30,6 +30,12 @@ export default function(state = initialState, action) {
 
       return Immutable.Map(state).set('checkoutID', action.checkoutID).toJS()
 
+    case 'SET_CHECKOUT' :
+
+      shopify.retrieveCheckout(action.checkoutID);
+
+      return Immutable.Map(state).set('checkoutID', action.checkoutID).toJS()
+
     case 'ADD_PRODUCT_TO_CART' :
 
       shopify.AddProductToCart(state.checkoutID, state.shopify[action.productID]);

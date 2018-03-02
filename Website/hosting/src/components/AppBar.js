@@ -31,7 +31,7 @@ import SmartBadge from './utilities/SmartBadge'
 
 var mapStateToProps = (state) => ({
   loginStatus: state.loginStatus,
-  itemsInCart: state.itemsInCart
+  itemsInCart: state.shoppingCart.length
 })
 
 const styles = {

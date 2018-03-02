@@ -21,6 +21,11 @@ export const readUserData = (user) => {
 		
 		retrieveGroups(snapshot);
 	})
+
+	firebase.database().ref('/users/' + user.uid + '/store').on('value', function(snapshot) {
+		
+		setup.store.dispatch(actions.setCheckout(snapshot.val().checkoutID));
+	})
 }
 
 const retrieveDevices = (snapshot) => {

@@ -55,8 +55,13 @@ export const initPaperSignals = () => ({
 	type: 'INIT_PAPER_SIGNALS'
 })
 
-export const setCheckout = (checkoutID) => ({
+export const createCheckout = (checkoutID) => ({
 	type: 'CREATE_CHECKOUT',
+	checkoutID
+})
+
+export const setCheckout = (checkoutID) => ({
+	type: 'SET_CHECKOUT',
 	checkoutID
 })
 
