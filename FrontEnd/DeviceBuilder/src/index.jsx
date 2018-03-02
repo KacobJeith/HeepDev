@@ -14,10 +14,10 @@ import DeviceBuilder from './components/DeviceBuilder'
 const startState = {
   deviceName: 'DefaultDevice',
   numControls: 0,
-  physicalLayer: 'W5100',
+  physicalLayer: 'SiulationH',
   ssid: 'your_ssid_here',
   ssidPassword: 'your_ssid_pwd',
-  systemType: 'Arduino',
+  systemType: 'Simulation',
   iconSelected: 1,
   selectingIcon: false,
   controls: []
