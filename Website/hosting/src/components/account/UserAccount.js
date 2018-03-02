@@ -6,11 +6,11 @@ import * as actions           from '../../redux/actions'
 import * as auth              from '../../firebase/FirebaseAuth'
 
 import { withTheme }       from 'material-ui/styles'
-import { Grid, Typography, Avatar, Divider, IconButton, List, ListItem, ListItemText, ListItemIcon}  from 'material-ui'
+import { Grid, Tooltip, Typography, Avatar, Divider, IconButton, List, ListItem, ListItemText, ListItemIcon}  from 'material-ui'
 import { Edit }  from 'material-ui-icons'
 
-import DeviceCard from '../heep/DeviceCard'
-import PlaceCard from '../heep/PlaceCard'
+import DeviceListItem from '../heep/DeviceListItem'
+import PlaceListItem from '../heep/PlaceListItem'
 import AddPlaceModal from './AddPlaceModal'
 
 var mapStateToProps = (state) => ({
@@ -65,13 +65,20 @@ class UserAccount extends React.Component {
               {title}
             </Typography>
           </Grid>
+
           <Grid item xs>
-            {edit ? <IconButton 
-              style={{float:'right'}}
-              onClick={onClick}
-            >
-              <Edit />
-            </IconButton> : <div/>
+            {edit ? 
+              
+                <IconButton 
+                  style={{float:'right'}}
+                  onClick={onClick}
+                >
+                  <Tooltip id="tooltip-edit" title="Edit">
+                    <Edit />
+                  </Tooltip>
+                </IconButton> 
+
+              : <div/>
             }
           </Grid>
         </Grid>
@@ -88,7 +95,7 @@ class UserAccount extends React.Component {
         {this.titleEditDivider('My Places', () => console.log('Edit Places'), false)}
         <List>
           {Object.keys(this.props.places).map((placeID) => (
-            <PlaceCard placeID={placeID} key={placeID}/>
+            <PlaceListItem placeID={placeID} key={placeID}/>
           ))}
           <AddPlaceModal/>
         </List>
@@ -102,7 +109,7 @@ class UserAccount extends React.Component {
         {this.titleEditDivider('My Devices', () => console.log('Edit Device Details Remotely'), false)}
         <List >
           {Object.keys(this.props.devices).map((deviceID) => (
-            <DeviceCard deviceID={deviceID} key={deviceID}/>
+            <DeviceListItem deviceID={deviceID} key={deviceID}/>
           ))}
         </List>
       </div>
