@@ -19,6 +19,7 @@ import DeviceBuilder from './heep/DeviceBuilder'
 import Checkout from './store/Checkout'
 import ProductDetails from './store/ProductDetails'
 import DownloadPage from './heep/DownloadPage'
+import ManageCart from './store/ManageCart'
 
 import PaperSignalsConsole from './PaperSignals/PaperSignalsConsole'
 
@@ -92,7 +93,7 @@ class App extends React.Component {
 									<Route path="/About" component={About}/>
 									<Route path="/Shop" component={Store}/>
 									<Route path="/product/:productID" component={ProductDetails}/>
-									<Route path="/Checkout" component={Checkout}/>
+									<Route path="/Checkout" component={ManageCart}/>
 									<Route exact path="/auth" component={Auth}/>
 									<Route exact path="/Developers" component={DownloadPage}/>
 									{loggedInRoutes}

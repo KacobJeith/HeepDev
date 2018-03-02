@@ -65,6 +65,11 @@ export const addProductToCart = (productID) => ({
 	productID
 })
 
+export const saveCartLocally = (cart) => ({
+	type: 'SAVE_CART_LOCALLY',
+	cart
+})
+
 
 export const saveNewPlace = (placeName, placeSSID, placeSSIDPassword) => ({
 	type: 'SAVE_NEW_PLACE',

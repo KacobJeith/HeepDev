@@ -157,6 +157,19 @@ export const updatePlaceName = (placeID, name) => {
 	firebase.database().ref('places/' + placeID + '/name').set(name);
 }
 
+export const saveCheckoutID = (checkoutID) => {
+
+	var user = firebaseAuth.currentUser();
+
+	if ( user.uid ) {
+		console.log("Saving checkoutID to user");
+		firebase.database().ref('users/' + user.uid + '/store/checkoutID').set(checkoutID);
+	} else {
+		console.log("Cannot save checkout until user logs in");
+	}
+	
+}
+
 export const updateGroupName = (groupID, name) => {
 
 	firebase.database().ref('groups/' + groupID + '/name').set(name);
@@ -221,4 +234,5 @@ const base64ToArrayBuffer = (base64) => {
 
     return bytes;
 }
+
 

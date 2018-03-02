@@ -19,12 +19,14 @@ export default function(state = initialState, action) {
         var newState = Immutable.Map(state.shopify).toJS();
 
         for (var i = 0; i < action.products.length; i++){
-          newState[action.products[i].id] = action.products[i];
+          newState[action.products[i].variants[0].id] = action.products[i];
         }
 
       return Immutable.Map(state).set('shopify', newState).toJS()
 
     case 'CREATE_CHECKOUT' :
+
+      database.saveCheckoutID(action.checkoutID);
 
       return Immutable.Map(state).set('checkoutID', action.checkoutID).toJS()
 
@@ -33,6 +35,14 @@ export default function(state = initialState, action) {
       shopify.AddProductToCart(state.checkoutID, state.shopify[action.productID]);
 
       return Immutable.Map(state).set('itemsInCart', state.itemsInCart += 1).toJS();
+
+    case 'SAVE_CART_LOCALLY' :
+
+        var newState = Immutable.Map(state.shoppingCart).toJS();
+
+      return Immutable.Map(state).set('shoppingCart', action.cart.lineItems).toJS()
+
+      return 
       
     case 'SCROLL':
 
