@@ -18,10 +18,14 @@ class ManageCart extends React.Component {
     
     return (
         <Grid container justify='center' style={{marginTop: 20}}>
-          <Grid item xs={10} style={{padding:24}}>
+          <Grid item xs={11} style={{padding:24}}>
             <Grid container direction='row' alignItems='stretch' spacing={16}>
               {this.props.cart.map((cartItem) => (
-                <CartItemCard key={cartItem.variant.id} productID={cartItem.variant.id}/>)
+                <CartItemCard 
+                key={cartItem.variant.id} 
+                productID={cartItem.variant.id} 
+                quantity={cartItem.quantity}
+                lineItemID={cartItem.id}/>)
               )}
             </Grid>
           </Grid>

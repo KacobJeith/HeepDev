@@ -70,6 +70,17 @@ export const addProductToCart = (productID) => ({
 	productID
 })
 
+export const updateProductQuantity = (lineItemID, newQuantity) => ({
+	type: 'UPDATE_QUANTITY_IN_CART',
+	lineItemID,
+	newQuantity
+})
+
+export const removeProductFromCart = (variantID) => ({
+	type: 'REMOVE_PRODUCT_FROM_CART',
+	variantID
+})
+
 export const saveCartLocally = (cart) => ({
 	type: 'SAVE_CART_LOCALLY',
 	cart

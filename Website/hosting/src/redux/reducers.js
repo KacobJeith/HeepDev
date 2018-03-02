@@ -42,6 +42,18 @@ export default function(state = initialState, action) {
 
       return Immutable.Map(state).set('itemsInCart', state.itemsInCart += 1).toJS();
 
+    case 'UPDATE_QUANTITY_IN_CART' :
+
+      shopify.UpdateQuantityInCart(state.checkoutID, action.lineItemID,  parseInt(action.newQuantity));
+
+      return state
+
+    case 'REMOVE_PRODUCT_FROM_CART' : 
+
+      shopify.RemoveProductFromCart(state.checkoutID, action.variantID)
+
+      return state
+
     case 'SAVE_CART_LOCALLY' :
 
         var newState = Immutable.Map(state.shoppingCart).toJS();
