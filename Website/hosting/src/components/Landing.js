@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import * as Actions from '../redux/actions'
+import BedroomSVG from './BedroomSVG'
 
 const mapStateToProps = (state) => ({
 })
@@ -41,7 +42,7 @@ class Landing extends React.Component {
      }
 
 	return (<div>
-            <object {...inputs.objectSVG}/>
+            <BedroomSVG />
           </div>
     );
   }

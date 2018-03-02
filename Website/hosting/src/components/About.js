@@ -8,7 +8,7 @@ import TeamModal from './TeamModal'
 
 import { founders } from '../assets/remote/Founders'
 import { banners } from '../assets/remote/Banners'
-import { svg } from '../assets/remote/SVG'
+import { svgs } from '../assets/remote/SVGs'
 
 class About extends React.Component {
   render() {
@@ -17,17 +17,17 @@ class About extends React.Component {
       AboutInputs:{
     		PlugAndPlay: {
           title: 'Easy to Install',
-          imagePath:svg.plugAndPlay,
+          imagePath:svgs.plugAndPlay,
           desc: "Unbox, wire, and play. Automate your home or booby trap it. We can set it up for you, so you don't have to worry about code. Heep makes connecting things easy."
         },
         CloudLess: {
           title: 'Cloud Less',
-          imagePath: svg.cloudLess,
+          imagePath: svgs.cloudLess,
           desc: "Heep doesn't require an internet connection. We don't send things to the cloud, so rest assured, no one's listening in or watching you. You do you, so just relax."
         },
         DeviceParty: {
           title: 'Device Party',
-          imagePath: svg.deviceParty,
+          imagePath: svgs.deviceParty,
           desc: "Connect your devices and get them to talk with you and other devices. They send and receive commands, provide data, and interact with you. Enable your environment."
         }
       },
