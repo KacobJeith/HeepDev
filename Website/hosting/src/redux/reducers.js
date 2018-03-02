@@ -90,13 +90,17 @@ export default function(state = initialState, action) {
 
       return state
 
-    case 'DELETE_PLACE' :
-
-      var newState = Immutable.Map(state.places).delete(action.placeID).toJS();
+    case 'DELETE_PLACE_FROM_FIREBASE' :
 
       setTimeout(() => {
         database.deletePlace(action.placeID)
       }, 1000);
+
+      return state 
+
+    case 'DELETE_PLACE': 
+
+      var newState = Immutable.Map(state.places).delete(action.placeID).toJS();
 
       return Immutable.Map(state).set('places', newState).toJS()
 

@@ -55,7 +55,7 @@ class PlaceListItem extends React.Component {
             color='primary'
             variant='flat'
             size='small'
-            onClick={() => this.props.deletePlace(this.props.placeID)}
+            onClick={() => this.props.deletePlaceFromAccount(this.props.placeID)}
           >
             Delete Place
             <Delete {...inputs.buttonIcon}/>

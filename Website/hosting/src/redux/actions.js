@@ -73,6 +73,11 @@ export const saveNewPlace = (placeName, placeSSID, placeSSIDPassword) => ({
 	placeSSIDPassword
 })
 
+export const deletePlaceFromAccount = (placeID) => ({
+	type: 'DELETE_PLACE_FROM_FIREBASE',
+	placeID
+})
+
 export const deletePlace = (placeID) => ({
 	type: 'DELETE_PLACE',
 	placeID

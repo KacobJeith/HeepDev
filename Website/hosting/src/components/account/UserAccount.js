@@ -118,6 +118,8 @@ class UserAccount extends React.Component {
 
   render() {
 
+    console.log("Places: ", this.props.places)
+
     return (
       <Grid container justify='center' style={{paddingTop: 50, maxWidth:'100%'}}>
         <Grid item xs={10}>

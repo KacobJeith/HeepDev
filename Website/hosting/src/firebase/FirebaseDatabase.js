@@ -39,14 +39,23 @@ const readDevice = (deviceID) => {
 const retrievePlaces = (snapshot) => {
 
 	snapshot.forEach( function(snapChild) {
+
 		readPlace(snapChild.key);
+		
 	});
 }
 
 const readPlace = (placeID) => {
 	let dataFromFirebaseRef = firebase.database().ref('/places/' + placeID).on('value', function(placeSnapshot) {
 
-		setup.store.dispatch(actions.addPlace(placeSnapshot.key, placeSnapshot.val()));
+		if (placeSnapshot.val()) {
+			
+			setup.store.dispatch(actions.addPlace(placeSnapshot.key, placeSnapshot.val()));
+
+		}  else {
+			setup.store.dispatch(actions.deletePlace(placeSnapshot.key));
+		}
+		
 	});
 }
 
