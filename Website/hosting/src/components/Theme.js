@@ -1,13 +1,15 @@
 import { createMuiTheme } from 'material-ui/styles';
 import bluegrey from 'material-ui/colors/blueGrey';
-import blue from 'material-ui/colors/blue';
+import cyan from 'material-ui/colors/cyan';
 
 const Theme = createMuiTheme({
   palette: {
     primary: {
       main: bluegrey[700]
     },
-    secondary: blue
+    secondary: {
+      main: cyan[500]
+    },
   },
   typography: {
     htmlFontSize: 11,

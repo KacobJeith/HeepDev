@@ -1,11 +1,11 @@
 import React from "react";
-import PropTypes from "prop-types";
 
 import { withStyles } from "material-ui/styles";
-import {  Typography,
-          Modal, 
-          Button,
-          Grid }           from "material-ui";
+
+import { Typography,
+         Modal,
+         Button,
+         Grid } from 'material-ui'
 
 const styles = theme => ({
   paper: {
@@ -39,26 +39,24 @@ class TeamModal extends React.Component {
     )
   };
 
-  nameSubheading(nameSubheading) {
+  nameSubheading() {
     return (
       <Typography variant="subheading" align='center' color="inherit">
-          {nameSubheading}
+          {this.props.name}
       </Typography>
     )
   };
 
-  nameTitle(nameTitle) {
+  nameTitle() {
     return (
       <Typography variant="title" align="center" color="inherit">
-        {nameTitle}
+        {this.props.name}
       </Typography>
     )
   };
 
-  render() {
-    const { classes } = this.props;
-
-    var inputs = {
+  buttonImage() {
+    const inputs = {
       buttonContainer: {
         style: {
           textAlign: 'center'
@@ -70,13 +68,19 @@ class TeamModal extends React.Component {
           maxWidth: this.props.imageButtonWidth,
         }
       },
-      modalPosition: {
-        style: {
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)'
-        }
-      },
+    }
+
+    return (
+      <div {...inputs.buttonContainer}>
+        <Button onClick={this.handleOpen}>
+          <img {...inputs.buttonImage}/>
+        </Button>
+      </div>
+    )
+  };
+
+  modalImage() {
+    const inputs = {
       modalImageContainer: {
         style: {
           paddingTop: 16,
@@ -88,25 +92,39 @@ class TeamModal extends React.Component {
         style: {
           maxWidth: '100%'
         }
-      }
+      },
+    }
+
+    return (
+      <div {...inputs.modalImageContainer}>
+        <img {...inputs.modalImage}/>
+      </div>
+    )
+  };
+
+  render() {
+    const { classes } = this.props;
+
+    const inputs = {
+      modalPosition: {
+        style: {
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)'
+        }
+      },
     };
 
     return (
       <div>
-        <div {...inputs.buttonContainer}>
-          <Button onClick={this.handleOpen}>
-            <img {...inputs.buttonImage}/>
-          </Button>
-        </div>
-        {this.nameSubheading(this.props.name)}
+        {this.buttonImage()}
+        {this.nameSubheading()}
         <Modal
           open={this.state.open}
           onClose={this.handleClose}>
           <div {...inputs.modalPosition} className={classes.paper}>
-            {this.nameTitle(this.props.name)}
-            <div {...inputs.modalImageContainer}>
-              <img {...inputs.modalImage}/>
-            </div>
+            {this.nameTitle()}
+            {this.modalImage()}
             {this.bioText(this.props.desc1)}
             {this.bioText(this.props.desc2)}
           </div>
@@ -115,9 +133,5 @@ class TeamModal extends React.Component {
     );
   }
 }
-
-TeamModal.propTypes = {
-  classes: PropTypes.object.isRequired
-};
 
 export default withStyles(styles)(TeamModal);
