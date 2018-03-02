@@ -33,7 +33,7 @@ export const bedroomSVG = `
     </g>
     <g id="dresser" fill="#FAFAFA" stroke="#37474F" stroke-width="2" stroke-miterlimit="10">
       <path id="dresserFrame" d="M867 401.908V570h-18v-19H615v19h-18V401.908c0-3.508 5.361-5.908 11.991-5.908h246c6.63 0 12.009 2.4 12.009 5.908z"/>
-      <g id="dresserDawers">
+      <g id="dresserDrawers">
         <path id="dresserDrawerBottom" d="M617 483h230v56H617z"/>
         <path id="dresserDrawerTop" d="M617 412h230v59H617z"/>
       </g>
@@ -97,8 +97,8 @@ export const bedroomSVG = `
         <path id="flowerPotLip" stroke-linejoin="round" d="M253 348v-12.421c-29.53 5.778-59 .005-59-.051v11.71l.565.389s27.216 7.882 58.435.373"/>
         <path id="flowerPotTop" stroke-linejoin="round" d="M252.824 335.631c-33.979-7.241-58.47-.046-58.47-.103 0 .056 29.617 5.881 58.47.103z"/>
         <g id="flowerLeafBodies">
-          <path id="leadBodyRight" d="M220.494 321.887c10.97-2.106 23.341 10.161 29.352 29.442l-.052.052c-19.282-6.01-31.637-18.468-29.53-29.438"/>
-          <path id="leadBodyCenter" d="M219.961 323.9c10.784 4.935 13.926 23.162 7.25 43.538l-.078.014c-12.972-17.074-15.984-35.455-7.406-43.644"/>
+          <path id="leafBodyRight" d="M220.494 321.887c10.97-2.106 23.341 10.161 29.352 29.442l-.052.052c-19.282-6.01-31.637-18.468-29.53-29.438"/>
+          <path id="leafBodyCenter" d="M219.961 323.9c10.784 4.935 13.926 23.162 7.25 43.538l-.078.014c-12.972-17.074-15.984-35.455-7.406-43.644"/>
           <path id="leafBodyLeft" d="M220.729 321.743c.924 9.182-10.081 18.456-26.388 21.981l-.039-.048c6.367-15.421 17.527-24.667 26.398-22.125"/>
         </g>
         <g id="flowerPetals">
@@ -483,9 +483,9 @@ export const bedroomSVG = `
         <path id="hangerUranus" stroke-linejoin="round" d="M804 164l.14-41.079 271.864-30.087"/>
         <path id="hangerEarth" stroke-linejoin="round" d="M1215 143v-11l-139.069-38.299"/>
         <path id="hangerMars" stroke-linecap="round" stroke-linejoin="round" d="M935 143v-11l-.068.017 140.036-38.316"/>
+        <path id="hangerPluto" stroke-linejoin="round" d="M1021 95V74l54.931 19.701"/>
         <path id="hangerMercury" stroke-linejoin="round" d="M1014 143v-11l61.931-38.299"/>
         <path id="hangerVenus" stroke-linejoin="round" d="M1141 147v-11l-66.032-42.299"/>
-        <path id="hangerPluto" stroke-linejoin="round" d="M1021 95V74l54.931 19.701"/>
         <path id="hangerJupiter" stroke-linejoin="round" d="M1127 94V75l-53.501 18.701"/>
         <path id="hangerSaturn" stroke-linejoin="round" d="M1278 156V93h-203"/>
         <path id="hangerRocket" stroke-linejoin="round" d="M1345 164v-41.158l-271.146-30.008"/>
