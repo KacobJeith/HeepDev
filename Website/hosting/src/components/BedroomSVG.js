@@ -5,6 +5,9 @@ import $ from 'jquery';
 import TimelineMax from 'gsap/src/uncompressed/TimelineMax';
 import TweenMax from 'gsap/src/uncompressed/TweenMax';
 
+var buttonCactus = [];
+
+
 class BedroomSVG extends React.Component{
 
   constructor(props) {
@@ -32,68 +35,89 @@ class BedroomSVG extends React.Component{
 
     this.buttonDresserBottom = document.getElementById('buttonDresserBottom');
 
-    this.buttonCactus = document.getElementById('buttonCactus');
-    this.buttonCactus.addEventListener('mouseover', this.hoverCactus)
+    buttonCactus = document.getElementById('buttonCactus');
+    buttonCactus.addEventListener('mouseover', this.hoverCactus)
 
     this.buttonFlower = document.getElementById('buttonFlower');
+    this.buttonFlower.addEventListener('mouseover', this.hoverFlower)
 
     this.buttonPail = document.getElementById('buttonPail');
   }
 
-  colorCactus() {
-  }
-
   hoverRemote() {
+    var tl = new TimelineMax();
+
     this.remoteBottom = document.getElementById('remoteBottom');
     this.remoteBody = document.getElementById('remoteBody');
-    this.remoteButtonLeft = document.getElementById('remoteButtonLeft');
-    this.remoteButtonRight = document.getElementById('remoteButtonRight');
+    this.remoteButtons = document.getElementById('remoteButtons');
     this.remoteAntennaTop = document.getElementById('remoteAntennaTop');
-    this.remoteStickBottomLeft = document.getElementById('remoteStickBottomLeft');
-    this.remoteStickBottomRight = document.getElementById('remoteStickBottomRight');
-    this.remoteStickTopRight = document.getElementById('remoteStickTopRight');
-    this.remoteStickTopLeft = document.getElementById('remoteStickTopLeft');
+    this.remoteStickBottoms = document.getElementById('remoteStickBottoms');
+    this.remoteStickTops = document.getElementById('remoteStickTops');
 
-    var tl = new TimelineMax();
     tl.to(this.remoteBottom, 1, {fill: '#333333', delay:0.6}, 0);
     tl.to(this.remoteBody, 1, {fill: '#666666', delay:0.6}, 0);
-    tl.to(this.remoteButtonLeft, 1, {fill: '#CCCCCC', delay:0.6}, 0);
-    tl.to(this.remoteButtonRight, 1, {fill: '#CCCCCC', delay:0.6}, 0);
+    tl.to(this.remoteButtons, 1, {fill: '#CCCCCC', delay:0.6}, 0);
     tl.to(this.remoteAntennaTop, 1, {fill: '#000', delay:0.6}, 0);
-    tl.to(this.remoteStickBottomLeft, 1, {fill: '#999999', delay:0.6}, 0);
-    tl.to(this.remoteStickBottomRight, 1, {fill: '#999999', delay:0.6}, 0);
-    tl.to(this.remoteStickTopRight, 1, {fill: '#666666', delay:0.6}, 0);
-    tl.to(this.remoteStickTopLeft, 1, {fill: '#666666', delay:0.6}, 0);
-    tl.to(this.remoteBottom, 1, {fill: '#333333', delay:0.6}, 1);
-    tl.to(this.remoteBody, 1, {fill: '#666666', delay:0.6}, 1);
+    tl.to(this.remoteStickBottoms, 1, {fill: '#999999', delay:0.6}, 0);
+    tl.to(this.remoteStickTops, 1, {fill: '#666666', delay:0.6}, 0);
     tl.to(this.remoteBottom, 1, {fill: '#FFF', delay:0.6}, 1);
     tl.to(this.remoteBody, 1, {fill: '#FFF', delay:0.6}, 1);
-    tl.to(this.remoteButtonLeft, 1, {fill: '#FFF', delay:0.6}, 1);
-    tl.to(this.remoteButtonRight, 1, {fill: '#FFF', delay:0.6}, 1);
+    tl.to(this.remoteButtons, 1, {fill: '#FFF', delay:0.6}, 1);
     tl.to(this.remoteAntennaTop, 1, {fill: '#FFF', delay:0.6}, 1);
-    tl.to(this.remoteStickBottomLeft, 1, {fill: '#FFF', delay:0.6}, 1);
-    tl.to(this.remoteStickBottomRight, 1, {fill: '#FFF', delay:0.6}, 1);
-    tl.to(this.remoteStickTopRight, 1, {fill: '#FFF', delay:0.6}, 1);
-    tl.to(this.remoteStickTopLeft, 1, {fill: '#FFF', delay:0.6}, 1);
-  };
+    tl.to(this.remoteStickBottoms, 1, {fill: '#FFF', delay:0.6}, 1);
+    tl.to(this.remoteStickTops, 1, {fill: '#FFF', delay:0.6}, 1);
+};
 
   hoverCactus() {
+    var tl = new TimelineMax();
+
     this.cactus = document.getElementById('cactus');
     this.cactusPotBody = document.getElementById('cactusPotBody');
     this.cactusPotLip = document.getElementById('cactusPotLip');
     this.cactusPotTop = document.getElementById('cactusPotTop');
     this.cactusBody = document.getElementById('cactusBody');
 
-    var tl = new TimelineMax();
     tl.to(this.cactusBody, 1, {fill: '#8cc63f', delay:0.6}, 0);
     tl.to(this.cactusPotTop, 1, {fill: '#603813', delay:0.6}, 0);
     tl.to(this.cactusPotBody, 1, {fill: '#a55447', delay:0.6}, 0);
     tl.to(this.cactusPotLip, 1, {fill: '#965040', delay:0.6}, 0);
+
     tl.to(this.cactusBody, 1, {fill: '#FFF', delay:0.6}, 1);
     tl.to(this.cactusPotTop, 1, {fill: '#FFF', delay:0.6}, 1);
     tl.to(this.cactusPotBody, 1, {fill: '#FFF', delay:0.6}, 1);
     tl.to(this.cactusPotLip, 1, {fill: '#FFF', delay:0.6}, 1);
   };
+
+  hoverFlower() {
+    var tl = new TimelineMax();
+
+    this.petals = document.getElementById('petals');
+    this.stamens = document.getElementById('stamens');
+    this.leafRight = document.getElementById('leafRight');
+    this.leafCenter = document.getElementById('leafCenter');
+    this.leafLeft = document.getElementById('leafLeft');
+    this.flowerPotBottom = document.getElementById('flowerPotBottom');
+    this.flowerPotLip = document.getElementById('flowerPotLip');
+    this.flowerPotTop = document.getElementById('flowerPotTop');
+
+    tl.to(this.flowerPotBottom, 1, {fill: '#A55447', delay:0.6}, 0);
+    tl.to(this.flowerPotLip, 1, {fill: '#965040', delay:0.6}, 0);
+    tl.to(this.flowerPotTop, 1, {fill: '#603813', delay:0.6}, 0);
+    tl.to(this.leafRight, 1, {fill: '#39B54A', delay:0.6}, 0);
+    tl.to(this.leafCenter, 1, {fill: '#006837', delay:0.6}, 0);
+    tl.to(this.leafLeft, 1, {fill: '#009245', delay:0.6}, 0);
+    tl.to(this.petals, 1, {fill: '#F9D7E4', delay:0.6}, 0);
+    tl.to(this.stamens, 1, {fill: '#FBB03B', delay:0.6}, 0);
+
+    tl.to(this.leafRight, 1, {fill: '#FFF', delay:0.6}, 1);
+    tl.to(this.leafCenter, 1, {fill: '#FFF', delay:0.6}, 1);
+    tl.to(this.leafLeft, 1, {fill: '#FFF', delay:0.6}, 1);
+    tl.to(this.petals, 1, {fill: '#FFF', delay:0.6}, 1);
+    tl.to(this.stamens, 1, {fill: '#FFF', delay:0.6}, 1);
+    tl.to(this.flowerPotBottom, 1, {fill: '#FFF', delay:0.6}, 1);
+    tl.to(this.flowerPotLip, 1, {fill: '#FFF', delay:0.6}, 1);
+    tl.to(this.flowerPotTop, 1, {fill: '#FFF', delay:0.6}, 1);
+  }
 
   render() {
     const inputs = {
