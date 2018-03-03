@@ -65,12 +65,17 @@ class ManageCart extends React.Component {
             {this.cartTitleLine()}
           </Grid>
           <Paper elevation={6} style={{padding:this.props.theme.spacing.unit*4}}>
+            
+            <CartItemCard titleBar={true}/>
+            <Divider style={{margin: this.props.theme.spacing.unit * 2}}/>
+
             {this.props.lineItems.map((cartItem) => (
               <CartItemCard 
               key={cartItem.variant.id} 
               productID={cartItem.variant.id} 
               quantity={cartItem.quantity}
-              lineItemID={cartItem.id}/>)
+              lineItemID={cartItem.id}
+              titleBar={false}/>)
             )}
 
             <Divider style={{margin: this.props.theme.spacing.unit * 4}}/>
