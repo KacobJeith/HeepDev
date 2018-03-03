@@ -2,6 +2,7 @@
 
 var path = require('path');
 var webpack = require('webpack');
+var ManifestPlugin = require('webpack-manifest-plugin');
 
 module.exports = {
   target: 'web',
@@ -11,12 +12,14 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: 'bundle.js',
+    publicPath: path.resolve(__dirname, "dist")
   },
 
   plugins: [
     // OccurenceOrderPlugin is needed for webpack 1.x only
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
+    new ManifestPlugin()
   ],
 
   devServer: {
