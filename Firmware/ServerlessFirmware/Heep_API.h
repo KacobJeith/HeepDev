@@ -1,11 +1,24 @@
 #include "CommonDataTypes.h"
 
+// Input Outputs
 #define HEEP_INPUT 0
 #define HEEP_OUTPUT 1
 
+// Control Types
 #define HEEP_ONOFF 0
 #define HEEP_RANGE 1
 #define HEEP_BUFFER 2
+
+// Icon Types
+#define HEEP_ICON_NONE 0
+#define HEEP_ICON_LIGHT_BULB 1
+#define HEEP_ICON_LIGHT_SWITCH 2
+#define HEEP_ICON_OUTLET 3
+#define HEEP_ICON_POWER_BUTTON 4
+#define HEEP_ICON_CUCKOO_CLOCK 5
+#define HEEP_ICON_MAGLOCK 6
+#define HEEP_ICON_RFID 7
+#define HEEP_ICON_MOTOR 8
 
 // Define the input and output buffers for global accessibility
 extern unsigned char outputBuffer [];
