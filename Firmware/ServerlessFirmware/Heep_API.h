@@ -1,7 +1,11 @@
 #include "CommonDataTypes.h"
 
-#define INPUT 0
-#define OUTPUT 1
+#define HEEP_INPUT 0
+#define HEEP_OUTPUT 1
+
+#define HEEP_ONOFF 0
+#define HEEP_RANGE 1
+#define HEEP_BUFFER 2
 
 // Define the input and output buffers for global accessibility
 extern unsigned char outputBuffer [];
@@ -44,3 +48,19 @@ void PostDataToFirebase();
 void ControlDaemon();
 
 void PerformHeepTasks();
+
+void AddRangeControl(char* controlName, int inputOutput, int highValue, int lowValue, int startingValue);
+void AddOnOffControl(char* controlName, int inputOutput, int startingValue);
+
+
+// AddToggleControl(Name, INPUT/OUTPUT, Starting)
+// AddMomentaryControl(NAME, INPUT/OUTPUT)
+// AddBufferControl(Name, INPUT/OUTPUT, BufferPtr, Starting)
+// GetRangeValueByName(Name)
+// GetToggleValueByName(Name)
+// GetMomentaryValueByName(Name)
+// SetBufferValueByName(Name, &Buffer)
+// SetRangeValueByName(Name)
+// SetToggleValueByName(Name)
+// SetMomentaryValueByName(Name)
+// SetBufferValueByName(Name, &Buffer)

@@ -168,3 +168,29 @@ void PerformHeepTasks()
 	CheckServerForInputs();
 	ControlDaemon();
 }
+
+void AddRangeControl(char* controlName, int inputOutput, int highValue, int lowValue, int startingValue)
+{
+	Control newControl;
+	newControl.controlName = controlName;
+	newControl.controlID = numberOfControls;
+	newControl.controlDirection = inputOutput;
+	newControl.controlType = HEEP_RANGE;
+	newControl.highValue = highValue;
+	newControl.lowValue = lowValue;
+	newControl.curValue = startingValue;
+	AddControl(newControl);
+}
+
+void AddOnOffControl(char* controlName, int inputOutput, int startingValue)
+{
+	Control newControl;
+	newControl.controlName = controlName;
+	newControl.controlID = numberOfControls;
+	newControl.controlDirection = inputOutput;
+	newControl.controlType = HEEP_ONOFF;
+	newControl.highValue = 1;
+	newControl.lowValue = 0;
+	newControl.curValue = startingValue;
+	AddControl(newControl);
+}
