@@ -58,7 +58,7 @@ export default function(state = initialState, action) {
 
         var newState = Immutable.Map(state.shoppingCart).toJS();
 
-      return Immutable.Map(state).set('shoppingCart', action.cart.lineItems).toJS()
+      return Immutable.Map(state).set('shoppingCart', action.cart).toJS()
 
       return 
       

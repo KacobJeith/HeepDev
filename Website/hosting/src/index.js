@@ -21,7 +21,9 @@ const startState = {
   loginStatus: false,
   checkoutID: null,
   itemsInCart: 0,
-  shoppingCart: [],
+  shoppingCart: {
+    lineItems:[]
+  },
   providers: {},
   devices: {},
   places: {},

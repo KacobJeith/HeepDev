@@ -31,7 +31,7 @@ import SmartBadge from './utilities/SmartBadge'
 
 var mapStateToProps = (state) => ({
   loginStatus: state.loginStatus,
-  itemsInCart: state.shoppingCart.length
+  itemsInCart: state.shoppingCart.lineItems.length
 })
 
 const styles = {
@@ -228,7 +228,7 @@ class MenuAppBar extends React.Component {
               </IconButton>
 
 
-              <NavLink to="/Checkout" style={{textDecoration: 'none'}}>
+              <NavLink to="/MyCart" style={{textDecoration: 'none'}}>
 
                 <IconButton className={classes.button} aria-label="Add to shopping cart">
                   {SmartBadge(

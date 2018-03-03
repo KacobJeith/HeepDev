@@ -3,73 +3,41 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import * as Actions from '../../redux/actions'
-import ShopifyBuy from 'shopify-buy'
+import { buttonLink } from '../utilities/ButtonUtils'
+
+import { Grid }   from 'material-ui';
 
 const mapStateToProps = (state) => ({
-  checkoutID: state.checkoutID
+  checkoutID: state.checkoutID,
+  cart: state.shoppingCart
 })
 
 
 class Checkout extends React.Component {
-
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      checkoutData: {},
-      webURL: "",
-
-    }
-
-  }
-
-  getCheckoutData() {
-
-    var client = ShopifyBuy.buildClient({
-    domain: 'shopheep.myshopify.com',
-    storefrontAccessToken: 'a444eb17144b5b4e7841eaa1e4cf8698'
-    });
-
-
-    client.checkout.fetch(this.props.checkoutID).then((checkout) => {
-      // Do something with the checkout
-      console.log(checkout);
-      // this.setState({checkoutData: checkout})
-
-      if (checkout.webUrl != this.state.webURL) {
-        this.setState({
-          webURL: checkout.webUrl
-        })
-      }
-
-      if (checkout.lineItems.length != this.state.lineItems) {
-        this.setState({
-          lineItems: checkout.lineItems.length
-        })
-      }
-
-    });
-  }
   
   render() {
 
-    this.getCheckoutData();
-
     var inputs = {
       checkoutFrame: {
-        src: this.state.webURL,
+        src: this.props.cart.webUrl,
         width: "100%",
         height: 1500,
         frameBorder: 0
       }
     }
 
-  	
-    if (this.state.lineItems > 0) {
+    if (this.props.cart.webUrl != null) {
 
-         return (<div> 
-            <iframe {...inputs.checkoutFrame}/>
-          </div>);
+         return (
+          <Grid container spacing={24} style={{maxWidth:'100%', padding:24}}>
+            <Grid item xs={12}>
+              {buttonLink('Back to Cart', '/MyCart', 'left')}
+            </Grid>
+
+            <Grid item xs={12}>
+              <iframe {...inputs.checkoutFrame}/>
+            </Grid>
+          </Grid>);
 
     } else {
 
