@@ -52,6 +52,8 @@ void PerformHeepTasks();
 void AddRangeControl(char* controlName, int inputOutput, int highValue, int lowValue, int startingValue);
 void AddOnOffControl(char* controlName, int inputOutput, int startingValue);
 
+int GetControlValueByName(char* controlName);
+void SetControlValueByName(char* controlName, int newValue);
 
 // AddToggleControl(Name, INPUT/OUTPUT, Starting)
 // AddMomentaryControl(NAME, INPUT/OUTPUT)

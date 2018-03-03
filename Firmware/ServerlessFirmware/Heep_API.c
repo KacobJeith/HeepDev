@@ -194,3 +194,31 @@ void AddOnOffControl(char* controlName, int inputOutput, int startingValue)
 	newControl.curValue = startingValue;
 	AddControl(newControl);
 }
+
+int GetControlValueByName(char* controlName)
+{
+	for(int i = 0; i < numberOfControls; i++)
+	{
+		if(strcmp(controlName, controlList[i].controlName) == 0)
+		{
+			return controlList[i].curValue;
+		}
+	}
+
+	return 0;
+}
+
+void SetControlValueByName(char* controlName, int newValue)
+{
+	for(int i = 0; i < numberOfControls; i++)
+	{
+		if(strcmp(controlName, controlList[i].controlName) == 0)
+		{
+			if(controlList[i].curValue != newValue)
+			{
+				controlList[i].curValue = newValue;
+				SendOutputByID(controlList[i].controlID, controlList[i].curValue);
+			}
+		}
+	}
+}
