@@ -14,7 +14,7 @@ const styles = theme => ({
   }),
 });
 
-var defaultColor = '#FAFAFA'
+var defaultColor = '#FFF'
 
 var buttonRemote = [];
 var buttonPig = [];
@@ -286,14 +286,14 @@ class BedroomSVG extends React.Component{
   };
 
   render() {
+    const { classes } = this.props;
+
     const inputs = {
 			svg: {
 				dangerouslySetInnerHTML: {__html: $(this.svg).prop('outerHTML')},
         overflow: 'hidden',
 			},
     };
-
-    const { classes } = this.props;
 
     return (
       <Paper className={classes.root} elevation='3'>

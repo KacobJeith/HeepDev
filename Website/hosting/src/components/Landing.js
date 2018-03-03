@@ -22,8 +22,7 @@ class Landing extends React.Component {
         backgroundColor: '#00adee',
         imagePath: banners.testPhoto,
         containerHeight: 200,
-        headerText: 'Connect your world with Heep.',
-        subText: 'Heep was founded in February 2017 with the dream of ubiquitous connectivity. We thought long and hard about what the world needs to make that happen. Thus, the Heep operating system was born. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum'
+        headerText: 'Heepify Your World',
       },
 
       bedroomContainer: {
