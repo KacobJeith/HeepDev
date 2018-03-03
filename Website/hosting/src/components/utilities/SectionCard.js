@@ -38,14 +38,12 @@ class SectionCard extends React.Component {
     }
 
     return (
-      <Grid container {...inputs.outerContainer} direction ='column' justify="center" >
-        <Grid container spacing={0} justify="center" >
+      <Grid container {...inputs.outerContainer} direction ='column' justify="center" alignItems="center">
           <Grid item xs={8}>
             {this.headerText()}
             {this.subText()}
           </Grid>
         </Grid>
-      </Grid>
     )
   }
 }
