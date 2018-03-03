@@ -6,6 +6,7 @@ import * as Actions from '../../redux/actions'
 import { buttonLink } from '../utilities/ButtonUtils'
 
 import { Grid }   from 'material-ui';
+import { CircularProgress } from 'material-ui/Progress';
 
 const mapStateToProps = (state) => ({
   checkoutID: state.checkoutID,
@@ -14,7 +15,14 @@ const mapStateToProps = (state) => ({
 
 
 class Checkout extends React.Component {
-  
+
+  constructor(props){
+    super(props) 
+    this.state = {
+      loading: true
+    }
+  }
+
   render() {
 
     var inputs = {
@@ -22,7 +30,8 @@ class Checkout extends React.Component {
         src: this.props.cart.webUrl,
         width: "100%",
         height: 1500,
-        frameBorder: 0
+        frameBorder: 0,
+        onLoad: () => this.setState({loading: false})
       }
     }
 
@@ -36,6 +45,17 @@ class Checkout extends React.Component {
 
             <Grid item xs={12}>
               <iframe {...inputs.checkoutFrame}/>
+              {this.state.loading && 
+              <div style={{
+                position: "absolute",
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                maxWidth: '100%'
+              }}>
+                <CircularProgress size={350} />
+              </div>
+            }
             </Grid>
           </Grid>);
 
