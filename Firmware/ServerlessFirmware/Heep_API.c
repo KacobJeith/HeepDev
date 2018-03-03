@@ -222,3 +222,10 @@ void SetControlValueByName(char* controlName, int newValue)
 		}
 	}
 }
+
+void StartHeep(char* deviceName, heepByte deviceIcon)
+{
+	SetupHeepDevice(deviceName, deviceIcon);
+	SetupHeepTasks();
+  	CreateInterruptServer(); 
+}

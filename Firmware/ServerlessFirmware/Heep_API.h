@@ -49,6 +49,8 @@ void ControlDaemon();
 
 void PerformHeepTasks();
 
+void StartHeep(char* deviceName, heepByte deviceIcon);
+
 void AddRangeControl(char* controlName, int inputOutput, int highValue, int lowValue, int startingValue);
 void AddOnOffControl(char* controlName, int inputOutput, int startingValue);
 
