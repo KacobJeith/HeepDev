@@ -1,5 +1,8 @@
 #include "CommonDataTypes.h"
 
+#define INPUT 0
+#define OUTPUT 1
+
 // Define the input and output buffers for global accessibility
 extern unsigned char outputBuffer [];
 extern unsigned int outputBufferLastByte;
