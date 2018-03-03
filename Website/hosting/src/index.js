@@ -11,8 +11,9 @@ import * as auth from './firebase/FirebaseAuth'
 import * as shopify from './shopify/Shopify'
 import { composeWithDevTools } from 'redux-devtools-extension';
 import ReactGA from 'react-ga';
+import registerServiceWorker from './registerServiceWorker'
 
-import loading from './assets/heepwink3_gradient.mov';
+registerServiceWorker()
 
 const startState = {
   shopify: {},

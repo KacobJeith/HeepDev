@@ -3,6 +3,9 @@
 var path = require('path');
 var webpack = require('webpack');
 var ManifestPlugin = require('webpack-manifest-plugin');
+var SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
+
+const PUBLIC_PATH = 'https://heep-3cddb.firebaseapp.com';
 
 module.exports = {
   target: 'web',
@@ -16,10 +19,18 @@ module.exports = {
   },
 
   plugins: [
-    // OccurenceOrderPlugin is needed for webpack 1.x only
-    new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
-    new ManifestPlugin()
+    new ManifestPlugin(),
+    new SWPrecacheWebpackPlugin(
+      {
+        cacheId: 'heep',
+        dontCacheBustUrlsMatching: /\.\w{8}\./,
+        filename: 'service-worker.js',
+        minify: true,
+        navigateFallback: PUBLIC_PATH + '/index.html',
+        staticFileGlobsIgnorePatterns: [/\.map$/, /asset-manifest\.json$/],
+      }
+    ),
   ],
 
   devServer: {

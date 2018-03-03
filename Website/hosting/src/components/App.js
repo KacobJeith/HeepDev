@@ -85,6 +85,7 @@ class App extends React.Component {
 					<Reboot>
 			    	<MuiThemeProvider theme={Theme}>
 							<div {...inputs.container}>
+								<Route path="/" component={Footer}/>
 								<div {...inputs.content}>
 									<Route path="/" component={AppBar}/>
 									<Route exact path="/" component={Landing}/>
@@ -97,7 +98,6 @@ class App extends React.Component {
 									<Route exact path="/Developers" component={DownloadPage}/>
 									{loggedInRoutes}
 								</div>
-								<Route path="/" component={Footer}/>
 						    </div>
 				    </MuiThemeProvider>
 					</Reboot>
