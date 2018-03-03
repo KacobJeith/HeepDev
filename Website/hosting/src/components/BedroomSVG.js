@@ -2,8 +2,17 @@ import React from 'react';
 import { svgs } from '../assets/remote/SVGs';
 import { bedroomSVG } from '../assets/BedroomString';
 import $ from 'jquery';
-import TimelineMax from 'gsap/src/uncompressed/TimelineMax';
-import TweenMax from 'gsap/src/uncompressed/TweenMax';
+import { TimelineMax, TweenLite } from 'gsap';
+import { withStyles } from 'material-ui/styles';
+import { Paper } from 'material-ui'
+
+const styles = theme => ({
+  root: theme.mixins.gutters({
+    paddingTop: 16,
+    paddingBottom: 16,
+    margin: theme.spacing.unit * 3,
+  }),
+});
 
 var defaultColor = '#FAFAFA'
 
@@ -17,6 +26,7 @@ var buttonCactus = [];
 var buttonFlower = [];
 var buttonPail = [];
 
+var remote = [];
 var remoteBottom = [];
 var remoteBody = [];
 var remoteButtons = [];
@@ -58,15 +68,15 @@ var leafBodyLeft = [];
 var flowerPetals = [];
 var flowerStamens = [];
 
-
-
 class BedroomSVG extends React.Component{
 
   constructor(props) {
 		super(props);
-    var dummyDiv = document.createElement('div');
-		dummyDiv.innerHTML = bedroomSVG;
-    this.svg = $(dummyDiv).find('svg')[0];
+    var bedroomDiv = document.createElement('div');
+		bedroomDiv.innerHTML = bedroomSVG;
+    this.svg = $(bedroomDiv).find('svg')[0];
+    this.svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+    this.svg.setAttribute('viewBox', '0 0 1500 800')
 	};
 
   componentDidMount() {
@@ -107,6 +117,7 @@ class BedroomSVG extends React.Component{
   };
 
   getElements() {
+    remote = document.getElementById('remote');
     remoteBottom = document.getElementById('remoteBottom');
     remoteBody = document.getElementById('remoteBody');
     remoteButtons = document.getElementById('remoteButtons');
@@ -151,7 +162,7 @@ class BedroomSVG extends React.Component{
   };
 
   hoverRemote() {
-    var tl = new TimelineMax();
+    let tl = new TimelineMax();
     tl.to(remoteBottom, 1, {fill: '#333333', delay:0.6}, 0);
     tl.to(remoteBody, 1, {fill: '#666666', delay:0.6}, 0);
     tl.to(remoteButtons, 1, {fill: '#CCCCCC', delay:0.6}, 0);
@@ -161,7 +172,7 @@ class BedroomSVG extends React.Component{
   };
 
   leaveRemote() {
-    var tl = new TimelineMax();
+    let tl = new TimelineMax();
     tl.to(remoteBottom, 1, {fill: defaultColor, delay:0.6}, 0);
     tl.to(remoteBody, 1, {fill: defaultColor, delay:0.6}, 0);
     tl.to(remoteButtons, 1, {fill: defaultColor, delay:0.6}, 0);
@@ -171,7 +182,7 @@ class BedroomSVG extends React.Component{
   };
 
   hoverPig() {
-    var tl = new TimelineMax();
+    let tl = new TimelineMax();
     tl.to(pigBodyElements, 1, {fill: '#EDC3D9', delay:0.6}, 0);
     tl.to(pigSnoutFront, 1, {fill: '#FCEDF7', delay:0.6}, 0);
     tl.to(pigBackElements, 1, {fill: '#B27D97', delay:0.6}, 0);
@@ -182,7 +193,7 @@ class BedroomSVG extends React.Component{
   };
 
   leavePig() {
-    var tl = new TimelineMax();
+    let tl = new TimelineMax();
     tl.to(pigBodyElements, 1, {fill: defaultColor, delay:0.6}, 0);
     tl.to(pigSnoutFront, 1, {fill: defaultColor, delay:0.6}, 0);
     tl.to(pigBackElements, 1, {fill: defaultColor, delay:0.6}, 0);
@@ -193,7 +204,7 @@ class BedroomSVG extends React.Component{
   };
 
   hoverDiary() {
-    var tl = new TimelineMax();
+    let tl = new TimelineMax();
     tl.to(diaryBottom, 1, {fill: '#4A99CE', delay:0.6}, 0);
     tl.to(diaryPages, 1, {fill: '#FFF', delay:0.6}, 0);
     tl.to(diaryCover, 1, {fill: '#ADE9F2', delay:0.6}, 0);
@@ -201,7 +212,7 @@ class BedroomSVG extends React.Component{
   };
 
   leaveDiary() {
-    var tl = new TimelineMax();
+    let tl = new TimelineMax();
     tl.to(diaryBottom, 1, {fill: defaultColor, delay:0.6}, 0);
     tl.to(diaryPages, 1, {fill: defaultColor, delay:0.6}, 0);
     tl.to(diaryCover, 1, {fill: defaultColor, delay:0.6}, 0);
@@ -209,33 +220,33 @@ class BedroomSVG extends React.Component{
   };
 
   hoverSleep() {
-    var tl = new TimelineMax();
-    tl.to(sleepMount, 1, {fill: '#AAAAAA', delay:0.6}, 0);
+    let tl = new TimelineMax();
+    tl.to(sleepMount, 1, {fill: '#C6C6C6', delay:0.6}, 0);
     tl.to(sleepButton, 1, {fill: '#AA1721', delay:0.6}, 0);
   };
 
   leaveSleep() {
-    var tl = new TimelineMax();
+    let tl = new TimelineMax();
     tl.to(sleepMount, 1, {fill: defaultColor, delay:0.6}, 0);
     tl.to(sleepButton, 1, {fill: defaultColor, delay:0.6}, 0);
   }
 
   hoverDresser() {
-    var tl = new TimelineMax();
+    let tl = new TimelineMax();
     tl.to(dresserFrame, 1, {fill: '#627172', delay:0.6}, 0);
     tl.to(dresserDrawers, 1, {fill: '#505B5B', delay:0.6}, 0);
     tl.to(dresserKnobs, 1, {fill: '#627172', delay:0.6}, 0);
   };
 
   leaveDresser() {
-    var tl = new TimelineMax();
+    let tl = new TimelineMax();
     tl.to(dresserFrame, 1, {fill: defaultColor, delay:0.6}, 0);
     tl.to(dresserDrawers, 1, {fill: defaultColor, delay:0.6}, 0);
     tl.to(dresserKnobs, 1, {fill: defaultColor, delay:0.6}, 0);
   };
 
   hoverCactus() {
-    var tl = new TimelineMax();
+    let tl = new TimelineMax();
     tl.to(cactusPotBody, 1, {fill: '#603813', delay:0.6}, 0);
     tl.to(cactusPotLip, 1, {fill: '#965040', delay:0.6}, 0);
     tl.to(cactusPotTop, 1, {fill: '#a55447', delay:0.6}, 0);
@@ -243,7 +254,7 @@ class BedroomSVG extends React.Component{
   };
 
   leaveCactus() {
-    var tl = new TimelineMax();
+    let tl = new TimelineMax();
     tl.to(cactusPotBody, 1, {fill: defaultColor, delay:0.6}, 0);
     tl.to(cactusPotLip, 1, {fill: defaultColor, delay:0.6}, 0);
     tl.to(cactusPotTop, 1, {fill: defaultColor, delay:0.6}, 0);
@@ -251,7 +262,7 @@ class BedroomSVG extends React.Component{
   };
 
   hoverFlower() {
-    var tl = new TimelineMax();
+    let tl = new TimelineMax();
     tl.to(flowerPotBottom, 1, {fill: '#A55447', delay:0.6}, 0);
     tl.to(flowerPotLip, 1, {fill: '#965040', delay:0.6}, 0);
     tl.to(flowerPotTop, 1, {fill: '#603813', delay:0.6}, 0);
@@ -263,7 +274,7 @@ class BedroomSVG extends React.Component{
   };
 
   leaveFlower() {
-    var tl = new TimelineMax();
+    let tl = new TimelineMax();
     tl.to(flowerPotBottom, 1, {fill: defaultColor, delay:0.6}, 0);
     tl.to(flowerPotLip, 1, {fill: defaultColor, delay:0.6}, 0);
     tl.to(flowerPotTop, 1, {fill: defaultColor, delay:0.6}, 0);
@@ -272,19 +283,24 @@ class BedroomSVG extends React.Component{
     tl.to(leafBodyLeft, 1, {fill: defaultColor, delay:0.6}, 0);
     tl.to(flowerPetals, 1, {fill: defaultColor, delay:0.6}, 0);
     tl.to(flowerStamens, 1, {fill: defaultColor, delay:0.6}, 0);
-  }
+  };
 
   render() {
     const inputs = {
 			svg: {
 				dangerouslySetInnerHTML: {__html: $(this.svg).prop('outerHTML')},
-			}
+        overflow: 'hidden',
+			},
     };
 
+    const { classes } = this.props;
+
     return (
-      <div {...inputs.svg}/>
+      <Paper className={classes.root} elevation='3'>
+        <div {...inputs.svg}/>
+      </Paper>
     )
   };
 };
 
-export default BedroomSVG
+export default withStyles(styles)(BedroomSVG)

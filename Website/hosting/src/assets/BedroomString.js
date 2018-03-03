@@ -1,5 +1,5 @@
 export const bedroomSVG = `
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1500" height="800">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <g id="Static" stroke="#37474F" stroke-width="2" stroke-miterlimit="10">
     <path id="floor" fill="none" d="M1 570h1500"/>
     <g id="nightstand" fill="#FAFAFA">
