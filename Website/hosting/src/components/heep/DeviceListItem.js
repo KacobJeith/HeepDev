@@ -9,6 +9,7 @@ import { List,
          ListItemIcon, 
          ListItemSecondaryAction, 
          IconButton,
+         Tooltip,
          Divider,
          Collapse }                 from 'material-ui'
 import { withTheme }                from 'material-ui/styles'
@@ -23,7 +24,7 @@ var mapStateToProps = (state, ownProps) => ({
   device: state.devices[ownProps.deviceID]
 })
 
-class DeviceCard extends React.Component {
+class DeviceListItem extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -52,10 +53,22 @@ class DeviceCard extends React.Component {
              <List disablePadding key={this.props.deviceID + thisControl.controlName}>
                <ListItem  {...inputs.nested}>
                  <ListItemIcon>
-                   {thisControl.controlDirection == 0 ? <Redo /> : <Undo/>}
+                   {thisControl.controlDirection == 0 ? 
+                      <Tooltip id='tooltip-input' title='Input' placement="left"> 
+                        <Redo /> 
+                      </Tooltip>: 
+                      <Tooltip id='tooltip-output' title='Output' placement="left"> 
+                        <Undo/>
+                      </Tooltip>}
                  </ListItemIcon>
                  <ListItemIcon>
-                   {thisControl.controlType == 1 ?  <LinearScale/> : <PowerSettingsNew /> }
+                   {thisControl.controlType == 1 ?  
+                    <Tooltip id='tooltip-range' title='Range' placement="left"> 
+                        <LinearScale/> 
+                    </Tooltip> : 
+                    <Tooltip id='tooltip-onoff' title='On/Off' placement="left"> 
+                        <PowerSettingsNew /> 
+                    </Tooltip> }
                  </ListItemIcon>
                  <ListItemText inset secondary={thisControl.controlName} />
                </ListItem>
@@ -112,5 +125,5 @@ var mapDispatchToProps = (dispatch) => {
   return bindActionCreators(actions, dispatch)
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withTheme()(DeviceCard)))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withTheme()(DeviceListItem)))
 

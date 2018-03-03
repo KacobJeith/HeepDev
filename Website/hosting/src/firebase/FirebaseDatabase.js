@@ -39,14 +39,23 @@ const readDevice = (deviceID) => {
 const retrievePlaces = (snapshot) => {
 
 	snapshot.forEach( function(snapChild) {
+
 		readPlace(snapChild.key);
+		
 	});
 }
 
 const readPlace = (placeID) => {
 	let dataFromFirebaseRef = firebase.database().ref('/places/' + placeID).on('value', function(placeSnapshot) {
 
-		setup.store.dispatch(actions.addPlace(placeSnapshot.key, placeSnapshot.val()));
+		if (placeSnapshot.val()) {
+			
+			setup.store.dispatch(actions.addPlace(placeSnapshot.key, placeSnapshot.val()));
+
+		}  else {
+			setup.store.dispatch(actions.deletePlace(placeSnapshot.key));
+		}
+		
 	});
 }
 
@@ -101,6 +110,46 @@ export const associateLegacyProfileName = (uid) => {
 		firebaseAuth.updateUserProfile({displayName: snapshot.val()});
 
 	});
+}
+
+export const saveNewPlace = (placeName, placeSSID, placeSSIDPassword) => {
+	const placeRef = firebase.database().ref('/places').push();
+
+	const placeObject = {
+		name: placeName,
+		placeID:  placeRef.key,
+		networks: {
+			wifi:{
+				ssid: placeSSID,
+				password: placeSSIDPassword
+			}
+		}
+	}
+
+	const placeUserObject = {
+		numDevices: 0,
+		placeID:  placeRef.key,
+		radius: 100,
+		x: 120,
+		y:120
+	}
+
+	var user = firebaseAuth.currentUser();
+
+	firebase.database().ref('/places/' + placeRef.key).set(placeObject);
+	firebase.database().ref('/users/' + user.uid + '/places/' + placeRef.key).set(placeUserObject);
+
+	console.log('Saved new Place: ', placeName);
+}
+
+export const deletePlace = (placeID) => {
+
+	var user = firebaseAuth.currentUser();
+
+	firebase.database().ref('/places/' + placeID).remove();
+	firebase.database().ref('/users/' + user.uid + '/places/' + placeID).remove();
+
+	console.log('Deleted Place: ', placeID);
 }
 
 export const updatePlaceName = (placeID, name) => {

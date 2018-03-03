@@ -6,11 +6,12 @@ import * as actions           from '../../redux/actions'
 import * as auth              from '../../firebase/FirebaseAuth'
 
 import { withTheme }       from 'material-ui/styles'
-import { Grid, Typography, Avatar, Divider, IconButton, List, ListItem, ListItemText, ListItemIcon}  from 'material-ui'
-import { Edit, Add }  from 'material-ui-icons'
+import { Grid, Tooltip, Typography, Avatar, Divider, IconButton, List, ListItem, ListItemText, ListItemIcon}  from 'material-ui'
+import { Edit }  from 'material-ui-icons'
 
-import DeviceCard from '../heep/DeviceCard'
-import PlaceCard from '../heep/PlaceCard'
+import DeviceListItem from '../heep/DeviceListItem'
+import PlaceListItem from '../heep/PlaceListItem'
+import AddPlaceModal from './AddPlaceModal'
 
 var mapStateToProps = (state) => ({
   loginStatus: state.loginStatus,
@@ -47,30 +48,38 @@ class UserAccount extends React.Component {
       <div>
         {this.titleEditDivider(this.props.user.displayName, () => console.log('edit username or email'))}
 
-        <Typography variant="caption" gutterBottom paragraph wrap>
+        <Typography variant="body1" style={{marginTop: this.props.theme.spacing.unit}}>
           {this.props.user.email}
         </Typography>
       </div>
     )
   }
 
-  titleEditDivider(title, onClick) {
+  titleEditDivider(title, onClick, edit = true) {
 
     return (
       <div>
         <Grid container alignItems='center' >
           <Grid item xs>
-            <Typography variant="title">
+            <Typography variant="title" gutterBottom={!edit}>
               {title}
             </Typography>
           </Grid>
+
           <Grid item xs>
-            <IconButton 
-              style={{float:'right'}}
-              onClick={onClick}
-            >
-              <Edit />
-            </IconButton>
+            {edit ? 
+              
+                <IconButton 
+                  style={{float:'right'}}
+                  onClick={onClick}
+                >
+                  <Tooltip id="tooltip-edit" title="Edit">
+                    <Edit />
+                  </Tooltip>
+                </IconButton> 
+
+              : <div/>
+            }
           </Grid>
         </Grid>
 
@@ -83,16 +92,13 @@ class UserAccount extends React.Component {
 
     return(
       <div>
-        {this.titleEditDivider('Heep Places', () => console.log('Add a New Place'))}
-        {Object.keys(this.props.places).map((placeID) => (
-          <PlaceCard placeID={placeID} key={placeID}/>
-        ))}
-        <ListItem button color='secondary'>
-          <ListItemIcon>
-            <Add/>
-          </ListItemIcon>
-          <ListItemText inset secondary='Add a New Place' />
-        </ListItem>
+        {this.titleEditDivider('My Places', () => console.log('Edit Places'), false)}
+        <List>
+          {Object.keys(this.props.places).map((placeID) => (
+            <PlaceListItem placeID={placeID} key={placeID}/>
+          ))}
+          <AddPlaceModal/>
+        </List>
       </div>
     )
   }
@@ -100,10 +106,10 @@ class UserAccount extends React.Component {
   userDevices() {
     return(
       <div>
-        {this.titleEditDivider('Heep Devices', () => console.log('Edit Device Details Remotely'))}
-        <List dense>
+        {this.titleEditDivider('My Devices', () => console.log('Edit Device Details Remotely'), false)}
+        <List >
           {Object.keys(this.props.devices).map((deviceID) => (
-            <DeviceCard deviceID={deviceID} key={deviceID}/>
+            <DeviceListItem deviceID={deviceID} key={deviceID}/>
           ))}
         </List>
       </div>
