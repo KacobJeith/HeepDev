@@ -15,7 +15,8 @@ import Button from 'material-ui/Button'
 import AddShoppingCart from 'material-ui-icons/AddShoppingCart'
 
 var mapStateToProps = (state, ownProps) => ({
-  product: state.shopify[ownProps.match.params.productID]
+  product: state.shopify[ownProps.match.params.productID],
+  variantID: ownProps.match.params.productID
 })
 
 const styles = theme => ({
@@ -120,7 +121,7 @@ class ProductDetails extends React.Component {
                 color='secondary'
                 className={classes.button}
                 size='small'
-                onClick={()=>{this.props.addProductToCart(this.props.product.id)}}
+                onClick={()=>{this.props.addProductToCart(this.props.variantID)}}
               >
                 <AddShoppingCart
                   className={classes.leftIcon}

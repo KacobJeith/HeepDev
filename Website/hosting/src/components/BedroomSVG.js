@@ -296,7 +296,7 @@ class BedroomSVG extends React.Component{
     };
 
     return (
-      <Paper className={classes.root} elevation='3'>
+      <Paper className={classes.root} elevation={3}>
         <div {...inputs.svg}/>
       </Paper>
     )

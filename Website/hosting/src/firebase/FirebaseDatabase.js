@@ -166,7 +166,7 @@ export const saveCheckoutID = (checkoutID) => {
 
 	var user = firebaseAuth.currentUser();
 
-	if ( user.uid ) {
+	if ( user && user.uid ) {
 		console.log("Saving checkoutID to user");
 		firebase.database().ref('users/' + user.uid + '/store/checkoutID').set(checkoutID);
 	} else {
