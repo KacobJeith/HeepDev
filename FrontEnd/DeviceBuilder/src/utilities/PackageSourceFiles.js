@@ -2,41 +2,7 @@ import fileDownload from 'react-file-download'
 import JSZip from 'jszip'
 import randomNumber from 'random-number-csprng'
 
-import Simulation_HeepCommsH         from '../../../../Firmware/ServerlessFirmware/Simulation_HeepComms.h'
-import Simulation_NonVolatileMemoryH from '../../../../Firmware/ServerlessFirmware/Simulation_NonVolatileMemory.h'
-import Simulation_TimerH             from '../../../../Firmware/ServerlessFirmware/Simulation_Timer.h'
-
-import Simulation_HeepCommsCPP         from '../../../../Firmware/ServerlessFirmware/Simulation_HeepComms.cpp'
-import Simulation_NonVolatileMemoryCPP from '../../../../Firmware/ServerlessFirmware/Simulation_NonVolatileMemory.cpp'
-import Simulation_TimerCPP           from '../../../../Firmware/ServerlessFirmware/Simulation_Timer.cpp'
-
-import ESP8266_HeepCommsH         from '../../../../Firmware/ServerlessFirmware/ESP8266_HeepComms.h'
-import ESP8266_NonVolatileMemoryH from '../../../../Firmware/ServerlessFirmware/ESP8266_NonVolatileMemory.h'
-
-import ESP8266_HeepCommsCPP         from '../../../../Firmware/ServerlessFirmware/ESP8266_HeepComms.cpp'
-import ESP8266_NonVolatileMemoryCPP from '../../../../Firmware/ServerlessFirmware/ESP8266_NonVolatileMemory.cpp'
-
-import Arduino_TimerH             from '../../../../Firmware/ServerlessFirmware/Arduino_Timer.h'
-import Arduino_TimerCPP           from '../../../../Firmware/ServerlessFirmware/Arduino_Timer.cpp'
-
-
-
 import { sys_phy_files } from '../utilities/SystemPHYCompatibilities'
-
-var sourceFiles = {
-  Simulation_HeepCommsH: Simulation_HeepCommsH,
-  Simulation_NonVolatileMemoryH: Simulation_NonVolatileMemoryH,
-  Simulation_TimerH: Simulation_TimerH,
-  Simulation_HeepCommsCPP: Simulation_HeepCommsCPP,
-  Simulation_NonVolatileMemoryCPP: Simulation_NonVolatileMemoryCPP,
-  Simulation_TimerCPP: Simulation_TimerCPP,
-  ESP8266_HeepCommsH: ESP8266_HeepCommsH,
-  ESP8266_HeepCommsCPP: ESP8266_HeepCommsCPP,
-  ESP8266_NonVolatileMemoryH: ESP8266_NonVolatileMemoryH,
-  ESP8266_NonVolatileMemoryCPP: ESP8266_NonVolatileMemoryCPP,
-  Arduino_TimerH: Arduino_TimerH,
-  Arduino_TimerCPP: Arduino_TimerCPP
-}
 
 export const packageSourceFiles = (deviceDetails, controls) => {
 
@@ -67,8 +33,6 @@ export const packageSourceFiles = (deviceDetails, controls) => {
       console.log("Did not match systemType");
   }
 
-  zip = getPHYforSys(deviceDetails.systemType, deviceDetails.physicalLayer, zip);
-
   var nameZip = deviceDetails.deviceName + '.zip';
 
   setIDAndMAC((deviceIDarray, MACAddressArray) => {
@@ -88,11 +52,6 @@ const packageESP8266Files = (deviceDetails, controls, zip) => {
 
   zip.file(deviceDetails.deviceName + ".ino", composeInoFile(deviceDetails, controls));
 
-  zip.file('ESP8266_NonVolatileMemory.h', ESP8266_NonVolatileMemoryH);
-  zip.file('Arduino_Timer.h', Arduino_TimerH);
-  zip.file('ESP8266_NonVolatileMemory.cpp', ESP8266_NonVolatileMemoryCPP);
-  zip.file('Arduino_Timer.cpp', Arduino_TimerCPP);
-
   return zip
 }
 
@@ -100,27 +59,7 @@ const packageSimulationFiles = (deviceDetails, controls, zip) => {
 
   zip.file(deviceDetails.deviceName + ".ino", composeInoFile(deviceDetails, controls));
 
-  zip.file('Simulation_NonVolatileMemory.h', Simulation_NonVolatileMemoryH);
-  zip.file('Simulation_Timer.h', Simulation_TimerH);
-  zip.file('Simulation_NonVolatileMemory.cpp', Simulation_NonVolatileMemoryCPP);
-  zip.file('Simulation_Timer.cpp', Simulation_TimerCPP);
-
   return zip
-}
-
-const getPHYforSys = (sys, phy, zip) => {
-
-  var physicalLayerFilenameRefH = sys_phy_files[sys][phy]["HeaderFile"];
-  var physicalLayerFileNameRefCPP = sys_phy_files[sys][phy]["CPPFile"];
-
-  var headerSourceRef = physicalLayerFilenameRefH.split('.')[0] + "H";
-  var cppSourceRef = physicalLayerFileNameRefCPP.split('.')[0] + "CPP";
-
-  console.log(headerSourceRef);
-  console.log(cppSourceRef);
-
-  zip.file(physicalLayerFileNameRefCPP, sourceFiles[cppSourceRef]);
-  return zip.file(physicalLayerFilenameRefH, sourceFiles[headerSourceRef]);
 }
 
 const composeInoFile = (deviceDetails, controls) => {
