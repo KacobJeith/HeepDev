@@ -97,7 +97,8 @@ export default function(state = initialState, action) {
 
       const checkoutID = state.shoppingCart.id;
 
-      database.pushCartToFulfillmentQueue()
+
+      database.pushCartToFulfillmentQueue(checkoutID, state.cartContext);
 
       return state
       

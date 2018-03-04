@@ -242,14 +242,20 @@ const base64ToArrayBuffer = (base64) => {
 
 export const pushCartToFulfillmentQueue = (checkoutID, variantIDsWithPlaceIDs) => {
 	
-	const checkoutPackage = {
-		checkoutID: checkoutID, 
-		userID: firebaseAuth.currentUser().uid,
-		devices: variantIDsWithPlaceIDs
-	}
+	var user = firebaseAuth.currentUser();
 
+	if (user) {
+		const checkoutPackage = {
+			checkoutID: checkoutID, 
+			userID: user.uid,
+			devices: variantIDsWithPlaceIDs
+		}
+		
+		firebase.database().ref('store/queue').push(checkoutPackage);
+	} else {
+		console.log("User must log in to push contextual data to queue");
+	}
 	
-	firebase.database().ref('store/queue').push(checkoutPackage);
 }
 
 
