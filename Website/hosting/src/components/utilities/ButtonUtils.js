@@ -9,3 +9,11 @@ export const buttonLink = (text, path, float = 'right') => (
       </Button>
     </Link>
   )
+
+export const buttonLinkWithAction = (text, path, callback, float = 'right') => (
+    <Link to={path} style={{textDecoration: 'none', float: float}}>
+      <Button variant='raised' color="primary" onClick={callback}>
+        {text}
+      </Button>
+    </Link>
+  )

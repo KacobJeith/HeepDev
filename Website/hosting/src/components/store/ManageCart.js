@@ -8,7 +8,7 @@ import { Grid, Typography, Paper, Divider }   from 'material-ui';
 import * as Actions         from '../../redux/actions'
 import CartItemCard          from './CartItemCard'
 import { withTheme } from 'material-ui/styles';
-import { buttonLink } from '../utilities/ButtonUtils'
+import { buttonLink, buttonLinkWithAction } from '../utilities/ButtonUtils'
 
 var mapStateToProps = (state) => ({
   cart: state.shoppingCart,
@@ -82,7 +82,7 @@ class ManageCart extends React.Component {
             {this.cartSubtotal()}
           </Paper>
           <Grid item xs={12} style={{marginTop: this.props.theme.spacing.unit * 4}}>
-            {buttonLink('Proceed to Checkout', '/Checkout' )}
+            {buttonLinkWithAction('Proceed to Checkout', '/Checkout', () => this.props.pushCartToFulfillmentQueue() )}
           </Grid>
         </Grid>
       </Grid>

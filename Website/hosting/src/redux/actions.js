@@ -103,3 +103,7 @@ export const deletePlace = (placeID) => ({
 	type: 'DELETE_PLACE',
 	placeID
 })
+
+export const pushCartToFulfillmentQueue = () => ({
+	type: 'PUSH_CART_TO_QUEUE'
+})

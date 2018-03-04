@@ -60,7 +60,11 @@ export default function(state = initialState, action) {
 
       return Immutable.Map(state).set('shoppingCart', action.cart).toJS()
 
-      return 
+    case 'PUSH_CART_TO_QUEUE' :
+
+      console.log('Pushing cart');
+
+      return state
       
     case 'SCROLL':
 
