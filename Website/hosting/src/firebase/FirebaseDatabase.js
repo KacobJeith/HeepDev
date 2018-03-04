@@ -240,4 +240,16 @@ const base64ToArrayBuffer = (base64) => {
     return bytes;
 }
 
+export const pushCartToFulfillmentQueue = (checkoutID, variantIDsWithPlaceIDs) => {
+	
+	const checkoutPackage = {
+		checkoutID: checkoutID, 
+		userID: firebaseAuth.currentUser().uid,
+		devices: variantIDsWithPlaceIDs
+	}
+
+	
+	firebase.database().ref('store/queue').push(checkoutPackage);
+}
+
 

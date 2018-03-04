@@ -24,8 +24,10 @@ var mapStateToProps = (state, ownProps) => ({
   product: state.shopify[ownProps.productID],
   productID: ownProps.productID,
   places: state.places,
+  associatedPlace: state.cartContext[ownProps.productID],
   quantity: ownProps.quantity,
-  titleBar: ownProps.titleBar
+  titleBar: ownProps.titleBar,
+
 })
 
 const styles = theme => ({
@@ -40,7 +42,6 @@ class CartItemCard extends React.Component {
     this.state = {
       hover: false,
       deletionHover: false,
-      associatedPlace: Object.keys(props.places).length > 0 ? Object.keys(props.places)[0] : 'none',
       quantity: props.quantity
     }
   }
@@ -74,7 +75,7 @@ class CartItemCard extends React.Component {
     return (
       <FormControl {...inputs.formControl}>
         <Select
-          value={this.state.associatedPlace}
+          value={this.props.associatedPlace}
           onChange={this.handleChange}
           inputProps={{
             name: 'associatedPlace',

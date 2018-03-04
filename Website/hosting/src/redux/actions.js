@@ -104,6 +104,12 @@ export const deletePlace = (placeID) => ({
 	placeID
 })
 
+export const updateCartContext = (variantID, placeID) => ({
+	type: 'UPDATE_CART_CONTEXT',
+	variantID, 
+	placeID
+})
+
 export const pushCartToFulfillmentQueue = () => ({
 	type: 'PUSH_CART_TO_QUEUE'
 })

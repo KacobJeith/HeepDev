@@ -56,13 +56,39 @@ export default function(state = initialState, action) {
 
     case 'SAVE_CART_LOCALLY' :
 
-        var newState = Immutable.Map(state.shoppingCart).toJS();
+        var trueLineItemIDs = [];
+        for (var i = 0; i < action.cart.lineItems.length; i++) {
+          trueLineItemIDs.push(action.cart.lineItems[i].variant.id);
+        }
 
-      return Immutable.Map(state).set('shoppingCart', action.cart).toJS()
+        var knownLineItemIDs = Object.keys(state.cartContext);
+
+        var newCartContext = Immutable.Map(state.cartContext).toJS();
+
+        for (var lineItemID in trueLineItemIDs) {
+          if (!(lineItemID in newCartContext)) {
+
+            var value = trueLineItemIDs[lineItemID];
+
+            if (Object.keys(state.places).length > 0) {
+
+              newCartContext[value] = Object.keys(state.places)[0];
+
+            } else {
+              newCartContext[value] = 'none';
+            }
+          }
+        }
+
+      return Immutable.Map(state).set('shoppingCart', action.cart).set('cartContext', newCartContext).toJS()
 
     case 'PUSH_CART_TO_QUEUE' :
 
       console.log('Pushing cart');
+
+      const checkoutID = state.shoppingCart.id;
+
+      database.pushCartToFulfillmentQueue()
 
       return state
       

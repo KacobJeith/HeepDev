@@ -24,6 +24,7 @@ const startState = {
   shoppingCart: {
     lineItems:[]
   },
+  cartContext:{},
   providers: {},
   devices: {},
   places: {},
