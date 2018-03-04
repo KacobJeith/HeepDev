@@ -40,7 +40,7 @@ class CartItemCard extends React.Component {
     this.state = {
       hover: false,
       deletionHover: false,
-      associatedPlace: 'none',
+      associatedPlace: Object.keys(props.places).length > 0 ? Object.keys(props.places)[0] : 'none',
       quantity: props.quantity
     }
   }
