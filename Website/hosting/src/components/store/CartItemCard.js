@@ -194,27 +194,27 @@ class CartItemCard extends React.Component {
     return (
        <Grid item xs={12} >
          <Grid container alignItems='center' direction='row' justify='space-between' spacing={16} >
-           <Grid item xs={12} sm={2} >
+           <Grid item xs={2}>
              {this.props.titleBar ? this.titleBarItem() : this.imageWithOverlay() }
            </Grid>
 
-           <Grid item xs={12} sm={4} md={3} >
+           <Grid item xs={3} >
              {this.props.titleBar ? this.titleBarItem('Product') : this.productTitle()}
            </Grid>
 
-           <Grid item xs={12} sm={3} md={2}>
+           <Grid item xs={2} >
              {this.props.titleBar ? this.titleBarItem('Place') : this.associatedPlace()}
            </Grid>
 
-           <Grid item xs={12} sm={1} >
+           <Grid item xs={1} >
              {this.props.titleBar ? this.titleBarItem('Price') : this.productPrice()}
            </Grid>
 
-           <Grid item xs={12} sm={3} md={1}>
+           <Grid item xs={1} >
              {this.props.titleBar ? this.titleBarItem('Quantity') : this.productQuantity()}
            </Grid>
 
-           <Grid item xs={12} sm={3} md={1}>
+           <Grid item xs={1} >
              {this.props.titleBar ? this.titleBarItem('Total Price') : this.totalPrice()}
            </Grid>
 

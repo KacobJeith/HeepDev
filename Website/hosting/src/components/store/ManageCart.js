@@ -60,7 +60,7 @@ class ManageCart extends React.Component {
 
     <Grid container justify='center' style={{marginTop: 20, maxWidth:'100%'}}>
       <Grid item xs={12} sm={11} style={{padding:24}}>
-        <Grid container direction='row' alignItems='stretch' spacing={16}>
+        <Grid container direction='row' alignItems='stretch' spacing={16} style={{minWidth:770}}>
           <Grid item xs={12}>
             {this.cartTitleLine()}
           </Grid>
