@@ -82,6 +82,15 @@ export default function(state = initialState, action) {
 
       return Immutable.Map(state).set('shoppingCart', action.cart).set('cartContext', newCartContext).toJS()
 
+    case 'UPDATE_CART_CONTEXT' :
+
+      var newCartContext = Immutable.Map(state.cartContext).toJS();
+
+      newCartContext[action.variantID] = action.placeID;
+
+
+      return Immutable.Map(state).set('cartContext', newCartContext).toJS()
+
     case 'PUSH_CART_TO_QUEUE' :
 
       console.log('Pushing cart');

@@ -61,6 +61,10 @@ class CartItemCard extends React.Component {
     this.setState({ [event.target.name]: event.target.value });
   };
 
+  handlePlaceUpdate = event => {
+    this.props.updateCartContext(this.props.productID, event.target.value);
+  }
+
   associatedPlace() {
 
     const inputs = {
@@ -76,7 +80,7 @@ class CartItemCard extends React.Component {
       <FormControl {...inputs.formControl}>
         <Select
           value={this.props.associatedPlace}
-          onChange={this.handleChange}
+          onChange={this.handlePlaceUpdate}
           inputProps={{
             name: 'associatedPlace',
             id: 'associated-place',
