@@ -66,9 +66,9 @@ export default function(state = initialState, action) {
         var newCartContext = Immutable.Map(state.cartContext).toJS();
 
         for (var lineItemID in trueLineItemIDs) {
-          if (!(lineItemID in newCartContext)) {
+          var value = trueLineItemIDs[lineItemID];
 
-            var value = trueLineItemIDs[lineItemID];
+          if (!(value in newCartContext)) {
 
             if (Object.keys(state.places).length > 0) {
 
