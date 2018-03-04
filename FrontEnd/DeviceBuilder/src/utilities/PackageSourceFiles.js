@@ -126,23 +126,17 @@ const getPHYforSys = (sys, phy, zip) => {
 const composeInoFile = (deviceDetails, controls) => {
 
     var fileContent = `
-#include "HeepDeviceDefinitions.h"
-
-char deviceName [] = "` + deviceDetails.deviceName + `";\n\n`
+#include "HeepDeviceDefinitions.h"\n`
 + initializeControls(controls)
-+ initializeOnChange()
 + createHardwareControlFunctionsArduinoSyntax(controls)
-+ CreateHardwareReadFunctionsOnChange(controls)
++ CreateHardwareReadFunctions(controls)
 + CreateHardwareWriteFunctions(controls)
 + `void setup()
 {
 
-  Serial.begin(115200);
-  SetupHeepDevice(deviceName, ` + deviceDetails.iconSelected + `);\n\n  `  
+  Serial.begin(115200);\n`
 + setControls(controls)
-+ `SetupHeepTasks();
-  InitializeControlHardware();
-  CreateInterruptServer(); 
++ `StartHeep("`+ deviceDetails.deviceName + `", ` + deviceDetails.iconSelected + `);\n\n
 }
 
 void loop()
@@ -162,11 +156,6 @@ var getPinDefineName = (control) => {
 var getPinDefine = (control) => {
   var pinDefineStr = `\n#define `+ getPinDefineName(control) + ` ` + control.pinNumber;
   return pinDefineStr;
-}
-
-var initializeOnChange = () => {
-  var onChangeVariable = `\nunsigned int lastSetting = 0;\n`
-  return onChangeVariable
 }
 
 var GetTabCharacter = () => {
@@ -220,35 +209,6 @@ var CreateHardwareReadFunctions = (controls) => {
       hardwareReadFunctions += `int ` + GetReadFunctionName(controls[i]) + `(){\n`
         + GetTabCharacter() + `int currentSetting = ` + notSign + controls[i]['analogOrDigital'] + `Read(` + getPinDefineName(controls[i]) + `);\n`
         + GetTabCharacter() + `SendOutputByIDNoAnalytics(` + controls[i].controlID + `,currentSetting);\n`
-        + GetTabCharacter() + `return currentSetting;\n`
-        + `}\n\n`;
-    }
-  }
-
-  return hardwareReadFunctions;
-
-}
-
-var CreateHardwareReadFunctionsOnChange = (controls) => {
-  var hardwareReadFunctions = ``;
-
-  // output == 1, input == 0 
-  // TODO: Make control direction into an enum with defined numbers just like Unity
-  for (var i in controls) {
-
-    var notSign = ``;
-    if(controls[i].pinNegativeLogic){
-      notSign = `!`;
-    }
-
-    // Only react to outputs. Heep Outputs are Hardware Inputs
-    if(controls[i].controlDirection == 1){
-      hardwareReadFunctions += `int ` + GetReadFunctionName(controls[i]) + `(){\n`
-        + GetTabCharacter() + `int currentSetting = ` + notSign + controls[i]['analogOrDigital'] + `Read(` + getPinDefineName(controls[i]) + `);\n`
-        + GetTabCharacter() + `if (currentSetting != lastSetting) {\n`
-        + GetTabCharacter() + GetTabCharacter() + `SendOutputByIDNoAnalytics(` + controls[i].controlID + `,currentSetting);\n`
-        + GetTabCharacter() + GetTabCharacter() + `lastSetting = currentSetting;\n`
-        + GetTabCharacter() + `}\n\n`
         + GetTabCharacter() + `return currentSetting;\n`
         + `}\n\n`;
     }
@@ -314,25 +274,60 @@ const initializeControls = (controls) => {
 
   var controlDefs = ``;
   for (var i in controls) {
-    controlDefs += `char controlName` + i + ` [] = "` + controls[i].controlName + `";\nControl control` + i + `;` + getPinDefine(controls[i]) + `\n\n`
+    controlDefs += getPinDefine(controls[i]) + `\n\n`
   }
 
   return controlDefs
 
 }
 
+const createOnOffControl = (control) => {
+  var controlStringToReturn = ``;
+
+   controlStringToReturn += `AddOnOffControl("` + control.controlName + `",`;
+
+   if(control.controlDirection == 0){
+    controlStringToReturn += "HEEP_INPUT,";
+   }
+   else {
+    controlStringToReturn += "HEEP_OUTPUT,";
+   }
+
+   controlStringToReturn += control.curValue + `);\n`;
+   
+   return controlStringToReturn;
+}
+
+const createRangeControl = (control) => {
+   var controlStringToReturn = ``;
+
+   controlStringToReturn += `AddRangeControl("` + control.controlName + `",`;
+
+   if(control.controlDirection == 0){
+    controlStringToReturn += "HEEP_INPUT,";
+   }
+   else {
+    controlStringToReturn += "HEEP_OUTPUT,";
+   }
+
+   controlStringToReturn += control.highValue + `,`;
+   controlStringToReturn += control.lowValue + `,`;
+   controlStringToReturn += control.curValue + `);\n`;
+   
+   return controlStringToReturn;
+}
+
 const setControls = (controls) => {
   var controlConfigs = ``;
   
   for (var i in controls) {
-    controlConfigs += `control` + i + `.controlName = ` + `controlName` + i + `;\n  `;
-    controlConfigs += `control` + i + `.controlID = ` + controls[i].controlID + `;\n  `;
-    controlConfigs += `control` + i + `.controlDirection = ` + controls[i].controlDirection + `;\n  `;
-    controlConfigs += `control` + i + `.controlType = ` + controls[i].controlType + `;\n  `;
-    controlConfigs += `control` + i + `.highValue = ` + controls[i].highValue + `;\n  `;
-    controlConfigs += `control` + i + `.lowValue = ` + controls[i].lowValue + `;\n  `;
-    controlConfigs += `control` + i + `.curValue = ` + controls[i].curValue + `;\n  `;
-    controlConfigs += `AddControl(control` + i + `);\n\n  `;
+    console.log("Control Type: " + controls[i].controlType);
+    if(controls[i].controlType == 0){
+      controlConfigs += createOnOffControl(controls[i]);
+    }
+    else if(controls[i].controlType == 1){
+      controlConfigs += createRangeControl(controls[i]);
+    }
   }
 
   return controlConfigs
