@@ -3,7 +3,13 @@ import { bindActionCreators } from 'redux'
 import { connect }            from 'react-redux'
 import { withRouter }         from 'react-router-dom'
 
-import { Grid }   from 'material-ui';
+import { List,
+         Grid}                 from 'material-ui'
+
+import {  ExpandLess, 
+          ExpandMore,
+          Home }   from 'material-ui-icons'
+import { withTheme}                from 'material-ui/styles'
 
 import * as Actions         from '../../redux/actions'
 import QueueCard          from './QueueCard'
@@ -20,9 +26,13 @@ class FulfillmentQueue extends React.Component {
         <Grid container justify='center' style={{marginTop: 20}}>
           <Grid item xs={10} style={{padding:24}}>
             <Grid container direction='row' alignItems='stretch' spacing={16}>
-              {Object.keys(this.props.queue).map((queueID) => (
-                <QueueCard key={queueID} queueID={queueID}/>)
-              )}
+
+              <List>
+                {Object.keys(this.props.queue).map((queueID)=> (
+                    <QueueCard queueID={queueID} key={queueID}/>
+                  ))}
+              </List>
+              
             </Grid>
           </Grid>
         </Grid>
@@ -36,4 +46,4 @@ var mapDispatchToProps = (dispatch) => {
   return bindActionCreators(Actions, dispatch)
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(FulfillmentQueue))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withTheme()(FulfillmentQueue)))
