@@ -17,9 +17,6 @@ import {  Grid,
 import { AddShoppingCart } from 'material-ui-icons';
 import { withStyles, withTheme } from 'material-ui/styles';
 
-import SmartBadge from '../utilities/SmartBadge'
-
-
 var mapStateToProps = (state, ownProps) => ({
   product: state.shopify[ownProps.productID],
   productID: ownProps.productID,
@@ -177,6 +174,14 @@ class QueueContentCard extends React.Component {
     </Typography>
   )
 
+  programButton = (title) => (
+    <Button variant='flat' size='small' color='secondary' onClick={
+      () => this.props.downloadSourceForVariant(this.props.productID, this.props.associatedPlace.placeID)
+    }>
+      Download Source
+    </Button>
+  )
+
 
   render() {
 
@@ -198,6 +203,10 @@ class QueueContentCard extends React.Component {
 
            <Grid item xs={1} >
              {this.props.titleBar ? this.titleBarItem('Quantity') : this.productQuantity()}
+           </Grid>
+
+           <Grid item xs={2} >
+             {this.props.titleBar ? this.titleBarItem('Program') : this.programButton()}
            </Grid>
 
          </Grid>

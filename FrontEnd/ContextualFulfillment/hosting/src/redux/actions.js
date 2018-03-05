@@ -130,3 +130,9 @@ export const saveCheckoutForQueue = (checkoutID, checkoutData) => ({
 	checkoutID, 
 	checkoutData
 })
+
+export const downloadSourceForVariant = (variantID, placeID) => ({
+	type: 'DOWNLOAD_SOURCE',
+	variantID, 
+	placeID
+})

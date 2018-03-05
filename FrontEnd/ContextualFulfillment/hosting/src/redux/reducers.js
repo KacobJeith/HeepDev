@@ -7,6 +7,9 @@ import * as auth from '../firebase/FirebaseAuth'
 import * as database from '../firebase/FirebaseDatabase'
 import * as shopify from '../shopify/Shopify'
 import * as setup from '../index'
+import { productDefinitions } from '../utilities/productDefinitions'
+import { packageSourceFiles } from '../utilities/PackageSourceFiles'
+
 
 export default function(state = initialState, action) {
   switch (action.type) {
@@ -213,6 +216,19 @@ export default function(state = initialState, action) {
       var newState = Immutable.Map(state.places).delete(action.placeID).toJS();
 
       return Immutable.Map(state).set('places', newState).toJS()
+
+    case 'DOWNLOAD_SOURCE' :
+
+      const productDetails =  productDefinitions[action.variantID];
+      var deviceDetails = productDetails.deviceDetails;
+      deviceDetails['ssid'] = state.places[action.placeID].networks.wifi.ssid;
+      deviceDetails['ssidPassword'] = state.places[action.placeID].networks.wifi.password;
+
+      const writeTheseControls = productDetails.controls;
+
+      packageSourceFiles(deviceDetails, writeTheseControls);
+
+      return state
 
     default:
       return state
