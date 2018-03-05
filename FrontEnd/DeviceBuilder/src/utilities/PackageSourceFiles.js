@@ -74,8 +74,9 @@ const composeInoFile = (deviceDetails, controls) => {
 {
 
   Serial.begin(115200);\n`
++ GetTabCharacter() + `InitializeControlHardware();\n`
 + setControls(controls)
-+ `StartHeep("`+ deviceDetails.deviceName + `", ` + deviceDetails.iconSelected + `);\n\n
++ GetTabCharacter() + `StartHeep("`+ deviceDetails.deviceName + `", ` + deviceDetails.iconSelected + `);\n
 }
 
 void loop()
@@ -213,7 +214,7 @@ const initializeControls = (controls) => {
 
   var controlDefs = ``;
   for (var i in controls) {
-    controlDefs += getPinDefine(controls[i]) + `\n\n`
+    controlDefs += getPinDefine(controls[i]) + `\n`
   }
 
   return controlDefs
@@ -223,7 +224,7 @@ const initializeControls = (controls) => {
 const createOnOffControl = (control) => {
   var controlStringToReturn = ``;
 
-   controlStringToReturn += `AddOnOffControl("` + control.controlName + `",`;
+   controlStringToReturn += GetTabCharacter() + `AddOnOffControl("` + control.controlName + `",`;
 
    if(control.controlDirection == 0){
     controlStringToReturn += "HEEP_INPUT,";
@@ -240,7 +241,7 @@ const createOnOffControl = (control) => {
 const createRangeControl = (control) => {
    var controlStringToReturn = ``;
 
-   controlStringToReturn += `AddRangeControl("` + control.controlName + `",`;
+   controlStringToReturn += GetTabCharacter() + `AddRangeControl("` + control.controlName + `",`;
 
    if(control.controlDirection == 0){
     controlStringToReturn += "HEEP_INPUT,";
