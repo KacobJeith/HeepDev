@@ -2,24 +2,17 @@ import ShopifyBuy from 'shopify-buy'
 import * as setup from '../index'
 import * as actions from '../redux/actions'
 
-export const InitializeShopify = () => {
-
-  var client = ShopifyBuy.buildClient({
+var client = ShopifyBuy.buildClient({
     domain: 'shopheep.myshopify.com',
     storefrontAccessToken: 'a444eb17144b5b4e7841eaa1e4cf8698'
-    // appId: '6',
-  });
+});
 
-   
+export const InitializeShopify = () => {
+
 
   client.collection.fetchAllWithProducts().then((collections) => {
     // Do something with the collections
-  });
-
-  client.checkout.create().then((checkout) => {
-      var checkoutID = checkout.id;
-
-      setup.store.dispatch(actions.setCheckout(checkoutID));
+    console.log('collections: ', collections)
   });
 
    client.product.fetchAll().then((products) => {
@@ -34,23 +27,75 @@ const AddProductsToRedux = (products) => {
 
 export const AddProductToCart = (checkoutID, productData) => {
 
-  var client = ShopifyBuy.buildClient({
-    domain: 'shopheep.myshopify.com',
-    storefrontAccessToken: 'a444eb17144b5b4e7841eaa1e4cf8698'
-    // appId: '6',
+  const variantID = productData.variants[0].id;
+
+   if (checkoutID == null ) {
+      createCart(AddToCheckout, variantID)
+   } else {
+      AddToCheckout(checkoutID, variantID);
+   }
+}
+
+export const RemoveProductFromCart = (checkoutID, variantID) => {
+
+  const lineItemIDsToRemove = [variantID];
+
+  client.checkout.removeLineItems(checkoutID, lineItemIdsToRemove).then((checkout) => {
+    setup.store.dispatch(actions.saveCartLocally(checkout));
   });
 
+}
 
- const lineItemsToAdd = [
-    {
-      variantId: productData.variants[0].id, 
-      quantity: 1
-    }
-  ];
 
-  // Add an item to the checkout
-  client.checkout.addLineItems(checkoutID, lineItemsToAdd).then((checkout) => {
-    // Do something with the updated checkout
-    console.log(checkout.lineItems); // Array with one additional line item
+
+export const AddToCheckout = (checkoutID, variantID) => {
+
+  const lineItemsToAdd = [
+     {
+       variantId: variantID, 
+       quantity: 1
+     }
+   ];
+
+   client.checkout.addLineItems(checkoutID, lineItemsToAdd).then((checkout) => {
+     setup.store.dispatch(actions.saveCartLocally(checkout));
+   });
+}
+
+export const UpdateQuantityInCart = (checkoutID, lineItemID, newQuantity) => {
+
+  const lineItemsToUpdate = [
+     {
+       id: lineItemID, 
+       quantity: newQuantity
+     }
+   ];
+
+   client.checkout.updateLineItems(checkoutID, lineItemsToUpdate).then((checkout) => {
+     setup.store.dispatch(actions.saveCartLocally(checkout));
+   });
+}
+
+const createCart = (callback = (_checkoutID, _passData) => {}, passData) => {
+
+  client.checkout.create().then((checkout) => {
+      var checkoutID = checkout.id;
+
+      setup.store.dispatch(actions.createCheckout(checkoutID));
+
+      callback(checkoutID, passData);
+  });
+
+}
+
+export const retrieveCheckout = (checkoutID) => {
+
+  client.checkout.fetch(checkoutID).then((checkout) => {
+    // Do something with the checkout
+    console.log(checkout);
+    setup.store.dispatch(actions.saveCartLocally(checkout));
+
   });
 }
+
+

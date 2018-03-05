@@ -19,33 +19,18 @@ const startState = {
   scrollPosition: 0,
   webGLStatus: false,
   loginStatus: false,
-  checkout: 0,
+  checkoutID: null,
   itemsInCart: 0,
+  shoppingCart: {
+    lineItems:[]
+  },
+  cartContext:{},
   providers: {},
   devices: {},
   places: {},
   groups: {},
   signals: {},
-  files: {},
-  iconURLs: {
-    Weather: "",
-    ShortsOrPants: "",
-    Timer: "",
-    NFL: "",
-    CryptoCurrency: "",
-    Umbrella: "",
-    RocketLaunch: "",
-    alt: ""
-  },
-  intentBackgrounds: {
-    Weather: "",
-    ShortsOrPants: "",
-    Timer: "",
-    NFL: "",
-    CryptoCurrency: "",
-    Umbrella: "",
-    RocketLaunch: ""
-  }
+  files: {}
 }
 
 export const initialState = Immutable.Map(startState)

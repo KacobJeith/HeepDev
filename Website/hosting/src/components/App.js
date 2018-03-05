@@ -19,6 +19,7 @@ import DeviceBuilder from './heep/DeviceBuilder'
 import Checkout from './store/Checkout'
 import ProductDetails from './store/ProductDetails'
 import DownloadPage from './heep/DownloadPage'
+import ManageCart from './store/ManageCart'
 
 import PaperSignalsConsole from './PaperSignals/PaperSignalsConsole'
 
@@ -67,7 +68,8 @@ class App extends React.Component {
 			},
 			content: {
 				style: {
-					flex: '1 0 auto'
+					flex: '1 0 auto',
+					maxWidth:'100%'
 				}
 			}
 	    }
@@ -93,6 +95,7 @@ class App extends React.Component {
 									<Route path="/Shop" component={Store}/>
 									<Route path="/product/:productID" component={ProductDetails}/>
 									<Route path="/Checkout" component={Checkout}/>
+									<Route path="/MyCart" component={ManageCart}/>
 									<Route exact path="/auth" component={Auth}/>
 									<Route exact path="/Developers" component={DownloadPage}/>
 									{loggedInRoutes}

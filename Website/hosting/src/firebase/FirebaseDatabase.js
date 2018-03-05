@@ -21,6 +21,11 @@ export const readUserData = (user) => {
 		
 		retrieveGroups(snapshot);
 	})
+
+	firebase.database().ref('/users/' + user.uid + '/store').on('value', function(snapshot) {
+		
+		setup.store.dispatch(actions.setCheckout(snapshot.val().checkoutID));
+	})
 }
 
 const retrieveDevices = (snapshot) => {
@@ -157,6 +162,19 @@ export const updatePlaceName = (placeID, name) => {
 	firebase.database().ref('places/' + placeID + '/name').set(name);
 }
 
+export const saveCheckoutID = (checkoutID) => {
+
+	var user = firebaseAuth.currentUser();
+
+	if ( user && user.uid ) {
+		console.log("Saving checkoutID to user");
+		firebase.database().ref('users/' + user.uid + '/store/checkoutID').set(checkoutID);
+	} else {
+		console.log("Cannot save checkout until user logs in");
+	}
+	
+}
+
 export const updateGroupName = (groupID, name) => {
 
 	firebase.database().ref('groups/' + groupID + '/name').set(name);
@@ -221,4 +239,23 @@ const base64ToArrayBuffer = (base64) => {
 
     return bytes;
 }
+
+export const pushCartToFulfillmentQueue = (checkoutID, variantIDsWithPlaceIDs) => {
+	
+	var user = firebaseAuth.currentUser();
+
+	if (user) {
+		const checkoutPackage = {
+			checkoutID: checkoutID, 
+			userID: user.uid,
+			devices: variantIDsWithPlaceIDs
+		}
+		
+		firebase.database().ref('store/queue').push(checkoutPackage);
+	} else {
+		console.log("User must log in to push contextual data to queue");
+	}
+	
+}
+
 

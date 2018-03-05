@@ -55,14 +55,35 @@ export const initPaperSignals = () => ({
 	type: 'INIT_PAPER_SIGNALS'
 })
 
-export const setCheckout = (checkoutID) => ({
+export const createCheckout = (checkoutID) => ({
 	type: 'CREATE_CHECKOUT',
+	checkoutID
+})
+
+export const setCheckout = (checkoutID) => ({
+	type: 'SET_CHECKOUT',
 	checkoutID
 })
 
 export const addProductToCart = (productID) => ({
 	type: 'ADD_PRODUCT_TO_CART',
 	productID
+})
+
+export const updateProductQuantity = (lineItemID, newQuantity) => ({
+	type: 'UPDATE_QUANTITY_IN_CART',
+	lineItemID,
+	newQuantity
+})
+
+export const removeProductFromCart = (variantID) => ({
+	type: 'REMOVE_PRODUCT_FROM_CART',
+	variantID
+})
+
+export const saveCartLocally = (cart) => ({
+	type: 'SAVE_CART_LOCALLY',
+	cart
 })
 
 
@@ -81,4 +102,14 @@ export const deletePlaceFromAccount = (placeID) => ({
 export const deletePlace = (placeID) => ({
 	type: 'DELETE_PLACE',
 	placeID
+})
+
+export const updateCartContext = (variantID, placeID) => ({
+	type: 'UPDATE_CART_CONTEXT',
+	variantID, 
+	placeID
+})
+
+export const pushCartToFulfillmentQueue = () => ({
+	type: 'PUSH_CART_TO_QUEUE'
 })
