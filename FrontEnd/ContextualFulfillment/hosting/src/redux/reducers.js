@@ -115,6 +115,15 @@ export default function(state = initialState, action) {
             setup.store.dispatch(actions.saveCheckoutForQueue(thisCheckout, checkout));
           })
         }
+
+        for (var variantID in action.queue[queueKey].devices) {
+          const placeID = action.queue[queueKey].devices[variantID];
+
+          if (!(placeID in state.places) && placeID != 'none'){
+            database.readPlace(placeID);
+          }
+          
+        }
       }
 
       return Immutable.Map(state).set('fulfillmentQueue', action.queue).toJS();

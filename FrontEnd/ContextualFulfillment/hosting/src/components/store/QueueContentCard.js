@@ -23,8 +23,7 @@ import SmartBadge from '../utilities/SmartBadge'
 var mapStateToProps = (state, ownProps) => ({
   product: state.shopify[ownProps.productID],
   productID: ownProps.productID,
-  places: state.places,
-  associatedPlace: 'none',
+  associatedPlace: state.places[ownProps.placeID],
   quantity: ownProps.quantity,
   titleBar: ownProps.titleBar,
 
@@ -76,10 +75,12 @@ class QueueContentCard extends React.Component {
       }
     }
 
+
+
     return (
       <FormControl {...inputs.formControl}>
         <Select
-          value={this.props.associatedPlace}
+          value={this.props.associatedPlace ? this.props.associatedPlace.name : 'None'}
           onChange={this.handlePlaceUpdate}
           inputProps={{
             name: 'associatedPlace',
@@ -90,11 +91,9 @@ class QueueContentCard extends React.Component {
           <MenuItem value="none">
             <em>None</em>
           </MenuItem>
-          {Object.keys(this.props.places).map((thisPlaceKey) => (
-            <MenuItem  value={thisPlaceKey} key={thisPlaceKey}>
-              {this.props.places[thisPlaceKey].name}
-            </MenuItem>
-          ))}
+          <MenuItem  value={this.props.associatedPlace ? this.props.associatedPlace.name : this.props.productID + 'wifi'} key={this.props.productID + 'wifi'}>
+            {this.props.associatedPlace ? this.props.associatedPlace.name : this.props.productID + 'wifi'}
+          </MenuItem>
         </Select>
       </FormControl>
     )

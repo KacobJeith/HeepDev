@@ -50,7 +50,7 @@ const retrievePlaces = (snapshot) => {
 	});
 }
 
-const readPlace = (placeID) => {
+export const readPlace = (placeID) => {
 	let dataFromFirebaseRef = firebase.database().ref('/places/' + placeID).on('value', function(placeSnapshot) {
 
 		if (placeSnapshot.val()) {
@@ -266,4 +266,5 @@ export const retrieveUserPublicProfile = (uid) => {
 		}
 	})
 }
+
 

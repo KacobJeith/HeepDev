@@ -66,6 +66,7 @@ class QueueCard extends React.Component {
                     productID={variantID} 
                     quantity={quantityObject[variantID]}
                     lineItemID={'asdf'}
+                    placeID={this.props.contents.devices[variantID]}
                     titleBar={false}/>)
                   )}
 
