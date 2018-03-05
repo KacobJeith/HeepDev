@@ -6,6 +6,7 @@ import * as actions from './actions'
 import * as auth from '../firebase/FirebaseAuth'
 import * as database from '../firebase/FirebaseDatabase'
 import * as shopify from '../shopify/Shopify'
+import * as setup from '../index'
 
 export default function(state = initialState, action) {
   switch (action.type) {
@@ -103,13 +104,28 @@ export default function(state = initialState, action) {
     case 'SAVE_QUEUE' :
 
       for (var queueKey in action.queue) {
-        var thisUser = action.queue[queueKey].userID;
+        const thisUser = action.queue[queueKey].userID;
         if (!(thisUser in state.users)) {
           database.retrieveUserPublicProfile(thisUser);
+        }
+
+        const thisCheckout = action.queue[queueKey].checkoutID;
+        if (!(thisCheckout in state.checkouts)) {
+          shopify.retrieveCheckout(thisCheckout, (checkout) => {
+            setup.store.dispatch(actions.saveCheckoutForQueue(thisCheckout, checkout));
+          })
         }
       }
 
       return Immutable.Map(state).set('fulfillmentQueue', action.queue).toJS();
+
+    case 'SAVE_CHECKOUT_FOR_QUEUE' :
+
+      var newCheckoutData = Immutable.Map(state.checkouts).toJS();
+
+      newCheckoutData[action.checkoutID] = action.checkoutData;
+
+      return Immutable.Map(state).set('checkouts', newCheckoutData).toJS()
 
     case 'SAVE_USER' :
 

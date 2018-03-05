@@ -33,7 +33,8 @@ import QueueContentCard          from './QueueContentCard'
 var mapStateToProps = (state, ownProps) => ({
   queueID: ownProps.queueID,
   contents: state.fulfillmentQueue[ownProps.queueID],
-  user: state.users[state.fulfillmentQueue[ownProps.queueID].userID]
+  user: state.users[state.fulfillmentQueue[ownProps.queueID].userID],
+  checkout: state.checkouts[state.fulfillmentQueue[ownProps.queueID].checkoutID]
 })
 
 class QueueCard extends React.Component {
@@ -77,6 +78,21 @@ class QueueCard extends React.Component {
       </Collapse>
     )
   }
+
+  calculateQuantity() {
+
+    var totalQuantity = 0;
+
+    for (var item in this.props.checkout.lineItems) {
+
+      if (item != 'type') {
+        var lineItemQuantity = this.props.checkout.lineItems[item].quantity;
+        totalQuantity += lineItemQuantity;
+      }
+    }
+
+    return totalQuantity
+  }
   
   render() {
     var inputs = {
@@ -89,14 +105,17 @@ class QueueCard extends React.Component {
     const displayName = this.props.user ? this.props.user.displayName : 'name';
     const avatarSrc = this.props.user ? this.props.user.photoURL : ''
     const initials = displayName.split(' ').map((element) => element[0]).join('');
+    const date = this.props.checkout ? this.props.checkout.updatedAt : 'date';
+
+    const quantity = this.props.checkout ? this.calculateQuantity() : 0;
 
     return (
       <div>
         <ListItem {...inputs.item}>
           <Avatar src={avatarSrc} alt={initials}/>
           <ListItemText inset primary={displayName}/>
-          <ListItemText inset primary='date'/>
-          <ListItemText inset primary='quantity' />
+          <ListItemText inset primary={date}/>
+          <ListItemText inset primary={quantity.toString()} />
           {this.state.view ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
         {this.collapsedDetails()}

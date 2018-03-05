@@ -124,3 +124,9 @@ export const saveUser = (uid, userData) => ({
 	uid, 
 	userData
 })
+
+export const saveCheckoutForQueue = (checkoutID, checkoutData) => ({
+	type: 'SAVE_CHECKOUT_FOR_QUEUE',
+	checkoutID, 
+	checkoutData
+})

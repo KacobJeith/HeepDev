@@ -88,12 +88,12 @@ const createCart = (callback = (_checkoutID, _passData) => {}, passData) => {
 
 }
 
-export const retrieveCheckout = (checkoutID) => {
+export const retrieveCheckout = (checkoutID, callback = (checkout) => setup.store.dispatch(actions.saveCartLocally(checkout))) => {
+
 
   client.checkout.fetch(checkoutID).then((checkout) => {
     // Do something with the checkout
-    console.log(checkout);
-    setup.store.dispatch(actions.saveCartLocally(checkout));
+    callback(checkout)
 
   });
 }
