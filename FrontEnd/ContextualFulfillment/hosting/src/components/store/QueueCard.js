@@ -45,7 +45,7 @@ class QueueCard extends React.Component {
     }
   }
 
-  collapsedDetails() {
+  collapsedDetails(quantityObject) {
 
     return (
 
@@ -64,7 +64,7 @@ class QueueCard extends React.Component {
                     <QueueContentCard 
                     key={variantID + 'test'} 
                     productID={variantID} 
-                    quantity={1}
+                    quantity={quantityObject[variantID]}
                     lineItemID={'asdf'}
                     titleBar={false}/>)
                   )}
@@ -81,17 +81,21 @@ class QueueCard extends React.Component {
 
   calculateQuantity() {
 
-    var totalQuantity = 0;
+    var quantityObject = {
+      totalQuantity: 0
+    }
+
 
     for (var item in this.props.checkout.lineItems) {
 
       if (item != 'type') {
         var lineItemQuantity = this.props.checkout.lineItems[item].quantity;
-        totalQuantity += lineItemQuantity;
+        quantityObject.totalQuantity += lineItemQuantity;
+        quantityObject[this.props.checkout.lineItems[item].variant.id] = lineItemQuantity;
       }
     }
 
-    return totalQuantity
+    return quantityObject
   }
   
   render() {
@@ -107,7 +111,7 @@ class QueueCard extends React.Component {
     const initials = displayName.split(' ').map((element) => element[0]).join('');
     const date = this.props.checkout ? this.props.checkout.updatedAt : 'date';
 
-    const quantity = this.props.checkout ? this.calculateQuantity() : 0;
+    const quantityObject = this.props.checkout ? this.calculateQuantity() : 0;
 
     return (
       <div>
@@ -115,10 +119,10 @@ class QueueCard extends React.Component {
           <Avatar src={avatarSrc} alt={initials}/>
           <ListItemText inset primary={displayName}/>
           <ListItemText inset primary={date}/>
-          <ListItemText inset primary={quantity.toString()} />
+          <ListItemText inset primary={quantityObject.totalQuantity} />
           {this.state.view ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
-        {this.collapsedDetails()}
+        {this.collapsedDetails(quantityObject)}
 
       </div>
 
