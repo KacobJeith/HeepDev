@@ -255,6 +255,8 @@ export const retrieveUserPublicProfile = (uid) => {
 
 		if (snapshot.val()) {
 
+			setup.store.dispatch(actions.saveUser(uid, snapshot.val()));
+
 		} else {
 			const defaultUser = {
 				displayName: 'Jenny Hu',
