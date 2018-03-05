@@ -118,3 +118,9 @@ export const saveQueueToRedux = (queue) => ({
 	type: 'SAVE_QUEUE', 
 	queue
 })
+
+export const saveUser = (uid, userData) => ({
+	type: 'SAVE_USER',
+	uid, 
+	userData
+})

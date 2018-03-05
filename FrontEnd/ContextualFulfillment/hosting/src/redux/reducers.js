@@ -102,7 +102,22 @@ export default function(state = initialState, action) {
 
     case 'SAVE_QUEUE' :
 
+      for (var queueKey in action.queue) {
+        var thisUser = action.queue[queueKey].userID;
+        if (!(thisUser in state.users)) {
+          database.retrieveUserPublicProfile(thisUser);
+        }
+      }
+
       return Immutable.Map(state).set('fulfillmentQueue', action.queue).toJS();
+
+    case 'SAVE_USER' :
+
+      var newUserData = Immutable.Map(state.users).toJS();
+
+      newUserData[action.uid] = action.userData;
+
+      return Immutable.Map(state).set('users', newUserData).toJS()
       
     case 'SCROLL':
 

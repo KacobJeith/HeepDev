@@ -21,6 +21,8 @@ const startState = {
   shoppingCart: {
     lineItems:[]
   },
+  users: {},
+  checkouts: {},
   fulfillmentQueue: {},
   cartContext:{},
   providers: {},

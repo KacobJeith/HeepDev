@@ -11,6 +11,7 @@ import { List,
          ListItem, 
          ListItemText, 
          ListItemIcon, 
+         Avatar,
          ListItemSecondaryAction, 
          IconButton,
          Tooltip,
@@ -31,7 +32,8 @@ import QueueContentCard          from './QueueContentCard'
 
 var mapStateToProps = (state, ownProps) => ({
   queueID: ownProps.queueID,
-  contents: state.fulfillmentQueue[ownProps.queueID]
+  contents: state.fulfillmentQueue[ownProps.queueID],
+  user: state.users[state.fulfillmentQueue[ownProps.queueID].userID]
 })
 
 class QueueCard extends React.Component {
@@ -84,15 +86,17 @@ class QueueCard extends React.Component {
       }
     }
 
+    const displayName = this.props.user ? this.props.user.displayName : 'name';
+    const avatarSrc = this.props.user ? this.props.user.photoURL : ''
+    const initials = displayName.split(' ').map((element) => element[0]).join('');
+
     return (
       <div>
         <ListItem {...inputs.item}>
-          <ListItemIcon >
-              <Home style={{
-                color:this.props.theme.palette.primary.main
-              }}/>
-          </ListItemIcon>
-          <ListItemText inset  primary={this.props.queueID} />
+          <Avatar src={avatarSrc} alt={initials}/>
+          <ListItemText inset primary={displayName}/>
+          <ListItemText inset primary='date'/>
+          <ListItemText inset primary='quantity' />
           {this.state.view ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
         {this.collapsedDetails()}
