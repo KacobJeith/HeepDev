@@ -123,6 +123,12 @@ class BedroomSVG extends React.Component{
     var carHandle = document.getElementById('carHandle');
     var carWindows = document.getElementById('carWindows');
     var carAntennaTop = document.getElementById('carAntennaTop');
+
+    var carAnimation = document.getElementById('Animation');
+    var carSmoke1 = document.getElementById('carSmoke1');
+    var carSmoke2 = document.getElementById('carSmoke2');
+    var carSmoke3 = document.getElementById('carSmoke3');
+    var carShadow = document.getElementById('carShadow');
   };
 
     addButtonListeners() {
@@ -204,21 +210,25 @@ class BedroomSVG extends React.Component{
       this.addButtonListeners();
       this.uncolorRemote();
     };
-    tlCar.to(carLights, colorDuration, {fill: '#F2B666'}, 0);
-    tlCar.to(carBody, colorDuration, {fill: '#C1272D'}, 0);
-    tlCar.to(carTires, colorDuration, {fill: '#333333'}, 0);
-    tlCar.to(carHubs, colorDuration, {fill: '#E6E6E6'}, 0);
-    tlCar.to(carHandle, colorDuration, {fill: '#B3B3B3'}, 0);
-    tlCar.to(carWindows, colorDuration, {fill: '#7FCAE5'}, 0);
-    tlCar.to(carAntennaTop, colorDuration, {fill: '#37474F'}, 0);
-    tlCar.fromTo(car, 4, {'xPercent':-20}, {'xPercent': 20}, 0.7);
-    tlCar.to(carLights, colorDuration, {fill: colorDefault}, 5);
-    tlCar.to(carBody, colorDuration, {fill: colorDefault}, 5);
-    tlCar.to(carTires, colorDuration, {fill: colorDefault}, 5);
-    tlCar.to(carHubs, colorDuration, {fill: colorDefault}, 5);
-    tlCar.to(carHandle, colorDuration, {fill: colorDefault}, 5);
-    tlCar.to(carWindows, colorDuration, {fill: colorDefault}, 5);
-    tlCar.to(carAntennaTop, colorDuration, {fill: colorDefault}, 5);
+    TweenLite.to(carAnimation, colorDuration, {display: 'block'});
+    TweenLite.to(carLights, colorDuration, {fill: '#F2B666'});
+    TweenLite.to(carBody, colorDuration, {fill: '#C1272D'});
+    TweenLite.to(carTires, colorDuration, {fill: '#333333'});
+    TweenLite.to(carHubs, colorDuration, {fill: '#E6E6E6'});
+    TweenLite.to(carHandle, colorDuration, {fill: '#B3B3B3'});
+    TweenLite.to(carWindows, colorDuration, {fill: '#7FCAE5'});
+    TweenLite.to(carAntennaTop, colorDuration, {fill: '#37474F'});
+    tlCar.fromTo([carSmoke1, carSmoke2, carSmoke3], 7.5, {y:-0.5}, {y:0.5, ease:RoughEase.ease.config({strength:20, points:20, template:Linear.easeNone, randomize:false}) , clearProps:"x"});
+    tlCar.to(car, 1.2, {x: -70, ease: Power2.easeout}, 0.7);
+    tlCar.to(car, 1, {x: 40, y: 160, ease: Power2.easeout}, 2);
+    tlCar.to(car, 0.6, {x: 200, ease: Power2.easeout}, 3.1);
+    tlCar.to(car, 0.6, {y: 80, ease: Power2.easeout}, 3.8);
+    tlCar.to(car, 0.7, {x: -30, y: -10, ease: Power2.easeout}, 4.5);
+    tlCar.to(car, 0.8, {y: 0, ease: Power2.easeout}, 5.3);
+    tlCar.to(car, 0.8, {x: 0, ease: Power2.easeout}, 6.2);
+    //tlCar.fromTo([carSmoke1, carSmoke2, carSmoke3], 0.3, {y:-0.7}, {y:0.7, ease:RoughEase.ease.config({strength:8, points:20, template:Linear.easeNone, randomize:false}) , clearProps:"x"});
+    tlCar.to(carAnimation, 0.1, {display: 'none'});
+    tlCar.to([carLights, carBody, carTires, carHubs, carHandle, carWindows, carAntennaTop], colorDuration, {fill: colorDefault, delay: 0.2});
     console.log("click")
   };
 
