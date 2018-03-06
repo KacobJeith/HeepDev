@@ -14,7 +14,10 @@ const styles = theme => ({
   }),
 });
 
-var defaultColor = '#FFF'
+var defaultColor = '#FFF';
+
+var colorDuration = 1;
+var colorDelay = 0.6;
 
 var buttonRemote = [];
 var buttonPig = [];
