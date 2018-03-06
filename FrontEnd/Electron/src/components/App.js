@@ -3,12 +3,10 @@ import {HashRouter as Router, Route} from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as Actions from '../redux/actions'
-import ReactGA from 'react-ga'
 
 import Header from './Header'
 import Auth from './Auth'
 import Logout from './Logout'
-import Loading from './Loading'
 import UserProfile from './UserProfile'
 import DeviceBuilder from './DeviceBuilder'
 import Flowchart from './Classic/Flowchart'
@@ -21,13 +19,6 @@ const mapStateToProps = (state) => ({
 class App extends React.Component {
 	constructor(props) {
 		super(props);
-		ReactGA.initialize('UA-93098480-1');
-	}
-
-
-	logPageView() {
-	  ReactGA.set({ page: window.location.pathname });
-	  ReactGA.pageview(window.location.pathname);
 	}
 
 	render() {

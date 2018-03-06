@@ -12,8 +12,6 @@ import $ from 'jquery'
 import { composeWithDevTools } from 'redux-devtools-extension';
 import * as actions_classic from './redux/actions_classic'
 
-import loading from './serverside/assets/heepwink3_gradient.mov';
-
 const startState = {
   webGLStatus: false,
   loginStatus: false,
