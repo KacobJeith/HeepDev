@@ -16,7 +16,6 @@ const styles = theme => ({
 
 var colorDefault = '#FFF';
 var colorDuration = 1;
-var colorDelay = 0.6;
 
 var tlShake = new TimelineMax({repeat:-1});
 
@@ -29,14 +28,34 @@ class BedroomSVG extends React.Component{
     this.svg = $(bedroomDiv).find('svg')[0];
     this.svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
     this.svg.setAttribute('viewBox', '0 0 1500 800')
+
+    this.hoverRemote = this.hoverRemote.bind(this);
+    this.hoverPig = this.hoverPig.bind(this);
+    this.hoverDiary = this.hoverDiary.bind(this);
+    this.hoverSleep = this.hoverSleep.bind(this);
+    this.hoverDresser = this.hoverDresser.bind(this);
+    this.hoverDresser = this.hoverDresser.bind(this);
+    this.hoverCactus = this.hoverCactus.bind(this);
+    this.hoverFlower = this.hoverFlower.bind(this);
+
+    this.leaveRemote = this.leaveRemote.bind(this);
+    this.leavePig = this.leavePig.bind(this);
+    this.leaveDiary = this.leaveDiary.bind(this);
+    this.leaveSleep = this.leaveSleep.bind(this);
+    this.leaveDresser = this.leaveDresser.bind(this);
+    this.leaveDresser = this.leaveDresser.bind(this);
+    this.leaveCactus = this.leaveCactus.bind(this);
+    this.leaveFlower = this.leaveFlower.bind(this);
+
+    this.clickRemote = this.clickRemote.bind(this);
 	};
 
   componentDidMount() {
-    this.createButtons();
     this.getElements();
+    this.addButtonListeners();
   };
 
-  createButtons() {
+  getElements() {
     var buttonRemote = document.getElementById('buttonRemote');
     var buttonPig = document.getElementById('buttonPig');
     var buttonDiary = document.getElementById('buttonDiary');
@@ -45,37 +64,7 @@ class BedroomSVG extends React.Component{
     var buttonDresserBottom = document.getElementById('buttonDresserBottom');
     var buttonCactus = document.getElementById('buttonCactus');
     var buttonFlower = document.getElementById('buttonFlower');
-    var buttonPail = document.getElementById('buttonPail');
 
-    buttonRemote.addEventListener('mouseover', this.hoverRemote.bind(this));
-    buttonPig.addEventListener('mouseover', this.hoverPig.bind(this));
-    buttonDiary.addEventListener('mouseover', this.hoverDiary.bind(this));
-    buttonSleep.addEventListener('mouseover', this.hoverSleep.bind(this));
-    buttonDresserTop.addEventListener('mouseover', this.hoverDresser.bind(this));
-    buttonDresserBottom.addEventListener('mouseover', this.hoverDresser.bind(this));
-    buttonCactus.addEventListener('mouseover', this.hoverCactus.bind(this));
-    buttonFlower.addEventListener('mouseover', this.hoverFlower.bind(this));
-
-    buttonRemote.addEventListener('mouseleave', this.leaveRemote.bind(this));
-    buttonPig.addEventListener('mouseleave', this.leavePig.bind(this));
-    buttonDiary.addEventListener('mouseleave', this.leaveDiary.bind(this));
-    buttonSleep.addEventListener('mouseleave', this.leaveSleep.bind(this));
-    buttonDresserTop.addEventListener('mouseleave', this.leaveDresser.bind(this));
-    buttonDresserBottom.addEventListener('mouseleave', this.leaveDresser.bind(this));
-    buttonCactus.addEventListener('mouseleave', this.leaveCactus.bind(this));
-    buttonFlower.addEventListener('mouseleave', this.leaveFlower.bind(this));
-
-    buttonRemote.addEventListener('click', this.clickRemote.bind(this));
-    //buttonPig.addEventListener('click', this.clickPig.bind(this));
-    //buttonDiary.addEventListener('click', this.clickDiary.bind(this));
-    //buttonSleep.addEventListener('click', this.clickSleep.bind(this));
-    //buttonDresserTop.addEventListener('click', this.clickDresser.bind(this));
-    //buttonDresserBottom.addEventListener('click', this.clickDresser.bind(this));
-    //buttonCactus.addEventListener('click', this.clickCactus.bind(this));
-    //buttonFlower.addEventListener('click', this.clickFlower.bind(this));
-  };
-
-  getElements() {
     var remote = document.getElementById('remote');
     var remoteBottom = document.getElementById('remoteBottom');
     var remoteBody = document.getElementById('remoteBody');
@@ -134,6 +123,52 @@ class BedroomSVG extends React.Component{
     var carAntennaTop = document.getElementById('carAntennaTop');
   };
 
+    addButtonListeners() {
+      buttonRemote.addEventListener('mouseover', this.hoverRemote);
+      buttonPig.addEventListener('mouseover', this.hoverPig);
+      buttonDiary.addEventListener('mouseover', this.hoverDiary);
+      buttonSleep.addEventListener('mouseover', this.hoverSleep);
+      buttonDresserTop.addEventListener('mouseover', this.hoverDresser);
+      buttonDresserBottom.addEventListener('mouseover', this.hoverDresser);
+      buttonCactus.addEventListener('mouseover', this.hoverCactus);
+      buttonFlower.addEventListener('mouseover', this.hoverFlower);
+
+      buttonRemote.addEventListener('mouseleave', this.leaveRemote);
+      buttonPig.addEventListener('mouseleave', this.leavePig);
+      buttonDiary.addEventListener('mouseleave', this.leaveDiary);
+      buttonSleep.addEventListener('mouseleave', this.leaveSleep);
+      buttonDresserTop.addEventListener('mouseleave', this.leaveDresser);
+      buttonDresserBottom.addEventListener('mouseleave', this.leaveDresser);
+      buttonCactus.addEventListener('mouseleave', this.leaveCactus);
+      buttonFlower.addEventListener('mouseleave', this.leaveFlower);
+
+      buttonRemote.addEventListener('click', this.clickRemote);
+  };
+
+    removeButtonListeners() {
+      buttonRemote.removeEventListener('mouseover', this.hoverRemote);
+      buttonPig.removeEventListener('mouseover', this.hoverPig);
+      buttonDiary.removeEventListener('mouseover', this.hoverDiary);
+      buttonSleep.removeEventListener('mouseover', this.hoverSleep);
+      buttonDresserTop.removeEventListener('mouseover', this.hoverDresser);
+      buttonDresserBottom.removeEventListener('mouseover', this.hoverDresser);
+      buttonCactus.removeEventListener('mouseover', this.hoverCactus);
+      buttonFlower.removeEventListener('mouseover', this.hoverFlower);
+
+      buttonRemote.removeEventListener('mouseleave', this.leaveRemote);
+      buttonPig.removeEventListener('mouseleave', this.leavePig);
+      buttonDiary.removeEventListener('mouseleave', this.leaveDiary);
+      buttonSleep.removeEventListener('mouseleave', this.leaveSleep);
+      buttonDresserTop.removeEventListener('mouseleave', this.leaveDresser);
+      buttonDresserBottom.removeEventListener('mouseleave', this.leaveDresser);
+      buttonCactus.removeEventListener('mouseleave', this.leaveCactus);
+      buttonFlower.removeEventListener('mouseleave', this.leaveFlower);
+
+      buttonRemote.removeEventListener('click', this.clickRemote);
+
+      console.log("removed")
+    }
+
   hoverShake(e) {
     tlShake.fromTo(e, 2, {x:-1}, {x:1, ease:RoughEase.ease.config({
       strength:8,
@@ -154,39 +189,42 @@ class BedroomSVG extends React.Component{
 
   leaveRemote() {
     this.uncolorRemote();
-    this.leaveShake();
+    tlShake.clear();
   };
 
   clickRemote() {
-    let tlCar = new TimelineMax();
-    tlCar.to(carLights, colorDuration, {fill: '#F2B666', colorDelay}, 0);
-    tlCar.to(carBody, colorDuration, {fill: '#C1272D', colorDelay}, 0);
-    tlCar.to(carTires, colorDuration, {fill: '#333333', colorDelay}, 0);
-    tlCar.to(carHubs, colorDuration, {fill: '#E6E6E6', colorDelay}, 0);
-    tlCar.to(carHandle, colorDuration, {fill: '#B3B3B3', colorDelay}, 0);
-    tlCar.to(carWindows, colorDuration, {fill: '#7FCAE5', colorDelay}, 0);
-    tlCar.to(carAntennaTop, colorDuration, {fill: '#37474F', colorDelay}, 0);
+    this.removeButtonListeners();
+    this.colorRemote();
+    tlShake.clear();
+
+    let tlCar = new TimelineMax({onComplete: this.addButtonListeners.bind(this)});
+    tlCar.to(carLights, colorDuration, {fill: '#F2B666'}, 0);
+    tlCar.to(carBody, colorDuration, {fill: '#C1272D'}, 0);
+    tlCar.to(carTires, colorDuration, {fill: '#333333'}, 0);
+    tlCar.to(carHubs, colorDuration, {fill: '#E6E6E6'}, 0);
+    tlCar.to(carHandle, colorDuration, {fill: '#B3B3B3'}, 0);
+    tlCar.to(carWindows, colorDuration, {fill: '#7FCAE5'}, 0);
+    tlCar.to(carAntennaTop, colorDuration, {fill: '#37474F'}, 0);
+    tlCar.to(car, 20, {x:-100}, 0);
     console.log("click")
   };
 
   colorRemote() {
-    let tl = new TimelineMax();
-    tl.to(remoteBottom, colorDuration, {fill: '#333333', colorDelay}, 0);
-    tl.to(remoteBody, colorDuration, {fill: '#666666', colorDelay}, 0);
-    tl.to(remoteButtons, colorDuration, {fill: '#CCCCCC', colorDelay}, 0);
-    tl.to(remoteAntennaTop, colorDuration, {fill: '#000', colorDelay}, 0);
-    tl.to(remoteStickBottoms, colorDuration, {fill: '#999999', colorDelay}, 0);
-    tl.to(remoteStickTops, colorDuration, {fill: '#666666', colorDelay}, 0);
+    TweenLite.to(remoteBottom, colorDuration, {fill: '#333333'});
+    TweenLite.to(remoteBody, colorDuration, {fill: '#666666'});
+    TweenLite.to(remoteButtons, colorDuration, {fill: '#CCCCCC'});
+    TweenLite.to(remoteAntennaTop, colorDuration, {fill: '#000'});
+    TweenLite.to(remoteStickBottoms, colorDuration, {fill: '#999999'});
+    TweenLite.to(remoteStickTops, colorDuration, {fill: '#666666'});
   };
 
   uncolorRemote() {
-    let tl = new TimelineMax();
-    tl.to(remoteBottom, colorDuration, {fill: colorDefault, colorDelay}, 0);
-    tl.to(remoteBody, colorDuration, {fill: colorDefault, colorDelay}, 0);
-    tl.to(remoteButtons, colorDuration, {fill: colorDefault, colorDelay}, 0);
-    tl.to(remoteAntennaTop, colorDuration, {fill: colorDefault, colorDelay}, 0);
-    tl.to(remoteStickBottoms, colorDuration, {fill: colorDefault, colorDelay}, 0);
-    tl.to(remoteStickTops, colorDuration, {fill: colorDefault, colorDelay}, 0);
+    TweenLite.to(remoteBottom, colorDuration, {fill: colorDefault});
+    TweenLite.to(remoteBody, colorDuration, {fill: colorDefault});
+    TweenLite.to(remoteButtons, colorDuration, {fill: colorDefault});
+    TweenLite.to(remoteAntennaTop, colorDuration, {fill: colorDefault});
+    TweenLite.to(remoteStickBottoms, colorDuration, {fill: colorDefault});
+    TweenLite.to(remoteStickTops, colorDuration, {fill: colorDefault});
   };
 
   hoverPig() {
@@ -200,25 +238,23 @@ class BedroomSVG extends React.Component{
   };
 
   colorPig() {
-    let tl = new TimelineMax();
-    tl.to(pigBodyElements, colorDuration, {fill: '#EDC3D9', colorDelay}, 0);
-    tl.to(pigSnoutFront, colorDuration, {fill: '#FCEDF7', colorDelay}, 0);
-    tl.to(pigBackElements, colorDuration, {fill: '#B27D97', colorDelay}, 0);
-    tl.to(pigEarInner, colorDuration, {fill: '#FCEDF7', colorDelay}, 0);
-    tl.to(pigNostrils, colorDuration, {fill: '#37474F', colorDelay}, 0);
-    tl.to(pigEyes, colorDuration, {fill: '#37474F', colorDelay}, 0);
-    tl.to(pigCoinSlot, colorDuration, {fill: '#37474F', colorDelay}, 0);
+    TweenLite.to(pigBodyElements, colorDuration, {fill: '#EDC3D9'});
+    TweenLite.to(pigSnoutFront, colorDuration, {fill: '#FCEDF7'});
+    TweenLite.to(pigBackElements, colorDuration, {fill: '#B27D97'});
+    TweenLite.to(pigEarInner, colorDuration, {fill: '#FCEDF7'});
+    TweenLite.to(pigNostrils, colorDuration, {fill: '#37474F'});
+    TweenLite.to(pigEyes, colorDuration, {fill: '#37474F'});
+    TweenLite.to(pigCoinSlot, colorDuration, {fill: '#37474F'});
   };
 
   uncolorPig() {
-    let tl = new TimelineMax();
-    tl.to(pigBodyElements, colorDuration, {fill: colorDefault, colorDelay}, 0);
-    tl.to(pigSnoutFront, colorDuration, {fill: colorDefault, colorDelay}, 0);
-    tl.to(pigBackElements, colorDuration, {fill: colorDefault, colorDelay}, 0);
-    tl.to(pigEarInner, colorDuration, {fill: colorDefault, colorDelay}, 0);
-    tl.to(pigNostrils, colorDuration, {fill: colorDefault, colorDelay}, 0);
-    tl.to(pigEyes, colorDuration, {fill: colorDefault, colorDelay}, 0);
-    tl.to(pigCoinSlot, colorDuration, {fill: colorDefault, colorDelay}, 0);
+    TweenLite.to(pigBodyElements, colorDuration, {fill: colorDefault});
+    TweenLite.to(pigSnoutFront, colorDuration, {fill: colorDefault});
+    TweenLite.to(pigBackElements, colorDuration, {fill: colorDefault});
+    TweenLite.to(pigEarInner, colorDuration, {fill: colorDefault});
+    TweenLite.to(pigNostrils, colorDuration, {fill: colorDefault});
+    TweenLite.to(pigEyes, colorDuration, {fill: colorDefault});
+    TweenLite.to(pigCoinSlot, colorDuration, {fill: colorDefault});
   };
 
   hoverDiary() {
@@ -232,19 +268,17 @@ class BedroomSVG extends React.Component{
   };
 
   colorDiary() {
-    let tl = new TimelineMax();
-    tl.to(diaryBottom, colorDuration, {fill: '#4A99CE', colorDelay}, 0);
-    tl.to(diaryPages, colorDuration, {fill: '#FFF', colorDelay}, 0);
-    tl.to(diaryCover, colorDuration, {fill: '#ADE9F2', colorDelay}, 0);
-    tl.to(diarySpine, colorDuration, {fill: '#4A99CE', colorDelay}, 0);
+    TweenLite.to(diaryBottom, colorDuration, {fill: '#4A99CE'});
+    TweenLite.to(diaryPages, colorDuration, {fill: '#FFF'});
+    TweenLite.to(diaryCover, colorDuration, {fill: '#ADE9F2'});
+    TweenLite.to(diarySpine, colorDuration, {fill: '#4A99CE'});
   };
 
   uncolorDiary() {
-    let tl = new TimelineMax();
-    tl.to(diaryBottom, colorDuration, {fill: colorDefault, colorDelay}, 0);
-    tl.to(diaryPages, colorDuration, {fill: colorDefault, colorDelay}, 0);
-    tl.to(diaryCover, colorDuration, {fill: colorDefault, colorDelay}, 0);
-    tl.to(diarySpine, colorDuration, {fill: colorDefault, colorDelay}, 0);
+    TweenLite.to(diaryBottom, colorDuration, {fill: colorDefault});
+    TweenLite.to(diaryPages, colorDuration, {fill: colorDefault});
+    TweenLite.to(diaryCover, colorDuration, {fill: colorDefault});
+    TweenLite.to(diarySpine, colorDuration, {fill: colorDefault});
   };
 
   hoverSleep() {
@@ -258,15 +292,13 @@ class BedroomSVG extends React.Component{
   };
 
   colorSleep() {
-    let tl = new TimelineMax();
-    tl.to(sleepMount, colorDuration, {fill: '#C6C6C6', colorDelay}, 0);
-    tl.to(sleepButton, colorDuration, {fill: '#AA1721', colorDelay}, 0);
+    TweenLite.to(sleepMount, colorDuration, {fill: '#C6C6C6'});
+    TweenLite.to(sleepButton, colorDuration, {fill: '#AA1721'});
   };
 
   uncolorSleep() {
-    let tl = new TimelineMax();
-    tl.to(sleepMount, colorDuration, {fill: colorDefault, colorDelay}, 0);
-    tl.to(sleepButton, colorDuration, {fill: colorDefault, colorDelay}, 0);
+    TweenLite.to(sleepMount, colorDuration, {fill: colorDefault});
+    TweenLite.to(sleepButton, colorDuration, {fill: colorDefault});
   };
 
   hoverDresser() {
@@ -280,17 +312,15 @@ class BedroomSVG extends React.Component{
   };
 
   colorDresser() {
-    let tl = new TimelineMax();
-    tl.to(dresserFrame, colorDuration, {fill: '#627172', colorDelay}, 0);
-    tl.to(dresserDrawers, colorDuration, {fill: '#505B5B', colorDelay}, 0);
-    tl.to(dresserKnobs, colorDuration, {fill: '#627172', colorDelay}, 0);
+    TweenLite.to(dresserFrame, colorDuration, {fill: '#627172'});
+    TweenLite.to(dresserDrawers, colorDuration, {fill: '#505B5B'});
+    TweenLite.to(dresserKnobs, colorDuration, {fill: '#627172'});
   };
 
   uncolorDresser() {
-    let tl = new TimelineMax();
-    tl.to(dresserFrame, colorDuration, {fill: colorDefault, colorDelay}, 0);
-    tl.to(dresserDrawers, colorDuration, {fill: colorDefault, colorDelay}, 0);
-    tl.to(dresserKnobs, colorDuration, {fill: colorDefault, colorDelay}, 0);
+    TweenLite.to(dresserFrame, colorDuration, {fill: colorDefault});
+    TweenLite.to(dresserDrawers, colorDuration, {fill: colorDefault});
+    TweenLite.to(dresserKnobs, colorDuration, {fill: colorDefault});
   };
 
   hoverCactus() {
@@ -304,19 +334,17 @@ class BedroomSVG extends React.Component{
   };
 
   colorCactus() {
-    let tl = new TimelineMax();
-    tl.to(cactusPotBody, colorDuration, {fill: '#603813', colorDelay}, 0);
-    tl.to(cactusPotLip, colorDuration, {fill: '#965040', colorDelay}, 0);
-    tl.to(cactusPotTop, colorDuration, {fill: '#a55447', colorDelay}, 0);
-    tl.to(cactusBody, colorDuration, {fill: '#8cc63f', colorDelay}, 0);
+    TweenLite.to(cactusPotBody, colorDuration, {fill: '#A55447'});
+    TweenLite.to(cactusPotLip, colorDuration, {fill: '#965040'});
+    TweenLite.to(cactusPotTop, colorDuration, {fill: '#603813'});
+    TweenLite.to(cactusBody, colorDuration, {fill: '#8cc63f'});
   };
 
   uncolorCactus() {
-    let tl = new TimelineMax();
-    tl.to(cactusPotBody, colorDuration, {fill: colorDefault, colorDelay}, 0);
-    tl.to(cactusPotLip, colorDuration, {fill: colorDefault, colorDelay}, 0);
-    tl.to(cactusPotTop, colorDuration, {fill: colorDefault, colorDelay}, 0);
-    tl.to(cactusBody, colorDuration, {fill: colorDefault, colorDelay}, 0);
+    TweenLite.to(cactusPotBody, colorDuration, {fill: colorDefault});
+    TweenLite.to(cactusPotLip, colorDuration, {fill: colorDefault});
+    TweenLite.to(cactusPotTop, colorDuration, {fill: colorDefault});
+    TweenLite.to(cactusBody, colorDuration, {fill: colorDefault});
   };
 
   hoverFlower() {
@@ -330,27 +358,25 @@ class BedroomSVG extends React.Component{
   };
 
   colorFlower() {
-    let tl = new TimelineMax();
-    tl.to(flowerPotBottom, colorDuration, {fill: '#A55447', colorDelay}, 0);
-    tl.to(flowerPotLip, colorDuration, {fill: '#965040', colorDelay}, 0);
-    tl.to(flowerPotTop, colorDuration, {fill: '#603813', colorDelay}, 0);
-    tl.to(leafBodyRight, colorDuration, {fill: '#39B54A', colorDelay}, 0);
-    tl.to(leafBodyCenter, colorDuration, {fill: '#006837', colorDelay}, 0);
-    tl.to(leafBodyLeft, colorDuration, {fill: '#009245', colorDelay}, 0);
-    tl.to(flowerPetals, colorDuration, {fill: '#F9D7E4', colorDelay}, 0);
-    tl.to(flowerStamens, colorDuration, {fill: '#FBB03B', colorDelay}, 0);
+    TweenLite.to(flowerPotBottom, colorDuration, {fill: '#A55447'});
+    TweenLite.to(flowerPotLip, colorDuration, {fill: '#965040'});
+    TweenLite.to(flowerPotTop, colorDuration, {fill: '#603813'});
+    TweenLite.to(leafBodyRight, colorDuration, {fill: '#39B54A'});
+    TweenLite.to(leafBodyCenter, colorDuration, {fill: '#006837'});
+    TweenLite.to(leafBodyLeft, colorDuration, {fill: '#009245'});
+    TweenLite.to(flowerPetals, colorDuration, {fill: '#F9D7E4'});
+    TweenLite.to(flowerStamens, colorDuration, {fill: '#FBB03B'});
   };
 
   uncolorFlower() {
-    let tl = new TimelineMax();
-    tl.to(flowerPotBottom, colorDuration, {fill: colorDefault, colorDelay}, 0);
-    tl.to(flowerPotLip, colorDuration, {fill: colorDefault, colorDelay}, 0);
-    tl.to(flowerPotTop, colorDuration, {fill: colorDefault, colorDelay}, 0);
-    tl.to(leafBodyRight, colorDuration, {fill: colorDefault, colorDelay}, 0);
-    tl.to(leafBodyCenter, colorDuration, {fill: colorDefault, colorDelay}, 0);
-    tl.to(leafBodyLeft, colorDuration, {fill: colorDefault, colorDelay}, 0);
-    tl.to(flowerPetals, colorDuration, {fill: colorDefault, colorDelay}, 0);
-    tl.to(flowerStamens, colorDuration, {fill: colorDefault, colorDelay}, 0);
+    TweenLite.to(flowerPotBottom, colorDuration, {fill: colorDefault});
+    TweenLite.to(flowerPotLip, colorDuration, {fill: colorDefault});
+    TweenLite.to(flowerPotTop, colorDuration, {fill: colorDefault});
+    TweenLite.to(leafBodyRight, colorDuration, {fill: colorDefault});
+    TweenLite.to(leafBodyCenter, colorDuration, {fill: colorDefault});
+    TweenLite.to(leafBodyLeft, colorDuration, {fill: colorDefault});
+    TweenLite.to(flowerPetals, colorDuration, {fill: colorDefault});
+    TweenLite.to(flowerStamens, colorDuration, {fill: colorDefault});
   };
 
   render() {
