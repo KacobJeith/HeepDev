@@ -2,7 +2,7 @@ import React from 'react';
 import { svgs } from '../assets/remote/SVGs';
 import { bedroomSVG } from '../assets/BedroomString';
 import $ from 'jquery';
-import { TimelineMax, TweenLite } from 'gsap';
+import { TimelineMax } from 'gsap';
 import { withStyles } from 'material-ui/styles';
 import { Paper } from 'material-ui'
 
@@ -28,6 +28,8 @@ class BedroomSVG extends React.Component{
     this.svg = $(bedroomDiv).find('svg')[0];
     this.svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
     this.svg.setAttribute('viewBox', '0 0 1500 800')
+
+    this.addButtonListeners = this.addButtonListeners.bind(this);
 
     this.hoverRemote = this.hoverRemote.bind(this);
     this.hoverPig = this.hoverPig.bind(this);
@@ -197,7 +199,11 @@ class BedroomSVG extends React.Component{
     this.colorRemote();
     tlShake.clear();
 
-    let tlCar = new TimelineMax({onComplete: this.addButtonListeners.bind(this)});
+    let tlCar = new TimelineMax({onComplete: proxyFunction.bind(this)});
+    function proxyFunction(): void {
+      this.addButtonListeners();
+      this.uncolorRemote();
+    };
     tlCar.to(carLights, colorDuration, {fill: '#F2B666'}, 0);
     tlCar.to(carBody, colorDuration, {fill: '#C1272D'}, 0);
     tlCar.to(carTires, colorDuration, {fill: '#333333'}, 0);
@@ -205,7 +211,14 @@ class BedroomSVG extends React.Component{
     tlCar.to(carHandle, colorDuration, {fill: '#B3B3B3'}, 0);
     tlCar.to(carWindows, colorDuration, {fill: '#7FCAE5'}, 0);
     tlCar.to(carAntennaTop, colorDuration, {fill: '#37474F'}, 0);
-    tlCar.to(car, 20, {x:-100}, 0);
+    tlCar.fromTo(car, 4, {'xPercent':-20}, {'xPercent': 20}, 0.7);
+    tlCar.to(carLights, colorDuration, {fill: colorDefault}, 5);
+    tlCar.to(carBody, colorDuration, {fill: colorDefault}, 5);
+    tlCar.to(carTires, colorDuration, {fill: colorDefault}, 5);
+    tlCar.to(carHubs, colorDuration, {fill: colorDefault}, 5);
+    tlCar.to(carHandle, colorDuration, {fill: colorDefault}, 5);
+    tlCar.to(carWindows, colorDuration, {fill: colorDefault}, 5);
+    tlCar.to(carAntennaTop, colorDuration, {fill: colorDefault}, 5);
     console.log("click")
   };
 
