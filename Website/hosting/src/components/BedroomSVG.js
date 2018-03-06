@@ -14,62 +14,11 @@ const styles = theme => ({
   }),
 });
 
-var defaultColor = '#FFF';
-
+var colorDefault = '#FFF';
 var colorDuration = 1;
 var colorDelay = 0.6;
 
-var buttonRemote = [];
-var buttonPig = [];
-var buttonDiary = [];
-var buttonSleep = [];
-var buttonDresserTop = [];
-var buttonDresserBottom = [];
-var buttonCactus = [];
-var buttonFlower = [];
-var buttonPail = [];
-
-var remote = [];
-var remoteBottom = [];
-var remoteBody = [];
-var remoteButtons = [];
-var remoteAntennaTop = [];
-var remoteStickBottoms = [];
-var remoteStickTops = [];
-
-var pigBodyElements = [];
-var pigSnoutFront = [];
-var pigBackElements = [];
-var pigEarInner = [];
-var pigNostrils = [];
-var pigEyes = [];
-var pigCoinSlot = [];
-
-var diaryBottom = [];
-var diaryPages = [];
-var diaryCover = [];
-var diarySpine = [];
-
-var sleepMount = [];
-var sleepButton = [];
-
-var dresserFrame = [];
-var dresserDrawers = [];
-var dresserKnobs = [];
-
-var cactusPotBody = [];
-var cactusPotLip = [];
-var cactusPotTop = [];
-var cactusBody = [];
-
-var flowerPotBottom = [];
-var flowerPotLip = [];
-var flowerPotTop = [];
-var leafBodyRight = [];
-var leafBodyCenter = [];
-var leafBodyLeft = [];
-var flowerPetals = [];
-var flowerStamens = [];
+var tlShake = new TimelineMax({repeat:-1});
 
 class BedroomSVG extends React.Component{
 
@@ -87,205 +36,235 @@ class BedroomSVG extends React.Component{
     this.getElements();
   };
 
-  createButtons(){
-    buttonRemote = document.getElementById('buttonRemote');
-    buttonPig = document.getElementById('buttonPig');
-    buttonDiary = document.getElementById('buttonDiary');
-    buttonSleep = document.getElementById('buttonSleep');
-    buttonDresserTop = document.getElementById('buttonDresserTop');
-    buttonDresserBottom = document.getElementById('buttonDresserBottom');
-    buttonCactus = document.getElementById('buttonCactus');
-    buttonFlower = document.getElementById('buttonFlower');
-    buttonPail = document.getElementById('buttonPail');
+  createButtons() {
+    var buttonRemote = document.getElementById('buttonRemote');
+    var buttonPig = document.getElementById('buttonPig');
+    var buttonDiary = document.getElementById('buttonDiary');
+    var buttonSleep = document.getElementById('buttonSleep');
+    var buttonDresserTop = document.getElementById('buttonDresserTop');
+    var buttonDresserBottom = document.getElementById('buttonDresserBottom');
+    var buttonCactus = document.getElementById('buttonCactus');
+    var buttonFlower = document.getElementById('buttonFlower');
+    var buttonPail = document.getElementById('buttonPail');
 
-    buttonRemote.addEventListener('mouseover', this.hoverRemote);
-    buttonPig.addEventListener('mouseover', this.hoverPig);
-    buttonDiary.addEventListener('mouseover', this.hoverDiary);
-    buttonSleep.addEventListener('mouseover', this.hoverSleep);
-    buttonDresserTop.addEventListener('mouseover', this.hoverDresser);
-    buttonDresserBottom.addEventListener('mouseover', this.hoverDresser);
-    buttonCactus.addEventListener('mouseover', this.hoverCactus);
-    buttonFlower.addEventListener('mouseover', this.hoverFlower);
-    buttonPail.addEventListener('mouseover', this.hoverPail);
+    buttonRemote.addEventListener('mouseover', this.hoverRemote.bind(this));
+    buttonPig.addEventListener('mouseover', this.hoverPig.bind(this));
+    buttonDiary.addEventListener('mouseover', this.hoverDiary.bind(this));
+    buttonSleep.addEventListener('mouseover', this.hoverSleep.bind(this));
+    buttonDresserTop.addEventListener('mouseover', this.hoverDresser.bind(this));
+    buttonDresserBottom.addEventListener('mouseover', this.hoverDresser.bind(this));
+    buttonCactus.addEventListener('mouseover', this.hoverCactus.bind(this));
+    buttonFlower.addEventListener('mouseover', this.hoverFlower.bind(this));
 
-    buttonRemote.addEventListener('mouseleave', this.leaveRemote);
-    buttonPig.addEventListener('mouseleave', this.leavePig);
-    buttonDiary.addEventListener('mouseleave', this.leaveDiary);
-    buttonSleep.addEventListener('mouseleave', this.leaveSleep);
-    buttonDresserTop.addEventListener('mouseleave', this.leaveDresser);
-    buttonDresserBottom.addEventListener('mouseleave', this.leaveDresser);
-    buttonCactus.addEventListener('mouseleave', this.leaveCactus);
-    buttonFlower.addEventListener('mouseleave', this.leaveFlower);
-    buttonPail.addEventListener('mouseleave', this.leavePail);
+    buttonRemote.addEventListener('mouseleave', this.leaveRemote.bind(this));
+    buttonPig.addEventListener('mouseleave', this.leavePig.bind(this));
+    buttonDiary.addEventListener('mouseleave', this.leaveDiary.bind(this));
+    buttonSleep.addEventListener('mouseleave', this.leaveSleep.bind(this));
+    buttonDresserTop.addEventListener('mouseleave', this.leaveDresser.bind(this));
+    buttonDresserBottom.addEventListener('mouseleave', this.leaveDresser.bind(this));
+    buttonCactus.addEventListener('mouseleave', this.leaveCactus.bind(this));
+    buttonFlower.addEventListener('mouseleave', this.leaveFlower.bind(this));
   };
 
   getElements() {
-    remote = document.getElementById('remote');
-    remoteBottom = document.getElementById('remoteBottom');
-    remoteBody = document.getElementById('remoteBody');
-    remoteButtons = document.getElementById('remoteButtons');
-    remoteAntennaTop = document.getElementById('remoteAntennaTop');
-    remoteStickBottoms = document.getElementById('remoteStickBottoms');
-    remoteStickTops = document.getElementById('remoteStickTops');
+    var remote = document.getElementById('remote');
+    var remoteBottom = document.getElementById('remoteBottom');
+    var remoteBody = document.getElementById('remoteBody');
+    var remoteButtons = document.getElementById('remoteButtons');
+    var remoteAntennaTop = document.getElementById('remoteAntennaTop');
+    var remoteStickBottoms = document.getElementById('remoteStickBottoms');
+    var remoteStickTops = document.getElementById('remoteStickTops');
 
-    pigBodyElements = document.getElementById('pigBodyElements');
-    pigSnoutFront = document.getElementById('pigSnoutFront');
-    pigBackElements = document.getElementById('pigBackElements');
-    pigEarInner = document.getElementById('pigEarInner');
-    pigNostrils = document.getElementById('pigNostrils');
-    pigEyes = document.getElementById('pigEyes');
-    pigCoinSlot = document.getElementById('pigCoinSlot');
+    var pig = document.getElementById('pig');
+    var pigBodyElements = document.getElementById('pigBodyElements');
+    var pigSnoutFront = document.getElementById('pigSnoutFront');
+    var pigBackElements = document.getElementById('pigBackElements');
+    var pigEarInner = document.getElementById('pigEarInner');
+    var pigNostrils = document.getElementById('pigNostrils');
+    var pigEyes = document.getElementById('pigEyes');
+    var pigCoinSlot = document.getElementById('pigCoinSlot');
 
-    diaryBottom = document.getElementById('diaryBottom');
-    diaryPages = document.getElementById('diaryPages');
-    diaryCover = document.getElementById('diaryCover');
-    diarySpine = document.getElementById('diarySpine');
+    var diary = document.getElementById('diary')
+    var diaryBottom = document.getElementById('diaryBottom');
+    var diaryPages = document.getElementById('diaryPages');
+    var diaryCover = document.getElementById('diaryCover');
+    var diarySpine = document.getElementById('diarySpine');
 
-    sleepMount = document.getElementById('sleepMount');
-    sleepButton = document.getElementById('sleepButton');
+    var sleep = document.getElementById('sleep');
+    var sleepMount = document.getElementById('sleepMount');
+    var sleepButton = document.getElementById('sleepButton');
 
-    dresserFrame = document.getElementById('dresserFrame');
-    dresserDrawers = document.getElementById('dresserDrawers');
-    dresserKnobs = document.getElementById('dresserKnobs');
+    var dresser = document.getElementById('dresser');
+    var dresserFrame = document.getElementById('dresserFrame');
+    var dresserDrawers = document.getElementById('dresserDrawers');
+    var dresserKnobs = document.getElementById('dresserKnobs');
 
-    cactusPotBody = document.getElementById('cactusPotBody');
-    cactusPotLip = document.getElementById('cactusPotLip');
-    cactusPotTop = document.getElementById('cactusPotTop');
-    cactusBody = document.getElementById('cactusBody');
+    var cactus = document.getElementById('cactus');
+    var cactusPotBody = document.getElementById('cactusPotBody');
+    var cactusPotLip = document.getElementById('cactusPotLip');
+    var cactusPotTop = document.getElementById('cactusPotTop');
+    var cactusBody = document.getElementById('cactusBody');
 
-    flowerPotBottom = document.getElementById('flowerPotBottom');
-    flowerPotLip = document.getElementById('flowerPotLip');
-    flowerPotTop = document.getElementById('flowerPotTop');
-    leafBodyRight = document.getElementById('leafBodyRight');
-    leafBodyCenter = document.getElementById('leafBodyCenter');
-    leafBodyLeft = document.getElementById('leafBodyLeft');
-    flowerPetals = document.getElementById('flowerPetals');
-    flowerStamens = document.getElementById('flowerStamens');
+    var flowers = document.getElementById('flowers');
+    var flowerPotBottom = document.getElementById('flowerPotBottom');
+    var flowerPotLip = document.getElementById('flowerPotLip');
+    var flowerPotTop = document.getElementById('flowerPotTop');
+    var leafBodyRight = document.getElementById('leafBodyRight');
+    var leafBodyCenter = document.getElementById('leafBodyCenter');
+    var leafBodyLeft = document.getElementById('leafBodyLeft');
+    var flowerPetals = document.getElementById('flowerPetals');
+    var flowerStamens = document.getElementById('flowerStamens');
+  };
 
+  hoverShake(e) {
+    tlShake.fromTo(e, 2, {x:-1}, {x:1, ease:RoughEase.ease.config({
+      strength:8,
+      points:20,
+      template:Linear.easeNone,
+      randomize:false
+    }) , clearProps:"x"});
+  };
+
+  leaveShake() {
+    tlShake.clear();
   };
 
   hoverRemote() {
     let tl = new TimelineMax();
-    tl.to(remoteBottom, 1, {fill: '#333333', delay:0.6}, 0);
-    tl.to(remoteBody, 1, {fill: '#666666', delay:0.6}, 0);
-    tl.to(remoteButtons, 1, {fill: '#CCCCCC', delay:0.6}, 0);
-    tl.to(remoteAntennaTop, 1, {fill: '#000', delay:0.6}, 0);
-    tl.to(remoteStickBottoms, 1, {fill: '#999999', delay:0.6}, 0);
-    tl.to(remoteStickTops, 1, {fill: '#666666', delay:0.6}, 0);
+    tl.to(remoteBottom, colorDuration, {fill: '#333333', colorDelay}, 0);
+    tl.to(remoteBody, colorDuration, {fill: '#666666', colorDelay}, 0);
+    tl.to(remoteButtons, colorDuration, {fill: '#CCCCCC', colorDelay}, 0);
+    tl.to(remoteAntennaTop, colorDuration, {fill: '#000', colorDelay}, 0);
+    tl.to(remoteStickBottoms, colorDuration, {fill: '#999999', colorDelay}, 0);
+    tl.to(remoteStickTops, colorDuration, {fill: '#666666', colorDelay}, 0);
+    this.hoverShake(remote);
   };
 
   leaveRemote() {
     let tl = new TimelineMax();
-    tl.to(remoteBottom, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(remoteBody, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(remoteButtons, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(remoteAntennaTop, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(remoteStickBottoms, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(remoteStickTops, 1, {fill: defaultColor, delay:0.6}, 0);
+    tl.to(remoteBottom, colorDuration, {fill: colorDefault, colorDelay}, 0);
+    tl.to(remoteBody, colorDuration, {fill: colorDefault, colorDelay}, 0);
+    tl.to(remoteButtons, colorDuration, {fill: colorDefault, colorDelay}, 0);
+    tl.to(remoteAntennaTop, colorDuration, {fill: colorDefault, colorDelay}, 0);
+    tl.to(remoteStickBottoms, colorDuration, {fill: colorDefault, colorDelay}, 0);
+    tl.to(remoteStickTops, colorDuration, {fill: colorDefault, colorDelay}, 0);
+    this.leaveShake();
   };
 
   hoverPig() {
     let tl = new TimelineMax();
-    tl.to(pigBodyElements, 1, {fill: '#EDC3D9', delay:0.6}, 0);
-    tl.to(pigSnoutFront, 1, {fill: '#FCEDF7', delay:0.6}, 0);
-    tl.to(pigBackElements, 1, {fill: '#B27D97', delay:0.6}, 0);
-    tl.to(pigEarInner, 1, {fill: '#FCEDF7', delay:0.6}, 0);
-    tl.to(pigNostrils, 1, {fill: '#37474F', delay:0.6}, 0);
-    tl.to(pigEyes, 1, {fill: '#37474F', delay:0.6}, 0);
-    tl.to(pigCoinSlot, 1, {fill: '#37474F', delay:0.6}, 0);
+    tl.to(pigBodyElements, colorDuration, {fill: '#EDC3D9', colorDelay}, 0);
+    tl.to(pigSnoutFront, colorDuration, {fill: '#FCEDF7', colorDelay}, 0);
+    tl.to(pigBackElements, colorDuration, {fill: '#B27D97', colorDelay}, 0);
+    tl.to(pigEarInner, colorDuration, {fill: '#FCEDF7', colorDelay}, 0);
+    tl.to(pigNostrils, colorDuration, {fill: '#37474F', colorDelay}, 0);
+    tl.to(pigEyes, colorDuration, {fill: '#37474F', colorDelay}, 0);
+    tl.to(pigCoinSlot, colorDuration, {fill: '#37474F', colorDelay}, 0);
+    this.hoverShake(pig);
   };
 
   leavePig() {
     let tl = new TimelineMax();
-    tl.to(pigBodyElements, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(pigSnoutFront, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(pigBackElements, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(pigEarInner, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(pigNostrils, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(pigEyes, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(pigCoinSlot, 1, {fill: defaultColor, delay:0.6}, 0);
+    tl.to(pigBodyElements, colorDuration, {fill: colorDefault, colorDelay}, 0);
+    tl.to(pigSnoutFront, colorDuration, {fill: colorDefault, colorDelay}, 0);
+    tl.to(pigBackElements, colorDuration, {fill: colorDefault, colorDelay}, 0);
+    tl.to(pigEarInner, colorDuration, {fill: colorDefault, colorDelay}, 0);
+    tl.to(pigNostrils, colorDuration, {fill: colorDefault, colorDelay}, 0);
+    tl.to(pigEyes, colorDuration, {fill: colorDefault, colorDelay}, 0);
+    tl.to(pigCoinSlot, colorDuration, {fill: colorDefault, colorDelay}, 0);
+    this.leaveShake();
   };
 
   hoverDiary() {
     let tl = new TimelineMax();
-    tl.to(diaryBottom, 1, {fill: '#4A99CE', delay:0.6}, 0);
-    tl.to(diaryPages, 1, {fill: '#FFF', delay:0.6}, 0);
-    tl.to(diaryCover, 1, {fill: '#ADE9F2', delay:0.6}, 0);
-    tl.to(diarySpine, 1, {fill: '#4A99CE', delay:0.6}, 0);
+    tl.to(diaryBottom, colorDuration, {fill: '#4A99CE', colorDelay}, 0);
+    tl.to(diaryPages, colorDuration, {fill: '#FFF', colorDelay}, 0);
+    tl.to(diaryCover, colorDuration, {fill: '#ADE9F2', colorDelay}, 0);
+    tl.to(diarySpine, colorDuration, {fill: '#4A99CE', colorDelay}, 0);
+    this.hoverShake(diary);
   };
 
   leaveDiary() {
     let tl = new TimelineMax();
-    tl.to(diaryBottom, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(diaryPages, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(diaryCover, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(diarySpine, 1, {fill: defaultColor, delay:0.6}, 0);
+    tl.to(diaryBottom, colorDuration, {fill: colorDefault, colorDelay}, 0);
+    tl.to(diaryPages, colorDuration, {fill: colorDefault, colorDelay}, 0);
+    tl.to(diaryCover, colorDuration, {fill: colorDefault, colorDelay}, 0);
+    tl.to(diarySpine, colorDuration, {fill: colorDefault, colorDelay}, 0);
+    this.leaveShake();
   };
 
   hoverSleep() {
     let tl = new TimelineMax();
-    tl.to(sleepMount, 1, {fill: '#C6C6C6', delay:0.6}, 0);
-    tl.to(sleepButton, 1, {fill: '#AA1721', delay:0.6}, 0);
+    tl.to(sleepMount, colorDuration, {fill: '#C6C6C6', colorDelay}, 0);
+    tl.to(sleepButton, colorDuration, {fill: '#AA1721', colorDelay}, 0);
+    this.hoverShake(sleep);
   };
 
   leaveSleep() {
     let tl = new TimelineMax();
-    tl.to(sleepMount, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(sleepButton, 1, {fill: defaultColor, delay:0.6}, 0);
+    tl.to(sleepMount, colorDuration, {fill: colorDefault, colorDelay}, 0);
+    tl.to(sleepButton, colorDuration, {fill: colorDefault, colorDelay}, 0);
+    this.leaveShake();
   }
 
   hoverDresser() {
     let tl = new TimelineMax();
-    tl.to(dresserFrame, 1, {fill: '#627172', delay:0.6}, 0);
-    tl.to(dresserDrawers, 1, {fill: '#505B5B', delay:0.6}, 0);
-    tl.to(dresserKnobs, 1, {fill: '#627172', delay:0.6}, 0);
+    tl.to(dresserFrame, colorDuration, {fill: '#627172', colorDelay}, 0);
+    tl.to(dresserDrawers, colorDuration, {fill: '#505B5B', colorDelay}, 0);
+    tl.to(dresserKnobs, colorDuration, {fill: '#627172', colorDelay}, 0);
+    this.hoverShake(dresser);
   };
 
   leaveDresser() {
     let tl = new TimelineMax();
-    tl.to(dresserFrame, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(dresserDrawers, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(dresserKnobs, 1, {fill: defaultColor, delay:0.6}, 0);
+    tl.to(dresserFrame, colorDuration, {fill: colorDefault, colorDelay}, 0);
+    tl.to(dresserDrawers, colorDuration, {fill: colorDefault, colorDelay}, 0);
+    tl.to(dresserKnobs, colorDuration, {fill: colorDefault, colorDelay}, 0);
+    this.leaveShake();
   };
 
   hoverCactus() {
     let tl = new TimelineMax();
-    tl.to(cactusPotBody, 1, {fill: '#603813', delay:0.6}, 0);
-    tl.to(cactusPotLip, 1, {fill: '#965040', delay:0.6}, 0);
-    tl.to(cactusPotTop, 1, {fill: '#a55447', delay:0.6}, 0);
-    tl.to(cactusBody, 1, {fill: '#8cc63f', delay:0.6}, 0);
+    tl.to(cactusPotBody, colorDuration, {fill: '#603813', colorDelay}, 0);
+    tl.to(cactusPotLip, colorDuration, {fill: '#965040', colorDelay}, 0);
+    tl.to(cactusPotTop, colorDuration, {fill: '#a55447', colorDelay}, 0);
+    tl.to(cactusBody, colorDuration, {fill: '#8cc63f', colorDelay}, 0);
+    this.hoverShake(cactus);
   };
 
   leaveCactus() {
     let tl = new TimelineMax();
-    tl.to(cactusPotBody, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(cactusPotLip, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(cactusPotTop, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(cactusBody, 1, {fill: defaultColor, delay:0.6}, 0);
+    tl.to(cactusPotBody, colorDuration, {fill: colorDefault, colorDelay}, 0);
+    tl.to(cactusPotLip, colorDuration, {fill: colorDefault, colorDelay}, 0);
+    tl.to(cactusPotTop, colorDuration, {fill: colorDefault, colorDelay}, 0);
+    tl.to(cactusBody, colorDuration, {fill: colorDefault, colorDelay}, 0);
+    this.leaveShake();
   };
 
   hoverFlower() {
     let tl = new TimelineMax();
-    tl.to(flowerPotBottom, 1, {fill: '#A55447', delay:0.6}, 0);
-    tl.to(flowerPotLip, 1, {fill: '#965040', delay:0.6}, 0);
-    tl.to(flowerPotTop, 1, {fill: '#603813', delay:0.6}, 0);
-    tl.to(leafBodyRight, 1, {fill: '#39B54A', delay:0.6}, 0);
-    tl.to(leafBodyCenter, 1, {fill: '#006837', delay:0.6}, 0);
-    tl.to(leafBodyLeft, 1, {fill: '#009245', delay:0.6}, 0);
-    tl.to(flowerPetals, 1, {fill: '#F9D7E4', delay:0.6}, 0);
-    tl.to(flowerStamens, 1, {fill: '#FBB03B', delay:0.6}, 0);
+    tl.to(flowerPotBottom, colorDuration, {fill: '#A55447', colorDelay}, 0);
+    tl.to(flowerPotLip, colorDuration, {fill: '#965040', colorDelay}, 0);
+    tl.to(flowerPotTop, colorDuration, {fill: '#603813', colorDelay}, 0);
+    tl.to(leafBodyRight, colorDuration, {fill: '#39B54A', colorDelay}, 0);
+    tl.to(leafBodyCenter, colorDuration, {fill: '#006837', colorDelay}, 0);
+    tl.to(leafBodyLeft, colorDuration, {fill: '#009245', colorDelay}, 0);
+    tl.to(flowerPetals, colorDuration, {fill: '#F9D7E4', colorDelay}, 0);
+    tl.to(flowerStamens, colorDuration, {fill: '#FBB03B', colorDelay}, 0);
+    this.hoverShake(flowers);
   };
 
   leaveFlower() {
     let tl = new TimelineMax();
-    tl.to(flowerPotBottom, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(flowerPotLip, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(flowerPotTop, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(leafBodyRight, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(leafBodyCenter, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(leafBodyLeft, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(flowerPetals, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(flowerStamens, 1, {fill: defaultColor, delay:0.6}, 0);
+    tl.to(flowerPotBottom, colorDuration, {fill: colorDefault, colorDelay}, 0);
+    tl.to(flowerPotLip, colorDuration, {fill: colorDefault, colorDelay}, 0);
+    tl.to(flowerPotTop, colorDuration, {fill: colorDefault, colorDelay}, 0);
+    tl.to(leafBodyRight, colorDuration, {fill: colorDefault, colorDelay}, 0);
+    tl.to(leafBodyCenter, colorDuration, {fill: colorDefault, colorDelay}, 0);
+    tl.to(leafBodyLeft, colorDuration, {fill: colorDefault, colorDelay}, 0);
+    tl.to(flowerPetals, colorDuration, {fill: colorDefault, colorDelay}, 0);
+    tl.to(flowerStamens, colorDuration, {fill: colorDefault, colorDelay}, 0);
+    this.leaveShake();
   };
 
   render() {
