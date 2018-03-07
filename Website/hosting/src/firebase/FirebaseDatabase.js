@@ -28,6 +28,11 @@ export const readUserData = (user) => {
 	})
 }
 
+export const saveUserPublicProfile = (uid, publicProfile) => {
+
+	firebase.database().ref('/users/' + uid + '/profile').set(publicProfile);
+}
+
 const retrieveDevices = (snapshot) => {
 	snapshot.forEach( function(snapChild){
 		readDevice(snapChild.key);
