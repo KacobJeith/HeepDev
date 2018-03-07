@@ -335,9 +335,9 @@ class BedroomSVG extends React.Component{
   };
 
   colorDresser() {
-    TweenLite.to(dresserFrame, colorDuration, {fill: '#627172'});
-    TweenLite.to(dresserDrawers, colorDuration, {fill: '#505B5B'});
-    TweenLite.to(dresserKnobs, colorDuration, {fill: '#627172'});
+    TweenLite.to(dresserFrame, colorDuration, {fill: '#896003'});
+    TweenLite.to(dresserDrawers, colorDuration, {fill: '#A87420'});
+    TweenLite.to(dresserKnobs, colorDuration, {fill: '#896003'});
   };
 
   uncolorDresser() {
