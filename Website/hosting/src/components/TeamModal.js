@@ -33,7 +33,7 @@ class TeamModal extends React.Component {
     return (
       <Typography style={{
           paddingTop: 16
-        }} variant="subheading" color="inherit">
+        }} variant="subheading">
           {bioText}
       </Typography>
     )
@@ -41,7 +41,7 @@ class TeamModal extends React.Component {
 
   nameSubheading() {
     return (
-      <Typography variant="subheading" align='center' color="inherit">
+      <Typography variant="subheading" align='center'>
           {this.props.name}
       </Typography>
     )
@@ -49,7 +49,7 @@ class TeamModal extends React.Component {
 
   nameTitle() {
     return (
-      <Typography variant="title" align="center" color="inherit">
+      <Typography variant="title" align="center">
         {this.props.name}
       </Typography>
     )

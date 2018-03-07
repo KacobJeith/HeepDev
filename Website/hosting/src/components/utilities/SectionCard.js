@@ -5,7 +5,7 @@ class SectionCard extends React.Component {
 
   headerText() {
     return (
-      <Typography variant="headline" align="center" color='inherit'>
+      <Typography variant="headline" align="center">
         {this.props.headerText}
       </Typography>
     )
@@ -13,7 +13,7 @@ class SectionCard extends React.Component {
 
   subText() {
     return (
-      <Typography style={{paddingTop: 10}} component="p" align="center" color='inherit'>
+      <Typography style={{paddingTop: 10}} variant="subheading" align="center">
         {this.props.subText}
       </Typography>
     )
@@ -39,11 +39,11 @@ class SectionCard extends React.Component {
 
     return (
       <Grid container {...inputs.outerContainer} direction ='column' justify="center" alignItems="center">
-          <Grid item xs={8}>
-            {this.headerText()}
-            {this.subText()}
-          </Grid>
+        <Grid item xs={8}>
+          {this.headerText()}
+          {this.subText()}
         </Grid>
+      </Grid>
     )
   }
 }
