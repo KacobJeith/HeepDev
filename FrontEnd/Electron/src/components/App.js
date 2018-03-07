@@ -10,7 +10,6 @@ import Logout from './Logout'
 import UserProfile from './UserProfile'
 import DeviceBuilder from './DeviceBuilder'
 import Flowchart from './Classic/Flowchart'
-// import Analytics from './Analytics/AnalyticsMain'
 
 const mapStateToProps = (state) => ({
 	loginStatus: state.loginStatus,
@@ -22,7 +21,6 @@ class App extends React.Component {
 	}
 
 	render() {
-		this.logPageView();
 
 		const styles = {
 	        container : { 
@@ -44,7 +42,6 @@ class App extends React.Component {
 	    if (this.props.loginStatus) {
 	    	loggedInRoutes.push(<Route path="/DeviceBuilder" component={DeviceBuilder} key="DeviceBuilder"/>)
 	    	loggedInRoutes.push(<Route path="/User" component={UserProfile} key="user"/>);
-	    	// loggedInRoutes.push(<Route path="/Analytics" component={Analytics} key="Analytics"/>);
 	    }
 
 	    return(

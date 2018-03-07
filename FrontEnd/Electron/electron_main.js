@@ -3,11 +3,7 @@ const electronApp = electron.app
 const BrowserWindow = electron.BrowserWindow
 const path = require('path')
 const url = require('url')
-var log = require('electron-log');
- 
-
-// const heep = require('./src/dist/server.js');
-
+const log = require('electron-log');
 const express = require('express');
 const bodyParser = require('body-parser');
 const heepConnect = require('./src/dist/heep/HeepConnections');
@@ -33,10 +29,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.get('/api/findDevices', function(req, res) {
-  let simulation = false;
+  let simulation = true;
   
   if (simulation) {
-    res.json(simulationDevice);
+    res.json(simulationDevice.simulationDevice);
   } else {
     heepConnect.SearchForHeepDevices(); 
     res.json(heepConnect.GetCurrentMasterState());
@@ -106,7 +102,7 @@ electronApp.on('ready', function() {
 
   mainWindow.loadURL('http://localhost:' + app.get('port'));
 
-  // mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools()
 
   mainWindow.on('closed', function () {
     mainWindow = null
