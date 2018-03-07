@@ -199,33 +199,44 @@ class MenuAppBar extends React.Component {
 
             <div className={classes.flex}/>
 
-              <IconButton
-                  color="inherit"
-                  style={{textDecoration: 'none', marginRight: 50}}>
-                <NavLink to="/About" style={{textDecoration: 'none', marginRight: 20}}>
+              <Button
+                style={{
+                  //marginRight: 10,
+                  textTransform: 'capitalize',
+                }}
+                >
+                <NavLink to="/About" style={{textDecoration: 'none'}}>
                   <Typography variant="subheading" style={{color:"white"}}>
                     About
                   </Typography>
                 </NavLink>
-              </IconButton>
+              </Button>
 
-              <IconButton
-                  color="inherit">
-                <NavLink to="/Shop" style={{textDecoration: 'none', marginRight: 90}}>
+              <Button
+                style={{
+                  //marginRight: 20,
+                  textTransform: 'capitalize',
+                }}
+                >
+                <NavLink to="/Shop" style={{textDecoration: 'none'}}>
                   <Typography variant="subheading" style={{color:"white"}}>
                     Shop
                   </Typography>
                 </NavLink>
-              </IconButton>
+              </Button>
 
-              <IconButton
-                  color="inherit">
-                <NavLink to="/Developers" style={{textDecoration: 'none', marginRight: 40}}>
+              <Button
+                style={{
+                  //marginRight: 20,
+                  textTransform: 'capitalize',
+                }}
+                >
+                <NavLink to="/Developers" style={{textDecoration: 'none'}}>
                   <Typography variant="subheading" style={{color:"white"}}>
                     Develop
                   </Typography>
                 </NavLink>
-              </IconButton>
+              </Button>
 
 
               <NavLink to="/MyCart" style={{textDecoration: 'none'}}>

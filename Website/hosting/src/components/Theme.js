@@ -29,10 +29,7 @@ const Theme = createMuiTheme({
     body1: {
       color: "rgba(0, 0, 0, 0.7)"
     },
-    button: {
-      color: "rgba(0, 0, 0, 0.7)"
-    }
-  }
+  },
 });
 
 export default Theme;
