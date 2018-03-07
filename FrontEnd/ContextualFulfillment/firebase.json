@@ -1,0 +1,35 @@
+{
+  "database": {
+    "rules": "database.rules.json"
+  },
+  "hosting": {
+    "public": "hosting",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source" : "/WebGL/**",
+        "destination" : "/WebGL/**"
+      },
+      {
+        "source": "/verifyUser",
+        "function": "verifyUser"
+      },
+      {
+        "source": "/incoming",
+        "function": "incoming"
+      },
+      {
+        "source": "**",
+        "destination": "/index.html"
+      },
+      {
+        "source": "**/**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
