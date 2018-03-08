@@ -50,6 +50,7 @@ class BedroomSVG extends React.Component{
     this.leaveFlower = this.leaveFlower.bind(this);
 
     this.clickRemote = this.clickRemote.bind(this);
+    this.clickPig = this.clickPig.bind(this);
 	};
 
   componentDidMount() {
@@ -123,12 +124,27 @@ class BedroomSVG extends React.Component{
     var carHandle = document.getElementById('carHandle');
     var carWindows = document.getElementById('carWindows');
     var carAntennaTop = document.getElementById('carAntennaTop');
-
     var carAnimation = document.getElementById('Animation');
     var carSmoke1 = document.getElementById('carSmoke1');
     var carSmoke2 = document.getElementById('carSmoke2');
     var carSmoke3 = document.getElementById('carSmoke3');
     var carShadow = document.getElementById('carShadow');
+
+    var solarSystem = document.getElementById('solarSystem');
+    var colorPlanets = document.getElementById('colorPlanets');
+
+    var lampBottom = document.getElementById('lampBottom');
+    var lampShade = document.getElementById('lampShade');
+    var lampTop = document.getElementById('lampTop');
+    var lampLightRed = document.getElementById('lampLightRed');
+    var lampLightYellow = document.getElementById('lampLightYellow');
+
+    var clock = document.getElementById('clock');
+    var clockBody = document.getElementById('clockBody');
+    var clockFace = document.getElementById('clockFace');
+    var clockBellLeft = document.getElementById('clockBellLeft');
+    var clockBellRight = document.getElementById('clockBellRight');
+    var clockLegs = document.getElementById('clockLegs');
   };
 
     addButtonListeners() {
@@ -151,6 +167,7 @@ class BedroomSVG extends React.Component{
       buttonFlower.addEventListener('mouseleave', this.leaveFlower);
 
       buttonRemote.addEventListener('click', this.clickRemote);
+      buttonPig.addEventListener('click', this.clickPig);
   };
 
     removeButtonListeners() {
@@ -173,6 +190,7 @@ class BedroomSVG extends React.Component{
       buttonFlower.removeEventListener('mouseleave', this.leaveFlower);
 
       buttonRemote.removeEventListener('click', this.clickRemote);
+      buttonRemote.removeEventListener('click', this.clickPig);
 
       console.log("removed")
     }
@@ -257,6 +275,71 @@ class BedroomSVG extends React.Component{
   leavePig() {
     this.uncolorPig();
     this.leaveShake();
+  };
+
+  clickPig() {
+    this.removeButtonListeners();
+    this.colorPig();
+    tlShake.clear();
+
+    let tlPig = new TimelineMax({onComplete: proxyFunction.bind(this)});
+    function proxyFunction(): void {
+      this.addButtonListeners();
+      this.uncolorPig();
+    };
+
+    const startTime = 1;
+    //color planets
+    TweenLite.to(colorPlanets, colorDuration, {display: 'block'});
+    //color lamp
+    TweenLite.to(lampBottom, colorDuration, {fill: '#A7CAD3'});
+    TweenLite.to(lampShade, colorDuration, {fill: '#FFF3C0'});
+    TweenLite.to(lampTop, colorDuration, {fill: '#FCEA6B'});
+    TweenLite.to(lampLightYellow, colorDuration, {display: 'block'});
+
+    //color alarm clock
+    TweenLite.to(clockBody, colorDuration, {fill: '#148408'});
+    TweenLite.to(clockFace, colorDuration, {fill: '#FFF'});
+    TweenLite.to(clockBellLeft, colorDuration, {fill: '#D88D2B'});
+    TweenLite.to(clockBellRight, colorDuration, {fill: '#D88D2B'});
+    TweenLite.to(clockLegs, colorDuration, {fill: '#808080'});
+
+    tlPig.fromTo(clock, 0.1, {y: 2}, {
+      y: -2,
+      yoyo: true,
+      repeat: 10,
+      ease: Sine.easeInOut
+    }, 1);
+
+    tlPig.fromTo(clockBellLeft, 0.2, {rotation: -4, transformOrigin: "50%", y: 3}, {
+      rotation: 4,
+      transformOrigin: "50%",
+      y: -3,
+      yoyo: true,
+      repeat: 10,
+      ease: Sine.easeInOut
+    }, startTime);
+
+    tlPig.fromTo(clockBellRight, 0.2, {rotation: 4, transformOrigin: "50%", y: -3}, {
+      rotation: -4,
+      transformOrigin: "50%",
+      y: 3,
+      yoyo: true,
+      repeat: 11,
+      ease: Sine.easeInOut
+    }, startTime);
+
+    tlPig.fromTo(solarSystem, 0.5, {rotation: 10, transformOrigin: "50%"}, {
+      rotation: -10,
+      yoyo: true,
+      repeat: 10,
+      ease: Sine.easeInOut
+    }, startTime)
+
+    tlPig.to(solarSystem, 0.25, {rotation: 0, transformOrigin: "50%"}, startTime+5)
+    tlPig.to([colorPlanets, lampLightYellow], 0.1, {display: 'none'}, startTime+5.3)
+    tlPig.to([clockBody, clockFace, clockBellLeft, clockBellRight, clockLegs, lampBottom, lampShade, lampTop], colorDuration, {fill: colorDefault, delay: 0.2});
+
   };
 
   colorPig() {
