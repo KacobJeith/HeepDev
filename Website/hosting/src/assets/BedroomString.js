@@ -424,31 +424,53 @@ export const bedroomSVG = `
         <ellipse id="remoteStickTopLeft" cx="171" cy="677.348" rx="3" ry="1.795"/>
       </g>
     </g>
-    <g id="lamp" fill="#FFFFFF" stroke="#37474F" stroke-width="2" stroke-miterlimit="10">
-      <path id="lampBottom" d="M815 362.54v-6.476c-6.582.571-13.99.646-22-.17v6.605c-6 0-12 5.37-12 12v9c0 6.63 5.87 12.5 12.5 12.5h21c6.63 0 11.5-5.87 11.5-12.5v-9c0-6.289-4-11.449-11-11.959z"/>
-      <path id="lampShade" stroke-linejoin="round" d="M825.103 297.254c-.011 2.345-8.76 4.246-19.551 4.246-10.798 0-21.552-2.153-21.552-4.5l-20.88 51.82c45.63 17.305 82.76 0 82.76 0l-20.777-51.566z"/>
-      <ellipse id="lampTop" cx="804.551" cy="297.333" rx="20.551" ry="3.594"/>
+    <g id="lamp">
+      <path id="lampBottom" fill="#FFFFFF" stroke="#37474F" stroke-width="2" stroke-miterlimit="10" d="M815 362.54v-6.476c-6.582.571-13.99.646-22-.17v6.605c-6 0-12 5.37-12 12v9c0 6.63 5.87 12.5 12.5 12.5h21c6.63 0 11.5-5.87 11.5-12.5v-9c0-6.289-4-11.449-11-11.959z"/>
+      <radialGradient id="lampLightRed_1_" cx="804.406" cy="350.246" r="57.733" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#e26f6f"/>
+        <stop offset=".208" stop-color="#e37373"/>
+        <stop offset=".404" stop-color="#e67e7e"/>
+        <stop offset=".595" stop-color="#ec9191"/>
+        <stop offset=".782" stop-color="#f3abac"/>
+        <stop offset=".966" stop-color="#fdcdce"/>
+        <stop offset="1" stop-color="#ffd4d5"/>
+      </radialGradient>
+      <path id="lampLightRed" display="none" opacity=".4" fill="url(#lampLightRed_1_)" d="M865.428 394.083c0 5.749-27.326 10.409-61.022 10.409-33.71 0-61.021-4.661-61.021-10.409 0-.34.102-.681.294-1.023l.015.731L784.145 296h40.586l40.346 97.73c.236.363.351-.028.351.353z"/>
+      <radialGradient id="lampLightYellow_1_" cx="805.406" cy="350.246" r="77.739" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#f9f27d"/>
+        <stop offset=".186" stop-color="#f9f281"/>
+        <stop offset=".36" stop-color="#faf48c"/>
+        <stop offset=".53" stop-color="#fbf59f"/>
+        <stop offset=".697" stop-color="#fcf8ba"/>
+        <stop offset=".861" stop-color="#fdfbdc"/>
+        <stop offset="1" stop-color="#fff"/>
+      </radialGradient>
+      <path id="lampLightYellow" display="none" opacity=".4" fill="url(#lampLightYellow_1_)" d="M866.428 394.083c0 5.749-27.326 10.409-61.022 10.409-33.71 0-61.021-4.661-61.021-10.409 0-.34.102-.681.294-1.023l.015.731L785.145 296h40.586l40.346 97.73c.236.363.351-.028.351.353z"/>
+      <path id="lampShade" fill="#FFFFFF" stroke="#37474F" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="10" d="M825.103 297.254c-.011 2.345-8.76 4.246-19.551 4.246-10.798 0-21.552-2.153-21.552-4.5l-20.88 51.82c45.63 17.305 82.76 0 82.76 0l-20.777-51.566z"/>
+      <ellipse id="lampTop" fill="#FFFFFF" stroke="#37474F" stroke-width="2" stroke-miterlimit="10" cx="804.551" cy="297.333" rx="20.551" ry="3.594"/>
     </g>
-    <g id="solarSystem" stroke="#37474F" stroke-width="2" stroke-miterlimit="10">
-      <g id="bodyPlanets" fill="#FFFFFF">
+    <g id="solarSystem">
+      <g id="bodyPlanets" fill="#FFFFFF" stroke="#37474F" stroke-width="2" stroke-miterlimit="10">
         <circle id="bodySun" cx="1075.143" cy="172.23" r="42.148"/>
         <circle id="bodyMars" cx="935.371" cy="158.371" r="15.371"/>
         <circle id="bodyMercury" cx="1013.688" cy="155.372" r="11.486"/>
         <circle id="bodyVenus" cx="1141.094" cy="160.411" r="14.094"/>
         <circle id="bodyUranus" cx="803.041" cy="186.839" r="23.063"/>
         <circle id="bodyNeptune" cx="871.552" cy="181.937" r="25.309"/>
-        <ellipse id="bodyJupiterSpot" transform="rotate(16.266 1136.671 122.456)" stroke-linecap="round" cx="1136.584" cy="122.429" rx="5.25" ry="2.079"/>
         <circle id="bodyJupiter" cx="1127.075" cy="115.575" r="21.575"/>
+        <ellipse id="bodyJupiterSpot" transform="rotate(16.266 1136.671 122.456)" stroke-linecap="round" cx="1136.584" cy="122.429" rx="5.25" ry="2.079"/>
         <path id="bodySaturn" d="M1297.282 175.754c0 11.116-9.01 20.127-20.125 20.127-11.118 0-20.126-9.011-20.126-20.127 0-11.114 9.008-20.125 20.126-20.125 11.115 0 20.125 9.011 20.125 20.125z"/>
         <circle id="bodyPluto" cx="1020.758" cy="103.554" r="8.275"/>
-        <path id="bodyEarthRight" stroke-linecap="round" stroke-linejoin="round" d="M1220.259 170.438c0-4 3.241-7.438 5.241-11.438-1-.5-1.5-1.5-2.5-2-.25-5.75.965-7.563 1.965-9.563a14.018 14.018 0 0 1 4.12 9.945c0 5.915-3.652 10.978-8.826 13.056"/>
-        <path id="bodyEarthLeft" stroke-linejoin="round" d="M1202.887 164.502c1.5 0 5.613-4.002 3.113-6.502 3.5-1.5 8-1.5 11-5 0-4.995-7.969-4.5-11.47-6.001a14.03 14.03 0 0 0-4.575 10.383c0 2.597.704 5.031 1.932 7.12z"/>
         <circle id="bodyEarth" cx="1215.02" cy="157.382" r="14.065"/>
+        <g id="bodyEarthLand" stroke-linejoin="round">
+          <path id="bodyEarthRight" stroke-linecap="round" d="M1220.259 170.438c0-4 3.241-7.438 5.241-11.438-1-.5-1.5-1.5-2.5-2-.25-5.75.965-7.563 1.965-9.563a14.018 14.018 0 0 1 4.12 9.945c0 5.915-3.652 10.978-8.826 13.056"/>
+          <path id="bodyEarthLeft" d="M1202.887 164.502c1.5 0 5.613-4.002 3.113-6.502 3.5-1.5 8-1.5 11-5 0-4.995-7.969-4.5-11.47-6.001a14.03 14.03 0 0 0-4.575 10.383c0 2.597.704 5.031 1.932 7.12z"/>
+        </g>
       </g>
-      <g id="rocket" fill="#FFFFFF">
+      <g id="rocket" fill="#FFFFFF" stroke="#37474F" stroke-width="2" stroke-miterlimit="10">
         <g id="rocketBoosters" stroke-linejoin="round">
-          <path id="rocketBoosterBottom" d="M1336.103 197.635l-4.441 2.931-7.427-11.251 4.443-2.931"/>
-          <path id="rocketBoosterTop" stroke-linecap="round" d="M1341.81 197.268l-4.736 3.127c-3.724-7.744-5.216-10.16-10.552-15.988l4.737-3.127"/>
+          <path id="rocketBoosterBottom" d="M1337.103 196.635l-4.441 2.931-7.427-11.251 4.443-2.931"/>
+          <path id="rocketBoosterTop" stroke-linecap="round" d="M1342.81 196.268l-4.736 3.127c-3.724-7.744-5.216-10.16-10.552-15.988l4.737-3.127"/>
         </g>
         <g id="rocketWingSide" stroke-linejoin="round">
           <path id="rocketWingSideBottom" d="M1366.135 182.544l-13.281 30.812-8.207-12.435"/>
@@ -458,14 +480,124 @@ export const bedroomSVG = `
         <path id="rocketWingMid" d="M1358.994 174.383l-21.94 16.323-1.627-2.468 23.558-13.707"/>
         <ellipse id="rocketWindow" transform="scale(-1) rotate(56.569 314.635 -2540.237)" cx="1366.804" cy="169.3" rx="3.902" ry="6.304"/>
       </g>
-      <g id="rings" fill="none">
+      <g id="colorPlanets" display="none">
+        <linearGradient id="colorUranus_1_" gradientUnits="userSpaceOnUse" x1="780.202" y1="184.574" x2="824.923" y2="189.01">
+          <stop offset=".269" stop-color="#08baba"/>
+          <stop offset=".324" stop-color="#20c4c4"/>
+          <stop offset=".43" stop-color="#4ad4d6"/>
+          <stop offset=".539" stop-color="#6ce1e5"/>
+          <stop offset=".65" stop-color="#87ecf0"/>
+          <stop offset=".762" stop-color="#9af3f9"/>
+          <stop offset=".877" stop-color="#a5f8fd"/>
+          <stop offset="1" stop-color="#a9f9ff"/>
+        </linearGradient>
+        <circle id="colorUranus" fill="url(#colorUranus_1_)" stroke="#37474F" stroke-width="2" stroke-miterlimit="10" cx="803.041" cy="186.839" r="23.063"/>
+        <linearGradient id="colorNeptune_1_" gradientUnits="userSpaceOnUse" x1="846.243" y1="181.938" x2="896.861" y2="181.938">
+          <stop offset="0" stop-color="#144268"/>
+          <stop offset=".037" stop-color="#184c73"/>
+          <stop offset=".189" stop-color="#266f9d"/>
+          <stop offset=".344" stop-color="#328cbf"/>
+          <stop offset=".501" stop-color="#3ba3da"/>
+          <stop offset=".661" stop-color="#42b3ed"/>
+          <stop offset=".825" stop-color="#46bdf8"/>
+          <stop offset="1" stop-color="#47c0fc"/>
+        </linearGradient>
+        <circle id="colorNeptune" fill="url(#colorNeptune_1_)" stroke="#37474F" stroke-width="2" stroke-miterlimit="10" cx="871.552" cy="181.937" r="25.309"/>
+        <linearGradient id="colorMars_1_" gradientUnits="userSpaceOnUse" x1="920.771" y1="154.481" x2="950.484" y2="162.395">
+          <stop offset=".156" stop-color="#941d00"/>
+          <stop offset=".696" stop-color="#db651c"/>
+          <stop offset="1" stop-color="#ff892a"/>
+        </linearGradient>
+        <circle id="colorMars" fill="url(#colorMars_1_)" stroke="#37474F" stroke-width="2" stroke-miterlimit="10" cx="935.371" cy="158.371" r="15.371"/>
+        <linearGradient id="colorMercury_1_" gradientUnits="userSpaceOnUse" x1="1004.539" y1="149.542" x2="1023.915" y2="161.891">
+          <stop offset=".22" stop-color="#7f4700"/>
+          <stop offset=".677" stop-color="#a76700"/>
+          <stop offset="1" stop-color="#bf7a00"/>
+        </linearGradient>
+        <circle id="colorMercury" fill="url(#colorMercury_1_)" stroke="#37474F" stroke-width="2" stroke-miterlimit="10" cx="1013.688" cy="155.372" r="11.486"/>
+        <linearGradient id="colorSun_1_" gradientUnits="userSpaceOnUse" x1="1075.143" y1="130.231" x2="1075.143" y2="214.526">
+          <stop offset="0" stop-color="#ff6400"/>
+          <stop offset=".011" stop-color="#f60"/>
+          <stop offset=".199" stop-color="#ff8808"/>
+          <stop offset=".391" stop-color="#ffa30e"/>
+          <stop offset=".586" stop-color="#ffb612"/>
+          <stop offset=".787" stop-color="#ffc114"/>
+          <stop offset="1" stop-color="#ffc515"/>
+        </linearGradient>
+        <circle id="colorSun" fill="url(#colorSun_1_)" stroke="#37474F" stroke-width="2" stroke-miterlimit="10" cx="1075.143" cy="172.23" r="42.148"/>
+        <linearGradient id="colorVenus_1_" gradientUnits="userSpaceOnUse" x1="1152.566" y1="153.125" x2="1128.769" y2="168.239">
+          <stop offset=".091" stop-color="#7f4700"/>
+          <stop offset=".285" stop-color="#986100"/>
+          <stop offset=".769" stop-color="#d29e00"/>
+          <stop offset="1" stop-color="#e9b600"/>
+        </linearGradient>
+        <circle id="colorVenus" fill="url(#colorVenus_1_)" stroke="#37474F" stroke-width="2" stroke-miterlimit="10" cx="1141.094" cy="160.411" r="14.094"/>
+        <linearGradient id="colorSaturn_1_" gradientUnits="userSpaceOnUse" x1="1257.031" y1="175.755" x2="1297.282" y2="175.755">
+          <stop offset="0" stop-color="#ffeaa9"/>
+          <stop offset=".164" stop-color="#ffe7a5"/>
+          <stop offset=".318" stop-color="#fddd9a"/>
+          <stop offset=".468" stop-color="#fbcc87"/>
+          <stop offset=".614" stop-color="#f7b46c"/>
+          <stop offset=".753" stop-color="#f3974c"/>
+          <stop offset=".841" stop-color="#f09734"/>
+          <stop offset="1" stop-color="#e99600"/>
+        </linearGradient>
+        <path id="colorSaturn" fill="url(#colorSaturn_1_)" stroke="#37474F" stroke-width="2" stroke-miterlimit="10" d="M1297.282 175.754c0 11.116-9.01 20.127-20.125 20.127-11.118 0-20.126-9.011-20.126-20.127 0-11.114 9.008-20.125 20.126-20.125 11.115 0 20.125 9.011 20.125 20.125z"/>
+        <linearGradient id="colorPluto_1_" gradientUnits="userSpaceOnUse" x1="1016.007" y1="97.693" x2="1026.429" y2="110.552">
+          <stop offset=".091" stop-color="#515151"/>
+          <stop offset=".348" stop-color="#777"/>
+          <stop offset=".79" stop-color="#b4b4b4"/>
+          <stop offset="1" stop-color="#ccc"/>
+        </linearGradient>
+        <circle id="colorPluto" fill="url(#colorPluto_1_)" stroke="#37474F" stroke-width="2" stroke-miterlimit="10" cx="1020.758" cy="103.554" r="8.275"/>
+        <linearGradient id="bodyEarth_2_" gradientUnits="userSpaceOnUse" x1="1204.887" y1="163.694" x2="1228.767" y2="148.819">
+          <stop offset="0" stop-color="#3988ff"/>
+          <stop offset="1" stop-color="#003e87"/>
+        </linearGradient>
+        <circle id="bodyEarth_1_" fill="url(#bodyEarth_2_)" stroke="#37474F" stroke-width="2" stroke-miterlimit="10" cx="1215.02" cy="157.382" r="14.065"/>
+        <g id="colorEarthLand" fill="#068429" stroke="#37474F" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="10">
+          <path id="bodyEarthRight_1_" stroke-linecap="round" d="M1220.259 170.438c0-4 3.241-7.438 5.241-11.438-1-.5-1.5-1.5-2.5-2-.25-5.75.965-7.563 1.965-9.563a14.018 14.018 0 0 1 4.12 9.945c0 5.915-3.652 10.978-8.826 13.056"/>
+          <path id="bodyEarthLeft_1_" d="M1202.887 164.502c1.5 0 5.613-4.002 3.113-6.502 3.5-1.5 8-1.5 11-5 0-4.995-7.969-4.5-11.47-6.001a14.03 14.03 0 0 0-4.575 10.383c0 2.597.704 5.031 1.932 7.12z"/>
+        </g>
+        <linearGradient id="colorJupiter_1_" gradientUnits="userSpaceOnUse" x1="1127.075" y1="95.755" x2="1127.075" y2="138.905">
+          <stop offset=".075" stop-color="#602f03"/>
+          <stop offset=".188" stop-color="#ffeaa9"/>
+          <stop offset=".312" stop-color="#a96300"/>
+          <stop offset=".391" stop-color="#ca9741"/>
+          <stop offset=".521" stop-color="#ffeaa9"/>
+          <stop offset=".537" stop-color="#fee3a1"/>
+          <stop offset=".658" stop-color="#f6ac64"/>
+          <stop offset=".715" stop-color="#f3974c"/>
+          <stop offset=".768" stop-color="#f7b46c"/>
+          <stop offset=".823" stop-color="#fbcc87"/>
+          <stop offset=".88" stop-color="#fddd9a"/>
+          <stop offset=".938" stop-color="#ffe7a5"/>
+          <stop offset="1" stop-color="#ffeaa9"/>
+        </linearGradient>
+        <circle id="colorJupiter" fill="url(#colorJupiter_1_)" stroke="#37474F" stroke-width="2" stroke-miterlimit="10" cx="1127.075" cy="115.575" r="21.575"/>
+        <ellipse id="colorJupiterSpot" transform="rotate(16.266 1136.671 122.456)" fill="#A33808" stroke="#37474F" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" cx="1136.584" cy="122.429" rx="5.25" ry="2.079"/>
+        <g id="colorRocket" stroke="#37474F" stroke-width="2" stroke-miterlimit="10">
+          <g id="colorRocketBoosters" fill="#6B6B6B" stroke-linejoin="round">
+            <path id="colorRocketBoosterBottom" d="M1337.103 196.635l-4.441 2.931-7.427-11.251 4.443-2.931"/>
+            <path id="colorRocketBoosterTop" stroke-linecap="round" d="M1342.81 196.268l-4.736 3.127c-3.724-7.744-5.216-10.16-10.552-15.988l4.737-3.127"/>
+          </g>
+          <g id="colorRocketWingSide" fill="#B70B0B" stroke-linejoin="round">
+            <path id="rocketWingSideBottom_1_" d="M1366.135 182.544l-13.281 30.812-8.207-12.435"/>
+            <path id="rocketWingSideTop_1_" d="M1354.691 164.727l-33.541.833 8.478 12.251"/>
+          </g>
+          <path id="colorRocketBody" fill="#E0E0E0" stroke-linejoin="round" d="M1382.796 158.928c-9.112-8.012-54.728 19.45-54.728 19.45 9.158 7.65 11.175 11.137 15.09 22.862 0 0 43.174-31.137 39.39-42.666"/>
+          <path id="colorRocketWingMid" fill="#B70B0B" stroke-linejoin="round" d="M1358.994 174.383l-21.94 16.323-1.627-2.468 23.558-13.707"/>
+          <ellipse id="colorRocketWindow" transform="scale(-1) rotate(56.569 314.635 -2540.237)" fill="#B6F1FF" cx="1366.804" cy="169.3" rx="3.902" ry="6.304"/>
+        </g>
+      </g>
+      <g id="rings" fill="none" stroke="#37474F" stroke-width="2" stroke-miterlimit="10">
         <path id="ringUranus" d="M805.551 210.099c-1.851 8.729-4.011 14.281-5.842 14.109-3.102-.29-4.086-16.872-2.201-37.037 1.884-20.165 5.925-36.277 9.027-35.986 1.768.165 2.848 5.627 3.101 14.029"/>
         <path id="ringSaturnOuter" d="M1294.506 165.694c15.178 1.862 25.828 6.22 25.828 11.3 0 6.772-18.934 12.263-42.291 12.263-23.356 0-42.292-5.491-42.292-12.263 0-4.854 9.722-9.049 23.826-11.037"/>
         <path id="ringSaturnInner" d="M1258.081 170.099c-6.429 1.245-10.507 3.098-10.507 5.167 0 3.75 13.387 6.79 29.898 6.79s29.9-3.04 29.9-6.79c0-2.164-4.459-4.092-11.404-5.335"/>
         <path id="ringSaturnMiddle" d="M1295.338 167.114c12.102 1.579 20.4 4.821 20.4 8.564 0 5.293-16.594 9.584-37.063 9.584s-37.062-4.291-37.062-9.584c0-3.398 6.836-6.384 17.145-8.085"/>
         <path id="ringNeptune" d="M896.517 177.792c8.636 1.09 14.15 2.749 14.15 4.608 0 3.279-17.163 5.938-38.334 5.938-21.17 0-38.333-2.659-38.333-5.938 0-1.64 4.291-3.125 11.228-4.2"/>
       </g>
-      <g id="hangers" fill="none">
+      <g id="hangers" fill="none" stroke="#37474F" stroke-width="2" stroke-miterlimit="10">
         <path id="hangerCentral" d="M1075 0v130"/>
         <path id="hangerUranus" stroke-linejoin="round" d="M804 164l.14-41.079 271.864-30.087"/>
         <path id="hangerEarth" stroke-linejoin="round" d="M1215 143v-11l-139.069-38.299"/>

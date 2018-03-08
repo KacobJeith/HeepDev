@@ -226,7 +226,6 @@ class BedroomSVG extends React.Component{
     tlCar.to(car, 0.7, {x: -30, y: -10, ease: Power2.easeout}, 4.5);
     tlCar.to(car, 0.8, {y: 0, ease: Power2.easeout}, 5.3);
     tlCar.to(car, 0.8, {x: 0, ease: Power2.easeout}, 6.2);
-    //tlCar.fromTo([carSmoke1, carSmoke2, carSmoke3], 0.3, {y:-0.7}, {y:0.7, ease:RoughEase.ease.config({strength:8, points:20, template:Linear.easeNone, randomize:false}) , clearProps:"x"});
     tlCar.to(carAnimation, 0.1, {display: 'none'});
     tlCar.to([carLights, carBody, carTires, carHubs, carHandle, carWindows, carAntennaTop], colorDuration, {fill: colorDefault, delay: 0.2});
     console.log("click")
