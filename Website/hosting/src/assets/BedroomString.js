@@ -426,26 +426,7 @@ export const bedroomSVG = `
     </g>
     <g id="lamp">
       <path id="lampBottom" fill="#FFFFFF" stroke="#37474F" stroke-width="2" stroke-miterlimit="10" d="M815 362.54v-6.476c-6.582.571-13.99.646-22-.17v6.605c-6 0-12 5.37-12 12v9c0 6.63 5.87 12.5 12.5 12.5h21c6.63 0 11.5-5.87 11.5-12.5v-9c0-6.289-4-11.449-11-11.959z"/>
-      <radialGradient id="lampLightRed_1_" cx="804.406" cy="350.246" r="57.733" gradientUnits="userSpaceOnUse">
-        <stop offset="0" stop-color="#e26f6f"/>
-        <stop offset=".208" stop-color="#e37373"/>
-        <stop offset=".404" stop-color="#e67e7e"/>
-        <stop offset=".595" stop-color="#ec9191"/>
-        <stop offset=".782" stop-color="#f3abac"/>
-        <stop offset=".966" stop-color="#fdcdce"/>
-        <stop offset="1" stop-color="#ffd4d5"/>
-      </radialGradient>
-      <path id="lampLightRed" display="none" opacity=".4" fill="url(#lampLightRed_1_)" d="M865.428 394.083c0 5.749-27.326 10.409-61.022 10.409-33.71 0-61.021-4.661-61.021-10.409 0-.34.102-.681.294-1.023l.015.731L784.145 296h40.586l40.346 97.73c.236.363.351-.028.351.353z"/>
-      <radialGradient id="lampLightYellow_1_" cx="805.406" cy="350.246" r="77.739" gradientUnits="userSpaceOnUse">
-        <stop offset="0" stop-color="#f9f27d"/>
-        <stop offset=".186" stop-color="#f9f281"/>
-        <stop offset=".36" stop-color="#faf48c"/>
-        <stop offset=".53" stop-color="#fbf59f"/>
-        <stop offset=".697" stop-color="#fcf8ba"/>
-        <stop offset=".861" stop-color="#fdfbdc"/>
-        <stop offset="1" stop-color="#fff"/>
-      </radialGradient>
-      <path id="lampLightYellow" display="none" opacity=".4" fill="url(#lampLightYellow_1_)" d="M866.428 394.083c0 5.749-27.326 10.409-61.022 10.409-33.71 0-61.021-4.661-61.021-10.409 0-.34.102-.681.294-1.023l.015.731L785.145 296h40.586l40.346 97.73c.236.363.351-.028.351.353z"/>
+      <path id="lampLight" display="none" opacity=".4" fill="#EAE1B2" d="M866.428 394.083c0 5.749-27.326 10.409-61.022 10.409-33.71 0-61.021-4.661-61.021-10.409 0-.34.102-.681.294-1.023l.015.731L785.145 296h40.586l40.346 97.73c.236.363.351-.028.351.353z"/>
       <path id="lampShade" fill="#FFFFFF" stroke="#37474F" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="10" d="M825.103 297.254c-.011 2.345-8.76 4.246-19.551 4.246-10.798 0-21.552-2.153-21.552-4.5l-20.88 51.82c45.63 17.305 82.76 0 82.76 0l-20.777-51.566z"/>
       <ellipse id="lampTop" fill="#FFFFFF" stroke="#37474F" stroke-width="2" stroke-miterlimit="10" cx="804.551" cy="297.333" rx="20.551" ry="3.594"/>
     </g>
@@ -481,7 +462,7 @@ export const bedroomSVG = `
         <ellipse id="rocketWindow" transform="scale(-1) rotate(56.569 314.635 -2540.237)" cx="1366.804" cy="169.3" rx="3.902" ry="6.304"/>
       </g>
       <g id="colorPlanets" display="none">
-        <linearGradient id="colorBodyUranus_1_" gradientUnits="userSpaceOnUse" x1="780.202" y1="184.574" x2="824.923" y2="189.01">
+        <linearGradient id="colorBodyUranus_1_" gradientUnits="userSpaceOnUse" x1="780.202" y1="184.575" x2="824.923" y2="189.011">
           <stop offset=".269" stop-color="#08baba"/>
           <stop offset=".324" stop-color="#20c4c4"/>
           <stop offset=".43" stop-color="#4ad4d6"/>
@@ -509,7 +490,7 @@ export const bedroomSVG = `
           <stop offset="1" stop-color="#ff892a"/>
         </linearGradient>
         <circle id="colorBodyMars" fill="url(#colorBodyMars_1_)" stroke="#37474F" stroke-width="2" stroke-miterlimit="10" cx="935.371" cy="158.371" r="15.371"/>
-        <linearGradient id="colorBodyMercury_1_" gradientUnits="userSpaceOnUse" x1="1004.539" y1="149.542" x2="1023.915" y2="161.891">
+        <linearGradient id="colorBodyMercury_1_" gradientUnits="userSpaceOnUse" x1="1004.539" y1="149.542" x2="1023.915" y2="161.89">
           <stop offset=".22" stop-color="#7f4700"/>
           <stop offset=".677" stop-color="#a76700"/>
           <stop offset="1" stop-color="#bf7a00"/>
@@ -525,7 +506,7 @@ export const bedroomSVG = `
           <stop offset="1" stop-color="#ffc515"/>
         </linearGradient>
         <circle id="colorBodySun" fill="url(#colorBodySun_1_)" stroke="#37474F" stroke-width="2" stroke-miterlimit="10" cx="1075.143" cy="172.23" r="42.148"/>
-        <linearGradient id="colorBodyVenus_1_" gradientUnits="userSpaceOnUse" x1="1152.566" y1="153.125" x2="1128.769" y2="168.239">
+        <linearGradient id="colorBodyVenus_1_" gradientUnits="userSpaceOnUse" x1="1152.565" y1="153.125" x2="1128.768" y2="168.238">
           <stop offset=".091" stop-color="#7f4700"/>
           <stop offset=".285" stop-color="#986100"/>
           <stop offset=".769" stop-color="#d29e00"/>
@@ -543,14 +524,14 @@ export const bedroomSVG = `
           <stop offset="1" stop-color="#e99600"/>
         </linearGradient>
         <path id="colorBodySaturn" fill="url(#colorBodySaturn_1_)" stroke="#37474F" stroke-width="2" stroke-miterlimit="10" d="M1297.282 175.754c0 11.116-9.01 20.127-20.125 20.127-11.118 0-20.126-9.011-20.126-20.127 0-11.114 9.008-20.125 20.126-20.125 11.115 0 20.125 9.011 20.125 20.125z"/>
-        <linearGradient id="colorBodyPluto_1_" gradientUnits="userSpaceOnUse" x1="1016.007" y1="97.693" x2="1026.429" y2="110.552">
+        <linearGradient id="colorBodyPluto_1_" gradientUnits="userSpaceOnUse" x1="1016.008" y1="97.693" x2="1026.43" y2="110.55">
           <stop offset=".091" stop-color="#515151"/>
           <stop offset=".348" stop-color="#777"/>
           <stop offset=".79" stop-color="#b4b4b4"/>
           <stop offset="1" stop-color="#ccc"/>
         </linearGradient>
         <circle id="colorBodyPluto" fill="url(#colorBodyPluto_1_)" stroke="#37474F" stroke-width="2" stroke-miterlimit="10" cx="1020.758" cy="103.554" r="8.275"/>
-        <linearGradient id="colorBodyEarth_1_" gradientUnits="userSpaceOnUse" x1="1204.887" y1="163.694" x2="1228.767" y2="148.819">
+        <linearGradient id="colorBodyEarth_1_" gradientUnits="userSpaceOnUse" x1="1204.887" y1="163.694" x2="1228.767" y2="148.82">
           <stop offset="0" stop-color="#3988ff"/>
           <stop offset="1" stop-color="#003e87"/>
         </linearGradient>

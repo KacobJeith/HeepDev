@@ -136,8 +136,7 @@ class BedroomSVG extends React.Component{
     var lampBottom = document.getElementById('lampBottom');
     var lampShade = document.getElementById('lampShade');
     var lampTop = document.getElementById('lampTop');
-    var lampLightRed = document.getElementById('lampLightRed');
-    var lampLightYellow = document.getElementById('lampLightYellow');
+    var lampLight = document.getElementById('lampLight');
 
     var clock = document.getElementById('clock');
     var clockBody = document.getElementById('clockBody');
@@ -190,7 +189,7 @@ class BedroomSVG extends React.Component{
       buttonFlower.removeEventListener('mouseleave', this.leaveFlower);
 
       buttonRemote.removeEventListener('click', this.clickRemote);
-      buttonRemote.removeEventListener('click', this.clickPig);
+      buttonPig.removeEventListener('click', this.clickPig);
 
       console.log("removed")
     }
@@ -281,6 +280,7 @@ class BedroomSVG extends React.Component{
     this.removeButtonListeners();
     this.colorPig();
     tlShake.clear();
+    this.clickTheft();
 
     let tlPig = new TimelineMax({onComplete: proxyFunction.bind(this)});
     function proxyFunction(): void {
@@ -288,58 +288,7 @@ class BedroomSVG extends React.Component{
       this.uncolorPig();
     };
 
-    const startTime = 1;
-    //color planets
-    TweenLite.to(colorPlanets, colorDuration, {display: 'block'});
-    //color lamp
-    TweenLite.to(lampBottom, colorDuration, {fill: '#A7CAD3'});
-    TweenLite.to(lampShade, colorDuration, {fill: '#FFF3C0'});
-    TweenLite.to(lampTop, colorDuration, {fill: '#FCEA6B'});
-    TweenLite.to(lampLightYellow, colorDuration, {display: 'block'});
-
-    //color alarm clock
-    TweenLite.to(clockBody, colorDuration, {fill: '#148408'});
-    TweenLite.to(clockFace, colorDuration, {fill: '#FFF'});
-    TweenLite.to(clockBellLeft, colorDuration, {fill: '#D88D2B'});
-    TweenLite.to(clockBellRight, colorDuration, {fill: '#D88D2B'});
-    TweenLite.to(clockLegs, colorDuration, {fill: '#808080'});
-
-    tlPig.fromTo(clock, 0.1, {y: 2}, {
-      y: -2,
-      yoyo: true,
-      repeat: 10,
-      ease: Sine.easeInOut
-    }, 1);
-
-    tlPig.fromTo(clockBellLeft, 0.2, {rotation: -4, transformOrigin: "50%", y: 3}, {
-      rotation: 4,
-      transformOrigin: "50%",
-      y: -3,
-      yoyo: true,
-      repeat: 10,
-      ease: Sine.easeInOut
-    }, startTime);
-
-    tlPig.fromTo(clockBellRight, 0.2, {rotation: 4, transformOrigin: "50%", y: -3}, {
-      rotation: -4,
-      transformOrigin: "50%",
-      y: 3,
-      yoyo: true,
-      repeat: 11,
-      ease: Sine.easeInOut
-    }, startTime);
-
-    tlPig.fromTo(solarSystem, 0.5, {rotation: 10, transformOrigin: "50%"}, {
-      rotation: -10,
-      yoyo: true,
-      repeat: 10,
-      ease: Sine.easeInOut
-    }, startTime)
-
-    tlPig.to(solarSystem, 0.25, {rotation: 0, transformOrigin: "50%"}, startTime+5)
-    tlPig.to([colorPlanets, lampLightYellow], 0.1, {display: 'none'}, startTime+5.3)
-    tlPig.to([clockBody, clockFace, clockBellLeft, clockBellRight, clockLegs, lampBottom, lampShade, lampTop], colorDuration, {fill: colorDefault, delay: 0.2});
-
+    tlPig.to(pig, 2.3, {scaleX: 1.8, scaleY: 1.8, x:150, y: 325, yoyo: true, repeat: 1, ease: Sine.easeInOut}, 0.2)
   };
 
   colorPig() {
@@ -385,6 +334,71 @@ class BedroomSVG extends React.Component{
     TweenLite.to(diaryCover, colorDuration, {fill: colorDefault});
     TweenLite.to(diarySpine, colorDuration, {fill: colorDefault});
   };
+
+  clickDiary() {
+
+  };
+
+  clickTheft() {
+    const tlTheft = new TimelineMax();
+
+    const startTime = 0.2;
+    //color planets
+    TweenLite.to(colorPlanets, colorDuration, {display: 'block'});
+    //color lamp
+    TweenLite.to(lampBottom, colorDuration, {fill: '#A7CAD3'});
+    TweenLite.to(lampShade, colorDuration, {fill: '#FFF3C0'});
+    TweenLite.to(lampTop, colorDuration, {fill: '#FCEA6B'});
+    TweenLite.to(lampLight, colorDuration, {display: 'block'});
+
+    //color alarm clock
+    TweenLite.to(clockBody, colorDuration, {fill: '#148408'});
+    TweenLite.to(clockFace, colorDuration, {fill: '#FFF'});
+    TweenLite.to(clockBellLeft, colorDuration, {fill: '#D88D2B'});
+    TweenLite.to(clockBellRight, colorDuration, {fill: '#D88D2B'});
+    TweenLite.to(clockLegs, colorDuration, {fill: '#808080'});
+
+    tlTheft.fromTo(lampTop, 0.2, {fill: '#BC0D0D'}, {fill: '#FCEA6B', repeat: 25}, startTime)
+    tlTheft.fromTo(lampShade, 0.2, {fill: '#E26F6F'}, {fill: '#FFF3C0', repeat: 25}, startTime)
+    tlTheft.fromTo(lampLight, 0.2, {fill: '#C98181'}, {fill: '#EAE1B2', repeat: 25}, startTime)
+
+    tlTheft.fromTo(clock, 0.1, {y: 5, x: 3}, {
+      y: -5,
+      x: -3,
+      yoyo: true,
+      repeat: 50,
+      ease: Sine.easeInOut
+    }, startTime);
+
+    tlTheft.fromTo(clockBellLeft, 0.2, {rotation: -4, transformOrigin: "50%", y: 3}, {
+      rotation: 4,
+      transformOrigin: "50%",
+      y: -3,
+      yoyo: true,
+      repeat: 26,
+      ease: Sine.easeInOut
+    }, startTime);
+
+    tlTheft.fromTo(clockBellRight, 0.2, {rotation: 4, transformOrigin: "50%", y: -3}, {
+      rotation: -4,
+      transformOrigin: "50%",
+      y: 3,
+      yoyo: true,
+      repeat: 25,
+      ease: Sine.easeInOut
+    }, startTime);
+
+    tlTheft.fromTo(solarSystem, 0.5, {rotation: 10, transformOrigin: "50%"}, {
+      rotation: -10,
+      yoyo: true,
+      repeat: 10,
+      ease: Sine.easeInOut
+    }, startTime)
+
+    tlTheft.to(solarSystem, 0.25, {rotation: 0, transformOrigin: "50%"}, startTime+5)
+    tlTheft.to([colorPlanets, lampLight], 0.1, {display: 'none'}, startTime+5.3)
+    tlTheft.to([clockBody, clockFace, clockBellLeft, clockBellRight, clockLegs, lampBottom, lampShade, lampTop], colorDuration, {fill: colorDefault, delay: 0.2});
+  }
 
   hoverSleep() {
     this.colorSleep()
