@@ -51,6 +51,7 @@ class BedroomSVG extends React.Component{
 
     this.clickRemote = this.clickRemote.bind(this);
     this.clickPig = this.clickPig.bind(this);
+    this.clickDiary = this.clickDiary.bind(this);
 	};
 
   componentDidMount() {
@@ -90,6 +91,7 @@ class BedroomSVG extends React.Component{
     var diaryPages = document.getElementById('diaryPages');
     var diaryCover = document.getElementById('diaryCover');
     var diarySpine = document.getElementById('diarySpine');
+    var diaryColor = document.getElementById('diaryColor');
 
     var sleep = document.getElementById('sleep');
     var sleepMount = document.getElementById('sleepMount');
@@ -167,6 +169,7 @@ class BedroomSVG extends React.Component{
 
       buttonRemote.addEventListener('click', this.clickRemote);
       buttonPig.addEventListener('click', this.clickPig);
+      buttonDiary.addEventListener('click', this.clickDiary);
   };
 
     removeButtonListeners() {
@@ -190,8 +193,7 @@ class BedroomSVG extends React.Component{
 
       buttonRemote.removeEventListener('click', this.clickRemote);
       buttonPig.removeEventListener('click', this.clickPig);
-
-      console.log("removed")
+      buttonDiary.removeEventListener('click', this.clickDiary);
     }
 
   hoverShake(e) {
@@ -312,23 +314,23 @@ class BedroomSVG extends React.Component{
   };
 
   hoverDiary() {
-    this.colorDiary();
+    this.diaryColor();
     this.hoverShake(diary);
   };
 
   leaveDiary() {
-    this.uncolorDiary();
+    this.undiaryColor();
     this.leaveShake();
   };
 
-  colorDiary() {
-    TweenLite.to(diaryBottom, colorDuration, {fill: '#4A99CE'});
+  diaryColor() {
+    TweenLite.to(diaryBottom, colorDuration, {fill: '#3F89B2'});
     TweenLite.to(diaryPages, colorDuration, {fill: '#FFF'});
-    TweenLite.to(diaryCover, colorDuration, {fill: '#ADE9F2'});
-    TweenLite.to(diarySpine, colorDuration, {fill: '#4A99CE'});
+    TweenLite.to(diaryCover, colorDuration, {fill: '#8AD4F9'});
+    TweenLite.to(diarySpine, colorDuration, {fill: '#3F89B2'});
   };
 
-  uncolorDiary() {
+  undiaryColor() {
     TweenLite.to(diaryBottom, colorDuration, {fill: colorDefault});
     TweenLite.to(diaryPages, colorDuration, {fill: colorDefault});
     TweenLite.to(diaryCover, colorDuration, {fill: colorDefault});
@@ -336,7 +338,24 @@ class BedroomSVG extends React.Component{
   };
 
   clickDiary() {
+    this.removeButtonListeners();
+    this.diaryColor();
+    tlShake.clear();
+    this.clickTheft();
 
+    let tlDiary = new TimelineMax({onComplete: proxyFunction.bind(this)});
+    function proxyFunction(): void {
+      this.addButtonListeners();
+      this.undiaryColor();
+    };
+
+    tlDiary.to(diary, 0.1, {display: 'none'}, 0.2)
+    tlDiary.to(diaryColor, 0.1, {display: 'block'}, 0.2)
+    tlDiary.to(diaryColor, 2, {scaleX: 1.4, scaleY: 1.4, x:50, y: 50, yoyo: true, repeat: 1, ease: Sine.easeInOut}, 0.3)
+    tlDiary.to(diaryColor, 0.1, {display: 'none'}, 4.4)
+    tlDiary.to(diary, 0.1, {display: 'block'}, 4.4)
+
+    //tlPig.to(pig, 2.3, {scaleX: 1.8, scaleY: 1.8, x:150, y: 325, yoyo: true, repeat: 1, ease: Sine.easeInOut}, 0.2)
   };
 
   clickTheft() {
