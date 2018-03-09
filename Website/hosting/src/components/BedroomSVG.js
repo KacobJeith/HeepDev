@@ -351,9 +351,9 @@ class BedroomSVG extends React.Component{
 
     tlDiary.to(diary, 0.1, {display: 'none'}, 0.2)
     tlDiary.to(diaryColor, 0.1, {display: 'block'}, 0.2)
-    tlDiary.to(diaryColor, 2, {scaleX: 1.4, scaleY: 1.4, x:50, y: 50, yoyo: true, repeat: 1, ease: Sine.easeInOut}, 0.3)
-    tlDiary.to(diaryColor, 0.1, {display: 'none'}, 4.4)
-    tlDiary.to(diary, 0.1, {display: 'block'}, 4.4)
+    tlDiary.to(diaryColor, 2.2, {scaleX: 1.4, scaleY: 1.4, x:50, y: 50, yoyo: true, repeat: 1, ease: Sine.easeInOut}, 0.3)
+    tlDiary.to(diaryColor, 0.1, {display: 'none'}, 4.8)
+    tlDiary.to(diary, 0.1, {display: 'block'}, 4.8)
 
     //tlPig.to(pig, 2.3, {scaleX: 1.8, scaleY: 1.8, x:150, y: 325, yoyo: true, repeat: 1, ease: Sine.easeInOut}, 0.2)
   };
