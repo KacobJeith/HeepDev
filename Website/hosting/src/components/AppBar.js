@@ -24,9 +24,11 @@ import { FormControlLabel, FormGroup }  from 'material-ui/Form';
 import Menu, { MenuItem }               from 'material-ui/Menu';
 import Badge                            from 'material-ui/Badge';
 import Avatar                           from 'material-ui/Avatar';
+import Grid                             from 'material-ui/Grid'
 
 
 import SmartBadge from './utilities/SmartBadge'
+import { logos } from '../assets/remote/Logos'
 
 
 var mapStateToProps = (state) => ({
@@ -123,7 +125,6 @@ class MenuAppBar extends React.Component {
   }
 
   notLoggedOn() {
-
     return (
       <div>
         <IconButton
@@ -158,26 +159,78 @@ class MenuAppBar extends React.Component {
         </Menu>
       </div>
     );
+  };
+
+  appBarLink(navLink, linkText) {
+    const inputs = {
+      Typography: {
+        style: {
+          color: "white",
+          paddingTop: 11,
+          paddingBottom: 11
+        }
+      },
+      Button: {
+        style: {
+          textTransform: "capitalize"
+        }
+      },
+      NavLink: {
+        style: {
+          textDecoration: "none"
+        }
+      },
+    };
+
+    return (
+      <Button {...inputs.Button}>
+        <NavLink to={navLink} {...inputs.NavLink}>
+          <Typography variant="subheading" {...inputs.Typography}>
+            {linkText}
+          </Typography>
+        </NavLink>
+      </Button>
+    )
+  };
+
+  appBarCart() {
+    return (
+      <NavLink to="/MyCart" style={{textDecoration: 'none'}}>
+        <IconButton aria-label="Add to shopping cart">
+          {SmartBadge(
+                    <ShoppingCartIcon style={{fill:"white"}}/>,
+                    this.props.itemsInCart,
+                    'secondary')
+          }
+        </IconButton>
+      </NavLink>
+    )
+  };
+
+  appBarLogo() {
+    const inputs = {
+      Logo: {
+        src: logos.sideBySide,
+        height: 50,
+        style: {
+          maxWidth: "250%"
+        }
+      },
+    }
+
+    return (
+      <NavLink to="/">
+        <Button {...inputs.Button}>
+          <img {...inputs.Logo}/>
+        </Button>
+      </NavLink>
+    )
   }
 
   render() {
     const { classes } = this.props;
     const { authed, anchorEl } = this.state;
     const open = Boolean(anchorEl);
-
-    var inputs = {
-      Logo: {
-        src: "https://firebasestorage.googleapis.com/v0/b/heep-3cddb.appspot.com/o/assets%2FLogo%2FSideBySide.png?alt=media&token=fa835081-275d-445e-be34-8241b08d687a",
-        height: 50,
-        style: {
-          marginTop: 0,
-          display: 'inline',
-          left: 0,
-          position: 'absolute',
-          maxWidth: "250%"
-        }
-      },
-    }
 
     var loggedInNavs = [];
 
@@ -191,56 +244,13 @@ class MenuAppBar extends React.Component {
       <div className={classes.root}>
         <AppBar position="static">
           <Toolbar>
-            <NavLink to="/">
-              <IconButton >
-                  <img {...inputs.Logo}/>
-              </IconButton>
-            </NavLink>
-
+            {this.appBarLogo()}
             <div className={classes.flex}/>
-
-              <IconButton
-                  color="inherit"
-                  style={{textDecoration: 'none', marginRight: 50}}>
-                <NavLink to="/About" style={{textDecoration: 'none', marginRight: 20}}>
-                  <Typography variant="subheading" style={{color:"white"}}>
-                    About
-                  </Typography>
-                </NavLink>
-              </IconButton>
-
-              <IconButton
-                  color="inherit">
-                <NavLink to="/Shop" style={{textDecoration: 'none', marginRight: 90}}>
-                  <Typography variant="subheading" style={{color:"white"}}>
-                    Shop
-                  </Typography>
-                </NavLink>
-              </IconButton>
-
-              <IconButton
-                  color="inherit">
-                <NavLink to="/Developers" style={{textDecoration: 'none', marginRight: 40}}>
-                  <Typography variant="subheading" style={{color:"white"}}>
-                    Develop
-                  </Typography>
-                </NavLink>
-              </IconButton>
-
-
-              <NavLink to="/MyCart" style={{textDecoration: 'none'}}>
-
-                <IconButton className={classes.button} aria-label="Add to shopping cart">
-                  {SmartBadge(
-                            <ShoppingCartIcon style={{fill:"white"}}/>,
-                            this.props.itemsInCart,
-                            'secondary')
-                  }
-                </IconButton>
-              </NavLink>
-
-              {loggedInNavs}
-
+            {this.appBarLink("/About", "About")}
+            {this.appBarLink("/Shop", "Shop")}
+            {this.appBarLink("/Developers", "Develop")}
+            {this.appBarCart()}
+            {loggedInNavs}
           </Toolbar>
         </AppBar>
       </div>

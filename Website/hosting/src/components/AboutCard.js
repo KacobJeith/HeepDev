@@ -44,7 +44,7 @@ class AboutCard extends React.Component {
     return (
       <Typography style={{paddingTop: 16}}
         variant="headline" component="headline"
-        align="center" color='inherit'>
+        align="center">
           {this.props.title}
       </Typography>
     )
@@ -53,7 +53,7 @@ class AboutCard extends React.Component {
   descAbout() {
     return (
       <Typography style={{paddingTop: 16}}
-        component="p" align="center" color='inherit'>
+        component="p" align="center">
           {this.props.desc}
       </Typography>
     )

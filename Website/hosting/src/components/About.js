@@ -17,7 +17,7 @@ class About extends React.Component {
       AboutInputs:{
     		PlugAndPlay: {
           title: 'Easy to Install',
-          imagePath:svgs.plugAndPlay,
+          imagePath: svgs.plugAndPlay,
           desc: "Unbox, wire, and play. Automate your home or booby trap it. We can set it up for you, so you don't have to worry about code. Heep makes connecting things easy."
         },
         CloudLess: {
