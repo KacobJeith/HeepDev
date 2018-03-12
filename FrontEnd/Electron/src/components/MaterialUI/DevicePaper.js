@@ -18,6 +18,9 @@ var mapStateToProps = (state, ownProps) => ({
 class DevicePaper extends React.Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			dragging: false
+		}
 
 		this.runningOffset = {top:  0,
 							  left: 0};
@@ -30,7 +33,11 @@ class DevicePaper extends React.Component {
 
 	  	this.lastPosition['left'] = event.pageX;
 	  	this.lastPosition['top'] = event.pageY;
-	  	// event.dataTransfer.setDragImage(this.refs.device, 99999,99999);
+	  	this.setState({dragging: true});
+
+	  	var dragIcon = document.createElement('img');
+
+	  	event.dataTransfer.setDragImage(dragIcon, 99999,99999);
 	}
 
 	onTouchStart(event) {
@@ -63,10 +70,11 @@ class DevicePaper extends React.Component {
 	sendPositionToServer() {
 
 		this.props.sendPositionToServer(this.props.deviceID);
+		this.setState({dragging: false});
 	}
 
 	render() {
-		
+
 		const inputs = {
 			deviceContainer: {
 				style: {
@@ -80,6 +88,7 @@ class DevicePaper extends React.Component {
 					left: this.props.position.left,
 					color: 'black'
 				},
+				elevation: this.state.dragging ? 2 : 4,
 				draggable: true,
 				onDragStart : (event) => {this.onDragStart(event)},
 				onDrag : (event) => {this.onDrag(event)},
@@ -87,7 +96,7 @@ class DevicePaper extends React.Component {
 				onTouchStart: (event) => {this.onTouchStart(event)},
 				onTouchMove : (event) => {this.onDrag(event.nativeEvent.changedTouches[0])},
 				onTouchEnd: (event) => {this.sendPositionToServer()},
-				webkitUserDrag: `auto | element | none`
+				// WebkitUserDrag: `auto | element | none`
 			}
 		}
 
