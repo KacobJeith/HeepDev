@@ -192,12 +192,25 @@ class AppBarDrawer extends React.Component {
   renderAppBar() {
     const { classes, theme } = this.props;
 
+    var inputs = {
+      Logo: {
+        src: "https://firebasestorage.googleapis.com/v0/b/heep-3cddb.appspot.com/o/assets%2FLogo%2FSideBySide.png?alt=media&token=fa835081-275d-445e-be34-8241b08d687a",
+        height: 50,
+        style: {
+          maxWidth: "250%",
+          marginLeft: this.state.open ? this.props.theme.spacing.unit * 4 : 'inherit'
+        }
+      },
+    }
+
     return (
       <AppBar
         position="absolute"
         className={classNames(classes.appBar, this.state.open && classes.appBarShift)}
       >
         <Toolbar disableGutters={!this.state.open}>
+          
+
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -206,9 +219,12 @@ class AppBarDrawer extends React.Component {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="title" color="inherit" noWrap>
-            Heep Logo
-          </Typography>
+
+          <NavLink to="/">
+            <IconButton >
+                <img {...inputs.Logo}/>
+            </IconButton>
+          </NavLink>
 
           <div className={classes.flex}/>
           
@@ -246,6 +262,8 @@ class AppBarDrawer extends React.Component {
 
   render() {
     const { classes, theme } = this.props;
+
+
 
     return (
       <div >
