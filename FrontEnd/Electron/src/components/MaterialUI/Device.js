@@ -173,7 +173,7 @@ class Device extends React.Component {
 				style: styles.deviceContainer,
 				draggable: true,
 				onDragStart : (event) => {this.onDragStart(event)},
-				onDrag : (event) => {console.log('dragging'); this.onDrag(event)},
+				onDrag : (event) => {this.onDrag(event)},
 				onDragEnd: (event) => {this.sendPositionToServer()},
 				onTouchStart: (event) => {this.onTouchStart(event)},
 				onTouchMove : (event) => {this.onDrag(event.nativeEvent.changedTouches[0])},
