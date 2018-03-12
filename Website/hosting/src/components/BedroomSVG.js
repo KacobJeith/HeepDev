@@ -70,70 +70,28 @@ class BedroomSVG extends React.Component{
     var buttonFlower = document.getElementById('buttonFlower');
 
     var remote = document.getElementById('remote');
-    var remoteBottom = document.getElementById('remoteBottom');
-    var remoteBody = document.getElementById('remoteBody');
-    var remoteButtons = document.getElementById('remoteButtons');
-    var remoteAntennaTop = document.getElementById('remoteAntennaTop');
-    var remoteStickBottoms = document.getElementById('remoteStickBottoms');
-    var remoteStickTops = document.getElementById('remoteStickTops');
 
     var pig = document.getElementById('pig');
-    var pigBodyElements = document.getElementById('pigBodyElements');
-    var pigSnoutFront = document.getElementById('pigSnoutFront');
-    var pigBackElements = document.getElementById('pigBackElements');
-    var pigEarInner = document.getElementById('pigEarInner');
-    var pigNostrils = document.getElementById('pigNostrils');
-    var pigEyes = document.getElementById('pigEyes');
-    var pigCoinSlot = document.getElementById('pigCoinSlot');
 
     var diary = document.getElementById('diary')
-    var diaryBottom = document.getElementById('diaryBottom');
-    var diaryPages = document.getElementById('diaryPages');
-    var diaryCover = document.getElementById('diaryCover');
-    var diarySpine = document.getElementById('diarySpine');
     var diaryColor = document.getElementById('diaryColor');
 
     var sleep = document.getElementById('sleep');
-    var sleepMount = document.getElementById('sleepMount');
-    var sleepButton = document.getElementById('sleepButton');
 
     var dresser = document.getElementById('dresser');
     var dresserFrame = document.getElementById('dresserFrame');
     var dresserDrawers = document.getElementById('dresserDrawers');
-    var dresserKnobs = document.getElementById('dresserKnobs');
 
     var cactus = document.getElementById('cactus');
-    var cactusPotBody = document.getElementById('cactusPotBody');
-    var cactusPotLip = document.getElementById('cactusPotLip');
-    var cactusPotTop = document.getElementById('cactusPotTop');
-    var cactusBody = document.getElementById('cactusBody');
 
     var flowers = document.getElementById('flowers');
-    var flowerPotBottom = document.getElementById('flowerPotBottom');
-    var flowerPotLip = document.getElementById('flowerPotLip');
-    var flowerPotTop = document.getElementById('flowerPotTop');
-    var leafBodyRight = document.getElementById('leafBodyRight');
-    var leafBodyCenter = document.getElementById('leafBodyCenter');
-    var leafBodyLeft = document.getElementById('leafBodyLeft');
-    var flowerPetals = document.getElementById('flowerPetals');
-    var flowerStamens = document.getElementById('flowerStamens');
 
     var car = document.getElementById('car');
-    var carLights = document.getElementById('carLights');
-    var carBody = document.getElementById('carBody');
-    var carTires = document.getElementById('carTires');
-    var carHubs = document.getElementById('carHubs');
-    var carHandle = document.getElementById('carHandle');
-    var carWindows = document.getElementById('carWindows');
-    var carAntennaTop = document.getElementById('carAntennaTop');
-    var carAnimation = document.getElementById('Animation');
     var carSmoke1 = document.getElementById('carSmoke1');
     var carSmoke2 = document.getElementById('carSmoke2');
     var carSmoke3 = document.getElementById('carSmoke3');
-    var carShadow = document.getElementById('carShadow');
 
     var solarSystem = document.getElementById('solarSystem');
-    var colorPlanets = document.getElementById('colorPlanets');
 
     var lampBottom = document.getElementById('lampBottom');
     var lampShade = document.getElementById('lampShade');
@@ -141,11 +99,8 @@ class BedroomSVG extends React.Component{
     var lampLight = document.getElementById('lampLight');
 
     var clock = document.getElementById('clock');
-    var clockBody = document.getElementById('clockBody');
-    var clockFace = document.getElementById('clockFace');
     var clockBellLeft = document.getElementById('clockBellLeft');
     var clockBellRight = document.getElementById('clockBellRight');
-    var clockLegs = document.getElementById('clockLegs');
   };
 
     addButtonListeners() {
@@ -210,18 +165,15 @@ class BedroomSVG extends React.Component{
   };
 
   hoverRemote() {
-    this.colorRemote();
     this.hoverShake(remote);
   };
 
   leaveRemote() {
-    this.uncolorRemote();
-    tlShake.clear();
+    this.leaveShake();
   };
 
   clickRemote() {
     this.removeButtonListeners();
-    this.colorRemote();
     tlShake.clear();
 
     let tlCar = new TimelineMax({onComplete: proxyFunction.bind(this)});
@@ -230,13 +182,6 @@ class BedroomSVG extends React.Component{
       this.uncolorRemote();
     };
     TweenLite.to(carAnimation, colorDuration, {display: 'block'});
-    TweenLite.to(carLights, colorDuration, {fill: '#F2B666'});
-    TweenLite.to(carBody, colorDuration, {fill: '#C1272D'});
-    TweenLite.to(carTires, colorDuration, {fill: '#333333'});
-    TweenLite.to(carHubs, colorDuration, {fill: '#E6E6E6'});
-    TweenLite.to(carHandle, colorDuration, {fill: '#B3B3B3'});
-    TweenLite.to(carWindows, colorDuration, {fill: '#7FCAE5'});
-    TweenLite.to(carAntennaTop, colorDuration, {fill: '#37474F'});
     tlCar.fromTo([carSmoke1, carSmoke2, carSmoke3], 7.5, {y:-0.5}, {y:0.5, ease:RoughEase.ease.config({strength:20, points:20, template:Linear.easeNone, randomize:false}) , clearProps:"x"});
     tlCar.to(car, 1.2, {x: -70, ease: Power2.easeout}, 0.7);
     tlCar.to(car, 1, {x: 40, y: 160, ease: Power2.easeout}, 2);
@@ -246,26 +191,7 @@ class BedroomSVG extends React.Component{
     tlCar.to(car, 0.8, {y: 0, ease: Power2.easeout}, 5.3);
     tlCar.to(car, 0.8, {x: 0, ease: Power2.easeout}, 6.2);
     tlCar.to(carAnimation, 0.1, {display: 'none'});
-    tlCar.to([carLights, carBody, carTires, carHubs, carHandle, carWindows, carAntennaTop], colorDuration, {fill: colorDefault, delay: 0.2});
     console.log("click")
-  };
-
-  colorRemote() {
-    TweenLite.to(remoteBottom, colorDuration, {fill: '#333333'});
-    TweenLite.to(remoteBody, colorDuration, {fill: '#666666'});
-    TweenLite.to(remoteButtons, colorDuration, {fill: '#CCCCCC'});
-    TweenLite.to(remoteAntennaTop, colorDuration, {fill: '#000'});
-    TweenLite.to(remoteStickBottoms, colorDuration, {fill: '#999999'});
-    TweenLite.to(remoteStickTops, colorDuration, {fill: '#666666'});
-  };
-
-  uncolorRemote() {
-    TweenLite.to(remoteBottom, colorDuration, {fill: colorDefault});
-    TweenLite.to(remoteBody, colorDuration, {fill: colorDefault});
-    TweenLite.to(remoteButtons, colorDuration, {fill: colorDefault});
-    TweenLite.to(remoteAntennaTop, colorDuration, {fill: colorDefault});
-    TweenLite.to(remoteStickBottoms, colorDuration, {fill: colorDefault});
-    TweenLite.to(remoteStickTops, colorDuration, {fill: colorDefault});
   };
 
   hoverPig() {
