@@ -81,7 +81,6 @@ class Device extends React.Component {
 		return (
 			<div >
 				{controlList.map((controlKey) => {
-					console.log(controlKey)
 					return <Control key={controlKey} deviceID={this.props.device.deviceID} controlID={controlKey}/>
 				}
 				)}
@@ -168,8 +167,6 @@ class Device extends React.Component {
 				width: 79,
 			}
 		}
-
-		console.log("localhost:3004/assets/svg/" + this.props.device.iconName + ".svg")
 
 		const inputs = {
 			deviceContainer: {
