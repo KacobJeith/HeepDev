@@ -174,6 +174,13 @@ class Device extends React.Component {
 		const inputs = {
 			deviceContainer: {
 				style: styles.deviceContainer,
+				draggable: true,
+				onDragStart : (event) => {this.onDragStart(event)},
+				onDrag : (event) => {console.log('dragging'); this.onDrag(event)},
+				onDragEnd: (event) => {this.sendPositionToServer()},
+				onTouchStart: (event) => {this.onTouchStart(event)},
+				onTouchMove : (event) => {this.onDrag(event.nativeEvent.changedTouches[0])},
+				onTouchEnd: (event) => {this.sendPositionToServer()},
 			},
 			name: {
 				style: styles.name,
@@ -197,7 +204,7 @@ class Device extends React.Component {
 				style: styles.iconContainer,
 				draggable: true,
 				onDragStart : (event) => {this.onDragStart(event)},
-				onDrag : (event) => {this.onDrag(event)},
+				onDrag : (event) => {console.log('dragging'); this.onDrag(event)},
 				onDragEnd: (event) => {this.sendPositionToServer()},
 				onTouchStart: (event) => {this.onTouchStart(event)},
 				onTouchMove : (event) => {this.onDrag(event.nativeEvent.changedTouches[0])},
