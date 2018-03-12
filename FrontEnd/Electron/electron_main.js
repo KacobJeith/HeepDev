@@ -10,8 +10,8 @@ var log = require('electron-log');
 
 const express = require('express');
 const bodyParser = require('body-parser');
-const heepConnect = require('./src/dist/heep/HeepConnections');
-const simulationDevice =  require('./src/dist/simulationHeepDevice.js');
+const heepConnect = require('./dist/heep/HeepConnections');
+const simulationDevice =  require('./dist/simulationHeepDevice.js');
 
 let mainWindow
 
@@ -28,15 +28,15 @@ var allowCrossDomain = function(req, res, next) {
 }
 
 app.use(allowCrossDomain);
-app.use('/', express.static(__dirname + '/src/dist/'));
+app.use('/', express.static(__dirname));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.get('/api/findDevices', function(req, res) {
-  let simulation = false;
+  let simulation = true;
   
   if (simulation) {
-    res.json(simulationDevice);
+    res.json(simulationDevice.simulationDevice);
   } else {
     heepConnect.SearchForHeepDevices(); 
     res.json(heepConnect.GetCurrentMasterState());
@@ -95,7 +95,7 @@ app.listen(app.get('port'), function(error) {
   }
 });
 
-heepConnect.SearchForHeepDevices();
+// heepConnect.SearchForHeepDevices();
 
 
 electronApp.on('ready', function() {
@@ -106,7 +106,7 @@ electronApp.on('ready', function() {
 
   mainWindow.loadURL('http://localhost:' + app.get('port'));
 
-  // mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools()
 
   mainWindow.on('closed', function () {
     mainWindow = null

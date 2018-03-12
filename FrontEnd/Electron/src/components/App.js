@@ -3,15 +3,13 @@ import {HashRouter as Router, Route} from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as Actions from '../redux/actions'
-import ReactGA from 'react-ga'
 
-import Header from './Header'
+import Header from './AppBar'
 import Auth from './Auth'
 import Logout from './Logout'
 import Loading from './Loading'
-import UserProfile from './UserProfile'
 import DeviceBuilder from './DeviceBuilder'
-import Flowchart from './Classic/Flowchart'
+import Flowchart from './MaterialUI/Flowchart'
 // import Analytics from './Analytics/AnalyticsMain'
 
 const mapStateToProps = (state) => ({
@@ -19,40 +17,34 @@ const mapStateToProps = (state) => ({
 })
 
 class App extends React.Component {
-	constructor(props) {
-		super(props);
-		ReactGA.initialize('UA-93098480-1');
-	}
-
-
-	logPageView() {
-	  ReactGA.set({ page: window.location.pathname });
-	  ReactGA.pageview(window.location.pathname);
-	}
-
 	render() {
-		this.logPageView();
 
-		const styles = {
-	        container : { 
-	          height: "100%",
-	          width: "100%",
-	          marginTop: 70,
-	          display: "block"
-	        }
-	      };
-
-	    const inputs = {
-	      container: {
-	        style: styles.container
-	      }
+		const inputs = {
+			container : {
+				style: {
+				    flexGrow: 1,
+				    height: '100%',
+				    zIndex: 1,
+				    overflow: 'hidden',
+				    position: 'relative',
+				    display: 'flex',
+				  }
+			},
+			content: {
+				style: {
+				    flexGrow: 1,
+				    backgroundColor: 'white',
+				    marginTop: 64, 
+				    width:'100%'
+				  }
+			}
 	    }
 
 	    var loggedInRoutes = [];
 
 	    if (this.props.loginStatus) {
 	    	loggedInRoutes.push(<Route path="/DeviceBuilder" component={DeviceBuilder} key="DeviceBuilder"/>)
-	    	loggedInRoutes.push(<Route path="/User" component={UserProfile} key="user"/>);
+
 	    	// loggedInRoutes.push(<Route path="/Analytics" component={Analytics} key="Analytics"/>);
 	    }
 
@@ -60,10 +52,12 @@ class App extends React.Component {
 			<Router >
 		    	<div {...inputs.container}>
 					<Route path="/" component={Header}/>
-					<Route exact path="/" component={Flowchart} key="Flow"/>
-					<Route path="/Classic" component={Flowchart} key="Flowchart"/>
-					<Route exact path="/auth" component={Auth}/>
-					{loggedInRoutes}
+					<div {...inputs.content} >
+						<Route exact path="/" component={Flowchart} key="Flow"/>
+						<Route path="/Classic" component={Flowchart} key="Flowchart"/>
+						<Route exact path="/auth" component={Auth}/>
+						{loggedInRoutes}
+					</div>
 			    </div>
 			</Router>);
 	    
