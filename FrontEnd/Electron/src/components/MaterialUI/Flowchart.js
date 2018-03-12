@@ -3,7 +3,8 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { withRouter } from 'react-router-dom'
 import * as Actions from '../../redux/actions_classic'
-import Device from './Device'
+
+import Device from './DevicePaper'
 import Vertex from './Vertex'
 
 var mapStateToProps = (state) => ({
