@@ -18,6 +18,7 @@ var colorDefault = '#FFF';
 var colorDuration = 1;
 
 var tlShake = new TimelineMax({repeat:-1});
+var tlVertex = new TimelineMax ()
 
 class BedroomSVG extends React.Component{
 
@@ -79,7 +80,6 @@ class BedroomSVG extends React.Component{
     var sleep = document.getElementById('sleep');
 
     var dresser = document.getElementById('dresser');
-    var dresserFrame = document.getElementById('dresserFrame');
     var dresserDrawers = document.getElementById('dresserDrawers');
 
     var cactus = document.getElementById('cactus');
@@ -87,6 +87,7 @@ class BedroomSVG extends React.Component{
     var flowers = document.getElementById('flowers');
 
     var car = document.getElementById('car');
+    var carAnimation = document.getElementById('carAnimation');
     var carSmoke1 = document.getElementById('carSmoke1');
     var carSmoke2 = document.getElementById('carSmoke2');
     var carSmoke3 = document.getElementById('carSmoke3');
@@ -101,6 +102,8 @@ class BedroomSVG extends React.Component{
     var clock = document.getElementById('clock');
     var clockBellLeft = document.getElementById('clockBellLeft');
     var clockBellRight = document.getElementById('clockBellRight');
+
+    var vertexCarRemote = document.getElementById('vertexCarRemote');
   };
 
     addButtonListeners() {
@@ -164,8 +167,25 @@ class BedroomSVG extends React.Component{
     tlShake.clear();
   };
 
+  drawLineTween(svg) {
+    var pathObject = {length:0, pathLength: svg.getTotalLength()};
+    TweenLite.to(svg, 0.1, {stroke: "#000"})
+    var tween = TweenLite.to(pathObject, 2, {length:pathObject.pathLength, onUpdate:this.drawLine, onUpdateParams:[pathObject, svg], immediateRender:true});
+    return tween;
+  }
+
+  drawLine(obj, svg) {
+    svg.style.strokeDasharray = [obj.length, obj.pathLength].join(' ');
+  };
+
+  hideLine(svg) {
+    var tween = TweenLite.to(svg, 0.1, {stroke: 'none'});
+    return tween;
+  }
+
   hoverRemote() {
     this.hoverShake(remote);
+    this.vertexRemote();
   };
 
   leaveRemote() {
@@ -180,6 +200,7 @@ class BedroomSVG extends React.Component{
     function proxyFunction(): void {
       this.addButtonListeners();
     };
+
     TweenLite.to(carAnimation, colorDuration, {display: 'block'});
     tlCar.fromTo([carSmoke1, carSmoke2, carSmoke3], 7.5, {y:-0.5}, {y:0.5, ease:RoughEase.ease.config({strength:20, points:20, template:Linear.easeNone, randomize:false}) , clearProps:"x"});
     tlCar.to(car, 1.2, {x: -70, ease: Sine.easeInOut}, 0.7);
@@ -192,6 +213,14 @@ class BedroomSVG extends React.Component{
     tlCar.to(carAnimation, 0.1, {display: 'none'});
     console.log("click")
   };
+
+  vertexRemote() {
+    //TweenLite.to(vertexCarRemote, 0.1, {strokeDasharray: 299, strokeDashoffset: 299})
+    tlVertex.add(this.drawLineTween(vertexCarRemote));
+    tlVertex.add(this.hideLine(vertexCarRemote));
+    //tlVertex.clear();
+    //tlVertex
+  }
 
   hoverPig() {
     this.hoverShake(pig);
