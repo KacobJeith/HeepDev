@@ -17,8 +17,12 @@ const styles = theme => ({
 var colorDefault = '#FFF';
 var colorDuration = 1;
 
+//var tlVertex = new TimelineMax();
+
 var tlShake = new TimelineMax({repeat:-1});
-var tlVertex = new TimelineMax ()
+var tlRemote = new TimelineMax();
+var tlPig = new TimelineMax();
+var tlDiary = new TimelineMax();
 
 class BedroomSVG extends React.Component{
 
@@ -103,7 +107,14 @@ class BedroomSVG extends React.Component{
     var clockBellLeft = document.getElementById('clockBellLeft');
     var clockBellRight = document.getElementById('clockBellRight');
 
-    var vertexCarRemote = document.getElementById('vertexCarRemote');
+    var vertexRemoteCar = document.getElementById('vertexRemoteCar');
+    var vertexPigLamp = document.getElementById('vertexPigLamp');
+    var vertexPigClock = document.getElementById('vertexPigClock');
+    var vertexPigPlanets = document.getElementById('vertexPigPlanets');
+    var vertexDiaryLamp = document.getElementById('vertexDiaryLamp')
+    var vertexDiaryClock = document.getElementById('vertexDiaryClock')
+    var vertexDiaryPlanets = document.getElementById('vertexDiaryPlanets')
+
   };
 
     addButtonListeners() {
@@ -170,7 +181,12 @@ class BedroomSVG extends React.Component{
   drawLineTween(svg) {
     var pathObject = {length:0, pathLength: svg.getTotalLength()};
     TweenLite.to(svg, 0.1, {stroke: "#000"})
-    var tween = TweenLite.to(pathObject, 2, {length:pathObject.pathLength, onUpdate:this.drawLine, onUpdateParams:[pathObject, svg], immediateRender:true});
+    var tween = TweenLite.to(pathObject, 2, {
+      length:pathObject.pathLength,
+      onUpdate:this.drawLine,
+      onUpdateParams:[pathObject, svg],
+      immediateRender:true
+    });
     return tween;
   }
 
@@ -181,6 +197,10 @@ class BedroomSVG extends React.Component{
   hideLine(svg) {
     var tween = TweenLite.to(svg, 0.1, {stroke: 'none'});
     return tween;
+  }
+
+  killLine(svg) {
+    TweenLite.to(svg, 0.1, {stroke: 'none'});
   }
 
   hoverRemote() {
@@ -195,6 +215,7 @@ class BedroomSVG extends React.Component{
   clickRemote() {
     this.removeButtonListeners();
     tlShake.clear();
+    this.killLine(vertexRemoteCar);
 
     let tlCar = new TimelineMax({onComplete: proxyFunction.bind(this)});
     function proxyFunction(): void {
@@ -202,7 +223,14 @@ class BedroomSVG extends React.Component{
     };
 
     TweenLite.to(carAnimation, colorDuration, {display: 'block'});
-    tlCar.fromTo([carSmoke1, carSmoke2, carSmoke3], 7.5, {y:-0.5}, {y:0.5, ease:RoughEase.ease.config({strength:20, points:20, template:Linear.easeNone, randomize:false}) , clearProps:"x"});
+    tlCar.fromTo([carSmoke1, carSmoke2, carSmoke3], 7.5, {y:-0.5}, {
+      y:0.5,
+      ease:RoughEase.ease.config({
+        strength:20,
+        points:20,
+        template:Linear.easeNone,
+        randomize:false
+      }) , clearProps:"x"});
     tlCar.to(car, 1.2, {x: -70, ease: Sine.easeInOut}, 0.7);
     tlCar.to(car, 1, {x: 40, y: 160, ease: Sine.easeInOut}, 2);
     tlCar.to(car, 0.6, {x: 200, ease: Sine.easeInOut}, 3.1);
@@ -215,15 +243,14 @@ class BedroomSVG extends React.Component{
   };
 
   vertexRemote() {
-    //TweenLite.to(vertexCarRemote, 0.1, {strokeDasharray: 299, strokeDashoffset: 299})
-    tlVertex.add(this.drawLineTween(vertexCarRemote));
-    tlVertex.add(this.hideLine(vertexCarRemote));
-    //tlVertex.clear();
-    //tlVertex
+    //var tlRemote = new TimelineMax();
+    tlRemote.add(this.drawLineTween(vertexRemoteCar));
+    tlRemote.add(this.hideLine(vertexRemoteCar));
   }
 
   hoverPig() {
     this.hoverShake(pig);
+    this.vertexPig();
   };
 
   leavePig() {
@@ -232,7 +259,7 @@ class BedroomSVG extends React.Component{
 
   clickPig() {
     this.removeButtonListeners();
-    tlShake.clear();
+    this.killLine([vertexPigPlanets, vertexPigLamp, vertexPigClock]);
     this.clickTheft();
 
     let tlPig = new TimelineMax({onComplete: proxyFunction.bind(this)});
@@ -240,11 +267,33 @@ class BedroomSVG extends React.Component{
       this.addButtonListeners();
     };
 
-    tlPig.to(pig, 2.3, {scaleX: 1.8, scaleY: 1.8, x:150, y: 325, yoyo: true, repeat: 1, ease: Sine.easeInOut}, 0.2)
+    tlPig.to(pig, 2.3, {
+      scaleX: 1.8,
+      scaleY: 1.8,
+      x: 150,
+      y: 325,
+      yoyo: true,
+      repeat: 1,
+      ease: Sine.easeInOut
+    }, 0.2);
   };
+
+  vertexPig() {
+    //var tlPig = new TimelineMax();
+    tlPig.add([
+      this.drawLineTween(vertexPigPlanets),
+      this.drawLineTween(vertexPigLamp),
+      this.drawLineTween(vertexPigClock)
+    ]);
+    tlPig.add(this.hideLine([
+      vertexPigPlanets,
+      vertexPigLamp,
+      vertexPigClock]));
+  }
 
   hoverDiary() {
     this.hoverShake(diary);
+    this.vertexDiary();
   };
 
   leaveDiary() {
@@ -254,6 +303,7 @@ class BedroomSVG extends React.Component{
   clickDiary() {
     this.removeButtonListeners();
     tlShake.clear();
+    this.killLine([vertexDiaryPlanets, vertexDiaryLamp, vertexDiaryClock]);
     this.clickTheft();
 
     let tlDiary = new TimelineMax({onComplete: proxyFunction.bind(this)});
@@ -261,11 +311,33 @@ class BedroomSVG extends React.Component{
       this.addButtonListeners();
     };
 
-    tlDiary.to(diary, 0.1, {display: 'none'}, 0.2)
-    tlDiary.to(diaryOpen, 0.1, {display: 'block'}, 0.2)
-    tlDiary.to(diaryOpen, 2.2, {scaleX: 1.4, scaleY: 1.4, x:50, y: 50, yoyo: true, repeat: 1, ease: Sine.easeInOut}, 0.3)
-    tlDiary.to(diaryOpen, 0.1, {display: 'none'}, 4.8)
-    tlDiary.to(diary, 0.1, {display: 'block'}, 4.8)
+    tlDiary.to(diary, 0.1, {display: 'none'}, 0.2);
+    tlDiary.to(diaryOpen, 0.1, {display: 'block'}, 0.2);
+    tlDiary.to(diaryOpen, 2.2, {
+      scaleX: 1.4,
+      scaleY: 1.4,
+      x:50,
+      y: 50,
+      yoyo: true,
+      repeat: 1,
+      ease: Sine.easeInOut
+    }, 0.3);
+    tlDiary.to(diaryOpen, 0.1, {display: 'none'}, 4.8);
+    tlDiary.to(diary, 0.1, {display: 'block'}, 4.8);
+  };
+
+  vertexDiary() {
+    //var tlDiary = new TimelineMax();
+    tlDiary.add([
+      this.drawLineTween(vertexDiaryPlanets),
+      this.drawLineTween(vertexDiaryLamp),
+      this.drawLineTween(vertexDiaryClock)
+    ]);
+    tlDiary.add(this.hideLine([
+      vertexDiaryPlanets,
+      vertexDiaryLamp,
+      vertexDiaryClock
+    ]));
   };
 
   clickTheft() {
@@ -290,7 +362,12 @@ class BedroomSVG extends React.Component{
       ease: Sine.easeInOut
     }, startTime);
 
-    tlTheft.fromTo(clockBellLeft, 0.2, {rotation: -4, transformOrigin: "50%", y: 3}, {
+    tlTheft.fromTo(clockBellLeft, 0.2, {
+      rotation: -4,
+      transformOrigin: "50%",
+      y: 3
+    },
+    {
       rotation: 4,
       transformOrigin: "50%",
       y: -3,
@@ -299,7 +376,12 @@ class BedroomSVG extends React.Component{
       ease: Sine.easeInOut
     }, startTime);
 
-    tlTheft.fromTo(clockBellRight, 0.2, {rotation: 4, transformOrigin: "50%", y: -3}, {
+    tlTheft.fromTo(clockBellRight, 0.2, {
+      rotation: 4,
+      transformOrigin: "50%",
+      y: -3
+    },
+    {
       rotation: -4,
       transformOrigin: "50%",
       y: 3,
@@ -308,7 +390,11 @@ class BedroomSVG extends React.Component{
       ease: Sine.easeInOut
     }, startTime);
 
-    tlTheft.fromTo(solarSystem, 0.5, {rotation: 10, transformOrigin: "50%"}, {
+    tlTheft.fromTo(solarSystem, 0.5, {
+      rotation: 10,
+      transformOrigin: "50%"
+    },
+    {
       rotation: -10,
       yoyo: true,
       repeat: 10,
