@@ -259,6 +259,7 @@ class BedroomSVG extends React.Component{
 
   clickPig() {
     this.removeButtonListeners();
+    tlShake.clear();
     this.killLine([vertexPigPlanets, vertexPigLamp, vertexPigClock]);
     this.clickTheft();
 
