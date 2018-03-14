@@ -25,8 +25,9 @@ export const InitializeShopifyFeat = () => {
   const collectionId = '3749969949'
   client.collection.fetchWithProducts(collectionId).then((collection) => {
   // Do something with the collection
-    //console.log('TEST ', collection);
-    //console.log('TEST ', collection.products);
+  console.log('TEST ', collection);
+  console.log('TEST ', collection.products);
+  console.log('TEST')
   });
 }
 

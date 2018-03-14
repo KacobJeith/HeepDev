@@ -24,6 +24,13 @@ export default function(state = initialState, action) {
 
       return Immutable.Map(state).set('shopify', newState).toJS()
 
+    case 'POPULATE_FEAT_ITEMS' :
+
+        var featItems = Immutable.Map(state.shopifyft).toJS();
+        for (var i = 0; i < action.products.length; i++){
+          featItems[action.products[i].variants[0].id] = action.products[i];
+        }
+
     case 'CREATE_CHECKOUT' :
 
       database.saveCheckoutID(action.checkoutID);
@@ -48,7 +55,7 @@ export default function(state = initialState, action) {
 
       return state
 
-    case 'REMOVE_PRODUCT_FROM_CART' : 
+    case 'REMOVE_PRODUCT_FROM_CART' :
 
       shopify.RemoveProductFromCart(state.checkoutID, action.variantID)
 
@@ -101,7 +108,7 @@ export default function(state = initialState, action) {
       database.pushCartToFulfillmentQueue(checkoutID, state.cartContext);
 
       return state
-      
+
     case 'SCROLL':
 
       return Immutable.Map(state).set('scrollPosition', action.positionY).toJS()
@@ -109,7 +116,7 @@ export default function(state = initialState, action) {
     case 'UPDATE_WEBGL_STATUS':
 
       return Immutable.Map(state).set('webGLStatus', action.status).toJS()
-      
+
     case 'LOGOUT':
 
       auth.logout();
@@ -132,25 +139,25 @@ export default function(state = initialState, action) {
 
       return Immutable.Map(state).set('providers', newState).toJS()
 
-    case 'ADD_DEVICE' : 
+    case 'ADD_DEVICE' :
 
       var newState = Immutable.Map(state.devices).set(action.deviceID, action.device).toJS();
 
       return Immutable.Map(state).set('devices', newState).toJS()
 
-    case 'ADD_PLACE' : 
+    case 'ADD_PLACE' :
 
       var newState = Immutable.Map(state.places).set(action.placeID, action.place).toJS();
 
       return Immutable.Map(state).set('places', newState).toJS()
 
-    case 'ADD_GROUP' : 
+    case 'ADD_GROUP' :
 
       var newState = Immutable.Map(state.groups).set(action.groupID, action.group).toJS();
 
       return Immutable.Map(state).set('groups', newState).toJS()
 
-    case 'SAVE_NEW_PLACE' : 
+    case 'SAVE_NEW_PLACE' :
 
       setTimeout(() => {
         database.saveNewPlace(action.placeName, action.placeSSID, action.placeSSIDPassword)
@@ -164,9 +171,9 @@ export default function(state = initialState, action) {
         database.deletePlace(action.placeID)
       }, 1000);
 
-      return state 
+      return state
 
-    case 'DELETE_PLACE': 
+    case 'DELETE_PLACE':
 
       var newState = Immutable.Map(state.places).delete(action.placeID).toJS();
 

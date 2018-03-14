@@ -1,24 +1,29 @@
 
 export const addDevice = (deviceID, device) => ({
   type: 'ADD_DEVICE',
-  deviceID, 
+  deviceID,
   device
 })
 
 export const addPlace = (placeID, place) => ({
   type: 'ADD_PLACE',
-  placeID, 
+  placeID,
   place
 })
 
 export const addGroup = (groupID, group) => ({
   type: 'ADD_GROUP',
-  group, 
+  group,
   groupID
 })
 
 export const populateShopify = (products) => ({
 	type: 'POPULATE_SHOPIFY',
+	products
+})
+
+export const featItems = (products) => ({
+	type: 'POPULATE_FEAT_ITEMS',
 	products
 })
 
@@ -89,8 +94,8 @@ export const saveCartLocally = (cart) => ({
 
 export const saveNewPlace = (placeName, placeSSID, placeSSIDPassword) => ({
 	type: 'SAVE_NEW_PLACE',
-	placeName, 
-	placeSSID, 
+	placeName,
+	placeSSID,
 	placeSSIDPassword
 })
 
@@ -106,7 +111,7 @@ export const deletePlace = (placeID) => ({
 
 export const updateCartContext = (variantID, placeID) => ({
 	type: 'UPDATE_CART_CONTEXT',
-	variantID, 
+	variantID,
 	placeID
 })
 
