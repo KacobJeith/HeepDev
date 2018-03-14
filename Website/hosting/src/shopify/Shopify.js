@@ -11,8 +11,7 @@ export const InitializeShopify = () => {
 
 
   client.collection.fetchAllWithProducts().then((collections) => {
-    // Do something with the collections
-    //console.log('collections: ', collections)
+    AddCollectionsToRedux(collections);
   });
 
    client.product.fetchAll().then((products) => {
@@ -20,20 +19,13 @@ export const InitializeShopify = () => {
   });
 }
 
-export const InitializeShopifyFeat = () => {
-
-  const collectionId = '3749969949'
-  client.collection.fetchWithProducts(collectionId).then((collection) => {
-  // Do something with the collection
-  console.log('TEST ', collection);
-  console.log('TEST ', collection.products);
-  console.log('TEST')
-  });
-}
-
 const AddProductsToRedux = (products) => {
 
   setup.store.dispatch(actions.populateShopify(products));
+}
+
+const AddCollectionsToRedux = (collections) => {
+  setup.store.dispatch(actions.populateCollections(collections));
 }
 
 export const AddProductToCart = (checkoutID, productData) => {

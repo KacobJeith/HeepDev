@@ -9,6 +9,7 @@ import { Grid, Paper } from 'material-ui'
 import BedroomSVG from './BedroomSVG'
 import SectionCard from './utilities/SectionCard'
 import FeaturedItems from './landing/FeaturedItems'
+import Collections from './landing/Collections'
 import { banners } from '../assets/remote/Banners'
 
 
@@ -66,6 +67,7 @@ class Landing extends React.Component {
       <div>
         {this.topBanner()}
         {this.bedroomSVG()}
+        <Collections />
       </div>
       );
   }

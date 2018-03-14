@@ -24,12 +24,15 @@ export default function(state = initialState, action) {
 
       return Immutable.Map(state).set('shopify', newState).toJS()
 
-    case 'POPULATE_FEAT_ITEMS' :
+    case 'POPULATE_COLLECTIONS' :
 
-        var featItems = Immutable.Map(state.shopifyft).toJS();
-        for (var i = 0; i < action.products.length; i++){
-          featItems[action.products[i].variants[0].id] = action.products[i];
+        var stateCollections = Immutable.Map(state.collections).toJS();
+
+        for (var i = 0; i < action.collections.length; i++){
+          stateCollections[action.collections[i].id] = action.collections[i];
         }
+
+      return Immutable.Map(state).set('shopify', stateCollections).toJS()
 
     case 'CREATE_CHECKOUT' :
 

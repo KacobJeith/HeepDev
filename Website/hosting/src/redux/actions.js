@@ -22,9 +22,9 @@ export const populateShopify = (products) => ({
 	products
 })
 
-export const featItems = (products) => ({
-	type: 'POPULATE_FEAT_ITEMS',
-	products
+export const populateCollections = (collections) => ({
+	type: 'POPULATE_COLLECTIONS',
+	collections
 })
 
 export const logout = () => ({
