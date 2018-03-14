@@ -9,7 +9,6 @@ var client = ShopifyBuy.buildClient({
 
 export const InitializeShopify = () => {
 
-
   client.collection.fetchAllWithProducts().then((collections) => {
     AddCollectionsToRedux(collections);
   });

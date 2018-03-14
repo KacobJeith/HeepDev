@@ -26,13 +26,13 @@ export default function(state = initialState, action) {
 
     case 'POPULATE_COLLECTIONS' :
 
-        var stateCollections = Immutable.Map(state.collections).toJS();
+        let titleCollections = Immutable.Map(state.collections).toJS();
 
-        for (var i = 0; i < action.collections.length; i++){
-          stateCollections[action.collections[i].id] = action.collections[i];
+        for (let i = 0; i < action.collections.length; i++){
+          titleCollections[action.collections[i].title] = action.collections[i];
         }
 
-      return Immutable.Map(state).set('shopify', stateCollections).toJS()
+      return Immutable.Map(state).set('collections', titleCollections).toJS()
 
     case 'CREATE_CHECKOUT' :
 

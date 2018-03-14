@@ -9,7 +9,6 @@ import { Grid, Paper } from 'material-ui'
 import BedroomSVG from './BedroomSVG'
 import SectionCard from './utilities/SectionCard'
 import FeaturedItems from './landing/FeaturedItems'
-import Collections from './landing/Collections'
 import { banners } from '../assets/remote/Banners'
 
 
@@ -52,22 +51,13 @@ class Landing extends React.Component {
     )
   };
 
-  featuredItems() {
-    const inputs = {
-      item1: 'Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8xMjYxODQ1MjE3MzA5'
-    }
-  };
-
   render() {
-    const inputs = {
-      item1: 0
-    }
 
   	return (
       <div>
         {this.topBanner()}
         {this.bedroomSVG()}
-        <Collections />
+        <FeaturedItems />
       </div>
       );
   }
