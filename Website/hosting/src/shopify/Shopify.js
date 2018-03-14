@@ -16,6 +16,12 @@ export const InitializeShopify = () => {
    client.product.fetchAll().then((products) => {
     AddProductsToRedux(products);
   });
+
+  const featuredID = 'Z2lkOi8vc2hvcGlmeS9Db2xsZWN0aW9uLzM3NDk5Njk5NDk='
+
+  client.collection.fetchWithProducts(featuredID).then((featured) => {
+    setTimeout(AddFeaturedToRedux(featured.products), 10000);
+  });
 }
 
 const AddProductsToRedux = (products) => {
@@ -25,6 +31,10 @@ const AddProductsToRedux = (products) => {
 
 const AddCollectionsToRedux = (collections) => {
   setup.store.dispatch(actions.populateCollections(collections));
+}
+
+const AddFeaturedToRedux = (featured) => {
+  setup.store.dispatch(actions.populateFeatured(featured));
 }
 
 export const AddProductToCart = (checkoutID, productData) => {

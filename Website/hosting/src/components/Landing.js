@@ -12,9 +12,9 @@ import FeaturedItems from './landing/FeaturedItems'
 import { banners } from '../assets/remote/Banners'
 
 
-const mapStateToProps = (state) => ({
-  product: state.shopify
-})
+var mapStateToProps = (state) => ({
+  products: state.featured,
+});
 
 class Landing extends React.Component {
 
@@ -51,13 +51,20 @@ class Landing extends React.Component {
     )
   };
 
+  featuredItems() {
+    return (
+      Object.keys(this.props.products).map((key) => (
+        <FeaturedItems key={key} productID={key}/>))
+    );
+  };
+
   render() {
 
   	return (
       <div>
         {this.topBanner()}
         {this.bedroomSVG()}
-        <FeaturedItems />
+        {setTimeout(console.log(typeof this.props.products), 11000)}
       </div>
       );
   }
