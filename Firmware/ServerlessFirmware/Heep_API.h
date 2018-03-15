@@ -45,6 +45,8 @@ int GetControlValueByID(unsigned controlID);
 
 void AddControl(struct Control myControl);
 
+void AddVertex(struct Vertex_Byte myVertex);
+
 void SetupHeepTasks();
 
 void CommitMemory();

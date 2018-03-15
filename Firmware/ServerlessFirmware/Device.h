@@ -15,8 +15,6 @@ unsigned char isVertexEqual(struct Vertex_Byte* vertex1, struct Vertex_Byte* ver
 
 void AddVertexPointer(unsigned int pointer);
 
-void AddVertex(struct Vertex_Byte myVertex);
-
 void RemoveVertexListEntry(unsigned int pointer);
 
 int DeleteVertex(struct Vertex_Byte myVertex);
