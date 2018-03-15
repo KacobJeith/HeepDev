@@ -38,64 +38,17 @@ class Control extends React.Component {
 								this.props.control['controlID']);
 	}
 
-	render() {
-		console.log('rendering control...', this.props.control)
-
-		const styles = {
-			all: {
-				width: 79,
-				top: 0,
-				height: 55,
-				position: 'relative',
-				display: 'inline-flex'
-			},
-			vertexKnob: {
-				width: 10,
-				top: 0,
-				height: 20,
-				display: 'inline-block',
-				marginLeft: this.direction == 0 ? -11 : 21,
-			},
-			background:{
-				backgroundColor: this.state.controlHighlight,
-				height: 55,
-				display: 'inline-block'
-			},
-			controlTitle: {
-				display: 'inline-block',
-				height: 15,
-				textAlign: this.direction == 0 ? 'left' : 'right',
-				textIndent: 7,
-				fontSize: 12,
-			},
-			controlContainer: {
-				height: 35,
-				textAlign: 'center',
-				display: 'inline-flex',
-				alignItems: 'center',
-				left: -20
-
-			}
-		};
-
+	drawControlKnob(ref) {
 
 		const inputs = {
-			all: {
-				style: styles.all
-			},
 			vertexKnob: {
-				style: styles.vertexKnob
-			},
-			background:{
-				style: styles.background,
-				onMouseEnter: () => this.setState({controlHighlight: '#e7e7e7'}),
-				onMouseLeave: () => this.setState({controlHighlight: 'white'}),
-			},
-			controlTitle:{
-				style: styles.controlTitle,
-			},
-			controlContainer:{
-				style: styles.controlContainer,
+				style: {
+					width: 10,
+					top: 0,
+					height: 20,
+					display: 'inline-block',
+					marginLeft: this.direction == 0 ? -11 : 21,
+				}
 			},
 			circleContainer: {
 				height: 20,
@@ -111,6 +64,56 @@ class Control extends React.Component {
 				cy: 10,
 				r: this.state.radius,
 				fill: this.direction == 0 ? "green" : 'red'
+			}
+		}
+
+		return (
+			<div {...inputs.vertexKnob}>
+				<svg {...inputs.circleContainer} ref={ref}>
+					<circle {...inputs.circle} />
+				</svg>
+			</div>
+		)
+	}
+
+	render() {
+
+		const inputs = {
+			all: {
+				style: {
+					width: 79,
+					top: 0,
+					height: 55,
+					position: 'relative',
+					display: 'inline-flex'
+				}
+			},
+			background:{
+				style: {
+					backgroundColor: this.state.controlHighlight,
+					height: 55,
+					display: 'inline-block'
+				},
+				onMouseEnter: () => this.setState({controlHighlight: '#e7e7e7'}),
+				onMouseLeave: () => this.setState({controlHighlight: 'white'}),
+			},
+			controlTitle:{
+				style: {
+					display: 'inline-block',
+					height: 15,
+					textAlign: this.direction == 0 ? 'left' : 'right',
+					textIndent: 7,
+					fontSize: 12,
+				}
+			},
+			controlContainer:{
+				style: {
+					height: 35,
+					textAlign: 'center',
+					display: 'inline-flex',
+					alignItems: 'center',
+					left: -20
+				}
 			},
 			controller:{
 				key: 0,
@@ -132,12 +135,7 @@ class Control extends React.Component {
 		// }
 
 		return (<div {...inputs.all}>
-					{this.direction == 1 ? null : 
-						<div {...inputs.vertexKnob}>
-							<svg {...inputs.circleContainer} ref="input">
-								<circle {...inputs.circle} />
-							</svg>
-						</div>}
+					{this.direction == 1 ? null : this.drawControlKnob('input')}
 
 					<div {...inputs.background}>
 						<text {...inputs.controlTitle}>
@@ -148,12 +146,7 @@ class Control extends React.Component {
 						</div>
 					</div>
 
-					{this.direction == 0 ? null : 
-						<div {...inputs.vertexKnob}>
-							<svg {...inputs.circleContainer} ref="output">
-								<circle {...inputs.circle} />
-							</svg>
-						</div> }
+					{this.direction == 0 ? null : this.drawControlKnob('output')}
 				</div>
 		);
 	}
