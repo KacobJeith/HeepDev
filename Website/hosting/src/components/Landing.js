@@ -20,17 +20,19 @@ class Landing extends React.Component {
 
   topBanner() {
     const inputs = {
-      banner: {
-        paddingTop: 25,
-        paddingBottom: 25,
-        backgroundColor: '#00adee',
-        imagePath: banners.testPhoto,
-        containerHeight: 200,
-        headerText: 'Heepify Your World',
-      },
+      paddingTop: 25,
+      paddingBottom: 25,
+      backgroundColor: '#00adee',
+      imagePath: banners.testPhoto,
+      containerHeight: 200,
     };
+
     return (
-      <SectionCard {...inputs.banner} />
+      <div>
+        {SectionCard(inputs,
+          'Heepify Your World'
+        )}
+      </div>
     )
   };
 
@@ -54,7 +56,7 @@ class Landing extends React.Component {
   featuredItems() {
     if (typeof this.props.collections['featuredItems'] !== 'undefined') {
       return (
-        <Grid container justify='center' spacing={2}>
+        <Grid container justify ='center'>
           {Object.keys(this.props.collections['featuredItems'].products).map((key, index) => {
             if (key != 'type') {
               return (
