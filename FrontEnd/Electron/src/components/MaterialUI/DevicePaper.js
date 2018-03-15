@@ -89,6 +89,10 @@ class DevicePaper extends React.Component {
 					color: 'black'
 				},
 				elevation: this.state.dragging ? 2 : 4,
+				
+				// WebkitUserDrag: `auto | element | none`
+			},
+			draggingCallbacks: {
 				draggable: true,
 				onDragStart : (event) => {this.onDragStart(event)},
 				onDrag : (event) => {this.onDrag(event)},
@@ -96,13 +100,15 @@ class DevicePaper extends React.Component {
 				onTouchStart: (event) => {this.onTouchStart(event)},
 				onTouchMove : (event) => {this.onDrag(event.nativeEvent.changedTouches[0])},
 				onTouchEnd: (event) => {this.sendPositionToServer()},
-				// WebkitUserDrag: `auto | element | none`
+				style: {
+					cursor: 'drag'
+				}
 			}
 		}
 
 		return (<Paper {...inputs.deviceContainer} ref="device"> 
 
-					<Device DeviceID={this.props.deviceID}/>
+					<Device DeviceID={this.props.deviceID} draggingCallbacks={{...inputs.draggingCallbacks}}/>
 					
 				</Paper>
 			);

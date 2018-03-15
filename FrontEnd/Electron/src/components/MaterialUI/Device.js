@@ -12,7 +12,8 @@ import { Paper, Button, Typography, Grid } from 'material-ui'
 var mapStateToProps = (state, ownProps) => ({
   device: state.devices[ownProps.DeviceID],
   controlInputs: state.controls.controlStructure[ownProps.DeviceID]['inputs'],
-  controlOutputs: state.controls.controlStructure[ownProps.DeviceID]['outputs']
+  controlOutputs: state.controls.controlStructure[ownProps.DeviceID]['outputs'],
+  draggingCallbacks: ownProps.draggingCallbacks
 })
 
 
@@ -24,7 +25,7 @@ class Device extends React.Component {
 
 
 	deviceName = () => (
-		<Typography variant='subheading'>
+		<Typography variant='subheading' >
 			{this.props.device.name}
 		</Typography>
 
@@ -51,10 +52,14 @@ class Device extends React.Component {
 			width: '100%',
 	        type:"image/svg+xml",
 	        data: "/dist/assets/svg/" + this.props.device.iconName + ".svg"
-		    }
+		}
+
 
 		return (
-			<object {...svgIcon}/>
+			<div >
+				<object {...svgIcon}  />
+				<div {...this.props.draggingCallbacks} style={{position:'absolute', top:0, left:0, width:'100%', height:'100%', cursor:'grab'}}/>
+			</div>
 		)
 	}
 
@@ -98,19 +103,28 @@ class Device extends React.Component {
 
 
 		return (
-					<Grid container direction='column' alignItems='center' spacing={8}> 
-						<Grid item >
-							{this.deviceName()}
+					<Grid container direction='column' alignItems='stretch' spacing={8}> 
+						<Grid item {...this.props.draggingCallbacks}>
+							<Grid container justify='center' >
+								<Grid item >
+									{this.deviceName()}
+								</Grid>
+							</Grid>
 						</Grid>
 
 						<Grid item style={{paddingRight:0, paddingLeft:0 }}>
-							<Grid container direction='row' justify='space-around' alignItems='center' spacing={0} >
+							<Grid container direction='row' justify='space-around' alignItems='stretch' spacing={0} >
 								<Grid item xs={3} style={{margin:0}}>
 									{this.drawControls(this.props.controlInputs)}
 								</Grid>
 
-								<Grid item xs={5} style={{margin:0}}>
-									{this.drawDeviceIcon()}
+								<Grid item xs={5} style={{margin:0}} {...this.props.draggingCallbacks}>
+									<Grid container alignItems='center' spacing={8} style={{height:'100%'}}> 
+										
+										<Grid item xs={12}>
+											{this.drawDeviceIcon()}
+										</Grid>
+									</Grid>
 								</Grid>
 
 								<Grid item xs={3} style={{margin:0}}>
@@ -122,8 +136,12 @@ class Device extends React.Component {
 						</Grid>
 
 
-						<Grid item >
-							{this.drawOptions()}
+						<Grid container direction='column' alignItems='stretch' spacing={8}> 
+							<Grid item {...this.props.draggingCallbacks}>
+								<Grid container justify='center' >
+									{this.drawOptions()}
+								</Grid>
+							</Grid>
 						</Grid>
 
 					</Grid>

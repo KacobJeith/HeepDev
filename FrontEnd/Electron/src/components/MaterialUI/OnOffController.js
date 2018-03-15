@@ -2,15 +2,14 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as Actions from '../../redux/actions_classic'
-// import Icon from '../../serverside/assets/icons'
-// import {ICONS} from '../../serverside/assets/iconConstants'
+import { PowerSettingsNew }   from 'material-ui-icons'
+import { IconButton }                 from 'material-ui'
 
 const mapStateToProps = (state, ownProps) => ({
   controlID: state.controls[ownProps.thisControl]['controlID'],
   DeviceID: ownProps.DeviceID,
   value: state.controls[ownProps.thisControl]['valueCurrent']
 })
-
 
 class OnOffController extends React.Component {
 	constructor(props){
@@ -40,20 +39,14 @@ class OnOffController extends React.Component {
 		var inputs = {
 			button: {
 				onClick: () => {this.sendCommand()},
-				style: styles.button
-			},
-			icon: {
-				icon: ICONS.POWER,
-		        color: this.props.value == 0 ?  "#43464c" : "gold" ,
-		        size: 30
 			}
-
 		};
 
-		return  <div {...inputs.button}>
-		filler
-				</div>
-            	
+		return  (
+			<IconButton onClick={() => this.sendCommand()} style={{maxWidth:'100%', height: 35}}>
+				<PowerSettingsNew style={{maxWidth:'100%'}}/>
+			</IconButton>
+		)           	
 	}
 }
 

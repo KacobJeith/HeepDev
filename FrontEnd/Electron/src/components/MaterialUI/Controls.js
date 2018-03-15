@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux'
 import * as Actions from '../../redux/actions_classic'
 import OnOffContainer from './OnOffController'
 import RangeContainer from './RangeController'
+import { Grid, Typography } from 'material-ui'
 
 var mapStateToProps = (state, ownProps) => ({
   control: state.controls[ownProps.controlID],
@@ -85,26 +86,7 @@ class Control extends React.Component {
 					top: 0,
 					height: 55,
 					position: 'relative',
-					display: 'inline-flex',
 					width: '100%'
-				}
-			},
-			background:{
-				style: {
-					backgroundColor: this.state.controlHighlight,
-					height: 55,
-					display: 'inline-block'
-				},
-				onMouseEnter: () => this.setState({controlHighlight: '#e7e7e7'}),
-				onMouseLeave: () => this.setState({controlHighlight: 'white'}),
-			},
-			controlTitle:{
-				style: {
-					display: 'inline-block',
-					height: 15,
-					textAlign: this.direction == 0 ? 'left' : 'right',
-					textIndent: 7,
-					fontSize: 12,
 				}
 			},
 			controlContainer:{
@@ -117,7 +99,6 @@ class Control extends React.Component {
 				}
 			},
 			controller:{
-				key: 0,
 				updateControlValue: this.props.updateControlValue,
 				DeviceID: this.props.deviceID,
 				controlID: this.props.controlID,
@@ -126,28 +107,21 @@ class Control extends React.Component {
 		}
 
 		var controller = [];
-		// if (this.props.control['controlType'] == 0){
-		// 	controller.push(<OnOffContainer {...inputs.controller}/>);
-		// 	inputs.controller.key++;
-		// }
-		// else if (this.props.control['controlType'] == 1){
-		// 	controller.push(<RangeContainer {...inputs.controller}/>);
-		// 	inputs.controller.key++;
-		// }
 
 		return (<div {...inputs.all}>
-					{this.direction == 1 ? null : this.drawControlKnob('input')}
 
-					<div {...inputs.background}>
-						<text {...inputs.controlTitle}>
+					<Grid container direction='column' justify='center' alignItems='center' spacing={0}> 
+						<Grid item xs>
+							<Typography variant='body2' align='center'>
 								{this.props.control['controlName']}
-						</text>
-						<div {...inputs.controlContainer}>
-							{controller}
-						</div>
-					</div>
+							</Typography>
+						</Grid>
+						<Grid item xs style={{height: 35}}>
+							{this.props.control.controlType == 0 ? <OnOffContainer {...inputs.controller}/> : <div style={{width:'80%'}}><RangeContainer {...inputs.controller}/></div> }
+						</Grid>
+					</Grid>
 
-					{this.direction == 0 ? null : this.drawControlKnob('output')}
+					{this.direction == 1 ?  this.drawControlKnob('output') : this.drawControlKnob('input')}
 				</div>
 		);
 	}
