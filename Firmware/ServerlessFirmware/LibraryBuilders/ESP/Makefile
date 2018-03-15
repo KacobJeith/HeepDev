@@ -10,32 +10,32 @@ COMPILERFLAGS = -c -w -Os -g -mlongcalls -mtext-section-literals -fno-exceptions
 
 all: libs
 
-Device.o: ../../Device.c ../../Device.h
-		$(CC) $(PREPROCESSORFLAGS) $(COMPILERFLAGS) $(DEFINE_SIMULATION) -c ../../Device.c
+Device.o: ../../Device.cpp ../../Device.h
+		$(CC) $(PREPROCESSORFLAGS) $(COMPILERFLAGS) $(DEFINE_SIMULATION) -c ../../Device.cpp
 
-MemoryUtilities.o: ../../MemoryUtilities.c ../../MemoryUtilities.h
-		$(CC) $(PREPROCESSORFLAGS) $(COMPILERFLAGS) $(DEFINE_SIMULATION) -c ../../MemoryUtilities.c
+MemoryUtilities.o: ../../MemoryUtilities.cpp ../../MemoryUtilities.h
+		$(CC) $(PREPROCESSORFLAGS) $(COMPILERFLAGS) $(DEFINE_SIMULATION) -c ../../MemoryUtilities.cpp
 
-DeviceMemory.o: ../../DeviceMemory.c ../../DeviceMemory.h
-		$(CC) $(PREPROCESSORFLAGS) $(COMPILERFLAGS) $(DEFINE_SIMULATION) -c ../../DeviceMemory.c
+DeviceMemory.o: ../../DeviceMemory.cpp ../../DeviceMemory.h
+		$(CC) $(PREPROCESSORFLAGS) $(COMPILERFLAGS) $(DEFINE_SIMULATION) -c ../../DeviceMemory.cpp
 
-Heep_API.o: ../../Heep_API.c ../../Heep_API.h
-		$(CC) $(PREPROCESSORFLAGS) $(COMPILERFLAGS) $(DEFINE_SIMULATION) -c ../../Heep_API.c
+Heep_API.o: ../../Heep_API.cpp ../../Heep_API.h
+		$(CC) $(PREPROCESSORFLAGS) $(COMPILERFLAGS) $(DEFINE_SIMULATION) -c ../../Heep_API.cpp
 
-ActionAndResponseOpCodes.o: ../../ActionAndResponseOpCodes.c ../../ActionAndResponseOpCodes.h
-		$(CC) $(PREPROCESSORFLAGS) $(COMPILERFLAGS) $(DEFINE_SIMULATION) -c ../../ActionAndResponseOpCodes.c
+ActionAndResponseOpCodes.o: ../../ActionAndResponseOpCodes.cpp ../../ActionAndResponseOpCodes.h
+		$(CC) $(PREPROCESSORFLAGS) $(COMPILERFLAGS) $(DEFINE_SIMULATION) -c ../../ActionAndResponseOpCodes.cpp
 
-Scheduler.o: ../../Scheduler.c ../../Scheduler.h
-		$(CC) $(PREPROCESSORFLAGS) $(COMPILERFLAGS) $(DEFINE_SIMULATION) -c ../../Scheduler.c
+Scheduler.o: ../../Scheduler.cpp ../../Scheduler.h
+		$(CC) $(PREPROCESSORFLAGS) $(COMPILERFLAGS) $(DEFINE_SIMULATION) -c ../../Scheduler.cpp
 
-Simulation_HeepComms.o: ../../Simulation_HeepComms.c ../../Simulation_HeepComms.h
-		$(CC) $(PREPROCESSORFLAGS) $(COMPILERFLAGS) $(DEFINE_SIMULATION) -c ../../Simulation_HeepComms.c
+Simulation_HeepComms.o: ../../Simulation_HeepComms.cpp ../../Simulation_HeepComms.h
+		$(CC) $(PREPROCESSORFLAGS) $(COMPILERFLAGS) $(DEFINE_SIMULATION) -c ../../Simulation_HeepComms.cpp
 
-Simulation_NonVolatileMemory.o: ../../Simulation_NonVolatileMemory.c ../../Simulation_NonVolatileMemory.h
-		$(CC) $(PREPROCESSORFLAGS) $(COMPILERFLAGS) $(DEFINE_SIMULATION) -c ../../Simulation_NonVolatileMemory.c
+Simulation_NonVolatileMemory.o: ../../Simulation_NonVolatileMemory.cpp ../../Simulation_NonVolatileMemory.h
+		$(CC) $(PREPROCESSORFLAGS) $(COMPILERFLAGS) $(DEFINE_SIMULATION) -c ../../Simulation_NonVolatileMemory.cpp
 
-Simulation_Timer.o: ../../Simulation_Timer.c ../../Simulation_Timer.h
-		$(CC) $(PREPROCESSORFLAGS) $(COMPILERFLAGS) $(DEFINE_SIMULATION) -c ../../Simulation_Timer.c
+Simulation_Timer.o: ../../Simulation_Timer.cpp ../../Simulation_Timer.h
+		$(CC) $(PREPROCESSORFLAGS) $(COMPILERFLAGS) $(DEFINE_SIMULATION) -c ../../Simulation_Timer.cpp
 
 libHeep.a: Device.o MemoryUtilities.o DeviceMemory.o Heep_API.o ActionAndResponseOpCodes.o Scheduler.o#let's link library files into a static library
 		$(AR) rcs libHeep.a Device.o MemoryUtilities.o DeviceMemory.o Heep_API.o ActionAndResponseOpCodes.o Scheduler.o
