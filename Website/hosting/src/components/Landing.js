@@ -13,8 +13,6 @@ import { banners } from '../assets/remote/Banners'
 
 
 var mapStateToProps = (state) => ({
-  products: state.featured,
-  allProducts: state.shopify,
   collections: state.collections
 });
 
@@ -54,13 +52,21 @@ class Landing extends React.Component {
   };
 
   featuredItems() {
-    return (
-      <div>
-      {Object.keys(this.props.products).map((key) => (
-        <FeaturedItems key={key} productID={key}/>))
+    if (typeof this.props.collections['featuredItems'] !== 'undefined') {
+      return (
+        <Grid container justify='center' spacing={2}>
+          {Object.keys(this.props.collections['featuredItems'].products).map((key, index) => {
+            if (key != 'type') {
+              return (
+                <Grid item xs={2.5}>
+                  <FeaturedItems key={key} productIndex={index}/>
+                </Grid>
+              )
+            }
+          })}
+        </Grid>
+      )
     }
-
-  </div>)
   };
 
   render() {
@@ -69,10 +75,7 @@ class Landing extends React.Component {
       <div>
         {this.topBanner()}
         {this.bedroomSVG()}
-        {Object.keys(this.props.collections).map((thisCollection)=> {
-          console.log(thisCollection)
-        })}
-        {console.log(this.props.collections)}
+        {this.featuredItems()}
       </div>
       );
   }

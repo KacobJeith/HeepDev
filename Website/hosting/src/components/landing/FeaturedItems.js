@@ -2,14 +2,15 @@ import React from 'react';
 
 import { bindActionCreators } from 'redux'
 import { connect }            from 'react-redux'
-import { withRouter }         from 'react-router-dom'
+import { withRouter, Link }         from 'react-router-dom'
 
 import * as Actions         from '../../redux/actions'
 import { Typography, Grid, Paper } from 'material-ui';
+import { withStyles } from 'material-ui/styles';
 
 var mapStateToProps = (state, ownProps) => ({
-  product: state.shopify[ownProps.productID],
-  productID: ownProps.productID
+  product: state.collections['featuredItems'].products[ownProps.productIndex],
+  products: state.collections
 });
 
 const styles = theme => ({
@@ -24,7 +25,7 @@ class FeaturedItems extends React.Component {
 
   productTitle() {
     return(
-        <Typography variant='title'>
+        <Typography variant='title' align='center'>
         {this.props.product.title}
         </Typography>
     );
@@ -32,6 +33,11 @@ class FeaturedItems extends React.Component {
 
   productImage() {
     const inputs = {
+      imageContainer: {
+        style: {
+          textAlign: 'center'
+        }
+      },
       image: {
         src: this.props.product.images[0].src,
         style: {
@@ -42,13 +48,15 @@ class FeaturedItems extends React.Component {
       },
     };
     return(
-      <img {...inputs.image}/>
+      <div {...inputs.imageContainer}>
+        <img {...inputs.image}/>
+      </div>
     )
   };
 
   productPrice() {
     return (
-      <Typography variant="subheading" gutterBottom paragraph wrap>
+      <Typography variant="subheading" align='center' gutterBottom paragraph wrap>
         {"$" + this.props.product.variants[0].price}
       </Typography>
     )
@@ -57,10 +65,11 @@ class FeaturedItems extends React.Component {
   render() {
 
     const { classes } = this.props;
+    console.log(this.props.products)
 
     return(
-      <Paper className={classes.root} elevation={3}>
-          <Link to={'/product/' + this.props.productID} style={{textDecoration: 'none'}}>
+      <Paper className={classes.root} elevation={1}>
+          <Link to={'/product/' + this.props.product.variants[0].id} style={{textDecoration: 'none'}}>
             {this.productTitle()}
             {this.productImage()}
             {this.productPrice()}
@@ -74,4 +83,4 @@ var mapDispatchToProps = (dispatch) => {
   return bindActionCreators(Actions, dispatch)
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(FeaturedItems))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(FeaturedItems)))

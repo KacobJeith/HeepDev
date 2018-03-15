@@ -9,16 +9,13 @@ var client = ShopifyBuy.buildClient({
 
 export const InitializeShopify = () => {
 
-   client.product.fetchAll().then((products) => {
+  client.product.fetchAll().then((products) => {
     AddProductsToRedux(products);
-
-    client.collection.fetchAllWithProducts().then((collections) => {
-      AddCollectionsToRedux(collections);
-    });
-
   });
 
-
+  client.collection.fetchAllWithProducts().then((collections) => {
+    AddCollectionsToRedux(collections);
+  });
 }
 
 const AddProductsToRedux = (products) => {
