@@ -6,10 +6,6 @@ uint8_t mac[6] = {0x61,0x4f,0xe,0x6c,0x53,0x45};
 
 using namespace std;
 
-Control theControl1;
-char controlName1 [] = "An Output";
-char deviceName  [] = "OS Code";
-
 int main(void)
 {
 	cout << "Start Heep" << endl;
