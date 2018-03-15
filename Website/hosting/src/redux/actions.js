@@ -27,11 +27,6 @@ export const populateCollections = (collections) => ({
 	collections
 })
 
-export const populateFeatured = (featured) => ({
-  type: 'POPULATE_FEATURED',
-  featured
-})
-
 export const logout = () => ({
 	type: 'LOGOUT'
 })

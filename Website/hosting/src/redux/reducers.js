@@ -34,17 +34,6 @@ export default function(state = initialState, action) {
 
       return Immutable.Map(state).set('collections', titleCollections).toJS()
 
-    case 'POPULATE_FEATURED' :
-
-      let featuredCollection = Immutable.Map(state.featured).toJS();
-        for (let i = 0; i < action.featured.length; i++){
-          featuredCollection[action.featured[i].id] = action.featured[i];
-        }
-
-      //return Immutable.Map(state).set('featured', action.featured).toJS();
-      return Immutable.Map(state).set('featured', featuredCollection).toJS();
-
-
     case 'CREATE_CHECKOUT' :
 
       database.saveCheckoutID(action.checkoutID);
