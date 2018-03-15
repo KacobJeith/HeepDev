@@ -70,4 +70,6 @@ var loadDevicesFromServer = (url) => {
     });
 }
 
-loadDevicesFromServer(window.location.origin.concat('/api/findDevices'));
+var timeoutRef = setInterval(() => loadDevicesFromServer(window.location.origin.concat('/api/findDevices')), 1000)
+
+setTimeout(() => clearTimeout(timeoutRef), 3000);
