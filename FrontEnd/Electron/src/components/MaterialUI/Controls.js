@@ -44,10 +44,11 @@ class Control extends React.Component {
 			vertexKnob: {
 				style: {
 					width: 10,
-					top: 0,
+					top: 5,
 					height: 20,
-					display: 'inline-block',
-					marginLeft: this.direction == 0 ? -11 : 21,
+					position:'absolute',
+					right: this.direction == 0 ? null : -12,
+					left: this.direction == 0 ? -11 : null,
 				}
 			},
 			circleContainer: {
@@ -81,11 +82,11 @@ class Control extends React.Component {
 		const inputs = {
 			all: {
 				style: {
-					width: 79,
 					top: 0,
 					height: 55,
 					position: 'relative',
-					display: 'inline-flex'
+					display: 'inline-flex',
+					width: '100%'
 				}
 			},
 			background:{
