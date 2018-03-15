@@ -50,7 +50,7 @@ class Device extends React.Component {
 			},
 			width: '100%',
 	        type:"image/svg+xml",
-	        data: "./dist/assets/svg/" + this.props.device.iconName + ".svg"
+	        data: "/dist/assets/svg/" + this.props.device.iconName + ".svg"
 		    }
 
 		return (
@@ -91,7 +91,7 @@ class Device extends React.Component {
 		          maxWidth: '100%'
 		        },
 		        type:"image/svg+xml",
-		        data: "/src/assets/svg/" + this.props.device.iconName + ".svg"
+		        data: "/dist/assets/svg/" + this.props.device.iconName + ".svg"
 		    }
 		}
 			

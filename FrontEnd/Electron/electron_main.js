@@ -33,7 +33,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.get('/api/findDevices', function(req, res) {
-  let simulation = true;
+  let simulation = false;
   
   if (simulation) {
     res.json(simulationDevice.simulationDevice);
