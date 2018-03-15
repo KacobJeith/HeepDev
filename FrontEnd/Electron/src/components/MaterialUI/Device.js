@@ -104,7 +104,7 @@ class Device extends React.Component {
 						</Grid>
 
 						<Grid item style={{paddingRight:0, paddingLeft:0 }}>
-							<Grid container direction='row' justify='space-around'  spacing={0} >
+							<Grid container direction='row' justify='space-around' alignItems='center' spacing={0} >
 								<Grid item xs={3} style={{margin:0}}>
 									{this.drawControls(this.props.controlInputs)}
 								</Grid>

@@ -300,6 +300,8 @@ var SetIconFromID = (heepChunk) => {
   var deviceName = masterState.devices[heepChunk.deviceID].deviceName;
   iconUtils.SetDeviceIconFromString(heepChunk.deviceID, deviceName, heepChunk.iconName);
   masterState.icons = iconUtils.GetIconContent()
+
+  masterState.devices[heepChunk.deviceID].iconName = heepChunk.iconName;
 }
 
 var SetCustomIcon = (heepChunk) => {
