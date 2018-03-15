@@ -17,7 +17,12 @@ const styles = theme => ({
 var colorDefault = '#FFF';
 var colorDuration = 1;
 
+//var tlVertex = new TimelineMax();
+
 var tlShake = new TimelineMax({repeat:-1});
+var tlRemote = new TimelineMax();
+var tlPig = new TimelineMax();
+var tlDiary = new TimelineMax();
 
 class BedroomSVG extends React.Component{
 
@@ -70,70 +75,28 @@ class BedroomSVG extends React.Component{
     var buttonFlower = document.getElementById('buttonFlower');
 
     var remote = document.getElementById('remote');
-    var remoteBottom = document.getElementById('remoteBottom');
-    var remoteBody = document.getElementById('remoteBody');
-    var remoteButtons = document.getElementById('remoteButtons');
-    var remoteAntennaTop = document.getElementById('remoteAntennaTop');
-    var remoteStickBottoms = document.getElementById('remoteStickBottoms');
-    var remoteStickTops = document.getElementById('remoteStickTops');
 
     var pig = document.getElementById('pig');
-    var pigBodyElements = document.getElementById('pigBodyElements');
-    var pigSnoutFront = document.getElementById('pigSnoutFront');
-    var pigBackElements = document.getElementById('pigBackElements');
-    var pigEarInner = document.getElementById('pigEarInner');
-    var pigNostrils = document.getElementById('pigNostrils');
-    var pigEyes = document.getElementById('pigEyes');
-    var pigCoinSlot = document.getElementById('pigCoinSlot');
 
     var diary = document.getElementById('diary')
-    var diaryBottom = document.getElementById('diaryBottom');
-    var diaryPages = document.getElementById('diaryPages');
-    var diaryCover = document.getElementById('diaryCover');
-    var diarySpine = document.getElementById('diarySpine');
-    var diaryColor = document.getElementById('diaryColor');
+    var diaryOpen = document.getElementById('diaryOpen');
 
     var sleep = document.getElementById('sleep');
-    var sleepMount = document.getElementById('sleepMount');
-    var sleepButton = document.getElementById('sleepButton');
 
     var dresser = document.getElementById('dresser');
-    var dresserFrame = document.getElementById('dresserFrame');
     var dresserDrawers = document.getElementById('dresserDrawers');
-    var dresserKnobs = document.getElementById('dresserKnobs');
 
     var cactus = document.getElementById('cactus');
-    var cactusPotBody = document.getElementById('cactusPotBody');
-    var cactusPotLip = document.getElementById('cactusPotLip');
-    var cactusPotTop = document.getElementById('cactusPotTop');
-    var cactusBody = document.getElementById('cactusBody');
 
     var flowers = document.getElementById('flowers');
-    var flowerPotBottom = document.getElementById('flowerPotBottom');
-    var flowerPotLip = document.getElementById('flowerPotLip');
-    var flowerPotTop = document.getElementById('flowerPotTop');
-    var leafBodyRight = document.getElementById('leafBodyRight');
-    var leafBodyCenter = document.getElementById('leafBodyCenter');
-    var leafBodyLeft = document.getElementById('leafBodyLeft');
-    var flowerPetals = document.getElementById('flowerPetals');
-    var flowerStamens = document.getElementById('flowerStamens');
 
     var car = document.getElementById('car');
-    var carLights = document.getElementById('carLights');
-    var carBody = document.getElementById('carBody');
-    var carTires = document.getElementById('carTires');
-    var carHubs = document.getElementById('carHubs');
-    var carHandle = document.getElementById('carHandle');
-    var carWindows = document.getElementById('carWindows');
-    var carAntennaTop = document.getElementById('carAntennaTop');
-    var carAnimation = document.getElementById('Animation');
+    var carAnimation = document.getElementById('carAnimation');
     var carSmoke1 = document.getElementById('carSmoke1');
     var carSmoke2 = document.getElementById('carSmoke2');
     var carSmoke3 = document.getElementById('carSmoke3');
-    var carShadow = document.getElementById('carShadow');
 
     var solarSystem = document.getElementById('solarSystem');
-    var colorPlanets = document.getElementById('colorPlanets');
 
     var lampBottom = document.getElementById('lampBottom');
     var lampShade = document.getElementById('lampShade');
@@ -141,11 +104,17 @@ class BedroomSVG extends React.Component{
     var lampLight = document.getElementById('lampLight');
 
     var clock = document.getElementById('clock');
-    var clockBody = document.getElementById('clockBody');
-    var clockFace = document.getElementById('clockFace');
     var clockBellLeft = document.getElementById('clockBellLeft');
     var clockBellRight = document.getElementById('clockBellRight');
-    var clockLegs = document.getElementById('clockLegs');
+
+    var vertexRemoteCar = document.getElementById('vertexRemoteCar');
+    var vertexPigLamp = document.getElementById('vertexPigLamp');
+    var vertexPigClock = document.getElementById('vertexPigClock');
+    var vertexPigPlanets = document.getElementById('vertexPigPlanets');
+    var vertexDiaryLamp = document.getElementById('vertexDiaryLamp')
+    var vertexDiaryClock = document.getElementById('vertexDiaryClock')
+    var vertexDiaryPlanets = document.getElementById('vertexDiaryPlanets')
+
   };
 
     addButtonListeners() {
@@ -209,174 +178,179 @@ class BedroomSVG extends React.Component{
     tlShake.clear();
   };
 
+  drawLineTween(svg) {
+    var pathObject = {length:0, pathLength: svg.getTotalLength()};
+    TweenLite.to(svg, 0.1, {stroke: "#000"})
+    var tween = TweenLite.to(pathObject, 2, {
+      length:pathObject.pathLength,
+      onUpdate:this.drawLine,
+      onUpdateParams:[pathObject, svg],
+      immediateRender:true
+    });
+    return tween;
+  }
+
+  drawLine(obj, svg) {
+    svg.style.strokeDasharray = [obj.length, obj.pathLength].join(' ');
+  };
+
+  hideLine(svg) {
+    var tween = TweenLite.to(svg, 0.1, {stroke: 'none'});
+    return tween;
+  }
+
+  killLine(svg) {
+    TweenLite.to(svg, 0.1, {stroke: 'none'});
+  }
+
   hoverRemote() {
-    this.colorRemote();
     this.hoverShake(remote);
+    this.vertexRemote();
   };
 
   leaveRemote() {
-    this.uncolorRemote();
-    tlShake.clear();
+    this.leaveShake();
   };
 
   clickRemote() {
     this.removeButtonListeners();
-    this.colorRemote();
     tlShake.clear();
+    this.killLine(vertexRemoteCar);
 
     let tlCar = new TimelineMax({onComplete: proxyFunction.bind(this)});
     function proxyFunction(): void {
       this.addButtonListeners();
-      this.uncolorRemote();
     };
+
     TweenLite.to(carAnimation, colorDuration, {display: 'block'});
-    TweenLite.to(carLights, colorDuration, {fill: '#F2B666'});
-    TweenLite.to(carBody, colorDuration, {fill: '#C1272D'});
-    TweenLite.to(carTires, colorDuration, {fill: '#333333'});
-    TweenLite.to(carHubs, colorDuration, {fill: '#E6E6E6'});
-    TweenLite.to(carHandle, colorDuration, {fill: '#B3B3B3'});
-    TweenLite.to(carWindows, colorDuration, {fill: '#7FCAE5'});
-    TweenLite.to(carAntennaTop, colorDuration, {fill: '#37474F'});
-    tlCar.fromTo([carSmoke1, carSmoke2, carSmoke3], 7.5, {y:-0.5}, {y:0.5, ease:RoughEase.ease.config({strength:20, points:20, template:Linear.easeNone, randomize:false}) , clearProps:"x"});
-    tlCar.to(car, 1.2, {x: -70, ease: Power2.easeout}, 0.7);
-    tlCar.to(car, 1, {x: 40, y: 160, ease: Power2.easeout}, 2);
-    tlCar.to(car, 0.6, {x: 200, ease: Power2.easeout}, 3.1);
-    tlCar.to(car, 0.6, {y: 80, ease: Power2.easeout}, 3.8);
-    tlCar.to(car, 0.7, {x: -30, y: -10, ease: Power2.easeout}, 4.5);
-    tlCar.to(car, 0.8, {y: 0, ease: Power2.easeout}, 5.3);
-    tlCar.to(car, 0.8, {x: 0, ease: Power2.easeout}, 6.2);
+    tlCar.fromTo([carSmoke1, carSmoke2, carSmoke3], 7.5, {y:-0.5}, {
+      y:0.5,
+      ease:RoughEase.ease.config({
+        strength:20,
+        points:20,
+        template:Linear.easeNone,
+        randomize:false
+      }) , clearProps:"x"});
+    tlCar.to(car, 1.2, {x: -70, ease: Sine.easeInOut}, 0.7);
+    tlCar.to(car, 1, {x: 40, y: 160, ease: Sine.easeInOut}, 2);
+    tlCar.to(car, 0.6, {x: 200, ease: Sine.easeInOut}, 3.1);
+    tlCar.to(car, 0.6, {y: 80, ease: Sine.easeInOut}, 3.8);
+    tlCar.to(car, 0.7, {x: -30, y: -10, ease: Sine.easeInOut}, 4.5);
+    tlCar.to(car, 0.8, {y: 0, ease: Sine.easeInOut}, 5.3);
+    tlCar.to(car, 0.8, {x: 0, ease: Sine.easeInOut}, 6.2);
     tlCar.to(carAnimation, 0.1, {display: 'none'});
-    tlCar.to([carLights, carBody, carTires, carHubs, carHandle, carWindows, carAntennaTop], colorDuration, {fill: colorDefault, delay: 0.2});
     console.log("click")
   };
 
-  colorRemote() {
-    TweenLite.to(remoteBottom, colorDuration, {fill: '#333333'});
-    TweenLite.to(remoteBody, colorDuration, {fill: '#666666'});
-    TweenLite.to(remoteButtons, colorDuration, {fill: '#CCCCCC'});
-    TweenLite.to(remoteAntennaTop, colorDuration, {fill: '#000'});
-    TweenLite.to(remoteStickBottoms, colorDuration, {fill: '#999999'});
-    TweenLite.to(remoteStickTops, colorDuration, {fill: '#666666'});
-  };
-
-  uncolorRemote() {
-    TweenLite.to(remoteBottom, colorDuration, {fill: colorDefault});
-    TweenLite.to(remoteBody, colorDuration, {fill: colorDefault});
-    TweenLite.to(remoteButtons, colorDuration, {fill: colorDefault});
-    TweenLite.to(remoteAntennaTop, colorDuration, {fill: colorDefault});
-    TweenLite.to(remoteStickBottoms, colorDuration, {fill: colorDefault});
-    TweenLite.to(remoteStickTops, colorDuration, {fill: colorDefault});
-  };
+  vertexRemote() {
+    //var tlRemote = new TimelineMax();
+    tlRemote.add(this.drawLineTween(vertexRemoteCar));
+    tlRemote.add(this.hideLine(vertexRemoteCar));
+  }
 
   hoverPig() {
-    this.colorPig();
     this.hoverShake(pig);
+    this.vertexPig();
   };
 
   leavePig() {
-    this.uncolorPig();
     this.leaveShake();
   };
 
   clickPig() {
     this.removeButtonListeners();
-    this.colorPig();
     tlShake.clear();
+    this.killLine([vertexPigPlanets, vertexPigLamp, vertexPigClock]);
     this.clickTheft();
 
     let tlPig = new TimelineMax({onComplete: proxyFunction.bind(this)});
     function proxyFunction(): void {
       this.addButtonListeners();
-      this.uncolorPig();
     };
 
-    tlPig.to(pig, 2.3, {scaleX: 1.8, scaleY: 1.8, x:150, y: 325, yoyo: true, repeat: 1, ease: Sine.easeInOut}, 0.2)
+    tlPig.to(pig, 2.3, {
+      scaleX: 1.8,
+      scaleY: 1.8,
+      x: 150,
+      y: 325,
+      yoyo: true,
+      repeat: 1,
+      ease: Sine.easeInOut
+    }, 0.2);
   };
 
-  colorPig() {
-    TweenLite.to(pigBodyElements, colorDuration, {fill: '#EDC3D9'});
-    TweenLite.to(pigSnoutFront, colorDuration, {fill: '#FCEDF7'});
-    TweenLite.to(pigBackElements, colorDuration, {fill: '#B27D97'});
-    TweenLite.to(pigEarInner, colorDuration, {fill: '#FCEDF7'});
-    TweenLite.to(pigNostrils, colorDuration, {fill: '#37474F'});
-    TweenLite.to(pigEyes, colorDuration, {fill: '#37474F'});
-    TweenLite.to(pigCoinSlot, colorDuration, {fill: '#37474F'});
-  };
-
-  uncolorPig() {
-    TweenLite.to(pigBodyElements, colorDuration, {fill: colorDefault});
-    TweenLite.to(pigSnoutFront, colorDuration, {fill: colorDefault});
-    TweenLite.to(pigBackElements, colorDuration, {fill: colorDefault});
-    TweenLite.to(pigEarInner, colorDuration, {fill: colorDefault});
-    TweenLite.to(pigNostrils, colorDuration, {fill: colorDefault});
-    TweenLite.to(pigEyes, colorDuration, {fill: colorDefault});
-    TweenLite.to(pigCoinSlot, colorDuration, {fill: colorDefault});
-  };
+  vertexPig() {
+    //var tlPig = new TimelineMax();
+    tlPig.add([
+      this.drawLineTween(vertexPigPlanets),
+      this.drawLineTween(vertexPigLamp),
+      this.drawLineTween(vertexPigClock)
+    ]);
+    tlPig.add(this.hideLine([
+      vertexPigPlanets,
+      vertexPigLamp,
+      vertexPigClock]));
+  }
 
   hoverDiary() {
-    this.diaryColor();
     this.hoverShake(diary);
+    this.vertexDiary();
   };
 
   leaveDiary() {
-    this.undiaryColor();
     this.leaveShake();
-  };
-
-  diaryColor() {
-    TweenLite.to(diaryBottom, colorDuration, {fill: '#3F89B2'});
-    TweenLite.to(diaryPages, colorDuration, {fill: '#FFF'});
-    TweenLite.to(diaryCover, colorDuration, {fill: '#8AD4F9'});
-    TweenLite.to(diarySpine, colorDuration, {fill: '#3F89B2'});
-  };
-
-  undiaryColor() {
-    TweenLite.to(diaryBottom, colorDuration, {fill: colorDefault});
-    TweenLite.to(diaryPages, colorDuration, {fill: colorDefault});
-    TweenLite.to(diaryCover, colorDuration, {fill: colorDefault});
-    TweenLite.to(diarySpine, colorDuration, {fill: colorDefault});
   };
 
   clickDiary() {
     this.removeButtonListeners();
-    this.diaryColor();
     tlShake.clear();
+    this.killLine([vertexDiaryPlanets, vertexDiaryLamp, vertexDiaryClock]);
     this.clickTheft();
 
     let tlDiary = new TimelineMax({onComplete: proxyFunction.bind(this)});
     function proxyFunction(): void {
       this.addButtonListeners();
-      this.undiaryColor();
     };
 
-    tlDiary.to(diary, 0.1, {display: 'none'}, 0.2)
-    tlDiary.to(diaryColor, 0.1, {display: 'block'}, 0.2)
-    tlDiary.to(diaryColor, 2.2, {scaleX: 1.4, scaleY: 1.4, x:50, y: 50, yoyo: true, repeat: 1, ease: Sine.easeInOut}, 0.3)
-    tlDiary.to(diaryColor, 0.1, {display: 'none'}, 4.8)
-    tlDiary.to(diary, 0.1, {display: 'block'}, 4.8)
+    tlDiary.to(diary, 0.1, {display: 'none'}, 0.2);
+    tlDiary.to(diaryOpen, 0.1, {display: 'block'}, 0.2);
+    tlDiary.to(diaryOpen, 2.2, {
+      scaleX: 1.4,
+      scaleY: 1.4,
+      x:50,
+      y: 50,
+      yoyo: true,
+      repeat: 1,
+      ease: Sine.easeInOut
+    }, 0.3);
+    tlDiary.to(diaryOpen, 0.1, {display: 'none'}, 4.8);
+    tlDiary.to(diary, 0.1, {display: 'block'}, 4.8);
+  };
 
-    //tlPig.to(pig, 2.3, {scaleX: 1.8, scaleY: 1.8, x:150, y: 325, yoyo: true, repeat: 1, ease: Sine.easeInOut}, 0.2)
+  vertexDiary() {
+    //var tlDiary = new TimelineMax();
+    tlDiary.add([
+      this.drawLineTween(vertexDiaryPlanets),
+      this.drawLineTween(vertexDiaryLamp),
+      this.drawLineTween(vertexDiaryClock)
+    ]);
+    tlDiary.add(this.hideLine([
+      vertexDiaryPlanets,
+      vertexDiaryLamp,
+      vertexDiaryClock
+    ]));
   };
 
   clickTheft() {
     const tlTheft = new TimelineMax();
 
     const startTime = 0.2;
-    //color planets
-    TweenLite.to(colorPlanets, colorDuration, {display: 'block'});
-    //color lamp
-    TweenLite.to(lampBottom, colorDuration, {fill: '#A7CAD3'});
+
     TweenLite.to(lampShade, colorDuration, {fill: '#FFF3C0'});
     TweenLite.to(lampTop, colorDuration, {fill: '#FCEA6B'});
     TweenLite.to(lampLight, colorDuration, {display: 'block'});
 
-    //color alarm clock
-    TweenLite.to(clockBody, colorDuration, {fill: '#148408'});
-    TweenLite.to(clockFace, colorDuration, {fill: '#FFF'});
-    TweenLite.to(clockBellLeft, colorDuration, {fill: '#D88D2B'});
-    TweenLite.to(clockBellRight, colorDuration, {fill: '#D88D2B'});
-    TweenLite.to(clockLegs, colorDuration, {fill: '#808080'});
-
+    // flash lights
     tlTheft.fromTo(lampTop, 0.2, {fill: '#BC0D0D'}, {fill: '#FCEA6B', repeat: 25}, startTime)
     tlTheft.fromTo(lampShade, 0.2, {fill: '#E26F6F'}, {fill: '#FFF3C0', repeat: 25}, startTime)
     tlTheft.fromTo(lampLight, 0.2, {fill: '#C98181'}, {fill: '#EAE1B2', repeat: 25}, startTime)
@@ -389,7 +363,12 @@ class BedroomSVG extends React.Component{
       ease: Sine.easeInOut
     }, startTime);
 
-    tlTheft.fromTo(clockBellLeft, 0.2, {rotation: -4, transformOrigin: "50%", y: 3}, {
+    tlTheft.fromTo(clockBellLeft, 0.2, {
+      rotation: -4,
+      transformOrigin: "50%",
+      y: 3
+    },
+    {
       rotation: 4,
       transformOrigin: "50%",
       y: -3,
@@ -398,7 +377,12 @@ class BedroomSVG extends React.Component{
       ease: Sine.easeInOut
     }, startTime);
 
-    tlTheft.fromTo(clockBellRight, 0.2, {rotation: 4, transformOrigin: "50%", y: -3}, {
+    tlTheft.fromTo(clockBellRight, 0.2, {
+      rotation: 4,
+      transformOrigin: "50%",
+      y: -3
+    },
+    {
       rotation: -4,
       transformOrigin: "50%",
       y: 3,
@@ -407,114 +391,54 @@ class BedroomSVG extends React.Component{
       ease: Sine.easeInOut
     }, startTime);
 
-    tlTheft.fromTo(solarSystem, 0.5, {rotation: 10, transformOrigin: "50%"}, {
+    tlTheft.fromTo(solarSystem, 0.5, {
+      rotation: 10,
+      transformOrigin: "50%"
+    },
+    {
       rotation: -10,
       yoyo: true,
       repeat: 10,
       ease: Sine.easeInOut
     }, startTime)
 
-    tlTheft.to(solarSystem, 0.25, {rotation: 0, transformOrigin: "50%"}, startTime+5)
-    tlTheft.to([colorPlanets, lampLight], 0.1, {display: 'none'}, startTime+5.3)
-    tlTheft.to([clockBody, clockFace, clockBellLeft, clockBellRight, clockLegs, lampBottom, lampShade, lampTop], colorDuration, {fill: colorDefault, delay: 0.2});
+    tlTheft.to(solarSystem, 0.25, {rotation: 0, transformOrigin: "50%"}, startTime+5);
+    tlTheft.to(clock, 0.1, {x: 0, y: 0}, startTime+5.3);
+    tlTheft.to(lampLight, 0.1, {display: 'none'}, startTime+5.3);
+    tlTheft.to(lampTop, colorDuration, {fill: '#848383'}, startTime+5.3);
+    tlTheft.to(lampShade, colorDuration, {fill: '#ADADAD'}, startTime+5.3);
   }
 
   hoverSleep() {
-    this.colorSleep()
     this.hoverShake(sleep);
   };
 
   leaveSleep() {
-    this.uncolorSleep();
     this.leaveShake();
   };
 
-  colorSleep() {
-    TweenLite.to(sleepMount, colorDuration, {fill: '#C6C6C6'});
-    TweenLite.to(sleepButton, colorDuration, {fill: '#AA1721'});
-  };
-
-  uncolorSleep() {
-    TweenLite.to(sleepMount, colorDuration, {fill: colorDefault});
-    TweenLite.to(sleepButton, colorDuration, {fill: colorDefault});
-  };
-
   hoverDresser() {
-    this.colorDresser();
     this.hoverShake(dresser);
   };
 
   leaveDresser() {
-    this.uncolorDresser();
     this.leaveShake();
   };
 
-  colorDresser() {
-    TweenLite.to(dresserFrame, colorDuration, {fill: '#896003'});
-    TweenLite.to(dresserDrawers, colorDuration, {fill: '#A87420'});
-    TweenLite.to(dresserKnobs, colorDuration, {fill: '#896003'});
-  };
-
-  uncolorDresser() {
-    TweenLite.to(dresserFrame, colorDuration, {fill: colorDefault});
-    TweenLite.to(dresserDrawers, colorDuration, {fill: colorDefault});
-    TweenLite.to(dresserKnobs, colorDuration, {fill: colorDefault});
-  };
-
   hoverCactus() {
-    this.colorCactus();
     this.hoverShake(cactus);
   };
 
   leaveCactus() {
-    this.uncolorCactus();
     this.leaveShake();
   };
 
-  colorCactus() {
-    TweenLite.to(cactusPotBody, colorDuration, {fill: '#A55447'});
-    TweenLite.to(cactusPotLip, colorDuration, {fill: '#965040'});
-    TweenLite.to(cactusPotTop, colorDuration, {fill: '#603813'});
-    TweenLite.to(cactusBody, colorDuration, {fill: '#8cc63f'});
-  };
-
-  uncolorCactus() {
-    TweenLite.to(cactusPotBody, colorDuration, {fill: colorDefault});
-    TweenLite.to(cactusPotLip, colorDuration, {fill: colorDefault});
-    TweenLite.to(cactusPotTop, colorDuration, {fill: colorDefault});
-    TweenLite.to(cactusBody, colorDuration, {fill: colorDefault});
-  };
-
   hoverFlower() {
-    this.colorFlower();
     this.hoverShake(flowers);
   };
 
   leaveFlower() {
-    this.uncolorFlower();
     this.leaveShake();
-  };
-
-  colorFlower() {
-    TweenLite.to(flowerPotBottom, colorDuration, {fill: '#A55447'});
-    TweenLite.to(flowerPotLip, colorDuration, {fill: '#965040'});
-    TweenLite.to(flowerPotTop, colorDuration, {fill: '#603813'});
-    TweenLite.to(leafBodyRight, colorDuration, {fill: '#39B54A'});
-    TweenLite.to(leafBodyCenter, colorDuration, {fill: '#006837'});
-    TweenLite.to(leafBodyLeft, colorDuration, {fill: '#009245'});
-    TweenLite.to(flowerPetals, colorDuration, {fill: '#F9D7E4'});
-    TweenLite.to(flowerStamens, colorDuration, {fill: '#FBB03B'});
-  };
-
-  uncolorFlower() {
-    TweenLite.to(flowerPotBottom, colorDuration, {fill: colorDefault});
-    TweenLite.to(flowerPotLip, colorDuration, {fill: colorDefault});
-    TweenLite.to(flowerPotTop, colorDuration, {fill: colorDefault});
-    TweenLite.to(leafBodyRight, colorDuration, {fill: colorDefault});
-    TweenLite.to(leafBodyCenter, colorDuration, {fill: colorDefault});
-    TweenLite.to(leafBodyLeft, colorDuration, {fill: colorDefault});
-    TweenLite.to(flowerPetals, colorDuration, {fill: colorDefault});
-    TweenLite.to(flowerStamens, colorDuration, {fill: colorDefault});
   };
 
   render() {
