@@ -3,6 +3,7 @@
 #include "DeviceMemory.h"
 #include "Device.h"
 #include "Scheduler.h"
+#include <string.h>
 
 unsigned char clearMemory = 1;
 void SetupHeepDevice(char* deviceName, char deviceIcon)
