@@ -23,81 +23,97 @@ class About extends React.Component {
     }
 
     return(
-      SectionCard(inputs,
-        'Connect your world with Heep'
-      )
+      SectionCard(inputs, '')
     )
+  };
+
+  aboutUs() {
+    const inputs = {
+      paddingTop: 25,
+      paddingBottom: 25,
+    };
+
+    return (
+      SectionCard(inputs,
+        <div>
+          <Typography variant='headline' align='center'>
+            Connect Your World
+          </Typography>
+          <br/>
+          <Typography variant='subheading' align='center'>
+            We built a sophisticated operating system for your smart devices. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+          </Typography>
+        </div>
+      )
+    );
   };
 
   aboutGraphics() {
     const inputs = {
-      section: {
-        paddingTop: 25,
-        paddingBottom: 25,
+      PlugAndPlay: {
+        title: 'Easy to Install',
+        imagePath: svgs.plugAndPlay,
+        desc: "Unbox, wire, and play. Automate your home or booby trap it. We can set it up for you, so you don't have to worry about code. Heep makes connecting things easy."
       },
-      aboutCards: {
-        PlugAndPlay: {
-          title: 'Easy to Install',
-          imagePath: svgs.plugAndPlay,
-          desc: "Unbox, wire, and play. Automate your home or booby trap it. We can set it up for you, so you don't have to worry about code. Heep makes connecting things easy."
-        },
-        CloudLess: {
-          title: 'Cloud Less',
-          imagePath: svgs.cloudLess,
-          desc: "Heep doesn't require an internet connection. We don't send things to the cloud, so rest assured, no one's listening in or watching you. You do you, so just relax."
-        },
-        DeviceParty: {
-          title: 'Device Party',
-          imagePath: svgs.deviceParty,
-          desc: "Connect your devices and get them to talk with you and other devices. They send and receive commands, provide data, and interact with you. Enable your environment."
-        },
+      CloudLess: {
+        title: 'Cloud Less',
+        imagePath: svgs.cloudLess,
+        desc: "Heep doesn't require an internet connection. We don't send things to the cloud, so rest assured, no one's listening in or watching you. You do you, so just relax."
+      },
+      DeviceParty: {
+        title: 'Device Party',
+        imagePath: svgs.deviceParty,
+        desc: "Connect your devices and get them to talk with you and other devices. They send and receive commands, provide data, and interact with you. Enable your environment."
       },
     };
 
     return (
       <div>
-        {SectionCard(inputs.section,
-          'We built a sophisticated operating system for your smart devices. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum'
-        )}
         <Grid container style={{maxWidth:'100%'}}
           spacing={24} justify='center'>
           <Grid item xs={6} sm={3}>
-            <AboutCard {...inputs.aboutCards.PlugAndPlay}/>
+            <AboutCard {...inputs.PlugAndPlay}/>
           </Grid>
           <Grid item xs={6} sm={3}>
-            <AboutCard {...inputs.aboutCards.CloudLess}/>
+            <AboutCard {...inputs.CloudLess}/>
           </Grid>
           <Grid item xs={6} sm={3}>
-            <AboutCard {...inputs.aboutCards.DeviceParty}/>
+            <AboutCard {...inputs.DeviceParty}/>
           </Grid>
         </Grid>
       </div>
-    )
+    );
   };
 
-  aboutHeep() {
+  ourStory() {
     const inputs = {
       paddingTop: 25,
       paddingBottom: 25,
-      backgroundColor: '#B0BEC5',
+      backgroundColor: '#B0BEC5'
     };
 
     return(
       SectionCard(inputs,
-        'Heep was founded in February 2017 with the dream of ubiquitous connectivity. We thought long and hard about what the world needs to make that happen. Thus, the Heep operating system was born. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum'
+        <div>
+          <Typography variant='headline' align='center'>
+            Our Story
+          </Typography>
+          <br/>
+          <Typography variant='subheading' align='center'>
+            Heep was founded in February 2017 with the dream of ubiquitous connectivity. We thought long and hard about what the world needs to make that happen. Thus, the Heep operating system was born. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+          </Typography>
+        </div>
       )
     )
   };
 
   teamSection() {
-
     const inputs = {
       section: {
         paddingTop: 25,
-        paddingBottom: 25,
-        backgroundColor: '#B0BEC5',
+        paddingBottom: 16,
       },
-      teamModals: {
+      teamModal: {
         james: {
           name: 'James DeVito',
           imagePath: founders.james,
@@ -105,29 +121,31 @@ class About extends React.Component {
           desc1: 'James is our hardware whisperer. Prior to Heep, he was an early employee at Adafruit, where he built hardware and engaged with the vast Adafruit community. James is also the founder of Smooth Technology, a group of designer-engineers whose art has been featured on the likes of Taylor Swift & Katy Perry and in the MoMA & Times Square.',
           desc2: 'James is the bassist of chiptune band Anamanaguchi, known for sending pizza into space. He earned a B.S. in Music Technology with a minor in Computer Science from New York University.'
         },
-      },
+      }
     };
 
     return (
       <div>
         {SectionCard(inputs.section,
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum'
+          <Typography variant='headline' align='center'>
+            Our Team
+          </Typography>
         )}
         <Grid container style={{maxWidth:'100%'}} justify='center'>
           <Grid item xs>
-            <TeamModal {...inputs.teamModals.james}/>
+            <TeamModal {...inputs.teamModal.james}/>
           </Grid>
           <Grid item xs>
-            <TeamModal {...inputs.teamModals.james}/>
+            <TeamModal {...inputs.teamModal.james}/>
           </Grid>
           <Grid item xs>
-            <TeamModal {...inputs.teamModals.james}/>
+            <TeamModal {...inputs.teamModal.james}/>
           </Grid>
           <Grid item xs>
-            <TeamModal {...inputs.teamModals.james}/>
+            <TeamModal {...inputs.teamModal.james}/>
           </Grid>
         </Grid>
-      </div>
+    </div>
     )
   };
 
@@ -135,8 +153,9 @@ class About extends React.Component {
   	return (
       <div>
         {this.topBanner()}
+        {this.aboutUs()}
         {this.aboutGraphics()}
-        {this.aboutHeep()}
+        {this.ourStory()}
         {this.teamSection()}
       </div>
     );
