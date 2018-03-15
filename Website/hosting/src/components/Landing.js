@@ -24,15 +24,13 @@ class Landing extends React.Component {
       paddingBottom: 25,
       backgroundColor: '#00adee',
       imagePath: banners.testPhoto,
-      containerHeight: 200,
+      minHeight: 200,
     };
 
     return (
-      <div>
-        {SectionCard(inputs,
-          'Heepify Your World'
-        )}
-      </div>
+      SectionCard(inputs,
+        'Heepify Your World'
+      )
     )
   };
 
@@ -60,7 +58,7 @@ class Landing extends React.Component {
           {Object.keys(this.props.collections['featuredItems'].products).map((key, index) => {
             if (key != 'type') {
               return (
-                <Grid item xs={2.5}>
+                <Grid item xs={3} key={key}>
                   <FeaturedItems key={key} productIndex={index}/>
                 </Grid>
               )
