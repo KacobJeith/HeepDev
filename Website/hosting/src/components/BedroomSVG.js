@@ -2,8 +2,9 @@ import React from 'react';
 import { svgs } from '../assets/remote/SVGs';
 import { bedroomSVG } from '../assets/BedroomString';
 import $ from 'jquery';
-import MorphSVGPlugin from './utilities/MorphSVGPlugin'
+//import * as MorphSVGPlugin from './gsap/MorphSVGPlugin'
 import { TimelineMax } from 'gsap';
+import MorphSVGPlugin from 'gsap/MorphSvgPlugin';
 import { withStyles } from 'material-ui/styles';
 import { Paper } from 'material-ui'
 
@@ -21,14 +22,13 @@ var colorDuration = 1;
 //var tlVertex = new TimelineMax();
 
 var tlShake = new TimelineMax({repeat:-1});
-var tlRemote = new TimelineMax();
-var tlPig = new TimelineMax();
-var tlDiary = new TimelineMax();
+var tlVertexRemote = new TimelineMax();
 
 class BedroomSVG extends React.Component{
 
   constructor(props) {
 		super(props);
+
     var bedroomDiv = document.createElement('div');
 		bedroomDiv.innerHTML = bedroomSVG;
     this.svg = $(bedroomDiv).find('svg')[0];
@@ -92,6 +92,7 @@ class BedroomSVG extends React.Component{
     var flowers = document.getElementById('flowers');
 
     var car = document.getElementById('car');
+    var carBodyGroup = document.getElementById('carBodyGroup');
     var carAnimation = document.getElementById('carAnimation');
     var carSmoke1 = document.getElementById('carSmoke1');
     var carSmoke2 = document.getElementById('carSmoke2');
@@ -117,6 +118,7 @@ class BedroomSVG extends React.Component{
     var vertexDiaryPlanets = document.getElementById('vertexDiaryPlanets')
 
     var cometRemote = document.getElementById('cometRemote')
+    var alignRemote = document.getElementById('alignRemote')
   };
 
     addButtonListeners() {
@@ -165,7 +167,7 @@ class BedroomSVG extends React.Component{
       buttonRemote.removeEventListener('click', this.clickRemote);
       buttonPig.removeEventListener('click', this.clickPig);
       buttonDiary.removeEventListener('click', this.clickDiary);
-    }
+    };
 
   hoverShake(e) {
     tlShake.fromTo(e, 2, {x:-1}, {x:1, ease:RoughEase.ease.config({
@@ -219,15 +221,22 @@ class BedroomSVG extends React.Component{
   };
 
   vertexRemote() {
-    var pathRemoteCar = MorphSVGPlugin.pathDataToBezier(vertexRemoteCar);
-    TweenMax.to(cometRemote, 0.1, {display:'block'})
-    TweenMax.to(cometRemote, 1, {
-      bezier: {
-        values:pathRemoteCar,
-        type: cubic
-      },
-      ease: Sine.easeInOut
-    });
+    var pathRemoteCar = MorphSVGPlugin.pathDataToBezier(vertexRemoteCar, {align: alignRemote});
+    tlVertexRemote.to(cometRemote, 0.05, {display:'block'});
+    tlVertexRemote.to(cometRemote, 0.7, {bezier: { type: "cubic", values: pathRemoteCar}, ease: Sine.easeInOut});
+    tlVertexRemote.to(cometRemote, 0.05, {display:'none'});
+    tlVertexRemote.to(cometRemote, 0.1, {x: 0, y: 0});
+    tlVertexRemote.fromTo(carBodyGroup, 0.4, {y:0}, {y:-15, ease: Sine.easeInOut, clearProps:"x", repeat: 1});
+
+  //  path.to(cometRemote, 10, {
+  //    bezier: { values: pathRemoteCar, type: 'cubic' },
+  //    ease: Sine.easeInOut
+  //  }, 1);
+
+    //TweenMax.to(cometRemote, 0.7, {bezier: { type: "cubic", values: pathRemoteCar}, ease: Sine.easeInOut})
+    //TweenMax.to(cometRemote, 0.1, {display:'none'},1)
+
+    console.log(pathRemoteCar)
 
   }
 

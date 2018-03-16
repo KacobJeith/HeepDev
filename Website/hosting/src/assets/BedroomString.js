@@ -1,7 +1,7 @@
 export const bedroomSVG = `
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="Static">
-    <path id="floor" fill="#A5CCD6" d="M1 567h1500v233H1z"/>
+    <path id="floor" fill="#A5CCD6" d="M0 567h1500v233H0z"/>
     <path id="wall" fill="#F4EFE9" d="M1 0h1499v568H1z"/>
     <g id="nightstand">
       <path opacity=".5" fill="#333333" d="M1275.177 568.801L1266.5 582H1414l-8.677-12.852"/>
@@ -367,26 +367,28 @@ export const bedroomSVG = `
         <path id="carSmoke3" opacity=".8" fill="#4F4F4F" d="M515.162 561.158c1.884-3.102 3.891-5.37 5.74-1.837 1.557-1.979 2.237-4.239 4.572-4.806.681-.282 1.362-.141 2.043 0 1.557.566.973.99 2.432-.565 1.946-1.837 4.67-2.402 6.907-1.695 1.167.283 5.059 1.413 3.697 4.382 1.556.141 2.14 0 2.821 2.402.486 1.837.778 4.099 1.07 6.077.487 4.522.195 7.913-3.405 7.207-1.557-.283-1.751-.849-2.433 1.13-.778 1.979-.778 4.382-2.529 5.23-2.043 1.13-5.351-.708-7.2-1.838-1.459-.707-2.724-2.402-3.794-1.271-.875.848-.875 2.261-2.043 2.967-.875.424-1.751.283-2.626 0-2.238-.847-3.308-2.826-4.086-5.793-1.946.564-3.113-2.12-3.405-4.664-.29-3.533.78-4.523 2.239-6.926z"/>
       </g>
       <path id="carShade" opacity=".5" fill="#333333" d="M321.375 602.587c-.44 4.398 15.625 6.636 33.625 6.852 3 0 7 .215 8 .863 6 3.661 22 6.463 38.561 7.31 3.306.18 6.634.286 9.95.321 26.534.29 52.312-3.873 59.602-9.522 0 0 2.089-1.183 4.971-2.414 2.882-1.228 6.557-2.506 9.728-2.693l6.341-.373c2.297 0 4.157-.981 4.157-1.465 0-.486-1.86-1.465-4.157-1.465H321.816c-2.296 0-4.221.979-4.221 1.465 0 .483 1.797 1.188 4.093 1.188"/>
-      <path id="carAntennaBottom" fill="#FFFFFF" stroke="#37474F" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" d="M470 550v-40 40z"/>
-      <g id="carLights" fill="#F9A93E">
-        <path id="carLightBack" d="M487 574.625c0 1.791-1.324 4.375-3.338 4.375h-4.403c-2.014 0-4.259-2.584-4.259-4.375v-5.996c0-1.792 2.245-2.629 4.259-2.629h4.403c2.014 0 3.338.837 3.338 2.629v5.996z"/>
-        <path id="carLightFront" d="M329.972 574.722c.01 1.797-1.474 4.276-3.485 4.278h-4.402c-2.015 0-4.085-2.47-4.085-4.261v-5.996c2-4.743 10-3.743 11.929-.046l.043 6.025z"/>
+      <g id="carBodyGroup">
+        <path id="carAntennaBottom" fill="#FFFFFF" stroke="#37474F" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" d="M470 550v-40 40z"/>
+        <g id="carLights" fill="#F9A93E">
+          <path id="carLightBack" d="M487 574.625c0 1.791-1.324 4.375-3.338 4.375h-4.403c-2.014 0-4.259-2.584-4.259-4.375v-5.996c0-1.792 2.245-2.629 4.259-2.629h4.403c2.014 0 3.338.837 3.338 2.629v5.996z"/>
+          <path id="carLightFront" d="M329.972 574.722c.01 1.797-1.474 4.276-3.485 4.278h-4.402c-2.015 0-4.085-2.47-4.085-4.261v-5.996c2-4.743 10-3.743 11.929-.046l.043 6.025z"/>
+        </g>
+        <path id="carBody" fill="#C62A2A" d="M321.375 579.813C320.935 559.393 337 549 355 548c3 0 7-1 8-4 6-17 22-30 38.561-33.925a50.725 50.725 0 0 1 9.951-1.5c26.533-1.344 52.311 17.982 59.601 44.211 0 0 2.089 5.489 4.971 11.196s6.557 11.632 9.728 12.501l6.341 1.737c2.297 0 4.157 2.639 4.157 4.889S494.45 588 492.153 588H321.816c-2.296 0-4.221-2.641-4.221-4.891s1.797-4.56 4.093-4.56"/>
+        <g id="carTires" fill="#37474F" stroke="#37474F" stroke-width="2" stroke-miterlimit="10">
+          <circle id="carTireRight" cx="452.965" cy="585.031" r="17.248"/>
+          <circle id="carTireLeft" cx="365.965" cy="585.031" r="17.248"/>
+        </g>
+        <g id="carHubs" fill="#E5E5E5">
+          <circle id="carHubRight" cx="452.854" cy="584.92" r="9.026"/>
+          <circle id="carHubLeft" cx="365.854" cy="584.92" r="9.026"/>
+        </g>
+        <path id="carHandle" fill="#898989" d="M403 555.963c-4 4.037-8.954 3.037-12.954.037 4-2 8.954-2 12.954-.153v.116z"/>
+        <g id="carWindows" fill="#C2E9F9">
+          <path id="carWindowRight" d="M409 548h55c-18.749-37.066-53-34.044-55-33.907v5.579c0 3.259.004 7.605.002 11.949.002 6.06.006 10.207-.002 16.379z"/>
+          <path id="carWindowLeft" d="M404 515c-17 2-32 16-36 33 12 0 23.989-.008 35.95-.034 0 0 .05-21.966.05-32.966z"/>
+        </g>
+        <circle id="carAntennaTop" fill="#37474F" stroke="#37474F" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" cx="470.408" cy="506.363" r="3.323"/>
       </g>
-      <path id="carBody" fill="#C62A2A" d="M321.375 579.813C320.935 559.393 337 549 355 548c3 0 7-1 8-4 6-17 22-30 38.561-33.925a50.725 50.725 0 0 1 9.951-1.5c26.533-1.344 52.311 17.982 59.601 44.211 0 0 2.089 5.489 4.971 11.196s6.557 11.632 9.728 12.501l6.341 1.737c2.297 0 4.157 2.639 4.157 4.889S494.45 588 492.153 588H321.816c-2.296 0-4.221-2.641-4.221-4.891s1.797-4.56 4.093-4.56"/>
-      <g id="carTires" fill="#37474F" stroke="#37474F" stroke-width="2" stroke-miterlimit="10">
-        <circle id="carTireRight" cx="452.965" cy="585.031" r="17.248"/>
-        <circle id="carTireLeft" cx="365.965" cy="585.031" r="17.248"/>
-      </g>
-      <g id="carHubs" fill="#E5E5E5">
-        <circle id="carHubRight" cx="452.854" cy="584.92" r="9.026"/>
-        <circle id="carHubLeft" cx="365.854" cy="584.92" r="9.026"/>
-      </g>
-      <path id="carHandle" fill="#898989" d="M403 555.963c-4 4.037-8.954 3.037-12.954.037 4-2 8.954-2 12.954-.153v.116z"/>
-      <g id="carWindows" fill="#C2E9F9">
-        <path id="carWindowRight" d="M409 548h55c-18.749-37.066-53-34.044-55-33.907v5.579c0 3.259.004 7.605.002 11.949.002 6.06.006 10.207-.002 16.379z"/>
-        <path id="carWindowLeft" d="M404 515c-17 2-32 16-36 33 12 0 23.989-.008 35.95-.034 0 0 .05-21.966.05-32.966z"/>
-      </g>
-      <circle id="carAntennaTop" fill="#37474F" stroke="#37474F" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" cx="470.408" cy="506.363" r="3.323"/>
     </g>
     <g id="clock">
       <circle id="clockBody" fill="#062C77" cx="1318.8" cy="423.25" r="23.25"/>
@@ -550,7 +552,8 @@ export const bedroomSVG = `
     </g>
   </g>
   <g id="Vertices" fill="none" stroke="none" stroke-width="3" stroke-miterlimit="10">
-    <path id="vertexRemoteCar" d="M215.653 669.994s86.978-296.908 164.974-157.415"/>
+    <circle id="alignRemote" cx="208" cy="681" r="7"/>
+    <path id="vertexRemoteCar" d="M223 673l180-117.037"/>
     <path id="vertexPigPlanets" d="M702.093 319.094c179.991-458.977 379.481-239.987 379.481-239.987"/>
     <path id="vertexPigLamp" d="M702.093 319.094c88.495-137.994 103.495-31.498 103.495-31.498"/>
     <path id="vertexPigClock" d="M702.093 319.094c586.47-116.994 614.97 64.497 614.97 64.497"/>
@@ -559,15 +562,15 @@ export const bedroomSVG = `
     <path id="vertexDiaryClock" d="M987.079 590.581s304.485-479.976 334.483-221.989"/>
   </g>
   <g id="Comets">
-   <g id="cometRemote" display="none">
-     <circle fill="#00FFFF" cx="216.511" cy="667.636" r="6"/>
-     <linearGradient id="SVGID_3_" gradientUnits="userSpaceOnUse" x1="193.886" y1="735.989" x2="216.585" y2="666.607">
-       <stop offset="0" stop-color="#fff" stop-opacity="0"/>
-       <stop offset="1" stop-color="#0ff"/>
-     </linearGradient>
-     <path fill="url(#SVGID_3_)" d="M219.912 667.695l-26.027 68.294 19.373-70.469z"/>
-   </g>
- </g>
+    <g id="cometRemote" display='none'>
+      <path fill="#00FFFF" d="M227.259 682.448c-4.799 2.969-11.095 1.481-14.065-3.315-2.967-4.8-1.482-11.096 3.318-14.066 4.798-2.964 11.094-1.482 14.064 3.317 2.968 4.801 1.483 11.096-3.317 14.064z"/>
+      <linearGradient id="SVGID_3_" gradientUnits="userSpaceOnUse" x1="115.051" y1="739.742" x2="220.78" y2="674.347">
+        <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+        <stop offset="1" stop-color="#0ff"/>
+      </linearGradient>
+      <path fill="url(#SVGID_3_)" d="M225.775 682.428l-110.729 57.307 100.736-73.467z"/>
+    </g>
+  </g>
   <g id="Buttons" fill="none">
     <rect id="buttonRemote" x="130" y="632" fill="none" width="118" height="97" pointer-events="all"/>
   	<rect id="buttonPig" x="613" y="310" fill="none" width="119" height="85" pointer-events="all"/>
