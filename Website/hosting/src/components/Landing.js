@@ -64,7 +64,7 @@ class Landing extends React.Component {
 
     const inputs = {
       section: {
-        backgroundColor: '#00adee',
+        backgroundColor: '#00ffe0',
         paddingTop: 30,
         paddingBottom: 30,
       },

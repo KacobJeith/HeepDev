@@ -5,9 +5,9 @@ import {  Link, NavLink, withRouter } from 'react-router-dom'
 import PropTypes                      from 'prop-types';
 
 
-import List, { 
-       ListItem, 
-       ListItemIcon, 
+import List, {
+       ListItem,
+       ListItemIcon,
        ListItemText } from 'material-ui/List';
 import Grid           from 'material-ui/Grid';
 import Paper          from 'material-ui/Paper';
@@ -38,23 +38,23 @@ const styles = theme => ({
 });
 
 
-class Footer extends React.Component { 
+class Footer extends React.Component {
 
   socialLogoLinks() {
     return(
       <Grid item xs>
-        <Grid container spacing={8} 
+        <Grid container spacing={8}
           justify={'center'}
           direction='row'
         >
-          {[{svg:'instagram',     url:'https://www.instagram.com/heep_inc/'}, 
+          {[{svg:'instagram',     url:'https://www.instagram.com/heep_inc/'},
             {svg:'facebook-box',  url:'https://www.facebook.com/heepio/'},
             {svg:'linkedin-box',  url:'https://www.linkedin.com/company/heep-inc/'},
             {svg:'pinterest',     url:'https://heep.io'},
             {svg:'twitter',       url:'https://twitter.com/HeepCo'},
             {svg:'github-circle', url:'https://github.com/HeepIO'}].map((social) => (
             <Grid item xs={4} sm={2} key={social.svg} style={{position:'relative'}}>
-                <object 
+                <object
                   width='100%'
                   height='100%'
                   style={{fill:'blue'}}
@@ -62,9 +62,9 @@ class Footer extends React.Component {
                   type='image/svg+xml'
                   data={'../src/assets/svg_social/' + social.svg + '.svg'}
                 />
-                <a href={social.url} 
+                <a href={social.url}
                    style={{
-                      width:'100%', 
+                      width:'100%',
                       height:'100%',
                       position:'absolute',
                       left:0,
@@ -113,7 +113,7 @@ class Footer extends React.Component {
   heepLogo() {
     return(
       <Grid item xs={6}>
-        <img 
+        <img
           src="../src/assets/Heep_Gradient.png"
           style={{
             maxWidth: '100%',
@@ -127,13 +127,13 @@ class Footer extends React.Component {
 
     return(
       <Grid item >
-        <NavLink to={url} 
+        <NavLink to={url}
         style={{
-          textDecoration: 'none', 
+          textDecoration: 'none',
           color: this.props.theme.palette.primary.contrastText
         }}>
           <Typography variant="caption" color='inherit' align={align}>
-            {text} 
+            {text}
           </Typography>
         </NavLink>
       </Grid>
@@ -148,21 +148,20 @@ class Footer extends React.Component {
       <footer >
         <div
             style={{
-                marginTop: 24,
                 padding: 24,
                 flexShrink: 0,
                 backgroundColor: this.props.theme.palette.primary.main,
                 color: this.props.theme.palette.primary.contrastText
               }}>
 
-            <Grid 
+            <Grid
               container
               spacing={24}
               justify={'center'}
               alignItems={'center'}
               >
               <Grid item xs>
-                <Grid 
+                <Grid
                   container
                   spacing={8}
                   justify={'center'}
@@ -172,29 +171,29 @@ class Footer extends React.Component {
                   {this.textNavLink('Shop', '/Store')}
                   {this.textNavLink('Blog', '/Blog')}
                   {this.textNavLink('Developers', '/Developers')}
-                  
+
                 </Grid>
 
               </Grid>
 
-              
+
 
               <Grid item xs>
-                <Grid 
+                <Grid
                   container
                   spacing={8}
                   justify={'center'}
                   alignItems={'center'}
                   direction='column'
-                >                
+                >
                 </Grid>
-              
+
               </Grid>
 
-              
+
 
               <Grid item xs md={2} lg={1}>
-                <Grid 
+                <Grid
                   container
                   spacing={8}
                   direction='column'
@@ -203,13 +202,13 @@ class Footer extends React.Component {
                 >
                 {this.heepLogo()}
                 {this.socialLogoLinks()}
-                
+
               </Grid>
-              
+
             </Grid>
 
             <Grid item xs>
-                <Grid 
+                <Grid
                   container
                   spacing={8}
                   direction='column'
@@ -217,7 +216,7 @@ class Footer extends React.Component {
               </Grid>
 
             <Grid item xs>
-                <Grid 
+                <Grid
                   container
                   spacing={8}
                   direction='column'
@@ -243,9 +242,9 @@ class Footer extends React.Component {
           </div>
       </footer>
     );
-    
+
   }
-  
+
 }
 
 

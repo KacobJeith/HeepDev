@@ -30,7 +30,8 @@ class FeaturedItems extends React.Component {
   productTitle() {
     return(
         <Typography variant='subheading' align='center'
-          style={{paddingTop: 10}}>
+          style={{
+            paddingTop: 10}}>
         {this.props.product.title}
         </Typography>
     );
