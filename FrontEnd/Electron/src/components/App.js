@@ -12,6 +12,9 @@ import DeviceBuilder from './DeviceBuilder'
 import Flowchart from './MaterialUI/Flowchart'
 // import Analytics from './Analytics/AnalyticsMain'
 
+import Theme from './Theme'
+import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
+
 const mapStateToProps = (state) => ({
 	loginStatus: state.loginStatus,
 })
@@ -50,15 +53,17 @@ class App extends React.Component {
 
 	    return(
 			<Router >
-		    	<div {...inputs.container}>
-					<Route path="/" component={Header}/>
-					<div {...inputs.content} >
-						<Route exact path="/" component={Flowchart} key="Flow"/>
-						<Route path="/Classic" component={Flowchart} key="Flowchart"/>
-						<Route exact path="/auth" component={Auth}/>
-						{loggedInRoutes}
-					</div>
-			    </div>
+		    	<MuiThemeProvider theme={Theme}>
+			    	<div {...inputs.container}>
+						<Route path="/" component={Header}/>
+						<div {...inputs.content} >
+							<Route exact path="/" component={Flowchart} key="Flow"/>
+							<Route path="/Classic" component={Flowchart} key="Flowchart"/>
+							<Route exact path="/auth" component={Auth}/>
+							{loggedInRoutes}
+						</div>
+				    </div>
+				</MuiThemeProvider>
 			</Router>);
 	    
 	}
