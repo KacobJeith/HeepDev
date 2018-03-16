@@ -28,6 +28,9 @@ class BedroomSVG extends React.Component{
 
   constructor(props) {
 		super(props);
+    this.state = {
+      animation: false,
+    }
 
     var bedroomDiv = document.createElement('div');
 		bedroomDiv.innerHTML = bedroomSVG;
@@ -184,7 +187,9 @@ class BedroomSVG extends React.Component{
 
   hoverRemote() {
     this.hoverShake(remote);
-    this.vertexRemote();
+    if (this.state.animation == false) {
+      this.vertexRemote()
+    }
   };
 
   leaveRemote() {
@@ -200,6 +205,8 @@ class BedroomSVG extends React.Component{
       this.addButtonListeners();
     };
 
+    const startTime = 0.5
+
     TweenLite.to(carAnimation, colorDuration, {display: 'block'});
     tlCar.fromTo([carSmoke1, carSmoke2, carSmoke3], 7.5, {y:-0.5}, {
       y:0.5,
@@ -208,36 +215,30 @@ class BedroomSVG extends React.Component{
         points:20,
         template:Linear.easeNone,
         randomize:false
-      }) , clearProps:"x"});
-    tlCar.to(car, 1.2, {x: -70, ease: Sine.easeInOut}, 0.7);
-    tlCar.to(car, 1, {x: 40, y: 160, ease: Sine.easeInOut}, 2);
-    tlCar.to(car, 0.6, {x: 200, ease: Sine.easeInOut}, 3.1);
-    tlCar.to(car, 0.6, {y: 80, ease: Sine.easeInOut}, 3.8);
-    tlCar.to(car, 0.7, {x: -30, y: -10, ease: Sine.easeInOut}, 4.5);
-    tlCar.to(car, 0.8, {y: 0, ease: Sine.easeInOut}, 5.3);
-    tlCar.to(car, 0.8, {x: 0, ease: Sine.easeInOut}, 6.2);
+      }) , clearProps:"x"}, startTime);
+    tlCar.to(car, 1.2, {x: -70, ease: Sine.easeInOut}, 0.7 + startTime);
+    tlCar.to(car, 1, {x: 40, y: 160, ease: Sine.easeInOut}, 2 + startTime);
+    tlCar.to(car, 0.6, {x: 200, ease: Sine.easeInOut}, 3.1 + startTime);
+    tlCar.to(car, 0.6, {y: 80, ease: Sine.easeInOut}, 3.8 + startTime);
+    tlCar.to(car, 0.7, {x: -30, y: -10, ease: Sine.easeInOut}, 4.5 + startTime);
+    tlCar.to(car, 0.8, {y: 0, ease: Sine.easeInOut}, 5.3 + startTime);
+    tlCar.to(car, 0.8, {x: 0, ease: Sine.easeInOut}, 6.2 + startTime);
     tlCar.to(carAnimation, 0.1, {display: 'none'});
     console.log("click")
   };
 
   vertexRemote() {
+    this.setState({animation: true})
     var pathRemoteCar = MorphSVGPlugin.pathDataToBezier(vertexRemoteCar, {align: alignRemote});
     tlVertexRemote.to(cometRemote, 0.05, {display:'block'});
     tlVertexRemote.to(cometRemote, 0.7, {bezier: { type: "cubic", values: pathRemoteCar}, ease: Sine.easeInOut});
     tlVertexRemote.to(cometRemote, 0.05, {display:'none'});
     tlVertexRemote.to(cometRemote, 0.1, {x: 0, y: 0});
-    tlVertexRemote.fromTo(carBodyGroup, 0.4, {y:0}, {y:-15, ease: Sine.easeInOut, clearProps:"x", repeat: 1});
-
-  //  path.to(cometRemote, 10, {
-  //    bezier: { values: pathRemoteCar, type: 'cubic' },
-  //    ease: Sine.easeInOut
-  //  }, 1);
-
-    //TweenMax.to(cometRemote, 0.7, {bezier: { type: "cubic", values: pathRemoteCar}, ease: Sine.easeInOut})
-    //TweenMax.to(cometRemote, 0.1, {display:'none'},1)
-
-    console.log(pathRemoteCar)
-
+    tlVertexRemote.fromTo(carBodyGroup, 0.4, {y:0}, {y:-15, ease: Sine.easeInOut, clearProps:"x", repeat: 1, onComplete: proxyFunction.bind(this)})
+    function proxyFunction(): void {
+      this.setState({animation: false})
+      tlVertexRemote.clear()
+    }
   }
 
   hoverPig() {
