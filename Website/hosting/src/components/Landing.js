@@ -34,7 +34,7 @@ class Landing extends React.Component {
           minHeight: inputs.minHeight
         }}>
           <Grid item>
-            <Typography variant='display2'>
+            <Typography variant='display1'>
               Heepify Your World
             </Typography>
           </Grid>
@@ -64,13 +64,13 @@ class Landing extends React.Component {
 
     const inputs = {
       section: {
-        backgroundColor: '#00ffe0',
+        backgroundColor: '#00e0c5',
         paddingTop: 30,
         paddingBottom: 30,
       },
       header: {
         paddingBottom: 30,
-        paddingLeft: 30,
+        paddingLeft: 40,
         fontWeight: 'bold',
       }
     };
