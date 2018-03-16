@@ -55,6 +55,9 @@ class Vertex extends React.Component {
 				onMouseEnter: () => this.setState({'color': 'red', 'strokeWidth': 4}),
 				onMouseLeave: () => this.setState({'color': 'black', 'strokeWidth': 3}),
 				onClick: () => this.sendDeleteVertexToServer(),
+				style: {
+					cursor: 'pointer'
+				}
 			}
 		}
 		

@@ -49,7 +49,7 @@ class Control extends React.Component {
 					height: 20,
 					position:'absolute',
 					right: this.direction == 0 ? null : -12,
-					left: this.direction == 0 ? -11 : null,
+					left: this.direction == 0 ? -11 : null
 				}
 			},
 			circleContainer: {
@@ -65,7 +65,10 @@ class Control extends React.Component {
 				cx: this.direction == 0 ? 9 : 0,
 				cy: 10,
 				r: this.state.radius,
-				fill: this.direction == 0 ? "green" : 'red'
+				fill: this.direction == 0 ? "green" : 'red',
+				style: {
+					cursor: 'pointer'
+				}
 			}
 		}
 
