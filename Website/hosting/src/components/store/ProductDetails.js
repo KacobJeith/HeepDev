@@ -151,7 +151,8 @@ class ProductDetails extends React.Component {
                             style={{
                               cursor: 'pointer',
                               maxWidth:"100%",
-                              maxHeight:"100%"
+                              maxHeight:"100%",
+                              display: 'block',
                             }}
                             key={tile.id}
                             onMouseEnter={ () => {this.setState({viewing: index})}}

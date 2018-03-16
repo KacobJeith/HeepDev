@@ -9,20 +9,22 @@ var client = ShopifyBuy.buildClient({
 
 export const InitializeShopify = () => {
 
-
-  client.collection.fetchAllWithProducts().then((collections) => {
-    // Do something with the collections
-    console.log('collections: ', collections)
+  client.product.fetchAll().then((products) => {
+    AddProductsToRedux(products);
   });
 
-   client.product.fetchAll().then((products) => {
-    AddProductsToRedux(products);
-  }); 
+  client.collection.fetchAllWithProducts().then((collections) => {
+    AddCollectionsToRedux(collections);
+  });
 }
 
 const AddProductsToRedux = (products) => {
-  
+
   setup.store.dispatch(actions.populateShopify(products));
+}
+
+const AddCollectionsToRedux = (collections) => {
+  setup.store.dispatch(actions.populateCollections(collections));
 }
 
 export const AddProductToCart = (checkoutID, productData) => {
@@ -52,7 +54,7 @@ export const AddToCheckout = (checkoutID, variantID) => {
 
   const lineItemsToAdd = [
      {
-       variantId: variantID, 
+       variantId: variantID,
        quantity: 1
      }
    ];
@@ -66,7 +68,7 @@ export const UpdateQuantityInCart = (checkoutID, lineItemID, newQuantity) => {
 
   const lineItemsToUpdate = [
      {
-       id: lineItemID, 
+       id: lineItemID,
        quantity: newQuantity
      }
    ];
@@ -97,5 +99,3 @@ export const retrieveCheckout = (checkoutID) => {
 
   });
 }
-
-
