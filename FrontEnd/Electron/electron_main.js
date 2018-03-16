@@ -101,12 +101,11 @@ app.listen(app.get('port'), function(error) {
 electronApp.on('ready', function() {
   log.warn('log from the main process');
 
-
   mainWindow = new BrowserWindow({width: 800, height: 600})
 
   mainWindow.loadURL('http://localhost:' + app.get('port'));
-
-  mainWindow.webContents.openDevTools()
+  mainWindow.setMenu(null);
+  // mainWindow.webContents.openDevTools()
 
   mainWindow.on('closed', function () {
     mainWindow = null
