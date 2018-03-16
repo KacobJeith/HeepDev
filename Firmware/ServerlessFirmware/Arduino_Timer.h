@@ -1,23 +1,8 @@
-unsigned long GetMillis()
-{
-	return millis();
-}
+#include "CommonDataTypes.h"
+
+unsigned long GetMillis();
 
 // No absolute time yet
-heepByte IsAbsoluteTime()
-{
-	return 0;
-}
+heepByte IsAbsoluteTime();
 
-uint64_t GetAnalyticsTime()
-{
-	if(IsAbsoluteTime())
-	{
-		// Calculate Analytics Time
-		return 0;
-	}
-	else
-	{
-		return millis();
-	}
-}
+uint64_t GetAnalyticsTime();

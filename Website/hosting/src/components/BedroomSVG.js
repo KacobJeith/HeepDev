@@ -2,7 +2,7 @@ import React from 'react';
 import { svgs } from '../assets/remote/SVGs';
 import { bedroomSVG } from '../assets/BedroomString';
 import $ from 'jquery';
-import { TimelineMax, TweenLite } from 'gsap';
+import { TimelineMax } from 'gsap';
 import { withStyles } from 'material-ui/styles';
 import { Paper } from 'material-ui'
 
@@ -14,59 +14,15 @@ const styles = theme => ({
   }),
 });
 
-var defaultColor = '#FFF'
+var colorDefault = '#FFF';
+var colorDuration = 1;
 
-var buttonRemote = [];
-var buttonPig = [];
-var buttonDiary = [];
-var buttonSleep = [];
-var buttonDresserTop = [];
-var buttonDresserBottom = [];
-var buttonCactus = [];
-var buttonFlower = [];
-var buttonPail = [];
+//var tlVertex = new TimelineMax();
 
-var remote = [];
-var remoteBottom = [];
-var remoteBody = [];
-var remoteButtons = [];
-var remoteAntennaTop = [];
-var remoteStickBottoms = [];
-var remoteStickTops = [];
-
-var pigBodyElements = [];
-var pigSnoutFront = [];
-var pigBackElements = [];
-var pigEarInner = [];
-var pigNostrils = [];
-var pigEyes = [];
-var pigCoinSlot = [];
-
-var diaryBottom = [];
-var diaryPages = [];
-var diaryCover = [];
-var diarySpine = [];
-
-var sleepMount = [];
-var sleepButton = [];
-
-var dresserFrame = [];
-var dresserDrawers = [];
-var dresserKnobs = [];
-
-var cactusPotBody = [];
-var cactusPotLip = [];
-var cactusPotTop = [];
-var cactusBody = [];
-
-var flowerPotBottom = [];
-var flowerPotLip = [];
-var flowerPotTop = [];
-var leafBodyRight = [];
-var leafBodyCenter = [];
-var leafBodyLeft = [];
-var flowerPetals = [];
-var flowerStamens = [];
+var tlShake = new TimelineMax({repeat:-1});
+var tlRemote = new TimelineMax();
+var tlPig = new TimelineMax();
+var tlDiary = new TimelineMax();
 
 class BedroomSVG extends React.Component{
 
@@ -77,212 +33,412 @@ class BedroomSVG extends React.Component{
     this.svg = $(bedroomDiv).find('svg')[0];
     this.svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
     this.svg.setAttribute('viewBox', '0 0 1500 800')
+
+    this.addButtonListeners = this.addButtonListeners.bind(this);
+
+    this.hoverRemote = this.hoverRemote.bind(this);
+    this.hoverPig = this.hoverPig.bind(this);
+    this.hoverDiary = this.hoverDiary.bind(this);
+    this.hoverSleep = this.hoverSleep.bind(this);
+    this.hoverDresser = this.hoverDresser.bind(this);
+    this.hoverDresser = this.hoverDresser.bind(this);
+    this.hoverCactus = this.hoverCactus.bind(this);
+    this.hoverFlower = this.hoverFlower.bind(this);
+
+    this.leaveRemote = this.leaveRemote.bind(this);
+    this.leavePig = this.leavePig.bind(this);
+    this.leaveDiary = this.leaveDiary.bind(this);
+    this.leaveSleep = this.leaveSleep.bind(this);
+    this.leaveDresser = this.leaveDresser.bind(this);
+    this.leaveDresser = this.leaveDresser.bind(this);
+    this.leaveCactus = this.leaveCactus.bind(this);
+    this.leaveFlower = this.leaveFlower.bind(this);
+
+    this.clickRemote = this.clickRemote.bind(this);
+    this.clickPig = this.clickPig.bind(this);
+    this.clickDiary = this.clickDiary.bind(this);
 	};
 
   componentDidMount() {
-    this.createButtons();
     this.getElements();
-  };
-
-  createButtons(){
-    buttonRemote = document.getElementById('buttonRemote');
-    buttonPig = document.getElementById('buttonPig');
-    buttonDiary = document.getElementById('buttonDiary');
-    buttonSleep = document.getElementById('buttonSleep');
-    buttonDresserTop = document.getElementById('buttonDresserTop');
-    buttonDresserBottom = document.getElementById('buttonDresserBottom');
-    buttonCactus = document.getElementById('buttonCactus');
-    buttonFlower = document.getElementById('buttonFlower');
-    buttonPail = document.getElementById('buttonPail');
-
-    buttonRemote.addEventListener('mouseover', this.hoverRemote);
-    buttonPig.addEventListener('mouseover', this.hoverPig);
-    buttonDiary.addEventListener('mouseover', this.hoverDiary);
-    buttonSleep.addEventListener('mouseover', this.hoverSleep);
-    buttonDresserTop.addEventListener('mouseover', this.hoverDresser);
-    buttonDresserBottom.addEventListener('mouseover', this.hoverDresser);
-    buttonCactus.addEventListener('mouseover', this.hoverCactus);
-    buttonFlower.addEventListener('mouseover', this.hoverFlower);
-    buttonPail.addEventListener('mouseover', this.hoverPail);
-
-    buttonRemote.addEventListener('mouseleave', this.leaveRemote);
-    buttonPig.addEventListener('mouseleave', this.leavePig);
-    buttonDiary.addEventListener('mouseleave', this.leaveDiary);
-    buttonSleep.addEventListener('mouseleave', this.leaveSleep);
-    buttonDresserTop.addEventListener('mouseleave', this.leaveDresser);
-    buttonDresserBottom.addEventListener('mouseleave', this.leaveDresser);
-    buttonCactus.addEventListener('mouseleave', this.leaveCactus);
-    buttonFlower.addEventListener('mouseleave', this.leaveFlower);
-    buttonPail.addEventListener('mouseleave', this.leavePail);
+    this.addButtonListeners();
   };
 
   getElements() {
-    remote = document.getElementById('remote');
-    remoteBottom = document.getElementById('remoteBottom');
-    remoteBody = document.getElementById('remoteBody');
-    remoteButtons = document.getElementById('remoteButtons');
-    remoteAntennaTop = document.getElementById('remoteAntennaTop');
-    remoteStickBottoms = document.getElementById('remoteStickBottoms');
-    remoteStickTops = document.getElementById('remoteStickTops');
+    var buttonRemote = document.getElementById('buttonRemote');
+    var buttonPig = document.getElementById('buttonPig');
+    var buttonDiary = document.getElementById('buttonDiary');
+    var buttonSleep = document.getElementById('buttonSleep');
+    var buttonDresserTop = document.getElementById('buttonDresserTop');
+    var buttonDresserBottom = document.getElementById('buttonDresserBottom');
+    var buttonCactus = document.getElementById('buttonCactus');
+    var buttonFlower = document.getElementById('buttonFlower');
 
-    pigBodyElements = document.getElementById('pigBodyElements');
-    pigSnoutFront = document.getElementById('pigSnoutFront');
-    pigBackElements = document.getElementById('pigBackElements');
-    pigEarInner = document.getElementById('pigEarInner');
-    pigNostrils = document.getElementById('pigNostrils');
-    pigEyes = document.getElementById('pigEyes');
-    pigCoinSlot = document.getElementById('pigCoinSlot');
+    var remote = document.getElementById('remote');
 
-    diaryBottom = document.getElementById('diaryBottom');
-    diaryPages = document.getElementById('diaryPages');
-    diaryCover = document.getElementById('diaryCover');
-    diarySpine = document.getElementById('diarySpine');
+    var pig = document.getElementById('pig');
 
-    sleepMount = document.getElementById('sleepMount');
-    sleepButton = document.getElementById('sleepButton');
+    var diary = document.getElementById('diary')
+    var diaryOpen = document.getElementById('diaryOpen');
 
-    dresserFrame = document.getElementById('dresserFrame');
-    dresserDrawers = document.getElementById('dresserDrawers');
-    dresserKnobs = document.getElementById('dresserKnobs');
+    var sleep = document.getElementById('sleep');
 
-    cactusPotBody = document.getElementById('cactusPotBody');
-    cactusPotLip = document.getElementById('cactusPotLip');
-    cactusPotTop = document.getElementById('cactusPotTop');
-    cactusBody = document.getElementById('cactusBody');
+    var dresser = document.getElementById('dresser');
+    var dresserDrawers = document.getElementById('dresserDrawers');
 
-    flowerPotBottom = document.getElementById('flowerPotBottom');
-    flowerPotLip = document.getElementById('flowerPotLip');
-    flowerPotTop = document.getElementById('flowerPotTop');
-    leafBodyRight = document.getElementById('leafBodyRight');
-    leafBodyCenter = document.getElementById('leafBodyCenter');
-    leafBodyLeft = document.getElementById('leafBodyLeft');
-    flowerPetals = document.getElementById('flowerPetals');
-    flowerStamens = document.getElementById('flowerStamens');
+    var cactus = document.getElementById('cactus');
+
+    var flowers = document.getElementById('flowers');
+
+    var car = document.getElementById('car');
+    var carAnimation = document.getElementById('carAnimation');
+    var carSmoke1 = document.getElementById('carSmoke1');
+    var carSmoke2 = document.getElementById('carSmoke2');
+    var carSmoke3 = document.getElementById('carSmoke3');
+
+    var solarSystem = document.getElementById('solarSystem');
+
+    var lampBottom = document.getElementById('lampBottom');
+    var lampShade = document.getElementById('lampShade');
+    var lampTop = document.getElementById('lampTop');
+    var lampLight = document.getElementById('lampLight');
+
+    var clock = document.getElementById('clock');
+    var clockBellLeft = document.getElementById('clockBellLeft');
+    var clockBellRight = document.getElementById('clockBellRight');
+
+    var vertexRemoteCar = document.getElementById('vertexRemoteCar');
+    var vertexPigLamp = document.getElementById('vertexPigLamp');
+    var vertexPigClock = document.getElementById('vertexPigClock');
+    var vertexPigPlanets = document.getElementById('vertexPigPlanets');
+    var vertexDiaryLamp = document.getElementById('vertexDiaryLamp')
+    var vertexDiaryClock = document.getElementById('vertexDiaryClock')
+    var vertexDiaryPlanets = document.getElementById('vertexDiaryPlanets')
 
   };
 
+    addButtonListeners() {
+      buttonRemote.addEventListener('mouseover', this.hoverRemote);
+      buttonPig.addEventListener('mouseover', this.hoverPig);
+      buttonDiary.addEventListener('mouseover', this.hoverDiary);
+      buttonSleep.addEventListener('mouseover', this.hoverSleep);
+      buttonDresserTop.addEventListener('mouseover', this.hoverDresser);
+      buttonDresserBottom.addEventListener('mouseover', this.hoverDresser);
+      buttonCactus.addEventListener('mouseover', this.hoverCactus);
+      buttonFlower.addEventListener('mouseover', this.hoverFlower);
+
+      buttonRemote.addEventListener('mouseleave', this.leaveRemote);
+      buttonPig.addEventListener('mouseleave', this.leavePig);
+      buttonDiary.addEventListener('mouseleave', this.leaveDiary);
+      buttonSleep.addEventListener('mouseleave', this.leaveSleep);
+      buttonDresserTop.addEventListener('mouseleave', this.leaveDresser);
+      buttonDresserBottom.addEventListener('mouseleave', this.leaveDresser);
+      buttonCactus.addEventListener('mouseleave', this.leaveCactus);
+      buttonFlower.addEventListener('mouseleave', this.leaveFlower);
+
+      buttonRemote.addEventListener('click', this.clickRemote);
+      buttonPig.addEventListener('click', this.clickPig);
+      buttonDiary.addEventListener('click', this.clickDiary);
+  };
+
+    removeButtonListeners() {
+      buttonRemote.removeEventListener('mouseover', this.hoverRemote);
+      buttonPig.removeEventListener('mouseover', this.hoverPig);
+      buttonDiary.removeEventListener('mouseover', this.hoverDiary);
+      buttonSleep.removeEventListener('mouseover', this.hoverSleep);
+      buttonDresserTop.removeEventListener('mouseover', this.hoverDresser);
+      buttonDresserBottom.removeEventListener('mouseover', this.hoverDresser);
+      buttonCactus.removeEventListener('mouseover', this.hoverCactus);
+      buttonFlower.removeEventListener('mouseover', this.hoverFlower);
+
+      buttonRemote.removeEventListener('mouseleave', this.leaveRemote);
+      buttonPig.removeEventListener('mouseleave', this.leavePig);
+      buttonDiary.removeEventListener('mouseleave', this.leaveDiary);
+      buttonSleep.removeEventListener('mouseleave', this.leaveSleep);
+      buttonDresserTop.removeEventListener('mouseleave', this.leaveDresser);
+      buttonDresserBottom.removeEventListener('mouseleave', this.leaveDresser);
+      buttonCactus.removeEventListener('mouseleave', this.leaveCactus);
+      buttonFlower.removeEventListener('mouseleave', this.leaveFlower);
+
+      buttonRemote.removeEventListener('click', this.clickRemote);
+      buttonPig.removeEventListener('click', this.clickPig);
+      buttonDiary.removeEventListener('click', this.clickDiary);
+    }
+
+  hoverShake(e) {
+    tlShake.fromTo(e, 2, {x:-1}, {x:1, ease:RoughEase.ease.config({
+      strength:8,
+      points:20,
+      template:Linear.easeNone,
+      randomize:false
+    }) , clearProps:"x"});
+  };
+
+  leaveShake() {
+    tlShake.clear();
+  };
+
+  drawLineTween(svg) {
+    var pathObject = {length:0, pathLength: svg.getTotalLength()};
+    TweenLite.to(svg, 0.1, {stroke: "#000"})
+    var tween = TweenLite.to(pathObject, 2, {
+      length:pathObject.pathLength,
+      onUpdate:this.drawLine,
+      onUpdateParams:[pathObject, svg],
+      immediateRender:true
+    });
+    return tween;
+  }
+
+  drawLine(obj, svg) {
+    svg.style.strokeDasharray = [obj.length, obj.pathLength].join(' ');
+  };
+
+  hideLine(svg) {
+    var tween = TweenLite.to(svg, 0.1, {stroke: 'none'});
+    return tween;
+  }
+
+  killLine(svg) {
+    TweenLite.to(svg, 0.1, {stroke: 'none'});
+  }
+
   hoverRemote() {
-    let tl = new TimelineMax();
-    tl.to(remoteBottom, 1, {fill: '#333333', delay:0.6}, 0);
-    tl.to(remoteBody, 1, {fill: '#666666', delay:0.6}, 0);
-    tl.to(remoteButtons, 1, {fill: '#CCCCCC', delay:0.6}, 0);
-    tl.to(remoteAntennaTop, 1, {fill: '#000', delay:0.6}, 0);
-    tl.to(remoteStickBottoms, 1, {fill: '#999999', delay:0.6}, 0);
-    tl.to(remoteStickTops, 1, {fill: '#666666', delay:0.6}, 0);
+    this.hoverShake(remote);
+    this.vertexRemote();
   };
 
   leaveRemote() {
-    let tl = new TimelineMax();
-    tl.to(remoteBottom, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(remoteBody, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(remoteButtons, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(remoteAntennaTop, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(remoteStickBottoms, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(remoteStickTops, 1, {fill: defaultColor, delay:0.6}, 0);
+    this.leaveShake();
   };
 
+  clickRemote() {
+    this.removeButtonListeners();
+    tlShake.clear();
+    this.killLine(vertexRemoteCar);
+
+    let tlCar = new TimelineMax({onComplete: proxyFunction.bind(this)});
+    function proxyFunction(): void {
+      this.addButtonListeners();
+    };
+
+    TweenLite.to(carAnimation, colorDuration, {display: 'block'});
+    tlCar.fromTo([carSmoke1, carSmoke2, carSmoke3], 7.5, {y:-0.5}, {
+      y:0.5,
+      ease:RoughEase.ease.config({
+        strength:20,
+        points:20,
+        template:Linear.easeNone,
+        randomize:false
+      }) , clearProps:"x"});
+    tlCar.to(car, 1.2, {x: -70, ease: Sine.easeInOut}, 0.7);
+    tlCar.to(car, 1, {x: 40, y: 160, ease: Sine.easeInOut}, 2);
+    tlCar.to(car, 0.6, {x: 200, ease: Sine.easeInOut}, 3.1);
+    tlCar.to(car, 0.6, {y: 80, ease: Sine.easeInOut}, 3.8);
+    tlCar.to(car, 0.7, {x: -30, y: -10, ease: Sine.easeInOut}, 4.5);
+    tlCar.to(car, 0.8, {y: 0, ease: Sine.easeInOut}, 5.3);
+    tlCar.to(car, 0.8, {x: 0, ease: Sine.easeInOut}, 6.2);
+    tlCar.to(carAnimation, 0.1, {display: 'none'});
+    console.log("click")
+  };
+
+  vertexRemote() {
+    //var tlRemote = new TimelineMax();
+    tlRemote.add(this.drawLineTween(vertexRemoteCar));
+    tlRemote.add(this.hideLine(vertexRemoteCar));
+  }
+
   hoverPig() {
-    let tl = new TimelineMax();
-    tl.to(pigBodyElements, 1, {fill: '#EDC3D9', delay:0.6}, 0);
-    tl.to(pigSnoutFront, 1, {fill: '#FCEDF7', delay:0.6}, 0);
-    tl.to(pigBackElements, 1, {fill: '#B27D97', delay:0.6}, 0);
-    tl.to(pigEarInner, 1, {fill: '#FCEDF7', delay:0.6}, 0);
-    tl.to(pigNostrils, 1, {fill: '#37474F', delay:0.6}, 0);
-    tl.to(pigEyes, 1, {fill: '#37474F', delay:0.6}, 0);
-    tl.to(pigCoinSlot, 1, {fill: '#37474F', delay:0.6}, 0);
+    this.hoverShake(pig);
+    this.vertexPig();
   };
 
   leavePig() {
-    let tl = new TimelineMax();
-    tl.to(pigBodyElements, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(pigSnoutFront, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(pigBackElements, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(pigEarInner, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(pigNostrils, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(pigEyes, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(pigCoinSlot, 1, {fill: defaultColor, delay:0.6}, 0);
+    this.leaveShake();
   };
 
+  clickPig() {
+    this.removeButtonListeners();
+    tlShake.clear();
+    this.killLine([vertexPigPlanets, vertexPigLamp, vertexPigClock]);
+    this.clickTheft();
+
+    let tlPig = new TimelineMax({onComplete: proxyFunction.bind(this)});
+    function proxyFunction(): void {
+      this.addButtonListeners();
+    };
+
+    tlPig.to(pig, 2.3, {
+      scaleX: 1.8,
+      scaleY: 1.8,
+      x: 150,
+      y: 325,
+      yoyo: true,
+      repeat: 1,
+      ease: Sine.easeInOut
+    }, 0.2);
+  };
+
+  vertexPig() {
+    //var tlPig = new TimelineMax();
+    tlPig.add([
+      this.drawLineTween(vertexPigPlanets),
+      this.drawLineTween(vertexPigLamp),
+      this.drawLineTween(vertexPigClock)
+    ]);
+    tlPig.add(this.hideLine([
+      vertexPigPlanets,
+      vertexPigLamp,
+      vertexPigClock]));
+  }
+
   hoverDiary() {
-    let tl = new TimelineMax();
-    tl.to(diaryBottom, 1, {fill: '#4A99CE', delay:0.6}, 0);
-    tl.to(diaryPages, 1, {fill: '#FFF', delay:0.6}, 0);
-    tl.to(diaryCover, 1, {fill: '#ADE9F2', delay:0.6}, 0);
-    tl.to(diarySpine, 1, {fill: '#4A99CE', delay:0.6}, 0);
+    this.hoverShake(diary);
+    this.vertexDiary();
   };
 
   leaveDiary() {
-    let tl = new TimelineMax();
-    tl.to(diaryBottom, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(diaryPages, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(diaryCover, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(diarySpine, 1, {fill: defaultColor, delay:0.6}, 0);
+    this.leaveShake();
   };
 
+  clickDiary() {
+    this.removeButtonListeners();
+    tlShake.clear();
+    this.killLine([vertexDiaryPlanets, vertexDiaryLamp, vertexDiaryClock]);
+    this.clickTheft();
+
+    let tlDiary = new TimelineMax({onComplete: proxyFunction.bind(this)});
+    function proxyFunction(): void {
+      this.addButtonListeners();
+    };
+
+    tlDiary.to(diary, 0.1, {display: 'none'}, 0.2);
+    tlDiary.to(diaryOpen, 0.1, {display: 'block'}, 0.2);
+    tlDiary.to(diaryOpen, 2.2, {
+      scaleX: 1.4,
+      scaleY: 1.4,
+      x:50,
+      y: 50,
+      yoyo: true,
+      repeat: 1,
+      ease: Sine.easeInOut
+    }, 0.3);
+    tlDiary.to(diaryOpen, 0.1, {display: 'none'}, 4.8);
+    tlDiary.to(diary, 0.1, {display: 'block'}, 4.8);
+  };
+
+  vertexDiary() {
+    //var tlDiary = new TimelineMax();
+    tlDiary.add([
+      this.drawLineTween(vertexDiaryPlanets),
+      this.drawLineTween(vertexDiaryLamp),
+      this.drawLineTween(vertexDiaryClock)
+    ]);
+    tlDiary.add(this.hideLine([
+      vertexDiaryPlanets,
+      vertexDiaryLamp,
+      vertexDiaryClock
+    ]));
+  };
+
+  clickTheft() {
+    const tlTheft = new TimelineMax();
+
+    const startTime = 0.2;
+
+    TweenLite.to(lampShade, colorDuration, {fill: '#FFF3C0'});
+    TweenLite.to(lampTop, colorDuration, {fill: '#FCEA6B'});
+    TweenLite.to(lampLight, colorDuration, {display: 'block'});
+
+    // flash lights
+    tlTheft.fromTo(lampTop, 0.2, {fill: '#BC0D0D'}, {fill: '#FCEA6B', repeat: 25}, startTime)
+    tlTheft.fromTo(lampShade, 0.2, {fill: '#E26F6F'}, {fill: '#FFF3C0', repeat: 25}, startTime)
+    tlTheft.fromTo(lampLight, 0.2, {fill: '#C98181'}, {fill: '#EAE1B2', repeat: 25}, startTime)
+
+    tlTheft.fromTo(clock, 0.1, {y: 5, x: 3}, {
+      y: -5,
+      x: -3,
+      yoyo: true,
+      repeat: 50,
+      ease: Sine.easeInOut
+    }, startTime);
+
+    tlTheft.fromTo(clockBellLeft, 0.2, {
+      rotation: -4,
+      transformOrigin: "50%",
+      y: 3
+    },
+    {
+      rotation: 4,
+      transformOrigin: "50%",
+      y: -3,
+      yoyo: true,
+      repeat: 26,
+      ease: Sine.easeInOut
+    }, startTime);
+
+    tlTheft.fromTo(clockBellRight, 0.2, {
+      rotation: 4,
+      transformOrigin: "50%",
+      y: -3
+    },
+    {
+      rotation: -4,
+      transformOrigin: "50%",
+      y: 3,
+      yoyo: true,
+      repeat: 25,
+      ease: Sine.easeInOut
+    }, startTime);
+
+    tlTheft.fromTo(solarSystem, 0.5, {
+      rotation: 10,
+      transformOrigin: "50%"
+    },
+    {
+      rotation: -10,
+      yoyo: true,
+      repeat: 10,
+      ease: Sine.easeInOut
+    }, startTime)
+
+    tlTheft.to(solarSystem, 0.25, {rotation: 0, transformOrigin: "50%"}, startTime+5);
+    tlTheft.to(clock, 0.1, {x: 0, y: 0}, startTime+5.3);
+    tlTheft.to(lampLight, 0.1, {display: 'none'}, startTime+5.3);
+    tlTheft.to(lampTop, colorDuration, {fill: '#848383'}, startTime+5.3);
+    tlTheft.to(lampShade, colorDuration, {fill: '#ADADAD'}, startTime+5.3);
+  }
+
   hoverSleep() {
-    let tl = new TimelineMax();
-    tl.to(sleepMount, 1, {fill: '#C6C6C6', delay:0.6}, 0);
-    tl.to(sleepButton, 1, {fill: '#AA1721', delay:0.6}, 0);
+    this.hoverShake(sleep);
   };
 
   leaveSleep() {
-    let tl = new TimelineMax();
-    tl.to(sleepMount, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(sleepButton, 1, {fill: defaultColor, delay:0.6}, 0);
-  }
+    this.leaveShake();
+  };
 
   hoverDresser() {
-    let tl = new TimelineMax();
-    tl.to(dresserFrame, 1, {fill: '#627172', delay:0.6}, 0);
-    tl.to(dresserDrawers, 1, {fill: '#505B5B', delay:0.6}, 0);
-    tl.to(dresserKnobs, 1, {fill: '#627172', delay:0.6}, 0);
+    this.hoverShake(dresser);
   };
 
   leaveDresser() {
-    let tl = new TimelineMax();
-    tl.to(dresserFrame, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(dresserDrawers, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(dresserKnobs, 1, {fill: defaultColor, delay:0.6}, 0);
+    this.leaveShake();
   };
 
   hoverCactus() {
-    let tl = new TimelineMax();
-    tl.to(cactusPotBody, 1, {fill: '#603813', delay:0.6}, 0);
-    tl.to(cactusPotLip, 1, {fill: '#965040', delay:0.6}, 0);
-    tl.to(cactusPotTop, 1, {fill: '#a55447', delay:0.6}, 0);
-    tl.to(cactusBody, 1, {fill: '#8cc63f', delay:0.6}, 0);
+    this.hoverShake(cactus);
   };
 
   leaveCactus() {
-    let tl = new TimelineMax();
-    tl.to(cactusPotBody, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(cactusPotLip, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(cactusPotTop, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(cactusBody, 1, {fill: defaultColor, delay:0.6}, 0);
+    this.leaveShake();
   };
 
   hoverFlower() {
-    let tl = new TimelineMax();
-    tl.to(flowerPotBottom, 1, {fill: '#A55447', delay:0.6}, 0);
-    tl.to(flowerPotLip, 1, {fill: '#965040', delay:0.6}, 0);
-    tl.to(flowerPotTop, 1, {fill: '#603813', delay:0.6}, 0);
-    tl.to(leafBodyRight, 1, {fill: '#39B54A', delay:0.6}, 0);
-    tl.to(leafBodyCenter, 1, {fill: '#006837', delay:0.6}, 0);
-    tl.to(leafBodyLeft, 1, {fill: '#009245', delay:0.6}, 0);
-    tl.to(flowerPetals, 1, {fill: '#F9D7E4', delay:0.6}, 0);
-    tl.to(flowerStamens, 1, {fill: '#FBB03B', delay:0.6}, 0);
+    this.hoverShake(flowers);
   };
 
   leaveFlower() {
-    let tl = new TimelineMax();
-    tl.to(flowerPotBottom, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(flowerPotLip, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(flowerPotTop, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(leafBodyRight, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(leafBodyCenter, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(leafBodyLeft, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(flowerPetals, 1, {fill: defaultColor, delay:0.6}, 0);
-    tl.to(flowerStamens, 1, {fill: defaultColor, delay:0.6}, 0);
+    this.leaveShake();
   };
 
   render() {

@@ -40,7 +40,7 @@ class DeviceIdentity extends React.Component {
       },
       systemType: {
         title: "Select System Type",
-        defaultValue: "Arduino",
+        defaultValue: "Simulation",
         options: Object.keys(sys_phy_files),
         onChange: (value) => {this.props.updateSystemType(value)}
       },

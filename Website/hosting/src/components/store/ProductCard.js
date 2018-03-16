@@ -33,7 +33,7 @@ class ProductCard extends React.Component {
   productTitle() {
 
     return (
-      <Link to={'/product/' + this.props.productID}>
+      <Link to={'/product/' + this.props.productID} style={{textDecoration: 'none'}}>
         <Typography align='left' variant="title" gutterBottom paragraph >
           {this.props.product.title}
         </Typography>
@@ -44,7 +44,7 @@ class ProductCard extends React.Component {
   productDescription() {
 
     return (
-      <Typography align='left' variant="caption" gutterBottom paragraph>
+      <Typography align='left' variant="body1" gutterBottom paragraph>
           {this.props.product.description}
       </Typography>
     )
@@ -85,7 +85,7 @@ class ProductCard extends React.Component {
 
     return (
       <Link to={'/product/' + this.props.productID}>
-        <div {...inputs.imageAndOverlayContainer}> 
+        <div {...inputs.imageAndOverlayContainer}>
           <img {...inputs.image}/>
           <div {...inputs.overlay}/>
         </div>
@@ -119,10 +119,10 @@ class ProductCard extends React.Component {
         }
       },
       shoppingCartIcon: {
-        nativeColor: this.props.theme.palette.secondary.contrastText, 
+        nativeColor: this.props.theme.palette.secondary.contrastText,
         fontSize: true,
         style: {
-          display:'inline-block', 
+          display:'inline-block',
           fontSize: Math.ceil(this.props.theme.typography.fontSize * 1.2),
           margin: this.props.theme.spacing.unit
         }
@@ -130,7 +130,7 @@ class ProductCard extends React.Component {
       typeButton: {
         variant:'caption',
         style: {
-          margin: this.props.theme.spacing.unit * 2, 
+          margin: this.props.theme.spacing.unit * 2,
           color:this.props.theme.palette.secondary.contrastText
         }
       }
@@ -139,7 +139,7 @@ class ProductCard extends React.Component {
     return (
       <div {...inputs.buttonAndPriceContainer}>
         <Button {...inputs.addToCartButton}>
-          Add to Cart 
+          Add to Cart
           {SmartBadge(
             <AddShoppingCart {...inputs.shoppingCartIcon}/>,
             this.state.countInCart,
@@ -178,4 +178,3 @@ var mapDispatchToProps = (dispatch) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme()(withStyles(styles)(ProductCard)))
-
