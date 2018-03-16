@@ -135,11 +135,12 @@ class Device extends React.Component {
 
 						</Grid>
 
-
-						<Grid container direction='column' alignItems='stretch' spacing={8}> 
-							<Grid item {...this.props.draggingCallbacks}>
-								<Grid container justify='center' >
-									{this.drawOptions()}
+						<Grid item>
+							<Grid container direction='column' alignItems='stretch' spacing={0} style={{maxWidth: '100%'}}> 
+								<Grid item {...this.props.draggingCallbacks}>
+									<Grid container justify='center' spacing={0} style={{maxWidth: '100%'}}>
+										{this.drawOptions()}
+									</Grid>
 								</Grid>
 							</Grid>
 						</Grid>
