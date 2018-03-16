@@ -5,11 +5,12 @@ import { connect } from 'react-redux'
 import * as Actions from '../redux/actions'
 
 import Header from './AppBar'
-import Auth from './Auth'
-import Logout from './Logout'
+import Auth from './account/Auth'
+import Logout from './account/Logout'
 import Loading from './Loading'
+import UserAccount from './account/UserAccount'
 import DeviceBuilder from './DeviceBuilder'
-import Flowchart from './MaterialUI/Flowchart'
+import Flowchart from './flowchart/Flowchart'
 // import Analytics from './Analytics/AnalyticsMain'
 
 import Theme from './Theme'
@@ -47,6 +48,7 @@ class App extends React.Component {
 
 	    if (this.props.loginStatus) {
 	    	loggedInRoutes.push(<Route path="/DeviceBuilder" component={DeviceBuilder} key="DeviceBuilder"/>)
+	    	loggedInRoutes.push(<Route path="/User" component={UserAccount} key="user"/>);
 
 	    	// loggedInRoutes.push(<Route path="/Analytics" component={Analytics} key="Analytics"/>);
 	    }

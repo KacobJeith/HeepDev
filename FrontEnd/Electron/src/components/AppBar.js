@@ -97,12 +97,18 @@ const styles = theme => ({
   },
   flex: {
     flex: 1,
+  },
+  navLink: {
+    textDecoration: 'none',
+    outline: 'none'
   }
 });
 
 class AppBarDrawer extends React.Component {
   state = {
     open: false,
+    auth: true,
+    anchorEl: null,
   };
 
   handleDrawerOpen = () => {
@@ -112,6 +118,23 @@ class AppBarDrawer extends React.Component {
   handleDrawerClose = () => {
     this.setState({ open: false });
   };
+
+  handleChange = (event, checked) => {
+    this.setState({ auth: checked });
+  };
+
+  handleMenu = event => {
+    this.setState({ anchorEl: event.currentTarget });
+  };
+
+  handleClose = () => {
+    this.setState({ anchorEl: null });
+  };
+
+  handleLogout = () => {
+    auth.logout();
+    this.handleClose();
+  }
 
   loggedOn() {
     return (
@@ -142,7 +165,7 @@ class AppBarDrawer extends React.Component {
           open={Boolean(this.state.anchorEl)}
           onClose={this.handleClose}
         >
-          <NavLink to="/User" style={styles.navLink}>
+          <NavLink to="/User" style={styles(this.props.theme).navLink}>
             <MenuItem onClick={this.handleClose}>Profile</MenuItem>
           </NavLink>
           <MenuItem onClick={this.handleLogout}>Logout</MenuItem>
@@ -177,11 +200,11 @@ class AppBarDrawer extends React.Component {
           open={Boolean(this.state.anchorEl)}
           onClose={this.handleClose}
         >
-          <NavLink to="/auth" style={styles.navLink}>
+          <NavLink to="/auth" style={styles(this.props.theme).navLink}>
             <MenuItem onClick={this.handleClose}>Login</MenuItem>
           </NavLink>
 
-          <NavLink to="/auth" style={styles.navLink}>
+          <NavLink to="/auth" style={styles(this.props.theme).navLink}>
             <MenuItem onClick={this.handleClose}>Create Account</MenuItem>
           </NavLink>
         </Menu>
