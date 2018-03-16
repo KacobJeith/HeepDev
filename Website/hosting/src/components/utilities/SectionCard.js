@@ -14,11 +14,9 @@ const SectionCard = (componentProps, wrappedComponent) => {
   };
 
   return(
-    <Grid container style={{...inputs.outerContainer, ...componentProps}} direction ='column' justify="center" alignItems="center">
-      <Grid item xs={8}>
-        {wrappedComponent}
-      </Grid>
-    </Grid>
+    <div style={{...inputs.outerContainer, ...componentProps}}>
+      {wrappedComponent}
+    </div>
   );
 };
 

@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import * as Actions from '../redux/actions'
 
-import { Grid, Paper } from 'material-ui'
+import { Grid, Paper, Typography } from 'material-ui'
 
 import BedroomSVG from './BedroomSVG'
 import SectionCard from './utilities/SectionCard'
@@ -29,7 +29,16 @@ class Landing extends React.Component {
 
     return (
       SectionCard(inputs,
-        'Heepify Your World'
+        <Grid container justify ='center' alignItems ='center' style={{
+          maxWidth: '100%',
+          minHeight: inputs.minHeight
+        }}>
+          <Grid item>
+            <Typography variant='display2'>
+              Heepify Your World
+            </Typography>
+          </Grid>
+        </Grid>
       )
     )
   };
@@ -52,19 +61,43 @@ class Landing extends React.Component {
   };
 
   featuredItems() {
+
+    const inputs = {
+      section: {
+        backgroundColor: '#00adee',
+        paddingTop: 30,
+        paddingBottom: 30,
+      },
+      header: {
+        paddingBottom: 30,
+        paddingLeft: 30,
+        fontWeight: 'bold',
+      }
+    };
+
     if (typeof this.props.collections['featuredItems'] !== 'undefined') {
       return (
-        <Grid container justify ='center'>
-          {Object.keys(this.props.collections['featuredItems'].products).map((key, index) => {
-            if (key != 'type') {
-              return (
-                <Grid item xs={3} key={key}>
-                  <FeaturedItems key={key} productIndex={index}/>
-                </Grid>
-              )
-            }
-          })}
-        </Grid>
+        SectionCard(inputs.section,
+          <div>
+            <div>
+              <Typography variant='display1'
+                style={{...inputs.header}}>
+                FEATURED COLLECTION
+              </Typography>
+            </div>
+            <Grid container style={{maxWidth: '100%'}} justify ='center'>
+              {Object.keys(this.props.collections['featuredItems'].products).map((key, index) => {
+                if (key != 'type') {
+                  return (
+                    <Grid item xs= {5} md={2} key={key}>
+                      <FeaturedItems key={key} productIndex={index}/>
+                    </Grid>
+                  )
+                }
+              })}
+            </Grid>
+          </div>
+        )
       )
     }
   };

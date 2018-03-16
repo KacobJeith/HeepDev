@@ -10,22 +10,27 @@ import { withStyles } from 'material-ui/styles';
 
 var mapStateToProps = (state, ownProps) => ({
   product: state.collections['featuredItems'].products[ownProps.productIndex],
-  products: state.collections
 });
 
 const styles = theme => ({
   root: theme.mixins.gutters({
-    paddingTop: 16,
-    paddingBottom: 16,
-    margin: theme.spacing.unit * 3,
+    padding: 0,
+    margin: 0,
   }),
 });
 
 class FeaturedItems extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      hover: false,
+    }
+  };
 
   productTitle() {
     return(
-        <Typography variant='title' align='center'>
+        <Typography variant='subheading' align='center'
+          style={{paddingTop: 10}}>
         {this.props.product.title}
         </Typography>
     );
@@ -33,24 +38,17 @@ class FeaturedItems extends React.Component {
 
   productImage() {
     const inputs = {
-      imageContainer: {
-        style: {
-          textAlign: 'center'
-        }
-      },
       image: {
         src: this.props.product.images[0].src,
         style: {
-          maxHeight: 200,
-          maxWidth: 200,
-          paddingTop: 16
+          maxHeight: '100%',
+          maxWidth: '100%',
+          display: 'block'
         },
       },
     };
     return(
-      <div {...inputs.imageContainer}>
         <img {...inputs.image}/>
-      </div>
     )
   };
 
@@ -68,13 +66,17 @@ class FeaturedItems extends React.Component {
     console.log(this.props.products)
 
     return(
-      <Paper className={classes.root} elevation={1}>
-          <Link to={'/product/' + this.props.product.variants[0].id} style={{textDecoration: 'none'}}>
-            {this.productTitle()}
+        <Link to={'/product/' + this.props.product.variants[0].id} style={{textDecoration: 'none'}}>
+          <Paper className={classes.root}
+            elevation={this.state.hover ? 10 : 5}
+            onMouseEnter={()=> {this.setState({hover: true})}}
+            onMouseLeave={()=> {this.setState({hover: false})}}
+            style={{transform: this.state.hover ? 'translate(0px, -5px)' : 'translate(0px, 0px)'}}
+          >
             {this.productImage()}
-            {this.productPrice()}
-          </Link>
-      </Paper>
+          </Paper>
+          {this.productTitle()}
+        </Link>
     );
   };
 }
