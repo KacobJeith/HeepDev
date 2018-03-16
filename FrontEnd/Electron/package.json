@@ -21,10 +21,11 @@
     "tbs": "npm run test && npm run bs",
     "bs": "webpack && npm run start",
     "ts": "npm run test && npm run start",
-    "be": "webpack && babel src/serverside/ --out-dir ./dist/ --presets=es2015 --copy-files && babel ./src/assets/ --out-dir ./dist/assets/ --presets=es2015 --copy-files  && electron .",
-    "package-mac": "webpack && babel src/serverside/ --out-dir ./dist/ --presets=es2015 --copy-files && electron-packager . --overwrite --platform=darwin --arch=x64 --icon=Heep_Gradient.icns --prune=true --out=release-builds",
-    "package-win": "webpack && babel src/serverside/ --out-dir ./dist/ --presets=es2015 --copy-files && electron-packager . Heep --overwrite --asar --platform=win32 --arch=ia32 --icon=Heep_Gradient.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName='Heep Desktop'",
-    "package-win-dev": "webpack && babel src/serverside/ --out-dir ./dist/ --presets=es2015 --copy-files && electron-packager . HeepDev --overwrite --asar --platform=win32 --arch=ia32 --icon=Heep_Gradient.ico --prune=true --out=development-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName='Heep Desktop'"
+    "be": "webpack && npm run copy-files && electron .",
+    "copy-files":"babel src/serverside/ --out-dir ./dist/ --presets=es2015 --copy-files && babel ./src/assets/ --out-dir ./dist/assets/ --presets=es2015 --copy-files ", 
+    "package-mac": "webpack && npm run copy-files && electron-packager . --overwrite --platform=darwin --arch=x64 --icon=Heep_Gradient.icns --prune=true --out=release-builds",
+    "package-win": "webpack && npm run copy-files && electron-packager . Heep --overwrite --asar --platform=win32 --arch=ia32 --icon=Heep_Gradient.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName='Heep Desktop'",
+    "package-win-dev": "webpack && npm run copy-files && electron-packager . HeepDev --overwrite --asar --platform=win32 --arch=ia32 --icon=Heep_Gradient.ico --prune=true --out=development-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName='Heep Desktop'"
   },
   "dependencies": {
     "babel-plugin-transform-object-rest-spread": "^6.22.0",
