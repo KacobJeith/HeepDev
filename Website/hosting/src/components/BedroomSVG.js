@@ -2,6 +2,7 @@ import React from 'react';
 import { svgs } from '../assets/remote/SVGs';
 import { bedroomSVG } from '../assets/BedroomString';
 import $ from 'jquery';
+import MorphSVGPlugin from './utilities/MorphSVGPlugin'
 import { TimelineMax } from 'gsap';
 import { withStyles } from 'material-ui/styles';
 import { Paper } from 'material-ui'
@@ -218,7 +219,7 @@ class BedroomSVG extends React.Component{
   };
 
   vertexRemote() {
-    const pathRemoteCar = MorphSVGPlugin.pathDataToBezier(vertexRemoteCar);
+    var pathRemoteCar = MorphSVGPlugin.pathDataToBezier(vertexRemoteCar);
     TweenMax.to(cometRemote, 0.1, {display:'block'})
     TweenMax.to(cometRemote, 1, {
       bezier: {

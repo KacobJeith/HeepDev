@@ -558,8 +558,8 @@ export const bedroomSVG = `
     <path id="vertexDiaryLamp" d="M987.079 583.082s-89.997-442.478-167.992-298.485"/>
     <path id="vertexDiaryClock" d="M987.079 590.581s304.485-479.976 334.483-221.989"/>
   </g>
-  <g id="Comets" display="none">
-   <g id="remoteComet">
+  <g id="Comets">
+   <g id="cometRemote" display="none">
      <circle fill="#00FFFF" cx="216.511" cy="667.636" r="6"/>
      <linearGradient id="SVGID_3_" gradientUnits="userSpaceOnUse" x1="193.886" y1="735.989" x2="216.585" y2="666.607">
        <stop offset="0" stop-color="#fff" stop-opacity="0"/>
