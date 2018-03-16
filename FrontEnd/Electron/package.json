@@ -23,7 +23,7 @@
     "ts": "npm run test && npm run start",
     "be": "npm run build && electron ./dist/",
     "copy-files": "babel src/serverside/copyToDist/ --out-dir ./dist/ --presets=es2015 --copy-files && babel ./src/assets/ --out-dir ./dist/assets/ --presets=es2015 --copy-files",
-    "package-mac": "npm run build && electron-packager ./dist/ --overwrite --platform=darwin --arch=x64 --icon=Heep_Gradient.icns --prune=true --out=release-builds",
+    "package-mac": "npm run build && electron-packager ./dist/ --overwrite --asar --platform=darwin --arch=x64 --icon=Heep_Gradient.icns --prune=true --out=release-builds",
     "package-win": "npm run build && electron-packager ./dist/ Heep --overwrite --asar --platform=win32 --arch=ia32 --icon=Heep_Gradient.ico --prune=false --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName='Heep Desktop'",
     "package-win-dev": "npm run build && electron-packager ./dist/ HeepDev --overwrite --asar --platform=win32 --arch=ia32 --icon=Heep_Gradient.ico --prune=true --out=development-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName='Heep Desktop'"
   },
