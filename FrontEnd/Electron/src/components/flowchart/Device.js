@@ -51,7 +51,7 @@ class Device extends React.Component {
 			},
 			width: '100%',
 	        type:"image/svg+xml",
-	        data: "/dist/assets/svg/" + this.props.device.iconName + ".svg"
+	        data: "/assets/svg/" + this.props.device.iconName + ".svg"
 		}
 
 

@@ -111,7 +111,6 @@ class UserAccount extends React.Component {
           {Object.keys(this.props.devices).map((deviceID) => {
             
             if (deviceID != 'deviceArray'){
-              console.log('display: ', deviceID);
               return <DeviceListItem deviceID={deviceID} key={deviceID}/>
             }
             

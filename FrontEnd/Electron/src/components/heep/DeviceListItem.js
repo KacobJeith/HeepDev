@@ -98,7 +98,7 @@ class DeviceListItem extends React.Component {
           maxWidth: '100%'
         },
         type:"image/svg+xml",
-        data: "../src/assets/svg/" + name + ".svg"
+        data: "/assets/svg/" + name + ".svg"
       }
     }
 
