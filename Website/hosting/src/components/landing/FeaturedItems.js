@@ -12,10 +12,15 @@ var mapStateToProps = (state, ownProps) => ({
   product: state.collections['featuredItems'].products[ownProps.productIndex],
 });
 
+var imageHeight = 300;
+
 const styles = theme => ({
   root: theme.mixins.gutters({
     padding: 0,
     margin: 0,
+    height: imageHeight,
+    overflow: 'hidden',
+    position: 'relative'
   }),
 });
 
@@ -42,14 +47,18 @@ class FeaturedItems extends React.Component {
       image: {
         src: this.props.product.images[0].src,
         style: {
-          maxHeight: '100%',
-          maxWidth: '100%',
-          display: 'block'
+          position: 'absolute',
+          top: -1000,
+          bottom: -1000,
+          left: -1000,
+          right: -1000,
+          margin: 'auto',
+          height: imageHeight,
         },
       },
     };
     return(
-        <img {...inputs.image}/>
+      <img {...inputs.image}/>
     )
   };
 
