@@ -219,9 +219,17 @@ class BedroomSVG extends React.Component{
       ease:RoughEase.ease.config({
         strength:20,
         points:20,
-        template:Linear.easeNone,
+        template:Sine.easeNone,
         randomize:false
       }) , clearProps:"x"}, startTime);
+    tlCar.fromTo(carBodyGroup, 7.5, {y:-0.02}, {
+      y:0.02,
+      ease:RoughEase.ease.config({
+        strength:100,
+        points:100,
+        template:Sine.easeNone,
+        randomize:false
+      }) , clearProps:"x"}, '-=7.5');
     tlCar.to(car, 1.2, {x: -70, ease: Sine.easeInOut}, 0.7 + startTime);
     tlCar.to(car, 1, {x: 40, y: 160, ease: Sine.easeInOut}, 2 + startTime);
     tlCar.to(car, 0.6, {x: 200, ease: Sine.easeInOut}, 3.1 + startTime);
