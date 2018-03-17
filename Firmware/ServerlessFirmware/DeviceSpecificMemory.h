@@ -13,10 +13,10 @@
 // Memory Allocation. These numbers are actually device specific, 
 // but they require more research to nail down the exact numbers
 // for each device
-#define MAX_MEMORY 255			// Bytes
+#define MAX_MEMORY 1500			// Bytes
 #define NUM_VERTICES 100		// Vertex Pointers
 #define NUM_CONTROLS 100		// Control Pointers
-#define OUTPUT_BUFFER_SIZE 200	// Bytes
+#define OUTPUT_BUFFER_SIZE 1500	// Bytes
 #define INPUT_BUFFER_SIZE 200	// Bytes
 
 // Heep OS Task Scheduling System
