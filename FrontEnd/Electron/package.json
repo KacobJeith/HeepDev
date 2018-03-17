@@ -28,7 +28,7 @@
     "package-win-dev": "npm run build && electron-packager ./dist/ HeepDev --overwrite --asar --platform=win32 --arch=ia32 --icon=Heep_Gradient.ico --prune=true --out=development-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName='Heep Desktop'",
     "dist": "electron-builder --projectDir ./dist/",
     "package-all": "npm run build && electron-builder --projectDir ./dist/ -mwl",
-    "package-eb": "npm run build && npm run dist"
+    "package-current": "npm run build && npm run dist"
   },
   "dependencies": {
     "body-parser": "^1.15.2",
