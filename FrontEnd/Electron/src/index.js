@@ -12,7 +12,6 @@ import $ from 'jquery'
 import { composeWithDevTools } from 'redux-devtools-extension';
 import * as actions_classic from './redux/actions_classic'
 
-import loading from './serverside/assets/heepwink3_gradient.mov';
 
 const startState = {
   webGLStatus: false,
@@ -71,4 +70,6 @@ var loadDevicesFromServer = (url) => {
     });
 }
 
-loadDevicesFromServer(window.location.origin.concat('/api/findDevices'));
+var timeoutRef = setInterval(() => loadDevicesFromServer(window.location.origin.concat('/api/findDevices')), 1000)
+
+setTimeout(() => clearTimeout(timeoutRef), 3000);
