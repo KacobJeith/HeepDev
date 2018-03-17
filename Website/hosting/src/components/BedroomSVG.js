@@ -4,7 +4,7 @@ import { bedroomSVG } from '../assets/BedroomString';
 import $ from 'jquery';
 //import * as MorphSVGPlugin from './gsap/MorphSVGPlugin'
 import { TimelineMax } from 'gsap';
-import MorphSVGPlugin from 'gsap/MorphSvgPlugin';
+import MorphSVGPlugin from './utilities/MorphSvgPlugin';
 import { withStyles } from 'material-ui/styles';
 import { Paper } from 'material-ui'
 
