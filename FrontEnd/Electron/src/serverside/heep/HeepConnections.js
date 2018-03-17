@@ -260,7 +260,7 @@ var AddDevice = (heepChunk, IPAddress) => {
     ipAddress: IPAddress,
     name: deviceName,
     active: false,
-    iconName: "light_on",
+    iconName: "lightbulb",
     version: 0
   }
 
@@ -300,6 +300,8 @@ var SetIconFromID = (heepChunk) => {
   var deviceName = masterState.devices[heepChunk.deviceID].deviceName;
   iconUtils.SetDeviceIconFromString(heepChunk.deviceID, deviceName, heepChunk.iconName);
   masterState.icons = iconUtils.GetIconContent()
+
+  masterState.devices[heepChunk.deviceID].iconName = heepChunk.iconName;
 }
 
 var SetCustomIcon = (heepChunk) => {

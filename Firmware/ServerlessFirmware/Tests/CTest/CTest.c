@@ -1,4 +1,3 @@
-#define SIMULATION
 #include <stdio.h>
 #include <stdint.h>
 #include "../../Heep_API.h"

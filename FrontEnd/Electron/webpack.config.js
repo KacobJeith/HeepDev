@@ -9,7 +9,7 @@ module.exports = {
   entry: ['src/index.js'],
 
   output: {
-    path: path.resolve(__dirname, "src/dist"),
+    path: path.resolve(__dirname, "dist"),
     filename: 'bundle.js',
   },
 
@@ -20,8 +20,7 @@ module.exports = {
   ],
 
   devServer: {
-    contentBase: path.resolve(__dirname, "src/dist"),
-    compress: true,
+    publicPath: '/dist',
     port: 9000,
     historyApiFallback: true
   },
@@ -44,16 +43,11 @@ module.exports = {
         exclude: /node_modules/ 
       },
       {
-        test: /\.(h|py|svg)$/,
-        loader: 'raw-loader',
-        exclude: /node_modules/ 
-      },
-      {
-        test: /\.(jpe?g|png|gif|mov|mp4)$/,
-        loader: 'file-loader',
-        options: {
-          name: '[name].[ext]'} 
-        }
+      test: /\.(jpe?g|png|gif|svg|mov|mp4)$/,
+      loader: 'file-loader',
+      options: {
+        name: '[name].[ext]'} 
+      }
     ],
 
   }
