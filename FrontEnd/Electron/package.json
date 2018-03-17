@@ -25,7 +25,10 @@
     "copy-files": "babel src/serverside/copyToDist/ --out-dir ./dist/ --presets=es2015 --copy-files && babel ./src/assets/ --out-dir ./dist/assets/ --presets=es2015 --copy-files",
     "package-mac": "npm run build && electron-packager ./dist/ --overwrite --asar --platform=darwin --arch=x64 --icon=Heep_Gradient.icns --prune=true --out=release-builds",
     "package-win": "npm run build && electron-packager ./dist/ Heep --overwrite --asar --platform=win32 --arch=ia32 --icon=Heep_Gradient.ico --prune=false --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName='Heep Desktop'",
-    "package-win-dev": "npm run build && electron-packager ./dist/ HeepDev --overwrite --asar --platform=win32 --arch=ia32 --icon=Heep_Gradient.ico --prune=true --out=development-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName='Heep Desktop'"
+    "package-win-dev": "npm run build && electron-packager ./dist/ HeepDev --overwrite --asar --platform=win32 --arch=ia32 --icon=Heep_Gradient.ico --prune=true --out=development-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName='Heep Desktop'",
+    "dist": "electron-builder --projectDir ./dist/",
+    "package-all": "npm run build && electron-builder --projectDir ./dist/ -mwl",
+    "package-eb": "npm run build && npm run dist"
   },
   "dependencies": {
     "body-parser": "^1.15.2",
@@ -66,6 +69,7 @@
     "babel-register": "^6.22.0",
     "css-loader": "^0.25.0",
     "dateformat": "^3.0.2",
+    "electron-builder": "^20.5.1",
     "electron-packager": "^11.0.0",
     "json-loader": "^0.5.7",
     "mocha": "^3.2.0",
@@ -103,6 +107,12 @@
       "es2015",
       "stage-0"
     ]
+  },
+  "build": {
+    "appId": "HeepID",
+    "mac": {
+      "category": "Electronics"
+    }
   },
   "main": "electron_main.js"
 }

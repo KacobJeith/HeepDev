@@ -1,3 +1,5 @@
 {
-  "main": "electron_bundle.js"
+	"name": "HeepDesktop",
+	"version": "0.1.0",
+	"main": "electron_bundle.js"
 }
