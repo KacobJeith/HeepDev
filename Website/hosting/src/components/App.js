@@ -83,7 +83,6 @@ class App extends React.Component {
 
 	    return(
 			<Router >
-					<Reboot>
 			    	<MuiThemeProvider theme={Theme}>
 							<div {...inputs.container}>
 								<div {...inputs.content}>
@@ -102,7 +101,6 @@ class App extends React.Component {
 								<Route path="/" component={Footer}/>
 						    </div>
 				    </MuiThemeProvider>
-					</Reboot>
 			</Router>);
 
 	}
