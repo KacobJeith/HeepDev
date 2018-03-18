@@ -20,6 +20,7 @@ import Checkout from './store/Checkout'
 import ProductDetails from './store/ProductDetails'
 import DownloadPage from './heep/DownloadPage'
 import ManageCart from './store/ManageCart'
+import DocumentationPortal from './pages/DocumentationPortal'
 
 import PaperSignalsConsole from './PaperSignals/PaperSignalsConsole'
 
@@ -83,7 +84,6 @@ class App extends React.Component {
 
 	    return(
 			<Router >
-					<Reboot>
 			    	<MuiThemeProvider theme={Theme}>
 							<div {...inputs.container}>
 								<div {...inputs.content}>
@@ -97,12 +97,12 @@ class App extends React.Component {
 									<Route path="/MyCart" component={ManageCart}/>
 									<Route exact path="/auth" component={Auth}/>
 									<Route exact path="/Developers" component={DownloadPage}/>
+									<Route exact path="/documentation/:pageID/:pageTitle" component={DocumentationPortal}/>
 									{loggedInRoutes}
 								</div>
 								<Route path="/" component={Footer}/>
 						    </div>
 				    </MuiThemeProvider>
-					</Reboot>
 			</Router>);
 
 	}

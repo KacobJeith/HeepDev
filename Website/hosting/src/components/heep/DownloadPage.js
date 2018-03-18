@@ -28,6 +28,26 @@ class DownloadPage extends React.Component {
 
   }
 
+  heepLogo() {
+    return (
+
+      <Grid 
+        item 
+        md={3}
+        lg={2}
+        sm={4}
+        xs={5}>
+        <img 
+          src="../src/assets/Heep_Gradient.png"
+          style={{
+            maxWidth: '100%',
+            maxHeight: '100%'
+          }}/>
+      </Grid>
+
+    )
+  }
+
   render() {
     
     return (
@@ -43,19 +63,7 @@ class DownloadPage extends React.Component {
           justify={'center'}
           alignItems={'center'}>
           <Hidden smUp>
-            <Grid 
-              item 
-              md={3}
-              lg={2}
-              sm={4}
-              xs={5}>
-              <img 
-                src="../src/assets/Heep_Gradient.png"
-                style={{
-                  maxWidth: '100%',
-                  maxHeight: '100%'
-                }}/>
-            </Grid>
+            {this.heepLogo()}
           </Hidden>
           <Grid 
             item 
@@ -92,19 +100,7 @@ class DownloadPage extends React.Component {
             </Button>
           </Grid>
           <Hidden only='xs'>
-            <Grid 
-              item 
-              md={3}
-              lg={2}
-              sm={4}
-              xs={5}>
-              <img 
-                src="../src/assets/Heep_Gradient.png"
-                style={{
-                  maxWidth: '100%',
-                  maxHeight: '100%'
-                }}/>
-            </Grid>
+            {this.heepLogo()}
           </Hidden>
         </Grid>
       </div>
