@@ -13,7 +13,7 @@ import Typography                                   from 'material-ui/Typography
 import Button                                       from 'material-ui/Button'
 import Hidden                                       from 'material-ui/Hidden';
 
-import FileDownload from 'material-ui-icons/FileDownload';
+import {FileDownload, ArrowForward}  from 'material-ui-icons';
 
 import * as actions from '../../redux/actions'
 
@@ -62,6 +62,26 @@ class DownloadPage extends React.Component {
           to data outputs (screens, lights, motors, and more). Start enchanting your world.
         </Typography>
       </div>
+    )
+  }
+
+  outboundLink() {
+
+    return (
+      <a href='https://heep-io.atlassian.net/wiki/spaces/DIYDEVDOCS/pages/496468058/Intro+to+Heep+OS' target="_blank">
+        <Button 
+          variant='flat'
+          color='primary'
+          size='large'
+        >
+          Go to Docs
+          <ArrowForward
+            style={{
+              marginLeft: 10
+            }}
+          />
+        </Button>
+      </a>
     )
   }
 
@@ -127,6 +147,15 @@ class DownloadPage extends React.Component {
                 }}/>
             </Grid>
           </Hidden>
+
+        </Grid>
+
+        <Grid container justify='flex-end' >
+          <Grid item xs={12} style={{height:100}}/>
+
+          <Grid item xs={3}>
+            {this.outboundLink()}
+          </Grid>
         </Grid>
       </div>
     );

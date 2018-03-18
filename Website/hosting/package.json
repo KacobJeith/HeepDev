@@ -19,7 +19,8 @@
     "start": "babel-node src/server.js",
     "tbs": "npm run test && npm run bs",
     "bs": "webpack && firebase serve",
-    "ts": "npm run test && npm run start"
+    "ts": "npm run test && npm run start",
+    "deploy": "webpack && firebase deploy --only hosting"
   },
   "dependencies": {
     "@shopify/buy-button-js": "^0.4.13",
