@@ -627,16 +627,22 @@ export const bedroomSVG = `
      <path fill="url(#SVGID_9_)" d="M1065.871 533.503l-116.457 44.524 108.34-61.702z"/>
    </g>
  </g>
+ <g id="Glow" fill="#00FFFF">
+   <circle id="glowCar" display="none" cx="413.445" cy="553.445" r="34.445"/>
+   <circle id="glowPlanets" display="none" cx="1084.945" cy="172.945" r="20.945"/>
+   <circle id="glowLamp" display="none" cx="802.945" cy="355.945" r="20.945"/>
+   <circle id="glowClock" display="none" cx="1318.434" cy="423.434" r="14.434"/>
+ </g>
   <g id="Buttons" fill="none">
-    <rect id="buttonRemote" x="130" y="632" fill="none" width="118" height="97" pointer-events="all" cursor="pointer"/>
-  	<rect id="buttonPig" x="613" y="310" fill="none" width="119" height="85" pointer-events="all" cursor="pointer"/>
-  	<rect id="buttonDiary" x="875" y="558" fill="none" width="198" height="86" pointer-events="all" cursor="pointer"/>
-  	<rect id="buttonSleep" x="1187" y="327" fill="none" width="70" height="60" pointer-events="all" cursor="pointer"/>
-  	<rect id="buttonDresserTop" x="613" y="408" fill="none" width="240" height="65" pointer-events="all" cursor="pointer"/>
-  	<rect id="buttonDresserBottom" x="612" y="479" fill="none" width="240" height="64" pointer-events="all" cursor="pointer"/>
-  	<rect id="buttonCactus" x="110" y="278" fill="none" width="64" height="118" pointer-events="all" cursor="pointer"/>
-  	<rect id="buttonFlower" x="177" y="249" fill="none" width="95" height="144" pointer-events="all" cursor="pointer"/>
-  	<rect id="buttonPail" x="350" y="330" fill="none" width="94" height="62" pointer-events="all" cursor="pointer"/>
+    <rect id="buttonRemote" x="130" y="632" fill="none" width="118" height="97" pointer-events="all"/>
+  	<rect id="buttonPig" x="613" y="310" fill="none" width="119" height="85" pointer-events="all"/>
+  	<rect id="buttonDiary" x="875" y="558" fill="none" width="198" height="86" pointer-events="all"/>
+  	<rect id="buttonSleep" x="1187" y="327" fill="none" width="70" height="60" pointer-events="all"/>
+  	<rect id="buttonDresserTop" x="613" y="408" fill="none" width="240" height="65" pointer-events="all"/>
+  	<rect id="buttonDresserBottom" x="612" y="479" fill="none" width="240" height="64" pointer-events="all"/>
+  	<rect id="buttonCactus" x="110" y="278" fill="none" width="64" height="118" pointer-events="all"/>
+  	<rect id="buttonFlower" x="177" y="249" fill="none" width="95" height="144" pointer-events="all"/>
+  	<rect id="buttonPail" x="350" y="330" fill="none" width="94" height="62" pointer-events="all"/>
   </g>
 </svg>
 `
