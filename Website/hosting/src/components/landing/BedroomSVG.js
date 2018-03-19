@@ -345,70 +345,76 @@ class BedroomSVG extends React.Component{
 
   clickTheft() {
     const tlTheft = new TimelineMax();
+    const startTime = 0.5;
 
-    const startTime = 0.2;
+    //turn on the lights
+    tlTheft.to(lampShade, 0.01, {fill: '#FFF3C0'}, 0.2)
+           .to(lampTop, 0.01, {fill: '#FCEA6B'}, 0.2)
+           .to(lampLight, 0.01, {fill: '#EAE1B2', display: 'block'}, 0.2)
 
-    TweenLite.to(lampShade, colorDuration, {fill: '#FFF3C0'});
-    TweenLite.to(lampTop, colorDuration, {fill: '#FCEA6B'});
-    TweenLite.to(lampLight, colorDuration, {display: 'block'});
+    //flash lights
+           .fromTo(lampTop, 0.2, {fill: '#BC0D0D'}, {fill: '#FCEA6B', repeat: 25}, startTime)
+           .fromTo(lampShade, 0.2, {fill: '#E26F6F'}, {fill: '#FFF3C0', repeat: 25}, startTime)
+           .fromTo(lampLight, 0.2, {fill: '#C98181'}, {fill: '#EAE1B2', repeat: 25}, startTime)
 
-    // flash lights
-    tlTheft.fromTo(lampTop, 0.2, {fill: '#BC0D0D'}, {fill: '#FCEA6B', repeat: 25}, startTime)
-    tlTheft.fromTo(lampShade, 0.2, {fill: '#E26F6F'}, {fill: '#FFF3C0', repeat: 25}, startTime)
-    tlTheft.fromTo(lampLight, 0.2, {fill: '#C98181'}, {fill: '#EAE1B2', repeat: 25}, startTime)
+    //bounce clock up and down
+           .fromTo(clock, 0.1, {y: 5, x: 3}, {
+              y: -5,
+              x: -3,
+              yoyo: true,
+              repeat: 50,
+              ease: Sine.easeInOut
+            }, startTime)
 
-    tlTheft.fromTo(clock, 0.1, {y: 5, x: 3}, {
-      y: -5,
-      x: -3,
-      yoyo: true,
-      repeat: 50,
-      ease: Sine.easeInOut
-    }, startTime);
+    //move clock bells
+            .fromTo(clockBellLeft, 0.2, {
+              rotation: -4,
+              transformOrigin: "50%",
+              y: 3
+            },
+            {
+              rotation: 4,
+              transformOrigin: "50%",
+              y: -3,
+              yoyo: true,
+              repeat: 26,
+              ease: Sine.easeInOut
+            }, startTime)
 
-    tlTheft.fromTo(clockBellLeft, 0.2, {
-      rotation: -4,
-      transformOrigin: "50%",
-      y: 3
-    },
-    {
-      rotation: 4,
-      transformOrigin: "50%",
-      y: -3,
-      yoyo: true,
-      repeat: 26,
-      ease: Sine.easeInOut
-    }, startTime);
+            .fromTo(clockBellRight, 0.2, {
+              rotation: 4,
+              transformOrigin: "50%",
+              y: -3
+            },
+            {
+              rotation: -4,
+              transformOrigin: "50%",
+              y: 3,
+              yoyo: true,
+              repeat: 25,
+              ease: Sine.easeInOut
+            }, startTime)
 
-    tlTheft.fromTo(clockBellRight, 0.2, {
-      rotation: 4,
-      transformOrigin: "50%",
-      y: -3
-    },
-    {
-      rotation: -4,
-      transformOrigin: "50%",
-      y: 3,
-      yoyo: true,
-      repeat: 25,
-      ease: Sine.easeInOut
-    }, startTime);
+    //planets wobble back and forth
+            .fromTo(solarSystem, 0.5, {
+              rotation: 10,
+              transformOrigin: "50%"
+            },
+            {
+              rotation: -10,
+              yoyo: true,
+              repeat: 10,
+              ease: Sine.easeInOut
+            }, startTime)
 
-    tlTheft.fromTo(solarSystem, 0.5, {
-      rotation: 10,
-      transformOrigin: "50%"
-    },
-    {
-      rotation: -10,
-      yoyo: true,
-      repeat: 10,
-      ease: Sine.easeInOut
-    }, startTime)
+    //move things back into place
+            .to(solarSystem, 0.25, {rotation: 0, transformOrigin: "50%"}, startTime+5)
+            .to(clock, 0.1, {x: 0, y: 0}, startTime+5.3)
 
-    tlTheft.to(solarSystem, 0.25, {rotation: 0, transformOrigin: "50%"}, startTime+5);
-    tlTheft.to(clock, 0.1, {x: 0, y: 0}, startTime+5.3);
-    tlTheft.to(lampLight, 0.1, {display: 'none'}, startTime+5.3);
-    tlTheft.to(lampTop, colorDuration, {fill: '#848383'}, startTime+5.3);
-    tlTheft.to(lampShade, colorDuration, {fill: '#ADADAD'}, startTime+5.3);
+    // make things disappear
+            .to(lampLight, 0.1, {display: 'none'}, startTime+5.3)
+            .to(lampTop, 0.1, {fill: '#848383'}, startTime+5.3)
+            .to(lampShade, 0.1, {fill: '#ADADAD'}, startTime+5.3)
   }
 
   hoverSleep() {
