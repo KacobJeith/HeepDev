@@ -1,10 +1,9 @@
 import React from 'react';
-import { svgs } from '../assets/remote/SVGs';
-import { bedroomSVG } from '../assets/BedroomString';
+import { bedroomSVG } from './BedroomString';
 import $ from 'jquery';
 //import * as MorphSVGPlugin from './gsap/MorphSVGPlugin'
 import { TimelineMax } from 'gsap';
-import MorphSVGPlugin from './utilities/MorphSvgPlugin';
+import MorphSVGPlugin from '../utilities/MorphSvgPlugin';
 import { withStyles } from 'material-ui/styles';
 import { Paper } from 'material-ui'
 
