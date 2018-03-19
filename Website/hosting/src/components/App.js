@@ -83,24 +83,24 @@ class App extends React.Component {
 
 	    return(
 			<Router >
-	    	<MuiThemeProvider theme={Theme}>
-					<div {...inputs.container}>
-						<div {...inputs.content}>
-							<Route path="/" component={AppBar}/>
-							<Route exact path="/" component={Landing}/>
-							<Route path="/Landing" component={Landing}/>
-							<Route path="/About" component={About}/>
-							<Route path="/Shop" component={Store}/>
-							<Route path="/product/:productID" component={ProductDetails}/>
-							<Route path="/Checkout" component={Checkout}/>
-							<Route path="/MyCart" component={ManageCart}/>
-							<Route exact path="/auth" component={Auth}/>
-							<Route exact path="/Developers" component={DownloadPage}/>
-							{loggedInRoutes}
-						</div>
-						<Route path="/" component={Footer}/>
-				    </div>
-		    </MuiThemeProvider>
+			    	<MuiThemeProvider theme={Theme}>
+							<div {...inputs.container}>
+								<div {...inputs.content}>
+									<Route path="/" component={AppBar}/>
+									<Route exact path="/" component={Landing}/>
+									<Route path="/Landing" component={Landing}/>
+									<Route path="/About" component={About}/>
+									<Route path="/Shop" component={Store}/>
+									<Route path="/product/:productID" component={ProductDetails}/>
+									<Route path="/Checkout" component={Checkout}/>
+									<Route path="/MyCart" component={ManageCart}/>
+									<Route exact path="/auth" component={Auth}/>
+									<Route exact path="/Developers" component={DownloadPage}/>
+									{loggedInRoutes}
+								</div>
+								<Route path="/" component={Footer}/>
+						    </div>
+				    </MuiThemeProvider>
 			</Router>);
 
 	}
