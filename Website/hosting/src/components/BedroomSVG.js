@@ -2,8 +2,9 @@ import React from 'react';
 import { svgs } from '../assets/remote/SVGs';
 import { bedroomSVG } from '../assets/BedroomString';
 import $ from 'jquery';
+//import * as MorphSVGPlugin from './gsap/MorphSVGPlugin'
 import { TimelineMax } from 'gsap';
-
+import MorphSVGPlugin from './utilities/MorphSvgPlugin';
 import { withStyles } from 'material-ui/styles';
 import { Paper } from 'material-ui'
 
@@ -21,14 +22,18 @@ var colorDuration = 1;
 //var tlVertex = new TimelineMax();
 
 var tlShake = new TimelineMax({repeat:-1});
-var tlRemote = new TimelineMax();
-var tlPig = new TimelineMax();
-var tlDiary = new TimelineMax();
+var tlVertexRemote = new TimelineMax();
+var tlVertexDiary = new TimelineMax();
+var tlVertexPig = new TimelineMax();
 
 class BedroomSVG extends React.Component{
 
   constructor(props) {
 		super(props);
+    this.state = {
+      animation: false,
+    }
+
     var bedroomDiv = document.createElement('div');
 		bedroomDiv.innerHTML = bedroomSVG;
     this.svg = $(bedroomDiv).find('svg')[0];
@@ -92,6 +97,7 @@ class BedroomSVG extends React.Component{
     var flowers = document.getElementById('flowers');
 
     var car = document.getElementById('car');
+    var carBodyGroup = document.getElementById('carBodyGroup');
     var carAnimation = document.getElementById('carAnimation');
     var carSmoke1 = document.getElementById('carSmoke1');
     var carSmoke2 = document.getElementById('carSmoke2');
@@ -117,6 +123,11 @@ class BedroomSVG extends React.Component{
     var vertexDiaryPlanets = document.getElementById('vertexDiaryPlanets')
 
     var cometRemote = document.getElementById('cometRemote')
+    var alignRemote = document.getElementById('alignRemote')
+
+    var cometDiaryLamp = document.getElementById('cometDiaryLamp')
+    var cometDiaryPlanets = document.getElementById('cometDiaryPlanets')
+    var cometDiaryClock = document.getElementById('cometDiaryClock')
   };
 
     addButtonListeners() {
@@ -165,7 +176,7 @@ class BedroomSVG extends React.Component{
       buttonRemote.removeEventListener('click', this.clickRemote);
       buttonPig.removeEventListener('click', this.clickPig);
       buttonDiary.removeEventListener('click', this.clickDiary);
-    }
+    };
 
   hoverShake(e) {
     tlShake.fromTo(e, 2, {x:-1}, {x:1, ease:RoughEase.ease.config({
@@ -182,7 +193,9 @@ class BedroomSVG extends React.Component{
 
   hoverRemote() {
     this.hoverShake(remote);
-    this.vertexRemote();
+    if (this.state.animation == false) {
+      this.vertexRemote()
+    }
   };
 
   leaveRemote() {
@@ -198,41 +211,54 @@ class BedroomSVG extends React.Component{
       this.addButtonListeners();
     };
 
+    const startTime = 0.5
+
     TweenLite.to(carAnimation, colorDuration, {display: 'block'});
     tlCar.fromTo([carSmoke1, carSmoke2, carSmoke3], 7.5, {y:-0.5}, {
       y:0.5,
       ease:RoughEase.ease.config({
         strength:20,
         points:20,
-        template:Linear.easeNone,
+        template:Sine.easeNone,
         randomize:false
-      }) , clearProps:"x"});
-    tlCar.to(car, 1.2, {x: -70, ease: Sine.easeInOut}, 0.7);
-    tlCar.to(car, 1, {x: 40, y: 160, ease: Sine.easeInOut}, 2);
-    tlCar.to(car, 0.6, {x: 200, ease: Sine.easeInOut}, 3.1);
-    tlCar.to(car, 0.6, {y: 80, ease: Sine.easeInOut}, 3.8);
-    tlCar.to(car, 0.7, {x: -30, y: -10, ease: Sine.easeInOut}, 4.5);
-    tlCar.to(car, 0.8, {y: 0, ease: Sine.easeInOut}, 5.3);
-    tlCar.to(car, 0.8, {x: 0, ease: Sine.easeInOut}, 6.2);
+      }) , clearProps:"x"}, startTime);
+    tlCar.fromTo(carBodyGroup, 7.5, {y:-0.02}, {
+      y:0.02,
+      ease:RoughEase.ease.config({
+        strength:100,
+        points:100,
+        template:Sine.easeNone,
+        randomize:false
+      }) , clearProps:"x"}, '-=7.5');
+    tlCar.to(car, 1.2, {x: -70, ease: Sine.easeInOut}, 0.7 + startTime);
+    tlCar.to(car, 1, {x: 40, y: 160, ease: Sine.easeInOut}, 2 + startTime);
+    tlCar.to(car, 0.6, {x: 200, ease: Sine.easeInOut}, 3.1 + startTime);
+    tlCar.to(car, 0.6, {y: 80, ease: Sine.easeInOut}, 3.8 + startTime);
+    tlCar.to(car, 0.7, {x: -30, y: -10, ease: Sine.easeInOut}, 4.5 + startTime);
+    tlCar.to(car, 0.8, {y: 0, ease: Sine.easeInOut}, 5.3 + startTime);
+    tlCar.to(car, 0.8, {x: 0, ease: Sine.easeInOut}, 6.2 + startTime);
     tlCar.to(carAnimation, 0.1, {display: 'none'});
     console.log("click")
   };
 
   vertexRemote() {
-    var pathRemoteCar = MorphSVGPlugin.pathDataToBezier(vertexRemoteCar);
-    TweenMax.to(cometRemote, 0.1, {display:'block'})
-    TweenMax.to(cometRemote, 1, {
-      bezier: {
-        values:pathRemoteCar,
-        type: cubic
-      },
-      ease: Sine.easeInOut
-    });
-
-  }
+    this.setState({animation: true})
+    var pathRemoteCar = MorphSVGPlugin.pathDataToBezier(vertexRemoteCar, {align: alignRemote});
+    tlVertexRemote.to(cometRemote, 0.05, {display:'block'});
+    tlVertexRemote.to(cometRemote, 0.6, {bezier: { type: "cubic", values: pathRemoteCar}, ease: Sine.easeInOut});
+    tlVertexRemote.to(cometRemote, 0.05, {display:'none'});
+    tlVertexRemote.to(cometRemote, 0.1, {x: 0, y: 0, onComplete: proxyFunction.bind(this)});
+    function proxyFunction(): void {
+      this.setState({animation: false})
+      tlVertexRemote.clear()
+    }
+  };
 
   hoverPig() {
     this.hoverShake(pig);
+    if (this.state.animation == false) {
+      this.vertexPig()
+    }
   };
 
   leavePig() {
@@ -260,8 +286,40 @@ class BedroomSVG extends React.Component{
     }, 0.2);
   };
 
+  vertexPig() {
+    this.setState({animation: true})
+
+    var pathPigLamp = MorphSVGPlugin.pathDataToBezier(vertexPigLamp, {align: alignPigLamp});
+    var pathPigPlanets = MorphSVGPlugin.pathDataToBezier(vertexPigPlanets, {align: alignPigPlanets});
+    var pathPigClock = MorphSVGPlugin.pathDataToBezier(vertexPigClock, {align: alignPigClock});
+
+    tlVertexPig.to(cometPigLamp, 0.05, {display:'block'});
+    tlVertexPig.to(cometPigPlanets, 0.05, {display:'block'}, '-=0.05');
+    tlVertexPig.to(cometPigClock, 0.05, {display:'block'}, '-=0.05');
+
+    tlVertexPig.to(cometPigLamp, 0.5, {bezier: { type: "cubic", values: pathPigLamp}, ease: Sine.easeInOut});
+    tlVertexPig.to(cometPigPlanets, 0.5, {bezier: { type: "cubic", values: pathPigPlanets}, ease: Sine.easeInOut}, '-=0.5');
+    tlVertexPig.to(cometPigClock, 0.5, {bezier: { type: "cubic", values: pathPigClock}, ease: Sine.easeInOut}, '-=0.5');
+
+    tlVertexPig.to(cometPigLamp, 0.05, {display:'none'});
+    tlVertexPig.to(cometPigPlanets, 0.05, {display:'none'}, '-=0.05');
+    tlVertexPig.to(cometPigClock, 0.05, {display:'none'}, '-=0.05');
+
+    tlVertexPig.to(cometPigLamp, 0.1, {x: 0, y: 0});
+    tlVertexPig.to(cometPigPlanets, 0.1, {x: 0, y: 0}, '-=0.1');
+    tlVertexPig.to(cometPigClock, 0.1, {x: 0, y: 0, onComplete: proxyFunction.bind(this)}, '-=0.1');
+
+    function proxyFunction(): void {
+      this.setState({animation: false})
+      tlVertexPig.clear()
+    }
+}
+
   hoverDiary() {
     this.hoverShake(diary);
+    if (this.state.animation == false) {
+      this.vertexDiary()
+    }
   };
 
   leaveDiary() {
@@ -291,6 +349,35 @@ class BedroomSVG extends React.Component{
     }, 0.3);
     tlDiary.to(diaryOpen, 0.1, {display: 'none'}, 4.8);
     tlDiary.to(diary, 0.1, {display: 'block'}, 4.8);
+  };
+
+  vertexDiary() {
+    this.setState({animation: true})
+
+    var pathDiaryLamp = MorphSVGPlugin.pathDataToBezier(vertexDiaryLamp, {align: alignDiaryLamp});
+    var pathDiaryPlanets = MorphSVGPlugin.pathDataToBezier(vertexDiaryPlanets, {align: alignDiaryPlanets});
+    var pathDiaryClock = MorphSVGPlugin.pathDataToBezier(vertexDiaryClock, {align: alignDiaryClock});
+
+    tlVertexDiary.to(cometDiaryLamp, 0.05, {display:'block'});
+    tlVertexDiary.to(cometDiaryPlanets, 0.05, {display:'block'}, '-=0.05');
+    tlVertexDiary.to(cometDiaryClock, 0.05, {display:'block'}, '-=0.05');
+
+    tlVertexDiary.to(cometDiaryLamp, 0.5, {bezier: { type: "cubic", values: pathDiaryLamp}, ease: Sine.easeInOut});
+    tlVertexDiary.to(cometDiaryPlanets, 0.5, {bezier: { type: "cubic", values: pathDiaryPlanets}, ease: Sine.easeInOut}, '-=0.5');
+    tlVertexDiary.to(cometDiaryClock, 0.5, {bezier: { type: "cubic", values: pathDiaryClock}, ease: Sine.easeInOut}, '-=0.5');
+
+    tlVertexDiary.to(cometDiaryLamp, 0.05, {display:'none'});
+    tlVertexDiary.to(cometDiaryPlanets, 0.05, {display:'none'}, '-=0.05');
+    tlVertexDiary.to(cometDiaryClock, 0.05, {display:'none'}, '-=0.05');
+
+    tlVertexDiary.to(cometDiaryLamp, 0.1, {x: 0, y: 0});
+    tlVertexDiary.to(cometDiaryPlanets, 0.1, {x: 0, y: 0}, '-=0.1');
+    tlVertexDiary.to(cometDiaryClock, 0.1, {x: 0, y: 0, onComplete: proxyFunction.bind(this)}, '-=0.1');
+
+    function proxyFunction(): void {
+      this.setState({animation: false})
+      tlVertexDiary.clear()
+    }
   };
 
   clickTheft() {
