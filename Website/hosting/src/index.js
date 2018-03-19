@@ -30,7 +30,8 @@ const startState = {
   places: {},
   groups: {},
   signals: {},
-  files: {}
+  files: {},
+  collections: {},
 }
 
 export const initialState = Immutable.Map(startState)
@@ -47,4 +48,3 @@ render(
 
   document.getElementById('root')
 );
-

@@ -13,9 +13,9 @@ var mapStateToProps = (state) => ({
 })
 
 class Store extends React.Component {
-  
+
   render() {
-    
+
     return (
         <Grid container justify='center' style={{marginTop: 20}}>
           <Grid item xs={10} style={{padding:24}}>
@@ -27,8 +27,8 @@ class Store extends React.Component {
           </Grid>
         </Grid>
     );
-  
-    
+
+
   }
 }
 

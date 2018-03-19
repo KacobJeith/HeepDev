@@ -1,23 +1,12 @@
-void CreateInterruptServer()
-{
+#pragma once
+#include "CommonDataTypes.h"
 
-}
+void CreateInterruptServer();
 
-void CheckServerForInputs()
-{
-	if(IsROP()) return;
+void CheckServerForInputs();
 
-    ExecuteControlOpCodes();
-}
-
-void SendOutputBufferToIP(struct HeepIPAddress destIP)
-{
-
-}
+void SendOutputBufferToIP(struct HeepIPAddress destIP);
 
 #ifdef USE_ANALYTICS
-void SendDataToFirebase(heepByte *buffer, int length, heepByte* base64IDBuffer, int base64IDLength)
-{
-	
-}
+void SendDataToFirebase(heepByte *buffer, int length, heepByte* base64IDBuffer, int base64IDLength);
 #endif
