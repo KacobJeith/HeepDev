@@ -62,68 +62,7 @@ class BedroomSVG extends React.Component{
 	};
 
   componentDidMount() {
-    this.getElements();
     this.addButtonListeners();
-  };
-
-  getElements() {
-    var buttonRemote = document.getElementById('buttonRemote');
-    var buttonPig = document.getElementById('buttonPig');
-    var buttonDiary = document.getElementById('buttonDiary');
-    var buttonSleep = document.getElementById('buttonSleep');
-    var buttonDresserTop = document.getElementById('buttonDresserTop');
-    var buttonDresserBottom = document.getElementById('buttonDresserBottom');
-    var buttonCactus = document.getElementById('buttonCactus');
-    var buttonFlower = document.getElementById('buttonFlower');
-
-    var remote = document.getElementById('remote');
-
-    var pig = document.getElementById('pig');
-
-    var diary = document.getElementById('diary')
-    var diaryOpen = document.getElementById('diaryOpen');
-
-    var sleep = document.getElementById('sleep');
-
-    var dresser = document.getElementById('dresser');
-    var dresserDrawers = document.getElementById('dresserDrawers');
-
-    var cactus = document.getElementById('cactus');
-
-    var flowers = document.getElementById('flowers');
-
-    var car = document.getElementById('car');
-    var carBodyGroup = document.getElementById('carBodyGroup');
-    var carAnimation = document.getElementById('carAnimation');
-    var carSmoke1 = document.getElementById('carSmoke1');
-    var carSmoke2 = document.getElementById('carSmoke2');
-    var carSmoke3 = document.getElementById('carSmoke3');
-
-    var solarSystem = document.getElementById('solarSystem');
-
-    var lampBottom = document.getElementById('lampBottom');
-    var lampShade = document.getElementById('lampShade');
-    var lampTop = document.getElementById('lampTop');
-    var lampLight = document.getElementById('lampLight');
-
-    var clock = document.getElementById('clock');
-    var clockBellLeft = document.getElementById('clockBellLeft');
-    var clockBellRight = document.getElementById('clockBellRight');
-
-    var vertexRemoteCar = document.getElementById('vertexRemoteCar');
-    var vertexPigLamp = document.getElementById('vertexPigLamp');
-    var vertexPigClock = document.getElementById('vertexPigClock');
-    var vertexPigPlanets = document.getElementById('vertexPigPlanets');
-    var vertexDiaryLamp = document.getElementById('vertexDiaryLamp')
-    var vertexDiaryClock = document.getElementById('vertexDiaryClock')
-    var vertexDiaryPlanets = document.getElementById('vertexDiaryPlanets')
-
-    var cometRemote = document.getElementById('cometRemote')
-    var alignRemote = document.getElementById('alignRemote')
-
-    var cometDiaryLamp = document.getElementById('cometDiaryLamp')
-    var cometDiaryPlanets = document.getElementById('cometDiaryPlanets')
-    var cometDiaryClock = document.getElementById('cometDiaryClock')
   };
 
     addButtonListeners() {
@@ -249,7 +188,6 @@ class BedroomSVG extends React.Component{
   clickPig() {
     this.removeButtonListeners();
     tlShake.clear();
-    this.clickTheft();
 
     let tlPig = new TimelineMax({onComplete: proxyFunction.bind(this)});
     function proxyFunction(): void {
@@ -301,7 +239,6 @@ class BedroomSVG extends React.Component{
   clickDiary() {
     this.removeButtonListeners();
     tlShake.clear();
-    this.clickTheft();
 
     let tlDiary = new TimelineMax({onComplete: proxyFunction.bind(this)});
     function proxyFunction(): void {
@@ -345,12 +282,12 @@ class BedroomSVG extends React.Component{
 
   clickTheft() {
     const tlTheft = new TimelineMax();
-    const startTime = 0.5;
+    const startTime = 0.1;
 
     //turn on the lights
-    tlTheft.to(lampShade, 0.01, {fill: '#FFF3C0'}, 0.2)
-           .to(lampTop, 0.01, {fill: '#FCEA6B'}, 0.2)
-           .to(lampLight, 0.01, {fill: '#EAE1B2', display: 'block'}, 0.2)
+    tlTheft.to(lampShade, 0.01, {fill: '#FFF3C0'}, 0.01)
+           .to(lampTop, 0.01, {fill: '#FCEA6B'}, 0.01)
+           .to(lampLight, 0.01, {fill: '#EAE1B2', display: 'block'}, 0.01)
 
     //flash lights
            .fromTo(lampTop, 0.2, {fill: '#BC0D0D'}, {fill: '#FCEA6B', repeat: 25}, startTime)
@@ -398,23 +335,24 @@ class BedroomSVG extends React.Component{
     //planets wobble back and forth
             .fromTo(solarSystem, 0.5, {
               rotation: 10,
-              transformOrigin: "50%"
+              transformOrigin: "50%",
+              ease: Sine.easeInOut
             },
             {
               rotation: -10,
               yoyo: true,
               repeat: 10,
               ease: Sine.easeInOut
-            }, startTime)
+            }, startTime+0.25)
 
     //move things back into place
-            .to(solarSystem, 0.25, {rotation: 0, transformOrigin: "50%"}, startTime+5)
-            .to(clock, 0.1, {x: 0, y: 0}, startTime+5.3)
+          .to(solarSystem, 0.25, {rotation: 0, transformOrigin: "50%"}, startTime+5)
+          .to(clock, 0.1, {x: 0, y: 0}, startTime+5.3)
 
     // make things disappear
-            .to(lampLight, 0.1, {display: 'none'}, startTime+5.3)
-            .to(lampTop, 0.1, {fill: '#848383'}, startTime+5.3)
-            .to(lampShade, 0.1, {fill: '#ADADAD'}, startTime+5.3)
+    .to(lampLight, 0.1, {display: 'none'}, startTime+5.3)
+    .to(lampTop, 0.1, {fill: '#848383'}, startTime+5.3)
+    .to(lampShade, 0.1, {fill: '#ADADAD'}, startTime+5.3)
   }
 
   hoverSleep() {

@@ -628,15 +628,15 @@ export const bedroomSVG = `
    </g>
  </g>
   <g id="Buttons" fill="none">
-    <rect id="buttonRemote" x="130" y="632" fill="none" width="118" height="97" pointer-events="all"/>
-  	<rect id="buttonPig" x="613" y="310" fill="none" width="119" height="85" pointer-events="all"/>
-  	<rect id="buttonDiary" x="875" y="558" fill="none" width="198" height="86" pointer-events="all"/>
-  	<rect id="buttonSleep" x="1187" y="327" fill="none" width="70" height="60" pointer-events="all"/>
-  	<rect id="buttonDresserTop" x="613" y="408" fill="none" width="240" height="65" pointer-events="all"/>
-  	<rect id="buttonDresserBottom" x="612" y="479" fill="none" width="240" height="64" pointer-events="all"/>
-  	<rect id="buttonCactus" x="110" y="278" fill="none" width="64" height="118" pointer-events="all"/>
-  	<rect id="buttonFlower" x="177" y="249" fill="none" width="95" height="144" pointer-events="all"/>
-  	<rect id="buttonPail" x="350" y="330" fill="none" width="94" height="62" pointer-events="all"/>
+    <rect id="buttonRemote" x="130" y="632" fill="none" width="118" height="97" pointer-events="all" cursor="pointer"/>
+  	<rect id="buttonPig" x="613" y="310" fill="none" width="119" height="85" pointer-events="all" cursor="pointer"/>
+  	<rect id="buttonDiary" x="875" y="558" fill="none" width="198" height="86" pointer-events="all" cursor="pointer"/>
+  	<rect id="buttonSleep" x="1187" y="327" fill="none" width="70" height="60" pointer-events="all" cursor="pointer"/>
+  	<rect id="buttonDresserTop" x="613" y="408" fill="none" width="240" height="65" pointer-events="all" cursor="pointer"/>
+  	<rect id="buttonDresserBottom" x="612" y="479" fill="none" width="240" height="64" pointer-events="all" cursor="pointer"/>
+  	<rect id="buttonCactus" x="110" y="278" fill="none" width="64" height="118" pointer-events="all" cursor="pointer"/>
+  	<rect id="buttonFlower" x="177" y="249" fill="none" width="95" height="144" pointer-events="all" cursor="pointer"/>
+  	<rect id="buttonPail" x="350" y="330" fill="none" width="94" height="62" pointer-events="all" cursor="pointer"/>
   </g>
 </svg>
 `
