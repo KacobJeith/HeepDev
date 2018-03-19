@@ -21,15 +21,32 @@ const startState = {
   places: {},
   groups: {},
 
-  devices: {deviceArray: []},
+  devices: {
+    deviceArray: []
+  },
   positions: {},
-  controls: {controlStructure:{}, connections: {}},
+  controls: {
+    controlStructure:{}, 
+    connections: {}
+  },
   vertexList: {},
   icons: {},
   url: '',
   analytics: {},
   analyticsDeviceList: [],
-  displayingAnalytics: ''
+  displayingAnalytics: '',
+
+  designer: {
+    deviceName: 'DefaultDevice',
+    numControls: 0,
+    physicalLayer: 'Simulation',
+    ssid: 'your_ssid_here',
+    ssidPassword: 'your_ssid_pwd',
+    systemType: 'Simulation',
+    iconSelected: 1,
+    selectingIcon: false,
+    controls: []
+  }
 }
 
 export const initialState = Immutable.Map(startState)

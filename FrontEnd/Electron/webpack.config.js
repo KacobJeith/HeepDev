@@ -26,8 +26,11 @@ module.exports = {
   },
 
   resolve: {
-    root: path.join(__dirname, ''),
-    modulesDirectories: ['web_modules', 'node_modules', 'client', 'js'],
+    root: [
+      path.join(__dirname, ''),
+      path.resolve('./../../')
+    ],
+    modulesDirectories: ['web_modules', 'node_modules', 'client', 'js', 'HeepModules'],
     extensions: ['', '.webpack.js', '.web.js', '.js', '.jsx']
   },
 

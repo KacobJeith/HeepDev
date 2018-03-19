@@ -9,7 +9,7 @@ import Auth from './account/Auth'
 import Logout from './account/Logout'
 import Loading from './Loading'
 import UserAccount from './account/UserAccount'
-import DeviceBuilder from './DeviceBuilder'
+import Designer from './designer/DeviceBuilder'
 import Flowchart from './flowchart/Flowchart'
 // import Analytics from './Analytics/AnalyticsMain'
 
@@ -61,6 +61,7 @@ class App extends React.Component {
 						<div {...inputs.content} >
 							<Route exact path="/" component={Flowchart} key="Flow"/>
 							<Route path="/Classic" component={Flowchart} key="Flowchart"/>
+							<Route path="/Designer" component={Designer} key="Designer"/>
 							<Route exact path="/auth" component={Auth}/>
 							{loggedInRoutes}
 						</div>

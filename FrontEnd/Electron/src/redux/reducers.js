@@ -7,6 +7,7 @@ import * as async from './async'
 import * as utils from '../serverside/utilities/generalUtilities'
 import * as auth from '../firebase/FirebaseAuth'
 import * as database from '../firebase/FirebaseDatabase'
+import reducersDesigner from './reducers_designer'
 
 export default function(state = initialState, action) {
   switch (action.type) {
@@ -259,6 +260,13 @@ export default function(state = initialState, action) {
       return state
 
     default:
-      return state
+      console.log('Passed through first Switch');
   }
+
+  const builderState = reducersDesigner(state.builder, action, state);
+
+  if (builderState !== state.builder) {
+    return builderState
+  }
+
 }
