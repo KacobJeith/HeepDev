@@ -430,13 +430,17 @@ class BedroomSVG extends React.Component{
     // animate sunset
            .to([outsideSun, outsideSunGlow], 4, {bezier: {type: "cubic", values: pathSun}, ease: Sine.easeInOut, scaleX: 1.4, scaleY: 1.4, transformOrigin: "center"}, "+=0.5")
            .to(outsideSun, 2, {fill: "#f26f41"}, "-=4")
-           .staggerTo("#outsideSunGlow_1_ stop", 4, {
-             stopColor: "#ffe027",
+           .staggerTo("#outsideSunGlow_1_ stop", 3, {
+             stopColor: "#f26f41",
              ease: Sine.easeInOut,
              cycle: {
                stopColor: ["#f26f41", "#fff"]
              }
            }, 0, "-=4")
+
+           .to(cloudLeft, 4, {fill: "#ffd69f"}, "-=4")
+           .to(cloudCenter, 4, {fill: "#f28757"}, "-=4")
+           .to(cloudRight, 4, {fill: "#d6b39a"}, "-=4")
 
            .staggerTo("#outsideSky_1_ stop", 4, {
              stopColor: "#b1e6f2",
@@ -447,23 +451,28 @@ class BedroomSVG extends React.Component{
            }, 1, "-=4")
            .to([windowGlare1, windowGlare2, windowGlare3], 1, {opacity: 0}, "-=4")
 
+           .to(cloudLeft, 5, {fill: "#9e97b6"})
+           .to(cloudCenter, 5, {fill: "#443d56"}, "-=5")
+           .to(cloudRight, 5, {fill: "#4d495b"}, "-=5")
+
            .staggerTo("#outsideSky_1_ stop", 2, {
              stopColor: "#ff7654",
              ease: Sine.easeInOut,
              cycle: {
-               stopColor: ["#ff7654", "#17003a"]
+               stopColor: ["#ff7654", "#110f27"]
              }
-           }, 1, "-=0.7")
+           }, 1, "-=5")
 
            .staggerTo("#outsideSky_1_ stop", 3, {
-             stopColor: "#17003a",
+             stopColor: "#110f27",
              ease: Sine.easeInOut,
              cycle: {
-               stopColor: ["#17003a", "#17003a"]
+               stopColor: ["#110f27", "#110f27"]
              }
-           }, 0.05, "-=0.7")
+           }, 0, "-=3")
 
-           .to([outsideSun, outsideSunGlow], 0.01, {display: "none"}, "-=0.7")
+           .to()
+
   };
 
   hoverDresser() {
