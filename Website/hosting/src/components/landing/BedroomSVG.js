@@ -428,7 +428,42 @@ class BedroomSVG extends React.Component{
            .to(glowSleep, 0.01, {scaleX: 1, scaleY: 1, opacity: 1, transformOrigin: "center"})
 
     // animate sunset
-           .to(outsideSun, 4, {bezier: {type: "cubic", values: pathSun}, ease: Sine.easeInOut, scaleX: 1.3, scaleY: 1.3, fill: "#e03f07"}, "+=0.5")
+           .to([outsideSun, outsideSunGlow], 4, {bezier: {type: "cubic", values: pathSun}, ease: Sine.easeInOut, scaleX: 1.4, scaleY: 1.4, transformOrigin: "center"}, "+=0.5")
+           .to(outsideSun, 2, {fill: "#f26f41"}, "-=4")
+           .staggerTo("#outsideSunGlow_1_ stop", 4, {
+             stopColor: "#ffe027",
+             ease: Sine.easeInOut,
+             cycle: {
+               stopColor: ["#f26f41", "#fff"]
+             }
+           }, 0, "-=4")
+
+           .staggerTo("#outsideSky_1_ stop", 4, {
+             stopColor: "#b1e6f2",
+             ease: Sine.easeInOut,
+             cycle: {
+               stopColor: ["#b1e6f2", "#ff7654"]
+             }
+           }, 1, "-=4")
+           .to([windowGlare1, windowGlare2, windowGlare3], 1, {opacity: 0}, "-=4")
+
+           .staggerTo("#outsideSky_1_ stop", 2, {
+             stopColor: "#ff7654",
+             ease: Sine.easeInOut,
+             cycle: {
+               stopColor: ["#ff7654", "#17003a"]
+             }
+           }, 1, "-=0.7")
+
+           .staggerTo("#outsideSky_1_ stop", 3, {
+             stopColor: "#17003a",
+             ease: Sine.easeInOut,
+             cycle: {
+               stopColor: ["#17003a", "#17003a"]
+             }
+           }, 0.05, "-=0.7")
+
+           .to([outsideSun, outsideSunGlow], 0.01, {display: "none"}, "-=0.7")
   };
 
   hoverDresser() {
@@ -447,7 +482,7 @@ class BedroomSVG extends React.Component{
     this.leaveShake();
   };
 
-  hoverFlower() {
+  hoverFlower() {sv
     this.hoverShake(flowers);
   };
 
