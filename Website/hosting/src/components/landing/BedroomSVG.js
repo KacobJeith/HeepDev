@@ -378,7 +378,7 @@ class BedroomSVG extends React.Component{
 
     //move things back into place
           .to(solarSystem, 0.25, {rotation: 0, transformOrigin: "50%"}, startTime+4.5)
-          .to(clock, 0.1, {x: 0, y: 0}, startTime+4.8)
+          .to([clock, clockBellLeft, clockBellRight], 0.1, {x: 0, y: 0}, startTime+4.8)
 
     // make things disappear
     .to(lampLight, 0.1, {display: 'none'}, startTime+4.8)
@@ -510,43 +510,71 @@ class BedroomSVG extends React.Component{
              }
            }, 0, "-=0.01")
 
+           .to([night, nightLightGlow, sunGlow], 1, {display: "none"}, "+=1")
+
            //bounce clock up and down
-                  .fromTo(clock, 0.1, {y: 5, x: 3}, {
-                     y: -5,
-                     x: -3,
-                     yoyo: true,
-                     repeat: 50,
-                     ease: Sine.easeInOut
-                   }, "+=2")
+           .from(clock, 0.2, {y: 0, x:0}, {
+             y: 5,
+             x: 3,
+             ease: Sine.easeInOut
+           })
+
+           .fromTo(clockBellLeft, 0.1, {y: 0, x: 0, rotation: 0}, {
+             y: 3,
+             rotation: -4,
+             transformOrigin: "50%",
+             ease: Sine.easeInOut
+           }, "-=0.2")
+
+           .fromTo(clockBellRight, 0.1, {y: 0, rotation: 0}, {
+             y: -3,
+             rotation: 4,
+             transformOrigin: "50%",
+             ease: Sine.easeInOut
+           }, "-=0.2")
+
+           .fromTo(clock, 0.1, {y: 5, x: 3}, {
+              y: -5,
+              x: -3,
+              yoyo: true,
+              repeat: 50,
+              ease: Sine.easeInOut
+            })
 
            //move clock bells
-                   .fromTo(clockBellLeft, 0.2, {
-                     rotation: -4,
-                     transformOrigin: "50%",
-                     y: 3
-                   },
-                   {
-                     rotation: 4,
-                     transformOrigin: "50%",
-                     y: -3,
-                     yoyo: true,
-                     repeat: 26,
-                     ease: Sine.easeInOut
-                   }, "-=")
+           .fromTo(clockBellLeft, 0.2, {
+             rotation: -4,
+             transformOrigin: "50%",
+             y: 3
+           },
+           {
+             rotation: 4,
+             transformOrigin: "50%",
+             y: -3,
+             yoyo: true,
+             repeat: 26,
+             ease: Sine.easeInOut
+           }, "-=5")
 
-                   .fromTo(clockBellRight, 0.2, {
-                     rotation: 4,
-                     transformOrigin: "50%",
-                     y: -3
-                   },
-                   {
-                     rotation: -4,
-                     transformOrigin: "50%",
-                     y: 3,
-                     yoyo: true,
-                     repeat: 25,
-                     ease: Sine.easeInOut
-                   }, startTime)
+           .fromTo(clockBellRight, 0.2, {
+             rotation: 4,
+             transformOrigin: "50%",
+             y: -3
+           },
+           {
+             rotation: -4,
+             transformOrigin: "50%",
+             y: 3,
+             yoyo: true,
+             repeat: 25,
+             ease: Sine.easeInOut
+           }, "-=5")
+
+           .to([clock, clockBellLeft, clockBellRight], 0.1, {x: 0, y: 0}, "+=0.01")
+
+          // blinds go up
+           .to(blindsMiddle, 4, {scaleY: 1, ease: Sine.easeInOut}, "-=5")
+           .to(blindsBottom, 4, {y: 0, ease: Sine.easeInOut}, "-=5")
 
   };
 
