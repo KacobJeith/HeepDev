@@ -412,6 +412,7 @@ class BedroomSVG extends React.Component{
     const glowSleep = [glowBlinds, glowPlanets, glowClock, glowNitelite]
 
     const pathSun = MorphSVGPlugin.pathDataToBezier(pathSunset, {align: alignPathSunset});
+    const pathMoon = MorphSVGPlugin.pathDataToBezier(pathMoonrise, {align: alignPathMoonrise});
 
     // comets appear, animate along the path, and then disappear
     tlSleep.to(cometSleep, 0.05, {display:'block'})
@@ -427,7 +428,8 @@ class BedroomSVG extends React.Component{
            .to(glowSleep, 0.01, {display: 'none'})
            .to(glowSleep, 0.01, {scaleX: 1, scaleY: 1, opacity: 1, transformOrigin: "center"})
 
-    // animate sunset
+    // animate sunset and moonrise
+          // sunset animation along path with color change
            .to([outsideSun, outsideSunGlow], 4, {bezier: {type: "cubic", values: pathSun}, ease: Sine.easeInOut, scaleX: 1.4, scaleY: 1.4, transformOrigin: "center"}, "+=0.5")
            .to(outsideSun, 2, {fill: "#f26f41"}, "-=4")
            .staggerTo("#outsideSunGlow_1_ stop", 3, {
@@ -438,10 +440,12 @@ class BedroomSVG extends React.Component{
              }
            }, 0, "-=4")
 
+          // first color change of clouds to reddish
            .to(cloudLeft, 4, {fill: "#ffd69f"}, "-=4")
            .to(cloudCenter, 4, {fill: "#f28757"}, "-=4")
            .to(cloudRight, 4, {fill: "#d6b39a"}, "-=4")
 
+          // first color change of sky to red
            .staggerTo("#outsideSky_1_ stop", 4, {
              stopColor: "#b1e6f2",
              ease: Sine.easeInOut,
@@ -451,18 +455,21 @@ class BedroomSVG extends React.Component{
            }, 1, "-=4")
            .to([windowGlare1, windowGlare2, windowGlare3], 1, {opacity: 0}, "-=4")
 
+          // second color change of cloud to purple
            .to(cloudLeft, 5, {fill: "#9e97b6"})
            .to(cloudCenter, 5, {fill: "#443d56"}, "-=5")
            .to(cloudRight, 5, {fill: "#4d495b"}, "-=5")
 
+          // second color change of sky to purple
            .staggerTo("#outsideSky_1_ stop", 2, {
              stopColor: "#ff7654",
              ease: Sine.easeInOut,
              cycle: {
                stopColor: ["#ff7654", "#110f27"]
              }
-           }, 1, "-=5")
+           }, 1, "-=6")
 
+          // third color change of sky to completely purple
            .staggerTo("#outsideSky_1_ stop", 3, {
              stopColor: "#110f27",
              ease: Sine.easeInOut,
@@ -471,7 +478,8 @@ class BedroomSVG extends React.Component{
              }
            }, 0, "-=3")
 
-           .to()
+          // moonrise animation
+           .to(outsideMoon, 3, {bezier: {type: "cubic", values: pathMoon}, ease: Sine.easeInOut}, "-=4")
 
   };
 
