@@ -59,6 +59,7 @@ class BedroomSVG extends React.Component{
     this.clickRemote = this.clickRemote.bind(this);
     this.clickPig = this.clickPig.bind(this);
     this.clickDiary = this.clickDiary.bind(this);
+    this.clickSleep = this.clickSleep.bind(this);
 	};
 
   componentDidMount() {
@@ -87,6 +88,7 @@ class BedroomSVG extends React.Component{
       buttonRemote.addEventListener('click', this.clickRemote);
       buttonPig.addEventListener('click', this.clickPig);
       buttonDiary.addEventListener('click', this.clickDiary);
+      buttonSleep.addEventListener('click', this.clickSleep);
 
       buttonRemote.setAttribute('cursor', 'pointer');
       buttonPig.setAttribute('cursor', 'pointer');
@@ -120,6 +122,7 @@ class BedroomSVG extends React.Component{
       buttonRemote.removeEventListener('click', this.clickRemote);
       buttonPig.removeEventListener('click', this.clickPig);
       buttonDiary.removeEventListener('click', this.clickDiary);
+      buttonSleep.removeEventListener('click', this.clickSleep);
 
       buttonRemote.removeAttribute('cursor', 'pointer');
       buttonPig.removeAttribute('cursor', 'pointer');
@@ -166,8 +169,7 @@ class BedroomSVG extends React.Component{
 
     tlCar.to(cometRemote, 0.05, {display:'block'})
          .to(cometRemote, 0.6, {bezier: { type: "cubic", values: pathRemoteCar}, ease: Sine.easeInOut})
-         .to(cometRemote, 0.05, {display:'none'})
-         .to(cometRemote, 0.01, {x: 0, y: 0})
+         .to(cometRemote, 0.01, {display:'none', x: 0, y: 0})
 
          .to(glowCar, 0.01, {display:'block'})
          .to(glowCar, 0.75, {scaleX: 3.2, scaleY: 3.2, opacity: 0, transformOrigin: "center"})
@@ -218,25 +220,27 @@ class BedroomSVG extends React.Component{
       this.addButtonListeners();
     };
 
+    const cometPig = [cometPigLamp, cometPigPlanets, cometPigClock]
+    const glowPig = [glowLamp, glowPlanets, glowClock]
+
     const pathPigLamp = MorphSVGPlugin.pathDataToBezier(vertexPigLamp, {align: alignPigLamp});
     const pathPigPlanets = MorphSVGPlugin.pathDataToBezier(vertexPigPlanets, {align: alignPigPlanets});
     const pathPigClock = MorphSVGPlugin.pathDataToBezier(vertexPigClock, {align: alignPigClock});
 
-    tlPig.to([cometPigLamp, cometPigPlanets, cometPigClock], 0.05, {display:'block'})
+    tlPig.to(cometPig, 0.05, {display:'block'})
 
          .to(cometPigLamp, 0.5, {bezier: { type: "cubic", values: pathPigLamp}, ease: Sine.easeInOut})
          .to(cometPigPlanets, 0.5, {bezier: { type: "cubic", values: pathPigPlanets}, ease: Sine.easeInOut}, '-=0.5')
          .to(cometPigClock, 0.5, {bezier: { type: "cubic", values: pathPigClock}, ease: Sine.easeInOut}, '-=0.5')
 
-         .to([cometPigLamp, cometPigPlanets, cometPigClock], 0.01, {display:'none'})
-         .to([cometPigLamp, cometPigPlanets, cometPigClock], 0.01, {x: 0, y: 0})
+         .to(cometPig, 0.01, {display:'none', x: 0, y: 0})
 
-         .to([glowLamp, glowPlanets, glowClock], 0.01, {display:'block'})
+         .to(glowPig, 0.01, {display:'block'})
 
-         .to([glowLamp, glowPlanets, glowClock], 0.75, {scaleX: 4, scaleY: 4, opacity: 0, transformOrigin: "center"})
+         .to(glowPig, 0.75, {scaleX: 4, scaleY: 4, opacity: 0, transformOrigin: "center"})
 
-         .to([glowLamp, glowPlanets, glowClock], 0.01, {display: 'none'})
-         .to([glowLamp, glowPlanets, glowClock], 0.01, {scaleX: 1, scaleY: 1, opacity: 1, transformOrigin: "center", onComplete: this.clickTheft.bind(this)})
+         .to(glowPig, 0.01, {display: 'none'})
+         .to(glowPig, 0.01, {scaleX: 1, scaleY: 1, opacity: 1, transformOrigin: "center", onComplete: this.clickTheft.bind(this)})
 
          .to(pig, 2.3, {
               scaleX: 1.8,
@@ -269,28 +273,30 @@ class BedroomSVG extends React.Component{
       this.addButtonListeners();
     };
 
+    const cometDiary = [cometDiaryLamp, cometDiaryPlanets, cometDiaryClock]
+    const glowDiary = [glowLamp, glowPlanets, glowClock]
+
     const pathDiaryLamp = MorphSVGPlugin.pathDataToBezier(vertexDiaryLamp, {align: alignDiaryLamp});
     const pathDiaryPlanets = MorphSVGPlugin.pathDataToBezier(vertexDiaryPlanets, {align: alignDiaryPlanets});
     const pathDiaryClock = MorphSVGPlugin.pathDataToBezier(vertexDiaryClock, {align: alignDiaryClock});
 
-    tlDiary.to([cometDiaryLamp, cometDiaryPlanets, cometDiaryClock], 0.05, {display:'block'})
+    tlDiary.to(cometDiary, 0.05, {display:'block'})
 
            .to(cometDiaryLamp, 0.5, {bezier: { type: "cubic", values: pathDiaryLamp}, ease: Sine.easeInOut})
            .to(cometDiaryPlanets, 0.5, {bezier: { type: "cubic", values: pathDiaryPlanets}, ease: Sine.easeInOut}, '-=0.5')
            .to(cometDiaryClock, 0.5, {bezier: { type: "cubic", values: pathDiaryClock}, ease: Sine.easeInOut}, '-=0.5')
 
-           .to([cometDiaryLamp, cometDiaryPlanets, cometDiaryClock], 0.01, {display:'none'})
-           .to([cometDiaryLamp, cometDiaryPlanets, cometDiaryClock], 0.01, {x: 0, y: 0})
+           .to(cometDiary, 0.01, {display:'none', x: 0, y: 0})
 
-           .to([glowLamp, glowPlanets, glowClock], 0.01, {display:'block'})
+           .to(glowDiary, 0.01, {display:'block'})
 
-           .to([glowLamp, glowPlanets, glowClock], 0.75, {scaleX: 4, scaleY: 4, opacity: 0, transformOrigin: "center"})
+           .to(glowDiary, 0.75, {scaleX: 4, scaleY: 4, opacity: 0, transformOrigin: "center"})
 
-           .to([glowLamp, glowPlanets, glowClock], 0.01, {display: 'none'})
-           .to([glowLamp, glowPlanets, glowClock], 0.01, {scaleX: 1, scaleY: 1, opacity: 1, transformOrigin: "center", onComplete: this.clickTheft.bind(this)})
+           .to(glowDiary, 0.01, {display: 'none'})
+           .to(glowDiary, 0.01, {scaleX: 1, scaleY: 1, opacity: 1, transformOrigin: "center", onComplete: this.clickTheft.bind(this)})
 
-           .to(diary, 0.1, {display: 'none'}, 1.2)
-           .to(diaryOpen, 0.1, {display: 'block'}, 1.2)
+           .to(diary, 0.01, {display: 'none'}, 1)
+           .to(diaryOpen, 0.01, {display: 'block'}, 1)
            .to(diaryOpen, 2.2, {
                 scaleX: 1.4,
                 scaleY: 1.4,
@@ -306,12 +312,12 @@ class BedroomSVG extends React.Component{
 
   clickTheft() {
     const tlTheft = new TimelineMax();
-    const startTime = 0.1;
+    const startTime = 0.3;
 
     //turn on the lights
-    tlTheft.to(lampShade, 0.01, {fill: '#FFF3C0'}, 0.01)
-           .to(lampTop, 0.01, {fill: '#FCEA6B'}, 0.01)
-           .to(lampLight, 0.01, {fill: '#EAE1B2', display: 'block'}, 0.01)
+    tlTheft.to(lampShade, 0.01, {fill: '#FFF3C0'}, 0.1)
+           .to(lampTop, 0.01, {fill: '#FCEA6B'}, 0.1)
+           .to(lampLight, 0.01, {fill: '#EAE1B2', display: 'block'}, 0.1)
 
     //flash lights
            .fromTo(lampTop, 0.2, {fill: '#BC0D0D'}, {fill: '#FCEA6B', repeat: 25}, startTime)
@@ -323,7 +329,7 @@ class BedroomSVG extends React.Component{
               y: -5,
               x: -3,
               yoyo: true,
-              repeat: 50,
+              repeat: 44,
               ease: Sine.easeInOut
             }, startTime)
 
@@ -338,7 +344,7 @@ class BedroomSVG extends React.Component{
               transformOrigin: "50%",
               y: -3,
               yoyo: true,
-              repeat: 26,
+              repeat: 22,
               ease: Sine.easeInOut
             }, startTime)
 
@@ -352,11 +358,11 @@ class BedroomSVG extends React.Component{
               transformOrigin: "50%",
               y: 3,
               yoyo: true,
-              repeat: 25,
+              repeat: 21,
               ease: Sine.easeInOut
             }, startTime)
 
-            .to(solarSystem, 0.75, {rotation: 15, ease: Sine.easeInOut, transformOrigin: "50%"}, startTime)
+            .to(solarSystem, 0.6, {rotation: 15, ease: Sine.easeInOut, transformOrigin: "50%"}, startTime)
 
     //planets wobble back and forth
             .fromTo(solarSystem, 0.5, {
@@ -369,16 +375,16 @@ class BedroomSVG extends React.Component{
               yoyo: true,
               repeat: 10,
               ease: Sine.easeInOut
-            }, startTime+0.75)
+            }, startTime+0.6)
 
     //move things back into place
-          .to(solarSystem, 0.25, {rotation: 0, transformOrigin: "50%"}, startTime+5)
-          .to(clock, 0.1, {x: 0, y: 0}, startTime+5.3)
+          .to(solarSystem, 0.25, {rotation: 0, transformOrigin: "50%"}, startTime+4.5)
+          .to(clock, 0.1, {x: 0, y: 0}, startTime+4.8)
 
     // make things disappear
-    .to(lampLight, 0.1, {display: 'none'}, startTime+5.3)
-    .to(lampTop, 0.1, {fill: '#848383'}, startTime+5.3)
-    .to(lampShade, 0.1, {fill: '#ADADAD'}, startTime+5.3)
+    .to(lampLight, 0.1, {display: 'none'}, startTime+4.8)
+    .to(lampTop, 0.1, {fill: '#848383'}, startTime+4.8)
+    .to(lampShade, 0.1, {fill: '#ADADAD'}, startTime+4.8)
   }
 
   hoverSleep() {
@@ -387,6 +393,40 @@ class BedroomSVG extends React.Component{
 
   leaveSleep() {
     this.leaveShake();
+  };
+
+  clickSleep() {
+    this.removeButtonListeners();
+    tlShake.clear();
+
+    const tlSleep = new TimelineMax({onComplete: proxyFunction.bind(this)});
+    function proxyFunction(): void {
+      this.addButtonListeners();
+    };
+
+    const pathSleepBlinds = MorphSVGPlugin.pathDataToBezier(vertexSleepBlinds, {align: alignSleepBlinds});
+    const pathSleepPlanets = MorphSVGPlugin.pathDataToBezier(vertexSleepPlanets, {align: alignSleepPlanets});
+    const pathSleepClock = MorphSVGPlugin.pathDataToBezier(vertexSleepClock, {align: alignSleepClock});
+    const pathSleepNitelite = MorphSVGPlugin.pathDataToBezier(vertexSleepNitelite, {align: alignSleepNitelite});
+
+    const cometSleep = [cometSleepBlinds, cometSleepPlanets, cometSleepClock, cometSleepNitelite]
+    const glowSleep = [glowBlinds, glowPlanets, glowClock, glowNitelite]
+
+    tlSleep.to(cometSleep, 0.05, {display:'block'})
+
+           .to(cometSleepBlinds, 0.5, {bezier: { type: "cubic", values: pathSleepBlinds}, ease: Sine.easeInOut})
+           .to(cometSleepPlanets, 0.5, {bezier: { type: "cubic", values: pathSleepPlanets}, ease: Sine.easeInOut}, '-=0.5')
+           .to(cometSleepClock, 0.5, {bezier: { type: "cubic", values: pathSleepClock}, ease: Sine.easeInOut}, '-=0.5')
+           .to(cometSleepNitelite, 0.5, {bezier: { type: "cubic", values: pathSleepNitelite}, ease: Sine.easeInOut}, '-=0.5')
+
+           .to(cometSleep, 0.01, {display:'none', x: 0, y: 0})
+
+           .to(glowSleep, 0.01, {display:'block'})
+
+           .to(glowSleep, 0.75, {scaleX: 4, scaleY: 4, opacity: 0, transformOrigin: "center"})
+
+           .to(glowSleep, 0.01, {display: 'none'})
+           .to(glowSleep, 0.01, {scaleX: 1, scaleY: 1, opacity: 1, transformOrigin: "center"})
   };
 
   hoverDresser() {
