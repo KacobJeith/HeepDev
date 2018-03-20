@@ -7,7 +7,7 @@ import ReactGA from 'react-ga'
 
 import AppBar from './AppBar'
 import Footer from './Footer'
-import Landing from './Landing'
+import Landing from './landing/Landing'
 import About from './About'
 import Store from './store/Store'
 import Build from './heep/Build'

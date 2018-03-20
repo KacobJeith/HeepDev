@@ -2,14 +2,14 @@ import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import * as Actions from '../redux/actions'
+import * as Actions from '../../redux/actions'
 
 import { Grid, Paper, Typography } from 'material-ui'
 
 import BedroomSVG from './BedroomSVG'
-import SectionCard from './utilities/SectionCard'
-import FeaturedItems from './landing/FeaturedItems'
-import { banners } from '../assets/remote/Banners'
+import SectionCard from '../utilities/SectionCard'
+import FeaturedItems from './FeaturedItems'
+import { banners } from '../../assets/remote/Banners'
 
 
 var mapStateToProps = (state) => ({

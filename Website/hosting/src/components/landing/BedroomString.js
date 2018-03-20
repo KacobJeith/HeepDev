@@ -552,80 +552,128 @@ export const bedroomSVG = `
    </g>
  </g>
  <g id="Vertices" display="none" fill="none" stroke="#000000" stroke-width="3" stroke-miterlimit="10">
-   <path id="vertexRemoteCar" d="M223 673l180-117.037"/>
-   <path id="vertexDiaryLamp" d="M902.71 507.921l-92.622-133.329"/>
-   <path id="vertexDiaryPlanets" d="M974.029 488.809l107.545-319.707"/>
-   <path id="vertexDiaryClock" d="M1061.71 526.921l253.853-107.331"/>
-   <path id="vertexPigPlanets" d="M755.5 304L1083 164"/>
-   <path id="vertexPigLamp" d="M737.372 373.691l69.646 2.578"/>
-   <path id="vertexPigClock" d="M791.194 356.104l524.369 63.486"/>
- </g>
+    <path id="vertexRemoteCar" d="M244.333 659.666L403 555.963"/>
+    <path id="vertexDiaryLamp" d="M902.71 507.921l-92.622-133.329"/>
+    <path id="vertexDiaryPlanets" d="M974.029 488.809l107.545-319.707"/>
+    <path id="vertexDiaryClock" d="M1061.71 526.921l253.853-107.331"/>
+    <path id="vertexPigPlanets" d="M755.5 304L1083 164"/>
+    <path id="vertexPigLamp" d="M706.243 370.129l100.715 4.476"/>
+    <path id="vertexPigClock" d="M791.194 356.104l524.369 63.486"/>
+    <path id="vertexSleepPlanets" d="M1171.5 287.5l-82.84-117.634"/>
+    <path id="vertexSleepNitelite" d="M1114.32 369.519L118 461"/>
+    <path id="vertexSleepBlinds" d="M1121.444 325.097L291.033 79.518"/>
+    <path id="vertexSleepClock" d="M1268.593 386.539l46.97 33.051"/>
+  </g>
  <g id="alignVertices" display="none" fill="none">
-    <circle id="alignPigLamp" cx="743.871" cy="373.872" r="3.79"/>
-    <circle id="alignDiaryLamp" cx="892.871" cy="493.872" r="3.79"/>
-    <circle id="alignDiaryClock" cx="1067.871" cy="524.872" r="3.79"/>
-    <circle id="alignRemote" cx="208" cy="681" r="7"/>
-    <circle id="alignDiaryPlanets" cx="979.871" cy="472.872" r="3.79"/>
+    <circle id="alignRemote" cx="243" cy="659" r="4"/>
+    <circle id="alignPigLamp" cx="705.871" cy="369.872" r="3.79"/>
     <circle id="alignPigClock" cx="791.871" cy="355.872" r="3.79"/>
     <circle id="alignPigPlanets" cx="756.871" cy="301.872" r="3.79"/>
+    <circle id="alignDiaryLamp" cx="892.871" cy="493.872" r="3.79"/>
+    <circle id="alignDiaryClock" cx="1067.871" cy="524.872" r="3.79"/>
+    <circle id="alignDiaryPlanets" cx="979.871" cy="472.872" r="3.79"/>
+    <circle id="alignSleepBlinds" cx="1120.871" cy="323.872" r="3.79"/>
+    <circle id="alignSleepClock" cx="1267.871" cy="385.872" r="3.79"/>
+    <circle id="alignSleepNitelite" cx="1112.871" cy="369.872" r="3.79"/>
+    <circle id="alignSleepPlanets" cx="1171.871" cy="288.872" r="3.79"/>
   </g>
- <g id="Comets">
-   <g id="cometRemote" display="none">
-     <path fill="#00FFFF" d="M227.259 682.448c-4.799 2.969-11.095 1.481-14.065-3.315-2.967-4.8-1.482-11.096 3.318-14.066 4.798-2.964 11.094-1.482 14.064 3.317 2.968 4.801 1.483 11.096-3.317 14.064z"/>
-     <linearGradient id="SVGID_3_" gradientUnits="userSpaceOnUse" x1="115.051" y1="739.742" x2="220.78" y2="674.347">
-       <stop offset="0" stop-color="#fff" stop-opacity="0"/>
-       <stop offset="1" stop-color="#0ff"/>
-     </linearGradient>
-     <path fill="url(#SVGID_3_)" d="M225.775 682.428l-110.729 57.307 100.736-73.467z"/>
+  <g id="Comets">
+     <g id="cometRemote" display="none">
+       <path fill="#00FFFF" d="M245.638 665.586a7.139 7.139 0 0 1-9.823-2.315 7.138 7.138 0 0 1 12.14-7.508 7.136 7.136 0 0 1-2.317 9.823z"/>
+       <linearGradient id="SVGID_3_" gradientUnits="userSpaceOnUse" x1="167.27" y1="705.602" x2="241.114" y2="659.928">
+         <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+         <stop offset="1" stop-color="#0ff"/>
+       </linearGradient>
+       <path fill="url(#SVGID_3_)" d="M245.057 666.307l-77.791 39.29 69.901-52.048z"/>
+     </g>
+     <g id="cometPigClock" display="none">
+       <path fill="#00FFFF" d="M790.13 366.266c-5.613-.587-9.684-5.615-9.099-11.227.589-5.612 5.613-9.684 11.231-9.097 5.607.59 9.682 5.613 9.094 11.227-.587 5.614-5.614 9.685-11.226 9.097z"/>
+       <linearGradient id="SVGID_4_" gradientUnits="userSpaceOnUse" x1="666.318" y1="342.95" x2="789.96" y2="355.895">
+         <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+         <stop offset="1" stop-color="#0ff"/>
+       </linearGradient>
+       <path fill="url(#SVGID_4_)" d="M788.97 365.343L666.318 342.94l124.632 3.506z"/>
+     </g>
+     <g id="cometPigLamp" display="none">
+       <circle fill="#00FFFF" cx="703.875" cy="369.567" r="4.811"/>
+       <linearGradient id="SVGID_5_" gradientUnits="userSpaceOnUse" x1="645.099" y1="363.216" x2="703.294" y2="369.466">
+         <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+         <stop offset="1" stop-color="#0ff"/>
+       </linearGradient>
+       <path fill="url(#SVGID_5_)" d="M702.865 373.444l-57.766-10.235 58.622 2.281z"/>
+     </g>
+     <g id="cometPigPlanets" display="none">
+       <path fill="#00FFFF" d="M758.568 314.537c-5.137 2.334-11.193.061-13.529-5.076-2.334-5.137-.062-11.193 5.078-13.531 5.134-2.331 11.192-.062 13.527 5.077 2.336 5.14.063 11.195-5.076 13.53z"/>
+       <linearGradient id="SVGID_6_" gradientUnits="userSpaceOnUse" x1="639.993" y1="357.116" x2="753.173" y2="305.679">
+         <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+         <stop offset="1" stop-color="#0ff"/>
+       </linearGradient>
+       <path fill="url(#SVGID_6_)" d="M757.102 314.328l-117.113 42.779 109.253-60.077z"/>
+     </g>
+     <g id="cometDiaryLamp" display="none">
+       <path fill="#00FFFF" d="M903.847 493.599c3.348 4.543 2.377 10.938-2.165 14.287-4.543 3.348-10.938 2.378-14.289-2.167-3.343-4.541-2.377-10.937 2.167-14.285 4.544-3.349 10.939-2.378 14.287 2.165z"/>
+       <linearGradient id="SVGID_7_" gradientUnits="userSpaceOnUse" x1="970.051" y1="600.792" x2="896.298" y2="500.713">
+         <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+         <stop offset="1" stop-color="#0ff"/>
+       </linearGradient>
+       <path fill="url(#SVGID_7_)" d="M903.946 495.077l66.096 105.72-81.393-94.448z"/>
+     </g>
+     <g id="cometDiaryPlanets" display="none">
+       <path fill="#00FFFF" d="M986.835 482.115c-1.688 5.385-7.421 8.379-12.806 6.693-5.385-1.688-8.38-7.42-6.693-12.809 1.689-5.381 7.42-8.379 12.807-6.691 5.386 1.69 8.381 7.421 6.692 12.807z"/>
+       <linearGradient id="SVGID_8_" gradientUnits="userSpaceOnUse" x1="939.457" y1="598.856" x2="976.636" y2="480.227">
+         <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+         <stop offset="1" stop-color="#0ff"/>
+       </linearGradient>
+       <path fill="url(#SVGID_8_)" d="M985.701 483.069l-46.254 115.784 28.123-121.467z"/>
+     </g>
+     <g id="cometDiaryClock" display="none">
+       <path fill="#00FFFF" d="M1067.343 533.689c-5.102 2.411-11.19.229-13.604-4.871-2.409-5.104-.228-11.191 4.876-13.605 5.1-2.408 11.19-.229 13.603 4.875 2.409 5.102.228 11.191-4.875 13.601z"/>
+       <linearGradient id="SVGID_9_" gradientUnits="userSpaceOnUse" x1="949.419" y1="578.038" x2="1061.813" y2="524.914">
+         <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+         <stop offset="1" stop-color="#0ff"/>
+       </linearGradient>
+       <path fill="url(#SVGID_9_)" d="M1065.871 533.503l-116.457 44.524 108.34-61.702z"/>
+     </g>
+     <g id="cometSleepBlinds" display="none">
+       <path fill="#00FFFF" d="M1129.854 316.09c5.385 1.688 8.379 7.421 6.693 12.806-1.688 5.385-7.42 8.38-12.809 6.693-5.381-1.689-8.379-7.42-6.691-12.807 1.689-5.386 7.422-8.382 12.807-6.692z"/>
+       <linearGradient id="SVGID_10_" gradientUnits="userSpaceOnUse" x1="1246.597" y1="363.462" x2="1127.966" y2="326.289">
+         <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+         <stop offset="1" stop-color="#0ff"/>
+       </linearGradient>
+       <path fill="url(#SVGID_10_)" d="M1130.809 317.224l115.783 46.254-121.467-28.124z"/>
+     </g>
+     <g id="cometSleepPlanets" display="none">
+       <circle fill="#00FFFF" cx="1172.352" cy="290.174" r="5.811"/>
+       <linearGradient id="SVGID_11_" gradientUnits="userSpaceOnUse" x1="1212.39" y1="349.312" x2="1172.714" y2="290.788">
+         <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+         <stop offset="1" stop-color="#0ff"/>
+       </linearGradient>
+       <path fill="url(#SVGID_11_)" d="M1177.267 287.703l35.114 61.614-44.22-55.443z"/>
+     </g>
+     <g id="cometSleepClock" display="none">
+       <path fill="#00FFFF" d="M1264.096 388.439a4.809 4.809 0 1 1 5.624-7.805 4.815 4.815 0 0 1 1.092 6.715 4.812 4.812 0 0 1-6.716 1.09z"/>
+       <linearGradient id="SVGID_12_" gradientUnits="userSpaceOnUse" x1="1218.96" y1="349.955" x2="1266.452" y2="384.163">
+         <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+         <stop offset="1" stop-color="#0ff"/>
+       </linearGradient>
+       <path fill="url(#SVGID_12_)" d="M1264.113 387.408l-45.149-37.46 49.825 30.969z"/>
+     </g>
+     <g id="cometSleepNitelite" display="none">
+       <path fill="#00FFFF" d="M1117.411 360.857c5.611-.579 10.631 3.5 11.214 9.114.58 5.612-3.5 10.63-9.117 11.215-5.608.576-10.628-3.502-11.211-9.115-.58-5.615 3.501-10.633 9.114-11.214z"/>
+       <linearGradient id="SVGID_13_" gradientUnits="userSpaceOnUse" x1="1243.373" y1="358.175" x2="1119.713" y2="370.972">
+         <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+         <stop offset="1" stop-color="#0ff"/>
+       </linearGradient>
+       <path fill="url(#SVGID_13_)" d="M1118.737 361.522l124.637-3.331-122.684 22.23z"/>
+     </g>
    </g>
-   <g id="cometDiaryLamp" display="none">
-     <path fill="#00FFFF" d="M903.847 493.599c3.348 4.543 2.377 10.938-2.165 14.287-4.543 3.348-10.938 2.378-14.289-2.167-3.343-4.541-2.377-10.937 2.167-14.285 4.544-3.349 10.939-2.378 14.287 2.165z"/>
-     <linearGradient id="SVGID_4_" gradientUnits="userSpaceOnUse" x1="970.051" y1="600.792" x2="896.298" y2="500.713">
-       <stop offset="0" stop-color="#fff" stop-opacity="0"/>
-       <stop offset="1" stop-color="#0ff"/>
-     </linearGradient>
-     <path fill="url(#SVGID_4_)" d="M903.946 495.077l66.096 105.72-81.393-94.448z"/>
-   </g>
-   <g id="cometPigClock" display="none">
-     <path fill="#00FFFF" d="M790.13 366.266c-5.613-.587-9.684-5.615-9.099-11.227.589-5.612 5.613-9.684 11.231-9.097 5.607.59 9.682 5.613 9.094 11.227-.587 5.614-5.614 9.685-11.226 9.097z"/>
-     <linearGradient id="SVGID_5_" gradientUnits="userSpaceOnUse" x1="666.318" y1="342.95" x2="789.96" y2="355.895">
-       <stop offset="0" stop-color="#fff" stop-opacity="0"/>
-       <stop offset="1" stop-color="#0ff"/>
-     </linearGradient>
-     <path fill="url(#SVGID_5_)" d="M788.97 365.343L666.318 342.94l124.632 3.506z"/>
-   </g>
-   <g id="cometPigLamp" display="none">
-     <path fill="#00FFFF" d="M741.769 383.477c-5.6-.708-9.561-5.823-8.855-11.421.71-5.598 5.821-9.561 11.426-8.853 5.593.711 9.559 5.821 8.849 11.42-.71 5.601-5.823 9.562-11.42 8.854z"/>
-     <linearGradient id="SVGID_6_" gradientUnits="userSpaceOnUse" x1="618.487" y1="357.495" x2="741.821" y2="373.104">
-       <stop offset="0" stop-color="#fff" stop-opacity="0"/>
-       <stop offset="1" stop-color="#0ff"/>
-     </linearGradient>
-     <path fill="url(#SVGID_6_)" d="M740.628 382.529l-122.14-25.044 124.527 6.194z"/>
-   </g>
-   <g id="cometPigPlanets" display="none">
-     <path fill="#00FFFF" d="M758.568 314.537c-5.137 2.334-11.193.061-13.529-5.076-2.334-5.137-.062-11.193 5.078-13.531 5.134-2.331 11.192-.062 13.527 5.077 2.336 5.14.063 11.195-5.076 13.53z"/>
-     <linearGradient id="SVGID_7_" gradientUnits="userSpaceOnUse" x1="639.993" y1="357.116" x2="753.173" y2="305.679">
-       <stop offset="0" stop-color="#fff" stop-opacity="0"/>
-       <stop offset="1" stop-color="#0ff"/>
-     </linearGradient>
-     <path fill="url(#SVGID_7_)" d="M757.102 314.328l-117.113 42.779 109.253-60.077z"/>
-   </g>
-   <g id="cometDiaryPlanets" display="none">
-     <path fill="#00FFFF" d="M986.835 482.115c-1.688 5.385-7.421 8.379-12.806 6.693-5.385-1.688-8.38-7.42-6.693-12.809 1.689-5.381 7.42-8.379 12.807-6.691 5.386 1.69 8.381 7.421 6.692 12.807z"/>
-     <linearGradient id="SVGID_8_" gradientUnits="userSpaceOnUse" x1="939.457" y1="598.856" x2="976.636" y2="480.227">
-       <stop offset="0" stop-color="#fff" stop-opacity="0"/>
-       <stop offset="1" stop-color="#0ff"/>
-     </linearGradient>
-     <path fill="url(#SVGID_8_)" d="M985.701 483.069l-46.254 115.784 28.123-121.467z"/>
-   </g>
-   <g id="cometDiaryClock" display="none">
-     <path fill="#00FFFF" d="M1067.343 533.689c-5.102 2.411-11.19.229-13.604-4.871-2.409-5.104-.228-11.191 4.876-13.605 5.1-2.408 11.19-.229 13.603 4.875 2.409 5.102.228 11.191-4.875 13.601z"/>
-     <linearGradient id="SVGID_9_" gradientUnits="userSpaceOnUse" x1="949.419" y1="578.038" x2="1061.813" y2="524.914">
-       <stop offset="0" stop-color="#fff" stop-opacity="0"/>
-       <stop offset="1" stop-color="#0ff"/>
-     </linearGradient>
-     <path fill="url(#SVGID_9_)" d="M1065.871 533.503l-116.457 44.524 108.34-61.702z"/>
-   </g>
+ <g id="Glow" fill="#00FFFF">
+   <circle id="glowCar" display="none" cx="413.445" cy="553.445" r="34.445"/>
+   <circle id="glowBlinds" display="none" cx="287.195" cy="74.195" r="29.195"/>
+   <circle id="glowNitelite" display="none" cx="120.661" cy="460.661" r="10.661"/>
+   <circle id="glowPlanets" display="none" cx="1084.945" cy="172.945" r="20.945"/>
+   <circle id="glowLamp" display="none" cx="802.945" cy="355.945" r="20.945"/>
+   <circle id="glowClock" display="none" cx="1318.434" cy="423.434" r="14.434"/>
  </g>
   <g id="Buttons" fill="none">
     <rect id="buttonRemote" x="130" y="632" fill="none" width="118" height="97" pointer-events="all"/>
