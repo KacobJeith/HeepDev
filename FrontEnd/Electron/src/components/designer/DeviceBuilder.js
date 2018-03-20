@@ -62,6 +62,9 @@ export default class DeviceBuilder extends React.Component {
             </Grid>
           </Grid>
         </Grid>
+        <Grid item >
+          <div {...inputs.spacer}/>
+        </Grid>
      </Grid>
     );
   }

@@ -17,6 +17,7 @@ export default class GenericTextInput extends React.Component {
 			  }}>
 	    	  <InputLabel htmlFor="text-input">{this.props.title}</InputLabel>
 	    	  <Input id="name-input"  
+	    	  	value={this.props.value}
 	    	    onChange={ (event) => {this.props.onChange(event.target.value)}}/>
 	    	  <FormHelperText>{this.props.helperText}</FormHelperText>
 	    	</FormControl>

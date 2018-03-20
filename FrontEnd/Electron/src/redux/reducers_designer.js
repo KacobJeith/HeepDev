@@ -48,31 +48,19 @@ export default function(state = initialState.builder, action, fullState = initia
 
     var controlID = action.controlID;
 
-    var controlDirection = 0;
-
-      if (action.direction == "output") {
-        controlDirection = 1;
-      }
 
       var newState = Immutable.List(state.controls).toJS();
-    newState[controlID]['controlDirection'] = controlDirection;
+      newState[controlID]['controlDirection'] = action.direction;
 
+      console.log('NEW: ', newState)
 
       return Immutable.Map(state).set('controls', newState).toJS()
 
     case 'UPDATE_CONTROL_TYPE' :
-      var controlType = 0;
-
-        console.log(action);
-
-      if (action.controlType == "Range") {
-        controlType = 1;
-      }
 
       var newState = Immutable.List(state.controls).toJS();
-        console.log(newState);
 
-    newState[action.controlID]['controlType'] = controlType;
+      newState[action.controlID]['controlType'] = action.controlType;
 
       return Immutable.Map(state).set('controls', newState).toJS()
 
@@ -185,7 +173,7 @@ const initialControlState = (controlID) => ({
     highValue: 100,
     lowValue: 0,
     curValue: 0,
-    pinNumber: 0,
+    pinNumber: 14,
     analogOrDigital: "digital",
     pinNegativeLogic: false
 })

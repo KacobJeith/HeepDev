@@ -3,13 +3,14 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as Actions from '../../redux/actions_designer'
 import { withRouter } from 'react-router-dom'
-import {ButtonGroup, ControlLabel, FormGroup, FormControl, HelpBlock, option} from 'react-bootstrap';
 
 import GenericSelect from './GenericSelect'
 import ControlledSelect from './ControlledSelect'
 import GenericTextInput from './GenericTextInput'
 import RangeOptions from './RangeOptions'
 import DefinePins from './DefinePins'
+
+import { Divider } from 'material-ui'
 
 var mapStateToProps = (state) => ({
   numControls: state.designer.numControls,
@@ -25,7 +26,7 @@ class ControlBuilder extends React.Component {
     }
   }
 
-  buildControl (controlIndex) {
+  buildControl (thisControl, controlIndex) {
 
     var inputs = {
       controlSection: {
@@ -45,7 +46,7 @@ class ControlBuilder extends React.Component {
       },
       controlName: {
         title: "Control Name",
-        defaultValue: this.props.controls[controlIndex].controlName,
+        defaultValue: thisControl.controlName,
         onChange: (value) => {this.props.updateControlName(controlIndex, value)}
       },
       controlType: {
@@ -55,7 +56,7 @@ class ControlBuilder extends React.Component {
           Range: 1
         },
         helperText: 'On/off or Range Control?',
-        defaultValue: this.props.controls[controlIndex].controlType,
+        defaultValue: thisControl.controlType,
         onChange: (value) => {this.props.updateControlType(controlIndex, value)}
       },
       controlDirection: {
@@ -64,7 +65,7 @@ class ControlBuilder extends React.Component {
           input: 0, 
           output: 1
         },
-        defaultValue: this.props.controls[controlIndex].controlDirection,
+        defaultValue: thisControl.controlDirection,
         onChange: (value) => {this.props.updateControlDirection(controlIndex, value)}
       },
       rangeOptions: {
@@ -77,13 +78,13 @@ class ControlBuilder extends React.Component {
 
     return (<div {...inputs.controlSection}>
               <div {...inputs.formContainer}>
-                <form>
+                  <Divider/>
                   <GenericTextInput {...inputs.controlName}/>
                   <GenericSelect {...inputs.controlDirection}/>
                   <GenericSelect {...inputs.controlType}/>
                   <RangeOptions {...inputs.rangeOptions}/>
                   <DefinePins {...inputs.pinOptions}/>
-                </form>
+
               </div>
             </div>
           );
@@ -114,16 +115,10 @@ class ControlBuilder extends React.Component {
       }
     }
 
-    var controlInputs = [];
-
-    for (var i = 0; i <= this.props.numControls - 1; i++) {
-      controlInputs.push(this.buildControl(i));
-    }
-
     return (
       <div >
         <div {...inputs.fieldInputs}>
-          {controlInputs}  
+          {this.props.controls.map((thisControl, index) => this.buildControl(thisControl, index))}  
         </div>
         <div {...inputs.spacer}/>
         <GenericSelect {...inputs.addNewControl}/>

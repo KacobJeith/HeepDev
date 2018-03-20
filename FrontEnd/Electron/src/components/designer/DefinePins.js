@@ -11,7 +11,9 @@ var mapStateToProps = (state, ownProps) => ({
   controlID: ownProps.controlID,
   systemType: state.designer.systemType,
   controlType: state.designer.controls[ownProps.controlID]['controlType'],
-  negativeLogic: state.designer.controls[ownProps.controlID]['pinNegativeLogic']
+  negativeLogic: state.designer.controls[ownProps.controlID]['pinNegativeLogic'],
+  pin: state.designer.controls[ownProps.controlID]['pinNumber'],
+  analogOrDigital: state.designer.controls[ownProps.controlID]['analogOrDigital']
 })
 
 class DefinePins extends React.Component {
@@ -25,7 +27,7 @@ class DefinePins extends React.Component {
       pins: {
         title: "Select Pin",
         options: Array.from(Array(30).keys()),
-        defaultValue: 0,
+        defaultValue: this.props.pin,
         onChange: (value) => {this.props.updateControlPin(this.props.controlID, value)} 
       },
       negativeLogic: {
@@ -38,15 +40,9 @@ class DefinePins extends React.Component {
       digitalOrAnalog: {
         title: "Digital or Analog",
         options: ["digital", "analog"],
-        defaultValue: "digital",
+        defaultValue: this.props.analogOrDigital,
         onChange: (value) => {this.props.updateControlAnalogOrDigital(this.props.controlID, value)} 
       }
-    }
-
-    var polarityBox = <div/>;
-
-    if (this.props.controlType == 0) {
-      polarityBox = <Checkbox {...inputs.negativeLogic}> Use Negative Logic </Checkbox>;
     }
     
     switch (this.props.systemType) {
