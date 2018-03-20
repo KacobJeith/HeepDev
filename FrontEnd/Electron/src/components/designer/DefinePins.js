@@ -2,14 +2,16 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as Actions from '../../redux/actions_designer'
-import {Checkbox} from 'react-bootstrap';
 
 import GenericSelect from './GenericSelect'
+import { FormGroup, FormControlLabel } from 'material-ui/Form';
+import Checkbox from 'material-ui/Checkbox';
 
 var mapStateToProps = (state, ownProps) => ({
   controlID: ownProps.controlID,
   systemType: state.designer.systemType,
-  controlType: state.designer.controls[ownProps.controlID]['controlType']
+  controlType: state.designer.controls[ownProps.controlID]['controlType'],
+  negativeLogic: state.designer.controls[ownProps.controlID]['pinNegativeLogic']
 })
 
 class DefinePins extends React.Component {
@@ -55,7 +57,18 @@ class DefinePins extends React.Component {
         return (<div>
           <GenericSelect {...inputs.pins}/>
           <GenericSelect {...inputs.digitalOrAnalog}/>
-          {polarityBox}
+          {this.props.controlType == 0 && (
+            <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={this.props.negativeLogic}
+                    onChange={(event) => {this.props.updateControlPinPolarity(this.props.controlID, event.target.checked)}}
+                    value='pin'
+                  />
+                }
+                label='Use Negative Logic'
+              />
+          )}
           </div>)
 
     default :

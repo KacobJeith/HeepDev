@@ -30,7 +30,7 @@ class ControlBuilder extends React.Component {
     var inputs = {
       controlSection: {
         style: {
-          backgroundColor: '#'+((Math.random()/2)*0xFFFFFF<<0).toString(16),
+          // backgroundColor: '#'+((Math.random()/2)*0xFFFFFF<<0).toString(16),
           paddingTop: 10,
           paddingBottom: 10
         },
@@ -50,13 +50,20 @@ class ControlBuilder extends React.Component {
       },
       controlType: {
         title: "Control Type",
-        options: ["OnOff", "Range"],
+        options: {
+          OnOff: 0, 
+          Range: 1
+        },
+        helperText: 'On/off or Range Control?',
         defaultValue: this.props.controls[controlIndex].controlType,
         onChange: (value) => {this.props.updateControlType(controlIndex, value)}
       },
       controlDirection: {
         title: "Control Direction",
-        options: ["input", "output"],
+        options: {
+          input: 0, 
+          output: 1
+        },
         defaultValue: this.props.controls[controlIndex].controlDirection,
         onChange: (value) => {this.props.updateControlDirection(controlIndex, value)}
       },
@@ -95,7 +102,8 @@ class ControlBuilder extends React.Component {
       },
       addNewControl: {
         title: "Add New Control",
-        value: this.state.selection,
+        value:this.state.selection,
+        defaultValue: this.state.selection,
         options: ["Custom", "Servo", "LED", "Select..."],
         onChange: (value) => {this.setState({selection: "Select..."}); this.props.addNewControl(value); },
       },
@@ -118,7 +126,7 @@ class ControlBuilder extends React.Component {
           {controlInputs}  
         </div>
         <div {...inputs.spacer}/>
-        <ControlledSelect {...inputs.addNewControl}/>
+        <GenericSelect {...inputs.addNewControl}/>
       </div>
          
     );

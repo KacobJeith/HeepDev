@@ -39,10 +39,10 @@ const startState = {
   designer: {
     deviceName: 'DefaultDevice',
     numControls: 0,
-    physicalLayer: 'Simulation',
+    physicalLayer: 'wifi',
     ssid: 'your_ssid_here',
     ssidPassword: 'your_ssid_pwd',
-    systemType: 'Simulation',
+    systemType: 'ESP8266',
     iconSelected: 1,
     selectingIcon: false,
     controls: []

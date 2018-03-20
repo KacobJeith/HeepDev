@@ -8,10 +8,21 @@ import DeviceIdentity from './DeviceIdentity'
 import ControlBuilder from './ControlBuilder'
 import DownloadSource from './DownloadSource'
 
+import { Button, Grid } from 'material-ui'
+
 export default class DeviceBuilder extends React.Component {
   constructor(props) {
     super(props);
   }
+
+  downloadButton = () => (
+    <Button 
+      variant='raised' 
+      color="primary" 
+      onClick={() => {this.props.packageSourceFiles()}}>
+      Download Source
+    </Button>
+  )
 
   render () {
 
@@ -37,15 +48,21 @@ export default class DeviceBuilder extends React.Component {
     }
 
     return (
-      <div {...inputs.builder}>
-        <div {...inputs.contents}>
-          <div {...inputs.spacer}/>
+      <Grid container direction='column' spacing={24}>
+        <Grid item>
             <DeviceIdentity/>
+        </Grid>
+        <Grid item>
             <ControlBuilder/>
-            <DownloadSource/>
-          <div {...inputs.spacer}/>
-        </div>
-     </div>
+        </Grid>
+        <Grid item xs>
+          <Grid container justify='flex-end' >
+            <Grid item style={{marginRight:24}}>
+              {this.downloadButton()}
+            </Grid>
+          </Grid>
+        </Grid>
+     </Grid>
     );
   }
 }

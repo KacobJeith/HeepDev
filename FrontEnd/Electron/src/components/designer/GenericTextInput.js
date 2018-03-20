@@ -1,27 +1,26 @@
 import React from 'react'
-import {HashRouter as Router, Route} from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import {ControlLabel, FormGroup, FormControl} from 'react-bootstrap'
+
+import Input, { InputLabel } from 'material-ui/Input';
+import { FormControl, FormHelperText } from 'material-ui/Form';
 
 
 export default class GenericTextInput extends React.Component {
-	constructor(props) {
-		super(props);
-		
-	}
 
 	render() {
+	    return (
+	    	<FormControl style={{
+			    margin: 24,
+			    minWidth: 120,
+			    width: '60%'
+			  }}>
+	    	  <InputLabel htmlFor="text-input">{this.props.title}</InputLabel>
+	    	  <Input id="name-input"  
+	    	    onChange={ (event) => {this.props.onChange(event.target.value)}}/>
+	    	  <FormHelperText>{this.props.helperText}</FormHelperText>
+	    	</FormControl>
 
-	    return(
-	    	<FormGroup controlId="formBasicText" >
-              <ControlLabel  style={{color:"white"}}>{this.props.title}</ControlLabel>
-              <FormControl
-                type="text"
-                defaultValue={this.props.defaultValue}
-                onChange={(change) => this.props.onChange(change.target.value)}/>
-            </FormGroup>
-            );
-	    
+	    )
 	}
 }

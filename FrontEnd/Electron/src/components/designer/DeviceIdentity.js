@@ -5,7 +5,7 @@ import * as Actions from '../../redux/actions_designer'
 import { withRouter } from 'react-router-dom'
 
 import { withStyles } from 'material-ui/styles';
-import { Grid, Select, Collapse }  from 'material-ui'
+import { Grid, Select, Collapse, Paper }  from 'material-ui'
 
 import Input, { InputLabel } from 'material-ui/Input';
 import { MenuItem } from 'material-ui/Menu';
@@ -121,9 +121,9 @@ class DeviceIdentity extends React.Component {
     return (
       <Grid container spacing={24}>
         <Grid item xs={5}>
-          <div {...inputs.iconContainer}>
+          <Paper>
             <GenericSVG {...inputs.iconSVG}/>
-          </div>
+          </Paper>
         </Grid>
         <Grid item xs={7}>
           <Grid container direction='column' spacing={24}>
