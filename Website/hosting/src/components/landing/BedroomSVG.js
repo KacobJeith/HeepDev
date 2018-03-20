@@ -484,8 +484,69 @@ class BedroomSVG extends React.Component{
            .to(outsideMoon, 3, {bezier: {type: "cubic", values: pathMoon}, ease: Sine.easeInOut}, "-=4")
 
            // blinds come down
-           .to(blindsMiddle, 4, {scaleY: 18.2, ease: Sine.easeInOut}, "-=1.5")
+           .to(blindsMiddle, 4, {scaleY: 18.2, ease: Sine.easeInOut}, "-=1")
            .to(blindsBottom, 4, {y: 289, ease: Sine.easeInOut}, "-=4")
+
+           // lights go off
+           .to([night, nightLightGlow, sunGlow], 1, {display: "block"}, "+=1")
+
+           // revert sun, sky, and clouds
+           .to([outsideSun, outsideSunGlow, outsideMoon], 0.01, {x: 0, y: 0, scaleX: 1, scaleY: 1})
+           .to(outsideSun, 0.01, {fill: "#ffe027"}, "-=0.01")
+           .to(cloudLeft, 0.01, {fill: "#efefef"}, "-=0.01")
+           .to(cloudCenter, 0.01, {fill: "#e8e8e6"}, "-=0.01")
+           .to(cloudRight, 0.01, {fill: "#fff"}, "-=0.01")
+           .to([windowGlare1, windowGlare2, windowGlare3], 0.01, {opacity: 0.5}, "-=0.01")
+           .staggerTo("#outsideSky_1_ stop", 0.01, {
+             stopColor: "#b1e6f2",
+             cycle: {
+               stopColor: ["#b1e6f2", "#b1e6f2"]
+             }
+           }, 0.01, "-=0.01")
+           .staggerTo("#outsideSunGlow_1_ stop", 3, {
+             stopColor: "#ffe027",
+             cycle: {
+               stopColor: ["#ffe027", "#fff"]
+             }
+           }, 0, "-=0.01")
+
+           //bounce clock up and down
+                  .fromTo(clock, 0.1, {y: 5, x: 3}, {
+                     y: -5,
+                     x: -3,
+                     yoyo: true,
+                     repeat: 50,
+                     ease: Sine.easeInOut
+                   }, "+=2")
+
+           //move clock bells
+                   .fromTo(clockBellLeft, 0.2, {
+                     rotation: -4,
+                     transformOrigin: "50%",
+                     y: 3
+                   },
+                   {
+                     rotation: 4,
+                     transformOrigin: "50%",
+                     y: -3,
+                     yoyo: true,
+                     repeat: 26,
+                     ease: Sine.easeInOut
+                   }, "-=")
+
+                   .fromTo(clockBellRight, 0.2, {
+                     rotation: 4,
+                     transformOrigin: "50%",
+                     y: -3
+                   },
+                   {
+                     rotation: -4,
+                     transformOrigin: "50%",
+                     y: 3,
+                     yoyo: true,
+                     repeat: 25,
+                     ease: Sine.easeInOut
+                   }, startTime)
 
   };
 
