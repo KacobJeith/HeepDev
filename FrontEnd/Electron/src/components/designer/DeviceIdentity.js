@@ -12,8 +12,8 @@ import { MenuItem } from 'material-ui/Menu';
 import { FormControl, FormHelperText } from 'material-ui/Form';
 
 import { sys_phy_files } from 'HeepDesigner/SystemPHYCompatibilities'
-import GenericSelect from './GenericSelect'
-import GenericTextInput from './GenericTextInput'
+import GenericSelect from '../utilities/GenericSelect'
+import GenericTextInput from '../utilities/GenericTextInput'
 import IconSVGSelect from './IconSVGSelect'
 import {iconMappings} from '../../assets/svg/iconMappings'
 import GenericSVG from './GenericSVG'
@@ -32,12 +32,10 @@ const styles = theme => ({
     flexWrap: 'wrap',
   },
   formControl: {
-    margin: theme.spacing.unit,
     minWidth: 120,
     width: '60%'
   },
   formControlSimple: {
-    margin: theme.spacing.unit
   },
   selectEmpty: {
     marginTop: theme.spacing.unit * 2,
@@ -48,10 +46,10 @@ class DeviceIdentity extends React.Component {
 
   nameDevice = () => (
     <FormControl className={this.props.classes.formControl}>
-      <InputLabel htmlFor="name-input">Name</InputLabel>
+      <InputLabel htmlFor="name-input">Device Name</InputLabel>
       <Input id="name-input"  
         onChange={ (event) => {this.props.updateDeviceName(event.target.value)}}/>
-      <FormHelperText>Name your Device</FormHelperText>
+
     </FormControl>
   )
 
@@ -68,7 +66,6 @@ class DeviceIdentity extends React.Component {
           <MenuItem value={thisKey} key={thisKey}>{thisKey}</MenuItem>
         ))}
       </Select>
-      <FormHelperText>Select the hardware used for this device</FormHelperText>
     </FormControl>
 
   )
@@ -76,25 +73,24 @@ class DeviceIdentity extends React.Component {
   inputWifiCredentials = () => (
 
     <Collapse in={this.props.physicalLayer == 'wifi'} timeout={750} unmountOnExit>
-      <FormControl className={this.props.classes.formControlSimple}>
-        <InputLabel htmlFor="name-input">SSID</InputLabel>
-        <Input id="ssid-input" 
-          onChange={ (event) => {this.props.updateSSID(event.target.value)}}/>
-        <FormHelperText>WiFi Network Name</FormHelperText>
-      </FormControl>
 
-      <FormControl className={this.props.classes.formControlSimple}>
-        <InputLabel htmlFor="password-input">Password</InputLabel>
-        <Input id="password-input" 
-          onChange={ (event) => {this.props.updateSSIDPassword(event.target.value)}}/>
-        <FormHelperText>WiFi Password</FormHelperText>
-      </FormControl>
+      <GenericTextInput 
+        width='33%'
+        title='SSID'
+        onChange={(event) => {this.props.updateSSID(event.target.value)}}
+        helperText='WiFi Network Name'
+      />
+      <GenericTextInput 
+        width='33%'
+        title='Password'
+        onChange={(event) => {this.props.updateSSIDPassword(event.target.value)}}
+        helperText='WiFi Password'
+      />
+      
     </Collapse>
   )
 
   render () {
-
-    console.log("display icon: ", iconMappings[this.props.icon]);
 
     var inputs = {
       iconSVG: {

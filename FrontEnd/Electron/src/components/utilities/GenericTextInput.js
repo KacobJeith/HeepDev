@@ -11,9 +11,8 @@ export default class GenericTextInput extends React.Component {
 	render() {
 	    return (
 	    	<FormControl style={{
-			    margin: 24,
-			    minWidth: 120,
-			    width: '60%'
+			    width: this.props.width,
+			    margin: 4
 			  }}>
 	    	  <InputLabel htmlFor="text-input">{this.props.title}</InputLabel>
 	    	  <Input id="name-input"  

@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as Actions from '../../redux/actions_designer'
 
-import GenericSelect from './GenericSelect'
+import GenericSelect from '../utilities/GenericSelect'
 import { FormGroup, FormControlLabel } from 'material-ui/Form';
 import Checkbox from 'material-ui/Checkbox';
 
@@ -28,6 +28,7 @@ class DefinePins extends React.Component {
         title: "Select Pin",
         options: Array.from(Array(30).keys()),
         defaultValue: this.props.pin,
+        width: '45%',
         onChange: (value) => {this.props.updateControlPin(this.props.controlID, value)} 
       },
       negativeLogic: {
@@ -40,6 +41,7 @@ class DefinePins extends React.Component {
       digitalOrAnalog: {
         title: "Digital or Analog",
         options: ["digital", "analog"],
+        width:'45%',
         defaultValue: this.props.analogOrDigital,
         onChange: (value) => {this.props.updateControlAnalogOrDigital(this.props.controlID, value)} 
       }

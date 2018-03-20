@@ -4,9 +4,8 @@ import { bindActionCreators } from 'redux'
 import * as Actions from '../../redux/actions_designer'
 import { withRouter } from 'react-router-dom'
 
-import GenericSelect from './GenericSelect'
-import ControlledSelect from './ControlledSelect'
-import GenericTextInput from './GenericTextInput'
+import GenericSelect from '../utilities/GenericSelect'
+import GenericTextInput from '../utilities/GenericTextInput'
 import RangeOptions from './RangeOptions'
 import DefinePins from './DefinePins'
 
@@ -46,21 +45,23 @@ class ControlBuilder extends React.Component {
       },
       controlName: {
         title: "Control Name",
+        width: '100%',
         defaultValue: thisControl.controlName,
         onChange: (value) => {this.props.updateControlName(controlIndex, value)}
       },
       controlType: {
         title: "Control Type",
+        width: '45%',
         options: {
           OnOff: 0, 
           Range: 1
         },
-        helperText: 'On/off or Range Control?',
         defaultValue: thisControl.controlType,
         onChange: (value) => {this.props.updateControlType(controlIndex, value)}
       },
       controlDirection: {
         title: "Control Direction",
+        width: '45%',
         options: {
           input: 0, 
           output: 1
@@ -105,6 +106,7 @@ class ControlBuilder extends React.Component {
         title: "Add New Control",
         value:this.state.selection,
         defaultValue: this.state.selection,
+        width: '33%',
         options: ["Custom", "Servo", "LED", "Select..."],
         onChange: (value) => {this.setState({selection: "Select..."}); this.props.addNewControl(value); },
       },
@@ -116,7 +118,7 @@ class ControlBuilder extends React.Component {
     }
 
     return (
-      <div >
+      <div style={{margin:24}}>
         <div {...inputs.fieldInputs}>
           {this.props.controls.map((thisControl, index) => this.buildControl(thisControl, index))}  
         </div>
