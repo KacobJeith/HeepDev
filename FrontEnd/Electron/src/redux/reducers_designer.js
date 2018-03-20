@@ -5,6 +5,7 @@ import { packageSourceFiles } from 'HeepDesigner/packageSourceFiles'
 import { sys_phy_files } from 'HeepDesigner/SystemPHYCompatibilities'
 
 export default function(state = initialState.builder, action, fullState = initialState) {
+
   switch (action.type) {
     case 'UPDATE_DEVICE_NAME' :
 
@@ -94,14 +95,14 @@ export default function(state = initialState.builder, action, fullState = initia
     case 'UPDATE_CONTROL_MAX' :
 
       var newState = Immutable.List(state.controls).toJS();
-    newState[action.controlID]['highValue'] = parseInteger(action.controlMax);
+      newState[action.controlID]['highValue'] = parseInteger(action.controlMax);
 
       return Immutable.Map(state).set('controls', newState).toJS()
 
     case 'UPDATE_CONTROL_MIN' :
 
       var newState = Immutable.List(state.controls).toJS();
-    newState[action.controlID]['lowValue'] = parseInteger(action.controlMin);
+      newState[action.controlID]['lowValue'] = parseInteger(action.controlMin);
 
       return Immutable.Map(state).set('controls', newState).toJS()
 
@@ -114,8 +115,6 @@ export default function(state = initialState.builder, action, fullState = initia
         .set('numControls', state.numControls + 1)
         .set('controls', controls)
         .toJS()
-
-        console.log(newMaster.controls);
 
         return newMaster
 
@@ -177,3 +176,16 @@ const parseInteger = (input) => {
     return setInt
   }
 }
+
+const initialControlState = (controlID) => ({
+    controlName: 'default',
+    controlID: controlID,
+    controlDirection: 0,
+    controlType: 0,
+    highValue: 100,
+    lowValue: 0,
+    curValue: 0,
+    pinNumber: 0,
+    analogOrDigital: "digital",
+    pinNegativeLogic: false
+})

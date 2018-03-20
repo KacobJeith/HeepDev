@@ -12,8 +12,8 @@ import RangeOptions from './RangeOptions'
 import DefinePins from './DefinePins'
 
 var mapStateToProps = (state) => ({
-  numControls: state.numControls,
-  controls: state.controls
+  numControls: state.designer.numControls,
+  controls: state.designer.controls
 })
 
 class ControlBuilder extends React.Component {

@@ -6,10 +6,10 @@ import * as Actions from '../../redux/actions_designer'
 import GenericTextInput from './GenericTextInput'
 
 var mapStateToProps = (state, ownProps) => ({
-  isRange: state.controls[ownProps.controlID]["controlType"] == 1,
+  isRange: state.designer.controls[ownProps.controlID]["controlType"] == 1,
   controlID: ownProps.controlID,
-  currentMax: state.controls[ownProps.controlID]["highValue"],
-  currentMin: state.controls[ownProps.controlID]["lowValue"]
+  currentMax: state.designer.controls[ownProps.controlID]["highValue"],
+  currentMin: state.designer.controls[ownProps.controlID]["lowValue"]
 })
 
 class RangeOptions extends React.Component {

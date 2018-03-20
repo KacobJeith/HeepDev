@@ -263,10 +263,13 @@ export default function(state = initialState, action) {
       console.log('Passed through first Switch');
   }
 
-  const builderState = reducersDesigner(state.builder, action, state);
+  const builderStartingState = Immutable.Map(state.designer).toJS();
+  const builderState = reducersDesigner(builderStartingState, action, state);
 
-  if (builderState !== state.builder) {
-    return builderState
+  if (builderState !== builderStartingState) {
+    return  Immutable.Map(state).set('designer', builderState).toJS()
   }
+
+  return state
 
 }

@@ -9,7 +9,7 @@ import {iconMappings} from '../../assets/svg/iconMappings'
 import IconSelectWrapper from './IconSelectWrapper'
 
 var mapStateToProps = (state) => ({
-	selectingIcon: state.selectingIcon
+	selectingIcon: state.designer.selectingIcon
 })
 
 class IconSVGSelect extends React.Component {

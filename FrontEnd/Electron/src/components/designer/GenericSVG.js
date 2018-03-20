@@ -34,29 +34,41 @@ var mapStateToProps = (state, ownProps) => ({
 
 class GenericSVG extends React.Component {
 
-	setDimensions() {
+	// setDimensions() {
 
-		this.icon.setAttribute("height", String(this.props.height).concat('px'));
-		this.icon.setAttribute("width", String(this.props.width).concat('px'));
-	}
+	// 	this.icon.setAttribute("height", String(this.props.height).concat('px'));
+	// 	this.icon.setAttribute("width", String(this.props.width).concat('px'));
+	// }
 
 	render() {
 
-		var dummydiv = document.createElement('div');
-		dummydiv.innerHTML = iconStrings[this.props.icon];
+		// var dummydiv = document.createElement('div');
+		// dummydiv.innerHTML = iconStrings[this.props.icon];
 
-		this.icon = $(dummydiv).find('svg')[0];
-		this.setDimensions();
+		// this.icon = $(dummydiv).find('svg')[0];
+		// this.setDimensions();
 
 		var inputs = {
 			icon: {
 				dangerouslySetInnerHTML: {__html: $(this.icon).prop('outerHTML')},
-			}
+			},
+			svgIcon: {
+		        style: {
+		          maxHeight: '100%',
+		          maxWidth: '100%'
+		        },
+		        width: this.props.width,
+		        height: this.props.height,
+		        type:"image/svg+xml",
+		        data: "/assets/svg/" + this.props.icon + ".svg"
+		    }
 		}
+// <div {...inputs.icon}/>
+
 
 
 		return (
-			<div {...inputs.icon}/>
+			<object {...inputs.svgIcon}/>
 		);
 	}
 }

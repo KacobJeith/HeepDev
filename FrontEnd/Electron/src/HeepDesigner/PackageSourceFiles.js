@@ -2,7 +2,7 @@ import fileDownload from 'react-file-download'
 import JSZip from 'jszip'
 import randomNumber from 'random-number-csprng'
 
-import { sys_phy_files } from 'SystemPHYCompatibilities'
+import { sys_phy_files } from './SystemPHYCompatibilities'
 
 export const packageSourceFiles = (deviceDetails, controls) => {
 

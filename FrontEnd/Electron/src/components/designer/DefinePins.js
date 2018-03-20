@@ -8,8 +8,8 @@ import GenericSelect from './GenericSelect'
 
 var mapStateToProps = (state, ownProps) => ({
   controlID: ownProps.controlID,
-  systemType: state.systemType,
-  controlType: state.controls[ownProps.controlID]['controlType']
+  systemType: state.designer.systemType,
+  controlType: state.designer.controls[ownProps.controlID]['controlType']
 })
 
 class DefinePins extends React.Component {

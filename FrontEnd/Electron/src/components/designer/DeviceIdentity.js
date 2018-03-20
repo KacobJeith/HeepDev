@@ -13,11 +13,11 @@ import {iconMappings} from '../../assets/svg/iconMappings'
 import GenericSVG from './GenericSVG'
 
 var mapStateToProps = (state, ownProps) => ({
-  deviceName: state.deviceName,
-  systemType: state.systemType,
-  physicalLayer: state.physicalLayer,
-  controls: state.controls,
-  icon: state.iconSelected
+  deviceName: state.designer.deviceName,
+  systemType: state.designer.systemType,
+  physicalLayer: state.designer.physicalLayer,
+  controls: state.designer.controls,
+  icon: state.designer.iconSelected
 })
 
 class DeviceIdentity extends React.Component {

@@ -19,8 +19,9 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
   ],
 
-  devServer: {
-    publicPath: '/dist',
+  devServer: { 
+    contentBase: 'dist',
+    publicPath: 'dist',
     port: 9000,
     historyApiFallback: true
   },
@@ -28,9 +29,9 @@ module.exports = {
   resolve: {
     root: [
       path.join(__dirname, ''),
-      path.resolve('./../../')
+      path.resolve('src')
     ],
-    modulesDirectories: ['web_modules', 'node_modules', 'client', 'js', 'HeepModules'],
+    modulesDirectories: ['node_modules'],
     extensions: ['', '.webpack.js', '.web.js', '.js', '.jsx']
   },
 

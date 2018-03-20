@@ -6,8 +6,8 @@ import * as Actions from '../../redux/actions_designer'
 import GenericSVG from './GenericSVG'
 
 var mapStateToProps = (state, ownProps) => ({
-	selected: state.iconSelected == ownProps.iconID,
-	actualSelected: state.iconSelected,
+	selected: state.designer.iconSelected == ownProps.iconID,
+	actualSelected: state.designer.iconSelected,
 	iconID: ownProps.iconID,
   	icon: ownProps.iconName
 })
