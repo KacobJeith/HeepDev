@@ -5,7 +5,7 @@ import * as Actions from '../../redux/actions_designer'
 import { withRouter } from 'react-router-dom'
 
 import { withStyles } from 'material-ui/styles';
-import { Grid, Select }  from 'material-ui'
+import { Grid, Select, Collapse }  from 'material-ui'
 
 import Input, { InputLabel } from 'material-ui/Input';
 import { MenuItem } from 'material-ui/Menu';
@@ -36,6 +36,9 @@ const styles = theme => ({
     minWidth: 120,
     width: '60%'
   },
+  formControlSimple: {
+    margin: theme.spacing.unit
+  },
   selectEmpty: {
     marginTop: theme.spacing.unit * 2,
   },
@@ -46,7 +49,8 @@ class DeviceIdentity extends React.Component {
   nameDevice = () => (
     <FormControl className={this.props.classes.formControl}>
       <InputLabel htmlFor="name-input">Name</InputLabel>
-      <Input id="name-input" />
+      <Input id="name-input"  
+        onChange={ (event) => {this.props.updateDeviceName(event.target.value)}}/>
       <FormHelperText>Name your Device</FormHelperText>
     </FormControl>
   )
@@ -69,46 +73,30 @@ class DeviceIdentity extends React.Component {
 
   )
 
+  inputWifiCredentials = () => (
+
+    <Collapse in={this.props.physicalLayer == 'wifi'} timeout={750} unmountOnExit>
+      <FormControl className={this.props.classes.formControlSimple}>
+        <InputLabel htmlFor="name-input">SSID</InputLabel>
+        <Input id="ssid-input" 
+          onChange={ (event) => {this.props.updateSSID(event.target.value)}}/>
+        <FormHelperText>WiFi Network Name</FormHelperText>
+      </FormControl>
+
+      <FormControl className={this.props.classes.formControlSimple}>
+        <InputLabel htmlFor="password-input">Password</InputLabel>
+        <Input id="password-input" 
+          onChange={ (event) => {this.props.updateSSIDPassword(event.target.value)}}/>
+        <FormHelperText>WiFi Password</FormHelperText>
+      </FormControl>
+    </Collapse>
+  )
+
   render () {
 
     console.log("display icon: ", iconMappings[this.props.icon]);
 
     var inputs = {
-      numControls: {
-        defaultValue: 1,
-        onChange: (value) => {this.props.updateNumControls(value)},
-        options: Array.from(Array(10).keys()),
-        title: "Controls"
-      },
-      deviceName: {
-        title: "Device Name",
-        defaultValue: "DefaultName",
-        onChange: (value) => {this.props.updateDeviceName(value)}
-      },
-      systemType: {
-        title: "Select System Type",
-        defaultValue: "Simulation",
-        options: Object.keys(sys_phy_files),
-        onChange: (value) => {this.props.updateSystemType(value)}
-      },
-      physicalLayer: {
-        title: "Select Physical Layer",
-        defaultValue: sys_phy_files[this.props.systemType][0],
-        options: Object.keys(sys_phy_files[this.props.systemType]),
-        onChange: (value) => {this.props.updatePhysicalLayer(value)}
-      },
-      ssid: {
-        key: 'ssid',
-        title: "Enter WiFi SSID",
-        defaultValue: '',
-        onChange: (value) => {this.props.updateSSID(value)}
-      },
-      ssidPassword: {
-        key: 'ssidpwd',
-        title: "Enter WiFi Password",
-        defaultValue: '',
-        onChange: (value) => {this.props.updateSSIDPassword(value)}
-      },
       iconSVG: {
         height: 150,
         width: 150,
@@ -127,42 +115,30 @@ class DeviceIdentity extends React.Component {
           margin: "auto"
         },
         onClick: () => {this.props.openIconModal()}
-      },
-      fullWidth: {
-        style: {
-          width: "100%"
-        }
       }
     }
 
-    // var optionalInputs = [];
-
-    // if (this.props.physicalLayer == 'wifi') {
-    //   optionalInputs.push(<Row> <div {...inputs.fullWidth}> <GenericTextInput {...inputs.ssid}/> </div> </Row>)
-    //   optionalInputs.push(<Row> <div {...inputs.fullWidth}> <GenericTextInput {...inputs.ssidPassword}/> </div> </Row>)
-    // }
-
     return (
-      <Grid container direction='column' spacing={24}>
-        <Grid item>
-          <IconSVGSelect />
-        </Grid>
-        <Grid item>
+      <Grid container spacing={24}>
+        <Grid item xs={5}>
           <div {...inputs.iconContainer}>
             <GenericSVG {...inputs.iconSVG}/>
           </div>
         </Grid>
-        <Grid item >
-          {this.nameDevice()}
-        </Grid>
-        <Grid item>
-          {this.selectSystemType()}
-        </Grid>
-        <Grid item>
-          <GenericSelect {...inputs.physicalLayer}/>
-        </Grid>
+        <Grid item xs={7}>
+          <Grid container direction='column' spacing={24}>
+            <Grid item >
+              {this.nameDevice()}
+            </Grid>
+            <Grid item>
+              {this.selectSystemType()}
+            </Grid>
+            <Grid item>
 
-            
+              {this.inputWifiCredentials()}
+            </Grid>
+          </Grid>
+        </Grid>
       </Grid>
     );
   }
