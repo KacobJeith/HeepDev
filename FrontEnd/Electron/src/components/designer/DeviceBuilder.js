@@ -18,7 +18,8 @@ export default class DeviceBuilder extends React.Component {
     var inputs = {
       builder: {
         style: {
-          backgroundColor: "#272B30",
+          backgroundColor: "#f1f1f1",
+          height:'100%',
           fontFamily: "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
         }
       },
@@ -39,9 +40,9 @@ export default class DeviceBuilder extends React.Component {
       <div {...inputs.builder}>
         <div {...inputs.contents}>
           <div {...inputs.spacer}/>
-          <DeviceIdentity/>
-          <ControlBuilder/>
-          <DownloadSource/>
+            <DeviceIdentity/>
+            <ControlBuilder/>
+            <DownloadSource/>
           <div {...inputs.spacer}/>
         </div>
      </div>

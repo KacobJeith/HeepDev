@@ -3,7 +3,13 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as Actions from '../../redux/actions_designer'
 import { withRouter } from 'react-router-dom'
-import {Grid, Row, Col, ButtonGroup, ControlLabel, FormGroup, FormControl, HelpBlock, option} from 'react-bootstrap';
+
+import { withStyles } from 'material-ui/styles';
+import { Grid, Select }  from 'material-ui'
+
+import Input, { InputLabel } from 'material-ui/Input';
+import { MenuItem } from 'material-ui/Menu';
+import { FormControl, FormHelperText } from 'material-ui/Form';
 
 import { sys_phy_files } from 'HeepDesigner/SystemPHYCompatibilities'
 import GenericSelect from './GenericSelect'
@@ -20,7 +26,48 @@ var mapStateToProps = (state, ownProps) => ({
   icon: state.designer.iconSelected
 })
 
+const styles = theme => ({
+  root: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  formControl: {
+    margin: theme.spacing.unit,
+    minWidth: 120,
+    width: '60%'
+  },
+  selectEmpty: {
+    marginTop: theme.spacing.unit * 2,
+  },
+});
+
 class DeviceIdentity extends React.Component {
+
+  nameDevice = () => (
+    <FormControl className={this.props.classes.formControl}>
+      <InputLabel htmlFor="name-input">Name</InputLabel>
+      <Input id="name-input" />
+      <FormHelperText>Name your Device</FormHelperText>
+    </FormControl>
+  )
+
+  selectSystemType = () => (
+
+    <FormControl className={this.props.classes.formControl}>
+      <InputLabel htmlFor="type-helper">System Type</InputLabel>
+      <Select
+        value={this.props.systemType}
+        onChange={ (event) => {this.props.updateSystemType(event.target.value)}}
+        input={<Input name="type-helper" id="type-helper" />}
+      >
+        {Object.keys(sys_phy_files).map((thisKey) => (
+          <MenuItem value={thisKey} key={thisKey}>{thisKey}</MenuItem>
+        ))}
+      </Select>
+      <FormHelperText>Select the hardware used for this device</FormHelperText>
+    </FormControl>
+
+  )
 
   render () {
 
@@ -88,32 +135,35 @@ class DeviceIdentity extends React.Component {
       }
     }
 
-    var optionalInputs = [];
+    // var optionalInputs = [];
 
-    if (this.props.physicalLayer == 'wifi') {
-      optionalInputs.push(<Row> <div {...inputs.fullWidth}> <GenericTextInput {...inputs.ssid}/> </div> </Row>)
-      optionalInputs.push(<Row> <div {...inputs.fullWidth}> <GenericTextInput {...inputs.ssidPassword}/> </div> </Row>)
-    }
+    // if (this.props.physicalLayer == 'wifi') {
+    //   optionalInputs.push(<Row> <div {...inputs.fullWidth}> <GenericTextInput {...inputs.ssid}/> </div> </Row>)
+    //   optionalInputs.push(<Row> <div {...inputs.fullWidth}> <GenericTextInput {...inputs.ssidPassword}/> </div> </Row>)
+    // }
 
     return (
-          <form>
+      <Grid container direction='column' spacing={24}>
+        <Grid item>
           <IconSVGSelect />
-          <Grid>
-            <Row>
-              <Col md={4} >
-                <div {...inputs.iconContainer}>
-                  <GenericSVG {...inputs.iconSVG}/>
-                </div>
-              </Col>
-              <Col md={8}>
-                <Row> <div {...inputs.fullWidth}> <GenericTextInput {...inputs.deviceName}/> </div> </Row>
-                <Row> <div {...inputs.fullWidth}> <GenericSelect {...inputs.systemType}/> </div> </Row>
-                <Row> <div {...inputs.fullWidth}> <GenericSelect {...inputs.physicalLayer}/> </div> </Row>
-                {optionalInputs}
-              </Col>
-            </Row>
-          </Grid>
-          </form>  
+        </Grid>
+        <Grid item>
+          <div {...inputs.iconContainer}>
+            <GenericSVG {...inputs.iconSVG}/>
+          </div>
+        </Grid>
+        <Grid item >
+          {this.nameDevice()}
+        </Grid>
+        <Grid item>
+          {this.selectSystemType()}
+        </Grid>
+        <Grid item>
+          <GenericSelect {...inputs.physicalLayer}/>
+        </Grid>
+
+            
+      </Grid>
     );
   }
 }
@@ -122,4 +172,4 @@ var mapDispatchToProps = (dispatch) => {
   return bindActionCreators(Actions, dispatch)
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(DeviceIdentity))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)( withStyles(styles)(DeviceIdentity)))

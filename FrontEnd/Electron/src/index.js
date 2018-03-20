@@ -69,7 +69,7 @@ var loadDevicesFromServer = (url) => {
     url: url,
     cache: false,
     success: (data) => {
-      console.log("Data from server: ", data)
+      
       try {
         data.url = window.location.origin;
         var immutableMap = Immutable.Map(data);
