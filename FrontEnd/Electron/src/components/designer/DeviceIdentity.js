@@ -44,7 +44,7 @@ class DeviceIdentity extends React.Component {
 
   nameDevice = () => (
     <FormControl className={this.props.classes.formControl}>
-      <InputLabel htmlFor="name-input">Device Name</InputLabel>
+      <InputLabel htmlFor="name-input">Enter Device Name</InputLabel>
       <Input id="name-input"  
         onChange={ (event) => {this.props.updateDeviceName(event.target.value)}}/>
 

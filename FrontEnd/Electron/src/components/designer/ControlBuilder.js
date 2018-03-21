@@ -44,7 +44,7 @@ class ControlBuilder extends React.Component {
         }
       },
       controlName: {
-        title: "Control Name",
+        title: "Enter Control Name",
         width: '100%',
         defaultValue: thisControl.controlName,
         onChange: (value) => {this.props.updateControlName(controlIndex, value)}
