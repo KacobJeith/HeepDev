@@ -67,6 +67,7 @@ void SetIconIDInMemory_Byte(char iconID, heepByte* deviceID);
 
 void SetIconDataInMemory_Byte(char* iconData, int numCharacters, heepByte* deviceID);
 
+heepByte GetWiFiFromMemory(char* WiFiSSID, char* WiFiPassword, int priority);
 void AddWiFiSettingsToMemory(char* WiFiSSID, int numCharSSID, char* WiFiPassword, int numCharPassword, heepByte* deviceID);
 
 #ifdef USE_ANALYTICS

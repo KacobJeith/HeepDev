@@ -132,6 +132,37 @@ void SetIconDataInMemory_Byte(char* iconData, int numCharacters, heepByte* devic
 	}
 }
 
+heepByte GetWiFiFromMemory(char* WiFiSSID, char* WiFiPassword, int priority)
+{
+	heepByte foundSSIDAndPassword = 0x00; // 0b00000011 When both found
+	int counter = 0;
+	while(counter < curFilledMemory)
+	{
+		if(deviceMemory[counter] == WiFiSSIDOpCode)
+		{
+			if(deviceMemory[counter + ID_SIZE + 1] == priority)
+			{
+				foundSSIDAndPassword |= 0x01;
+			}
+		}
+		else if(deviceMemory[counter] == WiFiPasswordOpCode)
+		{
+			if(deviceMemory[counter + ID_SIZE + 1] == priority)
+			{
+				foundSSIDAndPassword |= 0x02;
+			}
+		}
+
+		counter = SkipOpCode(counter);
+
+		if(foundSSIDAndPassword & 0x03){
+			return 0;
+		}
+	}
+
+	return 1; // No SSID Password Found at given Priority
+}
+
 void AddWiFiSettingsToMemory(char* WiFiSSID, int numCharSSID, char* WiFiPassword, int numCharPassword, heepByte* deviceID)
 {
 	heepByte IDPRiority = 1;
