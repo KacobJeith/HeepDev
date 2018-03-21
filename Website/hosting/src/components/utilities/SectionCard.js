@@ -10,15 +10,12 @@ const SectionCard = (componentProps, wrappedComponent) => {
       backgroundSize:'cover',
       maxWidth: '100%',
       margin: 0,
-      overflowX: 'hidden',
     }
   };
 
   return(
     <div style={{...inputs.outerContainer, ...componentProps}}>
-      <Grid container justify='center'>
-        {wrappedComponent}
-      </Grid>
+      {wrappedComponent}
     </div>
   );
 };

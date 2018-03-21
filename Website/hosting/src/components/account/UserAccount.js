@@ -117,9 +117,19 @@ class UserAccount extends React.Component {
   }
 
   render() {
+    const inputs = {
+      parentGrid: {
+        style: {
+          paddingTop: 50,
+          maxWidth:'100%',
+          overflowX: 'hidden',
+          margin: '0 auto'
+        }
+      }
+    }
 
     return (
-      <Grid container justify='center' style={{paddingTop: 50, maxWidth:'100%', overflowX: 'hidden'}}>
+      <Grid container justify='center' {...inputs.parentGrid}>
         <Grid item xs={10}>
           <Grid container spacing={24} alignItems='center'>
             <Grid item xs={3}>
