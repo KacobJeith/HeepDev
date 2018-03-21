@@ -33,7 +33,7 @@ class Landing extends React.Component {
           maxWidth: '100%',
           minHeight: inputs.minHeight
         }}>
-          <Grid item>
+          <Grid item xs={6}>
             <Typography variant='display1'>
               Heepify Your World
             </Typography>
@@ -89,7 +89,7 @@ class Landing extends React.Component {
               {Object.keys(this.props.collections['featuredItems'].products).map((key, index) => {
                 if (key != 'type') {
                   return (
-                    <Grid item xs= {5} md={2} key={key}>
+                    <Grid item xs= {12} md={2} key={key}>
                       <FeaturedItems key={key} productIndex={index}/>
                     </Grid>
                   )
