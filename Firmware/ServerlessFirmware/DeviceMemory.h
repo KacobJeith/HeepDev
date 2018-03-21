@@ -32,6 +32,9 @@
 
 #define AnalyticsOpCode				0x1F
 
+#define WiFiSSIDOpCode				0x20
+#define WiFiPasswordOpCode			0x21
+
 extern unsigned char deviceMemory[];
 extern unsigned int curFilledMemory; // Indicate the curent filled memory. 
 						 // Also serve as a place holder to 
@@ -63,6 +66,8 @@ void SetDeviceNameInMemory_Byte(char* deviceName, int numCharacters, heepByte* d
 void SetIconIDInMemory_Byte(char iconID, heepByte* deviceID);
 
 void SetIconDataInMemory_Byte(char* iconData, int numCharacters, heepByte* deviceID);
+
+void AddWiFiSettingsToMemory(char* WiFiSSID, int numCharSSID, char* WiFiPassword, int numCharPassword, heepByte* deviceID);
 
 #ifdef USE_ANALYTICS
 

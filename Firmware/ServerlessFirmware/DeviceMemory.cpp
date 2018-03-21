@@ -132,6 +132,33 @@ void SetIconDataInMemory_Byte(char* iconData, int numCharacters, heepByte* devic
 	}
 }
 
+void AddWiFiSettingsToMemory(char* WiFiSSID, int numCharSSID, char* WiFiPassword, int numCharPassword, heepByte* deviceID)
+{
+	heepByte IDPRiority = 1;
+
+	PerformPreOpCodeProcessing_Byte(deviceID);
+
+	// WiFi
+	AddNewCharToMemory(WiFiSSIDOpCode);
+	AddIndexOrDeviceIDToMemory_Byte(deviceID);
+	AddNewCharToMemory(1 + numCharSSID);
+	AddNewCharToMemory(IDPRiority);
+	for(int i = 0; i < numCharSSID; i++)
+	{
+		AddNewCharToMemory(WiFiSSID[i]);
+	}
+
+	// Password
+	AddNewCharToMemory(WiFiPasswordOpCode);
+	AddIndexOrDeviceIDToMemory_Byte(deviceID);
+	AddNewCharToMemory(1 + numCharPassword);
+	AddNewCharToMemory(IDPRiority);
+	for(int i = 0; i < numCharPassword; i++)
+	{
+		AddNewCharToMemory(WiFiPassword[i]);
+	}
+}
+
 #ifdef USE_ANALYTICS
 
 void SetAnalyticsDataControlValueInMemory_Byte(heepByte controlID, int controlValue, heepByte *deviceID)
