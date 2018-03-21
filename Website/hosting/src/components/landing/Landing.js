@@ -33,7 +33,7 @@ class Landing extends React.Component {
           maxWidth: '100%',
           minHeight: inputs.minHeight
         }}>
-          <Grid item xs={6}>
+          <Grid item>
             <Typography variant='display1'>
               Heepify Your World
             </Typography>

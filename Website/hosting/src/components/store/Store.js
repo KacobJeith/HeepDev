@@ -17,7 +17,7 @@ class Store extends React.Component {
   render() {
 
     return (
-        <Grid container justify='center' style={{marginTop: 20}}>
+        <Grid container justify='center' style={{marginTop: 20, overflowX: 'hidden', maxWidth: '100%'}}>
           <Grid item xs={10} style={{padding:24}}>
             <Grid container direction='row' alignItems='stretch' spacing={16}>
               {Object.keys(this.props.products).map((key) => (
