@@ -6,7 +6,6 @@ import * as Actions from '../../redux/actions_designer'
 
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
-import {Modal, Button} from 'react-bootstrap';
 import {iconMappings} from '../../assets/svg/iconMappings'
 
 import { Paper }  from 'material-ui'
@@ -67,7 +66,7 @@ class IconSVGSelect extends React.Component {
     	      },
     	      height: '100%',
     	      type:"image/svg+xml",
-    	      data: "/dist/assets/svg/" + iconMappings[this.props.icon] + ".svg"
+    	      data: "/assets/svg/" + iconMappings[this.props.icon] + ".svg"
     	},
     	paper: {
 	        style: {
@@ -125,7 +124,7 @@ class IconSVGSelect extends React.Component {
               onClick={() => this.props.selectIcon(index)}
             >
             	<ListItemIcon >
-		            <object {...inputs.svgIcon} data={"/dist/assets/svg/" + iconMappings[index] + ".svg"}/>
+		            <object {...inputs.svgIcon} data={"/assets/svg/" + iconMappings[index] + ".svg"}/>
 		          </ListItemIcon>
               {option}
             </MenuItem>

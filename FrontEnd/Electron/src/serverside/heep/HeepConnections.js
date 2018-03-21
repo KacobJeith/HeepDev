@@ -27,16 +27,21 @@ export var SearchForHeepDevices = () => {
   var gateway = findGateway();
   var searchBuffer = Buffer.from([0x09, 0x00])
 
-  var client = dgram.createSocket("udp4");
-  client.bind(function(err, bytes){
-      console.log("Set Broadcast");
-      client.setBroadcast(true);
-      var address = generalUtils.joinAddress(gateway,255)
-      client.send(searchBuffer, 5000, address, function(err, bytes) {
-          console.log("Broadcast sent");
-          client.close();
+  console.log(gateway)
+
+  if (gateway != undefined) {
+    var client = dgram.createSocket("udp4");
+    client.bind(function(err, bytes){
+        console.log("Set Broadcast");
+        client.setBroadcast(true);
+        var address = generalUtils.joinAddress(gateway,255)
+        client.send(searchBuffer, 5000, address, function(err, bytes) {
+            console.log("Broadcast sent");
+            client.close();
+        });
       });
-    });
+  }
+  
 }
 
 export var GetCurrentMasterState = () => {

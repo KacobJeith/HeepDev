@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux'
 import Immutable from 'immutable'
 import { initialState } from '../index'
-import { packageSourceFiles } from 'HeepDesigner/packageSourceFiles'
-import { sys_phy_files } from 'HeepDesigner/SystemPHYCompatibilities'
+import { packageSourceFiles } from '../HeepDesigner/packageSourceFiles'
+import { sys_phy_files } from '../HeepDesigner/SystemPHYCompatibilities'
 
 export default function(state = initialState.builder, action, fullState = initialState) {
 
