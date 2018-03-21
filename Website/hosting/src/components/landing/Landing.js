@@ -46,15 +46,16 @@ class Landing extends React.Component {
   bedroomSVG() {
     const inputs = {
       bedroomContainer: {
-        overflowX: 'hidden',
         style: {
           maxWidth: '100%',
+          overflowX: 'hidden',
+          margin: 0
         },
       },
     };
     return (
       <Grid container justify='center' {...inputs.bedroomContainer}>
-        <Grid item xs={8}>
+        <Grid item xs={12} md={8}>
           <BedroomSVG />
         </Grid>
       </Grid>
@@ -71,22 +72,26 @@ class Landing extends React.Component {
       },
       header: {
         paddingBottom: 30,
-        paddingLeft: 40,
         fontWeight: 'bold',
+      },
+      grid: {
+        style: {
+          maxWidth: '100%',
+          overflowX: 'hidden',
+          margin: '0 auto'
+        }
       }
     };
 
     if (typeof this.props.collections['featuredItems'] !== 'undefined') {
       return (
         SectionCard(inputs.section,
-          <div>
-            <div>
-              <Typography variant='display1'
-                style={{...inputs.header}}>
-                FEATURED COLLECTION
-              </Typography>
-            </div>
-            <Grid container style={{maxWidth: '100%'}} justify ='center'>
+          <div style={{textAlign: 'center'}}>
+            <Typography variant='display1' align='center'
+              style={{...inputs.header}}>
+              FEATURED COLLECTION
+            </Typography>
+            <Grid container {...inputs.grid} justify ='center'>
               {Object.keys(this.props.collections['featuredItems'].products).map((key, index) => {
                 if (key != 'type') {
                   return (

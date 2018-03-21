@@ -1,5 +1,5 @@
 import React from 'react'
-import { Typography, Grid } from 'material-ui'
+import { Grid } from 'material-ui'
 
 const SectionCard = (componentProps, wrappedComponent) => {
 
@@ -16,7 +16,9 @@ const SectionCard = (componentProps, wrappedComponent) => {
 
   return(
     <div style={{...inputs.outerContainer, ...componentProps}}>
-      {wrappedComponent}
+      <Grid container justify='center'>
+        {wrappedComponent}
+      </Grid>
     </div>
   );
 };

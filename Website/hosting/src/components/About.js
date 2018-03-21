@@ -35,7 +35,7 @@ class About extends React.Component {
 
     return (
       SectionCard(inputs,
-        <Grid container style={{maxWidth:'100%'}} justify='center' alignItems='center'>
+        <Grid container style={{maxWidth:'100%', margin: '0 auto'}} justify='center' alignItems='center'>
           <Grid item xs={8}>
             <Typography variant='headline' align='center'>
               Connect Your World
@@ -71,7 +71,11 @@ class About extends React.Component {
 
     return (
       <div>
-        <Grid container style={{maxWidth:'100%'}}
+        <Grid container style={{
+          maxWidth:'100%',
+          overflowX: 'hidden',
+          margin: '0 auto'
+        }}
           spacing={24} justify='center'>
           <Grid item xs={6} sm={3}>
             <AboutCard {...inputs.PlugAndPlay}/>
@@ -96,7 +100,7 @@ class About extends React.Component {
 
     return(
       SectionCard(inputs,
-        <Grid container style={{maxWidth:'100%'}} justify ='center' alignItems ='center'>
+        <Grid container style={{maxWidth:'100%', margin: '0 auto'}} justify ='center' alignItems ='center'>
           <Grid item xs={8}>
             <Typography variant='headline' align='center'>
               Our Story
@@ -135,7 +139,7 @@ class About extends React.Component {
             Our Team
           </Typography>
         )}
-        <Grid container style={{maxWidth:'100%'}} justify='center'>
+        <Grid container style={{maxWidth:'100%', margin: '0 auto'}} justify='center'>
           <Grid item xs>
             <TeamModal {...inputs.teamModal.james}/>
           </Grid>
