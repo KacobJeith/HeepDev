@@ -432,23 +432,25 @@ class BedroomSVG extends React.Component{
 
     // animate sunset and moonrise
            // sunset animation along path with color change
-           .to([outsideSun, outsideSunGlow], 4, {bezier: {type: "cubic", values: pathSun}, ease: Sine.easeInOut, scaleX: 1.4, scaleY: 1.4, transformOrigin: "center"}, "+=0.5")
-           .to(outsideSun, 2, {fill: "#f26f41"}, "-=4")
-           .staggerTo("#outsideSunGlow_1_ stop", 3, {
+           .to([outsideSun, outsideSunGlow], 3, {bezier: {type: "cubic", values: pathSun}, ease: Sine.easeInOut, scaleX: 1.4, scaleY: 1.4, transformOrigin: "center"}, "+=0.5")
+           .to(outsideSun, 3, {fill: "#f26f41"}, "-=3")
+
+           // first color change of clouds to reddish
+           .to(cloudLeft, 3, {fill: "#ffd69f"}, "-=3")
+           .to(cloudCenter, 3, {fill: "#f28757"}, "-=3")
+           .to(cloudRight, 3, {fill: "#d6b39a"}, "-=3")
+
+           .staggerTo("#outsideSunGlow_1_ stop", 1, {
              stopColor: "#f26f41",
              ease: Sine.easeInOut,
              cycle: {
                stopColor: ["#f26f41", "#fff"]
              }
-           }, 0, "-=4")
+           }, 0, "-=3")
 
-           // first color change of clouds to reddish
-           .to(cloudLeft, 4, {fill: "#ffd69f"}, "-=4")
-           .to(cloudCenter, 4, {fill: "#f28757"}, "-=4")
-           .to(cloudRight, 4, {fill: "#d6b39a"}, "-=4")
 
            // first color change of sky to red
-           .staggerTo("#outsideSky_1_ stop", 4, {
+           .staggerTo("#outsideSky_1_ stop", 3, {
              stopColor: "#b1e6f2",
              ease: Sine.easeInOut,
              cycle: {
@@ -458,9 +460,9 @@ class BedroomSVG extends React.Component{
            .to([windowGlare1, windowGlare2, windowGlare3], 1, {opacity: 0}, "-=4")
 
            // second color change of cloud to purple
-           .to(cloudLeft, 5, {fill: "#9e97b6"})
-           .to(cloudCenter, 5, {fill: "#443d56"}, "-=5")
-           .to(cloudRight, 5, {fill: "#4d495b"}, "-=5")
+           .to(cloudLeft, 3, {fill: "#9e97b6"})
+           .to(cloudCenter, 3, {fill: "#443d56"}, "-=4")
+           .to(cloudRight, 3, {fill: "#4d495b"}, "-=4")
 
            // second color change of sky to purple
            .staggerTo("#outsideSky_1_ stop", 2, {
@@ -472,23 +474,23 @@ class BedroomSVG extends React.Component{
            }, 1, "-=6")
 
            // third color change of sky to completely purple
-           .staggerTo("#outsideSky_1_ stop", 3, {
+           .staggerTo("#outsideSky_1_ stop", 2, {
              stopColor: "#110f27",
              ease: Sine.easeInOut,
              cycle: {
                stopColor: ["#110f27", "#110f27"]
              }
-           }, 0, "-=3")
+           }, 0, "-=4")
 
            // moonrise animation
-           .to(outsideMoon, 3, {bezier: {type: "cubic", values: pathMoon}, ease: Sine.easeInOut}, "-=4")
+           .to(outsideMoon, 2, {bezier: {type: "cubic", values: pathMoon}, ease: Sine.easeInOut}, "-=4")
 
            // blinds come down
-           .to(blindsMiddle, 4, {scaleY: 18.2, ease: Sine.easeInOut}, "-=1")
-           .to(blindsBottom, 4, {y: 289, ease: Sine.easeInOut}, "-=4")
+           .to(blindsMiddle, 2, {scaleY: 18.2, ease: Sine.easeInOut}, "-=1")
+           .to(blindsBottom, 2, {y: 289, ease: Sine.easeInOut}, "-=2")
 
            // lights go off
-           .to([night, nightLightGlow, sunGlow], 1, {display: "block"}, "+=1")
+           .to([night, nightLightGlow, sunGlow], 1, {opacity: 0.9}, "+=0.4")
 
            // revert sun, sky, and clouds
            .to([outsideSun, outsideSunGlow, outsideMoon], 0.01, {x: 0, y: 0, scaleX: 1, scaleY: 1})
@@ -503,14 +505,14 @@ class BedroomSVG extends React.Component{
                stopColor: ["#b1e6f2", "#b1e6f2"]
              }
            }, 0.01, "-=0.01")
-           .staggerTo("#outsideSunGlow_1_ stop", 3, {
+           .staggerTo("#outsideSunGlow_1_ stop", 0.01, {
              stopColor: "#ffe027",
              cycle: {
                stopColor: ["#ffe027", "#fff"]
              }
            }, 0, "-=0.01")
 
-           .to([night, nightLightGlow, sunGlow], 1, {display: "none"}, "+=1")
+           .to([night, nightLightGlow, sunGlow], 1, {opacity: 0}, "+=1")
 
            //bounce clock up and down
            .from(clock, 0.2, {y: 0, x:0}, {
@@ -537,7 +539,7 @@ class BedroomSVG extends React.Component{
               y: -5,
               x: -3,
               yoyo: true,
-              repeat: 50,
+              repeat: 25,
               ease: Sine.easeInOut
             })
 
@@ -552,9 +554,9 @@ class BedroomSVG extends React.Component{
              transformOrigin: "50%",
              y: -3,
              yoyo: true,
-             repeat: 26,
+             repeat: 13,
              ease: Sine.easeInOut
-           }, "-=5")
+           }, "-=2.5")
 
            .fromTo(clockBellRight, 0.2, {
              rotation: 4,
@@ -566,15 +568,15 @@ class BedroomSVG extends React.Component{
              transformOrigin: "50%",
              y: 3,
              yoyo: true,
-             repeat: 25,
+             repeat: 12,
              ease: Sine.easeInOut
-           }, "-=5")
+           }, "-=2.5")
 
            .to([clock, clockBellLeft, clockBellRight], 0.1, {x: 0, y: 0}, "+=0.01")
 
           // blinds go up
-           .to(blindsMiddle, 4, {scaleY: 1, ease: Sine.easeInOut}, "-=5")
-           .to(blindsBottom, 4, {y: 0, ease: Sine.easeInOut}, "-=5")
+           .to(blindsMiddle, 2, {scaleY: 1, ease: Sine.easeInOut}, "-=4")
+           .to(blindsBottom, 2, {y: 0, ease: Sine.easeInOut}, "-=4")
 
   };
 
@@ -594,7 +596,7 @@ class BedroomSVG extends React.Component{
     this.leaveShake();
   };
 
-  hoverFlower() {sv
+  hoverFlower() {
     this.hoverShake(flowers);
   };
 

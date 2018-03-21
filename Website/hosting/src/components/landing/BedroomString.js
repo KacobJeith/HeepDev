@@ -462,7 +462,7 @@ export const bedroomSVG = `
       <path id="pigCoinSlot_1_" fill="#515151" stroke="#515151" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" d="M649.247 329.693c8.429-5.118 9.011-5.223 19.783-6.963-10.097.425-16.501 2.546-22.34 6.427l2.557.536z"/>
       <path id="pigLegBack_1_" fill="#C191AA" d="M690.224 389.637l3.021 8.506c12.27.663 16.318-5.901 16.318-5.901l-6.193-11.188c-3.687 3.461-8.138 6.378-13.146 8.583z"/>
     </g>
-    <path id="night" display="none" opacity=".9" d="M0 1h1500v800H0z"/>
+    <path id="night" opacity="0" d="M0 1h1500v800H0z"/>
     <g id="solarSystem">
       <circle fill="#F2D379" cx="1137.206" cy="116.624" r="21.586"/>
       <path fill="#CE9C52" d="M1150.37 133.732a21.57 21.57 0 0 1-8.364 3.937c-7.75-2.532-16.54-6.056-23.747-10.701a21.506 21.506 0 0 1-2.561-8.451c.275.116.434.181.434.181 4.862 3.387 9.992 7.851 15.947 8.61 7.669.97 13.226 4.79 18.291 6.424z"/>
@@ -554,14 +554,14 @@ export const bedroomSVG = `
         <stop offset="0" stop-color="#ff9"/>
         <stop offset="1" stop-color="#fff" stop-opacity="0"/>
       </radialGradient>
-      <circle id="sunGlow" display="none" fill="url(#sunGlow_1_)" cx="1084" cy="173" r="69"/>
+      <circle id="sunGlow" opacity="0" fill="url(#sunGlow_1_)" cx="1084" cy="173" r="69"/>
     </g>
     <g id="nightLight">
       <radialGradient id="nightLightGlow_1_" cx="120" cy="459" r="69" gradientUnits="userSpaceOnUse">
         <stop offset="0" stop-color="#ff9"/>
         <stop offset="1" stop-color="#fff" stop-opacity="0"/>
       </radialGradient>
-      <circle id="nightLightGlow" display="none" fill="url(#nightLightGlow_1_)" cx="120" cy="459" r="69"/>
+      <circle id="nightLightGlow" opacity="0" fill="url(#nightLightGlow_1_)" cx="120" cy="459" r="69"/>
       <path id="nightLightMount" fill="#B5B5B5" d="M103 458h34v51h-34z"/>
       <g id="outlets" fill="#FFFFFF">
         <path id="outletBottom" d="M125.22 503c3.578 0 6.482-4.023 6.482-8.5s-2.904-8.5-6.482-8.5h-9.343c-3.582 0-6.482 4.023-6.482 8.5 0 4.478 2.9 8.5 6.482 8.5h9.343z"/>
