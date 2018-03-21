@@ -40,7 +40,7 @@ export default function(state = initialState.builder, action, fullState = initia
       var controlID = action.controlID;
 
       var newState = Immutable.Map(state.controls).toJS();
-    newState[controlID]['controlName'] = action.name;
+      newState[controlID]['controlName'] = action.name;
 
       return Immutable.Map(state).set('controls', newState).toJS()
 
@@ -72,15 +72,11 @@ export default function(state = initialState.builder, action, fullState = initia
 
       var currentControls = Immutable.Map(state.controls).toJS();
 
-      var writeTheseControls = currentControls;
-
-      if (currentControls.length != state.numControls) {
-        writeTheseControls.splice(state.numControls, state.controls.length - state.numControls);
+      for (var index in Object.keys(currentControls)) {
+        currentControls[Object.keys(currentControls)[index]].controlID = parseInt(index)
       }
-
-      console.log(deviceDetails);
       
-      packageSourceFiles(deviceDetails, writeTheseControls);
+      packageSourceFiles(deviceDetails, currentControls);
 
       return state
 
@@ -175,9 +171,8 @@ const parseInteger = (input) => {
   }
 }
 
-const initialControlState = (controlID) => ({
+const initialControlState = () => ({
     controlName: 'default',
-    controlID: controlID,
     controlDirection: 0,
     controlType: 0,
     highValue: 100,
