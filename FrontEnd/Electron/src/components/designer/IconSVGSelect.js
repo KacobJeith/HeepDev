@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import {iconMappings} from '../../assets/svg/iconMappings'
 
-import { Paper }  from 'material-ui'
+import { Paper, Tooltip }  from 'material-ui'
 import List, { ListItem, ListItemText, ListItemIcon } from 'material-ui/List';
 import Menu, { MenuItem } from 'material-ui/Menu';
 
@@ -101,17 +101,18 @@ class IconSVGSelect extends React.Component {
     
     return (
       <div className={classes.root}>
-        
-        <Paper {...inputs.paper}>
-              <object {...inputs.svgIcon}/>
-              <div {...inputs.overlay} 
-		          onClick={this.handleClickListItem}
-		       />
-		       <div {...inputs.popupHere}
-		       		ref='popup'
-	              aria-haspopup="true"
-		          aria-controls="lock-menu"/>
-        </Paper>
+        <Tooltip id="tooltip-bottom" title="Change Device Icon" placement="bottom">
+          <Paper {...inputs.paper}>
+                <object {...inputs.svgIcon}/>
+                <div {...inputs.overlay} 
+  		          onClick={this.handleClickListItem}
+  		       />
+  		       <div {...inputs.popupHere}
+  		       		ref='popup'
+  	              aria-haspopup="true"
+  		          aria-controls="lock-menu"/>
+          </Paper>
+        </Tooltip>
 
         <Menu
           id="lock-menu"
