@@ -10,7 +10,7 @@ import {Modal, Button} from 'react-bootstrap';
 import {iconMappings} from '../../assets/svg/iconMappings'
 
 import { Paper }  from 'material-ui'
-import List, { ListItem, ListItemText } from 'material-ui/List';
+import List, { ListItem, ListItemText, ListItemIcon } from 'material-ui/List';
 import Menu, { MenuItem } from 'material-ui/Menu';
 
 
@@ -43,7 +43,7 @@ class IconSVGSelect extends React.Component {
   button = undefined;
 
   handleClickListItem = event => {
-    this.setState({ anchorEl: event.currentTarget });
+    this.setState({ anchorEl: this.refs.popup });
   };
 
   handleMenuItemClick = (event, index) => {
@@ -75,7 +75,6 @@ class IconSVGSelect extends React.Component {
 	          width: 170, 
 	          padding: 10, 
 	          marginTop: 24,
-	          cursor: "pointer",
 	          position: 'relative'
 	        },
       	},
@@ -85,8 +84,16 @@ class IconSVGSelect extends React.Component {
       			height:'100%',
       			backgroundColor: 'transparent',
       			cursor: 'pointer',
-      			position: 'absolute'
+      			position: 'absolute',
+      			top: 0,
+      			left: 0
       		},
+      	},
+      	popupHere: {
+      		style: {
+      			position: 'absolute',
+      			right: 0
+      		}
       	}
     }
 
@@ -96,11 +103,12 @@ class IconSVGSelect extends React.Component {
         <Paper {...inputs.paper}>
               <object {...inputs.svgIcon}/>
               <div {...inputs.overlay} 
-	              aria-haspopup="true"
-		          aria-controls="lock-menu"
-		          aria-label="When device is locked"
 		          onClick={this.handleClickListItem}
 		       />
+		       <div {...inputs.popupHere}
+		       		ref='popup'
+	              aria-haspopup="true"
+		          aria-controls="lock-menu"/>
         </Paper>
 
         <Menu
@@ -116,6 +124,9 @@ class IconSVGSelect extends React.Component {
               selected={index === this.props.icon}
               onClick={() => this.props.selectIcon(index)}
             >
+            	<ListItemIcon >
+		            <object {...inputs.svgIcon} data={"/dist/assets/svg/" + iconMappings[index] + ".svg"}/>
+		          </ListItemIcon>
               {option}
             </MenuItem>
           ))}
