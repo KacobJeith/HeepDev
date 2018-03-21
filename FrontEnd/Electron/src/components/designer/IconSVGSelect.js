@@ -3,77 +3,134 @@ import { withRouter } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as Actions from '../../redux/actions_designer'
+
+import PropTypes from 'prop-types';
+import { withStyles } from 'material-ui/styles';
 import {Modal, Button} from 'react-bootstrap';
 import {iconMappings} from '../../assets/svg/iconMappings'
 
-import IconSelectWrapper from './IconSelectWrapper'
+import { Paper }  from 'material-ui'
+import List, { ListItem, ListItemText } from 'material-ui/List';
+import Menu, { MenuItem } from 'material-ui/Menu';
+
 
 var mapStateToProps = (state) => ({
-	selectingIcon: state.designer.selectingIcon
+	selectingIcon: state.designer.selectingIcon,
+  	icon: state.designer.iconSelected
 })
 
+const styles = theme => ({
+  root: {
+    width: '100%',
+    maxWidth: 360,
+    backgroundColor: theme.palette.background.paper,
+  },
+});
+
+const options = [
+  'Show some love to Material-UI',
+  'Show all notification content',
+  'Hide sensitive notification content',
+  'Hide all notification content',
+];
+
 class IconSVGSelect extends React.Component {
+  state = {
+    anchorEl: null,
+    selectedIndex: 1,
+  };
 
-	render() {
+  button = undefined;
 
-		if (!this.props.selectingIcon) {
+  handleClickListItem = event => {
+    this.setState({ anchorEl: event.currentTarget });
+  };
 
-			return <div/>
-		}
+  handleMenuItemClick = (event, index) => {
+    this.setState({ selectedIndex: index, anchorEl: null });
+  };
 
+  handleClose = () => {
+    this.setState({ anchorEl: null });
+  };
 
-		
-	    var options = [];
+  render() {
+    const { classes } = this.props;
+    const { anchorEl } = this.state;
 
-	    for (var i in iconMappings) {
+    const inputs = {
+    	svgIcon: {
+    	      style: {
+    	        maxHeight: '100%',
+    	        maxWidth: '100%',
+    	        position: 'relative'
+    	      },
+    	      height: '100%',
+    	      type:"image/svg+xml",
+    	      data: "/dist/assets/svg/" + iconMappings[this.props.icon] + ".svg"
+    	},
+    	paper: {
+	        style: {
+	          height: 170, 
+	          width: 170, 
+	          padding: 10, 
+	          marginTop: 24,
+	          cursor: "pointer",
+	          position: 'relative'
+	        },
+      	},
+      	overlay: {
+      		style: {
+      			width: '100%',
+      			height:'100%',
+      			backgroundColor: 'transparent',
+      			cursor: 'pointer',
+      			position: 'absolute'
+      		},
+      	}
+    }
 
-	    	var inputs = {
-	    		wrapper: {
-	    			iconID: i,
-	    			key: iconMappings[i] + '_key',
-	    			iconName: iconMappings[i]
-	    		}
-	    	}
+    return (
+      <div className={classes.root}>
+        
+        <Paper {...inputs.paper}>
+              <object {...inputs.svgIcon}/>
+              <div {...inputs.overlay} 
+	              aria-haspopup="true"
+		          aria-controls="lock-menu"
+		          aria-label="When device is locked"
+		          onClick={this.handleClickListItem}
+		       />
+        </Paper>
 
-	    	options.push (<IconSelectWrapper {...inputs.wrapper}/> )
-	    }
-
-	    var inputs = {
-	    	iconsContainer: {
-	    		style: {
-	    			display: "flex",
-	    			flexDirection: "row",
-	    			flexWrap: "wrap",
-	    			justifyContent: "space-evenly"
-	    		}
-	    	}
-	    }
-
-	    return(<div className="static-modal">
-				<Modal.Dialog>
-					<Modal.Header>
-						<Modal.Title>Select an Icon</Modal.Title>
-					</Modal.Header>
-
-					<Modal.Body>
-					<div {...inputs.iconsContainer}>
-						{options}
-					</div>
-					
-					</Modal.Body>
-
-					<Modal.Footer>
-						<Button onClick={() => {console.log("closing..."); this.props.closeIconModal()}}>Close</Button>
-						<Button bsStyle="primary" onClick={()=> {console.log("saving..."); this.props.closeIconModal()}}>Save changes</Button>
-					</Modal.Footer>
-				</Modal.Dialog>
-			</div>);
-	    
-	}
+        <Menu
+          id="lock-menu"
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={this.handleClose}
+        >
+          {iconMappings.map((option, index) => (
+            <MenuItem
+              key={option}
+              disabled={index === 0}
+              selected={index === this.props.icon}
+              onClick={() => this.props.selectIcon(index)}
+            >
+              {option}
+            </MenuItem>
+          ))}
+        </Menu>
+      </div>
+    );
+  }
 }
+
+IconSVGSelect.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
 
 var mapDispatchToProps = (dispatch) => {
   return bindActionCreators(Actions, dispatch)
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(IconSVGSelect))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(IconSVGSelect)))

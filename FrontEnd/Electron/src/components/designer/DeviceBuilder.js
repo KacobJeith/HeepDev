@@ -6,7 +6,6 @@ import { NavLink, withRouter } from 'react-router-dom';
 
 import DeviceIdentity from './DeviceIdentity'
 import ControlBuilder from './ControlBuilder'
-import DownloadSource from './DownloadSource'
 
 import { Button, Grid } from 'material-ui'
 

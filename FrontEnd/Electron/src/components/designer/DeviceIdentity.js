@@ -16,14 +16,12 @@ import GenericSelect from '../utilities/GenericSelect'
 import GenericTextInput from '../utilities/GenericTextInput'
 import IconSVGSelect from './IconSVGSelect'
 import {iconMappings} from '../../assets/svg/iconMappings'
-import GenericSVG from './GenericSVG'
 
 var mapStateToProps = (state, ownProps) => ({
   deviceName: state.designer.deviceName,
   systemType: state.designer.systemType,
   physicalLayer: state.designer.physicalLayer,
   controls: state.designer.controls,
-  icon: state.designer.iconSelected
 })
 
 const styles = theme => ({
@@ -86,40 +84,20 @@ class DeviceIdentity extends React.Component {
         onChange={(event) => {this.props.updateSSIDPassword(event.target.value)}}
         helperText='WiFi Password'
       />
-      
+
     </Collapse>
   )
 
   render () {
 
-    var inputs = {
-      iconSVG: {
-        height: 150,
-        width: 150,
-        iconName: iconMappings[this.props.icon]
-      },
-      iconContainer: {
-        style: {
-          backgroundColor: "white",
-          border: "10px solid white",
-          borderRadius: 5,
-          cursor: "pointer",
-          display: "flex",
-          justifyContent: "center",
-          width: 170,
-          height: 170,
-          margin: "auto"
-        },
-        onClick: () => {this.props.openIconModal()}
-      }
-    }
-
     return (
       <Grid container spacing={24}>
         <Grid item xs={5}>
-          <Paper>
-            <GenericSVG {...inputs.iconSVG}/>
-          </Paper>
+          <Grid container justify='center' spacing={24} style={{}}>
+          <Grid item>
+            <IconSVGSelect/>
+          </Grid>
+          </Grid>
         </Grid>
         <Grid item xs={7}>
           <Grid container direction='column' spacing={24}>
