@@ -9,7 +9,8 @@ const SectionCard = (componentProps, wrappedComponent) => {
       backgroundRepeat: 'no-repeat',
       backgroundSize:'cover',
       maxWidth: '100%',
-      margin: 0
+      margin: 0,
+      overflowX: 'hidden',
     }
   };
 

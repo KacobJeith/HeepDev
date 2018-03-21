@@ -242,7 +242,7 @@ class MenuAppBar extends React.Component {
 
     return (
       <div className={classes.root}>
-        <AppBar position="static">
+        <AppBar position="static" style={{overflowX: 'hidden'}}>
           <Toolbar>
             {this.appBarLogo()}
             <div className={classes.flex}/>

@@ -151,7 +151,8 @@ class Footer extends React.Component {
                 padding: 24,
                 flexShrink: 0,
                 backgroundColor: this.props.theme.palette.primary.main,
-                color: this.props.theme.palette.primary.contrastText
+                color: this.props.theme.palette.primary.contrastText,
+                overflowX: 'hidden'
               }}>
 
             <Grid

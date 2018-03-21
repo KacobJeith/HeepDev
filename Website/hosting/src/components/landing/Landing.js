@@ -46,6 +46,7 @@ class Landing extends React.Component {
   bedroomSVG() {
     const inputs = {
       bedroomContainer: {
+        overflowX: 'hidden',
         style: {
           maxWidth: '100%',
         },

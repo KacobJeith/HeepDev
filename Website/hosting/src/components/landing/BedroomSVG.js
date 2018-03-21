@@ -255,9 +255,6 @@ class BedroomSVG extends React.Component{
 
   hoverDiary() {
     this.hoverShake(diary);
-    if (this.state.animation == false) {
-      this.vertexDiary()
-    }
   };
 
   leaveDiary() {
