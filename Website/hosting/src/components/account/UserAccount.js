@@ -67,16 +67,16 @@ class UserAccount extends React.Component {
           </Grid>
 
           <Grid item xs>
-            {edit ? 
-              
-                <IconButton 
+            {edit ?
+
+                <IconButton
                   style={{float:'right'}}
                   onClick={onClick}
                 >
                   <Tooltip id="tooltip-edit" title="Edit">
                     <Edit />
                   </Tooltip>
-                </IconButton> 
+                </IconButton>
 
               : <div/>
             }
@@ -119,7 +119,7 @@ class UserAccount extends React.Component {
   render() {
 
     return (
-      <Grid container justify='center' style={{paddingTop: 50, maxWidth:'100%'}}>
+      <Grid container justify='center' style={{paddingTop: 50, maxWidth:'100%', overflowX: 'hidden'}}>
         <Grid item xs={10}>
           <Grid container spacing={24} alignItems='center'>
             <Grid item xs={3}>
