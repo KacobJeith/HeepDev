@@ -57,6 +57,8 @@ class IconSVGSelect extends React.Component {
     const { classes } = this.props;
     const { anchorEl } = this.state;
 
+    const dataUrlPrefix = window.location.port == 9000 ? "/dist/assets/svg/" : "/assets/svg/"; 
+
     const inputs = {
     	svgIcon: {
     	      style: {
@@ -66,7 +68,7 @@ class IconSVGSelect extends React.Component {
     	      },
     	      height: '100%',
     	      type:"image/svg+xml",
-    	      data: "/assets/svg/" + iconMappings[this.props.icon] + ".svg"
+    	      data: dataUrlPrefix + iconMappings[this.props.icon] + ".svg"
     	},
     	paper: {
 	        style: {
@@ -96,6 +98,7 @@ class IconSVGSelect extends React.Component {
       	}
     }
 
+    
     return (
       <div className={classes.root}>
         
@@ -124,7 +127,7 @@ class IconSVGSelect extends React.Component {
               onClick={() => this.props.selectIcon(index)}
             >
             	<ListItemIcon >
-		            <object {...inputs.svgIcon} data={"/assets/svg/" + iconMappings[index] + ".svg"}/>
+		            <object {...inputs.svgIcon} data={dataUrlPrefix + iconMappings[index] + ".svg"}/>
 		          </ListItemIcon>
               {option}
             </MenuItem>

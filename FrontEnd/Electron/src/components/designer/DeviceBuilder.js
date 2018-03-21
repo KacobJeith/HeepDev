@@ -49,7 +49,7 @@ class DeviceBuilder extends React.Component {
     }
 
     return (
-      <Grid container direction='column' spacing={24}>
+      <Grid container direction='column' spacing={24} style={{marginTop: 24}}>
         <Grid item>
             <DeviceIdentity/>
         </Grid>
