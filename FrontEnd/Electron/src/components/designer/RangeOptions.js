@@ -29,13 +29,13 @@ class RangeOptions extends React.Component {
             width='45%'
             title='Range Min'
             value={this.props.currentMin}
-            onChange={(event) => {this.props.updateControlMin(this.props.controlID, event.target.value)}}
+            onChange={(value) => {this.props.updateControlMin(this.props.controlID, value)}}
           />
           <GenericTextInput 
             width='45%'
             title='Range Max'
             value={this.props.currentMax}
-            onChange={(event) => {this.props.updateControlMax(this.props.controlID, event.target.value)}}
+            onChange={(value) => {this.props.updateControlMax(this.props.controlID, value)}}
           />
         </Collapse>)
 
