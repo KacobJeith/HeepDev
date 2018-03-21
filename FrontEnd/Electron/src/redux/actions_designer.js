@@ -97,3 +97,8 @@ export const closeIconModal = () => ({
 export const openIconModal = () => ({
 	type: 'OPEN_ICON_MODAL'
 })
+
+export const deleteControl = (controlID) => ({
+	type: 'DELETE_CONTROL',
+	controlID
+})

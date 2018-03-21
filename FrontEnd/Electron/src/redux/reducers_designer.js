@@ -13,7 +13,7 @@ export default function(state = initialState.builder, action, fullState = initia
 
     case 'UPDATE_NUM_CONTROLS' :
 
-      var controls = Immutable.List(state.controls).toJS();
+      var controls = Immutable.Map(state.controls).toJS();
 
       if (controls.length < action.num) {
         for (var i = controls.length; i < action.num; i++) {
@@ -39,7 +39,7 @@ export default function(state = initialState.builder, action, fullState = initia
 
       var controlID = action.controlID;
 
-      var newState = Immutable.List(state.controls).toJS();
+      var newState = Immutable.Map(state.controls).toJS();
     newState[controlID]['controlName'] = action.name;
 
       return Immutable.Map(state).set('controls', newState).toJS()
@@ -49,7 +49,7 @@ export default function(state = initialState.builder, action, fullState = initia
     var controlID = action.controlID;
 
 
-      var newState = Immutable.List(state.controls).toJS();
+      var newState = Immutable.Map(state.controls).toJS();
       newState[controlID]['controlDirection'] = action.direction;
 
       console.log('NEW: ', newState)
@@ -58,7 +58,7 @@ export default function(state = initialState.builder, action, fullState = initia
 
     case 'UPDATE_CONTROL_TYPE' :
 
-      var newState = Immutable.List(state.controls).toJS();
+      var newState = Immutable.Map(state.controls).toJS();
 
       newState[action.controlID]['controlType'] = action.controlType;
 
@@ -70,7 +70,7 @@ export default function(state = initialState.builder, action, fullState = initia
 
       var deviceDetails = Immutable.Map(state).delete("controls").toJS();
 
-      var currentControls = Immutable.List(state.controls).toJS();
+      var currentControls = Immutable.Map(state.controls).toJS();
 
       var writeTheseControls = currentControls;
 
@@ -86,22 +86,22 @@ export default function(state = initialState.builder, action, fullState = initia
 
     case 'UPDATE_CONTROL_MAX' :
 
-      var newState = Immutable.List(state.controls).toJS();
+      var newState = Immutable.Map(state.controls).toJS();
       newState[action.controlID]['highValue'] = parseInteger(action.controlMax);
 
       return Immutable.Map(state).set('controls', newState).toJS()
 
     case 'UPDATE_CONTROL_MIN' :
 
-      var newState = Immutable.List(state.controls).toJS();
+      var newState = Immutable.Map(state.controls).toJS();
       newState[action.controlID]['lowValue'] = parseInteger(action.controlMin);
 
       return Immutable.Map(state).set('controls', newState).toJS()
 
     case 'ADD_NEW_CONTROL' :
 
-        var controls = Immutable.List(state.controls).toJS();
-        controls.push(initialControlState(controls.length));
+        const controlKey = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+        var controls = Immutable.Map(state.controls).set(controlKey, initialControlState(Object.keys(state.controls).length)).toJS();
 
         var newMaster = Immutable.Map(state)
         .set('numControls', state.numControls + 1)
@@ -124,21 +124,21 @@ export default function(state = initialState.builder, action, fullState = initia
 
     case 'UPDATE_CONTROL_PIN' :
 
-        var newState = Immutable.List(state.controls).toJS();
+        var newState = Immutable.Map(state.controls).toJS();
         newState[action.controlID]['pinNumber'] = parseInteger(action.pinNumber);
 
         return Immutable.Map(state).set('controls', newState).toJS()
 
     case 'UPDATE_CONTROL_PIN_POLARITY' :
 
-        var newState = Immutable.List(state.controls).toJS();
+        var newState = Immutable.Map(state.controls).toJS();
         newState[action.controlID]['pinNegativeLogic'] = action.polarity;
 
         return Immutable.Map(state).set('controls', newState).toJS()
 
     case 'UPDATE_CONTROL_ANALOG_DIGITAL' :
 
-        var newState = Immutable.List(state.controls).toJS();
+        var newState = Immutable.Map(state.controls).toJS();
         newState[action.controlID]['analogOrDigital'] = action.analogOrDigital;
 
         return Immutable.Map(state).set('controls', newState).toJS()
@@ -153,6 +153,12 @@ export default function(state = initialState.builder, action, fullState = initia
 
     case 'OPEN_ICON_MODAL': 
         return Immutable.Map(state).set('selectingIcon', true).toJS();
+
+    case 'DELETE_CONTROL' :
+
+      const newState = Immutable.Map(state.controls).delete(action.controlID).toJS();
+
+      return Immutable.Map(state).set('controls', newState).toJS();
 
     default:
       return state

@@ -45,7 +45,7 @@ const startState = {
     systemType: 'ESP8266',
     iconSelected: 1,
     selectingIcon: false,
-    controls: []
+    controls: {}
   }
 }
 
