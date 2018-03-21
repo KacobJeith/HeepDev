@@ -75,13 +75,13 @@ class DeviceIdentity extends React.Component {
       <GenericTextInput 
         width='33%'
         title='SSID'
-        onChange={(event) => {this.props.updateSSID(event.target.value)}}
+        onChange={(value) => {this.props.updateSSID(value)}}
         helperText='WiFi Network Name'
       />
       <GenericTextInput 
         width='33%'
         title='Password'
-        onChange={(event) => {this.props.updateSSIDPassword(event.target.value)}}
+        onChange={(value) => {this.props.updateSSIDPassword(value)}}
         helperText='WiFi Password'
       />
 

@@ -9,10 +9,12 @@ import ControlBuilder from './ControlBuilder'
 
 import { Button, Grid } from 'material-ui'
 
-export default class DeviceBuilder extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+var mapStateToProps = (state) => ({
+
+})
+
+class DeviceBuilder extends React.Component {
+
 
   downloadButton = () => (
     <Button 
@@ -68,4 +70,11 @@ export default class DeviceBuilder extends React.Component {
     );
   }
 }
+
+
+var mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(Actions, dispatch)
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(DeviceBuilder))
 

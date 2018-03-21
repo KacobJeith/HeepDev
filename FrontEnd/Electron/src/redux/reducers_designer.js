@@ -66,6 +66,8 @@ export default function(state = initialState.builder, action, fullState = initia
 
     case 'PACKAGE_SOURCE_FILES' :
 
+      console.log('PACKAGE SOURCE');
+
       var deviceDetails = Immutable.Map(state).delete("controls").toJS();
 
       var currentControls = Immutable.List(state.controls).toJS();
@@ -75,6 +77,8 @@ export default function(state = initialState.builder, action, fullState = initia
       if (currentControls.length != state.numControls) {
         writeTheseControls.splice(state.numControls, state.controls.length - state.numControls);
       }
+
+      console.log(deviceDetails);
       
       packageSourceFiles(deviceDetails, writeTheseControls);
 
