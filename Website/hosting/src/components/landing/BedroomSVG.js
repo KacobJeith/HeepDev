@@ -493,6 +493,7 @@ class BedroomSVG extends React.Component{
            .to(blindsBottom, 2, {y: 289, ease: Sine.easeInOut}, "-=2")
 
            // lights go off
+           .to(night, 0.01, {display: 'block'})
            .to([night, nightLightGlow, sunGlow], 1, {opacity: 0.9}, "+=0.4")
 
            // revert sun, sky, and clouds
@@ -612,32 +613,34 @@ class BedroomSVG extends React.Component{
 
     const tlPlants = new TimelineMax();
     const tlSun = new TimelineMax({paused: true});
-    const tlLamp = new TimelineMax({paused: true});
-    const tlCactus = new TimelineMax({paused: true});
-    const tlFlowers = new TimelineMax({paused: true})
-
-    function pailListeners() {
-    }
-
-    // sun pulses indefinitely
-    tlSun.fromTo(outsideSunGlow, 1, {scale: 1.2, transformOrigin:'center'}, {scale: 1.4, yoyo: true, repeat: -1})
+    const tlUntilClick = new TimelineMax({paused: true});
 
     function playSun(){
       tlSun.play();
     }
 
-    tlLamp.fromTo(lampTop, 0.5, {fill: '#FCEA6B', ease: Sine.easeInOut}, {fill: '#02962f', ease: Sine.easeInOut, yoyo: true, repeat: -1})
-          .fromTo(lampShade, 0.5, {fill: '#FFF3C0', ease: Sine.easeInOut}, {fill: '#3bb254', ease: Sine.easeInOut, yoyo: true, repeat: -1}, '-=0.5')
-          .fromTo(lampLight, 0.5, {fill: '#EAE1B2', ease: Sine.easeInOut}, {fill: '#85e8a3', ease: Sine.easeInOut, yoyo: true, repeat: -1}, '-=0.5')
+    function playUntilClick() {
+      tlUntilClick.play();
+      //buttonPail.addEventListener('click', playAfterClick);
+      buttonPail.setAttribute('cursor', 'pointer');
+    };
 
-    function playLamp() {
-      tlLamp.play();
-    }
+    // sun pulses indefinitely
+    tlSun.fromTo(outsideSunGlow, 1, {scale: 1.2, transformOrigin:'center'}, {scale: 1.4, yoyo: true, repeat: -1})
 
-    tlCactus.to(cactusBody)
+    tlUntilClick.fromTo(lampTop, 0.5, {fill: '#FCEA6B', ease: Sine.easeInOut}, {fill: '#02962f', ease: Sine.easeInOut, yoyo: true, repeat: -1})
+                .fromTo(lampShade, 0.5, {fill: '#FFF3C0', ease: Sine.easeInOut}, {fill: '#3bb254', ease: Sine.easeInOut, yoyo: true, repeat: -1}, '-=0.5')
+                .fromTo(lampLight, 0.5, {fill: '#EAE1B2', ease: Sine.easeInOut}, {fill: '#85e8a3', ease: Sine.easeInOut, yoyo: true, repeat: -1}, '-=0.5')
+
+                .fromTo(pail, 2, {x:-1}, {x:1, ease:RoughEase.ease.config({
+                    strength:8,
+                    points:20,
+                    template:Linear.easeNone,
+                    randomize:false
+                  }), clearProps:"x", repeat: -1}, 1);
 
     // sun shifts slightly to the right, turns lighter and bigger, sky turns into inferno
-    tlPlants.to([outsideSun, outsideSunGlow], 1, {ease: Sine.easeInOut, x:40, scaleX: 1.2, scaleY: 1.2, transformOrigin: "center"})
+    tlPlants.to([outsideSun, outsideSunGlow], 2, {ease: Sine.easeInOut, x:70, scaleX: 1.2, scaleY: 1.2, transformOrigin: "center"})
             .to(outsideSun, 1, {fill: '#fcec9f'}, '-=1')
             .to([cloudLeft, cloudCenter, cloudRight], 1, {opacity: 0}, '-=1')
             .staggerTo("#outsideSky_1_ stop", 1, {
@@ -648,12 +651,26 @@ class BedroomSVG extends React.Component{
               onComplete: playSun
             }, 0, "-=1")
 
-    // thermometer gets bigger and shows change in temperature
-            .to(thermometer, 1, {scaleX: 2, scaleY: 2, ease: Sine.easeInOut, transformOrigin: 'bottom'})
-            .to(thermoMercury, 0.5, {scaleY: 2.17, transformOrigin: 'bottom', ease: Sine.easeInOut}, "-=0.5")
+    // thermometer gets bigger, shows temp, and then shrinks again
+            .to(thermometer, 2, {scaleX: 1.5, scaleY: 1.5, ease: Sine.easeInOut, transformOrigin: 'bottom'}, "-=1")
+            .to(thermoMercury, 1, {scaleY: 2.17, transformOrigin: 'bottom', ease: Sine.easeInOut}, "-=1")
             .to(thermometer, 2, {scaleX: 1, scaleY: 1, ease: Sine.easeInOut, transformOrigin: 'bottom'})
 
-            .to(lampLight, 0.01, {fill: '#EAE1B2', display: 'block', onComplete: playLamp}, "-=1")
+    // cactus turns brown and shrinks
+            .to(cactusBody, 5, {fill: '#846124'}, "-=3")
+            .to([cactusThorns, cactusBody], 5, {scaleX: 0.6, scaleY: 0.6, transformOrigin: 'bottom'}, "-=3")
+
+    // flower parts turn brown, leaves start falling
+            .to([leafMidLeft, leafMidCenter, leafMidRight], 4, {stroke: '#3f2700', ease: Sine.easeInOut}, "-=5")
+            .to([leafBodyLeft, leafBodyCenter, leafBodyRight], 4, {fill: '#7c4900', ease: Sine.easeInOut}, "-=5")
+            .to(flowerStems, 4, {stroke: '#3d2400', ease: Sine.easeInOut}, "-=5")
+            .to([petalsLeftLight, petalsLeftDark, petalsCenterLight, petalsCenterDark, petalsRightLight, petalsRightDark], 4, {fill: '#89611b'}, "-=5")
+            .to(leafLeft, 4, {y: 200, x: -10, opacity: 0, directionalRotation: 180, ease: Sine.easeInOut}, "-=4")
+            .to(leafRight, 4, {y: 200, x: 15, opacity: 0, directionalRotation: 180, ease: Sine.easeInOut}, "-=3")
+            .to(leafCenter, 4, {y: 170, opacity: 0, directionalRotation: 180, ease: Sine.easeInOut}, "-=2")
+
+    // lamp turns on, garden pail starts shaking
+            .to(lampLight, 0.01, {fill: '#EAE1B2', display: 'block', onComplete: playUntilClick}, "-=3")
   }
 
   render() {
