@@ -60,6 +60,7 @@ class BedroomSVG extends React.Component{
     this.clickPig = this.clickPig.bind(this);
     this.clickDiary = this.clickDiary.bind(this);
     this.clickSleep = this.clickSleep.bind(this);
+    this.clickPlants = this.clickPlants.bind(this);
 	};
 
   componentDidMount() {
@@ -89,6 +90,7 @@ class BedroomSVG extends React.Component{
       buttonPig.addEventListener('click', this.clickPig);
       buttonDiary.addEventListener('click', this.clickDiary);
       buttonSleep.addEventListener('click', this.clickSleep);
+      buttonCactus.addEventListener('click', this.clickPlants)
 
       buttonRemote.setAttribute('cursor', 'pointer');
       buttonPig.setAttribute('cursor', 'pointer');
@@ -123,6 +125,7 @@ class BedroomSVG extends React.Component{
       buttonPig.removeEventListener('click', this.clickPig);
       buttonDiary.removeEventListener('click', this.clickDiary);
       buttonSleep.removeEventListener('click', this.clickSleep);
+      buttonCactus.removeEventListener('click', this.clickCactus);
 
       buttonRemote.removeAttribute('cursor', 'pointer');
       buttonPig.removeAttribute('cursor', 'pointer');
@@ -577,7 +580,6 @@ class BedroomSVG extends React.Component{
           // blinds go up
            .to(blindsMiddle, 2, {scaleY: 1, ease: Sine.easeInOut}, "-=4")
            .to(blindsBottom, 2, {y: 0, ease: Sine.easeInOut}, "-=4")
-
   };
 
   hoverDresser() {
@@ -603,6 +605,28 @@ class BedroomSVG extends React.Component{
   leaveFlower() {
     this.leaveShake();
   };
+
+  clickPlants() {
+    this.removeButtonListeners();
+    tlShake.clear();
+
+    const tlPlants = new TimelineMax();
+    const tlSun = new TimelineMax();
+
+    tlSun.fromTo(outsideSunGlow, 1, {scale: 1.2, transformOrigin:'center'}, {scale: 1.4, yoyo: true, repeat: -1}, 1)
+
+    tlPlants.to([outsideSun, outsideSunGlow], 1, {ease: Sine.easeInOut, x:40, scaleX: 1.2, scaleY: 1.2, transformOrigin: "center"})
+            .to(outsideSun, 1, {fill: '#fcec9f'}, '-=1')
+            .to([cloudLeft, cloudCenter, cloudRight], 1, {opacity: 0}, '-=1')
+            .staggerTo("#outsideSky_1_ stop", 1, {
+              stopColor: "#ffa72a",
+              cycle: {
+                stopColor: ["#ffa72a", "#fff315"]
+              }
+            }, 0, "-=1")
+
+            .to(thermometer, 1, {scaleX: 2, scaleY: 2, ease: Sine.easeInOut, transformOrigin: 'bottom'})
+  }
 
   render() {
     const { classes } = this.props;
