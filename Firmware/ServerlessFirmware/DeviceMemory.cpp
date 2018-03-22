@@ -142,6 +142,9 @@ heepByte GetWiFiFromMemory(char* WiFiSSID, char* WiFiPassword, int priority)
 		{
 			if(deviceMemory[counter + ID_SIZE + 1] == priority)
 			{
+				unsigned int deviceMemoryCounter = counter + ID_SIZE + 2;
+				unsigned int SSIDBufferCounter = 0;
+				AddBufferToBuffer((heepByte*)WiFiSSID, deviceMemory, deviceMemory[counter + ID_SIZE] - 1, &SSIDBufferCounter, &deviceMemoryCounter);
 				foundSSIDAndPassword |= 0x01;
 			}
 		}
@@ -149,6 +152,9 @@ heepByte GetWiFiFromMemory(char* WiFiSSID, char* WiFiPassword, int priority)
 		{
 			if(deviceMemory[counter + ID_SIZE + 1] == priority)
 			{
+				unsigned int deviceMemoryCounter = counter + ID_SIZE + 2;
+				unsigned int PasswordBufferCounter = 0;
+				AddBufferToBuffer((heepByte*)WiFiPassword, deviceMemory, deviceMemory[counter+ID_SIZE] - 1, &PasswordBufferCounter, &deviceMemoryCounter);
 				foundSSIDAndPassword |= 0x02;
 			}
 		}
