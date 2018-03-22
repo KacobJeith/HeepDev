@@ -626,6 +626,7 @@ class BedroomSVG extends React.Component{
             }, 0, "-=1")
 
             .to(thermometer, 1, {scaleX: 2, scaleY: 2, ease: Sine.easeInOut, transformOrigin: 'bottom'})
+            .to(thermoMercury, 0.5, {scaleY: 2.17, transformOrigin: 'bottom', ease: Sine.easeInOut})
   }
 
   render() {
