@@ -227,21 +227,20 @@ class BedroomSVG extends React.Component{
     const pathPigPlanets = MorphSVGPlugin.pathDataToBezier(vertexPigPlanets, {align: alignPigPlanets});
     const pathPigClock = MorphSVGPlugin.pathDataToBezier(vertexPigClock, {align: alignPigClock});
 
+    // comets appear, animate along the path, and then disappear
     tlPig.to(cometPig, 0.05, {display:'block'})
-
          .to(cometPigLamp, 0.5, {bezier: { type: "cubic", values: pathPigLamp}, ease: Sine.easeInOut})
          .to(cometPigPlanets, 0.5, {bezier: { type: "cubic", values: pathPigPlanets}, ease: Sine.easeInOut}, '-=0.5')
          .to(cometPigClock, 0.5, {bezier: { type: "cubic", values: pathPigClock}, ease: Sine.easeInOut}, '-=0.5')
-
          .to(cometPig, 0.01, {display:'none', x: 0, y: 0})
 
+    // pulsing glow after comet hits the object; triggers Theft animation
          .to(glowPig, 0.01, {display:'block'})
-
          .to(glowPig, 0.75, {scaleX: 4, scaleY: 4, opacity: 0, transformOrigin: "center"})
-
          .to(glowPig, 0.01, {display: 'none'})
          .to(glowPig, 0.01, {scaleX: 1, scaleY: 1, opacity: 1, transformOrigin: "center", onComplete: this.clickTheft.bind(this)})
 
+    // pig animates toward the user and back
          .to(pig, 2.3, {
               scaleX: 1.8,
               scaleY: 1.8,
@@ -255,9 +254,6 @@ class BedroomSVG extends React.Component{
 
   hoverDiary() {
     this.hoverShake(diary);
-    if (this.state.animation == false) {
-      this.vertexDiary()
-    }
   };
 
   leaveDiary() {
@@ -280,21 +276,20 @@ class BedroomSVG extends React.Component{
     const pathDiaryPlanets = MorphSVGPlugin.pathDataToBezier(vertexDiaryPlanets, {align: alignDiaryPlanets});
     const pathDiaryClock = MorphSVGPlugin.pathDataToBezier(vertexDiaryClock, {align: alignDiaryClock});
 
+    // comets appear, animate along the path, and then disappear
     tlDiary.to(cometDiary, 0.05, {display:'block'})
-
            .to(cometDiaryLamp, 0.5, {bezier: { type: "cubic", values: pathDiaryLamp}, ease: Sine.easeInOut})
            .to(cometDiaryPlanets, 0.5, {bezier: { type: "cubic", values: pathDiaryPlanets}, ease: Sine.easeInOut}, '-=0.5')
            .to(cometDiaryClock, 0.5, {bezier: { type: "cubic", values: pathDiaryClock}, ease: Sine.easeInOut}, '-=0.5')
-
            .to(cometDiary, 0.01, {display:'none', x: 0, y: 0})
 
+    // pulsing glow after comet hits the object, triggers Theft animation
            .to(glowDiary, 0.01, {display:'block'})
-
            .to(glowDiary, 0.75, {scaleX: 4, scaleY: 4, opacity: 0, transformOrigin: "center"})
-
            .to(glowDiary, 0.01, {display: 'none'})
            .to(glowDiary, 0.01, {scaleX: 1, scaleY: 1, opacity: 1, transformOrigin: "center", onComplete: this.clickTheft.bind(this)})
 
+    // frame of open diary appears; close diary disappears; open diary animates toward user
            .to(diary, 0.01, {display: 'none'}, 1)
            .to(diaryOpen, 0.01, {display: 'block'}, 1)
            .to(diaryOpen, 2.2, {
@@ -362,9 +357,13 @@ class BedroomSVG extends React.Component{
               ease: Sine.easeInOut
             }, startTime)
 
-            .to(solarSystem, 0.6, {rotation: 15, ease: Sine.easeInOut, transformOrigin: "50%"}, startTime)
-
     //planets wobble back and forth
+            .to(solarSystem, 0.6, {
+              rotation: 15,
+              ease: Sine.easeInOut,
+              transformOrigin: "50%"
+            }, startTime)
+
             .fromTo(solarSystem, 0.5, {
               rotation: 10,
               transformOrigin: "50%",
@@ -379,7 +378,7 @@ class BedroomSVG extends React.Component{
 
     //move things back into place
           .to(solarSystem, 0.25, {rotation: 0, transformOrigin: "50%"}, startTime+4.5)
-          .to(clock, 0.1, {x: 0, y: 0}, startTime+4.8)
+          .to([clock, clockBellLeft, clockBellRight], 0.1, {x: 0, y: 0}, startTime+4.8)
 
     // make things disappear
     .to(lampLight, 0.1, {display: 'none'}, startTime+4.8)
@@ -404,6 +403,8 @@ class BedroomSVG extends React.Component{
       this.addButtonListeners();
     };
 
+    const tlBlinds = new TimelineMax();
+    // variables for comets
     const pathSleepBlinds = MorphSVGPlugin.pathDataToBezier(vertexSleepBlinds, {align: alignSleepBlinds});
     const pathSleepPlanets = MorphSVGPlugin.pathDataToBezier(vertexSleepPlanets, {align: alignSleepPlanets});
     const pathSleepClock = MorphSVGPlugin.pathDataToBezier(vertexSleepClock, {align: alignSleepClock});
@@ -412,21 +413,171 @@ class BedroomSVG extends React.Component{
     const cometSleep = [cometSleepBlinds, cometSleepPlanets, cometSleepClock, cometSleepNitelite]
     const glowSleep = [glowBlinds, glowPlanets, glowClock, glowNitelite]
 
-    tlSleep.to(cometSleep, 0.05, {display:'block'})
+    const pathSun = MorphSVGPlugin.pathDataToBezier(pathSunset, {align: alignPathSunset});
+    const pathMoon = MorphSVGPlugin.pathDataToBezier(pathMoonrise, {align: alignPathMoonrise});
 
+    // comets appear, animate along the path, and then disappear
+    tlSleep.to(cometSleep, 0.05, {display:'block'})
            .to(cometSleepBlinds, 0.5, {bezier: { type: "cubic", values: pathSleepBlinds}, ease: Sine.easeInOut})
            .to(cometSleepPlanets, 0.5, {bezier: { type: "cubic", values: pathSleepPlanets}, ease: Sine.easeInOut}, '-=0.5')
            .to(cometSleepClock, 0.5, {bezier: { type: "cubic", values: pathSleepClock}, ease: Sine.easeInOut}, '-=0.5')
            .to(cometSleepNitelite, 0.5, {bezier: { type: "cubic", values: pathSleepNitelite}, ease: Sine.easeInOut}, '-=0.5')
-
            .to(cometSleep, 0.01, {display:'none', x: 0, y: 0})
 
+    // pulsing glow after comet hits the object
            .to(glowSleep, 0.01, {display:'block'})
-
            .to(glowSleep, 0.75, {scaleX: 4, scaleY: 4, opacity: 0, transformOrigin: "center"})
-
            .to(glowSleep, 0.01, {display: 'none'})
            .to(glowSleep, 0.01, {scaleX: 1, scaleY: 1, opacity: 1, transformOrigin: "center"})
+
+    // animate sunset and moonrise
+           // sunset animation along path with color change
+           .to([outsideSun, outsideSunGlow], 3, {bezier: {type: "cubic", values: pathSun}, ease: Sine.easeInOut, scaleX: 1.4, scaleY: 1.4, transformOrigin: "center"}, "+=0.5")
+           .to(outsideSun, 3, {fill: "#f26f41"}, "-=3")
+
+           // first color change of clouds to reddish
+           .to(cloudLeft, 3, {fill: "#ffd69f"}, "-=3")
+           .to(cloudCenter, 3, {fill: "#f28757"}, "-=3")
+           .to(cloudRight, 3, {fill: "#d6b39a"}, "-=3")
+
+           .staggerTo("#outsideSunGlow_1_ stop", 1, {
+             stopColor: "#f26f41",
+             ease: Sine.easeInOut,
+             cycle: {
+               stopColor: ["#f26f41", "#fff"]
+             }
+           }, 0, "-=3")
+
+
+           // first color change of sky to red
+           .staggerTo("#outsideSky_1_ stop", 3, {
+             stopColor: "#b1e6f2",
+             ease: Sine.easeInOut,
+             cycle: {
+               stopColor: ["#b1e6f2", "#ff7654"]
+             }
+           }, 1, "-=4")
+           .to([windowGlare1, windowGlare2, windowGlare3], 1, {opacity: 0}, "-=4")
+
+           // second color change of cloud to purple
+           .to(cloudLeft, 3, {fill: "#9e97b6"})
+           .to(cloudCenter, 3, {fill: "#443d56"}, "-=4")
+           .to(cloudRight, 3, {fill: "#4d495b"}, "-=4")
+
+           // second color change of sky to purple
+           .staggerTo("#outsideSky_1_ stop", 2, {
+             stopColor: "#ff7654",
+             ease: Sine.easeInOut,
+             cycle: {
+               stopColor: ["#ff7654", "#110f27"]
+             }
+           }, 1, "-=6")
+
+           // third color change of sky to completely purple
+           .staggerTo("#outsideSky_1_ stop", 2, {
+             stopColor: "#110f27",
+             ease: Sine.easeInOut,
+             cycle: {
+               stopColor: ["#110f27", "#110f27"]
+             }
+           }, 0, "-=4")
+
+           // moonrise animation
+           .to(outsideMoon, 2, {bezier: {type: "cubic", values: pathMoon}, ease: Sine.easeInOut}, "-=4")
+
+           // blinds come down
+           .to(blindsMiddle, 2, {scaleY: 18.2, ease: Sine.easeInOut}, "-=1")
+           .to(blindsBottom, 2, {y: 289, ease: Sine.easeInOut}, "-=2")
+
+           // lights go off
+           .to([night, nightLightGlow, sunGlow], 1, {opacity: 0.9}, "+=0.4")
+
+           // revert sun, sky, and clouds
+           .to([outsideSun, outsideSunGlow, outsideMoon], 0.01, {x: 0, y: 0, scaleX: 1, scaleY: 1})
+           .to(outsideSun, 0.01, {fill: "#ffe027"}, "-=0.01")
+           .to(cloudLeft, 0.01, {fill: "#efefef"}, "-=0.01")
+           .to(cloudCenter, 0.01, {fill: "#e8e8e6"}, "-=0.01")
+           .to(cloudRight, 0.01, {fill: "#fff"}, "-=0.01")
+           .to([windowGlare1, windowGlare2, windowGlare3], 0.01, {opacity: 0.5}, "-=0.01")
+           .staggerTo("#outsideSky_1_ stop", 0.01, {
+             stopColor: "#b1e6f2",
+             cycle: {
+               stopColor: ["#b1e6f2", "#b1e6f2"]
+             }
+           }, 0.01, "-=0.01")
+           .staggerTo("#outsideSunGlow_1_ stop", 0.01, {
+             stopColor: "#ffe027",
+             cycle: {
+               stopColor: ["#ffe027", "#fff"]
+             }
+           }, 0, "-=0.01")
+
+           .to([night, nightLightGlow, sunGlow], 1, {opacity: 0}, "+=1")
+
+           //bounce clock up and down
+           .from(clock, 0.2, {y: 0, x:0}, {
+             y: 5,
+             x: 3,
+             ease: Sine.easeInOut
+           })
+
+           .fromTo(clockBellLeft, 0.1, {y: 0, x: 0, rotation: 0}, {
+             y: 3,
+             rotation: -4,
+             transformOrigin: "50%",
+             ease: Sine.easeInOut
+           }, "-=0.2")
+
+           .fromTo(clockBellRight, 0.1, {y: 0, rotation: 0}, {
+             y: -3,
+             rotation: 4,
+             transformOrigin: "50%",
+             ease: Sine.easeInOut
+           }, "-=0.2")
+
+           .fromTo(clock, 0.1, {y: 5, x: 3}, {
+              y: -5,
+              x: -3,
+              yoyo: true,
+              repeat: 25,
+              ease: Sine.easeInOut
+            })
+
+           //move clock bells
+           .fromTo(clockBellLeft, 0.2, {
+             rotation: -4,
+             transformOrigin: "50%",
+             y: 3
+           },
+           {
+             rotation: 4,
+             transformOrigin: "50%",
+             y: -3,
+             yoyo: true,
+             repeat: 13,
+             ease: Sine.easeInOut
+           }, "-=2.5")
+
+           .fromTo(clockBellRight, 0.2, {
+             rotation: 4,
+             transformOrigin: "50%",
+             y: -3
+           },
+           {
+             rotation: -4,
+             transformOrigin: "50%",
+             y: 3,
+             yoyo: true,
+             repeat: 12,
+             ease: Sine.easeInOut
+           }, "-=2.5")
+
+           .to([clock, clockBellLeft, clockBellRight], 0.1, {x: 0, y: 0}, "+=0.01")
+
+          // blinds go up
+           .to(blindsMiddle, 2, {scaleY: 1, ease: Sine.easeInOut}, "-=4")
+           .to(blindsBottom, 2, {y: 0, ease: Sine.easeInOut}, "-=4")
+
   };
 
   hoverDresser() {
