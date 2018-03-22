@@ -5,6 +5,8 @@
 #include <WiFiClientSecure.h>
 #include <Heep_API.h>
 
+#define TIMEOUT 5000
+
 unsigned int localPort = 5000;  
 int UDP_PORT = 5000;
 // An EthernetUDP instance to let us send and receive packets over UDP
