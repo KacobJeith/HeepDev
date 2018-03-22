@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { withRouter } from 'react-router-dom'
+import { withRouter, NavLink } from 'react-router-dom'
 import * as Actions from './../redux/actions_classic'
 
 import PropTypes from 'prop-types';
@@ -9,7 +9,7 @@ import { withStyles } from 'material-ui/styles';
 import ListSubheader from 'material-ui/List/ListSubheader';
 import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
 import Collapse from 'material-ui/transitions/Collapse';
-import RefreshIcon from 'material-ui-icons/Refresh';
+import {Refresh, Build} from 'material-ui-icons';
 
 var mapStateToProps = (state) => ({
 })
@@ -42,10 +42,21 @@ class NestedList extends React.Component {
         >
           <ListItem button>
             <ListItemIcon>
-              <RefreshIcon onClick={ () => this.props.refreshFlowchart()}/>
+              <Refresh onClick={ () => this.props.refreshFlowchart()}/>
             </ListItemIcon>
             <ListItemText inset primary="Refresh" />
           </ListItem>
+          <NavLink to="/designer" style={{
+    textDecoration: 'none',
+    outline: 'none'
+  }}>
+            <ListItem button>
+              <ListItemIcon>
+                <Build onClick={ () => this.props.refreshFlowchart()}/>
+              </ListItemIcon>
+              <ListItemText inset primary="Designing" />
+            </ListItem>
+          </NavLink>
         
         </List>
       </div>

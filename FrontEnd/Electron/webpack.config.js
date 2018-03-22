@@ -19,15 +19,33 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
   ],
 
-  devServer: {
-    publicPath: '/dist',
+  devServer: { 
     port: 9000,
-    historyApiFallback: true
+    historyApiFallback: true,
+    stats: {
+      colors: true,
+      hash: false,
+      version: false,
+      timings: false,
+      assets: false,
+      chunks: false,
+      modules: false,
+      reasons: false,
+      children: false,
+      source: false,
+      errors: true,
+      errorDetails: true,
+      warnings: true,
+      publicPath: false
+    }
   },
 
   resolve: {
-    root: path.join(__dirname, ''),
-    modulesDirectories: ['web_modules', 'node_modules', 'client', 'js'],
+    root: [
+      path.join(__dirname, ''),
+      path.resolve('src')
+    ],
+    modulesDirectories: ['node_modules'],
     extensions: ['', '.webpack.js', '.web.js', '.js', '.jsx']
   },
 
