@@ -611,10 +611,32 @@ class BedroomSVG extends React.Component{
     tlShake.clear();
 
     const tlPlants = new TimelineMax();
-    const tlSun = new TimelineMax();
+    const tlSun = new TimelineMax({paused: true});
+    const tlLamp = new TimelineMax({paused: true});
+    const tlCactus = new TimelineMax({paused: true});
+    const tlFlowers = new TimelineMax({paused: true})
 
-    tlSun.fromTo(outsideSunGlow, 1, {scale: 1.2, transformOrigin:'center'}, {scale: 1.4, yoyo: true, repeat: -1}, 1)
+    function pailListeners() {
+    }
 
+    // sun pulses indefinitely
+    tlSun.fromTo(outsideSunGlow, 1, {scale: 1.2, transformOrigin:'center'}, {scale: 1.4, yoyo: true, repeat: -1})
+
+    function playSun(){
+      tlSun.play();
+    }
+
+    tlLamp.fromTo(lampTop, 0.5, {fill: '#FCEA6B', ease: Sine.easeInOut}, {fill: '#02962f', ease: Sine.easeInOut, yoyo: true, repeat: -1})
+          .fromTo(lampShade, 0.5, {fill: '#FFF3C0', ease: Sine.easeInOut}, {fill: '#3bb254', ease: Sine.easeInOut, yoyo: true, repeat: -1}, '-=0.5')
+          .fromTo(lampLight, 0.5, {fill: '#EAE1B2', ease: Sine.easeInOut}, {fill: '#85e8a3', ease: Sine.easeInOut, yoyo: true, repeat: -1}, '-=0.5')
+
+    function playLamp() {
+      tlLamp.play();
+    }
+
+    tlCactus.to(cactusBody)
+
+    // sun shifts slightly to the right, turns lighter and bigger, sky turns into inferno
     tlPlants.to([outsideSun, outsideSunGlow], 1, {ease: Sine.easeInOut, x:40, scaleX: 1.2, scaleY: 1.2, transformOrigin: "center"})
             .to(outsideSun, 1, {fill: '#fcec9f'}, '-=1')
             .to([cloudLeft, cloudCenter, cloudRight], 1, {opacity: 0}, '-=1')
@@ -622,11 +644,16 @@ class BedroomSVG extends React.Component{
               stopColor: "#ffa72a",
               cycle: {
                 stopColor: ["#ffa72a", "#fff315"]
-              }
+              },
+              onComplete: playSun
             }, 0, "-=1")
 
+    // thermometer gets bigger and shows change in temperature
             .to(thermometer, 1, {scaleX: 2, scaleY: 2, ease: Sine.easeInOut, transformOrigin: 'bottom'})
-            .to(thermoMercury, 0.5, {scaleY: 2.17, transformOrigin: 'bottom', ease: Sine.easeInOut})
+            .to(thermoMercury, 0.5, {scaleY: 2.17, transformOrigin: 'bottom', ease: Sine.easeInOut}, "-=0.5")
+            .to(thermometer, 2, {scaleX: 1, scaleY: 1, ease: Sine.easeInOut, transformOrigin: 'bottom'})
+
+            .to(lampLight, 0.01, {fill: '#EAE1B2', display: 'block', onComplete: playLamp}, "-=1")
   }
 
   render() {
