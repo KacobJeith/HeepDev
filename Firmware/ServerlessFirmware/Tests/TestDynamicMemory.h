@@ -1244,6 +1244,26 @@ void TestAnalyticsDataInMemory()
 #endif
 }
 
+void TestWiFiMOP()
+{
+	std::string TestName = "Test WiFi MOPs";
+
+	ClearDeviceMemory();
+	heepByte testDeviceID[STANDARD_ID_SIZE];
+	CreateFakeDeviceID(testDeviceID);
+
+	std::string SSID = "MySSID";
+	std::string Password = "MyPassword";
+
+	AddWiFiSettingsToMemory(&SSID[0], SSID.length(), &Password[0], Password.length(), testDeviceID, 4);
+	PrintDeviceMemory();
+
+	char RetrievedSSID [20];
+	char RetrievedPassword [20];
+	cout << "Result: " << (int)GetWiFiFromMemory(RetrievedSSID, RetrievedPassword, 4) << endl;
+	cout << "Password: " << RetrievedPassword << "; SSID: " << RetrievedSSID << endl;
+}
+
 void TestDynamicMemory()
 {	
 	TestAddIPToDeviceMemory();
@@ -1276,4 +1296,5 @@ void TestDynamicMemory()
  	TestSetVertexOpCode_Byte();
  	TestGetVertex_Byte();
  	TestAnalyticsDataInMemory();
+ 	TestWiFiMOP();
 }

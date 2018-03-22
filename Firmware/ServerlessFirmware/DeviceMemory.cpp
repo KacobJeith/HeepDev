@@ -140,28 +140,28 @@ heepByte GetWiFiFromMemory(char* WiFiSSID, char* WiFiPassword, int priority)
 	{
 		if(deviceMemory[counter] == WiFiSSIDOpCode)
 		{
-			if(deviceMemory[counter + ID_SIZE + 1] == priority)
+			if(deviceMemory[counter + ID_SIZE + 2] == priority)
 			{
-				unsigned int deviceMemoryCounter = counter + ID_SIZE + 2;
+				unsigned int deviceMemoryCounter = counter + ID_SIZE + 3;
 				unsigned int SSIDBufferCounter = 0;
-				AddBufferToBuffer((heepByte*)WiFiSSID, deviceMemory, deviceMemory[counter + ID_SIZE] - 1, &SSIDBufferCounter, &deviceMemoryCounter);
+				AddBufferToBuffer((heepByte*)WiFiSSID, deviceMemory, deviceMemory[counter + ID_SIZE + 1] - 1, &SSIDBufferCounter, &deviceMemoryCounter);
 				foundSSIDAndPassword |= 0x01;
 			}
 		}
 		else if(deviceMemory[counter] == WiFiPasswordOpCode)
 		{
-			if(deviceMemory[counter + ID_SIZE + 1] == priority)
+			if(deviceMemory[counter + ID_SIZE + 2] == priority)
 			{
-				unsigned int deviceMemoryCounter = counter + ID_SIZE + 2;
+				unsigned int deviceMemoryCounter = counter + ID_SIZE + 3;
 				unsigned int PasswordBufferCounter = 0;
-				AddBufferToBuffer((heepByte*)WiFiPassword, deviceMemory, deviceMemory[counter+ID_SIZE] - 1, &PasswordBufferCounter, &deviceMemoryCounter);
+				AddBufferToBuffer((heepByte*)WiFiPassword, deviceMemory, deviceMemory[counter + ID_SIZE + 1] - 1, &PasswordBufferCounter, &deviceMemoryCounter);
 				foundSSIDAndPassword |= 0x02;
 			}
 		}
 
 		counter = SkipOpCode(counter);
 
-		if(foundSSIDAndPassword & 0x03){
+		if(foundSSIDAndPassword == 0x03){
 			return 0;
 		}
 	}
@@ -169,17 +169,15 @@ heepByte GetWiFiFromMemory(char* WiFiSSID, char* WiFiPassword, int priority)
 	return 1; // No SSID Password Found at given Priority
 }
 
-void AddWiFiSettingsToMemory(char* WiFiSSID, int numCharSSID, char* WiFiPassword, int numCharPassword, heepByte* deviceID)
+void AddWiFiSettingsToMemory(char* WiFiSSID, int numCharSSID, char* WiFiPassword, int numCharPassword, heepByte* deviceID, heepByte IDPriority)
 {
-	heepByte IDPRiority = 1;
-
 	PerformPreOpCodeProcessing_Byte(deviceID);
 
 	// WiFi
 	AddNewCharToMemory(WiFiSSIDOpCode);
 	AddIndexOrDeviceIDToMemory_Byte(deviceID);
 	AddNewCharToMemory(1 + numCharSSID);
-	AddNewCharToMemory(IDPRiority);
+	AddNewCharToMemory(IDPriority);
 	for(int i = 0; i < numCharSSID; i++)
 	{
 		AddNewCharToMemory(WiFiSSID[i]);
@@ -189,7 +187,7 @@ void AddWiFiSettingsToMemory(char* WiFiSSID, int numCharSSID, char* WiFiPassword
 	AddNewCharToMemory(WiFiPasswordOpCode);
 	AddIndexOrDeviceIDToMemory_Byte(deviceID);
 	AddNewCharToMemory(1 + numCharPassword);
-	AddNewCharToMemory(IDPRiority);
+	AddNewCharToMemory(IDPriority);
 	for(int i = 0; i < numCharPassword; i++)
 	{
 		AddNewCharToMemory(WiFiPassword[i]);
