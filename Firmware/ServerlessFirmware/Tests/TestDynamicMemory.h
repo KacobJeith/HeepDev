@@ -1252,16 +1252,65 @@ void TestWiFiMOP()
 	heepByte testDeviceID[STANDARD_ID_SIZE];
 	CreateFakeDeviceID(testDeviceID);
 
-	std::string SSID = "MySSID";
-	std::string Password = "MyPassword";
+	std::string SSID1 = "MySSID";
+	std::string Password1 = "MyPassword";
+	AddWiFiSettingsToMemory(&SSID1[0], SSID1.length(), &Password1[0], Password1.length(), testDeviceID, 4);
+	std::string SSID2 = "AnSSID";
+	std::string Password2 = "APassword";
+	AddWiFiSettingsToMemory(&SSID2[0], SSID2.length(), &Password2[0], Password2.length(), testDeviceID, 2);
+	
 
-	AddWiFiSettingsToMemory(&SSID[0], SSID.length(), &Password[0], Password.length(), testDeviceID, 4);
-	PrintDeviceMemory();
+	int DidReceive4 = 0;
+	char RetrievedSSID1 [20];
+	char RetrievedPassword1 [20];
+	DidReceive4 = GetWiFiFromMemory(RetrievedSSID1, RetrievedPassword1, 4);
+	std::string RetreivedSSIDStr1(RetrievedSSID1);
+	std::string RetreivedPasswordStr1(RetrievedPassword1);
 
-	char RetrievedSSID [20];
-	char RetrievedPassword [20];
-	cout << "Result: " << (int)GetWiFiFromMemory(RetrievedSSID, RetrievedPassword, 4) << endl;
-	cout << "Password: " << RetrievedPassword << "; SSID: " << RetrievedSSID << endl;
+	int DidReceive2 = 0;
+	char RetrievedSSID2 [20];
+	char RetrievedPassword2 [20];
+	DidReceive2 = GetWiFiFromMemory(RetrievedSSID2, RetrievedPassword2, 2);
+	std::string RetreivedSSIDStr2(RetrievedSSID2);
+	std::string RetreivedPasswordStr2(RetrievedPassword2);
+
+	int DidReceive1 = GetWiFiFromMemory(RetrievedSSID2, RetrievedPassword2, 1);
+	int DidReceive3 = GetWiFiFromMemory(RetrievedSSID2, RetrievedPassword2, 3);
+
+	ExpectedValue valueList [8];
+	valueList[0].valueName = "Did Receive 1";
+	valueList[0].expectedValue = 1;
+	valueList[0].actualValue = DidReceive1;
+
+	valueList[1].valueName = "Did Receive 2";
+	valueList[1].expectedValue = 0;
+	valueList[1].actualValue = DidReceive2;
+
+	valueList[2].valueName = "Did Receive 3";
+	valueList[2].expectedValue = 1;
+	valueList[2].actualValue = DidReceive3;
+
+	valueList[3].valueName = "Did Receive 4";
+	valueList[3].expectedValue = 0;
+	valueList[3].actualValue = DidReceive4;
+
+	valueList[4].valueName = "SSID 1";
+	valueList[4].expectedValue = 1;
+	valueList[4].actualValue = (int)(RetreivedSSIDStr1 == SSID1);
+
+	valueList[5].valueName = "Password 1";
+	valueList[5].expectedValue = 1;
+	valueList[5].actualValue = (int)(RetreivedPasswordStr1 == Password1);
+
+	valueList[6].valueName = "SSID 2";
+	valueList[6].expectedValue = 1;
+	valueList[6].actualValue = (int)(RetreivedSSIDStr2 == SSID2);
+
+	valueList[7].valueName = "Password 2";
+	valueList[7].expectedValue = 1;
+	valueList[7].actualValue = (int)(RetreivedPasswordStr2 == Password2);
+
+	CheckResults(TestName, valueList, 8);
 }
 
 void TestDynamicMemory()
