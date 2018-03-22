@@ -15,9 +15,20 @@ var mapStateToProps = (state) => ({
 class Store extends React.Component {
 
   render() {
+    
+    const inputs = {
+      parentGrid: {
+        style: {
+          margin: '0 auto',
+          overflowX: 'hidden',
+          maxWidth: '100%'
+        }
+      }
+    }
 
     return (
-        <Grid container justify='center' style={{marginTop: 20}}>
+      <div style={{marginTop: 20}}>
+        <Grid container justify='center' {...inputs.parentGrid}>
           <Grid item xs={10} style={{padding:24}}>
             <Grid container direction='row' alignItems='stretch' spacing={16}>
               {Object.keys(this.props.products).map((key) => (
@@ -26,6 +37,7 @@ class Store extends React.Component {
             </Grid>
           </Grid>
         </Grid>
+      </div>
     );
 
 

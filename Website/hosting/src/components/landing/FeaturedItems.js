@@ -17,7 +17,7 @@ var imageHeight = 300;
 const styles = theme => ({
   root: theme.mixins.gutters({
     padding: 0,
-    margin: 0,
+    margin: '0 auto',
     height: imageHeight,
     overflow: 'hidden',
     position: 'relative'

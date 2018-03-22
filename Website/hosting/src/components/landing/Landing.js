@@ -31,10 +31,11 @@ class Landing extends React.Component {
       SectionCard(inputs,
         <Grid container justify ='center' alignItems ='center' style={{
           maxWidth: '100%',
-          minHeight: inputs.minHeight
+          minHeight: inputs.minHeight,
+          margin: '0 auto'
         }}>
-          <Grid item>
-            <Typography variant='display1'>
+          <Grid item xs={12} md={8}>
+            <Typography variant='display1' align='center'>
               Heepify Your World
             </Typography>
           </Grid>
@@ -48,12 +49,14 @@ class Landing extends React.Component {
       bedroomContainer: {
         style: {
           maxWidth: '100%',
+          overflowX: 'hidden',
+          margin: 0
         },
       },
     };
     return (
       <Grid container justify='center' {...inputs.bedroomContainer}>
-        <Grid item xs={8}>
+        <Grid item xs={12} md={8}>
           <BedroomSVG />
         </Grid>
       </Grid>
@@ -70,26 +73,30 @@ class Landing extends React.Component {
       },
       header: {
         paddingBottom: 30,
-        paddingLeft: 40,
         fontWeight: 'bold',
+      },
+      grid: {
+        style: {
+          maxWidth: '100%',
+          overflowX: 'hidden',
+          margin: '0 auto'
+        }
       }
     };
 
     if (typeof this.props.collections['featuredItems'] !== 'undefined') {
       return (
         SectionCard(inputs.section,
-          <div>
-            <div>
-              <Typography variant='display1'
-                style={{...inputs.header}}>
-                FEATURED COLLECTION
-              </Typography>
-            </div>
-            <Grid container style={{maxWidth: '100%'}} justify ='center'>
+          <div style={{textAlign: 'center'}}>
+            <Typography variant='display1' align='center'
+              style={{...inputs.header}}>
+              FEATURED COLLECTION
+            </Typography>
+            <Grid container {...inputs.grid} justify ='center'>
               {Object.keys(this.props.collections['featuredItems'].products).map((key, index) => {
                 if (key != 'type') {
                   return (
-                    <Grid item xs= {5} md={2} key={key}>
+                    <Grid item xs={12} md={2} key={key}>
                       <FeaturedItems key={key} productIndex={index}/>
                     </Grid>
                   )

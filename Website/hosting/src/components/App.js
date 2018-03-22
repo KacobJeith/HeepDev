@@ -21,8 +21,6 @@ import ProductDetails from './store/ProductDetails'
 import DownloadPage from './heep/DownloadPage'
 import ManageCart from './store/ManageCart'
 
-import PaperSignalsConsole from './PaperSignals/PaperSignalsConsole'
-
 import Theme from './Theme'
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
 

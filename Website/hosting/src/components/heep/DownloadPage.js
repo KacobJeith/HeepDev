@@ -22,11 +22,11 @@ var mapStateToProps = (state, ownProps) => ({
 })
 
 
-class DownloadPage extends React.Component { 
+class DownloadPage extends React.Component {
 
   downloadButton(text, url) {
     return (
-      <Button 
+      <Button
         variant='raised'
         color='primary'
         size='large'
@@ -46,7 +46,7 @@ class DownloadPage extends React.Component {
     return (
       <div>
         <Typography
-          variant="display2" 
+          variant="display2"
           gutterBottom
         >Download Heep App</Typography>
         <Typography
@@ -57,8 +57,8 @@ class DownloadPage extends React.Component {
         <Typography
           variant='body1'
           paragraph>
-          Heep is a protocol for developing responsive local networks. From Smart Homes to Vertical Farms, Heep powered embedded devices 
-          are the robust, secure, performant backbone for your creations. Download the Heep App to link data sources (switches, sensors) 
+          Heep is a protocol for developing responsive local networks. From Smart Homes to Vertical Farms, Heep powered embedded devices
+          are the robust, secure, performant backbone for your creations. Download the Heep App to link data sources (switches, sensors)
           to data outputs (screens, lights, motors, and more). Start enchanting your world.
         </Typography>
       </div>
@@ -69,7 +69,7 @@ class DownloadPage extends React.Component {
 
     return (
       <a href='https://heep-io.atlassian.net/wiki/spaces/DIYDEVDOCS/pages/496468058/Intro+to+Heep+OS' target="_blank">
-        <Button 
+        <Button
           variant='flat'
           color='primary'
           size='large'
@@ -86,27 +86,29 @@ class DownloadPage extends React.Component {
   }
 
   render() {
-    
+
     return (
-      <div 
+      <div
         style={{
           margin: 20,
-          flexGrow: 1
+          maxWidth: '100%',
+          overflowX: 'hidden',
+          overflowY: 'hidden'
         }}
       >
-        <Grid 
+        <Grid
           container
           spacing={24}
           justify={'center'}
           alignItems={'center'}>
           <Hidden smUp>
-            <Grid 
-              item 
+            <Grid
+              item
               md={3}
               lg={2}
               sm={4}
               xs={5}>
-              <img 
+              <img
                 src="../src/assets/Heep_Gradient.png"
                 style={{
                   maxWidth: '100%',
@@ -114,8 +116,8 @@ class DownloadPage extends React.Component {
                 }}/>
             </Grid>
           </Hidden>
-          <Grid 
-            item 
+          <Grid
+            item
             sm={6}
             xs={10}>
             {this.downloadDescription()}
@@ -133,13 +135,13 @@ class DownloadPage extends React.Component {
           </Grid>
 
           <Hidden only='xs'>
-            <Grid 
-              item 
+            <Grid
+              item
               md={3}
               lg={2}
               sm={4}
               xs={5}>
-              <img 
+              <img
                 src="../src/assets/Heep_Gradient.png"
                 style={{
                   maxWidth: '100%',
@@ -159,9 +161,9 @@ class DownloadPage extends React.Component {
         </Grid>
       </div>
     );
-    
+
   }
-  
+
 }
 
 

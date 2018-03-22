@@ -1,5 +1,5 @@
 import React from 'react'
-import { Typography, Grid } from 'material-ui'
+import { Grid } from 'material-ui'
 
 const SectionCard = (componentProps, wrappedComponent) => {
 
@@ -9,7 +9,7 @@ const SectionCard = (componentProps, wrappedComponent) => {
       backgroundRepeat: 'no-repeat',
       backgroundSize:'cover',
       maxWidth: '100%',
-      margin: 0
+      margin: 0,
     }
   };
 
