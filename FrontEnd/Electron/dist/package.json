@@ -2,17 +2,17 @@
 	"name": "HeepDesktop",
 	"version": "v0.1.1",
 	"main": "electron_bundle.js",
-    "description": "Heep Desktop Application",
-    "author": "Heep Inc.",
+	"description": "Heep Desktop Application",
+	"author": "Heep Inc.",
 	"projectDir": "./dist/",
 	"build": {
 		"appId": "HeepID",
 		"mac": {
-		  "category": "Electronics"
+			"category": "Electronics"
 		},
 		"nsis": {
-		  "oneClick": false,
-		  "allowToChangeInstallationDirectory": true
+			"oneClick": false,
+			"allowToChangeInstallationDirectory": true
 		}
 	}
 }

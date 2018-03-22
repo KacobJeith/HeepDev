@@ -22,7 +22,7 @@
     "bs": "webpack && npm run start",
     "ts": "npm run test && npm run start",
     "be": "npm run build && electron ./dist/",
-    "copy-files": "babel src/serverside/copyToDist/ --out-dir ./dist/ --presets=es2015 --copy-files && babel ./src/assets/ --out-dir ./dist/assets/ --presets=es2015 --copy-files",
+    "copy-files": "babel ./src/assets/ --out-dir ./dist/assets/ --presets=es2015 --copy-files",
     "dist": "electron-builder --projectDir ./dist/",
     "package-all": "npm run build && electron-builder --projectDir ./dist/ -mwl",
     "package-current": "npm run build && npm run dist"
