@@ -31,7 +31,8 @@ class Landing extends React.Component {
       SectionCard(inputs,
         <Grid container justify ='center' alignItems ='center' style={{
           maxWidth: '100%',
-          minHeight: inputs.minHeight
+          minHeight: inputs.minHeight,
+          margin: '0 auto'
         }}>
           <Grid item xs={12} md={8}>
             <Typography variant='display1' align='center'>
