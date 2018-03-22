@@ -40,7 +40,7 @@ class About extends React.Component {
           margin: '0 auto'
          }}
          justify='center' alignItems='center'>
-          <Grid item xs={8}>
+          <Grid item  xs={12} md={8}>
             <Typography variant='headline' align='center'>
               Connect Your World
             </Typography>
@@ -81,13 +81,13 @@ class About extends React.Component {
           margin: '0 auto'
         }}
           spacing={24} justify='center'>
-          <Grid item xs={6} sm={3}>
+          <Grid item xs={12} md={3}>
             <AboutCard {...inputs.PlugAndPlay}/>
           </Grid>
-          <Grid item xs={6} sm={3}>
+          <Grid item xs={12} md={3}>
             <AboutCard {...inputs.CloudLess}/>
           </Grid>
-          <Grid item xs={6} sm={3}>
+          <Grid item xs={12} md={3}>
             <AboutCard {...inputs.DeviceParty}/>
           </Grid>
         </Grid>
@@ -108,7 +108,7 @@ class About extends React.Component {
           maxWidth:'100%',
           margin: '0 auto'
         }} justify ='center' alignItems ='center'>
-          <Grid item xs={8}>
+          <Grid item xs={12} md={8}>
             <Typography variant='headline' align='center'>
               Our Story
             </Typography>
@@ -150,16 +150,16 @@ class About extends React.Component {
           maxWidth:'100%',
           margin: '0 auto'
         }} justify='center'>
-          <Grid item xs>
+          <Grid item xs={12} md={3}>
             <TeamModal {...inputs.teamModal.james}/>
           </Grid>
-          <Grid item xs>
+          <Grid item xs={12} md={3}>
             <TeamModal {...inputs.teamModal.james}/>
           </Grid>
-          <Grid item xs>
+          <Grid item xs={12} md={3}>
             <TeamModal {...inputs.teamModal.james}/>
           </Grid>
-          <Grid item xs>
+          <Grid item xs={12} md={3}>
             <TeamModal {...inputs.teamModal.james}/>
           </Grid>
         </Grid>
