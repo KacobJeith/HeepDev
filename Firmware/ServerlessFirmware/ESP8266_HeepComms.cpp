@@ -1,11 +1,11 @@
 #include "ESP8266_HeepComms.h"
+#include "Heep_API.h"
 #include <SPI.h> 
 #include <ESP8266WiFi.h>
 #include <WiFiUdp.h>
 #include <WiFiClientSecure.h>
-#include <Heep_API.h>
 
-#define HEEP_CONNECT_TIMEOUT 5000
+#define HEEP_CONNECT_TIMEOUT 10000
 
 unsigned int localPort = 5000;  
 // An EthernetUDP instance to let us send and receive packets over UDP
@@ -21,8 +21,15 @@ void CreateInterruptServer()
   int currentWiFiPriorityID = 0;
   char currentSSID [20];
   char currentPassword [20];
-
+  
   do{
+
+    // Clear SSID and Password
+    for(int i = 0; i < 20; i++)
+    {
+      currentSSID[i] = '\0';
+      currentPassword[i] = '\0';
+    }
 
     connectAttemptStartTime = millis();
     if(GetWiFiFromMemory(currentSSID, currentPassword, currentWiFiPriorityID) == 0){
