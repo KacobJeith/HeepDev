@@ -175,7 +175,8 @@ class BedroomSVG extends React.Component{
 
     tlCar.to(cometRemote, 0.05, {display:'block'})
          .to(cometRemote, 0.6, {bezier: { type: "cubic", values: pathRemoteCar}, ease: Sine.easeInOut})
-         .to(cometRemote, 0.01, {display:'none', x: 0, y: 0})
+         .to(cometRemote, 0.01, {display:'none'})
+         .to(cometRemote, 0.01, {x: 0, y: 0})
 
          .to(glowCar, 0.01, {display:'block'})
          .to(glowCar, 0.75, {scaleX: 3.2, scaleY: 3.2, opacity: 0, transformOrigin: "center"})
@@ -238,7 +239,8 @@ class BedroomSVG extends React.Component{
          .to(cometPigLamp, 0.5, {bezier: { type: "cubic", values: pathPigLamp}, ease: Sine.easeInOut})
          .to(cometPigPlanets, 0.5, {bezier: { type: "cubic", values: pathPigPlanets}, ease: Sine.easeInOut}, '-=0.5')
          .to(cometPigClock, 0.5, {bezier: { type: "cubic", values: pathPigClock}, ease: Sine.easeInOut}, '-=0.5')
-         .to(cometPig, 0.01, {display:'none', x: 0, y: 0})
+         .to(cometPig, 0.01, {display:'none'})
+         .to(cometPig, 0.01, {x: 0, y: 0})
 
     // pulsing glow after comet hits the object; triggers Theft animation
          .to(glowPig, 0.01, {display:'block'})
@@ -287,7 +289,8 @@ class BedroomSVG extends React.Component{
            .to(cometDiaryLamp, 0.5, {bezier: { type: "cubic", values: pathDiaryLamp}, ease: Sine.easeInOut})
            .to(cometDiaryPlanets, 0.5, {bezier: { type: "cubic", values: pathDiaryPlanets}, ease: Sine.easeInOut}, '-=0.5')
            .to(cometDiaryClock, 0.5, {bezier: { type: "cubic", values: pathDiaryClock}, ease: Sine.easeInOut}, '-=0.5')
-           .to(cometDiary, 0.01, {display:'none', x: 0, y: 0})
+           .to(cometDiary, 0.01, {display:'none'})
+           .to(cometDiary, 0.01, {x: 0, y: 0})
 
     // pulsing glow after comet hits the object, triggers Theft animation
            .to(glowDiary, 0.01, {display:'block'})
@@ -428,7 +431,8 @@ class BedroomSVG extends React.Component{
            .to(cometSleepPlanets, 0.5, {bezier: { type: "cubic", values: pathSleepPlanets}, ease: Sine.easeInOut}, '-=0.5')
            .to(cometSleepClock, 0.5, {bezier: { type: "cubic", values: pathSleepClock}, ease: Sine.easeInOut}, '-=0.5')
            .to(cometSleepNitelite, 0.5, {bezier: { type: "cubic", values: pathSleepNitelite}, ease: Sine.easeInOut}, '-=0.5')
-           .to(cometSleep, 0.01, {display:'none', x: 0, y: 0})
+           .to(cometSleep, 0.01, {display:'none'})
+           .to(cometSleep, 0.01, {x: 0, y: 0})
 
     // pulsing glow after comet hits the object
            .to(glowSleep, 0.01, {display:'block'})
@@ -616,7 +620,8 @@ class BedroomSVG extends React.Component{
     tlCactus.to(cometCactus, 0.1, {display: 'block'})
             .to(cometCactusLamp, 0.5,  {bezier: { type: "cubic", values: pathCactusLamp}, ease: Sine.easeInOut})
             .to(cometCactusPail, 0.5,  {bezier: { type: "cubic", values: pathCactusPail}, ease: Sine.easeInOut}, '-=0.5')
-            .to(cometCactus, 0.01, {display:'none', x: 0, y: 0})
+            .to(cometCactus, 0.01, {display:'none'})
+            .to(cometCactus, 0.01, {x: 0, y: 0})
 
             .to(glowCactus, 0.01, {display:'block'})
             .to(glowCactus, 0.75, {scaleX: 4, scaleY: 4, opacity: 0, transformOrigin: "center"})
@@ -646,7 +651,8 @@ class BedroomSVG extends React.Component{
     tlFlowers.to(cometFlowers, 0.1, {display: 'block'})
              .to(cometFlowersLamp, 0.5,  {bezier: { type: "cubic", values: pathFlowersLamp}, ease: Sine.easeInOut})
              .to(cometFlowersPail, 0.5,  {bezier: { type: "cubic", values: pathFlowersPail}, ease: Sine.easeInOut}, '-=0.5')
-             .to(cometFlowers, 0.01, {display:'none', x: 0, y: 0})
+             .to(cometFlowers, 0.01, {display: 'none'})
+             .to(cometFlowers, 0.01, {x: 0, y: 0})
 
              .to(glowFlowers, 0.01, {display:'block'})
              .to(glowFlowers, 0.75, {scaleX: 4, scaleY: 4, opacity: 0, transformOrigin: "center"})

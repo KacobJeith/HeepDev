@@ -475,7 +475,7 @@ export const bedroomSVG = `
     <path id="vertexSleepNitelite" d="M1114.32 369.519L118 461"/>
     <path id="vertexSleepBlinds" d="M1121.444 325.097L291.033 79.518"/>
     <path id="vertexSleepClock" d="M1268.593 386.539l46.97 33.051"/>
-    <path id="vertexFlowersPail" d="M276.806 366.167L376 367.5l-99.194-1.333"/>
+    <path id="vertexFlowersPail" d="M278 365.75l99 1.5"/>
     <path id="vertexCactusPail" d="M192.987 370.047l183.026-1.594"/>
     <path id="vertexFlowersLamp" d="M346.919 353l454.437 4.168"/>
     <path id="vertexCactusLamp" d="M268 358l533.356-.832"/>
