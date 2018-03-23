@@ -45,7 +45,7 @@ class BedroomSVG extends React.Component{
     this.hoverDresser = this.hoverDresser.bind(this);
     this.hoverDresser = this.hoverDresser.bind(this);
     this.hoverCactus = this.hoverCactus.bind(this);
-    this.hoverFlower = this.hoverFlower.bind(this);
+    this.hoverFlowers = this.hoverFlowers.bind(this);
 
     this.leaveRemote = this.leaveRemote.bind(this);
     this.leavePig = this.leavePig.bind(this);
@@ -54,13 +54,14 @@ class BedroomSVG extends React.Component{
     this.leaveDresser = this.leaveDresser.bind(this);
     this.leaveDresser = this.leaveDresser.bind(this);
     this.leaveCactus = this.leaveCactus.bind(this);
-    this.leaveFlower = this.leaveFlower.bind(this);
+    this.leaveFlowers = this.leaveFlowers.bind(this);
 
     this.clickRemote = this.clickRemote.bind(this);
     this.clickPig = this.clickPig.bind(this);
     this.clickDiary = this.clickDiary.bind(this);
     this.clickSleep = this.clickSleep.bind(this);
-    this.clickPlants = this.clickPlants.bind(this);
+    this.clickCactus = this.clickCactus.bind(this);
+    this.clickFlowers = this.clickFlowers.bind(this);
 	};
 
   componentDidMount() {
@@ -75,7 +76,7 @@ class BedroomSVG extends React.Component{
       buttonDresserTop.addEventListener('mouseover', this.hoverDresser);
       buttonDresserBottom.addEventListener('mouseover', this.hoverDresser);
       buttonCactus.addEventListener('mouseover', this.hoverCactus);
-      buttonFlower.addEventListener('mouseover', this.hoverFlower);
+      buttonFlower.addEventListener('mouseover', this.hoverFlowers);
 
       buttonRemote.addEventListener('mouseleave', this.leaveRemote);
       buttonPig.addEventListener('mouseleave', this.leavePig);
@@ -84,14 +85,14 @@ class BedroomSVG extends React.Component{
       buttonDresserTop.addEventListener('mouseleave', this.leaveDresser);
       buttonDresserBottom.addEventListener('mouseleave', this.leaveDresser);
       buttonCactus.addEventListener('mouseleave', this.leaveCactus);
-      buttonFlower.addEventListener('mouseleave', this.leaveFlower);
+      buttonFlower.addEventListener('mouseleave', this.leaveFlowers);
 
       buttonRemote.addEventListener('click', this.clickRemote);
       buttonPig.addEventListener('click', this.clickPig);
       buttonDiary.addEventListener('click', this.clickDiary);
       buttonSleep.addEventListener('click', this.clickSleep);
-      buttonCactus.addEventListener('click', this.clickPlants)
-      buttonFlower.addEventListener('click', this.clickPlants)
+      buttonCactus.addEventListener('click', this.clickCactus)
+      buttonFlower.addEventListener('click', this.clickFlowers)
 
       buttonRemote.setAttribute('cursor', 'pointer');
       buttonPig.setAttribute('cursor', 'pointer');
@@ -111,7 +112,7 @@ class BedroomSVG extends React.Component{
       buttonDresserTop.removeEventListener('mouseover', this.hoverDresser);
       buttonDresserBottom.removeEventListener('mouseover', this.hoverDresser);
       buttonCactus.removeEventListener('mouseover', this.hoverCactus);
-      buttonFlower.removeEventListener('mouseover', this.hoverFlower);
+      buttonFlower.removeEventListener('mouseover', this.hoverFlowers);
 
       buttonRemote.removeEventListener('mouseleave', this.leaveRemote);
       buttonPig.removeEventListener('mouseleave', this.leavePig);
@@ -120,14 +121,14 @@ class BedroomSVG extends React.Component{
       buttonDresserTop.removeEventListener('mouseleave', this.leaveDresser);
       buttonDresserBottom.removeEventListener('mouseleave', this.leaveDresser);
       buttonCactus.removeEventListener('mouseleave', this.leaveCactus);
-      buttonFlower.removeEventListener('mouseleave', this.leaveFlower);
+      buttonFlower.removeEventListener('mouseleave', this.leaveFlowers);
 
       buttonRemote.removeEventListener('click', this.clickRemote);
       buttonPig.removeEventListener('click', this.clickPig);
       buttonDiary.removeEventListener('click', this.clickDiary);
       buttonSleep.removeEventListener('click', this.clickSleep);
-      buttonCactus.removeEventListener('click', this.clickPlants);
-      buttonFlower.removeEventListener('click', this.clickPlants);
+      buttonCactus.removeEventListener('click', this.clickCactus);
+      buttonFlower.removeEventListener('click', this.clickFlowers);
 
       buttonRemote.removeAttribute('cursor', 'pointer');
       buttonPig.removeAttribute('cursor', 'pointer');
@@ -243,7 +244,7 @@ class BedroomSVG extends React.Component{
          .to(glowPig, 0.01, {display:'block'})
          .to(glowPig, 0.75, {scaleX: 4, scaleY: 4, opacity: 0, transformOrigin: "center"})
          .to(glowPig, 0.01, {display: 'none'})
-         .to(glowPig, 0.01, {scaleX: 1, scaleY: 1, opacity: 1, transformOrigin: "center", onComplete: this.clickTheft.bind(this)})
+         .to(glowPig, 0.01, {scaleX: 1, scaleY: 1, opacity: 1, transformOrigin: "center", onComplete: this.animateTheft.bind(this)})
 
     // pig animates toward the user and back
          .to(pig, 2.3, {
@@ -292,7 +293,7 @@ class BedroomSVG extends React.Component{
            .to(glowDiary, 0.01, {display:'block'})
            .to(glowDiary, 0.75, {scaleX: 4, scaleY: 4, opacity: 0, transformOrigin: "center"})
            .to(glowDiary, 0.01, {display: 'none'})
-           .to(glowDiary, 0.01, {scaleX: 1, scaleY: 1, opacity: 1, transformOrigin: "center", onComplete: this.clickTheft.bind(this)})
+           .to(glowDiary, 0.01, {scaleX: 1, scaleY: 1, opacity: 1, transformOrigin: "center", onComplete: this.animateTheft.bind(this)})
 
     // frame of open diary appears; close diary disappears; open diary animates toward user
            .to(diary, 0.01, {display: 'none'}, 1)
@@ -310,7 +311,7 @@ class BedroomSVG extends React.Component{
           .to(diary, 0.01, {display: 'block'})
   };
 
-  clickTheft() {
+  animateTheft() {
     const tlTheft = new TimelineMax();
     const startTime = 0.3;
 
@@ -601,18 +602,59 @@ class BedroomSVG extends React.Component{
     this.leaveShake();
   };
 
-  hoverFlower() {
-    this.hoverShake(flowers);
-  };
-
-  leaveFlower() {
-    this.leaveShake();
-  };
-
-  clickPlants() {
+  clickCactus() {
     this.removeButtonListeners();
     tlShake.clear();
 
+    const tlCactus = new TimelineMax({onComplete: this.animatePlants.bind(this)});
+
+    const cometCactus = [cometCactusLamp, cometCactusPail]
+    const glowCactus = [glowPail, glowLamp]
+    const pathCactusPail = MorphSVGPlugin.pathDataToBezier(vertexCactusPail, {align: alignCactusPail});
+    const pathCactusLamp = MorphSVGPlugin.pathDataToBezier(vertexCactusLamp, {align: alignCactusLamp});
+
+    tlCactus.to(cometCactus, 0.1, {display: 'block'})
+            .to(cometCactusLamp, 0.5,  {bezier: { type: "cubic", values: pathCactusLamp}, ease: Sine.easeInOut})
+            .to(cometCactusPail, 0.5,  {bezier: { type: "cubic", values: pathCactusPail}, ease: Sine.easeInOut}, '-=0.5')
+            .to(cometCactus, 0.01, {display:'none', x: 0, y: 0})
+
+            .to(glowCactus, 0.01, {display:'block'})
+            .to(glowCactus, 0.75, {scaleX: 4, scaleY: 4, opacity: 0, transformOrigin: "center"})
+            .to(glowCactus, 0.01, {display: 'none'})
+            .to(glowCactus, 0.01, {scaleX: 1, scaleY: 1, opacity: 1, transformOrigin: "center"})
+  }
+
+  hoverFlowers() {
+    this.hoverShake(flowers);
+  };
+
+  leaveFlowers() {
+    this.leaveShake();
+  };
+
+  clickFlowers() {
+    this.removeButtonListeners();
+    tlShake.clear();
+
+    const tlFlowers = new TimelineMax({onComplete: this.animatePlants.bind(this)});
+
+    const cometFlowers = [cometFlowersLamp, cometFlowersPail]
+    const glowFlowers = [glowPail, glowLamp]
+    const pathFlowersPail = MorphSVGPlugin.pathDataToBezier(vertexFlowersPail, {align: alignFlowersPail});
+    const pathFlowersLamp = MorphSVGPlugin.pathDataToBezier(vertexFlowersLamp, {align: alignFlowersLamp});
+
+    tlFlowers.to(cometFlowers, 0.1, {display: 'block'})
+             .to(cometFlowersLamp, 0.5,  {bezier: { type: "cubic", values: pathFlowersLamp}, ease: Sine.easeInOut})
+             .to(cometFlowersPail, 0.5,  {bezier: { type: "cubic", values: pathFlowersPail}, ease: Sine.easeInOut}, '-=0.5')
+             .to(cometFlowers, 0.01, {display:'none', x: 0, y: 0})
+
+             .to(glowFlowers, 0.01, {display:'block'})
+             .to(glowFlowers, 0.75, {scaleX: 4, scaleY: 4, opacity: 0, transformOrigin: "center"})
+             .to(glowFlowers, 0.01, {display: 'none'})
+             .to(glowFlowers, 0.01, {scaleX: 1, scaleY: 1, opacity: 1, transformOrigin: "center"})
+  }
+
+  animatePlants() {
     const tlPlants = new TimelineMax({onComplete: addListeners.bind(this)});
     const tlSun = new TimelineMax({paused: true});
     const tlBeforeClickLamp = new TimelineMax({paused: true});
@@ -620,6 +662,12 @@ class BedroomSVG extends React.Component{
     const tlAfterClick = new TimelineMax({paused: true});
 
     const pathPail = MorphSVGPlugin.pathDataToBezier(pathPailCactus, {align: alignPathPailCactus});
+    const clouds = [cloudLeft, cloudCenter, cloudRight]
+    const petals = [petalsLeftLight, petalsLeftDark, petalsCenterLight, petalsCenterDark, petalsRightLight, petalsRightDark]
+
+    function addListeners() {
+      this.addButtonListeners();
+    }
 
     function playSun() {
       tlSun.play();
@@ -646,10 +694,6 @@ class BedroomSVG extends React.Component{
 
     function stopSun() {
       tlSun.clear();
-    }
-
-    function addListeners() {
-      this.addButtonListeners();
     }
 
     // sun pulses indefinitely
@@ -783,7 +827,12 @@ class BedroomSVG extends React.Component{
             .to(pail, 1, {x: 0, y: 0, ease: Sine.easeInOut})
 
     // grow cactus back
-            .to([cactusBody, cactusThorns], 4, {scaleX: 1, scaleY: 1, transformOrigin: 'bottom',  ease: Sine.easeInOut}, "-=3")
+            .to([cactusBody, cactusThorns], 4, {
+              scaleX: 1,
+              scaleY: 1,
+              transformOrigin: 'bottom',
+              ease: Sine.easeInOut
+            }, "-=3")
             .to(cactusBody, 4, {fill: '#8CC63F',  ease: Sine.easeInOut}, "-=4")
 
     // grow flower back and stop lamp

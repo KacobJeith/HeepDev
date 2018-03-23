@@ -475,6 +475,10 @@ export const bedroomSVG = `
     <path id="vertexSleepNitelite" d="M1114.32 369.519L118 461"/>
     <path id="vertexSleepBlinds" d="M1121.444 325.097L291.033 79.518"/>
     <path id="vertexSleepClock" d="M1268.593 386.539l46.97 33.051"/>
+    <path id="vertexFlowersPail" d="M276.806 366.167L376 367.5l-99.194-1.333"/>
+    <path id="vertexCactusPail" d="M192.987 370.047l183.026-1.594"/>
+    <path id="vertexFlowersLamp" d="M346.919 353l454.437 4.168"/>
+    <path id="vertexCactusLamp" d="M268 358l533.356-.832"/>
     <path id="pathSunset" d="M199 164s197.333 11.334 333.333 308.334"/>
     <path id="pathMoonrise" d="M49 327s43-164.654 113-163"/>
     <path id="pathPailCactus" d="M381.974 344.226s-98.396-236.783-193.506-117.932"/>
@@ -491,6 +495,10 @@ export const bedroomSVG = `
     <circle id="alignSleepClock" cx="1267.871" cy="385.872" r="3.79"/>
     <circle id="alignSleepNitelite" cx="1112.871" cy="369.872" r="3.79"/>
     <circle id="alignSleepPlanets" cx="1171.871" cy="288.872" r="3.79"/>
+    <circle id="alignCactusPail" cx="196" cy="369.667" r=".667"/>
+    <circle id="alignFlowersPail" cx="277.5" cy="366.167" r=".833"/>
+    <circle id="alignCactusLamp" cx="270.167" cy="357.833" r="1.167"/>
+    <circle id="alignFlowersLamp" cx="352.333" cy="353" r="1"/>
     <circle id="alignPathSunset" cx="200" cy="164" r="3"/>
     <circle id="alignPathMoonrise" cx="49" cy="328" r="2"/>
     <circle id="alignPathPailCactus" cx="381.98" cy="344.48" r="1.48"/>
@@ -584,6 +592,38 @@ export const bedroomSVG = `
        </linearGradient>
        <path fill="url(#SVGID_13_)" d="M1118.737 361.522l124.637-3.331-122.684 22.23z"/>
      </g>
+     <g id="cometCactusPail" display="none">
+      <circle fill="#00FFFF" cx="192.03" cy="369.832" r="4.811"/>
+      <linearGradient id="SVGID_14_" gradientUnits="userSpaceOnUse" x1="132.913" y1="369.434" x2="191.442" y2="369.791">
+        <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+        <stop offset="1" stop-color="#0ff"/>
+      </linearGradient>
+      <path fill="url(#SVGID_14_)" d="M191.416 373.791l-58.503-4.363 58.553-3.637z"/>
+    </g>
+    <g id="cometFlowersPail" display="none">
+      <circle fill="#00FFFF" cx="274.021" cy="365.398" r="4.811"/>
+      <linearGradient id="SVGID_15_" gradientUnits="userSpaceOnUse" x1="214.924" y1="363.768" x2="273.433" y2="365.346">
+        <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+        <stop offset="1" stop-color="#0ff"/>
+      </linearGradient>
+      <path fill="url(#SVGID_15_)" d="M273.324 369.344l-58.4-5.583 58.617-2.414z"/>
+    </g>
+    <g id="cometFlowersLamp" display="none">
+      <path fill="#00FFFF" d="M343.42 362.792c-5.643-.046-10.177-4.66-10.132-10.303.047-5.643 4.659-10.177 10.306-10.132 5.638.049 10.176 4.659 10.129 10.302-.046 5.646-4.659 10.18-10.303 10.133z"/>
+      <linearGradient id="SVGID_16_" gradientUnits="userSpaceOnUse" x1="217.943" y1="351.457" x2="342.259" y2="352.484">
+        <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+        <stop offset="1" stop-color="#0ff"/>
+      </linearGradient>
+      <path fill="url(#SVGID_16_)" d="M342.179 361.984l-124.236-10.536 124.394-8.463z"/>
+    </g>
+    <g id="cometCactusLamp" display="none">
+      <path fill="#00FFFF" d="M261.42 367.792c-5.643-.046-10.177-4.66-10.132-10.303.047-5.643 4.659-10.177 10.306-10.132 5.638.049 10.176 4.659 10.129 10.302-.046 5.646-4.659 10.18-10.303 10.133z"/>
+      <linearGradient id="SVGID_17_" gradientUnits="userSpaceOnUse" x1="135.943" y1="356.457" x2="260.258" y2="357.485">
+        <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+        <stop offset="1" stop-color="#0ff"/>
+      </linearGradient>
+      <path fill="url(#SVGID_17_)" d="M260.179 366.984l-124.236-10.536 124.394-8.463z"/>
+    </g>
    </g>
  <g id="Glow" fill="#00FFFF">
    <circle id="glowCar" display="none" cx="413.445" cy="553.445" r="34.445"/>
@@ -592,6 +632,7 @@ export const bedroomSVG = `
    <circle id="glowPlanets" display="none" cx="1084.945" cy="172.945" r="20.945"/>
    <circle id="glowLamp" display="none" cx="802.945" cy="355.945" r="20.945"/>
    <circle id="glowClock" display="none" cx="1318.434" cy="423.434" r="14.434"/>
+   <circle id="glowPail" display="none" cx="377.667" cy="367.667" r="16"/>
  </g>
   <g id="Buttons" fill="none">
     <rect id="buttonRemote" x="130" y="632" fill="none" width="118" height="97" pointer-events="all"/>
