@@ -11,6 +11,8 @@ const heepConnect = require('./serverside/heep/HeepConnections');
 const simulationDevice =  require('./serverside/simulationHeepDevice.js');
 
 const autoUpdater = require('electron-updater').autoUpdater;
+autoUpdater.logger = log;
+autoUpdater.logger.transports.file.level = "info";
 
 let mainWindow
 
@@ -115,6 +117,13 @@ electronApp.on('ready', function() {
   mainWindow.on('closed', function () {
     mainWindow = null
   })
+
+  log.info('Main Electron function');
+  autoUpdater.checkForUpdatesAndNotify();
+
+  autoUpdater.on('checking-for-update', function(info) {
+    log.info("inside checking for update: ", info);
+  });
 });
 
 electronApp.on('window-all-closed', function () {
