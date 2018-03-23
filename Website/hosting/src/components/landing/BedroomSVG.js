@@ -782,9 +782,11 @@ class BedroomSVG extends React.Component{
             .to(pail, 0.7, {rotation: 0, transformOrigin: 'center', ease: Sine.easeInOut}, "-=0.5")
             .to(pail, 1, {x: 0, y: 0, ease: Sine.easeInOut})
 
+    // grow cactus back
             .to([cactusBody, cactusThorns], 4, {scaleX: 1, scaleY: 1, transformOrigin: 'bottom',  ease: Sine.easeInOut}, "-=3")
             .to(cactusBody, 4, {fill: '#8CC63F',  ease: Sine.easeInOut}, "-=4")
 
+    // grow flower back and stop lamp
             .to([leafLeft, leafCenter, leafRight], 3, {opacity: 1}, '-=2')
             .to(flowerStems, 3, {stroke: '#006837'}, '-=3')
             .to([petalsLeftDark, petalsCenterDark], 3, {fill: '#E079A3'}, '-=3')
@@ -792,10 +794,12 @@ class BedroomSVG extends React.Component{
             .to(petalsRightLight, 3, {fill: '#F7D0E0'}, '-=3')
             .to(petalsRightDark, 3, {fill: '#F2B1CF', onComplete: stopLamp}, '-=3')
 
+    // turn lamp back
             .to(lampLight, 0.01, {display: 'none'})
             .to(lampTop, 0.01, {fill: '#848383'}, '-=0.01')
             .to(lampShade, 0.01, {fill: '#ADADAD'}, '-=0.01')
 
+    // revert sky back
             .to([outsideSun, outsideSunGlow], 2, {
                       ease: Sine.easeInOut,
                       x: 0,
