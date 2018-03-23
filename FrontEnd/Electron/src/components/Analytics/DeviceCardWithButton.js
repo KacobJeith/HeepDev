@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux'
 import * as Actions from '../../redux/actions'
 import { NavLink, withRouter } from 'react-router-dom';
 
-import DeviceCard from '../DeviceCard'
 
 var mapStateToProps = (state, ownProps) => ({
   thisDeviceID: ownProps.thisDeviceID,
@@ -44,7 +43,7 @@ class DeviceCardWithButton extends React.Component {
 
     return (
       <div {...inputs.button}>
-        <DeviceCard {...inputs.thisDevice}/>
+      
      </div>
     );
   }

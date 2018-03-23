@@ -4,9 +4,12 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-  target: 'electron-main',
 
-  entry: ['src/electron_main.js'],
+  context: path.resolve(__dirname),
+  
+  entry: './src/electron_main.js',
+
+  target: 'electron-main',
 
   output: {
     path: path.resolve(__dirname, "dist"),
@@ -14,8 +17,6 @@ module.exports = {
   },
 
   plugins: [
-    // OccurenceOrderPlugin is needed for webpack 1.x only
-    new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
   ],
 
@@ -26,9 +27,8 @@ module.exports = {
   },
 
   resolve: {
-    root: path.join(__dirname, ''),
-    modulesDirectories: ['web_modules', 'node_modules', 'client', 'js'],
-    extensions: ['', '.webpack.js', '.web.js', '.js', '.jsx']
+    modules: ['node_modules'],
+    extensions: ['.js']
   },
 
   node: {
@@ -36,25 +36,15 @@ module.exports = {
   },
 
   module: {
-    loaders: [
+    rules: [
       { 
-        exclude: /(node_modules|bower_components)/,
-        text: /\.js$/, 
-        loader: 'babel-loader',
-      },
-      { test: /\.jsx?$/, 
-        loaders: ['babel'], 
-        exclude: /node_modules/ 
+        test: /\.js$/, 
+        use: 'babel-loader',
+        exclude: /(node_modules)/
       },
       {
-      test: /\.(jpe?g|png|gif|svg|mov|mp4)$/,
-      loader: 'file-loader',
-      options: {
-        name: '[name].[ext]'} 
-      },
-      {
-        test: /\.json$/,
-        loader: 'json-loader'
+        test: /\.(jpe?g|png|gif|svg|mov|mp4)$/,
+        use: 'file-loader'
       }
     ],
 

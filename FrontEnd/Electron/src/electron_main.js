@@ -10,6 +10,8 @@ const bodyParser = require('body-parser');
 const heepConnect = require('./serverside/heep/HeepConnections');
 const simulationDevice =  require('./serverside/simulationHeepDevice.js');
 
+const autoUpdater = require('electron-updater').autoUpdater;
+
 let mainWindow
 
 var app = express();

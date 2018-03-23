@@ -11,7 +11,7 @@ import Input, { InputLabel } from 'material-ui/Input';
 import { MenuItem } from 'material-ui/Menu';
 import { FormControl, FormHelperText } from 'material-ui/Form';
 
-import { sys_phy_files } from 'HeepDesigner/SystemPHYCompatibilities'
+import { sys_phy_files } from '../../HeepDesigner/SystemPHYCompatibilities'
 import GenericSelect from '../utilities/GenericSelect'
 import GenericTextInput from '../utilities/GenericTextInput'
 import IconSVGSelect from './IconSVGSelect'
