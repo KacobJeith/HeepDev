@@ -460,6 +460,8 @@ export const bedroomSVG = `
         <path id="prongLeft" d="M117 490h2v5h-2z"/>
       </g>
     </g>
+    <path id="waterCactus" opacity="0" fill="#29ABE2" d="M155 279.912c0 .086-.574.088-1.669.088h-.162c-1.095 0-2.169-.002-2.169-.088v-2.759c0-.085 1.074-.152 2.169-.152h.162c1.095 0 1.669.067 1.669.152v2.759z"/>
+    <path id="waterFlowers" opacity="0" fill="#29ABE2" d="M237 279.912c0 .086-.574.088-1.669.088h-.162c-1.095 0-2.169-.002-2.169-.088v-2.759c0-.085 1.074-.152 2.169-.152h.162c1.095 0 1.669.067 1.669.152v2.759z"/>
   </g>
  <g id="Vertices" display="none" fill="none" stroke="#000" stroke-width="3" stroke-miterlimit="10">
     <path id="vertexRemoteCar" d="M244.333 659.666L403 555.963"/>

@@ -91,6 +91,7 @@ class BedroomSVG extends React.Component{
       buttonDiary.addEventListener('click', this.clickDiary);
       buttonSleep.addEventListener('click', this.clickSleep);
       buttonCactus.addEventListener('click', this.clickPlants)
+      buttonFlower.addEventListener('click', this.clickPlants)
 
       buttonRemote.setAttribute('cursor', 'pointer');
       buttonPig.setAttribute('cursor', 'pointer');
@@ -125,7 +126,8 @@ class BedroomSVG extends React.Component{
       buttonPig.removeEventListener('click', this.clickPig);
       buttonDiary.removeEventListener('click', this.clickDiary);
       buttonSleep.removeEventListener('click', this.clickSleep);
-      buttonCactus.removeEventListener('click', this.clickCactus);
+      buttonCactus.removeEventListener('click', this.clickPlants);
+      buttonFlower.removeEventListener('click', this.clickPlants);
 
       buttonRemote.removeAttribute('cursor', 'pointer');
       buttonPig.removeAttribute('cursor', 'pointer');
@@ -611,7 +613,7 @@ class BedroomSVG extends React.Component{
     this.removeButtonListeners();
     tlShake.clear();
 
-    const tlPlants = new TimelineMax();
+    const tlPlants = new TimelineMax({onComplete: addListeners.bind(this)});
     const tlSun = new TimelineMax({paused: true});
     const tlBeforeClickLamp = new TimelineMax({paused: true});
     const tlBeforeClickPail = new TimelineMax({paused: true});
@@ -626,6 +628,7 @@ class BedroomSVG extends React.Component{
     function beforeClick() {
       tlBeforeClickLamp.play();
       tlBeforeClickPail.play();
+      tlPlants.pause()
       buttonPail.addEventListener('click', afterClick);
       buttonPail.setAttribute('cursor', 'pointer');
     };
@@ -633,14 +636,27 @@ class BedroomSVG extends React.Component{
     function afterClick() {
       buttonPail.removeEventListener('click', afterClick);
       buttonPail.removeAttribute('cursor', 'pointer');
-      tlBeforeClickPail.pause();
-      tlAfterClick.play();
+      tlBeforeClickPail.clear();
+      tlPlants.play();
+    }
+
+    function stopLamp() {
+      tlBeforeClickLamp.clear();
+    }
+
+    function stopSun() {
+      tlSun.clear();
+    }
+
+    function addListeners() {
+      this.addButtonListeners();
     }
 
     // sun pulses indefinitely
     tlSun.fromTo(outsideSunGlow, 1, {scale: 1.2, transformOrigin:'center'}, {scale: 1.4, yoyo: true, repeat: -1})
 
-    tlBeforeClickLamp.fromTo(lampTop, 0.5, {fill: '#FCEA6B', ease: Sine.easeInOut},
+    tlBeforeClickLamp.to(lampLight, 0.5, {fill: '#EAE1B2', display: 'block'})
+                     .fromTo(lampTop, 0.5, {fill: '#FCEA6B', ease: Sine.easeInOut},
                         {fill: '#02962f', ease: Sine.easeInOut, yoyo: true, repeat: -1})
                      .fromTo(lampShade, 0.5, {fill: '#FFF3C0', ease: Sine.easeInOut},
                         {fill: '#3bb254', ease: Sine.easeInOut, yoyo: true, repeat: -1}, '-=0.5')
@@ -652,7 +668,7 @@ class BedroomSVG extends React.Component{
                         points:20,
                         template:Linear.easeNone,
                         randomize:false
-                      }), clearProps:"x", repeat: -1}, 1);
+                      }), clearProps:"x", repeat: -1}, 0.5);
 
     // sun shifts slightly to the right, turns lighter and bigger, sky turns into inferno
     tlPlants.to([outsideSun, outsideSunGlow], 2, {
@@ -716,26 +732,91 @@ class BedroomSVG extends React.Component{
               directionalRotation: 180,
               ease: Sine.easeInOut
             }, "-=4")
-            .to(leafRight, 4, {
+            .to(leafRight, 3, {
               y: 200,
               x: 15,
               opacity: 0,
               directionalRotation: 180,
               ease: Sine.easeInOut
             }, "-=3")
-            .to(leafCenter, 4, {
+            .to(leafCenter, 3, {
               y: 170,
+              x: -30,
               opacity: 0,
-              directionalRotation: 180,
+              directionalRotation: -180,
               ease: Sine.easeInOut
-            }, "-=2")
+            }, "-=3.5")
+            .to(leafBodyLeft, 0.01, {fill: '#009245'})
+            .to(leafBodyCenter, 0.01, {fill: '#006837'}, '-=0.01')
+            .to(leafBodyRight, 0.01, {fill: '#39B54A'}, '-=0.01')
+            .to(leafMidLeft, 0.01, {stroke: '#006837'}, '-=0.01')
+            .to(leafMidCenter, 0.01, {stroke: '#01773C'}, '-=0.01')
+            .to(leafMidRight, 0.01, {stroke: '#009245'}, '-=0.01')
+            .to([leafLeft, leafCenter, leafRight], 0.01, {x: 0, y: 0, rotation: 0, onComplete: beforeClick.bind(this)}, '-=0.01')
 
-    // lamp turns on, garden pail starts shaking
-            .to(lampLight, 0.01, {fill: '#EAE1B2', display: 'block', onComplete: beforeClick.bind(this)}, "-=3")
+    //move garden pail toward cactus
+            .to(pail, 0.2, {x: 0, ease: Sine.easeInOut})
+            .to(pail, 2, {bezier: {type: "cubic", values: pathPail}, ease: Sine.easeInOut})
+            .to(pail, 0.7, {rotation: -70, transformOrigin: 'center', ease: Sine.easeInOut}, "-=0.7")
 
-    tlAfterClick.to(pail, 0.2, {x: 0, ease: Sine.easeInOut})
-                .to(pail, 2, {bezier: {type: "cubic", values: pathPail}, ease: Sine.easeInOut})
-                .to(pail, 0.5, {rotation: -70, transformOrigin: 'center', ease: Sine.easeInOut}, "-=0.5")
+    //water cactus
+            .to(waterCactus, 0.1, {opacity: 1})
+            .to(waterCactus, 0.5, {scaleY: 23, transformOrigin: 'top'})
+            .to(waterCactus, 0.5, {scaleY: 1, transformOrigin: 'bottom'})
+            .to(waterCactus, 0.01, {opacity: 0, scaleY: 23, transformOrigin: 'bottom'})
+            .to(waterCactus, 0.01, {scaleY: 1, transformOrigin: 'top'})
+
+    //rotate pail back and move pail to flowers
+            .to(pail, 0.7, {rotation: 0, transformOrigin: 'center', ease: Sine.easeInOut}, "-=0.5")
+            .to(pail, 0.5, {x: -110, ease: Sine.easeInOut})
+            .to(pail, 0.7, {rotation: -70, transformOrigin: 'center', ease: Sine.easeInOut})
+
+    //water flowers
+            .to(waterFlowers, 0.1, {opacity: 1})
+            .to(waterFlowers, 0.5, {scaleY: 19.5, transformOrigin: 'top'})
+            .to(waterFlowers, 0.5, {scaleY: 1, transformOrigin: 'bottom'})
+            .to(waterFlowers, 0.01, {opacity: 0, scaleY: 19.5, transformOrigin: 'bottom'})
+            .to(waterFlowers, 0.01, {scaleY: 1, transformOrigin: 'top'})
+
+    //rotate pail and move back to window sill
+            .to(pail, 0.7, {rotation: 0, transformOrigin: 'center', ease: Sine.easeInOut}, "-=0.5")
+            .to(pail, 1, {x: 0, y: 0, ease: Sine.easeInOut})
+
+            .to([cactusBody, cactusThorns], 4, {scaleX: 1, scaleY: 1, transformOrigin: 'bottom',  ease: Sine.easeInOut}, "-=3")
+            .to(cactusBody, 4, {fill: '#8CC63F',  ease: Sine.easeInOut}, "-=4")
+
+            .to([leafLeft, leafCenter, leafRight], 3, {opacity: 1}, '-=2')
+            .to(flowerStems, 3, {stroke: '#006837'}, '-=3')
+            .to([petalsLeftDark, petalsCenterDark], 3, {fill: '#E079A3'}, '-=3')
+            .to([petalsLeftLight, petalsCenterLight], 3, {fill: '#F29EC3'}, '-=3')
+            .to(petalsRightLight, 3, {fill: '#F7D0E0'}, '-=3')
+            .to(petalsRightDark, 3, {fill: '#F2B1CF', onComplete: stopLamp}, '-=3')
+
+            .to(lampLight, 0.01, {display: 'none'})
+            .to(lampTop, 0.01, {fill: '#848383'}, '-=0.01')
+            .to(lampShade, 0.01, {fill: '#ADADAD'}, '-=0.01')
+
+            .to([outsideSun, outsideSunGlow], 2, {
+                      ease: Sine.easeInOut,
+                      x: 0,
+                      scaleX: 1,
+                      scaleY: 1,
+                      transformOrigin: "center"
+                    })
+            .to(outsideSun, 1, {fill: '#FFE027'}, '-=1')
+            .to([cloudLeft, cloudCenter, cloudRight], 1, {opacity: 1}, '-=1')
+            .to(thermoMercury, 1, {
+              scaleY: 1,
+              transformOrigin: 'bottom',
+              ease: Sine.easeInOut
+            }, "-=1")
+            .staggerTo("#outsideSky_1_ stop", 1, {
+                      stopColor: "#b1e6f2",
+                      cycle: {
+                        stopColor: ["#b1e6f2", "#b1e6f2"]
+                      },
+                      onComplete: stopSun
+                    }, 0, "-=1")
   }
 
   render() {
