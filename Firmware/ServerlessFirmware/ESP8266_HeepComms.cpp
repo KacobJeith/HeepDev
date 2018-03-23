@@ -5,32 +5,63 @@
 #include <WiFiClientSecure.h>
 #include <Heep_API.h>
 
-#define TIMEOUT 5000
+#define HEEP_CONNECT_TIMEOUT 5000
 
 unsigned int localPort = 5000;  
-int UDP_PORT = 5000;
 // An EthernetUDP instance to let us send and receive packets over UDP
 WiFiUDP Udp;
 
+String fallbackSSID = "SmoothHeep";
+String fallbackPassword = "SenorEgg";
+
 void CreateInterruptServer()
 {
-  WiFi.begin(SSID.c_str(), Password.c_str());
+  boolean onFallback = false;
+  unsigned long connectAttemptStartTime = 0;
+  int currentWiFiPriorityID = 0;
+  char currentSSID [20];
+  char currentPassword [20];
 
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(250);
-    Serial.print(".");
+  do{
+
+    connectAttemptStartTime = millis();
+    if(GetWiFiFromMemory(currentSSID, currentPassword, currentWiFiPriorityID) == 0){
+      onFallback = false;
+      Serial.print("Attempt SSID: "); Serial.println(currentSSID);
+      WiFi.begin(currentSSID, currentPassword);
+    }
+    else{
+      onFallback = true;
+      Serial.println("Attempting Fallback SSID");
+      WiFi.begin(fallbackSSID.c_str(), fallbackPassword.c_str());
+    }
+
+    while ( (WiFi.status() != WL_CONNECTED) && (millis() - connectAttemptStartTime < HEEP_CONNECT_TIMEOUT) ) {
+      delay(250);
+      Serial.print(".");
+    }
+
+    if(WiFi.status() != WL_CONNECTED){
+      currentWiFiPriorityID++;
+    }
+    else{
+      Serial.println("");
+      Serial.println("WiFi connected");
+      Serial.print("IP address: ");
+      Serial.println(WiFi.localIP());
+
+      Udp.begin(localPort);
+
+      IPAddress localIP = WiFi.localIP();
+      Serial.println(localIP);
+    }
+
+  }while(!onFallback && WiFi.status() != WL_CONNECTED); // Repeat until connected or fallback failed
+
+  if(WiFi.status() != WL_CONNECTED){
+    // Create Access Point because no WiFi worked
   }
-  Serial.println("");
-  Serial.println("WiFi connected");
-  Serial.print("IP address: ");
-  Serial.println(WiFi.localIP());
-
-  while(WiFi.status() != WL_CONNECTED);
-
-  Udp.begin(localPort);
-
-  IPAddress localIP = WiFi.localIP();
-  Serial.println(localIP);
+  
 }
 
 void CheckServerForInputs()
