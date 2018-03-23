@@ -23,8 +23,8 @@
     "ts": "npm run test && npm run start",
     "be": "npm run build && electron ./dist/",
     "copy-files": "babel ./src/assets/ --out-dir ./dist/assets/ --copy-files",
-    "dist": "GH_TOKEN=45693f8be2757271214491314761570a203f6c4b electron-builder --projectDir ./dist/ -p always",
-    "package-all": "npm run build && GH_TOKEN=45693f8be2757271214491314761570a203f6c4b electron-builder --projectDir ./dist/ -mw -p always",
+    "dist": "electron-builder --projectDir ./dist/ -p always",
+    "package-all": "npm run build && electron-builder --projectDir ./dist/ -mw -p always",
     "package-current": "npm run build && npm run dist",
     "build-electron-bundle": "webpack --config webpack-electron.config.js"
   },
