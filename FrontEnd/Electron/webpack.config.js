@@ -6,7 +6,7 @@ var webpack = require('webpack');
 module.exports = {
   target: 'web',
 
-  entry: ['src/index.js'],
+  entry: './src/index.js',
 
   output: {
     path: path.resolve(__dirname, "dist"),
@@ -14,8 +14,6 @@ module.exports = {
   },
 
   plugins: [
-    // OccurenceOrderPlugin is needed for webpack 1.x only
-    new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
   ],
 
@@ -41,30 +39,25 @@ module.exports = {
   },
 
   resolve: {
-    root: [
-      path.join(__dirname, ''),
-      path.resolve('src')
-    ],
-    modulesDirectories: ['node_modules'],
-    extensions: ['', '.webpack.js', '.web.js', '.js', '.jsx']
+    modules: ['node_modules'],
+    extensions: ['.js']
   },
 
   module: {
-    loaders: [
+    rules: [
       { 
-        exclude: /(node_modules|bower_components)/,
-        text: /\.js$/, 
-        loader: 'babel-loader',
-      },
-      { test: /\.jsx?$/, 
-        loaders: ['babel'], 
-        exclude: /node_modules/ 
+        exclude: /(node_modules)/,
+        test: /\.js$/, 
+        use: {
+          loader: 'babel-loader'
+        },
       },
       {
-      test: /\.(jpe?g|png|gif|svg|mov|mp4)$/,
-      loader: 'file-loader',
-      options: {
-        name: '[name].[ext]'} 
+        test: /\.(jpe?g|png|gif|svg|mov|mp4)$/,
+        loader: 'file-loader',
+        options: {
+          name: '[name].[ext]'
+        } 
       }
     ],
 
