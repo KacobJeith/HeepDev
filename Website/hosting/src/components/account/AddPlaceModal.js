@@ -32,10 +32,6 @@ const styles = theme => ({
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
     padding: theme.spacing.unit * 4,
-    minWidth: 500,
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)'
   },
   formControl: {
     margin: theme.spacing.unit,
@@ -150,7 +146,7 @@ class AddPlaceModal extends React.Component {
           },
           {
             title: 'How should Heep talk when on this network?',
-            description: `Not all places have the same network topology. Save your wifi credentials to 
+            description: `Not all places have the same network topology. Save your wifi credentials to
                           your place, and all future Heep Devices will be automatically logged in to your
                           network - it has never been so easy to install a new device!`,
             form: this.placeCommsForm()
@@ -161,7 +157,7 @@ class AddPlaceModal extends React.Component {
           },
           {
             title:'Invite friends & Family',
-            description: `Share this network with close friends and family - people you trust. They will be 
+            description: `Share this network with close friends and family - people you trust. They will be
                           able to purchase new Heep devices for this place, and bring their own devices seamlessly
                           into this network.`
           }
@@ -184,15 +180,35 @@ class AddPlaceModal extends React.Component {
   render() {
     const { classes } = this.props;
 
+    const inputs = {
+      gridContainer: {
+        style: {
+          height: '100%',
+          width: '100%',
+          overflowX: 'hidden',
+          outline: 'none',
+          margin: 0
+        }
+      },
+    };
+
     return (
       <div>
         {this.addPlaceListButton()}
         <Modal
           open={this.state.open}
           onClose={this.handleClose}>
-          <div className={classes.paper}>
-            {this.createPlaceForm()}
-          </div>
+          <Grid
+            container {...inputs.gridContainer}
+            justify='center'
+            alignItems='center'
+            onClick={this.handleClose}>
+            <Grid item xs={12} sm={6} style={{maxHeight: '90%'}}>
+              <div style={{position: 'relative'}} className={classes.paper}>
+                {this.createPlaceForm()}
+              </div>
+            </Grid>
+          </Grid>
         </Modal>
       </div>
     );
