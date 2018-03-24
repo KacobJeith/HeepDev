@@ -196,13 +196,11 @@ class AddPlaceModal extends React.Component {
       <div>
         {this.addPlaceListButton()}
         <Modal
-          open={this.state.open}
-          onClose={this.handleClose}>
+          open={this.state.open}>
           <Grid
             container {...inputs.gridContainer}
             justify='center'
-            alignItems='center'
-            onClick={this.handleClose}>
+            alignItems='center'>
             <Grid item xs={12} sm={6} style={{maxHeight: '90%'}}>
               <div style={{position: 'relative'}} className={classes.paper}>
                 {this.createPlaceForm()}
