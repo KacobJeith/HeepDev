@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux'
 import { withRouter }         from 'react-router-dom'
 import * as actions           from '../../redux/actions'
 import PropTypes              from "prop-types";
+import { Close }              from 'material-ui-icons'
 
 import {  withStyles } from "material-ui/styles";
 import {  Typography,
@@ -15,6 +16,7 @@ import {  Typography,
           InputLabel,
           TextField,
           Button,
+          IconButton,
           ListItem,
           ListItemIcon,
           ListItemText } from "material-ui";
@@ -190,6 +192,13 @@ class AddPlaceModal extends React.Component {
           margin: 0
         }
       },
+      closeButton: {
+        style: {
+          position: 'absolute',
+          top: 0,
+          right: 0,
+        }
+      }
     };
 
     return (
@@ -203,6 +212,11 @@ class AddPlaceModal extends React.Component {
             alignItems='center'>
             <Grid item xs={12} sm={6} style={{maxHeight: '90%'}}>
               <div style={{position: 'relative'}} className={classes.paper}>
+                <IconButton
+                  {...inputs.closeButton}
+                  onClick={this.handleClose}>
+                  <Close/>
+                </IconButton>
                 {this.createPlaceForm()}
               </div>
             </Grid>
