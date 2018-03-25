@@ -179,7 +179,7 @@ class AddPlaceModal extends React.Component {
     )
   }
 
-  render() {
+  createModal() {
     const { classes } = this.props;
 
     const inputs = {
@@ -202,26 +202,33 @@ class AddPlaceModal extends React.Component {
     };
 
     return (
+      <Modal
+        open={this.state.open}>
+        <Grid
+          container {...inputs.gridContainer}
+          justify='center'
+          alignItems='center'>
+          <Grid item xs={12} sm={6} style={{maxHeight: '90%'}}>
+            <div style={{position: 'relative'}} className={classes.paper}>
+              <IconButton
+                {...inputs.closeButton}
+                onClick={this.handleClose}>
+                <Close/>
+              </IconButton>
+              {this.createPlaceForm()}
+            </div>
+          </Grid>
+        </Grid>
+      </Modal>
+    )
+  };
+
+  render() {
+
+    return (
       <div>
         {this.addPlaceListButton()}
-        <Modal
-          open={this.state.open}>
-          <Grid
-            container {...inputs.gridContainer}
-            justify='center'
-            alignItems='center'>
-            <Grid item xs={12} sm={6} style={{maxHeight: '90%'}}>
-              <div style={{position: 'relative'}} className={classes.paper}>
-                <IconButton
-                  {...inputs.closeButton}
-                  onClick={this.handleClose}>
-                  <Close/>
-                </IconButton>
-                {this.createPlaceForm()}
-              </div>
-            </Grid>
-          </Grid>
-        </Modal>
+        {this.createModal()}
       </div>
     );
   }
