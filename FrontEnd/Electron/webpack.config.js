@@ -2,6 +2,7 @@
 
 var path = require('path');
 var webpack = require('webpack');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
   target: 'web',
@@ -14,11 +15,18 @@ module.exports = {
   },
 
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
+    new CleanWebpackPlugin(['dist']),
+    new webpack.NamedModulesPlugin(),
+    new webpack.HotModuleReplacementPlugin()
   ],
 
   devServer: { 
+    compress: true,
     port: 9000,
+    open: true,
+    hot: true,
+    inline: true,
+    hotOnly: true,
     historyApiFallback: true,
     stats: {
       colors: true,
@@ -49,7 +57,11 @@ module.exports = {
         exclude: /(node_modules)/,
         test: /\.js$/, 
         use: {
-          loader: 'babel-loader'
+          loader: 'babel-loader',
+          options: {
+            cacheDirectory: true,
+            plugins: ['react-hot-loader/babel']
+          }
         },
       },
       {

@@ -5,5 +5,8 @@
       "stage-0",
       "es2017"
     ],
-    "plugins": ["syntax-async-functions"]
+    "plugins": [
+    	"syntax-async-functions",
+    	"react-hot-loader/babel"
+    ]
 }

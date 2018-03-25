@@ -3,6 +3,7 @@ import { connect }            from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { withRouter }         from 'react-router-dom'
 import { NavLink }      from 'react-router-dom'
+import { hot } from 'react-hot-loader'
 
 
 import PropTypes from 'prop-types';
@@ -307,4 +308,5 @@ var mapDispatchToProps = (dispatch) => {
   return bindActionCreators(actions, dispatch)
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles, { withTheme: true })(AppBarDrawer)))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles, { withTheme: true })(hot(module)(AppBarDrawer))))
+

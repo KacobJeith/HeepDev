@@ -11,8 +11,14 @@ import * as auth from './firebase/FirebaseAuth'
 import $ from 'jquery'
 import { composeWithDevTools } from 'redux-devtools-extension';
 import * as actions_classic from './redux/actions_classic'
+import { hot } from 'react-hot-loader'
 
-
+if (module.hot) {
+   module.hot.accept('./components/App', function() {
+     console.log('Accepting the updated App module!');
+     printMe();
+   })
+ }
 
 const startState = {
   webGLStatus: false,
