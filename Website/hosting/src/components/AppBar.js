@@ -218,7 +218,7 @@ class MenuAppBar extends React.Component {
     return (
       <NavLink to="/MyCart" style={{textDecoration: 'none'}}>
         <IconButton aria-label="Add to shopping cart"
-          style={{marginTop: 5}}
+          style={{marginBottom: 0}}
         >
           {SmartBadge(
                     <ShoppingCartIcon style={{fill:"white"}}/>,
@@ -251,17 +251,23 @@ class MenuAppBar extends React.Component {
   }
 
   mobileMenu() {
+    const inputs = {
+      menuButton: {
+        style:{
+          fontSize: 30,
+          marginBottom: 3,
+          marginRight: 10
+        }
+      }
+    }
     return (
       <Hidden smUp={true}>
           <IconButton
+            {...inputs.menuButton}
             aria-owns={Boolean(this.state.anchorMobileMenu) ? 'mobile-menu-appbar' : null}
             aria-haspopup="true"
             onClick={this.handleMobileMenu}
             color="inherit"
-            style={{
-              fontSize: 30,
-              marginRight: 10
-            }}
           >
             <MenuIcon/>
             <Menu
