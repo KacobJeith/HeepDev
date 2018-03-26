@@ -2,12 +2,9 @@
 #include "CommonDataTypes.h"
 #include <Arduino.h>
 
-extern String SSID;
-extern String Password;
-
 void CreateInterruptServer();
 void CheckServerForInputs();
-void SendOutputBufferToIP(HeepIPAddress destIP);
+void SendOutputBufferToIP(struct HeepIPAddress destIP);
 
 #ifdef USE_ANALYTICS
 
