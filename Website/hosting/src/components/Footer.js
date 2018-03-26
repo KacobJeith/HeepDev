@@ -4,22 +4,11 @@ import { bindActionCreators }         from 'redux'
 import {  Link, NavLink, withRouter } from 'react-router-dom'
 import PropTypes                      from 'prop-types';
 
+import {  Grid,
+          Hidden,
+          Typography }        from 'material-ui'
 
-import List, {
-       ListItem,
-       ListItemIcon,
-       ListItemText } from 'material-ui/List';
-import Grid           from 'material-ui/Grid';
-import Paper          from 'material-ui/Paper';
-import IconButton     from 'material-ui/IconButton';
-import Typography     from 'material-ui/Typography';
 import { withStyles, withTheme } from 'material-ui/styles';
-
-
-import Icon from 'material-ui/Icon';
-import DeleteIcon from 'material-ui-icons/Delete';
-import AddShoppingCartIcon from 'material-ui-icons/AddShoppingCart';
-import PhotoCamera from 'material-ui-icons/PhotoCamera';
 
 import * as actions from '../redux/actions'
 
@@ -32,18 +21,27 @@ const styles = theme => ({
     backgroundColor:  theme.palette.primary.main,
     color: theme.palette.primary.contrastText
   },
-  button: {
-    margin:1,
-  }
 });
-
 
 class Footer extends React.Component {
 
+  socialLogo(svg, url) {
+    return (
+      <Grid item xs={4} sm={2} style={{textAlign: 'center'}}>
+        <a href={url}>
+          <img src={'../src/assets/svg_social/' + svg + '.svg'}
+            style={{maxHeight: 50}}
+          />
+        </a>
+      </Grid>
+    )
+  };
+
   socialLogoLinks() {
     return(
-      <Grid item xs>
-        <Grid container spacing={8}
+      <Grid item xs={12}>
+        <Grid container
+          spacing={8}
           justify='center'
           alignItems='center'
         >
@@ -57,18 +55,6 @@ class Footer extends React.Component {
       </Grid>
     )
   };
-
-  socialLogo(svg, url) {
-    return (
-      <Grid item xs={4} sm={2}>
-        <a href={url}>
-          <img src={'../src/assets/svg_social/' + svg + '.svg'}
-            style={{maxHeight: 40}}
-          />
-        </a>
-      </Grid>
-    )
-  }
 
   copyrightMadeInBrooklyn() {
     return(
@@ -94,16 +80,30 @@ class Footer extends React.Component {
     )
   };
 
-  textNavLink(text, url) {
+  mobileHeepLogo() {
+    return(
+      <Grid item xs={12} style={{textAlign: 'right'}}>
+        <NavLink to='/' style={{textDecoration: 'none'}}>
+          <img
+            src="../src/assets/Heep_Gradient.png"
+            style={{
+              maxHeight: 80
+            }}/>
+        </NavLink>
+      </Grid>
+    )
+  };
+
+  textNavLink(text, url, variant) {
 
     return(
-      <Grid item xs={12}>
+      <Grid item xs={12} sm={12}>
         <NavLink to={url}
         style={{
           textDecoration: 'none',
           color: this.props.theme.palette.primary.contrastText
         }}>
-          <Typography variant="caption" color='inherit'>
+          <Typography variant={variant} color='inherit' align='center'>
             {text}
           </Typography>
         </NavLink>
@@ -111,29 +111,28 @@ class Footer extends React.Component {
     )
   };
 
-  footerLeft() {
+  normalFooterLeft() {
     return (
       <Grid item xs={3}>
-        <Grid
-          container
+        <Grid container
           spacing={8}
           justify='center'
+          alignItems='flex-start'
           direction='column'
         >
-          {this.textNavLink('Account', '/User')}
-          {this.textNavLink('Shop', '/Store')}
-          {this.textNavLink('Blog', '/Blog')}
-          {this.textNavLink('Developers', '/Developers')}
+          {this.textNavLink('Account', '/User', 'caption')}
+          {this.textNavLink('Shop', '/Store', 'caption')}
+          {this.textNavLink('Blog', '/Blog', 'caption')}
+          {this.textNavLink('Developers', '/Developers', 'caption')}
         </Grid>
       </Grid>
     )
   };
 
-  footerCenter() {
+  normalFooterCenter() {
     return (
       <Grid item xs={6}>
-        <Grid
-          container
+        <Grid container
           spacing={8}
           direction='column'
           alignItems='center'
@@ -147,21 +146,88 @@ class Footer extends React.Component {
     )
   };
 
-  footerRight() {
+  normalFooterRight() {
     return(
       <Grid item xs={3}>
-        <Grid
-          container
+        <Grid container
           spacing={8}
           direction='column'
           alignItems='flex-end'
         >
-          {this.textNavLink('About Us', '/About')}
-          {this.textNavLink('Contact Us', '/Contact')}
-          {this.textNavLink('Privacy Policy', '/privacypolicy')}
-          {this.textNavLink('Terms of Service', '/tos')}
+          {this.textNavLink('About Us', '/About', 'caption')}
+          {this.textNavLink('Contact Us', '/Contact', 'caption')}
+          {this.textNavLink('Privacy Policy', '/privacypolicy', 'caption')}
+          {this.textNavLink('Terms of Service', '/tos', 'caption')}
         </Grid>
       </Grid>
+    )
+  };
+
+  normalFooter() {
+    return (
+      <Hidden xsDown={true}>
+        <Grid container
+          spacing={24}
+          justify='space-between'
+          alignItems='center'
+          direction='row'
+          >
+            {this.normalFooterLeft()}
+            {this.normalFooterCenter()}
+            {this.normalFooterRight()}
+        </Grid>
+      </Hidden>
+    )
+  };
+
+  mobileFooterLeft() {
+    return (
+      <Grid item xs={6}>
+        <Grid container
+          direction='column'
+          spacing={0}
+          justify='center'
+          alignItems='flex-start'
+        >
+          {this.textNavLink('About Us', '/About', 'subheading')}
+          {this.textNavLink('Contact Us', '/Contact', 'subheading')}
+          {this.textNavLink('Privacy Policy', '/privacypolicy', 'subheading')}
+          {this.textNavLink('Terms of Service', '/tos', 'subheading')}
+        </Grid>
+      </Grid>
+    )
+  };
+
+  mobileFooterRight() {
+    return (
+      <Grid item xs={6}>
+        <Grid container
+          direction='column'
+          justify='center'
+          alignItems='flex-end'
+          spacing={0}>
+          {this.mobileHeepLogo()}
+          <Grid item xs={12}>
+            <Typography variant="caption" color='inherit' style={{marginRight: 5}}>
+              &#169; 2018 Heep
+            </Typography>
+          </Grid>
+        </Grid>
+      </Grid>
+    )
+  };
+
+  mobileFooter() {
+    return (
+      <Hidden smUp={true}>
+        <Grid container
+          justify='space-between'
+          alignItems='center'
+          >
+          {this.mobileFooterLeft()}
+          {this.mobileFooterRight()}
+        </Grid>
+      </Hidden>
     )
   }
 
@@ -182,16 +248,8 @@ class Footer extends React.Component {
     return (
       <footer >
         <div {...inputs.footerContainer}>
-          <Grid
-            container
-            spacing={24}
-            justify='space-between'
-            alignItems='center'
-            >
-              {this.footerLeft()}
-              {this.footerCenter()}
-              {this.footerRight()}
-          </Grid>
+          {this.normalFooter()}
+          {this.mobileFooter()}
         </div>
       </footer>
     );
