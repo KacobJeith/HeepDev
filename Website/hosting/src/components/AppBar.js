@@ -245,7 +245,7 @@ class MenuAppBar extends React.Component {
 
   mobileMenu() {
     return (
-      <div>
+      <Hidden smUp={true}>
           <IconButton
             aria-owns={Boolean(this.state.anchorMobileMenu) ? 'mobile-menu-appbar' : null}
             aria-haspopup="true"
@@ -253,34 +253,34 @@ class MenuAppBar extends React.Component {
             color="inherit"
           >
             <MenuIcon/>
+            <Menu
+              id="mobile-menu-appbar"
+              anchorEl={this.state.anchorMobileMenu}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={Boolean(this.state.anchorMobileMenu)}
+              onClose={this.handleMobileMenuClose}
+            >
+              <NavLink to="/About" style={styles.navLink}>
+                <MenuItem onClick={this.handleMobileMenuClose}>About</MenuItem>
+              </NavLink>
+
+              <NavLink to="/Shop" style={styles.navLink}>
+                <MenuItem onClick={this.handleMobileMenuClose}>Shop</MenuItem>
+              </NavLink>
+
+              <NavLink to="/Developers" style={styles.navLink}>
+                <MenuItem onClick={this.handleMobileMenuClose}>Develop</MenuItem>
+              </NavLink>
+            </Menu>
           </IconButton>
-          <Menu
-            id="mobile-menu-appbar"
-            anchorEl={this.state.anchorMobileMenu}
-            anchorOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-            open={Boolean(this.state.anchorMobileMenu)}
-            onClose={this.handleMobileMenuClose}
-          >
-            <NavLink to="/About" style={styles.navLink}>
-              <MenuItem onClick={this.handleMobileMenuClose}>About</MenuItem>
-            </NavLink>
-
-            <NavLink to="/Shop" style={styles.navLink}>
-              <MenuItem onClick={this.handleMobileMenuClose}>Shop</MenuItem>
-            </NavLink>
-
-            <NavLink to="/Developers" style={styles.navLink}>
-              <MenuItem onClick={this.handleMobileMenuClose}>Develop</MenuItem>
-            </NavLink>
-          </Menu>
-      </div>
+      </Hidden>
     )
   }
 
