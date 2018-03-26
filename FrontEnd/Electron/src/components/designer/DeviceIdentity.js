@@ -93,7 +93,7 @@ class DeviceIdentity extends React.Component {
           </Select>
 
           <Grid container justify='space-between'> 
-            <Grid item xs={5}>
+            <Grid item xs={6}>
               <GenericTextInput 
                 title='SSID'
                 width='100%'
@@ -102,7 +102,7 @@ class DeviceIdentity extends React.Component {
                 onChange={(value) => {this.props.updateSSID(value)}}
               />
             </Grid>
-            <Grid item xs={5}>
+            <Grid item xs={6}>
               <GenericTextInput 
                 value={this.props.ssidPassword}
                 width='100%'
