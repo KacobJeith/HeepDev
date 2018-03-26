@@ -6,25 +6,30 @@ import { withRouter }         from 'react-router-dom'
 import PropTypes              from 'prop-types';
 import classNames             from 'classnames';
 
+import * as actions           from '../redux/actions'
+import * as auth              from '../firebase/FirebaseAuth'
+
+import {  AppBar,
+          Avatar,
+          Badge,
+          Button,
+          FormControlLabel,
+          FormGroup,
+          Grid,
+          Hidden,
+          IconButton,
+          Menu,
+          MenuItem,
+          Switch,
+          Toolbar,
+          Typography }        from 'material-ui'
+
 import MenuIcon               from 'material-ui-icons/Menu';
 import AccountCircle          from 'material-ui-icons/AccountCircle';
 import ShoppingCartIcon       from 'material-ui-icons/ShoppingCart';
 
-import * as actions           from '../redux/actions'
-import * as auth              from '../firebase/FirebaseAuth'
+import { withStyles }         from 'material-ui/styles';
 
-import { withStyles }                   from 'material-ui/styles';
-import AppBar                           from 'material-ui/AppBar';
-import Toolbar                          from 'material-ui/Toolbar';
-import Typography                       from 'material-ui/Typography';
-import IconButton                       from 'material-ui/IconButton';
-import Button                           from 'material-ui/Button';
-import Switch                           from 'material-ui/Switch';
-import { FormControlLabel, FormGroup }  from 'material-ui/Form';
-import Menu, { MenuItem }               from 'material-ui/Menu';
-import Badge                            from 'material-ui/Badge';
-import Avatar                           from 'material-ui/Avatar';
-import Grid                             from 'material-ui/Grid'
 
 
 import SmartBadge from './utilities/SmartBadge'
