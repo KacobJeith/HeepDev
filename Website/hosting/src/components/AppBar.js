@@ -47,10 +47,7 @@ const styles = {
   },
   flex: {
     flex: 1,
-  },
-  menuButton: {
-    marginLeft: -12,
-    marginRight: 20,
+    alignItems: 'center'
   },
   avatar: {
     margin: 10,
@@ -71,7 +68,7 @@ const ShopLink = props => <Link to="/Shop" {...props} style={{ textDecoration: '
 class MenuAppBar extends React.Component {
   state = {
     auth: true,
-    anchorEl: null,
+    anchorAccountMenu: null,
     anchorMobileMenu: null
   };
 
@@ -80,11 +77,11 @@ class MenuAppBar extends React.Component {
   };
 
   handleAccountMenu = event => {
-    this.setState({ anchorEl: event.currentTarget });
+    this.setState({ anchorAccountMenu: event.currentTarget });
   };
 
   handleAccountMenuClose = () => {
-    this.setState({ anchorEl: null });
+    this.setState({ anchorAccountMenu: null });
   };
 
   handleMobileMenu = event => {
@@ -117,7 +114,7 @@ class MenuAppBar extends React.Component {
         </IconButton>
         <Menu
           id="menu-appbar"
-          anchorEl={this.state.anchorEl}
+          anchorEl={this.state.anchorAccountMenu}
           anchorOrigin={{
             vertical: 'top',
             horizontal: 'right',
@@ -126,7 +123,7 @@ class MenuAppBar extends React.Component {
             vertical: 'top',
             horizontal: 'right',
           }}
-          open={Boolean(this.state.anchorEl)}
+          open={Boolean(this.state.anchorAccountMenu)}
           onClose={this.handleAccountMenuClose}
         >
           <NavLink to="/User" style={styles.navLink}>
@@ -142,7 +139,7 @@ class MenuAppBar extends React.Component {
     return (
       <div>
         <IconButton
-          aria-owns={Boolean(this.state.anchorEl) ? 'menu-appbar' : null}
+          aria-owns={Boolean(this.state.anchorAccountMenu) ? 'menu-appbar' : null}
           aria-haspopup="true"
           onClick={this.handleAccountMenu}
           color="inherit"
@@ -151,7 +148,7 @@ class MenuAppBar extends React.Component {
         </IconButton>
         <Menu
           id="menu-appbar"
-          anchorEl={this.state.anchorEl}
+          anchorEl={this.state.anchorAccountMenu}
           anchorOrigin={{
             vertical: 'top',
             horizontal: 'right',
@@ -160,7 +157,7 @@ class MenuAppBar extends React.Component {
             vertical: 'top',
             horizontal: 'right',
           }}
-          open={Boolean(this.state.anchorEl)}
+          open={Boolean(this.state.anchorAccountMenu)}
           onClose={this.handleAccountMenuClose}
         >
           <NavLink to="/auth" style={styles.navLink}>
@@ -197,7 +194,7 @@ class MenuAppBar extends React.Component {
     };
 
     return (
-      <Hidden smDown={true}>
+      <Hidden xsDown={true}>
         <Button {...inputs.Button}>
           <NavLink to={navLink} {...inputs.NavLink}>
             <Typography variant="subheading" {...inputs.Typography}>
@@ -210,9 +207,19 @@ class MenuAppBar extends React.Component {
   };
 
   appBarCart() {
+
+    const inputs = {
+      iconSize: {
+        width: 40,
+        height: 40
+      }
+    };
+
     return (
       <NavLink to="/MyCart" style={{textDecoration: 'none'}}>
-        <IconButton aria-label="Add to shopping cart">
+        <IconButton aria-label="Add to shopping cart"
+          style={{marginTop: 5}}
+        >
           {SmartBadge(
                     <ShoppingCartIcon style={{fill:"white"}}/>,
                     this.props.itemsInCart,
@@ -251,6 +258,10 @@ class MenuAppBar extends React.Component {
             aria-haspopup="true"
             onClick={this.handleMobileMenu}
             color="inherit"
+            style={{
+              fontSize: 30,
+              marginRight: 10
+            }}
           >
             <MenuIcon/>
             <Menu
