@@ -78,11 +78,11 @@ class DeviceIdentity extends React.Component {
   inputWifiCredentials = () => (
 
       <Collapse in={this.props.physicalLayer == 'wifi'} timeout={750} unmountOnExit>
-        <FormControl className={this.props.classes.formControl} style={{width:'100%', marginBottom: 24}}>
+        <FormControl className={this.props.classes.formControl} style={{width:'100%'}}>
           <InputLabel htmlFor="wifi-helper" >Select WiFi Credentials</InputLabel>
           <Select
             value={this.props.selectedPlace}
-            style={{width:'100%'}}
+            style={{width:'100%', marginBottom: 24}}
             title='Select WiFi Credentials'
             onChange={ (event) => {this.props.selectPlace(event.target.value)}}
             input={<Input name="place-helper" id="place-helper" />}
