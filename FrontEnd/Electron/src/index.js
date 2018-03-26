@@ -38,7 +38,7 @@ const startState = {
   displayingAnalytics: '',
 
   designer: {
-    deviceName: 'DefaultDevice',
+    deviceName: '',
     numControls: 0,
     physicalLayer: 'wifi',
     selectedPlace: 'Custom',

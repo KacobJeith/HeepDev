@@ -18,7 +18,7 @@ export default class GenericSelect extends React.Component {
 	    return (
 
 	    	<FormControl style={{
-			    width: this.props.width,
+			    width: this.props.width ? this.props.width : '100%' ,
 			    margin: 4
 			  }}>
 	    	  <InputLabel htmlFor="helper" >{this.props.title}</InputLabel>
