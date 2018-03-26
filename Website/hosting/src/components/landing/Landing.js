@@ -34,7 +34,7 @@ class Landing extends React.Component {
           minHeight: inputs.minHeight,
           margin: '0 auto'
         }}>
-          <Grid item xs={12} md={8}>
+          <Grid item xs={12} sm={8}>
             <Typography variant='display1' align='center'>
               Heepify Your World
             </Typography>
@@ -56,7 +56,7 @@ class Landing extends React.Component {
     };
     return (
       <Grid container justify='center' {...inputs.bedroomContainer}>
-        <Grid item xs={12} md={8}>
+        <Grid item xs={12} sm={8}>
           <BedroomSVG />
         </Grid>
       </Grid>
@@ -96,7 +96,7 @@ class Landing extends React.Component {
               {Object.keys(this.props.collections['featuredItems'].products).map((key, index) => {
                 if (key != 'type') {
                   return (
-                    <Grid item xs={12} md={2} key={key}>
+                    <Grid item xs={12} sm={2} key={key}>
                       <FeaturedItems key={key} productIndex={index}/>
                     </Grid>
                   )

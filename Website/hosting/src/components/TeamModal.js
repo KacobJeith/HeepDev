@@ -9,7 +9,7 @@ import { Typography,
 
 const styles = theme => ({
   paper: {
-    position: "absolute",
+    position: 'absolute',
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
     padding: theme.spacing.unit * 4
@@ -106,11 +106,13 @@ class TeamModal extends React.Component {
     const { classes } = this.props;
 
     const inputs = {
-      modalPosition: {
+      gridContainer: {
         style: {
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)'
+          height: '100%',
+          width: '100%',
+          overflowX: 'hidden',
+          outline: 'none',
+          margin: 0
         }
       },
     };
@@ -119,16 +121,24 @@ class TeamModal extends React.Component {
       <div>
         {this.buttonImage()}
         {this.nameSubheading()}
-        <Modal
-          open={this.state.open}
-          onClose={this.handleClose}>
-          <div {...inputs.modalPosition} className={classes.paper}>
-            {this.nameTitle()}
-            {this.modalImage()}
-            {this.bioText(this.props.desc1)}
-            {this.bioText(this.props.desc2)}
-          </div>
-        </Modal>
+            <Modal
+              open={this.state.open}
+              onClose={this.handleClose}>
+              <Grid
+                container {...inputs.gridContainer}
+                justify='center'
+                alignItems='center'
+                onClick={this.handleClose}>
+                <Grid item xs={12} sm={6} style={{maxHeight: '90%'}}>
+                  <div style={{position: 'relative'}} className={classes.paper}>
+                    {this.nameTitle()}
+                    {this.modalImage()}
+                    {this.bioText(this.props.desc1)}
+                    {this.bioText(this.props.desc2)}
+                  </div>
+                </Grid>
+              </Grid>
+            </Modal>
       </div>
     );
   }
