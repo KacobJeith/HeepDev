@@ -72,18 +72,27 @@ class MenuAppBar extends React.Component {
   state = {
     auth: true,
     anchorEl: null,
+    anchorMobileMenu: null
   };
 
   handleChange = (event, checked) => {
     this.setState({ auth: checked });
   };
 
-  handleMenu = event => {
+  handleAccountMenu = event => {
     this.setState({ anchorEl: event.currentTarget });
   };
 
-  handleClose = () => {
+  handleAccountMenuClose = () => {
     this.setState({ anchorEl: null });
+  };
+
+  handleMobileMenu = event => {
+    this.setState({ anchorMobileMenu: event.currentTarget });
+  };
+
+  handleMobileMenuClose = event => {
+    this.setState({ anchorMobileMenu: null });
   };
 
   handleLogout = () => {
@@ -97,7 +106,7 @@ class MenuAppBar extends React.Component {
         <IconButton
           aria-owns={open ? 'menu-appbar' : null}
           aria-haspopup="true"
-          onClick={this.handleMenu}
+          onClick={this.handleAccountMenu}
           color="inherit"
         >
           <Avatar
@@ -118,10 +127,10 @@ class MenuAppBar extends React.Component {
             horizontal: 'right',
           }}
           open={Boolean(this.state.anchorEl)}
-          onClose={this.handleClose}
+          onClose={this.handleAccountMenuClose}
         >
           <NavLink to="/User" style={styles.navLink}>
-            <MenuItem onClick={this.handleClose}>Profile</MenuItem>
+            <MenuItem onClick={this.handleAccountMenuClose}>Profile</MenuItem>
           </NavLink>
           <MenuItem onClick={this.handleLogout}>Logout</MenuItem>
         </Menu>
@@ -135,7 +144,7 @@ class MenuAppBar extends React.Component {
         <IconButton
           aria-owns={Boolean(this.state.anchorEl) ? 'menu-appbar' : null}
           aria-haspopup="true"
-          onClick={this.handleMenu}
+          onClick={this.handleAccountMenu}
           color="inherit"
         >
           <AccountCircle />
@@ -152,14 +161,14 @@ class MenuAppBar extends React.Component {
             horizontal: 'right',
           }}
           open={Boolean(this.state.anchorEl)}
-          onClose={this.handleClose}
+          onClose={this.handleAccountMenuClose}
         >
           <NavLink to="/auth" style={styles.navLink}>
-            <MenuItem onClick={this.handleClose}>Login</MenuItem>
+            <MenuItem onClick={this.handleAccountMenuClose}>Login</MenuItem>
           </NavLink>
 
           <NavLink to="/auth" style={styles.navLink}>
-            <MenuItem onClick={this.handleClose}>Create Account</MenuItem>
+            <MenuItem onClick={this.handleAccountMenuClose}>Create Account</MenuItem>
           </NavLink>
         </Menu>
       </div>
@@ -188,13 +197,15 @@ class MenuAppBar extends React.Component {
     };
 
     return (
-      <Button {...inputs.Button}>
-        <NavLink to={navLink} {...inputs.NavLink}>
-          <Typography variant="subheading" {...inputs.Typography}>
-            {linkText}
-          </Typography>
-        </NavLink>
-      </Button>
+      <Hidden smDown={true}>
+        <Button {...inputs.Button}>
+          <NavLink to={navLink} {...inputs.NavLink}>
+            <Typography variant="subheading" {...inputs.Typography}>
+              {linkText}
+            </Typography>
+          </NavLink>
+        </Button>
+      </Hidden>
     )
   };
 
@@ -232,6 +243,47 @@ class MenuAppBar extends React.Component {
     )
   }
 
+  mobileMenu() {
+    return (
+      <div>
+          <IconButton
+            aria-owns={Boolean(this.state.anchorMobileMenu) ? 'mobile-menu-appbar' : null}
+            aria-haspopup="true"
+            onClick={this.handleMobileMenu}
+            color="inherit"
+          >
+            <MenuIcon/>
+          </IconButton>
+          <Menu
+            id="mobile-menu-appbar"
+            anchorEl={this.state.anchorMobileMenu}
+            anchorOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            open={Boolean(this.state.anchorMobileMenu)}
+            onClose={this.handleMobileMenuClose}
+          >
+            <NavLink to="/About" style={styles.navLink}>
+              <MenuItem onClick={this.handleMobileMenuClose}>About</MenuItem>
+            </NavLink>
+
+            <NavLink to="/Shop" style={styles.navLink}>
+              <MenuItem onClick={this.handleMobileMenuClose}>Shop</MenuItem>
+            </NavLink>
+
+            <NavLink to="/Developers" style={styles.navLink}>
+              <MenuItem onClick={this.handleMobileMenuClose}>Develop</MenuItem>
+            </NavLink>
+          </Menu>
+      </div>
+    )
+  }
+
   render() {
     const { classes } = this.props;
     const { authed, anchorEl } = this.state;
@@ -251,6 +303,7 @@ class MenuAppBar extends React.Component {
           <Toolbar>
             {this.appBarLogo()}
             <div className={classes.flex}/>
+            {this.mobileMenu()}
             {this.appBarLink("/About", "About")}
             {this.appBarLink("/Shop", "Shop")}
             {this.appBarLink("/Developers", "Develop")}
