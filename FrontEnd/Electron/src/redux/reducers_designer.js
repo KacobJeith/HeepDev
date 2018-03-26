@@ -156,6 +156,16 @@ export default function(state = initialState.builder, action, fullState = initia
 
       return Immutable.Map(state).set('controls', newState).toJS();
 
+    case 'SELECT_PLACE' :
+
+      const newSSID = fullState.places[action.placeID] ? fullState.places[action.placeID].networks.wifi.ssid : ''
+      const newPassword = fullState.places[action.placeID] ? fullState.places[action.placeID].networks.wifi.password : ''
+
+      return Immutable.Map(state)
+              .set('selectedPlace', action.placeID)
+              .set('ssid', newSSID)
+              .set('ssidPassword', newPassword).toJS(); 
+
     default:
       return state
   }

@@ -102,3 +102,8 @@ export const deleteControl = (controlID) => ({
 	type: 'DELETE_CONTROL',
 	controlID
 })
+
+export const selectPlace = (placeID) => ({
+	type: 'SELECT_PLACE',
+	placeID
+})

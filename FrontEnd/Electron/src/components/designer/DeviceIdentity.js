@@ -22,6 +22,10 @@ var mapStateToProps = (state, ownProps) => ({
   systemType: state.designer.systemType,
   physicalLayer: state.designer.physicalLayer,
   controls: state.designer.controls,
+  places: state.places,
+  selectedPlace: state.designer.selectedPlace,
+  ssid: state.designer.ssid,
+  ssidPassword: state.designer.ssidPassword
 })
 
 const styles = theme => ({
@@ -70,22 +74,37 @@ class DeviceIdentity extends React.Component {
 
   inputWifiCredentials = () => (
 
-    <Collapse in={this.props.physicalLayer == 'wifi'} timeout={750} unmountOnExit>
+      <Collapse in={this.props.physicalLayer == 'wifi'} timeout={750} unmountOnExit>
+        
+        <Select
+          value={this.props.selectedPlace}
+          style={{width: 'calc(66% + 8px)', margin:4}}
+          onChange={ (event) => {this.props.selectPlace(event.target.value)}}
+          input={<Input name="place-helper" id="place-helper" />}
+        >
+          {Object.keys(this.props.places).concat('Custom').map((thisKey) => (
+            <MenuItem value={thisKey} key={thisKey}>{this.props.places[thisKey] ? this.props.places[thisKey].name : 'Custom'}</MenuItem>
+          ))}
+        </Select>
 
-      <GenericTextInput 
-        width='33%'
-        title='SSID'
-        onChange={(value) => {this.props.updateSSID(value)}}
-        helperText='WiFi Network Name'
-      />
-      <GenericTextInput 
-        width='33%'
-        title='Password'
-        onChange={(value) => {this.props.updateSSIDPassword(value)}}
-        helperText='WiFi Password'
-      />
+        <GenericTextInput 
+          width='33%'
+          title='SSID'
+          disabled={this.props.selectedPlace != 'Custom'}
+          value={this.props.ssid}
+          onChange={(value) => {this.props.updateSSID(value)}}
+          helperText='WiFi Network Name'
+        />
+        <GenericTextInput 
+          width='33%'
+          value={this.props.ssidPassword}
+          disabled={this.props.selectedPlace != 'Custom'}
+          title='Password'
+          onChange={(value) => {this.props.updateSSIDPassword(value)}}
+          helperText='WiFi Password'
+        />
 
-    </Collapse>
+      </Collapse>
   )
 
   render () {
