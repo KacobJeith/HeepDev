@@ -1,25 +1,30 @@
 
 export const addDevice = (deviceID, device) => ({
   type: 'ADD_DEVICE',
-  deviceID, 
+  deviceID,
   device
 })
 
 export const addPlace = (placeID, place) => ({
   type: 'ADD_PLACE',
-  placeID, 
+  placeID,
   place
 })
 
 export const addGroup = (groupID, group) => ({
   type: 'ADD_GROUP',
-  group, 
+  group,
   groupID
 })
 
 export const populateShopify = (products) => ({
 	type: 'POPULATE_SHOPIFY',
 	products
+})
+
+export const populateCollections = (collections) => ({
+	type: 'POPULATE_COLLECTIONS',
+	collections
 })
 
 export const logout = () => ({
@@ -55,50 +60,61 @@ export const initPaperSignals = () => ({
 	type: 'INIT_PAPER_SIGNALS'
 })
 
-
-
-/* <-------------------------------------------------------Paper Signals---------------------------------------------------------------------->*/
-
-
-
-
-export const addSignal = (name, intent) => ({
-  type: 'ADD_SIGNAL',
-  name,
-  intent
+export const createCheckout = (checkoutID) => ({
+	type: 'CREATE_CHECKOUT',
+	checkoutID
 })
 
-export const deleteSignal = (id) => ({
-	type: 'DELETE_SIGNAL', 
-	id
+export const setCheckout = (checkoutID) => ({
+	type: 'SET_CHECKOUT',
+	checkoutID
 })
 
-export const populateSignal = (id, content) => ({
-	type: 'POP_SIGNAL',
-	id,
-  	content
+export const addProductToCart = (productID) => ({
+	type: 'ADD_PRODUCT_TO_CART',
+	productID
 })
 
-export const storeFile = (filename, blob) => ({
-	type: 'STORE_FILE',
-	filename,
-	blob
+export const updateProductQuantity = (lineItemID, newQuantity) => ({
+	type: 'UPDATE_QUANTITY_IN_CART',
+	lineItemID,
+	newQuantity
 })
 
-export const updateName = (signalId, name) => ({
-	type: 'UPDATE_NAME',
-	signalId, 
-	name
+export const removeProductFromCart = (variantID) => ({
+	type: 'REMOVE_PRODUCT_FROM_CART',
+	variantID
 })
 
-export const storeIconURL = (iconName, url) => ({
-	type: 'STORE_ICONURL',
-	iconName, 
-	url
+export const saveCartLocally = (cart) => ({
+	type: 'SAVE_CART_LOCALLY',
+	cart
 })
 
-export const storeIntentBackgroundURL = (intent, url) => ({
-	type: 'STORE_INTENT_BACKGROUND_URL',
-	intent, 
-	url
+
+export const saveNewPlace = (placeName, placeSSID, placeSSIDPassword) => ({
+	type: 'SAVE_NEW_PLACE',
+	placeName,
+	placeSSID,
+	placeSSIDPassword
+})
+
+export const deletePlaceFromAccount = (placeID) => ({
+	type: 'DELETE_PLACE_FROM_FIREBASE',
+	placeID
+})
+
+export const deletePlace = (placeID) => ({
+	type: 'DELETE_PLACE',
+	placeID
+})
+
+export const updateCartContext = (variantID, placeID) => ({
+	type: 'UPDATE_CART_CONTEXT',
+	variantID,
+	placeID
+})
+
+export const pushCartToFulfillmentQueue = () => ({
+	type: 'PUSH_CART_TO_QUEUE'
 })

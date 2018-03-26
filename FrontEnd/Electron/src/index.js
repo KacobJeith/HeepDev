@@ -12,7 +12,7 @@ import $ from 'jquery'
 import { composeWithDevTools } from 'redux-devtools-extension';
 import * as actions_classic from './redux/actions_classic'
 
-import loading from './serverside/assets/heepwink3_gradient.mov';
+
 
 const startState = {
   webGLStatus: false,
@@ -22,15 +22,32 @@ const startState = {
   places: {},
   groups: {},
 
-  devices: {deviceArray: []},
+  devices: {
+    deviceArray: []
+  },
   positions: {},
-  controls: {controlStructure:{}, connections: {}},
+  controls: {
+    controlStructure:{}, 
+    connections: {}
+  },
   vertexList: {},
   icons: {},
   url: '',
   analytics: {},
   analyticsDeviceList: [],
-  displayingAnalytics: ''
+  displayingAnalytics: '',
+
+  designer: {
+    deviceName: 'DefaultDevice',
+    numControls: 0,
+    physicalLayer: 'wifi',
+    ssid: 'your_ssid_here',
+    ssidPassword: 'your_ssid_pwd',
+    systemType: 'ESP8266',
+    iconSelected: 1,
+    selectingIcon: false,
+    controls: {}
+  }
 }
 
 export const initialState = Immutable.Map(startState)
@@ -53,7 +70,7 @@ var loadDevicesFromServer = (url) => {
     url: url,
     cache: false,
     success: (data) => {
-      console.log("Data from server: ", data)
+      
       try {
         data.url = window.location.origin;
         var immutableMap = Immutable.Map(data);
@@ -71,4 +88,6 @@ var loadDevicesFromServer = (url) => {
     });
 }
 
-loadDevicesFromServer(window.location.origin.concat('/api/findDevices'));
+var timeoutRef = setInterval(() => loadDevicesFromServer(window.location.origin.concat('/api/findDevices')), 1000)
+
+setTimeout(() => clearTimeout(timeoutRef), 3000);

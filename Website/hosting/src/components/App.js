@@ -5,18 +5,24 @@ import { connect } from 'react-redux'
 import * as Actions from '../redux/actions'
 import ReactGA from 'react-ga'
 
-import Header from './Header'
-import Landing from './Landing'
-import Mission from './Mission'
-import Store from './Store'
-import Build from './Build'
-import Auth from './Auth'
-import Logout from './Logout'
+import AppBar from './AppBar'
+import Footer from './Footer'
+import Landing from './landing/Landing'
+import About from './About'
+import Store from './store/Store'
+import Build from './heep/Build'
+import Auth from './account/Auth'
+import Logout from './account/Logout'
 import Loading from './Loading'
-import UserProfile from './UserProfile'
-import DeviceBuilder from './DeviceBuilder'
+import UserAccount from './account/UserAccount'
+import DeviceBuilder from './heep/DeviceBuilder'
+import Checkout from './store/Checkout'
+import ProductDetails from './store/ProductDetails'
+import DownloadPage from './heep/DownloadPage'
+import ManageCart from './store/ManageCart'
 
-import PaperSignalsConsole from './PaperSignals/PaperSignalsConsole'
+import Theme from './Theme'
+import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
 
 const mapStateToProps = (state) => ({
 	loginStatus: state.loginStatus,
@@ -25,14 +31,14 @@ const mapStateToProps = (state) => ({
 class App extends React.Component {
 	constructor(props) {
 		super(props);
-		ReactGA.initialize('UA-93098480-1');
+		// ReactGA.initialize('UA-93098480-1');
 		this.handleScroll = this.handleScroll.bind(this)
 	}
 
 
 	logPageView() {
-	  ReactGA.set({ page: window.location.pathname });
-	  ReactGA.pageview(window.location.pathname);
+	  // ReactGA.set({ page: window.location.pathname });
+	  // ReactGA.pageview(window.location.pathname);
 	}
 
 	componentDidMount() {
@@ -46,19 +52,23 @@ class App extends React.Component {
 	render() {
 		this.logPageView();
 
-		const styles = {
-	        container : { 
-	          height: "100%",
-	          width: "100%",
-	          marginTop: 70,
-	          display: "block"
-	        }
-	      };
+		const inputs = {
+			container : {
+				style: {
+					height: "100vh",
+					width: "100%",
+					marginTop: 0,
+					display: "flex",
+					flexDirection: 'column'
+				}
 
-	    const inputs = {
-	      container: {
-	        style: styles.container
-	      }
+			},
+			content: {
+				style: {
+					flex: '1 0 auto',
+					maxWidth:'100%'
+				}
+			}
 	    }
 
 	    var loggedInRoutes = [];
@@ -66,22 +76,31 @@ class App extends React.Component {
 	    if (this.props.loginStatus) {
 	    	loggedInRoutes.push(<Route path="/Build" component={Build} key="build"/>);
 	    	loggedInRoutes.push(<Route path="/DeviceBuilder" component={DeviceBuilder} key="DeviceBuilder"/>)
-	    	loggedInRoutes.push(<Route path="/User" component={UserProfile} key="user"/>);
+	    	loggedInRoutes.push(<Route path="/User" component={UserAccount} key="user"/>);
 	    }
 
 	    return(
 			<Router >
-		    	<div {...inputs.container}>
-					<Route path="/" component={Header}/>
-					<Route exact path="/" component={Mission}/>
-					<Route path="/Mission" component={Mission}/>
-					<Route path="/Shop" component={Store}/>
-					<Route exact path="/auth" component={Auth}/>
-					<Route exact path="/PaperSignals" component={PaperSignalsConsole}/>
-					{loggedInRoutes}
-			    </div>
+			    	<MuiThemeProvider theme={Theme}>
+							<div {...inputs.container}>
+								<div {...inputs.content}>
+									<Route path="/" component={AppBar}/>
+									<Route exact path="/" component={Landing}/>
+									<Route path="/Landing" component={Landing}/>
+									<Route path="/About" component={About}/>
+									<Route path="/Shop" component={Store}/>
+									<Route path="/product/:productID" component={ProductDetails}/>
+									<Route path="/Checkout" component={Checkout}/>
+									<Route path="/MyCart" component={ManageCart}/>
+									<Route exact path="/auth" component={Auth}/>
+									<Route exact path="/Developers" component={DownloadPage}/>
+									{loggedInRoutes}
+								</div>
+								<Route path="/" component={Footer}/>
+						    </div>
+				    </MuiThemeProvider>
 			</Router>);
-	    
+
 	}
 }
 
@@ -91,4 +110,3 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)
-

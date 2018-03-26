@@ -15,11 +15,12 @@
   "scripts": {
     "tests": "mocha-webpack --webpack-config webpack.config-test.js \"src/**/*.test.js\"",
     "build": "webpack",
-    "dev": "webpack-dev-server --progress --inline --hot",
+    "dev": "webpack-dev-server --progress --inline --hot --watch",
     "start": "babel-node src/server.js",
     "tbs": "npm run test && npm run bs",
     "bs": "webpack && firebase serve",
-    "ts": "npm run test && npm run start"
+    "ts": "npm run test && npm run start",
+    "deploy": "webpack && firebase deploy --only hosting"
   },
   "dependencies": {
     "@shopify/buy-button-js": "^0.4.13",
@@ -30,10 +31,13 @@
     "file-loader": "^0.11.2",
     "firebase": "^4.3.0",
     "firebaseui": "^2.3.0",
+    "gsap": "^1.20.4",
     "history": "^4.7.2",
     "immutable": "^3.8.1",
-    "jquery": "^3.1.1",
+    "jquery": "^3.3.1",
     "jszip": "^3.1.4",
+    "material-ui": "^1.0.0-beta.34",
+    "material-ui-icons": "^1.0.0-beta.17",
     "normalizr": "^3.1.0",
     "react": "^15.3.2",
     "react-addons-update": "^15.3.2",
@@ -41,14 +45,15 @@
     "react-burger-menu": "^2.1.6",
     "react-dom": "^15.3.2",
     "react-file-download": "^0.3.4",
-    "react-ga": "^2.2.0",
+    "react-ga": "^2.4.1",
     "react-redux": "^5.0.2",
     "react-router": "^4.2.0",
     "react-router-bootstrap": "^0.24.4",
     "react-router-dom": "^4.2.2",
     "redux": "^3.6.0",
+    "redux-devtools-extension": "^2.13.2",
     "redux-thunk": "^2.2.0",
-    "shopify-buy": "^0.7.1"
+    "shopify-buy": "^1.0.2"
   },
   "devDependencies": {
     "autoprefixer-loader": "^3.2.0",

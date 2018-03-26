@@ -1,27 +1,9 @@
+#pragma once
+#include "CommonDataTypes.h"
 #include <stdint.h>
 
-uint64_t simMillis = 0;
-unsigned long GetMillis()
-{
-	simMillis++;
-	return simMillis;
-}
-
+extern uint64_t simMillis;
+unsigned long GetMillis();
 // No absolute time yet
-heepByte IsAbsoluteTime()
-{
-	return 0;
-}
-
-uint64_t GetAnalyticsTime()
-{
-	if(IsAbsoluteTime())
-	{
-		// Calculate Analytics Time
-		return 0;
-	}
-	else
-	{
-		return simMillis;
-	}
-}
+heepByte IsAbsoluteTime();
+uint64_t GetAnalyticsTime();

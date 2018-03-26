@@ -1,6 +1,9 @@
 # Dev Directories
 FrontEnd/Web/node_modules
 FrontEnd/mobile_ios/Pods
+FrontEnd/Electron/node_modules
+FrontEnd/ContextualFulfillment/hosting/node_modules
+Website/hosting/node_modules
 
 # Outputs
 *.pyc

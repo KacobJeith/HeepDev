@@ -7,6 +7,7 @@ import * as async from './async'
 import * as utils from '../serverside/utilities/generalUtilities'
 import * as auth from '../firebase/FirebaseAuth'
 import * as database from '../firebase/FirebaseDatabase'
+import reducersDesigner from './reducers_designer'
 
 export default function(state = initialState, action) {
   switch (action.type) {
@@ -184,6 +185,8 @@ export default function(state = initialState, action) {
 
       //CONTROL CHANGES
       var newStateControls = Immutable.Map(state.controls).toJS();
+
+      console.log("STATE CONTROLS: ", newStateControls);
       var txName = utils.nameControl(state.vertexList.selectedOutput.txDeviceID, state.vertexList.selectedOutput.txControlID);
       var rxName = utils.nameControl(action.rxDeviceID, action.rxControlID);
 
@@ -248,9 +251,25 @@ export default function(state = initialState, action) {
 
       return Immutable.Map(state).set('controls', newState).toJS()
 
+    case 'REFRESH_FLOWCHART' :
 
+      console.log("Refreshing Flowchart");
+
+      async.refreshLocalDeviceState();
+
+      return state
 
     default:
-      return state
+      console.log('Passed through first Switch');
   }
+
+  const builderStartingState = Immutable.Map(state.designer).toJS();
+  const builderState = reducersDesigner(builderStartingState, action, state);
+
+  if (builderState !== builderStartingState) {
+    return  Immutable.Map(state).set('designer', builderState).toJS()
+  }
+
+  return state
+
 }

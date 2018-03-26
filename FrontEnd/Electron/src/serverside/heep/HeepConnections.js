@@ -8,7 +8,7 @@ var log = require('electron-log');
 
 const udpServer = dgram.createSocket('udp4');
 
-var masterState = {
+var newMasterState = {
   devices: {deviceArray: []},
   positions: {},
   controls: {controlStructure:{}, connections: {}},
@@ -16,6 +16,8 @@ var masterState = {
   icons: {},
   url: ''
 };
+
+var masterState = newMasterState;
 
 var heepPort = 5000;
 var searchComplete = false;
@@ -25,16 +27,21 @@ export var SearchForHeepDevices = () => {
   var gateway = findGateway();
   var searchBuffer = Buffer.from([0x09, 0x00])
 
-  var client = dgram.createSocket("udp4");
-  client.bind(function(err, bytes){
-      console.log("Set Broadcast");
-      client.setBroadcast(true);
-      var address = generalUtils.joinAddress(gateway,255)
-      client.send(searchBuffer, 5000, address, function(err, bytes) {
-          console.log("Broadcast sent");
-          client.close();
+  console.log(gateway)
+
+  if (gateway != undefined) {
+    var client = dgram.createSocket("udp4");
+    client.bind(function(err, bytes){
+        console.log("Set Broadcast");
+        client.setBroadcast(true);
+        var address = generalUtils.joinAddress(gateway,255)
+        client.send(searchBuffer, 5000, address, function(err, bytes) {
+            console.log("Broadcast sent");
+            client.close();
+        });
       });
-    });
+  }
+  
 }
 
 export var GetCurrentMasterState = () => {
@@ -42,14 +49,7 @@ export var GetCurrentMasterState = () => {
 }
 
 export var ResetMasterState = () => {
-  masterState = {
-    devices: {deviceArray: []},
-    positions: {},
-    controls: {controlStructure:{}},
-    vertexList: {},
-    icons: {},
-    url: ''
-  };
+  masterState = newMasterState;
 
   return masterState
 }
@@ -265,7 +265,7 @@ var AddDevice = (heepChunk, IPAddress) => {
     ipAddress: IPAddress,
     name: deviceName,
     active: false,
-    iconName: "light_on",
+    iconName: "lightbulb",
     version: 0
   }
 
@@ -305,6 +305,8 @@ var SetIconFromID = (heepChunk) => {
   var deviceName = masterState.devices[heepChunk.deviceID].deviceName;
   iconUtils.SetDeviceIconFromString(heepChunk.deviceID, deviceName, heepChunk.iconName);
   masterState.icons = iconUtils.GetIconContent()
+
+  masterState.devices[heepChunk.deviceID].iconName = heepChunk.iconName;
 }
 
 var SetCustomIcon = (heepChunk) => {
