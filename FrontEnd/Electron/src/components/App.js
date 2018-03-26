@@ -32,6 +32,8 @@ class App extends React.Component {
 				    overflow: 'hidden',
 				    position: 'relative',
 				    display: 'flex',
+				    margin: 0,
+				    padding: 0
 				  }
 			},
 			content: {

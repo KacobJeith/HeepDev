@@ -12,13 +12,8 @@ import $ from 'jquery'
 import { composeWithDevTools } from 'redux-devtools-extension';
 import * as actions_classic from './redux/actions_classic'
 import { hot } from 'react-hot-loader'
+import { AppContainer } from 'react-hot-loader'
 
-if (module.hot) {
-   module.hot.accept('./components/App', function() {
-     console.log('Accepting the updated App module!');
-     printMe();
-   })
- }
 
 const startState = {
   webGLStatus: false,
@@ -62,12 +57,35 @@ export const store = createStore(reducers, startState, composeWithDevTools(apply
 
 auth.initializeFirebase();
 
-render(
-  <Provider store={store}>
-    <App/>
-  </Provider>,
-  document.getElementById('root')
-)
+if (module.hot) { 
+  console.log('detected hot module');
+
+  module.hot.accept('./components/App', () => { 
+     const App = require('./components/App'); 
+
+
+     render(
+       <AppContainer>
+         <Provider store={store}>
+           <App/>
+         </Provider>
+       </AppContainer>,
+       document.getElementById('root')
+     )
+  }); 
+} else {
+  console.log('normal render')
+  
+  render(
+      <Provider store={store}>
+        <App/>
+      </Provider>,
+    document.getElementById('root')
+  )
+}
+
+
+
 
 var loadDevicesFromServer = (url) => {
   console.log("Loading from server...");
@@ -97,3 +115,7 @@ var loadDevicesFromServer = (url) => {
 var timeoutRef = setInterval(() => loadDevicesFromServer(window.location.origin.concat('/api/findDevices')), 1000)
 
 setTimeout(() => clearTimeout(timeoutRef), 3000);
+
+
+i
+

@@ -44,7 +44,7 @@ class NestedList extends React.Component {
             <ListItemIcon>
               <Refresh onClick={ () => this.props.refreshFlowchart()}/>
             </ListItemIcon>
-            <ListItemText inset primary="Refreshing" />
+            <ListItemText inset primary="Refresh rr" />
           </ListItem>
           <NavLink to="/designer" style={{
     textDecoration: 'none',

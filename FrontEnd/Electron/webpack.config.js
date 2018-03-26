@@ -2,49 +2,74 @@
 
 var path = require('path');
 var webpack = require('webpack');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
 
 module.exports = {
   target: 'web',
 
-  entry: './src/index.js',
+  entry: {
+    index: './src/index.js'
+  },
 
   output: {
     path: path.resolve(__dirname, "dist"),
-    filename: 'bundle.js',
+    filename: '[name].bundle.js',
   },
 
   plugins: [
-    new CleanWebpackPlugin(['dist']),
-    new webpack.NamedModulesPlugin(),
+    new HtmlWebpackPlugin({
+      title: 'Hot Module Replacement',
+      filename: 'index.html',
+      template: 'index.template.ejs',
+      inject: 'body'
+    }),
     new webpack.HotModuleReplacementPlugin()
   ],
 
   devServer: { 
-    compress: true,
+    publicPath: './dist',
+    // contentBase: './dist',
+    // compress: true,
     port: 9000,
-    open: true,
+    // open: true,
     hot: true,
-    inline: true,
-    hotOnly: true,
+    watchContentBase: true,
+    // inline: true,
     historyApiFallback: true,
-    stats: {
-      colors: true,
-      hash: false,
-      version: false,
-      timings: false,
-      assets: false,
-      chunks: false,
-      modules: false,
-      reasons: false,
-      children: false,
-      source: false,
-      errors: true,
-      errorDetails: true,
-      warnings: true,
-      publicPath: false
-    }
+    // stats: {
+    //   colors: true,
+    //   hash: false,
+    //   version: false,
+    //   timings: false,
+    //   assets: false,
+    //   chunks: false,
+    //   modules: false,
+    //   reasons: false,
+    //   children: false,
+    //   source: false,
+    //   errors: true,
+    //   errorDetails: true,
+    //   warnings: true,
+    //   publicPath: false
+    // }
   },
+
+  optimization: {
+        splitChunks: {
+            cacheGroups: {
+                index: {
+                    name: "index",
+                    chunks: "async",
+                },
+                commons: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: 'vendor',
+                    chunks: 'all'
+                }
+            }
+        }
+    },
 
   resolve: {
     modules: ['node_modules'],
@@ -70,6 +95,15 @@ module.exports = {
         options: {
           name: '[name].[ext]'
         } 
+      },
+      {
+        test: /\.html$/,
+        use: [ {
+          loader: 'html-loader',
+          options: {
+            minimize: true
+          }
+        }]
       }
     ],
 
