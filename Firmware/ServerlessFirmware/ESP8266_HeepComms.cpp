@@ -20,24 +20,19 @@ void CreateAccessPoint()
 {
   Serial.println("Creating AP");
   
- //WiFi.mode(WIFI_AP);
+  uint8_t mac[WL_MAC_ADDR_LENGTH];
+  WiFi.softAPmacAddress(mac);
+  String macID = String(mac[WL_MAC_ADDR_LENGTH - 2], HEX) +
+                 String(mac[WL_MAC_ADDR_LENGTH - 1], HEX);
+  macID.toUpperCase();
+  String AP_NameString = "Heep" + macID;
+  String AP_Password = "Hello";
 
- //// // Do a little work to get a unique-ish name. Append the
- //// // last two bytes of the MAC (HEX'd) to "Thing-":
- //uint8_t mac[WL_MAC_ADDR_LENGTH];
- //WiFi.softAPmacAddress(mac);
- //String macID = String(mac[WL_MAC_ADDR_LENGTH - 2], HEX) +
- //               String(mac[WL_MAC_ADDR_LENGTH - 1], HEX);
- //macID.toUpperCase();
- //String AP_NameString = "Heep Thing " + macID;
- //String AP_Password = "Hello";
+  Serial.println(AP_NameString);
 
- //WiFi.softAP(AP_NameString.c_str(), AP_Password.c_str());
+  boolean result = WiFi.softAP(AP_NameString.c_str(), AP_Password.c_str());
 
- //server.begin();
-
-  boolean result = WiFi.softAP("Heep AP", "pass-to-soft-AP");
-
+  Serial.print("AP Result: "); Serial.println(result);
   Serial.println("AP UP");
 }
 
