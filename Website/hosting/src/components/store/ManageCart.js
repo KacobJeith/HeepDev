@@ -17,8 +17,8 @@ var mapStateToProps = (state) => ({
 
 class ManageCart extends React.Component {
 
-  cartTitleLine = () => (
-    <Typography align='left' variant="title" gutterBottom paragraph >
+  cartTitleLine = (variant='title') => (
+    <Typography align='left' variant={variant} gutterBottom paragraph >
       Your Order
     </Typography>
   )
@@ -57,11 +57,7 @@ class ManageCart extends React.Component {
           <Grid container
             direction='column'
             justify='center'
-            alignItems='center'
-            styles={{
-              overflowX: 'hidden',
-              margin: 0
-            }}>
+            alignItems='center'>
               <Grid item sm={12}>
                 <Typography align='center' variant="title" gutterBottom paragraph >
                   Add some items to experience the power of Heep!
@@ -78,7 +74,7 @@ class ManageCart extends React.Component {
     )
   }
 
-  orderInProgress = () => (
+  orderInProgressNormal = () => (
       <Grid container justify='center' style={{marginTop: 20, maxWidth:'100%'}}>
         <Grid item xs={12} sm={11} style={{padding:24}}>
           <Grid container direction='row' alignItems='stretch' spacing={16} style={{minWidth:770}}>
@@ -88,7 +84,6 @@ class ManageCart extends React.Component {
             <Paper elevation={6} style={{padding:this.props.theme.spacing.unit*4}}>
 
               <Divider style={{margin: this.props.theme.spacing.unit * 2}}/>
-
               {this.props.lineItems.map((cartItem) => (
                 <CartItemCard
                 key={cartItem.variant.id}
@@ -109,6 +104,44 @@ class ManageCart extends React.Component {
       </Grid>
   )
 
+  orderInProgressMobile() {
+
+    const inputs = {
+      gridContainer: {
+        style: {
+          margin: 0,
+          overflowX: 'hidden',
+          maxWidth: '100%',
+          padding: this.props.theme.spacing.unit*2
+        }
+      }
+    }
+
+    return(
+      <Grid container
+        {...inputs.gridContainer}
+        direction='column'
+        alignItems='center'
+        justify='center' >
+        <Grid item xs={12} style={{paddingTop: 10}}>
+        {this.cartTitleLine('display1')}
+        </Grid>
+        {this.props.lineItems.map((cartItem) => (
+          <Grid item xs={12}>
+            <Paper elevation={6} style={{padding:this.props.theme.spacing.unit*4}}>
+              <CartItemCard
+              key={cartItem.variant.id}
+              productID={cartItem.variant.id}
+              quantity={cartItem.quantity}
+              lineItemID={cartItem.id}
+              titleBar={false}/>
+            </Paper>
+          </Grid>
+        ))}
+      </Grid>
+    )
+  }
+
 
   render() {
 
@@ -118,7 +151,16 @@ class ManageCart extends React.Component {
 
     } else {
 
-      return this.orderInProgress()
+      return (
+        <div>
+          <Hidden xsDown={true}>
+            {this.orderInProgressNormal()}
+          </Hidden>
+          <Hidden smUp={true}>
+            {this.orderInProgressMobile()}
+          </Hidden>
+        </div>
+      )
     }
   }
 }

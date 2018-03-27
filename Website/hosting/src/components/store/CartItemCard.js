@@ -13,7 +13,8 @@ import {  Grid,
           Badge,
           Button,
           Paper,
-          Select }   from 'material-ui';
+          Select,
+          Hidden }         from 'material-ui';
 import { AddShoppingCart } from 'material-ui-icons';
 import { withStyles, withTheme } from 'material-ui/styles';
 
@@ -27,12 +28,14 @@ var mapStateToProps = (state, ownProps) => ({
   associatedPlace: state.cartContext[ownProps.productID],
   quantity: ownProps.quantity,
   titleBar: ownProps.titleBar,
-
 })
 
 const styles = theme => ({
-  card: {
-    maxWidth: 400,
+  paper: {
+    position: 'absolute',
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing.unit * 4
   }
 });
 
@@ -46,11 +49,11 @@ class CartItemCard extends React.Component {
     }
   }
 
-  productTitle() {
+  productTitle(variant='body1', align='left') {
 
     return (
-      <Link to={'/product/' + this.props.productID}>
-        <Typography align='left' variant="body1" gutterBottom paragraph >
+      <Link to={'/product/' + this.props.productID} style={{textDecoration: 'none'}}>
+        <Typography align={align} variant={variant} gutterBottom paragraph >
           {this.props.product.title}
         </Typography>
       </Link>
@@ -120,7 +123,7 @@ class CartItemCard extends React.Component {
           shrink: true,
         }}
         margin="normal"
-        style={{maxWidth:'80%'}}
+        InputProps={{textAlign: 'center'}}
       />
     )
   }
@@ -187,44 +190,91 @@ class CartItemCard extends React.Component {
     )
   }
 
-  titleBarItem = (title) => (
-    <Typography variant='body2' align="left">
+  titleBarItem = (title, variant='body2') => (
+    <Typography variant={variant} align="left">
           {title}
     </Typography>
   )
+
+  normalCart() {
+    return (
+      <Grid item xs={12} >
+        <Grid container alignItems='center' direction='row' justify='space-between' spacing={16} >
+          <Grid item xs={2}>
+            {this.props.titleBar ? this.titleBarItem() : this.imageWithOverlay() }
+          </Grid>
+
+          <Grid item xs={3} >
+            {this.props.titleBar ? this.titleBarItem('Product') : this.productTitle()}
+          </Grid>
+
+          <Grid item xs={2} >
+            {this.props.titleBar ? this.titleBarItem('Place') : this.associatedPlace()}
+          </Grid>
+
+          <Grid item xs={1} >
+            {this.props.titleBar ? this.titleBarItem('Price') : this.productPrice()}
+          </Grid>
+
+          <Grid item xs={1} >
+            {this.props.titleBar ? this.titleBarItem('Quantity') : this.productQuantity()}
+          </Grid>
+
+          <Grid item xs={1} >
+            {this.props.titleBar ? this.titleBarItem('Total Price') : this.totalPrice()}
+          </Grid>
+
+        </Grid>
+     </Grid>
+    )
+  };
+
+  mobileCart() {
+
+    const { classes } = this.props;
+
+    return(
+    <Grid item xs={12}>
+      <Grid container
+        direction='column'
+        alignItems='center'
+        justify='center'
+        spacing={8}>
+        <Grid item xs={12}>
+          {this.productTitle('title', 'center')}
+        </Grid>
+        <Grid item xs={12}>
+          {this.imageWithOverlay()}
+        </Grid>
+        <Grid item xs={12}>
+          {this.associatedPlace()}
+        </Grid>
+        <Grid item xs={12}>
+          {this.productPrice()}
+        </Grid>
+        <Grid item xs={12}>
+          {this.productQuantity()}
+        </Grid>
+        <Grid item xs={12}>
+          {this.totalPrice()}
+        </Grid>
+      </Grid>
+    </Grid>
+    )
+  }
 
 
   render() {
 
     return (
-       <Grid item xs={12} >
-         <Grid container alignItems='center' direction='row' justify='space-between' spacing={16} >
-           <Grid item xs={2}>
-             {this.props.titleBar ? this.titleBarItem() : this.imageWithOverlay() }
-           </Grid>
-
-           <Grid item xs={3} >
-             {this.props.titleBar ? this.titleBarItem('Product') : this.productTitle()}
-           </Grid>
-
-           <Grid item xs={2} >
-             {this.props.titleBar ? this.titleBarItem('Place') : this.associatedPlace()}
-           </Grid>
-
-           <Grid item xs={1} >
-             {this.props.titleBar ? this.titleBarItem('Price') : this.productPrice()}
-           </Grid>
-
-           <Grid item xs={1} >
-             {this.props.titleBar ? this.titleBarItem('Quantity') : this.productQuantity()}
-           </Grid>
-
-           <Grid item xs={1} >
-             {this.props.titleBar ? this.titleBarItem('Total Price') : this.totalPrice()}
-           </Grid>
-
-         </Grid>
-      </Grid>
+      <div>
+        <Hidden xsDown={true}>
+          {this.normalCart()}
+        </Hidden>
+        <Hidden smUp={true}>
+          {this.mobileCart()}
+        </Hidden>
+      </div>
     )
   }
 }
