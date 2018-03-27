@@ -467,6 +467,15 @@ void ExecuteSetWiFiDataOpCode()
 	FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
 }
 
+void ExecuteSetDeviceNameOpCode()
+{
+	SetDeviceNameInMemory_Byte((char*)(&inputBuffer[3]), inputBuffer[2], deviceIDByte);
+
+	ClearOutputBuffer();
+	char SuccessMessage [] = "Name Set!";
+	FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
+}
+
 unsigned char IsROP()
 {
 	if(inputBuffer[0] == MemoryDumpOpCode 
@@ -513,6 +522,10 @@ void ExecuteControlOpCodes()
 	else if(ReceivedOpCode == SetWiFiDataOpCode)
 	{
 		ExecuteSetWiFiDataOpCode();
+	}
+	else if(ReceivedOpCode == SetNameOpCode)
+	{
+		ExecuteSetDeviceNameOpCode();
 	}
 	else
 	{

@@ -36,6 +36,7 @@
 #define WiFiPasswordOpCode			0x21
 
 #define SetWiFiDataOpCode			0x22
+#define SetNameOpCode				0x23
 
 extern unsigned char deviceMemory[];
 extern unsigned int curFilledMemory; // Indicate the curent filled memory. 
