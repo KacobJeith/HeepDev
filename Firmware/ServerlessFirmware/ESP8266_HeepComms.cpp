@@ -30,13 +30,9 @@ void CreateAccessPoint()
   String AP_NameString = "Heep" + macID;
   String AP_Password = "HeepSecretPassword";
 
-  // String AP_NameString = "ESPsoftAP_01";
-  // String AP_Password = "pass-to-soft-AP";
-
   Serial.println(AP_NameString);
 
   boolean result = WiFi.softAP(AP_NameString.c_str(), AP_Password.c_str());
-  //boolean result = WiFi.softAP("ESPsoftAP_01", "pass-to-soft-AP");
 
   Serial.print("AP Result: "); Serial.println(result);
   Serial.println("AP UP");
@@ -108,10 +104,8 @@ void CreateInterruptServer()
   
 }
 
-void CheckServerForInputs()
+void HandleAPModeRequests()
 {
-  if(InAPMode)
-  {
     WiFiClient client = server.available();
     if (!client) {
       return;
@@ -146,7 +140,13 @@ void CheckServerForInputs()
     }
 
     Serial.println(millis() - startMillis);
+}
 
+void CheckServerForInputs()
+{
+  if(InAPMode)
+  {
+    HandleAPModeRequests();
   }
   else
   {
