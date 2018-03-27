@@ -469,7 +469,7 @@ void ExecuteSetWiFiDataOpCode()
 
 void ExecuteSetDeviceNameOpCode()
 {
-	SetDeviceNameInMemory_Byte((char*)(&inputBuffer[3]), inputBuffer[2], deviceIDByte);
+	SetDeviceNameInMemory_Byte((char*)(&inputBuffer[2]), inputBuffer[1], deviceIDByte);
 
 	ClearOutputBuffer();
 	char SuccessMessage [] = "Name Set!";

@@ -554,6 +554,38 @@ void TestAddWiFiCOP()
 	CheckResults(TestName, valueList, 3);
 }
 
+void TestDeviceNameCOP()
+{
+	std::string TestName = "Test Add Device Name COP";
+
+	ClearDeviceMemory();
+
+	ClearInputBuffer();
+	inputBuffer[0] = SetNameOpCode;
+	inputBuffer[1] = 5;
+	inputBuffer[2] = (unsigned char)'J';
+	inputBuffer[3] = (unsigned char)'a';
+	inputBuffer[4] = (unsigned char)'c';
+	inputBuffer[6] = (unsigned char)'o';
+	inputBuffer[7] = (unsigned char)'b';
+
+	ExecuteControlOpCodes();
+	
+
+#ifdef USE_INDEXED_IDS
+	unsigned char FirstLetterOfName = deviceMemory[10];
+#else
+	unsigned char FirstLetterOfName = deviceMemory[6];
+#endif
+
+	ExpectedValue valueList [1];
+	valueList[0].valueName = "First Letter";
+	valueList[0].expectedValue = 'J';
+	valueList[0].actualValue = FirstLetterOfName;
+
+	CheckResults(TestName, valueList, 1);
+}
+
 void TestActionAndResponseOpCodes()
 {
 	TestClearOutputBufferAndAddChar();
@@ -568,4 +600,5 @@ void TestActionAndResponseOpCodes()
 	TestDeleteMOPOpCode();
 	TestGetAnalyticsString();
 	TestAddWiFiCOP();
+	TestDeviceNameCOP();
 }
