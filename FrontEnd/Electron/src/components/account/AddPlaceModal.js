@@ -118,6 +118,7 @@ class AddPlaceModal extends React.Component {
             margin="normal"
           />
         </form>
+        
       </div>
     )
   }

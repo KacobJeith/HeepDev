@@ -5,7 +5,7 @@ import * as Actions from '../../redux/actions_designer'
 import { withRouter } from 'react-router-dom'
 
 import { withStyles } from 'material-ui/styles';
-import { Grid, Select, Collapse, Paper, List }  from 'material-ui'
+import { Grid, Select, Collapse, Paper, List, Button }  from 'material-ui'
 import { Edit }  from 'material-ui-icons'
 
 import Input, { InputLabel } from 'material-ui/Input';
@@ -18,6 +18,7 @@ import PlaceListItem from '../heep/PlaceListItem'
 import GenericTextInput from '../utilities/GenericTextInput'
 import IconSVGSelect from './IconSVGSelect'
 import {iconMappings} from '../../assets/svg/iconMappings'
+import AddPlaceModal from '../account/AddPlaceModal'
 
 var mapStateToProps = (state, ownProps) => ({
   deviceName: state.designer.deviceName,
@@ -46,6 +47,9 @@ const styles = theme => ({
 });
 
 class DeviceIdentity extends React.Component {
+  state = {
+    open: false
+  }
 
   nameDevice = () => (
 
@@ -110,6 +114,13 @@ class DeviceIdentity extends React.Component {
                 title='Password'
                 onChange={(value) => {this.props.updateSSIDPassword(value)}}
               />
+            </Grid>
+            <Grid item xs={12}>
+              <AddPlaceModal open={this.state.open} handleClose={()=> this.setState({open: false})} modalElement={
+                <Button style={{float:'right'}} onClick={() => this.setState({open: true})}>
+                  Save for Later
+                </Button>
+              }/>
             </Grid>
           </Grid>
 
