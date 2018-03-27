@@ -457,6 +457,16 @@ void ExecuteAddMOPOpCode()
 
 }
 
+void ExecuteSetWiFiDataOpCode()
+{
+	int passwordFirstPosition = inputBuffer[3] + 4;
+	AddWiFiSettingsToMemory( (char*)(&inputBuffer[4]), inputBuffer[3], (char*)(&inputBuffer[passwordFirstPosition+1]), inputBuffer[passwordFirstPosition], deviceIDByte, inputBuffer[2]);
+
+	ClearOutputBuffer();
+	char SuccessMessage [] = "WiFi Added!";
+	FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
+}
+
 unsigned char IsROP()
 {
 	if(inputBuffer[0] == MemoryDumpOpCode 
@@ -499,6 +509,10 @@ void ExecuteControlOpCodes()
 	else if(ReceivedOpCode == DeleteMOPOpCode)
 	{
 		ExecuteDeleteMOPOpCode();
+	}
+	else if(ReceivedOpCode == SetWiFiDataOpCode)
+	{
+		ExecuteSetWiFiDataOpCode();
 	}
 	else
 	{
