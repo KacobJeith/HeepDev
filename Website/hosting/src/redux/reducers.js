@@ -54,7 +54,22 @@ export default function(state = initialState, action) {
 
     case 'UPDATE_QUANTITY_IN_CART' :
 
-      shopify.UpdateQuantityInCart(state.checkoutID, action.lineItemID,  parseInt(action.newQuantity));
+      if (parseInt(action.newQuantity) > 0) {
+          shopify.UpdateQuantityInCart(state.checkoutID, action.lineItemID,  parseInt(action.newQuantity));
+      } else {
+
+          var newState = JSON.parse(JSON.stringify(state.shoppingCart))//Object.assign(state.shoppingCart);
+          console.log('newwww: ', newState);
+
+        for (var i in state.shoppingCart.lineItems) {
+
+          if ( state.shoppingCart.lineItems[i].id == action.lineItemID) {
+            newState.lineItems[i].quantity = 0;
+            console.log('found item:', newState )
+            return Immutable.Map(state).set('shoppingCart', newState).toJS()
+          }
+        }
+      }
 
       return state
 
@@ -101,12 +116,19 @@ export default function(state = initialState, action) {
 
       return Immutable.Map(state).set('cartContext', newCartContext).toJS()
 
-    case 'PUSH_CART_TO_QUEUE' :
+    case 'COMPLETE_CHECKOUT' :
 
       console.log('Pushing cart');
 
-      const checkoutID = state.shoppingCart.id;
+      for (var i in state.shoppingCart.lineItems) {
+        if (state.shoppingCart.lineItems[i].quantity == 0) {
+          console.log('setting to zeroooo')
+          shopify.RemoveProductFromCart(state.checkoutID, state.shoppingCart.lineItems[i].id)
+        }
+        //shopify.UpdateQuantityInCart(state.checkoutID, state.shoppingCart.lineItems[i].id,  state.shoppingCart.lineItems[i].quantity);
+      }
 
+      const checkoutID = state.shoppingCart.id;
 
       database.pushCartToFulfillmentQueue(checkoutID, state.cartContext);
 

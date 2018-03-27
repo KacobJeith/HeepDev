@@ -115,6 +115,6 @@ export const updateCartContext = (variantID, placeID) => ({
 	placeID
 })
 
-export const pushCartToFulfillmentQueue = () => ({
-	type: 'PUSH_CART_TO_QUEUE'
+export const completeCheckout = () => ({
+	type: 'COMPLETE_CHECKOUT'
 })

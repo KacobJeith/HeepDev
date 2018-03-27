@@ -376,7 +376,6 @@ class CartItemCard extends React.Component {
     )
   }
 
-
   render() {
 
     return (
