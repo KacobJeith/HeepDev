@@ -48,7 +48,7 @@ class ManageCart extends React.Component {
         {...inputs.gridContainer}
         justify='center'
         alignItems='center'>
-        <Grid item xs={12} sm={4}>
+        <Grid item xs={10} sm={8} md={4}>
           <Paper style={{
             position: "relative",
             padding: this.props.theme.spacing.unit * 4,
