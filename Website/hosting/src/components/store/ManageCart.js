@@ -34,11 +34,11 @@ class ManageCart extends React.Component {
     const inputs = {
       gridContainer: {
         style: {
-          height: window.innerHeight,
-          width: window.innerWidth,
+          height: '70vh',
+          width: '100vw',
           overflowX: 'hidden',
-          outline: 'none',
-          margin: 0
+          margin: 0,
+          maxWidth: '100%'
         }
       },
     };
@@ -46,20 +46,32 @@ class ManageCart extends React.Component {
     return (
       <Grid container
         {...inputs.gridContainer}
-        direction='column'
         justify='center'
         alignItems='center'>
-        <Grid item xs={4} sm={6}>
+        <Grid item xs={12} sm={4}>
           <Paper style={{
             position: "relative",
-            height: '50%',
             padding: this.props.theme.spacing.unit * 4,
             backgroundColor: this.props.theme.palette.background.paper,
           }}>
-              <Typography align='center' variant="title" gutterBottom paragraph >
-                Add some items to experience the power of Heep!
-              </Typography>
-              {buttonLink('Back to Store', '/Shop')}
+          <Grid container
+            direction='column'
+            justify='center'
+            alignItems='center'
+            styles={{
+              overflowX: 'hidden',
+              margin: 0
+            }}>
+              <Grid item sm={12}>
+                <Typography align='center' variant="title" gutterBottom paragraph >
+                  Add some items to experience the power of Heep!
+                </Typography>
+              </Grid>
+              <Grid item sm={12}>
+                {buttonLink('Back to Store', '/Shop')}
+            </Grid>
+            </Grid>
+
           </Paper>
         </Grid>
       </Grid>
