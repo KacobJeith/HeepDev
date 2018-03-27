@@ -17,7 +17,7 @@ import {  Grid,
           Paper,
           Select,
           Hidden }         from 'material-ui';
-import { AddShoppingCart } from 'material-ui-icons';
+import { Delete }          from 'material-ui-icons';
 import { withStyles, withTheme } from 'material-ui/styles';
 
 import SmartBadge from '../utilities/SmartBadge'
@@ -25,6 +25,7 @@ import SmartBadge from '../utilities/SmartBadge'
 
 var mapStateToProps = (state, ownProps) => ({
   product: state.shopify[ownProps.productID],
+  checkoutID: state.checkoutID,
   productID: ownProps.productID,
   places: state.places,
   associatedPlace: state.cartContext[ownProps.productID],
@@ -60,7 +61,7 @@ class CartItemCard extends React.Component {
         </Typography>
       </Link>
     )
-  }
+  };
 
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
@@ -68,7 +69,7 @@ class CartItemCard extends React.Component {
 
   handlePlaceUpdate = event => {
     this.props.updateCartContext(this.props.productID, event.target.value);
-  }
+  };
 
   associatedPlace() {
 
@@ -128,7 +129,7 @@ class CartItemCard extends React.Component {
         style={{width: '80%'}}
       />
     )
-  }
+  };
 
   imageWithOverlay() {
 
@@ -161,7 +162,7 @@ class CartItemCard extends React.Component {
         onMouseEnter: ()=> this.setState({hover: true}),
         onMouseLeave: ()=> this.setState({hover: false})
       },
-    }
+    };
 
     return (
       <Link to={'/product/' + this.props.productID}>
@@ -171,7 +172,7 @@ class CartItemCard extends React.Component {
         </div>
       </Link>
     )
-  }
+  };
 
   productPrice() {
 
@@ -180,7 +181,7 @@ class CartItemCard extends React.Component {
             ${this.props.product.variants[0].price}
         </Typography>
     )
-  }
+  };
 
   totalPrice() {
 
@@ -189,13 +190,23 @@ class CartItemCard extends React.Component {
             ${this.props.product.variants[0].price * this.props.quantity}
         </Typography>
     )
-  }
+  };
 
   titleBarItem = (title, variant='body2') => (
     <Typography variant={variant} align="left">
           {title}
     </Typography>
-  )
+  );
+
+  deleteButton() {
+    return (
+      <IconButton
+        onClick={(event) => {this.props.removeProductFromCart(this.props.lineItemID)}}
+      >
+        <Delete/>
+      </IconButton>
+    )
+  };
 
   normalCart() {
     return (
@@ -254,7 +265,7 @@ class CartItemCard extends React.Component {
         inputProps={{...inputs.textField}}
       />
     )
-  }
+  };
 
   mobileAssociatedPlace() {
     const inputs = {
@@ -322,7 +333,7 @@ class CartItemCard extends React.Component {
         />
       </FormControl>
     )
-  }
+  };
 
   mobileCart() {
 
@@ -361,7 +372,17 @@ class CartItemCard extends React.Component {
             </Grid>
 
             <Grid item xs={12} {...inputs.gridItem}>
-              {this.mobileProductQuantity()}
+              <Grid container
+                justify='center'
+                alignItems='center'
+                spacing={0}>
+                <Grid item xs={11} style={{margin: 0}}>
+                  {this.mobileProductQuantity()}
+                </Grid>
+                <Grid item xs={1} style={{marginTop: 12}}>
+                  {this.deleteButton()}
+                </Grid>
+              </Grid>
             </Grid>
 
             <Grid item xs={12} {...inputs.gridItem}>
