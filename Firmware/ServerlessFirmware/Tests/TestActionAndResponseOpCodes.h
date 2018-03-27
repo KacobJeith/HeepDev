@@ -499,6 +499,63 @@ void TestGetAnalyticsString()
 #endif
 }
 
+void TestAddWiFiCOP()
+{
+	std::string TestName = "Test Add WiFi COP";
+
+	ClearDeviceMemory();
+
+	ClearInputBuffer();
+	inputBuffer[0] = SetWiFiDataOpCode;
+	inputBuffer[1] = 17;
+	inputBuffer[2] = 0;
+	inputBuffer[3] = 8;
+	inputBuffer[4] = (unsigned char)'M';
+	inputBuffer[5] = (unsigned char)'a';
+	inputBuffer[6] = (unsigned char)'g';
+	inputBuffer[7] = (unsigned char)'D';
+	inputBuffer[8] = (unsigned char)'y';
+	inputBuffer[9] = (unsigned char)'l';
+	inputBuffer[10] = (unsigned char)'a';
+	inputBuffer[11] = (unsigned char)'n';
+	inputBuffer[12] = 6;
+	inputBuffer[13] = (unsigned char)'S';
+	inputBuffer[14] = (unsigned char)'e';
+	inputBuffer[15] = (unsigned char)'c';
+	inputBuffer[16] = (unsigned char)'r';
+	inputBuffer[17] = (unsigned char)'e';
+	inputBuffer[18] = (unsigned char)'t';
+
+	ExecuteControlOpCodes();
+
+	PrintBuffer(deviceMemory, curFilledMemory);
+
+	char RetrievedSSID [20];
+	char RetrievedPassword [20];
+	for(int i = 0; i < 20; i++)
+		RetrievedSSID[i] = RetrievedPassword[i] = '\0';
+
+	int didFindMemory = GetWiFiFromMemory(RetrievedSSID, RetrievedPassword, 0);
+	std::string RetreivedSSIDStr(RetrievedSSID);
+	std::string RetreivedPasswordStr(RetrievedPassword);
+
+	std::string expectedSSID = "MagDylan";
+	ExpectedValue valueList [3];
+	valueList[0].valueName = "SSID Match";
+	valueList[0].expectedValue = 1;
+	valueList[0].actualValue = RetreivedSSIDStr == expectedSSID;
+
+	valueList[1].valueName = "Password Match";
+	valueList[1].expectedValue = 1;
+	valueList[1].actualValue = RetreivedPasswordStr == std::string("Secret"); 
+
+	valueList[2].valueName = "Found Match";
+	valueList[2].expectedValue = 0;
+	valueList[2].actualValue = didFindMemory;
+
+	CheckResults(TestName, valueList, 3);
+}
+
 void TestActionAndResponseOpCodes()
 {
 	TestClearOutputBufferAndAddChar();
@@ -512,4 +569,5 @@ void TestActionAndResponseOpCodes()
 	TestAddMOPOpCode();
 	TestDeleteMOPOpCode();
 	TestGetAnalyticsString();
+	TestAddWiFiCOP();
 }
