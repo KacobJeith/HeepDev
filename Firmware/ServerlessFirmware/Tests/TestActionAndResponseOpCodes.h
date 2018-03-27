@@ -528,8 +528,6 @@ void TestAddWiFiCOP()
 
 	ExecuteControlOpCodes();
 
-	PrintBuffer(deviceMemory, curFilledMemory);
-
 	char RetrievedSSID [20];
 	char RetrievedPassword [20];
 	for(int i = 0; i < 20; i++)
