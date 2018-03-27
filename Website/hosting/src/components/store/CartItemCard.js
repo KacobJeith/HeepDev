@@ -244,7 +244,7 @@ class CartItemCard extends React.Component {
         id="quantity"
         label='Quantity'
         fullWidth={true}
-        value={Math.max(1, this.props.quantity)}
+        value={this.props.quantity}
         onChange={(event) => {this.props.updateProductQuantity(this.props.lineItemID, event.target.value)}}
         type="number"
         InputLabelProps={{
@@ -339,41 +339,43 @@ class CartItemCard extends React.Component {
       },
     };
 
-    return(
-    <Grid item xs={12}>
-      <Grid container
-        direction='column'
-        alignItems='center'
-        justify='center'
-        spacing={8}>
-
+    if (this.props.titleBar == false) {
+      return(
         <Grid item xs={12}>
-          {this.productTitle('title', 'center')}
-        </Grid>
+          <Grid container
+            direction='column'
+            alignItems='center'
+            justify='center'
+            spacing={8}>
 
-        <Grid item xs={12}>
-          {this.imageWithOverlay()}
-        </Grid>
+            <Grid item xs={12}>
+              {this.productTitle('title', 'center')}
+            </Grid>
 
-        <Grid item xs={12} {...inputs.gridItem}>
-          {this.mobileAssociatedPlace()}
-        </Grid>
+            <Grid item xs={12}>
+              {this.imageWithOverlay()}
+            </Grid>
 
-        <Grid item xs={12} {...inputs.gridItem}>
-          {this.mobileProductQuantity()}
-        </Grid>
+            <Grid item xs={12} {...inputs.gridItem}>
+              {this.mobileAssociatedPlace()}
+            </Grid>
 
-        <Grid item xs={12} {...inputs.gridItem}>
-          {this.mobilePriceDisabledForm('Item Price', this.props.product.variants[0].price)}
-        </Grid>
+            <Grid item xs={12} {...inputs.gridItem}>
+              {this.mobileProductQuantity()}
+            </Grid>
 
-        <Grid item xs={12} {...inputs.gridItem}>
-          {this.mobilePriceDisabledForm('Total Price', this.props.product.variants[0].price * this.props.quantity)}
-        </Grid>
+            <Grid item xs={12} {...inputs.gridItem}>
+              {this.mobilePriceDisabledForm('Item Price', this.props.product.variants[0].price)}
+            </Grid>
 
-      </Grid>
-    </Grid>
-    )
+            <Grid item xs={12} {...inputs.gridItem}>
+              {this.mobilePriceDisabledForm('Total Price', this.props.product.variants[0].price * this.props.quantity)}
+            </Grid>
+
+          </Grid>
+        </Grid>
+        )
+      }
   }
 
   render() {

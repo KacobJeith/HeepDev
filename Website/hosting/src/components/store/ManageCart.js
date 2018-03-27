@@ -81,7 +81,12 @@ class ManageCart extends React.Component {
         </Grid>
       </Grid>
     )
-  }
+  };
+
+  checkoutButton = () => (
+    buttonLinkWithAction('Proceed to Checkout', '/Checkout', () =>
+    this.props.completeCheckout())
+  )
 
   orderInProgressNormal = () => (
       <Grid container justify='center' style={{marginTop: 20, maxWidth:'100%'}}>
@@ -91,7 +96,7 @@ class ManageCart extends React.Component {
               {this.cartTitleLine()}
             </Grid>
             <Paper elevation={6} style={{padding:this.props.theme.spacing.unit*4}}>
-
+              <CartItemCard titleBar={true}/>
               <Divider style={{margin: this.props.theme.spacing.unit * 2}}/>
               {this.props.lineItems.map((cartItem) => (
                 <CartItemCard
@@ -106,7 +111,7 @@ class ManageCart extends React.Component {
               {this.cartSubtotal()}
             </Paper>
             <Grid item xs={12} style={{marginTop: this.props.theme.spacing.unit * 4}}>
-              {buttonLinkWithAction('Proceed to Checkout', '/Checkout', () => this.props.completeCheckout())}
+              {this.checkoutButton()}
             </Grid>
           </Grid>
         </Grid>
@@ -114,7 +119,6 @@ class ManageCart extends React.Component {
   )
 
   orderInProgressMobile() {
-
     const inputs = {
       gridContainer: {
         style: {
@@ -136,7 +140,7 @@ class ManageCart extends React.Component {
         {this.cartTitleLine('display1')}
         </Grid>
         {this.props.lineItems.map((cartItem) => (
-          <Grid item xs={12}>
+          <Grid item xs={12} key={cartItem.variant.id}>
             <Paper elevation={6} style={{padding:this.props.theme.spacing.unit*4}}>
               <CartItemCard
               key={cartItem.variant.id}
@@ -163,7 +167,7 @@ class ManageCart extends React.Component {
             marginBottom: 15,
             width: '100%'
           }}>
-          {buttonLinkWithAction('Proceed to Checkout', '/Checkout', () => this.props.completeCheckout() )}
+          {this.checkoutButton()}
         </Grid>
       </Grid>
     )
