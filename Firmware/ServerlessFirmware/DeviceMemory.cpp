@@ -94,6 +94,18 @@ void AddIPToMemory(struct HeepIPAddress theIP)
 
 void SetDeviceNameInMemory_Byte(char* deviceName, int numCharacters, heepByte* deviceID)
 {
+	int counter = 0;
+	
+	while(counter < curFilledMemory)
+	{
+		if(deviceMemory[counter] == DeviceNameOpCode){
+			deviceMemory[counter] = FragmentOpCode;
+		}
+
+		counter = SkipOpCode(counter);
+	}
+	
+
 	PerformPreOpCodeProcessing_Byte(deviceID);
 
 	AddNewCharToMemory(DeviceNameOpCode);
