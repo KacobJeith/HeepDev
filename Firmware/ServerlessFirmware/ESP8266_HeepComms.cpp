@@ -11,7 +11,7 @@ unsigned int localPort = 5000;
 // An EthernetUDP instance to let us send and receive packets over UDP
 WiFiUDP Udp;
 
-String fallbackSSID = "SmoothHeep";
+String fallbackSSID = "SmoothHeep-2.4";
 String fallbackPassword = "SenorEgg";
 
 boolean InAPMode = false;
