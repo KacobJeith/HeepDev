@@ -25,9 +25,18 @@ class ManageCart extends React.Component {
 
   cartSubtotal = () => (
     <Typography align='right' variant="title" gutterBottom paragraph >
-      Subtotal: ${this.props.cart.subtotalPrice}
+      Subtotal: ${this.calculateSubtotal()}
     </Typography>
   )
+
+  calculateSubtotal() {
+    var subtotal = 0;
+    for (var i = 0; i < this.props.lineItems.length; i++) {
+      subtotal += this.props.lineItems[i].quantity * parseInt(this.props.lineItems[i].variant.price);
+    }
+
+    return subtotal
+  }
 
   cartEmpty() {
 

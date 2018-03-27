@@ -59,13 +59,11 @@ export default function(state = initialState, action) {
       } else {
 
           var newState = JSON.parse(JSON.stringify(state.shoppingCart))//Object.assign(state.shoppingCart);
-          console.log('newwww: ', newState);
 
         for (var i in state.shoppingCart.lineItems) {
 
           if ( state.shoppingCart.lineItems[i].id == action.lineItemID) {
             newState.lineItems[i].quantity = 0;
-            console.log('found item:', newState )
             return Immutable.Map(state).set('shoppingCart', newState).toJS()
           }
         }
@@ -118,14 +116,10 @@ export default function(state = initialState, action) {
 
     case 'COMPLETE_CHECKOUT' :
 
-      console.log('Pushing cart');
-
       for (var i in state.shoppingCart.lineItems) {
         if (state.shoppingCart.lineItems[i].quantity == 0) {
-          console.log('setting to zeroooo')
           shopify.RemoveProductFromCart(state.checkoutID, state.shoppingCart.lineItems[i].id)
         }
-        //shopify.UpdateQuantityInCart(state.checkoutID, state.shoppingCart.lineItems[i].id,  state.shoppingCart.lineItems[i].quantity);
       }
 
       const checkoutID = state.shoppingCart.id;
