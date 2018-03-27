@@ -18,7 +18,6 @@ import {  Typography,
           ListItem,
           ListItemIcon,
           ListItemText } from "material-ui";
-import { Add }  from 'material-ui-icons'
 
 import VerticalStepper from '../utilities/VerticalStepper'
 
@@ -53,18 +52,9 @@ const styles = theme => ({
 
 class AddPlaceModal extends React.Component {
   state = {
-    open: false,
     name: 'Home',
     ssid: '',
     password: ''
-  };
-
-  handleOpen = () => {
-    this.setState({ open: true });
-  };
-
-  handleClose = () => {
-    this.setState({ open: false });
   };
 
   handleChange = name => event => {
@@ -76,12 +66,7 @@ class AddPlaceModal extends React.Component {
   addPlaceListButton() {
 
     return (
-      <ListItem button color='secondary' onClick={()=> this.setState({open: true})}>
-        <ListItemIcon>
-          <Add/>
-        </ListItemIcon>
-        <ListItemText inset secondary='Add a New Place' />
-      </ListItem>
+      this.props.modalElement
     )
   }
 
@@ -168,7 +153,7 @@ class AddPlaceModal extends React.Component {
         ],
         completionCallback: () => {
           this.props.saveNewPlace(this.state.name, this.state.ssid, this.state.password);
-          this.handleClose();
+          this.props.handleClose();
         }
       }
     }
@@ -188,8 +173,8 @@ class AddPlaceModal extends React.Component {
       <div>
         {this.addPlaceListButton()}
         <Modal
-          open={this.state.open}
-          onClose={this.handleClose}>
+          open={this.props.open}
+          onClose={this.props.handleClose}>
           <div className={classes.paper}>
             {this.createPlaceForm()}
           </div>
