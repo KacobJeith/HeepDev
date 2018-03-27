@@ -3,17 +3,18 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 import * as Actions from '../../redux/actions'
-import {  Grid, 
+import {  Grid,
           Typography,
           MenuItem,
           InputLabel,
-          FormControl, 
+          FormControl,
           TextField,
-          IconButton, 
-          Badge, 
+          IconButton,
+          Badge,
           Button,
-          Paper, 
-          Select }   from 'material-ui';
+          Paper,
+          Select,
+          Hidden }   from 'material-ui';
 import { AddShoppingCart } from 'material-ui-icons';
 import { withStyles, withTheme } from 'material-ui/styles';
 
@@ -44,7 +45,7 @@ class CartItemCard extends React.Component {
       deletionHover: false,
       quantity: props.quantity
     }
-  }
+  };
 
   productTitle() {
 
@@ -55,7 +56,7 @@ class CartItemCard extends React.Component {
         </Typography>
       </Link>
     )
-  }
+  };
 
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
@@ -63,7 +64,7 @@ class CartItemCard extends React.Component {
 
   handlePlaceUpdate = event => {
     this.props.updateCartContext(this.props.productID, event.target.value);
-  }
+  };
 
   associatedPlace() {
 
@@ -74,7 +75,7 @@ class CartItemCard extends React.Component {
           minWidth: 120,
         }
       }
-    }
+    };
 
     return (
       <FormControl {...inputs.formControl}>
@@ -97,7 +98,7 @@ class CartItemCard extends React.Component {
         </Select>
       </FormControl>
     )
-  }
+  };
 
   productQuantity() {
 
@@ -108,7 +109,7 @@ class CartItemCard extends React.Component {
           minWidth: 120,
         }
       }
-    }
+    };
 
     return (
       <TextField
@@ -123,7 +124,7 @@ class CartItemCard extends React.Component {
         style={{maxWidth:'80%'}}
       />
     )
-  }
+  };
 
 
   imageWithOverlay() {
@@ -157,17 +158,17 @@ class CartItemCard extends React.Component {
         onMouseEnter: ()=> this.setState({hover: true}),
         onMouseLeave: ()=> this.setState({hover: false})
       },
-    }
+    };
 
     return (
       <Link to={'/product/' + this.props.productID}>
-        <div {...inputs.imageAndOverlayContainer}> 
+        <div {...inputs.imageAndOverlayContainer}>
           <img {...inputs.image}/>
           <div {...inputs.overlay}/>
         </div>
       </Link>
     )
-  }
+  };
 
   productPrice() {
 
@@ -176,7 +177,7 @@ class CartItemCard extends React.Component {
             ${this.props.product.variants[0].price}
         </Typography>
     )
-  }
+  };
 
   totalPrice() {
 
@@ -185,46 +186,84 @@ class CartItemCard extends React.Component {
             ${this.props.product.variants[0].price * this.props.quantity}
         </Typography>
     )
-  }
+  };
 
   titleBarItem = (title) => (
     <Typography variant='body2' align="left">
           {title}
     </Typography>
-  )
+  );
+
+  mobileTitleItem = (title) => (
+    <Typography variant='body1'>
+          {title}:
+    </Typography>
+  );
+
+  normalCart() {
+    return (
+      <Hidden xsDown={true}>
+        <Grid item xs={12} >
+          <Grid container alignItems='center' direction='row' justify='space-between' spacing={16} >
+            <Grid item xs={2}>
+              {this.props.titleBar ? this.titleBarItem() : this.imageWithOverlay() }
+            </Grid>
+
+            <Grid item xs={3} >
+              {this.props.titleBar ? this.titleBarItem('Product') : this.productTitle()}
+            </Grid>
+
+            <Grid item xs={2} >
+              {this.props.titleBar ? this.titleBarItem('Place') : this.associatedPlace()}
+            </Grid>
+
+            <Grid item xs={1} >
+              {this.props.titleBar ? this.titleBarItem('Price') : this.productPrice()}
+            </Grid>
+
+            <Grid item xs={1} >
+              {this.props.titleBar ? this.titleBarItem('Quantity') : this.productQuantity()}
+            </Grid>
+
+            <Grid item xs={1} >
+              {this.props.titleBar ? this.titleBarItem('Total Price') : this.totalPrice()}
+            </Grid>
+
+          </Grid>
+        </Grid>
+      </Hidden>
+    )
+  }
+
+  mobileCart() {
+    return (
+      <Hidden smUp={true}>
+        <Grid container
+          direction='column'
+          justify='center'
+          alignItems='center'>
+          <Grid item xs={12}>
+            {this.productTitle()}
+          </Grid>
+          <Grid item xs={12}>
+            {this.imageWithOverlay()}
+          </Grid>
+          <Grid item xs={12}>
+            {this.mobileTitleItem('Place')}{this.associatedPlace()}
+          </Grid>
+        </Grid>
+      </Hidden>
+    )
+  }
 
 
   render() {
 
     return (
-       <Grid item xs={12} >
-         <Grid container alignItems='center' direction='row' justify='space-between' spacing={16} >
-           <Grid item xs={2}>
-             {this.props.titleBar ? this.titleBarItem() : this.imageWithOverlay() }
-           </Grid>
-
-           <Grid item xs={3} >
-             {this.props.titleBar ? this.titleBarItem('Product') : this.productTitle()}
-           </Grid>
-
-           <Grid item xs={2} >
-             {this.props.titleBar ? this.titleBarItem('Place') : this.associatedPlace()}
-           </Grid>
-
-           <Grid item xs={1} >
-             {this.props.titleBar ? this.titleBarItem('Price') : this.productPrice()}
-           </Grid>
-
-           <Grid item xs={1} >
-             {this.props.titleBar ? this.titleBarItem('Quantity') : this.productQuantity()}
-           </Grid>
-
-           <Grid item xs={1} >
-             {this.props.titleBar ? this.titleBarItem('Total Price') : this.totalPrice()}
-           </Grid>
-
-         </Grid>
-      </Grid>
+       <div>
+         {this.normalCart()}
+         {this.mobileCart()}
+       </div>
     )
   }
 }
@@ -234,4 +273,3 @@ var mapDispatchToProps = (dispatch) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme()(withStyles(styles)(CartItemCard)))
-
