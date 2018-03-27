@@ -91,8 +91,8 @@ class DeviceIdentity extends React.Component {
             onChange={ (event) => {this.props.selectPlace(event.target.value)}}
             input={<Input name="place-helper" id="place-helper" />}
           >
-            {Object.keys(this.props.places).concat('Custom').map((thisKey) => (
-              <MenuItem value={thisKey} key={thisKey}>{this.props.places[thisKey] ? this.props.places[thisKey].name : 'Custom'}</MenuItem>
+            {Object.keys(this.props.places).concat('Enter New WiFi').map((thisKey) => (
+              <MenuItem value={thisKey} key={thisKey}>{this.props.places[thisKey] ? this.props.places[thisKey].name : 'Enter New WiFi'}</MenuItem>
             ))}
           </Select>
 
@@ -101,7 +101,7 @@ class DeviceIdentity extends React.Component {
               <GenericTextInput 
                 title='SSID'
                 width='100%'
-                disabled={this.props.selectedPlace != 'Custom'}
+                disabled={this.props.selectedPlace != 'Enter New WiFi'}
                 value={this.props.ssid}
                 onChange={(value) => {this.props.updateSSID(value)}}
               />
@@ -110,18 +110,26 @@ class DeviceIdentity extends React.Component {
               <GenericTextInput 
                 value={this.props.ssidPassword}
                 width='100%'
-                disabled={this.props.selectedPlace != 'Custom'}
+                disabled={this.props.selectedPlace != 'Enter New WiFi'}
                 title='Password'
                 onChange={(value) => {this.props.updateSSIDPassword(value)}}
               />
             </Grid>
-            <Grid item xs={12}>
-              <AddPlaceModal open={this.state.open} handleClose={()=> this.setState({open: false})} modalElement={
-                <Button style={{float:'right'}} onClick={() => this.setState({open: true})}>
-                  Save for Later
-                </Button>
-              }/>
-            </Grid>
+            {this.props.selectedPlace == 'Enter New WiFi' && (
+                <Grid item xs={12}>
+                  <AddPlaceModal 
+                    open={this.state.open} 
+                    ssid={this.props.ssid} 
+                    password={this.props.ssidPassword} 
+                    handleClose={()=> this.setState({open: false})} 
+                    modalElement={
+                      <Button style={{float:'right'}} onClick={() => this.setState({open: true})}>
+                        Save for Later
+                      </Button>
+                    }/>
+                </Grid>
+            )}
+            
           </Grid>
 
         </FormControl>
