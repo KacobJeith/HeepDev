@@ -138,6 +138,12 @@ class ManageCart extends React.Component {
             </Paper>
           </Grid>
         ))}
+        <Grid item xs={12} style={{padding: 0, marginTop: 15, marginBottom: 0, width: '100%'}}>
+          {this.cartSubtotal()}
+        </Grid>
+        <Grid item sm={12} style={{padding: 0, marginTop: 0, marginBottom: 15, width: '100%'}}>
+          {buttonLinkWithAction('Proceed to Checkout', '/Checkout', () => this.props.pushCartToFulfillmentQueue() )}
+        </Grid>
       </Grid>
     )
   }

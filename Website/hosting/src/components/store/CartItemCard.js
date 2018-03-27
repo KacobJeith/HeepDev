@@ -8,6 +8,8 @@ import {  Grid,
           MenuItem,
           InputLabel,
           FormControl,
+          Input,
+          InputAdornment,
           TextField,
           IconButton,
           Badge,
@@ -100,15 +102,15 @@ class CartItemCard extends React.Component {
         </Select>
       </FormControl>
     )
-  }
+  };
 
   productQuantity() {
 
     const inputs = {
-      formControl: {
+      textField: {
         style: {
-          margin: this.props.theme.spacing.unit,
-          minWidth: 120,
+          width: '80%',
+          textAlign: 'center',
         }
       }
     }
@@ -123,11 +125,10 @@ class CartItemCard extends React.Component {
           shrink: true,
         }}
         margin="normal"
-        InputProps={{textAlign: 'center'}}
+        style={{width: '80%'}}
       />
     )
   }
-
 
   imageWithOverlay() {
 
@@ -229,9 +230,114 @@ class CartItemCard extends React.Component {
     )
   };
 
+  mobileProductQuantity() {
+    const inputs = {
+      textField: {
+        style: {
+          textAlign: 'center',
+        }
+      }
+    };
+
+    return (
+      <TextField
+        id="quantity"
+        label='Quantity'
+        fullWidth={true}
+        value={Math.max(1, this.props.quantity)}
+        onChange={(event) => {this.props.updateProductQuantity(this.props.lineItemID, event.target.value)}}
+        type="number"
+        InputLabelProps={{
+          shrink: true,
+        }}
+        margin="normal"
+        inputProps={{...inputs.textField}}
+      />
+    )
+  }
+
+  mobileAssociatedPlace() {
+    const inputs = {
+      formControl: {
+        style: {
+          textAlign: 'center'
+        }
+      }
+    }
+
+    return (
+      <FormControl
+        fullWidth={true}
+        {...inputs.formControl}>
+        <InputLabel htmlFor='wifi-helper'>
+          Place
+        </InputLabel>
+        <Select
+          value={this.props.associatedPlace}
+          onChange={this.handlePlaceUpdate}
+          inputProps={{
+            name: 'associatedPlace',
+            id: 'associated-place',
+          }}
+        >
+          <MenuItem value="none">
+            <em>None</em>
+          </MenuItem>
+          {Object.keys(this.props.places).map((thisPlaceKey) => (
+            <MenuItem  value={thisPlaceKey} key={thisPlaceKey}>
+              {this.props.places[thisPlaceKey].name}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    )
+  };
+
+  mobilePriceDisabledForm(label, text) {
+    const input = {
+      center: {
+        style:{
+          textAlign: 'centered'
+        }
+      }
+    }
+    return (
+      <FormControl disabled
+        fullWidth={true}>
+        <InputLabel
+          htmlFor='price-disabled'
+          style={{color: 'rgba(0, 0, 0, 0.54)'}}
+          >
+          {label}
+        </InputLabel>
+        <Input id='price-helper'
+          inputProps={{
+            style: {
+              textAlign: 'center',
+              color: 'rgba(0, 0, 0, 0.87)',
+            },
+          }}
+          value={'$' + text}
+          disableUnderline={true}
+        />
+      </FormControl>
+    )
+  }
+
   mobileCart() {
 
     const { classes } = this.props;
+
+    const inputs = {
+      gridItem: {
+        style: {
+          width: '50%',
+          textAlign: 'center',
+          marginTop: 10,
+          marginBottom: 0
+        }
+      },
+    };
 
     return(
     <Grid item xs={12}>
@@ -240,24 +346,31 @@ class CartItemCard extends React.Component {
         alignItems='center'
         justify='center'
         spacing={8}>
+
         <Grid item xs={12}>
           {this.productTitle('title', 'center')}
         </Grid>
+
         <Grid item xs={12}>
           {this.imageWithOverlay()}
         </Grid>
-        <Grid item xs={12}>
-          {this.associatedPlace()}
+
+        <Grid item xs={12} {...inputs.gridItem}>
+          {this.mobileAssociatedPlace()}
         </Grid>
-        <Grid item xs={12}>
-          {this.productPrice()}
+
+        <Grid item xs={12} {...inputs.gridItem}>
+          {this.mobileProductQuantity()}
         </Grid>
-        <Grid item xs={12}>
-          {this.productQuantity()}
+
+        <Grid item xs={12} {...inputs.gridItem}>
+          {this.mobilePriceDisabledForm('Item Price', this.props.product.variants[0].price)}
         </Grid>
-        <Grid item xs={12}>
-          {this.totalPrice()}
+
+        <Grid item xs={12} {...inputs.gridItem}>
+          {this.mobilePriceDisabledForm('Total Price', this.props.product.variants[0].price * this.props.quantity)}
         </Grid>
+
       </Grid>
     </Grid>
     )
