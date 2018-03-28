@@ -145,6 +145,12 @@ void ControlDaemon()
 
 void PerformHeepTasks()
 {
+	if(resetHeepNetwork)
+	{
+		CreateInterruptServer();
+		resetHeepNetwork = 0;
+	}
+
 	if(IsTaskTime())
 	{
 		unsigned char curTask = GetCurrentTask();

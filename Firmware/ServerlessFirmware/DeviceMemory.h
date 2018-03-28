@@ -38,6 +38,8 @@
 #define SetWiFiDataOpCode			0x22
 #define SetNameOpCode				0x23
 
+#define ResetDeviceNetwork			0x24
+
 extern unsigned char deviceMemory[];
 extern unsigned int curFilledMemory; // Indicate the curent filled memory. 
 						 // Also serve as a place holder to 

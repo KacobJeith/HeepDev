@@ -476,6 +476,15 @@ void ExecuteSetDeviceNameOpCode()
 	FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
 }
 
+void ExecuteResetDeviceNetwork()
+{
+	resetHeepNetwork = 1;
+
+	ClearOutputBuffer();
+	char SuccessMessage [] = "Reset Initiated!";
+	FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
+}
+
 unsigned char IsROP()
 {
 	if(inputBuffer[0] == MemoryDumpOpCode 
@@ -526,6 +535,10 @@ void ExecuteControlOpCodes()
 	else if(ReceivedOpCode == SetNameOpCode)
 	{
 		ExecuteSetDeviceNameOpCode();
+	}
+	else if(ReceivedOpCode == ResetDeviceNetwork)
+	{
+		ExecuteResetDeviceNetwork();
 	}
 	else
 	{

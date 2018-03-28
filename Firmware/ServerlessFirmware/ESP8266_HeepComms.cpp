@@ -39,6 +39,7 @@ void CreateAccessPoint()
 
   if(result == 1)
   {
+    Udp.begin(localPort);
     Serial.println("Creating Server");
     server.begin();
     Serial.println("Server started");
@@ -91,8 +92,6 @@ void CreateInterruptServer()
       Serial.print("IP address: ");
       Serial.println(WiFi.localIP());
 
-      Udp.begin(localPort);
-
       IPAddress localIP = WiFi.localIP();
       Serial.println(localIP);
     }
@@ -103,6 +102,7 @@ void CreateInterruptServer()
     CreateAccessPoint();
   }
   
+  Udp.begin(localPort);
 }
 
 void HandleAPModeRequests()
@@ -145,12 +145,12 @@ void HandleAPModeRequests()
 
 void CheckServerForInputs()
 {
-  if(InAPMode)
-  {
-    HandleAPModeRequests();
-  }
-  else
-  {
+  // if(InAPMode)
+  // {
+  //   HandleAPModeRequests();
+  // }
+  // else
+  // {
     int packetSize = Udp.parsePacket();
     if (packetSize) {
       Serial.print("Received packet of size ");
@@ -193,7 +193,7 @@ void CheckServerForInputs()
       Udp.write(outputBuffer, outputBufferLastByte);
       Udp.endPacket();
     }
-  }
+  // }
 }
 
 void SendOutputBufferToIP(HeepIPAddress destIP)

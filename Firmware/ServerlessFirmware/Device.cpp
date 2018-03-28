@@ -13,6 +13,8 @@ unsigned int numberOfControls = 0;
 unsigned int vertexPointerList[NUM_VERTICES];
 unsigned int numberOfVertices = 0;
 
+heepByte resetHeepNetwork = 0;
+
 void ClearControls()
 {
 	numberOfControls = 0;
