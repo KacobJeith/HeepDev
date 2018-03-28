@@ -353,6 +353,7 @@ const generateDeviceDefinitionsFile = (deviceIDarray, MACAddressArray, autoGenIn
   autoGenContent += autoGenIncludes;
   autoGenContent += `heepByte deviceIDByte [STANDARD_ID_SIZE] = {` + convertIntToHex(deviceIDarray) + `};\n`;
   autoGenContent += `uint8_t mac[6] = {` + convertIntToHex(MACAddressArray) + `};\n`;
+  autoGenContent += `unsigned char clearMemory = 1;\n`;
   
   return autoGenContent
 }
