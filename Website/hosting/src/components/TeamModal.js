@@ -50,7 +50,7 @@ class TeamModal extends React.Component {
 
   nameTitle() {
     return (
-      <Typography variant="title" align="center">
+      <Typography variant="title" align="center" paragraph>
         {this.props.name}
       </Typography>
     )
