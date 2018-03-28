@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux'
 import { withRouter }         from 'react-router-dom'
 import * as actions           from '../../redux/actions'
 import PropTypes              from "prop-types";
+import * as setup from '../../index'
 
 import {  withStyles } from "material-ui/styles";
 import {  Typography,
@@ -18,7 +19,6 @@ import {  Typography,
           ListItem,
           ListItemIcon,
           ListItemText } from "material-ui";
-import { Add }  from 'material-ui-icons'
 
 import VerticalStepper from '../utilities/VerticalStepper'
 
@@ -52,20 +52,16 @@ const styles = theme => ({
 });
 
 class AddPlaceModal extends React.Component {
-  state = {
-    open: false,
-    name: 'Home',
-    ssid: '',
-    password: ''
-  };
-
-  handleOpen = () => {
-    this.setState({ open: true });
-  };
-
-  handleClose = () => {
-    this.setState({ open: false });
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: this.props.name ? this.props.name :'',
+      ssid: this.props.ssid ? this.props.ssid : '',
+      password: this.props.password ? this.props.password : '',
+      pulledProps: false
+    };
+  }
+  
 
   handleChange = name => event => {
     this.setState({
@@ -76,12 +72,7 @@ class AddPlaceModal extends React.Component {
   addPlaceListButton() {
 
     return (
-      <ListItem button color='secondary' onClick={()=> this.setState({open: true})}>
-        <ListItemIcon>
-          <Add/>
-        </ListItemIcon>
-        <ListItemText inset secondary='Add a New Place' />
-      </ListItem>
+      this.props.modalElement
     )
   }
 
@@ -133,6 +124,7 @@ class AddPlaceModal extends React.Component {
             margin="normal"
           />
         </form>
+
       </div>
     )
   }
@@ -167,8 +159,10 @@ class AddPlaceModal extends React.Component {
           }
         ],
         completionCallback: () => {
-          this.props.saveNewPlace(this.state.name, this.state.ssid, this.state.password);
-          this.handleClose();
+          console.log(actions)
+          setup.store.dispatch(actions.saveNewPlace(this.state.name, this.state.ssid, this.state.password));
+          this.setState({pulledProps: false})
+          this.props.handleClose();
         }
       }
     }
@@ -181,15 +175,37 @@ class AddPlaceModal extends React.Component {
     )
   }
 
+  checkParentState() {
+
+    if (this.props.name) {
+      this.setState({name: this.props.name});
+    }
+
+    if (this.props.ssid) {
+      this.setState({ssid: this.props.ssid});
+    }
+
+    if (this.props.password) {
+      this.setState({password: this.props.password});
+    }
+
+    this.setState({pulledProps: true})
+
+  }
+
   render() {
     const { classes } = this.props;
+
+    if (this.props.open && !this.state.pulledProps) {
+      this.checkParentState();
+    }
 
     return (
       <div>
         {this.addPlaceListButton()}
         <Modal
-          open={this.state.open}
-          onClose={this.handleClose}>
+          open={this.props.open}
+          onClose={() => {this.props.handleClose(); this.setState({pulledProps: false})}}>
           <div className={classes.paper}>
             {this.createPlaceForm()}
           </div>

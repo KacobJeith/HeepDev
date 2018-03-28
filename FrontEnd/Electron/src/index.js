@@ -38,11 +38,12 @@ const startState = {
   displayingAnalytics: '',
 
   designer: {
-    deviceName: 'DefaultDevice',
+    deviceName: '',
     numControls: 0,
     physicalLayer: 'wifi',
-    ssid: 'your_ssid_here',
-    ssidPassword: 'your_ssid_pwd',
+    selectedPlace: 'Enter New WiFi',
+    ssid: '',
+    ssidPassword: '',
     systemType: 'ESP8266',
     iconSelected: 1,
     selectingIcon: false,
