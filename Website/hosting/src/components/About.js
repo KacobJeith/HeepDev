@@ -18,7 +18,7 @@ class About extends React.Component {
       paddingTop: 25,
       paddingBottom: 25,
       backgroundColor: '#00adee',
-      imagePath: banners.testPhoto,
+      imagePath: banners.brooklynBridge,
       minHeight: 400,
     }
 
@@ -27,7 +27,42 @@ class About extends React.Component {
     )
   };
 
-  aboutUs() {
+  mission() {
+    const inputs = {
+      paddingTop: 25,
+      paddingBottom: 25,
+    };
+
+    return (
+      SectionCard(inputs,
+        <Grid container style={{
+          maxWidth:'100%',
+          margin: '0 auto',
+          backgroundColor: '#B0BEC5'
+         }}
+         justify='center' alignItems='center'>
+          <Grid item  xs={12} md={8}>
+            <Typography variant='headline' align='center'>
+              Our Mission
+            </Typography>
+            <br/>
+            <Typography variant='subheading' align='center' gutterBottom paragraph>
+              Heep leverages connectedness to empower people to be more productive, 
+              make better decisions, 
+              and enjoy a better quality of life. 
+            </Typography>
+            <Typography variant='subheading' align='center' paragraph>
+              The Heep platform makes connectivity the simplest and most secure way to design any product. 
+              By reimagining IoT as a critical infrastructure rather than an add-on luxury, 
+              Heep is able to deliver a scalable and intuitive experience at a fraction of the cost.
+            </Typography>
+          </Grid>
+        </Grid>
+      )
+    );
+  };
+
+  ourValues() {
     const inputs = {
       paddingTop: 25,
       paddingBottom: 25,
@@ -42,14 +77,11 @@ class About extends React.Component {
          justify='center' alignItems='center'>
           <Grid item  xs={12} md={8}>
             <Typography variant='headline' align='center'>
-              Connect Your World
+              Our Values
             </Typography>
             <br/>
             <Typography variant='subheading' align='center' gutterBottom paragraph>
-              Heep leverages connectedness to empower people to be more productive, make better decisions, and enjoy a better quality of life. 
-            </Typography>
-            <Typography variant='subheading' align='center' paragraph>
-              The Heep platform makes connectivity the simplest and most secure way to design any product. By reimagining IoT as a critical infrastructure rather than an add-on luxury, Heep is able to deliver a scalable and intuitive experience at a fraction of the cost.
+              Open Source, Secure, Easy even for the Technophobe
             </Typography>
           </Grid>
         </Grid>
@@ -62,17 +94,24 @@ class About extends React.Component {
       PlugAndPlay: {
         title: 'Easy to Install',
         imagePath: svgs.plugAndPlay,
-        desc: "Unbox, wire, and play. Automate your home or booby trap it. We can set it up for you, so you don't have to worry about code. Heep makes connecting things easy."
+        desc: `Unbox, wire, and play. 
+                Automate your home or booby trap it. 
+                We can set it up for you, so you don't have to worry about code. 
+                Heep makes connecting things easy.`
       },
       CloudLess: {
         title: 'Cloud Less',
         imagePath: svgs.cloudLess,
-        desc: "Heep doesn't require an internet connection. We don't send things to the cloud, so rest assured, no one's listening in or watching you. You do you, so just relax."
+        desc: `Heep doesn't require an internet connection. 
+                We don't send things to the cloud, so rest assured, no one's listening in or watching you. 
+                You do you, so just relax.`
       },
       DeviceParty: {
         title: 'Device Party',
         imagePath: svgs.deviceParty,
-        desc: "Connect your devices and get them to talk with you and other devices. They send and receive commands, provide data, and interact with you. Enable your environment."
+        desc: `Connect your devices and get them to talk with you and other devices. 
+                They send and receive commands, provide data, and interact with you. 
+                Enable your environment.`
       },
     };
 
@@ -117,7 +156,9 @@ class About extends React.Component {
             </Typography>
             <br/>
             <Typography variant='subheading' align='center' paragraph>
-              Heep was founded in February 2017 with the dream of ubiquitous connectivity. We thought long and hard about what the world needs to make that happen. Thus, the Heep operating system was born. 
+              Heep was founded in February 2017 with the dream of ubiquitous connectivity. 
+              We thought long and hard about what the world needs to make that happen. 
+              Thus, the Heep operating system was born. 
             </Typography>
           </Grid>
         </Grid>
@@ -143,7 +184,7 @@ class About extends React.Component {
           name: 'Jacob Keith',
           imagePath: founders.jacob,
           imageButtonWidth: '75%',
-          desc1: 'Jacob Keith, Founder & CEO, is responsible for Heep’s vision, strategy, and full-stack frontend development. Prior to Heep, he was Product Director at Nanotronics, where he juggled his roles writing computer vision algorithms for industrial process control, managing an engineering team spread across three states, and heading global sales in Asia.',
+          desc1: 'Jacob Keith, Founder & CEO, is responsible for Heep’s vision, strategy, and full-stack frontend development. Prior to Heep, he was Product Director at Nanotronics, where he juggled his roles writing computer vision algorithms for industrial process control, managing an engineering team spread across three states, and heading customer relations in Asia.',
           desc2: 'Jacob speaks fluent Mandarin Chinese and slays at the violin. He earned a B.S. in Materials Science & Engineering from Columbia University'
         },
         yenny: {
@@ -151,7 +192,7 @@ class About extends React.Component {
           imagePath: founders.yenny,
           imageButtonWidth: '75%',
           desc1: 'Yenny Su, Founder & CRO, spends her time on strategy, finance, and business development. Prior to Heep, she was a consultant at BlackRock, where she helped build its fledgling advisory business and provided investment strategy to the firm’s largest institutional clients, ranging from $300 million to $50 billion in assets under management.',
-          desc2: 'Yenny loves the outdoors and once spent a summer hiking from Mexico to Canada on the Pacific Crest Trail. She earned a B.A., with honors, in Financial Economics and Political Science from Columbia University.'
+          desc2: 'Yenny loves the outdoors and spent most of 2017 hiking from Mexico to Canada on the Pacific Crest Trail. She earned a B.A., with honors, in Financial Economics and Political Science from Columbia University.'
         },
         dylan: {
           name: 'Dylan Fashbaugh',
@@ -164,7 +205,8 @@ class About extends React.Component {
     };
 
     return (
-      <div>
+      <div style={{
+          marginBottom: 100}}>
         {SectionCard(inputs.section,
           <Typography variant='headline' align='center'>
             Our Team
@@ -195,7 +237,8 @@ class About extends React.Component {
   	return (
       <div>
         {this.topBanner()}
-        {this.aboutUs()}
+        {this.mission()}
+        {this.ourValues()}
         {this.aboutGraphics()}
         {this.ourStory()}
         {this.teamSection()}
