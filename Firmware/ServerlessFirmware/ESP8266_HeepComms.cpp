@@ -68,6 +68,7 @@ void CreateInterruptServer()
     if(GetWiFiFromMemory(currentSSID, currentPassword, currentWiFiPriorityID) == 0){
       onFallback = false;
       Serial.print("Attempt SSID: "); Serial.println(currentSSID);
+      Serial.print("Attempt Password: "); Serial.println(currentPassword);
       WiFi.begin(currentSSID, currentPassword);
     }
     else{
