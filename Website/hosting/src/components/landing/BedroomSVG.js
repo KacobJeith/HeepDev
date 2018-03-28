@@ -67,6 +67,7 @@ class BedroomSVG extends React.Component{
 
   componentDidMount() {
     this.addButtonListeners();
+    TweenLite.to(paperSignalUmbrella, 0.01, {rotation: 0.01, scaleX: 10, scaleY: 10})
   };
 
     addButtonListeners() {
