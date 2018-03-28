@@ -45,8 +45,11 @@ class About extends React.Component {
               Connect Your World
             </Typography>
             <br/>
-            <Typography variant='subheading' align='center'>
-              We built a sophisticated operating system for your smart devices. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+            <Typography variant='subheading' align='center' gutterBottom paragraph>
+              Heep leverages connectedness to empower people to be more productive, make better decisions, and enjoy a better quality of life. 
+            </Typography>
+            <Typography variant='subheading' align='center' paragraph>
+              The Heep platform makes connectivity the simplest and most secure way to design any product. By reimagining IoT as a critical infrastructure rather than an add-on luxury, Heep is able to deliver a scalable and intuitive experience at a fraction of the cost.
             </Typography>
           </Grid>
         </Grid>
@@ -113,8 +116,8 @@ class About extends React.Component {
               Our Story
             </Typography>
             <br/>
-            <Typography variant='subheading' align='center'>
-              Heep was founded in February 2017 with the dream of ubiquitous connectivity. We thought long and hard about what the world needs to make that happen. Thus, the Heep operating system was born. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+            <Typography variant='subheading' align='center' paragraph>
+              Heep was founded in February 2017 with the dream of ubiquitous connectivity. We thought long and hard about what the world needs to make that happen. Thus, the Heep operating system was born. 
             </Typography>
           </Grid>
         </Grid>
