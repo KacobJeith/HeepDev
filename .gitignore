@@ -51,7 +51,7 @@ sysinfo.txt
 *.s#*
 *.l#*
 
-# Eagle Gerber Files
+# Eagle Gerber Files.
 *.gpi
 *.GTL
 *.GBL
