@@ -304,7 +304,7 @@ class CartItemCard extends React.Component {
     )
   };
 
-  mobilePriceDisabledForm(label, text) {
+  mobilePriceForm(label, text) {
     const input = {
       center: {
         style:{
@@ -386,11 +386,11 @@ class CartItemCard extends React.Component {
             </Grid>
 
             <Grid item xs={12} {...inputs.gridItem}>
-              {this.mobilePriceDisabledForm('Item Price', this.props.product.variants[0].price)}
+              {this.mobilePriceForm('Item Price', this.props.product.variants[0].price)}
             </Grid>
 
             <Grid item xs={12} {...inputs.gridItem}>
-              {this.mobilePriceDisabledForm('Total Price', this.props.product.variants[0].price * this.props.quantity)}
+              {this.mobilePriceForm('Total Price', this.props.product.variants[0].price * this.props.quantity)}
             </Grid>
 
           </Grid>
