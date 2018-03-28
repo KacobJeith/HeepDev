@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="8.6.0">
+<eagle version="8.6.3">
 <drawing>
 <settings>
 <setting alwaysvectorfont="yes"/>
@@ -5692,6 +5692,8 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <part name="U$3" library="Heep" deviceset="4P_JST_MINI_MICRO" device=""/>
 <part name="GND7" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="+3V11" library="supply1" deviceset="+3V3" device=""/>
+<part name="U$4" library="Heep" deviceset="JST_MINI_MICRO" device=""/>
+<part name="GND5" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -5833,6 +5835,8 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <instance part="U$3" gate="G$1" x="142.24" y="71.12" rot="R180"/>
 <instance part="GND7" gate="1" x="144.78" y="71.12" rot="R90"/>
 <instance part="+3V11" gate="G$1" x="139.7" y="78.74" rot="MR0"/>
+<instance part="U$4" gate="G$1" x="144.78" y="116.84" rot="R90"/>
+<instance part="GND5" gate="1" x="144.78" y="129.54" rot="R180"/>
 </instances>
 <busses>
 </busses>
@@ -6097,6 +6101,11 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <segment>
 <pinref part="U$3" gate="G$1" pin="GND"/>
 <pinref part="GND7" gate="1" pin="GND"/>
+</segment>
+<segment>
+<pinref part="U$4" gate="G$1" pin="VCC"/>
+<pinref part="GND5" gate="1" pin="GND"/>
+<wire x1="144.78" y1="127" x2="144.78" y2="121.92" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="INT" class="0">
@@ -6670,12 +6679,20 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <wire x1="35.56" y1="269.24" x2="50.8" y2="269.24" width="0.1524" layer="91"/>
 <label x="38.1" y="269.24" size="1.778" layer="95"/>
 </segment>
+<segment>
+<wire x1="144.78" y1="116.84" x2="160.02" y2="116.84" width="0.1524" layer="91"/>
+<pinref part="U$4" gate="G$1" pin="SIGNAL"/>
+</segment>
 </net>
 <net name="0" class="0">
 <segment>
 <pinref part="IC1" gate="G$1" pin="PD2(INT2/RXD1)"/>
 <wire x1="50.8" y1="266.7" x2="35.56" y2="266.7" width="0.1524" layer="91"/>
 <label x="38.1" y="266.7" size="1.778" layer="95"/>
+</segment>
+<segment>
+<wire x1="160.02" y1="119.38" x2="144.78" y2="119.38" width="0.1524" layer="91"/>
+<pinref part="U$4" gate="G$1" pin="GND"/>
 </segment>
 </net>
 <net name="+3V3" class="0">
