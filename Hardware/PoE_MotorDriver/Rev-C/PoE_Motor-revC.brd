@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="8.6.0">
+<eagle version="8.6.3">
 <drawing>
 <settings>
 <setting alwaysvectorfont="yes"/>
@@ -15,9 +15,9 @@
 <layer number="19" name="Unrouted" color="15" fill="1" visible="yes" active="yes"/>
 <layer number="20" name="Dimension" color="24" fill="1" visible="yes" active="yes"/>
 <layer number="21" name="tPlace" color="14" fill="1" visible="yes" active="yes"/>
-<layer number="22" name="bPlace" color="7" fill="1" visible="no" active="yes"/>
+<layer number="22" name="bPlace" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="23" name="tOrigins" color="15" fill="1" visible="yes" active="yes"/>
-<layer number="24" name="bOrigins" color="15" fill="1" visible="no" active="yes"/>
+<layer number="24" name="bOrigins" color="15" fill="1" visible="yes" active="yes"/>
 <layer number="25" name="tNames" color="7" fill="1" visible="no" active="yes"/>
 <layer number="26" name="bNames" color="7" fill="1" visible="no" active="yes"/>
 <layer number="27" name="tValues" color="15" fill="1" visible="no" active="yes"/>
@@ -196,9 +196,9 @@
 <text x="58.7375" y="65.7225" size="1.4224" layer="51" rot="SR180">A2</text>
 <text x="66.3575" y="65.7225" size="1.4224" layer="51" rot="SR180">A1</text>
 <text x="73.9775" y="65.7225" size="1.4224" layer="51" rot="SR180">A0</text>
-<text x="49.53" y="41.275" size="1.4224" layer="21">Motor Driver 
-Rev-C</text>
-<circle x="32.7025" y="6.13875" radius="0.25" width="0.7" layer="21"/>
+<text x="46.0375" y="40.9575" size="1.4224" layer="21">24V Passive PoE
+Motor Driver</text>
+<circle x="32.7025" y="1.37625" radius="0.25" width="0.7" layer="21"/>
 <text x="43.33875" y="16.03375" size="1.27" layer="21" font="fixed" ratio="10" distance="100">13</text>
 <text x="41.75125" y="7.46125" size="1.27" layer="21" font="fixed" ratio="10" distance="100">RST</text>
 <text x="23.8125" y="15.875" size="1.27" layer="21" font="fixed" ratio="10" distance="100" rot="SR270">3v3</text>
@@ -207,10 +207,19 @@ Rev-C</text>
 <text x="16.98625" y="17.30375" size="0.8128" layer="21" font="fixed" ratio="10" distance="100">FUSE</text>
 <text x="62.23" y="29.21" size="1.778" layer="21">1</text>
 <text x="61.9125" y="12.3825" size="1.778" layer="21">2</text>
-<text x="69.215" y="19.05" size="1.778" layer="21">B</text>
-<text x="69.215" y="8.89" size="1.778" layer="21">A</text>
-<text x="69.215" y="34.925" size="1.778" layer="21">B</text>
-<text x="68.8975" y="24.4475" size="1.778" layer="21">A</text>
+<text x="69.215" y="19.3675" size="1.778" layer="21">B</text>
+<text x="69.215" y="8.255" size="1.778" layer="21">A</text>
+<text x="69.215" y="35.2425" size="1.778" layer="21">B</text>
+<text x="68.8975" y="24.13" size="1.778" layer="21">A</text>
+<text x="26.82875" y="23.8125" size="1.27" layer="22" rot="SMR270">24V 
+Pre-Fuse</text>
+<text x="22.225" y="22.5425" size="1.27" layer="22" rot="SMR270">GND</text>
+<text x="62.865" y="29.21" size="1.778" layer="22" rot="MR0">1</text>
+<text x="62.865" y="12.3825" size="1.778" layer="22" rot="MR0">2</text>
+<text x="69.215" y="8.255" size="1.778" layer="22" rot="MR0">A</text>
+<text x="69.215" y="19.3675" size="1.778" layer="22" rot="MR0">B</text>
+<text x="68.8975" y="24.13" size="1.778" layer="22" rot="MR0">A</text>
+<text x="69.215" y="35.2425" size="1.778" layer="22" rot="MR0">B</text>
 </plain>
 <libraries>
 <library name="microbuilder">
@@ -4557,42 +4566,6 @@ design rules under a new name.</description>
 <wire x1="52.6025" y1="10.9125" x2="52.6025" y2="9.525" width="0.1524" layer="1"/>
 </signal>
 </signals>
-<errors>
-<approved hash="3,1,d9a3dba1dba1d9a3"/>
-<approved hash="3,1,0f3f0d3d0d3d0f3f"/>
-<approved hash="3,1,5c7d5e7f5e7f5c7d"/>
-<approved hash="3,1,d9a3dba1dba1d9a3"/>
-<approved hash="3,1,0f3f0d3d0d3d0f3f"/>
-<approved hash="3,1,5c7d5e7f5e7f5c7d"/>
-<approved hash="3,1,82c282c300400041"/>
-<approved hash="3,1,e6ace6ad6c226c23"/>
-<approved hash="3,1,71d0a1baa1f6719c"/>
-<approved hash="3,1,0b4f3df939711b63"/>
-<approved hash="3,1,e14c53725342e17c"/>
-<approved hash="3,1,730307d702423651"/>
-<approved hash="3,1,7de3838d83367d58"/>
-<approved hash="3,1,dc91c463f8423849"/>
-<approved hash="3,1,0e3e424042a70ed9"/>
-<approved hash="3,1,75b49ff6cbe25940"/>
-<approved hash="3,1,5a34f4caf50c5bf2"/>
-<approved hash="3,1,2ffe7a1f32997f5d"/>
-<approved hash="4,1,248a39b10947dc73"/>
-<approved hash="4,1,4b7c522b632bccba"/>
-<approved hash="5,1,106cb9526f4462a4"/>
-<approved hash="5,1,bbc73bc7f9c579c5"/>
-<approved hash="5,1,2c0584972f582314"/>
-<approved hash="5,1,f4e8a57c9cf2e89e"/>
-<approved hash="5,1,36ba36baf411f411"/>
-<approved hash="5,1,fed855b883ae8c10"/>
-<approved hash="5,1,5663d66312289228"/>
-<approved hash="5,1,ca486369c8a6c559"/>
-<approved hash="5,1,f9a6ab2d9ecceb86"/>
-<approved hash="5,1,d156d15611751175"/>
-<approved hash="5,1,d4009aae4200ffa3"/>
-<approved hash="5,1,7987482588114abe"/>
-<approved hash="3,1,41f143f343f341f1"/>
-<approved hash="3,1,77fd75ff75ff77fd"/>
-</errors>
 </board>
 </drawing>
 <compatibility>

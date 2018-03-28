@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="8.6.0">
+<eagle version="8.7.0">
 <drawing>
 <settings>
 <setting alwaysvectorfont="yes"/>
@@ -7537,7 +7537,7 @@ An 0805 resistor inside a standard 1/4W 5% resistor. Makes for easy mods</descri
 <instance part="GND16" gate="1" x="177.8" y="162.56" rot="R180"/>
 <instance part="R23" gate="G$1" x="317.5" y="106.68" rot="R180"/>
 <instance part="D5" gate="G$1" x="307.34" y="106.68"/>
-<instance part="GND17" gate="1" x="325.12" y="106.68" rot="R90"/>
+<instance part="GND17" gate="1" x="327.66" y="106.68" rot="R90"/>
 <instance part="+3V5" gate="G$1" x="66.04" y="88.9" rot="MR0"/>
 <instance part="U$19" gate="G$1" x="106.68" y="220.98"/>
 <instance part="C4" gate="G$1" x="83.82" y="223.52"/>
@@ -7761,6 +7761,7 @@ An 0805 resistor inside a standard 1/4W 5% resistor. Makes for easy mods</descri
 <segment>
 <pinref part="R23" gate="G$1" pin="1"/>
 <pinref part="GND17" gate="1" pin="GND"/>
+<wire x1="325.12" y1="106.68" x2="322.58" y2="106.68" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="C4" gate="G$1" pin="2"/>
