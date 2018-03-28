@@ -99,6 +99,8 @@ unsigned int GetFragmentFromMemory(int *pointerToFragment, int *numFragementByte
 void RemoveUnusedBytesAtPointer(int pointer, int numBytes);
 void DefragmentMemory();
 
+heepByte DeleteWiFiSetting(int priority, heepByte* deviceID);
+
 // Returns size of returned buffer
 heepByte GetIndexedDeviceID_Byte(heepByte* deviceID);
 
