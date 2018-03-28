@@ -7,7 +7,7 @@ import ReactGA from 'react-ga'
 
 import AppBar from './AppBar'
 import Footer from './Footer'
-import Landing from './Landing'
+import Landing from './landing/Landing'
 import About from './About'
 import Store from './store/Store'
 import Build from './heep/Build'
@@ -20,8 +20,6 @@ import Checkout from './store/Checkout'
 import ProductDetails from './store/ProductDetails'
 import DownloadPage from './heep/DownloadPage'
 import ManageCart from './store/ManageCart'
-
-import PaperSignalsConsole from './PaperSignals/PaperSignalsConsole'
 
 import Theme from './Theme'
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
@@ -83,7 +81,6 @@ class App extends React.Component {
 
 	    return(
 			<Router >
-					<Reboot>
 			    	<MuiThemeProvider theme={Theme}>
 							<div {...inputs.container}>
 								<div {...inputs.content}>
@@ -102,7 +99,6 @@ class App extends React.Component {
 								<Route path="/" component={Footer}/>
 						    </div>
 				    </MuiThemeProvider>
-					</Reboot>
 			</Router>);
 
 	}

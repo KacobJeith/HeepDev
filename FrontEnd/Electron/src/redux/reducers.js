@@ -7,6 +7,7 @@ import * as async from './async'
 import * as utils from '../serverside/utilities/generalUtilities'
 import * as auth from '../firebase/FirebaseAuth'
 import * as database from '../firebase/FirebaseDatabase'
+import reducersDesigner from './reducers_designer'
 
 export default function(state = initialState, action) {
   switch (action.type) {
@@ -258,7 +259,40 @@ export default function(state = initialState, action) {
 
       return state
 
-    default:
+    case 'SAVE_NEW_PLACE' :
+
+      setTimeout(() => {
+        database.saveNewPlace(action.placeName, action.placeSSID, action.placeSSIDPassword)
+      }, 100);
+
       return state
+
+    case 'DELETE_PLACE_FROM_FIREBASE' :
+
+      setTimeout(() => {
+        database.deletePlace(action.placeID)
+      }, 1000);
+
+      return state
+
+    case 'DELETE_PLACE':
+
+      var newState = Immutable.Map(state.places).delete(action.placeID).toJS();
+
+      return Immutable.Map(state).set('places', newState).toJS()
+
+
+    default:
+      console.log('Passed through first Switch');
   }
+
+  const builderStartingState = Immutable.Map(state.designer).toJS();
+  const builderState = reducersDesigner(builderStartingState, action, state);
+
+  if (builderState !== builderStartingState) {
+    return  Immutable.Map(state).set('designer', builderState).toJS()
+  }
+
+  return state
+
 }

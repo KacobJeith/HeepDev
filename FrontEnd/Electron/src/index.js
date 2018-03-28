@@ -13,6 +13,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import * as actions_classic from './redux/actions_classic'
 
 
+
 const startState = {
   webGLStatus: false,
   loginStatus: false,
@@ -21,15 +22,33 @@ const startState = {
   places: {},
   groups: {},
 
-  devices: {deviceArray: []},
+  devices: {
+    deviceArray: []
+  },
   positions: {},
-  controls: {controlStructure:{}, connections: {}},
+  controls: {
+    controlStructure:{}, 
+    connections: {}
+  },
   vertexList: {},
   icons: {},
   url: '',
   analytics: {},
   analyticsDeviceList: [],
-  displayingAnalytics: ''
+  displayingAnalytics: '',
+
+  designer: {
+    deviceName: '',
+    numControls: 0,
+    physicalLayer: 'wifi',
+    selectedPlace: 'Enter New WiFi',
+    ssid: '',
+    ssidPassword: '',
+    systemType: 'ESP8266',
+    iconSelected: 1,
+    selectingIcon: false,
+    controls: {}
+  }
 }
 
 export const initialState = Immutable.Map(startState)
@@ -52,7 +71,7 @@ var loadDevicesFromServer = (url) => {
     url: url,
     cache: false,
     success: (data) => {
-      console.log("Data from server: ", data)
+      
       try {
         data.url = window.location.origin;
         var immutableMap = Immutable.Map(data);

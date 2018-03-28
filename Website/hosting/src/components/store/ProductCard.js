@@ -66,7 +66,8 @@ class ProductCard extends React.Component {
         style: {
           height:'100%',
           width:'100%',
-          position:'relative'
+          position:'relative',
+          overflowX: 'hidden'
         }
       },
       overlay: {
@@ -157,7 +158,7 @@ class ProductCard extends React.Component {
 
     return (
       <Grid item xs={12}>
-        <Grid container alignItems='stretch' direction='row' spacing={24}>
+        <Grid container alignItems='stretch' direction='row' spacing={24} style={{overflowX: 'hidden'}}>
           <Grid item xs={12} sm={3} >
             {this.imageWithOverlay()}
           </Grid>

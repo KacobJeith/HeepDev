@@ -63,8 +63,22 @@ export const selectDeviceToDisplay = (deviceID) => ({
 	deviceID
 })
 
+export const saveNewPlace = (placeName, placeSSID, placeSSIDPassword) => ({
+	type: 'SAVE_NEW_PLACE',
+	placeName,
+	placeSSID,
+	placeSSIDPassword
+})
 
+export const deletePlaceFromAccount = (placeID) => ({
+	type: 'DELETE_PLACE_FROM_FIREBASE',
+	placeID
+})
 
+export const deletePlace = (placeID) => ({
+	type: 'DELETE_PLACE',
+	placeID
+})
 
 
 

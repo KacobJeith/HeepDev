@@ -35,8 +35,12 @@ class About extends React.Component {
 
     return (
       SectionCard(inputs,
-        <Grid container style={{maxWidth:'100%'}} justify='center' alignItems='center'>
-          <Grid item xs={8}>
+        <Grid container style={{
+          maxWidth:'100%',
+          margin: '0 auto'
+         }}
+         justify='center' alignItems='center'>
+          <Grid item  xs={12} md={8}>
             <Typography variant='headline' align='center'>
               Connect Your World
             </Typography>
@@ -71,15 +75,19 @@ class About extends React.Component {
 
     return (
       <div>
-        <Grid container style={{maxWidth:'100%'}}
+        <Grid container style={{
+          maxWidth:'100%',
+          overflowX: 'hidden',
+          margin: '0 auto'
+        }}
           spacing={24} justify='center'>
-          <Grid item xs={6} sm={3}>
+          <Grid item xs={12} md={3}>
             <AboutCard {...inputs.PlugAndPlay}/>
           </Grid>
-          <Grid item xs={6} sm={3}>
+          <Grid item xs={12} md={3}>
             <AboutCard {...inputs.CloudLess}/>
           </Grid>
-          <Grid item xs={6} sm={3}>
+          <Grid item xs={12} md={3}>
             <AboutCard {...inputs.DeviceParty}/>
           </Grid>
         </Grid>
@@ -96,8 +104,11 @@ class About extends React.Component {
 
     return(
       SectionCard(inputs,
-        <Grid container style={{maxWidth:'100%'}} justify ='center' alignItems ='center'>
-          <Grid item xs={8}>
+        <Grid container style={{
+          maxWidth:'100%',
+          margin: '0 auto'
+        }} justify ='center' alignItems ='center'>
+          <Grid item xs={12} md={8}>
             <Typography variant='headline' align='center'>
               Our Story
             </Typography>
@@ -106,7 +117,7 @@ class About extends React.Component {
               Heep was founded in February 2017 with the dream of ubiquitous connectivity. We thought long and hard about what the world needs to make that happen. Thus, the Heep operating system was born. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
             </Typography>
           </Grid>
-      </Grid>
+        </Grid>
       )
     )
   };
@@ -135,17 +146,20 @@ class About extends React.Component {
             Our Team
           </Typography>
         )}
-        <Grid container style={{maxWidth:'100%'}} justify='center'>
-          <Grid item xs>
+        <Grid container style={{
+          maxWidth:'100%',
+          margin: '0 auto'
+        }} justify='center'>
+          <Grid item xs={12} md={3}>
             <TeamModal {...inputs.teamModal.james}/>
           </Grid>
-          <Grid item xs>
+          <Grid item xs={12} md={3}>
             <TeamModal {...inputs.teamModal.james}/>
           </Grid>
-          <Grid item xs>
+          <Grid item xs={12} md={3}>
             <TeamModal {...inputs.teamModal.james}/>
           </Grid>
-          <Grid item xs>
+          <Grid item xs={12} md={3}>
             <TeamModal {...inputs.teamModal.james}/>
           </Grid>
         </Grid>

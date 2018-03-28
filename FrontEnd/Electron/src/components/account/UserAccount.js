@@ -7,7 +7,7 @@ import * as auth              from '../../firebase/FirebaseAuth'
 
 import { withTheme }       from 'material-ui/styles'
 import { Grid, Tooltip, Typography, Avatar, Divider, IconButton, List, ListItem, ListItemText, ListItemIcon}  from 'material-ui'
-import { Edit }  from 'material-ui-icons'
+import { Edit, Add }  from 'material-ui-icons'
 
 import DeviceListItem from '../heep/DeviceListItem'
 import PlaceListItem from '../heep/PlaceListItem'
@@ -23,6 +23,9 @@ var mapStateToProps = (state) => ({
 class UserAccount extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      open: false
+    }
   }
 
   userProfileImage() {
@@ -97,7 +100,14 @@ class UserAccount extends React.Component {
           {Object.keys(this.props.places).map((placeID) => (
             <PlaceListItem placeID={placeID} key={placeID}/>
           ))}
-          <AddPlaceModal/>
+          <AddPlaceModal open={this.state.open} handleClose={()=> this.setState({open: false})} modalElement={
+            <ListItem button color='secondary' onClick={()=> this.setState({open: true})}>
+              <ListItemIcon>
+                <Add/>
+              </ListItemIcon>
+              <ListItemText inset secondary='Add a New Place' />
+            </ListItem>
+          }/>
         </List>
       </div>
     )
