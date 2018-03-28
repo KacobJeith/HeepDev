@@ -62,6 +62,7 @@ class BedroomSVG extends React.Component{
     this.clickSleep = this.clickSleep.bind(this);
     this.clickCactus = this.clickCactus.bind(this);
     this.clickFlowers = this.clickFlowers.bind(this);
+    this.clickDresser = this.clickDresser.bind(this);
 	};
 
   componentDidMount() {
@@ -91,8 +92,9 @@ class BedroomSVG extends React.Component{
       buttonPig.addEventListener('click', this.clickPig);
       buttonDiary.addEventListener('click', this.clickDiary);
       buttonSleep.addEventListener('click', this.clickSleep);
-      buttonCactus.addEventListener('click', this.clickCactus)
-      buttonFlower.addEventListener('click', this.clickFlowers)
+      buttonDresserTop.addEventListener('click', this.clickDresser);
+      buttonCactus.addEventListener('click', this.clickCactus);
+      buttonFlower.addEventListener('click', this.clickFlowers);
 
       buttonRemote.setAttribute('cursor', 'pointer');
       buttonPig.setAttribute('cursor', 'pointer');
@@ -127,6 +129,7 @@ class BedroomSVG extends React.Component{
       buttonPig.removeEventListener('click', this.clickPig);
       buttonDiary.removeEventListener('click', this.clickDiary);
       buttonSleep.removeEventListener('click', this.clickSleep);
+      buttonDresserTop.removeEventListener('click', this.clickDresser);
       buttonCactus.removeEventListener('click', this.clickCactus);
       buttonFlower.removeEventListener('click', this.clickFlowers);
 
@@ -597,6 +600,20 @@ class BedroomSVG extends React.Component{
   leaveDresser() {
     this.leaveShake();
   };
+
+  clickDresser() {
+    this.removeButtonListeners();
+    tlShake.clear();
+
+    const tlDresser = new TimelineMax({onComplete: proxyFunction.bind(this)});
+    function proxyFunction(): void {
+      this.addButtonListeners();
+    };
+
+    tlDresser
+             .to(dresserDrawerTopOpen, 0.1, {display: 'block'})
+             .to(dresserDrawerTopOpen, 0.1, {display: 'none'}, "+=0.5")
+  }
 
   hoverCactus() {
     this.hoverShake(cactus);
