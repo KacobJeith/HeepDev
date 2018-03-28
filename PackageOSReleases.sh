@@ -28,3 +28,4 @@ tar -cvjSf ../HeepESP8266Boards/HeepESPPackage-1.0.0.tar.bz2 ../HeepESP8266Board
 
 ls -l ../HeepESP8266Boards/HeepESPPackage-1.0.0.tar.bz2
 shasum -a 256 ../HeepESP8266Boards/HeepESPPackage-1.0.0.tar.bz2
+
