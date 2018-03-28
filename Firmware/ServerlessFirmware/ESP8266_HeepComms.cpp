@@ -14,9 +14,6 @@ WiFiUDP Udp;
 String fallbackSSID = "SmoothHeep-2.4";
 String fallbackPassword = "SenorEgg";
 
-boolean InAPMode = false;
-WiFiServer server(8081);
-
 void CreateAccessPoint()
 {
   Serial.println("Creating AP");
@@ -39,17 +36,13 @@ void CreateAccessPoint()
 
   if(result == 1)
   {
-    Udp.begin(localPort);
     Serial.println("Creating Server");
-    server.begin();
     Serial.println("Server started");
-    InAPMode = true;
   }
 }
 
 void CreateInterruptServer()
 {
-  InAPMode = false;
   boolean onFallback = false;
   unsigned long connectAttemptStartTime = 0;
   int currentWiFiPriorityID = 0;
@@ -105,52 +98,8 @@ void CreateInterruptServer()
   Udp.begin(localPort);
 }
 
-void HandleAPModeRequests()
-{
-    WiFiClient client = server.available();
-    if (!client) {
-      return;
-    }
-
-    unsigned long startMillis = millis();
-
-    // Read the first line of the request
-    String command = client.readStringUntil(':');
-    Serial.println(command);
-
-    if(command == "SetWiFi")
-    {
-      String newSSID = client.readStringUntil(',');
-      String newPassword = client.readStringUntil('\r');
-      Serial.print("SSID: "); Serial.println(newSSID);
-      Serial.print("Password: "); Serial.println(newPassword);
-      client.flush();
-
-      AddWiFiSettingsToMemory(&newSSID[0], newSSID.length(), &newPassword[0], newPassword.length(), deviceIDByte, 0);
-
-      client.println("Set WiFi!");
-      client.stop();
-    }
-    else if(command == "Reset")
-    {
-      client.flush();
-
-      client.println("Begin Reset!");
-      client.stop();
-      CreateInterruptServer();
-    }
-
-    Serial.println(millis() - startMillis);
-}
-
 void CheckServerForInputs()
 {
-  // if(InAPMode)
-  // {
-  //   HandleAPModeRequests();
-  // }
-  // else
-  // {
     int packetSize = Udp.parsePacket();
     if (packetSize) {
       Serial.print("Received packet of size ");
@@ -193,7 +142,6 @@ void CheckServerForInputs()
       Udp.write(outputBuffer, outputBufferLastByte);
       Udp.endPacket();
     }
-  // }
 }
 
 void SendOutputBufferToIP(HeepIPAddress destIP)
