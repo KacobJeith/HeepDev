@@ -132,6 +132,68 @@ void SetIconDataInMemory_Byte(char* iconData, int numCharacters, heepByte* devic
 	}
 }
 
+heepByte GetWiFiFromMemory(char* WiFiSSID, char* WiFiPassword, int priority)
+{
+	heepByte foundSSIDAndPassword = 0x00; // 0b00000011 When both found
+	int counter = 0;
+	while(counter < curFilledMemory)
+	{
+		if(deviceMemory[counter] == WiFiSSIDOpCode)
+		{
+			if(deviceMemory[counter + ID_SIZE + 2] == priority)
+			{
+				unsigned int deviceMemoryCounter = counter + ID_SIZE + 3;
+				unsigned int SSIDBufferCounter = 0;
+				AddBufferToBuffer((heepByte*)WiFiSSID, deviceMemory, deviceMemory[counter + ID_SIZE + 1] - 1, &SSIDBufferCounter, &deviceMemoryCounter);
+				foundSSIDAndPassword |= 0x01;
+			}
+		}
+		else if(deviceMemory[counter] == WiFiPasswordOpCode)
+		{
+			if(deviceMemory[counter + ID_SIZE + 2] == priority)
+			{
+				unsigned int deviceMemoryCounter = counter + ID_SIZE + 3;
+				unsigned int PasswordBufferCounter = 0;
+				AddBufferToBuffer((heepByte*)WiFiPassword, deviceMemory, deviceMemory[counter + ID_SIZE + 1] - 1, &PasswordBufferCounter, &deviceMemoryCounter);
+				foundSSIDAndPassword |= 0x02;
+			}
+		}
+
+		counter = SkipOpCode(counter);
+
+		if(foundSSIDAndPassword == 0x03){
+			return 0;
+		}
+	}
+
+	return 1; // No SSID Password Found at given Priority
+}
+
+void AddWiFiSettingsToMemory(char* WiFiSSID, int numCharSSID, char* WiFiPassword, int numCharPassword, heepByte* deviceID, heepByte IDPriority)
+{
+	PerformPreOpCodeProcessing_Byte(deviceID);
+
+	// WiFi
+	AddNewCharToMemory(WiFiSSIDOpCode);
+	AddIndexOrDeviceIDToMemory_Byte(deviceID);
+	AddNewCharToMemory(1 + numCharSSID);
+	AddNewCharToMemory(IDPriority);
+	for(int i = 0; i < numCharSSID; i++)
+	{
+		AddNewCharToMemory(WiFiSSID[i]);
+	}
+
+	// Password
+	AddNewCharToMemory(WiFiPasswordOpCode);
+	AddIndexOrDeviceIDToMemory_Byte(deviceID);
+	AddNewCharToMemory(1 + numCharPassword);
+	AddNewCharToMemory(IDPriority);
+	for(int i = 0; i < numCharPassword; i++)
+	{
+		AddNewCharToMemory(WiFiPassword[i]);
+	}
+}
+
 #ifdef USE_ANALYTICS
 
 void SetAnalyticsDataControlValueInMemory_Byte(heepByte controlID, int controlValue, heepByte *deviceID)

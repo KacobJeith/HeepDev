@@ -6,25 +6,30 @@ import { withRouter }         from 'react-router-dom'
 import PropTypes              from 'prop-types';
 import classNames             from 'classnames';
 
+import * as actions           from '../redux/actions'
+import * as auth              from '../firebase/FirebaseAuth'
+
+import {  AppBar,
+          Avatar,
+          Badge,
+          Button,
+          FormControlLabel,
+          FormGroup,
+          Grid,
+          Hidden,
+          IconButton,
+          Menu,
+          MenuItem,
+          Switch,
+          Toolbar,
+          Typography }        from 'material-ui'
+
 import MenuIcon               from 'material-ui-icons/Menu';
 import AccountCircle          from 'material-ui-icons/AccountCircle';
 import ShoppingCartIcon       from 'material-ui-icons/ShoppingCart';
 
-import * as actions           from '../redux/actions'
-import * as auth              from '../firebase/FirebaseAuth'
+import { withStyles }         from 'material-ui/styles';
 
-import { withStyles }                   from 'material-ui/styles';
-import AppBar                           from 'material-ui/AppBar';
-import Toolbar                          from 'material-ui/Toolbar';
-import Typography                       from 'material-ui/Typography';
-import IconButton                       from 'material-ui/IconButton';
-import Button                           from 'material-ui/Button';
-import Switch                           from 'material-ui/Switch';
-import { FormControlLabel, FormGroup }  from 'material-ui/Form';
-import Menu, { MenuItem }               from 'material-ui/Menu';
-import Badge                            from 'material-ui/Badge';
-import Avatar                           from 'material-ui/Avatar';
-import Grid                             from 'material-ui/Grid'
 
 
 import SmartBadge from './utilities/SmartBadge'
@@ -42,10 +47,7 @@ const styles = {
   },
   flex: {
     flex: 1,
-  },
-  menuButton: {
-    marginLeft: -12,
-    marginRight: 20,
+    alignItems: 'center'
   },
   avatar: {
     margin: 10,
@@ -66,19 +68,28 @@ const ShopLink = props => <Link to="/Shop" {...props} style={{ textDecoration: '
 class MenuAppBar extends React.Component {
   state = {
     auth: true,
-    anchorEl: null,
+    anchorAccountMenu: null,
+    anchorMobileMenu: null
   };
 
   handleChange = (event, checked) => {
     this.setState({ auth: checked });
   };
 
-  handleMenu = event => {
-    this.setState({ anchorEl: event.currentTarget });
+  handleAccountMenu = event => {
+    this.setState({ anchorAccountMenu: event.currentTarget });
   };
 
-  handleClose = () => {
-    this.setState({ anchorEl: null });
+  handleAccountMenuClose = () => {
+    this.setState({ anchorAccountMenu: null });
+  };
+
+  handleMobileMenu = event => {
+    this.setState({ anchorMobileMenu: event.currentTarget });
+  };
+
+  handleMobileMenuClose = event => {
+    this.setState({ anchorMobileMenu: null });
   };
 
   handleLogout = () => {
@@ -92,7 +103,7 @@ class MenuAppBar extends React.Component {
         <IconButton
           aria-owns={open ? 'menu-appbar' : null}
           aria-haspopup="true"
-          onClick={this.handleMenu}
+          onClick={this.handleAccountMenu}
           color="inherit"
         >
           <Avatar
@@ -103,7 +114,7 @@ class MenuAppBar extends React.Component {
         </IconButton>
         <Menu
           id="menu-appbar"
-          anchorEl={this.state.anchorEl}
+          anchorEl={this.state.anchorAccountMenu}
           anchorOrigin={{
             vertical: 'top',
             horizontal: 'right',
@@ -112,11 +123,11 @@ class MenuAppBar extends React.Component {
             vertical: 'top',
             horizontal: 'right',
           }}
-          open={Boolean(this.state.anchorEl)}
-          onClose={this.handleClose}
+          open={Boolean(this.state.anchorAccountMenu)}
+          onClose={this.handleAccountMenuClose}
         >
           <NavLink to="/User" style={styles.navLink}>
-            <MenuItem onClick={this.handleClose}>Profile</MenuItem>
+            <MenuItem onClick={this.handleAccountMenuClose}>Profile</MenuItem>
           </NavLink>
           <MenuItem onClick={this.handleLogout}>Logout</MenuItem>
         </Menu>
@@ -128,16 +139,16 @@ class MenuAppBar extends React.Component {
     return (
       <div>
         <IconButton
-          aria-owns={Boolean(this.state.anchorEl) ? 'menu-appbar' : null}
+          aria-owns={Boolean(this.state.anchorAccountMenu) ? 'menu-appbar' : null}
           aria-haspopup="true"
-          onClick={this.handleMenu}
+          onClick={this.handleAccountMenu}
           color="inherit"
         >
           <AccountCircle />
         </IconButton>
         <Menu
           id="menu-appbar"
-          anchorEl={this.state.anchorEl}
+          anchorEl={this.state.anchorAccountMenu}
           anchorOrigin={{
             vertical: 'top',
             horizontal: 'right',
@@ -146,15 +157,15 @@ class MenuAppBar extends React.Component {
             vertical: 'top',
             horizontal: 'right',
           }}
-          open={Boolean(this.state.anchorEl)}
-          onClose={this.handleClose}
+          open={Boolean(this.state.anchorAccountMenu)}
+          onClose={this.handleAccountMenuClose}
         >
           <NavLink to="/auth" style={styles.navLink}>
-            <MenuItem onClick={this.handleClose}>Login</MenuItem>
+            <MenuItem onClick={this.handleAccountMenuClose}>Login</MenuItem>
           </NavLink>
 
           <NavLink to="/auth" style={styles.navLink}>
-            <MenuItem onClick={this.handleClose}>Create Account</MenuItem>
+            <MenuItem onClick={this.handleAccountMenuClose}>Create Account</MenuItem>
           </NavLink>
         </Menu>
       </div>
@@ -183,20 +194,32 @@ class MenuAppBar extends React.Component {
     };
 
     return (
-      <Button {...inputs.Button}>
-        <NavLink to={navLink} {...inputs.NavLink}>
-          <Typography variant="subheading" {...inputs.Typography}>
-            {linkText}
-          </Typography>
-        </NavLink>
-      </Button>
+      <Hidden xsDown={true}>
+        <Button {...inputs.Button}>
+          <NavLink to={navLink} {...inputs.NavLink}>
+            <Typography variant="subheading" {...inputs.Typography}>
+              {linkText}
+            </Typography>
+          </NavLink>
+        </Button>
+      </Hidden>
     )
   };
 
   appBarCart() {
+
+    const inputs = {
+      iconSize: {
+        width: 40,
+        height: 40
+      }
+    };
+
     return (
       <NavLink to="/MyCart" style={{textDecoration: 'none'}}>
-        <IconButton aria-label="Add to shopping cart">
+        <IconButton aria-label="Add to shopping cart"
+          style={{marginBottom: 0}}
+        >
           {SmartBadge(
                     <ShoppingCartIcon style={{fill:"white"}}/>,
                     this.props.itemsInCart,
@@ -227,6 +250,57 @@ class MenuAppBar extends React.Component {
     )
   }
 
+  mobileMenu() {
+    const inputs = {
+      menuButton: {
+        style:{
+          fontSize: 30,
+          marginBottom: 3,
+          marginRight: 10
+        }
+      }
+    }
+    return (
+      <Hidden smUp={true}>
+          <IconButton
+            {...inputs.menuButton}
+            aria-owns={Boolean(this.state.anchorMobileMenu) ? 'mobile-menu-appbar' : null}
+            aria-haspopup="true"
+            onClick={this.handleMobileMenu}
+            color="inherit"
+          >
+            <MenuIcon/>
+            <Menu
+              id="mobile-menu-appbar"
+              anchorEl={this.state.anchorMobileMenu}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={Boolean(this.state.anchorMobileMenu)}
+              onClose={this.handleMobileMenuClose}
+            >
+              <NavLink to="/About" style={styles.navLink}>
+                <MenuItem onClick={this.handleMobileMenuClose}>About</MenuItem>
+              </NavLink>
+
+              <NavLink to="/Shop" style={styles.navLink}>
+                <MenuItem onClick={this.handleMobileMenuClose}>Shop</MenuItem>
+              </NavLink>
+
+              <NavLink to="/Developers" style={styles.navLink}>
+                <MenuItem onClick={this.handleMobileMenuClose}>Develop</MenuItem>
+              </NavLink>
+            </Menu>
+          </IconButton>
+      </Hidden>
+    )
+  }
+
   render() {
     const { classes } = this.props;
     const { authed, anchorEl } = this.state;
@@ -246,6 +320,7 @@ class MenuAppBar extends React.Component {
           <Toolbar>
             {this.appBarLogo()}
             <div className={classes.flex}/>
+            {this.mobileMenu()}
             {this.appBarLink("/About", "About")}
             {this.appBarLink("/Shop", "Shop")}
             {this.appBarLink("/Developers", "Develop")}

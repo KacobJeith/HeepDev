@@ -15,6 +15,9 @@ import { Delete } from 'material-ui-icons';
 
 var mapStateToProps = (state, ownProps) => ({
   thisControl: state.designer.controls[ownProps.controlKey],
+  controlName: state.designer.controls[ownProps.controlKey].controlName,
+  controlDirection: state.designer.controls[ownProps.controlKey].controlDirection,
+  controlType: state.designer.controls[ownProps.controlKey].controlType,
   controlKey: ownProps.controlKey
 })
 
@@ -26,7 +29,7 @@ class ControlOptions extends React.Component {
       controlName: {
         title: "Enter Control Name",
         width: '100%',
-        defaultValue: this.props.thisControl.controlName,
+        defaultValue: this.props.controlName,
         onChange: (value) => {this.props.updateControlName(this.props.controlKey, value)}
       },
       controlType: {
@@ -36,7 +39,7 @@ class ControlOptions extends React.Component {
           OnOff: 0, 
           Range: 1
         },
-        defaultValue: this.props.thisControl.controlType,
+        defaultValue: this.props.controlType,
         onChange: (value) => {this.props.updateControlType(this.props.controlKey, value)}
       },
       controlDirection: {
@@ -46,7 +49,7 @@ class ControlOptions extends React.Component {
           input: 0, 
           output: 1
         },
-        defaultValue: this.props.thisControl.controlDirection,
+        defaultValue: this.props.controlDirection,
         onChange: (value) => {this.props.updateControlDirection(this.props.controlKey, value)}
       },
       rangeOptions: {
