@@ -3,18 +3,21 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 import * as Actions from '../../redux/actions'
-import {  Grid, 
+import {  Grid,
           Typography,
           MenuItem,
           InputLabel,
-          FormControl, 
+          FormControl,
+          Input,
+          InputAdornment,
           TextField,
-          IconButton, 
-          Badge, 
+          IconButton,
+          Badge,
           Button,
-          Paper, 
-          Select }   from 'material-ui';
-import { AddShoppingCart } from 'material-ui-icons';
+          Paper,
+          Select,
+          Hidden }         from 'material-ui';
+import { Delete }          from 'material-ui-icons';
 import { withStyles, withTheme } from 'material-ui/styles';
 
 import SmartBadge from '../utilities/SmartBadge'
@@ -22,17 +25,20 @@ import SmartBadge from '../utilities/SmartBadge'
 
 var mapStateToProps = (state, ownProps) => ({
   product: state.shopify[ownProps.productID],
+  checkoutID: state.checkoutID,
   productID: ownProps.productID,
   places: state.places,
   associatedPlace: state.cartContext[ownProps.productID],
   quantity: ownProps.quantity,
   titleBar: ownProps.titleBar,
-
 })
 
 const styles = theme => ({
-  card: {
-    maxWidth: 400,
+  paper: {
+    position: 'absolute',
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing.unit * 4
   }
 });
 
@@ -46,16 +52,16 @@ class CartItemCard extends React.Component {
     }
   }
 
-  productTitle() {
+  productTitle(variant='body1', align='left') {
 
     return (
-      <Link to={'/product/' + this.props.productID}>
-        <Typography align='left' variant="body1" gutterBottom paragraph >
+      <Link to={'/product/' + this.props.productID} style={{textDecoration: 'none'}}>
+        <Typography align={align} variant={variant} gutterBottom paragraph >
           {this.props.product.title}
         </Typography>
       </Link>
     )
-  }
+  };
 
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
@@ -63,7 +69,7 @@ class CartItemCard extends React.Component {
 
   handlePlaceUpdate = event => {
     this.props.updateCartContext(this.props.productID, event.target.value);
-  }
+  };
 
   associatedPlace() {
 
@@ -97,15 +103,15 @@ class CartItemCard extends React.Component {
         </Select>
       </FormControl>
     )
-  }
+  };
 
   productQuantity() {
 
     const inputs = {
-      formControl: {
+      textField: {
         style: {
-          margin: this.props.theme.spacing.unit,
-          minWidth: 120,
+          width: '80%',
+          textAlign: 'center',
         }
       }
     }
@@ -120,11 +126,10 @@ class CartItemCard extends React.Component {
           shrink: true,
         }}
         margin="normal"
-        style={{maxWidth:'80%'}}
+        style={{width: '80%'}}
       />
     )
-  }
-
+  };
 
   imageWithOverlay() {
 
@@ -157,17 +162,17 @@ class CartItemCard extends React.Component {
         onMouseEnter: ()=> this.setState({hover: true}),
         onMouseLeave: ()=> this.setState({hover: false})
       },
-    }
+    };
 
     return (
       <Link to={'/product/' + this.props.productID}>
-        <div {...inputs.imageAndOverlayContainer}> 
+        <div {...inputs.imageAndOverlayContainer}>
           <img {...inputs.image}/>
           <div {...inputs.overlay}/>
         </div>
       </Link>
     )
-  }
+  };
 
   productPrice() {
 
@@ -176,7 +181,7 @@ class CartItemCard extends React.Component {
             ${this.props.product.variants[0].price}
         </Typography>
     )
-  }
+  };
 
   totalPrice() {
 
@@ -185,46 +190,226 @@ class CartItemCard extends React.Component {
             ${this.props.product.variants[0].price * this.props.quantity}
         </Typography>
     )
-  }
+  };
 
-  titleBarItem = (title) => (
-    <Typography variant='body2' align="left">
+  titleBarItem = (title, variant='body2') => (
+    <Typography variant={variant} align="left">
           {title}
     </Typography>
-  )
+  );
 
+  deleteButton() {
+    return (
+      <IconButton
+        onClick={(event) => {this.props.removeProductFromCart(this.props.lineItemID)}}
+      >
+        <Delete/>
+      </IconButton>
+    )
+  };
+
+  normalCart() {
+    return (
+      <Grid item xs={12} >
+        <Grid container alignItems='center' direction='row' justify='space-between' spacing={16} >
+          <Grid item xs={2}>
+            {this.props.titleBar ? this.titleBarItem() : this.imageWithOverlay() }
+          </Grid>
+
+          <Grid item xs={3} >
+            {this.props.titleBar ? this.titleBarItem('Product') : this.productTitle()}
+          </Grid>
+
+          <Grid item xs={2} >
+            {this.props.titleBar ? this.titleBarItem('Place') : this.associatedPlace()}
+          </Grid>
+
+          <Grid item xs={1} >
+            {this.props.titleBar ? this.titleBarItem('Price') : this.productPrice()}
+          </Grid>
+
+          <Grid item xs={1} >
+            {this.props.titleBar ? this.titleBarItem('Quantity') : this.productQuantity()}
+          </Grid>
+
+          <Grid item xs={1} >
+            {this.props.titleBar ? this.titleBarItem('Total Price') : this.totalPrice()}
+          </Grid>
+
+        </Grid>
+     </Grid>
+    )
+  };
+
+  mobileProductQuantity() {
+    const inputs = {
+      textField: {
+        style: {
+          textAlign: 'center',
+        }
+      }
+    };
+
+    return (
+      <TextField
+        id="quantity"
+        label='Quantity'
+        fullWidth={true}
+        value={this.props.quantity}
+        onChange={(event) => {this.props.updateProductQuantity(this.props.lineItemID, event.target.value)}}
+        type="number"
+        InputLabelProps={{
+          shrink: true,
+        }}
+        margin="normal"
+        inputProps={{...inputs.textField}}
+      />
+    )
+  };
+
+  mobileAssociatedPlace() {
+    const inputs = {
+      formControl: {
+        style: {
+          textAlign: 'center'
+        }
+      }
+    }
+
+    return (
+      <FormControl
+        fullWidth={true}
+        {...inputs.formControl}>
+        <InputLabel htmlFor='wifi-helper'>
+          Place
+        </InputLabel>
+        <Select
+          value={this.props.associatedPlace}
+          onChange={this.handlePlaceUpdate}
+          inputProps={{
+            name: 'associatedPlace',
+            id: 'associated-place',
+          }}
+        >
+          <MenuItem value="none">
+            <em>None</em>
+          </MenuItem>
+          {Object.keys(this.props.places).map((thisPlaceKey) => (
+            <MenuItem  value={thisPlaceKey} key={thisPlaceKey}>
+              {this.props.places[thisPlaceKey].name}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    )
+  };
+
+  mobilePriceForm(label, text) {
+    const input = {
+      center: {
+        style:{
+          textAlign: 'centered'
+        }
+      }
+    }
+    return (
+      <FormControl disabled
+        fullWidth={true}>
+        <InputLabel
+          htmlFor='price-disabled'
+          style={{color: 'rgba(0, 0, 0, 0.54)'}}
+          >
+          {label}
+        </InputLabel>
+        <Input id='price-helper'
+          inputProps={{
+            style: {
+              textAlign: 'center',
+              color: 'rgba(0, 0, 0, 0.87)',
+            },
+          }}
+          value={'$' + text}
+          disableUnderline={true}
+        />
+      </FormControl>
+    )
+  };
+
+  mobileCart() {
+
+    const { classes } = this.props;
+
+    const inputs = {
+      gridItem: {
+        style: {
+          width: '50%',
+          textAlign: 'center',
+          marginTop: 10,
+          marginBottom: 0
+        }
+      },
+    };
+
+    if (this.props.titleBar == false) {
+      return(
+        <Grid item xs={12}>
+          <Grid container
+            direction='column'
+            alignItems='center'
+            justify='center'
+            spacing={8}>
+
+            <Grid item xs={12}>
+              {this.productTitle('title', 'center')}
+            </Grid>
+
+            <Grid item xs={12}>
+              {this.imageWithOverlay()}
+            </Grid>
+
+            <Grid item xs={12} {...inputs.gridItem}>
+              {this.mobileAssociatedPlace()}
+            </Grid>
+
+            <Grid item xs={12} {...inputs.gridItem}>
+              <Grid container
+                justify='center'
+                alignItems='center'
+                spacing={0}>
+                <Grid item xs={11} style={{margin: 0}}>
+                  {this.mobileProductQuantity()}
+                </Grid>
+                <Grid item xs={1} style={{marginTop: 12}}>
+                  {this.deleteButton()}
+                </Grid>
+              </Grid>
+            </Grid>
+
+            <Grid item xs={12} {...inputs.gridItem}>
+              {this.mobilePriceForm('Item Price', this.props.product.variants[0].price)}
+            </Grid>
+
+            <Grid item xs={12} {...inputs.gridItem}>
+              {this.mobilePriceForm('Total Price', this.props.product.variants[0].price * this.props.quantity)}
+            </Grid>
+
+          </Grid>
+        </Grid>
+        )
+      }
+  }
 
   render() {
 
     return (
-       <Grid item xs={12} >
-         <Grid container alignItems='center' direction='row' justify='space-between' spacing={16} >
-           <Grid item xs={2}>
-             {this.props.titleBar ? this.titleBarItem() : this.imageWithOverlay() }
-           </Grid>
-
-           <Grid item xs={3} >
-             {this.props.titleBar ? this.titleBarItem('Product') : this.productTitle()}
-           </Grid>
-
-           <Grid item xs={2} >
-             {this.props.titleBar ? this.titleBarItem('Place') : this.associatedPlace()}
-           </Grid>
-
-           <Grid item xs={1} >
-             {this.props.titleBar ? this.titleBarItem('Price') : this.productPrice()}
-           </Grid>
-
-           <Grid item xs={1} >
-             {this.props.titleBar ? this.titleBarItem('Quantity') : this.productQuantity()}
-           </Grid>
-
-           <Grid item xs={1} >
-             {this.props.titleBar ? this.titleBarItem('Total Price') : this.totalPrice()}
-           </Grid>
-
-         </Grid>
-      </Grid>
+      <div>
+        <Hidden xsDown={true}>
+          {this.normalCart()}
+        </Hidden>
+        <Hidden smUp={true}>
+          {this.mobileCart()}
+        </Hidden>
+      </div>
     )
   }
 }
@@ -234,4 +419,3 @@ var mapDispatchToProps = (dispatch) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme()(withStyles(styles)(CartItemCard)))
-

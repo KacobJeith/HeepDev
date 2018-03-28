@@ -42,7 +42,7 @@ export const RemoveProductFromCart = (checkoutID, variantID) => {
 
   const lineItemIDsToRemove = [variantID];
 
-  client.checkout.removeLineItems(checkoutID, lineItemIdsToRemove).then((checkout) => {
+  client.checkout.removeLineItems(checkoutID, lineItemIDsToRemove).then((checkout) => {
     setup.store.dispatch(actions.saveCartLocally(checkout));
   });
 
