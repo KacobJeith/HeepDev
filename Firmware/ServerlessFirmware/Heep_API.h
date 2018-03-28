@@ -59,7 +59,6 @@ void ExecuteControlOpCodes();
 void PostDataToFirebase();
 #endif
 
-// Control Daemon is untimed
 void ControlDaemon();
 
 void PerformHeepTasks();
@@ -74,15 +73,3 @@ void SetControlValueByName(char* controlName, int newValue);
 
 heepByte GetWiFiFromMemory(char* WiFiSSID, char* WiFiPassword, int priority);
 void AddWiFiSettingsToMemory(char* WiFiSSID, int numCharSSID, char* WiFiPassword, int numCharPassword, heepByte* deviceID, heepByte IDPriority);
-
-// AddToggleControl(Name, INPUT/OUTPUT, Starting)
-// AddMomentaryControl(NAME, INPUT/OUTPUT)
-// AddBufferControl(Name, INPUT/OUTPUT, BufferPtr, Starting)
-// GetRangeValueByName(Name)
-// GetToggleValueByName(Name)
-// GetMomentaryValueByName(Name)
-// SetBufferValueByName(Name, &Buffer)
-// SetRangeValueByName(Name)
-// SetToggleValueByName(Name)
-// SetMomentaryValueByName(Name)
-// SetBufferValueByName(Name, &Buffer)
