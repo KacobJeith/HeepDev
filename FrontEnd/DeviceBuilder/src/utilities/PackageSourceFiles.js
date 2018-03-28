@@ -148,7 +148,7 @@ var CreateHardwareReadFunctions = (controls) => {
     if(controls[i].controlDirection == 1){
       hardwareReadFunctions += `int ` + GetReadFunctionName(controls[i]) + `(){\n`
         + GetTabCharacter() + `int currentSetting = ` + notSign + controls[i]['analogOrDigital'] + `Read(` + getPinDefineName(controls[i]) + `);\n`
-        + GetTabCharacter() + `SendOutputByIDNoAnalytics(` + controls[i].controlID + `,currentSetting);\n`
+        + GetTabCharacter() + `SetControlValueByName("` + controls[i].controlName + `",currentSetting);\n`
         + GetTabCharacter() + `return currentSetting;\n`
         + `}\n\n`;
     }
@@ -174,7 +174,7 @@ var CreateHardwareWriteFunctions = (controls) => {
     // Only react to inputs. Heep inputs are Hardware Outputs
     if(controls[i].controlDirection == 0){
       hardwareWriteFunctions += `int ` + GetWriteFunctionName(controls[i]) + `(){\n`
-        + GetTabCharacter() + `int currentSetting = GetControlValueByID(` + controls[i].controlID + `);\n`
+        + GetTabCharacter() + `int currentSetting = GetControlValueByName("` + controls[i].controlName + `");\n`
         + GetTabCharacter() + controls[i]['analogOrDigital'] + `Write(` + getPinDefineName(controls[i]) + `,` + notSign + `currentSetting);\n`
         + GetTabCharacter() + `return currentSetting;\n`
         + `}\n\n`;
