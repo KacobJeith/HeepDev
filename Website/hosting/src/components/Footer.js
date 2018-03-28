@@ -4,22 +4,11 @@ import { bindActionCreators }         from 'redux'
 import {  Link, NavLink, withRouter } from 'react-router-dom'
 import PropTypes                      from 'prop-types';
 
+import {  Grid,
+          Hidden,
+          Typography }        from 'material-ui'
 
-import List, {
-       ListItem,
-       ListItemIcon,
-       ListItemText } from 'material-ui/List';
-import Grid           from 'material-ui/Grid';
-import Paper          from 'material-ui/Paper';
-import IconButton     from 'material-ui/IconButton';
-import Typography     from 'material-ui/Typography';
 import { withStyles, withTheme } from 'material-ui/styles';
-
-
-import Icon from 'material-ui/Icon';
-import DeleteIcon from 'material-ui-icons/Delete';
-import AddShoppingCartIcon from 'material-ui-icons/AddShoppingCart';
-import PhotoCamera from 'material-ui-icons/PhotoCamera';
 
 import * as actions from '../redux/actions'
 
@@ -32,215 +21,236 @@ const styles = theme => ({
     backgroundColor:  theme.palette.primary.main,
     color: theme.palette.primary.contrastText
   },
-  button: {
-    margin:1,
-  }
 });
-
 
 class Footer extends React.Component {
 
+  socialLogo(svg, url) {
+    return (
+      <Grid item xs={4} sm={2} style={{textAlign: 'center'}}>
+        <a href={url}>
+          <img src={'../src/assets/svg_social/' + svg + '.svg'}
+            style={{maxHeight: 50}}
+          />
+        </a>
+      </Grid>
+    )
+  };
+
   socialLogoLinks() {
     return(
-      <Grid item xs>
-        <Grid container spacing={8}
-          justify={'center'}
-          direction='row'
+      <Grid item xs={12}>
+        <Grid container
+          spacing={8}
+          justify='center'
+          alignItems='center'
         >
-          {[{svg:'instagram',     url:'https://www.instagram.com/heep_inc/'},
-            {svg:'facebook-box',  url:'https://www.facebook.com/heepio/'},
-            {svg:'linkedin-box',  url:'https://www.linkedin.com/company/heep-inc/'},
-            {svg:'pinterest',     url:'https://heep.io'},
-            {svg:'twitter',       url:'https://twitter.com/HeepCo'},
-            {svg:'github-circle', url:'https://github.com/HeepIO'}].map((social) => (
-            <Grid item xs={4} sm={2} key={social.svg} style={{position:'relative'}}>
-                <object
-                  width='100%'
-                  height='100%'
-                  style={{fill:'blue'}}
-                  fill='blue'
-                  type='image/svg+xml'
-                  data={'../src/assets/svg_social/' + social.svg + '.svg'}
-                />
-                <a href={social.url}
-                   style={{
-                      width:'100%',
-                      height:'100%',
-                      position:'absolute',
-                      left:0,
-                      top:0
-                    }}>
-                </a>
-            </Grid>
-          ))}
+          {this.socialLogo('instagram', 'https://www.instagram.com/heep_inc/')}
+          {this.socialLogo('facebook-box', 'https://www.facebook.com/heepio/')}
+          {this.socialLogo('linkedin-box', 'https://www.linkedin.com/company/heep-inc/')}
+          {this.socialLogo('pinterest', 'https://heep.io')}
+          {this.socialLogo('twitter', 'https://twitter.com/HeepCo')}
+          {this.socialLogo('github-circle', 'https://github.com/HeepIO')}
         </Grid>
       </Grid>
     )
-  }
-
-  copyrightHeep() {
-    return (
-      <Grid item >
-        <Typography variant="caption" color='inherit'>
-          &#169; 2018 Heep
-        </Typography>
-      </Grid>
-    )
-  }
-
-  madeInBrooklyn() {
-    return(
-      <Grid item >
-        <Typography variant="caption" color='inherit'>
-          Made with <span style={{color: 'red'}}>&#9829;</span> in Brooklyn
-        </Typography>
-      </Grid>
-    )
-  }
+  };
 
   copyrightMadeInBrooklyn() {
-
     return(
-      <Grid item >
+      <Grid item xs={12}>
         <Typography variant="caption" color='inherit'>
           &#169; 2018 Heep - Made with <span style={{color: 'red'}}>&#9829;</span> in Brooklyn
         </Typography>
       </Grid>
     )
-
-  }
+  };
 
   heepLogo() {
     return(
-      <Grid item xs={6}>
-        <img
-          src="../src/assets/Heep_Gradient.png"
-          style={{
-            maxWidth: '100%',
-            maxHeight: '100%'
-          }}/>
+      <Grid item xs={2}>
+        <NavLink to='/' style={{textDecoration: 'none'}}>
+          <img
+            src="../src/assets/Heep_Gradient.png"
+            style={{
+              maxHeight: 50
+            }}/>
+        </NavLink>
       </Grid>
     )
-  }
+  };
 
-  textNavLink(text, url, align = 'left') {
+  mobileHeepLogo() {
+    return(
+      <Grid item xs={12} style={{textAlign: 'right'}}>
+        <NavLink to='/' style={{textDecoration: 'none'}}>
+          <img
+            src="../src/assets/Heep_Gradient.png"
+            style={{
+              maxHeight: 80
+            }}/>
+        </NavLink>
+      </Grid>
+    )
+  };
+
+  textNavLink(text, url, variant) {
 
     return(
-      <Grid item >
+      <Grid item xs={12} sm={12}>
         <NavLink to={url}
         style={{
           textDecoration: 'none',
           color: this.props.theme.palette.primary.contrastText
         }}>
-          <Typography variant="caption" color='inherit' align={align}>
+          <Typography variant={variant} color='inherit' align='center'>
             {text}
           </Typography>
         </NavLink>
       </Grid>
+    )
+  };
+
+  normalFooterLeft() {
+    return (
+      <Grid item xs={3}>
+        <Grid container
+          spacing={8}
+          justify='center'
+          alignItems='flex-start'
+          direction='column'
+        >
+          {this.textNavLink('Account', '/User', 'caption')}
+          {this.textNavLink('Shop', '/Store', 'caption')}
+          {this.textNavLink('Blog', '/Blog', 'caption')}
+          {this.textNavLink('Developers', '/Developers', 'caption')}
+        </Grid>
+      </Grid>
+    )
+  };
+
+  normalFooterCenter() {
+    return (
+      <Grid item xs={6}>
+        <Grid container
+          spacing={8}
+          direction='column'
+          alignItems='center'
+          justify='center'
+        >
+          {this.heepLogo()}
+          {this.socialLogoLinks()}
+          {this.copyrightMadeInBrooklyn()}
+        </Grid>
+    </Grid>
+    )
+  };
+
+  normalFooterRight() {
+    return(
+      <Grid item xs={3}>
+        <Grid container
+          spacing={8}
+          direction='column'
+          alignItems='flex-end'
+        >
+          {this.textNavLink('About Us', '/About', 'caption')}
+          {this.textNavLink('Contact Us', '/Contact', 'caption')}
+          {this.textNavLink('Privacy Policy', '/privacypolicy', 'caption')}
+          {this.textNavLink('Terms of Service', '/tos', 'caption')}
+        </Grid>
+      </Grid>
+    )
+  };
+
+  normalFooter() {
+    return (
+      <Hidden xsDown={true}>
+        <Grid container
+          spacing={24}
+          justify='space-between'
+          alignItems='center'
+          direction='row'
+          >
+            {this.normalFooterLeft()}
+            {this.normalFooterCenter()}
+            {this.normalFooterRight()}
+        </Grid>
+      </Hidden>
+    )
+  };
+
+  mobileFooterLeft() {
+    return (
+      <Grid item xs={6}>
+        <Grid container
+          direction='column'
+          spacing={0}
+          justify='center'
+          alignItems='flex-start'
+        >
+          {this.textNavLink('About Us', '/About', 'subheading')}
+          {this.textNavLink('Contact Us', '/Contact', 'subheading')}
+          {this.textNavLink('Privacy Policy', '/privacypolicy', 'subheading')}
+          {this.textNavLink('Terms of Service', '/tos', 'subheading')}
+        </Grid>
+      </Grid>
+    )
+  };
+
+  mobileFooterRight() {
+    return (
+      <Grid item xs={6}>
+        <Grid container
+          direction='column'
+          justify='center'
+          alignItems='flex-end'
+          spacing={0}>
+          {this.mobileHeepLogo()}
+          <Grid item xs={12}>
+            <Typography variant="caption" color='inherit' style={{marginRight: 5}}>
+              &#169; 2018 Heep
+            </Typography>
+          </Grid>
+        </Grid>
+      </Grid>
+    )
+  };
+
+  mobileFooter() {
+    return (
+      <Hidden smUp={true}>
+        <Grid container
+          justify='space-between'
+          alignItems='center'
+          >
+          {this.mobileFooterLeft()}
+          {this.mobileFooterRight()}
+        </Grid>
+      </Hidden>
     )
   }
 
   render() {
     const { classes } = this.props;
 
+    const inputs = {
+      footerContainer: {
+        style: {
+          padding: 24,
+          backgroundColor: this.props.theme.palette.primary.main,
+          color: this.props.theme.palette.primary.contrastText,
+          overflowX: 'hidden'
+        }
+      }
+    }
 
     return (
       <footer >
-        <div
-            style={{
-                padding: 24,
-                flexShrink: 0,
-                backgroundColor: this.props.theme.palette.primary.main,
-                color: this.props.theme.palette.primary.contrastText,
-                overflowX: 'hidden'
-              }}>
-
-            <Grid
-              container
-              spacing={24}
-              justify={'center'}
-              alignItems={'center'}
-              >
-              <Grid item xs>
-                <Grid
-                  container
-                  spacing={8}
-                  justify={'center'}
-                  direction='column'
-                >
-                  {this.textNavLink('Account', '/User')}
-                  {this.textNavLink('Shop', '/Store')}
-                  {this.textNavLink('Blog', '/Blog')}
-                  {this.textNavLink('Developers', '/Developers')}
-
-                </Grid>
-
-              </Grid>
-
-
-
-              <Grid item xs>
-                <Grid
-                  container
-                  spacing={8}
-                  justify={'center'}
-                  alignItems={'center'}
-                  direction='column'
-                >
-                </Grid>
-
-              </Grid>
-
-
-
-              <Grid item xs md={2} lg={1}>
-                <Grid
-                  container
-                  spacing={8}
-                  direction='column'
-                  alignItems='center'
-                  justify='center'
-                >
-                {this.heepLogo()}
-                {this.socialLogoLinks()}
-
-              </Grid>
-
-            </Grid>
-
-            <Grid item xs>
-                <Grid
-                  container
-                  spacing={8}
-                  direction='column'
-                />
-              </Grid>
-
-            <Grid item xs>
-                <Grid
-                  container
-                  spacing={8}
-                  direction='column'
-                >
-                  {this.textNavLink('About Us', '/About', 'right')}
-                  {this.textNavLink('Contact Us', '/Contact', 'right')}
-                  {this.textNavLink('Privacy Policy', '/privacypolicy', 'right')}
-                  {this.textNavLink('Terms of Service', '/tos', 'right')}
-              </Grid>
-            </Grid>
-
-
-          </Grid>
-
-          <Grid container alignItems='center' justify='center'>
-            <Grid item>
-
-                {this.copyrightMadeInBrooklyn()}
-                </Grid>
-                </Grid>
-
-
-          </div>
+        <div {...inputs.footerContainer}>
+          {this.normalFooter()}
+          {this.mobileFooter()}
+        </div>
       </footer>
     );
 
