@@ -3,18 +3,31 @@
 var path = require('path');
 var webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+var HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 
 
 module.exports = {
   target: 'web',
 
   entry: {
-    index: './src/index.js'
+    index: './src/index.js',
+    hmr_endpoint: 'webpack-dev-server/client?http://localhost:8008'
+    // 'react-hot-loader/patch',
+    //   //activate HMR for React
+
+    //   'webpack-dev-server/client?http://localhost:8080',
+    //   //bundle the client for webpack dev server
+    //   //and connect to the provided endpoint
+
+    //   'webpack/hot/only-dev-server',
+    //   //bundle the client for hot reloading
+    //   //only- means to only hot reload for successful updates
   },
 
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: '[name].bundle.js',
+    // publicPath: '/dist'
   },
 
   plugins: [
@@ -22,14 +35,17 @@ module.exports = {
       title: 'Hot Module Replacement',
       filename: 'index.html',
       template: 'index.template.ejs',
-      inject: 'body'
+      inject: 'body',
+      alwaysWriteToDisk: true
     }),
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NamedModulesPlugin(),
+    new HtmlWebpackHarddiskPlugin(),
   ],
 
   devServer: { 
     publicPath: './dist',
-    // contentBase: './dist',
+    contentBase: './dist',
     // compress: true,
     port: 9000,
     // open: true,

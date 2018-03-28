@@ -57,31 +57,37 @@ export const store = createStore(reducers, startState, composeWithDevTools(apply
 
 auth.initializeFirebase();
 
-if (module.hot) { 
-  console.log('detected hot module');
+// if (module.hot) { 
+//   console.log('detected hot module');
 
-  module.hot.accept('./components/App', () => { 
-     const App = require('./components/App'); 
+//   module.hot.accept('./components/App', () => { 
+//      const App = require('./components/App'); 
+//      const { Root } = await import('index');
 
-
-     render(
-       <AppContainer>
-         <Provider store={store}>
-           <App/>
-         </Provider>
-       </AppContainer>,
-       document.getElementById('root')
-     )
-  }); 
-} else {
-  console.log('normal render')
+//      render(
+//        <AppContainer>
+//          <Provider store={store}>
+//            <div> test </div>
+//          </Provider>
+//        </AppContainer>,
+//        document.getElementById('root')
+//      )
+//   }); 
+// } else {
+//   console.log('normal render')
   
   render(
+    <AppContainer>
       <Provider store={store}>
         <App/>
-      </Provider>,
+      </Provider>
+    </AppContainer>,
     document.getElementById('root')
   )
+// }
+
+if(module.hot) {
+    module.hot.accept();
 }
 
 
@@ -116,6 +122,4 @@ var timeoutRef = setInterval(() => loadDevicesFromServer(window.location.origin.
 
 setTimeout(() => clearTimeout(timeoutRef), 3000);
 
-
-i
 

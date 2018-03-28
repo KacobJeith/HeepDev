@@ -185,7 +185,7 @@ class AppBarDrawer extends React.Component {
           onClick={this.handleMenu}
           color="inherit"
         >
-          <AccountCircle />
+          <MenuIcon />
         </IconButton>
         <Menu
           id="menu-appbar"
