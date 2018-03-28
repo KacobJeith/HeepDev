@@ -5,7 +5,8 @@ import { withStyles } from "material-ui/styles";
 import { Typography,
          Modal,
          Button,
-         Grid } from 'material-ui'
+         Grid,
+         Avatar } from 'material-ui'
 
 const styles = theme => ({
   paper: {
@@ -65,7 +66,8 @@ class TeamModal extends React.Component {
       buttonImage: {
         src: this.props.imagePath,
         style: {
-          maxWidth: this.props.imageButtonWidth,
+          width: 200,
+          height: 200
         }
       },
     }
@@ -73,7 +75,7 @@ class TeamModal extends React.Component {
     return (
       <div {...inputs.buttonContainer}>
         <Button onClick={this.handleOpen}>
-          <img {...inputs.buttonImage}/>
+          <Avatar {...inputs.buttonImage}/>
         </Button>
       </div>
     )
@@ -90,15 +92,18 @@ class TeamModal extends React.Component {
       modalImage: {
         src: this.props.imagePath,
         style: {
-          maxWidth: '100%'
+          width: 200,
+          height: 200
         }
       },
     }
 
     return (
-      <div {...inputs.modalImageContainer}>
-        <img {...inputs.modalImage}/>
-      </div>
+      <Grid container justify='center'>
+        <Grid item>
+          <Avatar {...inputs.modalImage}/>
+        </Grid>
+      </Grid>
     )
   };
 

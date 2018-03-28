@@ -136,6 +136,27 @@ class About extends React.Component {
           desc1: 'James is our hardware whisperer. Prior to Heep, he was an early employee at Adafruit, where he built hardware and engaged with the vast Adafruit community. James is also the founder of Smooth Technology, a group of designer-engineers whose art has been featured on the likes of Taylor Swift & Katy Perry and in the MoMA & Times Square.',
           desc2: 'James is the bassist of chiptune band Anamanaguchi, known for sending pizza into space. He earned a B.S. in Music Technology with a minor in Computer Science from New York University.'
         },
+        jacob:{
+          name: 'Jacob Keith',
+          imagePath: founders.jacob,
+          imageButtonWidth: '75%',
+          desc1: 'Jacob Keith, Founder & CEO, is responsible for Heep’s vision, strategy, and full-stack frontend development. Prior to Heep, he was Product Director at Nanotronics, where he juggled his roles writing computer vision algorithms for industrial process control, managing an engineering team spread across three states, and heading global sales in Asia.',
+          desc2: 'Jacob speaks fluent Mandarin Chinese and slays at the violin. He earned a B.S. in Materials Science & Engineering from Columbia University'
+        },
+        yenny: {
+          name: 'Yenny Su',
+          imagePath: founders.yenny,
+          imageButtonWidth: '75%',
+          desc1: 'Yenny Su, Founder & CRO, spends her time on strategy, finance, and business development. Prior to Heep, she was a consultant at BlackRock, where she helped build its fledgling advisory business and provided investment strategy to the firm’s largest institutional clients, ranging from $300 million to $50 billion in assets under management.',
+          desc2: 'Yenny loves the outdoors and once spent a summer hiking from Mexico to Canada on the Pacific Crest Trail. She earned a B.A., with honors, in Financial Economics and Political Science from Columbia University.'
+        },
+        dylan: {
+          name: 'Dylan Fashbaugh',
+          imagePath: founders.dylan,
+          imageButtonWidth: '75%',
+          desc1: 'Dylan Fashbaugh, Founder & CTO, is the architect behind the Heep platform. Prior to Heep, he led Software Engineering at Nanotronics and focused on image processing and motion control algorithms. Along with James, he is a co-founder of Smooth Technology.',
+          desc2: 'Dylan is a serial inventor, speaks fluent byte code, and can do the fourier transformation in his head. His brain controlled guitar pedals won the entrepreneurship portion of Cornell and Intel’s National Systems Engineering Competition. He earned a B.S. in Computer Engineering from the University of Akron.'
+        }
       }
     };
 
@@ -151,16 +172,16 @@ class About extends React.Component {
           margin: '0 auto'
         }} justify='center'>
           <Grid item xs={12} md={3}>
-            <TeamModal {...inputs.teamModal.james}/>
+            <TeamModal {...inputs.teamModal.jacob}/>
+          </Grid>
+          <Grid item xs={12} md={3}>
+            <TeamModal {...inputs.teamModal.dylan}/>
           </Grid>
           <Grid item xs={12} md={3}>
             <TeamModal {...inputs.teamModal.james}/>
           </Grid>
           <Grid item xs={12} md={3}>
-            <TeamModal {...inputs.teamModal.james}/>
-          </Grid>
-          <Grid item xs={12} md={3}>
-            <TeamModal {...inputs.teamModal.james}/>
+            <TeamModal {...inputs.teamModal.yenny}/>
           </Grid>
         </Grid>
     </div>
