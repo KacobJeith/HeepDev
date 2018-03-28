@@ -94,6 +94,18 @@ void AddIPToMemory(struct HeepIPAddress theIP)
 
 void SetDeviceNameInMemory_Byte(char* deviceName, int numCharacters, heepByte* deviceID)
 {
+	int counter = 0;
+	
+	while(counter < curFilledMemory)
+	{
+		if(deviceMemory[counter] == DeviceNameOpCode){
+			deviceMemory[counter] = FragmentOpCode;
+		}
+
+		counter = SkipOpCode(counter);
+	}
+	
+
 	PerformPreOpCodeProcessing_Byte(deviceID);
 
 	AddNewCharToMemory(DeviceNameOpCode);
@@ -169,8 +181,41 @@ heepByte GetWiFiFromMemory(char* WiFiSSID, char* WiFiPassword, int priority)
 	return 1; // No SSID Password Found at given Priority
 }
 
+heepByte DeleteWiFiSetting(int priority, heepByte* deviceID)
+{
+	heepByte foundSSIDAndPassword = 0x00; // 0b00000011 When both found
+	int counter = 0;
+	while(counter < curFilledMemory)
+	{
+		if(deviceMemory[counter] == WiFiSSIDOpCode)
+		{
+			if(deviceMemory[counter + ID_SIZE + 2] == priority)
+			{
+				deviceMemory[counter] = FragmentOpCode;
+			}
+		}
+		else if(deviceMemory[counter] == WiFiPasswordOpCode)
+		{
+			if(deviceMemory[counter + ID_SIZE + 2] == priority)
+			{
+				deviceMemory[counter] = FragmentOpCode;
+			}
+		}
+
+		counter = SkipOpCode(counter);
+
+		if(foundSSIDAndPassword == 0x03){
+			return 0;
+		}
+	}
+
+	return 1; // No SSID Password Found at given Priority
+}
+
 void AddWiFiSettingsToMemory(char* WiFiSSID, int numCharSSID, char* WiFiPassword, int numCharPassword, heepByte* deviceID, heepByte IDPriority)
 {
+	DeleteWiFiSetting(IDPriority, deviceID);
+	
 	PerformPreOpCodeProcessing_Byte(deviceID);
 
 	// WiFi
