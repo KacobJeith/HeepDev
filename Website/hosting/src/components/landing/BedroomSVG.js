@@ -43,7 +43,6 @@ class BedroomSVG extends React.Component{
     this.hoverDiary = this.hoverDiary.bind(this);
     this.hoverSleep = this.hoverSleep.bind(this);
     this.hoverDresser = this.hoverDresser.bind(this);
-    this.hoverDresser = this.hoverDresser.bind(this);
     this.hoverCactus = this.hoverCactus.bind(this);
     this.hoverFlowers = this.hoverFlowers.bind(this);
 
@@ -51,7 +50,6 @@ class BedroomSVG extends React.Component{
     this.leavePig = this.leavePig.bind(this);
     this.leaveDiary = this.leaveDiary.bind(this);
     this.leaveSleep = this.leaveSleep.bind(this);
-    this.leaveDresser = this.leaveDresser.bind(this);
     this.leaveDresser = this.leaveDresser.bind(this);
     this.leaveCactus = this.leaveCactus.bind(this);
     this.leaveFlowers = this.leaveFlowers.bind(this);
@@ -67,7 +65,6 @@ class BedroomSVG extends React.Component{
 
   componentDidMount() {
     this.addButtonListeners();
-    TweenLite.to(paperSignalUmbrella, 0.01, {rotation: 0.01, scaleX: 10, scaleY: 10})
   };
 
     addButtonListeners() {
@@ -75,8 +72,7 @@ class BedroomSVG extends React.Component{
       buttonPig.addEventListener('mouseover', this.hoverPig);
       buttonDiary.addEventListener('mouseover', this.hoverDiary);
       buttonSleep.addEventListener('mouseover', this.hoverSleep);
-      buttonDresserTop.addEventListener('mouseover', this.hoverDresser);
-      buttonDresserBottom.addEventListener('mouseover', this.hoverDresser);
+      buttonDresser.addEventListener('mouseover', this.hoverDresser);
       buttonCactus.addEventListener('mouseover', this.hoverCactus);
       buttonFlower.addEventListener('mouseover', this.hoverFlowers);
 
@@ -84,8 +80,7 @@ class BedroomSVG extends React.Component{
       buttonPig.addEventListener('mouseleave', this.leavePig);
       buttonDiary.addEventListener('mouseleave', this.leaveDiary);
       buttonSleep.addEventListener('mouseleave', this.leaveSleep);
-      buttonDresserTop.addEventListener('mouseleave', this.leaveDresser);
-      buttonDresserBottom.addEventListener('mouseleave', this.leaveDresser);
+      buttonDresser.addEventListener('mouseleave', this.leaveDresser);
       buttonCactus.addEventListener('mouseleave', this.leaveCactus);
       buttonFlower.addEventListener('mouseleave', this.leaveFlowers);
 
@@ -93,7 +88,7 @@ class BedroomSVG extends React.Component{
       buttonPig.addEventListener('click', this.clickPig);
       buttonDiary.addEventListener('click', this.clickDiary);
       buttonSleep.addEventListener('click', this.clickSleep);
-      buttonDresserTop.addEventListener('click', this.clickDresser);
+      buttonDresser.addEventListener('click', this.clickDresser);
       buttonCactus.addEventListener('click', this.clickCactus);
       buttonFlower.addEventListener('click', this.clickFlowers);
 
@@ -101,8 +96,7 @@ class BedroomSVG extends React.Component{
       buttonPig.setAttribute('cursor', 'pointer');
       buttonDiary.setAttribute('cursor', 'pointer');
       buttonSleep.setAttribute('cursor', 'pointer');
-      buttonDresserTop.setAttribute('cursor', 'pointer');
-      buttonDresserBottom.setAttribute('cursor', 'pointer');
+      buttonDresser.setAttribute('cursor', 'pointer');
       buttonCactus.setAttribute('cursor', 'pointer');
       buttonFlower.setAttribute('cursor', 'pointer');
   };
@@ -112,8 +106,7 @@ class BedroomSVG extends React.Component{
       buttonPig.removeEventListener('mouseover', this.hoverPig);
       buttonDiary.removeEventListener('mouseover', this.hoverDiary);
       buttonSleep.removeEventListener('mouseover', this.hoverSleep);
-      buttonDresserTop.removeEventListener('mouseover', this.hoverDresser);
-      buttonDresserBottom.removeEventListener('mouseover', this.hoverDresser);
+      buttonDresser.removeEventListener('mouseover', this.hoverDresser);
       buttonCactus.removeEventListener('mouseover', this.hoverCactus);
       buttonFlower.removeEventListener('mouseover', this.hoverFlowers);
 
@@ -121,8 +114,7 @@ class BedroomSVG extends React.Component{
       buttonPig.removeEventListener('mouseleave', this.leavePig);
       buttonDiary.removeEventListener('mouseleave', this.leaveDiary);
       buttonSleep.removeEventListener('mouseleave', this.leaveSleep);
-      buttonDresserTop.removeEventListener('mouseleave', this.leaveDresser);
-      buttonDresserBottom.removeEventListener('mouseleave', this.leaveDresser);
+      buttonDresser.removeEventListener('mouseleave', this.leaveDresser);
       buttonCactus.removeEventListener('mouseleave', this.leaveCactus);
       buttonFlower.removeEventListener('mouseleave', this.leaveFlowers);
 
@@ -130,7 +122,7 @@ class BedroomSVG extends React.Component{
       buttonPig.removeEventListener('click', this.clickPig);
       buttonDiary.removeEventListener('click', this.clickDiary);
       buttonSleep.removeEventListener('click', this.clickSleep);
-      buttonDresserTop.removeEventListener('click', this.clickDresser);
+      buttonDresser.removeEventListener('click', this.clickDresser);
       buttonCactus.removeEventListener('click', this.clickCactus);
       buttonFlower.removeEventListener('click', this.clickFlowers);
 
@@ -138,8 +130,7 @@ class BedroomSVG extends React.Component{
       buttonPig.removeAttribute('cursor', 'pointer');
       buttonDiary.removeAttribute('cursor', 'pointer');
       buttonSleep.removeAttribute('cursor', 'pointer');
-      buttonDresserTop.removeAttribute('cursor', 'pointer');
-      buttonDresserBottom.removeAttribute('cursor', 'pointer');
+      buttonDresser.removeAttribute('cursor', 'pointer');
       buttonCactus.removeAttribute('cursor', 'pointer');
       buttonFlower.removeAttribute('cursor', 'pointer');
     };
@@ -611,9 +602,23 @@ class BedroomSVG extends React.Component{
       this.addButtonListeners();
     };
 
-    tlDresser
-             .to(dresserDrawerTopOpen, 0.1, {display: 'block'})
-             .to(dresserDrawerTopOpen, 0.1, {display: 'none'}, "+=0.5")
+    const tlUmbrella = new TimelineMax()
+    const tlPants = new TimelineMax()
+
+    function chooseWeather() {
+      tlUmbrella.play();
+    }
+
+    tlDresser.to([dresserOpenBack, dresserOpenFront], 0.1, {display: 'block', onComplete: chooseWeather})
+             .to([dresserOpenBack, dresserOpenFront], 0.1, {display: 'none'}, "+=0.5")
+
+    tlUmbrella.to(paperUmbrella, 0.5, {scaleX: 2, scaleY: 2, transformOrigin: "bottom", ease: Sine.easeInOut})
+              .to(umbrellaLeft, 0.7, {rotation: -18, transformOrigin: "top", ease: Sine.easeInOut})
+              .to(umbrellaRight, 0.7, {rotation: 18, transformOrigin: "top", ease: Sine.easeInOut}, "-=0.7")
+
+    tlPants.to(paperPants, 0.5, {scaleX: 2, scaleY: 2, transformOrigin: "bottom", ease: Sine.easeInOut})
+           .to([pantsLeft, pantsRight], 0.7, {scaleY: 15, transformOrigin: "top", ease: Sine.easeInOut})
+
   }
 
   hoverCactus() {
