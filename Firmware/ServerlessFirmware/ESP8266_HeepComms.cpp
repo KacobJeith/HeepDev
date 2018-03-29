@@ -125,9 +125,7 @@ void CheckServerForInputs()
       }
       Serial.println();
       
-      if(IsROP()) return;
-
-      ExecuteControlOpCodes();
+      if(HandleHeepCommunications()) return;
 
       for(int i = 0; i < outputBufferLastByte; i++)
       {
