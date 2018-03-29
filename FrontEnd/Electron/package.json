@@ -16,7 +16,7 @@
   "scripts": {
     "test": "mocha-webpack --webpack-config webpack.config-test.js \"src/**/*.test.js\"",
     "build": "npm run copy-files && webpack --config webpack.config.js && webpack --config webpack-electron.config.js",
-    "dev": "webpack-dev-server --progress --inline --hot --output-public-path=/dist/ --watch",
+    "dev": "node devServer.js",
     "start": "electron .",
     "tbs": "npm run test && npm run bs",
     "bs": "webpack && npm run start",
@@ -77,6 +77,7 @@
     "dateformat": "^3.0.3",
     "electron-builder": "^20.7.1",
     "electron-packager": "^11.1.0",
+    "html-webpack-plugin": "^3.1.0",
     "json-loader": "^0.5.7",
     "mocha": "^3.2.0",
     "mocha-webpack": "^0.7.0",
@@ -92,7 +93,7 @@
     "webpack": "^4.2.0",
     "webpack-cli": "^2.0.13",
     "webpack-dev-middleware": "^3.1.0",
-    "webpack-dev-server": "^1.16.2",
+    "webpack-dev-server": "^3.1.1",
     "webpack-hot-middleware": "^2.21.2",
     "webpack-node-externals": "^1.5.4"
   },
