@@ -38,8 +38,19 @@ import { logos } from '../assets/remote/Logos'
 
 var mapStateToProps = (state) => ({
   loginStatus: state.loginStatus,
-  itemsInCart: state.shoppingCart.lineItems.length
+  itemsInCart: calculateQuantity(state)
 })
+
+const calculateQuantity = (state) => {
+  var quantity = 0;
+  
+  for (var i =0; i < state.shoppingCart.lineItems.length; i++) {
+
+    quantity += state.shoppingCart.lineItems[i].quantity;
+  }
+  
+  return quantity
+}
 
 const styles = {
   root: {
