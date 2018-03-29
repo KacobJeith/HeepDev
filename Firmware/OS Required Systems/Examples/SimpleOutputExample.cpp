@@ -15,7 +15,7 @@ int main(void)
   	AddOnOffControl("Bye", HEEP_OUTPUT, 1);
   	AddRangeControl("MyRange", HEEP_INPUT, 100, 20, 50);
 
-  	StartHeep("ExperimentUsability", HEEP_ICON_CUCKOO_CLOCK);
+  	StartHeep("OS Device", HEEP_ICON_CUCKOO_CLOCK);
 
 	while(1)
 	{
