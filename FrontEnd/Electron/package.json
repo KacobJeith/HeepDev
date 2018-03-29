@@ -16,7 +16,7 @@
   "scripts": {
     "test": "mocha-webpack --webpack-config webpack.config-test.js \"src/**/*.test.js\"",
     "build": "npm run copy-files && webpack --config webpack.config.js && webpack --config webpack-electron.config.js",
-    "dev": "node devServer.js",
+    "dev": "babel-node devServer.js",
     "start": "electron .",
     "tbs": "npm run test && npm run bs",
     "bs": "webpack && npm run start",

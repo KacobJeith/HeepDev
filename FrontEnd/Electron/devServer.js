@@ -3,12 +3,19 @@
 const Webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const webpackConfig = require('./webpack.config');
+require('./src/heepServer')
 
 const compiler = Webpack(webpackConfig);
 const devServerOptions = Object.assign({}, webpackConfig.devServer, {
   stats: {
     colors: true
-  }
+  },
+  proxy: {
+	  "/api": {
+	    target: "http://localhost:3004",
+	    secure: false
+		}
+	}
 });
 const server = new WebpackDevServer(compiler, devServerOptions);
 
