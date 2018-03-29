@@ -2,6 +2,8 @@
 
 var path = require('path');
 var webpack = require('webpack');
+var marked = require("marked");
+var renderer = new marked.Renderer();
 
 module.exports = {
   target: 'web',
@@ -47,6 +49,20 @@ module.exports = {
       loader: 'file-loader',
       options: {
         name: '[name].[ext]'} 
+      },
+      {
+        test: /\/md$/,
+        use: [
+          {
+            loader: "html-loader"
+          },
+          {
+            loader: "markdown-loader",
+            options: {
+                renderer
+            }
+          }
+        ]
       }
     ],
 

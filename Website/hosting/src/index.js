@@ -12,6 +12,8 @@ import * as shopify from './shopify/Shopify'
 import { composeWithDevTools } from 'redux-devtools-extension';
 import ReactGA from 'react-ga';
 
+import markdown from './tutorials/markdown.md'
+
 import loading from './assets/heepwink3_gradient.mov';
 
 const startState = {
