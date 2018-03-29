@@ -632,14 +632,14 @@ class BedroomSVG extends React.Component{
         tlPants.play();
         tlUmbrella.play();
 
-      } else if (weather==3) {
+      } else if (weather==2) {
         // raining
         this.addUmbrella();
         tlPants.play();
         tlUmbrella.play();
       }
 
-      else if (weather==4) {
+      else if (weather==3) {
         // snowing
         this.addUmbrella();
         this.addPants();
@@ -656,7 +656,6 @@ class BedroomSVG extends React.Component{
     }
 
     tlDresser.to([dresserOpenBack, dresserOpenFront], 0.1, {display: 'block', onComplete: chooseWeather})
-             .to([dresserOpenBack, dresserOpenFront], 0.1, {display: 'none', onComplete: endAnimation}, "+=3")
 
     tlUmbrella.to(paperUmbrella, 0.5, {scaleX: 2, scaleY: 2, transformOrigin: "bottom", ease: Sine.easeInOut})
 
