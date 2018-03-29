@@ -2,7 +2,6 @@
 
 var path = require('path');
 var webpack = require('webpack');
-const WebpackDevServer = require('webpack-dev-server');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
@@ -11,27 +10,20 @@ module.exports = {
   context: __dirname,
 
   entry: [
-    './src/index.js',
-    'webpack-dev-server/client/index.js?http://localhost:8080/'
+    './src/index.js'
   ],
 
-  mode: 'development',
-
   output: {
-    filename: 'dist/bundle.js',
+    filename: 'bundle.js',
   },
 
   plugins: [
     new webpack.NamedModulesPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: path.join(__dirname, 'index.html')
     })
   ],
-
-  devServer: { 
-  },
 
   resolve: {
     modules: ['node_modules'],
