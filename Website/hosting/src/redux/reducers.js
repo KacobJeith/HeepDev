@@ -36,7 +36,7 @@ export default function(state = initialState, action) {
 
     case 'CREATE_CHECKOUT' :
 
-      database.saveCheckoutID(action.checkoutID);
+      setTimeout(() => {database.saveCheckoutID(action.checkoutID)}, 100);
 
       return Immutable.Map(state).set('checkoutID', action.checkoutID).toJS()
 

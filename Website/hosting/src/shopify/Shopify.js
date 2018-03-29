@@ -91,11 +91,17 @@ const createCart = (callback = (_checkoutID, _passData) => {}, passData) => {
 }
 
 export const retrieveCheckout = (checkoutID) => {
+  console.log('Trying ID: ', checkoutID);
 
   client.checkout.fetch(checkoutID).then((checkout) => {
-    // Do something with the checkout
-    console.log(checkout);
+
+    console.log('Checkout Last updated: ', checkout.updatedAt);
+
     setup.store.dispatch(actions.saveCartLocally(checkout));
 
+  }).catch((error) => {
+    console.log('Failed to fetch Checkout');
+
+    createCart();
   });
 }
