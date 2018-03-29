@@ -602,22 +602,65 @@ class BedroomSVG extends React.Component{
       this.addButtonListeners();
     };
 
-    const tlUmbrella = new TimelineMax()
-    const tlPants = new TimelineMax()
+    const tlUmbrella = new TimelineMax({paused: true})
+    const tlPants = new TimelineMax({paused: true})
 
     function chooseWeather() {
-      tlUmbrella.play();
+      
+      const weather = Math.floor(Math.random() * 4);
+
+      this.addUmbrella = () => {
+        tlUmbrella.add(TweenMax.to(umbrellaLeft, 0.7, {rotation: -18, transformOrigin: "top", ease: Sine.easeInOut}), 0.5);
+        tlUmbrella.add(TweenMax.to(umbrellaRight, 0.7, {rotation: 18, transformOrigin: "top", ease: Sine.easeInOut}), 0.5);
+      }
+
+      this.addPants = () => {
+        tlPants.add(TweenMax.to([pantsLeft, pantsRight], 0.7, {scaleY: 13, transformOrigin: "top", ease: Sine.easeInOut}));
+      }
+
+      console.log(weather)
+
+      if (weather==0) {
+        // hot weather
+        tlUmbrella.play();
+        tlPants.play();
+
+      } else if (weather==2) {
+        // cold
+        this.addPants();
+        tlPants.play();
+        tlUmbrella.play();
+
+      } else if (weather==4) {
+        // raining
+        this.addUmbrella();
+        tlPants.play();
+        tlUmbrella.play();
+      }
+
+      else if (weather==3) {
+        // snowing
+        this.addUmbrella();
+        this.addPants();
+        tlPants.play();
+          tlUmbrella.play();
+      }
+
+    };
+
+    function endAnimation() {
+      tlUmbrella.add(TweenMax.to([umbrellaRight, umbrellaLeft], 0.7, {rotation: 0, transformOrigin: "top", ease: Sine.easeInOut}));
+      tlUmbrella.add(TweenMax.to(paperUmbrella, 0.5, {scaleX: 1, scaleY: 1, transformOrigin: "bottom", ease: Sine.easeInOut}));
+      tlPants.add(TweenMax.to([pantsLeft, pantsRight], 0.7, {scaleY: 0, transformOrigin: "top", ease:Sine.easeInOut}));
+      tlPants.add(TweenMax.to(paperPants, 0.5, {scaleX: 1, scaleY: 1, transformOrigin: "bottom", ease: Sine.easeInOut}));
     }
 
     tlDresser.to([dresserOpenBack, dresserOpenFront], 0.1, {display: 'block', onComplete: chooseWeather})
-             .to([dresserOpenBack, dresserOpenFront], 0.1, {display: 'none'}, "+=0.5")
+             .to([dresserOpenBack, dresserOpenFront], 0.1, {display: 'none', onComplete: endAnimation}, "+=3")
 
     tlUmbrella.to(paperUmbrella, 0.5, {scaleX: 2, scaleY: 2, transformOrigin: "bottom", ease: Sine.easeInOut})
-              .to(umbrellaLeft, 0.7, {rotation: -18, transformOrigin: "top", ease: Sine.easeInOut})
-              .to(umbrellaRight, 0.7, {rotation: 18, transformOrigin: "top", ease: Sine.easeInOut}, "-=0.7")
 
     tlPants.to(paperPants, 0.5, {scaleX: 2, scaleY: 2, transformOrigin: "bottom", ease: Sine.easeInOut})
-           .to([pantsLeft, pantsRight], 0.7, {scaleY: 15, transformOrigin: "top", ease: Sine.easeInOut})
 
   }
 
