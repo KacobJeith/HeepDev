@@ -586,6 +586,7 @@ class BedroomSVG extends React.Component{
   };
 
   hoverDresser() {
+    var dresser = [dresserFront, dresserBack];
     this.hoverShake(dresser);
   };
 
@@ -606,7 +607,7 @@ class BedroomSVG extends React.Component{
     const tlPants = new TimelineMax({paused: true})
 
     function chooseWeather() {
-      
+
       const weather = Math.floor(Math.random() * 4);
 
       this.addUmbrella = () => {
@@ -625,27 +626,26 @@ class BedroomSVG extends React.Component{
         tlUmbrella.play();
         tlPants.play();
 
-      } else if (weather==2) {
+      } else if (weather==1) {
         // cold
         this.addPants();
         tlPants.play();
         tlUmbrella.play();
 
-      } else if (weather==4) {
+      } else if (weather==3) {
         // raining
         this.addUmbrella();
         tlPants.play();
         tlUmbrella.play();
       }
 
-      else if (weather==3) {
+      else if (weather==4) {
         // snowing
         this.addUmbrella();
         this.addPants();
         tlPants.play();
-          tlUmbrella.play();
+        tlUmbrella.play();
       }
-
     };
 
     function endAnimation() {
