@@ -49,20 +49,6 @@ module.exports = {
       loader: 'file-loader',
       options: {
         name: '[name].[ext]'} 
-      },
-      {
-        test: /\/md$/,
-        use: [
-          {
-            loader: "html-loader"
-          },
-          {
-            loader: "markdown-loader",
-            options: {
-                renderer
-            }
-          }
-        ]
       }
     ],
 
