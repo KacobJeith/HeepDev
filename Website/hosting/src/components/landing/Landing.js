@@ -9,6 +9,7 @@ import { Grid, Paper, Typography } from 'material-ui'
 import BedroomSVG from './BedroomSVG'
 import SectionCard from '../utilities/SectionCard'
 import FeaturedItems from './FeaturedItems'
+import ExplainSVG from './ExplainSVG'
 import { banners } from '../../assets/remote/Banners'
 
 
@@ -55,9 +56,15 @@ class Landing extends React.Component {
       },
     };
     return (
-      <Grid container justify='center' {...inputs.bedroomContainer}>
-        <Grid item xs={12} sm={8}>
+      <Grid container
+        justify='center'
+        spacing={0}
+        {...inputs.bedroomContainer}>
+        <Grid item xs={10}sm={8}>
           <BedroomSVG />
+        </Grid>
+        <Grid item xs={2} sm={4}>
+          <ExplainSVG />
         </Grid>
       </Grid>
     )

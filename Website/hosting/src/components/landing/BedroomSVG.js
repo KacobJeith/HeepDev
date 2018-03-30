@@ -1,7 +1,6 @@
 import React from 'react';
 import { bedroomSVG } from './BedroomString';
 import $ from 'jquery';
-//import * as MorphSVGPlugin from './gsap/MorphSVGPlugin'
 import { TimelineMax } from 'gsap';
 import MorphSVGPlugin from '../utilities/MorphSvgPlugin';
 import { withStyles } from 'material-ui/styles';
@@ -25,7 +24,7 @@ var tlVertexRemote = new TimelineMax();
 var tlVertexDiary = new TimelineMax();
 var tlVertexPig = new TimelineMax();
 
-class BedroomSVG extends React.Component{
+class BedroomSVG extends React.Component {
 
   constructor(props) {
 		super(props);
