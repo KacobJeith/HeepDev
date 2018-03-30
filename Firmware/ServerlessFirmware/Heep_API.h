@@ -51,9 +51,7 @@ void SetupHeepTasks();
 
 void CommitMemory();
 
-unsigned char IsROP();
-
-void ExecuteControlOpCodes();
+heepByte HandleHeepCommunications();
 
 #ifdef USE_ANALYTICS
 void PostDataToFirebase();

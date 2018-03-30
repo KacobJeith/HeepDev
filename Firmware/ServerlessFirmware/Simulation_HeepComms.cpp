@@ -8,9 +8,7 @@ void CreateInterruptServer()
 
 void CheckServerForInputs()
 {
-	if(IsROP()) return;
-
-    ExecuteControlOpCodes();
+	if(HandleHeepCommunications()) return;
 }
 
 void SendOutputBufferToIP(struct HeepIPAddress destIP)
