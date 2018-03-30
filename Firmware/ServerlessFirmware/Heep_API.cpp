@@ -235,3 +235,12 @@ void StartHeep(char* deviceName, heepByte deviceIcon)
 	SetupHeepTasks();
   	CreateInterruptServer(); 
 }
+
+heepByte HandleHeepCommunications()
+{
+	if(IsROP()) 
+		return 1;
+
+	ExecuteControlOpCodes();
+	return 0;
+}

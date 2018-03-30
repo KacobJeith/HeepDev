@@ -166,6 +166,7 @@ class BedroomSVG extends React.Component{
     };
 
     const pathRemoteCar = MorphSVGPlugin.pathDataToBezier(vertexRemoteCar, {align: alignRemote});
+    const wheels = [wheelLeft, wheelRight]
     const startTime = 3.5
 
     tlCar.to(cometRemote, 0.05, {display:'block'})
@@ -187,6 +188,10 @@ class BedroomSVG extends React.Component{
               template:Sine.easeNone,
               randomize:false
             }) , clearProps:"x"}, "+=0.5")
+
+         .fromTo(carSmoke1, 0.5, {scaleX: 1, scaleY: 1}, {scaleX: 1.4, scaleY: 1.4, ease: Sine.easeInOut, yoyo: true, repeat: 15}, "-=7.5")
+         .fromTo(carSmoke2, 0.5, {scaleX: 1, scaleY: 1}, {scaleX: 1.6, scaleY: 1.6, ease: Sine.easeInOut, yoyo: true, repeat: 15}, "-=7.5")
+         .fromTo(carSmoke3, 0.5, {scaleX: 1, scaleY: 1}, {scaleX: 1.2, scaleY: 1.2, ease: Sine.easeInOut, yoyo: true, repeat: 15}, "-=7.5")
          .fromTo(carBodyGroup, 7.5, {y:-0.02}, {
             y:0.02,
             ease:RoughEase.ease.config({
@@ -194,14 +199,29 @@ class BedroomSVG extends React.Component{
               points:100,
               template:Sine.easeNone,
               randomize:false
-            }) , clearProps:"x"}, '-=7.5')
+            }) , clearProps:"x"}, '-=8')
+
          .to(car, 1.2, {x: -70, ease: Sine.easeInOut}, 0.7 + startTime)
+         .to(wheels, 1.2, {rotation: '-=360', ease: Sine.easeInOut, transformOrigin: '50% 50%'}, 0.7 + startTime)
+
          .to(car, 1, {x: 40, y: 160, ease: Sine.easeInOut}, 2 + startTime)
+         .to(wheels, 1, {rotation: '+=360', ease: Sine.easeInOut, transformOrigin: '50% 50%'}, 2 + startTime)
+
          .to(car, 0.6, {x: 200, ease: Sine.easeInOut}, 3.1 + startTime)
+         .to(wheels, 0.6, {rotation: '-=360', ease: Sine.easeInOut, transformOrigin: '50% 50%'}, 3.1 + startTime)
+
          .to(car, 0.6, {y: 80, ease: Sine.easeInOut}, 3.8 + startTime)
+         .to(wheels, 0.6, {rotation: '-=360', ease: Sine.easeInOut, transformOrigin: '50% 50%'}, 3.8 + startTime)
+
          .to(car, 0.7, {x: -30, y: -10, ease: Sine.easeInOut}, 4.5 + startTime)
+         .to(wheels, 0.7, {rotation: '+=360', ease: Sine.easeInOut, transformOrigin: '50% 50%'}, 4.5 + startTime)
+
          .to(car, 0.8, {y: 0, ease: Sine.easeInOut}, 5.3 + startTime)
+         .to(wheels, 0.8, {rotation: '+=360', ease: Sine.easeInOut, transformOrigin: '50% 50%'}, 5.3 + startTime)
+
          .to(car, 0.8, {x: 0, ease: Sine.easeInOut}, 6.2 + startTime)
+         .to(wheels, 0.8, {rotation: '+=360', ease: Sine.easeInOut, transformOrigin: '50% 50%'}, 6.2 + startTime)
+
          .to(carAnimation, 0.1, {display: 'none'})
   };
 

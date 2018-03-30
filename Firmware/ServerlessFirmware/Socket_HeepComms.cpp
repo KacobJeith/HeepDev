@@ -117,7 +117,7 @@ void CheckServerForInputs()
           inputBuffer[i] = recvBuffer[i];
         }
 
-        ExecuteControlOpCodes();
+        if(HandleHeepCommunications()) return;
 
         int s;
         socklen_t slen = sizeof(si_other);

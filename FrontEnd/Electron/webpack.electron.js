@@ -8,7 +8,7 @@ module.exports = {
   context: path.resolve(__dirname),
   
   entry: './src/electron_main.js',
-
+  mode: 'production', 
   target: 'electron-main',
 
   output: {
@@ -16,15 +16,7 @@ module.exports = {
     filename: 'electron_bundle.js',
   },
 
-  plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-  ],
-
-  devServer: {
-    publicPath: '/dist',
-    port: 9000,
-    historyApiFallback: true
-  },
+  plugins: [],
 
   resolve: {
     modules: ['node_modules'],

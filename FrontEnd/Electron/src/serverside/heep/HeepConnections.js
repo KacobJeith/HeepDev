@@ -1,4 +1,4 @@
-import os from 'os' 
+const os = require('os')
 import * as HAPIParser from './HAPIMemoryParser'
 import * as iconUtils from '../utilities/iconUtilities'
 import * as generalUtils from '../utilities/generalUtilities'
