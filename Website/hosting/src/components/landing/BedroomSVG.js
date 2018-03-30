@@ -43,7 +43,6 @@ class BedroomSVG extends React.Component{
     this.hoverDiary = this.hoverDiary.bind(this);
     this.hoverSleep = this.hoverSleep.bind(this);
     this.hoverDresser = this.hoverDresser.bind(this);
-    this.hoverDresser = this.hoverDresser.bind(this);
     this.hoverCactus = this.hoverCactus.bind(this);
     this.hoverFlowers = this.hoverFlowers.bind(this);
 
@@ -51,7 +50,6 @@ class BedroomSVG extends React.Component{
     this.leavePig = this.leavePig.bind(this);
     this.leaveDiary = this.leaveDiary.bind(this);
     this.leaveSleep = this.leaveSleep.bind(this);
-    this.leaveDresser = this.leaveDresser.bind(this);
     this.leaveDresser = this.leaveDresser.bind(this);
     this.leaveCactus = this.leaveCactus.bind(this);
     this.leaveFlowers = this.leaveFlowers.bind(this);
@@ -62,6 +60,7 @@ class BedroomSVG extends React.Component{
     this.clickSleep = this.clickSleep.bind(this);
     this.clickCactus = this.clickCactus.bind(this);
     this.clickFlowers = this.clickFlowers.bind(this);
+    this.clickDresser = this.clickDresser.bind(this);
 	};
 
   componentDidMount() {
@@ -73,8 +72,7 @@ class BedroomSVG extends React.Component{
       buttonPig.addEventListener('mouseover', this.hoverPig);
       buttonDiary.addEventListener('mouseover', this.hoverDiary);
       buttonSleep.addEventListener('mouseover', this.hoverSleep);
-      buttonDresserTop.addEventListener('mouseover', this.hoverDresser);
-      buttonDresserBottom.addEventListener('mouseover', this.hoverDresser);
+      buttonDresser.addEventListener('mouseover', this.hoverDresser);
       buttonCactus.addEventListener('mouseover', this.hoverCactus);
       buttonFlower.addEventListener('mouseover', this.hoverFlowers);
 
@@ -82,8 +80,7 @@ class BedroomSVG extends React.Component{
       buttonPig.addEventListener('mouseleave', this.leavePig);
       buttonDiary.addEventListener('mouseleave', this.leaveDiary);
       buttonSleep.addEventListener('mouseleave', this.leaveSleep);
-      buttonDresserTop.addEventListener('mouseleave', this.leaveDresser);
-      buttonDresserBottom.addEventListener('mouseleave', this.leaveDresser);
+      buttonDresser.addEventListener('mouseleave', this.leaveDresser);
       buttonCactus.addEventListener('mouseleave', this.leaveCactus);
       buttonFlower.addEventListener('mouseleave', this.leaveFlowers);
 
@@ -91,15 +88,15 @@ class BedroomSVG extends React.Component{
       buttonPig.addEventListener('click', this.clickPig);
       buttonDiary.addEventListener('click', this.clickDiary);
       buttonSleep.addEventListener('click', this.clickSleep);
-      buttonCactus.addEventListener('click', this.clickCactus)
-      buttonFlower.addEventListener('click', this.clickFlowers)
+      buttonDresser.addEventListener('click', this.clickDresser);
+      buttonCactus.addEventListener('click', this.clickCactus);
+      buttonFlower.addEventListener('click', this.clickFlowers);
 
       buttonRemote.setAttribute('cursor', 'pointer');
       buttonPig.setAttribute('cursor', 'pointer');
       buttonDiary.setAttribute('cursor', 'pointer');
       buttonSleep.setAttribute('cursor', 'pointer');
-      buttonDresserTop.setAttribute('cursor', 'pointer');
-      buttonDresserBottom.setAttribute('cursor', 'pointer');
+      buttonDresser.setAttribute('cursor', 'pointer');
       buttonCactus.setAttribute('cursor', 'pointer');
       buttonFlower.setAttribute('cursor', 'pointer');
   };
@@ -109,8 +106,7 @@ class BedroomSVG extends React.Component{
       buttonPig.removeEventListener('mouseover', this.hoverPig);
       buttonDiary.removeEventListener('mouseover', this.hoverDiary);
       buttonSleep.removeEventListener('mouseover', this.hoverSleep);
-      buttonDresserTop.removeEventListener('mouseover', this.hoverDresser);
-      buttonDresserBottom.removeEventListener('mouseover', this.hoverDresser);
+      buttonDresser.removeEventListener('mouseover', this.hoverDresser);
       buttonCactus.removeEventListener('mouseover', this.hoverCactus);
       buttonFlower.removeEventListener('mouseover', this.hoverFlowers);
 
@@ -118,8 +114,7 @@ class BedroomSVG extends React.Component{
       buttonPig.removeEventListener('mouseleave', this.leavePig);
       buttonDiary.removeEventListener('mouseleave', this.leaveDiary);
       buttonSleep.removeEventListener('mouseleave', this.leaveSleep);
-      buttonDresserTop.removeEventListener('mouseleave', this.leaveDresser);
-      buttonDresserBottom.removeEventListener('mouseleave', this.leaveDresser);
+      buttonDresser.removeEventListener('mouseleave', this.leaveDresser);
       buttonCactus.removeEventListener('mouseleave', this.leaveCactus);
       buttonFlower.removeEventListener('mouseleave', this.leaveFlowers);
 
@@ -127,6 +122,7 @@ class BedroomSVG extends React.Component{
       buttonPig.removeEventListener('click', this.clickPig);
       buttonDiary.removeEventListener('click', this.clickDiary);
       buttonSleep.removeEventListener('click', this.clickSleep);
+      buttonDresser.removeEventListener('click', this.clickDresser);
       buttonCactus.removeEventListener('click', this.clickCactus);
       buttonFlower.removeEventListener('click', this.clickFlowers);
 
@@ -134,8 +130,7 @@ class BedroomSVG extends React.Component{
       buttonPig.removeAttribute('cursor', 'pointer');
       buttonDiary.removeAttribute('cursor', 'pointer');
       buttonSleep.removeAttribute('cursor', 'pointer');
-      buttonDresserTop.removeAttribute('cursor', 'pointer');
-      buttonDresserBottom.removeAttribute('cursor', 'pointer');
+      buttonDresser.removeAttribute('cursor', 'pointer');
       buttonCactus.removeAttribute('cursor', 'pointer');
       buttonFlower.removeAttribute('cursor', 'pointer');
     };
@@ -242,14 +237,13 @@ class BedroomSVG extends React.Component{
     this.removeButtonListeners();
     tlShake.clear();
 
-    let tlPig = new TimelineMax({onComplete: proxyFunction.bind(this)});
-    function proxyFunction(): void {
-      this.addButtonListeners();
-    };
+    let tlPig = new TimelineMax();
+
 
     const cometPig = [cometPigLamp, cometPigPlanets, cometPigClock]
     const glowPig = [glowLamp, glowPlanets, glowClock]
 
+    const pathPigMove = MorphSVGPlugin.pathDataToBezier(pathPig, {align: alignPathPig});
     const pathPigLamp = MorphSVGPlugin.pathDataToBezier(vertexPigLamp, {align: alignPigLamp});
     const pathPigPlanets = MorphSVGPlugin.pathDataToBezier(vertexPigPlanets, {align: alignPigPlanets});
     const pathPigClock = MorphSVGPlugin.pathDataToBezier(vertexPigClock, {align: alignPigClock});
@@ -269,15 +263,14 @@ class BedroomSVG extends React.Component{
          .to(glowPig, 0.01, {scaleX: 1, scaleY: 1, opacity: 1, transformOrigin: "center", onComplete: this.animateTheft.bind(this)})
 
     // pig animates toward the user and back
+
          .to(pig, 2.3, {
-              scaleX: 1.8,
-              scaleY: 1.8,
-              x: 150,
-              y: 325,
-              yoyo: true,
-              repeat: 1,
-              ease: Sine.easeInOut
-            }, 1.2);
+           bezier: { type: "cubic", values: pathPigMove, ease: Sine.easeInOut},
+           scaleX: 1.8,
+           scaleY: 1.8,
+           yoyo: true,
+           repeat: 1
+         }, 1.2)
   };
 
   hoverDiary() {
@@ -292,10 +285,7 @@ class BedroomSVG extends React.Component{
     this.removeButtonListeners();
     tlShake.clear();
 
-    let tlDiary = new TimelineMax({onComplete: proxyFunction.bind(this)});
-    function proxyFunction(): void {
-      this.addButtonListeners();
-    };
+    let tlDiary = new TimelineMax();
 
     const cometDiary = [cometDiaryLamp, cometDiaryPlanets, cometDiaryClock]
     const glowDiary = [glowLamp, glowPlanets, glowClock]
@@ -335,8 +325,12 @@ class BedroomSVG extends React.Component{
   };
 
   animateTheft() {
-    const tlTheft = new TimelineMax();
+    const tlTheft = new TimelineMax({onComplete: proxyFunction});
     const startTime = 0.3;
+
+    function proxyFunction(): void {
+      this.addButtonListeners();
+    };
 
     //turn on the lights
     tlTheft.to(lampShade, 0.01, {fill: '#FFF3C0'}, 0.1)
@@ -611,11 +605,136 @@ class BedroomSVG extends React.Component{
   };
 
   hoverDresser() {
+    var dresser = [dresserFront, dresserBack];
     this.hoverShake(dresser);
   };
 
   leaveDresser() {
     this.leaveShake();
+  };
+
+  clickDresser() {
+    this.removeButtonListeners();
+    tlShake.clear();
+
+    const tlDresser = new TimelineMax({onComplete: proxyFunction.bind(this)});
+    const tlUmbrella = new TimelineMax({paused: true})
+    const tlPants = new TimelineMax({paused: true})
+
+    function proxyFunction(): void {
+      this.addButtonListeners();
+    };
+
+    function chooseWeather() {
+
+      const weather = Math.floor(Math.random() * 4);
+
+      this.addUmbrella = () => {
+        tlUmbrella.add(TweenMax.to(umbrellaLeft, 0.7, {rotation: -18, transformOrigin: "top", ease: Sine.easeInOut}), 0.5);
+        tlUmbrella.add(TweenMax.to(umbrellaRight, 0.7, {rotation: 18, transformOrigin: "top", ease: Sine.easeInOut}), 0.5);
+      }
+
+      this.addPants = () => {
+        tlPants.add(TweenMax.to([pantsLeft, pantsRight], 0.7, {scaleY: 13, transformOrigin: "top", ease: Sine.easeInOut}));
+      }
+
+      console.log(weather)
+
+      if (weather==0) {
+        // hot weather
+        tlUmbrella.play();
+        tlPants.play();
+        tlDresser.to(clothesShirt, 0.1, {display: 'block'}, '+=1.5')
+                 .to(clothesShirt, 1, {y: -200, scaleX: 1.4, scaleY: 1.4, transformOrigin: "bottom", ease: Sine.easeInOut})
+                 .to(clothesShirt, 0.6, {opacity: 0, ease: Sine.easeInOut}, "+=0.2")
+                 .to(clothesShorts, 0.1, {display: 'block'})
+                 .to(clothesShorts, 1, {y: -200, scaleX: 1.4, scaleY: 1.4, transformOrigin: "bottom", ease: Sine.easeInOut})
+                 .to(clothesShorts, 0.6, {opacity: 0, ease: Sine.easeInOut})
+                 .to([clothesShirt, clothesShorts], 0.1, {display: "none"})
+                 .to([clothesShirt, clothesShorts], 0.1, {y: 0, opacity: 1, scaleX: 1, scaleY: 1, transformOrigin: "bottom"})
+                 .to([dresserOpenBack, dresserOpenFront], 0.1, {display: "none", onComplete: endAnimation}, "+=0.3")
+
+      } else if (weather==1) {
+        // cold
+        this.addPants();
+        tlPants.play();
+        tlUmbrella.play();
+        tlDresser.to(clothesPants, 0.1, {display: 'block'}, '+=1.5')
+                 .to(clothesPants, 1, {scaleY: 1, transformOrigin: "bottom", ease: Sine.easeInOut})
+                 .to(clothesPants, 1, {y: -200, scaleX: 1.4, scaleY: 1.4, transformOrigin: "bottom", ease: Sine.easeInOut})
+                 .to(clothesPants, 0.6, {opacity: 0, ease: Sine.easeInOut}, "+=0.2")
+                 .to(clothesSweater, 0.1, {display: 'block'})
+                 .to(clothesSweater, 1, {y: -200, scaleX: 1.4, scaleY: 1.4, transformOrigin: "bottom", ease: Sine.easeInOut})
+                 .to(clothesSweater, 0.6, {opacity: 0, ease: Sine.easeInOut})
+                 .to([clothesPants, clothesSweater], 0.1, {display: "none"})
+                 .to([clothesPants, clothesSweater], 0.1, {y: 0, opacity: 1, scaleX: 1, scaleY: 1, transformOrigin: "bottom"})
+                 .to([dresserOpenBack, dresserOpenFront], 0.1, {display: "none", onComplete: endAnimation}, "+=0.3")
+
+      } else if (weather==2) {
+        // raining
+        this.addUmbrella();
+        tlPants.play();
+        tlUmbrella.play();
+        tlDresser.to(clothesRain, 0.1, {display: 'block'}, '+=1.5')
+                 .to(clothesRain, 1, {scaleY: 1, transformOrigin: "bottom", ease: Sine.easeInOut})
+                 .to(clothesRain, 1, {y: -200, scaleX: 1.4, scaleY: 1.4, transformOrigin: "bottom", ease: Sine.easeInOut})
+                 .to(clothesRain, 0.6, {opacity: 0, ease: Sine.easeInOut})
+                 .to(clothesRain, 0.1, {display: "none"})
+                 .to(clothesRain, 0.1, {y: 0, opacity: 1, scaleX: 1, scaleY: 1, transformOrigin: "bottom"})
+                 .to([dresserOpenBack, dresserOpenFront], 0.1, {display: "none", onComplete: endAnimation}, "+=0.3")
+      }
+
+      else if (weather==3) {
+        // snowing
+        this.addUmbrella();
+        this.addPants();
+        tlPants.play();
+        tlUmbrella.play();
+
+        tlDresser.to(clothesMittens, 0.1, {display: 'block'}, '+=1.5')
+                 .to(clothesMittens, 1, {y: -200, scaleX: 1.4, scaleY: 1.4, transformOrigin: "bottom", ease: Sine.easeInOut})
+                 .to(clothesMittens, 0.6, {opacity: 0, ease: Sine.easeInOut}, "+=0.2")
+                 .to(clothesHat, 0.1, {display: 'block'})
+                 .to(clothesHat, 1, {y: -200, scaleX: 1.4, scaleY: 1.4, transformOrigin: "bottom", ease: Sine.easeInOut})
+                 .to(clothesHat, 0.6, {opacity: 0, ease: Sine.easeInOut}, "+=0.2")
+                 .to(clothesSkis, 0.1, {display: 'block'})
+                 .to(clothesSkis, 1.3, {y: -120, scaleX: 1.4, scaleY: 1.4, transformOrigin: "bottom", ease: Sine.easeInOut})
+                 .to(clothesSkis, 0.6, {opacity: 0, ease: Sine.easeInOut})
+                 .to([clothesMittens, clothesHat, clothesSkis], 0.1, {display: "none"})
+                 .to([clothesMittens, clothesHat, clothesSkis], 0.1, {y: 0, opacity: 1, scaleX: 1, scaleY: 1, transformOrigin: "bottom"})
+                 .to([dresserOpenBack, dresserOpenFront], 0.1, {display: "none", onComplete: endAnimation}, "+=0.3")
+      }
+    };
+
+    function endAnimation() {
+      tlUmbrella.add(TweenMax.to([umbrellaRight, umbrellaLeft], 0.8, {rotation: 0, transformOrigin: "top", ease: Sine.easeInOut}, "=+0.6"));
+      tlUmbrella.add(TweenMax.to(paperUmbrella, 0.7, {scaleX: 1, scaleY: 1, transformOrigin: "bottom", ease: Sine.easeInOut}));
+      tlPants.add(TweenMax.to([pantsLeft, pantsRight], 0.8, {scaleY: 0, transformOrigin: "top", ease:Sine.easeInOut}, "=+0.6"));
+      tlPants.add(TweenMax.to(paperPants, 0.7, {scaleX: 1, scaleY: 1, transformOrigin: "bottom", ease: Sine.easeInOut}));
+    };
+
+    const cometDresser = [cometDresserUmbrella, cometDresserPants]
+    const glowDresser = [glowUmbrella, glowPants]
+    const pathDresserUmbrella = MorphSVGPlugin.pathDataToBezier(vertexDresserUmbrella, {align: alignDresserUmbrella});
+    const pathDresserPants = MorphSVGPlugin.pathDataToBezier(vertexDresserPants, {align: alignDresserPants});
+
+    tlDresser.to(cometDresser, 0.1, {display: 'block'})
+             .to(cometDresserUmbrella, 0.5,  {bezier: { type: "cubic", values: pathDresserUmbrella}, ease: Sine.easeInOut})
+             .to(cometDresserPants, 0.5,  {bezier: { type: "cubic", values: pathDresserPants}, ease: Sine.easeInOut}, '-=0.5')
+             .to(cometDresser, 0.01, {display:'none'})
+             .to(cometDresser, 0.01, {x: 0, y: 0})
+
+             .to(glowDresser, 0.01, {display:'block'})
+             .to(glowDresser, 0.75, {scaleX: 4, scaleY: 4, opacity: 0, transformOrigin: "center"})
+             .to(glowDresser, 0.01, {display: 'none'})
+             .to(glowDresser, 0.01, {scaleX: 1, scaleY: 1, opacity: 1, transformOrigin: "center"})
+
+             .to([dresserOpenBack, dresserOpenFront], 0.1, {display: 'block', onComplete: chooseWeather}, "+=0.5")
+             .to([clothesPants, clothesRain, clothesSkis], 0.1, {scaleY: 0.2, transformOrigin: "bottom"})
+
+    tlUmbrella.to(paperUmbrella, 0.8, {scaleX: 2, scaleY: 2, transformOrigin: "bottom", ease: Sine.easeInOut})
+
+    tlPants.to(paperPants, 0.8, {scaleX: 2, scaleY: 2, transformOrigin: "bottom", ease: Sine.easeInOut})
   };
 
   hoverCactus() {
