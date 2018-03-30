@@ -625,11 +625,11 @@ class BedroomSVG extends React.Component{
         tlUmbrella.play();
         tlPants.play();
         tlDresser.to(clothesShirt, 0.1, {display: 'block'}, '+=1.5')
-                 .to(clothesShirt, 1.5, {y: -200, scaleX: 1.4, scaleY: 1.4, transformOrigin: "bottom", ease: Sine.easeInOut})
-                 .to(clothesShirt, 0.8, {opacity: 0, ease: Sine.easeInOut}, "+=0.4")
-                 .to(clothesShorts, 0.1, {display: 'block'}, "+=0.5")
-                 .to(clothesShorts, 1.5, {y: -200, scaleX: 1.4, scaleY: 1.4, transformOrigin: "bottom", ease: Sine.easeInOut})
-                 .to(clothesShorts, 0.8, {opacity: 0, ease: Sine.easeInOut}, "+=0.4")
+                 .to(clothesShirt, 1, {y: -200, scaleX: 1.4, scaleY: 1.4, transformOrigin: "bottom", ease: Sine.easeInOut})
+                 .to(clothesShirt, 0.6, {opacity: 0, ease: Sine.easeInOut}, "+=0.4")
+                 .to(clothesShorts, 0.1, {display: 'block'})
+                 .to(clothesShorts, 1, {y: -200, scaleX: 1.4, scaleY: 1.4, transformOrigin: "bottom", ease: Sine.easeInOut})
+                 .to(clothesShorts, 0.6, {opacity: 0, ease: Sine.easeInOut}, "+=0.4")
                  .to([clothesShirt, clothesShorts], 0.1, {display: "none"})
                  .to([clothesShirt, clothesShorts], 0.1, {y: 0, opacity: 1, scaleX: 1, scaleY: 1, transformOrigin: "bottom"})
                  .to([dresserOpenBack, dresserOpenFront], 0.1, {display: "none", onComplete: endAnimation}, "+=0.3")
@@ -640,12 +640,12 @@ class BedroomSVG extends React.Component{
         tlPants.play();
         tlUmbrella.play();
         tlDresser.to(clothesPants, 0.1, {display: 'block'}, '+=1.5')
-                 .to(clothesPants, 1.3, {scaleY: 1, transformOrigin: "bottom", ease: Sine.easeInOut})
-                 .to(clothesPants, 1.5, {y: -200, scaleX: 1.4, scaleY: 1.4, transformOrigin: "bottom", ease: Sine.easeInOut})
-                 .to(clothesPants, 0.8, {opacity: 0, ease: Sine.easeInOut}, "+=0.4")
-                 .to(clothesSweater, 0.1, {display: 'block'}, "+=0.5")
-                 .to(clothesSweater, 1.5, {y: -200, scaleX: 1.4, scaleY: 1.4, transformOrigin: "bottom", ease: Sine.easeInOut})
-                 .to(clothesSweater, 0.8, {opacity: 0, ease: Sine.easeInOut}, "+=0.4")
+                 .to(clothesPants, 1, {scaleY: 1, transformOrigin: "bottom", ease: Sine.easeInOut})
+                 .to(clothesPants, 1, {y: -200, scaleX: 1.4, scaleY: 1.4, transformOrigin: "bottom", ease: Sine.easeInOut})
+                 .to(clothesPants, 0.6, {opacity: 0, ease: Sine.easeInOut}, "+=0.4")
+                 .to(clothesSweater, 0.1, {display: 'block'})
+                 .to(clothesSweater, 1, {y: -200, scaleX: 1.4, scaleY: 1.4, transformOrigin: "bottom", ease: Sine.easeInOut})
+                 .to(clothesSweater, 0.6, {opacity: 0, ease: Sine.easeInOut}, "+=0.4")
                  .to([clothesPants, clothesSweater], 0.1, {display: "none"})
                  .to([clothesPants, clothesSweater], 0.1, {y: 0, opacity: 1, scaleX: 1, scaleY: 1, transformOrigin: "bottom"})
                  .to([dresserOpenBack, dresserOpenFront], 0.1, {display: "none", onComplete: endAnimation}, "+=0.3")
@@ -656,9 +656,9 @@ class BedroomSVG extends React.Component{
         tlPants.play();
         tlUmbrella.play();
         tlDresser.to(clothesRain, 0.1, {display: 'block'}, '+=1.5')
-                 .to(clothesRain, 1.3, {scaleY: 1, transformOrigin: "bottom", ease: Sine.easeInOut})
-                 .to(clothesRain, 1.5, {y: -200, scaleX: 1.4, scaleY: 1.4, transformOrigin: "bottom", ease: Sine.easeInOut})
-                 .to(clothesRain, 0.8, {opacity: 0, ease: Sine.easeInOut}, "+=0.4")
+                 .to(clothesRain, 1, {scaleY: 1, transformOrigin: "bottom", ease: Sine.easeInOut})
+                 .to(clothesRain, 1, {y: -200, scaleX: 1.4, scaleY: 1.4, transformOrigin: "bottom", ease: Sine.easeInOut})
+                 .to(clothesRain, 0.6, {opacity: 0, ease: Sine.easeInOut}, "+=0.4")
                  .to(clothesRain, 0.1, {display: "none"})
                  .to(clothesRain, 0.1, {y: 0, opacity: 1, scaleX: 1, scaleY: 1, transformOrigin: "bottom"})
                  .to([dresserOpenBack, dresserOpenFront], 0.1, {display: "none", onComplete: endAnimation}, "+=0.3")
@@ -672,13 +672,16 @@ class BedroomSVG extends React.Component{
         tlUmbrella.play();
 
         tlDresser.to(clothesMittens, 0.1, {display: 'block'}, '+=1.5')
-                 .to(clothesMittens, 1.5, {y: -200, scaleX: 1.4, scaleY: 1.4, transformOrigin: "bottom", ease: Sine.easeInOut})
-                 .to(clothesMittens, 0.8, {opacity: 0, ease: Sine.easeInOut}, "+=0.4")
-                 .to(clothesHat, 0.1, {display: 'block'}, "+=0.5")
-                 .to(clothesHat, 1.5, {y: -200, scaleX: 1.4, scaleY: 1.4, transformOrigin: "bottom", ease: Sine.easeInOut})
-                 .to(clothesHat, 0.8, {opacity: 0, ease: Sine.easeInOut}, "+=0.4")
-                 .to([clothesMittens, clothesHat], 0.1, {display: "none"})
-                 .to([clothesMittens, clothesHat], 0.1, {y: 0, opacity: 1, scaleX: 1, scaleY: 1, transformOrigin: "bottom"})
+                 .to(clothesMittens, 1, {y: -200, scaleX: 1.4, scaleY: 1.4, transformOrigin: "bottom", ease: Sine.easeInOut})
+                 .to(clothesMittens, 0.6, {opacity: 0, ease: Sine.easeInOut}, "+=0.4")
+                 .to(clothesHat, 0.1, {display: 'block'})
+                 .to(clothesHat, 1, {y: -200, scaleX: 1.4, scaleY: 1.4, transformOrigin: "bottom", ease: Sine.easeInOut})
+                 .to(clothesHat, 0.6, {opacity: 0, ease: Sine.easeInOut}, "+=0.4")
+                 .to(clothesSkis, 0.1, {display: 'block'})
+                 .to(clothesSkis, 1.3, {y: -120, scaleX: 1.4, scaleY: 1.4, transformOrigin: "bottom", ease: Sine.easeInOut})
+                 .to(clothesSkis, 0.6, {opacity: 0, ease: Sine.easeInOut}, "+=0.4")
+                 .to([clothesMittens, clothesHat, clothesSkis], 0.1, {display: "none"})
+                 .to([clothesMittens, clothesHat, clothesSkis], 0.1, {y: 0, opacity: 1, scaleX: 1, scaleY: 1, transformOrigin: "bottom"})
                  .to([dresserOpenBack, dresserOpenFront], 0.1, {display: "none", onComplete: endAnimation}, "+=0.3")
       }
     };
@@ -707,7 +710,7 @@ class BedroomSVG extends React.Component{
              .to(glowDresser, 0.01, {scaleX: 1, scaleY: 1, opacity: 1, transformOrigin: "center"})
 
              .to([dresserOpenBack, dresserOpenFront], 0.1, {display: 'block', onComplete: chooseWeather}, "+=0.5")
-             .to([clothesPants, clothesRain], 0.1, {scaleY: 0.2, transformOrigin: "bottom"})
+             .to([clothesPants, clothesRain, clothesSkis], 0.1, {scaleY: 0.2, transformOrigin: "bottom"})
 
     tlUmbrella.to(paperUmbrella, 0.8, {scaleX: 2, scaleY: 2, transformOrigin: "bottom", ease: Sine.easeInOut})
 
