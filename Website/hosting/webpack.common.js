@@ -43,23 +43,26 @@ module.exports = {
       },
       {
         test: /\.(jpe?g|png|gif|svg|mov|mp4)$/,
-        loader: 'file-loader',
-        options: {
-          name: '[name].[ext]'
-        } 
+        use: {
+          loader: 'file-loader',
+          options: {
+            name: '[name].[ext]'
+          } 
+        }
       },
       {
-        test: /\/.md$/,
+        test: /\.md$/,
         use: [
-          {
-            loader: "html-loader"
-          },
-          {
-            loader: "markdown-loader",
-            options: {
-                renderer
+            {
+                loader: "html-loader"
+            },
+            {
+                loader: "markdown-loader",
+                options: {
+                    pedantic: true,
+                    renderer
+                }
             }
-          }
         ]
       }
     ],
