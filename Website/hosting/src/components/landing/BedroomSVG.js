@@ -625,18 +625,44 @@ class BedroomSVG extends React.Component{
         // hot weather
         tlUmbrella.play();
         tlPants.play();
+        tlDresser.to(clothesShirt, 0.1, {display: 'block'}, '+=1.5')
+                 .to(clothesShirt, 1.5, {y: -200, scaleX: 1.4, scaleY: 1.4, transformOrigin: "bottom", ease: Sine.easeInOut})
+                 .to(clothesShirt, 0.8, {opacity: 0, ease: Sine.easeInOut}, "+=0.4")
+                 .to(clothesShorts, 0.1, {display: 'block'}, "+=0.5")
+                 .to(clothesShorts, 1.5, {y: -200, scaleX: 1.4, scaleY: 1.4, transformOrigin: "bottom", ease: Sine.easeInOut})
+                 .to(clothesShorts, 0.8, {opacity: 0, ease: Sine.easeInOut}, "+=0.4")
+                 .to([clothesShirt, clothesShorts], 0.1, {display: "none"})
+                 .to([clothesShirt, clothesShorts], 0.1, {x: 0, y: 0, opacity: 1})
+                 .to([dresserOpenBack, dresserOpenFront], 0.1, {display: "none", onComplete: endAnimation}, "+=0.3")
 
       } else if (weather==1) {
         // cold
         this.addPants();
         tlPants.play();
         tlUmbrella.play();
+        tlDresser.to(clothesPants, 0.1, {display: 'block'}, '+=1.5')
+                 .to(clothesPants, 1.3, {scaleY: 1, transformOrigin: "bottom", ease: Sine.easeInOut})
+                 .to(clothesPants, 1.5, {y: -200, scaleX: 1.4, scaleY: 1.4, transformOrigin: "bottom", ease: Sine.easeInOut})
+                 .to(clothesPants, 0.8, {opacity: 0, ease: Sine.easeInOut}, "+=0.4")
+                 .to(clothesSweater, 0.1, {display: 'block'}, "+=0.5")
+                 .to(clothesSweater, 1.5, {y: -200, scaleX: 1.4, scaleY: 1.4, transformOrigin: "bottom", ease: Sine.easeInOut})
+                 .to(clothesSweater, 0.8, {opacity: 0, ease: Sine.easeInOut}, "+=0.4")
+                 .to([clothesPants, clothesSweater], 0.1, {display: "none"})
+                 .to([clothesPants, clothesSweater], 0.1, {x: 0, y: 0, opacity: 1})
+                 .to([dresserOpenBack, dresserOpenFront], 0.1, {display: "none", onComplete: endAnimation}, "+=0.3")
 
       } else if (weather==2) {
         // raining
         this.addUmbrella();
         tlPants.play();
         tlUmbrella.play();
+        tlDresser.to(clothesRain, 0.1, {display: 'block'}, '+=1.5')
+                 .to(clothesRain, 1.3, {scaleY: 1, transformOrigin: "bottom", ease: Sine.easeInOut})
+                 .to(clothesRain, 1.5, {y: -200, scaleX: 1.4, scaleY: 1.4, transformOrigin: "bottom", ease: Sine.easeInOut})
+                 .to(clothesRain, 0.8, {opacity: 0, ease: Sine.easeInOut}, "+=0.4")
+                 .to(clothesRain, 0.1, {display: "none"})
+                 .to(clothesRain, 0.1, {x: 0, y: 0, opacity: 1})
+                 .to([dresserOpenBack, dresserOpenFront], 0.1, {display: "none", onComplete: endAnimation}, "+=0.3")
       }
 
       else if (weather==3) {
@@ -645,23 +671,33 @@ class BedroomSVG extends React.Component{
         this.addPants();
         tlPants.play();
         tlUmbrella.play();
+
+        tlDresser.to(clothesMittens, 0.1, {display: 'block'}, '+=1.5')
+                 .to(clothesMittens, 1.5, {y: -200, scaleX: 1.4, scaleY: 1.4, transformOrigin: "bottom", ease: Sine.easeInOut})
+                 .to(clothesMittens, 0.8, {opacity: 0, ease: Sine.easeInOut}, "+=0.4")
+                 .to(clothesHat, 0.1, {display: 'block'}, "+=0.5")
+                 .to(clothesHat, 1.5, {y: -200, scaleX: 1.4, scaleY: 1.4, transformOrigin: "bottom", ease: Sine.easeInOut})
+                 .to(clothesHat, 0.8, {opacity: 0, ease: Sine.easeInOut}, "+=0.4")
+                 .to([clothesMittens, clothesHat], 0.1, {display: "none"})
+                 .to([clothesMittens, clothesHat], 0.1, {x: 0, y: 0, opacity: 1})
+                 .to([dresserOpenBack, dresserOpenFront], 0.1, {display: "none", onComplete: endAnimation}, "+=0.3")
       }
     };
 
     function endAnimation() {
-      tlUmbrella.add(TweenMax.to([umbrellaRight, umbrellaLeft], 0.7, {rotation: 0, transformOrigin: "top", ease: Sine.easeInOut}));
-      tlUmbrella.add(TweenMax.to(paperUmbrella, 0.5, {scaleX: 1, scaleY: 1, transformOrigin: "bottom", ease: Sine.easeInOut}));
-      tlPants.add(TweenMax.to([pantsLeft, pantsRight], 0.7, {scaleY: 0, transformOrigin: "top", ease:Sine.easeInOut}));
-      tlPants.add(TweenMax.to(paperPants, 0.5, {scaleX: 1, scaleY: 1, transformOrigin: "bottom", ease: Sine.easeInOut}));
+      tlUmbrella.add(TweenMax.to([umbrellaRight, umbrellaLeft], 0.8, {rotation: 0, transformOrigin: "top", ease: Sine.easeInOut}, "=+0.6"));
+      tlUmbrella.add(TweenMax.to(paperUmbrella, 0.7, {scaleX: 1, scaleY: 1, transformOrigin: "bottom", ease: Sine.easeInOut}));
+      tlPants.add(TweenMax.to([pantsLeft, pantsRight], 0.8, {scaleY: 0, transformOrigin: "top", ease:Sine.easeInOut}, "=+0.6"));
+      tlPants.add(TweenMax.to(paperPants, 0.7, {scaleX: 1, scaleY: 1, transformOrigin: "bottom", ease: Sine.easeInOut}));
     }
 
     tlDresser.to([dresserOpenBack, dresserOpenFront], 0.1, {display: 'block', onComplete: chooseWeather})
+             .to([clothesPants, clothesRain], 0.1, {scaleY: 0.2, transformOrigin: "bottom"})
 
-    tlUmbrella.to(paperUmbrella, 0.5, {scaleX: 2, scaleY: 2, transformOrigin: "bottom", ease: Sine.easeInOut})
+    tlUmbrella.to(paperUmbrella, 0.8, {scaleX: 2, scaleY: 2, transformOrigin: "bottom", ease: Sine.easeInOut})
 
-    tlPants.to(paperPants, 0.5, {scaleX: 2, scaleY: 2, transformOrigin: "bottom", ease: Sine.easeInOut})
-
-  }
+    tlPants.to(paperPants, 0.8, {scaleX: 2, scaleY: 2, transformOrigin: "bottom", ease: Sine.easeInOut})
+  };
 
   hoverCactus() {
     this.hoverShake(cactus);
