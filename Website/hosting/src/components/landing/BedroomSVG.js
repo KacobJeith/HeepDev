@@ -217,14 +217,13 @@ class BedroomSVG extends React.Component{
     this.removeButtonListeners();
     tlShake.clear();
 
-    let tlPig = new TimelineMax({onComplete: proxyFunction.bind(this)});
-    function proxyFunction(): void {
-      this.addButtonListeners();
-    };
+    let tlPig = new TimelineMax();
+
 
     const cometPig = [cometPigLamp, cometPigPlanets, cometPigClock]
     const glowPig = [glowLamp, glowPlanets, glowClock]
 
+    const pathPigMove = MorphSVGPlugin.pathDataToBezier(pathPig, {align: alignPathPig});
     const pathPigLamp = MorphSVGPlugin.pathDataToBezier(vertexPigLamp, {align: alignPigLamp});
     const pathPigPlanets = MorphSVGPlugin.pathDataToBezier(vertexPigPlanets, {align: alignPigPlanets});
     const pathPigClock = MorphSVGPlugin.pathDataToBezier(vertexPigClock, {align: alignPigClock});
@@ -244,15 +243,14 @@ class BedroomSVG extends React.Component{
          .to(glowPig, 0.01, {scaleX: 1, scaleY: 1, opacity: 1, transformOrigin: "center", onComplete: this.animateTheft.bind(this)})
 
     // pig animates toward the user and back
+
          .to(pig, 2.3, {
-              scaleX: 1.8,
-              scaleY: 1.8,
-              x: 150,
-              y: 325,
-              yoyo: true,
-              repeat: 1,
-              ease: Sine.easeInOut
-            }, 1.2);
+           bezier: { type: "cubic", values: pathPigMove, ease: Sine.easeInOut},
+           scaleX: 1.8,
+           scaleY: 1.8,
+           yoyo: true,
+           repeat: 1
+         }, 1.2)
   };
 
   hoverDiary() {
@@ -267,10 +265,7 @@ class BedroomSVG extends React.Component{
     this.removeButtonListeners();
     tlShake.clear();
 
-    let tlDiary = new TimelineMax({onComplete: proxyFunction.bind(this)});
-    function proxyFunction(): void {
-      this.addButtonListeners();
-    };
+    let tlDiary = new TimelineMax();
 
     const cometDiary = [cometDiaryLamp, cometDiaryPlanets, cometDiaryClock]
     const glowDiary = [glowLamp, glowPlanets, glowClock]
@@ -310,8 +305,12 @@ class BedroomSVG extends React.Component{
   };
 
   animateTheft() {
-    const tlTheft = new TimelineMax();
+    const tlTheft = new TimelineMax({onComplete: proxyFunction});
     const startTime = 0.3;
+
+    function proxyFunction(): void {
+      this.addButtonListeners();
+    };
 
     //turn on the lights
     tlTheft.to(lampShade, 0.01, {fill: '#FFF3C0'}, 0.1)
@@ -598,9 +597,9 @@ class BedroomSVG extends React.Component{
     this.removeButtonListeners();
     tlShake.clear();
 
-    const tlDresser = new TimelineMax();
+    const tlDresser = new TimelineMax({onComplete: proxyFunction.bind(this)});
     const tlUmbrella = new TimelineMax({paused: true})
-    const tlPants = new TimelineMax({paused: true, onComplete: proxyFunction.bind(this)})
+    const tlPants = new TimelineMax({paused: true})
 
     function proxyFunction(): void {
       this.addButtonListeners();
@@ -689,9 +688,25 @@ class BedroomSVG extends React.Component{
       tlUmbrella.add(TweenMax.to(paperUmbrella, 0.7, {scaleX: 1, scaleY: 1, transformOrigin: "bottom", ease: Sine.easeInOut}));
       tlPants.add(TweenMax.to([pantsLeft, pantsRight], 0.8, {scaleY: 0, transformOrigin: "top", ease:Sine.easeInOut}, "=+0.6"));
       tlPants.add(TweenMax.to(paperPants, 0.7, {scaleX: 1, scaleY: 1, transformOrigin: "bottom", ease: Sine.easeInOut}));
-    }
+    };
 
-    tlDresser.to([dresserOpenBack, dresserOpenFront], 0.1, {display: 'block', onComplete: chooseWeather})
+    const cometDresser = [cometDresserUmbrella, cometDresserPants]
+    const glowDresser = [glowUmbrella, glowPants]
+    const pathDresserUmbrella = MorphSVGPlugin.pathDataToBezier(vertexDresserUmbrella, {align: alignDresserUmbrella});
+    const pathDresserPants = MorphSVGPlugin.pathDataToBezier(vertexDresserPants, {align: alignDresserPants});
+
+    tlDresser.to(cometDresser, 0.1, {display: 'block'})
+             .to(cometDresserUmbrella, 0.5,  {bezier: { type: "cubic", values: pathDresserUmbrella}, ease: Sine.easeInOut})
+             .to(cometDresserPants, 0.5,  {bezier: { type: "cubic", values: pathDresserPants}, ease: Sine.easeInOut}, '-=0.5')
+             .to(cometDresser, 0.01, {display:'none'})
+             .to(cometDresser, 0.01, {x: 0, y: 0})
+
+             .to(glowDresser, 0.01, {display:'block'})
+             .to(glowDresser, 0.75, {scaleX: 4, scaleY: 4, opacity: 0, transformOrigin: "center"})
+             .to(glowDresser, 0.01, {display: 'none'})
+             .to(glowDresser, 0.01, {scaleX: 1, scaleY: 1, opacity: 1, transformOrigin: "center"})
+
+             .to([dresserOpenBack, dresserOpenFront], 0.1, {display: 'block', onComplete: chooseWeather}, "+=0.5")
              .to([clothesPants, clothesRain], 0.1, {scaleY: 0.2, transformOrigin: "bottom"})
 
     tlUmbrella.to(paperUmbrella, 0.8, {scaleX: 2, scaleY: 2, transformOrigin: "bottom", ease: Sine.easeInOut})
