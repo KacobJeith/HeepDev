@@ -1,10 +1,19 @@
 import React from 'react';
+import { bindActionCreators } from 'redux'
+import { connect }            from 'react-redux'
+import { withRouter }         from 'react-router-dom'
+
+import * as Actions         from '../../redux/actions'
+
 import { bedroomSVG } from './BedroomString';
 import $ from 'jquery';
 import { TimelineMax } from 'gsap';
 import MorphSVGPlugin from '../utilities/MorphSvgPlugin';
 import { withStyles } from 'material-ui/styles';
 import { Paper } from 'material-ui'
+
+var mapStateToProps = (state) => ({
+})
 
 const styles = theme => ({
   root: theme.mixins.gutters({
@@ -158,6 +167,7 @@ class BedroomSVG extends React.Component {
   clickRemote() {
     this.removeButtonListeners();
     tlShake.clear();
+    this.props.setSVGText('car');
 
     let tlCar = new TimelineMax({onComplete: proxyFunction.bind(this)});
     function proxyFunction(): void {
@@ -1034,4 +1044,8 @@ class BedroomSVG extends React.Component {
   };
 };
 
-export default withStyles(styles)(BedroomSVG)
+var mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(Actions, dispatch)
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(BedroomSVG)))
