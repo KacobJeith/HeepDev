@@ -2,41 +2,28 @@
 
 var path = require('path');
 var webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   target: 'web',
 
-  entry: './src/index.js',
+  context: __dirname,
+
+  entry: [
+    './src/index.js'
+  ],
 
   output: {
-    path: path.resolve(__dirname, "dist"),
     filename: 'bundle.js',
   },
 
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NamedModulesPlugin(),
+    new HtmlWebpackPlugin({
+      filename: 'index.html',
+      template: path.join(__dirname, 'index.html')
+    })
   ],
-
-  devServer: { 
-    port: 9000,
-    historyApiFallback: true,
-    stats: {
-      colors: true,
-      hash: false,
-      version: false,
-      timings: false,
-      assets: false,
-      chunks: false,
-      modules: false,
-      reasons: false,
-      children: false,
-      source: false,
-      errors: true,
-      errorDetails: true,
-      warnings: true,
-      publicPath: false
-    }
-  },
 
   resolve: {
     modules: ['node_modules'],

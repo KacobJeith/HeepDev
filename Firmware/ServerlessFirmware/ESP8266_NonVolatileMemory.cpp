@@ -21,12 +21,12 @@ void SaveMemory(unsigned char controlRegister, unsigned char* memoryBuffer, unsi
 	EEPROM.write(0, controlRegister);
 	EEPROM.write(1, bytesToWrite);
 
-	for(int i = 2; i < bytesToWrite + 1; i++)
+	for(int i = 2; i < bytesToWrite + 2; i++)
 	{
 		EEPROM.write(i, memoryBuffer[i-2]);
 	}
 
- EEPROM.commit();
+ 	EEPROM.commit();
 }
 
 void ClearMemory()
@@ -48,7 +48,7 @@ void ReadMemory(unsigned char* controlRegister, unsigned char* memoryBuffer, uns
 	int numberBytesToRead = EEPROM.read(1); // Address 1 contains number of bytes
 	*bytesRead = numberBytesToRead;
 
-	for(int i = 2; i < numberBytesToRead + 1; i++)
+	for(int i = 2; i < numberBytesToRead + 2; i++)
 	{
 		memoryBuffer[i-2] = EEPROM.read(i);
 	}

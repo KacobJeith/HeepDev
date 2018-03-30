@@ -145,6 +145,12 @@ void ControlDaemon()
 
 void PerformHeepTasks()
 {
+	if(resetHeepNetwork)
+	{
+		CreateInterruptServer();
+		resetHeepNetwork = 0;
+	}
+
 	if(IsTaskTime())
 	{
 		unsigned char curTask = GetCurrentTask();
@@ -228,4 +234,13 @@ void StartHeep(char* deviceName, heepByte deviceIcon)
 	SetupHeepDevice(deviceName, deviceIcon);
 	SetupHeepTasks();
   	CreateInterruptServer(); 
+}
+
+heepByte HandleHeepCommunications()
+{
+	if(IsROP()) 
+		return 1;
+
+	ExecuteControlOpCodes();
+	return 0;
 }

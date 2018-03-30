@@ -11,8 +11,35 @@ unsigned int localPort = 5000;
 // An EthernetUDP instance to let us send and receive packets over UDP
 WiFiUDP Udp;
 
-String fallbackSSID = "SmoothHeep";
+String fallbackSSID = "SmoothHeep-2.4";
 String fallbackPassword = "SenorEgg";
+
+void CreateAccessPoint()
+{
+  Serial.println("Creating AP");
+  
+  uint8_t mac[WL_MAC_ADDR_LENGTH];
+  WiFi.softAPmacAddress(mac);
+  String macID = String(mac[WL_MAC_ADDR_LENGTH - 2], HEX) +
+                 String(mac[WL_MAC_ADDR_LENGTH - 1], HEX);
+  macID.toUpperCase();
+
+  String AP_NameString = "Heep" + macID;
+  String AP_Password = "HeepSecretPassword";
+
+  Serial.println(AP_NameString);
+
+  boolean result = WiFi.softAP(AP_NameString.c_str(), AP_Password.c_str());
+
+  Serial.print("AP Result: "); Serial.println(result);
+  Serial.println("AP UP");
+
+  if(result == 1)
+  {
+    Serial.println("Creating Server");
+    Serial.println("Server started");
+  }
+}
 
 void CreateInterruptServer()
 {
@@ -35,6 +62,7 @@ void CreateInterruptServer()
     if(GetWiFiFromMemory(currentSSID, currentPassword, currentWiFiPriorityID) == 0){
       onFallback = false;
       Serial.print("Attempt SSID: "); Serial.println(currentSSID);
+      Serial.print("Attempt Password: "); Serial.println(currentPassword);
       WiFi.begin(currentSSID, currentPassword);
     }
     else{
@@ -57,8 +85,6 @@ void CreateInterruptServer()
       Serial.print("IP address: ");
       Serial.println(WiFi.localIP());
 
-      Udp.begin(localPort);
-
       IPAddress localIP = WiFi.localIP();
       Serial.println(localIP);
     }
@@ -66,56 +92,54 @@ void CreateInterruptServer()
   }while(!onFallback && WiFi.status() != WL_CONNECTED); // Repeat until connected or fallback failed
 
   if(WiFi.status() != WL_CONNECTED){
-    // Create Access Point because no WiFi worked
+    CreateAccessPoint();
   }
   
+  Udp.begin(localPort);
 }
 
 void CheckServerForInputs()
 {
-  int packetSize = Udp.parsePacket();
-  if (packetSize) {
-    Serial.print("Received packet of size ");
-    Serial.println(packetSize);
-    Serial.print("From ");
-    IPAddress remote = Udp.remoteIP();
-    for (int i=0; i < 4; i++) {
-      Serial.print(remote[i], DEC);
-      if (i < 3) {
-        Serial.print(".");
+    int packetSize = Udp.parsePacket();
+    if (packetSize) {
+      Serial.print("Received packet of size ");
+      Serial.println(packetSize);
+      Serial.print("From ");
+      IPAddress remote = Udp.remoteIP();
+      for (int i=0; i < 4; i++) {
+        Serial.print(remote[i], DEC);
+        if (i < 3) {
+          Serial.print(".");
+        }
       }
+      Serial.print(", port ");
+      Serial.println(Udp.remotePort());
+
+      // read the packet into packetBufffer
+      Udp.read(inputBuffer, inputBufferSize);
+      Serial.println("Contents:");
+      for(int i = 0; i < inputBufferSize; i++)
+      {
+        Serial.print((int)inputBuffer[i]);
+        Serial.print(" ");
+      }
+      Serial.println();
+      
+      if(HandleHeepCommunications()) return;
+
+      for(int i = 0; i < outputBufferLastByte; i++)
+      {
+        Serial.print(outputBuffer[i]); Serial.print(" ");
+      }
+      Serial.println();
+
+      // send a reply to the IP address and port that sent us the packet we received
+      IPAddress remoteIP(Udp.remoteIP());
+      Serial.print("Sending to: "); Serial.print(Udp.remoteIP());
+      Udp.beginPacket(Udp.remoteIP(), localPort);
+      Udp.write(outputBuffer, outputBufferLastByte);
+      Udp.endPacket();
     }
-    Serial.print(", port ");
-    Serial.println(Udp.remotePort());
-
-    // read the packet into packetBufffer
-    Udp.read(inputBuffer, inputBufferSize);
-    Serial.println("Contents:");
-    for(int i = 0; i < inputBufferSize; i++)
-    {
-      Serial.print((int)inputBuffer[i]);
-      Serial.print(" ");
-    }
-    Serial.println();
-    
-    if(IsROP()) return;
-
-    ExecuteControlOpCodes();
-
-    for(int i = 0; i < outputBufferLastByte; i++)
-    {
-      Serial.print(outputBuffer[i]); Serial.print(" ");
-    }
-    Serial.println();
-
-    // send a reply to the IP address and port that sent us the packet we received
-    IPAddress remoteIP(Udp.remoteIP());
-    Serial.print("Sending to: "); Serial.print(Udp.remoteIP());
-    Udp.beginPacket(Udp.remoteIP(), localPort);
-    Udp.write(outputBuffer, outputBufferLastByte);
-    Udp.endPacket();
-  }
-
 }
 
 void SendOutputBufferToIP(HeepIPAddress destIP)

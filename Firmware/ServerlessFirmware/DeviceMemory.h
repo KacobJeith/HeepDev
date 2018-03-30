@@ -35,6 +35,11 @@
 #define WiFiSSIDOpCode				0x20
 #define WiFiPasswordOpCode			0x21
 
+#define SetWiFiDataOpCode			0x22
+#define SetNameOpCode				0x23
+
+#define ResetDeviceNetwork			0x24
+
 extern unsigned char deviceMemory[];
 extern unsigned int curFilledMemory; // Indicate the curent filled memory. 
 						 // Also serve as a place holder to 
@@ -93,6 +98,8 @@ int GetNextVertexPointer(unsigned int* pointer,unsigned int* counter);
 unsigned int GetFragmentFromMemory(int *pointerToFragment, int *numFragementBytes);
 void RemoveUnusedBytesAtPointer(int pointer, int numBytes);
 void DefragmentMemory();
+
+heepByte DeleteWiFiSetting(int priority, heepByte* deviceID);
 
 // Returns size of returned buffer
 heepByte GetIndexedDeviceID_Byte(heepByte* deviceID);

@@ -1314,6 +1314,105 @@ void TestWiFiMOP()
 	CheckResults(TestName, valueList, 8);
 }
 
+void TestMultipleNameReplacement()
+{
+	std::string TestName = "Test Multiple Name Replacement";
+
+	ClearDeviceMemory();
+	heepByte deviceID1[STANDARD_ID_SIZE];
+	CreateFakeDeviceID(deviceID1);
+	char* deviceName = "Jacob";
+	SetDeviceNameInMemory_Byte(deviceName, strlen(deviceName), deviceID1);
+	char* deviceName2 = "Yenny";
+	SetDeviceNameInMemory_Byte(deviceName2, strlen(deviceName2), deviceID1);
+
+#ifdef USE_INDEXED_IDS
+	int FragmentPosition = 7;
+	int NameOpCodePosition = 15;
+	int JPosition = 10;
+	int YPosition = 18;
+#else
+	int FragmentPosition = 0;
+	int NameOpCodePosition = 11;
+	int JPosition = 6;
+	int YPosition = 17;
+#endif
+
+	ExpectedValue valueList [4];
+	valueList[0].valueName = "Found Fragment";
+	valueList[0].expectedValue = 18;
+	valueList[0].actualValue = deviceMemory[FragmentPosition];
+
+	valueList[1].valueName = "Found J";
+	valueList[1].expectedValue = 'J';
+	valueList[1].actualValue = deviceMemory[JPosition];
+
+	valueList[2].valueName = "Found Device Name Op";
+	valueList[2].expectedValue = 6;
+	valueList[2].actualValue = deviceMemory[NameOpCodePosition];
+
+	valueList[3].valueName = "Found Y";
+	valueList[3].expectedValue = 'Y';
+	valueList[3].actualValue = deviceMemory[YPosition];
+
+	CheckResults(TestName, valueList, 4);
+}
+
+void TestWiFiReplacement()
+{
+	std::string TestName = "Test WiFi MOP Replacement";
+
+	ClearDeviceMemory();
+	heepByte testDeviceID[STANDARD_ID_SIZE];
+	CreateFakeDeviceID(testDeviceID);
+
+	std::string SSID1 = "MySSID";
+	std::string Password1 = "MyPassword";
+	AddWiFiSettingsToMemory(&SSID1[0], SSID1.length(), &Password1[0], Password1.length(), testDeviceID, 4);
+
+	std::string SSID2 = "AnSSID";
+	std::string Password2 = "APassword";
+	AddWiFiSettingsToMemory(&SSID2[0], SSID2.length(), &Password2[0], Password2.length(), testDeviceID, 2);
+
+	std::string SSID3 = "TheSSID";
+	std::string Password3 = "ThePassword";
+	AddWiFiSettingsToMemory(&SSID3[0], SSID3.length(), &Password3[0], Password3.length(), testDeviceID, 4);
+
+	int DidReceive4 = 0;
+	char RetrievedSSID4 [20];
+	char RetrievedPassword4 [20];
+	DidReceive4 = GetWiFiFromMemory(RetrievedSSID4, RetrievedPassword4, 4);
+	std::string RetreivedSSIDStr4(RetrievedSSID4);
+	std::string RetreivedPasswordStr4(RetrievedPassword4);
+
+	int DidReceive2 = 0;
+	char RetrievedSSID2 [20];
+	char RetrievedPassword2 [20];
+	DidReceive2 = GetWiFiFromMemory(RetrievedSSID2, RetrievedPassword2, 2);
+	std::string RetreivedSSIDStr2(RetrievedSSID2);
+	std::string RetreivedPasswordStr2(RetrievedPassword2);
+
+	ExpectedValue valueList [4];
+
+	valueList[0].valueName = "SSID 4";
+	valueList[0].expectedValue = 1;
+	valueList[0].actualValue = (int)(RetreivedSSIDStr4 == SSID3);
+
+	valueList[1].valueName = "Password 4";
+	valueList[1].expectedValue = 1;
+	valueList[1].actualValue = (int)(RetreivedPasswordStr4 == Password3);
+
+	valueList[2].valueName = "SSID 2";
+	valueList[2].expectedValue = 1;
+	valueList[2].actualValue = (int)(RetreivedSSIDStr2 == SSID2);
+
+	valueList[3].valueName = "Password 2";
+	valueList[3].expectedValue = 1;
+	valueList[3].actualValue = (int)(RetreivedPasswordStr2 == Password2);
+
+	CheckResults(TestName, valueList, 4);
+}
+
 void TestDynamicMemory()
 {	
 	TestAddIPToDeviceMemory();
@@ -1347,4 +1446,6 @@ void TestDynamicMemory()
  	TestGetVertex_Byte();
  	TestAnalyticsDataInMemory();
  	TestWiFiMOP();
+ 	TestMultipleNameReplacement();
+ 	TestWiFiReplacement();
 }

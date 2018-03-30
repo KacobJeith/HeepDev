@@ -47,6 +47,12 @@ void ExecuteSetVertexOpCode();
 // Updated
 void ExecuteDeleteVertexOpCode();
 
+void ExecuteSetWiFiDataOpCode();
+
+void ExecuteSetDeviceNameOpCode();
+
+void ExecuteResetDeviceNetwork();
+
 // Updated
 // Validate that a MOP can be added. Then restructure it for localIDs as necessary
 int ValidateAndRestructureIncomingMOP(unsigned int MOPStartAddr, unsigned int* numBytes);
@@ -55,3 +61,6 @@ void ExecuteDeleteMOPOpCode();
 
 void ExecuteAddMOPOpCode();
 
+unsigned char IsROP();
+
+void ExecuteControlOpCodes();

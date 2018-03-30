@@ -8,6 +8,8 @@ extern unsigned int numberOfControls;
 extern unsigned int vertexPointerList[];
 extern unsigned int numberOfVertices;
 
+extern heepByte resetHeepNetwork;
+
 void ClearControls();
 void ClearVertices();
 
