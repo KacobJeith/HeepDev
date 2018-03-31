@@ -3,7 +3,6 @@
 var path = require('path');
 var webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-var marked = require('marked');
 
 module.exports = {
   target: 'web',
@@ -48,6 +47,18 @@ module.exports = {
             name: '[name].[ext]'
           } 
         }
+      },
+      {
+        test: /\.md$/,
+        use: [
+
+            {
+                loader: "html-loader"
+            },
+            {
+                loader: "markdown-loader"
+            }
+        ]
       }
     ],
 
