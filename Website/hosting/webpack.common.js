@@ -7,10 +7,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
   target: 'web',
 
-  context: __dirname,
-
   entry: [
-    './src/index.js'
+    path.join(__dirname, 'src/index.js')
   ],
 
   output: {
@@ -21,7 +19,7 @@ module.exports = {
     new webpack.NamedModulesPlugin(),
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      template: path.join(__dirname, 'index.html')
+      template: path.join(__dirname, 'index_template.html')
     })
   ],
 

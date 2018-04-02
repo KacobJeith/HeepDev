@@ -8,7 +8,6 @@ module.exports = merge(common, {
   mode: 'development',
 
   devServer: {
-    publicPath: '/dist',
     port: 9000,
     historyApiFallback: true
   },
