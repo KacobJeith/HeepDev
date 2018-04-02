@@ -334,7 +334,7 @@ class BedroomSVG extends React.Component {
   };
 
   animateTheft() {
-    const tlTheft = new TimelineMax({onComplete: proxyFunction});
+    const tlTheft = new TimelineMax({onComplete: proxyFunction.bind(this)});
     const startTime = 0.3;
 
     function proxyFunction(): void {

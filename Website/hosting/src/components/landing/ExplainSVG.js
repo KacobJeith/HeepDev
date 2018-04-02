@@ -9,7 +9,6 @@ import { TimelineMax } from 'gsap';
 import { withStyles } from 'material-ui/styles';
 import { Typography,
          Paper } from 'material-ui'
-import * as SVGText from './ExplainSVGFunctions'
 
 var mapStateToProps = (state) => ({
   svgText: state.svgText
@@ -32,7 +31,7 @@ class ExplainSVG extends React.Component {
           Welcome to the Heep Room!
         </Typography>
         <Typography variant="subheading" paragraph>
-          We've imagined a future where connected devices work seamlessly and unintrusively.
+          We've imagined a future where connected devices work seamlessly and unintrusively. Heep makes it easy to build,
           <br/><br/>
           Click around and take a look!
         </Typography>
