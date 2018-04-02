@@ -1271,6 +1271,8 @@ void TestWiFiMOP()
 	int DidReceive2 = 0;
 	char RetrievedSSID2 [20];
 	char RetrievedPassword2 [20];
+	for(int i = 0; i < 20; i++)
+		RetrievedSSID2[i] = RetrievedPassword2[i] = '\0';
 	DidReceive2 = GetWiFiFromMemory(RetrievedSSID2, RetrievedPassword2, 2);
 	std::string RetreivedSSIDStr2(RetrievedSSID2);
 	std::string RetreivedPasswordStr2(RetrievedPassword2);
