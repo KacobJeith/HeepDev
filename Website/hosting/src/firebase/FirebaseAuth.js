@@ -3,7 +3,6 @@ import firebaseui from 'firebaseui'
 import * as setup from '../index'
 import * as actions from '../redux/actions'
 import * as database from './FirebaseDatabase'
-import $ from 'jquery'
 
 export const logout = () => {
   
@@ -90,7 +89,6 @@ export const initializeFirebase = () => {
 		
 	    validateUser()
 	    
-	    VerifyUser()
 	    loadUserProviders()
 
 
@@ -282,17 +280,6 @@ export const updateUserProfile = (newData) => {
 	  console.log("Failed to Update");
 
 	});
-}
-
-export const VerifyUser = () => {
-
-    let actionsUID = searchURL("actionsUID") 
-
-    if (actionsUID) {
-		let user = firebase.auth().currentUser
-    	$.get("/verifyUser" + "?actionsUID=" + actionsUID + "&uid=" + user.uid + "&email=" + user.email);
-    }
-    
 }
 
 const signinSuccessURL = () => {
