@@ -198,6 +198,9 @@ export default function(state = initialState, action) {
 
       return Immutable.Map(state).set('places', newState).toJS()
 
+    case 'SET_SVG_TEXT':
+      return Immutable.Map(state).set('svgText', action.svgText).toJS();
+
     default:
       return state
   }

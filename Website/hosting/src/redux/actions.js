@@ -118,3 +118,8 @@ export const updateCartContext = (variantID, placeID) => ({
 export const completeCheckout = () => ({
 	type: 'COMPLETE_CHECKOUT'
 })
+
+export const setSVGText = (svgText) => ({
+  type: 'SET_SVG_TEXT',
+  svgText
+})
