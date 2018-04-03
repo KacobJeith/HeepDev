@@ -8,14 +8,17 @@ import * as actions           from '../../redux/actions_classic'
 import { withTheme } from 'material-ui/styles';
 import { Drawer, Button, Divider, Paper, Typography, IconButton } from 'material-ui';
 import List, { ListItem, ListItemIcon, ListItemText, ListSubheader } from 'material-ui/List';
-import { Close } from 'material-ui-icons'
+import { Close, Add } from 'material-ui-icons'
 
 import DetailsPanelControlBlock from './DetailsPanelControlBlock'
+import PlaceListItem from './PlaceListItem'
+import AddPlaceModal from '../account/AddPlaceModal'
 
 var mapStateToProps = (state) => ({
   deviceID:  state.detailsPanelDeviceID,
   device: state.devices[state.detailsPanelDeviceID],
-  controls: state.detailsPanelDeviceID == null ? {} : extractControls(state)
+  controls: state.detailsPanelDeviceID == null ? {} : extractControls(state),
+  places: state.places
 })
 
 const extractControls = (state) => {
@@ -30,6 +33,9 @@ const extractControls = (state) => {
 }
 
 class DeviceDetailsPanel extends React.Component {
+  state = {
+      open: false
+    }
 
   deviceDetails() {
     return (
@@ -72,7 +78,11 @@ class DeviceDetailsPanel extends React.Component {
             this.deviceIdentity(field, this.props.device[field])
           ))}
         </List>
+
+        {this.deviceOptions()}
+
         {this.listControls()}
+        
         <div style={{height: 500}}/>
       </div>
     )
@@ -130,6 +140,35 @@ class DeviceDetailsPanel extends React.Component {
           {value.toString()}
         </Typography>
       </ListItem>
+    )
+  }
+
+  deviceOptions() {
+
+    return (
+      <List disablePadding dense
+        subheader={
+          <ListSubheader component="div" style={{padding: 0}}>
+            Options
+          </ListSubheader>}>
+        
+        <Divider/>
+
+        <List>
+          {Object.keys(this.props.places).map((placeID) => (
+            <PlaceListItem placeID={placeID} key={placeID}/>
+          ))}
+          <AddPlaceModal open={this.state.open} handleClose={()=> this.setState({open: false})} modalElement={
+            <ListItem button color='secondary' onClick={()=> this.setState({open: true})}>
+              <ListItemIcon>
+                <Add/>
+              </ListItemIcon>
+              <ListItemText inset secondary='Add a New Place' />
+            </ListItem>
+          }/>
+        </List>
+
+      </List>
     )
   }
 
