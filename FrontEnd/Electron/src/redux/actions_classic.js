@@ -74,3 +74,8 @@ export const startLiveMode = () => ({
 export const stopLiveMode = () => ({
   type: 'STOP_LIVE_MODE'
 })
+
+export const setDetailsPanelDeviceID = (deviceID) => ({
+  type: 'SET_DETAILS_DEVICE_ID',
+  deviceID
+})

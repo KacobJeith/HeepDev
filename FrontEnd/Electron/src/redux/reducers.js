@@ -291,6 +291,10 @@ export default function(state = initialState, action) {
 
       return Immutable.Map(state).set('liveModeReference', null).toJS();
 
+    case 'SET_DETAILS_DEVICE_ID' :
+
+      return Immutable.Map(state).set('detailsPanelDeviceID', action.deviceID).toJS()
+
     default:
       console.log('Passed through first Switch');
   }
