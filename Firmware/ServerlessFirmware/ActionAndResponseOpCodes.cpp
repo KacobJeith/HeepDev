@@ -298,11 +298,20 @@ void ExecuteSetVertexOpCode()
 	myVertex.txControlID = txControl;
 	myVertex.rxIPAddress = vertexIP;
 
-	AddVertex(myVertex);
+	if(AddVertex(myVertex) == 0)
+	{
+		ClearOutputBuffer();
+		char SuccessMessage [] = "Vertex Set";
+		FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
+	}
+	else
+	{
+		ClearOutputBuffer();
+		char errorMessage [] = "Vertex Not Set. Memory Overflow";
+		FillOutputBufferWithError(errorMessage, strlen(errorMessage));
+	}
 
-	ClearOutputBuffer();
-	char SuccessMessage [] = "Vertex Set";
-	FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
+	
 }
 
 // Updated

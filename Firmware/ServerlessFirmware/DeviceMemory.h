@@ -92,7 +92,7 @@ void SetIPInMemory_Byte(struct HeepIPAddress theIP, heepByte* deviceID);
 void DeleteVertexAtPointer(unsigned long pointer);
 int GetVertexAtPointer_Byte(unsigned long pointer, struct Vertex_Byte* returnedVertex);
 
-int SetVertexInMemory_Byte(struct Vertex_Byte theVertex);
+heepByte SetVertexInMemory_Byte(struct Vertex_Byte theVertex, unsigned int* vertexPointer);
 
 int GetNextVertexPointer(unsigned int* pointer,unsigned int* counter);
 

@@ -370,7 +370,7 @@ heepByte UpdateXYInMemory_Byte(int x, int y, heepByte* deviceID)
 	{
 		if(WillMemoryOverflow(ID_SIZE+6))
 			return 1;
-		
+
 		SetXYInMemory_Byte(x, y, deviceID);
 	}
 
@@ -427,7 +427,7 @@ int GetVertexAtPointer_Byte(unsigned long pointer, struct Vertex_Byte* returnedV
 	return 0;
 }
 
-int SetVertexInMemory_Byte(struct Vertex_Byte theVertex)
+heepByte SetVertexInMemory_Byte(struct Vertex_Byte theVertex, unsigned int* vertexPointer)
 {
 	PerformPreOpCodeProcessing_Byte(theVertex.txID);
 	PerformPreOpCodeProcessing_Byte(theVertex.rxID);
@@ -437,7 +437,7 @@ int SetVertexInMemory_Byte(struct Vertex_Byte theVertex)
 	heepByte copyIDRx[STANDARD_ID_SIZE];
 	CopyDeviceID(theVertex.rxID, copyIDRx);
 
-	int beginningOfMemory = curFilledMemory;
+	*vertexPointer = curFilledMemory;
 
 	AddNewCharToMemory(VertexOpCode);
 	AddIndexOrDeviceIDToMemory_Byte(copyIDTx);
@@ -449,7 +449,7 @@ int SetVertexInMemory_Byte(struct Vertex_Byte theVertex)
 
 	memoryChanged = 1;
 
-	return beginningOfMemory;
+	return 0;
 }
 
 int GetNextVertexPointer(unsigned int* pointer,unsigned int* counter)
