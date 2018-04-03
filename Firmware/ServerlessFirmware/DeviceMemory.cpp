@@ -350,7 +350,7 @@ void SetXYInMemory_Byte(int x, int y, heepByte* deviceID)
 	AddNumberToMemoryWithSpecifiedBytes(y, 2);
 }
 
-void UpdateXYInMemory_Byte(int x, int y, heepByte* deviceID)
+heepByte UpdateXYInMemory_Byte(int x, int y, heepByte* deviceID)
 {	
 	heepByte copyID[STANDARD_ID_SIZE];
 	CopyDeviceID(deviceID, copyID);
@@ -368,10 +368,15 @@ void UpdateXYInMemory_Byte(int x, int y, heepByte* deviceID)
 	}
 	else
 	{
+		if(WillMemoryOverflow(ID_SIZE+6))
+			return 1;
+		
 		SetXYInMemory_Byte(x, y, deviceID);
 	}
 
 	memoryChanged = 1;
+
+	return 0;
 }
 
 void SetIPInMemory_Byte(struct HeepIPAddress theIP, heepByte* deviceID)

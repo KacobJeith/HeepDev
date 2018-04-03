@@ -263,10 +263,16 @@ void ExecuteSetPositionOpCode()
 	unsigned int xValue = GetNumberFromBuffer(inputBuffer, &counter, 2);
 	unsigned int yValue = GetNumberFromBuffer(inputBuffer, &counter, 2);
 
-	UpdateXYInMemory_Byte(xValue, yValue, deviceIDByte);
-
-	char SuccessMessage [] = "Value Set";
-	FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
+	if(UpdateXYInMemory_Byte(xValue, yValue, deviceIDByte) == 0)
+	{
+		char SuccessMessage [] = "Value Set";
+		FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
+	}
+	else
+	{
+		char ErrorMessage [] = "Failed to set. Memory Full";
+		FillOutputBufferWithError(ErrorMessage, strlen(ErrorMessage));
+	}
 }
 
 // Updated

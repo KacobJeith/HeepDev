@@ -86,7 +86,7 @@ unsigned int GetXYFromMemory_Byte(int *x, int *y, heepByte* deviceID, unsigned i
 
 void SetXYInMemory_Byte(int x, int y, heepByte* deviceID);
 
-void UpdateXYInMemory_Byte(int x, int y, heepByte* deviceID);
+heepByte UpdateXYInMemory_Byte(int x, int y, heepByte* deviceID);
 
 void SetIPInMemory_Byte(struct HeepIPAddress theIP, heepByte* deviceID);
 void DeleteVertexAtPointer(unsigned long pointer);
