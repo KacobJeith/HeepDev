@@ -1466,7 +1466,7 @@ void TestAnalyticsMOPQueue()
 void TestAnalyticsMOPTimeGetter()
 {
 #ifdef USE_ANALYTICS
-	std::string TestName = "Test Analytics MOP Queuing";
+	std::string TestName = "Test Analytics MOP Time Getter";
 
 	ClearDeviceMemory();
 
@@ -1477,29 +1477,21 @@ void TestAnalyticsMOPTimeGetter()
 	SetAnalyticsDataControlValueInMemory_Byte(0, 4, deviceID1);
 
 	simMillis = 2315232;
-	SetAnalyticsDataControlValueInMemory_Byte(0, 4, deviceID1);
+	SetAnalyticsDataControlValueInMemory_Byte(0, 21, deviceID1);
 
 	int firstAnalyticsMOP = GetNextAnalyticsDataPointer(0);
 	int secondAnalyticsMOP = GetNextAnalyticsDataPointer(SkipOpCode(firstAnalyticsMOP));
 
-	cout << "MOPS  " << firstAnalyticsMOP << " " << secondAnalyticsMOP << endl;
-
-	int counter = GetMemCounterStart();
-
-	ExpectedValue valueList [3];
+	ExpectedValue valueList [2];
 	valueList[0].valueName = "Analytics OpCode";
-	valueList[0].expectedValue = AnalyticsOpCode;
-	valueList[0].actualValue = deviceMemory[counter];
+	valueList[0].expectedValue = 100;
+	valueList[0].actualValue = GetTimeFromAnalyticsMOP(firstAnalyticsMOP);
 
 	valueList[1].valueName = "Number of Bytes";
-	valueList[1].expectedValue = 12;
-	valueList[1].actualValue = deviceMemory[counter + ID_SIZE + 1];
+	valueList[1].expectedValue = 2315232;
+	valueList[1].actualValue = GetTimeFromAnalyticsMOP(secondAnalyticsMOP);
 
-	valueList[2].valueName = "Time Bytes";
-	valueList[2].expectedValue = 7;
-	valueList[2].actualValue = deviceMemory[counter + ID_SIZE + 6];
-
-	CheckResults(TestName, valueList, 3);
+	CheckResults(TestName, valueList, 2);
 #endif
 }
 

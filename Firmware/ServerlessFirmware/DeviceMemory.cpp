@@ -297,9 +297,12 @@ int GetNextAnalyticsDataPointer(int startingPointer)
 	return -1;
 }
 
-void GetTimeFromAnalyticsMOP(int MOPAddress)
+uint64_t GetTimeFromAnalyticsMOP(int MOPAddress)
 {
+	unsigned int startCount = MOPAddress + ID_SIZE + 3 + deviceMemory[MOPAddress + ID_SIZE + 3] + 3;
+	unsigned int numBytesTime = deviceMemory[startCount - 1];
 
+	return GetNumberFromBuffer(deviceMemory, &startCount, numBytesTime);
 }
 
 #endif
