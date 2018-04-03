@@ -3,11 +3,12 @@ import React from 'react';
 import { connect }            from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { withRouter }         from 'react-router-dom'
-import * as actions           from '../../redux/actions'
+import * as actions           from '../../redux/actions_classic'
 
 import { withTheme } from 'material-ui/styles';
-import { Drawer, Button, Divider, Paper, Typography } from 'material-ui';
+import { Drawer, Button, Divider, Paper, Typography, IconButton } from 'material-ui';
 import List, { ListItem, ListItemIcon, ListItemText, ListSubheader } from 'material-ui/List';
+import { Close } from 'material-ui-icons'
 
 import DetailsPanelControlBlock from './DetailsPanelControlBlock'
 
@@ -35,9 +36,30 @@ class DeviceDetailsPanel extends React.Component {
       <div style={{
         width: this.props.deviceID != null ? 250 : 0, 
         marginTop: 70,
-        padding: this.props.theme.spacing.unit
+        padding: this.props.theme.spacing.unit,
+        position: 'relative'
       }}>
+
+
         {this.detailsTitle()}
+
+        <IconButton 
+          onClick={() => this.props.setDetailsPanelDeviceID(null)}
+          size='small'
+          style={{
+            position: 'absolute', 
+            right: 4, 
+            height: 24,
+            width: 24,
+            top: 4, 
+            fontSize: 16,
+            cursor: 'pointer'
+          }}>
+            <Close 
+              style={{
+                fontSize: 16
+              }}/>
+          </IconButton>
 
         <List 
           disablePadding 
@@ -69,7 +91,7 @@ class DeviceDetailsPanel extends React.Component {
         <Divider/>
 
         {this.props.controls.map((controlID) => (
-          <DetailsPanelControlBlock controlID={controlID}/>
+          <DetailsPanelControlBlock key={controlID} controlID={controlID}/>
         ))}
 
       </List>
@@ -90,11 +112,11 @@ class DeviceDetailsPanel extends React.Component {
     }
 
     return (
-      <ListItem >
+      <ListItem style={{paddingRight: 0}}>
         <ListItemIcon>
             <object {...inputs.primary}/>
         </ListItemIcon>
-        <ListItemText primary={this.props.device.name}/>
+        <ListItemText primary={this.props.device.name} />
       </ListItem>
     )
   }
@@ -114,7 +136,7 @@ class DeviceDetailsPanel extends React.Component {
   render() {
 
     return (  
-        <Drawer anchor="right" variant='permanent' open={this.props.deviceID != null}>
+        <Drawer anchor="right" variant='permanent' open={this.props.deviceID != null} >
           {this.props.deviceID != null && (this.deviceDetails())}
           
         </Drawer>
