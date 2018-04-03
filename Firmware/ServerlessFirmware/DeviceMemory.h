@@ -106,3 +106,7 @@ heepByte DeleteWiFiSetting(int priority, heepByte* deviceID);
 heepByte GetIndexedDeviceID_Byte(heepByte* deviceID);
 
 heepByte GetDeviceIDFromIndex_Byte(heepByte* index, heepByte* returnedID);
+
+heepByte WillMemoryOverflow(int numBytesToBeAdded);
+void FragmentAllOfMOP(heepByte inputMOP);
+void ImmediatelyClearAllOfMOP(heepByte inputMOP);

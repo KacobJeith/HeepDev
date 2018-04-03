@@ -249,7 +249,7 @@ void SetAnalyticsDataControlValueInMemory_Byte(heepByte controlID, int controlVa
 	heepByte numBytesForTime = GetNumBytes64Bit(GetAnalyticsTime());
 
 	heepByte totalBytesForAnalyticsMOP = 1 + ID_SIZE + 1 + numBytesForTime + 5;
-	while(curFilledMemory + totalBytesForAnalyticsMOP >= 1500)
+	while(WillMemoryOverflow(totalBytesForAnalyticsMOP))
 	{
 		int firstAnalyticsData = GetNextAnalyticsDataPointer(0);
 		if(firstAnalyticsData >= 0)
@@ -620,4 +620,24 @@ heepByte GetDeviceIDFromIndex_Byte(heepByte* index, heepByte* returnedID)
 	GetDeviceIDOrLocalIDFromBuffer(index, returnedID, 0);
 	return STANDARD_ID_SIZE; // Index is just device ID!
 #endif
+}
+
+heepByte WillMemoryOverflow(int numBytesToBeAdded)
+{
+	if(numBytesToBeAdded + curFilledMemory >= MAX_MEMORY)
+	{
+		return 1;
+	}
+
+	return 0;
+}
+
+void FragmentAllOfMOP(heepByte inputMOP)
+{
+
+}
+
+void ImmediatelyClearAllOfMOP(heepByte inputMOP)
+{
+
 }
