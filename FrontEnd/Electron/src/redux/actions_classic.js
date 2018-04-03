@@ -66,3 +66,11 @@ export const claimDevice = (deviceID) => ({
 export const refreshFlowchart = () => ({
   type: 'REFRESH_FLOWCHART'
 })
+
+export const startLiveMode = () => ({
+  type: 'START_LIVE_MODE'
+})
+
+export const stopLiveMode = () => ({
+  type: 'STOP_LIVE_MODE'
+})

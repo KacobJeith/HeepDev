@@ -59,7 +59,7 @@ export var refreshLocalDeviceState = () => {
   var url = urlPrefix.concat('/api/refreshLocalDeviceState');
 
   performAJAX(url, {}, 'GET', (data) => {
-    console.log("Received Data: ", data);
+    
     setup.store.dispatch(actions_classic.overwriteFromServer(data));
   })
 }
@@ -78,6 +78,16 @@ export var performAJAX = (url, messagePacket, type = 'POST', callback = (data) =
       console.log('Hitting Commands sendDataToServer error')
     }
   });
+}
+
+export const startLiveMode = () => {
+  var liveModeRef = setInterval(refreshLocalDeviceState, 4000);
+
+  return liveModeRef
+}
+
+export const stopLiveMode = (liveModeReference) => {
+  clearTimeout(liveModeReference);
 }
 
 

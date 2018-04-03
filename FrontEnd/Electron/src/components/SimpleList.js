@@ -9,9 +9,12 @@ import { withStyles } from 'material-ui/styles';
 import ListSubheader from 'material-ui/List/ListSubheader';
 import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
 import Collapse from 'material-ui/transitions/Collapse';
-import {Refresh, Build} from 'material-ui-icons';
+import { Refresh, Build, TrackChanges, Home } from 'material-ui-icons';
+
+import { Divider } from 'material-ui'
 
 var mapStateToProps = (state) => ({
+  liveMode: state.liveModeReference
 })
 
 const styles = theme => ({
@@ -32,6 +35,52 @@ class NestedList extends React.Component {
     this.setState({ open: !this.state.open });
   };
 
+  refreshFlowchart = () => (
+    <ListItem button>
+      <ListItemIcon>
+        <Refresh onClick={ () => this.props.refreshFlowchart()}/>
+      </ListItemIcon>
+      <ListItemText inset primary="Refresh" />
+    </ListItem>
+  )
+
+  deviceBuilder = () => (
+    <NavLink to="/designer" style={{
+      textDecoration: 'none',
+      outline: 'none'
+    }}>
+      <ListItem button>
+        <ListItemIcon>
+          <Build />
+        </ListItemIcon>
+        <ListItemText inset primary="Design" />
+      </ListItem>
+    </NavLink>
+  )
+
+  flowchartNav = () => (
+    <NavLink to="/" style={{
+      textDecoration: 'none',
+      outline: 'none'
+    }}>
+      <ListItem button>
+        <ListItemIcon>
+          <Home />
+        </ListItemIcon>
+        <ListItemText inset primary="Home" />
+      </ListItem>
+    </NavLink>
+  )
+
+  liveModeToggle = () => (
+    <ListItem button onClick={ () => this.props.liveMode == null ? this.props.startLiveMode() : this.props.stopLiveMode()}>
+      <ListItemIcon>
+        <TrackChanges color={this.props.liveMode == null ? 'disabled' : 'secondary'}/>
+      </ListItemIcon>
+      <ListItemText inset primary="Live Mode" />
+    </ListItem>
+  )
+
   render() {
     const { classes } = this.props;
 
@@ -40,23 +89,12 @@ class NestedList extends React.Component {
         <List
           component="nav"
         >
-          <ListItem button>
-            <ListItemIcon>
-              <Refresh onClick={ () => this.props.refreshFlowchart()}/>
-            </ListItemIcon>
-            <ListItemText inset primary="Refresh" />
-          </ListItem>
-          <NavLink to="/designer" style={{
-    textDecoration: 'none',
-    outline: 'none'
-  }}>
-            <ListItem button>
-              <ListItemIcon>
-                <Build onClick={ () => this.props.refreshFlowchart()}/>
-              </ListItemIcon>
-              <ListItemText inset primary="Design" />
-            </ListItem>
-          </NavLink>
+          {this.flowchartNav()}
+          {this.deviceBuilder()}
+          <Divider/>
+          {this.liveModeToggle()}
+          {this.refreshFlowchart()}
+          
         
         </List>
       </div>

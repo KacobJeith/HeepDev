@@ -48,7 +48,6 @@ class Flowchart extends React.Component {
 	}
 
 	render() {
-		console.log("Running Flowchart: ", this.props.vertexList)
 
 		const inputs = {
 			flowchart: {

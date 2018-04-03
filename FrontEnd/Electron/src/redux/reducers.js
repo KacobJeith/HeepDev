@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux'
 import Immutable from 'immutable'
-import 'babel-polyfill'
 import { initialState } from '../index'
 import * as actions from './actions'
 import * as async from './async'
@@ -281,6 +280,16 @@ export default function(state = initialState, action) {
 
       return Immutable.Map(state).set('places', newState).toJS()
 
+    case 'START_LIVE_MODE': 
+      var liveModeRef = async.startLiveMode();
+
+      return Immutable.Map(state).set('liveModeReference', liveModeRef).toJS();
+                                  
+    case 'STOP_LIVE_MODE': 
+
+      async.stopLiveMode(state.liveModeReference);
+
+      return Immutable.Map(state).set('liveModeReference', null).toJS();
 
     default:
       console.log('Passed through first Switch');
