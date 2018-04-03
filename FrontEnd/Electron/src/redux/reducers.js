@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux'
 import Immutable from 'immutable'
-import 'babel-polyfill'
 import { initialState } from '../index'
 import * as actions from './actions'
 import * as async from './async'
