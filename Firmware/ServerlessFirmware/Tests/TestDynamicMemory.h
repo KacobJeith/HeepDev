@@ -1426,7 +1426,7 @@ void TestAnalyticsMOPQueue()
 	heepByte deviceID1[STANDARD_ID_SIZE];
 	CreateFakeDeviceID(deviceID1);
 
-	for(int i = 0; i < 460; i++)
+	for(int i = 0; i < 20000; i++)
 	{
 		simMillis++;
 		SetAnalyticsDataControlValueInMemory_Byte(0, 4, deviceID1);
