@@ -102,10 +102,13 @@ void CheckServerForInputs()
 {
     int packetSize = Udp.parsePacket();
     if (packetSize) {
+
+#ifdef HEEP_DEBUG
+      IPAddress remote = Udp.remoteIP();
       Serial.print("Received packet of size ");
       Serial.println(packetSize);
       Serial.print("From ");
-      IPAddress remote = Udp.remoteIP();
+      
       for (int i=0; i < 4; i++) {
         Serial.print(remote[i], DEC);
         if (i < 3) {
@@ -114,9 +117,12 @@ void CheckServerForInputs()
       }
       Serial.print(", port ");
       Serial.println(Udp.remotePort());
+#endif
 
       // read the packet into packetBufffer
       Udp.read(inputBuffer, inputBufferSize);
+
+#ifdef HEEP_DEBUG
       Serial.println("Contents:");
       for(int i = 0; i < inputBufferSize; i++)
       {
@@ -124,18 +130,22 @@ void CheckServerForInputs()
         Serial.print(" ");
       }
       Serial.println();
+#endif
       
       if(HandleHeepCommunications()) return;
 
+#ifdef HEEP_DEBUG
       for(int i = 0; i < outputBufferLastByte; i++)
       {
         Serial.print(outputBuffer[i]); Serial.print(" ");
       }
       Serial.println();
 
+      Serial.print("Sending to: "); Serial.print(Udp.remoteIP());
+#endif
+
       // send a reply to the IP address and port that sent us the packet we received
       IPAddress remoteIP(Udp.remoteIP());
-      Serial.print("Sending to: "); Serial.print(Udp.remoteIP());
       Udp.beginPacket(Udp.remoteIP(), localPort);
       Udp.write(outputBuffer, outputBufferLastByte);
       Udp.endPacket();
