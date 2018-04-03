@@ -11,10 +11,6 @@ module.exports = merge(common, {
 
   mode: 'development',
 
-  devServer: {
-  	contentBase: '/src'
-  },
-
   plugins: [
     new webpack.HotModuleReplacementPlugin()
   ]

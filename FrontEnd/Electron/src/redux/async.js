@@ -80,6 +80,16 @@ export var performAJAX = (url, messagePacket, type = 'POST', callback = (data) =
   });
 }
 
+export const startLiveMode = () => {
+  var liveModeRef = setInterval(refreshLocalDeviceState, 4000);
+
+  return liveModeRef
+}
+
+export const stopLiveMode = (liveModeReference) => {
+  clearTimeout(liveModeReference);
+}
+
 
 
 
