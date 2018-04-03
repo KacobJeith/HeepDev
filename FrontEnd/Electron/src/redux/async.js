@@ -59,7 +59,7 @@ export var refreshLocalDeviceState = () => {
   var url = urlPrefix.concat('/api/refreshLocalDeviceState');
 
   performAJAX(url, {}, 'GET', (data) => {
-    console.log("Received Data: ", data);
+    
     setup.store.dispatch(actions_classic.overwriteFromServer(data));
   })
 }
