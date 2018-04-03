@@ -1437,29 +1437,21 @@ void TestAnalyticsMOPQueue()
 	int lastAnalyticsIndex = 0;
 	do
 	{
-		currentAnalyticsIndex = SkipOpCode(currentAnalyticsIndex);
 		lastAnalyticsIndex = currentAnalyticsIndex;
+		currentAnalyticsIndex = SkipOpCode(currentAnalyticsIndex);
 		currentAnalyticsIndex = GetNextAnalyticsDataPointer(currentAnalyticsIndex);
 	}while(currentAnalyticsIndex != -1);
 
-	cout << "LAST NALY " << lastAnalyticsIndex << endl;
+	ExpectedValue valueList [2];
+	valueList[0].valueName = "Final Time";
+	valueList[0].expectedValue = 20000;
+	valueList[0].actualValue = GetTimeFromAnalyticsMOP(lastAnalyticsIndex);
 
-	int counter = GetMemCounterStart();
+	valueList[1].valueName = "First Time";
+	valueList[1].expectedValue = 1;
+	valueList[1].actualValue = GetTimeFromAnalyticsMOP(GetNextAnalyticsDataPointer(0)) != 0;
 
-	ExpectedValue valueList [3];
-	valueList[0].valueName = "Analytics OpCode";
-	valueList[0].expectedValue = AnalyticsOpCode;
-	valueList[0].actualValue = deviceMemory[counter];
-
-	valueList[1].valueName = "Number of Bytes";
-	valueList[1].expectedValue = 12;
-	valueList[1].actualValue = deviceMemory[counter + ID_SIZE + 1];
-
-	valueList[2].valueName = "Time Bytes";
-	valueList[2].expectedValue = 7;
-	valueList[2].actualValue = deviceMemory[counter + ID_SIZE + 6];
-
-	CheckResults(TestName, valueList, 3);
+	CheckResults(TestName, valueList, 2);
 #endif
 }
 
@@ -1483,11 +1475,11 @@ void TestAnalyticsMOPTimeGetter()
 	int secondAnalyticsMOP = GetNextAnalyticsDataPointer(SkipOpCode(firstAnalyticsMOP));
 
 	ExpectedValue valueList [2];
-	valueList[0].valueName = "Analytics OpCode";
+	valueList[0].valueName = "MOP 1 Time";
 	valueList[0].expectedValue = 100;
 	valueList[0].actualValue = GetTimeFromAnalyticsMOP(firstAnalyticsMOP);
 
-	valueList[1].valueName = "Number of Bytes";
+	valueList[1].valueName = "MOP 2 Time";
 	valueList[1].expectedValue = 2315232;
 	valueList[1].actualValue = GetTimeFromAnalyticsMOP(secondAnalyticsMOP);
 
