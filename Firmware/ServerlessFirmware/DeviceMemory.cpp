@@ -297,6 +297,11 @@ int GetNextAnalyticsDataPointer(int startingPointer)
 	return -1;
 }
 
+void GetTimeFromAnalyticsMOP(int MOPAddress)
+{
+
+}
+
 #endif
 
 unsigned int ParseXYOpCode_Byte(int *x, int *y, heepByte* deviceID, unsigned int counter)

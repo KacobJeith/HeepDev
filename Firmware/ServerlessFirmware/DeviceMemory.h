@@ -76,6 +76,7 @@ void SetIconDataInMemory_Byte(char* iconData, int numCharacters, heepByte* devic
 
 void SetAnalyticsDataControlValueInMemory_Byte(heepByte controlID, int controlValue, heepByte *deviceID);
 int GetNextAnalyticsDataPointer(int startingPointer);
+void GetTimeFromAnalyticsMOP(int MOPAddress);
 
 #endif
 

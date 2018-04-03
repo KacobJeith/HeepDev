@@ -1431,7 +1431,58 @@ void TestAnalyticsMOPQueue()
 		simMillis++;
 		SetAnalyticsDataControlValueInMemory_Byte(0, 4, deviceID1);
 	}
-	PrintDeviceMemory();
+
+	// Find last analytics MOP
+	int currentAnalyticsIndex = GetNextAnalyticsDataPointer(0);
+	int lastAnalyticsIndex = 0;
+	do
+	{
+		currentAnalyticsIndex = SkipOpCode(currentAnalyticsIndex);
+		lastAnalyticsIndex = currentAnalyticsIndex;
+		currentAnalyticsIndex = GetNextAnalyticsDataPointer(currentAnalyticsIndex);
+	}while(currentAnalyticsIndex != -1);
+
+	cout << "LAST NALY " << lastAnalyticsIndex << endl;
+
+	int counter = GetMemCounterStart();
+
+	ExpectedValue valueList [3];
+	valueList[0].valueName = "Analytics OpCode";
+	valueList[0].expectedValue = AnalyticsOpCode;
+	valueList[0].actualValue = deviceMemory[counter];
+
+	valueList[1].valueName = "Number of Bytes";
+	valueList[1].expectedValue = 12;
+	valueList[1].actualValue = deviceMemory[counter + ID_SIZE + 1];
+
+	valueList[2].valueName = "Time Bytes";
+	valueList[2].expectedValue = 7;
+	valueList[2].actualValue = deviceMemory[counter + ID_SIZE + 6];
+
+	CheckResults(TestName, valueList, 3);
+#endif
+}
+
+void TestAnalyticsMOPTimeGetter()
+{
+#ifdef USE_ANALYTICS
+	std::string TestName = "Test Analytics MOP Queuing";
+
+	ClearDeviceMemory();
+
+	simMillis = 100;
+	heepByte deviceID1[STANDARD_ID_SIZE];
+	CreateFakeDeviceID(deviceID1);
+
+	SetAnalyticsDataControlValueInMemory_Byte(0, 4, deviceID1);
+
+	simMillis = 2315232;
+	SetAnalyticsDataControlValueInMemory_Byte(0, 4, deviceID1);
+
+	int firstAnalyticsMOP = GetNextAnalyticsDataPointer(0);
+	int secondAnalyticsMOP = GetNextAnalyticsDataPointer(SkipOpCode(firstAnalyticsMOP));
+
+	cout << "MOPS  " << firstAnalyticsMOP << " " << secondAnalyticsMOP << endl;
 
 	int counter = GetMemCounterStart();
 
@@ -1488,4 +1539,5 @@ void TestDynamicMemory()
  	TestMultipleNameReplacement();
  	TestWiFiReplacement();
  	TestAnalyticsMOPQueue();
+ 	TestAnalyticsMOPTimeGetter();
 }
