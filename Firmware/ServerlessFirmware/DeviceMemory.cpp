@@ -96,15 +96,7 @@ void SetDeviceNameInMemory_Byte(char* deviceName, int numCharacters, heepByte* d
 {
 	int counter = 0;
 	
-	while(counter < curFilledMemory)
-	{
-		if(deviceMemory[counter] == DeviceNameOpCode){
-			deviceMemory[counter] = FragmentOpCode;
-		}
-
-		counter = SkipOpCode(counter);
-	}
-	
+	FragmentAllOfMOP(DeviceNameOpCode);
 
 	PerformPreOpCodeProcessing_Byte(deviceID);
 
