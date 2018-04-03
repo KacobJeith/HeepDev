@@ -634,10 +634,18 @@ heepByte WillMemoryOverflow(int numBytesToBeAdded)
 
 void FragmentAllOfMOP(heepByte inputMOP)
 {
+	unsigned int counter = 0;
+	while(counter < curFilledMemory)
+	{
+		if(deviceMemory[counter] == inputMOP)
+			deviceMemory[counter] = FragmentOpCode;
 
+		counter = SkipOpCode(counter);
+	}
 }
 
 void ImmediatelyClearAllOfMOP(heepByte inputMOP)
 {
-
+	FragmentAllOfMOP(inputMOP);
+	DefragmentMemory();
 }
