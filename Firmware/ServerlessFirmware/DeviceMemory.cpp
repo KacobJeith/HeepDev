@@ -449,9 +449,9 @@ heepByte SetVertexInMemory_Byte(struct Vertex_Byte theVertex, unsigned int* vert
 	PerformPreOpCodeProcessing_Byte(theVertex.txID);
 	PerformPreOpCodeProcessing_Byte(theVertex.rxID);
 	
-	heepByte copyIDTx[ID_SIZE];
+	heepByte copyIDTx[STANDARD_ID_SIZE];
 	CopyDeviceID(theVertex.txID, copyIDTx);
-	heepByte copyIDRx[ID_SIZE];
+	heepByte copyIDRx[STANDARD_ID_SIZE];
 	CopyDeviceID(theVertex.rxID, copyIDRx);
 
 	*vertexPointer = curFilledMemory;
