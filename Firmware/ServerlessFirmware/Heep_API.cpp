@@ -118,6 +118,7 @@ void CommitMemory()
 }
 
 #ifdef USE_ANALYTICS
+#ifdef POST_ANALYTICS
 void PostDataToFirebase()
 {
 	AddAnalyticsStringToOutputBufferAndDeleteMOPs();
@@ -127,6 +128,7 @@ void PostDataToFirebase()
 		SendDataToFirebase(outputBuffer, outputBufferLastByte, base64DeviceIDByte, STANDARD_ID_SIZE_BASE_64);
 	}
 }
+#endif
 #endif
 
 // Control Daemon is untimed
@@ -164,10 +166,12 @@ void PerformHeepTasks()
 			CommitMemory();
 		}
 #ifdef USE_ANALYTICS
+#ifdef POST_ANALYTICS
 		else if(curTask == PostData)
 		{
 			PostDataToFirebase();
 		}
+#endif
 #endif
 	}
 
