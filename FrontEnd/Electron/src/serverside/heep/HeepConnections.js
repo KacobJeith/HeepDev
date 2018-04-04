@@ -73,6 +73,22 @@ export var SendPositionToHeepDevice = (deviceID, position) => {
 
 }
 
+export var sendWifiCredsToDevice = (deviceID, ssid, password) => {
+
+  var IPAddress = masterState.devices[deviceID].ipAddress;
+  var priority = byteUtils.GetValueAsFixedSizeByteArray(0, 1);
+  var ssidByteArray = byteUtils.GetStringAsByteArray(ssid);
+  var passwordByteArray = byteUtils.GetStringAsByteArray(password);
+  var packet = priority.concat([ssidByteArray.length], ssidByteArray, [passwordByteArray.length], passwordByteArray);
+  var numBytes = [packet.length];
+
+  var messageBuffer = Buffer.from([0x22].concat(numBytes, packet));
+  console.log('Connecting to Device ', deviceID + ' at IPAddress: ' + IPAddress);
+  console.log('Data packet: ', messageBuffer);
+  ConnectToHeepDevice(IPAddress, heepPort, messageBuffer)
+
+}
+
 export var SendValueToHeepDevice = (deviceID, controlID, newValue) => {
   if (CheckIfNewValueAndSet(deviceID, controlID, newValue)){
     var IPAddress = masterState.devices[deviceID].ipAddress;

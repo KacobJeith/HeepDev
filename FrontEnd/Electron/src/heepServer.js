@@ -79,7 +79,7 @@ app.post('/api/setPosition', function(req, res) {
 
 app.post('/api/sendWifiCredsToDevice', function(req, res) {
   
-  //heepConnect.SendPositionToHeepDevice(req.body.deviceID, req.body.ssid, req.body.password);
+  heepConnect.sendWifiCredsToDevice(req.body.deviceID, req.body.ssid, req.body.password);
   console.log("Sending Wifi Credentials to the Device: " + req.body.deviceID)
   res.end("Sending Wifi Credentials to the Device: " + req.body.deviceID);
 });
