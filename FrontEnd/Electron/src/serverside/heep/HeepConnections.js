@@ -217,7 +217,7 @@ var ConsumeHeepResponse = (data, IPAddress, port) => {
 }
 
 var AddMemoryChunksToMasterState = (heepChunks, IPAddress) => {
-  console.log(heepChunks);  
+  // console.log(heepChunks);  
 
   for (var i = 0; i < heepChunks.length; i++) {
 
