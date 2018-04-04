@@ -92,8 +92,12 @@ void AddIPToMemory(struct HeepIPAddress theIP)
 	AddNewCharToMemory(theIP.Octet1);
 }
 
-void SetDeviceNameInMemory_Byte(char* deviceName, int numCharacters, heepByte* deviceID)
+heepByte SetDeviceNameInMemory_Byte(char* deviceName, int numCharacters, heepByte* deviceID)
 {
+	int numBytesNeeded = 1 + ID_SIZE + 1 + numCharacters;
+	if(WillMemoryOverflow(numBytesNeeded))
+		return 1;
+
 	int counter = 0;
 	
 	FragmentAllOfMOP(DeviceNameOpCode);
@@ -109,6 +113,8 @@ void SetDeviceNameInMemory_Byte(char* deviceName, int numCharacters, heepByte* d
 	{
 		AddNewCharToMemory(deviceName[i]);
 	}
+
+	return 0;
 }
 
 void SetIconIDInMemory_Byte(char iconID, heepByte* deviceID)

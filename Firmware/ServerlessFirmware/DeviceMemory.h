@@ -67,7 +67,7 @@ void AddIndexOrDeviceIDToMemory_Byte(heepByte* deviceID);
 
 void AddIPToMemory(struct HeepIPAddress theIP);
 
-void SetDeviceNameInMemory_Byte(char* deviceName, int numCharacters, heepByte* deviceID);
+heepByte SetDeviceNameInMemory_Byte(char* deviceName, int numCharacters, heepByte* deviceID);
 void SetIconIDInMemory_Byte(char iconID, heepByte* deviceID);
 
 void SetIconDataInMemory_Byte(char* iconData, int numCharacters, heepByte* deviceID);

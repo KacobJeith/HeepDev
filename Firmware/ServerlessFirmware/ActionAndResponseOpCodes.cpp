@@ -492,11 +492,18 @@ void ExecuteSetWiFiDataOpCode()
 
 void ExecuteSetDeviceNameOpCode()
 {
-	SetDeviceNameInMemory_Byte((char*)(&inputBuffer[2]), inputBuffer[1], deviceIDByte);
-
-	ClearOutputBuffer();
-	char SuccessMessage [] = "Name Set!";
-	FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
+	if(SetDeviceNameInMemory_Byte((char*)(&inputBuffer[2]), inputBuffer[1], deviceIDByte) == 0)
+	{
+		ClearOutputBuffer();
+		char SuccessMessage [] = "Name Set!";
+		FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
+	}
+	else
+	{
+		ClearOutputBuffer();
+		char errorMessage [] = "Cannot Add Name. Not enough memory!";
+		FillOutputBufferWithError(errorMessage, strlen(errorMessage));
+	}
 }
 
 void ExecuteResetDeviceNetwork()
