@@ -175,7 +175,7 @@ class DeviceDetailsPanel extends React.Component {
             onClose={() => this.setState({ anchorEl: null })}
           >
             {Object.keys(this.props.places).map((placeKey) => (
-              <MenuItem onClick={() => this.props.sendWiFiCredentialsToDevice(this.props.deviceID, placeKey)}>
+              <MenuItem key={placeKey} onClick={() => this.props.sendWiFiCredentialsToDevice(this.props.deviceID, placeKey)}>
                 
                 <ListItemText primary={this.props.places[placeKey].name} secondary={this.props.places[placeKey].networks.wifi.ssid} />
               </MenuItem>

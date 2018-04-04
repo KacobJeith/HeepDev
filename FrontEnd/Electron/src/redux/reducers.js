@@ -296,6 +296,26 @@ export default function(state = initialState, action) {
 
       return Immutable.Map(state).set('detailsPanelDeviceID', action.deviceID).toJS()
 
+    case 'SEND_WIFI_CRED_TO_DEVICE' :
+      var newState = Immutable.Map(state.deviceWiFiCreds).toJS();
+
+      const ssid = state.places[action.placeKey].networks.wifi.ssid;
+      const password = state.places[action.placeKey].networks.wifi.password;
+
+      if (newState[action.deviceID] == undefined) {
+        newState[action.deviceID] = [{
+          ssid: ssid
+        }]
+      } else {
+        newState[action.deviceID].push({
+          ssid: ssid
+        })
+      }
+
+      async.sendWifiCredsToServer(action.deviceID, ssid, password);
+
+      return Immutable.Map(state).set('deviceWiFiCreds', newState).toJS();
+
     default:
       console.log('Passed through first Switch');
   }
