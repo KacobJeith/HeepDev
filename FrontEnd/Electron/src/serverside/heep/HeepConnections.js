@@ -268,7 +268,7 @@ var AddDevice = (heepChunk, IPAddress) => {
     deviceID: deviceID,
     ipAddress: IPAddress,
     name: deviceName,
-    active: false,
+    active: true,
     iconName: "lightbulb",
     version: 0
   }

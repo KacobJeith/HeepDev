@@ -6,7 +6,7 @@ import { withRouter }         from 'react-router-dom'
 import * as actions           from '../../redux/actions_classic'
 
 import { withTheme } from 'material-ui/styles';
-import { Drawer, Button, Divider, Paper, Typography, IconButton } from 'material-ui';
+import { Drawer, Button, Divider, Paper, Typography, IconButton, Menu, MenuItem } from 'material-ui';
 import List, { ListItem, ListItemIcon, ListItemText, ListSubheader } from 'material-ui/List';
 import { Close, Add } from 'material-ui-icons'
 
@@ -18,7 +18,8 @@ var mapStateToProps = (state) => ({
   deviceID:  state.detailsPanelDeviceID,
   device: state.devices[state.detailsPanelDeviceID],
   controls: state.detailsPanelDeviceID == null ? {} : extractControls(state),
-  places: state.places
+  places: state.places,
+  wifi: state.deviceWiFiCreds[state.detailsPanelDeviceID]
 })
 
 const extractControls = (state) => {
@@ -34,7 +35,8 @@ const extractControls = (state) => {
 
 class DeviceDetailsPanel extends React.Component {
   state = {
-      open: false
+      open: false,
+      anchorEl: null
     }
 
   deviceDetails() {
@@ -154,19 +156,34 @@ class DeviceDetailsPanel extends React.Component {
         
         <Divider/>
 
-        <List>
-          {Object.keys(this.props.places).map((placeID) => (
-            <PlaceListItem placeID={placeID} key={placeID}/>
-          ))}
-          <AddPlaceModal open={this.state.open} handleClose={()=> this.setState({open: false})} modalElement={
-            <ListItem button color='secondary' onClick={()=> this.setState({open: true})}>
-              <ListItemIcon>
-                <Add/>
-              </ListItemIcon>
-              <ListItemText inset secondary='Add a New Place' />
-            </ListItem>
-          }/>
-        </List>
+        {this.props.deviceWiFiCreds  && this.props.deviceWiFiCreds.map((credBlock) => (
+          <ListItem key={credBlock.ssid} > 
+            <ListItemText primary={credBlock.ssid} />
+          </ListItem>
+        ))}
+        
+        <ListItem button onClick={(event) => this.setState({ anchorEl: event.currentTarget })}> 
+          <ListItemIcon>
+            <Add/>
+          </ListItemIcon>
+          <ListItemText primary={'Add New WiFi Credentials'} />
+
+          <Menu
+            id="simple-menu"
+            anchorEl={this.state.anchorEl}
+            open={Boolean(this.state.anchorEl)}
+            onClose={() => this.setState({ anchorEl: null })}
+          >
+            {Object.keys(this.props.places).map((placeKey) => (
+              <MenuItem onClick={() => this.props.sendWiFiCredentialsToDevice(this.props.deviceID, placeKey)}>
+                
+                <ListItemText primary={this.props.places[placeKey].name} secondary={this.props.places[placeKey].networks.wifi.ssid} />
+              </MenuItem>
+            ))}
+            
+          </Menu>
+
+        </ListItem>
 
       </List>
     )
