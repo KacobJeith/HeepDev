@@ -14,7 +14,8 @@ const newMasterState = {
   controls: {controlStructure:{}, connections: {}},
   vertexList: {},
   icons: {},
-  url: ''
+  url: '',
+  analytics: {}
 };
 
 var masterState = JSON.parse(JSON.stringify(newMasterState));
@@ -245,8 +246,10 @@ var AddMemoryChunksToMasterState = (heepChunks, IPAddress) => {
 
         SetDevicePosition(heepChunks[i])
         
-      } else if (heepChunks[i].op == 8){
+      } else if (heepChunks[i].op == 31){
         
+        SetAnalyticsData(heepChunks[i])
+
       }
     } catch (err) {
       console.log(err.toString());
@@ -408,3 +411,11 @@ var SetControlPosition = (deviceID, index, direction) => {
   return position;
 }
 
+var SetAnalyticsData = (heepChunk) => {
+
+  if (masterState.analytics[heepChunk.deviceID] == undefined) {
+    masterState.analytics[heepChunk.deviceID] = {};
+  }
+
+  masterState.analytics[heepChunk.deviceID][heepChunk.analytics.timeStamp] = heepChunk.analytics;
+}

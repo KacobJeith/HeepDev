@@ -11,7 +11,7 @@ import Loading from './Loading'
 import UserAccount from './account/UserAccount'
 import Designer from './designer/DeviceBuilder'
 import Flowchart from './flowchart/Flowchart'
-// import Analytics from './Analytics/AnalyticsMain'
+import Analytics from './Analytics/AnalyticsMain'
 
 import Theme from './Theme'
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
@@ -48,8 +48,7 @@ class App extends React.Component {
 
 	    if (this.props.loginStatus) {
 	    	loggedInRoutes.push(<Route path="/User" component={UserAccount} key="user"/>);
-
-	    	// loggedInRoutes.push(<Route path="/Analytics" component={Analytics} key="Analytics"/>);
+			loggedInRoutes.push(<Route path="/Analytics" component={Analytics} key="Analytics"/>);
 	    }
 
 	    return(
