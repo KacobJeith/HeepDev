@@ -586,6 +586,41 @@ void TestDeviceNameCOP()
 	CheckResults(TestName, valueList, 1);
 }
 
+void TestSetVertexOverflow()
+{
+	ClearVertices();
+	ClearDeviceMemory();
+	ClearInputBuffer();
+
+	inputBuffer[0] = 0x0C;
+	inputBuffer[1] = 0x04;
+
+	inputBuffer[2] = 0xF1;
+	inputBuffer[3] = 0x02;
+	inputBuffer[4] = 0xB2;
+	inputBuffer[5] = 0x3C;
+
+	inputBuffer[6] = 0x1A;
+	inputBuffer[7] = 0x2D;
+	inputBuffer[8] = 0x40;
+	inputBuffer[9] = 0x02;
+
+	inputBuffer[10] = 0x01;
+	inputBuffer[11] = 0x02;
+
+	inputBuffer[12] = 0xC0;
+	inputBuffer[13] = 0xD0;
+	inputBuffer[14] = 0x20;
+	inputBuffer[15] = 0x02;
+
+	for(int i = 0; i < 20000; i++)
+	{
+		ExecuteControlOpCodes();
+	}
+
+	cout << "OUTPUT BUFFER " << (int)outputBuffer[0] << " " << curFilledMemory << endl;
+}
+
 void TestActionAndResponseOpCodes()
 {
 	TestClearOutputBufferAndAddChar();
@@ -601,4 +636,5 @@ void TestActionAndResponseOpCodes()
 	TestGetAnalyticsString();
 	TestAddWiFiCOP();
 	TestDeviceNameCOP();
+	TestSetVertexOverflow();
 }

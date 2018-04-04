@@ -442,12 +442,16 @@ int GetVertexAtPointer_Byte(unsigned long pointer, struct Vertex_Byte* returnedV
 
 heepByte SetVertexInMemory_Byte(struct Vertex_Byte theVertex, unsigned int* vertexPointer)
 {
+	int numBytesNeeded = 1 + ID_SIZE + ID_SIZE + 7;
+	if(WillMemoryOverflow(numBytesNeeded))
+		return 1;
+
 	PerformPreOpCodeProcessing_Byte(theVertex.txID);
 	PerformPreOpCodeProcessing_Byte(theVertex.rxID);
 	
-	heepByte copyIDTx[STANDARD_ID_SIZE];
+	heepByte copyIDTx[ID_SIZE];
 	CopyDeviceID(theVertex.txID, copyIDTx);
-	heepByte copyIDRx[STANDARD_ID_SIZE];
+	heepByte copyIDRx[ID_SIZE];
 	CopyDeviceID(theVertex.rxID, copyIDRx);
 
 	*vertexPointer = curFilledMemory;
