@@ -204,9 +204,14 @@ heepByte DeleteWiFiSetting(int priority, heepByte* deviceID)
 	return 1; // No SSID Password Found at given Priority
 }
 
-void AddWiFiSettingsToMemory(char* WiFiSSID, int numCharSSID, char* WiFiPassword, int numCharPassword, heepByte* deviceID, heepByte IDPriority)
+heepByte AddWiFiSettingsToMemory(char* WiFiSSID, int numCharSSID, char* WiFiPassword, int numCharPassword, heepByte* deviceID, heepByte IDPriority)
 {
 	DeleteWiFiSetting(IDPriority, deviceID);
+
+	int numberOfBytesNeeded = 1 + ID_SIZE + 1 + 1 + numCharSSID;
+	numberOfBytesNeeded += 1 + ID_SIZE + 1 + 1 + numCharPassword;
+	if(WillMemoryOverflow(numberOfBytesNeeded))
+		return 1;
 	
 	PerformPreOpCodeProcessing_Byte(deviceID);
 
@@ -229,6 +234,8 @@ void AddWiFiSettingsToMemory(char* WiFiSSID, int numCharSSID, char* WiFiPassword
 	{
 		AddNewCharToMemory(WiFiPassword[i]);
 	}
+
+	return 0;
 }
 
 #ifdef USE_ANALYTICS
