@@ -77,7 +77,8 @@ class DevicePaper extends React.Component {
 
 		const inputs = {
 			deviceContainer: {
-				style: {
+        pointerEvents: 'visible',
+        style: {
 					backgroundColor: 'white',
 					margin: 10,
 					padding: 3,

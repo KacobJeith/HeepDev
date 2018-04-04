@@ -5,6 +5,7 @@ import * as Actions from '../../redux/actions_classic'
 import OnOffContainer from './OnOffController'
 import RangeContainer from './RangeController'
 import { Grid, Typography } from 'material-ui'
+import * as Utils from '../../serverside/utilities/generalUtilities'
 
 var mapStateToProps = (state, ownProps) => ({
   control: state.controls[ownProps.controlID],
@@ -57,7 +58,7 @@ class Control extends React.Component {
 				width: 9
 			},
 			circle: {
-        id: this.props.deviceID + '.' + this.props.control['controlID'],
+        id: this.props.controlID,
 				onClick: (event) => {this.direction == 0 ?
 									 this.selectInputVertex(event) :
 									 this.selectOutputVertex(event)},

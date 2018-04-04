@@ -19,19 +19,22 @@ class Flowchart extends React.Component {
 		this.state = {
 			hoverRefresh: false
 		}
-		
+
 	}
 
 	drawVertices() {
 
 		const inputs = {
 			vertexSVGSpace: {
+        id: 'vertexSVGSpace',
 				style: {
 					position: 'absolute',
 					width: 3000,
 					height: 3000,
-					viewBox: '0 0 1000 1000'
-				}
+					viewBox: '0 0 1000 1000',
+          top: 0,
+          left: 0,
+				},
 			}
 		}
 
@@ -39,9 +42,9 @@ class Flowchart extends React.Component {
 			<svg {...inputs.vertexSVGSpace}>
 				{Object.keys(this.props.vertexList).map((thisVertexKey) => {
 					if (thisVertexKey != 'selectedOutput'){
-				  		return <Vertex key={thisVertexKey} vertexID={thisVertexKey}/>
+              return <Vertex key={thisVertexKey} vertexID={thisVertexKey}/>
 					}
-				})} 
+				})}
 			</svg>
 		)
 
@@ -54,7 +57,6 @@ class Flowchart extends React.Component {
 				style: {
 					height: 3000,
 					width: 3000,
-					position: 'relative',
 					backgroundColor: '#e7e7e7',
 					overflow: 'auto'
 				}
@@ -88,24 +90,32 @@ class Flowchart extends React.Component {
 					position: 'absolute'
 				},
 				onClick: () => {
-					console.log("clicked"); 
+					console.log("clicked");
 					this.props.refreshFlowchart();
 				},
         		onMouseEnter: () => this.setState({hoverRefresh: true}),
         		onMouseLeave: () => this.setState({hoverRefresh: false})
-			}
+			},
+      deviceContainer: {
+        style: {
+          position: 'relative',
+          width: '100%',
+          height: '100%',
+        },
+        background: 'none !important',
+      },
 		}
 
 
 
-	return (<div {...inputs.flowchart} ref="flowchart"> 
-
-				{this.drawVertices()}
-
-				{this.props.deviceArray.map((thisDevice) => (
-					<Device key={thisDevice} DeviceID={thisDevice}/>
-				))}
-				
+	return (
+      <div {...inputs.flowchart} ref="flowchart">
+        {this.drawVertices()}
+        <div {...inputs.deviceContainer}>
+  				{this.props.deviceArray.map((thisDevice) => (
+  					<Device key={thisDevice} DeviceID={thisDevice}/>
+  				))}
+        </div>
 			</div>
 		);
 
