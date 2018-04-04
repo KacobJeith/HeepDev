@@ -48,7 +48,7 @@ class App extends React.Component {
 
 	    if (this.props.loginStatus) {
 	    	loggedInRoutes.push(<Route path="/User" component={UserAccount} key="user"/>);
-			loggedInRoutes.push(<Route path="/Analytics" component={Analytics} key="Analytics"/>);
+			loggedInRoutes.push(<Route path="/Analytics/:deviceID" component={Analytics} key="Analytics"/>);
 	    }
 
 	    return(

@@ -77,7 +77,7 @@ const getAnalyticsSeries = (state, ownProps, key) => {
 
   if ("analytics" in state) {
     if (ownProps.deviceID.toString() in state.analytics) {
-      return Array.from(state.analytics[ownProps.deviceID], x => x[key])
+      return Array.from(Object.keys(state.analytics[ownProps.deviceID]), x => state.analytics[ownProps.deviceID][x][key]);
     }
   }
 
@@ -90,7 +90,8 @@ const getDailyActivity = (state, ownProps) => {
   var hourCounters = new Array(24).fill(0);
 
   for (var i in allTimes) {
-    var key = allTimes[i].getUTCHours() ;
+    var keydate = new Date(allTimes[i])
+    var key = keydate.getUTCHours() ;
     hourCounters[key] += 1;
 
   }

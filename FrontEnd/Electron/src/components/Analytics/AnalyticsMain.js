@@ -9,8 +9,8 @@ import SideBar from './SideBar'
 import DailyActivityGraph from './DailyActivityGraph'
 import BusyTimesGraph from './BusyTimesGraph'
 
-const mapStateToProps = (state) => ({
-  deviceID: state.displayingAnalytics
+const mapStateToProps = (state, ownProps) => ({
+  deviceID: ownProps.match.params.deviceID
 })
 
 class AnalyticsMain extends React.Component {
