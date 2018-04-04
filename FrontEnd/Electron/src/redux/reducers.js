@@ -147,7 +147,8 @@ export default function(state = initialState, action) {
                                  .set('positions', action.fromServer.positions)
                                  .set('controls', action.fromServer.controls)
                                  .set('vertexList', action.fromServer.vertexList)
-                                 .set('icons', action.fromServer.icons).toJS()
+                                 .set('icons', action.fromServer.icons)
+                                 .set('deviceWiFiCreds', action.fromServer.deviceWiFiCreds).toJS()
     case 'STORE_URL':  
       
       return Immutable.Map(state).set('url', action.url).toJS()

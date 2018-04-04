@@ -10,6 +10,7 @@ const udpServer = dgram.createSocket('udp4');
 
 const newMasterState = {
   devices: {deviceArray: []},
+  deviceWiFiCreds: {},
   positions: {},
   controls: {controlStructure:{}, connections: {}},
   vertexList: {},
@@ -247,6 +248,8 @@ var AddMemoryChunksToMasterState = (heepChunks, IPAddress) => {
         
       } else if (heepChunks[i].op == 8){
         
+      } else if (heepChunks[i].op == 32){
+        
       }
     } catch (err) {
       console.log(err.toString());
@@ -406,5 +409,20 @@ var SetControlPosition = (deviceID, index, direction) => {
   }
   
   return position;
+}
+
+var SetDeviceWiFi = (deviceID, SSID) => {
+  var existingCreds = masterState.deviceWiFiCreds[deviceID];
+  
+  if (existingCreds = undefined) {
+    masterState.deviceWiFiCreds[deviceID] = [{
+      ssid: SSID
+    }]
+  } else {
+    masterState.deviceWiFiCreds[deviceID].push({
+      ssid: SSID
+    })
+  }
+  
 }
 

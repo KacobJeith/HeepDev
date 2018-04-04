@@ -23,6 +23,7 @@ const startState = {
   devices: {
     deviceArray: []
   },
+  deviceWiFiCreds: {},
   positions: {},
   controls: {
     controlStructure:{}, 
