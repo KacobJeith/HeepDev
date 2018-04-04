@@ -8,7 +8,7 @@ import * as actions           from '../../redux/actions_classic'
 import { withTheme } from 'material-ui/styles';
 import { Drawer, Button, Divider, Paper, Typography, IconButton, Menu, MenuItem } from 'material-ui';
 import List, { ListItem, ListItemIcon, ListItemText, ListSubheader } from 'material-ui/List';
-import { Close, Add } from 'material-ui-icons'
+import { Close, Add, NetworkWifi } from 'material-ui-icons'
 
 import DetailsPanelControlBlock from './DetailsPanelControlBlock'
 import PlaceListItem from './PlaceListItem'
@@ -19,7 +19,7 @@ var mapStateToProps = (state) => ({
   device: state.devices[state.detailsPanelDeviceID],
   controls: state.detailsPanelDeviceID == null ? {} : extractControls(state),
   places: state.places,
-  wifi: state.deviceWiFiCreds[state.detailsPanelDeviceID]
+  deviceWiFiCreds: state.deviceWiFiCreds[state.detailsPanelDeviceID]
 })
 
 const extractControls = (state) => {
@@ -156,9 +156,10 @@ class DeviceDetailsPanel extends React.Component {
         
         <Divider/>
 
-        {this.props.deviceWiFiCreds  && this.props.deviceWiFiCreds.map((credBlock) => (
-          <ListItem key={credBlock.ssid} > 
-            <ListItemText primary={credBlock.ssid} />
+        {Object.keys(this.props.deviceWiFiCreds).map((cred) => (
+          <ListItem key={cred} > 
+            <NetworkWifi/>
+            <ListItemText primary={cred} />
           </ListItem>
         ))}
         

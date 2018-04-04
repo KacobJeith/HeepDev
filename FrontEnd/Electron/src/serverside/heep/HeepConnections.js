@@ -265,7 +265,7 @@ var AddMemoryChunksToMasterState = (heepChunks, IPAddress) => {
       } else if (heepChunks[i].op == 8){
         
       } else if (heepChunks[i].op == 32){
-        
+        SetDeviceWiFi(heepChunks[i]);
       }
     } catch (err) {
       console.log(err.toString());
@@ -345,6 +345,16 @@ var SetNullPosition = (deviceID) => {
 var SetDevicePosition = (heepChunk) => {
   masterState.positions[heepChunk.deviceID].device = heepChunk.position;
   RecalculateControlPositions(heepChunk.deviceID);
+}
+
+var SetDeviceWiFi = (heepChunk) => {
+
+  if (masterState.deviceWiFiCreds[heepChunk.deviceID] == undefined) {
+    masterState.deviceWiFiCreds[heepChunk.deviceID] = {};
+  }
+  
+  masterState.deviceWiFiCreds[heepChunk.deviceID][heepChunk.SSID] = true;
+  
 }
 
 var SetDevicePositionFromBrowser = (deviceID, position) => {
@@ -427,18 +437,5 @@ var SetControlPosition = (deviceID, index, direction) => {
   return position;
 }
 
-var SetDeviceWiFi = (deviceID, SSID) => {
-  var existingCreds = masterState.deviceWiFiCreds[deviceID];
-  
-  if (existingCreds = undefined) {
-    masterState.deviceWiFiCreds[deviceID] = [{
-      ssid: SSID
-    }]
-  } else {
-    masterState.deviceWiFiCreds[deviceID].push({
-      ssid: SSID
-    })
-  }
-  
-}
+
 
