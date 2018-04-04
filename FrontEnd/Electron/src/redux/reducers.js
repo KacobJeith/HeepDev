@@ -303,14 +303,10 @@ export default function(state = initialState, action) {
       const password = state.places[action.placeKey].networks.wifi.password;
 
       if (newState[action.deviceID] == undefined) {
-        newState[action.deviceID] = [{
-          ssid: ssid
-        }]
-      } else {
-        newState[action.deviceID].push({
-          ssid: ssid
-        })
+        newState[action.deviceID] = {}
       }
+      
+      newState[action.deviceID][ssid] = true;
 
       async.sendWifiCredsToServer(action.deviceID, ssid, password);
 

@@ -6,9 +6,9 @@ import { withRouter }         from 'react-router-dom'
 import * as actions           from '../../redux/actions_classic'
 
 import { withTheme } from 'material-ui/styles';
-import { Drawer, Button, Divider, Paper, Typography, IconButton, Menu, MenuItem } from 'material-ui';
+import { Drawer, Button, Divider, Paper, Typography, IconButton, Menu, MenuItem, Collapse } from 'material-ui';
 import List, { ListItem, ListItemIcon, ListItemText, ListSubheader } from 'material-ui/List';
-import { Close, Add, NetworkWifi } from 'material-ui-icons'
+import { Close, Add, NetworkWifi, ExpandLess, ExpandMore } from 'material-ui-icons'
 
 import DetailsPanelControlBlock from './DetailsPanelControlBlock'
 import PlaceListItem from './PlaceListItem'
@@ -36,7 +36,8 @@ const extractControls = (state) => {
 class DeviceDetailsPanel extends React.Component {
   state = {
       open: false,
-      anchorEl: null
+      anchorEl: null,
+      viewNetworks: false
     }
 
   deviceDetails() {
@@ -156,36 +157,46 @@ class DeviceDetailsPanel extends React.Component {
         
         <Divider/>
 
-        {Object.keys(this.props.deviceWiFiCreds).map((cred) => (
-          <ListItem key={cred} > 
-            <NetworkWifi/>
-            <ListItemText primary={cred} />
-          </ListItem>
-        ))}
-        
-        <ListItem button onClick={(event) => this.setState({ anchorEl: event.currentTarget })}> 
-          <ListItemIcon>
-            <Add/>
-          </ListItemIcon>
-          <ListItemText primary={'Add New WiFi Credentials'} />
-
-          <Menu
-            id="simple-menu"
-            anchorEl={this.state.anchorEl}
-            open={Boolean(this.state.anchorEl)}
-            onClose={() => this.setState({ anchorEl: null })}
-          >
-            {Object.keys(this.props.places).map((placeKey) => (
-              <MenuItem key={placeKey} onClick={() => this.props.sendWiFiCredentialsToDevice(this.props.deviceID, placeKey)}>
-                
-                <ListItemText primary={this.props.places[placeKey].name} secondary={this.props.places[placeKey].networks.wifi.ssid} />
-              </MenuItem>
-            ))}
-            
-          </Menu>
-
+        <ListItem button onClick={()=> this.setState({viewNetworks: !this.state.viewNetworks})}>
+          <ListItemText primary={'Networks'} />
+          {this.state.viewNetworks ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
 
+        <Collapse in={this.state.viewNetworks} timeout="auto" unmountOnExit>
+          <div>
+            {this.props.deviceWiFiCreds && Object.keys(this.props.deviceWiFiCreds).map((cred) => (
+              <ListItem key={cred} > 
+                <NetworkWifi />
+                <ListItemText primary={cred} />
+              </ListItem>
+            ))}
+          </div>
+
+          <ListItem button onClick={(event) => this.setState({ anchorEl: event.currentTarget })}> 
+            <ListItemIcon>
+              <Add/>
+            </ListItemIcon>
+            <ListItemText primary={'Add New'} />
+
+            <Menu
+              id="simple-menu"
+              anchorEl={this.state.anchorEl}
+              open={Boolean(this.state.anchorEl)}
+              onClose={() => this.setState({ anchorEl: null })}
+            >
+              {Object.keys(this.props.places).map((placeKey) => (
+                <MenuItem key={placeKey} onClick={() => this.props.sendWiFiCredentialsToDevice(this.props.deviceID, placeKey)}>
+                  
+                  <ListItemText primary={this.props.places[placeKey].name} secondary={this.props.places[placeKey].networks.wifi.ssid} />
+                </MenuItem>
+              ))}
+              
+            </Menu>
+
+          </ListItem>
+
+        </Collapse>
+        
       </List>
     )
   }
