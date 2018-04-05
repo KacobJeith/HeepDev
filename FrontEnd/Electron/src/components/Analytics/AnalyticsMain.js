@@ -15,7 +15,8 @@ import BusyTimesGraph from './BusyTimesGraph'
 const mapStateToProps = (state, ownProps) => ({
   deviceID: ownProps.match.params.deviceID,
   devicesWithAnalytics: Object.keys(state.analytics),
-  deviceNames: Array.from(Object.keys(state.analytics), deviceID => state.devices[deviceID].name)
+  deviceNames: Array.from(Object.keys(state.analytics), deviceID => state.devices[deviceID].name),
+  deviceImages: Array.from(Object.keys(state.analytics), deviceID => state.devices[deviceID].iconName)
 })
 
 class AnalyticsMain extends React.Component {
@@ -24,6 +25,7 @@ class AnalyticsMain extends React.Component {
 
     return (
       <List component="nav"
+
         subheader={
           <ListSubheader component="div" style={{
             padding: 0, 
@@ -53,8 +55,17 @@ class AnalyticsMain extends React.Component {
           textDecoration: 'none',
           outline: 'none'
         }}>
-        <ListItem button >
-          <ListItemText primary={this.props.deviceNames[index]} />
+        <ListItem button style={{padding: this.props.theme.spacing.unit * 1.5}}>
+          <ListItemIcon >
+            <img 
+              src={"../src/assets/svg/" + this.props.deviceImages[index] + ".svg"} 
+              style={{maxHeight: '200%', maxWidth: '200%'}}/>
+          </ListItemIcon>
+          <ListItemText 
+            primary={this.props.deviceNames[index]} 
+            style={{
+              padding: 0
+            }}/>
         </ListItem>
       </NavLink>
     )
@@ -69,8 +80,8 @@ class AnalyticsMain extends React.Component {
     }
 
     return (
-      <Grid container alignItems='stretch'>
-        <Grid item xs={2}>
+      <Grid container alignItems='stretch' style={{margin: 0}}>
+        <Grid item xs={2} style={{boxShadow: '1px 1px 1px lightgrey', padding: 0}}>
           {this.availableDevices()}
         </Grid>
         <Grid item xs>
