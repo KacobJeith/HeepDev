@@ -45,6 +45,20 @@ export var sendPositionToServer = (deviceID, position) => {
   
 };
 
+export var sendWifiCredsToServer = (deviceID, ssid, password) => {
+
+  var messagePacket = {
+    deviceID: deviceID, 
+    ssid: ssid,
+    password: password
+  };
+
+  var url = urlPrefix.concat('/api/sendWifiCredsToDevice');
+  
+  performAJAX(url, messagePacket);
+  
+};
+
 export var sendDeleteVertexToServer = (vertex) => {
 
   var url = urlPrefix.concat('/api/deleteVertex');

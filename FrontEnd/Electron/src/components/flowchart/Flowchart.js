@@ -6,6 +6,7 @@ import * as Actions from '../../redux/actions_classic'
 
 import Device from './DevicePaper'
 import Vertex from './Vertex'
+import DeviceDetailsPanel from '../heep/DeviceDetailsPanel'
 
 var mapStateToProps = (state) => ({
   deviceArray: state.devices.deviceArray,
@@ -105,6 +106,8 @@ class Flowchart extends React.Component {
 				{this.props.deviceArray.map((thisDevice) => (
 					<Device key={thisDevice} DeviceID={thisDevice}/>
 				))}
+
+				<DeviceDetailsPanel/>
 				
 			</div>
 		);

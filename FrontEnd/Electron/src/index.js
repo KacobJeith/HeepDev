@@ -23,6 +23,7 @@ const startState = {
   devices: {
     deviceArray: []
   },
+  deviceWiFiCreds: {},
   positions: {},
   controls: {
     controlStructure:{}, 
@@ -48,7 +49,8 @@ const startState = {
     controls: {}
   },
 
-  liveModeReference: null
+  liveModeReference: null,
+  detailsPanelDeviceID: null
 }
 
 export const initialState = Immutable.Map(startState)

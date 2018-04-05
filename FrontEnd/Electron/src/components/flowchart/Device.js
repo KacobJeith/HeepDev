@@ -5,7 +5,8 @@ import * as Actions from '../../redux/actions_classic'
 import * as newActions from '../../redux/actions'
 import Control from './Controls';
 import DynamicIcon from './DynamicIcon';
-import { Paper, Button, Typography, Grid } from 'material-ui'
+import { Paper, Button, Typography, Grid, IconButton } from 'material-ui'
+import { InfoOutline } from 'material-ui-icons'
 
 
 
@@ -13,7 +14,8 @@ var mapStateToProps = (state, ownProps) => ({
   device: state.devices[ownProps.DeviceID],
   controlInputs: state.controls.controlStructure[ownProps.DeviceID]['inputs'],
   controlOutputs: state.controls.controlStructure[ownProps.DeviceID]['outputs'],
-  draggingCallbacks: ownProps.draggingCallbacks
+  draggingCallbacks: ownProps.draggingCallbacks,
+  detailsPanelDeviceID: state.detailsPanelDeviceID
 })
 
 
@@ -67,13 +69,19 @@ class Device extends React.Component {
 
 		const button = {
 			size: 'small',
-			color: 'secondary',
-			onClick: () => this.props.claimDevice(this.props.device.deviceID)
+			color: this.props.detailsPanelDeviceID == this.props.device.deviceID ? 'secondary' : 'default',
+			onClick: () => this.props.detailsPanelDeviceID == this.props.device.deviceID ? 
+							this.props.setDetailsPanelDeviceID(null) :
+							this.props.setDetailsPanelDeviceID(this.props.device.deviceID)
 			}
 		
 
 		return (
-			<Button {...button}> Claim </Button>
+			<Grid container justify='flex-end'>
+				<IconButton {...button}>
+					<InfoOutline/>
+				</IconButton>
+			</Grid>
 
 		)
 	}

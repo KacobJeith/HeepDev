@@ -77,6 +77,13 @@ app.post('/api/setPosition', function(req, res) {
   res.end("Device Position has been updated");
 });
 
+app.post('/api/sendWifiCredsToDevice', function(req, res) {
+  
+  heepConnect.sendWifiCredsToDevice(req.body.deviceID, req.body.ssid, req.body.password);
+  console.log("Sending Wifi Credentials to the Device: " + req.body.deviceID)
+  res.end("Sending Wifi Credentials to the Device: " + req.body.deviceID);
+});
+
 app.listen(app.get('port'), function(error) {
   
   if (error) {
