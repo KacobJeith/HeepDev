@@ -70,7 +70,9 @@ class Device extends React.Component {
 		const button = {
 			size: 'small',
 			color: this.props.detailsPanelDeviceID == this.props.device.deviceID ? 'secondary' : 'default',
-			onClick: () => this.props.setDetailsPanelDeviceID(this.props.device.deviceID)
+			onClick: () => this.props.detailsPanelDeviceID == this.props.device.deviceID ? 
+							this.props.setDetailsPanelDeviceID(null) :
+							this.props.setDetailsPanelDeviceID(this.props.device.deviceID)
 			}
 		
 
