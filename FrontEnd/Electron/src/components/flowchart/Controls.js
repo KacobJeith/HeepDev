@@ -5,6 +5,7 @@ import * as Actions from '../../redux/actions_classic'
 import OnOffContainer from './OnOffController'
 import RangeContainer from './RangeController'
 import { Grid, Typography } from 'material-ui'
+import * as Utils from '../../serverside/utilities/generalUtilities'
 
 var mapStateToProps = (state, ownProps) => ({
   control: state.controls[ownProps.controlID],
@@ -57,9 +58,10 @@ class Control extends React.Component {
 				width: 9
 			},
 			circle: {
-				onClick: (event) => {this.direction == 0 ? 
-									 this.selectInputVertex(event) : 
-									 this.selectOutputVertex(event)},									  
+        id: this.props.controlID,
+				onClick: (event) => {this.direction == 0 ?
+									 this.selectInputVertex(event) :
+									 this.selectOutputVertex(event)},
 				onMouseEnter: () => this.setState({radius: 9}),
 				onMouseLeave: () => this.setState({radius: 6}),
 				cx: this.direction == 0 ? 9 : 0,
@@ -67,7 +69,7 @@ class Control extends React.Component {
 				r: this.state.radius,
 				fill: this.direction == 0 ? "green" : 'red',
 				style: {
-					cursor: 'pointer'
+					cursor: 'pointer',
 				}
 			}
 		}
@@ -113,9 +115,9 @@ class Control extends React.Component {
 
 		return (<div {...inputs.all}>
 
-					<Grid container direction='column' justify='center' alignItems='center' spacing={0}> 
+					<Grid container direction='column' justify='center' alignItems='center' spacing={0}>
 						<Grid item xs>
-							<Typography variant='body2' align='center'>
+							<Typography variant='body2' align='center' noWrap={true}>
 								{this.props.control['controlName']}
 							</Typography>
 						</Grid>

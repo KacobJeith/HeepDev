@@ -74,7 +74,7 @@ class Device extends React.Component {
 							this.props.setDetailsPanelDeviceID(null) :
 							this.props.setDetailsPanelDeviceID(this.props.device.deviceID)
 			}
-		
+
 
 		return (
 			<Grid container justify='flex-end'>
@@ -107,11 +107,11 @@ class Device extends React.Component {
 		        data: "/dist/assets/svg/" + this.props.device.iconName + ".svg"
 		    }
 		}
-			
+
 
 
 		return (
-					<Grid container direction='column' alignItems='stretch' spacing={8}> 
+					<Grid container direction='column' alignItems='stretch' spacing={8}>
 						<Grid item {...this.props.draggingCallbacks}>
 							<Grid container justify='center' >
 								<Grid item >
@@ -127,8 +127,8 @@ class Device extends React.Component {
 								</Grid>
 
 								<Grid item xs={5} style={{margin:0}} {...this.props.draggingCallbacks}>
-									<Grid container alignItems='center' spacing={8} style={{height:'100%'}}> 
-										
+									<Grid container alignItems='center' spacing={8} style={{height:'100%'}}>
+
 										<Grid item xs={12}>
 											{this.drawDeviceIcon()}
 										</Grid>
@@ -144,7 +144,7 @@ class Device extends React.Component {
 						</Grid>
 
 						<Grid item>
-							<Grid container direction='column' alignItems='stretch' spacing={0} style={{maxWidth: '100%'}}> 
+							<Grid container direction='column' alignItems='stretch' spacing={0} style={{maxWidth: '100%'}}>
 								<Grid item {...this.props.draggingCallbacks}>
 									<Grid container justify='center' spacing={0} style={{maxWidth: '100%'}}>
 										{this.drawOptions()}
@@ -154,7 +154,7 @@ class Device extends React.Component {
 						</Grid>
 
 					</Grid>
-					
+
 			);
 	}
 }
