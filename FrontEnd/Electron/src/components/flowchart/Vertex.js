@@ -32,9 +32,12 @@ class Vertex extends React.Component {
       const svgElement = document.getElementById(txControlName)
       const svgRect = svgElement.getBoundingClientRect()
 
+      const heightOffset = svgRect.height * 1.5
+      const widthOffset = svgRect.width / 2
+
       returnPosition = {
-        top: svgRect['top'],
-        left: svgRect['left'],
+        top: svgRect.top + heightOffset,
+        left: svgRect.left + widthOffset,
       };
 
   	} catch(err){
@@ -50,10 +53,13 @@ class Vertex extends React.Component {
       const svgElement = document.getElementById(rxControlName)
       const svgRect = svgElement.getBoundingClientRect()
 
+      const heightOffset = svgRect.height * 1.5
+      const widthOffset = svgRect.width / 2
+
       returnPosition = {
-        top: svgRect['top'],
-        left: svgRect['left'],
-      };
+        top: svgRect.top + heightOffset,
+        left: svgRect.left + widthOffset,
+      }
 
   	} catch(err){
   		//console.log('Found a dangling vertex: ', state.vertexList[ownProps.vertexID]);
@@ -79,21 +85,21 @@ class Vertex extends React.Component {
 				strokeWidth: this.state.strokeWidth,
 				stroke: this.state.color,
 				fill: 'transparent',
-				d: "M".concat(	String(getInput.left),
-								" ",
-								String(getInput.top),
-								" Q ",
-								String(Math.round(getInput.left - 5)),
-								" ",
-								String(Math.round(getInput.top + 20)),
-								", ",
-								String(Math.round(getInput.left + (getOutput.left - getInput.left)/2)),
-								" ",
-								String(Math.round(getInput.top + (getOutput.top - getInput.top)/2)),
-								" T ",
-								String(getOutput.left + 9),
-								" ",
-								String(getOutput.top + 14)),
+        d: "M".concat(	String(getInput.left),
+                " ",
+                String(getInput.top),
+                " Q ",
+                String(Math.round(getInput.left) + 30),
+                " ",
+                String(Math.round(getInput.top)),
+                ", ",
+                String(Math.round(getInput.left + (getOutput.left - getInput.left)/2)),
+                " ",
+                String(Math.round(getInput.top + (getOutput.top - getInput.top)/2)),
+                " T ",
+                String(getOutput.left),
+                " ",
+                String(getOutput.top)),
 				onMouseEnter: () => this.setState({'color': 'red', 'strokeWidth': 4}),
 				onMouseLeave: () => this.setState({'color': 'black', 'strokeWidth': 3}),
 				onClick: () => this.sendDeleteVertexToServer(),
