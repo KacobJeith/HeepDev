@@ -9,7 +9,7 @@ import Vertex from './Vertex'
 import DeviceDetailsPanel from '../heep/DeviceDetailsPanel'
 
 var mapStateToProps = (state) => ({
-  deviceArray: state.devices.deviceArray,
+  deviceArray: Object.keys(state.devices),
   vertexList: state.vertexList
 })
 
@@ -52,7 +52,7 @@ class Flowchart extends React.Component {
 	}
 
 	render() {
-
+		
 		const inputs = {
 			flowchart: {
 				style: {
