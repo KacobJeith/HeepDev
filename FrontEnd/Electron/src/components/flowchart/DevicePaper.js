@@ -5,7 +5,7 @@ import * as Actions from '../../redux/actions_classic'
 import * as newActions from '../../redux/actions'
 import Control from './Controls';
 import DynamicIcon from './DynamicIcon';
-import { Paper, Button, Typography, Grid } from 'material-ui'
+import { Paper, Button, Typography, Grid, Tooltip } from 'material-ui'
 
 import Device from './Device'
 
@@ -111,9 +111,9 @@ class DevicePaper extends React.Component {
 		}
 
 		return (<Paper {...inputs.deviceContainer} ref="device">
-
-					<Device DeviceID={this.props.deviceID} draggingCallbacks={{...inputs.draggingCallbacks}}/>
-
+					<Tooltip id="tooltip-top" title={this.props.activeState ? null : 'Having trouble communicating with this device. Is it still plugged in?'} placement="top">
+						<Device DeviceID={this.props.deviceID} draggingCallbacks={{...inputs.draggingCallbacks}}/>
+					</Tooltip>
 				</Paper>
 			);
 	}
