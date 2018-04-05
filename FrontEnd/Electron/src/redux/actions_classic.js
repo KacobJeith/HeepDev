@@ -74,3 +74,14 @@ export const startLiveMode = () => ({
 export const stopLiveMode = () => ({
   type: 'STOP_LIVE_MODE'
 })
+
+export const setDetailsPanelDeviceID = (deviceID) => ({
+  type: 'SET_DETAILS_DEVICE_ID',
+  deviceID
+})
+
+export const sendWiFiCredentialsToDevice = (deviceID, placeKey) => ({
+  type: 'SEND_WIFI_CRED_TO_DEVICE',
+  deviceID, 
+  placeKey
+})

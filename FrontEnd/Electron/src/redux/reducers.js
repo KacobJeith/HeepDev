@@ -148,7 +148,8 @@ export default function(state = initialState, action) {
                                  .set('positions', action.fromServer.positions)
                                  .set('controls', action.fromServer.controls)
                                  .set('vertexList', action.fromServer.vertexList)
-                                 .set('icons', action.fromServer.icons).toJS()
+                                 .set('icons', action.fromServer.icons)
+                                 .set('deviceWiFiCreds', action.fromServer.deviceWiFiCreds).toJS()
     case 'STORE_URL':  
       
       return Immutable.Map(state).set('url', action.url).toJS()
@@ -291,6 +292,26 @@ export default function(state = initialState, action) {
       async.stopLiveMode(state.liveModeReference);
 
       return Immutable.Map(state).set('liveModeReference', null).toJS();
+
+    case 'SET_DETAILS_DEVICE_ID' :
+
+      return Immutable.Map(state).set('detailsPanelDeviceID', action.deviceID).toJS()
+
+    case 'SEND_WIFI_CRED_TO_DEVICE' :
+      var newState = Immutable.Map(state.deviceWiFiCreds).toJS();
+
+      const ssid = state.places[action.placeKey].networks.wifi.ssid;
+      const password = state.places[action.placeKey].networks.wifi.password;
+
+      if (newState[action.deviceID] == undefined) {
+        newState[action.deviceID] = {}
+      }
+      
+      newState[action.deviceID][ssid] = true;
+
+      async.sendWifiCredsToServer(action.deviceID, ssid, password);
+
+      return Immutable.Map(state).set('deviceWiFiCreds', newState).toJS();
 
     default:
       console.log('Passed through first Switch');

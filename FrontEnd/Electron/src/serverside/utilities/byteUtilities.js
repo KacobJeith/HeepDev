@@ -25,6 +25,18 @@ export var GetValueAsFixedSizeByteArray = (value, size) => {
   return valueBytes
 }
 
+export var GetStringAsByteArray = (str) => {
+  var myBuffer = [];
+  var buffer = new Buffer(str, 'utf16le');
+  for (var i = 0; i < buffer.length; i++) {
+      myBuffer.push(buffer[i]);
+  }
+
+  console.log(myBuffer);
+
+  return myBuffer
+}
+
 export var GetByteArrayFromValue = (value, numBytes = GetNecessaryBytes(value)) => {
   var byteArray = [];
 

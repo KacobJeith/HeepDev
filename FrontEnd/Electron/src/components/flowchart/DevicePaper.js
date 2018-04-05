@@ -77,19 +77,21 @@ class DevicePaper extends React.Component {
 
 		const inputs = {
 			deviceContainer: {
-				style: {
+        style: {
 					backgroundColor: 'white',
 					margin: 10,
 					padding: 3,
-					width: 230,
+          minWidth: 230,
+          maxWidth: 450,
 					cursor: '-webkit-grab',
 					position: 'absolute',
 					top: this.props.position.top,
 					left: this.props.position.left,
-					color: 'black'
+					color: 'black',
+          pointerEvents: 'visible',
 				},
 				elevation: this.state.dragging ? 2 : 4,
-				
+
 				// WebkitUserDrag: `auto | element | none`
 			},
 			draggingCallbacks: {
@@ -106,10 +108,10 @@ class DevicePaper extends React.Component {
 			}
 		}
 
-		return (<Paper {...inputs.deviceContainer} ref="device"> 
+		return (<Paper {...inputs.deviceContainer} ref="device">
 
 					<Device DeviceID={this.props.deviceID} draggingCallbacks={{...inputs.draggingCallbacks}}/>
-					
+
 				</Paper>
 			);
 	}
