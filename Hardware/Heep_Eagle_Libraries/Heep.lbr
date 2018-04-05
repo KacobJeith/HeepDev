@@ -7,7 +7,7 @@
 <setting keepoldvectorfont="yes"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="50" unitdist="mil" unit="mm" style="lines" multiple="1" display="yes" altdistance="0.003125" altunitdist="mic" altunit="mm"/>
+<grid distance="50" unitdist="mil" unit="mil" style="lines" multiple="1" display="yes" altdistance="5" altunitdist="mil" altunit="mil"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="16" name="Bottom" color="1" fill="1" visible="yes" active="yes"/>
@@ -7311,6 +7311,43 @@ Source: http://www.nxp.com/acrobat_download/datasheets/PH7030L_4.pdf</descriptio
 <wire x1="-3" y1="1.16" x2="-3" y2="-1.69" width="0.2" layer="21"/>
 <smd name="SDA" x="0.5" y="-2.04" dx="0.6" dy="1.55" layer="1" rot="R180"/>
 </package>
+<package name="SO08">
+<description>SOIC, 0.15 inch width</description>
+<wire x1="2.3368" y1="1.9463" x2="-2.3368" y2="1.9463" width="0.2032" layer="21"/>
+<wire x1="2.4368" y1="-1.9463" x2="2.7178" y2="-1.5653" width="0.2032" layer="21" curve="90"/>
+<wire x1="-2.7178" y1="1.4653" x2="-2.3368" y2="1.9463" width="0.2032" layer="21" curve="-90.023829"/>
+<wire x1="2.3368" y1="1.9463" x2="2.7178" y2="1.5653" width="0.2032" layer="21" curve="-90.030084"/>
+<wire x1="-2.7178" y1="-1.6653" x2="-2.3368" y2="-1.9463" width="0.2032" layer="21" curve="90.060185"/>
+<wire x1="-2.3368" y1="-1.9463" x2="2.4368" y2="-1.9463" width="0.2032" layer="21"/>
+<wire x1="2.7178" y1="-1.5653" x2="2.7178" y2="1.5653" width="0.2032" layer="21"/>
+<wire x1="-2.667" y1="0.6096" x2="-2.667" y2="-0.6604" width="0.2032" layer="21" curve="-180"/>
+<wire x1="-2.7178" y1="1.4526" x2="-2.7178" y2="0.6096" width="0.2032" layer="21"/>
+<wire x1="-2.7178" y1="-1.6653" x2="-2.7178" y2="-0.6604" width="0.2032" layer="21"/>
+<rectangle x1="-2.159" y1="-3.302" x2="-1.651" y2="-2.2733" layer="51"/>
+<rectangle x1="-0.889" y1="-3.302" x2="-0.381" y2="-2.2733" layer="51"/>
+<rectangle x1="0.381" y1="-3.302" x2="0.889" y2="-2.2733" layer="51"/>
+<rectangle x1="1.651" y1="-3.302" x2="2.159" y2="-2.2733" layer="51"/>
+<rectangle x1="-0.889" y1="2.286" x2="-0.381" y2="3.302" layer="51"/>
+<rectangle x1="0.381" y1="2.286" x2="0.889" y2="3.302" layer="51"/>
+<rectangle x1="1.651" y1="2.286" x2="2.159" y2="3.302" layer="51"/>
+<smd name="1" x="-1.905" y="-2.8" dx="0.4572" dy="1.2" layer="1"/>
+<smd name="2" x="-0.635" y="-2.8" dx="0.4572" dy="1.2" layer="1"/>
+<smd name="3" x="0.635" y="-2.8" dx="0.4572" dy="1.2" layer="1"/>
+<smd name="4" x="1.905" y="-2.8" dx="0.4572" dy="1.2" layer="1"/>
+<smd name="5" x="1.905" y="2.8" dx="0.4572" dy="1.2" layer="1"/>
+<smd name="6" x="0.635" y="2.8" dx="0.4572" dy="1.2" layer="1"/>
+<smd name="7" x="-0.635" y="2.8" dx="0.4572" dy="1.2" layer="1"/>
+<smd name="8" x="-1.905" y="2.8" dx="0.4572" dy="1.2" layer="1"/>
+<text x="-3.175" y="0" size="0.6096" layer="25" font="vector" ratio="20" rot="R90" align="bottom-center">&gt;NAME</text>
+<text x="3.81" y="0" size="0.6096" layer="27" font="vector" ratio="20" rot="R90" align="bottom-center">&gt;VALUE</text>
+<rectangle x1="-2.159" y1="2.286" x2="-1.651" y2="3.302" layer="51"/>
+<polygon width="0.002540625" layer="21">
+<vertex x="-2.69875" y="-2.38125" curve="90"/>
+<vertex x="-3.01625" y="-2.06375" curve="90"/>
+<vertex x="-3.33375" y="-2.38125" curve="90"/>
+<vertex x="-3.01625" y="-2.69875" curve="90"/>
+</polygon>
+</package>
 </packages>
 <symbols>
 <symbol name="AC_BLADE">
@@ -7623,6 +7660,23 @@ Source: http://www.nxp.com/acrobat_download/datasheets/PH7030L_4.pdf</descriptio
 <pin name="3V3" x="2.54" y="0" visible="pad" length="middle" direction="pwr" rot="R90"/>
 <pin name="SDA" x="5.08" y="0" visible="pad" length="middle" rot="R90"/>
 <pin name="SCL" x="7.62" y="0" visible="pad" length="middle" rot="R90"/>
+</symbol>
+<symbol name="SPI_FLASH_DUAL/QUAD">
+<description>&lt;h3&gt;SPI Flash Memory - Dual/Quad&lt;/h3&gt;</description>
+<pin name="!ON" x="-15.24" y="5.08" length="middle"/>
+<pin name="GND" x="-15.24" y="0" length="middle"/>
+<pin name="ISET" x="-15.24" y="-2.54" length="middle"/>
+<pin name="!FAULT" x="-15.24" y="2.54" length="middle"/>
+<pin name="OUT8" x="20.32" y="5.08" length="middle" rot="R180"/>
+<pin name="IN7" x="20.32" y="2.54" length="middle" rot="R180"/>
+<pin name="OUT6" x="20.32" y="0" length="middle" rot="R180"/>
+<pin name="IN5" x="20.32" y="-2.54" length="middle" rot="R180"/>
+<wire x1="-10.16" y1="-5.08" x2="-10.16" y2="7.62" width="0.254" layer="94"/>
+<wire x1="-10.16" y1="7.62" x2="15.24" y2="7.62" width="0.254" layer="94"/>
+<wire x1="15.24" y1="7.62" x2="15.24" y2="-5.08" width="0.254" layer="94"/>
+<wire x1="15.24" y1="-5.08" x2="-10.16" y2="-5.08" width="0.254" layer="94"/>
+<text x="-10.16" y="7.874" size="1.778" layer="95" font="vector">&gt;NAME</text>
+<text x="-10.16" y="-5.334" size="1.778" layer="96" font="vector" align="top-left">&gt;VALUE</text>
 </symbol>
 </symbols>
 <devicesets>
@@ -8035,6 +8089,38 @@ Updated  by  Dan Xu 2014-07-08&lt;br&gt;
 </connects>
 <technologies>
 <technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="AT25SF041" prefix="U">
+<description>&lt;h3&gt;AT25SF041 4Mb Serial Flash Memory&lt;/h3&gt;
+&lt;p&gt;104MHz, SPI, 8-SOIC
+&lt;li&gt;&lt;a href=”http://www.adestotech.com/wp-content/uploads/DS-AT25SF041_044.pdf”&gt;Datasheet&lt;/a&gt;&lt;/li&gt;&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;SparkFun Products:&lt;/b&gt;
+&lt;ul&gt;&lt;li&gt;&lt;a href=”https://www.sparkfun.com/products/13231”&gt;SparkFun ESP8266 Thing&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=”https://www.sparkfun.com/products/13711”&gt;SparkFun ESP8266 Thing - Dev Board&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/p&gt;</description>
+<gates>
+<gate name="G$1" symbol="SPI_FLASH_DUAL/QUAD" x="-2.54" y="0"/>
+</gates>
+<devices>
+<device name="" package="SO08">
+<connects>
+<connect gate="G$1" pin="!FAULT" pad="2"/>
+<connect gate="G$1" pin="!ON" pad="1"/>
+<connect gate="G$1" pin="GND" pad="3"/>
+<connect gate="G$1" pin="IN5" pad="5"/>
+<connect gate="G$1" pin="IN7" pad="7"/>
+<connect gate="G$1" pin="ISET" pad="4"/>
+<connect gate="G$1" pin="OUT6" pad="6"/>
+<connect gate="G$1" pin="OUT8" pad="8"/>
+</connects>
+<technologies>
+<technology name="">
+<attribute name="PROD_ID" value="IC-12455" constant="no"/>
+<attribute name="VALUE" value="4MB Flash" constant="no"/>
+</technology>
 </technologies>
 </device>
 </devices>
