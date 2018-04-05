@@ -67,7 +67,7 @@ class Control extends React.Component {
 				cx: this.direction == 0 ? 9 : 0,
 				cy: 10,
 				r: this.state.radius,
-				fill: this.direction == 0 ? "green" : 'red',
+				fill: this.direction == 0 ? "#00baff" : '#00aa67',
 				style: {
 					cursor: 'pointer',
 				}
