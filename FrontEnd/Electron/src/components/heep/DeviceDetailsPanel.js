@@ -46,7 +46,8 @@ class DeviceDetailsPanel extends React.Component {
         width: this.props.deviceID != null ? 250 : 0, 
         marginTop: 70,
         padding: this.props.theme.spacing.unit,
-        position: 'relative'
+        position: 'relative',
+        overflowY: 'auto'
       }}>
 
 
@@ -73,7 +74,7 @@ class DeviceDetailsPanel extends React.Component {
         <List 
           disablePadding 
           dense
-          subheader={<ListSubheader component="div" style={{padding: 0}}>Device Details</ListSubheader>}>
+          subheader={<ListSubheader component="div" style={{padding: 0, backgroundColor: 'white'}}>Device Details</ListSubheader>}>
           
           <Divider/>
 
@@ -86,7 +87,6 @@ class DeviceDetailsPanel extends React.Component {
 
         {this.listControls()}
         
-        <div style={{height: 500}}/>
       </div>
     )
   }
@@ -97,7 +97,7 @@ class DeviceDetailsPanel extends React.Component {
         disablePadding 
         dense
         subheader={
-          <ListSubheader component="div" style={{padding: 0}}>
+          <ListSubheader component="div" style={{padding: 0, backgroundColor: 'white'}}>
             Controls
           </ListSubheader>}>
         
@@ -151,7 +151,7 @@ class DeviceDetailsPanel extends React.Component {
     return (
       <List disablePadding dense
         subheader={
-          <ListSubheader component="div" style={{padding: 0}}>
+          <ListSubheader component="div" style={{padding: 0, backgroundColor: 'white'}}>
             Options
           </ListSubheader>}>
         
