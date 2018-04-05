@@ -29,8 +29,8 @@ class OnOffController extends React.Component {
 			buttonIcon: {
 				style: {
           maxWidth: '100%',
-          stroke: (this.props.value == 0) ? 'none' : 'rgb(48, 119, 255)',
-          fill: (this.props.value == 0) ? 'rgba(0, 0, 0, 0.54)' : 'rgb(48, 119, 255)',
+          stroke: (this.props.value == 0) ? 'none' : '#03a9f4',
+          fill: (this.props.value == 0) ? 'rgba(0, 0, 0, 0.54)' : '#03a9f4',
           strokeWidth: (this.props.value == 0) ? 0 : 1
         }
 			}

@@ -20,7 +20,10 @@ class RangeController extends React.Component {
 
 		this.state = {
 			x: this.convertCtrlVal(),
-			radius: 7
+			radius: 7,
+      mouseDrag: false,
+      fill: '#455a64',
+      fontSize: 8.5,
 		}
 
 		this.dragging = 0;
@@ -38,7 +41,7 @@ class RangeController extends React.Component {
 		if (this.props.control['valueCurrent'] != this.lastSentControlValue) {
 
 			this.setState({x: this.convertCtrlVal()});
-			
+
 		}
 	}
 
@@ -46,7 +49,7 @@ class RangeController extends React.Component {
 		return this.displayMin + (this.displayMax-this.displayMin)*(this.props.control['valueCurrent']/(this.props.control['valueHigh']-this.props.control['valueLow']))
 
 	}
-	
+
 	sendCommand() {
 	    var newVal = this.calcNewControlValue();
 	    this.props.updateControlValue(this.props.DeviceID, this.props.controlID, newVal);
@@ -85,7 +88,7 @@ class RangeController extends React.Component {
 	}
 
 	onWheel(event) {
-		event.preventDefault(); 
+		event.preventDefault();
 
 		if (event.deltaY < 0){
 			var newVal = this.state.x + this.displayMin
@@ -102,7 +105,7 @@ class RangeController extends React.Component {
 				newVal = this.displayMin;
 			}
 			this.setState({x: newVal});
-		} 
+		}
 
 		this.sendCommand();
 	}
@@ -144,15 +147,15 @@ class RangeController extends React.Component {
 			},
 			selected:{
 				strokeWidth: 2,
-				stroke: 'black',
+				stroke: '#8ed0ee',
 				x1: this.displayMin,
 				x2: this.state.x,
 				y1: 11,
 				y2: 11,
 			},
-			dragDot: {		
-				onMouseEnter : () => this.setState({radius: 7.5}),
-				onMouseLeave : () => this.setState({radius: 7}),
+			dragDot: {
+				onMouseEnter : () => this.setState({radius: 10.7, fill: '#02a8f4', fontSize: 13}),
+				onMouseLeave : () => this.setState({radius: 7, fill: '#455a64', fontSize: 8.5}),
 				onMouseDown : (event) => {this.onMouseDown(event);},
 				onMouseUp : (event) => {this.dragging = 0;},
 				onTouchStart: (event) => {event.preventDefault(); this.onMouseDown(event.nativeEvent.changedTouches[0])},
@@ -161,13 +164,13 @@ class RangeController extends React.Component {
 				cx: this.state.x,
 				cy: 11,
 				r: this.state.radius,
-				fill: "black"
+				fill: this.state.fill,
 			},
 			text: {
 				x: this.state.x,
 				y: 14,
 				fontFamily: "Verdana",
-				fontSize: 8.5,
+				fontSize: this.state.fontSize,
 				fill: '#e1e3e8',
 				textAnchor: 'middle',
 				pointerEvents: 'none'
@@ -183,7 +186,7 @@ class RangeController extends React.Component {
 						<text {...inputs.text}> {this.props.control['valueCurrent']} </text>
 					</svg>
 				</div>
-            	
+
 	}
 }
 
