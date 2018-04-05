@@ -10,6 +10,7 @@ const udpServer = dgram.createSocket('udp4');
 
 const newMasterState = {
   devices: {deviceArray: []},
+  deviceWiFiCreds: {},
   positions: {},
   controls: {controlStructure:{}, connections: {}},
   vertexList: {},
@@ -66,6 +67,22 @@ export var SendPositionToHeepDevice = (deviceID, position) => {
   var numBytes = [packet.length];
 
   var messageBuffer = Buffer.from([0x0B].concat(numBytes, packet));
+  console.log('Connecting to Device ', deviceID + ' at IPAddress: ' + IPAddress);
+  console.log('Data packet: ', messageBuffer);
+  ConnectToHeepDevice(IPAddress, heepPort, messageBuffer)
+
+}
+
+export var sendWifiCredsToDevice = (deviceID, ssid, password) => {
+
+  var IPAddress = masterState.devices[deviceID].ipAddress;
+  var priority = byteUtils.GetValueAsFixedSizeByteArray(0, 1);
+  var ssidByteArray = byteUtils.GetStringAsByteArray(ssid);
+  var passwordByteArray = byteUtils.GetStringAsByteArray(password);
+  var packet = priority.concat([ssidByteArray.length], ssidByteArray, [passwordByteArray.length], passwordByteArray);
+  var numBytes = [packet.length];
+
+  var messageBuffer = Buffer.from([0x22].concat(numBytes, packet));
   console.log('Connecting to Device ', deviceID + ' at IPAddress: ' + IPAddress);
   console.log('Data packet: ', messageBuffer);
   ConnectToHeepDevice(IPAddress, heepPort, messageBuffer)
@@ -217,7 +234,7 @@ var ConsumeHeepResponse = (data, IPAddress, port) => {
 }
 
 var AddMemoryChunksToMasterState = (heepChunks, IPAddress) => {
-  console.log(heepChunks);  
+  // console.log(heepChunks);  
 
   for (var i = 0; i < heepChunks.length; i++) {
 
@@ -247,6 +264,8 @@ var AddMemoryChunksToMasterState = (heepChunks, IPAddress) => {
         
       } else if (heepChunks[i].op == 8){
         
+      } else if (heepChunks[i].op == 32){
+        SetDeviceWiFi(heepChunks[i]);
       }
     } catch (err) {
       console.log(err.toString());
@@ -265,7 +284,7 @@ var AddDevice = (heepChunk, IPAddress) => {
     deviceID: deviceID,
     ipAddress: IPAddress,
     name: deviceName,
-    active: false,
+    active: true,
     iconName: "lightbulb",
     version: 0
   }
@@ -326,6 +345,16 @@ var SetNullPosition = (deviceID) => {
 var SetDevicePosition = (heepChunk) => {
   masterState.positions[heepChunk.deviceID].device = heepChunk.position;
   RecalculateControlPositions(heepChunk.deviceID);
+}
+
+var SetDeviceWiFi = (heepChunk) => {
+
+  if (masterState.deviceWiFiCreds[heepChunk.deviceID] == undefined) {
+    masterState.deviceWiFiCreds[heepChunk.deviceID] = {};
+  }
+  
+  masterState.deviceWiFiCreds[heepChunk.deviceID][heepChunk.SSID] = true;
+  
 }
 
 var SetDevicePositionFromBrowser = (deviceID, position) => {
@@ -407,4 +436,6 @@ var SetControlPosition = (deviceID, index, direction) => {
   
   return position;
 }
+
+
 

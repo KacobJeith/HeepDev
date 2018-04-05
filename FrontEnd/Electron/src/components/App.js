@@ -39,7 +39,8 @@ class App extends React.Component {
 				    flexGrow: 1,
 				    backgroundColor: 'white',
 				    marginTop: 64, 
-				    width:'100%'
+				    width:'100%',
+				    overflow: 'auto'
 				  }
 			}
 	    }

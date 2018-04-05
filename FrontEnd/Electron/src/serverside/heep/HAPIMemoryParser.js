@@ -69,7 +69,7 @@ var GetNextBlock = (buffer, it) => {
   };
 
 
-  // console.log('Encountered OP: ', buffer[it]);
+  console.log('Encountered OP: ', buffer[it]);
 
   it += 5;
   var thisBlockData = buffer.slice(it, it + buffer[it] + 1);
@@ -112,6 +112,10 @@ var GetNextBlock = (buffer, it) => {
   } else if (thisBlock.op == 0x1F) {
     //Analytics
     thisBlock.analytics = ReadAnalyticsData(thisBlockData);
+
+  } else if (thisBlock.op == 0x20) {
+    //WiFi SSID
+    thisBlock.SSID = ReadWiFiSSID(thisBlockData);
 
   } else {
     
@@ -249,3 +253,7 @@ export var ReadControl = (thisBlockData) => { // OP 2
 
   return thisAnalytics
  }
+
+const ReadWiFiSSID = (thisBlockData) => {
+  return thisBlockData.slice(1).toString('ascii')
+}
