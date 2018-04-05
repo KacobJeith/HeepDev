@@ -77,7 +77,6 @@ class DevicePaper extends React.Component {
 
 		const inputs = {
 			deviceContainer: {
-        pointerEvents: 'visible',
         style: {
 					backgroundColor: 'white',
 					margin: 10,
@@ -88,7 +87,8 @@ class DevicePaper extends React.Component {
 					position: 'absolute',
 					top: this.props.position.top,
 					left: this.props.position.left,
-					color: 'black'
+					color: 'black',
+          pointerEvents: 'visible',
 				},
 				elevation: this.state.dragging ? 2 : 4,
 

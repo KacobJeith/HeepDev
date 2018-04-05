@@ -35,6 +35,7 @@ class Flowchart extends React.Component {
           top: 0,
           left: 0,
 				},
+        pointerEvents: 'none'
 			}
 		}
 
@@ -98,11 +99,12 @@ class Flowchart extends React.Component {
 			},
       deviceContainer: {
         style: {
-          position: 'relative',
+          position: 'absolute',
           width: '100%',
           height: '100%',
+          background: 'none',
+          pointerEvents: 'none'
         },
-        background: 'none !important',
       },
 		}
 

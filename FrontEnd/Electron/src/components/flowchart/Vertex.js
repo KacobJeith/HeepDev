@@ -76,7 +76,8 @@ class Vertex extends React.Component {
 		var inputs = {
 			vertex: {
         id: this.props.id,
-        pointerEvents: 'visible',
+        pointerEvents: 'all',
+        display: 'inline-block',
 				strokeWidth: this.state.strokeWidth,
 				stroke: this.state.color,
 				fill: 'transparent',
@@ -94,7 +95,7 @@ class Vertex extends React.Component {
 								" T ",
 								String(getOutput.left + 9),
 								" ",
-								String(getOutput.top + 16)),
+								String(getOutput.top + 14)),
 				onMouseEnter: () => this.setState({'color': 'red', 'strokeWidth': 4}),
 				onMouseLeave: () => this.setState({'color': 'black', 'strokeWidth': 3}),
 				onClick: () => this.sendDeleteVertexToServer(),
