@@ -32,12 +32,12 @@ class Vertex extends React.Component {
       const svgElement = document.getElementById(txControlName)
       const svgRect = svgElement.getBoundingClientRect()
 
-      const heightOffset = svgRect.height * 1.5
+      const heightOffset = svgRect.height / 2
       const widthOffset = svgRect.width / 2
 
       returnPosition = {
-        top: svgRect.top + heightOffset,
-        left: svgRect.left + widthOffset,
+        top: svgRect.top + heightOffset + window.scrollY,
+        left: svgRect.left + widthOffset + window.scrollX,
       };
 
   	} catch(err){
@@ -53,12 +53,12 @@ class Vertex extends React.Component {
       const svgElement = document.getElementById(rxControlName)
       const svgRect = svgElement.getBoundingClientRect()
 
-      const heightOffset = svgRect.height * 1.5
+      const heightOffset = svgRect.height / 2
       const widthOffset = svgRect.width / 2
 
       returnPosition = {
-        top: svgRect.top + heightOffset,
-        left: svgRect.left + widthOffset,
+        top: svgRect.top + heightOffset + window.scrollY,
+        left: svgRect.left + widthOffset + window.scrollX,
       }
 
   	} catch(err){
