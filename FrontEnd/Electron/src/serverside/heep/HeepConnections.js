@@ -59,7 +59,9 @@ export var ResetMasterState = () => {
 
 export var ResetDevicesActiveStatus = () => {
 
-  
+  for (var deviceID in masterState.devices) {
+    masterState.devices[deviceID].active = false
+  }
 
 }
 

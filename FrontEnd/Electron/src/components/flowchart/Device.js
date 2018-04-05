@@ -27,7 +27,7 @@ class Device extends React.Component {
 
 
 	deviceName = () => (
-		<Typography variant='subheading' >
+		<Typography variant='subheading'>
 			{this.props.device.name}
 		</Typography>
 

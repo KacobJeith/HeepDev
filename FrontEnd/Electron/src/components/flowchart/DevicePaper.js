@@ -11,7 +11,8 @@ import Device from './Device'
 
 var mapStateToProps = (state, ownProps) => ({
   deviceID: ownProps.DeviceID,
-  position: state.positions[ownProps.DeviceID]['device']
+  position: state.positions[ownProps.DeviceID]['device'],
+  activeState: state.devices[ownProps.DeviceID].active
 })
 
 
@@ -77,18 +78,19 @@ class DevicePaper extends React.Component {
 
 		const inputs = {
 			deviceContainer: {
-        style: {
+        		style: {
 					backgroundColor: 'white',
 					margin: 10,
 					padding: 3,
-          minWidth: 230,
-          maxWidth: 450,
+					minWidth: 230,
+					maxWidth: 450,
 					cursor: '-webkit-grab',
 					position: 'absolute',
 					top: this.props.position.top,
 					left: this.props.position.left,
 					color: 'black',
-          pointerEvents: 'visible',
+          			pointerEvents: 'visible',
+          			opacity: this.props.activeState ? 1.0 : .4
 				},
 				elevation: this.state.dragging ? 2 : 4,
 

@@ -73,7 +73,7 @@ class Vertex extends React.Component {
     const getOutput = this.getOutputPosition();
 
 		if (getInput == false || getOutput == false) {
-      console.log("false")
+      // console.log("false")
 			return <g/>
 		}
 

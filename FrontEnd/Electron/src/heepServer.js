@@ -39,6 +39,7 @@ app.get('/api/findDevices', function(req, res) {
 app.get('/api/refreshLocalDeviceState', (req, res) => {
   console.log("Refreshing local device state")
   // heepConnect.ResetMasterState(); 
+  heepConnect.ResetDevicesActiveStatus();
   heepConnect.SearchForHeepDevices(); 
 
   setTimeout(() => {
