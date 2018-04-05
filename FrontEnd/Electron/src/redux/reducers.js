@@ -144,6 +144,7 @@ export default function(state = initialState, action) {
     case 'OVERWRITE_WITH_SERVER_DATA':
 
       return Immutable.Map(state).set('devices', action.fromServer.devices)
+                                 .set('analytics', action.fromServer.analytics)
                                  .set('positions', action.fromServer.positions)
                                  .set('controls', action.fromServer.controls)
                                  .set('vertexList', action.fromServer.vertexList)
