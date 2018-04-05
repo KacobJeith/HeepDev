@@ -14,7 +14,8 @@ import BusyTimesGraph from './BusyTimesGraph'
 
 const mapStateToProps = (state, ownProps) => ({
   deviceID: ownProps.match.params.deviceID,
-  devicesWithAnalytics: Object.keys(state.analytics)
+  devicesWithAnalytics: Object.keys(state.analytics),
+  deviceNames: Array.from(Object.keys(state.analytics), deviceID => state.devices[deviceID].name)
 })
 
 class AnalyticsMain extends React.Component {
@@ -33,14 +34,14 @@ class AnalyticsMain extends React.Component {
           </ListSubheader>
       }>
           
-        {this.props.devicesWithAnalytics.map((deviceID) => (
-          this.deviceAnalyticsLink(deviceID)
+        {this.props.devicesWithAnalytics.map((deviceID, index) => (
+          this.deviceAnalyticsLink(deviceID, index)
         ))}
       </List>
     )
   }
 
-  deviceAnalyticsLink(deviceID) {
+  deviceAnalyticsLink(deviceID, index) {
 
     const highlight = this.props.deviceID ? this.props.deviceID : this.props.devicesWithAnalytics[0] ;
 
@@ -53,7 +54,7 @@ class AnalyticsMain extends React.Component {
           outline: 'none'
         }}>
         <ListItem button >
-          <ListItemText primary={deviceID} />
+          <ListItemText primary={this.props.deviceNames[index]} />
         </ListItem>
       </NavLink>
     )
