@@ -70,31 +70,31 @@ export const initializeFirebase = () => {
 	    messagingSenderId: "832186256119"
 	  };
 
-	firebase.initializeApp(config);
+	// firebase.initializeApp(config);
 
-	firebase.auth().onAuthStateChanged(function(user) {
-	  if (user) {
-	    // User is signed in.
-	    console.log("Welcome back, ", user.email);
-	    setup.store.dispatch(actions.updateLoginStatus(true));
-	    database.readUserData(user);	    
-		//database.retrieveAnalyticData(user);
+	// firebase.auth().onAuthStateChanged(function(user) {
+	//   if (user) {
+	//     // User is signed in.
+	//     console.log("Welcome back, ", user.email);
+	//     setup.store.dispatch(actions.updateLoginStatus(true));
+	//     database.readUserData(user);	    
+	// 	//database.retrieveAnalyticData(user);
 		
-	    validateUser()
+	//     validateUser()
 	    
-	    VerifyUser()
-	    loadUserProviders()
+	//     VerifyUser()
+	//     loadUserProviders()
 
 
-	  } else {
-	    // No user is signed in.
-	    console.log("Detected no user signed in");
-	    setup.store.dispatch(actions.updateLoginStatus(false));
+	//   } else {
+	//     // No user is signed in.
+	//     console.log("Detected no user signed in");
+	//     setup.store.dispatch(actions.updateLoginStatus(false));
 
-	    checkIfInbound();
+	//     checkIfInbound();
 
-	  }
-	});
+	//   }
+	// });
 
 }
 

@@ -147,7 +147,6 @@ class AppBarDrawer extends React.Component {
         >
           <Avatar
             alt={auth.currentUser().displayName}
-            src={auth.getMyUserImagePath()}
             className={classNames(this.props.avatar, this.props.bigAvatar)}
           />
         </IconButton>
@@ -244,9 +243,7 @@ class AppBarDrawer extends React.Component {
           </IconButton>
 
           <NavLink to="/">
-            <IconButton >
-                <img {...inputs.Logo}/>
-            </IconButton>
+            <IconButton >            </IconButton>
           </NavLink>
 
           <div className={classes.flex}/>

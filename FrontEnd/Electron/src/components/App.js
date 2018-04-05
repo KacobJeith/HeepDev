@@ -61,6 +61,7 @@ class App extends React.Component {
 							<Route path="/Classic" component={Flowchart} key="Flowchart"/>
 							<Route path="/Designer" component={Designer} key="Designer"/>
 							<Route exact path="/auth" component={Auth}/>
+							<Route path="/Analytics/:deviceID" component={Analytics} key="Analytics"/>
 							{loggedInRoutes}
 						</div>
 				    </div>

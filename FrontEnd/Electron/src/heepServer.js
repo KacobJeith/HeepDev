@@ -43,7 +43,7 @@ app.get('/api/refreshLocalDeviceState', (req, res) => {
 
   setTimeout(() => {
     res.json(heepConnect.GetCurrentMasterState());
-  }, 2000);
+  }, 4000);
 
 })
 

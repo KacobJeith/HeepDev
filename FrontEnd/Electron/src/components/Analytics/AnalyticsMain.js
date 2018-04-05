@@ -20,6 +20,8 @@ class AnalyticsMain extends React.Component {
 
   render () {
 
+    console.log('Rendering: ', this.props.deviceID)
+
     var inputs = {
       builder: {
         style: {
