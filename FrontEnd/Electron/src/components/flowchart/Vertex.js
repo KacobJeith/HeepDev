@@ -4,8 +4,6 @@ import { bindActionCreators } from 'redux'
 import * as Actions from '../../redux/actions_classic'
 import * as generalUtils from '../../serverside/utilities/generalUtilities'
 
-import { Draggable } from 'gsap'
-
 var mapStateToProps = (state, ownProps) => (
 {
   id: ownProps.vertexID,

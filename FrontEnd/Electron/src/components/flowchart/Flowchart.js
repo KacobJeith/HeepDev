@@ -35,7 +35,6 @@ class Flowchart extends React.Component {
           top: 0,
           left: 0,
 				},
-        pointerEvents: 'none'
 			}
 		}
 
