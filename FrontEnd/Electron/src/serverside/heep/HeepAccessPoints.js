@@ -8,7 +8,6 @@ export const QueryAvailableAccessPoints = (callback) => {
   
   WiFiControl.scanForWiFi( function(err, response) {
     if (err) console.log(err);
-    console.log(response);
 
     callback(filterForHeepAPs(response.networks));
   })

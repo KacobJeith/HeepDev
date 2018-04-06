@@ -2,9 +2,12 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { NavLink, withRouter } from 'react-router-dom'
-import * as Actions from '../redux/actions'
+import * as Actions from '../redux/actions_classic'
 
-import { Grid, Typography } from 'material-ui'
+import { Grid, Typography, Divider } from 'material-ui'
+import List, { ListItem, ListItemIcon, ListItemText, ListSubheader } from 'material-ui/List';
+import { NetworkWifi } from 'material-ui-icons'
+
 import { withTheme } from 'material-ui/styles';
 import VerticalStepper from './utilities/VerticalStepper'
 
@@ -13,6 +16,15 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 class SearchAccessPointsForm extends React.Component {
+
+
+  componentWillMount() {
+    this.searchRef = setInterval(() => this.props.searchForAccessPoints(), 5000);
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.searchRef);
+  }
 
   createAPForm() {
 
@@ -58,9 +70,31 @@ class SearchAccessPointsForm extends React.Component {
   selectAccessPoint() {
 
     return (
-      <div>
-        List of Access Point Buttons
-      </div>
+      <List 
+        disablePadding 
+        dense
+        subheader={
+          <ListSubheader component="div" style={{padding: 0, backgroundColor: 'white'}}>
+            Heep Access Points
+          </ListSubheader>}>
+        
+        <Divider/>
+
+        {Object.keys(this.props.accessPoints).map((accessPointSSID) => (
+          <ListItem 
+            button 
+            onClick={() => this.props.connectToAccessPoint(accessPointSSID)}
+            style={{paddingRight: 0}} 
+            key={accessPointSSID}>
+            <ListItemIcon>
+                <NetworkWifi/>
+            </ListItemIcon>
+            <ListItemText primary={accessPointSSID} />
+          </ListItem>
+
+        ))}
+
+      </List>
     )
   }
 

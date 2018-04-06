@@ -98,3 +98,8 @@ export const setAccessPoints = (accessPoints) => ({
   type: 'SET_ACCESS_POINTS',
   accessPoints
 })
+
+export const connectToAccessPoint = (ssid) => ({
+  type: 'CONNECT_TO_ACCESS_POINT',
+  ssid
+})

@@ -100,6 +100,21 @@ export const searchForAccessPoints = () => {
 
 }
 
+export const connectToAccessPoint = (ssid) => {
+
+  const messagePacket = {ssid: ssid};
+
+  var url = urlPrefix.concat('/api/connectToAccessPoint');
+
+  performAJAX(url, messagePacket, 'POST', (data) => {
+
+    console.log('Connection: ', data);
+    
+    // setup.store.dispatch(actions_classic.setAccessPoints(data));
+  })
+
+}
+
 
 export var performAJAX = (url, messagePacket, type = 'POST', callback = (data) => {} ) => {
   $.ajax({

@@ -55,14 +55,6 @@ app.get('/api/ResetSystemWifi', (req, res) => {
 
 })
 
-app.get('/api/connectToAccessPoint', (req, res) => {
-  console.log("Connect To Access Point: ", req.body.ssid)
-
-  heepAccess.ConnectToAccessPoint(ssid, password, (response) => {
-    res.json(response);
-  });
-})
-
 app.get('/api/refreshLocalDeviceState', (req, res) => {
   console.log("Refreshing local device state")
   heepConnect.ResetDevicesActiveStatus();
@@ -121,6 +113,14 @@ app.post('/api/sendWifiCredsToDevice', function(req, res) {
   console.log("Sending Wifi Credentials to the Device: " + req.body.deviceID)
   res.end("Sending Wifi Credentials to the Device: " + req.body.deviceID);
 });
+
+app.post('/api/connectToAccessPoint', function(req, res) {
+  console.log("Connect To Access Point: ", req.body.ssid)
+
+  heepAccess.ConnectToAccessPoint(req.body.ssid, 'HeepSecretPassword', (response) => {
+    res.json(response);
+  });
+})
 
 app.listen(app.get('port'), function(error) {
   
