@@ -19,7 +19,7 @@ class Vertex extends React.Component {
 	constructor() {
 		super();
 		this.state = {
-			color: 'black',
+			color: '#455a64',
 			strokeWidth: 3,
 		}
 	}
@@ -103,8 +103,8 @@ class Vertex extends React.Component {
                 String(getOutput.left),
                 " ",
                 String(getOutput.top)),
-				onMouseEnter: () => this.setState({'color': 'red', 'strokeWidth': 4}),
-				onMouseLeave: () => this.setState({'color': 'black', 'strokeWidth': 3}),
+				onMouseEnter: () => this.setState({'color': '#d40000', 'strokeWidth': 4}),
+				onMouseLeave: () => this.setState({'color': '#455a64', 'strokeWidth': 3}),
 				onClick: () => this.sendDeleteVertexToServer(),
 				style: {
 					cursor: 'pointer',
