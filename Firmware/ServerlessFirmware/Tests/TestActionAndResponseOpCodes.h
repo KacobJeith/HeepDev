@@ -586,8 +586,12 @@ void TestDeviceNameCOP()
 	CheckResults(TestName, valueList, 1);
 }
 
+// Note: If this test fails, it may be due to the vertex pointer list being too small
+// 	     Enough vertex pointers must be supported to fill memory
 void TestSetVertexOverflow()
 {
+	std::string TestName = "Test Vertex Overflow Detection";
+
 	ClearVertices();
 	ClearDeviceMemory();
 	ClearInputBuffer();
@@ -618,7 +622,12 @@ void TestSetVertexOverflow()
 		ExecuteControlOpCodes();
 	}
 
-	cout << "OUTPUT BUFFER " << (int)outputBuffer[0] << " " << curFilledMemory << endl;
+	ExpectedValue valueList [1];
+	valueList[0].valueName = "Less than max memory";
+	valueList[0].expectedValue = 1;
+	valueList[0].actualValue = curFilledMemory <= MAX_MEMORY;
+
+	CheckResults(TestName, valueList, 1);
 }
 
 void TestActionAndResponseOpCodes()
