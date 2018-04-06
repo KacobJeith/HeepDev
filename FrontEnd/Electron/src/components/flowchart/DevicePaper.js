@@ -79,20 +79,20 @@ class DevicePaper extends React.Component {
 		const inputs = {
 			deviceContainer: {
         		style: {
-					backgroundColor: 'white',
-					margin: 10,
-					padding: 3,
-					minWidth: 230,
-					maxWidth: 450,
-					cursor: '-webkit-grab',
-					position: 'absolute',
-					top: this.props.position.top,
-					left: this.props.position.left,
-					color: 'black',
-          			pointerEvents: 'visible',
-          			opacity: this.props.activeState ? 1.0 : .4
+    					backgroundColor: 'white',
+    					margin: 10,
+    					padding: 3,
+              width: 330,
+    					cursor: '-webkit-grab',
+    					position: 'absolute',
+    					top: this.props.position.top,
+    					left: this.props.position.left,
+    					color: 'black',
+              pointerEvents: 'visible',
+              opacity: this.props.activeState ? 1.0 : .4,
+              borderRadius: 20
 				},
-				elevation: this.state.dragging ? 2 : 4,
+				elevation: this.state.dragging ? 3 : 5,
 
 				// WebkitUserDrag: `auto | element | none`
 			},
@@ -110,11 +110,11 @@ class DevicePaper extends React.Component {
 			}
 		}
 
-		return (<div> 
-					{this.props.activeState ? 
+		return (<div>
+					{this.props.activeState ?
 					<Paper {...inputs.deviceContainer} ref="device">
-							<Device DeviceID={this.props.deviceID} draggingCallbacks={{...inputs.draggingCallbacks}}/> 
-					</Paper> : 
+							<Device DeviceID={this.props.deviceID} draggingCallbacks={{...inputs.draggingCallbacks}}/>
+					</Paper> :
 					<Tooltip id="tooltip-top" title={'Having trouble communicating with this device. Is it still plugged in?'} placement="top">
 						<Paper {...inputs.deviceContainer} ref="device">
 								<Device DeviceID={this.props.deviceID} draggingCallbacks={{...inputs.draggingCallbacks}}/>

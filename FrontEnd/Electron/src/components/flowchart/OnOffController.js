@@ -12,15 +12,13 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 class OnOffController extends React.Component {
-	constructor(props){
-		super(props);
-		this.lastSentControlValue = this.props.value;
-	}
 
 	sendCommand() {
-		var newVal = 1 - this.props.value;
-	    this.lastSentControlValue = newVal;
-	    this.props.updateControlValue(this.props.DeviceID, this.props.controlID, newVal);
+    var newVal = 0
+    if (this.props.value == 0) {
+      newVal = 1
+    }
+	  this.props.updateControlValue(this.props.DeviceID, this.props.controlID, newVal);
 	}
 
 	render() {
@@ -29,8 +27,8 @@ class OnOffController extends React.Component {
 			buttonIcon: {
 				style: {
           maxWidth: '100%',
-          stroke: (this.props.value == 0) ? 'none' : 'rgb(48, 119, 255)',
-          fill: (this.props.value == 0) ? 'rgba(0, 0, 0, 0.54)' : 'rgb(48, 119, 255)',
+          stroke: (this.props.value == 0) ? 'none' : '#03a9f4',
+          fill: (this.props.value == 0) ? 'rgba(0, 0, 0, 0.54)' : '#03a9f4',
           strokeWidth: (this.props.value == 0) ? 0 : 1
         }
 			}
