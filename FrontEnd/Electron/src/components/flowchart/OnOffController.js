@@ -12,15 +12,13 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 class OnOffController extends React.Component {
-	constructor(props){
-		super(props);
-		this.lastSentControlValue = this.props.value;
-	}
 
 	sendCommand() {
-		var newVal = 1 - this.props.value;
-	    this.lastSentControlValue = newVal;
-	    this.props.updateControlValue(this.props.DeviceID, this.props.controlID, newVal);
+    var newVal = 0
+    if (this.props.value == 0) {
+      newVal = 1
+    }
+	  this.props.updateControlValue(this.props.DeviceID, this.props.controlID, newVal);
 	}
 
 	render() {
