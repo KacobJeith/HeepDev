@@ -104,10 +104,10 @@ var GetNextBlock = (buffer, it) => {
     thisBlock.position = ReadPosition(thisBlockData);
 
   } else if (thisBlock.op == 0x08) {
-    //DeviceIP 
+    //DeviceIP
 
   } else if (thisBlock.op == 0x12) {
-    //Fragment 
+    //Fragment
 
   } else if (thisBlock.op == 0x1F) {
     //Analytics
@@ -118,7 +118,7 @@ var GetNextBlock = (buffer, it) => {
     thisBlock.SSID = ReadWiFiSSID(thisBlockData);
 
   } else {
-    
+
   }
 
   it += CalculateNextIterator(byteIndicatorBytes, thisBlock.packetBytes);
@@ -130,9 +130,9 @@ export var ReadDeviceID = (buffer) => {
 
   var asBase64String = byteUtils.ByteArrayToBase64String(buffer);
 
-  var deviceID =  ((buffer[0] << 24) >>> 0) + 
+  var deviceID =  ((buffer[0] << 24) >>> 0) +
                   ((buffer[1] << 16) >>> 0) +
-                  ((buffer[2] <<  8) >>> 0) + 
+                  ((buffer[2] <<  8) >>> 0) +
                   ( buffer[3]);
 
   return asBase64String
@@ -149,7 +149,7 @@ var CalculateNextIterator = (indicator, bytes) => {
 }
 
 export var ReadFirmwareVersion = (thisBlockData) => { // OP 1
-  return thisBlockData[1] 
+  return thisBlockData[1]
 }
 
 export var ReadControl = (thisBlockData) => { // OP 2
@@ -209,6 +209,16 @@ export var ReadControl = (thisBlockData) => { // OP 2
     iconName = 'rfid';
   } else if (thisBlockData[1] == 8) {
     iconName = 'motor';
+  } else if (thisBlockData[1] == 9) {
+    iconName = 'button';
+  } else if (thisBlockData[1] == 10) {
+    iconName = 'climate';
+  } else if (thisBlockData[1] == 11) {
+    iconName = 'servo';
+  } else if (thisBlockData[1] == 12) {
+    iconName = 'soilSensor';
+  } else if (thisBlockData[1] == 13) {
+    iconName = 'speakers';
   }
 
   return iconName;
@@ -225,7 +235,7 @@ export var ReadControl = (thisBlockData) => { // OP 2
   var thisVertex = {
     rxDeviceID: ReadDeviceID(thisBlockData.slice(1, 5)),
     txControlID: thisBlockData[5],
-    rxControlID: thisBlockData[6], 
+    rxControlID: thisBlockData[6],
     rxIP: thisBlockData.slice(7).join('.')
   };
 
@@ -238,7 +248,7 @@ export var ReadControl = (thisBlockData) => { // OP 2
   var date = new Date(Date.UTC(2018, 0, 1, 0, 0, 0));
   var controlValNumBytes = thisBlockData[2];
   var controlValBytes = thisBlockData.slice(3, 3 + controlValNumBytes);
-  var controlValue = byteUtils.GetIntFromByteArray(controlValBytes); 
+  var controlValue = byteUtils.GetIntFromByteArray(controlValBytes);
   var timeStampNumBytes = thisBlockData[3 + controlValNumBytes + 1];
   var timeInMillis = byteUtils.GetIntFromByteArray(thisBlockData.slice(3 + controlValNumBytes + 1));
   var timestampMillis = date.getTime() + timeInMillis;
