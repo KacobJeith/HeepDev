@@ -95,7 +95,7 @@ export const searchForAccessPoints = () => {
 
     console.log('Access Points: ', data);
     
-    // setup.store.dispatch(actions_classic.overwriteFromServer(data));
+    setup.store.dispatch(actions_classic.setAccessPoints(data));
   })
 
 }

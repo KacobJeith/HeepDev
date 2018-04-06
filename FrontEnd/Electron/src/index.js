@@ -48,7 +48,8 @@ const startState = {
   },
 
   liveModeReference: null,
-  detailsPanelDeviceID: null
+  detailsPanelDeviceID: null,
+  accessPoints: {}
 }
 
 export const initialState = Immutable.Map(startState)

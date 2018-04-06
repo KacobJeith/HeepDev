@@ -93,3 +93,8 @@ export const hardRefresh = () => ({
 export const searchForAccessPoints = () => ({
   type: 'SEARCH_FOR_ACCESS_POINTS'
 })
+
+export const setAccessPoints = (accessPoints) => ({
+  type: 'SET_ACCESS_POINTS',
+  accessPoints
+})

@@ -46,6 +46,23 @@ app.get('/api/searchForAccessPoints', (req, res) => {
 
 })
 
+app.get('/api/ResetSystemWifi', (req, res) => {
+  console.log("Resetting Wifi")
+
+  heepAccess.ResetSystemWifi((results) => {
+    res.json(results);
+  });
+
+})
+
+app.get('/api/connectToAccessPoint', (req, res) => {
+  console.log("Connect To Access Point: ", req.body.ssid)
+
+  heepAccess.ConnectToAccessPoint(ssid, password, (response) => {
+    res.json(response);
+  });
+})
+
 app.get('/api/refreshLocalDeviceState', (req, res) => {
   console.log("Refreshing local device state")
   heepConnect.ResetDevicesActiveStatus();
