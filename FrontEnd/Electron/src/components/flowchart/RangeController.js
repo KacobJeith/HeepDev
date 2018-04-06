@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { Tooltip }  from 'material-ui'
 import * as Actions from '../../redux/actions_classic'
 
 var mapStateToProps = (state, ownProps) => ({
@@ -184,12 +185,14 @@ class RangeController extends React.Component {
 		};
 
 		return  <div {...inputs.button}>
-					<svg {...inputs.rangeContainer}>
-						<line {...inputs.unselected}/>
-						<line {...inputs.selected}/>
-						<circle {...inputs.dragDot} ref='dragDot'/>
-						<text {...inputs.text}> {this.props.control['valueCurrent']} </text>
-					</svg>
+          <Tooltip id="tooltip-right" title={this.props.control['valueCurrent']} placement="right-start">
+  					<svg {...inputs.rangeContainer}>
+  						<line {...inputs.unselected}/>
+  						<line {...inputs.selected}/>
+  						<circle {...inputs.dragDot} ref='dragDot'/>
+  						<text {...inputs.text}> {this.props.control['valueCurrent']} </text>
+  					</svg>
+          </Tooltip>
 				</div>
 
 	}
