@@ -119,17 +119,19 @@ app.post('/api/connectToAccessPoint', function(req, res) {
 
   connectToAccessPoint(req, res, (response) => {
     console.log('First connection succeeded')
-    hardReset(res, response.success);
+    hardResetAP(res, req.body.ssid, response.success);
 
   }, () => {
 
     console.log('First connection failed. Trying to connect a second time');
 
     connectToAccessPoint(req, res, (response) => {
-      hardReset(res, response.success);
+      hardResetAP(res, req.body.ssid, response.success);
     }, (response) => {
+
       res.json({
         success: response.success,
+        ssid: req.body.ssid,
         data: heepConnect.GetCurrentMasterState()
       })
     });
@@ -150,13 +152,14 @@ const connectToAccessPoint = function(req, res, successCallback, failureCallback
   });
 }
 
-const hardReset = function(res, success = true) {
+const hardResetAP = function(res, ssid, success = true) {
 
   heepConnect.ResetMasterState(); 
   heepConnect.SearchForHeepDevices(); 
   setTimeout(() => {
     res.json({
       success: success,
+      ssid: ssid,
       data: heepConnect.GetCurrentMasterState()
     });
   }, 2000);

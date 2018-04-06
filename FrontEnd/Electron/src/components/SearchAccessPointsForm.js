@@ -4,9 +4,10 @@ import { bindActionCreators } from 'redux'
 import { NavLink, withRouter } from 'react-router-dom'
 import * as Actions from '../redux/actions_classic'
 
-import { Grid, Typography, Divider } from 'material-ui'
+import { Grid, Typography, Divider,  } from 'material-ui'
 import List, { ListItem, ListItemIcon, ListItemText, ListSubheader } from 'material-ui/List';
-import { NetworkWifi } from 'material-ui-icons'
+import { CircularProgress } from 'material-ui/Progress';
+import { NetworkWifi, CheckCircle, Cancel } from 'material-ui-icons'
 
 import { withTheme } from 'material-ui/styles';
 import VerticalStepper from './utilities/VerticalStepper'
@@ -14,6 +15,7 @@ import DeviceDetailsPanel from './heep/DeviceDetailsPanel'
 
 const mapStateToProps = (state, ownProps) => ({
   accessPoints: state.accessPoints,
+  accessPointStatus: state.accessPointData,
   places: state.places
 })
 
@@ -101,6 +103,9 @@ class SearchAccessPointsForm extends React.Component {
                 <NetworkWifi/>
             </ListItemIcon>
             <ListItemText primary={accessPointSSID} />
+            {this.props.accessPointStatus.currentlyConnecting == accessPointSSID ? <CircularProgress /> : null}
+            {this.props.accessPointStatus.connectedTo == accessPointSSID ? <CheckCircle nativeColor='green'/> : null}
+            {this.props.accessPointStatus.failedAttempt == accessPointSSID ? <Cancel nativeColor='red'/> : null}
           </ListItem>
 
         ))}
@@ -147,7 +152,7 @@ class SearchAccessPointsForm extends React.Component {
 
     return (
       <Grid container justify='center' style={{margin: 0, maxWidth: '100%'}}>
-        <Grid item xs={10}>
+        <Grid item xs={7} >
           {this.createAPForm()}
         </Grid>
         <DeviceDetailsPanel/>

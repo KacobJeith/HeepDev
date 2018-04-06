@@ -103,3 +103,8 @@ export const connectToAccessPoint = (ssid) => ({
   type: 'CONNECT_TO_ACCESS_POINT',
   ssid
 })
+
+export const setAccessData = (packet) => ({
+  type: 'SET_ACCESS_DATA',
+  packet
+})

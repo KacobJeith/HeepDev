@@ -109,9 +109,32 @@ export const connectToAccessPoint = (ssid) => {
   performAJAX(url, messagePacket, 'POST', (response) => {
 
     console.log('results: ', response);
+
     if (response.success) {
+      const deviceID = Object.keys(response.data.devices)[0];
+
       setup.store.dispatch(actions_classic.overwriteFromServer(response.data));
-      setup.store.dispatch(actions_classic.setDetailsPanelDeviceID(Object.keys(response.data.devices)[0]));
+      
+      const accessData = {
+        connectedTo: response.ssid,
+        currentlyConnecting: null,
+        failedAttempt: null,
+        deviceID: deviceID
+      }
+
+      setup.store.dispatch(actions_classic.setAccessData(accessData));
+      setup.store.dispatch(actions_classic.setDetailsPanelDeviceID(deviceID));
+
+    } else {
+
+      const accessData = {
+        connectedTo: null,
+        currentlyConnecting: null,
+        failedAttempt: response.ssid,
+        deviceID: deviceID
+      }
+
+      setup.store.dispatch(actions_classic.setAccessData(accessData));
     }
     
   })
