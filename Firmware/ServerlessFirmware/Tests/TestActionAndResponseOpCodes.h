@@ -640,9 +640,60 @@ void TestSetVertexOverflow()
 	CheckResults(TestName, valueList, 3);
 }
 
+// Test Currently fails on indexed code. Need to handle overflow from adding a new
+// Compressed device ID
 void CheckSetPositionOverflowHandling()
 {
+	std::string TestName = "Test Position Overflow Detection";
 
+	ClearVertices();
+	ClearDeviceMemory();
+	ClearInputBuffer();
+
+	inputBuffer[0] = SetPositionOpCode;
+	inputBuffer[1] = 0x04;
+
+	inputBuffer[2] = 0xA0;
+	inputBuffer[3] = 0x02;
+	inputBuffer[4] = 0xB2;
+	inputBuffer[5] = 0x3C;
+
+	ExecuteControlOpCodes();
+
+	heepByte shouldBeSuccessCode = outputBuffer[0];
+
+	ClearDeviceMemory();
+	for(int i = curFilledMemory; i < MAX_MEMORY-3; i++)
+	{
+		AddNewCharToMemory('H');
+	}
+
+	inputBuffer[0] = SetPositionOpCode;
+	inputBuffer[1] = 0x04;
+
+	inputBuffer[2] = 0xA0;
+	inputBuffer[3] = 0x02;
+	inputBuffer[4] = 0xB2;
+	inputBuffer[5] = 0x3C;
+
+	ExecuteControlOpCodes();
+
+	heepByte shouldbeFailureCode = outputBuffer[0];
+
+	ExpectedValue valueList [3];
+	valueList[0].valueName = "Less than max memory";
+	valueList[0].expectedValue = 1;
+	valueList[0].actualValue = curFilledMemory <= MAX_MEMORY;
+
+	valueList[1].valueName = "ROP Should be Failure";
+	valueList[1].expectedValue = ErrorOpCode;
+	valueList[1].actualValue = shouldbeFailureCode;
+
+	valueList[2].valueName = "ROP Should be Success";
+	valueList[2].expectedValue = SuccessOpCode;
+	valueList[2].actualValue = shouldBeSuccessCode;
+
+	CheckResults(TestName, valueList, 3);
 }
 
 void TestActionAndResponseOpCodes()
@@ -661,4 +712,5 @@ void TestActionAndResponseOpCodes()
 	TestAddWiFiCOP();
 	TestDeviceNameCOP();
 	TestSetVertexOverflow();
+	CheckSetPositionOverflowHandling();
 }
