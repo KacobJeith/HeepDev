@@ -82,7 +82,7 @@ class DevicePaper extends React.Component {
 					margin: 10,
 					padding: 3,
           minWidth: 230,
-          maxWidth: 450,
+          maxWidth: 330,
 					cursor: '-webkit-grab',
 					position: 'absolute',
 					top: this.props.position.top,

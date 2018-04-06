@@ -20,7 +20,7 @@ class Control extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			radius: 6,
+			radius: 8,
 			controlHighlight: 'white',
 		}
 
@@ -49,25 +49,25 @@ class Control extends React.Component {
 					top: 5,
 					height: 20,
 					position:'absolute',
-					right: this.direction == 0 ? null : -12,
-					left: this.direction == 0 ? -11 : null
+					right: this.direction == 0 ? null : -10,
+					left: this.direction == 0 ? -10 : null
 				}
 			},
 			circleContainer: {
 				height: 20,
-				width: 9
+				width: 11,
 			},
 			circle: {
         id: this.props.controlID,
 				onClick: (event) => {this.direction == 0 ?
 									 this.selectInputVertex(event) :
 									 this.selectOutputVertex(event)},
-				onMouseEnter: () => this.setState({radius: 9}),
-				onMouseLeave: () => this.setState({radius: 6}),
+				onMouseEnter: () => this.setState({radius: 11}),
+				onMouseLeave: () => this.setState({radius: 8}),
 				cx: this.direction == 0 ? 9 : 0,
 				cy: 10,
 				r: this.state.radius,
-				fill: this.direction == 0 ? "#00baff" : '#00aa67',
+				fill: this.direction == 0 ? "#00baff" : '#00cb7b',
 				style: {
 					cursor: 'pointer',
 				}
@@ -108,7 +108,13 @@ class Control extends React.Component {
 				DeviceID: this.props.deviceID,
 				controlID: this.props.controlID,
 				thisControl: this.props.controlID
-			}
+			},
+      controlTitle: {
+        style: {
+          userSelect: 'none',
+          paddingRight: this.direction == 0 ? 0 : 4,
+        }
+      }
 		}
 
 		var controller = [];
@@ -117,7 +123,7 @@ class Control extends React.Component {
 
 					<Grid container direction='column' justify='center' alignItems='center' spacing={0}>
 						<Grid item xs>
-							<Typography variant='body2' align='center' noWrap={true}>
+							<Typography {...inputs.controlTitle} variant='body2' align='center' noWrap={true}>
 								{this.props.control['controlName']}
 							</Typography>
 						</Grid>

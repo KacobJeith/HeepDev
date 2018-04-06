@@ -135,7 +135,8 @@ class RangeController extends React.Component {
 			rangeContainer: {
 				width: 68,
 				height: 35,
-				viewBox: '0 0 68 35'
+				viewBox: '0 0 68 35',
+        overflow: 'visible'
 			},
 			unselected:{
 				strokeWidth: 1,
@@ -154,7 +155,7 @@ class RangeController extends React.Component {
 				y2: 11,
 			},
 			dragDot: {
-				onMouseEnter : () => this.setState({radius: 10.7, fill: '#02a8f4', fontSize: 13}),
+				onMouseEnter : () => this.setState({radius: 11, fill: '#02a8f4', fontSize: 15}),
 				onMouseLeave : () => this.setState({radius: 7, fill: '#455a64', fontSize: 8.5}),
 				onMouseDown : (event) => {this.onMouseDown(event);},
 				onMouseUp : (event) => {this.dragging = 0;},
@@ -167,13 +168,17 @@ class RangeController extends React.Component {
 				fill: this.state.fill,
 			},
 			text: {
+        padding: 2,
 				x: this.state.x,
 				y: 14,
 				fontFamily: "Verdana",
 				fontSize: this.state.fontSize,
 				fill: '#e1e3e8',
 				textAnchor: 'middle',
-				pointerEvents: 'none'
+				pointerEvents: 'none',
+        style: {
+          userSelect: 'none'
+        }
 
 			}
 		};
