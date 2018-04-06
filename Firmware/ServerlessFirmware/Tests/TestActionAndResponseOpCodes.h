@@ -617,17 +617,32 @@ void TestSetVertexOverflow()
 	inputBuffer[14] = 0x20;
 	inputBuffer[15] = 0x02;
 
+	heepByte firstROP = outputBuffer[0];
 	for(int i = 0; i < 20000; i++)
 	{
 		ExecuteControlOpCodes();
 	}
+	heepByte lastROP = outputBuffer[0];
 
-	ExpectedValue valueList [1];
+	ExpectedValue valueList [3];
 	valueList[0].valueName = "Less than max memory";
 	valueList[0].expectedValue = 1;
 	valueList[0].actualValue = curFilledMemory <= MAX_MEMORY;
 
-	CheckResults(TestName, valueList, 1);
+	valueList[1].valueName = "ROP Should be Failure";
+	valueList[1].expectedValue = ErrorOpCode;
+	valueList[1].actualValue = lastROP;
+
+	valueList[2].valueName = "ROP Should be Success";
+	valueList[2].expectedValue = SuccessOpCode;
+	valueList[2].actualValue = firstROP;
+
+	CheckResults(TestName, valueList, 3);
+}
+
+void CheckSetPositionOverflowHandling()
+{
+
 }
 
 void TestActionAndResponseOpCodes()
