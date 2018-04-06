@@ -131,6 +131,8 @@ void TestCaptureAnalyticsToggle()
 
 	simMillis = 1;
 
+	AddOnOffControl("Hello", HEEP_OUTPUT, 0);
+
 	int firstAnalyticsPointer = GetNextAnalyticsDataPointer(0);
 
 	SendOutputByID(0,1);
