@@ -109,12 +109,20 @@ class NestedList extends React.Component {
   )
 
   accessibilityMode = () => (
-    <ListItem button onClick={ () => this.props.searchForAccessPoints()}>
-      <ListItemIcon>
-        <Accessible />
-      </ListItemIcon>
-      <ListItemText inset primary="Access Mode" />
-    </ListItem>
+
+    <NavLink to="/AccessPoints" style={{
+      textDecoration: 'none',
+      outline: 'none'
+    }}>
+      <ListItem button onClick={ () => this.props.searchForAccessPoints()}>
+        <ListItemIcon>
+          <Accessible />
+        </ListItemIcon>
+        <ListItemText inset primary="Access Mode" />
+      </ListItem>
+    </NavLink>
+
+    
   )
 
   render() {
@@ -134,8 +142,6 @@ class NestedList extends React.Component {
           {this.refreshFlowchart()}
           {this.hardRefresh()}
 
-          
-        
         </List>
       </div>
     );
