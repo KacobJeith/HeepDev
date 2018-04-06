@@ -118,7 +118,18 @@ app.post('/api/connectToAccessPoint', function(req, res) {
   console.log("Connect To Access Point: ", req.body.ssid)
 
   heepAccess.ConnectToAccessPoint(req.body.ssid, 'HeepSecretPassword', (response) => {
-    res.json(response);
+    //Perform a hard reset and send results back to UI - should only see 1 device
+    console.log(response);
+
+    heepConnect.ResetMasterState(); 
+    heepConnect.SearchForHeepDevices(); 
+
+    setTimeout(() => {
+      res.json({
+        success: response.success,
+        data: heepConnect.GetCurrentMasterState()
+      });
+    }, 2000);
   });
 })
 

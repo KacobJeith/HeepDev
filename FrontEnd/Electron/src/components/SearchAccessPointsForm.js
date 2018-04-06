@@ -10,19 +10,30 @@ import { NetworkWifi } from 'material-ui-icons'
 
 import { withTheme } from 'material-ui/styles';
 import VerticalStepper from './utilities/VerticalStepper'
+import DeviceDetailsPanel from './heep/DeviceDetailsPanel'
 
 const mapStateToProps = (state, ownProps) => ({
-  accessPoints: state.accessPoints
+  accessPoints: state.accessPoints,
+  places: state.places
 })
 
 class SearchAccessPointsForm extends React.Component {
 
 
   componentWillMount() {
-    this.searchRef = setInterval(() => this.props.searchForAccessPoints(), 5000);
+    this.props.setDetailsPanelDeviceID(null);
+    this.startAPSearch();
   }
 
   componentWillUnmount() {
+    this.stopAPSearch();
+  }
+
+  startAPSearch() {
+    this.searchRef = setInterval(() => this.props.searchForAccessPoints(), 5000);
+  }
+
+  stopAPSearch() {
     clearTimeout(this.searchRef);
   }
 
@@ -39,7 +50,7 @@ class SearchAccessPointsForm extends React.Component {
           {
             title: 'Push WiFi Credentials to this Device?',
             description: `Would you like to let this device know how to log on to your local network?`,
-            form: this.selectAccessPoint()
+            form: this.listPlaceOptions()
           },
           {
             title: 'Reset Device? ',
@@ -80,16 +91,50 @@ class SearchAccessPointsForm extends React.Component {
         
         <Divider/>
 
-        {Object.keys(this.props.accessPoints).map((accessPointSSID) => (
+        {Object.keys(this.props.accessPoints).sort().map((accessPointSSID) => (
           <ListItem 
             button 
-            onClick={() => this.props.connectToAccessPoint(accessPointSSID)}
+            onClick={() => { this.stopAPSearch(); this.props.connectToAccessPoint(accessPointSSID);}}
             style={{paddingRight: 0}} 
             key={accessPointSSID}>
             <ListItemIcon>
                 <NetworkWifi/>
             </ListItemIcon>
             <ListItemText primary={accessPointSSID} />
+          </ListItem>
+
+        ))}
+
+      </List>
+    )
+  }
+
+  listPlaceOptions() {
+
+    return (
+      <List 
+        disablePadding 
+        dense
+        subheader={
+          <ListSubheader component="div" style={{padding: 0, backgroundColor: 'white'}}>
+            Your Places
+          </ListSubheader>}>
+        
+        <Divider/>
+
+        {Object.keys(this.props.places).map((thisPlaceKey) => (
+          <ListItem 
+            button 
+            onClick={() => { 
+              console.log('selected: ', this.props.places[thisPlaceKey].name);
+              this.props.sendWiFiCredentialsToDevice('test', placeKey)
+            }}
+            style={{paddingRight: 0}} 
+            key={thisPlaceKey}>
+            <ListItemIcon>
+                <NetworkWifi/>
+            </ListItemIcon>
+            <ListItemText primary={this.props.places[thisPlaceKey].name} />
           </ListItem>
 
         ))}
@@ -105,6 +150,7 @@ class SearchAccessPointsForm extends React.Component {
         <Grid item xs={10}>
           {this.createAPForm()}
         </Grid>
+        <DeviceDetailsPanel/>
      </Grid>
 
 

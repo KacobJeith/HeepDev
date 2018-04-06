@@ -106,11 +106,14 @@ export const connectToAccessPoint = (ssid) => {
 
   var url = urlPrefix.concat('/api/connectToAccessPoint');
 
-  performAJAX(url, messagePacket, 'POST', (data) => {
+  performAJAX(url, messagePacket, 'POST', (response) => {
 
-    console.log('Connection: ', data);
+    console.log('results: ', response);
+    if (response.success) {
+      setup.store.dispatch(actions_classic.overwriteFromServer(response.data));
+      setup.store.dispatch(actions_classic.setDetailsPanelDeviceID(Object.keys(response.data.devices)[0]));
+    }
     
-    // setup.store.dispatch(actions_classic.setAccessPoints(data));
   })
 
 }
