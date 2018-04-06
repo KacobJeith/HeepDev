@@ -774,6 +774,62 @@ void TestWiFiOverflowDetection()
 	CheckResults(TestName, valueList, 3);
 }
 
+void TestNameOverflowDetection()
+{
+	std::string TestName = "Test Name Overflow Detection";
+
+	ClearVertices();
+	ClearDeviceMemory();
+	ClearInputBuffer();
+
+	inputBuffer[0] = SetNameOpCode;
+	inputBuffer[1] = 5;
+	inputBuffer[2] = (unsigned char)'J';
+	inputBuffer[3] = (unsigned char)'a';
+	inputBuffer[4] = (unsigned char)'c';
+	inputBuffer[6] = (unsigned char)'o';
+	inputBuffer[7] = (unsigned char)'b';
+
+	ExecuteControlOpCodes();
+
+	heepByte shouldBeSuccessCode = outputBuffer[0];
+
+	ClearDeviceMemory();
+	SetXYInMemory_Byte(20, 30, deviceIDByte);
+
+	for(int i = curFilledMemory; i < MAX_MEMORY-3; i++)
+	{
+		AddNewCharToMemory('H');
+	}
+
+	inputBuffer[0] = SetNameOpCode;
+	inputBuffer[1] = 5;
+	inputBuffer[2] = (unsigned char)'J';
+	inputBuffer[3] = (unsigned char)'a';
+	inputBuffer[4] = (unsigned char)'c';
+	inputBuffer[6] = (unsigned char)'o';
+	inputBuffer[7] = (unsigned char)'b';
+
+	ExecuteControlOpCodes();
+
+	heepByte shouldbeFailureCode = outputBuffer[0];
+
+	ExpectedValue valueList [3];
+	valueList[0].valueName = "Less than max memory";
+	valueList[0].expectedValue = 1;
+	valueList[0].actualValue = curFilledMemory <= MAX_MEMORY;
+
+	valueList[1].valueName = "ROP Should be Failure";
+	valueList[1].expectedValue = ErrorOpCode;
+	valueList[1].actualValue = shouldbeFailureCode;
+
+	valueList[2].valueName = "ROP Should be Success";
+	valueList[2].expectedValue = SuccessOpCode;
+	valueList[2].actualValue = shouldBeSuccessCode;
+
+	CheckResults(TestName, valueList, 3);
+}
+
 void TestActionAndResponseOpCodes()
 {
 	TestClearOutputBufferAndAddChar();
@@ -792,4 +848,5 @@ void TestActionAndResponseOpCodes()
 	TestSetVertexOverflow();
 	CheckSetPositionOverflowHandling();
 	TestWiFiOverflowDetection();
+	TestNameOverflowDetection();
 }
