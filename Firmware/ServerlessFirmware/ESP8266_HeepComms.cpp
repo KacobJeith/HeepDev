@@ -17,6 +17,8 @@ String fallbackPassword = "SenorEgg";
 void CreateAccessPoint()
 {
   Serial.println("Creating AP");
+
+  WiFi.mode(WIFI_AP);
   
   uint8_t mac[WL_MAC_ADDR_LENGTH];
   WiFi.softAPmacAddress(mac);
@@ -48,6 +50,10 @@ void CreateInterruptServer()
   int currentWiFiPriorityID = 0;
   char currentSSID [20];
   char currentPassword [20];
+
+  WiFi.softAPdisconnect();
+  WiFi.disconnect();
+  WiFi.mode(WIFI_STA);
   
   do{
 
