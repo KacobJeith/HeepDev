@@ -98,6 +98,17 @@ export var sendWifiCredsToDevice = (deviceID, ssid, password) => {
 
 }
 
+export var sendResetNetworkToDevice = (deviceID) => {
+
+  var IPAddress = masterState.devices[deviceID].ipAddress;
+  
+  var messageBuffer = Buffer.from([0x24, 0x00]);
+  console.log('Connecting to Device ', deviceID + ' at IPAddress: ' + IPAddress);
+  console.log('Data packet: ', messageBuffer);
+  ConnectToHeepDevice(IPAddress, heepPort, messageBuffer)
+
+}
+
 export var SendValueToHeepDevice = (deviceID, controlID, newValue) => {
   if (CheckIfNewValueAndSet(deviceID, controlID, newValue)){
     var IPAddress = masterState.devices[deviceID].ipAddress;

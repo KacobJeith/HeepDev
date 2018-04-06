@@ -55,6 +55,19 @@ app.get('/api/ResetSystemWifi', (req, res) => {
 
 })
 
+app.post('/api/resetDeviceAndOSWifi', (req, res) => {
+  console.log("Resetting Wifi")
+
+  heepConnect.sendResetNetworkToDevice(req.body.deviceID)
+
+  heepAccess.ResetSystemWifi((results) => {
+    console.log(results)
+
+    setTimeout(() => hardResetState(req, res), 1000);
+  });
+
+})
+
 app.get('/api/refreshLocalDeviceState', (req, res) => {
   console.log("Refreshing local device state")
   heepConnect.ResetDevicesActiveStatus();
@@ -67,6 +80,10 @@ app.get('/api/refreshLocalDeviceState', (req, res) => {
 })
 
 app.get('/api/hardRefreshLocalDeviceState', (req, res) => {
+  hardResetState(req, res);
+})
+
+const hardResetState = (req, res) => {
   console.log("Refreshing local device state")
   heepConnect.ResetMasterState(); 
   heepConnect.SearchForHeepDevices(); 
@@ -75,7 +92,7 @@ app.get('/api/hardRefreshLocalDeviceState', (req, res) => {
     res.json(heepConnect.GetCurrentMasterState());
   }, 2000);
 
-})
+}
 
 app.post('/api/setValue', function(req, res) {
   

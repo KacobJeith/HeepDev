@@ -108,3 +108,8 @@ export const setAccessData = (packet) => ({
   type: 'SET_ACCESS_DATA',
   packet
 })
+
+export const resetDeviceAndOSWifi = (deviceID) => ({
+  type: 'RESET_DEVICE_AND_OS_WIFI',
+  deviceID
+})

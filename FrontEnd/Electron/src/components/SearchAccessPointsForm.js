@@ -16,7 +16,9 @@ import DeviceDetailsPanel from './heep/DeviceDetailsPanel'
 const mapStateToProps = (state, ownProps) => ({
   accessPoints: state.accessPoints,
   accessPointStatus: state.accessPointData,
-  places: state.places
+  places: state.places,
+  allWifis: state.deviceWiFiCreds,
+  deviceWifis: state.deviceWiFiCreds[state.accessPointData.deviceID]
 })
 
 class SearchAccessPointsForm extends React.Component {
@@ -55,16 +57,12 @@ class SearchAccessPointsForm extends React.Component {
             form: this.listPlaceOptions()
           },
           {
-            title: 'Reset Device? ',
-            description: `Now that your device knows how to log onto the wifi, would you like to reset it so that it can log on?`
-          },
-          {
-            title:'Jump back to your original wifi?',
-            description: `Now that we've configured your Heep Device to log on to your wifi, would you like to do anything else?`
+            title: 'Complete Setup',
+            description: `Now that your device knows how to log onto the wifi, complete the setup by resetting the device!`
           }
         ],
         completionCallback: () => {
-          console.log('Setup Complete!')
+          this.props.resetDeviceAndOSWifi(this.props.accessPointStatus.deviceID);
         }
       }
     }
@@ -132,7 +130,7 @@ class SearchAccessPointsForm extends React.Component {
             button 
             onClick={() => { 
               console.log('selected: ', this.props.places[thisPlaceKey].name);
-              this.props.sendWiFiCredentialsToDevice('test', placeKey)
+              this.props.sendWiFiCredentialsToDevice(this.props.accessPointStatus.deviceID, thisPlaceKey)
             }}
             style={{paddingRight: 0}} 
             key={thisPlaceKey}>
@@ -143,7 +141,6 @@ class SearchAccessPointsForm extends React.Component {
           </ListItem>
 
         ))}
-
       </List>
     )
   }
