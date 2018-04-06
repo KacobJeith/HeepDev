@@ -117,21 +117,50 @@ app.post('/api/sendWifiCredsToDevice', function(req, res) {
 app.post('/api/connectToAccessPoint', function(req, res) {
   console.log("Connect To Access Point: ", req.body.ssid)
 
-  heepAccess.ConnectToAccessPoint(req.body.ssid, 'HeepSecretPassword', (response) => {
-    //Perform a hard reset and send results back to UI - should only see 1 device
-    console.log(response);
+  connectToAccessPoint(req, res, (response) => {
+    console.log('First connection succeeded')
+    hardReset(res, response.success);
 
-    heepConnect.ResetMasterState(); 
-    heepConnect.SearchForHeepDevices(); 
+  }, () => {
 
-    setTimeout(() => {
+    console.log('First connection failed. Trying to connect a second time');
+
+    connectToAccessPoint(req, res, (response) => {
+      hardReset(res, response.success);
+    }, (response) => {
       res.json({
         success: response.success,
         data: heepConnect.GetCurrentMasterState()
-      });
-    }, 2000);
+      })
+    });
   });
+
 })
+
+const connectToAccessPoint = function(req, res, successCallback, failureCallback) {
+
+  heepAccess.ConnectToAccessPoint(req.body.ssid, 'HeepSecretPassword', (response) => {
+    //Perform a hard reset and send results back to UI - should only see 1 device
+    if ( response.success ) {
+      successCallback(response);
+    } else {
+      failureCallback(response)
+    }
+    
+  });
+}
+
+const hardReset = function(res, success = true) {
+
+  heepConnect.ResetMasterState(); 
+  heepConnect.SearchForHeepDevices(); 
+  setTimeout(() => {
+    res.json({
+      success: success,
+      data: heepConnect.GetCurrentMasterState()
+    });
+  }, 2000);
+}
 
 app.listen(app.get('port'), function(error) {
   
