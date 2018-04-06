@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux'
 import Immutable from 'immutable'
-import 'babel-polyfill'
 import { initialState } from '../index'
 import * as actions from './actions'
 import * as async from './async'
@@ -145,10 +144,12 @@ export default function(state = initialState, action) {
     case 'OVERWRITE_WITH_SERVER_DATA':
 
       return Immutable.Map(state).set('devices', action.fromServer.devices)
+                                 .set('analytics', action.fromServer.analytics)
                                  .set('positions', action.fromServer.positions)
                                  .set('controls', action.fromServer.controls)
                                  .set('vertexList', action.fromServer.vertexList)
-                                 .set('icons', action.fromServer.icons).toJS()
+                                 .set('icons', action.fromServer.icons)
+                                 .set('deviceWiFiCreds', action.fromServer.deviceWiFiCreds).toJS()
     case 'STORE_URL':  
       
       return Immutable.Map(state).set('url', action.url).toJS()
@@ -239,23 +240,31 @@ export default function(state = initialState, action) {
 
       var newState = Immutable.Map(state.controls).toJS();
       var identifier = utils.nameControl(action.deviceID, action.controlID);
+
       newState[identifier]['valueCurrent'] = action.newValue;
       async.sendValueToServer(action.deviceID, action.controlID, action.newValue);
 
       var connectedControl = '';
       for (var i = 0; i < newState.connections[identifier].length; i++){
         connectedControl = newState.connections[identifier][i];
-        newState[connectedControl]['valueCurrent'] = action.newValue;
-        async.sendValueToServer(newState[connectedControl].deviceID, newState[connectedControl].controlID, action.newValue);
+
+        if (newState[connectedControl]) {
+          newState[connectedControl]['valueCurrent'] = action.newValue;
+          async.sendValueToServer(newState[connectedControl].deviceID, newState[connectedControl].controlID, action.newValue);
+        }
       }
 
       return Immutable.Map(state).set('controls', newState).toJS()
 
     case 'REFRESH_FLOWCHART' :
 
-      console.log("Refreshing Flowchart");
-
       async.refreshLocalDeviceState();
+
+      return state
+
+    case 'HARD_REFRESH_FLOWCHART' :
+
+      async.hardRefreshLocalDeviceState();
 
       return state
 
@@ -281,6 +290,36 @@ export default function(state = initialState, action) {
 
       return Immutable.Map(state).set('places', newState).toJS()
 
+    case 'START_LIVE_MODE': 
+      var liveModeRef = async.startLiveMode();
+
+      return Immutable.Map(state).set('liveModeReference', liveModeRef).toJS();
+                                  
+    case 'STOP_LIVE_MODE': 
+
+      async.stopLiveMode(state.liveModeReference);
+
+      return Immutable.Map(state).set('liveModeReference', null).toJS();
+
+    case 'SET_DETAILS_DEVICE_ID' :
+
+      return Immutable.Map(state).set('detailsPanelDeviceID', action.deviceID).toJS()
+
+    case 'SEND_WIFI_CRED_TO_DEVICE' :
+      var newState = Immutable.Map(state.deviceWiFiCreds).toJS();
+
+      const ssid = state.places[action.placeKey].networks.wifi.ssid;
+      const password = state.places[action.placeKey].networks.wifi.password;
+
+      if (newState[action.deviceID] == undefined) {
+        newState[action.deviceID] = {}
+      }
+      
+      newState[action.deviceID][ssid] = true;
+
+      async.sendWifiCredsToServer(action.deviceID, ssid, password);
+
+      return Immutable.Map(state).set('deviceWiFiCreds', newState).toJS();
 
     default:
       console.log('Passed through first Switch');

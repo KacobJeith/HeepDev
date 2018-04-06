@@ -26,13 +26,6 @@ const styles = theme => ({
   },
 });
 
-const options = [
-  'Show some love to Material-UI',
-  'Show all notification content',
-  'Hide sensitive notification content',
-  'Hide all notification content',
-];
-
 class IconSVGSelect extends React.Component {
   state = {
     anchorEl: null,
@@ -57,7 +50,7 @@ class IconSVGSelect extends React.Component {
     const { classes } = this.props;
     const { anchorEl } = this.state;
 
-    const dataUrlPrefix = window.location.port == 9000 ? "/dist/assets/svg/" : "/assets/svg/"; 
+    const dataUrlPrefix = window.location.port == 9000 ? "/dist/assets/svg/" : "/assets/svg/";
 
     const inputs = {
     	svgIcon: {
@@ -72,9 +65,9 @@ class IconSVGSelect extends React.Component {
     	},
     	paper: {
 	        style: {
-	          height: 170, 
-	          width: 170, 
-	          padding: 10, 
+	          height: 170,
+	          width: 170,
+	          padding: 10,
 	          marginTop: 24,
 	          position: 'relative'
 	        },
@@ -98,13 +91,13 @@ class IconSVGSelect extends React.Component {
       	}
     }
 
-    
+
     return (
       <div className={classes.root}>
         <Tooltip id="tooltip-bottom" title="Change Device Icon" placement="bottom">
           <Paper {...inputs.paper}>
                 <object {...inputs.svgIcon}/>
-                <div {...inputs.overlay} 
+                <div {...inputs.overlay}
   		          onClick={this.handleClickListItem}
   		       />
   		       <div {...inputs.popupHere}

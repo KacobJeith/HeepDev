@@ -38,6 +38,17 @@ app.get('/api/findDevices', function(req, res) {
 
 app.get('/api/refreshLocalDeviceState', (req, res) => {
   console.log("Refreshing local device state")
+  heepConnect.ResetDevicesActiveStatus();
+  heepConnect.SearchForHeepDevices(); 
+
+  setTimeout(() => {
+    res.json(heepConnect.GetCurrentMasterState());
+  }, 2000);
+
+})
+
+app.get('/api/hardRefreshLocalDeviceState', (req, res) => {
+  console.log("Refreshing local device state")
   heepConnect.ResetMasterState(); 
   heepConnect.SearchForHeepDevices(); 
 
@@ -75,6 +86,13 @@ app.post('/api/setPosition', function(req, res) {
   heepConnect.SendPositionToHeepDevice(req.body.deviceID, req.body.position);
   
   res.end("Device Position has been updated");
+});
+
+app.post('/api/sendWifiCredsToDevice', function(req, res) {
+  
+  heepConnect.sendWifiCredsToDevice(req.body.deviceID, req.body.ssid, req.body.password);
+  console.log("Sending Wifi Credentials to the Device: " + req.body.deviceID)
+  res.end("Sending Wifi Credentials to the Device: " + req.body.deviceID);
 });
 
 app.listen(app.get('port'), function(error) {

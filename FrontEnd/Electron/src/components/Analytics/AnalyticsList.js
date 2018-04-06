@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux'
 import { withRouter } from 'react-router-dom'
 import * as Actions from '../../redux/actions'
 import Plot from 'react-plotly.js'
+import * as utils from '../../serverside/utilities/generalUtilities'
 
 import AnalyticsCard from './AnalyticsCard'
 
@@ -23,30 +24,6 @@ class AnalyticsList extends React.Component {
   }
 
   render () {
-    
-    // var inputs = {
-    //   thisCard: {
-    //     deviceID: this.props.deviceID,
-    //     element: 0,
-    //     key: 0
-    //   }
-      
-    // }
-
-    // var analyticsCards = [];
-
-    // for (var i = 0; i < this.props.numberElements; i++) {
-    //   inputs.thisCard.element = i;
-    //   inputs.thisCard.key = "MOP_" + i.toString();
-    //   analyticsCards.push( <AnalyticsCard {...inputs.thisCard}/>);
-    // }
-
-    // return (
-    //   <div>
-    //     {analyticsCards} 
-    //   </div>
-    // );
-
 
     var data = [
       {
@@ -119,8 +96,8 @@ const countMOPS = (state, ownProps) => {
 const getAnalyticsSeries = (state, ownProps, key) => {
 
   if ("analytics" in state) {
-    if (ownProps.deviceID.toString() in state.analytics) {
-      return Array.from(state.analytics[ownProps.deviceID], x => x[key])
+    if (ownProps.deviceID in state.analytics) {
+      return Array.from(Object.keys(state.analytics[ownProps.deviceID]), x => state.analytics[ownProps.deviceID][x][key]);
     }
   }
 
@@ -132,7 +109,8 @@ const getHoverText = (state, ownProps) => {
   var hoverText = [];
   for (var i in controlIDs) {
     try {
-      hoverText.push(state.devices_firebase[ownProps.deviceID].controls[controlIDs[i]].controlName)
+      const controlKey = utils.nameControl(ownProps.deviceID, controlIDs[i]);
+      hoverText.push(state.controls[controlKey].controlName)
     } catch (err) {
       hoverText.push("unnamed");
     }

@@ -32,7 +32,6 @@ class Sidebar extends React.Component {
       sidebar: {
         style: {
           fontSize: 13,
-          position: "fixed",
           height: "100%",
           width: 162.5,
           top: 0,

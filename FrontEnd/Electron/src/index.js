@@ -12,8 +12,6 @@ import $ from 'jquery'
 import { composeWithDevTools } from 'redux-devtools-extension';
 import * as actions_classic from './redux/actions_classic'
 
-
-
 const startState = {
   webGLStatus: false,
   loginStatus: false,
@@ -22,9 +20,8 @@ const startState = {
   places: {},
   groups: {},
 
-  devices: {
-    deviceArray: []
-  },
+  devices: {},
+  deviceWiFiCreds: {},
   positions: {},
   controls: {
     controlStructure:{}, 
@@ -48,7 +45,10 @@ const startState = {
     iconSelected: 1,
     selectingIcon: false,
     controls: {}
-  }
+  },
+
+  liveModeReference: null,
+  detailsPanelDeviceID: null
 }
 
 export const initialState = Immutable.Map(startState)
@@ -91,4 +91,5 @@ var loadDevicesFromServer = (url) => {
 
 var timeoutRef = setInterval(() => loadDevicesFromServer(window.location.origin.concat('/api/findDevices')), 1000)
 
-setTimeout(() => clearTimeout(timeoutRef), 3000);
+setTimeout(() => clearTimeout(timeoutRef), 5000);
+

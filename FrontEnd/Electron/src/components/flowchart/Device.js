@@ -5,7 +5,9 @@ import * as Actions from '../../redux/actions_classic'
 import * as newActions from '../../redux/actions'
 import Control from './Controls';
 import DynamicIcon from './DynamicIcon';
-import { Paper, Button, Typography, Grid } from 'material-ui'
+import { Paper, Button, Typography, Grid, IconButton } from 'material-ui'
+import { withTheme } from 'material-ui/styles'
+import { InfoOutline } from 'material-ui-icons'
 
 
 
@@ -13,7 +15,8 @@ var mapStateToProps = (state, ownProps) => ({
   device: state.devices[ownProps.DeviceID],
   controlInputs: state.controls.controlStructure[ownProps.DeviceID]['inputs'],
   controlOutputs: state.controls.controlStructure[ownProps.DeviceID]['outputs'],
-  draggingCallbacks: ownProps.draggingCallbacks
+  draggingCallbacks: ownProps.draggingCallbacks,
+  detailsPanelDeviceID: state.detailsPanelDeviceID
 })
 
 
@@ -25,7 +28,7 @@ class Device extends React.Component {
 
 
 	deviceName = () => (
-		<Typography variant='subheading' >
+		<Typography variant='subheading' style={{userSelect: 'none', fontWeight: 'bold', fontSize: 18}}>
 			{this.props.device.name}
 		</Typography>
 
@@ -65,15 +68,32 @@ class Device extends React.Component {
 
 	drawOptions() {
 
-		const button = {
-			size: 'small',
-			color: 'secondary',
-			onClick: () => this.props.claimDevice(this.props.device.deviceID)
-			}
-		
+		const inputs= {
+      buttonContainer: {
+        style: {
+          position: 'absolute',
+          top: 2,
+          right: 2
+        }
+      },
+      button: {
+  			size: 'small',
+  			color: this.props.detailsPanelDeviceID == this.props.device.deviceID ? 'secondary' : 'default',
+  			onClick: () => this.props.detailsPanelDeviceID == this.props.device.deviceID ?
+  							this.props.setDetailsPanelDeviceID(null) :
+  							this.props.setDetailsPanelDeviceID(this.props.device.deviceID)
+  			}
+    }
+
 
 		return (
-			<Button {...button}> Claim </Button>
+      <div {...inputs.buttonContainer}>
+  			<Grid container {...inputs.buttonContainer} justify='flex-end'>
+  				<IconButton {...inputs.button}>
+  					<InfoOutline/>
+  				</IconButton>
+  			</Grid>
+      </div>
 
 		)
 	}
@@ -82,7 +102,13 @@ class Device extends React.Component {
 	render() {
 
 		const inputs = {
-			name: {
+      gridContainer: {
+        style: {
+          marginTop: this.props.theme.spacing.unit,
+          marginBottom: this.props.theme.spacing.unit
+        }
+      },
+      name: {
 				style: {
 					textAlign: 'center',
 					marginBottom: 5,
@@ -99,11 +125,13 @@ class Device extends React.Component {
 		        data: "/dist/assets/svg/" + this.props.device.iconName + ".svg"
 		    }
 		}
-			
+
 
 
 		return (
-					<Grid container direction='column' alignItems='stretch' spacing={8}> 
+      <div>
+        {this.drawOptions()}
+					<Grid container {...inputs.gridContainer} direction='column' alignItems='stretch' spacing={8}>
 						<Grid item {...this.props.draggingCallbacks}>
 							<Grid container justify='center' >
 								<Grid item >
@@ -114,39 +142,27 @@ class Device extends React.Component {
 
 						<Grid item style={{paddingRight:0, paddingLeft:0 }}>
 							<Grid container direction='row' justify='space-around' alignItems='stretch' spacing={0} >
-								<Grid item xs={3} style={{margin:0}}>
+								<Grid item xs={4} style={{margin:0}}>
 									{this.drawControls(this.props.controlInputs)}
 								</Grid>
 
-								<Grid item xs={5} style={{margin:0}} {...this.props.draggingCallbacks}>
-									<Grid container alignItems='center' spacing={8} style={{height:'100%'}}> 
-										
+								<Grid item xs={4} style={{margin:0}} {...this.props.draggingCallbacks}>
+									<Grid container alignItems='center' spacing={0} style={{height:'100%', margin: 0, padding: 0}}>
 										<Grid item xs={12}>
 											{this.drawDeviceIcon()}
 										</Grid>
 									</Grid>
 								</Grid>
 
-								<Grid item xs={3} style={{margin:0}}>
+								<Grid item xs={4} style={{margin:0, padding: 0}}>
 									{this.drawControls(this.props.controlOutputs)}
 								</Grid>
 
 							</Grid>
 
 						</Grid>
-
-						<Grid item>
-							<Grid container direction='column' alignItems='stretch' spacing={0} style={{maxWidth: '100%'}}> 
-								<Grid item {...this.props.draggingCallbacks}>
-									<Grid container justify='center' spacing={0} style={{maxWidth: '100%'}}>
-										{this.drawOptions()}
-									</Grid>
-								</Grid>
-							</Grid>
-						</Grid>
-
 					</Grid>
-					
+        </div>
 			);
 	}
 }
@@ -155,4 +171,4 @@ var mapDispatchToProps = (dispatch) => {
   return bindActionCreators(Actions, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Device);
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme()(Device));

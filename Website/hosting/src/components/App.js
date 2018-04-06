@@ -20,6 +20,7 @@ import Checkout from './store/Checkout'
 import ProductDetails from './store/ProductDetails'
 import DownloadPage from './heep/DownloadPage'
 import ManageCart from './store/ManageCart'
+import Tutorials from './Tutorials'
 
 import Theme from './Theme'
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
@@ -89,6 +90,7 @@ class App extends React.Component {
 									<Route path="/Landing" component={Landing}/>
 									<Route path="/About" component={About}/>
 									<Route path="/Shop" component={Store}/>
+									<Route path="/Tutorials" component={Tutorials}/>
 									<Route path="/product/:productID" component={ProductDetails}/>
 									<Route path="/Checkout" component={Checkout}/>
 									<Route path="/MyCart" component={ManageCart}/>

@@ -8,16 +8,18 @@ var log = require('electron-log');
 
 const udpServer = dgram.createSocket('udp4');
 
-var newMasterState = {
-  devices: {deviceArray: []},
+const newMasterState = {
+  devices: {},
+  deviceWiFiCreds: {},
   positions: {},
   controls: {controlStructure:{}, connections: {}},
   vertexList: {},
   icons: {},
-  url: ''
+  url: '',
+  analytics: {}
 };
 
-var masterState = newMasterState;
+var masterState = JSON.parse(JSON.stringify(newMasterState));
 
 var heepPort = 5000;
 var searchComplete = false;
@@ -49,9 +51,18 @@ export var GetCurrentMasterState = () => {
 }
 
 export var ResetMasterState = () => {
-  masterState = newMasterState;
+
+  masterState = JSON.parse(JSON.stringify(newMasterState));
 
   return masterState
+}
+
+export var ResetDevicesActiveStatus = () => {
+
+  for (var deviceID in masterState.devices) {
+    masterState.devices[deviceID].active = false
+  }
+
 }
 
 export var SendPositionToHeepDevice = (deviceID, position) => {
@@ -65,6 +76,22 @@ export var SendPositionToHeepDevice = (deviceID, position) => {
   var numBytes = [packet.length];
 
   var messageBuffer = Buffer.from([0x0B].concat(numBytes, packet));
+  console.log('Connecting to Device ', deviceID + ' at IPAddress: ' + IPAddress);
+  console.log('Data packet: ', messageBuffer);
+  ConnectToHeepDevice(IPAddress, heepPort, messageBuffer)
+
+}
+
+export var sendWifiCredsToDevice = (deviceID, ssid, password) => {
+
+  var IPAddress = masterState.devices[deviceID].ipAddress;
+  var priority = byteUtils.GetValueAsFixedSizeByteArray(0, 1);
+  var ssidByteArray = byteUtils.GetStringAsByteArray(ssid);
+  var passwordByteArray = byteUtils.GetStringAsByteArray(password);
+  var packet = priority.concat([ssidByteArray.length], ssidByteArray, [passwordByteArray.length], passwordByteArray);
+  var numBytes = [packet.length];
+
+  var messageBuffer = Buffer.from([0x22].concat(numBytes, packet));
   console.log('Connecting to Device ', deviceID + ' at IPAddress: ' + IPAddress);
   console.log('Data packet: ', messageBuffer);
   ConnectToHeepDevice(IPAddress, heepPort, messageBuffer)
@@ -216,7 +243,7 @@ var ConsumeHeepResponse = (data, IPAddress, port) => {
 }
 
 var AddMemoryChunksToMasterState = (heepChunks, IPAddress) => {
-  console.log(heepChunks);  
+  // console.log(heepChunks);  
 
   for (var i = 0; i < heepChunks.length; i++) {
 
@@ -244,8 +271,13 @@ var AddMemoryChunksToMasterState = (heepChunks, IPAddress) => {
 
         SetDevicePosition(heepChunks[i])
         
-      } else if (heepChunks[i].op == 8){
+      } else if (heepChunks[i].op == 31) {
         
+        SetAnalyticsData(heepChunks[i])
+
+      } else if (heepChunks[i].op == 32) {
+        SetDeviceWiFi(heepChunks[i]);
+
       }
     } catch (err) {
       console.log(err.toString());
@@ -264,13 +296,9 @@ var AddDevice = (heepChunk, IPAddress) => {
     deviceID: deviceID,
     ipAddress: IPAddress,
     name: deviceName,
-    active: false,
+    active: true,
     iconName: "lightbulb",
     version: 0
-  }
-
-  if( masterState.devices.deviceArray.indexOf(deviceID) == -1){
-    masterState.devices.deviceArray.push(deviceID);
   }
 
   SetNullPosition(deviceID);
@@ -325,6 +353,16 @@ var SetNullPosition = (deviceID) => {
 var SetDevicePosition = (heepChunk) => {
   masterState.positions[heepChunk.deviceID].device = heepChunk.position;
   RecalculateControlPositions(heepChunk.deviceID);
+}
+
+var SetDeviceWiFi = (heepChunk) => {
+
+  if (masterState.deviceWiFiCreds[heepChunk.deviceID] == undefined) {
+    masterState.deviceWiFiCreds[heepChunk.deviceID] = {};
+  }
+  
+  masterState.deviceWiFiCreds[heepChunk.deviceID][heepChunk.SSID] = true;
+  
 }
 
 var SetDevicePositionFromBrowser = (deviceID, position) => {
@@ -405,5 +443,14 @@ var SetControlPosition = (deviceID, index, direction) => {
   }
   
   return position;
+}
+
+var SetAnalyticsData = (heepChunk) => {
+
+  if (masterState.analytics[heepChunk.deviceID] == undefined) {
+    masterState.analytics[heepChunk.deviceID] = {};
+  }
+
+  masterState.analytics[heepChunk.deviceID][heepChunk.analytics.timeStamp] = heepChunk.analytics;
 }
 

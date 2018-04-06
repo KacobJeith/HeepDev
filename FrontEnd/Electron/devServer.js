@@ -7,11 +7,12 @@ require('./src/heepServer')
 
 const compiler = Webpack(webpackConfig);
 const devServerOptions = Object.assign({}, webpackConfig.devServer, {
-  stats: {
-    colors: true
-  },
-  proxy: {
-	  "/api": {
+	
+	stats: {
+    	colors: true
+  	},
+  	proxy: {
+	  	"/api": {
 	    target: "http://localhost:3004",
 	    secure: false
 		}
