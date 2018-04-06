@@ -258,9 +258,13 @@ export default function(state = initialState, action) {
 
     case 'REFRESH_FLOWCHART' :
 
-      console.log("Refreshing Flowchart");
-
       async.refreshLocalDeviceState();
+
+      return state
+
+    case 'HARD_REFRESH_FLOWCHART' :
+
+      async.hardRefreshLocalDeviceState();
 
       return state
 
