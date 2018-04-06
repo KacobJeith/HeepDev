@@ -9,7 +9,7 @@ var log = require('electron-log');
 const udpServer = dgram.createSocket('udp4');
 
 const newMasterState = {
-  devices: {deviceArray: []},
+  devices: {},
   deviceWiFiCreds: {},
   positions: {},
   controls: {controlStructure:{}, connections: {}},
@@ -55,6 +55,14 @@ export var ResetMasterState = () => {
   masterState = JSON.parse(JSON.stringify(newMasterState));
 
   return masterState
+}
+
+export var ResetDevicesActiveStatus = () => {
+
+  for (var deviceID in masterState.devices) {
+    masterState.devices[deviceID].active = false
+  }
+
 }
 
 export var SendPositionToHeepDevice = (deviceID, position) => {
@@ -291,10 +299,6 @@ var AddDevice = (heepChunk, IPAddress) => {
     active: true,
     iconName: "lightbulb",
     version: 0
-  }
-
-  if( masterState.devices.deviceArray.indexOf(deviceID) == -1){
-    masterState.devices.deviceArray.push(deviceID);
   }
 
   SetNullPosition(deviceID);
