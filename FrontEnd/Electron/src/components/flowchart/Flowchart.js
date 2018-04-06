@@ -27,14 +27,14 @@ class Flowchart extends React.Component {
 
 		const inputs = {
 			vertexSVGSpace: {
-        id: 'vertexSVGSpace',
+        	id: 'vertexSVGSpace',
 				style: {
 					position: 'absolute',
 					width: 3000,
 					height: 3000,
 					viewBox: '0 0 1000 1000',
-          top: 0,
-          left: 0,
+          			top: 0,
+          			left: 0,
 				},
 			}
 		}
@@ -43,7 +43,7 @@ class Flowchart extends React.Component {
 			<svg {...inputs.vertexSVGSpace}>
 				{Object.keys(this.props.vertexList).map((thisVertexKey) => {
 					if (thisVertexKey != 'selectedOutput'){
-              return <Vertex key={thisVertexKey} vertexID={thisVertexKey}/>
+              return <Vertex key={thisVertexKey} vertexID={thisVertexKey} />
 					}
 				})}
 			</svg>
@@ -52,7 +52,7 @@ class Flowchart extends React.Component {
 	}
 
 	render() {
-		
+
 		const inputs = {
 			flowchart: {
 				style: {

@@ -238,13 +238,8 @@ export default function(state = initialState, action) {
    
     case 'UPDATE_CONTROL_VALUE':
 
-      console.log(action)
-
       var newState = Immutable.Map(state.controls).toJS();
       var identifier = utils.nameControl(action.deviceID, action.controlID);
-
-      console.log(identifier)
-      console.log(newState[identifier])
 
       newState[identifier]['valueCurrent'] = action.newValue;
       async.sendValueToServer(action.deviceID, action.controlID, action.newValue);
@@ -252,7 +247,7 @@ export default function(state = initialState, action) {
       var connectedControl = '';
       for (var i = 0; i < newState.connections[identifier].length; i++){
         connectedControl = newState.connections[identifier][i];
-        
+
         if (newState[connectedControl]) {
           newState[connectedControl]['valueCurrent'] = action.newValue;
           async.sendValueToServer(newState[connectedControl].deviceID, newState[connectedControl].controlID, action.newValue);

@@ -110,11 +110,17 @@ class DevicePaper extends React.Component {
 			}
 		}
 
-		return (<Paper {...inputs.deviceContainer} ref="device">
-					<Tooltip id="tooltip-top" title={this.props.activeState ? null : 'Having trouble communicating with this device. Is it still plugged in?'} placement="top">
-						<Device DeviceID={this.props.deviceID} draggingCallbacks={{...inputs.draggingCallbacks}}/>
-					</Tooltip>
-				</Paper>
+		return (<div> 
+					{this.props.activeState ? 
+					<Paper {...inputs.deviceContainer} ref="device">
+							<Device DeviceID={this.props.deviceID} draggingCallbacks={{...inputs.draggingCallbacks}}/> 
+					</Paper> : 
+					<Tooltip id="tooltip-top" title={'Having trouble communicating with this device. Is it still plugged in?'} placement="top">
+						<Paper {...inputs.deviceContainer} ref="device">
+								<Device DeviceID={this.props.deviceID} draggingCallbacks={{...inputs.draggingCallbacks}}/>
+						</Paper>
+					</Tooltip>}
+				</div>
 			);
 	}
 }
