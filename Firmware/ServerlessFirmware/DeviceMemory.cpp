@@ -249,7 +249,7 @@ void SetAnalyticsDataControlValueInMemory_Byte(heepByte controlID, int controlVa
 	heepByte numBytesForTime = GetNumBytes64Bit(GetAnalyticsTime());
 
 	heepByte totalBytesForAnalyticsMOP = 1 + ID_SIZE + 1 + numBytesForTime + 5;
-	while(curFilledMemory + totalBytesForAnalyticsMOP >= 1500)
+	while(curFilledMemory + totalBytesForAnalyticsMOP >= MAX_MEMORY)
 	{
 		int firstAnalyticsData = GetNextAnalyticsDataPointer(0);
 		if(firstAnalyticsData >= 0)
