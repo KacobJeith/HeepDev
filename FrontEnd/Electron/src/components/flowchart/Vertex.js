@@ -100,7 +100,7 @@ class Vertex extends React.Component {
                 String(getOutput.left),
                 " ",
                 String(getOutput.top)),
-				onMouseEnter: () => this.setState({'color': '#740000', 'strokeWidth': 4}),
+				onMouseEnter: () => this.setState({'color': '#d40000', 'strokeWidth': 4}),
 				onMouseLeave: () => this.setState({'color': '#455a64', 'strokeWidth': 3}),
 				onClick: () => this.sendDeleteVertexToServer(),
 				style: {

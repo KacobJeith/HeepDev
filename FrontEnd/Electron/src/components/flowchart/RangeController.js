@@ -25,7 +25,7 @@ class RangeController extends React.Component {
       mouseDrag: false,
       fill: '#455a64',
       fontSize: 8.5,
-      textCenter: 14
+      textCenter: 14,
 		}
 
 		this.dragging = 0;
@@ -36,7 +36,8 @@ class RangeController extends React.Component {
 							  left: 0};
 
 		this.lastSentControlValue = this.props.control['valueCurrent'];
-		this.newControlValue = this.props.control['valueCurrent'];
+		this.newControlValue = this.props.control['valueCurrent']
+    this.direction = this.props.control['controlDirection'];
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -185,7 +186,9 @@ class RangeController extends React.Component {
 		};
 
 		return  <div {...inputs.button}>
-          <Tooltip id="tooltip-right" title={this.props.control['valueCurrent']} placement="right-start">
+          <Tooltip id="tooltip-range"
+            title={this.props.control['valueCurrent']}
+            placement={this.direction == 0 ? 'right-start' : 'left-start'}>
   					<svg {...inputs.rangeContainer}>
   						<line {...inputs.unselected}/>
   						<line {...inputs.selected}/>
