@@ -5,6 +5,7 @@ var log = require('electron-log');
 const express = require('express');
 const bodyParser = require('body-parser');
 const heepConnect = require('./serverside/heep/HeepConnections');
+const heepAccess = require('./serverside/heep/HeepAccessPoints');
 const simulationDevice =  require('./serverside/simulationHeepDevice.js');
 
 var app = express();
@@ -35,6 +36,15 @@ app.get('/api/findDevices', function(req, res) {
   }
     
 });
+
+app.get('/api/searchForAccessPoints', (req, res) => {
+  console.log("Search for Access Points")
+
+  heepAccess.QueryAvailableAccessPoints((results) => {
+    res.json(results);
+  });
+
+})
 
 app.get('/api/refreshLocalDeviceState', (req, res) => {
   console.log("Refreshing local device state")

@@ -89,3 +89,7 @@ export const sendWiFiCredentialsToDevice = (deviceID, placeKey) => ({
 export const hardRefresh = () => ({
   type: 'HARD_REFRESH_FLOWCHART'
 })
+
+export const searchForAccessPoints = () => ({
+  type: 'SEARCH_FOR_ACCESS_POINTS'
+})

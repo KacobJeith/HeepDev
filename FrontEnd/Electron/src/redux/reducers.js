@@ -305,6 +305,12 @@ export default function(state = initialState, action) {
 
       return Immutable.Map(state).set('detailsPanelDeviceID', action.deviceID).toJS()
 
+    case 'SEARCH_FOR_ACCESS_POINTS' :
+
+      async.searchForAccessPoints();
+
+      return state
+
     case 'SEND_WIFI_CRED_TO_DEVICE' :
       var newState = Immutable.Map(state.deviceWiFiCreds).toJS();
 

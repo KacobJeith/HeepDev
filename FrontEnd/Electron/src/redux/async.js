@@ -87,6 +87,19 @@ export var hardRefreshLocalDeviceState = () => {
   })
 }
 
+export const searchForAccessPoints = () => {
+  
+  var url = urlPrefix.concat('/api/searchForAccessPoints');
+
+  performAJAX(url, {}, 'GET', (data) => {
+
+    console.log('Access Points: ', data);
+    
+    // setup.store.dispatch(actions_classic.overwriteFromServer(data));
+  })
+
+}
+
 
 export var performAJAX = (url, messagePacket, type = 'POST', callback = (data) => {} ) => {
   $.ajax({
