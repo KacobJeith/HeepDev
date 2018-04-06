@@ -14,8 +14,9 @@ typedef unsigned char heepByte;
 extern heepByte deviceIDByte [STANDARD_ID_SIZE];
 extern uint8_t mac[6];
 
+//#define USE_ANALYTICS
 #ifdef USE_ANALYTICS
-heepByte base64DeviceIDByte [STANDARD_ID_SIZE_BASE_64];
+extern heepByte base64DeviceIDByte [STANDARD_ID_SIZE_BASE_64];
 #endif
 
 // Only one of these blocks is necessary. It will determine

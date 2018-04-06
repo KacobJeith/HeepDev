@@ -78,6 +78,15 @@ export var refreshLocalDeviceState = () => {
   })
 }
 
+export var hardRefreshLocalDeviceState = () => {
+  var url = urlPrefix.concat('/api/hardRefreshLocalDeviceState');
+
+  performAJAX(url, {}, 'GET', (data) => {
+    
+    setup.store.dispatch(actions_classic.overwriteFromServer(data));
+  })
+}
+
 
 export var performAJAX = (url, messagePacket, type = 'POST', callback = (data) => {} ) => {
   $.ajax({

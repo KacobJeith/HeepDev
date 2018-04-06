@@ -9,13 +9,14 @@ var log = require('electron-log');
 const udpServer = dgram.createSocket('udp4');
 
 const newMasterState = {
-  devices: {deviceArray: []},
+  devices: {},
   deviceWiFiCreds: {},
   positions: {},
   controls: {controlStructure:{}, connections: {}},
   vertexList: {},
   icons: {},
-  url: ''
+  url: '',
+  analytics: {}
 };
 
 var masterState = JSON.parse(JSON.stringify(newMasterState));
@@ -54,6 +55,14 @@ export var ResetMasterState = () => {
   masterState = JSON.parse(JSON.stringify(newMasterState));
 
   return masterState
+}
+
+export var ResetDevicesActiveStatus = () => {
+
+  for (var deviceID in masterState.devices) {
+    masterState.devices[deviceID].active = false
+  }
+
 }
 
 export var SendPositionToHeepDevice = (deviceID, position) => {
@@ -262,10 +271,13 @@ var AddMemoryChunksToMasterState = (heepChunks, IPAddress) => {
 
         SetDevicePosition(heepChunks[i])
         
-      } else if (heepChunks[i].op == 8){
+      } else if (heepChunks[i].op == 31) {
         
-      } else if (heepChunks[i].op == 32){
+        SetAnalyticsData(heepChunks[i])
+
+      } else if (heepChunks[i].op == 32) {
         SetDeviceWiFi(heepChunks[i]);
+
       }
     } catch (err) {
       console.log(err.toString());
@@ -287,10 +299,6 @@ var AddDevice = (heepChunk, IPAddress) => {
     active: true,
     iconName: "lightbulb",
     version: 0
-  }
-
-  if( masterState.devices.deviceArray.indexOf(deviceID) == -1){
-    masterState.devices.deviceArray.push(deviceID);
   }
 
   SetNullPosition(deviceID);
@@ -437,5 +445,12 @@ var SetControlPosition = (deviceID, index, direction) => {
   return position;
 }
 
+var SetAnalyticsData = (heepChunk) => {
 
+  if (masterState.analytics[heepChunk.deviceID] == undefined) {
+    masterState.analytics[heepChunk.deviceID] = {};
+  }
+
+  masterState.analytics[heepChunk.deviceID][heepChunk.analytics.timeStamp] = heepChunk.analytics;
+}
 

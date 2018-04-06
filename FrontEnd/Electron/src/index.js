@@ -20,9 +20,7 @@ const startState = {
   places: {},
   groups: {},
 
-  devices: {
-    deviceArray: []
-  },
+  devices: {},
   deviceWiFiCreds: {},
   positions: {},
   controls: {

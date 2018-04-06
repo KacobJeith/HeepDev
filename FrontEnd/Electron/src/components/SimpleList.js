@@ -9,9 +9,9 @@ import { withStyles } from 'material-ui/styles';
 import ListSubheader from 'material-ui/List/ListSubheader';
 import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
 import Collapse from 'material-ui/transitions/Collapse';
-import { Refresh, Build, TrackChanges, Home } from 'material-ui-icons';
+import { Refresh, Build, TrackChanges, Home, ShowChart, DeleteSweep } from 'material-ui-icons';
 
-import { Divider } from 'material-ui'
+import { Divider, Tooltip } from 'material-ui'
 
 var mapStateToProps = (state) => ({
   liveMode: state.liveModeReference
@@ -35,20 +35,15 @@ class NestedList extends React.Component {
     this.setState({ open: !this.state.open });
   };
 
-  refreshFlowchart = () => (
-    <ListItem button>
-      <ListItemIcon>
-        <Refresh onClick={ () => this.props.refreshFlowchart()}/>
-      </ListItemIcon>
-      <ListItemText inset primary="Refresh" />
-    </ListItem>
-  )
+  
 
   deviceBuilder = () => (
     <NavLink to="/designer" style={{
       textDecoration: 'none',
-      outline: 'none'
-    }}>
+      outline: 'none',
+      width: '100%',
+      height: '100%'
+    }}>   
       <ListItem button>
         <ListItemIcon>
           <Build />
@@ -72,12 +67,44 @@ class NestedList extends React.Component {
     </NavLink>
   )
 
+  analyticsNav = () => (
+    <NavLink to="/Analytics" style={{
+      textDecoration: 'none',
+      outline: 'none'
+    }}>
+      <ListItem button>
+        <ListItemIcon>
+          <ShowChart />
+        </ListItemIcon>
+        <ListItemText inset primary="Analytics" />
+      </ListItem>
+    </NavLink>
+  )
+
   liveModeToggle = () => (
     <ListItem button onClick={ () => this.props.liveMode == null ? this.props.startLiveMode() : this.props.stopLiveMode()}>
       <ListItemIcon>
         <TrackChanges color={this.props.liveMode == null ? 'disabled' : 'secondary'}/>
       </ListItemIcon>
       <ListItemText inset primary="Live Mode" />
+    </ListItem>
+  )
+
+  refreshFlowchart = () => (
+    <ListItem button>
+      <ListItemIcon>
+        <Refresh onClick={ () => this.props.refreshFlowchart()}/>
+      </ListItemIcon>
+      <ListItemText inset primary="Soft Refresh" />
+    </ListItem>
+  )
+
+  hardRefresh = () => (
+    <ListItem button onClick={ () => this.props.hardRefresh()}>
+      <ListItemIcon>
+        <DeleteSweep />
+      </ListItemIcon>
+      <ListItemText inset primary="Hard Refresh" />
     </ListItem>
   )
 
@@ -91,9 +118,11 @@ class NestedList extends React.Component {
         >
           {this.flowchartNav()}
           {this.deviceBuilder()}
+          {this.analyticsNav()}
           <Divider/>
           {this.liveModeToggle()}
           {this.refreshFlowchart()}
+          {this.hardRefresh()}
           
         
         </List>

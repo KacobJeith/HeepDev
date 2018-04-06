@@ -144,6 +144,7 @@ export default function(state = initialState, action) {
     case 'OVERWRITE_WITH_SERVER_DATA':
 
       return Immutable.Map(state).set('devices', action.fromServer.devices)
+                                 .set('analytics', action.fromServer.analytics)
                                  .set('positions', action.fromServer.positions)
                                  .set('controls', action.fromServer.controls)
                                  .set('vertexList', action.fromServer.vertexList)
@@ -239,23 +240,31 @@ export default function(state = initialState, action) {
 
       var newState = Immutable.Map(state.controls).toJS();
       var identifier = utils.nameControl(action.deviceID, action.controlID);
+
       newState[identifier]['valueCurrent'] = action.newValue;
       async.sendValueToServer(action.deviceID, action.controlID, action.newValue);
 
       var connectedControl = '';
       for (var i = 0; i < newState.connections[identifier].length; i++){
         connectedControl = newState.connections[identifier][i];
-        newState[connectedControl]['valueCurrent'] = action.newValue;
-        async.sendValueToServer(newState[connectedControl].deviceID, newState[connectedControl].controlID, action.newValue);
+
+        if (newState[connectedControl]) {
+          newState[connectedControl]['valueCurrent'] = action.newValue;
+          async.sendValueToServer(newState[connectedControl].deviceID, newState[connectedControl].controlID, action.newValue);
+        }
       }
 
       return Immutable.Map(state).set('controls', newState).toJS()
 
     case 'REFRESH_FLOWCHART' :
 
-      console.log("Refreshing Flowchart");
-
       async.refreshLocalDeviceState();
+
+      return state
+
+    case 'HARD_REFRESH_FLOWCHART' :
+
+      async.hardRefreshLocalDeviceState();
 
       return state
 

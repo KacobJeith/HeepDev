@@ -5,13 +5,14 @@ import * as Actions from '../../redux/actions_classic'
 import * as newActions from '../../redux/actions'
 import Control from './Controls';
 import DynamicIcon from './DynamicIcon';
-import { Paper, Button, Typography, Grid } from 'material-ui'
+import { Paper, Button, Typography, Grid, Tooltip } from 'material-ui'
 
 import Device from './Device'
 
 var mapStateToProps = (state, ownProps) => ({
   deviceID: ownProps.DeviceID,
-  position: state.positions[ownProps.DeviceID]['device']
+  position: state.positions[ownProps.DeviceID]['device'],
+  activeState: state.devices[ownProps.DeviceID].active
 })
 
 
@@ -77,19 +78,19 @@ class DevicePaper extends React.Component {
 
 		const inputs = {
 			deviceContainer: {
-        style: {
-					backgroundColor: 'white',
-					margin: 10,
-					padding: 3,
-          minWidth: 330,
-          maxWidth: 330,
-					cursor: '-webkit-grab',
-					position: 'absolute',
-					top: this.props.position.top,
-					left: this.props.position.left,
-					color: 'black',
-          pointerEvents: 'visible',
-          borderRadius: 20
+        		style: {
+    					backgroundColor: 'white',
+    					margin: 10,
+    					padding: 3,
+              width: 330,
+    					cursor: '-webkit-grab',
+    					position: 'absolute',
+    					top: this.props.position.top,
+    					left: this.props.position.left,
+    					color: 'black',
+              pointerEvents: 'visible',
+              opacity: this.props.activeState ? 1.0 : .4,
+              borderRadius: 20
 				},
 				elevation: this.state.dragging ? 3 : 5,
 
@@ -109,11 +110,17 @@ class DevicePaper extends React.Component {
 			}
 		}
 
-		return (<Paper {...inputs.deviceContainer} ref="device">
-
-					<Device DeviceID={this.props.deviceID} draggingCallbacks={{...inputs.draggingCallbacks}}/>
-
-				</Paper>
+		return (<div>
+					{this.props.activeState ?
+					<Paper {...inputs.deviceContainer} ref="device">
+							<Device DeviceID={this.props.deviceID} draggingCallbacks={{...inputs.draggingCallbacks}}/>
+					</Paper> :
+					<Tooltip id="tooltip-top" title={'Having trouble communicating with this device. Is it still plugged in?'} placement="top">
+						<Paper {...inputs.deviceContainer} ref="device">
+								<Device DeviceID={this.props.deviceID} draggingCallbacks={{...inputs.draggingCallbacks}}/>
+						</Paper>
+					</Tooltip>}
+				</div>
 			);
 	}
 }

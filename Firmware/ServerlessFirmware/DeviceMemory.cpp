@@ -248,6 +248,23 @@ void SetAnalyticsDataControlValueInMemory_Byte(heepByte controlID, int controlVa
 
 	heepByte numBytesForTime = GetNumBytes64Bit(GetAnalyticsTime());
 
+	heepByte totalBytesForAnalyticsMOP = 1 + ID_SIZE + 1 + numBytesForTime + 5;
+	while(curFilledMemory + totalBytesForAnalyticsMOP >= MAX_MEMORY)
+	{
+		int firstAnalyticsData = GetNextAnalyticsDataPointer(0);
+		if(firstAnalyticsData >= 0)
+		{
+			// Delete Analytics Data in FIFO Manner
+			deviceMemory[firstAnalyticsData] = FragmentOpCode;
+			DefragmentMemory();
+		}
+		else
+		{
+			// Something else has filled the memory, so we cannot add analytics
+			return;
+		}
+	}
+
 	PerformPreOpCodeProcessing_Byte(deviceID);
 
 	AddNewCharToMemory(AnalyticsOpCode);
@@ -278,6 +295,14 @@ int GetNextAnalyticsDataPointer(int startingPointer)
 	}
 
 	return -1;
+}
+
+uint64_t GetTimeFromAnalyticsMOP(int MOPAddress)
+{
+	unsigned int startCount = MOPAddress + ID_SIZE + 3 + deviceMemory[MOPAddress + ID_SIZE + 3] + 3;
+	unsigned int numBytesTime = deviceMemory[startCount - 1];
+
+	return GetNumberFromBuffer(deviceMemory, &startCount, numBytesTime);
 }
 
 #endif

@@ -136,11 +136,6 @@ void AddBufferToBuffer(heepByte* rxBuffer, heepByte* txBuffer, heepByte size, un
 
 #ifdef USE_ANALYTICS
 
-static const char* base64_chars = 
-             "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-             "abcdefghijklmnopqrstuvwxyz"
-             "0123456789+/";
-
 void base64_encode_Heep(heepByte* deviceID) {
 
 	int in_len = STANDARD_ID_SIZE;

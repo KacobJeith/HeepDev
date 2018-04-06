@@ -8,8 +8,11 @@ var mapStateToProps = (state, ownProps) => (
 {
   id: ownProps.vertexID,
   vertex: state.vertexList[ownProps.vertexID],
-  positions: state.positions
-
+  positions: state.positions,
+  activeState:  state.devices[state.vertexList[ownProps.vertexID].rxDeviceID] && 
+                state.devices[state.vertexList[ownProps.vertexID].txDeviceID] && 
+                state.devices[state.vertexList[ownProps.vertexID].rxDeviceID].active && 
+                state.devices[state.vertexList[ownProps.vertexID].txDeviceID].active
 })
 
 class Vertex extends React.Component {
@@ -73,7 +76,7 @@ class Vertex extends React.Component {
     const getOutput = this.getOutputPosition();
 
 		if (getInput == false || getOutput == false) {
-      console.log("false")
+      // console.log("false")
 			return <g/>
 		}
 
@@ -104,7 +107,8 @@ class Vertex extends React.Component {
 				onMouseLeave: () => this.setState({'color': '#455a64', 'strokeWidth': 3}),
 				onClick: () => this.sendDeleteVertexToServer(),
 				style: {
-					cursor: 'pointer'
+					cursor: 'pointer',
+          opacity: this.props.activeState ? 1.0 : 0.2
 				}
 			}
 		}

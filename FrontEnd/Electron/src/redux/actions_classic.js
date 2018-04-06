@@ -85,3 +85,7 @@ export const sendWiFiCredentialsToDevice = (deviceID, placeKey) => ({
   deviceID, 
   placeKey
 })
+
+export const hardRefresh = () => ({
+  type: 'HARD_REFRESH_FLOWCHART'
+})
