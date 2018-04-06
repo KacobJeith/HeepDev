@@ -24,6 +24,7 @@ class RangeController extends React.Component {
       mouseDrag: false,
       fill: '#455a64',
       fontSize: 8.5,
+      textCenter: 14
 		}
 
 		this.dragging = 0;
@@ -155,8 +156,8 @@ class RangeController extends React.Component {
 				y2: 11,
 			},
 			dragDot: {
-				onMouseEnter : () => this.setState({radius: 11, fill: '#02a8f4', fontSize: 15}),
-				onMouseLeave : () => this.setState({radius: 7, fill: '#455a64', fontSize: 8.5}),
+				onMouseEnter : () => this.setState({radius: 11, fill: '#02a8f4', fontSize: 15, textCenter: 16}),
+				onMouseLeave : () => this.setState({radius: 7, fill: '#455a64', fontSize: 8.5, textCenter: 14}),
 				onMouseDown : (event) => {this.onMouseDown(event);},
 				onMouseUp : (event) => {this.dragging = 0;},
 				onTouchStart: (event) => {event.preventDefault(); this.onMouseDown(event.nativeEvent.changedTouches[0])},
@@ -168,9 +169,8 @@ class RangeController extends React.Component {
 				fill: this.state.fill,
 			},
 			text: {
-        padding: 2,
 				x: this.state.x,
-				y: 14,
+				y: this.state.textCenter,
 				fontFamily: "Verdana",
 				fontSize: this.state.fontSize,
 				fill: '#e1e3e8',

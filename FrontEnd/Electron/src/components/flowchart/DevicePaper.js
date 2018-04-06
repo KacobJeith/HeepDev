@@ -81,7 +81,7 @@ class DevicePaper extends React.Component {
 					backgroundColor: 'white',
 					margin: 10,
 					padding: 3,
-          minWidth: 230,
+          minWidth: 330,
           maxWidth: 330,
 					cursor: '-webkit-grab',
 					position: 'absolute',
@@ -89,8 +89,9 @@ class DevicePaper extends React.Component {
 					left: this.props.position.left,
 					color: 'black',
           pointerEvents: 'visible',
+          borderRadius: 20
 				},
-				elevation: this.state.dragging ? 2 : 4,
+				elevation: this.state.dragging ? 3 : 5,
 
 				// WebkitUserDrag: `auto | element | none`
 			},

@@ -154,7 +154,7 @@ class Device extends React.Component {
 									</Grid>
 								</Grid>
 
-								<Grid item xs={4} style={{margin:0}}>
+								<Grid item xs={4} style={{margin:0, padding: 0}}>
 									{this.drawControls(this.props.controlOutputs)}
 								</Grid>
 
