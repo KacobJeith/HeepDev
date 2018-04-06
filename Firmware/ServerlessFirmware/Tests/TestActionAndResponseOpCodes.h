@@ -707,33 +707,54 @@ void TestWiFiOverflowDetection()
 	ClearDeviceMemory();
 	ClearInputBuffer();
 
-	inputBuffer[0] = SetPositionOpCode;
-	inputBuffer[1] = 0x04;
-
-	inputBuffer[2] = 0xA0;
-	inputBuffer[3] = 0x02;
-	inputBuffer[4] = 0xB2;
-	inputBuffer[5] = 0x3C;
+	inputBuffer[0] = SetWiFiDataOpCode;
+	inputBuffer[1] = 17;
+	inputBuffer[2] = 0;
+	inputBuffer[3] = 8;
+	inputBuffer[4] = (unsigned char)'M';
+	inputBuffer[5] = (unsigned char)'a';
+	inputBuffer[6] = (unsigned char)'g';
+	inputBuffer[7] = (unsigned char)'D';
+	inputBuffer[8] = (unsigned char)'y';
+	inputBuffer[9] = (unsigned char)'l';
+	inputBuffer[10] = (unsigned char)'a';
+	inputBuffer[11] = (unsigned char)'n';
+	inputBuffer[12] = 6;
+	inputBuffer[13] = (unsigned char)'S';
+	inputBuffer[14] = (unsigned char)'e';
+	inputBuffer[15] = (unsigned char)'c';
+	inputBuffer[16] = (unsigned char)'r';
+	inputBuffer[17] = (unsigned char)'e';
+	inputBuffer[18] = (unsigned char)'t';
 
 	ExecuteControlOpCodes();
 
 	heepByte shouldBeSuccessCode = outputBuffer[0];
 
 	ClearDeviceMemory();
-	for(int i = curFilledMemory; i < MAX_MEMORY-3; i++)
-	{
-		AddNewCharToMemory('H');
-	}
 
-	inputBuffer[0] = SetPositionOpCode;
-	inputBuffer[1] = 0x04;
+	inputBuffer[0] = SetWiFiDataOpCode;
+	inputBuffer[1] = 17;
+	inputBuffer[2] = 0;
+	inputBuffer[3] = 8;
+	inputBuffer[4] = (unsigned char)'M';
+	inputBuffer[5] = (unsigned char)'a';
+	inputBuffer[6] = (unsigned char)'g';
+	inputBuffer[7] = (unsigned char)'D';
+	inputBuffer[8] = (unsigned char)'y';
+	inputBuffer[9] = (unsigned char)'l';
+	inputBuffer[10] = (unsigned char)'a';
+	inputBuffer[11] = (unsigned char)'n';
+	inputBuffer[12] = 6;
+	inputBuffer[13] = (unsigned char)'S';
+	inputBuffer[14] = (unsigned char)'e';
+	inputBuffer[15] = (unsigned char)'c';
+	inputBuffer[16] = (unsigned char)'r';
+	inputBuffer[17] = (unsigned char)'e';
+	inputBuffer[18] = (unsigned char)'t';
 
-	inputBuffer[2] = 0xA0;
-	inputBuffer[3] = 0x02;
-	inputBuffer[4] = 0xB2;
-	inputBuffer[5] = 0x3C;
-
-	ExecuteControlOpCodes();
+	for(int i =0; i<20000;i++)
+		ExecuteControlOpCodes();
 
 	heepByte shouldbeFailureCode = outputBuffer[0];
 
@@ -770,4 +791,5 @@ void TestActionAndResponseOpCodes()
 	TestDeviceNameCOP();
 	TestSetVertexOverflow();
 	CheckSetPositionOverflowHandling();
+	TestWiFiOverflowDetection();
 }
