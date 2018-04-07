@@ -235,14 +235,16 @@ export var ReadControl = (thisBlockData) => { // OP 2
 
  var ReadAnalyticsData = (thisBlockData) => {
 
+  console.log('Analytics Bytes: ', thisBlockData);
+
   var date = new Date(Date.UTC(2018, 0, 1, 0, 0, 0));
   var controlValNumBytes = thisBlockData[2];
   var controlValBytes = thisBlockData.slice(3, 3 + controlValNumBytes);
   var controlValue = byteUtils.GetIntFromByteArray(controlValBytes); 
   var timeStampNumBytes = thisBlockData[3 + controlValNumBytes + 1];
-  var timeInMillis = byteUtils.GetIntFromByteArray(thisBlockData.slice(3 + controlValNumBytes + 1));
+  const timeStampBytes = thisBlockData.slice(3 + controlValNumBytes + 2);
+  var timeInMillis = byteUtils.GetIntFromByteArray(timeStampBytes);
   var timestampMillis = date.getTime() + timeInMillis;
-
   var timestamp = new Date(timestampMillis);
 
   var thisAnalytics = {

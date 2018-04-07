@@ -325,6 +325,12 @@ export default function(state = initialState, action) {
 
       return Immutable.Map(state).set('accessPointData', action.packet).toJS()
 
+    case 'RESET_DEVICE_AND_OS_WIFI': 
+
+      async.resetDeviceAndOSWifi(action.deviceID);
+
+      return state
+
     case 'SEND_WIFI_CRED_TO_DEVICE' :
       var newState = Immutable.Map(state.deviceWiFiCreds).toJS();
 

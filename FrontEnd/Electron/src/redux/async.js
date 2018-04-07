@@ -141,6 +141,19 @@ export const connectToAccessPoint = (ssid) => {
 
 }
 
+export const resetDeviceAndOSWifi = (deviceID) => {
+
+  
+  var url = urlPrefix.concat('/api/resetDeviceAndOSWifi');
+
+  performAJAX(url, {deviceID: deviceID}, 'POST', (response) => {
+
+    setup.store.dispatch(actions_classic.overwriteFromServer(response.data));    
+    
+  })
+
+}
+
 
 export var performAJAX = (url, messagePacket, type = 'POST', callback = (data) => {} ) => {
   $.ajax({
