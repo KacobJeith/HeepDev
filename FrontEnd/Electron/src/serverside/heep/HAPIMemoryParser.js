@@ -235,8 +235,6 @@ export var ReadControl = (thisBlockData) => { // OP 2
 
  var ReadAnalyticsData = (thisBlockData) => {
 
-  console.log('Analytics Bytes: ', thisBlockData);
-
   var date = new Date(Date.UTC(2018, 0, 1, 0, 0, 0));
   var controlValNumBytes = thisBlockData[2];
   var controlValBytes = thisBlockData.slice(3, 3 + controlValNumBytes);
