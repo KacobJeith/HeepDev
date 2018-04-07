@@ -126,16 +126,10 @@ var GetNextBlock = (buffer, it) => {
 }
 
 export var ReadDeviceID = (buffer) => {
-  // it is the counter at the OP Code
+  var asHexString = byteUtils.ByteArrayToHexString(buffer);
 
-  var asBase64String = byteUtils.ByteArrayToBase64String(buffer);
+  return asHexString
 
-  var deviceID =  ((buffer[0] << 24) >>> 0) +
-                  ((buffer[1] << 16) >>> 0) +
-                  ((buffer[2] <<  8) >>> 0) +
-                  ( buffer[3]);
-
-  return asBase64String
 }
 
 var ReadSizeOfPacket = (buffer, it) => {
