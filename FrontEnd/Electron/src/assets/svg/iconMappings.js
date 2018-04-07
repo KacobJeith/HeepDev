@@ -1,5 +1,5 @@
 export const iconMappings = [
-	    	'none', 
+	    	'none',
 	    	'lightbulb',
 	    	'lightswitch',
 	    	'outlet',
@@ -7,5 +7,10 @@ export const iconMappings = [
 	    	'cuckooClock',
 	    	'maglock',
 	    	'rfid',
-	    	'motor'
+	    	'motor',
+				'button',
+				'climate',
+				'servo',
+				'soilSensor',
+				'speakers'
 	    ]
