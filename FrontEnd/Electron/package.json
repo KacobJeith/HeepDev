@@ -23,7 +23,7 @@
     "ts": "npm run test && npm run start",
     "be": "npm run build && electron ./dist/",
     "copy-files": "babel ./src/assets/ --out-dir ./dist/assets/ --copy-files",
-    "dist": "electron-builder --projectDir ./dist/ -p always",
+    "dist": "electron-builder --projectDir ./dist/ ",
     "package-all": "npm run build && electron-builder --projectDir ./dist/ -mw -p always",
     "package-current": "npm run build && npm run dist",
     "build-electron-bundle": "webpack --config webpack.electron.js"
@@ -47,6 +47,7 @@
     "jszip": "^3.1.4",
     "material-ui": "^1.0.0-beta.38",
     "material-ui-icons": "^1.0.0-beta.17",
+    "node-wifi": "^2.0.4",
     "normalizr": "^3.1.0",
     "random-number-csprng": "^1.0.2",
     "react": "^15.3.2",

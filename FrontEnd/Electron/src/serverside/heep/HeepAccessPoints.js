@@ -1,20 +1,15 @@
 const heepConnect = require('./HeepConnections');
-
-if (process.env.NODE_ENV == 'dev') {
-  var WiFiControl = require('wifi-control');
-} else {
-  var WiFiControl = __non_webpack_require__('wifi-control');
-}
+var wifi = require('node-wifi');
 
 export const QueryAvailableAccessPoints = (callback) => {
-  WiFiControl.init({
-    debug: true
+  wifi.init({
+    iface: null
   });
   
-  WiFiControl.scanForWiFi( function(err, response) {
+  wifi.scan( function(err, networks) {
     if (err) console.log(err);
 
-    callback(filterForHeepAPs(response.networks));
+    callback(filterForHeepAPs(networks));
   })
 }
 
@@ -32,23 +27,26 @@ const filterForHeepAPs = (allNetworks) => {
 
 export const ConnectToAccessPoint = (ssid, password, callback = () => ('success')) => {
 
-  var _ap = {
-    ssid: ssid,
-    password: password
-  };
+  var results = wifi.connect( { ssid: ssid, password: password }).then(function () {
 
-  var results = WiFiControl.connectToAP( _ap, function(err, response) {
-    if (err) console.log(err);
-    console.log(response);
-    callback(response);
-  });
+    callback({success: true})
+
+  }).catch(function (error) {
+    // error
+
+    callback({success: false})
+  })
+
 }
 
 export const ResetSystemWifi = (callback) => {
 
-  WiFiControl.resetWiFi( function(err, response) {
-    if (err) console.log(err);
+  wifi.disconnect().then( function(response) {
+
     console.log(response);
     callback(response)
-  } );
+
+  }).catch(function(error) {
+    console.log('FAILED TO DISCONNECT')
+  });
 }
