@@ -41,12 +41,24 @@ export const ConnectToAccessPoint = (ssid, password, callback = () => ('success'
 
 export const ResetSystemWifi = (callback) => {
 
-  wifi.disconnect().then( function(response) {
+  // wifi.disconnect().then( function(response) {
 
-    console.log(response);
-    callback(response)
+  //   console.log(response);
+  //   callback(response)
 
-  }).catch(function(error) {
-    console.log('FAILED TO DISCONNECT')
-  });
+  // }).catch(function(error) {
+  //   console.log('FAILED TO DISCONNECT')
+  // });
+
+  var results = wifi.connect( { ssid: 'PottedPlant', password: '' }).then(function () {
+
+    // callback({success: true})
+    console.log("SUCCESS")
+
+  }).catch(function (error) {
+    // error
+
+    // callback({success: false})
+    console.log("FAIL")
+  })
 }
