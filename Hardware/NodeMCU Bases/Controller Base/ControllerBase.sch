@@ -1154,9 +1154,9 @@ SparkFun BigTime Watch Kit&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
 <label x="81.28" y="55.88" size="1.778" layer="95"/>
 </segment>
 <segment>
-<wire x1="109.22" y1="68.58" x2="121.92" y2="68.58" width="0.1524" layer="91"/>
-<pinref part="S4" gate="G$1" pin="1"/>
-<label x="111.76" y="68.58" size="1.778" layer="95"/>
+<wire x1="109.22" y1="73.66" x2="121.92" y2="73.66" width="0.1524" layer="91"/>
+<pinref part="S3" gate="G$1" pin="1"/>
+<label x="111.76" y="73.66" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="2" class="0">
@@ -1166,16 +1166,9 @@ SparkFun BigTime Watch Kit&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
 <label x="81.28" y="53.34" size="1.778" layer="95"/>
 </segment>
 <segment>
-<wire x1="109.22" y1="53.34" x2="121.92" y2="53.34" width="0.1524" layer="91"/>
-<pinref part="S7" gate="G$1" pin="1"/>
-<label x="111.76" y="53.34" size="1.778" layer="95"/>
-</segment>
-</net>
-<net name="4" class="0">
-<segment>
-<wire x1="76.2" y1="48.26" x2="88.9" y2="48.26" width="0.1524" layer="91"/>
-<pinref part="U$1" gate="G$1" pin="D4"/>
-<label x="81.28" y="48.26" size="1.778" layer="95"/>
+<wire x1="109.22" y1="68.58" x2="121.92" y2="68.58" width="0.1524" layer="91"/>
+<pinref part="S4" gate="G$1" pin="1"/>
+<label x="111.76" y="68.58" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="7" class="0">
@@ -1190,23 +1183,16 @@ SparkFun BigTime Watch Kit&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
 <label x="111.76" y="63.5" size="1.778" layer="95"/>
 </segment>
 </net>
-<net name="0" class="0">
+<net name="3" class="0">
 <segment>
-<wire x1="76.2" y1="58.42" x2="88.9" y2="58.42" width="0.1524" layer="91"/>
-<pinref part="U$1" gate="G$1" pin="D0"/>
-<label x="81.28" y="58.42" size="1.778" layer="95"/>
+<pinref part="U$1" gate="G$1" pin="D3"/>
+<wire x1="76.2" y1="50.8" x2="88.9" y2="50.8" width="0.1524" layer="91"/>
+<label x="81.28" y="50.8" size="1.778" layer="95"/>
 </segment>
 <segment>
-<wire x1="109.22" y1="73.66" x2="121.92" y2="73.66" width="0.1524" layer="91"/>
-<pinref part="S3" gate="G$1" pin="1"/>
-<label x="111.76" y="73.66" size="1.778" layer="95"/>
-</segment>
-</net>
-<net name="8" class="0">
-<segment>
-<pinref part="U$1" gate="G$1" pin="D8"/>
-<wire x1="76.2" y1="33.02" x2="88.9" y2="33.02" width="0.1524" layer="91"/>
-<label x="81.28" y="33.02" size="1.778" layer="95"/>
+<wire x1="109.22" y1="53.34" x2="121.92" y2="53.34" width="0.1524" layer="91"/>
+<pinref part="S7" gate="G$1" pin="1"/>
+<label x="111.76" y="53.34" size="1.778" layer="95"/>
 </segment>
 </net>
 </nets>
