@@ -1,10 +1,5 @@
 const heepConnect = require('./HeepConnections');
-
-if (process.env.NODE_ENV == 'dev') {
-  var WiFiControl = require('wifi-control');
-} else {
-  var WiFiControl = __non_webpack_require__('wifi-control');
-}
+var WiFiControl = require('wifi-control');
 
 export const QueryAvailableAccessPoints = (callback) => {
   WiFiControl.init({
