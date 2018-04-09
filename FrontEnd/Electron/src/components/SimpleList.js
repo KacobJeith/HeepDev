@@ -9,7 +9,7 @@ import { withStyles } from 'material-ui/styles';
 import ListSubheader from 'material-ui/List/ListSubheader';
 import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
 import Collapse from 'material-ui/transitions/Collapse';
-import { Refresh, Build, TrackChanges, Home, ShowChart, DeleteSweep, Accessible } from 'material-ui-icons';
+import { Refresh, Build, TrackChanges, Home, ShowChart, DeleteSweep, ChildCare } from 'material-ui-icons';
 
 import { Divider, Tooltip } from 'material-ui'
 
@@ -116,9 +116,9 @@ class NestedList extends React.Component {
     }}>
       <ListItem button onClick={ () => this.props.searchForAccessPoints()}>
         <ListItemIcon>
-          <Accessible />
+          <ChildCare />
         </ListItemIcon>
-        <ListItemText inset primary="Access Mode" />
+        <ListItemText inset primary="New Device" />
       </ListItem>
     </NavLink>
 
