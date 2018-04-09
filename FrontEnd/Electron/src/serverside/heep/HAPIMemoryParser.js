@@ -213,6 +213,8 @@ export var ReadControl = (thisBlockData) => { // OP 2
     iconName = 'soilSensor';
   } else if (thisBlockData[1] == 13) {
     iconName = 'speakers';
+  } else if (thisBlockData[1] == 14) {
+    iconName = 'rotary';
   }
 
   return iconName;
