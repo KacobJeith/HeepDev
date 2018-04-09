@@ -14,6 +14,8 @@ import ReactGA from 'react-ga';
 
 import loading from './assets/heepwink3_gradient.mov';
 
+require('./service-worker-registration.js');
+
 const startState = {
   shopify: {},
   scrollPosition: 0,

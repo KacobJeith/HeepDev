@@ -3,6 +3,7 @@
 var path = require('path');
 var webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+var SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
 
 module.exports = {
   target: 'web',
@@ -12,7 +13,7 @@ module.exports = {
   ],
 
   output: {
-    filename: 'bundle.js',
+    filename: 'bundle.js'
   },
 
   plugins: [
@@ -20,7 +21,8 @@ module.exports = {
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: path.join(__dirname, 'index_template.html')
-    })
+    }),
+    new SWPrecacheWebpackPlugin()
   ],
 
   resolve: {
@@ -45,18 +47,6 @@ module.exports = {
             name: '[name].[ext]'
           } 
         }
-      },
-      {
-        test: /\.md$/,
-        use: [
-
-            {
-                loader: "html-loader"
-            },
-            {
-                loader: "markdown-loader"
-            }
-        ]
       }
     ],
 
