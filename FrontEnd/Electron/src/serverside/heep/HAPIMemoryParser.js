@@ -215,6 +215,8 @@ export var ReadControl = (thisBlockData) => { // OP 2
     iconName = 'speakers';
   } else if (thisBlockData[1] == 14) {
     iconName = 'rotary';
+  } else if (thisBlockData[1] == 15) {
+    iconName = 'openClose';
   }
 
   return iconName;
