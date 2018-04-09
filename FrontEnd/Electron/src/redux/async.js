@@ -90,8 +90,6 @@ export const searchForAccessPoints = () => {
   var url = urlPrefix.concat('/api/searchForAccessPoints');
 
   performAJAX(url, {}, 'GET', (data) => {
-
-    console.log('Access Points: ', data);
     
     setup.store.dispatch(actions_classic.setAccessPoints(data));
   })
@@ -105,8 +103,6 @@ export const connectToAccessPoint = (ssid) => {
   var url = urlPrefix.concat('/api/connectToAccessPoint');
 
   performAJAX(url, messagePacket, 'POST', (response) => {
-
-    console.log('results: ', response);
 
     if (response.success) {
       const deviceID = Object.keys(response.data.devices)[0];
@@ -154,8 +150,6 @@ export const resetDeviceAndOSWifi = (deviceID) => {
   var url = urlPrefix.concat('/api/resetDeviceAndOSWifi');
 
   performAJAX(url, {deviceID: deviceID}, 'POST', (response) => {
-
-    console.log('Reset Response: ', response);
 
     setup.store.dispatch(actions_classic.overwriteFromServer(response));    
     
