@@ -13,6 +13,6 @@ export const iconMappings = [
 				'servo',
 				'soilSensor',
 				'speakers',
-				'rotary'
+				'rotary',
 				'openClose'
 	    ]
