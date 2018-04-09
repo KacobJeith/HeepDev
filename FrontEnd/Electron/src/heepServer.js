@@ -60,11 +60,14 @@ app.post('/api/resetDeviceAndOSWifi', (req, res) => {
 
   heepConnect.sendResetNetworkToDevice(req.body.deviceID)
 
-  heepAccess.ResetSystemWifi((results) => {
-    console.log(results)
+  setTimeout( () => { // Wait 1 second for the device to respond to the Reset COP
+    
+    heepAccess.ResetSystemWifi((results) => {
+      console.log(results)
 
-    setTimeout(() => hardResetState(req, res), 1000);
-  });
+      setTimeout(() => hardResetState(req, res), 1000); //wait 1 second after wifi reset to start trying to get the new state
+    });
+  }, 1000);
 
 })
 
@@ -83,14 +86,18 @@ app.get('/api/hardRefreshLocalDeviceState', (req, res) => {
   hardResetState(req, res);
 })
 
-const hardResetState = (req, res) => {
+const hardResetState = (req, res, timeout = 2000) => {
   console.log("Refreshing local device state")
   heepConnect.ResetMasterState(); 
-  heepConnect.SearchForHeepDevices(); 
+  heepConnect.SearchForHeepDevices(0, (success) => {
+    console.log('Found Gateway, waiting ' + timeout + 'ms to reset state');
+    setTimeout(() => {
+      res.json(heepConnect.GetCurrentMasterState());
+    }, timeout);
 
-  setTimeout(() => {
-    res.json(heepConnect.GetCurrentMasterState());
-  }, 2000);
+  }); 
+
+  
 
 }
 
