@@ -56,10 +56,18 @@ void AddVertexPointer(unsigned int pointer)
 	numberOfVertices++;
 }
 
-void AddVertex(struct Vertex_Byte myVertex)
+heepByte AddVertex(struct Vertex_Byte myVertex)
 {
-	unsigned int pointerToVertex = SetVertexInMemory_Byte(myVertex);
-	AddVertexPointer(pointerToVertex);
+	unsigned int pointerToVertex = 0;
+	if(SetVertexInMemory_Byte(myVertex, &pointerToVertex) == 0)
+	{	
+		AddVertexPointer(pointerToVertex);
+		return 0;
+	}
+	else
+	{
+		return 1;
+	}
 }
 
 void RemoveVertexListEntry(unsigned int pointer)

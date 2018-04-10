@@ -263,10 +263,16 @@ void ExecuteSetPositionOpCode()
 	unsigned int xValue = GetNumberFromBuffer(inputBuffer, &counter, 2);
 	unsigned int yValue = GetNumberFromBuffer(inputBuffer, &counter, 2);
 
-	UpdateXYInMemory_Byte(xValue, yValue, deviceIDByte);
-
-	char SuccessMessage [] = "Value Set";
-	FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
+	if(UpdateXYInMemory_Byte(xValue, yValue, deviceIDByte) == 0)
+	{
+		char SuccessMessage [] = "Value Set";
+		FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
+	}
+	else
+	{
+		char ErrorMessage [] = "Failed to set. Memory Full";
+		FillOutputBufferWithError(ErrorMessage, strlen(ErrorMessage));
+	}
 }
 
 // Updated
@@ -292,11 +298,20 @@ void ExecuteSetVertexOpCode()
 	myVertex.txControlID = txControl;
 	myVertex.rxIPAddress = vertexIP;
 
-	AddVertex(myVertex);
+	if(AddVertex(myVertex) == 0)
+	{
+		ClearOutputBuffer();
+		char SuccessMessage [] = "Vertex Set";
+		FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
+	}
+	else
+	{
+		ClearOutputBuffer();
+		char errorMessage [] = "Vertex Not Set. Memory Overflow";
+		FillOutputBufferWithError(errorMessage, strlen(errorMessage));
+	}
 
-	ClearOutputBuffer();
-	char SuccessMessage [] = "Vertex Set";
-	FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
+	
 }
 
 // Updated
@@ -460,20 +475,35 @@ void ExecuteAddMOPOpCode()
 void ExecuteSetWiFiDataOpCode()
 {
 	int passwordFirstPosition = inputBuffer[3] + 4;
-	AddWiFiSettingsToMemory( (char*)(&inputBuffer[4]), inputBuffer[3], (char*)(&inputBuffer[passwordFirstPosition+1]), inputBuffer[passwordFirstPosition], deviceIDByte, inputBuffer[2]);
-
-	ClearOutputBuffer();
-	char SuccessMessage [] = "WiFi Added!";
-	FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
+	if(AddWiFiSettingsToMemory( (char*)(&inputBuffer[4]), inputBuffer[3], (char*)(&inputBuffer[passwordFirstPosition+1]), inputBuffer[passwordFirstPosition], deviceIDByte, inputBuffer[2]) == 0)
+	{
+		ClearOutputBuffer();
+		char SuccessMessage [] = "WiFi Added!";
+		FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
+	}
+	else
+	{
+		ClearOutputBuffer();
+		char errorMessage [] = "Cannot Add Wifi: Out of memory!";
+		FillOutputBufferWithError(errorMessage, strlen(errorMessage));
+	}
+	
 }
 
 void ExecuteSetDeviceNameOpCode()
 {
-	SetDeviceNameInMemory_Byte((char*)(&inputBuffer[2]), inputBuffer[1], deviceIDByte);
-
-	ClearOutputBuffer();
-	char SuccessMessage [] = "Name Set!";
-	FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
+	if(SetDeviceNameInMemory_Byte((char*)(&inputBuffer[2]), inputBuffer[1], deviceIDByte) == 0)
+	{
+		ClearOutputBuffer();
+		char SuccessMessage [] = "Name Set!";
+		FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
+	}
+	else
+	{
+		ClearOutputBuffer();
+		char errorMessage [] = "Cannot Add Name. Not enough memory!";
+		FillOutputBufferWithError(errorMessage, strlen(errorMessage));
+	}
 }
 
 void ExecuteResetDeviceNetwork()
