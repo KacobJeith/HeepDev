@@ -13,6 +13,7 @@ import {  AppBar,
           Avatar,
           Badge,
           Button,
+          Drawer,
           FormControlLabel,
           FormGroup,
           Grid,
@@ -43,12 +44,12 @@ var mapStateToProps = (state) => ({
 
 const calculateQuantity = (state) => {
   var quantity = 0;
-  
+
   for (var i =0; i < state.shoppingCart.lineItems.length; i++) {
 
     quantity += state.shoppingCart.lineItems[i].quantity;
   }
-  
+
   return quantity
 }
 
@@ -281,20 +282,8 @@ class MenuAppBar extends React.Component {
             color="inherit"
           >
             <MenuIcon/>
-            <Menu
-              id="mobile-menu-appbar"
-              anchorEl={this.state.anchorMobileMenu}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(this.state.anchorMobileMenu)}
-              onClose={this.handleMobileMenuClose}
-            >
+
+            <Drawer anchor='left' open={true} variant='temporary'>
               <NavLink to="/About" style={styles.navLink}>
                 <MenuItem onClick={this.handleMobileMenuClose}>About</MenuItem>
               </NavLink>
@@ -306,7 +295,8 @@ class MenuAppBar extends React.Component {
               <NavLink to="/Developers" style={styles.navLink}>
                 <MenuItem onClick={this.handleMobileMenuClose}>Develop</MenuItem>
               </NavLink>
-            </Menu>
+            </Drawer>
+
           </IconButton>
       </Hidden>
     )
