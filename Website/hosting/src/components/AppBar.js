@@ -77,11 +77,6 @@ const styles = {
     textDecoration: 'none',
     outline: 'none'
   },
-  navLinkMenu: {
-    textDecoration: 'none',
-    outline: 'none',
-    width: 250
-  }
 };
 
 const ShopLink = props => <Link to="/Shop" {...props} style={{ textDecoration: 'none' }}/>
@@ -108,12 +103,10 @@ class MenuAppBar extends React.Component {
 
   handleMobileMenuOpen = () => {
     this.setState({ mobileMenu: true })
-    console.log('click open!')
   };
 
   handleMobileMenuClose = () => {
     this.setState({ mobileMenu: false })
-    console.log('click close!')
   };
 
   handleLogout = () => {
@@ -232,13 +225,6 @@ class MenuAppBar extends React.Component {
 
   appBarCart() {
 
-    const inputs = {
-      iconSize: {
-        width: 40,
-        height: 40
-      }
-    };
-
     return (
       <NavLink to="/MyCart" style={{textDecoration: 'none'}}>
         <IconButton aria-label="Add to shopping cart"
@@ -272,23 +258,102 @@ class MenuAppBar extends React.Component {
         </Button>
       </NavLink>
     )
-  }
+  };
+
+  mobileAppBarLogo() {
+    return (
+      <Hidden smUp={true}>
+        <Grid container justify='center' style={{
+          width: '100%',
+          height: '100%',
+          overflow:' hidden'
+        }}>
+          <Grid item>
+            {this.appBarLogo()}
+          </Grid>
+        </Grid>
+      </Hidden>
+    )
+  };
+
+  mobileMenuLogo() {
+    const inputs = {
+      logo: {
+        src: logos.gradientLogo,
+        height: 60,
+        style: {
+          maxWidth: "250%"
+        },
+      },
+    };
+
+    return (
+      <div>
+        <NavLink to="/" style={styles.navLink}>
+          <MenuItem style={{
+            height: 80,
+          }}>
+            <Grid container justify='center' style={{maxWidth: '100%', margin: 0}}>
+              <Grid item>
+                <img {...inputs.logo}/>
+              </Grid>
+            </Grid>
+          </MenuItem>
+        </NavLink>
+
+        <Divider />
+      </div>
+    )
+  };
+
+  mobileMenuCart() {
+
+    return (
+      <div>
+        <NavLink to="/MyCart" style={{textDecoration: 'none'}}>
+          <MenuItem>
+              <IconButton aria-label="Add to shopping cart"
+                style={{marginBottom: 0}}
+              >
+                {SmartBadge(
+                          <ShoppingCartIcon/>,
+                          this.props.itemsInCart,
+                          'secondary')
+                }
+              </IconButton>
+              Cart
+            </MenuItem>
+        </NavLink>
+        <Divider/>
+      </div>
+    )
+  };
+
+  mobileMenuLink(link, linkText, linkIcon) {
+
+    return (
+      <div>
+      <NavLink to={link} style={styles.navLink}>
+        <MenuItem>
+          <IconButton>
+            {linkIcon}
+          </IconButton>
+          {linkText}
+        </MenuItem>
+      </NavLink>
+
+      <Divider />
+    </div>
+    )
+  };
 
   mobileMenu() {
-
     const inputs = {
       menuButton: {
         style:{
           fontSize: 30,
           marginBottom: 3,
           marginRight: 10
-        }
-      },
-      logo: {
-        src: logos.gradientLogo,
-        height: 60,
-        style: {
-          maxWidth: "250%"
         }
       },
     }
@@ -318,57 +383,14 @@ class MenuAppBar extends React.Component {
                 style={{width: 200}}
                 >
 
-                <NavLink to="/" style={styles.navLink}>
-                  <MenuItem style={{
-                    height: 80,
-                  }}>
-                    <Grid container justify='center' style={{maxWidth: '100%', margin: 0}}>
-                      <Grid item>
-                        <img {...inputs.logo}/>
-                      </Grid>
-                    </Grid>
-                  </MenuItem>
-                </NavLink>
-
-                <Divider />
-
-                <NavLink to="/About" style={styles.navLink}>
-                  <MenuItem>
-                    <IconButton>
-                      <AboutIcon/>
-                    </IconButton>
-                    About
-                  </MenuItem>
-                </NavLink>
-
-                <Divider />
-
-                <NavLink to="/Shop" style={styles.navLink}>
-                  <MenuItem>
-                    <IconButton>
-                      <ShopIcon/>
-                    </IconButton>
-                    Shop
-                  </MenuItem>
-                </NavLink>
-
-                <Divider />
-
-                <NavLink to="/Developers" style={styles.navLink}>
-                <MenuItem>
-                  <IconButton>
-                    <DevelopIcon/>
-                  </IconButton>
-                  Develop
-                </MenuItem>
-                </NavLink>
-
-                <Divider />
+                {this.mobileMenuLogo()}
+                {this.mobileMenuCart()}
+                {this.mobileMenuLink('/About', 'About', <AboutIcon/>)}
+                {this.mobileMenuLink('/Shop', 'Shop', <ShopIcon/>)}
+                {this.mobileMenuLink('/Develop', 'Develop', <DevelopIcon/>)}
 
               </div>
-
             </Drawer>
-
           </IconButton>
       </Hidden>
     )
@@ -392,11 +414,10 @@ class MenuAppBar extends React.Component {
         <AppBar position="static" style={{overflowX: 'hidden'}}>
           <Toolbar>
             {this.mobileMenu()}
-            <Grid container>
-              <Grid item>
-                {this.appBarLogo()}
-              </Grid>
-            </Grid>
+            <Hidden xsDown={true}>
+              {this.appBarLogo()}
+            </Hidden>
+            {this.mobileAppBarLogo()}
             <div className={classes.flex}/>
             {this.appBarLink("/About", "About")}
             {this.appBarLink("/Shop", "Shop")}
