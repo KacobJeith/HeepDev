@@ -15,7 +15,8 @@ module.exports = {
   ],
 
   output: {
-    filename: '[name].bundle.js'
+    filename: '[name].bundle.js',
+    chunkFilename: '[name].bundle.js'
   },
 
   plugins: [
@@ -24,7 +25,7 @@ module.exports = {
       filename: 'index.html',
       template: path.join(__dirname, 'index_template.html')
     }),
-    new BundleAnalyzerPlugin(),
+    // new BundleAnalyzerPlugin(),
     new SWPrecacheWebpackPlugin(),
     new WebpackPwaManifest({
         name: 'HeepWebsite',

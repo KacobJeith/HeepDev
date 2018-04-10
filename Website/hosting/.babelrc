@@ -1,11 +1,15 @@
 {
   "presets": [
-      "react",
-      "es2015",
-      "stage-0",
-      "es2017"
-    ],
-    "plugins": [
+    "react",
+    ["env", {
+    	"targets": {
+			"browsers": ["last 2 versions", "safari >= 7"]
+		},
+    	"debug": true
+    }],
+    "stage-1"
+  ],
+  "plugins": [
     	"syntax-async-functions", 
     	"syntax-dynamic-import",
     	"dynamic-import-webpack"

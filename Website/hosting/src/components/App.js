@@ -23,7 +23,11 @@ import DownloadPage from './heep/DownloadPage'
 import ManageCart from './store/ManageCart'
 import Tutorials from './Tutorials'
 
-const Landing = () => import(/* webpackChunkName: "landing" */ './landing/Landing');
+const Landing = () => import(
+	/* webpackChunkName: "landing" */
+  	/* webpackMode: "lazy" */ 
+  	'./landing/Landing');
+
 
 import Theme from './Theme'
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
