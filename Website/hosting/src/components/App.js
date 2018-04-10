@@ -7,7 +7,7 @@ import ReactGA from 'react-ga'
 
 import AppBar from './AppBar'
 import Footer from './Footer'
-import Landing from './landing/Landing'
+// import Landing from './landing/Landing'
 import About from './About'
 import Store from './store/Store'
 import Build from './heep/Build'
@@ -21,6 +21,8 @@ import ProductDetails from './store/ProductDetails'
 import DownloadPage from './heep/DownloadPage'
 import ManageCart from './store/ManageCart'
 import Tutorials from './Tutorials'
+
+const Landing = () => import(/* webpackChunkName: "Landing" */ './landing/Landing');
 
 import Theme from './Theme'
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
