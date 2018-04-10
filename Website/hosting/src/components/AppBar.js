@@ -13,6 +13,7 @@ import {  AppBar,
           Avatar,
           Badge,
           Button,
+          Divider,
           Drawer,
           FormControlLabel,
           FormGroup,
@@ -21,6 +22,7 @@ import {  AppBar,
           IconButton,
           Menu,
           MenuItem,
+          List,
           Switch,
           Toolbar,
           Typography }        from 'material-ui'
@@ -28,6 +30,9 @@ import {  AppBar,
 import MenuIcon               from 'material-ui-icons/Menu';
 import AccountCircle          from 'material-ui-icons/AccountCircle';
 import ShoppingCartIcon       from 'material-ui-icons/ShoppingCart';
+import ShopIcon               from 'material-ui-icons/ShoppingBasket'
+import AboutIcon              from 'material-ui-icons/Contacts'
+import DevelopIcon            from 'material-ui-icons/Code'
 
 import { withStyles }         from 'material-ui/styles';
 
@@ -71,6 +76,11 @@ const styles = {
   navLink: {
     textDecoration: 'none',
     outline: 'none'
+  },
+  navLinkMenu: {
+    textDecoration: 'none',
+    outline: 'none',
+    width: 250
   }
 };
 
@@ -81,7 +91,7 @@ class MenuAppBar extends React.Component {
   state = {
     auth: true,
     anchorAccountMenu: null,
-    anchorMobileMenu: null
+    mobileMenu: false
   };
 
   handleChange = (event, checked) => {
@@ -96,18 +106,20 @@ class MenuAppBar extends React.Component {
     this.setState({ anchorAccountMenu: null });
   };
 
-  handleMobileMenu = event => {
-    this.setState({ anchorMobileMenu: event.currentTarget });
+  handleMobileMenuOpen = () => {
+    this.setState({ mobileMenu: true })
+    console.log('click open!')
   };
 
-  handleMobileMenuClose = event => {
-    this.setState({ anchorMobileMenu: null });
+  handleMobileMenuClose = () => {
+    this.setState({ mobileMenu: false })
+    console.log('click close!')
   };
 
   handleLogout = () => {
     auth.logout();
     this.handleClose();
-  }
+  };
 
   loggedOn() {
     return (
@@ -263,6 +275,7 @@ class MenuAppBar extends React.Component {
   }
 
   mobileMenu() {
+
     const inputs = {
       menuButton: {
         style:{
@@ -272,29 +285,71 @@ class MenuAppBar extends React.Component {
         }
       }
     }
+
     return (
       <Hidden smUp={true}>
           <IconButton
             {...inputs.menuButton}
-            aria-owns={Boolean(this.state.anchorMobileMenu) ? 'mobile-menu-appbar' : null}
-            aria-haspopup="true"
-            onClick={this.handleMobileMenu}
+            onClick={this.handleMobileMenuOpen}
             color="inherit"
           >
             <MenuIcon/>
 
-            <Drawer anchor='left' open={true} variant='temporary'>
-              <NavLink to="/About" style={styles.navLink}>
-                <MenuItem onClick={this.handleMobileMenuClose}>About</MenuItem>
-              </NavLink>
+            <Drawer
+              anchor='left'
+              open={this.state.mobileMenu}
+              onChange={this.handleMobileMenuClose}
+              ModalProps={{ onBackdropClick: this.handleMobileMenuClose }}
+              variant='temporary'
+              >
 
-              <NavLink to="/Shop" style={styles.navLink}>
-                <MenuItem onClick={this.handleMobileMenuClose}>Shop</MenuItem>
-              </NavLink>
+              <div
+                tabIndex={0}
+                role="button"
+                onClick={this.handleMobileMenuClose}
+                onKeyDown={this.handleMobileMenuClose}
+                style={{width: 250}}
+                >
 
-              <NavLink to="/Developers" style={styles.navLink}>
-                <MenuItem onClick={this.handleMobileMenuClose}>Develop</MenuItem>
-              </NavLink>
+                <NavLink to="/" style={styles.navLink}>
+                  <MenuItem>Home</MenuItem>
+                </NavLink>
+
+                <Divider />
+
+                <NavLink to="/About" style={styles.navLink}>
+                  <MenuItem>
+                    <IconButton>
+                      <AboutIcon/>
+                    </IconButton>
+                    About
+                  </MenuItem>
+                </NavLink>
+
+                <Divider />
+
+                <NavLink to="/Shop" style={styles.navLink}>
+                  <MenuItem>
+                    <IconButton>
+                      <ShopIcon/>
+                    </IconButton>
+                    Shop
+                  </MenuItem>
+                </NavLink>
+
+                <Divider />
+
+                <NavLink to="/Developers" style={styles.navLink}>
+                <MenuItem>
+                  <IconButton>
+                    <DevelopIcon/>
+                  </IconButton>
+                  Develop
+                </MenuItem>
+                </NavLink>
+
+              </div>
+
             </Drawer>
 
           </IconButton>
