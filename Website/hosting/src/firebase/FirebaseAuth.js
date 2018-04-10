@@ -1,5 +1,4 @@
 import firebase from 'firebase'
-import firebaseui from 'firebaseui'
 import * as setup from '../index'
 import * as actions from '../redux/actions'
 import * as database from './FirebaseDatabase'
@@ -125,59 +124,63 @@ export const loginUser = () => {
 }
 
 export const firebaseAuthUI = () => {
-	var uiConfig = {
-        callbacks: {
-          signInSuccess: function(currentUser, credential, redirectUrl) {
 
-            return true;
-          },
-          uiShown: function() {
+	import(/* webpackChunkName: "firebaseui" */'firebaseui').then(firebaseui => {
+			var uiConfig = {
+		        callbacks: {
+		          signInSuccess: function(currentUser, credential, redirectUrl) {
 
-            document.getElementById('loader').style.display = 'none';
-          }
-        },
-        credentialHelper: firebaseui.auth.CredentialHelper.ACCOUNT_CHOOSER_COM,
+		            return true;
+		          },
+		          uiShown: function() {
 
-        queryParameterForWidgetMode: 'mode',
+		            document.getElementById('loader').style.display = 'none';
+		          }
+		        },
+		        credentialHelper: firebaseui.auth.CredentialHelper.ACCOUNT_CHOOSER_COM,
 
-        queryParameterForSignInSuccessUrl: 'signInSuccessUrl',
+		        queryParameterForWidgetMode: 'mode',
 
-        signInFlow: 'redirect',
-        signInSuccessUrl: signinSuccessURL(),
-        signInOptions: [
+		        queryParameterForSignInSuccessUrl: 'signInSuccessUrl',
 
-          {
-            provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
-            requireDisplayName: true
-          },
-          {
-		      provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-		      customParameters: {
-		        prompt: 'select_account'
-		      }
-		  }
+		        signInFlow: 'redirect',
+		        signInSuccessUrl: signinSuccessURL(),
+		        signInOptions: [
 
-        ],
+		          {
+		            provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
+		            requireDisplayName: true
+		          },
+		          {
+				      provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+				      customParameters: {
+				        prompt: 'select_account'
+				      }
+				  }
 
-        tosUrl: '/TermsOfService'
-    };
+		        ],
+
+		        tosUrl: '/TermsOfService'
+		    };
 
 
-	var instance = firebaseui.auth.AuthUI.getInstance();
+			var instance = firebaseui.auth.AuthUI.getInstance();
 
-	if (instance != null) {
+			if (instance != null) {
 
-		instance.delete().then(() => {
+				instance.delete().then(() => {
 
-			var ui = new firebaseui.auth.AuthUI(firebase.auth());
-			ui.start('#firebaseui-auth-container', uiConfig);
+					var ui = new firebaseui.auth.AuthUI(firebase.auth());
+					ui.start('#firebaseui-auth-container', uiConfig);
 
-		});
-	} else {
+				});
+			} else {
 
-		var ui = new firebaseui.auth.AuthUI(firebase.auth());
-		ui.start('#firebaseui-auth-container', uiConfig);
-	}
+				var ui = new firebaseui.auth.AuthUI(firebase.auth());
+				ui.start('#firebaseui-auth-container', uiConfig);
+			}
+	})
+	
 }
 
 export const handleLogin = () => {

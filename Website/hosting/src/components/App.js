@@ -11,7 +11,6 @@ import Footer from './Footer'
 // import Landing from './landing/Landing'
 import About from './About'
 import Build from './heep/Build'
-import Auth from './account/Auth'
 import Logout from './account/Logout'
 import Loading from './Loading'
 import UserAccount from './account/UserAccount'
@@ -35,6 +34,11 @@ const Checkout = () => <AsyncComponent moduleProvider={() => import(
 	/* webpackChunkName: "checkout" */
   	/* webpackMode: "lazy" */ 
   	'./store/Checkout')} />
+
+const Auth = () => <AsyncComponent moduleProvider={() => import(
+	/* webpackChunkName: "auth" */
+  	/* webpackMode: "lazy" */ 
+  	'./account/Auth')} />
 
 import Theme from './Theme'
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
