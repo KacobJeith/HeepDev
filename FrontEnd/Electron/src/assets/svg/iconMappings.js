@@ -14,5 +14,6 @@ export const iconMappings = [
 				'soilSensor',
 				'speakers',
 				'rotary',
-				'openClose'
+				'openClose',
+				'PIRSensor'
 	    ]

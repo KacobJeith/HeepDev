@@ -217,6 +217,8 @@ export var ReadControl = (thisBlockData) => { // OP 2
     iconName = 'rotary';
   } else if (thisBlockData[1] == 15) {
     iconName = 'openClose';
+  } else if (thisBlockData[1] == 16) {
+    iconName = 'PIRSensor';
   }
 
   return iconName;
