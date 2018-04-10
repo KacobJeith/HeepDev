@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as Actions from '../redux/actions'
 import ReactGA from 'react-ga'
+import AsyncComponent from './AsyncComponent'
 
 import AppBar from './AppBar'
 import Footer from './Footer'
@@ -22,7 +23,7 @@ import DownloadPage from './heep/DownloadPage'
 import ManageCart from './store/ManageCart'
 import Tutorials from './Tutorials'
 
-const Landing = () => import(/* webpackChunkName: "Landing" */ './landing/Landing');
+const Landing = () => import(/* webpackChunkName: "landing" */ './landing/Landing');
 
 import Theme from './Theme'
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
@@ -88,8 +89,8 @@ class App extends React.Component {
 							<div {...inputs.container}>
 								<div {...inputs.content}>
 									<Route path="/" component={AppBar}/>
-									<Route exact path="/" component={Landing}/>
-									<Route path="/Landing" component={Landing}/>
+									<Route exact path="/" component={() => <AsyncComponent moduleProvider={Landing} />}/>
+									<Route path="/Landing" component={() => <AsyncComponent moduleProvider={Landing} />}/>
 									<Route path="/About" component={About}/>
 									<Route path="/Shop" component={Store}/>
 									<Route path="/Tutorials" component={Tutorials}/>
