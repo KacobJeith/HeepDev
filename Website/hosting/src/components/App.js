@@ -10,24 +10,31 @@ import AppBar from './AppBar'
 import Footer from './Footer'
 // import Landing from './landing/Landing'
 import About from './About'
-import Store from './store/Store'
 import Build from './heep/Build'
 import Auth from './account/Auth'
 import Logout from './account/Logout'
 import Loading from './Loading'
 import UserAccount from './account/UserAccount'
 import DeviceBuilder from './heep/DeviceBuilder'
-import Checkout from './store/Checkout'
 import ProductDetails from './store/ProductDetails'
 import DownloadPage from './heep/DownloadPage'
 import ManageCart from './store/ManageCart'
 import Tutorials from './Tutorials'
 
-const Landing = () => import(
+const Landing = () => <AsyncComponent moduleProvider={() => import(
 	/* webpackChunkName: "landing" */
   	/* webpackMode: "lazy" */ 
-  	'./landing/Landing');
+  	'./landing/Landing')} />
 
+const Store = () => <AsyncComponent moduleProvider={() => import(
+	/* webpackChunkName: "store" */
+  	/* webpackMode: "lazy" */ 
+  	'./store/Store')} />
+
+const Checkout = () => <AsyncComponent moduleProvider={() => import(
+	/* webpackChunkName: "checkout" */
+  	/* webpackMode: "lazy" */ 
+  	'./store/Checkout')} />
 
 import Theme from './Theme'
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
@@ -93,8 +100,8 @@ class App extends React.Component {
 							<div {...inputs.container}>
 								<div {...inputs.content}>
 									<Route path="/" component={AppBar}/>
-									<Route exact path="/" component={() => <AsyncComponent moduleProvider={Landing} />}/>
-									<Route path="/Landing" component={() => <AsyncComponent moduleProvider={Landing} />}/>
+									<Route exact path="/" component={Landing}/>
+									<Route path="/Landing" component={Landing}/>
 									<Route path="/About" component={About}/>
 									<Route path="/Shop" component={Store}/>
 									<Route path="/Tutorials" component={Tutorials}/>

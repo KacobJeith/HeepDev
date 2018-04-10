@@ -8,10 +8,5 @@
     	"debug": true
     }],
     "stage-1"
-  ],
-  "plugins": [
-    	"syntax-async-functions", 
-    	"syntax-dynamic-import",
-    	"dynamic-import-webpack"
-    ]
+  ]
 }
