@@ -17,10 +17,7 @@
 /* eslint-env browser */
 'use strict';
 
-console.log('running service worker');
-
 if ('serviceWorker' in navigator) {
-  console.log('found service worker')
   // Your service-worker.js *must* be located at the top-level directory relative to your site.
   // It won't be able to control pages unless it's located at the same level or higher than them.
   // *Don't* register service worker file in, e.g., a scripts/ sub-directory!
