@@ -283,7 +283,14 @@ class MenuAppBar extends React.Component {
           marginBottom: 3,
           marginRight: 10
         }
-      }
+      },
+      logo: {
+        src: logos.gradientLogo,
+        height: 60,
+        style: {
+          maxWidth: "250%"
+        }
+      },
     }
 
     return (
@@ -308,11 +315,19 @@ class MenuAppBar extends React.Component {
                 role="button"
                 onClick={this.handleMobileMenuClose}
                 onKeyDown={this.handleMobileMenuClose}
-                style={{width: 250}}
+                style={{width: 200}}
                 >
 
                 <NavLink to="/" style={styles.navLink}>
-                  <MenuItem>Home</MenuItem>
+                  <MenuItem style={{
+                    height: 80,
+                  }}>
+                    <Grid container justify='center' style={{maxWidth: '100%', margin: 0}}>
+                      <Grid item>
+                        <img {...inputs.logo}/>
+                      </Grid>
+                    </Grid>
+                  </MenuItem>
                 </NavLink>
 
                 <Divider />
@@ -348,6 +363,8 @@ class MenuAppBar extends React.Component {
                 </MenuItem>
                 </NavLink>
 
+                <Divider />
+
               </div>
 
             </Drawer>
@@ -374,9 +391,13 @@ class MenuAppBar extends React.Component {
       <div className={classes.root}>
         <AppBar position="static" style={{overflowX: 'hidden'}}>
           <Toolbar>
-            {this.appBarLogo()}
-            <div className={classes.flex}/>
             {this.mobileMenu()}
+            <Grid container>
+              <Grid item>
+                {this.appBarLogo()}
+              </Grid>
+            </Grid>
+            <div className={classes.flex}/>
             {this.appBarLink("/About", "About")}
             {this.appBarLink("/Shop", "Shop")}
             {this.appBarLink("/Developers", "Develop")}
