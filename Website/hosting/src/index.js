@@ -12,6 +12,8 @@ import * as shopify from './shopify/Shopify'
 import { composeWithDevTools } from 'redux-devtools-extension';
 import ReactGA from 'react-ga';
 
+require('./service-worker-registration.js');
+
 const startState = {
   shopify: {},
   scrollPosition: 0,
