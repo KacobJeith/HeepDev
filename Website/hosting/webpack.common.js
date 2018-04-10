@@ -4,6 +4,7 @@ var path = require('path');
 var webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 var SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
+var WebpackPwaManifest = require('webpack-pwa-manifest')
 
 module.exports = {
   target: 'web',
@@ -22,7 +23,17 @@ module.exports = {
       filename: 'index.html',
       template: path.join(__dirname, 'index_template.html')
     }),
-    new SWPrecacheWebpackPlugin()
+    new SWPrecacheWebpackPlugin(),
+    new WebpackPwaManifest({
+        name: 'HeepWebsite',
+        filename: "manifest.json",
+        short_name: 'Heep',
+        description: 'Main Heep Website & Webstore',
+        background_color: '#ffffff',
+        fingerprints: false,
+        orientation: "landscape"
+      
+    })
   ],
 
   resolve: {
