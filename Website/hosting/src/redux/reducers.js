@@ -3,15 +3,13 @@ import Immutable from 'immutable'
 import 'babel-polyfill'
 import { initialState } from '../index'
 import * as actions from './actions'
-import * as auth from '../firebase/FirebaseAuth'
-import * as database from '../firebase/FirebaseDatabase'
 import * as shopify from '../shopify/Shopify'
 
 export default function(state = initialState, action) {
   switch (action.type) {
     case 'LOGIN' :
 
-      setTimeout(() => {auth.handleLogin()}, 100);
+      import(/* webpackChunkName: "firebaseAuth" */ '../firebase/FirebaseAuth').then((auth) => auth.handleLogin());
 
       return state
     case 'POPULATE_SHOPIFY' :
@@ -36,7 +34,7 @@ export default function(state = initialState, action) {
 
     case 'CREATE_CHECKOUT' :
 
-      setTimeout(() => {database.saveCheckoutID(action.checkoutID)}, 100);
+      import(/* webpackChunkName: "firebaseDatabase" */ '../firebase/FirebaseDatabase').then((database) => database.saveCheckoutID(action.checkoutID));
 
       return Immutable.Map(state).set('checkoutID', action.checkoutID).toJS()
 
@@ -124,7 +122,7 @@ export default function(state = initialState, action) {
 
       const checkoutID = state.shoppingCart.id;
 
-      database.pushCartToFulfillmentQueue(checkoutID, state.cartContext);
+      import(/* webpackChunkName: "firebaseDatabase" */ '../firebase/FirebaseDatabase').then((database) => database.pushCartToFulfillmentQueue(checkoutID, state.cartContext));
 
       return state
 
@@ -138,7 +136,7 @@ export default function(state = initialState, action) {
 
     case 'LOGOUT':
 
-      auth.logout();
+      import(/* webpackChunkName: "firebaseAuth" */ '../firebase/FirebaseAuth').then((auth) => auth.logout());
 
       return initialState
 
@@ -154,13 +152,13 @@ export default function(state = initialState, action) {
 
     case 'LOGIN_TO_FIREBASE' : 
 
-      auth.firebaseAuthUI();
+      import(/* webpackChunkName: "firebaseAuth" */ '../firebase/FirebaseAuth').then((auth) => auth.firebaseAuthUI());
 
       return state
 
     case 'LOGOUT_OF_FIREBASE' :
-    
-      auth.logout();
+
+      import(/* webpackChunkName: "firebaseAuth" */ '../firebase/FirebaseAuth').then((auth) => auth.logout());
 
       return state
 
@@ -194,17 +192,14 @@ export default function(state = initialState, action) {
 
     case 'SAVE_NEW_PLACE' :
 
-      setTimeout(() => {
-        database.saveNewPlace(action.placeName, action.placeSSID, action.placeSSIDPassword)
-      }, 100);
+      import(/* webpackChunkName: "firebaseDatabase" */ '../firebase/FirebaseDatabase').then((database) => database.saveNewPlace(action.placeName, action.placeSSID, action.placeSSIDPassword));
 
       return state
 
     case 'DELETE_PLACE_FROM_FIREBASE' :
 
-      setTimeout(() => {
-        database.deletePlace(action.placeID)
-      }, 1000);
+      import(/* webpackChunkName: "firebaseDatabase" */ '../firebase/FirebaseDatabase').then((database) => database.deletePlace(action.placeID));
+
 
       return state
 

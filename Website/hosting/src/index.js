@@ -7,7 +7,6 @@ import { createStore, applyMiddleware } from 'redux'
 import reducers from './redux/reducers'
 import App from './components/App'
 import thunk from 'redux-thunk'
-import * as auth from './firebase/FirebaseAuth'
 import * as shopify from './shopify/Shopify'
 import { composeWithDevTools } from 'redux-devtools-extension';
 import ReactGA from 'react-ga';
@@ -40,7 +39,7 @@ export const initialState = Immutable.Map(startState)
 
 export const store = createStore(reducers, startState,  composeWithDevTools(applyMiddleware(thunk)));
 
-auth.initializeFirebase();
+import(/* webpackChunkName: "firebaseAuth" */ './firebase/FirebaseAuth').then((auth) => auth.initializeFirebase());
 shopify.InitializeShopify();
 
 render(
