@@ -30,9 +30,19 @@ module.exports = {
         short_name: 'Heep',
         description: 'Main Heep Website & Webstore',
         background_color: '#ffffff',
+        theme_color: '#ffffff',
         fingerprints: false,
-        orientation: "landscape"
-      
+        orientation: "landscape",
+        icons: [
+          {
+            src: path.resolve('src/assets/Heep_Gradient.png'),
+            sizes: [96, 128, 192, 256, 384, 512] 
+          },
+          {
+            src: path.resolve('src/assets/Heep_Gradient.png'),
+            size: '1024x1024' 
+          }
+        ]
     })
   ],
 
