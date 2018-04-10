@@ -152,6 +152,22 @@ export default function(state = initialState, action) {
 
       return Immutable.Map(state).set('providers', newState).toJS()
 
+    case 'LOGIN_TO_FIREBASE' : 
+
+      auth.firebaseAuthUI();
+
+      return state
+
+    case 'LOGOUT_OF_FIREBASE' :
+    
+      auth.logout();
+
+      return state
+
+    case 'ADD_USER': 
+
+      return Immutable.Map(state).set('user', action.user).toJS();
+
     case 'UNLINK_PROVIDER' :
 
       var newState = Immutable.Map(state.providers).delete(action.providerId).toJS();

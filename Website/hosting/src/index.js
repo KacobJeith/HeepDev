@@ -33,6 +33,7 @@ const startState = {
   files: {},
   collections: {},
   svgText: 'starting',
+  user: null
 }
 
 export const initialState = Immutable.Map(startState)
