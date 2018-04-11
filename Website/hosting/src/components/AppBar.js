@@ -260,6 +260,19 @@ class MenuAppBar extends React.Component {
     )
   };
 
+  avatarLogin() {
+
+    var loggedInNavs = [];
+
+    if (this.props.loginStatus) {
+      loggedInNavs = this.loggedOn();
+    } else {
+      loggedInNavs = this.notLoggedOn();
+    }
+
+    return loggedInNavs
+  };
+
   mobileAppBarLogo() {
     return (
       <Hidden smUp={true}>
@@ -342,7 +355,7 @@ class MenuAppBar extends React.Component {
         </MenuItem>
       </NavLink>
 
-      <Divider />
+      <Divider/>
     </div>
     )
   };
@@ -372,6 +385,7 @@ class MenuAppBar extends React.Component {
               open={this.state.mobileMenu}
               onChange={this.handleMobileMenuClose}
               ModalProps={{ onBackdropClick: this.handleMobileMenuClose }}
+              PaperProps={{ style: {backgroundColor: '#ECEFF1'} }}
               variant='temporary'
               >
 
@@ -380,14 +394,16 @@ class MenuAppBar extends React.Component {
                 role="button"
                 onClick={this.handleMobileMenuClose}
                 onKeyDown={this.handleMobileMenuClose}
-                style={{width: 200}}
+                style={{
+                  width: 200,
+                }}
                 >
 
                 {this.mobileMenuLogo()}
                 {this.mobileMenuCart()}
                 {this.mobileMenuLink('/About', 'About', <AboutIcon/>)}
                 {this.mobileMenuLink('/Shop', 'Shop', <ShopIcon/>)}
-                {this.mobileMenuLink('/Develop', 'Develop', <DevelopIcon/>)}
+                {this.mobileMenuLink('/Developers', 'Develop', <DevelopIcon/>)}
 
               </div>
             </Drawer>
@@ -397,17 +413,8 @@ class MenuAppBar extends React.Component {
   }
 
   render() {
+
     const { classes } = this.props;
-    const { authed, anchorEl } = this.state;
-    const open = Boolean(anchorEl);
-
-    var loggedInNavs = [];
-
-    if (this.props.loginStatus) {
-      loggedInNavs = this.loggedOn();
-    } else {
-      loggedInNavs = this.notLoggedOn();
-    }
 
     return (
       <div className={classes.root}>
@@ -423,7 +430,7 @@ class MenuAppBar extends React.Component {
             {this.appBarLink("/Shop", "Shop")}
             {this.appBarLink("/Developers", "Develop")}
             {this.appBarCart()}
-            {loggedInNavs}
+            {this.avatarLogin()}
           </Toolbar>
         </AppBar>
       </div>
