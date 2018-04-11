@@ -32,7 +32,6 @@ import { withStyles }         from 'material-ui/styles';
 
 
 import SmartBadge from './utilities/SmartBadge'
-import { logos } from '../assets/remote/Logos'
 
 
 var mapStateToProps = (state) => ({
@@ -244,7 +243,7 @@ class MenuAppBar extends React.Component {
   appBarLogo() {
     const inputs = {
       Logo: {
-        src: logos.sideBySide,
+        src: '/assets/svg/SideBySide.svg',
         height: 50,
         style: {
           maxWidth: "250%"

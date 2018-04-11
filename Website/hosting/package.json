@@ -1,24 +1,25 @@
 {
-  "name": "Redux_Webpack",
+  "name": "Heep_Website",
+  "sideEffects": false,
   "version": "0.0.0",
   "private": false,
   "license": "see LICENSE file",
-  "description": "A Minimal Hello World for JS Frameworks",
+  "description": "Web Store and landing page for people interested in Heep",
   "author": "kacobjeith",
   "bugs": {
     "url": ""
   },
-  "homepage": "",
+  "homepage": "heep.io",
   "engines": {
     "node": "8.9.4"
   },
   "scripts": {
     "tests": "mocha-webpack --webpack-config webpack.config-test.js \"src/**/*.test.js\"",
     "build": "webpack --config webpack.production.js",
-    "dev": "webpack-dev-server --config webpack.dev.js --hot --watch",
+    "dev": "NODE_ENV=development webpack-dev-server --config webpack.dev.js --hot --watch",
     "start": "babel-node src/server.js",
     "tbs": "npm run test && npm run bs",
-    "bs": "npm run build && firebase serve",
+    "bs": "NODE_ENV='production' npm run build && firebase serve",
     "ts": "npm run test && npm run start",
     "deploy": "npm run build && firebase deploy --only hosting"
   },
@@ -56,6 +57,7 @@
     "babel-preset-react": "^6.24.1",
     "babel-register": "^6.22.0",
     "bundle-loader": "^0.5.6",
+    "compression-webpack-plugin": "^1.1.11",
     "css-loader": "^0.25.0",
     "file-loader": "^1.1.11",
     "html-loader": "^0.5.5",
@@ -66,6 +68,7 @@
     "react-hot-loader": "^3.0.0-beta.6",
     "style-loader": "^0.13.1",
     "sw-precache-webpack-plugin": "^0.11.5",
+    "uglifyjs-webpack-plugin": "^1.2.4",
     "webpack": "^4.2.0",
     "webpack-bundle-analyzer": "^2.11.1",
     "webpack-cli": "^2.0.13",
