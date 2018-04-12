@@ -27,7 +27,7 @@ module.exports = {
       filename: 'index.html',
       template: path.join(__dirname, 'index_template.html')
     }),
-    new BundleAnalyzerPlugin(),
+    // new BundleAnalyzerPlugin(),
     new SWPrecacheWebpackPlugin(),
     new WebpackPwaManifest({
         name: 'HeepWebsite',

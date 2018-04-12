@@ -6,7 +6,10 @@ import reducers from './redux/reducers'
 import App from './components/App'
 import thunk from 'redux-thunk'
 import * as shopify from './shopify/Shopify'
+
 import { composeWithDevTools } from 'redux-devtools-extension';
+
+
 
 require('./service-worker-registration.js');
 
@@ -33,8 +36,7 @@ const startState = {
 }
 
 export const initialState = startState;
-
-export const store = createStore(reducers, startState, applyMiddleware(thunk));
+export const store = createStore(reducers, startState, composeWithDevTools(applyMiddleware(thunk)));
 
 render(
   <Provider store={store}>

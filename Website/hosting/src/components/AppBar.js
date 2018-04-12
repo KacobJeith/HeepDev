@@ -243,7 +243,7 @@ class MenuAppBar extends React.Component {
   appBarLogo() {
     const inputs = {
       Logo: {
-        src: '/assets/svg/SideBySide.svg',
+        src: 'src/assets/svg/SideBySide.svg',
         height: 50,
         style: {
           maxWidth: "250%"
