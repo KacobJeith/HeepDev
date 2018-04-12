@@ -4,15 +4,19 @@ import { bindActionCreators } from 'redux'
 import { withRouter } from 'react-router-dom'
 import * as actions from '../../redux/actions'
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
-import Paper from 'material-ui/Paper';
-import Grid from 'material-ui/Grid';
-import GridList, { GridListTile, GridListTileBar } from 'material-ui/GridList';
-import IconButton from 'material-ui/IconButton';
-import StarBorderIcon from 'material-ui-icons/StarBorder';
-import Typography from 'material-ui/Typography';
-import Button from 'material-ui/Button'
-import AddShoppingCart from 'material-ui-icons/AddShoppingCart'
+
+import { withStyles }     from 'material-ui/styles';
+import Paper              from 'material-ui/Paper';
+import Grid               from 'material-ui/Grid';
+import IconButton         from 'material-ui/IconButton';
+import Typography         from 'material-ui/Typography';
+import Button             from 'material-ui/Button'
+
+import  GridList, { 
+        GridListTile,   
+        GridListTileBar } from 'material-ui/GridList';
+
+import AddShoppingCart    from 'material-ui-icons/AddShoppingCart'
 
 var mapStateToProps = (state, ownProps) => ({
   product: state.shopify[ownProps.match.params.productID],

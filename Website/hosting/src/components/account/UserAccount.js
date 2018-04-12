@@ -6,7 +6,7 @@ import * as actions           from '../../redux/actions'
 
 import { withTheme }       from 'material-ui/styles'
 import { Grid, Tooltip, Typography, Avatar, Divider, IconButton, List, ListItem, ListItemText, ListItemIcon}  from 'material-ui'
-import { Edit }  from 'material-ui-icons'
+import Edit   from 'material-ui-icons/Edit'
 
 import DeviceListItem from '../heep/DeviceListItem'
 import PlaceListItem from '../heep/PlaceListItem'
