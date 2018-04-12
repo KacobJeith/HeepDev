@@ -4,10 +4,7 @@ var path = require('path');
 var webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-var SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
 var WebpackPwaManifest = require('webpack-pwa-manifest')
-const CompressionPlugin = require("compression-webpack-plugin")
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = {
   target: 'web',
@@ -16,11 +13,6 @@ module.exports = {
     path.join(__dirname, 'src/index.js')
   ],
 
-  output: {
-    filename: '[name].[hash].bundle.js',
-    chunkFilename: '[name].[chunkhash].bundle.js'
-  },
-
   plugins: [
     new webpack.NamedModulesPlugin(),
     new HtmlWebpackPlugin({
@@ -28,7 +20,6 @@ module.exports = {
       template: path.join(__dirname, 'index_template.html')
     }),
     // new BundleAnalyzerPlugin(),
-    new SWPrecacheWebpackPlugin(),
     new WebpackPwaManifest({
         name: 'HeepWebsite',
         filename: "manifest.json",
@@ -48,28 +39,10 @@ module.exports = {
             size: '1024x1024' 
           }
         ]
-    }),
-    new CompressionPlugin()
+    })
   ],
 
   optimization: {
-    minimizer: [
-      new UglifyJsPlugin({
-        uglifyOptions: {
-          compress: {
-              global_defs: {
-                  "process.env.NODE_ENV": "production"
-              }
-          },
-          mangle: true,
-          keep_fnames: true,
-          output: {
-            beautify: false,
-            comments: false
-          }
-        }
-      })
-    ],
     splitChunks: {
         cacheGroups: {
             commons: {
