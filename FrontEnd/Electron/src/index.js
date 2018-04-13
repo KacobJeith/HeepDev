@@ -14,6 +14,8 @@ import * as actions_classic from './redux/actions_classic'
 
 import 'firebaseui/dist/firebaseui.css';
 
+require('./service-worker-registration.js');
+
 const startState = {
   webGLStatus: false,
   loginStatus: false,

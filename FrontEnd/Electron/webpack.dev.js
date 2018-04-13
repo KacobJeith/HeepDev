@@ -5,6 +5,10 @@ const common = require('./webpack.common.js');
 
 module.exports = merge(common, {
 
+  entry: [
+    'webpack-dev-server/client/index.js?http://localhost:8080/'
+  ],
+
   mode: 'development',
 
   output: {
