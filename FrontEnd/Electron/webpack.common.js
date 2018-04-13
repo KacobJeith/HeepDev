@@ -59,6 +59,10 @@ module.exports = {
         options: {
           name: '[name].[ext]'
         } 
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
       }
     ],
 

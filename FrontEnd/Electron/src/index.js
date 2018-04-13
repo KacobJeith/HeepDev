@@ -12,6 +12,8 @@ import $ from 'jquery'
 import { composeWithDevTools } from 'redux-devtools-extension';
 import * as actions_classic from './redux/actions_classic'
 
+import 'firebaseui/dist/firebaseui.css';
+
 const startState = {
   webGLStatus: false,
   loginStatus: false,
