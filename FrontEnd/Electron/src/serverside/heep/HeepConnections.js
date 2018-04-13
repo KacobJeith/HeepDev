@@ -25,13 +25,14 @@ var heepPort = 5000;
 var searchComplete = false;
 var mostRecentSearch = {};
 
-export var SearchForHeepDevices = () => {
+export var SearchForHeepDevices = (numTimesTried = 0, callback = () => {}) => {
   var gateway = findGateway();
   var searchBuffer = Buffer.from([0x09, 0x00])
 
   console.log(gateway)
 
   if (gateway != undefined) {
+    callback(true);
     var client = dgram.createSocket("udp4");
     client.bind(function(err, bytes){
         console.log("Set Broadcast");
@@ -42,6 +43,10 @@ export var SearchForHeepDevices = () => {
             client.close();
         });
       });
+  } else {
+    if (numTimesTried < 5) {
+      setTimeout(() => SearchForHeepDevices(numTimesTried + 1, callback), 1000)
+    }
   }
   
 }
@@ -92,6 +97,17 @@ export var sendWifiCredsToDevice = (deviceID, ssid, password) => {
   var numBytes = [packet.length];
 
   var messageBuffer = Buffer.from([0x22].concat(numBytes, packet));
+  console.log('Connecting to Device ', deviceID + ' at IPAddress: ' + IPAddress);
+  console.log('Data packet: ', messageBuffer);
+  ConnectToHeepDevice(IPAddress, heepPort, messageBuffer)
+
+}
+
+export var sendResetNetworkToDevice = (deviceID) => {
+
+  var IPAddress = masterState.devices[deviceID].ipAddress;
+  
+  var messageBuffer = Buffer.from([0x24, 0x00]);
   console.log('Connecting to Device ', deviceID + ' at IPAddress: ' + IPAddress);
   console.log('Data packet: ', messageBuffer);
   ConnectToHeepDevice(IPAddress, heepPort, messageBuffer)

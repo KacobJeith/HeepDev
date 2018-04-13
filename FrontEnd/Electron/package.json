@@ -15,7 +15,8 @@
   },
   "scripts": {
     "test": "mocha-webpack --webpack-config webpack.config-test.js \"src/**/*.test.js\"",
-    "build": "npm run copy-files && webpack --config webpack.production.js && webpack --config webpack.electron.js",
+    "build": "npm run overwrite-module-files && npm run copy-files && webpack --config webpack.production.js && webpack --config webpack.electron.js",
+    "overwrite-module-files": "babel ./packageResources --out-dir ./node_modules/node-wifiscanner2/lib/ --copy-files",
     "dev": "babel-node devServer.js",
     "start": "electron .",
     "tbs": "npm run test && npm run bs",
@@ -26,7 +27,7 @@
     "dist": "electron-builder --projectDir ./dist/ -p always",
     "package-all": "npm run build && electron-builder --projectDir ./dist/ -mw -p always",
     "package-current": "npm run build && npm run dist",
-    "build-electron-bundle": "webpack --config webpack.electron.js"
+    "build-electron-bundle": "npm run overwrite-module-files && webpack --config webpack.electron.js"
   },
   "dependencies": {
     "babel-core": "^6.26.0",
@@ -42,7 +43,7 @@
     "firebase": "^4.12.0",
     "firebaseui": "^2.6.3",
     "fs": "0.0.1-security",
-    "immutable": "^3.8.1",
+    "immutable": "^3.8.2",
     "jquery": "^3.1.1",
     "jszip": "^3.1.4",
     "material-ui": "^1.0.0-beta.38",
@@ -57,7 +58,8 @@
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "redux": "^3.6.0",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "wifi-control": "^2.0.1"
   },
   "devDependencies": {
     "autoprefixer-loader": "^3.2.0",

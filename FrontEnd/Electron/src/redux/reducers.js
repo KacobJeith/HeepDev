@@ -304,6 +304,32 @@ export default function(state = initialState, action) {
 
       return Immutable.Map(state).set('detailsPanelDeviceID', action.deviceID).toJS()
 
+    case 'SEARCH_FOR_ACCESS_POINTS' :
+
+      async.searchForAccessPoints();
+
+      return state
+
+    case 'SET_ACCESS_POINTS' :
+
+      return Immutable.Map(state).set('accessPoints', action.accessPoints).toJS()
+
+    case 'CONNECT_TO_ACCESS_POINT' :
+
+      async.connectToAccessPoint(action.ssid);
+
+      return Immutable.fromJS(state).setIn(['accessPointData','currentlyConnecting'], action.ssid).toJS()
+
+    case 'SET_ACCESS_DATA' : 
+
+      return Immutable.Map(state).set('accessPointData', action.packet).toJS()
+
+    case 'RESET_DEVICE_AND_OS_WIFI': 
+
+      async.resetDeviceAndOSWifi(action.deviceID);
+
+      return state
+
     case 'SEND_WIFI_CRED_TO_DEVICE' :
       var newState = Immutable.Map(state.deviceWiFiCreds).toJS();
 

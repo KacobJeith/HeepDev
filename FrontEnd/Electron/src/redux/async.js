@@ -85,6 +85,78 @@ export var hardRefreshLocalDeviceState = () => {
   })
 }
 
+export const searchForAccessPoints = () => {
+  
+  var url = urlPrefix.concat('/api/searchForAccessPoints');
+
+  performAJAX(url, {}, 'GET', (data) => {
+    
+    setup.store.dispatch(actions_classic.setAccessPoints(data));
+  })
+
+}
+
+export const connectToAccessPoint = (ssid) => {
+
+  const messagePacket = {ssid: ssid};
+
+  var url = urlPrefix.concat('/api/connectToAccessPoint');
+
+  performAJAX(url, messagePacket, 'POST', (response) => {
+
+    if (response.success) {
+      const deviceID = Object.keys(response.data.devices)[0];
+
+      setup.store.dispatch(actions_classic.overwriteFromServer(response.data));
+      
+      const accessData = {
+        connectedTo: response.ssid,
+        currentlyConnecting: null,
+        failedAttempt: null,
+        deviceID: deviceID
+      }
+
+      setup.store.dispatch(actions_classic.setAccessData(accessData));
+      setup.store.dispatch(actions_classic.setDetailsPanelDeviceID(deviceID));
+
+    } else {
+
+      const accessData = {
+        connectedTo: null,
+        currentlyConnecting: null,
+        failedAttempt: response.ssid,
+        deviceID: deviceID
+      }
+
+      setup.store.dispatch(actions_classic.setAccessData(accessData));
+    }
+    
+  })
+
+}
+
+export const resetDeviceAndOSWifi = (deviceID) => {
+
+  const accessData = {
+    connectedTo: null,
+    currentlyConnecting: null,
+    failedAttempt: null,
+    deviceID: null
+  }
+  
+  setTimeout(() => setup.store.dispatch(actions_classic.setDetailsPanelDeviceID(null)), 100);
+  setTimeout(() => setup.store.dispatch(actions_classic.setAccessData(accessData)), 200);
+  
+  var url = urlPrefix.concat('/api/resetDeviceAndOSWifi');
+
+  performAJAX(url, {deviceID: deviceID}, 'POST', (response) => {
+
+    setup.store.dispatch(actions_classic.overwriteFromServer(response));    
+    
+  })
+
+}
+
 
 export var performAJAX = (url, messagePacket, type = 'POST', callback = (data) => {} ) => {
   $.ajax({
