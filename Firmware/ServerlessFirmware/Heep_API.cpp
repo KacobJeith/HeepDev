@@ -256,7 +256,10 @@ void SendControlsOnHeartBeat(unsigned long controlSendPeriod)
 	{
 		for(int i = 0; i < numberOfControls; i++)
 		{
-			SendOutputByID(controlList[i].controlID, controlList[i].curValue);
+			if(controlList[i].controlDirection == HEEP_OUTPUT)
+			{
+				SendOutputByID(controlList[i].controlID, controlList[i].curValue);
+			}
 		}
 		lastHeartBeat = GetMillis();
 	}
