@@ -81,8 +81,8 @@ unsigned long CalculateCoreMemorySize()
 {
 	unsigned long coreMemorySize = 0;
 
-	// Firmware Version / Initial Client ID will always be the same
-	coreMemorySize += 7;
+	// Firmware MOP + ID Size + NumBytesByte + Number of bytes in the version
+	coreMemorySize += 2 + STANDARD_ID_SIZE + NUM_COPS_UNDERSTOOD;
 
 	return coreMemorySize + CalculateControlDataSize();
 }
@@ -144,6 +144,24 @@ void FillOutputBufferWithDynamicMemorySize()
 	AddNewCharToOutputBuffer(MAX_MEMORY);
 }
 
+void AddVersionToOutputBuffer()
+{
+	// Add Version Data
+	AddNewCharToOutputBuffer(ClientDataOpCode);
+	AddDeviceIDOrIndexToOutputBuffer_Byte(deviceIDByte);
+	AddNewCharToOutputBuffer(NUM_COPS_UNDERSTOOD);
+	AddNewCharToOutputBuffer(IsHeepDeviceOpCode);
+	AddNewCharToOutputBuffer(SetValueOpCode);
+	AddNewCharToOutputBuffer(SetPositionOpCode);
+	AddNewCharToOutputBuffer(SetVertexOpCode);
+	AddNewCharToOutputBuffer(DeleteVertexOpCode);
+	AddNewCharToOutputBuffer(AddMOPOpCode);
+	AddNewCharToOutputBuffer(DeleteMOPOpCode);
+	AddNewCharToOutputBuffer(SetWiFiDataOpCode);
+	AddNewCharToOutputBuffer(SetNameOpCode);
+	AddNewCharToOutputBuffer(ResetDeviceNetwork);
+}
+
 // Updated
 void FillOutputBufferWithMemoryDump()
 {
@@ -156,14 +174,10 @@ void FillOutputBufferWithMemoryDump()
 
 	AddNewCharToOutputBuffer(totalMemory);
 
+	AddVersionToOutputBuffer();
+
 	// First data sent is control register so that receiver can decode the rest
 	//AddNewCharToOutputBuffer(controlRegister);
-
-	// Add Client Data
-	AddNewCharToOutputBuffer(ClientDataOpCode);
-	AddDeviceIDOrIndexToOutputBuffer_Byte(deviceIDByte);
-	AddNewCharToOutputBuffer(1);
-	AddNewCharToOutputBuffer(firmwareVersion);
 
 	// Add Control Data
 	FillOutputBufferWithControlData();
