@@ -1,6 +1,7 @@
 const path = require('path')
 const url = require('url')
 var log = require('electron-log');
+var expressStaticGzip = require("express-static-gzip");
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -28,7 +29,7 @@ app.use('/src', (req, res, next) => {
   next();
 });
 
-app.use('/', express.static(__dirname));
+app.use('/', expressStaticGzip(__dirname));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 

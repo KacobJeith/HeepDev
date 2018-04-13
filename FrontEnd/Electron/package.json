@@ -15,7 +15,7 @@
   },
   "scripts": {
     "test": "mocha-webpack --webpack-config webpack.config-test.js \"src/**/*.test.js\"",
-    "build": "npm run overwrite-module-files && npm run copy-files && webpack --config webpack.production.js && webpack --config webpack.electron.js",
+    "build": "set NODE_ENV=production && npm run overwrite-module-files && npm run copy-files && webpack --config webpack.production.js && webpack --config webpack.electron.js",
     "overwrite-module-files": "babel ./packageResources --out-dir ./node_modules/node-wifiscanner2/lib/ --copy-files",
     "dev": "set NODE_ENV=development && babel-node devServer.js",
     "start": "electron .",
@@ -71,6 +71,7 @@
     "css-loader": "^0.28.11",
     "dateformat": "^3.0.3",
     "electron-builder": "^20.7.1",
+    "express-static-gzip": "^0.3.2",
     "file-loader": "^0.11.2",
     "html-webpack-plugin": "^3.1.0",
     "plotly.js": "^1.35.2",

@@ -3,6 +3,7 @@ import {HashRouter as Router, Route} from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as Actions from '../redux/actions'
+import AsyncComponent from './AsyncComponent'
 
 import Header from './AppBar'
 import Auth from './account/Auth'
@@ -11,11 +12,16 @@ import Loading from './Loading'
 import UserAccount from './account/UserAccount'
 import Designer from './designer/DeviceBuilder'
 import Flowchart from './flowchart/Flowchart'
-import Analytics from './Analytics/AnalyticsMain'
+// import Analytics from './Analytics/AnalyticsMain'
 import SearchAccessPointsForm from './SearchAccessPointsForm'
 
 import Theme from './Theme'
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
+
+const Analytics = () => <AsyncComponent moduleProvider={() => import(
+	/* webpackChunkName: "analytics" */
+  	/* webpackMode: "lazy" */ 
+  	'./Analytics/AnalyticsMain')} />
 
 const mapStateToProps = (state) => ({
 	loginStatus: state.loginStatus,
