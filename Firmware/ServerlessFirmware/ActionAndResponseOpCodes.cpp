@@ -84,6 +84,9 @@ unsigned long CalculateCoreMemorySize()
 	// Firmware MOP + ID Size + NumBytesByte + Number of bytes in the version
 	coreMemorySize += 2 + STANDARD_ID_SIZE + NUM_COPS_UNDERSTOOD;
 
+	// Dynamic Memory Size MOP + ID Size + NumBytesByte + Dynamic Memory Size
+	coreMemorySize += 1 + STANDARD_ID_SIZE + 1 + 1;
+
 	return coreMemorySize + CalculateControlDataSize();
 }
 
