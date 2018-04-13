@@ -157,7 +157,9 @@ void AddVersionToOutputBuffer()
 	AddNewCharToOutputBuffer(DeleteVertexOpCode);
 	AddNewCharToOutputBuffer(AddMOPOpCode);
 	AddNewCharToOutputBuffer(DeleteMOPOpCode);
+#ifdef DEVICE_USES_WIFI
 	AddNewCharToOutputBuffer(SetWiFiDataOpCode);
+#endif
 	AddNewCharToOutputBuffer(SetNameOpCode);
 	AddNewCharToOutputBuffer(ResetDeviceNetwork);
 }
@@ -572,10 +574,12 @@ void ExecuteControlOpCodes()
 	{
 		ExecuteDeleteMOPOpCode();
 	}
+#ifdef DEVICE_USES_WIFI
 	else if(ReceivedOpCode == SetWiFiDataOpCode)
 	{
 		ExecuteSetWiFiDataOpCode();
 	}
+#endif
 	else if(ReceivedOpCode == SetNameOpCode)
 	{
 		ExecuteSetDeviceNameOpCode();
