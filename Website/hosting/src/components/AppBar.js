@@ -7,7 +7,6 @@ import PropTypes              from 'prop-types';
 import classNames             from 'classnames';
 
 import * as actions           from '../redux/actions'
-import * as auth              from '../firebase/FirebaseAuth'
 
 import {  AppBar,
           Avatar,
@@ -39,12 +38,12 @@ import { withStyles }         from 'material-ui/styles';
 
 
 import SmartBadge from './utilities/SmartBadge'
-import { logos } from '../assets/remote/Logos'
 
 
 var mapStateToProps = (state) => ({
   loginStatus: state.loginStatus,
-  itemsInCart: calculateQuantity(state)
+  itemsInCart: calculateQuantity(state),
+  userImage: state.user ? state.user.photoURL : ''
 })
 
 const calculateQuantity = (state) => {
@@ -110,7 +109,7 @@ class MenuAppBar extends React.Component {
   };
 
   handleLogout = () => {
-    auth.logout();
+    this.props.logoutOfFirebase();
     this.handleClose();
   };
 
@@ -125,7 +124,7 @@ class MenuAppBar extends React.Component {
         >
           <Avatar
             alt="Adelle Charles"
-            src={auth.getMyUserImagePath()}
+            src={this.props.userImage}
             className={classNames(this.props.avatar, this.props.bigAvatar)}
           />
         </IconButton>
@@ -243,7 +242,7 @@ class MenuAppBar extends React.Component {
   appBarLogo() {
     const inputs = {
       Logo: {
-        src: logos.sideBySide,
+        src: 'src/assets/svg/SideBySide.svg',
         height: 50,
         style: {
           maxWidth: "250%"

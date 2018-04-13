@@ -8,12 +8,12 @@ import Paper                                        from 'material-ui/Paper';
 import Grid                                         from 'material-ui/Grid';
 import GridList, { GridListTile, GridListTileBar }  from 'material-ui/GridList';
 import IconButton                                   from 'material-ui/IconButton';
-import StarBorderIcon                               from 'material-ui-icons/StarBorder';
 import Typography                                   from 'material-ui/Typography';
 import Button                                       from 'material-ui/Button'
 import Hidden                                       from 'material-ui/Hidden';
 
-import {FileDownload, ArrowForward}  from 'material-ui-icons';
+import FileDownload  from 'material-ui-icons/FileDownload';
+import ArrowForward  from 'material-ui-icons/ArrowForward';
 
 import * as actions from '../../redux/actions'
 

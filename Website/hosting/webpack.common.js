@@ -3,7 +3,7 @@
 var path = require('path');
 var webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-var SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 var WebpackPwaManifest = require('webpack-pwa-manifest')
 
 module.exports = {
@@ -13,17 +13,13 @@ module.exports = {
     path.join(__dirname, 'src/index.js')
   ],
 
-  output: {
-    filename: 'bundle.js'
-  },
-
   plugins: [
     new webpack.NamedModulesPlugin(),
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: path.join(__dirname, 'index_template.html')
     }),
-    new SWPrecacheWebpackPlugin(),
+    // new BundleAnalyzerPlugin(),
     new WebpackPwaManifest({
         name: 'HeepWebsite',
         filename: "manifest.json",
@@ -46,6 +42,18 @@ module.exports = {
     })
   ],
 
+  optimization: {
+    splitChunks: {
+        cacheGroups: {
+            commons: {
+                test: /[\\/]node_modules[\\/]/,
+                name: "vendors",
+                chunks: "initial"
+            }
+        }
+    }
+  },
+
   resolve: {
     modules: ['node_modules'],
     extensions: ['.js']
@@ -53,6 +61,10 @@ module.exports = {
 
   module: {
     rules: [
+      {
+        include: /(node_modules)/,
+        sideEffects: false
+      },
       { 
         exclude: /(node_modules)/,
         test: /\.js$/, 

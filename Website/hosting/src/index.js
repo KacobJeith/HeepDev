@@ -1,18 +1,15 @@
-import 'babel-polyfill'
 import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
-import Immutable from 'immutable'
 import { createStore, applyMiddleware } from 'redux'
 import reducers from './redux/reducers'
 import App from './components/App'
 import thunk from 'redux-thunk'
-import * as auth from './firebase/FirebaseAuth'
 import * as shopify from './shopify/Shopify'
-import { composeWithDevTools } from 'redux-devtools-extension';
-import ReactGA from 'react-ga';
 
-import loading from './assets/heepwink3_gradient.mov';
+import { composeWithDevTools } from 'redux-devtools-extension';
+
+
 
 require('./service-worker-registration.js');
 
@@ -35,14 +32,11 @@ const startState = {
   files: {},
   collections: {},
   svgText: 'starting',
+  user: null
 }
 
-export const initialState = Immutable.Map(startState)
-
-export const store = createStore(reducers, startState,  composeWithDevTools(applyMiddleware(thunk)));
-
-auth.initializeFirebase();
-shopify.InitializeShopify();
+export const initialState = startState;
+export const store = createStore(reducers, startState, composeWithDevTools(applyMiddleware(thunk)));
 
 render(
   <Provider store={store}>
@@ -51,3 +45,6 @@ render(
 
   document.getElementById('root')
 );
+
+import(/* webpackChunkName: "firebaseAuth" */ './firebase/FirebaseAuth').then((auth) => auth.initializeFirebase());
+shopify.InitializeShopify();

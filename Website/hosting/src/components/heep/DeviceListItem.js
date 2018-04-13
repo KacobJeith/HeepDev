@@ -13,12 +13,13 @@ import { List,
          Divider,
          Collapse }                 from 'material-ui'
 import { withTheme }                from 'material-ui/styles'
-import {  ExpandLess, 
-          ExpandMore, 
-          Redo,
-          Undo,
-          LinearScale,
-          PowerSettingsNew }   from 'material-ui-icons'
+
+import ExpandLess       from 'material-ui-icons/ExpandLess'
+import ExpandMore       from 'material-ui-icons/ExpandMore'
+import Redo             from 'material-ui-icons/Redo'
+import Undo             from 'material-ui-icons/Undo'
+import LinearScale      from 'material-ui-icons/LinearScale'
+import PowerSettingsNew from 'material-ui-icons/PowerSettingsNew'
 
 var mapStateToProps = (state, ownProps) => ({
   device: state.devices[ownProps.deviceID]
@@ -98,7 +99,7 @@ class DeviceListItem extends React.Component {
           maxWidth: '100%'
         },
         type:"image/svg+xml",
-        data: "../src/assets/svg/" + name + ".svg"
+        data: "src/assets/svg/" + name + ".svg"
       }
     }
 
