@@ -69,5 +69,7 @@ void AddOnOffControl(char* controlName, int inputOutput, int startingValue);
 int GetControlValueByName(char* controlName);
 void SetControlValueByName(char* controlName, int newValue);
 
+void SendControlsOnHeartBeat(unsigned long controlSendPeriod);
+
 heepByte GetWiFiFromMemory(char* WiFiSSID, char* WiFiPassword, int priority);
 heepByte AddWiFiSettingsToMemory(char* WiFiSSID, int numCharSSID, char* WiFiPassword, int numCharPassword, heepByte* deviceID, heepByte IDPriority);

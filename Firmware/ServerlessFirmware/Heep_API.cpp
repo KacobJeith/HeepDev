@@ -248,3 +248,16 @@ heepByte HandleHeepCommunications()
 	ExecuteControlOpCodes();
 	return 0;
 }
+
+unsigned long lastHeartBeat = 0;
+void SendControlsOnHeartBeat(unsigned long controlSendPeriod)
+{
+	if(GetMillis() - lastHeartBeat > controlSendPeriod)
+	{
+		for(int i = 0; i < numberOfControls; i++)
+		{
+			SendOutputByID(controlList[i].controlID, controlList[i].curValue);
+		}
+		lastHeartBeat = GetMillis();
+	}
+}
