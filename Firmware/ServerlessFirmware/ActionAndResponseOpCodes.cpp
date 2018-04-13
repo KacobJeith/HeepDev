@@ -82,10 +82,10 @@ unsigned long CalculateCoreMemorySize()
 	unsigned long coreMemorySize = 0;
 
 	// Firmware MOP + ID Size + NumBytesByte + Number of bytes in the version
-	coreMemorySize += 2 + STANDARD_ID_SIZE + NUM_COPS_UNDERSTOOD;
+	coreMemorySize += 2 + ID_SIZE + NUM_COPS_UNDERSTOOD;
 
 	// Dynamic Memory Size MOP + ID Size + NumBytesByte + Dynamic Memory Size
-	coreMemorySize += 1 + STANDARD_ID_SIZE + 1 + 1;
+	coreMemorySize += 1 + ID_SIZE + 1 + 1;
 
 	return coreMemorySize + CalculateControlDataSize();
 }
@@ -175,7 +175,7 @@ void FillOutputBufferWithMemoryDump()
 	AddNewCharToOutputBuffer(MemoryDumpOpCode);
 	AddDeviceIDToOutputBuffer_Byte(deviceIDByte);
 
-	unsigned long totalMemory = curFilledMemory + CalculateCoreMemorySize() + 1;
+	unsigned long totalMemory = curFilledMemory + CalculateCoreMemorySize();
 
 	AddNewCharToOutputBuffer(totalMemory);
 
