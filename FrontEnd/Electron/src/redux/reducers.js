@@ -4,15 +4,13 @@ import { initialState } from '../index'
 import * as actions from './actions'
 import * as async from './async'
 import * as utils from '../serverside/utilities/generalUtilities'
-import * as auth from '../firebase/FirebaseAuth'
-import * as database from '../firebase/FirebaseDatabase'
 import reducersDesigner from './reducers_designer'
 
 export default function(state = initialState, action) {
   switch (action.type) {
     case 'LOGIN' :
 
-      setTimeout(() => {auth.handleLogin()}, 100);
+      import(/* webpackChunkName: "firebaseAuth" */ '../firebase/FirebaseAuth').then((auth) => auth.handleLogin());
 
       return state
 
@@ -22,7 +20,7 @@ export default function(state = initialState, action) {
       
     case 'LOGOUT':
 
-      auth.logout();
+      import(/* webpackChunkName: "firebaseAuth" */ '../firebase/FirebaseAuth').then((auth) => auth.logout());
 
       return initialState
 
@@ -132,7 +130,22 @@ export default function(state = initialState, action) {
 
       return Immutable.Map(state).set('displayingAnalytics', action.deviceID).toJS()
 
-      
+    case 'LOGIN_TO_FIREBASE' : 
+
+      import(/* webpackChunkName: "firebaseAuth" */ '../firebase/FirebaseAuth').then((auth) => auth.firebaseAuthUI());
+
+      return state
+
+    case 'LOGOUT_OF_FIREBASE' :
+
+      import(/* webpackChunkName: "firebaseAuth" */ '../firebase/FirebaseAuth').then((auth) => auth.logout());
+
+      return state
+
+    case 'ADD_USER': 
+
+      return Immutable.Map(state).set('user', action.user).toJS();
+
 
 
 
@@ -269,9 +282,7 @@ export default function(state = initialState, action) {
 
     case 'SAVE_NEW_PLACE' :
 
-      setTimeout(() => {
-        database.saveNewPlace(action.placeName, action.placeSSID, action.placeSSIDPassword)
-      }, 100);
+      import(/* webpackChunkName: "firebaseDatabase" */ '../firebase/FirebaseDatabase').then((database) => database.deletePlace(action.placeID));
 
       return state
 

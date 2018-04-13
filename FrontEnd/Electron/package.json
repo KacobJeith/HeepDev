@@ -57,6 +57,7 @@
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "redux": "^3.6.0",
+    "redux-persist": "^5.9.1",
     "redux-thunk": "^2.2.0",
     "underscore": "^1.8.3",
     "wifi-control": "^2.0.1"

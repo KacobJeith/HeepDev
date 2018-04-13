@@ -16,7 +16,7 @@ module.exports = {
 
   plugins: [
     new webpack.NamedModulesPlugin(),
-    // new BundleAnalyzerPlugin(),
+    new BundleAnalyzerPlugin(),
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: path.join(__dirname, 'index_template.html')

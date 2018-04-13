@@ -80,5 +80,15 @@ export const deletePlace = (placeID) => ({
 	placeID
 })
 
+export const loginToFirebase = () => ({
+	type: 'LOGIN_TO_FIREBASE'
+})
 
+export const logoutOfFirebase = () => ({
+	type: 'LOGOUT_OF_FIREBASE'
+})
 
+export const addUser = (user) => ({
+	type: 'ADD_USER',
+	user
+})

@@ -21,6 +21,13 @@ var allowCrossDomain = function(req, res, next) {
 }
 
 app.use(allowCrossDomain);
+
+app.use('/src', (req, res, next) => {
+  const oneYear = 365 * 24 * 60 * 60;
+  res.setHeader('Cache-Control', 'max-age=' + oneYear + ', immutable');
+  next();
+});
+
 app.use('/', express.static(__dirname));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
