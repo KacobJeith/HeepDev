@@ -1,9 +1,11 @@
 {
   "presets": [
-      "react",
-      "es2015",
-      "stage-0",
-      "es2017"
-    ],
-    "plugins": ["syntax-async-functions"]
+    "react",
+    ["env", {
+    	"targets": {
+			"browsers": ["last 2 versions", "safari >= 7"]
+		}
+    }],
+    "stage-1"
+  ]
 }

@@ -1,6 +1,7 @@
 const path = require('path')
 const url = require('url')
 var log = require('electron-log');
+var expressStaticGzip = require("express-static-gzip");
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -21,7 +22,14 @@ var allowCrossDomain = function(req, res, next) {
 }
 
 app.use(allowCrossDomain);
-app.use('/', express.static(__dirname));
+
+app.use('/src', (req, res, next) => {
+  const oneYear = 365 * 24 * 60 * 60;
+  res.setHeader('Cache-Control', 'max-age=' + oneYear + ', immutable');
+  next();
+});
+
+app.use('/', expressStaticGzip(__dirname));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 

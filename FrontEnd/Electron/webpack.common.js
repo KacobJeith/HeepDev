@@ -2,7 +2,9 @@
 
 var path = require('path');
 var webpack = require('webpack');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+var SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
 
 module.exports = {
   target: 'web',
@@ -13,17 +15,27 @@ module.exports = {
     './src/index.js'
   ],
 
-  output: {
-    filename: 'bundle.js',
-  },
-
   plugins: [
     new webpack.NamedModulesPlugin(),
+    // new BundleAnalyzerPlugin(),
+    new SWPrecacheWebpackPlugin(),
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      template: path.join(__dirname, 'index.html')
+      template: path.join(__dirname, 'index_template.html')
     })
   ],
+
+  optimization: {
+    splitChunks: {
+        cacheGroups: {
+            commons: {
+                test: /[\\/]node_modules[\\/]/,
+                name: "vendors",
+                chunks: "initial"
+            }
+        }
+    }
+  },
 
   resolve: {
     modules: ['node_modules'],
@@ -32,6 +44,10 @@ module.exports = {
 
   module: {
     rules: [
+      {
+        include: /(node_modules)/,
+        sideEffects: false
+      },
       { 
         exclude: /(node_modules)/,
         test: /\.js$/, 
@@ -45,6 +61,10 @@ module.exports = {
         options: {
           name: '[name].[ext]'
         } 
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
       }
     ],
 

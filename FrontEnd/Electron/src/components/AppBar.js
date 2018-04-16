@@ -25,10 +25,11 @@ import Menu, { MenuItem }               from 'material-ui/Menu';
 
 import SimpleList from './SimpleList'
 import * as actions from '../redux/actions'
-import * as auth from '../firebase/FirebaseAuth'
 
 var mapStateToProps = (state) => ({
-  loginStatus: state.loginStatus
+  loginStatus: state.loginStatus,
+  userName: state.user ? state.user.name: '',
+  userImage: state.user ? state.user.photoURL : null
 })
 
 const drawerWidth = 240;
@@ -132,7 +133,7 @@ class AppBarDrawer extends React.Component {
   };
 
   handleLogout = () => {
-    auth.logout();
+    this.props.logoutOfFirebase();
     this.handleClose();
   }
 
@@ -146,8 +147,8 @@ class AppBarDrawer extends React.Component {
           color="inherit"
         >
           <Avatar
-            alt={auth.currentUser().displayName}
-            src={auth.getMyUserImagePath()}
+            alt={this.props.userName}
+            src={this.props.userImage}
             className={classNames(this.props.avatar, this.props.bigAvatar)}
           />
         </IconButton>
@@ -217,7 +218,7 @@ class AppBarDrawer extends React.Component {
 
     var inputs = {
       Logo: {
-        src: "https://firebasestorage.googleapis.com/v0/b/heep-3cddb.appspot.com/o/assets%2FLogo%2FSideBySide.png?alt=media&token=fa835081-275d-445e-be34-8241b08d687a",
+        src: 'src/assets/svg/SideBySide.svg',
         height: 50,
         style: {
           maxWidth: "250%",
