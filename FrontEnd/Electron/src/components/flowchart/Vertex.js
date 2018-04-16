@@ -33,15 +33,19 @@ class Vertex extends React.Component {
   	let returnPosition = false;
   	try {
       const txControlName = generalUtils.getTxControlNameFromVertex(this.props.vertex)
-      const svgElement = document.getElementById(txControlName)
-      const svgRect = svgElement.getBoundingClientRect()
 
-      const heightOffset = svgRect.height / 2
-      const widthOffset = svgRect.width / 2
+      const svgElement = document.getElementById(txControlName)
+      const svgElRect = svgElement.getBoundingClientRect()
+
+      const svgContainer = document.getElementById("deviceContainer")
+      const svgConRect = svgContainer.getBoundingClientRect()
+
+      const heightOffset = svgElRect.height / 2
+      const widthOffset = svgElRect.width / 2
 
       returnPosition = {
-        top: svgRect.top + heightOffset + window.scrollY,
-        left: svgRect.left + widthOffset + window.scrollX,
+        top: svgElRect.top + heightOffset + window.scrollY - svgConRect.top,
+        left: svgElRect.left + widthOffset + window.scrollX - svgConRect.left,
       };
 
   	} catch(err){
@@ -54,15 +58,19 @@ class Vertex extends React.Component {
   	let returnPosition = false;
   	try {
       const rxControlName = generalUtils.getRxControlNameFromVertex(this.props.vertex)
-      const svgElement = document.getElementById(rxControlName)
-      const svgRect = svgElement.getBoundingClientRect()
 
-      const heightOffset = svgRect.height / 2
-      const widthOffset = svgRect.width / 2
+      const svgElement = document.getElementById(rxControlName)
+      const svgElRect = svgElement.getBoundingClientRect()
+
+      const svgContainer = document.getElementById("deviceContainer")
+      const svgConRect = svgContainer.getBoundingClientRect()
+
+      const heightOffset = svgElRect.height / 2
+      const widthOffset = svgElRect.width / 2
 
       returnPosition = {
-        top: svgRect.top + heightOffset + window.scrollY,
-        left: svgRect.left + widthOffset + window.scrollX,
+        top: svgElRect.top + heightOffset + window.scrollY - svgConRect.top,
+        left: svgElRect.left + widthOffset + window.scrollX - svgConRect.left,
       }
 
   	} catch(err){

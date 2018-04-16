@@ -43,7 +43,8 @@ class DevicePaper extends React.Component {
 			},
 		}
 
-		return (<div>
+		return (
+        <div>
 					{this.props.activeState ?
 					<Paper {...inputs.deviceContainer} ref="device">
 							<Device DeviceID={this.props.deviceID}/>

@@ -54,6 +54,8 @@ class Flowchart extends React.Component {
 		)
 	};
 
+
+
   initializeDrag () {
     Draggable.create(".devicePaper", {
       type: "x,y",
@@ -123,8 +125,8 @@ class Flowchart extends React.Component {
 
 	return (
       <div {...inputs.flowchart} ref="flowchart">
-        {this.drawVertices()}
-        <div {...inputs.deviceContainer}>
+        <div id="deviceContainer" {...inputs.deviceContainer}>
+          {this.drawVertices()}
   				{this.props.deviceArray.map((thisDevice) => (
             <div className="devicePaper" id={thisDevice} key={thisDevice}>
   				        <Device DeviceID={thisDevice}/>

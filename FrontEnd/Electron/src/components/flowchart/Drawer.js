@@ -6,7 +6,7 @@ import { withRouter }         from 'react-router-dom'
 import PropTypes              from 'prop-types';
 import classNames             from 'classnames';
 
-import * as actions           from '../../redux/actions'
+import * as actions           from '../../redux/actions_classic'
 import * as auth              from '../../firebase/FirebaseAuth'
 
 import { withStyles } from 'material-ui/styles';
@@ -97,12 +97,9 @@ class Sidebar extends React.Component {
     open: false,
   };
 
-  handleDrawerOpen = () => {
-    this.setState({ open: true });
-  };
-
   handleDrawerClose = () => {
     this.setState({ open: false });
+    this.props.updateDragging();
   };
 
   render() {
