@@ -28,7 +28,7 @@ import * as actions from '../redux/actions'
 
 var mapStateToProps = (state) => ({
   loginStatus: state.loginStatus,
-  userName: state.user ? state.user.name: '',
+  userName: state.user ? state.user.displayName: '',
   userImage: state.user ? state.user.photoURL : null
 })
 
@@ -150,7 +150,9 @@ class AppBarDrawer extends React.Component {
             alt={this.props.userName}
             src={this.props.userImage}
             className={classNames(this.props.avatar, this.props.bigAvatar)}
-          />
+          >
+            {this.props.userName.split(' ').map((word) => word[0])}
+          </Avatar>
         </IconButton>
         <Menu
           id="menu-appbar"
