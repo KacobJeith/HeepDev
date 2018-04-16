@@ -218,18 +218,89 @@ int GetControlValueByName(char* controlName)
 	return 0;
 }
 
-void SetControlValueByName(char* controlName, int newValue)
+int GetControlIndexByName(char* controlName)
 {
 	for(int i = 0; i < numberOfControls; i++)
 	{
 		if(strcmp(controlName, controlList[i].controlName) == 0)
 		{
-			if(controlList[i].curValue != newValue)
-			{
-				controlList[i].curValue = newValue;
-				SendOutputByID(controlList[i].controlID, controlList[i].curValue);
-			}
+			return i;
 		}
+	}
+
+	return -1;
+}
+
+void SetControlValueByName(char* controlName, int newValue)
+{
+	int controlIndex = GetControlIndexByName(controlName);
+
+	if(controlIndex != -1)
+	{
+		if(controlList[controlIndex].curValue != newValue)
+		{
+			controlList[controlIndex].curValue = newValue;
+			SendOutputByID(controlList[controlIndex].controlID, controlList[controlIndex].curValue);
+		}
+	}
+}
+
+void SetControlValueByNameAlwaysSend(char* controlName, int newValue)
+{
+	int controlIndex = GetControlIndexByName(controlName);
+
+	if(controlIndex != -1)
+	{
+		controlList[controlIndex].curValue = newValue;
+		SendOutputByID(controlList[controlIndex].controlID, controlList[controlIndex].curValue);
+	}
+}
+
+void SetControlValueByNameNoSend(char *controlName, int newValue)
+{
+	int controlIndex = GetControlIndexByName(controlName);
+
+	if(controlIndex != -1)
+	{
+		controlList[controlIndex].curValue = newValue;
+#ifdef USE_ANALYTICS
+		SetAnalyticsDataControlValueInMemory_Byte(controlList[controlIndex].controlID, controlList[controlIndex].curValue, deviceIDByte);
+#endif
+	}
+}
+
+void SetControlValueByNameNoAnalytics(char *controlName, int newValue)
+{
+	int controlIndex = GetControlIndexByName(controlName);
+
+	if(controlIndex != -1)
+	{
+		if(controlList[controlIndex].curValue != newValue)
+		{
+			controlList[controlIndex].curValue = newValue;
+			SendOutputByIDNoAnalytics(controlList[controlIndex].controlID, controlList[controlIndex].curValue);
+		}
+	}
+}
+
+void SetControlValueByNameNoAnalyticsNoSend(char *controlName, int newValue)
+{
+	int controlIndex = GetControlIndexByName(controlName);
+
+	if(controlIndex != -1)
+	{
+		controlList[controlIndex].curValue = newValue;
+	}
+}
+
+void SetControlValueByNameNoAnalyticsAlwaysSend(char *controlName, int newValue)
+{
+	int controlIndex = GetControlIndexByName(controlName);
+
+	if(controlIndex != -1)
+	{
+		controlList[controlIndex].curValue = newValue;
+		SendOutputByIDNoAnalytics(controlList[controlIndex].controlID, controlList[controlIndex].curValue);
 	}
 }
 
@@ -247,4 +318,20 @@ heepByte HandleHeepCommunications()
 
 	ExecuteControlOpCodes();
 	return 0;
+}
+
+unsigned long lastHeartBeat = 0;
+void SendControlsOnHeartBeat(unsigned long controlSendPeriod)
+{
+	if(GetMillis() - lastHeartBeat > controlSendPeriod)
+	{
+		for(int i = 0; i < numberOfControls; i++)
+		{
+			if(controlList[i].controlDirection == HEEP_OUTPUT)
+			{
+				SendOutputByID(controlList[i].controlID, controlList[i].curValue);
+			}
+		}
+		lastHeartBeat = GetMillis();
+	}
 }
