@@ -55,7 +55,7 @@ const startState = {
   },
   flowchart: {
     dragVertex: false,
-    scale: 0.8
+    scale: 0.8,
   },
   liveModeReference: null,
   detailsPanelDeviceID: null,

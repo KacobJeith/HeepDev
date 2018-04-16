@@ -18,7 +18,7 @@ var mapStateToProps = (state) => ({
   deviceArray: Object.keys(state.devices),
   vertexList: state.vertexList,
   scale: state.flowchart.scale,
-  detailsPanelOut: state.detailsPanelDeviceID != null
+  detailsPanelOut: state.detailsPanelDeviceID != null,
 })
 
 
@@ -35,36 +35,35 @@ class Flowchart extends React.Component {
 	}
 
 	flowchartOptions() {
-
 		return (
 			<div style={{
-				position:'fixed', 
-				bottom:  this.props.theme.spacing.unit, 
+				position:'fixed',
+				bottom:  this.props.theme.spacing.unit,
 				right: this.props.detailsPanelOut ? 300 :  this.props.theme.spacing.unit
 			}}>
-				<Button 
+				<Button
 					mini
-					variant="fab" 
-					color="primary" 
-					aria-label="zoom-out" 
+					variant="fab"
+					color="primary"
+					aria-label="zoom-out"
 					onClick={() => this.props.zoomOut()}
 					style={{marginRight: this.props.theme.spacing.unit}}
 				>
 					<Remove/>
 				</Button>
-				<Button 
+				<Button
 					mini
-					variant="fab" 
-					color="primary" 
-					aria-label="zoom-in" 
+					variant="fab"
+					color="primary"
+					aria-label="zoom-in"
 					onClick={() => this.props.zoomIn()}
 				>
 					<Add/>
 				</Button>
-				
+
 			</div>
 		)
-	}
+	};
 
 	drawVertices() {
 
@@ -103,8 +102,7 @@ class Flowchart extends React.Component {
         ))}
       </div>
     )
-}
-
+  };
 
   initializeDrag () {
     Draggable.create(".draggableDevice", {
@@ -112,7 +110,7 @@ class Flowchart extends React.Component {
       allowContextMenu: true,
       onDrag: () => this.props.updateVertex(),
     });
-  }
+  };
 
 	render() {
 
@@ -178,7 +176,6 @@ class Flowchart extends React.Component {
 		          		transformOrigin: 'top left'
 		          	}}>
 					<div id="deviceContainer" {...inputs.deviceContainer}>
-					
 						{this.drawVertices()}
 						{this.drawDevices()}
 					</div>

@@ -231,10 +231,6 @@ export default function(state = initialState, action) {
 
       return Immutable.fromJS(state).setIn(['flowchart', 'dragVertex'], !state.flowchart.dragVertex).toJS()
 
-    case 'DRAGGING':
-
-      return Immutable.fromJS(state).setIn(['flowchart', 'dragging'], !state.flowchart.dragging).toJS()
-
     case 'POSITION_DEVICE':
       var newState = Immutable.Map(state.positions).toJS();
 
@@ -365,11 +361,11 @@ export default function(state = initialState, action) {
 
       return Immutable.Map(state).set('deviceWiFiCreds', newState).toJS();
 
-    case 'ZOOM_OUT_FLOWCHART': 
+    case 'ZOOM_OUT_FLOWCHART':
 
       return Immutable.fromJS(state).setIn(['flowchart', 'scale'], state.flowchart.scale - 0.1).toJS()
 
-    case 'ZOOM_IN_FLOWCHART': 
+    case 'ZOOM_IN_FLOWCHART':
 
       return Immutable.fromJS(state).setIn(['flowchart', 'scale'], state.flowchart.scale + 0.1).toJS()
 
