@@ -151,7 +151,7 @@ class AppBarDrawer extends React.Component {
             src={this.props.userImage}
             className={classNames(this.props.avatar, this.props.bigAvatar)}
           >
-            {this.props.userName.split(' ').map((word) => word[0])}
+            {this.props.userImage ? null : this.props.userName.split(' ').map((word) => word[0])}
           </Avatar>
         </IconButton>
         <Menu
