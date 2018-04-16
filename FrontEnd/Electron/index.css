@@ -3,13 +3,6 @@
   padding: 0px;
 }
 
-.circle {
-  cx: 300;
-  cy: 300;
-  r: 30;
-  fill: red;
-}
 
-.devicePaper {
-  overflow: visible
+.draggableDevice {
 }

@@ -227,7 +227,11 @@ export default function(state = initialState, action) {
 
       return Immutable.Map(state).set('vertexList', newState).set('controls', newStateControls).toJS();
 
-    case 'UPDATE_DRAGGING':
+    case 'UPDATE_VERTEX':
+
+      return Immutable.fromJS(state).setIn(['flowchart', 'dragVertex'], !state.flowchart.dragVertex).toJS()
+
+    case 'DRAGGING':
 
       return Immutable.fromJS(state).setIn(['flowchart', 'dragging'], !state.flowchart.dragging).toJS()
 

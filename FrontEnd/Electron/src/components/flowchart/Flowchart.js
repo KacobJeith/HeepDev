@@ -93,13 +93,24 @@ class Flowchart extends React.Component {
 		)
 	};
 
+  drawDevices() {
+    return (
+      <div>
+        {this.props.deviceArray.map((thisDevice) => (
+          <div className="draggableDevice" id={thisDevice} key={thisDevice}>
+                <Device DeviceID={thisDevice}/>
+          </div>
+        ))}
+      </div>
+    )
+}
 
 
   initializeDrag () {
-    Draggable.create(".devicePaper", {
+    Draggable.create(".draggableDevice", {
       type: "x,y",
       allowContextMenu: true,
-      onDrag: () => this.props.updateDragging()
+      onDrag: () => this.props.updateVertex(),
     });
   }
 
@@ -169,11 +180,7 @@ class Flowchart extends React.Component {
 					<div id="deviceContainer" {...inputs.deviceContainer}>
 					
 						{this.drawVertices()}
-						{this.props.deviceArray.map((thisDevice) => (
-							<div className="devicePaper" id={thisDevice} key={thisDevice}>
-								<Device DeviceID={thisDevice}/>
-							</div>
-						))}
+						{this.drawDevices()}
 					</div>
 				</div>
 				{this.flowchartOptions()}
