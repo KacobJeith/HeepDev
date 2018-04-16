@@ -81,8 +81,11 @@ unsigned long CalculateCoreMemorySize()
 {
 	unsigned long coreMemorySize = 0;
 
-	// Firmware Version / Initial Client ID will always be the same
-	coreMemorySize += 7;
+	// Firmware MOP + ID Size + NumBytesByte + Number of bytes in the version
+	coreMemorySize += 2 + ID_SIZE + NUM_COPS_UNDERSTOOD;
+
+	// Dynamic Memory Size MOP + ID Size + NumBytesByte + Dynamic Memory Size
+	coreMemorySize += 1 + ID_SIZE + 1 + 1;
 
 	return coreMemorySize + CalculateControlDataSize();
 }
@@ -144,6 +147,26 @@ void FillOutputBufferWithDynamicMemorySize()
 	AddNewCharToOutputBuffer(MAX_MEMORY);
 }
 
+void AddVersionToOutputBuffer()
+{
+	// Add Version Data
+	AddNewCharToOutputBuffer(ClientDataOpCode);
+	AddDeviceIDOrIndexToOutputBuffer_Byte(deviceIDByte);
+	AddNewCharToOutputBuffer(NUM_COPS_UNDERSTOOD);
+	AddNewCharToOutputBuffer(IsHeepDeviceOpCode);
+	AddNewCharToOutputBuffer(SetValueOpCode);
+	AddNewCharToOutputBuffer(SetPositionOpCode);
+	AddNewCharToOutputBuffer(SetVertexOpCode);
+	AddNewCharToOutputBuffer(DeleteVertexOpCode);
+	AddNewCharToOutputBuffer(AddMOPOpCode);
+	AddNewCharToOutputBuffer(DeleteMOPOpCode);
+#ifdef DEVICE_USES_WIFI
+	AddNewCharToOutputBuffer(SetWiFiDataOpCode);
+#endif
+	AddNewCharToOutputBuffer(SetNameOpCode);
+	AddNewCharToOutputBuffer(ResetDeviceNetwork);
+}
+
 // Updated
 void FillOutputBufferWithMemoryDump()
 {
@@ -152,18 +175,14 @@ void FillOutputBufferWithMemoryDump()
 	AddNewCharToOutputBuffer(MemoryDumpOpCode);
 	AddDeviceIDToOutputBuffer_Byte(deviceIDByte);
 
-	unsigned long totalMemory = curFilledMemory + CalculateCoreMemorySize() + 1;
+	unsigned long totalMemory = curFilledMemory + CalculateCoreMemorySize();
 
 	AddNewCharToOutputBuffer(totalMemory);
 
+	AddVersionToOutputBuffer();
+
 	// First data sent is control register so that receiver can decode the rest
 	//AddNewCharToOutputBuffer(controlRegister);
-
-	// Add Client Data
-	AddNewCharToOutputBuffer(ClientDataOpCode);
-	AddDeviceIDOrIndexToOutputBuffer_Byte(deviceIDByte);
-	AddNewCharToOutputBuffer(1);
-	AddNewCharToOutputBuffer(firmwareVersion);
 
 	// Add Control Data
 	FillOutputBufferWithControlData();
@@ -558,10 +577,12 @@ void ExecuteControlOpCodes()
 	{
 		ExecuteDeleteMOPOpCode();
 	}
+#ifdef DEVICE_USES_WIFI
 	else if(ReceivedOpCode == SetWiFiDataOpCode)
 	{
 		ExecuteSetWiFiDataOpCode();
 	}
+#endif
 	else if(ReceivedOpCode == SetNameOpCode)
 	{
 		ExecuteSetDeviceNameOpCode();

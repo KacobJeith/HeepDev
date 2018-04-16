@@ -4,6 +4,8 @@
 // The heepByte is our standard 8bit unit that we will work with
 typedef unsigned char heepByte;
 
+#define DEVICE_USES_WIFI
+
 #define STANDARD_ID_SIZE 4
 #define STANDARD_ID_SIZE_BASE_64 8 // 4 * ceiling(STANDRD_ID_SIZE/3)
 
