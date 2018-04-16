@@ -339,6 +339,12 @@ export default function(state = initialState, action) {
 
       return state
 
+    case 'RESET_DEVICE_WIFI': 
+
+      async.resetDeviceWifi(action.deviceID);
+
+      return state
+
     case 'SEND_WIFI_CRED_TO_DEVICE' :
       var newState = Immutable.Map(state.deviceWiFiCreds).toJS();
 

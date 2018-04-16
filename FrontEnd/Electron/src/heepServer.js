@@ -79,6 +79,15 @@ app.post('/api/resetDeviceAndOSWifi', (req, res) => {
 
 })
 
+app.post('/api/resetDeviceWifi', (req, res) => {
+  console.log("Resetting Device Wifi")
+
+  heepConnect.sendResetNetworkToDevice(req.body.deviceID)
+
+  res.end('Sent COP to device');
+
+})
+
 app.get('/api/refreshLocalDeviceState', (req, res) => {
   console.log("Refreshing local device state")
   heepConnect.ResetDevicesActiveStatus();
