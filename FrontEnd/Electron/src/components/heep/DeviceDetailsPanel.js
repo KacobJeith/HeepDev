@@ -37,7 +37,8 @@ class DeviceDetailsPanel extends React.Component {
   state = {
       open: false,
       anchorEl: null,
-      viewNetworks: false
+      viewNetworks: false,
+      addPlaceModalopen: false
     }
 
   deviceDetails() {
@@ -176,7 +177,7 @@ class DeviceDetailsPanel extends React.Component {
             <ListItemIcon>
               <Add/>
             </ListItemIcon>
-            <ListItemText primary={'Add New'} />
+            <ListItemText primary={'Attach Place'} />
 
             <Menu
               id="simple-menu"
@@ -190,7 +191,16 @@ class DeviceDetailsPanel extends React.Component {
                   <ListItemText primary={this.props.places[placeKey].name} secondary={this.props.places[placeKey].networks.wifi.ssid} />
                 </MenuItem>
               ))}
-              
+
+              <AddPlaceModal open={this.state.addPlaceModalopen} handleClose={()=> this.setState({addPlaceModalopen: false})} modalElement={
+                <ListItem button color='secondary' onClick={()=> this.setState({addPlaceModalopen: true})}>
+                  <ListItemIcon>
+                    <Add/>
+                  </ListItemIcon>
+                  <ListItemText inset secondary='Create New Place' />
+                </ListItem>
+              }/>
+
             </Menu>
 
           </ListItem>
