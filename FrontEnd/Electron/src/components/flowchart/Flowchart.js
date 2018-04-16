@@ -20,7 +20,14 @@ class Flowchart extends React.Component {
 		this.state = {
 			hoverRefresh: false
 		}
+	}
 
+	componentDidMount() {
+		// this.props.rehydrateServerState();
+
+		// var timeoutRef = setInterval(() => this.props.refreshFlowchart(), 1000)
+
+		// setTimeout(() => clearTimeout(timeoutRef), 5000);
 	}
 
 	drawVertices() {

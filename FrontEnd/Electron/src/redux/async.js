@@ -57,6 +57,13 @@ export var sendWifiCredsToServer = (deviceID, ssid, password) => {
   
 };
 
+export var rehydrateServerState = (state) => {
+
+  var url = urlPrefix.concat('/api/rehydrateDeviceState');
+  
+  performAJAX(url, state);
+}
+
 export var sendDeleteVertexToServer = (vertex) => {
 
   var url = urlPrefix.concat('/api/deleteVertex');

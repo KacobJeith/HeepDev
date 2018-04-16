@@ -55,6 +55,12 @@ export var GetCurrentMasterState = () => {
   return masterState
 }
 
+export var rehydrateMasterState = (newState) => {
+  masterState = {...newState};
+
+  console.log('Rehydrated: ', masterState);
+}
+
 export var ResetMasterState = () => {
 
   masterState = JSON.parse(JSON.stringify(newMasterState));

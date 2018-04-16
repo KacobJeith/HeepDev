@@ -77,8 +77,6 @@ export const store = createStore(persistedReducer, startState, composeWithDevToo
 
 let persistor = persistStore(store);
 
-//export const store = createStore(reducers, startState, composeWithDevTools(applyMiddleware(thunk)));
-
 import(/* webpackChunkName: "firebaseAuth" */ './firebase/FirebaseAuth').then((auth) => auth.initializeFirebase());
 
 render(
@@ -90,32 +88,32 @@ render(
   document.getElementById('root')
 )
 
-var loadDevicesFromServer = (url) => {
-  console.log("Loading from server...");
+// var loadDevicesFromServer = (url) => {
+//   console.log("Loading from server...");
 
-  $.ajax({
-    url: url,
-    cache: false,
-    success: (data) => {
+//   $.ajax({
+//     url: url,
+//     cache: false,
+//     success: (data) => {
       
-      try {
-        data.url = window.location.origin;
-        var immutableMap = Immutable.Map(data);
-        store.dispatch(actions_classic.overwriteFromServer(data));
+//       try {
+//         data.url = window.location.origin;
+//         var immutableMap = Immutable.Map(data);
+//         store.dispatch(actions_classic.mergeFromServer(data));
 
-      } 
-      catch (err) {
-        console.log("Running on Dev server, cannot update url or feed classic data");
-      }
+//       } 
+//       catch (err) {
+//         console.log("Running on Dev server, cannot update url or feed classic data");
+//       }
       
-    },
-    error: (xhr, status, err) => {
-      console.error(url, status, err.toString());
-      }
-    });
-}
+//     },
+//     error: (xhr, status, err) => {
+//       console.error(url, status, err.toString());
+//       }
+//     });
+// }
 
-var timeoutRef = setInterval(() => loadDevicesFromServer(window.location.origin.concat('/api/findDevices')), 1000)
+// var timeoutRef = setInterval(() => loadDevicesFromServer(window.location.origin.concat('/api/findDevices')), 1000)
 
-setTimeout(() => clearTimeout(timeoutRef), 5000);
+// setTimeout(() => clearTimeout(timeoutRef), 5000);
 

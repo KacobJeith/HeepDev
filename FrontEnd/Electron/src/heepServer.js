@@ -79,6 +79,14 @@ app.post('/api/resetDeviceAndOSWifi', (req, res) => {
 
 })
 
+app.post('/api/rehydrateDeviceState', (req, res) => {
+  console.log("Rehydrating local device state")
+
+  heepConnect.rehydrateMasterState(req.body);
+
+  res.end("Rehydrated");
+})
+
 app.get('/api/refreshLocalDeviceState', (req, res) => {
   console.log("Refreshing local device state")
   heepConnect.ResetDevicesActiveStatus();
@@ -87,7 +95,6 @@ app.get('/api/refreshLocalDeviceState', (req, res) => {
   setTimeout(() => {
     res.json(heepConnect.GetCurrentMasterState());
   }, 2000);
-
 })
 
 app.get('/api/hardRefreshLocalDeviceState', (req, res) => {

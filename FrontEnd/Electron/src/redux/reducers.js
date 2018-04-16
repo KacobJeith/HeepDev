@@ -153,6 +153,11 @@ export default function(state = initialState, action) {
 
 
 //<----------------------------------------------------------------------------------------------------------------------------------->
+    case 'REHYDRATE_SERVER_STATE' :
+
+      async.rehydrateServerState(state)
+
+      return state
 
     case 'OVERWRITE_WITH_SERVER_DATA':
 
@@ -163,6 +168,11 @@ export default function(state = initialState, action) {
                                  .set('vertexList', action.fromServer.vertexList)
                                  .set('icons', action.fromServer.icons)
                                  .set('deviceWiFiCreds', action.fromServer.deviceWiFiCreds).toJS()
+
+    case 'MERGE_WITH_SERVER_DATA' :
+
+      return Immutable.Map(state).mergeDeep(action.fromServer).toJS();
+
     case 'STORE_URL':  
       
       return Immutable.Map(state).set('url', action.url).toJS()

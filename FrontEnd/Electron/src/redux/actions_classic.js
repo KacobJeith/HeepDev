@@ -53,8 +53,17 @@ export const selectOutput = (txDeviceID, txControlID) => ({
   txControlID
 })
 
+export const rehydrateServerState = () => ({
+  type: 'REHYDRATE_SERVER_STATE'
+})
+
 export const overwriteFromServer = (fromServer) => ({
   type: 'OVERWRITE_WITH_SERVER_DATA',
+  fromServer
+})
+
+export const mergeFromServer = (fromServer) => ({
+  type: 'MERGE_WITH_SERVER_DATA',
   fromServer
 })
 

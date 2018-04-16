@@ -28,6 +28,7 @@ const mapStateToProps = (state) => ({
 })
 
 class App extends React.Component {
+
 	render() {
 
 		const inputs = {
