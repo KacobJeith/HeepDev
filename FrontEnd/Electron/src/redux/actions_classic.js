@@ -117,3 +117,11 @@ export const resetDeviceAndOSWifi = (deviceID) => ({
   type: 'RESET_DEVICE_AND_OS_WIFI',
   deviceID
 })
+
+export const zoomIn = () => ({
+  type: 'ZOOM_IN_FLOWCHART'
+})
+
+export const zoomOut = () => ({
+  type: 'ZOOM_OUT_FLOWCHART'
+})

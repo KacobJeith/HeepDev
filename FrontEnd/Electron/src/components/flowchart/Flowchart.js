@@ -40,18 +40,14 @@ class Flowchart extends React.Component {
 			<div style={{
 				position:'fixed', 
 				bottom:  this.props.theme.spacing.unit, 
-				right: this.props.detailsPanelOut ? 300 :  this.props.theme.spacing.unit,
-				transition: this.props.theme.transitions.create(['width', 'margin'], {
-				  easing: this.props.theme.transitions.easing.sharp,
-				  duration: this.props.theme.transitions.duration.leavingScreen,
-				})
+				right: this.props.detailsPanelOut ? 300 :  this.props.theme.spacing.unit
 			}}>
 				<Button 
 					mini
 					variant="fab" 
 					color="primary" 
 					aria-label="zoom-out" 
-					onClick={() => console.log('zoom out')}
+					onClick={() => this.props.zoomOut()}
 					style={{marginRight: this.props.theme.spacing.unit}}
 				>
 					<Remove/>
@@ -61,7 +57,7 @@ class Flowchart extends React.Component {
 					variant="fab" 
 					color="primary" 
 					aria-label="zoom-in" 
-					onClick={() => console.log('zoom in')}
+					onClick={() => this.props.zoomIn()}
 				>
 					<Add/>
 				</Button>
