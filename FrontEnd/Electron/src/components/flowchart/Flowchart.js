@@ -8,6 +8,7 @@ import * as Draggable from 'gsap/Draggable'
 import Device from './DevicePaper'
 import Vertex from './Vertex'
 import DeviceDetailsPanel from '../heep/DeviceDetailsPanel'
+import { withTheme } from 'material-ui/styles'
 
 import Add from 'material-ui-icons/Add'
 import Remove from 'material-ui-icons/Remove'
@@ -16,7 +17,8 @@ import { Button }  from 'material-ui'
 var mapStateToProps = (state) => ({
   deviceArray: Object.keys(state.devices),
   vertexList: state.vertexList,
-  scale: 0.5
+  scale: state.flowchart.scale,
+  detailsPanelOut: state.detailsPanelDeviceID != null
 })
 
 
@@ -35,16 +37,27 @@ class Flowchart extends React.Component {
 	flowchartOptions() {
 
 		return (
-			<div style={{position:'absolute', top: 10, left: 10}}>
+			<div style={{
+				position:'fixed', 
+				bottom:  this.props.theme.spacing.unit, 
+				right: this.props.detailsPanelOut ? 300 :  this.props.theme.spacing.unit,
+				transition: this.props.theme.transitions.create(['width', 'margin'], {
+				  easing: this.props.theme.transitions.easing.sharp,
+				  duration: this.props.theme.transitions.duration.leavingScreen,
+				})
+			}}>
 				<Button 
+					mini
 					variant="fab" 
 					color="primary" 
 					aria-label="zoom-out" 
 					onClick={() => console.log('zoom out')}
+					style={{marginRight: this.props.theme.spacing.unit}}
 				>
 					<Remove/>
 				</Button>
 				<Button 
+					mini
 					variant="fab" 
 					color="primary" 
 					aria-label="zoom-in" 
@@ -157,7 +170,7 @@ class Flowchart extends React.Component {
 						transform: 'scale(' + this.props.scale + ')',
 		          		transformOrigin: 'top left'
 		          	}}>
-				<div id="deviceContainer" {...inputs.deviceContainer}>
+					<div id="deviceContainer" {...inputs.deviceContainer}>
 					
 						{this.drawVertices()}
 						{this.props.deviceArray.map((thisDevice) => (
@@ -167,6 +180,7 @@ class Flowchart extends React.Component {
 						))}
 					</div>
 				</div>
+				{this.flowchartOptions()}
 				<DeviceDetailsPanel/>
 			</div>
 		);
@@ -178,4 +192,4 @@ var mapDispatchToProps = (dispatch) => {
   return bindActionCreators(Actions, dispatch)
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Flowchart))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withTheme()(Flowchart)))
