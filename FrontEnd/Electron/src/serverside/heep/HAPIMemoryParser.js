@@ -213,6 +213,12 @@ export var ReadControl = (thisBlockData) => { // OP 2
     iconName = 'soilSensor';
   } else if (thisBlockData[1] == 13) {
     iconName = 'speakers';
+  } else if (thisBlockData[1] == 14) {
+    iconName = 'rotary';
+  } else if (thisBlockData[1] == 15) {
+    iconName = 'openClose';
+  } else if (thisBlockData[1] == 16) {
+    iconName = 'PIRSensor';
   }
 
   return iconName;
@@ -244,9 +250,9 @@ export var ReadControl = (thisBlockData) => { // OP 2
   var controlValBytes = thisBlockData.slice(3, 3 + controlValNumBytes);
   var controlValue = byteUtils.GetIntFromByteArray(controlValBytes);
   var timeStampNumBytes = thisBlockData[3 + controlValNumBytes + 1];
-  var timeInMillis = byteUtils.GetIntFromByteArray(thisBlockData.slice(3 + controlValNumBytes + 1));
+  const timeStampBytes = thisBlockData.slice(3 + controlValNumBytes + 2);
+  var timeInMillis = byteUtils.GetIntFromByteArray(timeStampBytes);
   var timestampMillis = date.getTime() + timeInMillis;
-
   var timestamp = new Date(timestampMillis);
 
   var thisAnalytics = {

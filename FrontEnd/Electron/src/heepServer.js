@@ -1,10 +1,12 @@
 const path = require('path')
 const url = require('url')
 var log = require('electron-log');
+var expressStaticGzip = require("express-static-gzip");
 
 const express = require('express');
 const bodyParser = require('body-parser');
 const heepConnect = require('./serverside/heep/HeepConnections');
+const heepAccess = require('./serverside/heep/HeepAccessPoints');
 const simulationDevice =  require('./serverside/simulationHeepDevice.js');
 
 var app = express();
@@ -20,7 +22,14 @@ var allowCrossDomain = function(req, res, next) {
 }
 
 app.use(allowCrossDomain);
-app.use('/', express.static(__dirname));
+
+app.use('/src', (req, res, next) => {
+  const oneYear = 365 * 24 * 60 * 60;
+  res.setHeader('Cache-Control', 'max-age=' + oneYear + ', immutable');
+  next();
+});
+
+app.use('/', expressStaticGzip(__dirname));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -36,6 +45,40 @@ app.get('/api/findDevices', function(req, res) {
     
 });
 
+app.get('/api/searchForAccessPoints', (req, res) => {
+  console.log("Search for Access Points")
+
+  heepAccess.QueryAvailableAccessPoints((results) => {
+    res.json(results);
+  });
+
+})
+
+app.get('/api/ResetSystemWifi', (req, res) => {
+  console.log("Resetting Wifi")
+
+  heepAccess.ResetSystemWifi((results) => {
+    res.json(results);
+  });
+
+})
+
+app.post('/api/resetDeviceAndOSWifi', (req, res) => {
+  console.log("Resetting Wifi")
+
+  heepConnect.sendResetNetworkToDevice(req.body.deviceID)
+
+  setTimeout( () => { // Wait 1 second for the device to respond to the Reset COP
+    
+    heepAccess.ResetSystemWifi((results) => {
+      console.log(results)
+
+      setTimeout(() => hardResetState(req, res), 1000); //wait 1 second after wifi reset to start trying to get the new state
+    });
+  }, 1000);
+
+})
+
 app.get('/api/refreshLocalDeviceState', (req, res) => {
   console.log("Refreshing local device state")
   heepConnect.ResetDevicesActiveStatus();
@@ -48,15 +91,23 @@ app.get('/api/refreshLocalDeviceState', (req, res) => {
 })
 
 app.get('/api/hardRefreshLocalDeviceState', (req, res) => {
+  hardResetState(req, res);
+})
+
+const hardResetState = (req, res, timeout = 2000) => {
   console.log("Refreshing local device state")
   heepConnect.ResetMasterState(); 
-  heepConnect.SearchForHeepDevices(); 
+  heepConnect.SearchForHeepDevices(0, (success) => {
+    console.log('Found Gateway, waiting ' + timeout + 'ms to reset state');
+    setTimeout(() => {
+      res.json(heepConnect.GetCurrentMasterState());
+    }, timeout);
 
-  setTimeout(() => {
-    res.json(heepConnect.GetCurrentMasterState());
-  }, 2000);
+  }); 
 
-})
+  
+
+}
 
 app.post('/api/setValue', function(req, res) {
   
@@ -94,6 +145,57 @@ app.post('/api/sendWifiCredsToDevice', function(req, res) {
   console.log("Sending Wifi Credentials to the Device: " + req.body.deviceID)
   res.end("Sending Wifi Credentials to the Device: " + req.body.deviceID);
 });
+
+app.post('/api/connectToAccessPoint', function(req, res) {
+  console.log("Connect To Access Point: ", req.body.ssid)
+
+  connectToAccessPoint(req, res, (response) => {
+    console.log('First connection succeeded')
+    hardResetAP(res, req.body.ssid, response.success);
+
+  }, () => {
+
+    console.log('First connection failed. Trying to connect a second time');
+
+    connectToAccessPoint(req, res, (response) => {
+      hardResetAP(res, req.body.ssid, response.success);
+    }, (response) => {
+
+      res.json({
+        success: response.success,
+        ssid: req.body.ssid,
+        data: heepConnect.GetCurrentMasterState()
+      })
+    });
+  });
+
+})
+
+const connectToAccessPoint = function(req, res, successCallback, failureCallback) {
+
+  heepAccess.ConnectToAccessPoint(req.body.ssid, 'HeepSecretPassword', (response) => {
+    //Perform a hard reset and send results back to UI - should only see 1 device
+    if ( response.success ) {
+      successCallback(response);
+    } else {
+      failureCallback(response)
+    }
+    
+  });
+}
+
+const hardResetAP = function(res, ssid, success = true) {
+
+  heepConnect.ResetMasterState(); 
+  heepConnect.SearchForHeepDevices(); 
+  setTimeout(() => {
+    res.json({
+      success: success,
+      ssid: ssid,
+      data: heepConnect.GetCurrentMasterState()
+    });
+  }, 2000);
+}
 
 app.listen(app.get('port'), function(error) {
   

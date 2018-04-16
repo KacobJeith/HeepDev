@@ -89,3 +89,27 @@ export const sendWiFiCredentialsToDevice = (deviceID, placeKey) => ({
 export const hardRefresh = () => ({
   type: 'HARD_REFRESH_FLOWCHART'
 })
+
+export const searchForAccessPoints = () => ({
+  type: 'SEARCH_FOR_ACCESS_POINTS'
+})
+
+export const setAccessPoints = (accessPoints) => ({
+  type: 'SET_ACCESS_POINTS',
+  accessPoints
+})
+
+export const connectToAccessPoint = (ssid) => ({
+  type: 'CONNECT_TO_ACCESS_POINT',
+  ssid
+})
+
+export const setAccessData = (packet) => ({
+  type: 'SET_ACCESS_DATA',
+  packet
+})
+
+export const resetDeviceAndOSWifi = (deviceID) => ({
+  type: 'RESET_DEVICE_AND_OS_WIFI',
+  deviceID
+})

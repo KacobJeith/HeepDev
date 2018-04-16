@@ -195,7 +195,8 @@ void TestDefragmentDeviceMemory()
 
 	int memCheckStart = GetMemCounterStart()*2;
 
-	SetVertexInMemory_Byte(theVertex);
+	unsigned int pointer = 0;
+	SetVertexInMemory_Byte(theVertex, &pointer);
 	ExpectedValue valueList [3];
 	unsigned int beforeDeletionMemory = curFilledMemory;
 	valueList[0].valueName = "Memory Filled Before Deletion";
@@ -248,7 +249,8 @@ void TestDefragmentDeviceMemoryAtEnd()
 	vertexPointer += ID_SIZE+STANDARD_ID_SIZE+2;
 #endif
 
-	SetVertexInMemory_Byte(theVertex);
+	unsigned int pointer = 0;
+	SetVertexInMemory_Byte(theVertex, &pointer);
 	unsigned int beforeDeletionMemory = curFilledMemory;
 	DeleteVertexAtPointer(vertexPointer);
 	unsigned int afterDeletionMemory = curFilledMemory;
@@ -292,7 +294,8 @@ void TestDefragmentDeviceMemoryDeviceAtFront()
 
 	int memCheckStart = GetMemCounterStart()*2;
 
-	SetVertexInMemory_Byte(theVertex);
+	unsigned int pointer = 0;
+	SetVertexInMemory_Byte(theVertex, &pointer);
 	SetDeviceNameInMemory_Byte("Crowbar", 7, deviceID1);
 	SetIPInMemory_Byte(theIP, deviceID2);
 	ExpectedValue valueList [2];
@@ -344,7 +347,8 @@ void TestDefragmentDeviceMemoryInMiddle()
 	vertexPointer += ID_SIZE+STANDARD_ID_SIZE+2;
 #endif
 
-	SetVertexInMemory_Byte(theVertex);
+	unsigned int pointer = 0;
+	SetVertexInMemory_Byte(theVertex, &pointer);
 	SetIPInMemory_Byte(theIP, deviceID2);
 	unsigned int beforeDeletionMemory = curFilledMemory;
 	DeleteVertexAtPointer(vertexPointer);
@@ -397,9 +401,10 @@ void TestBuildVertexListFromPointers()
 
 
 	SetDeviceNameInMemory_Byte("Crowbar", 7, deviceID2);
-	SetVertexInMemory_Byte(theVertex);
+	unsigned int pointer = 0;
+	SetVertexInMemory_Byte(theVertex, &pointer);
 	SetIPInMemory_Byte(theIP, deviceID1);
-	SetVertexInMemory_Byte(theVertex2);
+	SetVertexInMemory_Byte(theVertex2, &pointer);
 
 	FillVertexListFromMemory();
 
@@ -1105,7 +1110,8 @@ void TestSetVertexOpCode_Byte()
 	myVertex.txControlID = 0x01;
 	myVertex.rxControlID = 0x02;
 
-	SetVertexInMemory_Byte(myVertex);
+	unsigned int pointer = 0;
+	SetVertexInMemory_Byte(myVertex, &pointer);
 
 	int memCheckStart = GetMemCounterStart()*2;
 
@@ -1166,7 +1172,8 @@ void TestGetVertex_Byte()
 	myVertex.txControlID = 0x01;
 	myVertex.rxControlID = 0x02;
 
-	SetVertexInMemory_Byte(myVertex);
+	unsigned int pointer = 0;
+	SetVertexInMemory_Byte(myVertex, &pointer);
 
 	int memCheckStart = GetMemCounterStart()*2;
 

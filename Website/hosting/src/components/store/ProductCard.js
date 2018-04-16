@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 import * as Actions from '../../redux/actions'
 import { Grid, Typography, IconButton, Badge, Button, Paper }   from 'material-ui';
-import { AddShoppingCart } from 'material-ui-icons';
+import  AddShoppingCart  from 'material-ui-icons/AddShoppingCart';
 import { withStyles, withTheme } from 'material-ui/styles';
 
 import SmartBadge from '../utilities/SmartBadge'

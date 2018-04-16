@@ -3,11 +3,10 @@ import { connect }            from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { withRouter }         from 'react-router-dom'
 import * as actions           from '../../redux/actions'
-import * as auth              from '../../firebase/FirebaseAuth'
 
 import { withTheme }       from 'material-ui/styles'
 import { Grid, Tooltip, Typography, Avatar, Divider, IconButton, List, ListItem, ListItemText, ListItemIcon}  from 'material-ui'
-import { Edit }  from 'material-ui-icons'
+import Edit   from 'material-ui-icons/Edit'
 
 import DeviceListItem from '../heep/DeviceListItem'
 import PlaceListItem from '../heep/PlaceListItem'
@@ -15,7 +14,7 @@ import AddPlaceModal from './AddPlaceModal'
 
 var mapStateToProps = (state) => ({
   loginStatus: state.loginStatus,
-  user: auth.currentUser(),
+  user: state.user,
   devices: state.devices,
   places: state.places
 })
@@ -117,6 +116,10 @@ class UserAccount extends React.Component {
   }
 
   render() {
+    if (!this.props.user) {
+      return <div/>
+    }
+
     const inputs = {
       parentGrid: {
         style: {

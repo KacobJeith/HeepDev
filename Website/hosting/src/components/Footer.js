@@ -29,7 +29,7 @@ class Footer extends React.Component {
     return (
       <Grid item xs={4} sm={2} style={{textAlign: 'center'}}>
         <a href={url}>
-          <img src={'../src/assets/svg_social/' + svg + '.svg'}
+          <img src={'src/assets/svg_social/' + svg + '.svg'}
             style={{maxHeight: 50}}
           />
         </a>
@@ -71,7 +71,7 @@ class Footer extends React.Component {
       <Grid item xs={2}>
         <NavLink to='/' style={{textDecoration: 'none'}}>
           <img
-            src="../src/assets/Heep_Gradient.png"
+            src="src/assets/Heep_Gradient.png"
             style={{
               maxHeight: 50
             }}/>
@@ -85,7 +85,7 @@ class Footer extends React.Component {
       <Grid item xs={12} style={{textAlign: 'right'}}>
         <NavLink to='/' style={{textDecoration: 'none'}}>
           <img
-            src="../src/assets/Heep_Gradient.png"
+            src="src/assets/Heep_Gradient.png"
             style={{
               maxHeight: 80
             }}/>

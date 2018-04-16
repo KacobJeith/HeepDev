@@ -7,12 +7,13 @@ import PropTypes              from 'prop-types';
 import classNames             from 'classnames';
 
 import * as actions           from '../redux/actions'
-import * as auth              from '../firebase/FirebaseAuth'
 
 import {  AppBar,
           Avatar,
           Badge,
           Button,
+          Divider,
+          Drawer,
           FormControlLabel,
           FormGroup,
           Grid,
@@ -20,6 +21,7 @@ import {  AppBar,
           IconButton,
           Menu,
           MenuItem,
+          List,
           Switch,
           Toolbar,
           Typography }        from 'material-ui'
@@ -27,28 +29,31 @@ import {  AppBar,
 import MenuIcon               from 'material-ui-icons/Menu';
 import AccountCircle          from 'material-ui-icons/AccountCircle';
 import ShoppingCartIcon       from 'material-ui-icons/ShoppingCart';
+import ShopIcon               from 'material-ui-icons/ShoppingBasket'
+import AboutIcon              from 'material-ui-icons/Contacts'
+import DevelopIcon            from 'material-ui-icons/Code'
 
 import { withStyles }         from 'material-ui/styles';
 
 
 
 import SmartBadge from './utilities/SmartBadge'
-import { logos } from '../assets/remote/Logos'
 
 
 var mapStateToProps = (state) => ({
   loginStatus: state.loginStatus,
-  itemsInCart: calculateQuantity(state)
+  itemsInCart: calculateQuantity(state),
+  userImage: state.user ? state.user.photoURL : ''
 })
 
 const calculateQuantity = (state) => {
   var quantity = 0;
-  
+
   for (var i =0; i < state.shoppingCart.lineItems.length; i++) {
 
     quantity += state.shoppingCart.lineItems[i].quantity;
   }
-  
+
   return quantity
 }
 
@@ -70,7 +75,7 @@ const styles = {
   navLink: {
     textDecoration: 'none',
     outline: 'none'
-  }
+  },
 };
 
 const ShopLink = props => <Link to="/Shop" {...props} style={{ textDecoration: 'none' }}/>
@@ -80,7 +85,7 @@ class MenuAppBar extends React.Component {
   state = {
     auth: true,
     anchorAccountMenu: null,
-    anchorMobileMenu: null
+    mobileMenu: false
   };
 
   handleChange = (event, checked) => {
@@ -95,18 +100,18 @@ class MenuAppBar extends React.Component {
     this.setState({ anchorAccountMenu: null });
   };
 
-  handleMobileMenu = event => {
-    this.setState({ anchorMobileMenu: event.currentTarget });
+  handleMobileMenuOpen = () => {
+    this.setState({ mobileMenu: true })
   };
 
-  handleMobileMenuClose = event => {
-    this.setState({ anchorMobileMenu: null });
+  handleMobileMenuClose = () => {
+    this.setState({ mobileMenu: false })
   };
 
   handleLogout = () => {
-    auth.logout();
+    this.props.logoutOfFirebase();
     this.handleClose();
-  }
+  };
 
   loggedOn() {
     return (
@@ -119,7 +124,7 @@ class MenuAppBar extends React.Component {
         >
           <Avatar
             alt="Adelle Charles"
-            src={auth.getMyUserImagePath()}
+            src={this.props.userImage}
             className={classNames(this.props.avatar, this.props.bigAvatar)}
           />
         </IconButton>
@@ -219,13 +224,6 @@ class MenuAppBar extends React.Component {
 
   appBarCart() {
 
-    const inputs = {
-      iconSize: {
-        width: 40,
-        height: 40
-      }
-    };
-
     return (
       <NavLink to="/MyCart" style={{textDecoration: 'none'}}>
         <IconButton aria-label="Add to shopping cart"
@@ -244,7 +242,7 @@ class MenuAppBar extends React.Component {
   appBarLogo() {
     const inputs = {
       Logo: {
-        src: logos.sideBySide,
+        src: 'src/assets/svg/SideBySide.svg',
         height: 50,
         style: {
           maxWidth: "250%"
@@ -259,63 +257,9 @@ class MenuAppBar extends React.Component {
         </Button>
       </NavLink>
     )
-  }
+  };
 
-  mobileMenu() {
-    const inputs = {
-      menuButton: {
-        style:{
-          fontSize: 30,
-          marginBottom: 3,
-          marginRight: 10
-        }
-      }
-    }
-    return (
-      <Hidden smUp={true}>
-          <IconButton
-            {...inputs.menuButton}
-            aria-owns={Boolean(this.state.anchorMobileMenu) ? 'mobile-menu-appbar' : null}
-            aria-haspopup="true"
-            onClick={this.handleMobileMenu}
-            color="inherit"
-          >
-            <MenuIcon/>
-            <Menu
-              id="mobile-menu-appbar"
-              anchorEl={this.state.anchorMobileMenu}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(this.state.anchorMobileMenu)}
-              onClose={this.handleMobileMenuClose}
-            >
-              <NavLink to="/About" style={styles.navLink}>
-                <MenuItem onClick={this.handleMobileMenuClose}>About</MenuItem>
-              </NavLink>
-
-              <NavLink to="/Shop" style={styles.navLink}>
-                <MenuItem onClick={this.handleMobileMenuClose}>Shop</MenuItem>
-              </NavLink>
-
-              <NavLink to="/Developers" style={styles.navLink}>
-                <MenuItem onClick={this.handleMobileMenuClose}>Develop</MenuItem>
-              </NavLink>
-            </Menu>
-          </IconButton>
-      </Hidden>
-    )
-  }
-
-  render() {
-    const { classes } = this.props;
-    const { authed, anchorEl } = this.state;
-    const open = Boolean(anchorEl);
+  avatarLogin() {
 
     var loggedInNavs = [];
 
@@ -325,18 +269,167 @@ class MenuAppBar extends React.Component {
       loggedInNavs = this.notLoggedOn();
     }
 
+    return loggedInNavs
+  };
+
+  mobileAppBarLogo() {
+    return (
+      <Hidden smUp={true}>
+        <Grid container justify='center' style={{
+          width: '100%',
+          height: '100%',
+          overflow:' hidden'
+        }}>
+          <Grid item>
+            {this.appBarLogo()}
+          </Grid>
+        </Grid>
+      </Hidden>
+    )
+  };
+
+  mobileMenuLogo() {
+    const inputs = {
+      logo: {
+        src: logos.gradientLogo,
+        height: 60,
+        style: {
+          maxWidth: "250%"
+        },
+      },
+    };
+
+    return (
+      <div>
+        <NavLink to="/" style={styles.navLink}>
+          <MenuItem style={{
+            height: 80,
+          }}>
+            <Grid container justify='center' style={{maxWidth: '100%', margin: 0}}>
+              <Grid item>
+                <img {...inputs.logo}/>
+              </Grid>
+            </Grid>
+          </MenuItem>
+        </NavLink>
+
+        <Divider />
+      </div>
+    )
+  };
+
+  mobileMenuCart() {
+
+    return (
+      <div>
+        <NavLink to="/MyCart" style={{textDecoration: 'none'}}>
+          <MenuItem>
+              <IconButton aria-label="Add to shopping cart"
+                style={{marginBottom: 0}}
+              >
+                {SmartBadge(
+                          <ShoppingCartIcon/>,
+                          this.props.itemsInCart,
+                          'secondary')
+                }
+              </IconButton>
+              Cart
+            </MenuItem>
+        </NavLink>
+        <Divider/>
+      </div>
+    )
+  };
+
+  mobileMenuLink(link, linkText, linkIcon) {
+
+    return (
+      <div>
+      <NavLink to={link} style={styles.navLink}>
+        <MenuItem>
+          <IconButton>
+            {linkIcon}
+          </IconButton>
+          {linkText}
+        </MenuItem>
+      </NavLink>
+
+      <Divider/>
+    </div>
+    )
+  };
+
+  mobileMenu() {
+    const inputs = {
+      menuButton: {
+        style:{
+          fontSize: 30,
+          marginBottom: 3,
+          marginRight: 10
+        }
+      },
+    }
+
+    return (
+      <Hidden smUp={true}>
+          <IconButton
+            {...inputs.menuButton}
+            onClick={this.handleMobileMenuOpen}
+            color="inherit"
+          >
+            <MenuIcon/>
+
+            <Drawer
+              anchor='left'
+              open={this.state.mobileMenu}
+              onChange={this.handleMobileMenuClose}
+              ModalProps={{ onBackdropClick: this.handleMobileMenuClose }}
+              PaperProps={{ style: {backgroundColor: '#ECEFF1'} }}
+              variant='temporary'
+              >
+
+              <div
+                tabIndex={0}
+                role="button"
+                onClick={this.handleMobileMenuClose}
+                onKeyDown={this.handleMobileMenuClose}
+                style={{
+                  width: 200,
+                }}
+                >
+
+                {this.mobileMenuLogo()}
+                {this.mobileMenuCart()}
+                {this.mobileMenuLink('/About', 'About', <AboutIcon/>)}
+                {this.mobileMenuLink('/Shop', 'Shop', <ShopIcon/>)}
+                {this.mobileMenuLink('/Developers', 'Develop', <DevelopIcon/>)}
+
+              </div>
+            </Drawer>
+          </IconButton>
+      </Hidden>
+    )
+  }
+
+  render() {
+
+    const { classes } = this.props;
+
     return (
       <div className={classes.root}>
         <AppBar position="static" style={{overflowX: 'hidden'}}>
           <Toolbar>
-            {this.appBarLogo()}
-            <div className={classes.flex}/>
             {this.mobileMenu()}
+            <Hidden xsDown={true}>
+              {this.appBarLogo()}
+            </Hidden>
+            {this.mobileAppBarLogo()}
+            <div className={classes.flex}/>
             {this.appBarLink("/About", "About")}
             {this.appBarLink("/Shop", "Shop")}
             {this.appBarLink("/Developers", "Develop")}
             {this.appBarCart()}
-            {loggedInNavs}
+            {this.avatarLogin()}
           </Toolbar>
         </AppBar>
       </div>

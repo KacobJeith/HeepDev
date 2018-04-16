@@ -4,23 +4,41 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as Actions from '../redux/actions'
 import ReactGA from 'react-ga'
+import AsyncComponent from './AsyncComponent'
 
 import AppBar from './AppBar'
 import Footer from './Footer'
-import Landing from './landing/Landing'
+// import Landing from './landing/Landing'
 import About from './About'
-import Store from './store/Store'
 import Build from './heep/Build'
-import Auth from './account/Auth'
 import Logout from './account/Logout'
 import Loading from './Loading'
 import UserAccount from './account/UserAccount'
 import DeviceBuilder from './heep/DeviceBuilder'
-import Checkout from './store/Checkout'
 import ProductDetails from './store/ProductDetails'
 import DownloadPage from './heep/DownloadPage'
 import ManageCart from './store/ManageCart'
 import Tutorials from './Tutorials'
+
+const Landing = () => <AsyncComponent moduleProvider={() => import(
+	/* webpackChunkName: "landing" */
+  	/* webpackMode: "lazy" */ 
+  	'./landing/Landing')} />
+
+const Store = () => <AsyncComponent moduleProvider={() => import(
+	/* webpackChunkName: "store" */
+  	/* webpackMode: "lazy" */ 
+  	'./store/Store')} />
+
+const Checkout = () => <AsyncComponent moduleProvider={() => import(
+	/* webpackChunkName: "checkout" */
+  	/* webpackMode: "lazy" */ 
+  	'./store/Checkout')} />
+
+const Auth = () => <AsyncComponent moduleProvider={() => import(
+	/* webpackChunkName: "auth" */
+  	/* webpackMode: "lazy" */ 
+  	'./account/Auth')} />
 
 import Theme from './Theme'
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'

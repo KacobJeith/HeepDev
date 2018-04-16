@@ -7,10 +7,17 @@ import { createStore, applyMiddleware } from 'redux'
 import reducers from './redux/reducers'
 import App from './components/App'
 import thunk from 'redux-thunk'
-import * as auth from './firebase/FirebaseAuth'
 import $ from 'jquery'
 import { composeWithDevTools } from 'redux-devtools-extension';
 import * as actions_classic from './redux/actions_classic'
+
+import { persistStore, persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage' // defaults to localStorage for web and AsyncStorage for react-native
+import { PersistGate } from 'redux-persist/integration/react'
+
+import 'firebaseui/dist/firebaseui.css';
+
+require('./service-worker-registration.js');
 
 const startState = {
   webGLStatus: false,
@@ -48,18 +55,37 @@ const startState = {
   },
 
   liveModeReference: null,
-  detailsPanelDeviceID: null
+  detailsPanelDeviceID: null,
+  accessPoints: {},
+  accessPointData: {
+    connectedTo: null,
+    currentlyConnecting: null,
+    failedAttempt: null,
+    deviceID: null
+  } 
 }
 
-export const initialState = Immutable.Map(startState)
+export const initialState = Immutable.Map(startState);
 
-export const store = createStore(reducers, startState, composeWithDevTools(applyMiddleware(thunk)));
+const persistConfig = {
+  key: 'root',
+  storage,
+}
+ 
+const persistedReducer = persistReducer(persistConfig, reducers)
+export const store = createStore(persistedReducer, startState, composeWithDevTools(applyMiddleware(thunk)));
 
-auth.initializeFirebase();
+let persistor = persistStore(store);
+
+//export const store = createStore(reducers, startState, composeWithDevTools(applyMiddleware(thunk)));
+
+import(/* webpackChunkName: "firebaseAuth" */ './firebase/FirebaseAuth').then((auth) => auth.initializeFirebase());
 
 render(
   <Provider store={store}>
-    <App/>
+    <PersistGate loading={null} persistor={persistor}>
+      <App/>
+    </PersistGate>
   </Provider>,
   document.getElementById('root')
 )

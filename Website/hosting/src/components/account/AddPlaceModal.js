@@ -4,7 +4,8 @@ import { bindActionCreators } from 'redux'
 import { withRouter }         from 'react-router-dom'
 import * as actions           from '../../redux/actions'
 import PropTypes              from "prop-types";
-import { Close }              from 'material-ui-icons'
+import Close               from 'material-ui-icons/Close'
+import Add               from 'material-ui-icons/Add'
 
 import {  withStyles } from "material-ui/styles";
 import {  Typography,
@@ -20,7 +21,6 @@ import {  Typography,
           ListItem,
           ListItemIcon,
           ListItemText } from "material-ui";
-import { Add }  from 'material-ui-icons'
 
 import VerticalStepper from '../utilities/VerticalStepper'
 

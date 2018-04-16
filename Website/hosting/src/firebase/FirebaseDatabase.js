@@ -4,7 +4,6 @@ import * as setup from '../index'
 import * as actions from '../redux/actions'
 // import * as HAPI from '../serverside/heep/HAPIMemoryParser.js'
 
-
 export const readUserData = (user) => {
 
 	firebase.database().ref('/users/' + user.uid + '/devices').on('value', function(snapshot) {

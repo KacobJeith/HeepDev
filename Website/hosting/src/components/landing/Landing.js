@@ -120,7 +120,6 @@ class Landing extends React.Component {
 
   	return (
       <div>
-        {this.topBanner()}
         {this.bedroomSVG()}
         {this.featuredItems()}
       </div>

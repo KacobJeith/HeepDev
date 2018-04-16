@@ -81,8 +81,11 @@ unsigned long CalculateCoreMemorySize()
 {
 	unsigned long coreMemorySize = 0;
 
-	// Firmware Version / Initial Client ID will always be the same
-	coreMemorySize += 7;
+	// Firmware MOP + ID Size + NumBytesByte + Number of bytes in the version
+	coreMemorySize += 2 + ID_SIZE + NUM_COPS_UNDERSTOOD;
+
+	// Dynamic Memory Size MOP + ID Size + NumBytesByte + Dynamic Memory Size
+	coreMemorySize += 1 + ID_SIZE + 1 + 1;
 
 	return coreMemorySize + CalculateControlDataSize();
 }
@@ -144,6 +147,26 @@ void FillOutputBufferWithDynamicMemorySize()
 	AddNewCharToOutputBuffer(MAX_MEMORY);
 }
 
+void AddVersionToOutputBuffer()
+{
+	// Add Version Data
+	AddNewCharToOutputBuffer(ClientDataOpCode);
+	AddDeviceIDOrIndexToOutputBuffer_Byte(deviceIDByte);
+	AddNewCharToOutputBuffer(NUM_COPS_UNDERSTOOD);
+	AddNewCharToOutputBuffer(IsHeepDeviceOpCode);
+	AddNewCharToOutputBuffer(SetValueOpCode);
+	AddNewCharToOutputBuffer(SetPositionOpCode);
+	AddNewCharToOutputBuffer(SetVertexOpCode);
+	AddNewCharToOutputBuffer(DeleteVertexOpCode);
+	AddNewCharToOutputBuffer(AddMOPOpCode);
+	AddNewCharToOutputBuffer(DeleteMOPOpCode);
+#ifdef DEVICE_USES_WIFI
+	AddNewCharToOutputBuffer(SetWiFiDataOpCode);
+#endif
+	AddNewCharToOutputBuffer(SetNameOpCode);
+	AddNewCharToOutputBuffer(ResetDeviceNetwork);
+}
+
 // Updated
 void FillOutputBufferWithMemoryDump()
 {
@@ -152,18 +175,14 @@ void FillOutputBufferWithMemoryDump()
 	AddNewCharToOutputBuffer(MemoryDumpOpCode);
 	AddDeviceIDToOutputBuffer_Byte(deviceIDByte);
 
-	unsigned long totalMemory = curFilledMemory + CalculateCoreMemorySize() + 1;
+	unsigned long totalMemory = curFilledMemory + CalculateCoreMemorySize();
 
 	AddNewCharToOutputBuffer(totalMemory);
 
+	AddVersionToOutputBuffer();
+
 	// First data sent is control register so that receiver can decode the rest
 	//AddNewCharToOutputBuffer(controlRegister);
-
-	// Add Client Data
-	AddNewCharToOutputBuffer(ClientDataOpCode);
-	AddDeviceIDOrIndexToOutputBuffer_Byte(deviceIDByte);
-	AddNewCharToOutputBuffer(1);
-	AddNewCharToOutputBuffer(firmwareVersion);
 
 	// Add Control Data
 	FillOutputBufferWithControlData();
@@ -263,10 +282,16 @@ void ExecuteSetPositionOpCode()
 	unsigned int xValue = GetNumberFromBuffer(inputBuffer, &counter, 2);
 	unsigned int yValue = GetNumberFromBuffer(inputBuffer, &counter, 2);
 
-	UpdateXYInMemory_Byte(xValue, yValue, deviceIDByte);
-
-	char SuccessMessage [] = "Value Set";
-	FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
+	if(UpdateXYInMemory_Byte(xValue, yValue, deviceIDByte) == 0)
+	{
+		char SuccessMessage [] = "Value Set";
+		FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
+	}
+	else
+	{
+		char ErrorMessage [] = "Failed to set. Memory Full";
+		FillOutputBufferWithError(ErrorMessage, strlen(ErrorMessage));
+	}
 }
 
 // Updated
@@ -292,11 +317,20 @@ void ExecuteSetVertexOpCode()
 	myVertex.txControlID = txControl;
 	myVertex.rxIPAddress = vertexIP;
 
-	AddVertex(myVertex);
+	if(AddVertex(myVertex) == 0)
+	{
+		ClearOutputBuffer();
+		char SuccessMessage [] = "Vertex Set";
+		FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
+	}
+	else
+	{
+		ClearOutputBuffer();
+		char errorMessage [] = "Vertex Not Set. Memory Overflow";
+		FillOutputBufferWithError(errorMessage, strlen(errorMessage));
+	}
 
-	ClearOutputBuffer();
-	char SuccessMessage [] = "Vertex Set";
-	FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
+	
 }
 
 // Updated
@@ -460,20 +494,35 @@ void ExecuteAddMOPOpCode()
 void ExecuteSetWiFiDataOpCode()
 {
 	int passwordFirstPosition = inputBuffer[3] + 4;
-	AddWiFiSettingsToMemory( (char*)(&inputBuffer[4]), inputBuffer[3], (char*)(&inputBuffer[passwordFirstPosition+1]), inputBuffer[passwordFirstPosition], deviceIDByte, inputBuffer[2]);
-
-	ClearOutputBuffer();
-	char SuccessMessage [] = "WiFi Added!";
-	FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
+	if(AddWiFiSettingsToMemory( (char*)(&inputBuffer[4]), inputBuffer[3], (char*)(&inputBuffer[passwordFirstPosition+1]), inputBuffer[passwordFirstPosition], deviceIDByte, inputBuffer[2]) == 0)
+	{
+		ClearOutputBuffer();
+		char SuccessMessage [] = "WiFi Added!";
+		FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
+	}
+	else
+	{
+		ClearOutputBuffer();
+		char errorMessage [] = "Cannot Add Wifi: Out of memory!";
+		FillOutputBufferWithError(errorMessage, strlen(errorMessage));
+	}
+	
 }
 
 void ExecuteSetDeviceNameOpCode()
 {
-	SetDeviceNameInMemory_Byte((char*)(&inputBuffer[2]), inputBuffer[1], deviceIDByte);
-
-	ClearOutputBuffer();
-	char SuccessMessage [] = "Name Set!";
-	FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
+	if(SetDeviceNameInMemory_Byte((char*)(&inputBuffer[2]), inputBuffer[1], deviceIDByte) == 0)
+	{
+		ClearOutputBuffer();
+		char SuccessMessage [] = "Name Set!";
+		FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
+	}
+	else
+	{
+		ClearOutputBuffer();
+		char errorMessage [] = "Cannot Add Name. Not enough memory!";
+		FillOutputBufferWithError(errorMessage, strlen(errorMessage));
+	}
 }
 
 void ExecuteResetDeviceNetwork()
@@ -528,10 +577,12 @@ void ExecuteControlOpCodes()
 	{
 		ExecuteDeleteMOPOpCode();
 	}
+#ifdef DEVICE_USES_WIFI
 	else if(ReceivedOpCode == SetWiFiDataOpCode)
 	{
 		ExecuteSetWiFiDataOpCode();
 	}
+#endif
 	else if(ReceivedOpCode == SetNameOpCode)
 	{
 		ExecuteSetDeviceNameOpCode();
