@@ -25,6 +25,7 @@ import Menu, { MenuItem }               from 'material-ui/Menu';
 
 import SimpleList from './SimpleList'
 import * as actions from '../redux/actions'
+import * as actions_classic from '../redux/actions_classic'
 
 var mapStateToProps = (state) => ({
   loginStatus: state.loginStatus,
@@ -233,7 +234,7 @@ class AppBarDrawer extends React.Component {
         className={classNames(classes.appBar, this.state.open && classes.appBarShift)}
       >
         <Toolbar disableGutters={!this.state.open}>
-          
+
 
           <IconButton
             color="inherit"
@@ -251,7 +252,7 @@ class AppBarDrawer extends React.Component {
           </NavLink>
 
           <div className={classes.flex}/>
-          
+
           {this.props.loginStatus ? this.loggedOn() : this.notLoggedOn()}
 
 
@@ -293,7 +294,7 @@ class AppBarDrawer extends React.Component {
       <div >
         {this.renderAppBar()}
         {this.renderDrawer()}
-        
+
       </div>
     );
   }
@@ -305,7 +306,7 @@ AppBarDrawer.propTypes = {
 };
 
 var mapDispatchToProps = (dispatch) => {
-  return bindActionCreators(actions, dispatch)
+  return bindActionCreators({...actions, ...actions_classic}, dispatch)
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles, { withTheme: true })(AppBarDrawer)))

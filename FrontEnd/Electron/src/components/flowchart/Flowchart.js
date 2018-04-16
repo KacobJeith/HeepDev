@@ -84,6 +84,8 @@ class Flowchart extends React.Component {
 		)
 	};
 
+
+
   initializeDrag () {
     Draggable.create(".devicePaper", {
       type: "x,y",
@@ -153,6 +155,7 @@ class Flowchart extends React.Component {
 
 
 
+<<<<<<< HEAD
 		return (
 	      	<div {...inputs.flowchart} ref="flowchart">
 		        {this.drawVertices()}
@@ -166,6 +169,19 @@ class Flowchart extends React.Component {
 	  				{this.flowchartOptions()}
 		        </div>
 		        <DeviceDetailsPanel/>
+=======
+	return (
+      <div {...inputs.flowchart} ref="flowchart">
+        <div id="deviceContainer" {...inputs.deviceContainer}>
+          {this.drawVertices()}
+  				{this.props.deviceArray.map((thisDevice) => (
+            <div className="devicePaper" id={thisDevice} key={thisDevice}>
+  				        <Device DeviceID={thisDevice}/>
+            </div>
+  				))}
+        </div>
+        <DeviceDetailsPanel/>
+>>>>>>> a1c9f0deccc717115f1ffe3d31cea56854987787
 			</div>
 		);
 
