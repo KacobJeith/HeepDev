@@ -29,18 +29,6 @@ class Vertex extends React.Component {
 		this.props.deleteVertex(this.props.id, this.props.vertex)
 	};
 
-  handleMouseEnter = () => {
-    this.setState({'color': '#d40000', 'strokeWidth': 4})
-    console.log("entered")
-    Draggable.get(".draggableDevice").disable()
-  }
-
-  handleMouseLeave = () => {
-    this.setState({'color': '#455a64', 'strokeWidth': 3})
-    console.log("leave")
-    Draggable.get(".draggableDevice").enable()
-  }
-
   getInputPosition = () => {
   	let returnPosition = false;
   	try {
@@ -124,8 +112,8 @@ class Vertex extends React.Component {
                 String(getOutput.left),
                 " ",
                 String(getOutput.top)),
-				onMouseEnter: () => this.handleMouseEnter(),
-				onMouseLeave: () => this.handleMouseLeave(),
+				onMouseEnter: () => this.setState({'color': '#d40000', 'strokeWidth': 4}),
+				onMouseLeave: () => this.setState({'color': '#455a64', 'strokeWidth': 3}),
 				onClick: () => this.sendDeleteVertexToServer(),
 				style: {
 					cursor: 'pointer',

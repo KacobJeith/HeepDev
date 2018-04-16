@@ -231,6 +231,10 @@ export default function(state = initialState, action) {
 
       return Immutable.Map(state).set('dragVertex', !state.dragVertex).toJS()
 
+    case 'DRAGGING':
+
+      return Immutable.Map(state).set('dragging', !state.dragging).toJS()
+
     case 'POSITION_DEVICE':
       var newState = Immutable.Map(state.positions).toJS();
 

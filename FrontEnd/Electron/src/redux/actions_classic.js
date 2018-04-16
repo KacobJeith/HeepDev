@@ -15,6 +15,10 @@ export const updateVertex = () => ({
   type: 'UPDATE_VERTEX'
 })
 
+export const dragging = () => ({
+  type: 'DRAGGING'
+})
+
 //Icons
 export const addIcon = (deviceID, icon) => ({
   type: 'ADD_ICON',

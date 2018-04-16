@@ -4,6 +4,8 @@ import { bindActionCreators } from 'redux'
 import { Tooltip }  from 'material-ui'
 import * as Actions from '../../redux/actions_classic'
 
+import * as Draggable from 'gsap/Draggable'
+
 var mapStateToProps = (state, ownProps) => ({
   control: state.controls[ownProps.thisControl],
   controlID: state.controls[ownProps.thisControl]['controlID'],
@@ -47,6 +49,16 @@ class RangeController extends React.Component {
 
 		}
 	}
+
+  handleMouseEnter = () => {
+    this.setState({radius: 11, fill: '#02a8f4', fontSize: 15, textCenter: 16})
+    console.log("entered")
+  }
+
+  handleMouseLeave = () => {
+    this.setState({radius: 7, fill: '#455a64', fontSize: 8.5, textCenter: 14})
+    console.log("left")
+  }
 
 	convertCtrlVal() {
 		return this.displayMin + (this.displayMax-this.displayMin)*(this.props.control['valueCurrent']/(this.props.control['valueHigh']-this.props.control['valueLow']))
@@ -158,8 +170,8 @@ class RangeController extends React.Component {
 				y2: 11,
 			},
 			dragDot: {
-				onMouseEnter : () => this.setState({radius: 11, fill: '#02a8f4', fontSize: 15, textCenter: 16}),
-				onMouseLeave : () => this.setState({radius: 7, fill: '#455a64', fontSize: 8.5, textCenter: 14}),
+				onMouseEnter : () => this.handleMouseEnter(),
+				onMouseLeave : () => this.handleMouseLeave(),
 				onMouseDown : (event) => {this.onMouseDown(event);},
 				onMouseUp : (event) => {this.dragging = 0;},
 				onTouchStart: (event) => {event.preventDefault(); this.onMouseDown(event.nativeEvent.changedTouches[0])},
