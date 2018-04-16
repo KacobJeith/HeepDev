@@ -11,8 +11,8 @@ export const sendPositionToServer = (deviceID, newPosition) => ({
   newPosition
 })
 
-export const updateDragging = () => ({
-  type: 'UPDATE_DRAGGING'
+export const updateVertex = () => ({
+  type: 'UPDATE_VERTEX'
 })
 
 //Icons

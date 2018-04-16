@@ -13,7 +13,7 @@ var mapStateToProps = (state, ownProps) => (
                 state.devices[state.vertexList[ownProps.vertexID].txDeviceID] &&
                 state.devices[state.vertexList[ownProps.vertexID].rxDeviceID].active &&
                 state.devices[state.vertexList[ownProps.vertexID].txDeviceID].active,
-  dragging: state.dragging
+  dragging: state.dragVertex
 })
 
 class Vertex extends React.Component {

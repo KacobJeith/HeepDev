@@ -6,6 +6,7 @@ import OnOffContainer from './OnOffController'
 import RangeContainer from './RangeController'
 import { Grid, Typography } from 'material-ui'
 import * as Utils from '../../serverside/utilities/generalUtilities'
+import * as Draggable from 'gsap/Draggable'
 
 var mapStateToProps = (state, ownProps) => ({
   control: state.controls[ownProps.controlID],

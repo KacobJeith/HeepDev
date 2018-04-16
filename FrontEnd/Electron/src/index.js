@@ -34,7 +34,7 @@ const startState = {
     controlStructure:{},
     connections: {}
   },
-  dragging: false,
+  dragVertex: false,
   vertexList: {},
   icons: {},
   url: '',

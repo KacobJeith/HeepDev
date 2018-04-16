@@ -227,9 +227,9 @@ export default function(state = initialState, action) {
 
       return Immutable.Map(state).set('vertexList', newState).set('controls', newStateControls).toJS();
 
-    case 'UPDATE_DRAGGING':
+    case 'UPDATE_VERTEX':
 
-      return Immutable.Map(state).set('dragging', !state.dragging).toJS()
+      return Immutable.Map(state).set('dragVertex', !state.dragVertex).toJS()
 
     case 'POSITION_DEVICE':
       var newState = Immutable.Map(state.positions).toJS();
