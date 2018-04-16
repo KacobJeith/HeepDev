@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { withRouter } from 'react-router-dom'
 import * as Actions from '../../redux/actions_classic'
+import { TimelineMax, Draggable } from 'gsap'
 
 import Device from './DevicePaper'
 import Vertex from './Vertex'
