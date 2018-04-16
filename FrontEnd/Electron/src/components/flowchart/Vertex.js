@@ -13,7 +13,8 @@ var mapStateToProps = (state, ownProps) => (
                 state.devices[state.vertexList[ownProps.vertexID].txDeviceID] &&
                 state.devices[state.vertexList[ownProps.vertexID].rxDeviceID].active &&
                 state.devices[state.vertexList[ownProps.vertexID].txDeviceID].active,
-  dragging: state.dragging
+  dragging: state.flowchart.dragging,
+  scale: 0.5
 })
 
 class Vertex extends React.Component {
@@ -44,8 +45,8 @@ class Vertex extends React.Component {
       const widthOffset = svgElRect.width / 2
 
       returnPosition = {
-        top: svgElRect.top + heightOffset + window.scrollY - svgConRect.top,
-        left: svgElRect.left + widthOffset + window.scrollX - svgConRect.left,
+        top: (svgElRect.top + heightOffset + window.scrollY - svgConRect.top) / this.props.scale,
+        left: (svgElRect.left + widthOffset + window.scrollX - svgConRect.left) / this.props.scale,
       };
 
   	} catch(err){
@@ -68,9 +69,12 @@ class Vertex extends React.Component {
       const heightOffset = svgElRect.height / 2
       const widthOffset = svgElRect.width / 2
 
+      console.log(svgConRect.left);
+      console.log(svgElRect.left)
+
       returnPosition = {
-        top: svgElRect.top + heightOffset + window.scrollY - svgConRect.top,
-        left: svgElRect.left + widthOffset + window.scrollX - svgConRect.left,
+        top: (svgElRect.top + heightOffset + window.scrollY - svgConRect.top) / this.props.scale,
+        left: (svgElRect.left + widthOffset + window.scrollX - svgConRect.left) / this.props.scale,
       }
 
   	} catch(err){

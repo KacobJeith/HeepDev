@@ -146,42 +146,28 @@ class Flowchart extends React.Component {
 		          width: '100%',
 		          height: '100%',
 		          background: 'none',
-		          pointerEvents: 'none',
-		          transform: 'scale(' + this.props.scale + ')',
-		          transformOrigin: 'top left'
+		          pointerEvents: 'none'
 		        }
 		    }
 		}
 
-
-
-<<<<<<< HEAD
 		return (
-	      	<div {...inputs.flowchart} ref="flowchart">
-		        {this.drawVertices()}
-		        <div {...inputs.deviceContainer}>
-	  				{this.props.deviceArray.map((thisDevice) => (
-			            <div className="devicePaper" id={thisDevice} key={thisDevice}>
-			  				<Device DeviceID={thisDevice}/>
-			            </div>
-	  				))}
-	  				
-	  				{this.flowchartOptions()}
-		        </div>
-		        <DeviceDetailsPanel/>
-=======
-	return (
-      <div {...inputs.flowchart} ref="flowchart">
-        <div id="deviceContainer" {...inputs.deviceContainer}>
-          {this.drawVertices()}
-  				{this.props.deviceArray.map((thisDevice) => (
-            <div className="devicePaper" id={thisDevice} key={thisDevice}>
-  				        <Device DeviceID={thisDevice}/>
-            </div>
-  				))}
-        </div>
-        <DeviceDetailsPanel/>
->>>>>>> a1c9f0deccc717115f1ffe3d31cea56854987787
+			<div {...inputs.flowchart} ref="flowchart">
+				<div style={{
+						transform: 'scale(' + this.props.scale + ')',
+		          		transformOrigin: 'top left'
+		          	}}>
+				<div id="deviceContainer" {...inputs.deviceContainer}>
+					
+						{this.drawVertices()}
+						{this.props.deviceArray.map((thisDevice) => (
+							<div className="devicePaper" id={thisDevice} key={thisDevice}>
+								<Device DeviceID={thisDevice}/>
+							</div>
+						))}
+					</div>
+				</div>
+				<DeviceDetailsPanel/>
 			</div>
 		);
 

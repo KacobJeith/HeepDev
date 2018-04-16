@@ -34,7 +34,7 @@ const startState = {
     controlStructure:{},
     connections: {}
   },
-  dragging: false,
+  
   vertexList: {},
   icons: {},
   url: '',
@@ -54,7 +54,10 @@ const startState = {
     selectingIcon: false,
     controls: {}
   },
-
+  flowchart: {
+    dragging: false,
+    scale: 1.0
+  },
   liveModeReference: null,
   detailsPanelDeviceID: null,
   accessPoints: {},

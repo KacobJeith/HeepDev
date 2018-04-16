@@ -229,7 +229,7 @@ export default function(state = initialState, action) {
 
     case 'UPDATE_DRAGGING':
 
-      return Immutable.Map(state).set('dragging', !state.dragging).toJS()
+      return Immutable.fromJS(state).setIn(['flowchart', 'dragging'], !state.flowchart.dragging).toJS()
 
     case 'POSITION_DEVICE':
       var newState = Immutable.Map(state.positions).toJS();
