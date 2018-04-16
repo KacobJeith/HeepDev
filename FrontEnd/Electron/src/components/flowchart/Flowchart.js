@@ -9,9 +9,14 @@ import Device from './DevicePaper'
 import Vertex from './Vertex'
 import DeviceDetailsPanel from '../heep/DeviceDetailsPanel'
 
+import Add from 'material-ui-icons/Add'
+import Remove from 'material-ui-icons/Remove'
+import { Button }  from 'material-ui'
+
 var mapStateToProps = (state) => ({
   deviceArray: Object.keys(state.devices),
   vertexList: state.vertexList,
+  scale: 0.5
 })
 
 
@@ -23,9 +28,34 @@ class Flowchart extends React.Component {
 		}
 	};
 
-  componentDidMount() {
-    this.initializeDrag();
-  }
+	componentDidMount() {
+		this.initializeDrag();
+	}
+
+	flowchartOptions() {
+
+		return (
+			<div style={{position:'absolute', top: 10, left: 10}}>
+				<Button 
+					variant="fab" 
+					color="primary" 
+					aria-label="zoom-out" 
+					onClick={() => console.log('zoom out')}
+				>
+					<Remove/>
+				</Button>
+				<Button 
+					variant="fab" 
+					color="primary" 
+					aria-label="zoom-in" 
+					onClick={() => console.log('zoom in')}
+				>
+					<Add/>
+				</Button>
+				
+			</div>
+		)
+	}
 
 	drawVertices() {
 
@@ -108,30 +138,34 @@ class Flowchart extends React.Component {
         		onMouseEnter: () => this.setState({hoverRefresh: true}),
         		onMouseLeave: () => this.setState({hoverRefresh: false})
 			},
-      deviceContainer: {
-        style: {
-          position: 'absolute',
-          width: '100%',
-          height: '100%',
-          background: 'none',
-          pointerEvents: 'none'
-        },
-      },
+      		deviceContainer: {
+		        style: {
+		          position: 'absolute',
+		          width: '100%',
+		          height: '100%',
+		          background: 'none',
+		          pointerEvents: 'none',
+		          transform: 'scale(' + this.props.scale + ')',
+		          transformOrigin: 'top left'
+		        }
+		    }
 		}
 
 
 
-	return (
-      <div {...inputs.flowchart} ref="flowchart">
-        {this.drawVertices()}
-        <div {...inputs.deviceContainer}>
-  				{this.props.deviceArray.map((thisDevice) => (
-            <div className="devicePaper" id={thisDevice} key={thisDevice}>
-  				        <Device DeviceID={thisDevice}/>
-            </div>
-  				))}
-        </div>
-        <DeviceDetailsPanel/>
+		return (
+	      	<div {...inputs.flowchart} ref="flowchart">
+		        {this.drawVertices()}
+		        <div {...inputs.deviceContainer}>
+	  				{this.props.deviceArray.map((thisDevice) => (
+			            <div className="devicePaper" id={thisDevice} key={thisDevice}>
+			  				<Device DeviceID={thisDevice}/>
+			            </div>
+	  				))}
+	  				
+	  				{this.flowchartOptions()}
+		        </div>
+		        <DeviceDetailsPanel/>
 			</div>
 		);
 
