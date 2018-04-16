@@ -11,6 +11,10 @@ export const sendPositionToServer = (deviceID, newPosition) => ({
   newPosition
 })
 
+export const updateDragging = () => ({
+  type: 'UPDATE_DRAGGING'
+})
+
 //Icons
 export const addIcon = (deviceID, icon) => ({
   type: 'ADD_ICON',
@@ -21,8 +25,8 @@ export const addIcon = (deviceID, icon) => ({
 //Control
 export const updateControlValue = (deviceID, controlID, newValue) => ({
   type: 'UPDATE_CONTROL_VALUE',
-  deviceID, 
-  controlID, 
+  deviceID,
+  controlID,
   newValue
 })
 
@@ -36,7 +40,7 @@ export const storeURL = (url) => ({
 //Vertex
 export const addVertex = (rxDeviceID, rxControlID, rxIP) => ({
   type: 'ADD_VERTEX',
-  rxDeviceID, 
+  rxDeviceID,
   rxControlID,
   rxIP
 })
@@ -49,7 +53,7 @@ export const deleteVertex = (vertexID, vertex) => ({
 
 export const selectOutput = (txDeviceID, txControlID) => ({
   type: 'SELECT_OUTPUT',
-  txDeviceID, 
+  txDeviceID,
   txControlID
 })
 
@@ -82,7 +86,7 @@ export const setDetailsPanelDeviceID = (deviceID) => ({
 
 export const sendWiFiCredentialsToDevice = (deviceID, placeKey) => ({
   type: 'SEND_WIFI_CRED_TO_DEVICE',
-  deviceID, 
+  deviceID,
   placeKey
 })
 

@@ -9,10 +9,11 @@ var mapStateToProps = (state, ownProps) => (
   id: ownProps.vertexID,
   vertex: state.vertexList[ownProps.vertexID],
   positions: state.positions,
-  activeState:  state.devices[state.vertexList[ownProps.vertexID].rxDeviceID] && 
-                state.devices[state.vertexList[ownProps.vertexID].txDeviceID] && 
-                state.devices[state.vertexList[ownProps.vertexID].rxDeviceID].active && 
-                state.devices[state.vertexList[ownProps.vertexID].txDeviceID].active
+  activeState:  state.devices[state.vertexList[ownProps.vertexID].rxDeviceID] &&
+                state.devices[state.vertexList[ownProps.vertexID].txDeviceID] &&
+                state.devices[state.vertexList[ownProps.vertexID].rxDeviceID].active &&
+                state.devices[state.vertexList[ownProps.vertexID].txDeviceID].active,
+  dragging: state.dragging
 })
 
 class Vertex extends React.Component {

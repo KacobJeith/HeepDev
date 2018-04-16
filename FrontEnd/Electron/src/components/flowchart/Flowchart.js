@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { withRouter } from 'react-router-dom'
 import * as Actions from '../../redux/actions_classic'
-import { TimelineMax, Draggable } from 'gsap'
+import * as Draggable from 'gsap/Draggable'
 
 import Device from './DevicePaper'
 import Vertex from './Vertex'
@@ -11,7 +11,7 @@ import DeviceDetailsPanel from '../heep/DeviceDetailsPanel'
 
 var mapStateToProps = (state) => ({
   deviceArray: Object.keys(state.devices),
-  vertexList: state.vertexList
+  vertexList: state.vertexList,
 })
 
 
@@ -21,8 +21,11 @@ class Flowchart extends React.Component {
 		this.state = {
 			hoverRefresh: false
 		}
+	};
 
-	}
+  componentDidMount() {
+    this.initializeDrag();
+  }
 
 	drawVertices() {
 
@@ -51,21 +54,13 @@ class Flowchart extends React.Component {
 		)
 	};
 
-  drawCircle() {
-    const inputs = {
-      circle: {
-        id: 'testCircle',
-				cx: 300,
-			  cy: 300,
-				r: 30,
-				fill: 'red',
-      }
-    };
-
-    return (
-      <circle {...inputs.circle} />
-    )
-  };
+  initializeDrag () {
+    Draggable.create(".devicePaper", {
+      type: "x,y",
+      allowContextMenu: true,
+      onDrag: () => this.props.updateDragging()
+    });
+  }
 
 	render() {
 
@@ -128,11 +123,12 @@ class Flowchart extends React.Component {
 
 	return (
       <div {...inputs.flowchart} ref="flowchart">
-        {this.drawCircle()}
         {this.drawVertices()}
         <div {...inputs.deviceContainer}>
   				{this.props.deviceArray.map((thisDevice) => (
-  					<Device key={thisDevice} DeviceID={thisDevice}/>
+            <div className="devicePaper" id={thisDevice} key={thisDevice}>
+  				        <Device DeviceID={thisDevice}/>
+            </div>
   				))}
         </div>
         <DeviceDetailsPanel/>

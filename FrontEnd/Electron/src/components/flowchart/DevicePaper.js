@@ -96,18 +96,6 @@ class DevicePaper extends React.Component {
 
 				// WebkitUserDrag: `auto | element | none`
 			},
-			draggingCallbacks: {
-				draggable: true,
-				onDragStart : (event) => {this.onDragStart(event)},
-				onDrag : (event) => {this.onDrag(event)},
-				onDragEnd: (event) => {this.sendPositionToServer()},
-				onTouchStart: (event) => {this.onTouchStart(event)},
-				onTouchMove : (event) => {this.onDrag(event.nativeEvent.changedTouches[0])},
-				onTouchEnd: (event) => {this.sendPositionToServer()},
-				style: {
-					cursor: 'drag'
-				}
-			}
 		}
 
 		return (<div>
