@@ -15,7 +15,6 @@ var mapStateToProps = (state, ownProps) => ({
   device: state.devices[ownProps.DeviceID],
   controlInputs: state.controls.controlStructure[ownProps.DeviceID]['inputs'],
   controlOutputs: state.controls.controlStructure[ownProps.DeviceID]['outputs'],
-  draggingCallbacks: ownProps.draggingCallbacks,
   detailsPanelDeviceID: state.detailsPanelDeviceID
 })
 
@@ -61,7 +60,7 @@ class Device extends React.Component {
 		return (
 			<div style={{position:'relative'}}>
 				<object {...svgIcon}  />
-				<div {...this.props.draggingCallbacks} style={{position:'absolute', top:0, left:0, width:'100%', height:'100%', cursor:'grab'}}/>
+				<div style={{position:'absolute', top:0, left:0, width:'100%', height:'100%', cursor:'grab'}}/>
 			</div>
 		)
 	}
@@ -132,7 +131,7 @@ class Device extends React.Component {
       <div>
         {this.drawOptions()}
 					<Grid container {...inputs.gridContainer} direction='column' alignItems='stretch' spacing={8}>
-						<Grid item {...this.props.draggingCallbacks}>
+						<Grid item>
 							<Grid container justify='center' >
 								<Grid item >
 									{this.deviceName()}
@@ -146,7 +145,7 @@ class Device extends React.Component {
 									{this.drawControls(this.props.controlInputs)}
 								</Grid>
 
-								<Grid item xs={4} style={{margin:0}} {...this.props.draggingCallbacks}>
+								<Grid item xs={4} style={{margin:0}}>
 									<Grid container alignItems='center' spacing={0} style={{height:'100%', margin: 0, padding: 0}}>
 										<Grid item xs={12}>
 											{this.drawDeviceIcon()}

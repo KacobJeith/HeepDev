@@ -17,61 +17,9 @@ var mapStateToProps = (state, ownProps) => ({
 
 
 class DevicePaper extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			dragging: false
-		}
-
-		this.runningOffset = {top:  0,
-							  left: 0};
-		this.lastPosition =  {top:  0,
-							  left: 0};
-
-	}
-
-	onDragStart(event) {
-
-	  	this.lastPosition['left'] = event.pageX;
-	  	this.lastPosition['top'] = event.pageY;
-	  	this.setState({dragging: true});
-
-	  	var dragIcon = document.createElement('img');
-
-	  	event.dataTransfer.setDragImage(dragIcon, 99999,99999);
-	}
-
-	onTouchStart(event) {
-
-		event.preventDefault();
-		this.lastPosition['left'] = event.nativeEvent.changedTouches[0].pageX;
-	  	this.lastPosition['top'] = event.nativeEvent.changedTouches[0].pageY;
-
-	}
-
-	onDrag(event) {
-		this.calculateDragOffset(event);
-		this.props.positionDevice(this.props.deviceID, this.runningOffset);
-	}
-
-	calculateDragOffset(event) {
-		// The final drag event is always 0, which throws off tracking unless you catch and ignore it
-		if (event.clientX == 0 && event.clientY == 0){
-			return;
-		}
-
-		this.runningOffset['left'] = event.pageX - this.lastPosition['left']  ;
-		this.lastPosition['left'] = event.pageX;
-
-		this.runningOffset['top'] = event.pageY - this.lastPosition['top']  ;
-		this.lastPosition['top'] = event.pageY;
-
-	}
 
 	sendPositionToServer() {
-
 		this.props.sendPositionToServer(this.props.deviceID);
-		this.setState({dragging: false});
 	}
 
 	render() {
@@ -92,20 +40,17 @@ class DevicePaper extends React.Component {
               opacity: this.props.activeState ? 1.0 : .4,
               borderRadius: 20
 				},
-				elevation: this.state.dragging ? 3 : 5,
-
-				// WebkitUserDrag: `auto | element | none`
 			},
 		}
 
 		return (<div>
 					{this.props.activeState ?
 					<Paper {...inputs.deviceContainer} ref="device">
-							<Device DeviceID={this.props.deviceID} draggingCallbacks={{...inputs.draggingCallbacks}}/>
+							<Device DeviceID={this.props.deviceID}/>
 					</Paper> :
 					<Tooltip id="tooltip-top" title={'Having trouble communicating with this device. Is it still plugged in?'} placement="top">
 						<Paper {...inputs.deviceContainer} ref="device">
-								<Device DeviceID={this.props.deviceID} draggingCallbacks={{...inputs.draggingCallbacks}}/>
+								<Device DeviceID={this.props.deviceID}/>
 						</Paper>
 					</Tooltip>}
 				</div>
