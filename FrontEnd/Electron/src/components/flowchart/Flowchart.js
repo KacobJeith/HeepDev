@@ -49,8 +49,23 @@ class Flowchart extends React.Component {
 				})}
 			</svg>
 		)
+	};
 
-	}
+  drawCircle() {
+    const inputs = {
+      circle: {
+        id: 'testCircle',
+				cx: 300,
+			  cy: 300,
+				r: 30,
+				fill: 'red',
+      }
+    };
+
+    return (
+      <circle {...inputs.circle} />
+    )
+  };
 
 	render() {
 
@@ -113,6 +128,7 @@ class Flowchart extends React.Component {
 
 	return (
       <div {...inputs.flowchart} ref="flowchart">
+        {this.drawCircle()}
         {this.drawVertices()}
         <div {...inputs.deviceContainer}>
   				{this.props.deviceArray.map((thisDevice) => (
