@@ -81,7 +81,7 @@ export default function(state = initialState, action) {
         identity: deviceIdentity
       }
 
-      setTimeout(() => {database.associateDeviceWithAccount(device)}, 100);
+      import(/* webpackChunkName: "firebaseDatabase" */ '../firebase/FirebaseDatabase').then((database) => database.associateDeviceWithAccount(device));
 
       return state
 
@@ -282,15 +282,13 @@ export default function(state = initialState, action) {
 
     case 'SAVE_NEW_PLACE' :
 
-      import(/* webpackChunkName: "firebaseDatabase" */ '../firebase/FirebaseDatabase').then((database) => database.deletePlace(action.placeID));
+      import(/* webpackChunkName: "firebaseDatabase" */ '../firebase/FirebaseDatabase').then((database) =>database.saveNewPlace(action.placeName, action.placeSSID, action.placeSSIDPassword));
 
       return state
 
     case 'DELETE_PLACE_FROM_FIREBASE' :
 
-      setTimeout(() => {
-        database.deletePlace(action.placeID)
-      }, 1000);
+     import(/* webpackChunkName: "firebaseDatabase" */ '../firebase/FirebaseDatabase').then((database) => database.deletePlace(action.placeID));
 
       return state
 
