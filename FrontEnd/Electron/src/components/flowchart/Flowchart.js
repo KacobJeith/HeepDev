@@ -30,6 +30,10 @@ class Flowchart extends React.Component {
 		}
 	};
 
+	componentWillMount() {
+		this.props.setDetailsPanelDeviceID(null);
+	}
+
 	componentDidMount() {
 		this.initializeDrag();
 	}
@@ -41,8 +45,8 @@ class Flowchart extends React.Component {
 				id='flowchartOptions'
 				style={{
 					position:'fixed', 
-					bottom:  this.props.theme.spacing.unit, 
-					right: this.props.theme.spacing.unit
+					bottom:  this.props.theme.spacing.unit * 2, 
+					right: this.props.theme.spacing.unit * 2
 			}}>
 				<Button 
 					mini
