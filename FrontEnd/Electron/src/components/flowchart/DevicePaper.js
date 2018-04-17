@@ -5,10 +5,11 @@ import * as Actions from '../../redux/actions_classic'
 import * as newActions from '../../redux/actions'
 import Control from './Controls';
 import DynamicIcon from './DynamicIcon';
-import { Paper, Button, Typography, Grid, Tooltip } from 'material-ui'
+import { Paper, Button, Typography, Grid, Tooltip } from 'material-ui';
 
-import * as Draggable from 'gsap/Draggable'
-import { ThrowPropsPlugin } from 'gsap'
+import { TweenLite } from "gsap"
+import * as Draggable from 'gsap/Draggable';
+import ThrowPropsPlugin from '../utilities/ThrowPropsPlugin';
 
 import Device from './Device'
 
@@ -50,12 +51,13 @@ class DevicePaper extends React.Component {
     Draggable.create("#_" + this.props.DeviceID, {
       type: "x,y",
       bounds: "#flowchart",
-      //bounds: {top: (-1* this.initialPosition.top), left: (-1 * this.initialPosition.left)},
-      edgeResistance: 1,
+      edgeResistance: 0.7,
       allowContextMenu: true,
       throwProps: true,
       onDrag: () => this.props.updateVertex(),
-      onRelease: () => this.sendPositionToServer(),
+      onThrowUpdate: () => this.props.updateVertex(),
+      onDragEnd: () => this.sendPositionToServer(),
+      onThrowComplete: () => this.sendPositionToServer(),
     });
   };
 
