@@ -5,9 +5,10 @@ import * as Actions from '../../redux/actions_designer'
 
 import GenericSelect from '../utilities/GenericSelect'
 import { FormGroup, FormControlLabel } from 'material-ui/Form';
-import Checkbox from 'material-ui/Checkbox';
+import {Checkbox, Collapse} from 'material-ui';
 
 var mapStateToProps = (state, ownProps) => ({
+  isPinType: state.designer.controls[ownProps.controlID].designerControlType == "Pin",
   controlID: ownProps.controlID,
   systemType: state.designer.systemType,
   controlType: state.designer.controls[ownProps.controlID]['controlType'],
@@ -52,7 +53,10 @@ class DefinePins extends React.Component {
       case "ESP8266" :
       case "PoE" :
 
-        return (<div>
+        return (
+          <Collapse in={this.props.isPinType} timeout={750} unmountOnExit>
+          <div>
+
           <GenericSelect {...inputs.pins}/>
           <GenericSelect {...inputs.digitalOrAnalog}/>
           {this.props.controlType == 0 && (
@@ -67,7 +71,9 @@ class DefinePins extends React.Component {
                 label='Use Negative Logic'
               />
           )}
-          </div>)
+          </div>
+          </Collapse>
+          )
 
     default :
       return (<div/>)
