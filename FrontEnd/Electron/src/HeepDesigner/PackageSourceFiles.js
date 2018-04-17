@@ -165,7 +165,7 @@ var CreateVirtualControlReadFunction = (control) => {
 }
 
 var CreateReadFunctions = (controls) => {
-  var hardwareReadFunctions = ``;
+  var readFunctions = ``;
 
   // output == 1, input == 0 
   // TODO: Make control direction into an enum with defined numbers just like Unity
@@ -174,15 +174,15 @@ var CreateReadFunctions = (controls) => {
     // Only react to outputs. Heep Outputs are Hardware Inputs
     if(controls[i].controlDirection == 1){
       if(controls[i].designerControlType == "Pin"){
-          hardwareReadFunctions += CreatePinControlReadFunction(controls[i]);
+          readFunctions += CreatePinControlReadFunction(controls[i]);
       }
       else{
-          hardwareReadFunctions += CreateVirtualControlReadFunction(controls[i]);
+          readFunctions += CreateVirtualControlReadFunction(controls[i]);
       }
     }
   }
 
-  return hardwareReadFunctions;
+  return readFunctions;
 
 }
 
