@@ -44,7 +44,7 @@ class ControlBuilder extends React.Component {
         value:this.state.selection,
         defaultValue: this.state.selection,
         width: '33%',
-        options: ["Custom", "Servo", "LED", "Select..."],
+        options: ["Virtual", "Pin", "Select..."],
         onChange: (value) => {this.setState({selection: "Select..."}); this.props.addNewControl(value); },
       },
       spacer: {
