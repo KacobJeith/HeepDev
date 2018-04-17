@@ -4,6 +4,8 @@ import { bindActionCreators } from 'redux'
 import { withRouter } from 'react-router-dom'
 import * as Actions from '../../redux/actions_classic'
 
+import * as Draggable from 'gsap/Draggable'
+
 import Device from './DevicePaper'
 import Vertex from './Vertex'
 import DeviceDetailsPanel from '../heep/DeviceDetailsPanel'
@@ -28,6 +30,19 @@ class Flowchart extends React.Component {
 			hoverRefresh: false
 		}
 	};
+
+  componentDidMount() {
+    this.dragFlowchart()
+  }
+
+  dragFlowchart() {
+      Draggable.create("#deviceContainer", {
+        type: "x,y",
+        allowContextMenu: true,
+        bounds: "#flowchart",
+        onDrag: () => this.props.updateVertex(),
+      });
+  }
 
 	flowchartOptions() {
 		return (
@@ -108,7 +123,7 @@ class Flowchart extends React.Component {
 					height: 3000,
 					width: 3000,
 					backgroundColor: '#e7e7e7',
-					overflow: 'auto'
+          overflow: "hidden"
 				}
 			},
 			refresh: {
@@ -152,16 +167,17 @@ class Flowchart extends React.Component {
 		          width: '100%',
 		          height: '100%',
 		          background: 'none',
-		          pointerEvents: 'none'
 		        }
 		    }
 		}
 
 		return (
-			<div {...inputs.flowchart} ref="flowchart">
+			<div id="#flowchart" {...inputs.flowchart} ref="flowchart">
 				<div style={{
 						transform: 'scale(' + this.props.scale + ')',
-		          		transformOrigin: 'top left'
+		          		transformOrigin: 'top left',
+                  width: '100%',
+                  height: '100%'
 		          	}}>
 					<div id="deviceContainer" {...inputs.deviceContainer}>
 						{this.drawVertices()}

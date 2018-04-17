@@ -39,6 +39,10 @@ class DevicePaper extends React.Component {
 	render() {
 
 		const inputs = {
+      divContainer: {
+        onMouseEnter: () => Draggable.get("#deviceContainer").disable(),
+        onMouseLeave: () => Draggable.get("#deviceContainer").enable()
+      },
 			deviceContainer: {
         		style: {
     					backgroundColor: 'white',
@@ -58,7 +62,7 @@ class DevicePaper extends React.Component {
 		}
 
 		return (
-        <div id={"_" + this.props.DeviceID}>
+        <div id={"_" + this.props.DeviceID} {...inputs.divContainer}>
 					{this.props.activeState ?
 					<Paper {...inputs.deviceContainer} ref="device">
 							<Device DeviceID={this.props.deviceID}/>
