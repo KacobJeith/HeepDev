@@ -230,7 +230,7 @@ class DeviceDetailsPanel extends React.Component {
     const { classes, theme } = this.props;
 
     return (  
-      <div style={{position: 'fixed', right:0, top: 0}}>
+      <div style={{position: 'fixed', right:0, top: 0}} id='detailsPanel'>
         <Drawer 
           variant='permanent' 
           open={this.props.deviceID != null} 
