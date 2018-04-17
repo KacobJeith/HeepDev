@@ -7,6 +7,8 @@ import Control from './Controls';
 import DynamicIcon from './DynamicIcon';
 import { Paper, Button, Typography, Grid, Tooltip } from 'material-ui'
 
+import * as Draggable from 'gsap/Draggable'
+
 import Device from './Device'
 
 var mapStateToProps = (state, ownProps) => ({
@@ -18,9 +20,21 @@ var mapStateToProps = (state, ownProps) => ({
 
 class DevicePaper extends React.Component {
 
+  componentDidMount() {
+    this.createDraggable()
+  }
+
 	sendPositionToServer() {
 		this.props.sendPositionToServer(this.props.deviceID);
 	}
+
+  createDraggable () {
+    Draggable.create("#_" + this.props.DeviceID, {
+      type: "x,y",
+      allowContextMenu: true,
+      onDrag: () => this.props.updateVertex(),
+    });
+  };
 
 	render() {
 
@@ -44,7 +58,7 @@ class DevicePaper extends React.Component {
 		}
 
 		return (
-        <div>
+        <div id={"_" + this.props.DeviceID}>
 					{this.props.activeState ?
 					<Paper {...inputs.deviceContainer} ref="device">
 							<Device DeviceID={this.props.deviceID}/>

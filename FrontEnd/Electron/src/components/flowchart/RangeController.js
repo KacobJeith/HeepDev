@@ -52,12 +52,12 @@ class RangeController extends React.Component {
 
   handleMouseEnter = () => {
     this.setState({radius: 11, fill: '#02a8f4', fontSize: 15, textCenter: 16})
-    Draggable.get(".draggableDevice").disable()
+    Draggable.get("#_" + this.props.DeviceID).disable()
   }
 
   handleMouseLeave = () => {
     this.setState({radius: 7, fill: '#455a64', fontSize: 8.5, textCenter: 14})
-    Draggable.get(".draggableDevice").enable()
+    Draggable.get("#_" + this.props.DeviceID).enable()
   }
 
 	convertCtrlVal() {

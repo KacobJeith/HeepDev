@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { withRouter } from 'react-router-dom'
 import * as Actions from '../../redux/actions_classic'
-import * as Draggable from 'gsap/Draggable'
 
 import Device from './DevicePaper'
 import Vertex from './Vertex'
@@ -29,10 +28,6 @@ class Flowchart extends React.Component {
 			hoverRefresh: false
 		}
 	};
-
-	componentDidMount() {
-		this.initializeDrag();
-	}
 
 	flowchartOptions() {
 		return (
@@ -95,21 +90,13 @@ class Flowchart extends React.Component {
   drawDevices() {
     return (
       <div>
-        {this.props.deviceArray.map((thisDevice) => (
-          <div className="draggableDevice" id={thisDevice} key={thisDevice}>
-                <Device DeviceID={thisDevice}/>
-          </div>
-        ))}
+        {this.props.deviceArray.map((thisDevice) => {
+          return (
+            <Device key={thisDevice} DeviceID={thisDevice}/>
+          )
+        })}
       </div>
     )
-  };
-
-  initializeDrag () {
-    Draggable.create(".draggableDevice", {
-      type: "x,y",
-      allowContextMenu: true,
-      onDrag: () => this.props.updateVertex(),
-    });
   };
 
 	render() {
