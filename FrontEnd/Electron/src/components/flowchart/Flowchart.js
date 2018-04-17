@@ -40,7 +40,8 @@ class Flowchart extends React.Component {
 			<div style={{
 				position:'fixed', 
 				bottom:  this.props.theme.spacing.unit, 
-				right: this.props.detailsPanelOut ? 300 :  this.props.theme.spacing.unit
+				right: this.props.detailsPanelOut ? 258 + this.props.theme.spacing.unit :  this.props.theme.spacing.unit
+
 			}}>
 				<Button 
 					mini
