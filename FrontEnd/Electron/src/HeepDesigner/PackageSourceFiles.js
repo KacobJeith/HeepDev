@@ -68,7 +68,7 @@ const composeInoFile = (deviceDetails, controls) => {
 #include "HeepDeviceDefinitions.h"\n`
 + initializeControls(controls)
 + createHardwareControlFunctionsArduinoSyntax(controls)
-+ CreateHardwareReadFunctions(controls)
++ CreateReadFunctions(controls)
 + CreateHardwareWriteFunctions(controls)
 + `void setup()
 {
@@ -135,34 +135,49 @@ var createHardwareControlFunctionsArduinoSyntax = (controls) => {
   return hardwareInitializations;
 }
 
-// TODO: Make this function handle control types that are not just pin reads
-var CreateHardwareReadFunctions = (controls) => {
+var CreatePinControlReadFunction = (control) => {
+  var readFunction = ``;
+
+  var notSign = ``;
+  if(control.pinNegativeLogic){
+    notSign = `!`;
+  }
+
+  readFunction += `int ` + GetReadFunctionName(control) + `(){\n`
+            + GetTabCharacter() + `int currentSetting = ` + notSign + control['analogOrDigital'] + `Read(` + getPinDefineName(control) + `);\n`
+            + GetTabCharacter() + `SetControlValueByName("` + control.controlName + `",currentSetting);\n`
+            + GetTabCharacter() + `return currentSetting;\n`
+            + `}\n\n`;
+
+  return readFunction;
+}
+
+var CreateVirtualControlReadFunction = (control) => {
+  var readFunction = ``;
+
+  readFunction += `int ` + GetReadFunctionName(control) + `(){\n`
+            + GetTabCharacter() + `int currentSetting = 0; //ToDo: Add your custom control logic here\n`
+            + GetTabCharacter() + `SetControlValueByName("` + control.controlName + `",currentSetting);\n`
+            + GetTabCharacter() + `return currentSetting;\n`
+            + `}\n\n`;
+
+  return readFunction;
+}
+
+var CreateReadFunctions = (controls) => {
   var hardwareReadFunctions = ``;
 
   // output == 1, input == 0 
   // TODO: Make control direction into an enum with defined numbers just like Unity
   for (var i in controls) {
 
-    var notSign = ``;
-    if(controls[i].pinNegativeLogic){
-      notSign = `!`;
-    }
-
     // Only react to outputs. Heep Outputs are Hardware Inputs
     if(controls[i].controlDirection == 1){
       if(controls[i].designerControlType == "Pin"){
-          hardwareReadFunctions += `int ` + GetReadFunctionName(controls[i]) + `(){\n`
-            + GetTabCharacter() + `int currentSetting = ` + notSign + controls[i]['analogOrDigital'] + `Read(` + getPinDefineName(controls[i]) + `);\n`
-            + GetTabCharacter() + `SetControlValueByName("` + controls[i].controlName + `",currentSetting);\n`
-            + GetTabCharacter() + `return currentSetting;\n`
-            + `}\n\n`;
+          hardwareReadFunctions += CreatePinControlReadFunction(controls[i]);
       }
       else{
-        hardwareReadFunctions += `int ` + GetReadFunctionName(controls[i]) + `(){\n`
-            + GetTabCharacter() + `int currentSetting = 0; //ToDo: Add your custom control logic here\n`
-            + GetTabCharacter() + `SetControlValueByName("` + controls[i].controlName + `",currentSetting);\n`
-            + GetTabCharacter() + `return currentSetting;\n`
-            + `}\n\n`;
+          hardwareReadFunctions += CreateVirtualControlReadFunction(controls[i]);
       }
     }
   }
