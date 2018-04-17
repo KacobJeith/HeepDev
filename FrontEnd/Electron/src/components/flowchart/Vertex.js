@@ -45,8 +45,8 @@ class Vertex extends React.Component {
       const widthOffset = svgElRect.width / 2
 
       returnPosition = {
-        top: (svgElRect.top + heightOffset + window.scrollY - svgConRect.top) / this.props.scale,
-        left: (svgElRect.left + widthOffset + window.scrollX - svgConRect.left) / this.props.scale,
+        top: (svgElRect.top + heightOffset - svgConRect.top) / this.props.scale,
+        left: (svgElRect.left + widthOffset - svgConRect.left) / this.props.scale,
       };
 
   	} catch(err){

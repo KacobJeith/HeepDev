@@ -21,24 +21,36 @@ var mapStateToProps = (state, ownProps) => ({
 
 class DevicePaper extends React.Component {
 
-  componentDidMount() {
-    this.createDraggable()
+  constructor(props) {
+    super(props)
+    this.initialPosition = {top: props.position.top, left: props.position.left};
+    this.newPosition = {top:  0, left: 0};
   }
 
-	sendPositionToServer() {
+  componentDidMount() {
+    this.createDraggable()
+    // this.initialPosition = {top: this.props.position.top, left: this.props.position.left};
+    this.newPosition = {top: this.props.position.top, left: this.props.position.left};
+  }
+
+  calculateNewPosition() {
     const dragElement = document.getElementById("_" + this.props.DeviceID)
     const x1 = dragElement._gsTransform.x
     const y1 = dragElement._gsTransform.y
 
-    console.log(x1, y1)
+    this.newPosition = {top: Math.round(this.initialPosition.top + y1), left: Math.round(this.initialPosition.left + x1)}
+  }
 
-		//this.props.sendPositionToServer(this.props.deviceID);
+  sendPositionToServer() {
+    this.calculateNewPosition()
+		this.props.sendPositionToServer(this.props.deviceID, this.newPosition);
 	}
 
   createDraggable () {
     Draggable.create("#_" + this.props.DeviceID, {
       type: "x,y",
-      bounds: {target: "#flowchart", top: (-1* this.props.position.top), left: (-1 * this.props.position.left)},
+      bounds: "#flowchart",
+      //bounds: {top: (-1* this.initialPosition.top), left: (-1 * this.initialPosition.left)},
       edgeResistance: 1,
       allowContextMenu: true,
       throwProps: true,
@@ -52,7 +64,12 @@ class DevicePaper extends React.Component {
 		const inputs = {
       divContainer: {
         onMouseEnter: () => Draggable.get("#deviceContainer").disable(),
-        onMouseLeave: () => Draggable.get("#deviceContainer").enable()
+        onMouseLeave: () => Draggable.get("#deviceContainer").enable(),
+        style: {
+          position: 'absolute',
+          top: this.initialPosition.top,
+          left: this.initialPosition.left,
+        }
       },
 			deviceContainer: {
         		style: {
@@ -62,8 +79,6 @@ class DevicePaper extends React.Component {
               width: 330,
     					cursor: '-webkit-grab',
     					position: 'absolute',
-    					transform: `translate(${this.props.position.left}px, ${this.props.position.top}px)`,//this.props.position.top,
-    					// left: ``this.props.position.left,
     					color: 'black',
               pointerEvents: 'visible',
               opacity: this.props.activeState ? 1.0 : .4,

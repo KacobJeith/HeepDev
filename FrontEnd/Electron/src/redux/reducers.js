@@ -7,8 +7,11 @@ import * as utils from '../serverside/utilities/generalUtilities'
 import reducersDesigner from './reducers_designer'
 import { TweenLite } from 'gsap'
 import theme from '../components/Theme'
+import { persistStore, persistReducer } from 'redux-persist'
+import * as setup from '../index'
 
 export default function(state = initialState, action) {
+
   switch (action.type) {
     case 'LOGIN' :
 
@@ -249,10 +252,12 @@ export default function(state = initialState, action) {
 
     case 'POSITION_DEVICE_SEND':
 
-      var positionToSend = state.positions[action.deviceID].device;
-      async.sendPositionToServer(action.deviceID, positionToSend);
+      async.sendPositionToServer(action.deviceID, action.newPosition);
 
-      return state
+      return Immutable.fromJS(state)
+                      .setIn(['positions', action.deviceID, 'device', 'top'], action.newPosition.top)
+                      .setIn(['positions', action.deviceID, 'device', 'left'], action.newPosition.left)
+                      .toJS()
 
     case 'UPDATE_CONTROL_VALUE':
 
