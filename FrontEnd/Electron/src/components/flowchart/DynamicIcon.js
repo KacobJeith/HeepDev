@@ -39,7 +39,7 @@ class DynamicIcon extends React.Component {
 
 	updateColor() {
 		var LEDelement = $(this.icon).find('#LEDState')
-		
+
 		if(LEDelement.length > 0) {
 
 			var edit = LEDelement[0];
@@ -49,7 +49,7 @@ class DynamicIcon extends React.Component {
 	}
 
 	render() {
-		
+
 		// this.updateColor();
 
 		var inputs = {

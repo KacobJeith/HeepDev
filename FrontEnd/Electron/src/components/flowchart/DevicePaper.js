@@ -24,10 +24,6 @@ class DevicePaper extends React.Component {
     this.createDraggable()
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return false;
-  }
-
 	sendPositionToServer() {
 		this.props.sendPositionToServer(this.props.deviceID);
 	}
@@ -35,6 +31,7 @@ class DevicePaper extends React.Component {
   createDraggable () {
     Draggable.create("#_" + this.props.DeviceID, {
       type: "x,y",
+      bounds: {top: -100, left: -100},
       allowContextMenu: true,
       onDrag: () => this.props.updateVertex(),
     });

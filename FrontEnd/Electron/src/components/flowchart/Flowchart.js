@@ -38,7 +38,7 @@ class Flowchart extends React.Component {
   dragFlowchart() {
       Draggable.create("#deviceContainer", {
         type: "scroll",
-        bounds: {top: 0, left: 0, width: 3000, height: 3000},
+        bounds: {top: 0, left: 0},
         allowContextMenu: true,
         onDrag: () => this.props.updateVertex()
       });
