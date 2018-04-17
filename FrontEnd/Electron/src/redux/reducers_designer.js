@@ -99,6 +99,8 @@ export default function(state = initialState.builder, action, fullState = initia
         const controlKey = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
         var controls = Immutable.Map(state.controls).set(controlKey, initialControlState(Object.keys(state.controls).length)).toJS();
 
+        controls[controlKey].designerControlType = action.controlConfig;
+
         var newMaster = Immutable.Map(state)
         .set('numControls', state.numControls + 1)
         .set('controls', controls)
@@ -190,5 +192,6 @@ const initialControlState = () => ({
     curValue: 0,
     pinNumber: 14,
     analogOrDigital: "digital",
-    pinNegativeLogic: false
+    pinNegativeLogic: false,
+    designerControlType: "Virtual"
 })
