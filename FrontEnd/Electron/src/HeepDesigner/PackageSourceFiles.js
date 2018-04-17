@@ -118,12 +118,16 @@ var createHardwareControlFunctionsArduinoSyntax = (controls) => {
   // output == 1, input == 0 
   // TODO: Make control direction into an enum with defined numbers just like Unity
   for (var i in controls) {
-    var arduinoDirection = "OUTPUT";
-    if(controls[i].controlDirection == 1){
-      arduinoDirection = "INPUT";
-    }
 
-    hardwareInitializations += `\n` + GetTabCharacter() + `pinMode(` + getPinDefineName(controls[i]) + `,` + arduinoDirection + `);`;
+    if(controls.designerControlType == "Pin")
+    {
+      var arduinoDirection = "OUTPUT";
+      if(controls[i].controlDirection == 1){
+        arduinoDirection = "INPUT";
+      }
+
+      hardwareInitializations += `\n` + GetTabCharacter() + `pinMode(` + getPinDefineName(controls[i]) + `,` + arduinoDirection + `);`;
+    }
   }
 
   hardwareInitializations += `\n}\n\n`;
@@ -146,11 +150,20 @@ var CreateHardwareReadFunctions = (controls) => {
 
     // Only react to outputs. Heep Outputs are Hardware Inputs
     if(controls[i].controlDirection == 1){
-      hardwareReadFunctions += `int ` + GetReadFunctionName(controls[i]) + `(){\n`
-        + GetTabCharacter() + `int currentSetting = ` + notSign + controls[i]['analogOrDigital'] + `Read(` + getPinDefineName(controls[i]) + `);\n`
-        + GetTabCharacter() + `SetControlValueByName("` + controls[i].controlName + `",currentSetting);\n`
-        + GetTabCharacter() + `return currentSetting;\n`
-        + `}\n\n`;
+      if(controls[i].designerControlType == "Pin"){
+          hardwareReadFunctions += `int ` + GetReadFunctionName(controls[i]) + `(){\n`
+            + GetTabCharacter() + `int currentSetting = ` + notSign + controls[i]['analogOrDigital'] + `Read(` + getPinDefineName(controls[i]) + `);\n`
+            + GetTabCharacter() + `SetControlValueByName("` + controls[i].controlName + `",currentSetting);\n`
+            + GetTabCharacter() + `return currentSetting;\n`
+            + `}\n\n`;
+      }
+      else{
+        hardwareReadFunctions += `int ` + GetReadFunctionName(controls[i]) + `(){\n`
+            + GetTabCharacter() + `int currentSetting = 0; //ToDo: Add your custom control logic here\n`
+            + GetTabCharacter() + `SetControlValueByName("` + controls[i].controlName + `",currentSetting);\n`
+            + GetTabCharacter() + `return currentSetting;\n`
+            + `}\n\n`;
+      }
     }
   }
 
@@ -173,11 +186,20 @@ var CreateHardwareWriteFunctions = (controls) => {
 
     // Only react to inputs. Heep inputs are Hardware Outputs
     if(controls[i].controlDirection == 0){
-      hardwareWriteFunctions += `int ` + GetWriteFunctionName(controls[i]) + `(){\n`
+      if(controls[i].designerControlType == "Pin"){
+        hardwareWriteFunctions += `int ` + GetWriteFunctionName(controls[i]) + `(){\n`
         + GetTabCharacter() + `int currentSetting = GetControlValueByName("` + controls[i].controlName + `");\n`
         + GetTabCharacter() + controls[i]['analogOrDigital'] + `Write(` + getPinDefineName(controls[i]) + `,` + notSign + `currentSetting);\n`
         + GetTabCharacter() + `return currentSetting;\n`
         + `}\n\n`;
+      }
+      else{
+        hardwareWriteFunctions += `int ` + GetWriteFunctionName(controls[i]) + `(){\n`
+        + GetTabCharacter() + `int currentSetting = GetControlValueByName("` + controls[i].controlName + `");\n`
+        + GetTabCharacter() + `//ToDo: Add your custom control logic here\n`
+        + GetTabCharacter() + `return currentSetting;\n`
+        + `}\n\n`;
+      }
     }
   }
 
@@ -214,7 +236,10 @@ const initializeControls = (controls) => {
 
   var controlDefs = ``;
   for (var i in controls) {
-    controlDefs += getPinDefine(controls[i]) + `\n`
+    if(controls[i].designerControlType == "Pin")
+    {
+      controlDefs += getPinDefine(controls[i]) + `\n`
+    }
   }
 
   return controlDefs
