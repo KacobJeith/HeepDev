@@ -97,7 +97,6 @@ class Device extends React.Component {
 		)
 	}
 
-
 	render() {
 
 		const inputs = {

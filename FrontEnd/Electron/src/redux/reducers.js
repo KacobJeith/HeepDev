@@ -5,6 +5,8 @@ import * as actions from './actions'
 import * as async from './async'
 import * as utils from '../serverside/utilities/generalUtilities'
 import reducersDesigner from './reducers_designer'
+import { TweenLite } from 'gsap'
+import theme from '../components/Theme'
 
 export default function(state = initialState, action) {
   switch (action.type) {
@@ -320,6 +322,14 @@ export default function(state = initialState, action) {
       return Immutable.Map(state).set('liveModeReference', null).toJS();
 
     case 'SET_DETAILS_DEVICE_ID' :
+
+      if (action.deviceID == null ) {
+        TweenLite.to('#flowchartOptions', 0.5, {x: 0, ease: Sine.easeInOut});
+        TweenLite.to('#detailsPanel', 0.5, {x: 258, ease: Sine.easeInOut});
+      } else {
+        TweenLite.to('#flowchartOptions', 0.5, {x: -258, ease: Sine.easeInOut});
+        TweenLite.to('#detailsPanel', 0.5, {x: 0, ease: Sine.easeInOut});
+      }
 
       return Immutable.Map(state).set('detailsPanelDeviceID', action.deviceID).toJS()
 
