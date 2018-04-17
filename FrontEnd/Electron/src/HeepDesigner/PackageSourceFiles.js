@@ -69,7 +69,7 @@ const composeInoFile = (deviceDetails, controls) => {
 + initializeControls(controls)
 + createHardwareControlFunctionsArduinoSyntax(controls)
 + CreateReadFunctions(controls)
-+ CreateHardwareWriteFunctions(controls)
++ CreateWriteFunctions(controls)
 + `void setup()
 {
 
@@ -186,39 +186,54 @@ var CreateReadFunctions = (controls) => {
 
 }
 
-// TODO: Make this function handle control types that are not just pin writes
-var CreateHardwareWriteFunctions = (controls) => {
-  var hardwareWriteFunctions = ``;
+var CreatePinControlWriteunction = (control) => {
+  var writeFunction = ``;
+
+  var notSign = ``;
+  if(control.pinNegativeLogic){
+    notSign = `!`;
+  }
+
+  writeFunction += `int ` + GetWriteFunctionName(control) + `(){\n`
+        + GetTabCharacter() + `int currentSetting = GetControlValueByName("` + control.controlName + `");\n`
+        + GetTabCharacter() + control['analogOrDigital'] + `Write(` + getPinDefineName(control) + `,` + notSign + `currentSetting);\n`
+        + GetTabCharacter() + `return currentSetting;\n`
+        + `}\n\n`;
+
+  return writeFunction;
+}
+
+var CreateVirtualControlWriteFunction = (control) => {
+  var writeFunction = ``;
+
+  writeFunction += `int ` + GetWriteFunctionName(control) + `(){\n`
+        + GetTabCharacter() + `int currentSetting = GetControlValueByName("` + control.controlName + `");\n`
+        + GetTabCharacter() + `//ToDo: Add your custom control logic here\n`
+        + GetTabCharacter() + `return currentSetting;\n`
+        + `}\n\n`;
+
+  return writeFunction;
+}
+
+var CreateWriteFunctions = (controls) => {
+  var writeFunctions = ``;
 
   // output == 1, input == 0 
   // TODO: Make control direction into an enum with defined numbers just like Unity
   for (var i in controls) {
 
-    var notSign = ``;
-    if(controls[i].pinNegativeLogic){
-      notSign = `!`;
-    }
-
     // Only react to inputs. Heep inputs are Hardware Outputs
     if(controls[i].controlDirection == 0){
       if(controls[i].designerControlType == "Pin"){
-        hardwareWriteFunctions += `int ` + GetWriteFunctionName(controls[i]) + `(){\n`
-        + GetTabCharacter() + `int currentSetting = GetControlValueByName("` + controls[i].controlName + `");\n`
-        + GetTabCharacter() + controls[i]['analogOrDigital'] + `Write(` + getPinDefineName(controls[i]) + `,` + notSign + `currentSetting);\n`
-        + GetTabCharacter() + `return currentSetting;\n`
-        + `}\n\n`;
+        writeFunctions += CreatePinControlWriteunction(controls[i]);
       }
       else{
-        hardwareWriteFunctions += `int ` + GetWriteFunctionName(controls[i]) + `(){\n`
-        + GetTabCharacter() + `int currentSetting = GetControlValueByName("` + controls[i].controlName + `");\n`
-        + GetTabCharacter() + `//ToDo: Add your custom control logic here\n`
-        + GetTabCharacter() + `return currentSetting;\n`
-        + `}\n\n`;
+        writeFunctions += CreateVirtualControlWriteFunction(controls[i]);
       }
     }
   }
 
-  return hardwareWriteFunctions;
+  return writeFunctions;
 
 }
 
