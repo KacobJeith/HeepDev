@@ -37,10 +37,10 @@ class Flowchart extends React.Component {
 
   dragFlowchart() {
       Draggable.create("#deviceContainer", {
-        type: "x,y",
+        type: "scroll",
+        bounds: {top: 0, left: 0, width: 3000, height: 3000},
         allowContextMenu: true,
-        bounds: "#flowchart",
-        onDrag: () => this.props.updateVertex(),
+        onDrag: () => this.props.updateVertex()
       });
   }
 
@@ -84,8 +84,8 @@ class Flowchart extends React.Component {
         	id: 'vertexSVGSpace',
 				style: {
 					position: 'absolute',
-					width: 3000,
-					height: 3000,
+					width: 10000,
+					height: 10000,
 					viewBox: '0 0 1000 1000',
           			top: 0,
           			left: 0,
@@ -121,8 +121,8 @@ class Flowchart extends React.Component {
 		const inputs = {
 			flowchart: {
 				style: {
-					height: 3000,
-					width: 3000,
+					height: "100%",
+					width: "100%",
 					backgroundColor: '#e7e7e7',
           overflow: "hidden"
 				}
@@ -164,7 +164,7 @@ class Flowchart extends React.Component {
 			},
       		deviceContainer: {
 		        style: {
-		          position: 'absolute',
+		          position: 'relative',
 		          width: '100%',
 		          height: '100%',
 		          background: 'none',
@@ -174,13 +174,13 @@ class Flowchart extends React.Component {
 
 		return (
 			<div id="#flowchart" {...inputs.flowchart} ref="flowchart">
-				<div style={{
-						transform: 'scale(' + this.props.scale + ')',
-		          		transformOrigin: 'top left',
-                  width: '100%',
-                  height: '100%'
-		          	}}>
 					<div id="deviceContainer" {...inputs.deviceContainer}>
+            <div style={{
+    						transform: 'scale(' + this.props.scale + ')',
+    		          		transformOrigin: 'top left',
+                      width: '100%',
+                      height: '100%'
+    		          	}}>
 						{this.drawVertices()}
 						{this.drawDevices()}
 					</div>

@@ -24,6 +24,10 @@ class DevicePaper extends React.Component {
     this.createDraggable()
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return false;
+  }
+
 	sendPositionToServer() {
 		this.props.sendPositionToServer(this.props.deviceID);
 	}

@@ -35,14 +35,14 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.get('/api/findDevices', function(req, res) {
   let simulation = false;
-  
+
   if (simulation) {
     res.json(simulationDevice.simulationDevice);
   } else {
-    heepConnect.SearchForHeepDevices(); 
+    heepConnect.SearchForHeepDevices();
     res.json(heepConnect.GetCurrentMasterState());
   }
-    
+
 });
 
 app.get('/api/searchForAccessPoints', (req, res) => {
@@ -69,7 +69,7 @@ app.post('/api/resetDeviceAndOSWifi', (req, res) => {
   heepConnect.sendResetNetworkToDevice(req.body.deviceID)
 
   setTimeout( () => { // Wait 1 second for the device to respond to the Reset COP
-    
+
     heepAccess.ResetSystemWifi((results) => {
       console.log(results)
 
@@ -82,7 +82,7 @@ app.post('/api/resetDeviceAndOSWifi', (req, res) => {
 app.get('/api/refreshLocalDeviceState', (req, res) => {
   console.log("Refreshing local device state")
   heepConnect.ResetDevicesActiveStatus();
-  heepConnect.SearchForHeepDevices(); 
+  heepConnect.SearchForHeepDevices();
 
   setTimeout(() => {
     res.json(heepConnect.GetCurrentMasterState());
@@ -96,51 +96,51 @@ app.get('/api/hardRefreshLocalDeviceState', (req, res) => {
 
 const hardResetState = (req, res, timeout = 2000) => {
   console.log("Refreshing local device state")
-  heepConnect.ResetMasterState(); 
+  heepConnect.ResetMasterState();
   heepConnect.SearchForHeepDevices(0, (success) => {
     console.log('Found Gateway, waiting ' + timeout + 'ms to reset state');
     setTimeout(() => {
       res.json(heepConnect.GetCurrentMasterState());
     }, timeout);
 
-  }); 
+  });
 
-  
+
 
 }
 
 app.post('/api/setValue', function(req, res) {
-  
+
   heepConnect.SendValueToHeepDevice(req.body.deviceID, req.body.controlID, req.body.value);
-  
+
   res.end("Value sent to Heep Device");
 });
 
 app.post('/api/setVertex', function (req, res) {
   console.log(req.body.vertex)
-  
+
   heepConnect.SendVertexToHeepDevices(req.body.vertex);
-  
+
   res.end("Sending Vertex to Heep Devices");
 });
 
 app.post('/api/deleteVertex', function(req, res) {
   console.log(req.body.vertex)
-  
+
   heepConnect.SendDeleteVertexToHeepDevices(req.body.vertex);
-  
+
   res.end("Deleting Vertex on Heep Devices");
 });
 
 app.post('/api/setPosition', function(req, res) {
-  
+
   heepConnect.SendPositionToHeepDevice(req.body.deviceID, req.body.position);
-  
+
   res.end("Device Position has been updated");
 });
 
 app.post('/api/sendWifiCredsToDevice', function(req, res) {
-  
+
   heepConnect.sendWifiCredsToDevice(req.body.deviceID, req.body.ssid, req.body.password);
   console.log("Sending Wifi Credentials to the Device: " + req.body.deviceID)
   res.end("Sending Wifi Credentials to the Device: " + req.body.deviceID);
@@ -180,14 +180,14 @@ const connectToAccessPoint = function(req, res, successCallback, failureCallback
     } else {
       failureCallback(response)
     }
-    
+
   });
 }
 
 const hardResetAP = function(res, ssid, success = true) {
 
-  heepConnect.ResetMasterState(); 
-  heepConnect.SearchForHeepDevices(); 
+  heepConnect.ResetMasterState();
+  heepConnect.SearchForHeepDevices();
   setTimeout(() => {
     res.json({
       success: success,
@@ -198,7 +198,7 @@ const hardResetAP = function(res, ssid, success = true) {
 }
 
 app.listen(app.get('port'), function(error) {
-  
+
   if (error) {
     console.error(error)
   } else {
