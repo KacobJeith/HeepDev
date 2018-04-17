@@ -8,6 +8,7 @@ import DynamicIcon from './DynamicIcon';
 import { Paper, Button, Typography, Grid, Tooltip } from 'material-ui'
 
 import * as Draggable from 'gsap/Draggable'
+import { ThrowPropsPlugin } from 'gsap'
 
 import Device from './Device'
 
@@ -31,8 +32,10 @@ class DevicePaper extends React.Component {
   createDraggable () {
     Draggable.create("#_" + this.props.DeviceID, {
       type: "x,y",
-      bounds: {top: -100, left: -100},
+      bounds: {target: "#flowchart", top: (-1* this.props.position.top), left: (-1 * this.props.position.left)},
+      edgeResistance: 1,
       allowContextMenu: true,
+      throwProps: true,
       onDrag: () => this.props.updateVertex(),
     });
   };
@@ -52,8 +55,8 @@ class DevicePaper extends React.Component {
               width: 330,
     					cursor: '-webkit-grab',
     					position: 'absolute',
-    					top: this.props.position.top,
-    					left: this.props.position.left,
+    					transform: `translate(${this.props.position.left}px, ${this.props.position.top}px)`,//this.props.position.top,
+    					// left: ``this.props.position.left,
     					color: 'black',
               pointerEvents: 'visible',
               opacity: this.props.activeState ? 1.0 : .4,
