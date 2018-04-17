@@ -30,6 +30,10 @@ class Flowchart extends React.Component {
 		}
 	};
 
+	componentWillMount() {
+		this.props.setDetailsPanelDeviceID(null);
+	}
+
 	componentDidMount() {
 		this.initializeDrag();
 	}
