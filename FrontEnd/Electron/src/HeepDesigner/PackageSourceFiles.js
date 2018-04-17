@@ -68,8 +68,8 @@ const composeInoFile = (deviceDetails, controls) => {
 #include "HeepDeviceDefinitions.h"\n`
 + initializeControls(controls)
 + createHardwareControlFunctionsArduinoSyntax(controls)
-+ CreateHardwareReadFunctions(controls)
-+ CreateHardwareWriteFunctions(controls)
++ CreateReadFunctions(controls)
++ CreateWriteFunctions(controls)
 + `void setup()
 {
 
@@ -118,12 +118,16 @@ var createHardwareControlFunctionsArduinoSyntax = (controls) => {
   // output == 1, input == 0 
   // TODO: Make control direction into an enum with defined numbers just like Unity
   for (var i in controls) {
-    var arduinoDirection = "OUTPUT";
-    if(controls[i].controlDirection == 1){
-      arduinoDirection = "INPUT";
-    }
 
-    hardwareInitializations += `\n` + GetTabCharacter() + `pinMode(` + getPinDefineName(controls[i]) + `,` + arduinoDirection + `);`;
+    if(controls.designerControlType == "Pin")
+    {
+      var arduinoDirection = "OUTPUT";
+      if(controls[i].controlDirection == 1){
+        arduinoDirection = "INPUT";
+      }
+
+      hardwareInitializations += `\n` + GetTabCharacter() + `pinMode(` + getPinDefineName(controls[i]) + `,` + arduinoDirection + `);`;
+    }
   }
 
   hardwareInitializations += `\n}\n\n`;
@@ -131,57 +135,105 @@ var createHardwareControlFunctionsArduinoSyntax = (controls) => {
   return hardwareInitializations;
 }
 
-// TODO: Make this function handle control types that are not just pin reads
-var CreateHardwareReadFunctions = (controls) => {
-  var hardwareReadFunctions = ``;
+var CreatePinControlReadFunction = (control) => {
+  var readFunction = ``;
+
+  var notSign = ``;
+  if(control.pinNegativeLogic){
+    notSign = `!`;
+  }
+
+  readFunction += `int ` + GetReadFunctionName(control) + `(){\n`
+            + GetTabCharacter() + `int currentSetting = ` + notSign + control['analogOrDigital'] + `Read(` + getPinDefineName(control) + `);\n`
+            + GetTabCharacter() + `SetControlValueByName("` + control.controlName + `",currentSetting);\n`
+            + GetTabCharacter() + `return currentSetting;\n`
+            + `}\n\n`;
+
+  return readFunction;
+}
+
+var CreateVirtualControlReadFunction = (control) => {
+  var readFunction = ``;
+
+  readFunction += `int ` + GetReadFunctionName(control) + `(){\n`
+            + GetTabCharacter() + `int currentSetting = 0; //ToDo: Add your custom control logic here\n`
+            + GetTabCharacter() + `SetControlValueByName("` + control.controlName + `",currentSetting);\n`
+            + GetTabCharacter() + `return currentSetting;\n`
+            + `}\n\n`;
+
+  return readFunction;
+}
+
+var CreateReadFunctions = (controls) => {
+  var readFunctions = ``;
 
   // output == 1, input == 0 
   // TODO: Make control direction into an enum with defined numbers just like Unity
   for (var i in controls) {
-
-    var notSign = ``;
-    if(controls[i].pinNegativeLogic){
-      notSign = `!`;
-    }
 
     // Only react to outputs. Heep Outputs are Hardware Inputs
     if(controls[i].controlDirection == 1){
-      hardwareReadFunctions += `int ` + GetReadFunctionName(controls[i]) + `(){\n`
-        + GetTabCharacter() + `int currentSetting = ` + notSign + controls[i]['analogOrDigital'] + `Read(` + getPinDefineName(controls[i]) + `);\n`
-        + GetTabCharacter() + `SetControlValueByName("` + controls[i].controlName + `",currentSetting);\n`
-        + GetTabCharacter() + `return currentSetting;\n`
-        + `}\n\n`;
+      if(controls[i].designerControlType == "Pin"){
+          readFunctions += CreatePinControlReadFunction(controls[i]);
+      }
+      else{
+          readFunctions += CreateVirtualControlReadFunction(controls[i]);
+      }
     }
   }
 
-  return hardwareReadFunctions;
+  return readFunctions;
 
 }
 
-// TODO: Make this function handle control types that are not just pin writes
-var CreateHardwareWriteFunctions = (controls) => {
-  var hardwareWriteFunctions = ``;
+var CreatePinControlWriteunction = (control) => {
+  var writeFunction = ``;
+
+  var notSign = ``;
+  if(control.pinNegativeLogic){
+    notSign = `!`;
+  }
+
+  writeFunction += `int ` + GetWriteFunctionName(control) + `(){\n`
+        + GetTabCharacter() + `int currentSetting = GetControlValueByName("` + control.controlName + `");\n`
+        + GetTabCharacter() + control['analogOrDigital'] + `Write(` + getPinDefineName(control) + `,` + notSign + `currentSetting);\n`
+        + GetTabCharacter() + `return currentSetting;\n`
+        + `}\n\n`;
+
+  return writeFunction;
+}
+
+var CreateVirtualControlWriteFunction = (control) => {
+  var writeFunction = ``;
+
+  writeFunction += `int ` + GetWriteFunctionName(control) + `(){\n`
+        + GetTabCharacter() + `int currentSetting = GetControlValueByName("` + control.controlName + `");\n`
+        + GetTabCharacter() + `//ToDo: Add your custom control logic here\n`
+        + GetTabCharacter() + `return currentSetting;\n`
+        + `}\n\n`;
+
+  return writeFunction;
+}
+
+var CreateWriteFunctions = (controls) => {
+  var writeFunctions = ``;
 
   // output == 1, input == 0 
   // TODO: Make control direction into an enum with defined numbers just like Unity
   for (var i in controls) {
 
-    var notSign = ``;
-    if(controls[i].pinNegativeLogic){
-      notSign = `!`;
-    }
-
     // Only react to inputs. Heep inputs are Hardware Outputs
     if(controls[i].controlDirection == 0){
-      hardwareWriteFunctions += `int ` + GetWriteFunctionName(controls[i]) + `(){\n`
-        + GetTabCharacter() + `int currentSetting = GetControlValueByName("` + controls[i].controlName + `");\n`
-        + GetTabCharacter() + controls[i]['analogOrDigital'] + `Write(` + getPinDefineName(controls[i]) + `,` + notSign + `currentSetting);\n`
-        + GetTabCharacter() + `return currentSetting;\n`
-        + `}\n\n`;
+      if(controls[i].designerControlType == "Pin"){
+        writeFunctions += CreatePinControlWriteunction(controls[i]);
+      }
+      else{
+        writeFunctions += CreateVirtualControlWriteFunction(controls[i]);
+      }
     }
   }
 
-  return hardwareWriteFunctions;
+  return writeFunctions;
 
 }
 
@@ -214,7 +266,10 @@ const initializeControls = (controls) => {
 
   var controlDefs = ``;
   for (var i in controls) {
-    controlDefs += getPinDefine(controls[i]) + `\n`
+    if(controls[i].designerControlType == "Pin")
+    {
+      controlDefs += getPinDefine(controls[i]) + `\n`
+    }
   }
 
   return controlDefs
