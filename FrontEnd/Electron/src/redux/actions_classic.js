@@ -113,3 +113,8 @@ export const resetDeviceAndOSWifi = (deviceID) => ({
   type: 'RESET_DEVICE_AND_OS_WIFI',
   deviceID
 })
+
+export const resetDeviceWifi = (deviceID) => ({
+  type: 'RESET_DEVICE_WIFI',
+  deviceID
+})

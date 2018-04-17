@@ -15,6 +15,8 @@ import AddPlaceModal from './AddPlaceModal'
 var mapStateToProps = (state) => ({
   loginStatus: state.loginStatus,
   user: state.user,
+  userName: state.user ? state.user.displayName: '',
+  userImage: state.user ? state.user.photoURL : null,
   devices: state.devices_firebase,
   places: state.places
 })
@@ -34,13 +36,16 @@ class UserAccount extends React.Component {
         src: this.props.user.photoURL,
         style: {
           width: '100%',
-          height: 'auto'
+          height: 'auto',
+          minHeight: 150
         }
       }
     }
 
     return (
-      <Avatar {...inputs.avatar}/>
+      <Avatar {...inputs.avatar}>
+        {this.props.userImage ? null : this.props.userName.split(' ').map((word) => word[0])}
+      </Avatar>
     )
   }
 

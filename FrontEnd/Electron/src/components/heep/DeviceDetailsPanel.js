@@ -8,7 +8,13 @@ import * as actions           from '../../redux/actions_classic'
 import { withTheme } from 'material-ui/styles';
 import { Drawer, Button, Divider, Paper, Typography, IconButton, Menu, MenuItem, Collapse } from 'material-ui';
 import List, { ListItem, ListItemIcon, ListItemText, ListSubheader } from 'material-ui/List';
-import { Close, Add, NetworkWifi, ExpandLess, ExpandMore } from 'material-ui-icons'
+
+import Close from 'material-ui-icons/Close'
+import Add from 'material-ui-icons/Add'
+import NetworkWifi from 'material-ui-icons/NetworkWifi'
+import ExpandLess from 'material-ui-icons/ExpandLess'
+import ExpandMore from 'material-ui-icons/ExpandMore'
+import AutoRenew from 'material-ui-icons/AutoRenew'
 
 import DetailsPanelControlBlock from './DetailsPanelControlBlock'
 import PlaceListItem from './PlaceListItem'
@@ -37,7 +43,8 @@ class DeviceDetailsPanel extends React.Component {
   state = {
       open: false,
       anchorEl: null,
-      viewNetworks: false
+      viewNetworks: false,
+      addPlaceModalopen: false
     }
 
   deviceDetails() {
@@ -158,7 +165,7 @@ class DeviceDetailsPanel extends React.Component {
         <Divider/>
 
         <ListItem button onClick={()=> this.setState({viewNetworks: !this.state.viewNetworks})}>
-          <ListItemText primary={'Networks'} />
+          <ListItemText primary={'Networking'} />
           {this.state.viewNetworks ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
 
@@ -176,7 +183,7 @@ class DeviceDetailsPanel extends React.Component {
             <ListItemIcon>
               <Add/>
             </ListItemIcon>
-            <ListItemText primary={'Add New'} />
+            <ListItemText primary={'Attach Place'} />
 
             <Menu
               id="simple-menu"
@@ -190,9 +197,25 @@ class DeviceDetailsPanel extends React.Component {
                   <ListItemText primary={this.props.places[placeKey].name} secondary={this.props.places[placeKey].networks.wifi.ssid} />
                 </MenuItem>
               ))}
-              
+
+              <AddPlaceModal open={this.state.addPlaceModalopen} handleClose={()=> this.setState({addPlaceModalopen: false})} modalElement={
+                <ListItem button color='secondary' onClick={()=> this.setState({addPlaceModalopen: true})}>
+                  <ListItemIcon>
+                    <Add/>
+                  </ListItemIcon>
+                  <ListItemText inset secondary='Create New Place' />
+                </ListItem>
+              }/>
+
             </Menu>
 
+          </ListItem>
+
+          <ListItem button color='secondary' onClick={() => this.props.resetDeviceWifi(this.props.deviceID)}>
+            <ListItemIcon>
+              <AutoRenew/>
+            </ListItemIcon>
+            <ListItemText inset primary='Reset Device Wifi' />
           </ListItem>
 
         </Collapse>
