@@ -96,17 +96,21 @@ export default function(state = initialState.builder, action, fullState = initia
 
     case 'ADD_NEW_CONTROL' :
 
-        const controlKey = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-        var controls = Immutable.Map(state.controls).set(controlKey, initialControlState(Object.keys(state.controls).length)).toJS();
+        if(action.controlConfig != "Select...")
+        {
+          const controlKey = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+          var controls = Immutable.Map(state.controls).set(controlKey, initialControlState(Object.keys(state.controls).length)).toJS();
 
-        controls[controlKey].designerControlType = action.controlConfig;
+          controls[controlKey].designerControlType = action.controlConfig;
 
-        var newMaster = Immutable.Map(state)
-        .set('numControls', state.numControls + 1)
-        .set('controls', controls)
-        .toJS()
+          var newMaster = Immutable.Map(state)
+          .set('numControls', state.numControls + 1)
+          .set('controls', controls)
+          .toJS()
 
-        return newMaster
+          return newMaster
+        }
+        return state; 
 
     case 'UPDATE_PHYSICAL_LAYER' : 
 
