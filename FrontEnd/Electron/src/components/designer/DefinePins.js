@@ -55,7 +55,6 @@ class DefinePins extends React.Component {
 
         return (
           <Collapse in={this.props.isPinType} timeout={750} unmountOnExit>
-          <div>
 
           <GenericSelect {...inputs.pins}/>
           <GenericSelect {...inputs.digitalOrAnalog}/>
@@ -71,7 +70,6 @@ class DefinePins extends React.Component {
                 label='Use Negative Logic'
               />
           )}
-          </div>
           </Collapse>
           )
 
