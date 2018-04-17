@@ -26,7 +26,13 @@ class DevicePaper extends React.Component {
   }
 
 	sendPositionToServer() {
-		this.props.sendPositionToServer(this.props.deviceID);
+    const dragElement = document.getElementById("_" + this.props.DeviceID)
+    const x1 = dragElement._gsTransform.x
+    const y1 = dragElement._gsTransform.y
+
+    console.log(x1, y1)
+
+		//this.props.sendPositionToServer(this.props.deviceID);
 	}
 
   createDraggable () {
@@ -37,6 +43,7 @@ class DevicePaper extends React.Component {
       allowContextMenu: true,
       throwProps: true,
       onDrag: () => this.props.updateVertex(),
+      onRelease: () => this.sendPositionToServer(),
     });
   };
 
