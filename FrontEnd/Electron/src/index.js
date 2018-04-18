@@ -17,7 +17,7 @@ import { PersistGate } from 'redux-persist/integration/react'
 
 import 'firebaseui/dist/firebaseui.css';
 
-require('./service-worker-registration.js');
+// require('./service-worker-registration.js');
 
 const startState = {
   webGLStatus: false,

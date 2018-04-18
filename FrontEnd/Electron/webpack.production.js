@@ -12,7 +12,7 @@ module.exports = merge(common, {
    },
 
    plugins: [
-    new CompressionPlugin()
+    // new CompressionPlugin()
    ],
 
    optimization: {
