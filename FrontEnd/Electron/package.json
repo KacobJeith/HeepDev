@@ -15,7 +15,7 @@
   },
   "scripts": {
     "test": "mocha-webpack --webpack-config webpack.config-test.js \"src/**/*.test.js\"",
-    "build": "set NODE_ENV=production && npm run overwrite-module-files && npm run copy-files && webpack --config webpack.production.js && webpack --config webpack.electron.js",
+    "build": "npm run overwrite-module-files && npm run copy-files && webpack --config webpack.production.js && webpack --config webpack.electron.js",
     "overwrite-module-files": "babel ./packageResources --out-dir ./node_modules/node-wifiscanner2/lib/ --copy-files",
     "dev": "set NODE_ENV=development && babel-node devServer.js",
     "start": "electron .",
@@ -25,8 +25,8 @@
     "be": "npm run build && electron ./dist/",
     "copy-files": "babel ./src/assets/ --out-dir ./dist/src/assets/ --copy-files",
     "dist": "electron-builder --projectDir ./dist/ -p always",
-    "package-all": "npm run build && electron-builder --projectDir ./dist/ -mw -p always",
-    "package-current": "npm run build && npm run dist",
+    "package-all": "set NODE_ENV=production && npm run build && electron-builder --projectDir ./dist/ -mw -p always",
+    "package-current": "set NODE_ENV=production && npm run build && npm run dist",
     "build-electron-bundle": "npm run overwrite-module-files && webpack --config webpack.electron.js"
   },
   "dependencies": {

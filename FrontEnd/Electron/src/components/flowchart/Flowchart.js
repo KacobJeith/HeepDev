@@ -31,20 +31,24 @@ class Flowchart extends React.Component {
 		}
 	};
 
-  componentDidMount() {
-    this.dragFlowchart()
-  }
+	componentWillMount() {
+		this.props.setDetailsPanelDeviceID(null);
+	}
 
-  dragFlowchart() {
-      Draggable.create("#deviceContainer", {
-        type: "x, y",
-        bounds: "#flowchart",
-        edgeResistance: 1,
-        allowContextMenu: true,
-        zIndexBoost: false,
-        onDrag: () => this.props.updateVertex()
-      });
-  }
+	componentDidMount() {
+		this.dragFlowchart()
+	}
+
+	dragFlowchart() {
+	  Draggable.create("#deviceContainer", {
+	    type: "x, y",
+	    bounds: "#flowchart",
+	    edgeResistance: 1,
+	    allowContextMenu: true,
+	    zIndexBoost: false,
+	    onDrag: () => this.props.updateVertex()
+	  });
+	}
 
 	flowchartOptions() {
 		return (
