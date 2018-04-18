@@ -7,9 +7,23 @@ import * as Actions from '../../redux/actions_classic'
 var mapStateToProps = (state, ownProps) => ({
   control: state.controls[ownProps.thisControl],
   controlID: state.controls[ownProps.thisControl]['controlID'],
-  value: state.controls[ownProps.thisControl]['valueCurrent'],
+  value: boundCurrentValue(state, ownProps),
   DeviceID: ownProps.DeviceID
 })
+
+const boundCurrentValue = (state, ownProps) => {
+	const valueCurrent = state.controls[ownProps.thisControl].valueCurrent;
+	const valueLow = state.controls[ownProps.thisControl].valueLow;
+	const valueHigh = state.controls[ownProps.thisControl].valueHigh;
+
+	if (valueCurrent > valueHigh) {
+		return valueHigh;
+	} else if ( valueCurrent < valueLow) {
+		return valueLow
+	} else {
+		return valueCurrent
+	}
+}
 
 
 class RangeController extends React.Component {
@@ -35,13 +49,13 @@ class RangeController extends React.Component {
 		this.runningOffset = {top:  0,
 							  left: 0};
 
-		this.lastSentControlValue = this.props.control['valueCurrent'];
-		this.newControlValue = this.props.control['valueCurrent']
+		this.lastSentControlValue = this.props.value;
+		this.newControlValue = this.props.value
     this.direction = this.props.control['controlDirection'];
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (this.props.control['valueCurrent'] != this.lastSentControlValue) {
+		if (this.props.value != this.lastSentControlValue) {
 
 			this.setState({x: this.convertCtrlVal()});
 
@@ -49,7 +63,7 @@ class RangeController extends React.Component {
 	}
 
 	convertCtrlVal() {
-		return this.displayMin + (this.displayMax-this.displayMin)*(this.props.control['valueCurrent']/(this.props.control['valueHigh']-this.props.control['valueLow']))
+		return this.displayMin + (this.displayMax-this.displayMin)*(this.props.value/(this.props.control['valueHigh']-this.props.control['valueLow']))
 
 	}
 
@@ -187,13 +201,13 @@ class RangeController extends React.Component {
 
 		return  <div {...inputs.button}>
           <Tooltip id="tooltip-range"
-            title={this.props.control['valueCurrent']}
+            title={this.props.value}
             placement={this.direction == 0 ? 'right-start' : 'left-start'}>
   					<svg {...inputs.rangeContainer}>
   						<line {...inputs.unselected}/>
   						<line {...inputs.selected}/>
   						<circle {...inputs.dragDot} ref='dragDot'/>
-  						<text {...inputs.text}> {this.props.control['valueCurrent']} </text>
+  						<text {...inputs.text}> {this.props.value} </text>
   					</svg>
           </Tooltip>
 				</div>
