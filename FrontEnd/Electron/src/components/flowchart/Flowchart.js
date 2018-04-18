@@ -4,13 +4,22 @@ import { bindActionCreators } from 'redux'
 import { withRouter } from 'react-router-dom'
 import * as Actions from '../../redux/actions_classic'
 
+import * as Draggable from 'gsap/Draggable'
+
 import Device from './DevicePaper'
 import Vertex from './Vertex'
 import DeviceDetailsPanel from '../heep/DeviceDetailsPanel'
+import { withTheme } from 'material-ui/styles'
+
+import Add from 'material-ui-icons/Add'
+import Remove from 'material-ui-icons/Remove'
+import { Button, Tooltip }  from 'material-ui'
 
 var mapStateToProps = (state) => ({
   deviceArray: Object.keys(state.devices),
-  vertexList: state.vertexList
+  vertexList: state.vertexList,
+  scale: state.flowchart.scale,
+  detailsPanelOut: state.detailsPanelDeviceID != null,
 })
 
 
@@ -20,8 +29,59 @@ class Flowchart extends React.Component {
 		this.state = {
 			hoverRefresh: false
 		}
+	};
 
-	}
+  componentDidMount() {
+    this.dragFlowchart()
+  }
+
+  dragFlowchart() {
+      Draggable.create("#deviceContainer", {
+        type: "x, y",
+        bounds: "#flowchart",
+        edgeResistance: 1,
+        allowContextMenu: true,
+        zIndexBoost: false,
+        onDrag: () => this.props.updateVertex()
+      });
+  }
+
+	flowchartOptions() {
+		return (
+      <Tooltip id="tooltip-range"
+            title={Math.round(this.props.scale * 100) + "%"}
+            placement="top">
+			<div
+				id='flowchartOptions'
+				style={{
+					position:'fixed',
+					bottom:  this.props.theme.spacing.unit,
+					right: this.props.theme.spacing.unit
+			}}>
+				<Button
+					mini
+					variant="fab"
+					color="primary"
+					aria-label="zoom-out"
+					onClick={() => this.props.zoomOut()}
+					style={{marginRight: this.props.theme.spacing.unit}}
+				>
+					<Remove/>
+				</Button>
+				<Button
+					mini
+					variant="fab"
+					color="primary"
+					aria-label="zoom-in"
+					onClick={() => this.props.zoomIn()}
+				>
+					<Add/>
+				</Button>
+
+			</div>
+    </Tooltip>
+		)
+	};
 
 	drawVertices() {
 
@@ -30,11 +90,12 @@ class Flowchart extends React.Component {
         	id: 'vertexSVGSpace',
 				style: {
 					position: 'absolute',
-					width: 3000,
-					height: 3000,
-					viewBox: '0 0 1000 1000',
-          			top: 0,
-          			left: 0,
+					width: 10000,
+					height: 10000,
+					viewBox: '0 0 4000 4000',
+    			top: 0,
+    			left: 0,
+          overflow: 'hidden'
 				},
 			}
 		}
@@ -48,18 +109,39 @@ class Flowchart extends React.Component {
 				})}
 			</svg>
 		)
+	};
 
-	}
+  drawDevices() {
+    return (
+      <div>
+        {this.props.deviceArray.map((thisDevice) => {
+          return (
+            <Device key={thisDevice} DeviceID={thisDevice}/>
+          )
+        })}
+      </div>
+    )
+  };
 
 	render() {
 
 		const inputs = {
+      pageContainer: {
+        style: {
+          backgroundColor: '#e7e7e7',
+          height: 5000,
+          width: 5000
+        }
+      },
 			flowchart: {
 				style: {
-					height: 3000,
-					width: 3000,
-					backgroundColor: '#e7e7e7',
-					overflow: 'auto'
+          // height: 1000,
+          // width: 1000,
+					height: window.innerHeight,
+					width: window.innerWidth,
+          margin: 0,
+					backgroundColor: 'rgba(0, 0, 0, 0.54)',
+          overflow: "hidden"
 				}
 			},
 			refresh: {
@@ -97,29 +179,36 @@ class Flowchart extends React.Component {
         		onMouseEnter: () => this.setState({hoverRefresh: true}),
         		onMouseLeave: () => this.setState({hoverRefresh: false})
 			},
-      deviceContainer: {
-        style: {
-          position: 'absolute',
-          width: '100%',
-          height: '100%',
-          background: 'none',
-          pointerEvents: 'none'
-        },
-      },
+      		deviceContainer: {
+		        style: {
+		          position: 'relative',
+		          width: 3000,
+		          height: 3000,
+		          background: '#e7e7e7',
+              overflow: 'hidden'
+		        }
+		    }
 		}
 
-
-
-	return (
-      <div {...inputs.flowchart} ref="flowchart">
-        {this.drawVertices()}
-        <div {...inputs.deviceContainer}>
-  				{this.props.deviceArray.map((thisDevice) => (
-  					<Device key={thisDevice} DeviceID={thisDevice}/>
-  				))}
-        </div>
-        <DeviceDetailsPanel/>
+		return (
+      <div {...inputs.pageContainer}>
+			<div id="flowchart" {...inputs.flowchart} ref="flowchart">
+					<div id="deviceContainer" {...inputs.deviceContainer}>
+            <div style={{
+    						transform: 'scale(' + this.props.scale + ')',
+    		          		transformOrigin: 'top left',
+                      width: '100%',
+                      height: '100%',
+                      overflow: 'hidden'
+    		          	}}>
+						{this.drawVertices()}
+						{this.drawDevices()}
+					</div>
+				</div>
+				{this.flowchartOptions()}
+				<DeviceDetailsPanel/>
 			</div>
+    </div>
 		);
 
 	}
@@ -129,4 +218,4 @@ var mapDispatchToProps = (dispatch) => {
   return bindActionCreators(Actions, dispatch)
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Flowchart))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withTheme()(Flowchart)))

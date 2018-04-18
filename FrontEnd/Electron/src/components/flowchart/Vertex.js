@@ -9,10 +9,12 @@ var mapStateToProps = (state, ownProps) => (
   id: ownProps.vertexID,
   vertex: state.vertexList[ownProps.vertexID],
   positions: state.positions,
-  activeState:  state.devices[state.vertexList[ownProps.vertexID].rxDeviceID] && 
-                state.devices[state.vertexList[ownProps.vertexID].txDeviceID] && 
-                state.devices[state.vertexList[ownProps.vertexID].rxDeviceID].active && 
-                state.devices[state.vertexList[ownProps.vertexID].txDeviceID].active
+  activeState:  state.devices[state.vertexList[ownProps.vertexID].rxDeviceID] &&
+                state.devices[state.vertexList[ownProps.vertexID].txDeviceID] &&
+                state.devices[state.vertexList[ownProps.vertexID].rxDeviceID].active &&
+                state.devices[state.vertexList[ownProps.vertexID].txDeviceID].active,
+  dragging: state.flowchart.dragVertex,
+  scale: state.flowchart.scale
 })
 
 class Vertex extends React.Component {
@@ -32,15 +34,19 @@ class Vertex extends React.Component {
   	let returnPosition = false;
   	try {
       const txControlName = generalUtils.getTxControlNameFromVertex(this.props.vertex)
-      const svgElement = document.getElementById(txControlName)
-      const svgRect = svgElement.getBoundingClientRect()
 
-      const heightOffset = svgRect.height / 2
-      const widthOffset = svgRect.width / 2
+      const svgElement = document.getElementById(txControlName)
+      const svgElRect = svgElement.getBoundingClientRect()
+
+      const svgContainer = document.getElementById("deviceContainer")
+      const svgConRect = svgContainer.getBoundingClientRect()
+
+      const heightOffset = svgElRect.height / 2
+      const widthOffset = svgElRect.width / 2
 
       returnPosition = {
-        top: svgRect.top + heightOffset + window.scrollY,
-        left: svgRect.left + widthOffset + window.scrollX,
+        top: (svgElRect.top + heightOffset - svgConRect.top) / this.props.scale,
+        left: (svgElRect.left + widthOffset - svgConRect.left) / this.props.scale,
       };
 
   	} catch(err){
@@ -53,15 +59,19 @@ class Vertex extends React.Component {
   	let returnPosition = false;
   	try {
       const rxControlName = generalUtils.getRxControlNameFromVertex(this.props.vertex)
-      const svgElement = document.getElementById(rxControlName)
-      const svgRect = svgElement.getBoundingClientRect()
 
-      const heightOffset = svgRect.height / 2
-      const widthOffset = svgRect.width / 2
+      const svgElement = document.getElementById(rxControlName)
+      const svgElRect = svgElement.getBoundingClientRect()
+
+      const svgContainer = document.getElementById("deviceContainer")
+      const svgConRect = svgContainer.getBoundingClientRect()
+
+      const heightOffset = svgElRect.height / 2
+      const widthOffset = svgElRect.width / 2
 
       returnPosition = {
-        top: svgRect.top + heightOffset + window.scrollY,
-        left: svgRect.left + widthOffset + window.scrollX,
+        top: (svgElRect.top + heightOffset - svgConRect.top) / this.props.scale,
+        left: (svgElRect.left + widthOffset - svgConRect.left) / this.props.scale,
       }
 
   	} catch(err){

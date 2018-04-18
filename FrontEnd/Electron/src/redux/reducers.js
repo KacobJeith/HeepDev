@@ -5,8 +5,13 @@ import * as actions from './actions'
 import * as async from './async'
 import * as utils from '../serverside/utilities/generalUtilities'
 import reducersDesigner from './reducers_designer'
+import { TweenLite } from 'gsap'
+import theme from '../components/Theme'
+import { persistStore, persistReducer } from 'redux-persist'
+import * as setup from '../index'
 
 export default function(state = initialState, action) {
+
   switch (action.type) {
     case 'LOGIN' :
 
@@ -17,7 +22,7 @@ export default function(state = initialState, action) {
     case 'UPDATE_WEBGL_STATUS':
 
       return Immutable.Map(state).set('webGLStatus', action.status).toJS()
-      
+
     case 'LOGOUT':
 
       import(/* webpackChunkName: "firebaseAuth" */ '../firebase/FirebaseAuth').then((auth) => auth.logout());
@@ -40,19 +45,19 @@ export default function(state = initialState, action) {
 
       return Immutable.Map(state).set('providers', newState).toJS()
 
-    case 'ADD_DEVICE' : 
+    case 'ADD_DEVICE' :
 
       var newState = Immutable.Map(state.devices_firebase).set(action.deviceID, action.device).toJS();
 
       return Immutable.Map(state).set('devices_firebase', newState).toJS()
 
-    case 'ADD_PLACE' : 
+    case 'ADD_PLACE' :
 
       var newState = Immutable.Map(state.places).set(action.placeID, action.place).toJS();
 
       return Immutable.Map(state).set('places', newState).toJS()
 
-    case 'ADD_GROUP' : 
+    case 'ADD_GROUP' :
 
       var newState = Immutable.Map(state.groups).set(action.groupID, action.group).toJS();
 
@@ -130,7 +135,7 @@ export default function(state = initialState, action) {
 
       return Immutable.Map(state).set('displayingAnalytics', action.deviceID).toJS()
 
-    case 'LOGIN_TO_FIREBASE' : 
+    case 'LOGIN_TO_FIREBASE' :
 
       import(/* webpackChunkName: "firebaseAuth" */ '../firebase/FirebaseAuth').then((auth) => auth.firebaseAuthUI());
 
@@ -142,7 +147,7 @@ export default function(state = initialState, action) {
 
       return state
 
-    case 'ADD_USER': 
+    case 'ADD_USER':
 
       return Immutable.Map(state).set('user', action.user).toJS();
 
@@ -163,8 +168,8 @@ export default function(state = initialState, action) {
                                  .set('vertexList', action.fromServer.vertexList)
                                  .set('icons', action.fromServer.icons)
                                  .set('deviceWiFiCreds', action.fromServer.deviceWiFiCreds).toJS()
-    case 'STORE_URL':  
-      
+    case 'STORE_URL':
+
       return Immutable.Map(state).set('url', action.url).toJS()
 
     case 'ADD_ICON':
@@ -184,12 +189,12 @@ export default function(state = initialState, action) {
       var vertex = {...state.vertexList.selectedOutput, rxControlID: action.rxControlID,
                                                         rxIP: action.rxIP,
                                                         rxDeviceID: action.rxDeviceID};
-      
+
       async.sendVertexToServer(vertex);
 
       var newVertex = {txDeviceID: state.vertexList.selectedOutput.txDeviceID,
                        txControlID: state.vertexList.selectedOutput.txControlID,
-                       rxDeviceID: action.rxDeviceID, 
+                       rxDeviceID: action.rxDeviceID,
                        rxControlID: action.rxControlID,
                        rxIP: action.rxIP}
 
@@ -227,13 +232,17 @@ export default function(state = initialState, action) {
 
       return Immutable.Map(state).set('vertexList', newState).set('controls', newStateControls).toJS();
 
+    case 'UPDATE_VERTEX':
+
+      return Immutable.fromJS(state).setIn(['flowchart', 'dragVertex'], !state.flowchart.dragVertex).toJS()
+
     case 'POSITION_DEVICE':
       var newState = Immutable.Map(state.positions).toJS();
 
       for (var id in state.positions[action.deviceID]){
 
         newState[action.deviceID][id] = {
-          top: action.newPosition['top'] + state.positions[action.deviceID][id]['top'], 
+          top: action.newPosition['top'] + state.positions[action.deviceID][id]['top'],
           left: action.newPosition['left'] + state.positions[action.deviceID][id]['left']
         }
       }
@@ -242,12 +251,14 @@ export default function(state = initialState, action) {
 
 
     case 'POSITION_DEVICE_SEND':
-    
-      var positionToSend = state.positions[action.deviceID].device;
-      async.sendPositionToServer(action.deviceID, positionToSend);
 
-      return state
-   
+      async.sendPositionToServer(action.deviceID, action.newPosition);
+
+      return Immutable.fromJS(state)
+                      .setIn(['positions', action.deviceID, 'device', 'top'], action.newPosition.top)
+                      .setIn(['positions', action.deviceID, 'device', 'left'], action.newPosition.left)
+                      .toJS()
+
     case 'UPDATE_CONTROL_VALUE':
 
       var newState = Immutable.Map(state.controls).toJS();
@@ -298,18 +309,26 @@ export default function(state = initialState, action) {
 
       return Immutable.Map(state).set('places', newState).toJS()
 
-    case 'START_LIVE_MODE': 
+    case 'START_LIVE_MODE':
       var liveModeRef = async.startLiveMode();
 
       return Immutable.Map(state).set('liveModeReference', liveModeRef).toJS();
-                                  
-    case 'STOP_LIVE_MODE': 
+
+    case 'STOP_LIVE_MODE':
 
       async.stopLiveMode(state.liveModeReference);
 
       return Immutable.Map(state).set('liveModeReference', null).toJS();
 
     case 'SET_DETAILS_DEVICE_ID' :
+
+      if (action.deviceID == null ) {
+        TweenLite.to('#flowchartOptions', 0.5, {x: 0, ease: Sine.easeInOut});
+        TweenLite.to('#detailsPanel', 0.5, {x: 258, ease: Sine.easeInOut});
+      } else {
+        TweenLite.to('#flowchartOptions', 0.5, {x: -258, ease: Sine.easeInOut});
+        TweenLite.to('#detailsPanel', 0.5, {x: 0, ease: Sine.easeInOut});
+      }
 
       return Immutable.Map(state).set('detailsPanelDeviceID', action.deviceID).toJS()
 
@@ -329,11 +348,11 @@ export default function(state = initialState, action) {
 
       return Immutable.fromJS(state).setIn(['accessPointData','currentlyConnecting'], action.ssid).toJS()
 
-    case 'SET_ACCESS_DATA' : 
+    case 'SET_ACCESS_DATA' :
 
       return Immutable.Map(state).set('accessPointData', action.packet).toJS()
 
-    case 'RESET_DEVICE_AND_OS_WIFI': 
+    case 'RESET_DEVICE_AND_OS_WIFI':
 
       async.resetDeviceAndOSWifi(action.deviceID);
 
@@ -354,12 +373,28 @@ export default function(state = initialState, action) {
       if (newState[action.deviceID] == undefined) {
         newState[action.deviceID] = {}
       }
-      
+
       newState[action.deviceID][ssid] = true;
 
       async.sendWifiCredsToServer(action.deviceID, ssid, password);
 
       return Immutable.Map(state).set('deviceWiFiCreds', newState).toJS();
+
+    case 'ZOOM_OUT_FLOWCHART':
+      if (state.flowchart.scale <= 0.3) {
+        return state
+      } else {
+        return Immutable.fromJS(state).setIn(['flowchart', 'scale'], state.flowchart.scale - 0.1).toJS()
+      }
+
+
+
+    case 'ZOOM_IN_FLOWCHART':
+      if (state.flowchart.scale >= 1.5) {
+        return state
+      } else {
+        return Immutable.fromJS(state).setIn(['flowchart', 'scale'], state.flowchart.scale + 0.1).toJS()
+      }
 
     default:
       console.log('Passed through first Switch');

@@ -31,7 +31,7 @@ const startState = {
   deviceWiFiCreds: {},
   positions: {},
   controls: {
-    controlStructure:{}, 
+    controlStructure:{},
     connections: {}
   },
   vertexList: {},
@@ -53,7 +53,10 @@ const startState = {
     selectingIcon: false,
     controls: {}
   },
-
+  flowchart: {
+    dragVertex: false,
+    scale: 0.8,
+  },
   liveModeReference: null,
   detailsPanelDeviceID: null,
   accessPoints: {},
@@ -62,7 +65,7 @@ const startState = {
     currentlyConnecting: null,
     failedAttempt: null,
     deviceID: null
-  } 
+  }
 }
 
 export const initialState = Immutable.Map(startState);
@@ -71,7 +74,7 @@ const persistConfig = {
   key: 'root',
   storage,
 }
- 
+
 const persistedReducer = persistReducer(persistConfig, reducers)
 export const store = createStore(persistedReducer, startState, composeWithDevTools(applyMiddleware(thunk)));
 
@@ -97,17 +100,17 @@ var loadDevicesFromServer = (url) => {
     url: url,
     cache: false,
     success: (data) => {
-      
+
       try {
         data.url = window.location.origin;
         var immutableMap = Immutable.Map(data);
         store.dispatch(actions_classic.overwriteFromServer(data));
 
-      } 
+      }
       catch (err) {
         console.log("Running on Dev server, cannot update url or feed classic data");
       }
-      
+
     },
     error: (xhr, status, err) => {
       console.error(url, status, err.toString());
@@ -118,4 +121,3 @@ var loadDevicesFromServer = (url) => {
 var timeoutRef = setInterval(() => loadDevicesFromServer(window.location.origin.concat('/api/findDevices')), 1000)
 
 setTimeout(() => clearTimeout(timeoutRef), 5000);
-

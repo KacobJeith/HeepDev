@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux'
 import { withRouter }         from 'react-router-dom'
 import * as actions           from '../../redux/actions_classic'
 
-import { withTheme } from 'material-ui/styles';
+import { withStyles, withTheme } from 'material-ui/styles';
 import { Drawer, Button, Divider, Paper, Typography, IconButton, Menu, MenuItem, Collapse } from 'material-ui';
 import List, { ListItem, ListItemIcon, ListItemText, ListSubheader } from 'material-ui/List';
 
@@ -19,6 +19,8 @@ import AutoRenew from 'material-ui-icons/AutoRenew'
 import DetailsPanelControlBlock from './DetailsPanelControlBlock'
 import PlaceListItem from './PlaceListItem'
 import AddPlaceModal from '../account/AddPlaceModal'
+
+import classNames from 'classnames';
 
 var mapStateToProps = (state) => ({
   deviceID:  state.detailsPanelDeviceID,
@@ -38,6 +40,28 @@ const extractControls = (state) => {
   return allControls
 
 }
+
+const drawerWidth = 258;
+
+const styles = theme => ({
+  drawerPaper: {
+    position: 'relative',
+    width: drawerWidth,
+    overflowX: 'hidden',
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  drawerPaperClose: {
+    overflowX: 'hidden',
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    width: 0
+  }
+});
 
 class DeviceDetailsPanel extends React.Component {
   state = {
@@ -226,11 +250,21 @@ class DeviceDetailsPanel extends React.Component {
 
   render() {
 
+    const { classes, theme } = this.props;
+
     return (  
-        <Drawer anchor="right" variant='permanent' open={this.props.deviceID != null} >
+      <div style={{position: 'fixed', right:0, top: 0}} id='detailsPanel'>
+        <Drawer 
+          variant='permanent' 
+          open={this.props.deviceID != null} 
+          classes={{
+            paper: classNames(classes.drawerPaper, this.props.deviceID == null && classes.drawerPaperClose),
+          }}
+        >
           {this.props.deviceID != null && (this.deviceDetails())}
           
         </Drawer>
+      </div>
     );
   }
 }
@@ -239,4 +273,4 @@ var mapDispatchToProps = (dispatch) => {
   return bindActionCreators(actions, dispatch)
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withTheme()(DeviceDetailsPanel)))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles, { withTheme: true })(DeviceDetailsPanel)))
