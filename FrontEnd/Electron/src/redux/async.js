@@ -157,6 +157,18 @@ export const resetDeviceAndOSWifi = (deviceID) => {
 
 }
 
+export const resetDeviceWifi = (deviceID) => {
+  
+  var url = urlPrefix.concat('/api/resetDeviceWifi');
+
+  performAJAX(url, {deviceID: deviceID}, 'POST', (response) => {
+
+    // setup.store.dispatch(actions_classic.overwriteFromServer(response));  
+    console.log('WifiReset: ', response);   
+    
+  })
+
+}
 
 export var performAJAX = (url, messagePacket, type = 'POST', callback = (data) => {} ) => {
   $.ajax({

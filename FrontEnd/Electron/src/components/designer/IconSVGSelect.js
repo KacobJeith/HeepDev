@@ -50,7 +50,7 @@ class IconSVGSelect extends React.Component {
     const { classes } = this.props;
     const { anchorEl } = this.state;
 
-    const dataUrlPrefix = window.location.port == 9000 ? "/dist/assets/svg/" : "/assets/svg/";
+    const dataUrlPrefix = "src/assets/svg/";
 
     const inputs = {
     	svgIcon: {
