@@ -31,20 +31,24 @@ class Flowchart extends React.Component {
 		}
 	};
 
-  componentDidMount() {
-    this.dragFlowchart()
-  }
+	componentWillMount() {
+		this.props.setDetailsPanelDeviceID(null);
+	}
 
-  dragFlowchart() {
-      Draggable.create("#deviceContainer", {
-        type: "x, y",
-        bounds: "#flowchart",
-        edgeResistance: 1,
-        allowContextMenu: true,
-        zIndexBoost: false,
-        onDrag: () => this.props.updateVertex()
-      });
-  }
+	componentDidMount() {
+		this.dragFlowchart()
+	}
+
+	dragFlowchart() {
+	  Draggable.create("#deviceContainer", {
+	    type: "x, y",
+	    bounds: "#flowchart",
+	    edgeResistance: 1,
+	    allowContextMenu: true,
+	    zIndexBoost: false,
+	    onDrag: () => this.props.updateVertex()
+	  });
+	}
 
 	flowchartOptions() {
 		return (
@@ -87,15 +91,15 @@ class Flowchart extends React.Component {
 
 		const inputs = {
 			vertexSVGSpace: {
-        	id: 'vertexSVGSpace',
+				id: 'vertexSVGSpace',
 				style: {
 					position: 'absolute',
 					width: 10000,
 					height: 10000,
 					viewBox: '0 0 4000 4000',
-    			top: 0,
-    			left: 0,
-          overflow: 'hidden'
+					top: 0,
+					left: 0,
+					overflow: 'hidden'
 				},
 			}
 		}
@@ -126,68 +130,31 @@ class Flowchart extends React.Component {
 	render() {
 
 		const inputs = {
-      pageContainer: {
-        style: {
-          backgroundColor: '#e7e7e7',
-          height: 5000,
-          width: 5000
-        }
-      },
+	      	pageContainer: {
+	        	style: {
+					backgroundColor: '#e7e7e7',
+					height: 5000,
+					width: 5000
+				}
+			},
 			flowchart: {
 				style: {
-          // height: 1000,
-          // width: 1000,
 					height: window.innerHeight,
 					width: window.innerWidth,
-          margin: 0,
+					margin: 0,
 					backgroundColor: 'rgba(0, 0, 0, 0.54)',
-          overflow: "hidden"
+					overflow: "hidden"
 				}
 			},
-			refresh: {
-			  width: 45,
-			  height: 45,
-			  type:"image/svg+xml",
-			  data: './dist/assets/svg/refresh.svg',
-			  style: {
-			  	position: 'absolute',
-			  }
-			},
-			refreshContainer: {
-				style: {
-					width: 50,
-					height: 50,
-					top: 2,
-					left: 2,
-					backgroundColor: this.state.hoverRefresh ? "rgba(0,0,0,0.1)" : "rgba(0,0,0,0)",
-					cursor: "pointer",
-					position: 'relative'
-				}
-			},
-			refreshButton: {
-				style: {
-					width: 50,
-					height: 50,
-					backgroundColor: this.state.hoverRefresh ? "rgba(0,0,0,0.1)" : "rgba(0,0,0,0)",
-					cursor: "pointer",
-					position: 'absolute'
-				},
-				onClick: () => {
-					console.log("clicked");
-					this.props.refreshFlowchart();
-				},
-        		onMouseEnter: () => this.setState({hoverRefresh: true}),
-        		onMouseLeave: () => this.setState({hoverRefresh: false})
-			},
-      		deviceContainer: {
-		        style: {
-		          position: 'relative',
-		          width: 3000,
-		          height: 3000,
-		          background: '#e7e7e7',
-              overflow: 'hidden'
-		        }
-		    }
+			deviceContainer: {
+			    style: {
+					position: 'relative',
+					width: 3000,
+					height: 3000,
+					background: '#e7e7e7',
+			  		overflow: 'hidden'
+			    }
+			}
 		}
 
 		return (
