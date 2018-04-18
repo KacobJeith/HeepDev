@@ -13,7 +13,7 @@ import { withTheme } from 'material-ui/styles'
 
 import Add from 'material-ui-icons/Add'
 import Remove from 'material-ui-icons/Remove'
-import { Button }  from 'material-ui'
+import { Button, Tooltip }  from 'material-ui'
 
 var mapStateToProps = (state) => ({
   deviceArray: Object.keys(state.devices),
@@ -48,6 +48,9 @@ class Flowchart extends React.Component {
 
 	flowchartOptions() {
 		return (
+      <Tooltip id="tooltip-range"
+            title={Math.round(this.props.scale * 100) + "%"}
+            placement="top">
 			<div
 				id='flowchartOptions'
 				style={{
@@ -76,6 +79,7 @@ class Flowchart extends React.Component {
 				</Button>
 
 			</div>
+    </Tooltip>
 		)
 	};
 
@@ -86,11 +90,12 @@ class Flowchart extends React.Component {
         	id: 'vertexSVGSpace',
 				style: {
 					position: 'absolute',
-					width: "100%",
-					height: "100%",
-					viewBox: '0 0 1000 1000',
-          			top: 0,
-          			left: 0,
+					width: 10000,
+					height: 10000,
+					viewBox: '0 0 4000 4000',
+    			top: 0,
+    			left: 0,
+          overflow: 'hidden'
 				},
 			}
 		}
@@ -121,8 +126,17 @@ class Flowchart extends React.Component {
 	render() {
 
 		const inputs = {
+      pageContainer: {
+        style: {
+          backgroundColor: '#e7e7e7',
+          height: 5000,
+          width: 5000
+        }
+      },
 			flowchart: {
 				style: {
+          // height: 1000,
+          // width: 1000,
 					height: window.innerHeight,
 					width: window.innerWidth,
           margin: 0,
@@ -171,18 +185,21 @@ class Flowchart extends React.Component {
 		          width: 3000,
 		          height: 3000,
 		          background: '#e7e7e7',
+              overflow: 'hidden'
 		        }
 		    }
 		}
 
 		return (
+      <div {...inputs.pageContainer}>
 			<div id="flowchart" {...inputs.flowchart} ref="flowchart">
 					<div id="deviceContainer" {...inputs.deviceContainer}>
             <div style={{
     						transform: 'scale(' + this.props.scale + ')',
     		          		transformOrigin: 'top left',
                       width: '100%',
-                      height: '100%'
+                      height: '100%',
+                      overflow: 'hidden'
     		          	}}>
 						{this.drawVertices()}
 						{this.drawDevices()}
@@ -191,6 +208,7 @@ class Flowchart extends React.Component {
 				{this.flowchartOptions()}
 				<DeviceDetailsPanel/>
 			</div>
+    </div>
 		);
 
 	}

@@ -377,13 +377,20 @@ export default function(state = initialState, action) {
       return Immutable.Map(state).set('deviceWiFiCreds', newState).toJS();
 
     case 'ZOOM_OUT_FLOWCHART':
+      if (state.flowchart.scale <= 0.3) {
+        return state
+      } else {
+        return Immutable.fromJS(state).setIn(['flowchart', 'scale'], state.flowchart.scale - 0.1).toJS()
+      }
 
-      return Immutable.fromJS(state).setIn(['flowchart', 'scale'], state.flowchart.scale - 0.1).toJS()
+
 
     case 'ZOOM_IN_FLOWCHART':
-
-      return Immutable.fromJS(state).setIn(['flowchart', 'scale'], state.flowchart.scale + 0.1).toJS()
-
+      if (state.flowchart.scale >= 1.5) {
+        return state
+      } else {
+        return Immutable.fromJS(state).setIn(['flowchart', 'scale'], state.flowchart.scale + 0.1).toJS()
+      }
 
     default:
       console.log('Passed through first Switch');

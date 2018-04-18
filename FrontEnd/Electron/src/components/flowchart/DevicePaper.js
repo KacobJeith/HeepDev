@@ -16,7 +16,8 @@ import Device from './Device'
 var mapStateToProps = (state, ownProps) => ({
   deviceID: ownProps.DeviceID,
   position: state.positions[ownProps.DeviceID]['device'],
-  activeState: state.devices[ownProps.DeviceID].active
+  activeState: state.devices[ownProps.DeviceID].active,
+  scale: state.flowchart.scale
 })
 
 
@@ -50,10 +51,12 @@ class DevicePaper extends React.Component {
   createDraggable () {
     Draggable.create("#_" + this.props.DeviceID, {
       type: "x,y",
-      bounds: "#flowchart",
-      edgeResistance: 0.7,
+      bounds: "#vertexSVGSpace",
+      edgeResistance: 0.9,
       allowContextMenu: true,
       throwProps: true,
+      throwResistance: 100000,
+      // throwMax: 500,
       onDrag: () => this.props.updateVertex(),
       onThrowUpdate: () => this.props.updateVertex(),
       onDragEnd: () => this.sendPositionToServer(),
