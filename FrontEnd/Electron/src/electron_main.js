@@ -5,8 +5,6 @@ const electronApp = electron.app
 const BrowserWindow = electron.BrowserWindow
 var log = require('electron-log');
 
-const setupMenu = require('./electron/menu');
-
 const autoUpdater = require('electron-updater').autoUpdater;
 autoUpdater.logger = log;
 autoUpdater.logger.transports.file.level = "info";
@@ -164,7 +162,7 @@ electronApp.on('ready', function() {
 
     const menu = Menu.buildFromTemplate(template)
     Menu.setApplicationMenu(menu)
-    
+
   } else {
     mainMenu.setMenu(null);
   }
