@@ -13,6 +13,11 @@ export const updateSystemType = (system) => ({
 	system
 })
 
+export const updateApplicationName = (applicationName) => ({
+	type: 'UPDATE_APPLICATION_NAME',
+	applicationName
+})
+
 export const updateControlName = (controlID, name) => ({
 	type: 'UPDATE_CONTROL_NAME',
 	controlID, 

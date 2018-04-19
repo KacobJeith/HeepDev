@@ -3,3 +3,8 @@ import ClimateSensorInoFile from '../../../../Firmware/ServerlessFirmware/Action
 export const inoFiles = {
   ClimateSensorFile: ClimateSensorInoFile,
 }
+
+export const applicationNames = {
+	Custom : "Custom",
+	ClimateSensor : "Climate Sensor"
+}
