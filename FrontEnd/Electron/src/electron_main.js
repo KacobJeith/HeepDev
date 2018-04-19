@@ -152,20 +152,20 @@ electronApp.on('ready', function() {
       }
     })
 
-  mainWindow.loadURL('http://localhost:3004/');
-
-  mainWindow.on('closed', function () {
-    mainWindow = null
-  })
-
   if (process.platform === 'darwin') {
 
     const menu = Menu.buildFromTemplate(template)
     Menu.setApplicationMenu(menu)
 
   } else {
-    mainMenu.setMenu(null);
+    mainWindow.setMenu(null);
   }
+
+  mainWindow.loadURL('http://localhost:3004/');
+
+  mainWindow.on('closed', function () {
+    mainWindow = null
+  })
 
   log.info('Main Electron function');
   autoUpdater.checkForUpdatesAndNotify();
