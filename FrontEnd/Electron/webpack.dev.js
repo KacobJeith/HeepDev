@@ -23,5 +23,15 @@ module.exports = merge(common, {
 
   plugins: [
     new webpack.HotModuleReplacementPlugin()
-  ]
+  ],
+
+  module: {
+    rules: [
+      {
+        test: /\.h$/,
+        use: 'raw-loader'
+      }
+    ]
+  }
+
 });
