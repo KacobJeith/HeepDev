@@ -26,7 +26,7 @@
     "be": "set NODE_ENV=development && npm run buildfast && electron ./dist/",
     "bep": "set NODE_ENV=production && npm run build && electron ./dist/",
     "copy-files": "babel ./src/assets/ --out-dir ./dist/src/assets/ --copy-files",
-    "dist": "electron-builder --projectDir ./dist/ -p always",
+    "dist": "electron-builder --projectDir ./dist/ ",
     "package-all": "set NODE_ENV=production && npm run build && electron-builder --projectDir ./dist/ -mw -p always",
     "package-current": "set NODE_ENV=production && npm run build && npm run dist",
     "build-electron-bundle": "npm run overwrite-module-files && webpack --config webpack.electron.js"
