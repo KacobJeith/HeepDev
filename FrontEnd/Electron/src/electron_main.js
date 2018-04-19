@@ -160,8 +160,14 @@ electronApp.on('ready', function() {
     mainWindow = null
   })
 
-  const menu = Menu.buildFromTemplate(template)
-  Menu.setApplicationMenu(menu)
+  if (process.platform === 'darwin') {
+
+    const menu = Menu.buildFromTemplate(template)
+    Menu.setApplicationMenu(menu)
+    
+  } else {
+    mainMenu.setMenu(null);
+  }
 
   log.info('Main Electron function');
   autoUpdater.checkForUpdatesAndNotify();
