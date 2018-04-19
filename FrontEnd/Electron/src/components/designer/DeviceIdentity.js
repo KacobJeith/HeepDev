@@ -137,6 +137,24 @@ class DeviceIdentity extends React.Component {
       </Collapse>
   )
 
+  selectApplication = () => (
+
+    <FormControl className={this.props.classes.formControl} style={{width:'100%'}}>
+      <InputLabel htmlFor="type-helper">Application Type</InputLabel>
+      <Select
+        value={this.props.systemType}
+        title='Select Application Type'
+        onChange={ (event) => {this.props.updateSystemType(event.target.value)}}
+        input={<Input name="type-helper" id="type-helper" />}
+      >
+        {Object.keys(sys_phy_files).map((thisKey) => (
+          <MenuItem value={thisKey} key={thisKey}>{thisKey}</MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+
+  )
+
   render () {
 
     return (
@@ -158,6 +176,9 @@ class DeviceIdentity extends React.Component {
             </Grid>
             <Grid item>
               {this.inputWifiCredentials()}
+            </Grid>
+            <Grid item>
+              {this.selectApplication()}
             </Grid>
           </Grid>
         </Grid>
