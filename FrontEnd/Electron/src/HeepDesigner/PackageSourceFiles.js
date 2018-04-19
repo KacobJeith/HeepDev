@@ -4,9 +4,12 @@ import randomNumber from 'random-number-csprng'
 
 import { sys_phy_files } from './SystemPHYCompatibilities'
 
-import ClimateSensorInoFile from '../assets/inoFiles.js'
+import { inoFiles } from '../assets/inoFiles.js'
 
 export const packageSourceFiles = (deviceDetails, controls) => {
+
+  console.log("About to print ClimateSensorInoFile")
+  console.log(inoFiles.ClimateSensorFile);
 
   console.log("Device: ", deviceDetails);
   console.log("Controls: ", controls);
