@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux'
 import { withRouter }         from 'react-router-dom'
 import PropTypes              from 'prop-types';
 import classNames             from 'classnames';
+import { logos }              from '../assets/remote/Logos'
 
 import * as actions           from '../redux/actions'
 
