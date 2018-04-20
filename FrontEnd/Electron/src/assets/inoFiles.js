@@ -1,4 +1,4 @@
-import ClimateSensorInoFile from '../../../../Firmware/ServerlessFirmware/ActionAndResponseOpCodes.h'
+import ClimateSensorInoFile from '../../../../../Heep Product Demos/ClimateSensorGitRepo/ClimateSensor/ClimateSensor.ino'
 
 export const inoFiles = {
   ClimateSensorFile: ClimateSensorInoFile,

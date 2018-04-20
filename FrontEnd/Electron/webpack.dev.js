@@ -28,7 +28,7 @@ module.exports = merge(common, {
   module: {
     rules: [
       {
-        test: /\.h$/,
+        test: /\.(h|cpp|ino)$/,
         use: 'raw-loader'
       }
     ]
