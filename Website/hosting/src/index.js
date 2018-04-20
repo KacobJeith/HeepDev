@@ -46,5 +46,5 @@ render(
   document.getElementById('root')
 );
 
-import(/* webpackChunkName: "firebaseAuth" */ './firebase/FirebaseAuth').then((auth) => auth.initializeFirebase());
+// import(/* webpackChunkName: "firebaseAuth" */ './firebase/FirebaseAuth').then((auth) => auth.initializeFirebase());
 shopify.InitializeShopify();

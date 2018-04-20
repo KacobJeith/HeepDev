@@ -17,12 +17,12 @@
     "tests": "mocha-webpack --webpack-config webpack.config-test.js \"src/**/*.test.js\"",
     "build": "npm run copy-files && webpack --config webpack.production.js",
     "copy-files": "babel ./src/assets/ --out-dir ./dist/src/assets/ --copy-files",
-    "dev": "NODE_ENV=development webpack-dev-server --config webpack.dev.js --hot --watch",
+    "dev": "set NODE_ENV=development && webpack-dev-server --config webpack.dev.js --hot --watch",
     "start": "babel-node src/server.js",
     "tbs": "npm run test && npm run bs",
-    "bs": "NODE_ENV=production npm run build && firebase serve",
+    "bs": "set NODE_ENV=production && npm run build && firebase serve",
     "ts": "npm run test && npm run start",
-    "deploy": "NODE_ENV=production npm run build && firebase deploy --only hosting"
+    "deploy": "set NODE_ENV=production &&npm run build && firebase deploy --only hosting"
   },
   "dependencies": {
     "body-parser": "^1.15.2",
