@@ -10,7 +10,7 @@ import ControlBuilder from './ControlBuilder'
 import { Button, Grid } from 'material-ui'
 
 var mapStateToProps = (state) => ({
-
+  numControls: state.designer.numControls
 })
 
 class DeviceBuilder extends React.Component {
@@ -49,7 +49,7 @@ class DeviceBuilder extends React.Component {
     }
 
     return (
-      <Grid direction='column' spacing={24} style={{marginTop: 24, maxWidth: '100%'}}>
+      <Grid container direction='column' spacing={24} style={{marginTop: 24, maxWidth: '100%', overflow: 'auto'}}>
         <Grid item>
             <DeviceIdentity/>
         </Grid>
