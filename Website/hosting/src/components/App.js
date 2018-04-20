@@ -90,31 +90,23 @@ class App extends React.Component {
 			}
 	    }
 
-	    var loggedInRoutes = [];
-
-	    if (this.props.loginStatus) {
-	    	loggedInRoutes.push(<Route path="/Build" component={Build} key="build"/>);
-	    	loggedInRoutes.push(<Route path="/DeviceBuilder" component={DeviceBuilder} key="DeviceBuilder"/>)
-	    	loggedInRoutes.push(<Route path="/User" component={UserAccount} key="user"/>);
-	    }
-
 	    return(
 			<Router >
 			    	<MuiThemeProvider theme={Theme}>
 							<div {...inputs.container}>
 								<div {...inputs.content}>
 									<Route path="/" component={AppBar}/>
-									<Route exact path="/" component={Landing}/>
-									<Route path="/Landing" component={Landing}/>
+{/* 									<Route exact path="/" component={Landing}/> */}
+{/* 									<Route path="/Landing" component={Landing}/> */}
 									<Route path="/About" component={About}/>
 									<Route path="/Shop" component={Store}/>
-									<Route path="/Tutorials" component={Tutorials}/>
+{/* 									<Route path="/Tutorials" component={Tutorials}/> */}
 									<Route path="/product/:productID" component={ProductDetails}/>
 									<Route path="/Checkout" component={Checkout}/>
 									<Route path="/MyCart" component={ManageCart}/>
-									<Route exact path="/auth" component={Auth}/>
-									<Route exact path="/Developers" component={DownloadPage}/>
-									{loggedInRoutes}
+{/* 									<Route exact path="/auth" component={Auth}/> */}
+{/* 									<Route exact path="/Developers" component={DownloadPage}/> */}
+{/* 									{this.props.loginStatus && <Route path="/User" component={UserAccount} key="user"/>} */}
 								</div>
 								<Route path="/" component={Footer}/>
 						    </div>

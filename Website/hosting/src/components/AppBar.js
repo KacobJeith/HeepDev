@@ -403,7 +403,7 @@ class MenuAppBar extends React.Component {
                 {this.mobileMenuCart()}
                 {this.mobileMenuLink('/About', 'About', <AboutIcon/>)}
                 {this.mobileMenuLink('/Shop', 'Shop', <ShopIcon/>)}
-                {this.mobileMenuLink('/Developers', 'Develop', <DevelopIcon/>)}
+{/*                 {this.mobileMenuLink('/Developers', 'Develop', <DevelopIcon/>)} */}
 
               </div>
             </Drawer>
@@ -428,9 +428,9 @@ class MenuAppBar extends React.Component {
             <div className={classes.flex}/>
             {this.appBarLink("/About", "About")}
             {this.appBarLink("/Shop", "Shop")}
-            {this.appBarLink("/Developers", "Develop")}
+{/*             {this.appBarLink("/Developers", "Develop")} */}
             {this.appBarCart()}
-            {this.avatarLogin()}
+{/*             {this.avatarLogin()} */}
           </Toolbar>
         </AppBar>
       </div>
