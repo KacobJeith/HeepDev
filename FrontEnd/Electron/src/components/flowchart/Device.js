@@ -102,7 +102,8 @@ class Device extends React.Component {
       gridContainer: {
         style: {
           marginTop: this.props.theme.spacing.unit,
-          marginBottom: this.props.theme.spacing.unit
+          marginBottom: this.props.theme.spacing.unit,
+          userSelect: "none"
         }
       },
       name: {
