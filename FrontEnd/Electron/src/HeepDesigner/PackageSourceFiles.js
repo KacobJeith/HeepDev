@@ -72,6 +72,26 @@ const getPreExistingInoFile = (deviceDetails) => {
   if(deviceDetails.applicationName == "ClimateSensor"){
     return inoFiles.ClimateSensorFile;
   }
+  else if(deviceDetails.applicationName == "CloseOpenSensor"){
+    return inoFiles.CloseOpenSensorFile;
+  }
+  else if(deviceDetails.applicationName == "Encoder"){
+    return inoFiles.EncoderFile;
+  }
+  else if(deviceDetails.applicationName == "PiezoBuzzer"){
+    return inoFiles.PiezoBuzzerFile;
+  }
+  else if(deviceDetails.applicationName == "PassiveIR"){
+    return inoFiles.PassiveIRFile;
+  }
+  else if(deviceDetails.applicationName == "Servo"){
+    return inoFiles.ServoFile;
+  }
+  else if(deviceDetails.applicationName == "SoilSensor"){
+    return inoFiles.SoilSensorFile;
+  }
+
+  return "Something went wrong";
 }
 
 const composeInoFile = (deviceDetails, controls) => {
