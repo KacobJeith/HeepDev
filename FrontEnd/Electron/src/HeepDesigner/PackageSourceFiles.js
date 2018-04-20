@@ -68,9 +68,19 @@ const packageSimulationFiles = (deviceDetails, controls, zip) => {
   return zip
 }
 
+const getPreExistingInoFile = (deviceDetails) => {
+  if(deviceDetails.applicationName == "ClimateSensor"){
+    return inoFiles.ClimateSensorFile;
+  }
+}
+
 const composeInoFile = (deviceDetails, controls) => {
 
-    var fileContent = `
+  if(deviceDetails.applicationName != "Custom"){
+    return getPreExistingInoFile(deviceDetails);
+  }
+
+var fileContent = `
 #include "HeepDeviceDefinitions.h"\n`
 + initializeControls(controls)
 + createHardwareControlFunctionsArduinoSyntax(controls)
