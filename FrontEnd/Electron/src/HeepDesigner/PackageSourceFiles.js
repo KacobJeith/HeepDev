@@ -8,8 +8,9 @@ import { inoFiles } from '../assets/inoFiles.js'
 
 export const packageSourceFiles = (deviceDetails, controls) => {
 
-  console.log("About to print ClimateSensorInoFile")
-  console.log(inoFiles.ClimateSensorFile);
+  console.log("About to print application Name")
+  console.log(deviceDetails.applicationName)
+  //console.log(inoFiles.ClimateSensorFile);
 
   console.log("Device: ", deviceDetails);
   console.log("Controls: ", controls);
@@ -42,7 +43,7 @@ export const packageSourceFiles = (deviceDetails, controls) => {
 
   setIDAndMAC((deviceIDarray, MACAddressArray) => {
 
-    zip.file('HeepDeviceDefinitions.h', generateDeviceDefinitionsFile(deviceIDarray, MACAddressArray, autoGenIncludes));
+    zip.file('HeepDeviceDefinitions.h', generateDeviceDefinitionsFile(deviceDetails.deviceName, deviceIDarray, MACAddressArray, autoGenIncludes));
 
     zip.generateAsync({type:"blob"})
     .then(function(content) {
@@ -81,7 +82,7 @@ const composeInoFile = (deviceDetails, controls) => {
   Serial.begin(115200);\n`
 + GetTabCharacter() + `InitializeControlHardware();\n`
 + setControls(controls)
-+ GetTabCharacter() + `StartHeep("`+ deviceDetails.deviceName + `", ` + deviceDetails.iconSelected + `);\n
++ GetTabCharacter() + `StartHeep(heepDeviceName, ` + deviceDetails.iconSelected + `);\n
 }
 
 void loop()
@@ -407,13 +408,14 @@ const setIDAndMAC = (launchDownloadCallback) => {
 
 }
 
-const generateDeviceDefinitionsFile = (deviceIDarray, MACAddressArray, autoGenIncludes) => {
+const generateDeviceDefinitionsFile = (deviceName, deviceIDarray, MACAddressArray, autoGenIncludes) => {
 
   var autoGenContent = `#include <Heep_API.h>\n`;
   autoGenContent += autoGenIncludes;
   autoGenContent += `heepByte deviceIDByte [STANDARD_ID_SIZE] = {` + convertIntToHex(deviceIDarray) + `};\n`;
   autoGenContent += `uint8_t mac[6] = {` + convertIntToHex(MACAddressArray) + `};\n`;
   autoGenContent += `unsigned char clearMemory = 1;\n`;
+  autoGenContent += `char* heepDeviceName = "` + deviceName + `";\n`;
   
   return autoGenContent
 }
@@ -453,9 +455,7 @@ const getIncludes_Simulation = (deviceDetails) => {
 }
 
 const getIncludes_ESP8266 = (deviceDetails) => {
-  return `String SSID = "` + deviceDetails.ssid + `";
-  String Password = "` + deviceDetails.ssidPassword + `";
-  #include "` + getCommsFileName(deviceDetails) + `"
+  return `#include "` + getCommsFileName(deviceDetails) + `"
   #include "ESP8266_NonVolatileMemory.h"
   #include "Arduino_Timer.h" \n`
 }
