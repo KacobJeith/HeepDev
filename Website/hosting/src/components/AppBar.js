@@ -33,6 +33,9 @@ import ShoppingCartIcon       from 'material-ui-icons/ShoppingCart';
 import ShopIcon               from 'material-ui-icons/ShoppingBasket'
 import AboutIcon              from 'material-ui-icons/Contacts'
 import DevelopIcon            from 'material-ui-icons/Code'
+import Home                   from 'material-ui-icons/Home'
+import Business                   from 'material-ui-icons/Business'
+
 
 import { withStyles }         from 'material-ui/styles';
 
@@ -400,9 +403,11 @@ class MenuAppBar extends React.Component {
                 >
 
                 {this.mobileMenuLogo()}
-                {this.mobileMenuCart()}
-                {this.mobileMenuLink('/About', 'About', <AboutIcon/>)}
+                {this.mobileMenuLink('/', 'Home', <Home/>)}
+                {this.mobileMenuLink('/IndustrialHeep', 'Industry', <Business/>)}
                 {this.mobileMenuLink('/Shop', 'Shop', <ShopIcon/>)}
+                {this.mobileMenuLink('/About', 'About', <AboutIcon/>)}
+                {this.mobileMenuCart()}
 {/*                 {this.mobileMenuLink('/Developers', 'Develop', <DevelopIcon/>)} */}
 
               </div>
@@ -426,6 +431,8 @@ class MenuAppBar extends React.Component {
             </Hidden>
             {this.mobileAppBarLogo()}
             <div className={classes.flex}/>
+            {this.appBarLink("/", "Home")}
+            {this.appBarLink("/IndustrialHeep", "Industry")}
             {this.appBarLink("/About", "About")}
             {this.appBarLink("/Shop", "Shop")}
 {/*             {this.appBarLink("/Developers", "Develop")} */}
