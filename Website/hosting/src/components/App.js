@@ -40,6 +40,11 @@ const Auth = () => <AsyncComponent moduleProvider={() => import(
   	/* webpackMode: "lazy" */ 
   	'./account/Auth')} />
 
+const iiot = () => <AsyncComponent moduleProvider={() => import(
+	/* webpackChunkName: "iiot" */
+  	/* webpackMode: "lazy" */ 
+  	'./pages/iiot')} />
+
 import Theme from './Theme'
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
 
@@ -100,6 +105,7 @@ class App extends React.Component {
 {/* 									<Route path="/Landing" component={Landing}/> */}
 									<Route path="/About" component={About}/>
 									<Route path="/Shop" component={Store}/>
+									<Route path="/IndustrialHeep" component={iiot}/>
 {/* 									<Route path="/Tutorials" component={Tutorials}/> */}
 									<Route path="/product/:productID" component={ProductDetails}/>
 									<Route path="/Checkout" component={Checkout}/>
