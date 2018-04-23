@@ -29,6 +29,7 @@ import {  AppBar,
 
 import MenuIcon               from 'material-ui-icons/Menu';
 import AccountCircle          from 'material-ui-icons/AccountCircle';
+import ContactMail            from 'material-ui-icons/ContactMail';
 import ShoppingCartIcon       from 'material-ui-icons/ShoppingCart';
 import ShopIcon               from 'material-ui-icons/ShoppingBasket'
 import AboutIcon              from 'material-ui-icons/Contacts'
@@ -407,6 +408,7 @@ class MenuAppBar extends React.Component {
                 {this.mobileMenuLink('/IndustrialHeep', 'Industry', <Business/>)}
                 {this.mobileMenuLink('/Shop', 'Shop', <ShopIcon/>)}
                 {this.mobileMenuLink('/About', 'About', <AboutIcon/>)}
+                {this.mobileMenuLink('/Contact', 'Contact', <ContactMail/>)}
                 {this.mobileMenuCart()}
 {/*                 {this.mobileMenuLink('/Developers', 'Develop', <DevelopIcon/>)} */}
 
@@ -434,6 +436,7 @@ class MenuAppBar extends React.Component {
             {this.appBarLink("/", "Home")}
             {this.appBarLink("/IndustrialHeep", "Industry")}
             {this.appBarLink("/About", "About")}
+            {this.appBarLink("/Contact", "Contact")}
             {this.appBarLink("/Shop", "Shop")}
 {/*             {this.appBarLink("/Developers", "Develop")} */}
             {this.appBarCart()}
