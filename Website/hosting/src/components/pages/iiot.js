@@ -14,10 +14,6 @@ import { svgs } from '../../assets/remote/SVGs'
 
 class IIOT extends React.Component {
 
-  componentDidMount() {
-    document.getElementById('iiotVid').play(); 
-  }
-
   topBanner() {
 
     const inputs = {
@@ -31,10 +27,9 @@ class IIOT extends React.Component {
     return(
       VideoBackgroundCard(inputs, 
         <Grid container direction='column' justify ='center' alignItems ='center' style={{
-          maxWidth: '100%',
+          width: '100%',
           minHeight: inputs.minHeight,
-          margin: '0 auto',
-          backgroundColor: 'transparent'
+          margin: '0 auto'
         }}>
           <Grid item xs={12} sm={8}>
             <Typography variant='display1' align='center' style={{color:'white'}}>
@@ -69,7 +64,7 @@ class IIOT extends React.Component {
          justify='center' alignItems='center'>
           <Grid item  xs={12} md={8}>
             <Typography variant='headline' align='center'>
-              Our Mission
+              Secure
             </Typography>
             <br/>
             <Typography variant='subheading' align='center' gutterBottom paragraph>
@@ -117,7 +112,7 @@ class IIOT extends React.Component {
     const inputs = {
       imageSide: 'left', 
       minHeight: 400,
-      imagePath: 'https://user-images.githubusercontent.com/3604149/38447851-16ac9844-39ce-11e8-9fc3-1963cea40556.gif'
+      imagePath: 'http://www.tdworld.com/sites/tdworld.com/files/distributed-network-MickeyCZ.jpg'
     };
 
     return (
@@ -129,7 +124,7 @@ class IIOT extends React.Component {
          justify='center' alignItems='center'>
           <Grid item  xs={12} md={8}>
             <Typography variant='headline' align='center'>
-              Design Rich Control Systems
+              Design Powerful Robust Control Systems
             </Typography>
             
           </Grid>
