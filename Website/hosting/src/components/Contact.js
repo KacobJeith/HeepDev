@@ -1,9 +1,15 @@
 import React from 'react'
-import { Grid, Paper, Typography, TextField, Button } from 'material-ui'
+import { Grid, Typography, TextField, Button, Hidden } from 'material-ui'
 import { withStyles } from 'material-ui/styles'
 import SectionCard from './utilities/SectionCard'
 
 const styles = theme => ({
+  root: theme.mixins.gutters({
+    padding: 20,
+    // paddingTop: 16,
+    // paddingBottom: 16,
+    margin: theme.spacing.unit * 3,
+  }),
   button: {
     margin: theme.spacing.unit,
   },
@@ -12,7 +18,6 @@ const styles = theme => ({
 class Contact extends React.Component {
 
   headerSection() {
-
     const inputs = {
       paddingBottom: 25,
     };
@@ -27,7 +32,7 @@ class Contact extends React.Component {
           paddingBottom: 25,
          }}
          justify='center' alignItems='center'>
-          <Grid item  xs={12} md={8}>
+          <Grid item  xs={10} md={8}>
             <Typography variant='headline' align='center'>
               Our Mission
             </Typography>
@@ -48,11 +53,11 @@ class Contact extends React.Component {
     )
   }
 
-  createTextField(label, multiline=false) {
+  contactTextField(label, multiline=false) {
     const inputs = {
       textField: {
         style: {
-          width: "100%"
+          width: "100%",
         }
       }
     }
@@ -61,7 +66,7 @@ class Contact extends React.Component {
       <Grid item xs={12}
          style={{
            maxWidth: "100%",
-           marginLeft: 40,
+           margin: "0"
          }}>
         <TextField
           label={label}
@@ -75,49 +80,64 @@ class Contact extends React.Component {
     )
   };
 
-  contactForm() {
+  contactHeadline() {
     return (
-      <Grid item xs={7}>
-        <Grid container direction="column"
-          alignItems="stretch"
-          justify="center"
-          style={{
-            maxWidth: "100%",
-            margin: "0 auto"
-          }}>
-          <Grid item xs={12} style={{
-            marginLeft: 40
-          }}>
-            <Typography variant='headline' gutterBottom={true} align='left'>
-              Give Us A Shout
+      <Grid item xs={12}>
+        <Typography variant='headline' gutterBottom={true} align='left'>
+          Give Us A Shout
+        </Typography>
+        <Typography variant='subheading' align='left'>
+          Fill out the form below and we'll get back to you.
+        </Typography>
+      </Grid>
+    )
+  }
+
+  contactButton() {
+    return (
+      <Grid item xs={12} style={{
+        paddingTop: 30,
+      }}>
+        <Grid container justify='flex-end' alignItems='center'>
+          <Button variant='raised' color='secondary'>
+            <Typography variant='title' style={{color: "white"}}>
+              Submit
             </Typography>
-            <Typography variant='subheading' align='left'>
-              Fill out the form below and we'll get back to you.
-            </Typography>
-          </Grid>
-          {this.createTextField("Name", false)}
-          {this.createTextField("Company", false)}
-          {this.createTextField("Email", false)}
-          {this.createTextField("Message", true)}
-          <Grid item xs={12} style={{
-            paddingTop: 30,
-          }}>
-            <Grid container justify='flex-end' alignItem='center'>
-              <Button variant='raised' color='secondary'>
-                <Typography variant='title' style={{color: "white"}}>
-                  SUBMIT
-                </Typography>
-              </Button>
-            </Grid>
-          </Grid>
+          </Button>
         </Grid>
+      </Grid>
+    )
+  }
+
+  contactForm() {
+    const { classes } = this.props;
+
+    return (
+      <Grid item xs={12} md={6}>
+          <Grid container direction="column"
+            alignItems="stretch"
+            justify="center"
+            style={{
+              maxWidth: "100%",
+              margin: "0 auto",
+              paddingLeft: 40,
+              paddingRight: 40
+            }}>
+            {this.contactHeadline()}
+            {this.contactTextField("Name", false)}
+            {this.contactTextField("Company", false)}
+            {this.contactTextField("Email", false)}
+            {this.contactTextField("Message", true)}
+            {this.contactButton()}
+          </Grid>
       </Grid>
     )
   };
 
   contactDetails() {
     return(
-      <Grid item xs={5}>
+
+      <Grid item xs={12} md={6}>
         <Grid container direction="column"
           alignItems="center"
           justify="center"
@@ -125,37 +145,55 @@ class Contact extends React.Component {
             maxWidth: "100%",
             margin: "0 auto"
           }}>
-          <Grid item xs={12}
-            style={{
-              marginLeft: 40
-            }}>
-            <Typography variant='body2'
-              align='left'
+          <Grid item xs={12}>
+            <Typography variant='subheading'
+              align='center'
               gutterBottom={true}
               style={{fontWeight: "bold"}}>
               <br/>
               <br/>
               Connect with us:
             </Typography>
-            <Typography variant='body1'
-              align='left'>
+            <Typography variant='subheading'
+              align='center'>
               Email us at support@heep.io
             </Typography>
             <br/>
             <br/>
-            <Typography variant='body1'
-              align='left'
+            <Typography variant='subheading'
+              align='center'
               style={{
                 fontWeight: "bold"
               }}>
               Heep Inc
             </Typography>
-            <Typography variant='body1' align='left'>
+            <Typography variant='subheading' align='center'>
               250 44th St, Suite 211 <br/>
               Brooklyn, New York 11232 <br/>
               (347) - 921 - 4337
             </Typography>
           </Grid>
+        </Grid>
+      </Grid>
+    )
+  }
+
+  mapSection() {
+    return (
+      <Grid container style={{
+        paddingTop: 40,
+      }}>
+        <Grid item xs={12}>
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d138871.76625127273!2d-74.15451278130566!3d40.70334362282912!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDDCsDM5JzA1LjUiTiA3NMKwMDAnNDQuNCJX!5e0!3m2!1sen!2sus!4v1524508764529"
+            frameBorder="0"
+            style={{border: 0,
+            width: "100%",
+            height: 400,
+            margin: 0
+          }}
+            allowFullScreen
+          />
         </Grid>
       </Grid>
     )
@@ -173,6 +211,7 @@ class Contact extends React.Component {
           {this.contactForm()}
           {this.contactDetails()}
         </Grid>
+        {this.mapSection()}
     </div>
     );
   }
