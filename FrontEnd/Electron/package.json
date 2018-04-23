@@ -15,8 +15,8 @@
   },
   "scripts": {
     "test": "mocha-webpack --webpack-config webpack.config-test.js \"src/**/*.test.js\"",
-    "build": "npm run overwrite-module-files && npm run copy-files && webpack --config webpack.production.js && webpack --config webpack.electron.js",
-    "buildfast": "npm run overwrite-module-files && npm run copy-files && webpack --config webpack.pseudoProduction.js && webpack --config webpack.electron.js",
+    "build": "sh GetDeviceBuilderExamples.sh && npm run overwrite-module-files && npm run copy-files && webpack --config webpack.production.js && webpack --config webpack.electron.js",
+    "buildfast": "sh GetDeviceBuilderExamples.sh && npm run overwrite-module-files && npm run copy-files && webpack --config webpack.pseudoProduction.js && webpack --config webpack.electron.js",
     "overwrite-module-files": "babel ./packageResources --out-dir ./node_modules/node-wifiscanner2/lib/ --copy-files",
     "dev": "sh GetDeviceBuilderExamples.sh && set NODE_ENV=development && babel-node devServer.js",
     "start": "electron .",
