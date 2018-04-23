@@ -1,10 +1,10 @@
-import ClimateSensorInoFile from '../../../../../Heep Product Demos/ClimateSensorGitRepo/ClimateSensor/ClimateSensor.ino'
-import CloseOpenSensorInoFile from '../../../../../Heep Product Demos/CloseOpenSensorGitRepo/CloseOpenSensor/CloseOpenSensor.ino'
-import EncoderInoFile from '../../../../../Heep Product Demos/EncoderReadGitRepo/Encoder/Encoder.ino'
-import PiezoBuzzerInoFile from '../../../../../Heep Product Demos/PiezoBuzzerGitRepo/PiezoBuzzer/PiezoBuzzer.ino'
-import PassiveIRInoFile from '../../../../../Heep Product Demos/PIRGitRepo/PassiveIR/PassiveIR.ino'
-import ServoInoFile from '../../../../../Heep Product Demos/ServoGitRepo/Servo/Servo.ino'
-import SoilSensorInoFile from '../../../../../Heep Product Demos/SoilSensorGitRepo/SoilHygrometer/SoilHygrometer.ino'
+import ClimateSensorInoFile from '../../DeviceBuilderExamples/ClimateSensor/ClimateSensor/ClimateSensor.ino'
+import CloseOpenSensorInoFile from '../../DeviceBuilderExamples/CloseOpenSensor/CloseOpenSensor/CloseOpenSensor.ino'
+import EncoderInoFile from '../../DeviceBuilderExamples/EncoderReader/Encoder/Encoder.ino'
+import PiezoBuzzerInoFile from '../../DeviceBuilderExamples/PiezoBuzzer/PiezoBuzzer/PiezoBuzzer.ino'
+import PassiveIRInoFile from '../../DeviceBuilderExamples/PassiveIRSensor/PassiveIR/PassiveIR.ino'
+import ServoInoFile from '../../DeviceBuilderExamples/ServoController/Servo/Servo.ino'
+import SoilSensorInoFile from '../../DeviceBuilderExamples/SoilHygrometer/SoilHygrometer/SoilHygrometer.ino'
 
 export const inoFiles = {
 	ClimateSensorFile : ClimateSensorInoFile,
