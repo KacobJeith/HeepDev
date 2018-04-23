@@ -47,6 +47,7 @@ class App extends React.Component {
 				    backgroundColor: 'white',
 				    marginTop: 64, 
 				    width:'100%',
+				    height: '100%',
 				    overflow: 'auto'
 				  }
 			}
