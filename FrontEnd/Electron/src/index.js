@@ -46,6 +46,7 @@ const startState = {
     selectedPlace: 'Enter New WiFi',
     ssid: '',
     ssidPassword: '',
+    applicationName: 'Custom',
     systemType: 'ESP8266',
     iconSelected: 1,
     selectingIcon: false,
