@@ -6,23 +6,37 @@ import PassiveIRInoFile from '../../DeviceBuilderExamples/PassiveIRSensor/Passiv
 import ServoInoFile from '../../DeviceBuilderExamples/ServoController/Servo/Servo.ino'
 import SoilSensorInoFile from '../../DeviceBuilderExamples/SoilHygrometer/SoilHygrometer/SoilHygrometer.ino'
 
-export const inoFiles = {
-	ClimateSensorFile : ClimateSensorInoFile,
-	CloseOpenSensorFile : CloseOpenSensorInoFile,
-	EncoderFile : EncoderInoFile,
-	PiezoBuzzerFile : PiezoBuzzerInoFile,
-	PassiveIRFile : PassiveIRInoFile,
-	ServoFile : ServoInoFile,
-	SoilSensorFile : SoilSensorInoFile
-}
-
-export const applicationNames = {
-	Custom : "Custom",
-	ClimateSensor : "Climate Sensor",
-	CloseOpenSensor : "Close Open Sensor",
-	Encoder : "Encoder",
-	PiezoBuzzer : "Piezo Buzzer",
-	PassiveIR : "Passive IR",
-	Servo: "Servo",
-	SoilSensor: "Soil Sensor"
+export const applications = {
+	Custom :  {
+		name: "Custom",
+		file: null
+	},
+	ClimateSensor : {
+		name: "Climate Sensor",
+		file: ClimateSensorInoFile
+	},
+	CloseOpenSensor : {
+		name: "Close Open Sensor",
+		file: CloseOpenSensorInoFile
+	},
+	Encoder : {
+		name: "Encoder",
+		file: EncoderInoFile
+	},
+	PiezoBuzzer : {
+		name: "Piezo Buzzer",
+		file: PiezoBuzzerInoFile
+	},
+	PassiveIR : {
+		name: "Passive IR",
+		file: PassiveIRInoFile
+	},
+	Servo : {
+		name: "Servo",
+		file: ServoInoFile
+	},
+	SoilSensor : {
+		name: "Soil Sensor",
+		file: SoilSensorInoFile
+	}
 }

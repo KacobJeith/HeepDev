@@ -19,7 +19,7 @@ import GenericTextInput from '../utilities/GenericTextInput'
 import IconSVGSelect from './IconSVGSelect'
 import {iconMappings} from '../../assets/svg/iconMappings'
 import AddPlaceModal from '../account/AddPlaceModal'
-import {applicationNames} from "../../assets/inoFiles"
+import {applications} from "../../assets/inoFiles"
 
 var mapStateToProps = (state, ownProps) => ({
   deviceName: state.designer.deviceName,
@@ -149,7 +149,7 @@ class DeviceIdentity extends React.Component {
         onChange={ (event) => {this.props.updateApplicationName(event.target.value)}}
         input={<Input name="type-helper" id="type-helper" />}
       >
-        {Object.keys(applicationNames).map((thisKey) => (
+        {Object.keys(applications).map((thisKey) => (
           <MenuItem value={thisKey} key={thisKey}>{thisKey}</MenuItem>
         ))}
       </Select>

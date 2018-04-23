@@ -4,7 +4,7 @@ import randomNumber from 'random-number-csprng'
 
 import { sys_phy_files } from './SystemPHYCompatibilities'
 
-import { inoFiles } from '../assets/inoFiles.js'
+import { applications } from '../assets/inoFiles.js'
 
 export const packageSourceFiles = (deviceDetails, controls) => {
 
@@ -70,7 +70,7 @@ const packageSimulationFiles = (deviceDetails, controls, zip) => {
 
 const getPreExistingInoFile = (deviceDetails) => {
 
-  return inoFiles[deviceDetails.applicationName + 'File'];
+  return applications[deviceDetails.applicationName].file;
 }
 
 const composeInoFile = (deviceDetails, controls) => {
