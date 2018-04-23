@@ -23,15 +23,6 @@ module.exports = merge(common, {
 
   plugins: [
     new webpack.HotModuleReplacementPlugin()
-  ],
-
-  module: {
-    rules: [
-      {
-        test: /\.(h|cpp|ino)$/,
-        use: 'raw-loader'
-      }
-    ]
-  }
+  ]
 
 });
