@@ -48,7 +48,7 @@ class Contact extends React.Component {
     return (
       <Grid item xs={12}>
         <Typography variant='headline' gutterBottom={true} align='left'>
-          Give Us A Shout
+          How can we help?
         </Typography>
         <Typography variant='subheading' align='left'>
           Fill out the form below and we'll get back to you.
