@@ -64,6 +64,9 @@ const startState = {
     currentlyConnecting: null,
     failedAttempt: null,
     deviceID: null
+  },
+  preferences: {
+    searchMode: 'broadcast'
   }
 }
 
@@ -97,6 +100,8 @@ var loadDevicesFromServer = (url) => {
 
   $.ajax({
     url: url,
+    type: 'POST',
+    data: {searchMode: 'broadcast'},
     cache: false,
     success: (data) => {
 

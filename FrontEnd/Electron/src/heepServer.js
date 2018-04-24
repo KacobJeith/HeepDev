@@ -33,13 +33,13 @@ app.use('/', expressStaticGzip(__dirname));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-app.get('/api/findDevices', function(req, res) {
+app.post('/api/findDevices', function(req, res) {
   let simulation = false;
 
   if (simulation) {
     res.json(simulationDevice.simulationDevice);
   } else {
-    heepConnect.SearchForHeepDevices();
+    heepConnect.SearchForHeepDevices(req.body.searchMode);
     res.json(heepConnect.GetCurrentMasterState());
   }
 
@@ -88,10 +88,10 @@ app.post('/api/resetDeviceWifi', (req, res) => {
 
 })
 
-app.get('/api/refreshLocalDeviceState', (req, res) => {
+app.post('/api/refreshLocalDeviceState', (req, res) => {
   console.log("Refreshing local device state")
   heepConnect.ResetDevicesActiveStatus();
-  heepConnect.SearchForHeepDevices();
+  heepConnect.SearchForHeepDevices(req.body.searchMode);
 
   setTimeout(() => {
     res.json(heepConnect.GetCurrentMasterState());
@@ -99,14 +99,14 @@ app.get('/api/refreshLocalDeviceState', (req, res) => {
 
 })
 
-app.get('/api/hardRefreshLocalDeviceState', (req, res) => {
+app.post('/api/hardRefreshLocalDeviceState', (req, res) => {
   hardResetState(req, res);
 })
 
 const hardResetState = (req, res, timeout = 2000) => {
   console.log("Refreshing local device state")
   heepConnect.ResetMasterState();
-  heepConnect.SearchForHeepDevices(0, (success) => {
+  heepConnect.SearchForHeepDevices(req.body.searchMode, 0, (success) => {
     console.log('Found Gateway, waiting ' + timeout + 'ms to reset state');
     setTimeout(() => {
       res.json(heepConnect.GetCurrentMasterState());
@@ -196,7 +196,7 @@ const connectToAccessPoint = function(req, res, successCallback, failureCallback
 const hardResetAP = function(res, ssid, success = true) {
 
   heepConnect.ResetMasterState();
-  heepConnect.SearchForHeepDevices();
+  heepConnect.SearchForHeepDevices(req.body.searchMode);
   setTimeout(() => {
     res.json({
       success: success,

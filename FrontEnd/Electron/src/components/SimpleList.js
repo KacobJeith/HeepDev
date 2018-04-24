@@ -9,7 +9,7 @@ import { withStyles } from 'material-ui/styles';
 import ListSubheader from 'material-ui/List/ListSubheader';
 import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
 import Collapse from 'material-ui/transitions/Collapse';
-import { Refresh, Build, TrackChanges, Home, ShowChart, DeleteSweep, ChildCare } from 'material-ui-icons';
+import { Refresh, Build, TrackChanges, Home, ShowChart, DeleteSweep, ChildCare, Settings } from 'material-ui-icons';
 
 import { Divider, Tooltip } from 'material-ui'
 
@@ -108,6 +108,15 @@ class NestedList extends React.Component {
     </ListItem>
   )
 
+  settings = () => (
+    <ListItem button onClick={ () => this.props.setSearchMode()}>
+      <ListItemIcon>
+        <Settings />
+      </ListItemIcon>
+      <ListItemText inset primary="Settings" />
+    </ListItem>
+  )
+
   accessibilityMode = () => (
 
     <NavLink to="/AccessPoints" style={{
@@ -121,8 +130,6 @@ class NestedList extends React.Component {
         <ListItemText inset primary="New Device" />
       </ListItem>
     </NavLink>
-
-    
   )
 
   render() {
@@ -141,6 +148,8 @@ class NestedList extends React.Component {
           {this.liveModeToggle()}
           {this.refreshFlowchart()}
           {this.hardRefresh()}
+          <Divider/>
+          {this.settings()}
 
         </List>
       </div>

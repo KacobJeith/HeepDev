@@ -25,7 +25,7 @@ var heepPort = 5000;
 var searchComplete = false;
 var mostRecentSearch = {};
 
-export var SearchForHeepDevices = (numTimesTried = 0, callback = () => {}) => {
+export var SearchForHeepDevices = (searchMode = 'broadcast', numTimesTried = 0, callback = () => {}) => {
   var gateway = findGateway();
   var searchBuffer = Buffer.from([0x09, 0x00])
 
@@ -33,7 +33,12 @@ export var SearchForHeepDevices = (numTimesTried = 0, callback = () => {}) => {
 
   if (gateway != undefined) {
     callback(true);
-    PerformUnicastSearch(gateway, searchBuffer);
+    if (searchMode == 'broadcast') {
+      PerformBroadcastSearch(gateway, searchBuffer);
+    } else if (searchMode == 'unicast') {
+      PerformUnicastSearch(gateway, searchBuffer);
+    }
+    
 
   } else {
     if (numTimesTried < 5) {

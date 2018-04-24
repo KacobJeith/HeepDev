@@ -67,19 +67,19 @@ export var sendDeleteVertexToServer = (vertex) => {
 
 }
 
-export var refreshLocalDeviceState = () => {
+export var refreshLocalDeviceState = (searchMode) => {
   var url = urlPrefix.concat('/api/refreshLocalDeviceState');
 
-  performAJAX(url, {}, 'GET', (data) => {
+  performAJAX(url, {searchMode: searchMode}, 'POST', (data) => {
     
     setup.store.dispatch(actions_classic.overwriteFromServer(data));
   })
 }
 
-export var hardRefreshLocalDeviceState = () => {
+export var hardRefreshLocalDeviceState = (searchMode) => {
   var url = urlPrefix.concat('/api/hardRefreshLocalDeviceState');
 
-  performAJAX(url, {}, 'GET', (data) => {
+  performAJAX(url, {searchMode: searchMode}, 'POST', (data) => {
     
     setup.store.dispatch(actions_classic.overwriteFromServer(data));
   })
@@ -135,7 +135,7 @@ export const connectToAccessPoint = (ssid) => {
 
 }
 
-export const resetDeviceAndOSWifi = (deviceID) => {
+export const resetDeviceAndOSWifi = (deviceID, searchMode) => {
 
   const accessData = {
     connectedTo: null,
@@ -149,7 +149,7 @@ export const resetDeviceAndOSWifi = (deviceID) => {
   
   var url = urlPrefix.concat('/api/resetDeviceAndOSWifi');
 
-  performAJAX(url, {deviceID: deviceID}, 'POST', (response) => {
+  performAJAX(url, {deviceID: deviceID, searchMode: searchMode}, 'POST', (response) => {
 
     setup.store.dispatch(actions_classic.overwriteFromServer(response));    
     
