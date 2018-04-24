@@ -436,7 +436,6 @@ class MenuAppBar extends React.Component {
             {this.appBarLink("/", "Home")}
             {this.appBarLink("/IndustrialHeep", "Industry")}
             {this.appBarLink("/About", "About")}
-            {this.appBarLink("/Contact", "Contact")}
             {this.appBarLink("/Shop", "Shop")}
 {/*             {this.appBarLink("/Developers", "Develop")} */}
             {this.appBarCart()}

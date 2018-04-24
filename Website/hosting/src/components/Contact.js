@@ -17,42 +17,6 @@ const styles = theme => ({
 
 class Contact extends React.Component {
 
-  headerSection() {
-    const inputs = {
-      paddingBottom: 25,
-    };
-
-    return (
-      SectionCard(inputs,
-        <Grid container style={{
-          maxWidth:'100%',
-          margin: '0 auto',
-          backgroundColor: '#B0BEC5',
-          paddingTop: 25,
-          paddingBottom: 25,
-         }}
-         justify='center' alignItems='center'>
-          <Grid item  xs={10} md={8}>
-            <Typography variant='headline' align='center'>
-              Our Mission
-            </Typography>
-            <br/>
-            <Typography variant='subheading' align='center' gutterBottom paragraph>
-              Heep leverages connectedness to empower people to be more productive,
-              make better decisions,
-              and enjoy a better quality of life.
-            </Typography>
-            <Typography variant='subheading' align='center' paragraph>
-              The Heep platform makes connectivity the simplest and most secure way to design any product.
-              By reimagining IoT as a critical infrastructure rather than an add-on luxury,
-              Heep is able to deliver a scalable and intuitive experience at a fraction of the cost.
-            </Typography>
-          </Grid>
-        </Grid>
-      )
-    )
-  }
-
   contactTextField(label, multiline=false) {
     const inputs = {
       textField: {
@@ -203,10 +167,10 @@ class Contact extends React.Component {
   render() {
     return(
       <div>
-        {this.headerSection()}
         <Grid container style={{
           margin: "0 auto",
-          maxWidth: "100%"
+          maxWidth: "100%",
+          paddingTop: 40
         }}>
           {this.contactForm()}
           {this.contactDetails()}
