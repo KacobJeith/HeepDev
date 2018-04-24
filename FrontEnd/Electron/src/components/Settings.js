@@ -50,8 +50,23 @@ class Settings extends React.Component {
     }
 
     return (
-      <div style={{margin: 0, padding:0, maxWidth: '100%', height: '100%', overflow: 'auto', overflowX: 'hidden', backgroundColor: '#e7e7e7'}}>
-        <Grid container direction='row' justify='center' alignItems='center' spacing={24} style={{marginTop: 24}}>
+      <div style={{
+        margin: 0, 
+        padding:0, 
+        maxWidth: '100%', 
+        height: '100%', 
+        overflow: 'auto', 
+        overflowX: 'hidden', 
+        backgroundColor: '#e7e7e7'
+      }}>
+        <Grid 
+          container 
+          direction='row' 
+          justify='center' 
+          alignItems='center' 
+          spacing={24} 
+          style={{marginTop: 24}}
+        >
           <Grid item xs={12}>
             {this.title()}
           </Grid>
