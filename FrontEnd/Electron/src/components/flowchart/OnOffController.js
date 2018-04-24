@@ -35,7 +35,7 @@ class OnOffController extends React.Component {
 		};
 
 		return  (
-			<IconButton onClick={() => this.sendCommand()} style={{maxWidth:'100%', height: 35}}>
+			<IconButton onClick={() => this.sendCommand()} style={{maxWidth:'100%', height: 30, width: 30}}>
 				<PowerSettingsNew {...inputs.buttonIcon}/>
 			</IconButton>
 		)

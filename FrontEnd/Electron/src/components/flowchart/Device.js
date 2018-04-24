@@ -70,14 +70,16 @@ class Device extends React.Component {
       buttonContainer: {
         style: {
           position: 'absolute',
-          top: 2,
-          right: 0
+          top: 11,
+          right: 5
         }
       },
       infoButton: {
   			style: {
           // fontSize: 5,
           padding: 0,
+          height: 30,
+          width: 30
         },
         // size: 'xsmall',
         // disableRipple: true,
@@ -90,6 +92,8 @@ class Device extends React.Component {
         style: {
           // fontSize: 5
           padding: 0,
+          height: 30,
+          width: 30
         },
         // size: 'xsmall',
         // disableRipple: true,
@@ -104,10 +108,10 @@ class Device extends React.Component {
   			<Grid container justify='flex-end' spacing={0}>
           <Grid item xs={12}>
             <IconButton {...inputs.collapseButton}>
-    					<KeyboardArrowDown mini={true}/>
+    					<KeyboardArrowDown/>
     				</IconButton>
             <IconButton {...inputs.infoButton}>
-    					<InfoOutline mini={true}/>
+    					<InfoOutline/>
     				</IconButton>
           </Grid>
   			</Grid>
@@ -158,27 +162,32 @@ class Device extends React.Component {
 							</Grid>
 						</Grid>
 
-						<Grid item style={{paddingRight:0, paddingLeft:0 }}>
-							<Grid container direction='row' justify='space-around' alignItems='stretch' spacing={0} >
-								<Grid item xs={4} style={{margin:0}}>
-									{this.drawControls(this.props.controlInputs)}
-								</Grid>
+  						<Grid item style={{
+                paddingRight:0,
+                paddingLeft:0,
+                display: this.props.collapsed ? "none" : "visible"}}>
+                {/* <Collapse in={!this.props.collapsed} timeout="auto" unmountOnExit> */}
+  							<Grid container direction='row' justify='space-around' alignItems='stretch' spacing={0} >
+  								<Grid item xs={4} style={{margin:0}}>
+  									{this.drawControls(this.props.controlInputs)}
+  								</Grid>
 
-								<Grid item xs={4} style={{margin:0}}>
-									<Grid container alignItems='center' spacing={0} style={{height:'100%', margin: 0, padding: 0}}>
-										<Grid item xs={12}>
-											{this.drawDeviceIcon()}
-										</Grid>
-									</Grid>
-								</Grid>
+  								<Grid item xs={4} style={{margin:0}}>
+  									<Grid container alignItems='center' spacing={0} style={{height:'100%', margin: 0, padding: 0}}>
+  										<Grid item xs={12}>
+  											{this.drawDeviceIcon()}
+  										</Grid>
+  									</Grid>
+  								</Grid>
 
-								<Grid item xs={4} style={{margin:0, padding: 0}}>
-									{this.drawControls(this.props.controlOutputs)}
-								</Grid>
+  								<Grid item xs={4} style={{margin:0, padding: 0}}>
+  									{this.drawControls(this.props.controlOutputs)}
+  								</Grid>
 
-							</Grid>
+  							</Grid>
+                {/* </Collapse> */}
+  						</Grid>
 
-						</Grid>
 					</Grid>
         </div>
 			);
