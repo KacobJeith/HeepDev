@@ -33,22 +33,41 @@ export var SearchForHeepDevices = (numTimesTried = 0, callback = () => {}) => {
 
   if (gateway != undefined) {
     callback(true);
-    var client = dgram.createSocket("udp4");
-    client.bind(function(err, bytes){
-        console.log("Set Broadcast");
-        client.setBroadcast(true);
-        var address = generalUtils.joinAddress(gateway,255)
-        client.send(searchBuffer, 5000, address, function(err, bytes) {
-            console.log("Broadcast sent");
-            client.close();
-        });
-      });
+    PerformUnicastSearch(gateway, searchBuffer);
+
   } else {
     if (numTimesTried < 5) {
       setTimeout(() => SearchForHeepDevices(numTimesTried + 1, callback), 1000)
     }
   }
-  
+}
+
+const PerformBroadcastSearch = (gateway, searchBuffer) => {
+
+  var client = dgram.createSocket("udp4");
+  client.bind(function(err, bytes){
+    console.log("Set Broadcast");
+    client.setBroadcast(true);
+    const address = generalUtils.joinAddress(gateway,255)
+    client.send(searchBuffer, 5000, address, function(err, bytes) {
+        console.log("Broadcast sent");
+        client.close();
+    });
+  });
+}
+
+const PerformUnicastSearch = (gateway, searchBuffer) => {
+  console.log('Searching using Unicast Loop');
+  for (var i = 0; i < 255; i++) {
+
+    const client = dgram.createSocket("udp4");
+    const IPAddress = generalUtils.joinAddress(gateway, i)
+    // client.bind(function(err, bytes){
+      client.send(searchBuffer, heepPort, IPAddress, (err) => {
+        client.close();
+      });
+    // });
+  }
 }
 
 export var GetCurrentMasterState = () => {
