@@ -7,14 +7,12 @@ import Control from './Controls';
 import DynamicIcon from './DynamicIcon';
 import { Paper, Button, Typography, Grid, IconButton, Collapse } from 'material-ui'
 import { withTheme } from 'material-ui/styles'
-import { InfoOutline } from 'material-ui-icons'
-
-
+import { InfoOutline, KeyboardArrowDown } from 'material-ui-icons'
 
 var mapStateToProps = (state, ownProps) => ({
   device: state.devices[ownProps.DeviceID],
   deviceID: ownProps.DeviceID,
-  collapsed: state.flowchart.devices[ownProps.DeviceID].collapsed,
+  collapsed: state.flowchart.devices[ownProps.DeviceID] ? state.flowchart.devices[ownProps.DeviceID].collapsed : false,
   controlInputs: state.controls.controlStructure[ownProps.DeviceID].inputs,
   controlOutputs: state.controls.controlStructure[ownProps.DeviceID].outputs,
   detailsPanelDeviceID: state.detailsPanelDeviceID
@@ -73,18 +71,28 @@ class Device extends React.Component {
         style: {
           position: 'absolute',
           top: 2,
-          right: 2
+          right: 0
         }
       },
       infoButton: {
-  			size: 'small',
+  			style: {
+          // fontSize: 5,
+          padding: 0,
+        },
+        // size: 'xsmall',
+        // disableRipple: true,
   			color: this.props.detailsPanelDeviceID == this.props.device.deviceID ? 'secondary' : 'default',
   			onClick: () => this.props.detailsPanelDeviceID == this.props.device.deviceID ?
   							this.props.setDetailsPanelDeviceID(null) :
   							this.props.setDetailsPanelDeviceID(this.props.device.deviceID)
 			},
       collapseButton: {
-        size: 'small',
+        style: {
+          // fontSize: 5
+          padding: 0,
+        },
+        // size: 'xsmall',
+        // disableRipple: true,
   			color:  this.props.collapsed ? 'secondary' : 'default',
   			onClick: () => this.props.collapseDevice(this.props.deviceID)
       }
@@ -93,10 +101,15 @@ class Device extends React.Component {
 
 		return (
       <div {...inputs.buttonContainer}>
-  			<Grid container {...inputs.buttonContainer} justify='flex-end'>
-  				<IconButton {...inputs.infoButton}>
-  					<InfoOutline/>
-  				</IconButton>
+  			<Grid container justify='flex-end' spacing={0}>
+          <Grid item xs={12}>
+            <IconButton {...inputs.collapseButton}>
+    					<KeyboardArrowDown mini={true}/>
+    				</IconButton>
+            <IconButton {...inputs.infoButton}>
+    					<InfoOutline mini={true}/>
+    				</IconButton>
+          </Grid>
   			</Grid>
       </div>
 
