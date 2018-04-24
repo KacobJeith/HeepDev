@@ -15,6 +15,11 @@ export const updateVertex = () => ({
   type: 'UPDATE_VERTEX'
 })
 
+export const collapseDevice = (deviceID) => ({
+  type: 'COLLAPSE_DEVICE',
+  deviceID
+})
+
 //Icons
 export const addIcon = (deviceID, icon) => ({
   type: 'ADD_ICON',

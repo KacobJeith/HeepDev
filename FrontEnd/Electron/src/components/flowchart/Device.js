@@ -5,7 +5,7 @@ import * as Actions from '../../redux/actions_classic'
 import * as newActions from '../../redux/actions'
 import Control from './Controls';
 import DynamicIcon from './DynamicIcon';
-import { Paper, Button, Typography, Grid, IconButton } from 'material-ui'
+import { Paper, Button, Typography, Grid, IconButton, Collapse } from 'material-ui'
 import { withTheme } from 'material-ui/styles'
 import { InfoOutline } from 'material-ui-icons'
 
@@ -13,8 +13,10 @@ import { InfoOutline } from 'material-ui-icons'
 
 var mapStateToProps = (state, ownProps) => ({
   device: state.devices[ownProps.DeviceID],
-  controlInputs: state.controls.controlStructure[ownProps.DeviceID]['inputs'],
-  controlOutputs: state.controls.controlStructure[ownProps.DeviceID]['outputs'],
+  deviceID: ownProps.DeviceID,
+  collapsed: state.flowchart.devices[ownProps.DeviceID].collapsed,
+  controlInputs: state.controls.controlStructure[ownProps.DeviceID].inputs,
+  controlOutputs: state.controls.controlStructure[ownProps.DeviceID].outputs,
   detailsPanelDeviceID: state.detailsPanelDeviceID
 })
 
@@ -74,20 +76,25 @@ class Device extends React.Component {
           right: 2
         }
       },
-      button: {
+      infoButton: {
   			size: 'small',
   			color: this.props.detailsPanelDeviceID == this.props.device.deviceID ? 'secondary' : 'default',
   			onClick: () => this.props.detailsPanelDeviceID == this.props.device.deviceID ?
   							this.props.setDetailsPanelDeviceID(null) :
   							this.props.setDetailsPanelDeviceID(this.props.device.deviceID)
-  			}
+			},
+      collapseButton: {
+        size: 'small',
+  			color:  this.props.collapsed ? 'secondary' : 'default',
+  			onClick: () => this.props.collapseDevice(this.props.deviceID)
+      }
     }
 
 
 		return (
       <div {...inputs.buttonContainer}>
   			<Grid container {...inputs.buttonContainer} justify='flex-end'>
-  				<IconButton {...inputs.button}>
+  				<IconButton {...inputs.infoButton}>
   					<InfoOutline/>
   				</IconButton>
   			</Grid>

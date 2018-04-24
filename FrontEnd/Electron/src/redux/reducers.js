@@ -358,7 +358,7 @@ export default function(state = initialState, action) {
 
       return state
 
-    case 'RESET_DEVICE_WIFI': 
+    case 'RESET_DEVICE_WIFI':
 
       async.resetDeviceWifi(action.deviceID);
 
@@ -396,6 +396,15 @@ export default function(state = initialState, action) {
         return Immutable.fromJS(state).setIn(['flowchart', 'scale'], state.flowchart.scale + 0.1).toJS()
       }
 
+    case 'COLLAPSE_DEVICE':
+      if (state.flowchart.devices[action.deviceID] == undefined) {
+        var newState = Immutable.Map(state.flowchart.devices).toJS();
+        newState[action.deviceID] = initialDeviceFlowchartState()
+        return Immutable.fromJS(state).setIn(['flowchart', 'devices'], newState).toJS()
+      } else {
+        return Immutable.fromJS(state).setIn(['flowchart', 'devices', action.deviceID, 'collapsed'], !state.flowchart.devices[action.deviceID].collapsed).toJS()
+      }
+
     default:
       console.log('Passed through first Switch');
   }
@@ -410,3 +419,7 @@ export default function(state = initialState, action) {
   return state
 
 }
+
+const initialDeviceFlowchartState = () => ({
+    collapsed: true,
+})
