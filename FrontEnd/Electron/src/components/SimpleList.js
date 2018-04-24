@@ -109,12 +109,17 @@ class NestedList extends React.Component {
   )
 
   settings = () => (
-    <ListItem button onClick={ () => this.props.setSearchMode()}>
-      <ListItemIcon>
-        <Settings />
-      </ListItemIcon>
-      <ListItemText inset primary="Settings" />
-    </ListItem>
+    <NavLink to="/Settings" style={{
+      textDecoration: 'none',
+      outline: 'none'
+    }}>
+      <ListItem button>
+        <ListItemIcon>
+          <Settings />
+        </ListItemIcon>
+        <ListItemText inset primary="Settings" />
+      </ListItem>
+    </NavLink>
   )
 
   accessibilityMode = () => (
@@ -144,12 +149,12 @@ class NestedList extends React.Component {
           {this.deviceBuilder()}
           {this.analyticsNav()}
           {this.accessibilityMode()}
+          {this.settings()}
           <Divider/>
           {this.liveModeToggle()}
           {this.refreshFlowchart()}
           {this.hardRefresh()}
-          <Divider/>
-          {this.settings()}
+
 
         </List>
       </div>

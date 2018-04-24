@@ -14,6 +14,7 @@ import Designer from './designer/DeviceBuilder'
 import Flowchart from './flowchart/Flowchart'
 // import Analytics from './Analytics/AnalyticsMain'
 import SearchAccessPointsForm from './SearchAccessPointsForm'
+import Settings from './Settings'
 
 import Theme from './Theme'
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
@@ -47,7 +48,6 @@ class App extends React.Component {
 				    backgroundColor: 'white',
 				    marginTop: 64, 
 				    width:'100%',
-				    height: '100%',
 				    overflow: 'auto'
 				  }
 			}
@@ -67,6 +67,7 @@ class App extends React.Component {
 						<div {...inputs.content} >
 							<Route exact path="/" component={Flowchart} key="Flow"/>
 							<Route path="/Classic" component={Flowchart} key="Flowchart"/>
+							<Route path="/Settings" component={Settings} key="Settings"/>
 							<Route path="/Designer" component={Designer} key="Designer"/>
 							<Route exact path="/auth" component={Auth}/>
 							<Route path="/Analytics/:deviceID?" component={Analytics} key="Analytics"/>
