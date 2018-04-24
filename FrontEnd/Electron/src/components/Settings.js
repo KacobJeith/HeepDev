@@ -33,7 +33,7 @@ class Settings extends React.Component {
             <MenuItem value={'broadcast'}>Broadcast</MenuItem>
             <MenuItem value={'unicast'}>Unicast</MenuItem>
           </Select>
-          <FormHelperText>The method used to discover Heep Devices</FormHelperText>
+          <FormHelperText>The method used to discover Heep Devices on your local network</FormHelperText>
         </FormControl>
       </Paper>
     )
