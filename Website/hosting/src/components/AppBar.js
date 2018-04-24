@@ -433,10 +433,11 @@ class MenuAppBar extends React.Component {
             </Hidden>
             {this.mobileAppBarLogo()}
             <div className={classes.flex}/>
-            {this.appBarLink("/", "Home")}
-            {this.appBarLink("/IndustrialHeep", "Industry")}
-            {this.appBarLink("/About", "About")}
-            {this.appBarLink("/Shop", "Shop")}
+            {this.appBarLink("/", "HOME")}
+            {this.appBarLink("/IndustrialHeep", "INDUSTRY")}
+            {this.appBarLink("/About", "ABOUT")}
+            {this.appBarLink("/Contact", "CONTACT")}
+            {this.appBarLink("/Shop", "SHOP")}
 {/*             {this.appBarLink("/Developers", "Develop")} */}
             {this.appBarCart()}
 {/*             {this.avatarLogin()} */}
