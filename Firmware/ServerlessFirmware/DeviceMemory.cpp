@@ -665,6 +665,11 @@ void ImmediatelyClearAllOfMOP(heepByte inputMOP)
 	DefragmentMemory();
 }
 
+int GetNumBytesToReadForMOP(unsigned int pointer)
+{
+	return deviceMemory[pointer + ID_SIZE + 1];
+}
+
 heepByte GetMOPPointer(heepByte MOP, unsigned int *pointer, unsigned int *counter)
 {
 	while(*counter < curFilledMemory)
@@ -709,7 +714,19 @@ heepByte GetUserMOP(heepByte userMOPNumber, heepByte* buffer)
 	if(MOPNumber > USER_MOP_END_ID) // Outside of User MOP Zone. Return error
 		return 1;
 
+	unsigned int pointer = 0;
+	unsigned int counter = 0;
 
+	if(GetMOPPointer(MOPNumber, &pointer, &counter) == 1) // Failed to find MOP
+		return 1;
+
+	// Get Num Bytes to Read
+	int numBytes = GetNumBytesToReadForMOP(pointer);
+
+	unsigned int bufferCounter = 0;
+	unsigned int deviceMemCounter = pointer + ID_SIZE + 1;
+
+	AddBufferToBuffer(buffer, deviceMemory, numBytes, &bufferCounter, &deviceMemCounter);
 
 	return 0;
 }

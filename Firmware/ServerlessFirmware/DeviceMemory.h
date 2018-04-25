@@ -57,6 +57,7 @@ extern unsigned char memoryChanged;
 
 extern unsigned char controlRegister;
 
+int GetNumBytesToReadForMOP(unsigned int pointer);
 heepByte GetMOPPointer(heepByte MOP, unsigned int *pointer, unsigned int *counter);
 
 heepByte AddUserMOP(heepByte userMOPNumber, heepByte* buffer, int bufferLength);
