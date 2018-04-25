@@ -60,7 +60,7 @@ extern unsigned char controlRegister;
 int GetNumBytesToReadForMOP(unsigned int pointer);
 heepByte GetMOPPointer(heepByte MOP, unsigned int *pointer, unsigned int *counter);
 
-heepByte AddUserMOP(heepByte userMOPNumber, heepByte* buffer, int bufferLength);
+heepByte AddUserMOP(heepByte userMOPNumber, heepByte* buffer, int bufferLength, heepByte* deviceID);
 heepByte GetUserMOP(heepByte userMOPNumber, heepByte* buffer);
 
 void PerformPreOpCodeProcessing_Byte(heepByte* deviceID);

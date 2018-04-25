@@ -1494,6 +1494,38 @@ void TestAnalyticsMOPTimeGetter()
 #endif
 }
 
+void TestUserMOP()
+{
+	std::string TestName = "Test User MOP Adding";
+
+	ClearDeviceMemory();
+
+	cout << "USER MOP" << endl;
+	PrintDeviceMemory();
+
+	heepByte deviceID1[STANDARD_ID_SIZE];
+	CreateFakeDeviceID(deviceID1);
+	
+	int bufLen = 5;
+	heepByte myBuffer [] = {'H', 'E', 'L', 'L', 'O'};
+	heepByte newBuffer[10];
+	cout << (int)AddUserMOP(0, myBuffer, bufLen, deviceID1) << endl;
+	GetUserMOP(0, newBuffer);
+
+	PrintDeviceMemory();
+
+	// ExpectedValue valueList [2];
+	// valueList[0].valueName = "MOP 1 Time";
+	// valueList[0].expectedValue = 100;
+	// valueList[0].actualValue = GetTimeFromAnalyticsMOP(firstAnalyticsMOP);
+
+	// valueList[1].valueName = "MOP 2 Time";
+	// valueList[1].expectedValue = 2315232;
+	// valueList[1].actualValue = GetTimeFromAnalyticsMOP(secondAnalyticsMOP);
+
+	// CheckResults(TestName, valueList, 2);
+}
+
 void TestDynamicMemory()
 {	
 	TestAddIPToDeviceMemory();
@@ -1531,4 +1563,5 @@ void TestDynamicMemory()
  	TestWiFiReplacement();
  	TestAnalyticsMOPQueue();
  	TestAnalyticsMOPTimeGetter();
+ 	TestUserMOP();
 }

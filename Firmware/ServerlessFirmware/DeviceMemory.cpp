@@ -690,7 +690,7 @@ heepByte GetMOPPointer(heepByte MOP, unsigned int *pointer, unsigned int *counte
 	return 1;
 }
 
-heepByte AddUserMOP(heepByte userMOPNumber, heepByte* buffer, int bufferLength)
+heepByte AddUserMOP(heepByte userMOPNumber, heepByte* buffer, int bufferLength, heepByte* deviceID)
 {
 	heepByte MOPNumber = userMOPNumber + USER_MOP_START_ID;
 
@@ -699,6 +699,12 @@ heepByte AddUserMOP(heepByte userMOPNumber, heepByte* buffer, int bufferLength)
 
 	if(WillMemoryOverflow( 1 + ID_SIZE + 1 + bufferLength)) // Memory will overflow, so return error
 		return 1;
+
+	PerformPreOpCodeProcessing_Byte(deviceID);
+
+	AddNewCharToMemory(MOPNumber);
+	AddIndexOrDeviceIDToMemory_Byte(deviceID);
+	AddNewCharToMemory((char)bufferLength);
 
 	unsigned int transmittingBufferCounter = 0;
 	unsigned int receivingBufferCounter = curFilledMemory;
