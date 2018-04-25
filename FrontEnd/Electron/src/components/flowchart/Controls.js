@@ -9,10 +9,11 @@ import * as Utils from '../../serverside/utilities/generalUtilities'
 
 var mapStateToProps = (state, ownProps) => ({
   control: state.controls[ownProps.controlID],
+  collapsed: state.flowchart.devices[ownProps.DeviceID] ? state.flowchart.devices[ownProps.DeviceID].collapsed : false,
   deviceID: ownProps.deviceID,
   controlID: ownProps.controlID,
-  value: state.controls[ownProps.controlID]['valueCurrent'],
-  ip: state.devices[ownProps.deviceID]['ipAddress']
+  value: state.controls[ownProps.controlID].valueCurrent,
+  ip: state.devices[ownProps.deviceID].ipAddress
 })
 
 

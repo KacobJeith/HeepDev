@@ -69,15 +69,21 @@ class Device extends React.Component {
   animateCollapse() {
     const deviceDetails = document.getElementById(this.props.deviceID+'_details')
 
+    function updatingVertex() {
+      this.props.updateVertex()
+    }
+
     //setTimeout(this.props.updateVertex(), 500)
 
     if (this.props.collapsed) {
-      TweenLite.to(deviceDetails, 1, {opacity: 1}).delay(0.3)
+      TweenLite.to(deviceDetails, 1, {opacity: 1, onComplete: updatingVertex.bind(this)}).delay(0.3)
       this.props.collapseDevice(this.props.deviceID)
+      setTimeout(updatingVertex.bind(this), 300)
 
     } else {
       this.props.collapseDevice(this.props.deviceID)
       TweenLite.to(deviceDetails, 0.01, {opacity: 0}, 2)
+      setTimeout(updatingVertex.bind(this), 300)
     }
   }
 
