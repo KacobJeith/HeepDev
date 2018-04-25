@@ -12,6 +12,9 @@ import { founders } from '../../assets/remote/Founders'
 import { banners } from '../../assets/remote/Banners'
 import { svgs } from '../../assets/remote/SVGs'
 
+const titleVariant = 'display1';
+const titleAlign = 'center';
+
 class IIOT extends React.Component {
 
   topBanner() {
@@ -32,7 +35,7 @@ class IIOT extends React.Component {
           margin: '0 auto'
         }}>
           <Grid item xs={12} sm={8}>
-            <Typography variant='display1' align='center' style={{color:'white'}}>
+            <Typography variant={titleVariant} align={titleAlign} style={{color:'white'}}>
               Leverage Embedded Insights 
             </Typography>
           </Grid>
@@ -42,17 +45,18 @@ class IIOT extends React.Component {
               By embedding intelligence throughout your process, 
               you can unlock higher yields, more secure operation, and competitive advantages for your business.
             </Typography>
+
           </Grid>
         </Grid>
       )
     )
   };
 
-  mission() {
+  security(imageSide) {
     const inputs = {
-      imageSide: 'left', 
+      imageSide: imageSide, 
       minHeight: 400,
-      imagePath: 'https://user-images.githubusercontent.com/3604149/38447851-16ac9844-39ce-11e8-9fc3-1963cea40556.gif'
+      imagePath: 'https://ujg433eawlo3i4uqknhm8e1b-wpengine.netdna-ssl.com/wp-content/uploads/2016/11/iot-security-attacks.jpg'
     };
 
     return (
@@ -63,29 +67,27 @@ class IIOT extends React.Component {
          }}
          justify='center' alignItems='center'>
           <Grid item  xs={12} md={8}>
-            <Typography variant='headline' align='center'>
+            <Typography variant={titleVariant} align={titleAlign}>
               Secure
             </Typography>
             <br/>
-            <Typography variant='subheading' align='center' gutterBottom paragraph>
-              Heep leverages connectedness to empower people to be more productive, 
-              make better decisions, 
-              and enjoy a better quality of life. 
+            <Typography variant='subheading' align='left' gutterBottom paragraph>
+              <ul>
+                <li>No cloud dependence</li>
+                <li>Encrypted communications</li>
+                <li>Protect legacy systems with Two-Factor Authentication</li>
+              </ul>
             </Typography>
-            <Typography variant='subheading' align='center' paragraph>
-              The Heep platform makes connectivity the simplest and most secure way to design any product. 
-              By reimagining IoT as a critical infrastructure rather than an add-on luxury, 
-              Heep is able to deliver a scalable and intuitive experience at a fraction of the cost.
-            </Typography>
+
           </Grid>
         </Grid>
       )
     );
   };
 
-  interoperability() {
+  insights(imageSide) {
     const inputs = {
-      imageSide: 'right', 
+      imageSide: imageSide, 
       minHeight: 400,
       imagePath: 'https://user-images.githubusercontent.com/3604149/38447851-16ac9844-39ce-11e8-9fc3-1963cea40556.gif'
     };
@@ -98,8 +100,16 @@ class IIOT extends React.Component {
          }}
          justify='center' alignItems='center'>
           <Grid item  xs={12} md={8}>
-            <Typography variant='headline' align='center'>
-              Interoperability
+            <Typography variant={titleVariant} align={titleAlign}>
+              Collect Actionable Insights
+            </Typography>
+
+            <Typography variant='subheading' align='left' gutterBottom paragraph>
+              <ul>
+                <li>Optimizes your technology investment for data collection, not infrastructure overhead</li> 
+                <li>More actionable insights, less wasted overhead</li>
+                <li>Become NIST SP 800-171 compliant with 100% asset utilization tracking coverage</li>
+              </ul>
             </Typography>
 
           </Grid>
@@ -108,9 +118,42 @@ class IIOT extends React.Component {
     );
   };
 
-  controlSystem() {
+  interoperability(imageSide) {
     const inputs = {
-      imageSide: 'left', 
+      imageSide: imageSide, 
+      minHeight: 400,
+      imagePath: 'https://user-images.githubusercontent.com/3604149/38447851-16ac9844-39ce-11e8-9fc3-1963cea40556.gif'
+    };
+
+    return (
+      SplitSectionCard(inputs,
+        <Grid container style={{
+          maxWidth:'100%',
+          margin: '0 auto'
+         }}
+         justify='center' alignItems='center'>
+          <Grid item  xs={12} md={8}>
+            <Typography variant={titleVariant} align={titleAlign}>
+              Interoperability
+            </Typography>
+
+             <Typography variant='subheading' align='left' gutterBottom paragraph>
+              <ul>
+                <li>Optimizes your technology investment for data collection, not infrastructure overhead</li> 
+                <li>More actionable insights, less wasted overhead</li>
+                <li>Become NIST SP 800-171 compliant with 100% asset utilization tracking coverage</li>
+              </ul>
+            </Typography>
+
+          </Grid>
+        </Grid>
+      )
+    );
+  };
+
+  controlSystem(imageSide) {
+    const inputs = {
+      imageSide: imageSide, 
       minHeight: 400,
       imagePath: 'http://www.tdworld.com/sites/tdworld.com/files/distributed-network-MickeyCZ.jpg'
     };
@@ -123,7 +166,7 @@ class IIOT extends React.Component {
          }}
          justify='center' alignItems='center'>
           <Grid item  xs={12} md={8}>
-            <Typography variant='headline' align='center'>
+            <Typography variant={titleVariant} align={titleAlign} paragraph>
               Design Powerful Robust Control Systems
             </Typography>
             
@@ -133,26 +176,29 @@ class IIOT extends React.Component {
     );
   };
 
-  ourValues() {
+  simplicity(imageSide) {
     const inputs = {
-      paddingTop: 25,
-      paddingBottom: 25,
+      imageSide: imageSide, 
+      minHeight: 400,
+      imagePath: 'http://www.tdworld.com/sites/tdworld.com/files/distributed-network-MickeyCZ.jpg'
     };
 
     return (
-      SectionCard(inputs,
+      SplitSectionCard(inputs,
         <Grid container style={{
           maxWidth:'100%',
           margin: '0 auto'
          }}
          justify='center' alignItems='center'>
           <Grid item  xs={12} md={8}>
-            <Typography variant='headline' align='center'>
-              Our Values
+            <Typography variant={titleVariant} align={titleAlign} paragraph>
+              Simple Integration
             </Typography>
-            <br/>
-            <Typography variant='subheading' align='center' gutterBottom paragraph>
-              Open Source, Secure, Easy even for the Technophobe
+            <Typography variant='subheading' align='center' paragraph>
+              <ul>
+                <li>Single wire design for plug & play installation</li> 
+                <li>No software installation required on existing systems</li>
+              </ul>
             </Typography>
           </Grid>
         </Grid>
@@ -160,92 +206,47 @@ class IIOT extends React.Component {
     );
   };
 
-  aboutGraphics() {
+  localFirst(imageSide) {
     const inputs = {
-      PlugAndPlay: {
-        title: 'Easy to Install',
-        imagePath: svgs.plugAndPlay,
-        desc: `Unbox, wire, and play. 
-                Automate your home or booby trap it. 
-                We can set it up for you, so you don't have to worry about code. 
-                Heep makes connecting things easy.`
-      },
-      CloudLess: {
-        title: 'Cloud Less',
-        imagePath: svgs.cloudLess,
-        desc: `Heep doesn't require an internet connection. 
-                We don't send things to the cloud, so rest assured, no one's listening in or watching you. 
-                You do you, so just relax.`
-      },
-      DeviceParty: {
-        title: 'Device Party',
-        imagePath: svgs.deviceParty,
-        desc: `Connect your devices and get them to talk with you and other devices. 
-                They send and receive commands, provide data, and interact with you. 
-                Enable your environment.`
-      },
+      imageSide: imageSide, 
+      minHeight: 400,
+      imagePath: 'http://ideflorbio.pa.gov.br/wp-content/uploads/2016/11/sl1.png'
     };
 
     return (
-      <div>
-        <Grid container style={{
-          maxWidth:'100%',
-          overflowX: 'hidden',
-          margin: '0 auto'
-        }}
-          spacing={24} justify='center'>
-          <Grid item xs={12} md={3}>
-            <AboutCard {...inputs.PlugAndPlay}/>
-          </Grid>
-          <Grid item xs={12} md={3}>
-            <AboutCard {...inputs.CloudLess}/>
-          </Grid>
-          <Grid item xs={12} md={3}>
-            <AboutCard {...inputs.DeviceParty}/>
-          </Grid>
-        </Grid>
-      </div>
-    );
-  };
-
-  ourStory() {
-    const inputs = {
-      paddingTop: 25,
-      paddingBottom: 25,
-      backgroundColor: '#B0BEC5'
-    };
-
-    return(
-      SectionCard(inputs,
+      SplitSectionCard(inputs,
         <Grid container style={{
           maxWidth:'100%',
           margin: '0 auto'
-        }} justify ='center' alignItems ='center'>
-          <Grid item xs={12} md={8}>
-            <Typography variant='headline' align='center'>
-              Our Story
+         }}
+         justify='center' alignItems='center'>
+          <Grid item  xs={12} md={8}>
+            <Typography variant={titleVariant} align={titleAlign} paragraph>
+              Local First Design
             </Typography>
-            <br/>
             <Typography variant='subheading' align='center' paragraph>
-              Heep was founded in February 2017 with the dream of ubiquitous connectivity. 
-              We thought long and hard about what the world needs to make that happen. 
-              Thus, the Heep operating system was born. 
+              Your data is your data. Period. 
+            </Typography>
+            <Typography variant='subheading' align='center' paragraph>
+              Your operations should not be dependent on high-latency and interceptable cloud operations.
+              Empower your operations without the risk of relying on cloud uptime.
             </Typography>
           </Grid>
         </Grid>
       )
-    )
+    );
   };
-
- 
 
   render() {
     return (
       <div>
         {this.topBanner()}
-        {this.mission()}
-        {this.interoperability()}
-        {this.controlSystem()}
+        {this.simplicity('left')}
+        {this.security('right')}
+        {this.insights('left')}
+        {this.interoperability('right')}
+        {this.controlSystem('left')}
+        {this.localFirst('right')}
       </div>
     );
   }

@@ -7,18 +7,19 @@ const SplitSectionCard = (componentProps, richContent) => {
     imageContainer: {
       backgroundImage: componentProps.imagePath !== undefined ? `url(${componentProps.imagePath})` : '',
       backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center',
       backgroundSize:'cover',
       maxWidth: '100%',
-      margin: 0,
+      margin: 'auto',
     }
   };
 
   return(
     <Grid container spacing={0} justify='center' alignItems='center' style={{...componentProps}}>
-      <Grid item xs={6}>
+      <Grid item sm={6} xs={10} style={{overflow: 'hidden'}}>
         {componentProps.imageSide == 'left' ? <div style={{...inputs.imageContainer, ...componentProps}}/> : richContent}
       </Grid>
-      <Grid item xs={6}>
+      <Grid item sm={6} xs={10} style={{overflow: 'hidden'}}>
         {componentProps.imageSide == 'right' ? <div style={{...inputs.imageContainer, ...componentProps}}/> : richContent}
       </Grid>
     </Grid>

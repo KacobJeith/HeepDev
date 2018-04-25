@@ -23,7 +23,7 @@ const VideoBackgroundCard = (componentProps, wrappedComponent) => {
           Your browser does not support the video tag.
         </video>
       </div>
-      <div style={{position: 'absolute', top: 0, left: 0, zIndex: 2, width: '100%', backgroundColor: 'rgba(0,0,0, 0.5)' }}>
+      <div style={{position: 'absolute', top: 0, left: 0, zIndex: 2, width: '100%', backgroundColor: 'rgba(0,0,0, 0.7)' }}>
         {wrappedComponent}
       </div>
     </div>
