@@ -1,6 +1,6 @@
 {
 	"name": "Heep",
-	"version": "v0.1.5",
+	"version": "v0.1.6",
 	"main": "electron_bundle.js",
 	"description": "Heep Desktop Application",
 	"author": "Heep Inc.",

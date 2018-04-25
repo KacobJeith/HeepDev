@@ -310,7 +310,7 @@ export default function(state = initialState, action) {
       return Immutable.Map(state).set('places', newState).toJS()
 
     case 'START_LIVE_MODE':
-      var liveModeRef = async.startLiveMode();
+      var liveModeRef = async.startLiveMode(state.preferences.searchMode);
 
       return Immutable.Map(state).set('liveModeReference', liveModeRef).toJS();
 
@@ -355,7 +355,7 @@ export default function(state = initialState, action) {
     case 'SET_SEARCH_MODE': 
 
       return Immutable.fromJS(state)
-                      .setIn(['preferences','searchMode'], state.preferences.searchMode == 'broadcast' ? 'unicast' : 'broadcast')
+                      .setIn(['preferences','searchMode'], action.searchMode)
                       .toJS()
 
     case 'RESET_DEVICE_AND_OS_WIFI':

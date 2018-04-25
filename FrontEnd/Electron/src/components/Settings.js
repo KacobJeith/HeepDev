@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import * as Actions from '../redux/actions_designer'
+import * as Actions from '../redux/actions_classic'
 import { NavLink, withRouter } from 'react-router-dom';
 
 import { Typography, Grid, Paper, FormControl, InputLabel, Select, MenuItem, FormHelperText } from 'material-ui'
@@ -28,7 +28,7 @@ class Settings extends React.Component {
           <InputLabel htmlFor="search-mode">Addressing Method</InputLabel>
           <Select
             value={this.props.preferences.searchMode}
-            onChange={() => this.props.setSearchMode()}
+            onChange={(event) => this.props.setSearchMode(event.target.value)}
           >
             <MenuItem value={'broadcast'}>Broadcast</MenuItem>
             <MenuItem value={'unicast'}>Unicast</MenuItem>

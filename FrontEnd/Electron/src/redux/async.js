@@ -185,8 +185,8 @@ export var performAJAX = (url, messagePacket, type = 'POST', callback = (data) =
   });
 }
 
-export const startLiveMode = () => {
-  var liveModeRef = setInterval(refreshLocalDeviceState, 4000);
+export const startLiveMode = (searchMode) => {
+  var liveModeRef = setInterval(() => refreshLocalDeviceState(searchMode), 4000);
 
   return liveModeRef
 }

@@ -29,7 +29,9 @@ export var SearchForHeepDevices = (searchMode = 'broadcast', numTimesTried = 0, 
   var gateway = findGateway();
   var searchBuffer = Buffer.from([0x09, 0x00])
 
-  console.log(gateway)
+  console.log(gateway);
+  log.info('Searching for Devices on Gateway: ' + gateway);
+  log.info('Search Mode: ' + searchMode);
 
   if (gateway != undefined) {
     callback(true);
@@ -202,6 +204,8 @@ var CheckIfNewValueAndSet = (deviceID, controlID, newValue) => {
 export var findGateway = () => {
   var networkInterfaces = os.networkInterfaces( );
 
+  log.info('Found Interfaces: ' + networkInterfaces);
+
   for (var interfaces in networkInterfaces) {
     for (var i = 0; i < networkInterfaces[interfaces].length; i++ ) {
       // console.log(networkInterfaces[interfaces][i])
@@ -240,6 +244,8 @@ udpServer.on('error', (err) => {
 udpServer.on('message', (msg, rinfo) => {
   ConsumeHeepResponse(msg, rinfo.address, rinfo.port);
   console.log(`server got: ${msg} from ${rinfo.address}:${rinfo.port}`);
+
+  log.info(`server got: ${msg} from ${rinfo.address}:${rinfo.port}`);
 });
 
 udpServer.on('listening', () => {
