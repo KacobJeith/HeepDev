@@ -665,6 +665,26 @@ void ImmediatelyClearAllOfMOP(heepByte inputMOP)
 	DefragmentMemory();
 }
 
+heepByte GetMOPPointer(heepByte MOP, unsigned int *pointer, unsigned int *counter)
+{
+	while(*counter < curFilledMemory)
+	{
+		if(deviceMemory[*counter] == MOP)
+		{
+			*pointer = *counter;
+
+			*counter = SkipOpCode(*counter);
+			return 0;
+		}
+		else
+		{
+			*counter = SkipOpCode(*counter);
+		}
+	}
+
+	return 1;
+}
+
 heepByte AddUserMOP(heepByte userMOPNumber, heepByte* buffer, int bufferLength)
 {
 	heepByte MOPNumber = userMOPNumber + USER_MOP_START_ID;
@@ -678,6 +698,18 @@ heepByte AddUserMOP(heepByte userMOPNumber, heepByte* buffer, int bufferLength)
 	unsigned int transmittingBufferCounter = 0;
 	unsigned int receivingBufferCounter = curFilledMemory;
 	AddBufferToBuffer(deviceMemory, buffer, bufferLength, &receivingBufferCounter, &transmittingBufferCounter);
+
+	return 0;
+}
+
+heepByte GetUserMOP(heepByte userMOPNumber, heepByte* buffer)
+{
+	heepByte MOPNumber = userMOPNumber + USER_MOP_START_ID;
+
+	if(MOPNumber > USER_MOP_END_ID) // Outside of User MOP Zone. Return error
+		return 1;
+
+
 
 	return 0;
 }
