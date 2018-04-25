@@ -30,7 +30,7 @@ const SplitSectionCard = (componentProps, richContent) => {
   };
 
   return(
-    <Grid container spacing={0} justify='center' alignItems='center' style={{...componentProps}}>
+    <Grid container spacing={0} justify='center' alignItems='center' style={{...componentProps}} key={componentProps.imagePath}>
       <Grid item sm={6} xs={10} style={{overflow: 'hidden'}}>
         {componentProps.imageSide == 'left' ? imageSection(inputs, componentProps) : richContent}
       </Grid>

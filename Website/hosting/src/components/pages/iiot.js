@@ -11,9 +11,7 @@ import AboutCard from '../AboutCard'
 import TeamModal from '../TeamModal'
 import SplitSectionCard from '../utilities/SplitSectionCard'
 
-import { founders } from '../../assets/remote/Founders'
-import { banners } from '../../assets/remote/Banners'
-import { svgs } from '../../assets/remote/SVGs'
+import assets from '../../assets/remote/iiotAssets.json'
 
 const titleVariant = 'title';
 const titleAlign = 'center';
@@ -24,9 +22,8 @@ class IIOT extends React.Component {
 
     const inputs = {
       backgroundColor: '#00adee',
-      imagePath: banners.iiot,
       //TO-DO: Purchase video
-      videoSrc: 'https://media.istockphoto.com/videos/male-asian-engineer-inspecting-the-work-process-of-the-robots-their-video-id804872590',
+      videoSrc: assets.bannerVideo,
       minHeight: 400,
     }
 
@@ -96,7 +93,7 @@ class IIOT extends React.Component {
     const inputs = {
       imageSide: orientation, 
       minHeight: 400,
-      imagePath: sectionInfo.imgSrc
+      imagePath: assets[sectionInfo.link]
     };
 
     return (
@@ -111,10 +108,10 @@ class IIOT extends React.Component {
               {sectionInfo.title}
             </Typography>
 
-            <Typography variant='subheading' align='left' gutterBottom paragraph>
+            <Typography variant='subheading' align='left' gutterBottom>
               <ul>
-                {sectionInfo.bullets.map((thisBullet) => (
-                  <li>{thisBullet}</li> 
+                {sectionInfo.bullets.map((thisBullet, index) => (
+                  <li key={sectionInfo.link + index}>{thisBullet}</li> 
                 ))}
               </ul>
             </Typography>
@@ -178,7 +175,6 @@ class IIOT extends React.Component {
       {
         link: 'security', 
         title: 'Security',
-        imgSrc: 'http://talkdailynews.com/wp-content/uploads/2018/02/Global-Smart-Factory-Market-640x360.jpg',
         bullets: [
           'No cloud dependence',
           'Encrypted communications',
@@ -188,7 +184,6 @@ class IIOT extends React.Component {
       {
         link: 'insights', 
         title: 'Insights',
-        imgSrc: 'https://i1.wp.com/electronicpublic.com/wp-content/uploads/2018/03/industrial-control-and-factory-automation-market.jpg?fit=600%2C400&ssl=1',
         bullets: [
           'Optimizes your technology investment for data collection, not infrastructure overhead',
           'More actionable insights, less wasted overhead',
@@ -198,7 +193,6 @@ class IIOT extends React.Component {
       {
         link: 'interoperability', 
         title: 'Interoperability',
-        imgSrc: 'https://dynaimage.cdn.cnn.com/cnn/q_auto,w_1024,c_fill,g_auto,h_576,ar_16:9/http%3A%2F%2Fcdn.cnn.com%2Fcnnnext%2Fdam%2Fassets%2F140104172932-boeing-assembly-line-file.jpg',
         bullets: [
           'Focus on your product, not vender technology integrations',
           'Leveraging the Heep application programming interface (HAPI), your assets communicate seamlessly for light fast operation',
@@ -218,7 +212,6 @@ class IIOT extends React.Component {
       {
         link: 'local-first', 
         title: 'Local First',
-        imgSrc: 'http://www.maxxi.art/wp-content/uploads/2017/12/cern.jpg?x64602',
         bullets: [
           'Your data is your data. Period.',
           'Your operations should not be dependent on high-latency and interceptable cloud operations. ',
@@ -228,7 +221,6 @@ class IIOT extends React.Component {
       {
         link: 'simple-integration', 
         title: 'Simplicity',
-        imgSrc: 'http://www.newelectronics.co.uk/article-images/164720/24350701403_759e7c7e76_k_fitted1367x860_popup.jpg',
         bullets: [
           'Single wire design for plug & play installation',
           'No software installation required on existing systems'
