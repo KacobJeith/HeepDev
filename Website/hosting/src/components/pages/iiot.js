@@ -3,6 +3,7 @@ import React from 'react'
 import { Grid, Typography } from 'material-ui';
 
 import SectionCard from '../utilities/SectionCard'
+import VideoBackgroundCard from '../utilities/VideoBackgroundCard'
 import AboutCard from '../AboutCard'
 import TeamModal from '../TeamModal'
 import SplitSectionCard from '../utilities/SplitSectionCard'
@@ -16,17 +17,17 @@ class IIOT extends React.Component {
   topBanner() {
 
     const inputs = {
-      paddingTop: 25,
-      paddingBottom: 25,
       backgroundColor: '#00adee',
       imagePath: banners.iiot,
+      //TO-DO: Purchase video
+      videoSrc: 'https://media.istockphoto.com/videos/male-asian-engineer-inspecting-the-work-process-of-the-robots-their-video-id804872590',
       minHeight: 400,
     }
 
     return(
-      SectionCard(inputs, 
+      VideoBackgroundCard(inputs, 
         <Grid container direction='column' justify ='center' alignItems ='center' style={{
-          maxWidth: '100%',
+          width: '100%',
           minHeight: inputs.minHeight,
           margin: '0 auto'
         }}>
@@ -63,7 +64,7 @@ class IIOT extends React.Component {
          justify='center' alignItems='center'>
           <Grid item  xs={12} md={8}>
             <Typography variant='headline' align='center'>
-              Our Mission
+              Secure
             </Typography>
             <br/>
             <Typography variant='subheading' align='center' gutterBottom paragraph>
@@ -111,7 +112,7 @@ class IIOT extends React.Component {
     const inputs = {
       imageSide: 'left', 
       minHeight: 400,
-      imagePath: 'https://user-images.githubusercontent.com/3604149/38447851-16ac9844-39ce-11e8-9fc3-1963cea40556.gif'
+      imagePath: 'http://www.tdworld.com/sites/tdworld.com/files/distributed-network-MickeyCZ.jpg'
     };
 
     return (
@@ -123,7 +124,7 @@ class IIOT extends React.Component {
          justify='center' alignItems='center'>
           <Grid item  xs={12} md={8}>
             <Typography variant='headline' align='center'>
-              Design Rich Control Systems
+              Design Powerful Robust Control Systems
             </Typography>
             
           </Grid>
