@@ -7,7 +7,9 @@ import Control from './Controls';
 import DynamicIcon from './DynamicIcon';
 import { Paper, Button, Typography, Grid, IconButton, Collapse } from 'material-ui'
 import { withTheme } from 'material-ui/styles'
-import { InfoOutline, KeyboardArrowDown } from 'material-ui-icons'
+import InfoOutline from 'material-ui-icons/InfoOutline'
+import KeyboardArrowDown from 'material-ui-icons/KeyboardArrowDown'
+import { TweenLite } from 'gsap'
 
 var mapStateToProps = (state, ownProps) => ({
   device: state.devices[ownProps.DeviceID],
@@ -64,6 +66,21 @@ class Device extends React.Component {
 		)
 	}
 
+  animateCollapse() {
+    const deviceDetails = document.getElementById(this.props.deviceID+'_details')
+
+    //setTimeout(this.props.updateVertex(), 500)
+
+    if (this.props.collapsed) {
+      TweenLite.to(deviceDetails, 1, {opacity: 1}).delay(0.3)
+      this.props.collapseDevice(this.props.deviceID)
+
+    } else {
+      this.props.collapseDevice(this.props.deviceID)
+      TweenLite.to(deviceDetails, 0.01, {opacity: 0}, 2)
+    }
+  }
+
 	drawOptions() {
 
 		const inputs= {
@@ -98,10 +115,9 @@ class Device extends React.Component {
         // size: 'xsmall',
         // disableRipple: true,
   			color:  this.props.collapsed ? 'secondary' : 'default',
-  			onClick: () => this.props.collapseDevice(this.props.deviceID)
+  			onClick: () => this.animateCollapse()
       }
     }
-
 
 		return (
       <div {...inputs.buttonContainer}>
@@ -162,30 +178,32 @@ class Device extends React.Component {
 							</Grid>
 						</Grid>
 
-  						<Grid item style={{
+  						<Grid id={this.props.deviceID+'_details'} item style={{
                 paddingRight:0,
                 paddingLeft:0,
-                display: this.props.collapsed ? "none" : "visible"}}>
-                {/* <Collapse in={!this.props.collapsed} timeout="auto" unmountOnExit> */}
-  							<Grid container direction='row' justify='space-around' alignItems='stretch' spacing={0} >
-  								<Grid item xs={4} style={{margin:0}}>
-  									{this.drawControls(this.props.controlInputs)}
-  								</Grid>
+                //opacity: this.props.collapsed ? 0 : 1
+                // display: this.props.collapsed ? "none" : "block"
+              }}>
+                <Collapse in={!this.props.collapsed} style={{overflow: 'visible'}} timeout="auto" unmountOnExit>
+    							<Grid container direction='row' justify='space-around' alignItems='stretch' spacing={0} >
+    								<Grid item xs={4} style={{margin:0}}>
+    									{this.drawControls(this.props.controlInputs)}
+    								</Grid>
 
-  								<Grid item xs={4} style={{margin:0}}>
-  									<Grid container alignItems='center' spacing={0} style={{height:'100%', margin: 0, padding: 0}}>
-  										<Grid item xs={12}>
-  											{this.drawDeviceIcon()}
-  										</Grid>
-  									</Grid>
-  								</Grid>
+    								<Grid item xs={4} style={{margin:0}}>
+    									<Grid container alignItems='center' spacing={0} style={{height:'100%', margin: 0, padding: 0}}>
+    										<Grid item xs={12}>
+    											{this.drawDeviceIcon()}
+    										</Grid>
+    									</Grid>
+    								</Grid>
 
-  								<Grid item xs={4} style={{margin:0, padding: 0}}>
-  									{this.drawControls(this.props.controlOutputs)}
-  								</Grid>
+    								<Grid item xs={4} style={{margin:0, padding: 0}}>
+    									{this.drawControls(this.props.controlOutputs)}
+    								</Grid>
 
-  							</Grid>
-                {/* </Collapse> */}
+    							</Grid>
+                </Collapse>
   						</Grid>
 
 					</Grid>
