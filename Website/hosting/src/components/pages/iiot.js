@@ -232,16 +232,6 @@ class IIOT extends React.Component {
 
         ]
       },
-      // {
-      //   link: 'powerful-control-systems', 
-      //   title: 'Control System',
-      //   imgSrc: 'http://www.tdworld.com/sites/tdworld.com/files/distributed-network-MickeyCZ.jpg',
-      //   bullets: [
-      //     // '',
-      //     // '',
-      //     // ''
-      //   ]
-      // },
       {
         link: 'local-first', 
         title: 'Local First',
