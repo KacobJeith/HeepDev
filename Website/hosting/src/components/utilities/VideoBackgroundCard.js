@@ -12,6 +12,18 @@ const VideoBackgroundCard = (componentProps, wrappedComponent) => {
       position: 'relative',
       overflow: 'hidden',
       width: '100%'
+    },
+    videoContainer: {
+      style: {
+        position: 'absolute',
+        top: -1000,
+        bottom: -1000,
+        left: -1000,
+        right: -1000,
+        margin: 'auto',
+
+        // height: imageHeight, //300
+      },
     }
   };
 
@@ -22,8 +34,9 @@ const VideoBackgroundCard = (componentProps, wrappedComponent) => {
           <source src={componentProps.videoSrc} type="video/mp4"/>
           Your browser does not support the video tag.
         </video>
+
       </div>
-      <div style={{position: 'absolute', top: 0, left: 0, zIndex: 2, width: '100%', backgroundColor: 'rgba(0,0,0, 0.7)' }}>
+      <div style={{position: 'absolute', top: 0, left: 0, zIndex: 2, width: '100%', backgroundColor: 'rgba(0,0,0, 0.5)' }}>
         {wrappedComponent}
       </div>
     </div>

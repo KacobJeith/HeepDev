@@ -46,6 +46,11 @@ const iiot = () => <AsyncComponent moduleProvider={() => import(
   	/* webpackMode: "lazy" */
   	'./pages/iiot')} />
 
+const diy = () => <AsyncComponent moduleProvider={() => import(
+	/* webpackChunkName: "diy" */
+  	/* webpackMode: "lazy" */
+  	'./pages/diy')} />
+
 import Theme from './Theme'
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
 
@@ -104,6 +109,7 @@ class App extends React.Component {
 									<Route path="/" component={AppBar}/>
 									<Route exact path="/" component={Landing}/>
 									<Route path="/Landing" component={Landing}/>
+									<Route path="/DIY" component={diy}/>
 									<Route path="/About" component={About}/>
 									<Route path="/Shop" component={Store}/>
 									<Route path="/IndustrialHeep" component={iiot}/>

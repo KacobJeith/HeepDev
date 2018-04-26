@@ -12,6 +12,8 @@ import AboutCard from '../AboutCard'
 import TeamModal from '../TeamModal'
 import SplitSectionCard from '../utilities/SplitSectionCard'
 
+import ContactUsSection from '../utilities/ContactUsSection'
+
 import assets from '../../assets/remote/iiotAssets.json'
 
 const titleVariant = 'title';
@@ -110,7 +112,7 @@ class IIOT extends React.Component {
               {sectionInfo.title}
             </Typography>
 
-            <Typography variant='body1' align='left' gutterBottom style={{color: '#999'}}>
+            <Typography variant='body1' align='left' style={{color: '#999'}}>
               <ul>
                 {sectionInfo.bullets.map((thisBullet, index) => (
                   <li key={sectionInfo.link + index}>{thisBullet}</li> 
@@ -147,51 +149,6 @@ class IIOT extends React.Component {
         </Grid>
       )
     );
-  };
-
-  contactUs() {
-    const inputs = {
-      paddingTop: 25,
-      paddingBottom: 25,
-      backgroundColor: 'white'
-    };
-
-    return(
-      SectionCard(inputs,
-        <Grid container direction='column' style={{
-          maxWidth:'100%',
-          minHeight: 400,
-          margin: '0 auto'
-        }} justify='center' alignItems='center'>
-          <Grid item xs={12}>
-            <Typography variant='headline' align='center'>
-              Let's Get Started.
-            </Typography>
-            <br/>
-            <Typography variant='subheading' align='center' paragraph>
-              Contact us for a consulation on how Heep products can augment your operations.
-            </Typography>
-           
-          </Grid>
-
-          <Grid item>
-            <HashLink 
-              smooth 
-              to={"/Contact#top"} 
-              style={{
-                textDecoration: 'none',
-                outline: 'none'
-              }}
-            >
-            <Button variant='raised' color='secondary' style={{ textTransform: "capitalize"}}> 
-                Contact Us
-              </Button>
-            </HashLink>
-          </Grid>
-
-        </Grid>
-      )
-    )
   };
 
   render() {
@@ -257,7 +214,7 @@ class IIOT extends React.Component {
         {sections.map((sectionInfo, index) => {
           return this.splitSectionWithBullets(sectionInfo, index % 2 == 0 ? 'left' : 'right')
         })}
-        {this.contactUs()}
+        <ContactUsSection/>
       </div>
     );
   }

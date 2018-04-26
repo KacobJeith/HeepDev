@@ -425,7 +425,7 @@ class MenuAppBar extends React.Component {
 
     return (
       <div className={classes.root}>
-        <AppBar position="static" id='top' style={{overflowX: 'hidden'}}>
+        <AppBar position="sticky" id='top' style={{overflowX: 'hidden'}}>
           <Toolbar>
             {this.mobileMenu()}
             <Hidden xsDown={true}>
@@ -434,7 +434,9 @@ class MenuAppBar extends React.Component {
             {this.mobileAppBarLogo()}
             <div className={classes.flex}/>
             {this.appBarLink("/", "HOME")}
+            {this.appBarLink("/Business", "BUSINESS")}
             {this.appBarLink("/IndustrialHeep", "INDUSTRY")}
+            {this.appBarLink("/DIY", "DIY")}
             {this.appBarLink("/About", "ABOUT")}
             {this.appBarLink("/Contact", "CONTACT")}
             {this.appBarLink("/Shop", "SHOP")}

@@ -2,14 +2,18 @@ import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
+import { withTheme } from 'material-ui/styles';
 import * as Actions from '../../redux/actions'
 
 import { Grid, Paper, Typography } from 'material-ui'
 
 import SectionCard from '../utilities/SectionCard'
+import AboutCard from '../AboutCard'
 import CollectionPreview from '../utilities/CollectionPreview'
+import VideoBackgroundCard from '../utilities/VideoBackgroundCard'
 import { banners } from '../../assets/remote/Banners'
-
+import { svgs } from '../../assets/remote/SVGs'
+import ContactUsSection from '../utilities/ContactUsSection'
 
 var mapStateToProps = (state) => ({
 });
@@ -17,29 +21,96 @@ var mapStateToProps = (state) => ({
 class LandingIIOT extends React.Component {
 
   topBanner() {
-    const inputs = {
-      paddingTop: 25,
-      paddingBottom: 25,
-      backgroundColor: '#00adee',
-      imagePath: banners.testPhoto,
-      minHeight: 200,
+
+      const inputs = {
+        backgroundColor: '#00adee',
+        //TO-DO: Purchase video
+        videoSrc: banners.networkVideo,
+        minHeight: 400,
+      }
+
+      return(
+        VideoBackgroundCard(inputs, 
+          <Grid container direction='column' justify ='center' alignItems ='center' style={{
+            width: '100%',
+            minHeight: inputs.minHeight,
+            margin: '0 auto'
+          }}>
+            <Grid item xs={12} sm={8}>
+              <Typography variant='display1' align='center' style={{color:'white'}}>
+                Heepify Your World
+              </Typography>
+            </Grid>
+
+            <Grid item xs={12} sm={8}>
+              <Typography variant='subheading' align='center' style={{color:'#bbbbbb'}}>
+                Enchanted, Connected, Accessible Technology for Humans
+              </Typography>
+
+            </Grid>
+          </Grid>
+        )
+      )
     };
 
+  heepTechnology() {
+    const inputs = [
+      {
+        title: 'Heep OS',
+        // imagePath: svgs.cloudLess,
+        desc: ` The Heep OS is a memory sharing distributed operating system and control system. 
+                It is designed to require the smallest possible footprint on any member device. 
+                `
+      },
+      {
+        title: 'Heep API (HAPI)',
+        // imagePath: svgs.deviceParty,
+        desc: ` 
+                HAPI is a local first IoT protocol designed for speed and reliability. 
+                All communication is distilled into simple input/output relationships.
+                Connecting devices is as simple as loading a front end, and wiring two devices together in software.
+                All of the operations are local and fast. `
+      },
+      {
+        title: 'Heep Hardware',
+        // imagePath: 'https://docs.particle.io/assets/images/raspberry-pi.svg',
+        desc: ` We designed the Heep Core from first principles so that no electronic device is excluded, no matter what physical layer the device talks over.
+                In concert with the Heep OS and HAPI, our products achieve maximum performance at application optimized costs. 
+                `
+      }
+    ]
+
+
     return (
-      SectionCard(inputs,
-        <Grid container justify ='center' alignItems ='center' style={{
-          maxWidth: '100%',
-          minHeight: inputs.minHeight,
-          margin: '0 auto'
-        }}>
-          <Grid item xs={12} sm={8}>
-            <Typography variant='display1' align='center'>
-              Heepify Your World
-            </Typography>
-          </Grid>
-        </Grid>
-      )
-    )
+          SectionCard({},
+            <Grid container justify ='center' alignItems='center' spacing={24} style={{
+              maxWidth: '100%',
+              minHeight: inputs.minHeight,
+              paddingTop: this.props.theme.spacing.unit * 5,
+              paddingBottom: this.props.theme.spacing.unit * 5,
+              margin: '0 auto'
+            }}>
+              <Grid item xs={12} sm={10}>
+                <Typography variant='display1' align='center' paragraph>
+                  Our Technology
+                </Typography>
+
+                <Grid container style={{
+                    maxWidth:'100%',
+                    overflowX: 'hidden',
+                    margin: '0 auto'
+                  }} spacing={24} justify='center' alignItems='stretch'
+                >
+                  {inputs.map((thisInput) => (
+                    <Grid item xs={12} md={4} key={thisInput.title}>
+                      <AboutCard {...thisInput}/>
+                    </Grid>
+                  ))}
+                </Grid>
+              </Grid>
+            </Grid>
+          )
+        )
   };
 
   iiotCollection() {
@@ -49,13 +120,70 @@ class LandingIIOT extends React.Component {
     )
   }
 
+  bigQuote(quote) {
+
+    const inputs = {
+      paddingTop: 25,
+      paddingBottom: 25,
+      backgroundColor: '#B0BEC5'
+    };
+    return(
+      SectionCard(inputs,
+        <Grid container justify ='center' alignItems='center' spacing={24} style={{
+          maxWidth: '100%',
+          minHeight: inputs.minHeight,
+          paddingTop: this.props.theme.spacing.unit * 5,
+          paddingBottom: this.props.theme.spacing.unit * 5,
+          margin: '0 auto'
+        }}>
+          <Grid item xs={6}>
+                <Typography variant='display1' align='center' paragraph>
+                  {quote}
+                </Typography>
+          </Grid>
+        </Grid>
+      )
+    )
+  }
+
+
+  iiotBlurb() {
+
+    const inputs = {
+      paddingTop: this.props.theme.spacing.unit * 5,
+      paddingBottom: this.props.theme.spacing.unit * 5,
+      backgroundColor: 'white'
+    };
+    return(
+      SectionCard(inputs,
+        <Grid container justify ='center' alignItems='center' spacing={24} style={{
+          maxWidth: '100%',
+          minHeight: inputs.minHeight,
+          margin: '0 auto'
+        }}>
+          <Grid item xs={6}>
+                
+          </Grid>
+        </Grid>
+      )
+    )
+  }
 
   render() {
+    const inputs = {
+      quote1: `From the smallest embedded chip, to lightning fast gaming PCs, 
+                  Heep unlocks immersive, living, tangibly magical experiences.`,
+      quote2: ``
+    }
 
   	return (
       <div>
         {this.topBanner()}
-        {this.iiotCollection()}
+{/*         {this.iiotCollection()} */}
+        {this.heepTechnology()}
+        {this.bigQuote(inputs.quote1)}
+        {this.iiotBlurb()}
+        <ContactUsSection />
       </div>
       );
   }
@@ -67,4 +195,4 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(Actions, dispatch)
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(LandingIIOT))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withTheme()(LandingIIOT)))
