@@ -1500,9 +1500,6 @@ void TestUserMOP()
 
 	ClearDeviceMemory();
 
-	cout << "USER MOP" << endl;
-	PrintDeviceMemory();
-
 	heepByte deviceID1[STANDARD_ID_SIZE];
 	CreateFakeDeviceID(deviceID1);
 	
@@ -1513,26 +1510,32 @@ void TestUserMOP()
 	cout << (int)AddUserMOP(0, myBuffer, bufLen, deviceID1) << endl;
 	GetUserMOP(0, newBuffer, &bytesReturned);
 
-	PrintDeviceMemory();
+	ExpectedValue valueList [6];
+	valueList[0].valueName = "Num Bytes Received";
+	valueList[0].expectedValue = 5;
+	valueList[0].actualValue = bytesReturned;
 
-	for(int i = 0; i < 5; i++)
-	{
-		cout << (int)newBuffer[i] << " ";
-	}
-	cout << endl;
+	valueList[1].valueName = "Value 0";
+	valueList[1].expectedValue = 'H';
+	valueList[1].actualValue = myBuffer[0];
 
-	cout << "NumBytes: " << bytesReturned << endl;
+	valueList[2].valueName = "Value 1";
+	valueList[2].expectedValue = 'E';
+	valueList[2].actualValue = myBuffer[1];
 
-	// ExpectedValue valueList [2];
-	// valueList[0].valueName = "MOP 1 Time";
-	// valueList[0].expectedValue = 100;
-	// valueList[0].actualValue = GetTimeFromAnalyticsMOP(firstAnalyticsMOP);
+	valueList[3].valueName = "Value 2";
+	valueList[3].expectedValue = 'L';
+	valueList[3].actualValue = myBuffer[2];
 
-	// valueList[1].valueName = "MOP 2 Time";
-	// valueList[1].expectedValue = 2315232;
-	// valueList[1].actualValue = GetTimeFromAnalyticsMOP(secondAnalyticsMOP);
+	valueList[4].valueName = "Value 3";
+	valueList[4].expectedValue = 'L';
+	valueList[4].actualValue = myBuffer[3];
 
-	// CheckResults(TestName, valueList, 2);
+	valueList[5].valueName = "Value 4";
+	valueList[5].expectedValue = 'O';
+	valueList[5].actualValue = myBuffer[4];
+
+	CheckResults(TestName, valueList, 6);
 }
 
 void TestDynamicMemory()
