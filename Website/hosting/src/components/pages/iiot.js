@@ -37,16 +37,16 @@ class IIOT extends React.Component {
         }}>
           <Grid item xs={12} sm={8}>
             <Typography variant='display1' align={titleAlign} style={{color:'white'}}>
-              Manufacturing has never been so Simple
+              Industry. Simplified.
             </Typography>
           </Grid>
 
           <Grid item xs={12} sm={8}>
             <Typography variant='subheading' align='center' style={{color:'#bbbbbb'}}>
-              By embedding intelligence throughout your process, 
+              By embedding Heep Intelligence throughout your process, 
               you can unlock higher yields, 
-              more secure operation, 
-              and competitive advantages for your business.
+              plug security holes, 
+              and gain competitive advantages for your business.
             </Typography>
 
           </Grid>
@@ -247,17 +247,16 @@ class IIOT extends React.Component {
         link: 'local-first', 
         title: 'Local First',
         bullets: [
-          'Your data is your data. Period.',
-          'Your operations should not be dependent on high-latency and interceptable cloud operations. ',
-          'Empower your operations without the risk of relying on cloud uptime.'
+          'By prioritizing local-first communication, Heep control systems operate at maximum networks speeds with 100% uptime',
+          'Your data stays in-house. Protect your business assets by holding them close.'
         ]
       },
       {
         link: 'simple-integration', 
         title: 'Simplicity',
         bullets: [
-          'Single wire design for plug & play installation',
-          'No software installation required on existing systems'
+          'Heep strives to offer single-wire designs for plug & play installation. Simplify cable management by designing smart with Heep',
+          'No software installation required on existing systems. Heep devices stand on their own, keeping your existing assets obstruction-free'
         ]
       }
     ];
