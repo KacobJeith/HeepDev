@@ -1,253 +1,266 @@
 import React from 'react'
 
-import { Grid, Typography } from 'material-ui';
+import { Grid, Typography, Button } from 'material-ui';
+import ArrowForward from 'material-ui-icons/ArrowForward'
+import { HashLink } from "react-router-hash-link";
+import { withTheme } from 'material-ui/styles';
+import { withRouter }         from 'react-router-dom'
 
 import SectionCard from '../utilities/SectionCard'
+import VideoBackgroundCard from '../utilities/VideoBackgroundCard'
 import AboutCard from '../AboutCard'
 import TeamModal from '../TeamModal'
 import SplitSectionCard from '../utilities/SplitSectionCard'
 
-import { founders } from '../../assets/remote/Founders'
-import { banners } from '../../assets/remote/Banners'
-import { svgs } from '../../assets/remote/SVGs'
+import assets from '../../assets/remote/iiotAssets.json'
+
+const titleVariant = 'title';
+const titleAlign = 'center';
 
 class IIOT extends React.Component {
 
   topBanner() {
 
     const inputs = {
-      paddingTop: 25,
-      paddingBottom: 25,
       backgroundColor: '#00adee',
-      imagePath: banners.iiot,
+      //TO-DO: Purchase video
+      videoSrc: assets.bannerVideo,
       minHeight: 400,
     }
 
     return(
-      SectionCard(inputs, 
+      VideoBackgroundCard(inputs, 
         <Grid container direction='column' justify ='center' alignItems ='center' style={{
-          maxWidth: '100%',
+          width: '100%',
           minHeight: inputs.minHeight,
           margin: '0 auto'
         }}>
           <Grid item xs={12} sm={8}>
-            <Typography variant='display1' align='center' style={{color:'white'}}>
-              Leverage Embedded Insights 
+            <Typography variant='display1' align={titleAlign} style={{color:'white'}}>
+              Industry. Simplified.
             </Typography>
           </Grid>
 
           <Grid item xs={12} sm={8}>
-            <Typography variant='subheading' align='center' style={{color:'white'}}>
-              By embedding intelligence throughout your process, 
-              you can unlock higher yields, more secure operation, and competitive advantages for your business.
+            <Typography variant='subheading' align='center' style={{color:'#bbbbbb'}}>
+              By embedding Heep Intelligence throughout your process, 
+              you can unlock higher yields, 
+              plug security holes, 
+              and gain competitive advantages for your business.
             </Typography>
+
           </Grid>
         </Grid>
       )
     )
   };
 
-  mission() {
-    const inputs = {
-      imageSide: 'left', 
-      minHeight: 400,
-      imagePath: 'https://user-images.githubusercontent.com/3604149/38447851-16ac9844-39ce-11e8-9fc3-1963cea40556.gif'
-    };
+
+  sectionLinks(sections) {
 
     return (
-      SplitSectionCard(inputs,
-        <Grid container style={{
-          maxWidth:'100%',
-          margin: '0 auto'
-         }}
-         justify='center' alignItems='center'>
-          <Grid item  xs={12} md={8}>
-            <Typography variant='headline' align='center'>
-              Our Mission
-            </Typography>
-            <br/>
-            <Typography variant='subheading' align='center' gutterBottom paragraph>
-              Heep leverages connectedness to empower people to be more productive, 
-              make better decisions, 
-              and enjoy a better quality of life. 
-            </Typography>
-            <Typography variant='subheading' align='center' paragraph>
-              The Heep platform makes connectivity the simplest and most secure way to design any product. 
-              By reimagining IoT as a critical infrastructure rather than an add-on luxury, 
-              Heep is able to deliver a scalable and intuitive experience at a fraction of the cost.
-            </Typography>
-          </Grid>
-        </Grid>
-      )
-    );
-  };
-
-  interoperability() {
-    const inputs = {
-      imageSide: 'right', 
-      minHeight: 400,
-      imagePath: 'https://user-images.githubusercontent.com/3604149/38447851-16ac9844-39ce-11e8-9fc3-1963cea40556.gif'
-    };
-
-    return (
-      SplitSectionCard(inputs,
-        <Grid container style={{
-          maxWidth:'100%',
-          margin: '0 auto'
-         }}
-         justify='center' alignItems='center'>
-          <Grid item  xs={12} md={8}>
-            <Typography variant='headline' align='center'>
-              Interoperability
-            </Typography>
-
-          </Grid>
-        </Grid>
-      )
-    );
-  };
-
-  controlSystem() {
-    const inputs = {
-      imageSide: 'left', 
-      minHeight: 400,
-      imagePath: 'https://user-images.githubusercontent.com/3604149/38447851-16ac9844-39ce-11e8-9fc3-1963cea40556.gif'
-    };
-
-    return (
-      SplitSectionCard(inputs,
-        <Grid container style={{
-          maxWidth:'100%',
-          margin: '0 auto'
-         }}
-         justify='center' alignItems='center'>
-          <Grid item  xs={12} md={8}>
-            <Typography variant='headline' align='center'>
-              Design Rich Control Systems
-            </Typography>
-            
-          </Grid>
-        </Grid>
-      )
-    );
-  };
-
-  ourValues() {
-    const inputs = {
-      paddingTop: 25,
-      paddingBottom: 25,
-    };
-
-    return (
-      SectionCard(inputs,
-        <Grid container style={{
-          maxWidth:'100%',
-          margin: '0 auto'
-         }}
-         justify='center' alignItems='center'>
-          <Grid item  xs={12} md={8}>
-            <Typography variant='headline' align='center'>
-              Our Values
-            </Typography>
-            <br/>
-            <Typography variant='subheading' align='center' gutterBottom paragraph>
-              Open Source, Secure, Easy even for the Technophobe
-            </Typography>
-          </Grid>
-        </Grid>
-      )
-    );
-  };
-
-  aboutGraphics() {
-    const inputs = {
-      PlugAndPlay: {
-        title: 'Easy to Install',
-        imagePath: svgs.plugAndPlay,
-        desc: `Unbox, wire, and play. 
-                Automate your home or booby trap it. 
-                We can set it up for you, so you don't have to worry about code. 
-                Heep makes connecting things easy.`
-      },
-      CloudLess: {
-        title: 'Cloud Less',
-        imagePath: svgs.cloudLess,
-        desc: `Heep doesn't require an internet connection. 
-                We don't send things to the cloud, so rest assured, no one's listening in or watching you. 
-                You do you, so just relax.`
-      },
-      DeviceParty: {
-        title: 'Device Party',
-        imagePath: svgs.deviceParty,
-        desc: `Connect your devices and get them to talk with you and other devices. 
-                They send and receive commands, provide data, and interact with you. 
-                Enable your environment.`
-      },
-    };
-
-    return (
-      <div>
-        <Grid container style={{
-          maxWidth:'100%',
-          overflowX: 'hidden',
+      <Grid container alignItems='center' justify='center' spacing={0} 
+        style={{
+          backgroundColor: this.props.theme.palette.primary.dark, 
+          padding: this.props.theme.spacing.unit,
+          width: '100%',
           margin: '0 auto'
         }}
-          spacing={24} justify='center'>
-          <Grid item xs={12} md={3}>
-            <AboutCard {...inputs.PlugAndPlay}/>
+      >
+        {sections.map((nextSection) => (
+          <Grid item key={nextSection.link + 'key'} 
+            style={{marginRight: 20}}
+
+          >    
+            <HashLink 
+                smooth 
+                to={"#" + nextSection.link} 
+                style={{
+                  textDecoration: 'none',
+                  outline: 'none',
+                }}
+                >
+
+                <Button variant='flat' style={{ textTransform: "capitalize", color: '#ddd'}}> 
+                  {nextSection.title}
+                </Button>
+              </HashLink>
           </Grid>
-          <Grid item xs={12} md={3}>
-            <AboutCard {...inputs.CloudLess}/>
+        ))}
+      </Grid>
+    )
+  }
+
+  splitSectionWithBullets(sectionInfo, orientation) {
+    const inputs = {
+      imageSide: orientation, 
+      minHeight: 400,
+      imagePath: assets[sectionInfo.link]
+    };
+
+    return (
+      SplitSectionCard(inputs,
+        <Grid container id={sectionInfo.link} style={{
+          maxWidth:'100%',
+          margin: '0 auto'
+         }}
+         justify='center' alignItems='center'>
+          <Grid item  xs={12} md={10}>
+            <Typography variant={titleVariant} align={titleAlign}>
+              {sectionInfo.title}
+            </Typography>
+
+            <Typography variant='body1' align='left' gutterBottom style={{color: '#999'}}>
+              <ul>
+                {sectionInfo.bullets.map((thisBullet, index) => (
+                  <li key={sectionInfo.link + index}>{thisBullet}</li> 
+                ))}
+              </ul>
+            </Typography>
+
           </Grid>
-          <Grid item xs={12} md={3}>
-            <AboutCard {...inputs.DeviceParty}/>
-          </Grid>
+          {sectionInfo.moreInfoLink && (
+            <Grid item xs={12}>
+              <Grid container justify='center' alignItems='center'>
+                <HashLink 
+                  smooth 
+                  to={sectionInfo.moreInfoLink.externalLink ? 
+                    'IndustrialHeep' : 
+                    sectionInfo.moreInfoLink.link} 
+                  style={{
+                    textDecoration: 'none',
+                    outline: 'none'
+                  }}
+                >
+                <Button variant='flat' color='secondary' style={{ textTransform: "capitalize"}}
+                  onClick={sectionInfo.moreInfoLink.externalLink ? 
+                    () => window.open(sectionInfo.moreInfoLink.externalLink, '_blank') : 
+                    () => {}}> 
+                    {sectionInfo.moreInfoLink.text}
+                    <ArrowForward style={{marginLeft: this.props.theme.spacing.unit}}/>
+                  </Button>
+                </HashLink>
+              </Grid>
+            </Grid>
+          )}
+          
         </Grid>
-      </div>
+      )
     );
   };
 
-  ourStory() {
+  contactUs() {
     const inputs = {
       paddingTop: 25,
       paddingBottom: 25,
-      backgroundColor: '#B0BEC5'
+      backgroundColor: 'white'
     };
 
     return(
       SectionCard(inputs,
-        <Grid container style={{
+        <Grid container direction='column' style={{
           maxWidth:'100%',
+          minHeight: 400,
           margin: '0 auto'
-        }} justify ='center' alignItems ='center'>
-          <Grid item xs={12} md={8}>
+        }} justify='center' alignItems='center'>
+          <Grid item xs={12}>
             <Typography variant='headline' align='center'>
-              Our Story
+              Let's Get Started.
             </Typography>
             <br/>
             <Typography variant='subheading' align='center' paragraph>
-              Heep was founded in February 2017 with the dream of ubiquitous connectivity. 
-              We thought long and hard about what the world needs to make that happen. 
-              Thus, the Heep operating system was born. 
+              Contact us for a consulation on how Heep products can augment your operations.
             </Typography>
+           
           </Grid>
+
+          <Grid item>
+            <HashLink 
+              smooth 
+              to={"/Contact#top"} 
+              style={{
+                textDecoration: 'none',
+                outline: 'none'
+              }}
+            >
+            <Button variant='raised' color='secondary' style={{ textTransform: "capitalize"}}> 
+                Contact Us
+              </Button>
+            </HashLink>
+          </Grid>
+
         </Grid>
       )
     )
   };
 
- 
-
   render() {
+
+    const sections = [
+      {
+        link: 'security', 
+        title: 'Security',
+        bullets: [
+          'Heep networks require no cloud connectivity. You control where your data gets sent.',
+          'All Heep devices encrypt even their local communications. No other edge computing platform takes security this seriously.',
+          'Leverage Heep to protect your legacy systems with two-factor Authentication'
+        ],
+        moreInfoLink: {
+          text: 'Learn More',
+          link: '/product/Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8xMjYxODQ1MjE3MzA5'
+        }
+      },
+      {
+        link: 'insights', 
+        title: 'Insights',
+        bullets: [
+          'Optimize your technology investment for actionable insights, without the often costly overhead',
+          'Heep Analytics store locally on the edge and across the distributed OS, with option for centralized storage',
+          'Become NIST SP 800-171 compliant with 100% asset utilization tracking coverage'
+        ],
+        moreInfoLink: {
+          text: 'Learn More',
+          externalLink: 'https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171r1.pdf'
+        }
+      },
+      {
+        link: 'interoperability', 
+        title: 'Interoperability',
+        bullets: [
+          'Focus on your product, not vender technology integrations',
+          'Leveraging the Heep application programming interface (HAPI), your assets communicate seamlessly for light fast operation',
+
+        ]
+      },
+      {
+        link: 'local-first', 
+        title: 'Local First',
+        bullets: [
+          'By prioritizing local-first communication, Heep control systems operate at maximum networks speeds with 100% uptime',
+          'Your data stays in-house. Protect your business assets by holding them close.'
+        ]
+      },
+      {
+        link: 'simple-integration', 
+        title: 'Simplicity',
+        bullets: [
+          'Heep strives to offer single-wire designs for plug & play installation.',
+          'No software installation required on existing systems. Heep devices stand on their own, upgrading your operations while keeping your existing assets obstruction-free'
+        ]
+      }
+    ];
+
     return (
       <div>
         {this.topBanner()}
-        {this.mission()}
-        {this.interoperability()}
-        {this.controlSystem()}
+        {this.sectionLinks(sections)}
+        {sections.map((sectionInfo, index) => {
+          return this.splitSectionWithBullets(sectionInfo, index % 2 == 0 ? 'left' : 'right')
+        })}
+        {this.contactUs()}
       </div>
     );
   }
 }
 
-export default IIOT
+export default withRouter(withTheme()(IIOT))

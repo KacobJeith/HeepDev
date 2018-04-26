@@ -7,6 +7,7 @@ const SectionCard = (componentProps, wrappedComponent) => {
     outerContainer: {
       backgroundImage: componentProps.imagePath !== undefined ? `url(${componentProps.imagePath})` : '',
       backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center',
       backgroundSize:'cover',
       maxWidth: '100%',
       margin: 0,
