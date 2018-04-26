@@ -335,3 +335,13 @@ void SendControlsOnHeartBeat(unsigned long controlSendPeriod)
 		lastHeartBeat = GetMillis();
 	}
 }
+
+heepByte AddUserMemory(heepByte userMemoryNumber, heepByte* buffer, int bufferLength)
+{
+	return AddUserMOP(userMemoryNumber, buffer, bufferLength, deviceIDByte);
+}
+
+heepByte GetUserMemory(heepByte userMemoryNumber, heepByte* buffer, int* bytesReturned)
+{
+	return GetUserMOP(userMemoryNumber, buffer, bytesReturned);
+}
