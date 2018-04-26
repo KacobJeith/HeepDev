@@ -332,7 +332,7 @@ void SendControlsOnHeartBeat(unsigned long controlSendPeriod)
 				SendOutputByID(controlList[i].controlID, controlList[i].curValue);
 			}
 		}
-		lastHeartBeat = GetMillis();
+		lastHeartBeat = GetMillis(); 
 	}
 }
 
