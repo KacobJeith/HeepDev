@@ -254,8 +254,8 @@ class IIOT extends React.Component {
         link: 'simple-integration', 
         title: 'Simplicity',
         bullets: [
-          'Heep strives to offer single-wire designs for plug & play installation. Simplify cable management by designing smart with Heep',
-          'No software installation required on existing systems. Heep devices stand on their own, keeping your existing assets obstruction-free'
+          'Heep strives to offer single-wire designs for plug & play installation.',
+          'No software installation required on existing systems. Heep devices stand on their own, upgrading your operations while keeping your existing assets obstruction-free'
         ]
       }
     ];
