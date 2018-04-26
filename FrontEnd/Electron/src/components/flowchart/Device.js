@@ -189,6 +189,12 @@ class Device extends React.Component {
 
   animateCollapse() {
     const deviceDetails = document.getElementById(this.props.deviceID+'_details')
+    const deviceVertices = '.vertex' + this.props.deviceID.toString()
+    //const allVertices = document.querySelectorAll(vertices)
+
+    TweenLite.set(deviceVertices, {opacity: 0})
+
+
 
     function updatingVertex() {
       this.props.updateVertex()
@@ -201,7 +207,8 @@ class Device extends React.Component {
 
     } else {
       this.props.collapseDevice(this.props.deviceID)
-      TweenLite.to(deviceDetails, 0.01, {opacity: 0}, 2)
+      TweenLite.to(deviceVertices, 1, {opacity: 1})
+      TweenLite.set(deviceDetails, {opacity: 0})
       setTimeout(updatingVertex.bind(this), 300)
     }
   };
@@ -210,7 +217,7 @@ class Device extends React.Component {
 	render() {
 
 		const inputs = {
-      container: {
+      deviceContainer: {
         style: {
           marginTop: this.props.theme.spacing.unit,
           marginBottom: this.props.theme.spacing.unit,
@@ -223,14 +230,6 @@ class Device extends React.Component {
           paddingLeft:0,
         }
       },
-			svgIcon: {
-		        style: {
-		          maxHeight: '100%',
-		          maxWidth: '100%'
-		        },
-		        type:"image/svg+xml",
-		        data: "/dist/assets/svg/" + this.props.device.iconName + ".svg"
-	    },
 		}
 
 		return (
@@ -240,7 +239,7 @@ class Device extends React.Component {
           direction='column'
           alignItems='stretch'
           spacing={8}
-          {...inputs.container}
+          {...inputs.deviceContainer}
           >
 					<Grid item xs={12}>
 						{this.drawTopItems()}

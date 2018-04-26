@@ -121,9 +121,14 @@ class Vertex extends React.Component {
 			return <g/>
 		}
 
+    const rxClassName = 'vertex' + this.props.rxDeviceID.toString()
+    const txClassName = 'vertex' + this.props.txDeviceID.toString()
+
 		var inputs = {
+
 			vertex: {
         id: this.props.id,
+        className: [rxClassName, txClassName, "test"].join(" "),
         pointerEvents: 'all',
         display: 'inline-block',
 				strokeWidth: this.state.strokeWidth,
@@ -153,8 +158,6 @@ class Vertex extends React.Component {
 				}
 			}
 		}
-
-
 		return <path {...inputs.vertex}/>
 	}
 }
