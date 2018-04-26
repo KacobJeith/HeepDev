@@ -125,13 +125,18 @@ class IIOT extends React.Component {
               <Grid container justify='center' alignItems='center'>
                 <HashLink 
                   smooth 
-                  to={sectionInfo.moreInfoLink.link} 
+                  to={sectionInfo.moreInfoLink.externalLink ? 
+                    'IndustrialHeep' : 
+                    sectionInfo.moreInfoLink.link} 
                   style={{
                     textDecoration: 'none',
                     outline: 'none'
                   }}
                 >
-                <Button variant='flat' color='secondary' style={{ textTransform: "capitalize"}}> 
+                <Button variant='flat' color='secondary' style={{ textTransform: "capitalize"}}
+                  onClick={sectionInfo.moreInfoLink.externalLink ? 
+                    () => window.open(sectionInfo.moreInfoLink.externalLink, '_blank') : 
+                    () => {}}> 
                     {sectionInfo.moreInfoLink.text}
                     <ArrowForward style={{marginLeft: this.props.theme.spacing.unit}}/>
                   </Button>
@@ -210,10 +215,14 @@ class IIOT extends React.Component {
         link: 'insights', 
         title: 'Insights',
         bullets: [
-          'Optimizes your technology investment for data collection, not infrastructure overhead',
-          'More actionable insights, less wasted overhead',
+          'Optimize your technology investment for actionable insights, without the often costly overhead',
+          'Heep Analytics store locally on the edge and across the distributed OS, with option for centralized storage',
           'Become NIST SP 800-171 compliant with 100% asset utilization tracking coverage'
-        ]
+        ],
+        moreInfoLink: {
+          text: 'Learn More',
+          externalLink: 'https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171r1.pdf'
+        }
       },
       {
         link: 'interoperability', 
