@@ -27,7 +27,7 @@ class Vertex extends React.Component {
 		this.state = {
 			color: '#455a64',
 			strokeWidth: 3,
-      collapsedColor: '#82888b'
+      collapsedColor: '#9fa1a2'
 		}
 	}
 
