@@ -78,11 +78,10 @@ class IIOT extends React.Component {
                 style={{
                   textDecoration: 'none',
                   outline: 'none',
-                  color: 'white'
                 }}
                 >
 
-                <Button variant='flat' style={{ textTransform: "capitalize", color: this.props.theme.palette.primary.contrastText}}> 
+                <Button variant='flat' style={{ textTransform: "capitalize", color: '#ddd'}}> 
                   {nextSection.title}
                 </Button>
               </HashLink>
