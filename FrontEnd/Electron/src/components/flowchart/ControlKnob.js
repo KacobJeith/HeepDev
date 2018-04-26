@@ -42,25 +42,25 @@ class ControlKnob extends React.Component {
 	drawControlKnob(ref) {
 
 		const inputs = {
-			vertexKnob: {
-				style: {
-					width: 10,
-					//top: 5,
-					height: 20,
-					//position:'absolute',
-					//right: this.direction == 0 ? null : -10,
-					//left: this.direction == 0 ? -10 : null
-				}
-			},
-			circleContainer: {
-				// height: 20,
-				// width: 11,
-			},
+			// vertexKnob: {
+			// 	style: {
+			// 		width: 10,
+			// 		top: 5,
+			// 		height: 20,
+			// 		position:'absolute',
+			// 		right: this.direction == 0 ? null : -10,
+			// 		left: this.direction == 0 ? -10 : null
+			// 	}
+			// },
+			// circleContainer: {
+			// 	height: 20,
+			// 	width: 11,
+			// },
 			circle: {
-        id: this.props.controlID,
-				onClick: (event) => {this.direction == 0 ?
-									 this.selectInputVertex(event) :
-									 this.selectOutputVertex(event)},
+        id: this.props.controlID+ '2',
+				// onClick: (event) => {this.direction == 0 ?
+				// 					 this.selectInputVertex(event) :
+				// 					 this.selectOutputVertex(event)},
 				onMouseEnter: () => this.setState({radius: 11}),
 				onMouseLeave: () => this.setState({radius: 8}),
 				cx: this.direction == 0 ? 9 : 0,
@@ -97,7 +97,7 @@ class ControlKnob extends React.Component {
 
 		var controller = [];
 
-		return (<div {...inputs.all}>
+		return (<div>
 					   {this.direction == 1 ?  this.drawControlKnob('output') : this.drawControlKnob('input')}
     				</div>
 		);
