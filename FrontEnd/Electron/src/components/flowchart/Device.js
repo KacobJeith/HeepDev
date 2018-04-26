@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux'
 import * as Actions from '../../redux/actions_classic'
 import * as newActions from '../../redux/actions'
 import Control from './Controls';
+import ControlKnob from './ControlKnob';
 import DynamicIcon from './DynamicIcon';
 import { Paper, Button, Typography, Grid, IconButton, Collapse } from 'material-ui'
 import { withTheme } from 'material-ui/styles'
@@ -45,6 +46,15 @@ class Device extends React.Component {
 			</div>
 		)
 	}
+
+  drawControlKnobs(controlList) {
+    <div>
+      {controlList.map((controlKey) => {
+        return <ControlKnob key={controlKey} deviceID={this.props.device.deviceID} controlID={controlKey}/>
+      }
+      )}
+    </div>
+  }
 
 	drawDeviceIcon() {
 		const svgIcon = {
@@ -173,10 +183,15 @@ class Device extends React.Component {
 
 
 		return (
-      <div>
+      <div style={{
+        left: -15,
+        position: 'relative',
+        width: 370
+      }}>
         {this.drawOptions()}
 					<Grid container {...inputs.gridContainer} direction='column' alignItems='stretch' spacing={8}>
-						<Grid item>
+
+						<Grid item xs={12}>
 							<Grid container justify='center' >
 								<Grid item >
 									{this.deviceName()}
@@ -184,35 +199,58 @@ class Device extends React.Component {
 							</Grid>
 						</Grid>
 
-  						<Grid id={this.props.deviceID+'_details'} item style={{
+                {/* {this.drawControlKnobs(this.props.controlInputs)} */}
+
+  						<Grid item style={{
                 paddingRight:0,
                 paddingLeft:0,
+                // left: -11,
+                // position: 'absolute',
+                // width: 360
                 //opacity: this.props.collapsed ? 0 : 1
                 // display: this.props.collapsed ? "none" : "block"
               }}>
-                <Collapse in={!this.props.collapsed} style={{overflow: 'visible'}} timeout="auto" unmountOnExit>
-    							<Grid container direction='row' justify='space-around' alignItems='stretch' spacing={0} >
-    								<Grid item xs={4} style={{margin:0}}>
-    									{this.drawControls(this.props.controlInputs)}
-    								</Grid>
 
-    								<Grid item xs={4} style={{margin:0}}>
-    									<Grid container alignItems='center' spacing={0} style={{height:'100%', margin: 0, padding: 0}}>
-    										<Grid item xs={12}>
-    											{this.drawDeviceIcon()}
-    										</Grid>
-    									</Grid>
-    								</Grid>
+              <Grid container direction='row' justify='space-between'>
+                <Grid item xs={2} style={{backgroundColor: 'green'}}>
+                  {this.drawControlKnobs(this.props.controlInputs)}
+                </Grid>
 
-    								<Grid item xs={4} style={{margin:0, padding: 0}}>
-    									{this.drawControls(this.props.controlOutputs)}
-    								</Grid>
+                <Grid item xs={8}>
+                  <Collapse in={!this.props.collapsed} style={{overflow: 'visible'}} timeout="auto" unmountOnExit>
+      							<Grid container id={this.props.deviceID+'_details'} style={{backgroundColor: 'blue'}} direction='row' justify='space-around' alignItems='stretch' spacing={0} >
 
-    							</Grid>
-                </Collapse>
+                      <Grid item xs={4} style={{margin:0}}>
+      									{this.drawControls(this.props.controlInputs)}
+      								</Grid>
+
+      								<Grid item xs={4} style={{margin:0}}>
+      									<Grid container alignItems='center' spacing={0} style={{height:'100%', margin: 0, padding: 0}}>
+      										<Grid item xs={12}>
+      											{this.drawDeviceIcon()}
+      										</Grid>
+      									</Grid>
+      								</Grid>
+
+      								<Grid item xs={4} style={{margin:0, padding: 0}}>
+      									{this.drawControls(this.props.controlOutputs)}
+      								</Grid>
+      							</Grid>
+                  </Collapse>
+                </Grid>
+
+                <Grid item xs={2} style={{backgroundColor: 'green'}}>
+                  {this.drawControlKnobs(this.props.controlOutputs)}
+                </Grid>
+
+              </Grid>
+
+
   						</Grid>
 
-					</Grid>
+                  {/* {this.drawControlKnobs(this.props.controlOutputs)} */}
+              </Grid>
+
         </div>
 			);
 	}

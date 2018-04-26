@@ -41,48 +41,48 @@ class Control extends React.Component {
 								this.props.control['controlID']);
 	}
 
-	drawControlKnob(ref) {
-
-		const inputs = {
-			vertexKnob: {
-				style: {
-					width: 10,
-					top: 5,
-					height: 20,
-					position:'absolute',
-					right: this.direction == 0 ? null : -10,
-					left: this.direction == 0 ? -10 : null
-				}
-			},
-			circleContainer: {
-				height: 20,
-				width: 11,
-			},
-			circle: {
-        id: this.props.controlID,
-				onClick: (event) => {this.direction == 0 ?
-									 this.selectInputVertex(event) :
-									 this.selectOutputVertex(event)},
-				onMouseEnter: () => this.setState({radius: 11}),
-				onMouseLeave: () => this.setState({radius: 8}),
-				cx: this.direction == 0 ? 9 : 0,
-				cy: 10,
-				r: this.state.radius,
-				fill: this.direction == 0 ? "#00baff" : '#00cb7b',
-				style: {
-					cursor: 'pointer',
-				}
-			}
-		}
-
-		return (
-			<div {...inputs.vertexKnob}>
-				<svg {...inputs.circleContainer} ref={ref}>
-					<circle {...inputs.circle} />
-				</svg>
-			</div>
-		)
-	}
+	// drawControlKnob(ref) {
+  //
+	// 	const inputs = {
+	// 		vertexKnob: {
+	// 			style: {
+	// 				width: 10,
+	// 				top: 5,
+	// 				height: 20,
+	// 				position:'absolute',
+	// 				right: this.direction == 0 ? null : -10,
+	// 				left: this.direction == 0 ? -10 : null
+	// 			}
+	// 		},
+	// 		circleContainer: {
+	// 			height: 20,
+	// 			width: 11,
+	// 		},
+	// 		circle: {
+  //       id: this.props.controlID,
+	// 			onClick: (event) => {this.direction == 0 ?
+	// 								 this.selectInputVertex(event) :
+	// 								 this.selectOutputVertex(event)},
+	// 			onMouseEnter: () => this.setState({radius: 11}),
+	// 			onMouseLeave: () => this.setState({radius: 8}),
+	// 			cx: this.direction == 0 ? 9 : 0,
+	// 			cy: 10,
+	// 			r: this.state.radius,
+	// 			fill: this.direction == 0 ? "#00baff" : '#00cb7b',
+	// 			style: {
+	// 				cursor: 'pointer',
+	// 			}
+	// 		}
+	// 	}
+  //
+	// 	return (
+	// 		<div {...inputs.vertexKnob}>
+	// 			<svg {...inputs.circleContainer} ref={ref}>
+	// 				<circle {...inputs.circle} />
+	// 			</svg>
+	// 		</div>
+	// 	)
+	// }
 
 	render() {
 
@@ -133,7 +133,7 @@ class Control extends React.Component {
 						</Grid>
 					</Grid>
 
-					{this.direction == 1 ?  this.drawControlKnob('output') : this.drawControlKnob('input')}
+					{/* {this.direction == 1 ?  this.drawControlKnob('output') : this.drawControlKnob('input')} */}
 				</div>
 		);
 	}
