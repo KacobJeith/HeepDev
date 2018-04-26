@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { Grid, Typography, Button } from 'material-ui';
+import ArrowForward from 'material-ui-icons/ArrowForward'
 import { HashLink } from "react-router-hash-link";
 import { withTheme } from 'material-ui/styles';
 import { withRouter }         from 'react-router-dom'
@@ -35,15 +36,17 @@ class IIOT extends React.Component {
           margin: '0 auto'
         }}>
           <Grid item xs={12} sm={8}>
-            <Typography variant={titleVariant} align={titleAlign} style={{color:'white'}}>
-              Leverage Embedded Insights 
+            <Typography variant='display1' align={titleAlign} style={{color:'white'}}>
+              Manufacturing has never been so Simple
             </Typography>
           </Grid>
 
           <Grid item xs={12} sm={8}>
-            <Typography variant='subheading' align='center' style={{color:'white'}}>
+            <Typography variant='subheading' align='center' style={{color:'#bbbbbb'}}>
               By embedding intelligence throughout your process, 
-              you can unlock higher yields, more secure operation, and competitive advantages for your business.
+              you can unlock higher yields, 
+              more secure operation, 
+              and competitive advantages for your business.
             </Typography>
 
           </Grid>
@@ -103,12 +106,12 @@ class IIOT extends React.Component {
           margin: '0 auto'
          }}
          justify='center' alignItems='center'>
-          <Grid item  xs={12} md={8}>
+          <Grid item  xs={12} md={10}>
             <Typography variant={titleVariant} align={titleAlign}>
               {sectionInfo.title}
             </Typography>
 
-            <Typography variant='subheading' align='left' gutterBottom>
+            <Typography variant='body1' align='left' gutterBottom style={{color: '#999'}}>
               <ul>
                 {sectionInfo.bullets.map((thisBullet, index) => (
                   <li key={sectionInfo.link + index}>{thisBullet}</li> 
@@ -117,6 +120,26 @@ class IIOT extends React.Component {
             </Typography>
 
           </Grid>
+          {sectionInfo.moreInfoLink && (
+            <Grid item xs={12}>
+              <Grid container justify='center' alignItems='center'>
+                <HashLink 
+                  smooth 
+                  to={sectionInfo.moreInfoLink.link} 
+                  style={{
+                    textDecoration: 'none',
+                    outline: 'none'
+                  }}
+                >
+                <Button variant='flat' color='secondary' style={{ textTransform: "capitalize"}}> 
+                    {sectionInfo.moreInfoLink.text}
+                    <ArrowForward style={{marginLeft: this.props.theme.spacing.unit}}/>
+                  </Button>
+                </HashLink>
+              </Grid>
+            </Grid>
+          )}
+          
         </Grid>
       )
     );
@@ -131,10 +154,11 @@ class IIOT extends React.Component {
 
     return(
       SectionCard(inputs,
-        <Grid container style={{
+        <Grid container direction='column' style={{
           maxWidth:'100%',
+          minHeight: 400,
           margin: '0 auto'
-        }} justify ='center' alignItems ='center'>
+        }} justify='center' alignItems='center'>
           <Grid item xs={12}>
             <Typography variant='headline' align='center'>
               Let's Get Started.
@@ -144,12 +168,9 @@ class IIOT extends React.Component {
               Contact us for a consulation on how Heep products can augment your operations.
             </Typography>
            
-            
-
-
           </Grid>
 
-          <Grid item >
+          <Grid item>
             <HashLink 
               smooth 
               to={"/Contact#top"} 
@@ -176,10 +197,14 @@ class IIOT extends React.Component {
         link: 'security', 
         title: 'Security',
         bullets: [
-          'No cloud dependence',
-          'Encrypted communications',
-          'Protect legacy systems with Two-Factor Authentication'
-        ]
+          'Heep networks require no cloud connectivity. You control where your data gets sent.',
+          'All Heep devices encrypt even their local communications. No other edge computing platform takes security this seriously.',
+          'Leverage Heep to protect your legacy systems with two-factor Authentication'
+        ],
+        moreInfoLink: {
+          text: 'Learn More',
+          link: '/product/Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8xMjYxODQ1MjE3MzA5'
+        }
       },
       {
         link: 'insights', 
