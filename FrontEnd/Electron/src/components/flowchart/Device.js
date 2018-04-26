@@ -236,26 +236,21 @@ class Device extends React.Component {
 		return (
       <div>
         {this.drawOptions()}
-
-					<Grid container
-            direction='column'
-            {...inputs.container}
-            alignItems='stretch'
-            spacing={8}
-            >
-
-						<Grid item xs={12}>
-							{this.drawTopItems()}
-						</Grid>
-
-						<Grid item xs={12} {...inputs.detailsContainer}>
-              {this.drawDetails()}
-  					</Grid>
-
-              </Grid>
-
-        </div>
-			);
+				<Grid container
+          direction='column'
+          alignItems='stretch'
+          spacing={8}
+          {...inputs.container}
+          >
+					<Grid item xs={12}>
+						{this.drawTopItems()}
+					</Grid>
+					<Grid item xs={12} {...inputs.detailsContainer}>
+            {this.drawDetails()}
+					</Grid>
+        </Grid>
+      </div>
+		);
 	}
 }
 
