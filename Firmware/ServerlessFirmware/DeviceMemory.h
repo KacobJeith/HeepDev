@@ -61,7 +61,7 @@ int GetNumBytesToReadForMOP(unsigned int pointer);
 heepByte GetMOPPointer(heepByte MOP, unsigned int *pointer, unsigned int *counter);
 
 heepByte AddUserMOP(heepByte userMOPNumber, heepByte* buffer, int bufferLength, heepByte* deviceID);
-heepByte GetUserMOP(heepByte userMOPNumber, heepByte* buffer);
+heepByte GetUserMOP(heepByte userMOPNumber, heepByte* buffer, int* bytesReturned);
 
 void PerformPreOpCodeProcessing_Byte(heepByte* deviceID);
 void SetControlRegister();

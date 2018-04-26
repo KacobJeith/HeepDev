@@ -1507,12 +1507,21 @@ void TestUserMOP()
 	CreateFakeDeviceID(deviceID1);
 	
 	int bufLen = 5;
+	int bytesReturned = 0;
 	heepByte myBuffer [] = {'H', 'E', 'L', 'L', 'O'};
 	heepByte newBuffer[10];
 	cout << (int)AddUserMOP(0, myBuffer, bufLen, deviceID1) << endl;
-	GetUserMOP(0, newBuffer);
+	GetUserMOP(0, newBuffer, &bytesReturned);
 
 	PrintDeviceMemory();
+
+	for(int i = 0; i < 5; i++)
+	{
+		cout << (int)newBuffer[i] << " ";
+	}
+	cout << endl;
+
+	cout << "NumBytes: " << bytesReturned << endl;
 
 	// ExpectedValue valueList [2];
 	// valueList[0].valueName = "MOP 1 Time";

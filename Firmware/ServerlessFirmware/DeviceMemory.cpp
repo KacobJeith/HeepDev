@@ -706,14 +706,12 @@ heepByte AddUserMOP(heepByte userMOPNumber, heepByte* buffer, int bufferLength, 
 	AddIndexOrDeviceIDToMemory_Byte(deviceID);
 	AddNewCharToMemory((char)bufferLength);
 
-	unsigned int transmittingBufferCounter = 0;
-	unsigned int receivingBufferCounter = curFilledMemory;
-	AddBufferToBuffer(deviceMemory, buffer, bufferLength, &receivingBufferCounter, &transmittingBufferCounter);
+	AddBufferToMemory(buffer, bufferLength);
 
 	return 0;
 }
 
-heepByte GetUserMOP(heepByte userMOPNumber, heepByte* buffer)
+heepByte GetUserMOP(heepByte userMOPNumber, heepByte* buffer, int* bytesReturned)
 {
 	heepByte MOPNumber = userMOPNumber + USER_MOP_START_ID;
 
@@ -727,12 +725,12 @@ heepByte GetUserMOP(heepByte userMOPNumber, heepByte* buffer)
 		return 1;
 
 	// Get Num Bytes to Read
-	int numBytes = GetNumBytesToReadForMOP(pointer);
+	*bytesReturned = GetNumBytesToReadForMOP(pointer);
 
 	unsigned int bufferCounter = 0;
-	unsigned int deviceMemCounter = pointer + ID_SIZE + 1;
+	unsigned int deviceMemCounter = pointer + ID_SIZE + 2;
 
-	AddBufferToBuffer(buffer, deviceMemory, numBytes, &bufferCounter, &deviceMemCounter);
+	AddBufferToBuffer(buffer, deviceMemory, *bytesReturned, &bufferCounter, &deviceMemCounter);
 
 	return 0;
 }
