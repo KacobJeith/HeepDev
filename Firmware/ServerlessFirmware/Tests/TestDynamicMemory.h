@@ -1507,7 +1507,7 @@ void TestUserMOP()
 	int bytesReturned = 0;
 	heepByte myBuffer [] = {'H', 'E', 'L', 'L', 'O'};
 	heepByte newBuffer[10];
-	cout << (int)AddUserMOP(0, myBuffer, bufLen, deviceID1) << endl;
+	AddUserMOP(0, myBuffer, bufLen, deviceID1);
 	GetUserMOP(0, newBuffer, &bytesReturned);
 
 	ExpectedValue valueList [6];
@@ -1536,6 +1536,36 @@ void TestUserMOP()
 	valueList[5].actualValue = myBuffer[4];
 
 	CheckResults(TestName, valueList, 6);
+}
+
+void TestGetNumBytesFromMOP()
+{
+	std::string TestName = "Test Pointer and NumBytes";
+
+	ClearDeviceMemory();
+
+	heepByte deviceID1[STANDARD_ID_SIZE];
+	CreateFakeDeviceID(deviceID1);
+	
+	int bufLen = 5;
+	heepByte myBuffer [] = {'H', 'E', 'L', 'L', 'O'};
+	heepByte newBuffer[10];
+	AddUserMOP(0, myBuffer, bufLen, deviceID1);
+	AddUserMOP(1, myBuffer, bufLen, deviceID1);
+	AddUserMOP(2, myBuffer, bufLen, deviceID1);
+	SetXYInMemory_Byte(312, 513, deviceID1);
+
+	unsigned int pointer = 0;
+	unsigned int counter = 0;
+	GetMOPPointer(FrontEndPositionOpCode, &pointer, &counter);
+	int bytesReturned = GetNumBytesToReadForMOP(pointer);
+
+	ExpectedValue valueList [1];
+	valueList[0].valueName = "Num Bytes Received";
+	valueList[0].expectedValue = 4;
+	valueList[0].actualValue = bytesReturned;
+
+	CheckResults(TestName, valueList, 1);
 }
 
 void TestDynamicMemory()
@@ -1576,4 +1606,5 @@ void TestDynamicMemory()
  	TestAnalyticsMOPQueue();
  	TestAnalyticsMOPTimeGetter();
  	TestUserMOP();
+	TestGetNumBytesFromMOP();
 }
