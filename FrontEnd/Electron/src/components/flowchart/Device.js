@@ -145,27 +145,21 @@ class Device extends React.Component {
         r: 8,
         fill: 'none',
       },
-      noPaddingMargin: {
-        style: {
-          margin: 0,
-          padding: 0
-        }
-      }
     }
 
     return (
       <Grid container {...inputs.titleContainer} justify='space-between'>
-        <Grid item xs={2} {...inputs.noPaddingMargin}>
+        <Grid item xs={2}>
         <svg {...inputs.circleContainer}>
           <circle {...inputs.rxCircle} />
         </svg>
         </Grid>
 
-          <Grid item xs={8} {...inputs.noPaddingMargin}>
+          <Grid item xs={8}>
             {this.deviceName()}
           </Grid>
 
-          <Grid item xs={2} {...inputs.noPaddingMargin}>
+          <Grid item xs={2}>
           <svg {...inputs.circleContainer}>
             <circle {...inputs.txCircle} />
           </svg>
@@ -185,16 +179,16 @@ class Device extends React.Component {
     }
 
     return (
-      <Grid container direction='row' justify='space-between' {...inputs.noPaddingMargin}>
+      <Grid container direction='row' justify='space-between'>
         <Grid item xs={12} id={this.props.deviceID+'_details'} >
           <Collapse in={!this.props.collapsed} style={{overflow: 'visible'}} timeout="auto" unmountOnExit>
-            <Grid container direction='row' justify='space-around' alignItems='stretch' spacing={0} {...inputs.noPaddingMargin}>
+            <Grid container direction='row' justify='space-around' alignItems='stretch' spacing={0}>
 
-              <Grid item xs={4} {...inputs.noPaddingMargin}>
+              <Grid item xs={4}>
                 {this.drawControls(this.props.controlInputs)}
               </Grid>
 
-              <Grid item xs={4} {...inputs.noPaddingMargin}>
+              <Grid item xs={4}>
                 <Grid container alignItems='center' spacing={0} style={{height:'100%', margin: 0, paddingTop: 10}}>
                   <Grid item xs={12}>
                     {this.drawDeviceIcon()}
@@ -202,7 +196,7 @@ class Device extends React.Component {
                 </Grid>
               </Grid>
 
-              <Grid item xs={4} {...inputs.noPaddingMargin}>
+              <Grid item xs={4}>
                 {this.drawControls(this.props.controlOutputs)}
               </Grid>
             </Grid>
