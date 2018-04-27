@@ -11,6 +11,7 @@ import SectionCard from '../utilities/SectionCard'
 
 import VideoBackgroundCard from '../utilities/VideoBackgroundCard'
 import ContactUsSection from '../utilities/ContactUsSection'
+import { banners } from '../../assets/remote/Banners'
 
 var mapStateToProps = (state) => ({
 });
@@ -22,12 +23,12 @@ class DIY extends React.Component {
       const inputs = {
         backgroundColor: '#00adee',
         //TO-DO: Purchase video
-        videoSrc: 'src/assets/PaperSignals.mp4',
+        imagePath: banners.paperSignals,
         minHeight: 500,
       }
 
       return(
-        VideoBackgroundCard(inputs, 
+        SectionCard(inputs, 
           <Grid container direction='column' justify ='center' alignItems ='center' style={{
             width: '100%',
             minHeight: inputs.minHeight,
@@ -35,7 +36,7 @@ class DIY extends React.Component {
           }}>
             <Grid item xs={12} sm={8}>
               <Typography variant='display1' align='center' style={{color:'white'}}>
-                Heep <span style={{color: 'red'}}>&#9829;</span> Open Source
+                Heep <span style={{color: '#00adee'}}>&#9829;</span> Open Source
               </Typography>
             </Grid>
 
@@ -72,7 +73,7 @@ class DIY extends React.Component {
                 </Typography>
 
                 <Typography variant='display1' align='center' paragraph>
-                  Stay tuned for a DIY announcement soon! 
+                  Stay tuned for an announcement soon! 
                 </Typography>
           </Grid>
         </Grid>

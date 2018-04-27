@@ -6,6 +6,8 @@ import { withTheme } from 'material-ui/styles';
 import * as Actions from '../../redux/actions'
 
 import { Grid, Paper, Typography } from 'material-ui'
+import Memory from 'material-ui-icons/Memory'
+import DesktopWindows from 'material-ui-icons/DesktopWindows'
 
 import SectionCard from '../utilities/SectionCard'
 import AboutCard from '../AboutCard'
@@ -121,14 +123,26 @@ class LandingIIOT extends React.Component {
   }
 
   bigQuote(quote) {
+    const fontSize = 36
 
     const inputs = {
-      paddingTop: 25,
-      paddingBottom: 25,
-      backgroundColor: '#B0BEC5'
+      sectionInputs: {
+        paddingTop: 25,
+        paddingBottom: 25,
+        backgroundColor: '#B0BEC5'
+      },
+      icon: {
+        color: 'primary',
+        style: { 
+          width: 100,
+          height: 100 
+        }
+      }
     };
+
+
     return(
-      SectionCard(inputs,
+      SectionCard(inputs.sectionInputs,
         <Grid container justify ='center' alignItems='center' spacing={24} style={{
           maxWidth: '100%',
           minHeight: inputs.minHeight,
@@ -136,10 +150,24 @@ class LandingIIOT extends React.Component {
           paddingBottom: this.props.theme.spacing.unit * 5,
           margin: '0 auto'
         }}>
+          <Grid item xs={3}>
+            <Grid container justify='center'>
+              <Grid item>
+                <Memory {...inputs.icon}/>
+              </Grid>
+            </Grid>
+          </Grid>
           <Grid item xs={6}>
                 <Typography variant='display1' align='center' paragraph>
                   {quote}
                 </Typography>
+          </Grid>
+          <Grid item xs={3}>
+            <Grid container justify='center'>
+              <Grid item>
+                <DesktopWindows {...inputs.icon}/>
+            </Grid>
+            </Grid>
           </Grid>
         </Grid>
       )
