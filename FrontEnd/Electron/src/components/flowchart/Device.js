@@ -80,11 +80,16 @@ class Device extends React.Component {
           width: 30,
           minWidth: 30
         },
-  			color: this.props.detailsPanelDeviceID == this.props.device.deviceID ? 'secondary' : '#979ba2',
+  			color: this.props.detailsPanelDeviceID == this.props.device.deviceID ? 'secondary' : 'default',
   			onClick: () => this.props.detailsPanelDeviceID == this.props.device.deviceID ?
   							this.props.setDetailsPanelDeviceID(null) :
   							this.props.setDetailsPanelDeviceID(this.props.device.deviceID)
 			},
+      infoIcon: {
+        style: {
+          color: this.props.detailsPanelDeviceID == this.props.device.deviceID ? '#03a9f4' : '#7e838a'
+        }
+      },
       collapseButton: {
         style: {
           padding: 0,
@@ -92,8 +97,13 @@ class Device extends React.Component {
           width: 30,
           minWidth: 30
         },
-  			color:  this.props.collapsed ? 'secondary' : '#979ba2',
+  			color:  this.props.collapsed ? 'secondary' : 'default',
   			onClick: () => this.animateCollapse()
+      },
+      collapsedIcon: {
+        style: {
+          color: this.props.collapsed ? '#03a9f4' : '#7e838a'
+        }
       }
     }
 
@@ -102,10 +112,10 @@ class Device extends React.Component {
   			<Grid container justify='flex-end' spacing={0}>
           <Grid item xs={12}>
             <Button {...inputs.collapseButton}>
-    					<KeyboardArrowDown/>
+    					<KeyboardArrowDown {...inputs.collapsedIcon}/>
     				</Button>
             <Button {...inputs.infoButton}>
-    					<InfoOutline/>
+    					<InfoOutline {...inputs.infoIcon}/>
     				</Button>
           </Grid>
   			</Grid>
@@ -217,7 +227,7 @@ class Device extends React.Component {
     }
 
     if (this.props.collapsed) {
-      TweenLite.to(deviceDetails, 1, {opacity: 1, onComplete: updatingVertex.bind(this)}).delay(0.3)
+      TweenLite.to(deviceDetails, 1, {opacity: 1, onComplete: updatingVertex.bind(this)}).delay(0.5)
       this.props.collapseDevice(this.props.deviceID)
       setTimeout(updatingVertex.bind(this), 300)
 
