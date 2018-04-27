@@ -117,7 +117,6 @@ class Device extends React.Component {
     const inputs = {
       titleContainer: {
         style: {
-          height: 25,
           margin: "0 auto",
           padding: 0,
           maxWidth: "100%"
