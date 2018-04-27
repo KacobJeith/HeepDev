@@ -248,8 +248,8 @@ void ExecuteSetValOpCode()
 {
 	unsigned int counter = 1;
 	unsigned char numBytes = inputBuffer[counter++];
-	unsigned char controlID = inputBuffer[counter++];
-	unsigned char sentControlType = inputBuffer[counter++];
+	unsigned char controlID = inputBuffer[counter++]; numBytes--;
+	unsigned char sentControlType = inputBuffer[counter++]; numBytes--;
 
 	heepByte controlType = GetControlTypeFromControlID(controlID);
 
@@ -257,7 +257,7 @@ void ExecuteSetValOpCode()
 	if(controlType == 2)
 	{
 		if(sentControlType == 2)
-			success = SetControlValueByIDFromNetworkBuffer(controlID, inputBuffer, counter, numBytes - 1);
+			success = SetControlValueByIDFromNetworkBuffer(controlID, inputBuffer, counter, numBytes);
 		else
 			success = 1; // Can't set a number to a buffer
 	}
@@ -265,10 +265,10 @@ void ExecuteSetValOpCode()
 	{
 		if(sentControlType == 1 || sentControlType == 0)
 		{
-			heepByte highValue = inputBuffer[counter++];
-			heepByte lowValue = inputBuffer[counter++];
+			heepByte highValue = inputBuffer[counter++]; numBytes--;
+			heepByte lowValue = inputBuffer[counter++]; numBytes--;
 
-			unsigned int value = GetNumberFromBuffer(inputBuffer, &counter, numBytes - 1);
+			unsigned int value = GetNumberFromBuffer(inputBuffer, &counter, numBytes);
 			success = SetControlValueByIDFromNetwork(controlID, value, highValue, lowValue);
 		}
 		else

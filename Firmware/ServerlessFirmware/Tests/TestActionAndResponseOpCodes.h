@@ -161,12 +161,13 @@ void TestSetValSuccess()
 
 	ClearInputBuffer();
 	inputBuffer[0] = 0x0A;// OpCode
-	inputBuffer[1] = 0x02;
+	inputBuffer[1] = 0x05;
 	inputBuffer[2] = 0x00; // Destination ID
 	inputBuffer[3] = 0x00; // Source Control Type
 	inputBuffer[4] = 0x04; // Source High Val
 	inputBuffer[5] = 0x00; // Source Low Val
 	inputBuffer[6] = 0x03; // Value
+	inputBuffer[7] = 0x05; // Random junk for edge case test
 	ExecuteControlOpCodes();
 
 	ExpectedValue valueList[2];
