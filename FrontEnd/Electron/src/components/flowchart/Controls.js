@@ -9,10 +9,11 @@ import * as Utils from '../../serverside/utilities/generalUtilities'
 
 var mapStateToProps = (state, ownProps) => ({
   control: state.controls[ownProps.controlID],
+  collapsed: state.flowchart.devices[ownProps.DeviceID] ? state.flowchart.devices[ownProps.DeviceID].collapsed : false,
   deviceID: ownProps.deviceID,
   controlID: ownProps.controlID,
-  value: state.controls[ownProps.controlID]['valueCurrent'],
-  ip: state.devices[ownProps.deviceID]['ipAddress']
+  value: state.controls[ownProps.controlID].valueCurrent,
+  ip: state.devices[ownProps.deviceID].ipAddress
 })
 
 
@@ -49,13 +50,13 @@ class Control extends React.Component {
 					top: 5,
 					height: 20,
 					position:'absolute',
-					right: this.direction == 0 ? null : -10,
-					left: this.direction == 0 ? -10 : null
+					right: this.direction == 0 ? null : -13,
+					left: this.direction == 0 ? -14 : null
 				}
 			},
 			circleContainer: {
 				height: 20,
-				width: 11,
+				width: 12
 			},
 			circle: {
         id: this.props.controlID,
@@ -64,7 +65,7 @@ class Control extends React.Component {
 									 this.selectOutputVertex(event)},
 				onMouseEnter: () => this.setState({radius: 11}),
 				onMouseLeave: () => this.setState({radius: 8}),
-				cx: this.direction == 0 ? 9 : 0,
+				cx: this.direction == 0 ? 11 : 0,
 				cy: 10,
 				r: this.state.radius,
 				fill: this.direction == 0 ? "#00baff" : '#00cb7b',

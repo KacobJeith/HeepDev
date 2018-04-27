@@ -87,7 +87,8 @@ class DevicePaper extends React.Component {
     					color: 'black',
               pointerEvents: 'visible',
               opacity: this.props.activeState ? 1.0 : .4,
-              borderRadius: 20
+              borderRadius: 20,
+              overflow: 'visible'
 				},
 			},
 		}
