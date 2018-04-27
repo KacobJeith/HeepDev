@@ -116,9 +116,9 @@ class Device extends React.Component {
       titleContainer: {
         style: {
           height: 25,
-          backgroundColor: 'green'
         },
-        pointerEvents: 'none'
+        pointerEvents: 'none',
+        overflow: 'visible'
       },
       rxCircle: {
         id: this.props.deviceID+ '_rx',
@@ -160,7 +160,7 @@ class Device extends React.Component {
 
   drawDetails() {
     return (
-      <Grid container direction='row' justify='space-between' style={{backgroundColor: "blue"}}>
+      <Grid container direction='row' justify='space-between'>
         <Grid item xs={12} id={this.props.deviceID+'_details'}>
           <Collapse in={!this.props.collapsed} style={{overflow: 'visible'}} timeout="auto" unmountOnExit>
             <Grid container direction='row' justify='space-around' alignItems='stretch' spacing={0} >
@@ -237,7 +237,7 @@ class Device extends React.Component {
 				<Grid container
           direction='column'
           alignItems='stretch'
-          spacing={16}
+          spacing={8}
           {...inputs.deviceContainer}
           >
 					<Grid item xs={12}>
