@@ -119,6 +119,7 @@ class Device extends React.Component {
         style: {
           margin: "0 auto",
           padding: 0,
+          height: 30,
           maxWidth: "100%"
         },
         pointerEvents: 'none',
@@ -143,23 +144,28 @@ class Device extends React.Component {
         cy: 15,
         r: 8,
         fill: 'none',
+      },
+      noPaddingMargin: {
+        style: {
+          margin: 0,
+          padding: 0
+        }
       }
     }
 
     return (
       <Grid container {...inputs.titleContainer} justify='space-between'>
-        <Grid item xs={1} style={{
-        }}>
+        <Grid item xs={2} {...inputs.noPaddingMargin}>
         <svg {...inputs.circleContainer}>
           <circle {...inputs.rxCircle} />
         </svg>
         </Grid>
 
-          <Grid item xs={8}>
+          <Grid item xs={8} {...inputs.noPaddingMargin}>
             {this.deviceName()}
           </Grid>
 
-          <Grid item xs={1}>
+          <Grid item xs={2} {...inputs.noPaddingMargin}>
           <svg {...inputs.circleContainer}>
             <circle {...inputs.txCircle} />
           </svg>
@@ -169,17 +175,26 @@ class Device extends React.Component {
   };
 
   drawDetails() {
-    return (
-      <Grid container direction='row' justify='space-between'>
-        <Grid item xs={12} id={this.props.deviceID+'_details'}>
-          <Collapse in={!this.props.collapsed} style={{overflow: 'visible'}} timeout="auto" unmountOnExit>
-            <Grid container direction='row' justify='space-around' alignItems='stretch' spacing={0} >
+    const inputs = {
+      noPaddingMargin: {
+        style: {
+          margin: 0,
+          padding: 0
+        }
+      }
+    }
 
-              <Grid item xs={4} style={{margin:0}}>
+    return (
+      <Grid container direction='row' justify='space-between' {...inputs.noPaddingMargin}>
+        <Grid item xs={12} id={this.props.deviceID+'_details'} >
+          <Collapse in={!this.props.collapsed} style={{overflow: 'visible'}} timeout="auto" unmountOnExit>
+            <Grid container direction='row' justify='space-around' alignItems='stretch' spacing={0} {...inputs.noPaddingMargin}>
+
+              <Grid item xs={4} {...inputs.noPaddingMargin}>
                 {this.drawControls(this.props.controlInputs)}
               </Grid>
 
-              <Grid item xs={4} style={{margin:0}}>
+              <Grid item xs={4} {...inputs.noPaddingMargin}>
                 <Grid container alignItems='center' spacing={0} style={{height:'100%', margin: 0, paddingTop: 10}}>
                   <Grid item xs={12}>
                     {this.drawDeviceIcon()}
@@ -187,7 +202,7 @@ class Device extends React.Component {
                 </Grid>
               </Grid>
 
-              <Grid item xs={4} style={{margin:0, padding: 0}}>
+              <Grid item xs={4} {...inputs.noPaddingMargin}>
                 {this.drawControls(this.props.controlOutputs)}
               </Grid>
             </Grid>
@@ -235,8 +250,7 @@ class Device extends React.Component {
       },
       detailsContainer: {
         style: {
-          paddingRight:0,
-          paddingLeft:0,
+          padding: 0,
         }
       },
 		}
