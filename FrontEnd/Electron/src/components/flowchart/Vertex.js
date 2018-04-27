@@ -17,8 +17,8 @@ var mapStateToProps = (state, ownProps) => (
   scale: state.flowchart.scale,
   txDeviceID: state.vertexList[ownProps.vertexID].txDeviceID,
   rxDeviceID: state.vertexList[ownProps.vertexID].rxDeviceID,
-  txCollapsed: state.flowchart.devices[state.vertexList[ownProps.vertexID].txDeviceID].collapsed ? state.flowchart.devices[state.vertexList[ownProps.vertexID].txDeviceID].collapsed : false,
-  rxCollapsed: state.flowchart.devices[state.vertexList[ownProps.vertexID].rxDeviceID].collapsed ? state.flowchart.devices[state.vertexList[ownProps.vertexID].rxDeviceID].collapsed : false,
+  txCollapsed: state.flowchart.devices[state.vertexList[ownProps.vertexID].txDeviceID] && state.flowchart.devices[state.vertexList[ownProps.vertexID].txDeviceID].collapsed ? state.flowchart.devices[state.vertexList[ownProps.vertexID].txDeviceID].collapsed : false,
+  rxCollapsed: state.flowchart.devices[state.vertexList[ownProps.vertexID].rxDeviceID] && state.flowchart.devices[state.vertexList[ownProps.vertexID].rxDeviceID].collapsed ? state.flowchart.devices[state.vertexList[ownProps.vertexID].rxDeviceID].collapsed : false,
 })
 
 class Vertex extends React.Component {
@@ -38,8 +38,6 @@ class Vertex extends React.Component {
   getInputPosition = () => {
   	let returnPosition = false;
   	try {
-      // const txControlName = generalUtils.getTxControlNameFromVertex(this.props.vertex)
-      // console.log(this.props.txCollapsed)
 
       let txControlName
 
@@ -80,8 +78,6 @@ class Vertex extends React.Component {
       } else {
         rxControlName = generalUtils.getRxControlNameFromVertex(this.props.vertex)
       }
-
-      // const rxControlName = generalUtils.getRxControlNameFromVertex(this.props.vertex)
 
       const svgElement = document.getElementById(rxControlName)
       const svgElRect = svgElement.getBoundingClientRect()

@@ -190,11 +190,8 @@ class Device extends React.Component {
   animateCollapse() {
     const deviceDetails = document.getElementById(this.props.deviceID+'_details')
     const deviceVertices = '.vertex' + this.props.deviceID.toString()
-    //const allVertices = document.querySelectorAll(vertices)
 
     TweenLite.set(deviceVertices, {opacity: 0})
-
-
 
     function updatingVertex() {
       this.props.updateVertex()
@@ -238,7 +235,7 @@ class Device extends React.Component {
 				<Grid container
           direction='column'
           alignItems='stretch'
-          spacing={8}
+          spacing={16}
           {...inputs.deviceContainer}
           >
 					<Grid item xs={12}>
