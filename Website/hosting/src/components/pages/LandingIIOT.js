@@ -4,10 +4,12 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { withTheme } from 'material-ui/styles';
 import * as Actions from '../../redux/actions'
+import { HashLink } from "react-router-hash-link";
 
-import { Grid, Paper, Typography } from 'material-ui'
+import { Grid, Paper, Typography, Button } from 'material-ui'
 import Memory from 'material-ui-icons/Memory'
 import DesktopWindows from 'material-ui-icons/DesktopWindows'
+import ArrowForward from 'material-ui-icons/ArrowForward'
 
 import SectionCard from '../utilities/SectionCard'
 import AboutCard from '../AboutCard'
@@ -16,6 +18,12 @@ import VideoBackgroundCard from '../utilities/VideoBackgroundCard'
 import { banners } from '../../assets/remote/Banners'
 import { svgs } from '../../assets/remote/SVGs'
 import ContactUsSection from '../utilities/ContactUsSection'
+
+import SplitSectionCard from '../utilities/SplitSectionCard'
+import assets from '../../assets/remote/general.json'
+
+const titleVariant = 'title';
+const titleAlign = 'center';
 
 var mapStateToProps = (state) => ({
 });
@@ -175,27 +183,59 @@ class LandingIIOT extends React.Component {
   }
 
 
-  iiotBlurb() {
-
+  splitSectionWithBlurb(sectionInfo, orientation) {
     const inputs = {
-      paddingTop: this.props.theme.spacing.unit * 5,
-      paddingBottom: this.props.theme.spacing.unit * 5,
-      backgroundColor: 'white'
+      imageSide: orientation, 
+      minHeight: 400,
+      imagePath: assets[sectionInfo.link]
     };
-    return(
-      SectionCard(inputs,
-        <Grid container justify ='center' alignItems='center' spacing={24} style={{
-          maxWidth: '100%',
-          minHeight: inputs.minHeight,
+
+    return (
+      SplitSectionCard(inputs,
+        <Grid container id={sectionInfo.link} style={{
+          maxWidth:'100%',
           margin: '0 auto'
-        }}>
-          <Grid item xs={6}>
-                
+         }}
+         justify='center' alignItems='center'>
+          <Grid item  xs={12} md={10}>
+            <Typography variant={titleVariant} align={titleAlign}>
+              {sectionInfo.title}
+            </Typography>
+
+            <Typography variant='body1' align='left' style={{color: '#999'}}>
+              
+            </Typography>
+
           </Grid>
+          {sectionInfo.moreInfoLink && (
+            <Grid item xs={12}>
+              <Grid container justify='center' alignItems='center'>
+                <HashLink 
+                  smooth 
+                  to={sectionInfo.moreInfoLink.externalLink ? 
+                    'IndustrialHeep' : 
+                    sectionInfo.moreInfoLink.link} 
+                  style={{
+                    textDecoration: 'none',
+                    outline: 'none'
+                  }}
+                >
+                <Button variant='flat' color='secondary' style={{ textTransform: "capitalize"}}
+                  onClick={sectionInfo.moreInfoLink.externalLink ? 
+                    () => window.open(sectionInfo.moreInfoLink.externalLink, '_blank') : 
+                    () => {}}> 
+                    {sectionInfo.moreInfoLink.text}
+                    <ArrowForward style={{marginLeft: this.props.theme.spacing.unit}}/>
+                  </Button>
+                </HashLink>
+              </Grid>
+            </Grid>
+          )}
+          
         </Grid>
       )
-    )
-  }
+    );
+  };
 
   render() {
     const inputs = {
@@ -204,13 +244,42 @@ class LandingIIOT extends React.Component {
       quote2: ``
     }
 
+    const blurbs = [
+      {
+        title: 'Commercial Applications',
+        link: 'missionChinese',
+        moreInfoLink: {
+          text: 'Learn More',
+          link: '/Business'
+        }
+      },
+      {
+        title: 'Industrial Applications',
+        link: 'interoperability',
+        moreInfoLink: {
+          text: 'Learn More',
+          link: '/IndustrialHeep'
+        }
+      },
+      {
+        title: 'Consumer Applications',
+        link: 'paperSignals',
+        moreInfoLink: {
+          text: 'Learn More',
+          link: '/diy'
+        }
+      }
+    ]
+
   	return (
       <div>
         {this.topBanner()}
 {/*         {this.iiotCollection()} */}
         {this.heepTechnology()}
         {this.bigQuote(inputs.quote1)}
-        {this.iiotBlurb()}
+        {blurbs.map((sectionInfo, index) => {
+          return this.splitSectionWithBlurb(sectionInfo, index % 2 == 0 ? 'left' : 'right')
+        })}
         <ContactUsSection />
       </div>
       );

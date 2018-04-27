@@ -32,7 +32,8 @@ class DIY extends React.Component {
           <Grid container direction='column' justify ='center' alignItems ='center' style={{
             width: '100%',
             minHeight: inputs.minHeight,
-            margin: '0 auto'
+            margin: '0 auto',
+            backgroundColor: 'rgba(0,0,0,0.25)'
           }}>
             <Grid item xs={12} sm={8}>
               <Typography variant='display1' align='center' style={{color:'white'}}>
