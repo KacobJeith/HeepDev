@@ -134,7 +134,9 @@ int GetScaledValue(unsigned char controlID, unsigned int value, unsigned int hig
 	// Special case to round up when receiving control has only 2 states
 	if(controlList[controlID].highValue - controlList[controlID].lowValue == 1)
 	{
-		if(value >= (highValue - lowValue)/2)
+		if(highValue - lowValue == 1)
+			return value;
+		else if(value >= (highValue - lowValue)/2)
 			return controlList[controlID].highValue;
 		else 
 			return controlList[controlID].lowValue;

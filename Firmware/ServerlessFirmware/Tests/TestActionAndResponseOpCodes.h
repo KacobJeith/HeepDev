@@ -874,8 +874,10 @@ void TestGetScaledValue()
 	int shouldBe0 = GetScaledValue(0, 24, 50, 0);
 	int shouldBe1Two = GetScaledValue(0, 1, 2, 0);
 	int shouldBe100 = GetScaledValue(1, 3, 2, 0);
+	int shouldBe1Three = GetScaledValue(0, 1, 1, 0);
+	int shouldBe0Two = GetScaledValue(0, 0, 1, 0);
 
-	ExpectedValue valueList [5];
+	ExpectedValue valueList [7];
 	valueList[0].valueName = "Scaled 1";
 	valueList[0].expectedValue = 1;
 	valueList[0].actualValue = shouldBe1;
@@ -896,7 +898,15 @@ void TestGetScaledValue()
 	valueList[4].expectedValue = 100;
 	valueList[4].actualValue = shouldBe100;
 
-	CheckResults(TestName, valueList, 4);
+	valueList[5].valueName = "Scaled 6";
+	valueList[5].expectedValue = 1;
+	valueList[5].actualValue = shouldBe1Three;
+
+	valueList[6].valueName = "Scaled 7";
+	valueList[6].expectedValue = 0;
+	valueList[6].actualValue = shouldBe0Two;
+
+	CheckResults(TestName, valueList, 7);
 }
 
 void TestSetValBuffer()
