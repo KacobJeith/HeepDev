@@ -899,6 +899,73 @@ void TestGetScaledValue()
 	CheckResults(TestName, valueList, 4);
 }
 
+void TestSetValBuffer()
+{
+	std::string TestName = "Test Set Val Buffer";
+
+	ClearVertices();
+	ClearDeviceMemory();
+	ClearInputBuffer();
+	ClearControls();
+	
+	heepByte bufferControl [10];
+
+	SetDeviceName("Test");
+	Control theControl;
+	theControl.controlName = "Test Control";
+	theControl.controlID = 0;
+	theControl.controlDirection = 1;
+	theControl.controlType = 2;
+	theControl.highValue= 10;
+	theControl.controlBuffer = bufferControl;
+	AddControl(theControl);
+
+	ClearInputBuffer();
+	inputBuffer[0] = 0x0A;// OpCode
+	inputBuffer[1] = 0x05;
+	inputBuffer[2] = 0x00; // Destination ID
+	inputBuffer[3] = 0x00; // Source Control Type (Not buffer, should fail)
+	inputBuffer[4] = 0x04; // Source High Val
+	inputBuffer[5] = 0x00; // Source Low Val
+	inputBuffer[6] = 0x03; // Value
+	inputBuffer[7] = 0x05; // Random junk for edge case test
+	ExecuteControlOpCodes();
+
+	int shoudlBeFailureROP = outputBuffer[0];
+
+	ClearInputBuffer();
+	inputBuffer[0] = 0x0A;// OpCode
+	inputBuffer[1] = 12;
+	inputBuffer[2] = 0x00; // Destination ID
+	inputBuffer[3] = 0x02; // Source Control Type
+	for(int i = 0; i < 10; i++)
+	{
+		inputBuffer[i+4] = i;
+	}
+	ExecuteControlOpCodes();
+
+	int shouldBeSuccessROP = outputBuffer[0];
+
+	ExpectedValue valueList[12];
+	valueList[0].valueName = "Returned Op Code";
+	valueList[0].expectedValue = ErrorOpCode;
+	valueList[0].actualValue = shoudlBeFailureROP;
+
+	valueList[1].valueName = "Control Value";
+	valueList[1].expectedValue = SuccessOpCode;
+	valueList[1].actualValue = shouldBeSuccessROP;
+
+	for(int i = 0; i < 10; i++)
+	{
+		valueList[i+2].valueName = std::string("Value ") + std::to_string(i);
+		valueList[i+2].expectedValue = i;
+		valueList[i+2].actualValue = controlList[0].controlBuffer[i];
+	}
+
+	CheckResults(TestName, valueList, 12);
+
+}
+
 void TestActionAndResponseOpCodes()
 {
 	TestClearOutputBufferAndAddChar();
@@ -919,4 +986,5 @@ void TestActionAndResponseOpCodes()
 	TestWiFiOverflowDetection();
 	TestNameOverflowDetection();
 	TestGetScaledValue();
+	TestSetValBuffer();
 }
