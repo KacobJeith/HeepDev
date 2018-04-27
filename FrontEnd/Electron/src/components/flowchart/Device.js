@@ -250,7 +250,8 @@ class Device extends React.Component {
       },
       detailsContainer: {
         style: {
-          padding: 0,
+          paddingRight:0,
+          paddingLeft:0,
         }
       },
 		}
