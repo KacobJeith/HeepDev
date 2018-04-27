@@ -832,7 +832,7 @@ void TestNameOverflowDetection()
 
 void TestGetScaledValue()
 {
-	std::string TestName = "Test Name Overflow Detection";
+	std::string TestName = "Test Scale Input Values";
 
 	ClearVertices();
 	ClearDeviceMemory();
@@ -845,31 +845,46 @@ void TestGetScaledValue()
 	theControl.controlID = 0;
 	theControl.controlDirection = 1;
 	theControl.controlType = 1;
-	theControl.highValue= 100;
+	theControl.highValue= 1;
 	theControl.lowValue = 0;
 	theControl.curValue = 50;
 	AddControl(theControl);
 
+	Control theControl2;
+	theControl2.controlName = "Test Control 2";
+	theControl2.controlID = 1;
+	theControl2.controlDirection = 1;
+	theControl2.controlType = 1;
+	theControl2.highValue= 100;
+	theControl2.lowValue = 0;
+	theControl2.curValue = 50;
+	AddControl(theControl2);
+
 	int GetScaledValue(unsigned char controlID, unsigned int value, unsigned int highValue, unsigned int lowValue);
 
-	int returnedValue1 = GetScaledValue()
+	int shouldBe1 = GetScaledValue(0, 25, 50, 0);
+	int shouldBe50 = GetScaledValue(1, 25, 50, 0);
+	int shouldBe0 = GetScaledValue(0, 24, 50, 0);
+	int shouldBe1Two = GetScaledValue(0, 1, 2, 0);
 
-	heepByte shouldbeFailureCode = outputBuffer[0];
-
-	ExpectedValue valueList [3];
-	valueList[0].valueName = "Less than max memory";
+	ExpectedValue valueList [4];
+	valueList[0].valueName = "Scaled 1";
 	valueList[0].expectedValue = 1;
-	valueList[0].actualValue = curFilledMemory <= MAX_MEMORY;
+	valueList[0].actualValue = shouldBe1;
 
-	valueList[1].valueName = "ROP Should be Failure";
-	valueList[1].expectedValue = ErrorOpCode;
-	valueList[1].actualValue = shouldbeFailureCode;
+	valueList[1].valueName = "Scaled 2";
+	valueList[1].expectedValue = 50;
+	valueList[1].actualValue = shouldBe50;
 
-	valueList[2].valueName = "ROP Should be Success";
-	valueList[2].expectedValue = SuccessOpCode;
-	valueList[2].actualValue = shouldBeSuccessCode;
+	valueList[2].valueName = "Scaled 3";
+	valueList[2].expectedValue = 0;
+	valueList[2].actualValue = shouldBe0;
 
-	CheckResults(TestName, valueList, 3);
+	valueList[3].valueName = "Scaled 4";
+	valueList[3].expectedValue = 1;
+	valueList[3].actualValue = shouldBe1Two;
+
+	CheckResults(TestName, valueList, 4);
 }
 
 void TestActionAndResponseOpCodes()
