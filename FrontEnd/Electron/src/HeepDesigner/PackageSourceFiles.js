@@ -39,7 +39,7 @@ export const packageSourceFiles = (deviceDetails, controls) => {
       console.log("Did not match systemType");
   }
 
-  var nameZip = deviceDetails.deviceName + '.zip';
+  var nameZip = getArduinoCompatibleFileString(deviceDetails.deviceName) + '.zip';
 
   setIDAndMAC((deviceIDarray, MACAddressArray) => {
 
@@ -54,16 +54,20 @@ export const packageSourceFiles = (deviceDetails, controls) => {
 
 }
 
+const getArduinoCompatibleFileString = (NameToConvert) => {
+  return NameToConvert.split(' ').join('_');
+}
+
 const packageESP8266Files = (deviceDetails, controls, zip) => {
 
-  zip.file(deviceDetails.deviceName + ".ino", composeInoFile(deviceDetails, controls));
+  zip.file(getArduinoCompatibleFileString(deviceDetails.deviceName) + ".ino", composeInoFile(deviceDetails, controls));
 
   return zip
 }
 
 const packageSimulationFiles = (deviceDetails, controls, zip) => {
 
-  zip.file(deviceDetails.deviceName + ".ino", composeInoFile(deviceDetails, controls));
+  zip.file(getArduinoCompatibleFileString(deviceDetails.deviceName) + ".ino", composeInoFile(deviceDetails, controls));
 
   return zip
 }
