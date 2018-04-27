@@ -90,12 +90,15 @@ unsigned long CalculateCoreMemorySize()
 	return coreMemorySize + CalculateControlDataSize();
 }
 
-void FillOutputBufferWithSetValCOP(unsigned char controlID, unsigned char value)
+void FillOutputBufferWithSetValCOP(unsigned char controlID, unsigned char value, unsigned char sourceControlID)
 {
 	ClearOutputBuffer();
 	AddNewCharToOutputBuffer(SetValueOpCode);
-	AddNewCharToOutputBuffer(2);
+	AddNewCharToOutputBuffer(5);
 	AddNewCharToOutputBuffer(controlID);
+	AddNewCharToOutputBuffer(controlList[sourceControlID].controlType);
+	AddNewCharToOutputBuffer(controlList[sourceControlID].highValue);
+	AddNewCharToOutputBuffer(controlList[sourceControlID].lowValue);
 	AddNewCharToOutputBuffer(value);
 }
 

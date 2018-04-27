@@ -16,7 +16,7 @@ void AddAnalyticsStringToOutputBufferAndDeleteMOPs();
 unsigned long CalculateControlDataSize();
 
 unsigned long CalculateCoreMemorySize();
-void FillOutputBufferWithSetValCOP(unsigned char controlID, unsigned char value);
+void FillOutputBufferWithSetValCOP(unsigned char controlID, unsigned char value, unsigned char sourceControlID);
 
 void FillOutputBufferWithSetValCOPBuffer(unsigned char controlID, heepByte* buffer, int bufferLength);
 

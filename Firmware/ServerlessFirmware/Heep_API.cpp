@@ -51,7 +51,7 @@ void SendOutputByIDNoAnalytics(unsigned char controlID, unsigned int value)
 			}
 			else
 			{
-				FillOutputBufferWithSetValCOP(newVertex.rxControlID, value);
+				FillOutputBufferWithSetValCOP(newVertex.rxControlID, value, controlID);
 				SendOutputBufferToIP(newVertex.rxIPAddress);
 			}
 		}
