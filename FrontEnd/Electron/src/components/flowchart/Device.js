@@ -80,7 +80,7 @@ class Device extends React.Component {
           width: 30,
           minWidth: 30
         },
-  			color: this.props.detailsPanelDeviceID == this.props.device.deviceID ? 'secondary' : 'default',
+  			color: this.props.detailsPanelDeviceID == this.props.device.deviceID ? 'secondary' : '#979ba2',
   			onClick: () => this.props.detailsPanelDeviceID == this.props.device.deviceID ?
   							this.props.setDetailsPanelDeviceID(null) :
   							this.props.setDetailsPanelDeviceID(this.props.device.deviceID)
@@ -92,7 +92,7 @@ class Device extends React.Component {
           width: 30,
           minWidth: 30
         },
-  			color:  this.props.collapsed ? 'secondary' : 'default',
+  			color:  this.props.collapsed ? 'secondary' : '#979ba2',
   			onClick: () => this.animateCollapse()
       }
     }
@@ -170,10 +170,17 @@ class Device extends React.Component {
   };
 
   drawDetails() {
+    const inputs = {
+      deviceDetails: {
+        style: {
+          opacity: this.props.collapsed ? 0 : 0
+        }
+      }
+    }
 
     return (
       <Grid container direction='row' justify='space-between'>
-        <Grid item xs={12} id={this.props.deviceID+'_details'} >
+        <Grid item xs={12} id={this.props.deviceID+'_details'}>
           <Collapse in={!this.props.collapsed} style={{overflow: 'visible'}} timeout="auto" unmountOnExit>
             <Grid container direction='row' justify='space-around' alignItems='stretch' spacing={0}>
 
