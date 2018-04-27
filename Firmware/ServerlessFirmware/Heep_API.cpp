@@ -34,7 +34,7 @@ void FactoryReset(char* deviceName, char iconEnum)
 
 void SendOutputByIDNoAnalytics(unsigned char controlID, unsigned int value)
 {
-	SetControlValueByID(controlID, value, 0);
+	SetControlValueByID(controlID, value, controlList[controlID].highValue, controlList[controlID].lowValue, 0);
 
 	struct Vertex_Byte newVertex;
 
@@ -47,7 +47,7 @@ void SendOutputByIDNoAnalytics(unsigned char controlID, unsigned int value)
 		{
 			if(CheckBufferEquality(newVertex.txID, newVertex.rxID, STANDARD_ID_SIZE))
 			{
-				SetControlValueByID(newVertex.rxControlID, value, 0);
+				SetControlValueByID(newVertex.rxControlID, value, controlList[controlID].highValue, controlList[controlID].lowValue, 0);
 			}
 			else
 			{

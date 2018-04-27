@@ -246,21 +246,37 @@ void ExecuteSetValOpCode()
 	unsigned int counter = 1;
 	unsigned char numBytes = inputBuffer[counter++];
 	unsigned char controlID = inputBuffer[counter++];
+	unsigned char sentControlType = inputBuffer[counter++];
 
 	heepByte controlType = GetControlTypeFromControlID(controlID);
 
 	int success = 1;
 	if(controlType == 2)
 	{
-		success = SetControlValueByIDFromNetworkBuffer(controlID, inputBuffer, counter, numBytes - 1);
+		if(sentControlType == 2)
+			success = SetControlValueByIDFromNetworkBuffer(controlID, inputBuffer, counter, numBytes - 1);
+		else
+			success = 1; // Can't set a number to a buffer
+	}
+	else if(controlType == 1 || controlType == 0)
+	{
+		if(sentControlType == 1 || sentControlType == 0)
+		{
+			heepByte highValue = inputBuffer[counter++];
+			heepByte lowValue = inputBuffer[counter++];
+
+			unsigned int value = GetNumberFromBuffer(inputBuffer, &counter, numBytes - 1);
+			success = SetControlValueByIDFromNetwork(controlID, value, highValue, lowValue);
+		}
+		else
+			success = 1; // Can't set a buffer to a number
 	}
 	else
 	{
-		unsigned int value = GetNumberFromBuffer(inputBuffer, &counter, numBytes - 1);
-		success = SetControlValueByIDFromNetwork(controlID, value);
+		char ErrorMessage [] = "Failed to Set: Unkown control type";
+		FillOutputBufferWithError(ErrorMessage, strlen(ErrorMessage));
+		return;
 	}
-
-	
 
 	if(success == 0)
 	{
