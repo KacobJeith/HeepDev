@@ -118,7 +118,8 @@ class Device extends React.Component {
       titleContainer: {
         style: {
           margin: "0 auto",
-          padding: 0,
+          paddingTop: 0,
+          paddingBottom: 0,
           height: 30,
           maxWidth: "100%"
         },
@@ -169,14 +170,6 @@ class Device extends React.Component {
   };
 
   drawDetails() {
-    const inputs = {
-      noPaddingMargin: {
-        style: {
-          margin: 0,
-          padding: 0
-        }
-      }
-    }
 
     return (
       <Grid container direction='row' justify='space-between'>
