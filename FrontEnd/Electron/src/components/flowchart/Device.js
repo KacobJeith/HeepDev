@@ -149,7 +149,7 @@ class Device extends React.Component {
     }
 
     return (
-      <Grid container {...inputs.titleContainer} justify='space-between'>
+      <Grid container {...inputs.titleContainer} justify='space-between' alignItems='center'>
         <Grid item xs={2}>
         <svg {...inputs.circleContainer}>
           <circle {...inputs.rxCircle} />
