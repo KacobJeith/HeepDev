@@ -7335,7 +7335,7 @@ An 0805 resistor inside a standard 1/4W 5% resistor. Makes for easy mods</descri
 <part name="R22" library="SparkFun-Passives" deviceset="RESISTOR" device="0603-RES" value="51"/>
 <part name="GND30" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="GND33" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
-<part name="25MHZ" library="SparkFun-Clocks" deviceset="CRYSTAL-GROUNDED" device="SMD-3.2X2.5"/>
+<part name="25MHZ" library="SparkFun-Clocks" deviceset="CRYSTAL-GROUNDED" device="SMD-3.2X2.5" value="25MHZ"/>
 <part name="GND36" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="C9" library="SparkFun-Passives" deviceset="CAP" device="0603-CAP" value="0.1uF"/>
 <part name="C10" library="SparkFun-Passives" deviceset="CAP" device="0603-CAP" value="0.1uF"/>
@@ -7367,7 +7367,7 @@ An 0805 resistor inside a standard 1/4W 5% resistor. Makes for easy mods</descri
 <part name="+3V3" library="supply1" deviceset="+3V3" device=""/>
 <part name="U$5" library="microbuilder" deviceset="VBUS" device=""/>
 <part name="U$10" library="microbuilder" deviceset="VBUS" device=""/>
-<part name="SW1" library="adafruit" deviceset="SPST_TACT" device="-KMR2"/>
+<part name="SW1" library="adafruit" deviceset="SPST_TACT" device="-KMR2" value="TACTILE"/>
 <part name="GND34" library="supply1" deviceset="GND" device=""/>
 <part name="U$33" library="microbuilder" deviceset="VBAT" device=""/>
 <part name="X2" library="Heep" deviceset="J1011F" device="HY931147C" value="J1011FHY931147C"/>
@@ -7376,7 +7376,7 @@ An 0805 resistor inside a standard 1/4W 5% resistor. Makes for easy mods</descri
 <part name="GND11" library="supply1" deviceset="GND" device=""/>
 <part name="GND16" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="R23" library="SparkFun-Passives" deviceset="RESISTOR" device="0603-RES" value="1K"/>
-<part name="D5" library="microbuilder" deviceset="LED" device="0805_NOOUTLINE"/>
+<part name="D5" library="microbuilder" deviceset="LED" device="0805_NOOUTLINE" value="RED"/>
 <part name="GND17" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="+3V5" library="supply1" deviceset="+3V3" device=""/>
 <part name="U$19" library="Heep" deviceset="BUCK_CONVERTER" device=""/>
@@ -7419,13 +7419,13 @@ An 0805 resistor inside a standard 1/4W 5% resistor. Makes for easy mods</descri
 <part name="R15" library="adafruit" deviceset="FLIPFLOP-RES" device="" value="30K"/>
 <part name="X5" library="microbuilder" deviceset="TERMBLOCK_1X2" device="" value="DCMOTOR"/>
 <part name="R16" library="SparkFun-Passives" deviceset="RESISTOR" device="0603-RES" value="1K"/>
-<part name="D8" library="microbuilder" deviceset="LED" device="0805_NOOUTLINE"/>
+<part name="D8" library="microbuilder" deviceset="LED" device="0805_NOOUTLINE" value="GRN"/>
 <part name="R17" library="SparkFun-Passives" deviceset="RESISTOR" device="0603-RES" value="1K"/>
-<part name="D9" library="microbuilder" deviceset="LED" device="0805_NOOUTLINE"/>
+<part name="D9" library="microbuilder" deviceset="LED" device="0805_NOOUTLINE" value="YELLOW"/>
 <part name="R18" library="SparkFun-Passives" deviceset="RESISTOR" device="0603-RES" value="1K"/>
-<part name="D10" library="microbuilder" deviceset="LED" device="0805_NOOUTLINE"/>
+<part name="D10" library="microbuilder" deviceset="LED" device="0805_NOOUTLINE" value="GRN"/>
 <part name="R24" library="SparkFun-Passives" deviceset="RESISTOR" device="0603-RES" value="1K"/>
-<part name="D11" library="microbuilder" deviceset="LED" device="0805_NOOUTLINE"/>
+<part name="D11" library="microbuilder" deviceset="LED" device="0805_NOOUTLINE" value="YELLOW"/>
 <part name="J1" library="SparkFun-Connectors" deviceset="CONN_01" device=""/>
 <part name="J8" library="SparkFun-Connectors" deviceset="CONN_01" device=""/>
 <part name="J9" library="SparkFun-Connectors" deviceset="CONN_01" device=""/>
