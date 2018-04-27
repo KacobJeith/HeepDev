@@ -74,22 +74,22 @@ class Device extends React.Component {
         }
       },
       infoButton: {
-  			style: {
-          padding: 0,
-          height: 30,
-          width: 30
-        },
+  			// style: {
+        //   padding: 0,
+        //   height: 30,
+        //   width: 30
+        // },
   			color: this.props.detailsPanelDeviceID == this.props.device.deviceID ? 'secondary' : 'default',
   			onClick: () => this.props.detailsPanelDeviceID == this.props.device.deviceID ?
   							this.props.setDetailsPanelDeviceID(null) :
   							this.props.setDetailsPanelDeviceID(this.props.device.deviceID)
 			},
       collapseButton: {
-        style: {
-          padding: 0,
-          height: 30,
-          width: 30
-        },
+        // style: {
+        //   padding: 0,
+        //   height: 30,
+        //   width: 30
+        // },
   			color:  this.props.collapsed ? 'secondary' : 'default',
   			onClick: () => this.animateCollapse()
       }
