@@ -36,3 +36,5 @@ int SetControlValueByIDBuffer(unsigned char controlID, heepByte* buffer, int buf
 int SetControlValueByIDFromNetwork(unsigned char controlID, unsigned int value, unsigned int highValue, unsigned int lowValue);
 
 int SetControlValueByIDFromNetworkBuffer(unsigned char controlID, heepByte* buffer, int bufferStartPoint, int bufferLength);
+
+int GetScaledValue(unsigned char controlID, unsigned int value, unsigned int highValue, unsigned int lowValue);

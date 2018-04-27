@@ -830,6 +830,48 @@ void TestNameOverflowDetection()
 	CheckResults(TestName, valueList, 3);
 }
 
+void TestGetScaledValue()
+{
+	std::string TestName = "Test Name Overflow Detection";
+
+	ClearVertices();
+	ClearDeviceMemory();
+	ClearInputBuffer();
+	ClearControls();
+	
+	SetDeviceName("Test");
+	Control theControl;
+	theControl.controlName = "Test Control";
+	theControl.controlID = 0;
+	theControl.controlDirection = 1;
+	theControl.controlType = 1;
+	theControl.highValue= 100;
+	theControl.lowValue = 0;
+	theControl.curValue = 50;
+	AddControl(theControl);
+
+	int GetScaledValue(unsigned char controlID, unsigned int value, unsigned int highValue, unsigned int lowValue);
+
+	int returnedValue1 = GetScaledValue()
+
+	heepByte shouldbeFailureCode = outputBuffer[0];
+
+	ExpectedValue valueList [3];
+	valueList[0].valueName = "Less than max memory";
+	valueList[0].expectedValue = 1;
+	valueList[0].actualValue = curFilledMemory <= MAX_MEMORY;
+
+	valueList[1].valueName = "ROP Should be Failure";
+	valueList[1].expectedValue = ErrorOpCode;
+	valueList[1].actualValue = shouldbeFailureCode;
+
+	valueList[2].valueName = "ROP Should be Success";
+	valueList[2].expectedValue = SuccessOpCode;
+	valueList[2].actualValue = shouldBeSuccessCode;
+
+	CheckResults(TestName, valueList, 3);
+}
+
 void TestActionAndResponseOpCodes()
 {
 	TestClearOutputBufferAndAddChar();
@@ -849,4 +891,5 @@ void TestActionAndResponseOpCodes()
 	CheckSetPositionOverflowHandling();
 	TestWiFiOverflowDetection();
 	TestNameOverflowDetection();
+	TestGetScaledValue();
 }
