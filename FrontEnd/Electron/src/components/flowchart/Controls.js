@@ -51,12 +51,12 @@ class Control extends React.Component {
 					height: 20,
 					position:'absolute',
 					right: this.direction == 0 ? null : -13,
-					left: this.direction == 0 ? -13 : null
+					left: this.direction == 0 ? -14 : null
 				}
 			},
 			circleContainer: {
 				height: 20,
-				width: 11,
+				width: 12
 			},
 			circle: {
         id: this.props.controlID,
@@ -65,7 +65,7 @@ class Control extends React.Component {
 									 this.selectOutputVertex(event)},
 				onMouseEnter: () => this.setState({radius: 11}),
 				onMouseLeave: () => this.setState({radius: 8}),
-				cx: this.direction == 0 ? 9 : 0,
+				cx: this.direction == 0 ? 11 : 0,
 				cy: 10,
 				r: this.state.radius,
 				fill: this.direction == 0 ? "#00baff" : '#00cb7b',

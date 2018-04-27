@@ -116,9 +116,18 @@ class Device extends React.Component {
       titleContainer: {
         style: {
           height: 25,
+          margin: "0 auto",
+          padding: 0,
+          maxWidth: "100%"
         },
         pointerEvents: 'none',
         overflow: 'visible'
+      },
+      circleContainer: {
+        style: {
+          height: 25,
+          width: 20,
+        }
       },
       rxCircle: {
         id: this.props.deviceID+ '_rx',
@@ -129,7 +138,7 @@ class Device extends React.Component {
       },
       txCircle: {
         id: this.props.deviceID+ '_tx',
-        cx: 25,
+        cx: 20,
         cy: 15,
         r: 8,
         fill: 'none',
@@ -140,7 +149,7 @@ class Device extends React.Component {
       <Grid container {...inputs.titleContainer} justify='space-between'>
         <Grid item xs={1} style={{
         }}>
-        <svg>
+        <svg {...inputs.circleContainer}>
           <circle {...inputs.rxCircle} />
         </svg>
         </Grid>
@@ -150,7 +159,7 @@ class Device extends React.Component {
           </Grid>
 
           <Grid item xs={1}>
-          <svg>
+          <svg {...inputs.circleContainer}>
             <circle {...inputs.txCircle} />
           </svg>
           </Grid>
