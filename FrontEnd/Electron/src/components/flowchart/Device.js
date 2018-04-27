@@ -125,14 +125,14 @@ class Device extends React.Component {
         // cx: 5,
         cy: 15,
         r: 8,
-        fill: 'gray',
+        fill: 'none',
       },
       txCircle: {
         id: this.props.deviceID+ '_tx',
         cx: 25,
         cy: 15,
         r: 8,
-        fill: 'gray',
+        fill: 'none',
       }
     }
 
