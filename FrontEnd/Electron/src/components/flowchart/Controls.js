@@ -50,8 +50,8 @@ class Control extends React.Component {
 					top: 5,
 					height: 20,
 					position:'absolute',
-					right: this.direction == 0 ? null : -10,
-					left: this.direction == 0 ? -10 : null
+					right: this.direction == 0 ? null : -13,
+					left: this.direction == 0 ? -13 : null
 				}
 			},
 			circleContainer: {

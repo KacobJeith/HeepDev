@@ -115,22 +115,24 @@ class Device extends React.Component {
     const inputs = {
       titleContainer: {
         style: {
-          height: 25
-        }
+          height: 25,
+          backgroundColor: 'green'
+        },
+        pointerEvents: 'none'
       },
       rxCircle: {
         id: this.props.deviceID+ '_rx',
-        cx: 5,
+        // cx: 5,
         cy: 15,
         r: 8,
-        fill: 'none',
+        fill: 'gray',
       },
       txCircle: {
         id: this.props.deviceID+ '_tx',
-        cx: 20,
+        cx: 25,
         cy: 15,
         r: 8,
-        fill: 'none',
+        fill: 'gray',
       }
     }
 
@@ -147,9 +149,7 @@ class Device extends React.Component {
             {this.deviceName()}
           </Grid>
 
-          <Grid item xs={1} style={{
-            pointerEvents: 'none'
-          }}>
+          <Grid item xs={1}>
           <svg>
             <circle {...inputs.txCircle} />
           </svg>
@@ -160,7 +160,7 @@ class Device extends React.Component {
 
   drawDetails() {
     return (
-      <Grid container direction='row' justify='space-between'>
+      <Grid container direction='row' justify='space-between' style={{backgroundColor: "blue"}}>
         <Grid item xs={12} id={this.props.deviceID+'_details'}>
           <Collapse in={!this.props.collapsed} style={{overflow: 'visible'}} timeout="auto" unmountOnExit>
             <Grid container direction='row' justify='space-around' alignItems='stretch' spacing={0} >
@@ -216,8 +216,10 @@ class Device extends React.Component {
 		const inputs = {
       deviceContainer: {
         style: {
-          marginTop: this.props.theme.spacing.unit,
-          marginBottom: this.props.theme.spacing.unit,
+          paddingTop: this.props.theme.spacing.unit,
+          paddingBottom: this.props.theme.spacing.unit,
+          margin: "0 auto",
+          maxWidth: "100%",
           userSelect: "none"
         }
       },
