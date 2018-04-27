@@ -74,22 +74,24 @@ class Device extends React.Component {
         }
       },
       infoButton: {
-  			// style: {
-        //   padding: 0,
-        //   height: 30,
-        //   width: 30
-        // },
+  			style: {
+          padding: 0,
+          height: 30,
+          width: 30,
+          minWidth: 30
+        },
   			color: this.props.detailsPanelDeviceID == this.props.device.deviceID ? 'secondary' : 'default',
   			onClick: () => this.props.detailsPanelDeviceID == this.props.device.deviceID ?
   							this.props.setDetailsPanelDeviceID(null) :
   							this.props.setDetailsPanelDeviceID(this.props.device.deviceID)
 			},
       collapseButton: {
-        // style: {
-        //   padding: 0,
-        //   height: 30,
-        //   width: 30
-        // },
+        style: {
+          padding: 0,
+          height: 30,
+          width: 30,
+          minWidth: 30
+        },
   			color:  this.props.collapsed ? 'secondary' : 'default',
   			onClick: () => this.animateCollapse()
       }
@@ -99,12 +101,12 @@ class Device extends React.Component {
       <div {...inputs.buttonContainer}>
   			<Grid container justify='flex-end' spacing={0}>
           <Grid item xs={12}>
-            <IconButton {...inputs.collapseButton}>
+            <Button {...inputs.collapseButton}>
     					<KeyboardArrowDown/>
-    				</IconButton>
-            <IconButton {...inputs.infoButton}>
+    				</Button>
+            <Button {...inputs.infoButton}>
     					<InfoOutline/>
-    				</IconButton>
+    				</Button>
           </Grid>
   			</Grid>
       </div>
@@ -131,7 +133,7 @@ class Device extends React.Component {
       },
       rxCircle: {
         id: this.props.deviceID+ '_rx',
-        // cx: 5,
+        cx: 0,
         cy: 15,
         r: 8,
         fill: 'none',
@@ -179,7 +181,7 @@ class Device extends React.Component {
               </Grid>
 
               <Grid item xs={4} style={{margin:0}}>
-                <Grid container alignItems='center' spacing={0} style={{height:'100%', margin: 0, padding: 0}}>
+                <Grid container alignItems='center' spacing={0} style={{height:'100%', margin: 0, paddingTop: 10}}>
                   <Grid item xs={12}>
                     {this.drawDeviceIcon()}
                   </Grid>
