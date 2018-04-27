@@ -160,10 +160,13 @@ void TestSetValSuccess()
 	AddControl(theControl);
 
 	ClearInputBuffer();
-	inputBuffer[0] = 0x0A;
+	inputBuffer[0] = 0x0A;// OpCode
 	inputBuffer[1] = 0x02;
-	inputBuffer[2] = 0x00;
-	inputBuffer[3] = 0x04;
+	inputBuffer[2] = 0x00; // Destination ID
+	inputBuffer[3] = 0x00; // Source Control Type
+	inputBuffer[4] = 0x04; // Source High Val
+	inputBuffer[5] = 0x00; // Source Low Val
+	inputBuffer[6] = 0x03; // Value
 	ExecuteControlOpCodes();
 
 	ExpectedValue valueList[2];
@@ -172,7 +175,7 @@ void TestSetValSuccess()
 	valueList[0].actualValue = outputBuffer[0];
 
 	valueList[1].valueName = "Control Value";
-	valueList[1].expectedValue = 4;
+	valueList[1].expectedValue = 75;
 	valueList[1].actualValue = GetControlValueByID(0);
 
 	CheckResults(TestName, valueList, 2);
@@ -198,7 +201,10 @@ void TestSetValFailure()
 	inputBuffer[0] = 0x0A;
 	inputBuffer[1] = 0x02;
 	inputBuffer[2] = 0x01;
-	inputBuffer[3] = 0x04;
+	inputBuffer[3] = 0x00; // Source Control Type
+	inputBuffer[4] = 0x04; // Source High Val
+	inputBuffer[5] = 0x00; // Source Low Val
+	inputBuffer[6] = 0x03; // Value
 	ExecuteControlOpCodes();
 
 	ExpectedValue valueList[2];
@@ -866,8 +872,9 @@ void TestGetScaledValue()
 	int shouldBe50 = GetScaledValue(1, 25, 50, 0);
 	int shouldBe0 = GetScaledValue(0, 24, 50, 0);
 	int shouldBe1Two = GetScaledValue(0, 1, 2, 0);
+	int shouldBe100 = GetScaledValue(1, 3, 2, 0);
 
-	ExpectedValue valueList [4];
+	ExpectedValue valueList [5];
 	valueList[0].valueName = "Scaled 1";
 	valueList[0].expectedValue = 1;
 	valueList[0].actualValue = shouldBe1;
@@ -883,6 +890,10 @@ void TestGetScaledValue()
 	valueList[3].valueName = "Scaled 4";
 	valueList[3].expectedValue = 1;
 	valueList[3].actualValue = shouldBe1Two;
+
+	valueList[4].valueName = "Scaled 5";
+	valueList[4].expectedValue = 100;
+	valueList[4].actualValue = shouldBe100;
 
 	CheckResults(TestName, valueList, 4);
 }
