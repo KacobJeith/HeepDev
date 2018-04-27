@@ -196,7 +196,7 @@ class LandingIIOT extends React.Component {
           maxWidth:'100%',
           margin: '0 auto'
          }}
-         justify='center' alignItems='center'>
+         justify='center' alignItems='center' key={sectionInfo.title}>
           <Grid item  xs={12} md={10}>
             <Typography variant={titleVariant} align={titleAlign}>
               {sectionInfo.title}
