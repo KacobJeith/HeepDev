@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux'
 import { withRouter }         from 'react-router-dom'
 import PropTypes              from 'prop-types';
 import classNames             from 'classnames';
+import { logos }              from '../assets/remote/Logos'
 
 import * as actions           from '../redux/actions'
 
@@ -28,10 +29,14 @@ import {  AppBar,
 
 import MenuIcon               from 'material-ui-icons/Menu';
 import AccountCircle          from 'material-ui-icons/AccountCircle';
+import ContactMail            from 'material-ui-icons/ContactMail';
 import ShoppingCartIcon       from 'material-ui-icons/ShoppingCart';
 import ShopIcon               from 'material-ui-icons/ShoppingBasket'
 import AboutIcon              from 'material-ui-icons/Contacts'
 import DevelopIcon            from 'material-ui-icons/Code'
+import Home                   from 'material-ui-icons/Home'
+import Business                   from 'material-ui-icons/Business'
+
 
 import { withStyles }         from 'material-ui/styles';
 
@@ -399,10 +404,13 @@ class MenuAppBar extends React.Component {
                 >
 
                 {this.mobileMenuLogo()}
-                {this.mobileMenuCart()}
-                {this.mobileMenuLink('/About', 'About', <AboutIcon/>)}
+                {this.mobileMenuLink('/', 'Home', <Home/>)}
+                {this.mobileMenuLink('/IndustrialHeep', 'Industry', <Business/>)}
                 {this.mobileMenuLink('/Shop', 'Shop', <ShopIcon/>)}
-                {this.mobileMenuLink('/Developers', 'Develop', <DevelopIcon/>)}
+                {this.mobileMenuLink('/About', 'About', <AboutIcon/>)}
+                {this.mobileMenuLink('/Contact', 'Contact', <ContactMail/>)}
+                {this.mobileMenuCart()}
+{/*                 {this.mobileMenuLink('/Developers', 'Develop', <DevelopIcon/>)} */}
 
               </div>
             </Drawer>
@@ -417,7 +425,7 @@ class MenuAppBar extends React.Component {
 
     return (
       <div className={classes.root}>
-        <AppBar position="static" style={{overflowX: 'hidden'}}>
+        <AppBar position="sticky" id='top' style={{overflowX: 'hidden'}}>
           <Toolbar>
             {this.mobileMenu()}
             <Hidden xsDown={true}>
@@ -425,11 +433,16 @@ class MenuAppBar extends React.Component {
             </Hidden>
             {this.mobileAppBarLogo()}
             <div className={classes.flex}/>
-            {this.appBarLink("/About", "About")}
-            {this.appBarLink("/Shop", "Shop")}
-            {this.appBarLink("/Developers", "Develop")}
+            {this.appBarLink("/", "HOME")}
+            {this.appBarLink("/Business", "BUSINESS")}
+            {this.appBarLink("/IndustrialHeep", "INDUSTRY")}
+            {this.appBarLink("/DIY", "DIY")}
+            {this.appBarLink("/About", "ABOUT")}
+            {this.appBarLink("/Contact", "CONTACT")}
+            {this.appBarLink("/Shop", "SHOP")}
+{/*             {this.appBarLink("/Developers", "Develop")} */}
             {this.appBarCart()}
-            {this.avatarLogin()}
+{/*             {this.avatarLogin()} */}
           </Toolbar>
         </AppBar>
       </div>

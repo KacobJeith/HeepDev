@@ -19,26 +19,37 @@ import ProductDetails from './store/ProductDetails'
 import DownloadPage from './heep/DownloadPage'
 import ManageCart from './store/ManageCart'
 import Tutorials from './Tutorials'
+import Contact from './Contact'
 
 const Landing = () => <AsyncComponent moduleProvider={() => import(
 	/* webpackChunkName: "landing" */
-  	/* webpackMode: "lazy" */ 
-  	'./landing/Landing')} />
+  	/* webpackMode: "lazy" */
+  	'./pages/LandingIIOT')} />
 
 const Store = () => <AsyncComponent moduleProvider={() => import(
 	/* webpackChunkName: "store" */
-  	/* webpackMode: "lazy" */ 
+  	/* webpackMode: "lazy" */
   	'./store/Store')} />
 
 const Checkout = () => <AsyncComponent moduleProvider={() => import(
 	/* webpackChunkName: "checkout" */
-  	/* webpackMode: "lazy" */ 
+  	/* webpackMode: "lazy" */
   	'./store/Checkout')} />
 
 const Auth = () => <AsyncComponent moduleProvider={() => import(
 	/* webpackChunkName: "auth" */
-  	/* webpackMode: "lazy" */ 
+  	/* webpackMode: "lazy" */
   	'./account/Auth')} />
+
+const iiot = () => <AsyncComponent moduleProvider={() => import(
+	/* webpackChunkName: "iiot" */
+  	/* webpackMode: "lazy" */
+  	'./pages/iiot')} />
+
+const diy = () => <AsyncComponent moduleProvider={() => import(
+	/* webpackChunkName: "diy" */
+  	/* webpackMode: "lazy" */
+  	'./pages/diy')} />
 
 import Theme from './Theme'
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
@@ -90,14 +101,6 @@ class App extends React.Component {
 			}
 	    }
 
-	    var loggedInRoutes = [];
-
-	    if (this.props.loginStatus) {
-	    	loggedInRoutes.push(<Route path="/Build" component={Build} key="build"/>);
-	    	loggedInRoutes.push(<Route path="/DeviceBuilder" component={DeviceBuilder} key="DeviceBuilder"/>)
-	    	loggedInRoutes.push(<Route path="/User" component={UserAccount} key="user"/>);
-	    }
-
 	    return(
 			<Router >
 			    	<MuiThemeProvider theme={Theme}>
@@ -106,15 +109,18 @@ class App extends React.Component {
 									<Route path="/" component={AppBar}/>
 									<Route exact path="/" component={Landing}/>
 									<Route path="/Landing" component={Landing}/>
+									<Route path="/DIY" component={diy}/>
 									<Route path="/About" component={About}/>
 									<Route path="/Shop" component={Store}/>
-									<Route path="/Tutorials" component={Tutorials}/>
+									<Route path="/IndustrialHeep" component={iiot}/>
+{/* 									<Route path="/Tutorials" component={Tutorials}/> */}
 									<Route path="/product/:productID" component={ProductDetails}/>
 									<Route path="/Checkout" component={Checkout}/>
 									<Route path="/MyCart" component={ManageCart}/>
-									<Route exact path="/auth" component={Auth}/>
-									<Route exact path="/Developers" component={DownloadPage}/>
-									{loggedInRoutes}
+                  <Route path="/Contact" component={Contact}/>
+{/* 									<Route exact path="/auth" component={Auth}/> */}
+{/* 									<Route exact path="/Developers" component={DownloadPage}/> */}
+{/* 									{this.props.loginStatus && <Route path="/User" component={UserAccount} key="user"/>} */}
 								</div>
 								<Route path="/" component={Footer}/>
 						    </div>

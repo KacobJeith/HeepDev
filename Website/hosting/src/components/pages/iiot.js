@@ -1,0 +1,223 @@
+import React from 'react'
+
+import { Grid, Typography, Button } from 'material-ui';
+import ArrowForward from 'material-ui-icons/ArrowForward'
+import { HashLink } from "react-router-hash-link";
+import { withTheme } from 'material-ui/styles';
+import { withRouter }         from 'react-router-dom'
+
+import SectionCard from '../utilities/SectionCard'
+import VideoBackgroundCard from '../utilities/VideoBackgroundCard'
+import AboutCard from '../AboutCard'
+import TeamModal from '../TeamModal'
+import SplitSectionCard from '../utilities/SplitSectionCard'
+
+import ContactUsSection from '../utilities/ContactUsSection'
+
+import assets from '../../assets/remote/iiotAssets.json'
+
+const titleVariant = 'title';
+const titleAlign = 'center';
+
+class IIOT extends React.Component {
+
+  topBanner() {
+
+    const inputs = {
+      backgroundColor: '#00adee',
+      //TO-DO: Purchase video
+      videoSrc: assets.bannerVideo,
+      minHeight: 400,
+    }
+
+    return(
+      VideoBackgroundCard(inputs, 
+        <Grid container direction='column' justify ='center' alignItems ='center' style={{
+          width: '100%',
+          minHeight: inputs.minHeight,
+          margin: '0 auto'
+        }}>
+          <Grid item xs={12} sm={8}>
+            <Typography variant='display1' align={titleAlign} style={{color:'white'}}>
+              Industry. Simplified.
+            </Typography>
+          </Grid>
+
+          <Grid item xs={12} sm={8}>
+            <Typography variant='subheading' align='center' style={{color:'#bbbbbb'}}>
+              By embedding Heep Intelligence throughout your process, 
+              you can unlock higher yields, 
+              plug security holes, 
+              and gain competitive advantages for your business.
+            </Typography>
+
+          </Grid>
+        </Grid>
+      )
+    )
+  };
+
+
+  sectionLinks(sections) {
+
+    return (
+      <Grid container alignItems='center' justify='center' spacing={0} 
+        style={{
+          backgroundColor: this.props.theme.palette.primary.dark, 
+          padding: this.props.theme.spacing.unit,
+          width: '100%',
+          margin: '0 auto'
+        }}
+      >
+        {sections.map((nextSection) => (
+          <Grid item key={nextSection.link + 'key'} 
+            style={{marginRight: 20}}
+
+          >    
+            <HashLink 
+                smooth 
+                to={"#" + nextSection.link} 
+                style={{
+                  textDecoration: 'none',
+                  outline: 'none',
+                }}
+                >
+
+                <Button variant='flat' style={{ textTransform: "capitalize", color: '#ddd'}}> 
+                  {nextSection.title}
+                </Button>
+              </HashLink>
+          </Grid>
+        ))}
+      </Grid>
+    )
+  }
+
+  splitSectionWithBullets(sectionInfo, orientation) {
+    const inputs = {
+      imageSide: orientation, 
+      minHeight: 400,
+      imagePath: assets[sectionInfo.link]
+    };
+
+    return (
+      SplitSectionCard(inputs,
+        <Grid container id={sectionInfo.link} style={{
+          maxWidth:'100%',
+          margin: '0 auto'
+         }}
+         justify='center' alignItems='center'>
+          <Grid item  xs={12} md={10}>
+            <Typography variant={titleVariant} align={titleAlign}>
+              {sectionInfo.title}
+            </Typography>
+
+            <Typography variant='body1' align='left' style={{color: '#999'}}>
+              <ul>
+                {sectionInfo.bullets.map((thisBullet, index) => (
+                  <li key={sectionInfo.link + index}>{thisBullet}</li> 
+                ))}
+              </ul>
+            </Typography>
+
+          </Grid>
+          {sectionInfo.moreInfoLink && (
+            <Grid item xs={12}>
+              <Grid container justify='center' alignItems='center'>
+                <HashLink 
+                  smooth 
+                  to={sectionInfo.moreInfoLink.externalLink ? 
+                    'IndustrialHeep' : 
+                    sectionInfo.moreInfoLink.link} 
+                  style={{
+                    textDecoration: 'none',
+                    outline: 'none'
+                  }}
+                >
+                <Button variant='flat' color='secondary' style={{ textTransform: "capitalize"}}
+                  onClick={sectionInfo.moreInfoLink.externalLink ? 
+                    () => window.open(sectionInfo.moreInfoLink.externalLink, '_blank') : 
+                    () => {}}> 
+                    {sectionInfo.moreInfoLink.text}
+                    <ArrowForward style={{marginLeft: this.props.theme.spacing.unit}}/>
+                  </Button>
+                </HashLink>
+              </Grid>
+            </Grid>
+          )}
+          
+        </Grid>
+      )
+    );
+  };
+
+  render() {
+
+    const sections = [
+      {
+        link: 'security', 
+        title: 'Security',
+        bullets: [
+          'Heep networks require no cloud connectivity. You control where your data gets sent.',
+          'All Heep devices encrypt even their local communications. No other edge computing platform takes security this seriously.',
+          'Leverage Heep to protect your legacy systems with two-factor Authentication'
+        ],
+        moreInfoLink: {
+          text: 'Learn More',
+          link: '/product/Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8xMjYxODQ1MjE3MzA5'
+        }
+      },
+      {
+        link: 'insights', 
+        title: 'Insights',
+        bullets: [
+          'Optimize your technology investment for actionable insights, without the often costly overhead',
+          'Heep Analytics store locally on the edge and across the distributed OS, with option for centralized storage',
+          'Become NIST SP 800-171 compliant with 100% asset utilization tracking coverage'
+        ],
+        moreInfoLink: {
+          text: 'Learn More',
+          externalLink: 'https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171r1.pdf'
+        }
+      },
+      {
+        link: 'interoperability', 
+        title: 'Interoperability',
+        bullets: [
+          'Focus on your product, not vender technology integrations',
+          'Leveraging the Heep application programming interface (HAPI), your assets communicate seamlessly for light fast operation',
+
+        ]
+      },
+      {
+        link: 'local-first', 
+        title: 'Local First',
+        bullets: [
+          'By prioritizing local-first communication, Heep control systems operate at maximum networks speeds with 100% uptime',
+          'Your data stays in-house. Protect your business assets by holding them close.'
+        ]
+      },
+      {
+        link: 'simple-integration', 
+        title: 'Simplicity',
+        bullets: [
+          'Heep strives to offer single-wire designs for plug & play installation.',
+          'No software installation required on existing systems. Heep devices stand on their own, upgrading your operations while keeping your existing assets obstruction-free'
+        ]
+      }
+    ];
+
+    return (
+      <div>
+        {this.topBanner()}
+        {this.sectionLinks(sections)}
+        {sections.map((sectionInfo, index) => {
+          return this.splitSectionWithBullets(sectionInfo, index % 2 == 0 ? 'left' : 'right')
+        })}
+        <ContactUsSection/>
+      </div>
+    );
+  }
+}
+
+export default withRouter(withTheme()(IIOT))

@@ -53,7 +53,7 @@ class About extends React.Component {
             </Typography>
             <Typography variant='subheading' align='center' paragraph>
               The Heep platform makes connectivity the simplest and most secure way to design any product. 
-              By reimagining IoT as a critical infrastructure rather than an add-on luxury, 
+              By reimagining IoT as a critical infrastructure rather than a luxury gimmick, 
               Heep is able to deliver a scalable and intuitive experience at a fraction of the cost.
             </Typography>
           </Grid>
@@ -81,7 +81,7 @@ class About extends React.Component {
             </Typography>
             <br/>
             <Typography variant='subheading' align='center' gutterBottom paragraph>
-              Open Source, Secure, Easy even for the Technophobe
+              Open Source, Secure, Easy. Even for the Technophobe
             </Typography>
           </Grid>
         </Grid>
@@ -104,7 +104,7 @@ class About extends React.Component {
         imagePath: svgs.cloudLess,
         desc: `Heep doesn't require an internet connection. 
                 We don't send things to the cloud, so rest assured, no one's listening in or watching you. 
-                You do you, so just relax.`
+                You do you, so just relax and enjoy.`
       },
       DeviceParty: {
         title: 'Device Party',
@@ -159,6 +159,7 @@ class About extends React.Component {
               Heep was founded in February 2017 with the dream of ubiquitous connectivity. 
               We thought long and hard about what the world needs to make that happen. 
               Thus, the Heep operating system was born. 
+              The Heep team hails from a diverse 
             </Typography>
           </Grid>
         </Grid>
