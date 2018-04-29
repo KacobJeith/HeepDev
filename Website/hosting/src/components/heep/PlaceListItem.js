@@ -17,13 +17,14 @@ import { List,
          Collapse }                 from 'material-ui'
 import { withTheme, withStyles }                from 'material-ui/styles'
 import { red } from 'material-ui/colors';
-import {  ExpandLess, 
-          ExpandMore, 
-          Home,
-          NetworkWifi,
-          Delete,
-          Save,
-          Edit }   from 'material-ui-icons'
+
+import ExpandLess   from 'material-ui-icons/ExpandLess'
+import ExpandMore   from 'material-ui-icons/ExpandMore'
+import Home         from 'material-ui-icons/Home'
+import NetworkWifi  from 'material-ui-icons/NetworkWifi'
+import Delete       from 'material-ui-icons/Delete'
+import Save         from 'material-ui-icons/Save'
+import Edit         from 'material-ui-icons/Edit'
 
 var mapStateToProps = (state, ownProps) => ({
   place: state.places[ownProps.placeID],

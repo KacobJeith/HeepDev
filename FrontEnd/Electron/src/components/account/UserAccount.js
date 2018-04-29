@@ -3,7 +3,6 @@ import { connect }            from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { withRouter }         from 'react-router-dom'
 import * as actions           from '../../redux/actions'
-import * as auth              from '../../firebase/FirebaseAuth'
 
 import { withTheme }       from 'material-ui/styles'
 import { Grid, Tooltip, Typography, Avatar, Divider, IconButton, List, ListItem, ListItemText, ListItemIcon}  from 'material-ui'
@@ -15,7 +14,9 @@ import AddPlaceModal from './AddPlaceModal'
 
 var mapStateToProps = (state) => ({
   loginStatus: state.loginStatus,
-  user: auth.currentUser(),
+  user: state.user,
+  userName: state.user ? state.user.displayName: '',
+  userImage: state.user ? state.user.photoURL : null,
   devices: state.devices_firebase,
   places: state.places
 })
@@ -35,13 +36,16 @@ class UserAccount extends React.Component {
         src: this.props.user.photoURL,
         style: {
           width: '100%',
-          height: 'auto'
+          height: 'auto',
+          minHeight: 150
         }
       }
     }
 
     return (
-      <Avatar {...inputs.avatar}/>
+      <Avatar {...inputs.avatar}>
+        {this.props.userImage ? null : this.props.userName.split(' ').map((word) => word[0])}
+      </Avatar>
     )
   }
 

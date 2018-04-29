@@ -29,14 +29,14 @@ class ControlOptions extends React.Component {
       controlName: {
         title: "Enter Control Name",
         width: '100%',
-        defaultValue: this.props.controlName,
+        value: this.props.controlName,
         onChange: (value) => {this.props.updateControlName(this.props.controlKey, value)}
       },
       controlType: {
         title: "Control Type",
         width: '45%',
         options: {
-          OnOff: 0, 
+          OnOff: 0,
           Range: 1
         },
         defaultValue: this.props.controlType,
@@ -46,7 +46,7 @@ class ControlOptions extends React.Component {
         title: "Control Direction",
         width: '45%',
         options: {
-          input: 0, 
+          input: 0,
           output: 1
         },
         defaultValue: this.props.controlDirection,
@@ -65,8 +65,8 @@ class ControlOptions extends React.Component {
               <Grid item xs={4}>
                 <GenericTextInput {...inputs.controlName}/>
                 <Grid container justify='center'>
-                  <Button 
-                    variant='flat' 
+                  <Button
+                    variant='flat'
                     color='secondary'
                     onClick={() => {this.props.deleteControl(this.props.controlKey)}}>
                     <Delete style={{marginRight: 4}} />

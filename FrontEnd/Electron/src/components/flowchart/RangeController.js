@@ -1,14 +1,33 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { Tooltip }  from 'material-ui'
 import * as Actions from '../../redux/actions_classic'
+
+import * as Draggable from 'gsap/Draggable'
 
 var mapStateToProps = (state, ownProps) => ({
   control: state.controls[ownProps.thisControl],
   controlID: state.controls[ownProps.thisControl]['controlID'],
-  value: state.controls[ownProps.thisControl]['valueCurrent'],
+  valueCurrent: state.controls[ownProps.thisControl]['valueCurrent'],
+  //value: state.controls[ownProps.thisControl]['valueCurrent'],
+  value: boundCurrentValue(state, ownProps),
   DeviceID: ownProps.DeviceID
 })
+
+const boundCurrentValue = (state, ownProps) => {
+	const valueCurrent = state.controls[ownProps.thisControl].valueCurrent;
+	const valueLow = state.controls[ownProps.thisControl].valueLow;
+	const valueHigh = state.controls[ownProps.thisControl].valueHigh;
+
+	if (valueCurrent > valueHigh) {
+		return valueHigh;
+	} else if ( valueCurrent < valueLow) {
+		return valueLow
+	} else {
+		return valueCurrent
+	}
+}
 
 
 class RangeController extends React.Component {
@@ -20,7 +39,11 @@ class RangeController extends React.Component {
 
 		this.state = {
 			x: this.convertCtrlVal(),
-			radius: 7
+			radius: 7,
+      mouseDrag: false,
+      fill: '#455a64',
+      fontSize: 8.5,
+      textCenter: 14,
 		}
 
 		this.dragging = 0;
@@ -30,23 +53,26 @@ class RangeController extends React.Component {
 		this.runningOffset = {top:  0,
 							  left: 0};
 
-		this.lastSentControlValue = this.props.control['valueCurrent'];
-		this.newControlValue = this.props.control['valueCurrent'];
+		this.lastSentControlValue = this.props.value;
+		this.newControlValue = this.props.value
+    this.direction = this.props.control['controlDirection'];
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (this.props.control['valueCurrent'] != this.lastSentControlValue) {
+  handleMouseEnter = () => {
+    this.setState({radius: 11, fill: '#02a8f4', fontSize: 15, textCenter: 16})
+    Draggable.get("#_" + this.props.DeviceID).disable()
+  }
 
-			this.setState({x: this.convertCtrlVal()});
-			
-		}
-	}
+  handleMouseLeave = () => {
+    this.setState({radius: 7, fill: '#455a64', fontSize: 8.5, textCenter: 14})
+    Draggable.get("#_" + this.props.DeviceID).enable()
+  }
 
 	convertCtrlVal() {
-		return this.displayMin + (this.displayMax-this.displayMin)*(this.props.control['valueCurrent']/(this.props.control['valueHigh']-this.props.control['valueLow']))
+		return this.displayMin + (this.displayMax-this.displayMin)*(this.props.value/(this.props.control['valueHigh']-this.props.control['valueLow']))
 
 	}
-	
+
 	sendCommand() {
 	    var newVal = this.calcNewControlValue();
 	    this.props.updateControlValue(this.props.DeviceID, this.props.controlID, newVal);
@@ -54,6 +80,7 @@ class RangeController extends React.Component {
 
 	calcNewControlValue() {//15
 		var newVal = Math.round((this.state['x'] - this.displayMin)/(this.displayMax-this.displayMin)*(this.props.control['valueHigh']-this.props.control['valueLow']) + this.props.control['valueLow']);
+    console.log("calculating")
 		this.lastSentControlValue = newVal;
 		return newVal
 	}
@@ -85,7 +112,7 @@ class RangeController extends React.Component {
 	}
 
 	onWheel(event) {
-		event.preventDefault(); 
+		event.preventDefault();
 
 		if (event.deltaY < 0){
 			var newVal = this.state.x + this.displayMin
@@ -102,7 +129,7 @@ class RangeController extends React.Component {
 				newVal = this.displayMin;
 			}
 			this.setState({x: newVal});
-		} 
+		}
 
 		this.sendCommand();
 	}
@@ -132,7 +159,8 @@ class RangeController extends React.Component {
 			rangeContainer: {
 				width: 68,
 				height: 35,
-				viewBox: '0 0 68 35'
+				viewBox: '0 0 68 35',
+        overflow: 'visible'
 			},
 			unselected:{
 				strokeWidth: 1,
@@ -144,15 +172,15 @@ class RangeController extends React.Component {
 			},
 			selected:{
 				strokeWidth: 2,
-				stroke: 'black',
+				stroke: '#8ed0ee',
 				x1: this.displayMin,
 				x2: this.state.x,
 				y1: 11,
 				y2: 11,
 			},
-			dragDot: {		
-				onMouseEnter : () => this.setState({radius: 7.5}),
-				onMouseLeave : () => this.setState({radius: 7}),
+			dragDot: {
+				onMouseEnter : () => this.handleMouseEnter(),
+				onMouseLeave : () => this.handleMouseLeave(),
 				onMouseDown : (event) => {this.onMouseDown(event);},
 				onMouseUp : (event) => {this.dragging = 0;},
 				onTouchStart: (event) => {event.preventDefault(); this.onMouseDown(event.nativeEvent.changedTouches[0])},
@@ -161,29 +189,36 @@ class RangeController extends React.Component {
 				cx: this.state.x,
 				cy: 11,
 				r: this.state.radius,
-				fill: "black"
+				fill: this.state.fill,
 			},
 			text: {
 				x: this.state.x,
-				y: 14,
+				y: this.state.textCenter,
 				fontFamily: "Verdana",
-				fontSize: 8.5,
+				fontSize: this.state.fontSize,
 				fill: '#e1e3e8',
 				textAnchor: 'middle',
-				pointerEvents: 'none'
+				pointerEvents: 'none',
+        style: {
+          userSelect: 'none'
+        }
 
 			}
 		};
 
 		return  <div {...inputs.button}>
-					<svg {...inputs.rangeContainer}>
-						<line {...inputs.unselected}/>
-						<line {...inputs.selected}/>
-						<circle {...inputs.dragDot} ref='dragDot'/>
-						<text {...inputs.text}> {this.props.control['valueCurrent']} </text>
-					</svg>
+          <Tooltip id="tooltip-range"
+            title={this.props.value}
+            placement={this.direction == 0 ? 'right-start' : 'left-start'}>
+  					<svg {...inputs.rangeContainer}>
+  						<line {...inputs.unselected}/>
+  						<line {...inputs.selected}/>
+  						<circle {...inputs.dragDot} ref='dragDot'/>
+  						<text {...inputs.text}> {this.props.value} </text>
+  					</svg>
+          </Tooltip>
 				</div>
-            	
+
 	}
 }
 

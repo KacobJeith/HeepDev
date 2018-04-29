@@ -5,112 +5,106 @@ import * as Actions from '../../redux/actions_classic'
 import * as newActions from '../../redux/actions'
 import Control from './Controls';
 import DynamicIcon from './DynamicIcon';
-import { Paper, Button, Typography, Grid } from 'material-ui'
+import { Paper, Button, Typography, Grid, Tooltip } from 'material-ui';
+
+import { TweenLite } from "gsap"
+import * as Draggable from 'gsap/Draggable';
+import ThrowPropsPlugin from '../utilities/ThrowPropsPlugin';
 
 import Device from './Device'
 
 var mapStateToProps = (state, ownProps) => ({
   deviceID: ownProps.DeviceID,
-  position: state.positions[ownProps.DeviceID]['device']
+  position: state.positions[ownProps.DeviceID]['device'],
+  activeState: state.devices[ownProps.DeviceID].active,
+  scale: state.flowchart.scale
 })
 
 
 class DevicePaper extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			dragging: false
-		}
 
-		this.runningOffset = {top:  0,
-							  left: 0};
-		this.lastPosition =  {top:  0,
-							  left: 0};
+  constructor(props) {
+    super(props)
+    this.initialPosition = {top: props.position.top, left: props.position.left};
+    this.newPosition = {top:  0, left: 0};
+  }
 
+  componentDidMount() {
+    this.createDraggable()
+    // this.initialPosition = {top: this.props.position.top, left: this.props.position.left};
+    this.newPosition = {top: this.props.position.top, left: this.props.position.left};
+  }
+
+  calculateNewPosition() {
+    const dragElement = document.getElementById("_" + this.props.DeviceID)
+    const x1 = dragElement._gsTransform.x
+    const y1 = dragElement._gsTransform.y
+
+    this.newPosition = {top: Math.round(this.initialPosition.top + y1), left: Math.round(this.initialPosition.left + x1)}
+  }
+
+  sendPositionToServer() {
+    this.calculateNewPosition()
+		this.props.sendPositionToServer(this.props.deviceID, this.newPosition);
 	}
 
-	onDragStart(event) {
-
-	  	this.lastPosition['left'] = event.pageX;
-	  	this.lastPosition['top'] = event.pageY;
-	  	this.setState({dragging: true});
-
-	  	var dragIcon = document.createElement('img');
-
-	  	event.dataTransfer.setDragImage(dragIcon, 99999,99999);
-	}
-
-	onTouchStart(event) {
-
-		event.preventDefault();
-		this.lastPosition['left'] = event.nativeEvent.changedTouches[0].pageX;
-	  	this.lastPosition['top'] = event.nativeEvent.changedTouches[0].pageY;
-
-	}
-
-	onDrag(event) {
-		this.calculateDragOffset(event);
-		this.props.positionDevice(this.props.deviceID, this.runningOffset);
-	}
-
-	calculateDragOffset(event) {
-		// The final drag event is always 0, which throws off tracking unless you catch and ignore it
-		if (event.clientX == 0 && event.clientY == 0){
-			return;
-		}
-
-		this.runningOffset['left'] = event.pageX - this.lastPosition['left']  ;
-		this.lastPosition['left'] = event.pageX;
-
-		this.runningOffset['top'] = event.pageY - this.lastPosition['top']  ;
-		this.lastPosition['top'] = event.pageY;
-
-	}
-
-	sendPositionToServer() {
-
-		this.props.sendPositionToServer(this.props.deviceID);
-		this.setState({dragging: false});
-	}
+  createDraggable () {
+    Draggable.create("#_" + this.props.DeviceID, {
+      type: "x,y",
+      bounds: "#vertexSVGSpace",
+      edgeResistance: 0.9,
+      allowContextMenu: true,
+      throwProps: true,
+      throwResistance: 100000,
+      // throwMax: 500,
+      onDrag: () => this.props.updateVertex(),
+      onThrowUpdate: () => this.props.updateVertex(),
+      onDragEnd: () => this.sendPositionToServer(),
+      onThrowComplete: () => this.sendPositionToServer(),
+    });
+  };
 
 	render() {
 
 		const inputs = {
+      divContainer: {
+        onMouseEnter: () => Draggable.get("#deviceContainer").disable(),
+        onMouseLeave: () => Draggable.get("#deviceContainer").enable(),
+        style: {
+          position: 'absolute',
+          top: this.initialPosition.top,
+          left: this.initialPosition.left,
+        }
+      },
 			deviceContainer: {
-				style: {
-					backgroundColor: 'white',
-					margin: 10,
-					padding: 3,
-					width: 230,
-					cursor: '-webkit-grab',
-					position: 'absolute',
-					top: this.props.position.top,
-					left: this.props.position.left,
-					color: 'black'
+        		style: {
+    					backgroundColor: 'white',
+    					margin: 10,
+    					padding: 3,
+              width: 330,
+    					cursor: '-webkit-grab',
+    					position: 'absolute',
+    					color: 'black',
+              pointerEvents: 'visible',
+              opacity: this.props.activeState ? 1.0 : .4,
+              borderRadius: 20,
+              overflow: 'visible'
 				},
-				elevation: this.state.dragging ? 2 : 4,
-				
-				// WebkitUserDrag: `auto | element | none`
 			},
-			draggingCallbacks: {
-				draggable: true,
-				onDragStart : (event) => {this.onDragStart(event)},
-				onDrag : (event) => {this.onDrag(event)},
-				onDragEnd: (event) => {this.sendPositionToServer()},
-				onTouchStart: (event) => {this.onTouchStart(event)},
-				onTouchMove : (event) => {this.onDrag(event.nativeEvent.changedTouches[0])},
-				onTouchEnd: (event) => {this.sendPositionToServer()},
-				style: {
-					cursor: 'drag'
-				}
-			}
 		}
 
-		return (<Paper {...inputs.deviceContainer} ref="device"> 
-
-					<Device DeviceID={this.props.deviceID} draggingCallbacks={{...inputs.draggingCallbacks}}/>
-					
-				</Paper>
+		return (
+        <div id={"_" + this.props.DeviceID} {...inputs.divContainer}>
+					{this.props.activeState ?
+					<Paper {...inputs.deviceContainer} ref="device">
+							<Device DeviceID={this.props.deviceID}/>
+					</Paper> :
+					<Tooltip id="tooltip-top" title={'Having trouble communicating with this device. Is it still plugged in?'} placement="top">
+						<Paper {...inputs.deviceContainer} ref="device">
+								<Device DeviceID={this.props.deviceID}/>
+						</Paper>
+					</Tooltip>}
+				</div>
 			);
 	}
 }

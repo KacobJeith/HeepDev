@@ -92,19 +92,15 @@ void AddIPToMemory(struct HeepIPAddress theIP)
 	AddNewCharToMemory(theIP.Octet1);
 }
 
-void SetDeviceNameInMemory_Byte(char* deviceName, int numCharacters, heepByte* deviceID)
+heepByte SetDeviceNameInMemory_Byte(char* deviceName, int numCharacters, heepByte* deviceID)
 {
+	int numBytesNeeded = 1 + ID_SIZE + 1 + numCharacters;
+	if(WillMemoryOverflow(numBytesNeeded))
+		return 1;
+
 	int counter = 0;
 	
-	while(counter < curFilledMemory)
-	{
-		if(deviceMemory[counter] == DeviceNameOpCode){
-			deviceMemory[counter] = FragmentOpCode;
-		}
-
-		counter = SkipOpCode(counter);
-	}
-	
+	FragmentAllOfMOP(DeviceNameOpCode);
 
 	PerformPreOpCodeProcessing_Byte(deviceID);
 
@@ -117,6 +113,8 @@ void SetDeviceNameInMemory_Byte(char* deviceName, int numCharacters, heepByte* d
 	{
 		AddNewCharToMemory(deviceName[i]);
 	}
+
+	return 0;
 }
 
 void SetIconIDInMemory_Byte(char iconID, heepByte* deviceID)
@@ -212,9 +210,14 @@ heepByte DeleteWiFiSetting(int priority, heepByte* deviceID)
 	return 1; // No SSID Password Found at given Priority
 }
 
-void AddWiFiSettingsToMemory(char* WiFiSSID, int numCharSSID, char* WiFiPassword, int numCharPassword, heepByte* deviceID, heepByte IDPriority)
+heepByte AddWiFiSettingsToMemory(char* WiFiSSID, int numCharSSID, char* WiFiPassword, int numCharPassword, heepByte* deviceID, heepByte IDPriority)
 {
 	DeleteWiFiSetting(IDPriority, deviceID);
+
+	int numberOfBytesNeeded = 1 + ID_SIZE + 1 + 1 + numCharSSID;
+	numberOfBytesNeeded += 1 + ID_SIZE + 1 + 1 + numCharPassword;
+	if(WillMemoryOverflow(numberOfBytesNeeded))
+		return 1;
 	
 	PerformPreOpCodeProcessing_Byte(deviceID);
 
@@ -237,6 +240,8 @@ void AddWiFiSettingsToMemory(char* WiFiSSID, int numCharSSID, char* WiFiPassword
 	{
 		AddNewCharToMemory(WiFiPassword[i]);
 	}
+
+	return 0;
 }
 
 #ifdef USE_ANALYTICS
@@ -247,6 +252,24 @@ void SetAnalyticsDataControlValueInMemory_Byte(heepByte controlID, int controlVa
 	// Set absolute byte to indicate 
 
 	heepByte numBytesForTime = GetNumBytes64Bit(GetAnalyticsTime());
+
+	heepByte totalBytesForAnalyticsMOP = 1 + ID_SIZE + 1 + numBytesForTime + 5;
+	
+	while(WillMemoryOverflow(totalBytesForAnalyticsMOP))
+	{
+		int firstAnalyticsData = GetNextAnalyticsDataPointer(0);
+		if(firstAnalyticsData >= 0)
+		{
+			// Delete Analytics Data in FIFO Manner
+			deviceMemory[firstAnalyticsData] = FragmentOpCode;
+			DefragmentMemory();
+		}
+		else
+		{
+			// Something else has filled the memory, so we cannot add analytics
+			return;
+		}
+	}
 
 	PerformPreOpCodeProcessing_Byte(deviceID);
 
@@ -278,6 +301,14 @@ int GetNextAnalyticsDataPointer(int startingPointer)
 	}
 
 	return -1;
+}
+
+uint64_t GetTimeFromAnalyticsMOP(int MOPAddress)
+{
+	unsigned int startCount = MOPAddress + ID_SIZE + 3 + deviceMemory[MOPAddress + ID_SIZE + 3] + 3;
+	unsigned int numBytesTime = deviceMemory[startCount - 1];
+
+	return GetNumberFromBuffer(deviceMemory, &startCount, numBytesTime);
 }
 
 #endif
@@ -333,7 +364,7 @@ void SetXYInMemory_Byte(int x, int y, heepByte* deviceID)
 	AddNumberToMemoryWithSpecifiedBytes(y, 2);
 }
 
-void UpdateXYInMemory_Byte(int x, int y, heepByte* deviceID)
+heepByte UpdateXYInMemory_Byte(int x, int y, heepByte* deviceID)
 {	
 	heepByte copyID[STANDARD_ID_SIZE];
 	CopyDeviceID(deviceID, copyID);
@@ -351,10 +382,15 @@ void UpdateXYInMemory_Byte(int x, int y, heepByte* deviceID)
 	}
 	else
 	{
+		if(WillMemoryOverflow(ID_SIZE+6))
+			return 1;
+
 		SetXYInMemory_Byte(x, y, deviceID);
 	}
 
 	memoryChanged = 1;
+
+	return 0;
 }
 
 void SetIPInMemory_Byte(struct HeepIPAddress theIP, heepByte* deviceID)
@@ -405,8 +441,12 @@ int GetVertexAtPointer_Byte(unsigned long pointer, struct Vertex_Byte* returnedV
 	return 0;
 }
 
-int SetVertexInMemory_Byte(struct Vertex_Byte theVertex)
+heepByte SetVertexInMemory_Byte(struct Vertex_Byte theVertex, unsigned int* vertexPointer)
 {
+	int numBytesNeeded = 1 + ID_SIZE + ID_SIZE + 7;
+	if(WillMemoryOverflow(numBytesNeeded))
+		return 1;
+
 	PerformPreOpCodeProcessing_Byte(theVertex.txID);
 	PerformPreOpCodeProcessing_Byte(theVertex.rxID);
 	
@@ -415,7 +455,7 @@ int SetVertexInMemory_Byte(struct Vertex_Byte theVertex)
 	heepByte copyIDRx[STANDARD_ID_SIZE];
 	CopyDeviceID(theVertex.rxID, copyIDRx);
 
-	int beginningOfMemory = curFilledMemory;
+	*vertexPointer = curFilledMemory;
 
 	AddNewCharToMemory(VertexOpCode);
 	AddIndexOrDeviceIDToMemory_Byte(copyIDTx);
@@ -427,7 +467,7 @@ int SetVertexInMemory_Byte(struct Vertex_Byte theVertex)
 
 	memoryChanged = 1;
 
-	return beginningOfMemory;
+	return 0;
 }
 
 int GetNextVertexPointer(unsigned int* pointer,unsigned int* counter)
@@ -595,4 +635,32 @@ heepByte GetDeviceIDFromIndex_Byte(heepByte* index, heepByte* returnedID)
 	GetDeviceIDOrLocalIDFromBuffer(index, returnedID, 0);
 	return STANDARD_ID_SIZE; // Index is just device ID!
 #endif
+}
+
+heepByte WillMemoryOverflow(int numBytesToBeAdded)
+{
+	if(numBytesToBeAdded + curFilledMemory >= MAX_MEMORY)
+	{
+		return 1;
+	}
+
+	return 0;
+}
+
+void FragmentAllOfMOP(heepByte inputMOP)
+{
+	unsigned int counter = 0;
+	while(counter < curFilledMemory)
+	{
+		if(deviceMemory[counter] == inputMOP)
+			deviceMemory[counter] = FragmentOpCode;
+
+		counter = SkipOpCode(counter);
+	}
+}
+
+void ImmediatelyClearAllOfMOP(heepByte inputMOP)
+{
+	FragmentAllOfMOP(inputMOP);
+	DefragmentMemory();
 }

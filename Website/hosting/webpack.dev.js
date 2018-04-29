@@ -7,6 +7,11 @@ module.exports = merge(common, {
 
   mode: 'development',
 
+  output: {
+    filename: '[name].bundle.js',
+    chunkFilename: '[name].bundle.js'
+  },
+
   devServer: {
     port: 9000,
     historyApiFallback: true

@@ -7,10 +7,15 @@ import { createStore, applyMiddleware } from 'redux'
 import reducers from './redux/reducers'
 import App from './components/App'
 import thunk from 'redux-thunk'
-import * as auth from './firebase/FirebaseAuth'
 import $ from 'jquery'
 import { composeWithDevTools } from 'redux-devtools-extension';
 import * as actions_classic from './redux/actions_classic'
+
+import { persistStore, persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage' // defaults to localStorage for web and AsyncStorage for react-native
+import { PersistGate } from 'redux-persist/integration/react'
+
+import 'firebaseui/dist/firebaseui.css';
 
 const startState = {
   webGLStatus: false,
@@ -20,12 +25,11 @@ const startState = {
   places: {},
   groups: {},
 
-  devices: {
-    deviceArray: []
-  },
+  devices: {},
+  deviceWiFiCreds: {},
   positions: {},
   controls: {
-    controlStructure:{}, 
+    controlStructure:{},
     connections: {}
   },
   vertexList: {},
@@ -42,24 +46,49 @@ const startState = {
     selectedPlace: 'Enter New WiFi',
     ssid: '',
     ssidPassword: '',
+    applicationName: 'Custom',
     systemType: 'ESP8266',
     iconSelected: 1,
     selectingIcon: false,
     controls: {}
   },
-
-  liveModeReference: null
+  flowchart: {
+    dragVertex: false,
+    scale: 0.8,
+    devices: {},
+  },
+  liveModeReference: null,
+  detailsPanelDeviceID: null,
+  accessPoints: {},
+  accessPointData: {
+    connectedTo: null,
+    currentlyConnecting: null,
+    failedAttempt: null,
+    deviceID: null
+  }
 }
 
-export const initialState = Immutable.Map(startState)
+export const initialState = Immutable.Map(startState);
 
-export const store = createStore(reducers, startState, composeWithDevTools(applyMiddleware(thunk)));
+const persistConfig = {
+  key: 'root',
+  storage,
+}
 
-auth.initializeFirebase();
+const persistedReducer = persistReducer(persistConfig, reducers)
+export const store = createStore(persistedReducer, startState, composeWithDevTools(applyMiddleware(thunk)));
+
+let persistor = persistStore(store);
+
+//export const store = createStore(reducers, startState, composeWithDevTools(applyMiddleware(thunk)));
+
+import(/* webpackChunkName: "firebaseAuth" */ './firebase/FirebaseAuth').then((auth) => auth.initializeFirebase());
 
 render(
   <Provider store={store}>
-    <App/>
+    <PersistGate loading={null} persistor={persistor}>
+      <App/>
+    </PersistGate>
   </Provider>,
   document.getElementById('root')
 )
@@ -71,17 +100,17 @@ var loadDevicesFromServer = (url) => {
     url: url,
     cache: false,
     success: (data) => {
-      
+
       try {
         data.url = window.location.origin;
         var immutableMap = Immutable.Map(data);
         store.dispatch(actions_classic.overwriteFromServer(data));
 
-      } 
+      }
       catch (err) {
         console.log("Running on Dev server, cannot update url or feed classic data");
       }
-      
+
     },
     error: (xhr, status, err) => {
       console.error(url, status, err.toString());
@@ -92,4 +121,3 @@ var loadDevicesFromServer = (url) => {
 var timeoutRef = setInterval(() => loadDevicesFromServer(window.location.origin.concat('/api/findDevices')), 1000)
 
 setTimeout(() => clearTimeout(timeoutRef), 5000);
-

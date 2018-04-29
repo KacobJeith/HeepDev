@@ -1,19 +1,19 @@
 
 export const addDevice = (deviceID, device) => ({
   type: 'ADD_DEVICE',
-  deviceID, 
+  deviceID,
   device
 })
 
 export const addPlace = (placeID, place) => ({
   type: 'ADD_PLACE',
-  placeID, 
+  placeID,
   place
 })
 
 export const addGroup = (groupID, group) => ({
   type: 'ADD_GROUP',
-  group, 
+  group,
   groupID
 })
 
@@ -48,7 +48,7 @@ export const initPaperSignals = () => ({
 export const addMemoryDump = (deviceID, controlID, MOP) => ({
 	type: 'ADD_MEMORY_DUMP',
 	deviceID,
-	controlID, 
+	controlID,
 	MOP
 })
 
@@ -80,5 +80,15 @@ export const deletePlace = (placeID) => ({
 	placeID
 })
 
+export const loginToFirebase = () => ({
+	type: 'LOGIN_TO_FIREBASE'
+})
 
+export const logoutOfFirebase = () => ({
+	type: 'LOGOUT_OF_FIREBASE'
+})
 
+export const addUser = (user) => ({
+	type: 'ADD_USER',
+	user
+})

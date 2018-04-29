@@ -17,7 +17,7 @@ import {  Grid,
           Paper,
           Select,
           Hidden }         from 'material-ui';
-import { Delete }          from 'material-ui-icons';
+import  Delete           from 'material-ui-icons/Delete';
 import { withStyles, withTheme } from 'material-ui/styles';
 
 import SmartBadge from '../utilities/SmartBadge'

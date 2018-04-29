@@ -195,7 +195,8 @@ void TestDefragmentDeviceMemory()
 
 	int memCheckStart = GetMemCounterStart()*2;
 
-	SetVertexInMemory_Byte(theVertex);
+	unsigned int pointer = 0;
+	SetVertexInMemory_Byte(theVertex, &pointer);
 	ExpectedValue valueList [3];
 	unsigned int beforeDeletionMemory = curFilledMemory;
 	valueList[0].valueName = "Memory Filled Before Deletion";
@@ -248,7 +249,8 @@ void TestDefragmentDeviceMemoryAtEnd()
 	vertexPointer += ID_SIZE+STANDARD_ID_SIZE+2;
 #endif
 
-	SetVertexInMemory_Byte(theVertex);
+	unsigned int pointer = 0;
+	SetVertexInMemory_Byte(theVertex, &pointer);
 	unsigned int beforeDeletionMemory = curFilledMemory;
 	DeleteVertexAtPointer(vertexPointer);
 	unsigned int afterDeletionMemory = curFilledMemory;
@@ -292,7 +294,8 @@ void TestDefragmentDeviceMemoryDeviceAtFront()
 
 	int memCheckStart = GetMemCounterStart()*2;
 
-	SetVertexInMemory_Byte(theVertex);
+	unsigned int pointer = 0;
+	SetVertexInMemory_Byte(theVertex, &pointer);
 	SetDeviceNameInMemory_Byte("Crowbar", 7, deviceID1);
 	SetIPInMemory_Byte(theIP, deviceID2);
 	ExpectedValue valueList [2];
@@ -344,7 +347,8 @@ void TestDefragmentDeviceMemoryInMiddle()
 	vertexPointer += ID_SIZE+STANDARD_ID_SIZE+2;
 #endif
 
-	SetVertexInMemory_Byte(theVertex);
+	unsigned int pointer = 0;
+	SetVertexInMemory_Byte(theVertex, &pointer);
 	SetIPInMemory_Byte(theIP, deviceID2);
 	unsigned int beforeDeletionMemory = curFilledMemory;
 	DeleteVertexAtPointer(vertexPointer);
@@ -397,9 +401,10 @@ void TestBuildVertexListFromPointers()
 
 
 	SetDeviceNameInMemory_Byte("Crowbar", 7, deviceID2);
-	SetVertexInMemory_Byte(theVertex);
+	unsigned int pointer = 0;
+	SetVertexInMemory_Byte(theVertex, &pointer);
 	SetIPInMemory_Byte(theIP, deviceID1);
-	SetVertexInMemory_Byte(theVertex2);
+	SetVertexInMemory_Byte(theVertex2, &pointer);
 
 	FillVertexListFromMemory();
 
@@ -1105,7 +1110,8 @@ void TestSetVertexOpCode_Byte()
 	myVertex.txControlID = 0x01;
 	myVertex.rxControlID = 0x02;
 
-	SetVertexInMemory_Byte(myVertex);
+	unsigned int pointer = 0;
+	SetVertexInMemory_Byte(myVertex, &pointer);
 
 	int memCheckStart = GetMemCounterStart()*2;
 
@@ -1166,7 +1172,8 @@ void TestGetVertex_Byte()
 	myVertex.txControlID = 0x01;
 	myVertex.rxControlID = 0x02;
 
-	SetVertexInMemory_Byte(myVertex);
+	unsigned int pointer = 0;
+	SetVertexInMemory_Byte(myVertex, &pointer);
 
 	int memCheckStart = GetMemCounterStart()*2;
 
@@ -1271,6 +1278,8 @@ void TestWiFiMOP()
 	int DidReceive2 = 0;
 	char RetrievedSSID2 [20];
 	char RetrievedPassword2 [20];
+	for(int i = 0; i < 20; i++)
+		RetrievedSSID2[i] = RetrievedPassword2[i] = '\0';
 	DidReceive2 = GetWiFiFromMemory(RetrievedSSID2, RetrievedPassword2, 2);
 	std::string RetreivedSSIDStr2(RetrievedSSID2);
 	std::string RetreivedPasswordStr2(RetrievedPassword2);
@@ -1413,6 +1422,78 @@ void TestWiFiReplacement()
 	CheckResults(TestName, valueList, 4);
 }
 
+void TestAnalyticsMOPQueue()
+{
+#ifdef USE_ANALYTICS
+	std::string TestName = "Test Analytics MOP Queuing";
+
+	ClearDeviceMemory();
+
+	simMillis = 0;
+	heepByte deviceID1[STANDARD_ID_SIZE];
+	CreateFakeDeviceID(deviceID1);
+
+	for(int i = 0; i < 20000; i++)
+	{
+		simMillis++;
+		SetAnalyticsDataControlValueInMemory_Byte(0, 4, deviceID1);
+	}
+
+	// Find last analytics MOP
+	int currentAnalyticsIndex = GetNextAnalyticsDataPointer(0);
+	int lastAnalyticsIndex = 0;
+	do
+	{
+		lastAnalyticsIndex = currentAnalyticsIndex;
+		currentAnalyticsIndex = SkipOpCode(currentAnalyticsIndex);
+		currentAnalyticsIndex = GetNextAnalyticsDataPointer(currentAnalyticsIndex);
+	}while(currentAnalyticsIndex != -1);
+
+	ExpectedValue valueList [2];
+	valueList[0].valueName = "Final Time";
+	valueList[0].expectedValue = 20000;
+	valueList[0].actualValue = GetTimeFromAnalyticsMOP(lastAnalyticsIndex);
+
+	valueList[1].valueName = "First Time";
+	valueList[1].expectedValue = 1;
+	valueList[1].actualValue = GetTimeFromAnalyticsMOP(GetNextAnalyticsDataPointer(0)) != 0;
+
+	CheckResults(TestName, valueList, 2);
+#endif
+}
+
+void TestAnalyticsMOPTimeGetter()
+{
+#ifdef USE_ANALYTICS
+	std::string TestName = "Test Analytics MOP Time Getter";
+
+	ClearDeviceMemory();
+
+	simMillis = 100;
+	heepByte deviceID1[STANDARD_ID_SIZE];
+	CreateFakeDeviceID(deviceID1);
+
+	SetAnalyticsDataControlValueInMemory_Byte(0, 4, deviceID1);
+
+	simMillis = 2315232;
+	SetAnalyticsDataControlValueInMemory_Byte(0, 21, deviceID1);
+
+	int firstAnalyticsMOP = GetNextAnalyticsDataPointer(0);
+	int secondAnalyticsMOP = GetNextAnalyticsDataPointer(SkipOpCode(firstAnalyticsMOP));
+
+	ExpectedValue valueList [2];
+	valueList[0].valueName = "MOP 1 Time";
+	valueList[0].expectedValue = 100;
+	valueList[0].actualValue = GetTimeFromAnalyticsMOP(firstAnalyticsMOP);
+
+	valueList[1].valueName = "MOP 2 Time";
+	valueList[1].expectedValue = 2315232;
+	valueList[1].actualValue = GetTimeFromAnalyticsMOP(secondAnalyticsMOP);
+
+	CheckResults(TestName, valueList, 2);
+#endif
+}
+
 void TestDynamicMemory()
 {	
 	TestAddIPToDeviceMemory();
@@ -1448,4 +1529,6 @@ void TestDynamicMemory()
  	TestWiFiMOP();
  	TestMultipleNameReplacement();
  	TestWiFiReplacement();
+ 	TestAnalyticsMOPQueue();
+ 	TestAnalyticsMOPTimeGetter();
 }

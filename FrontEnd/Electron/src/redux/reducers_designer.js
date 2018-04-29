@@ -35,6 +35,10 @@ export default function(state = initialState.builder, action, fullState = initia
         .set('physicalLayer', Object.keys(sys_phy_files[action.system])[0])
         .toJS()
 
+    case 'UPDATE_APPLICATION_NAME' :
+
+      return Immutable.Map(state).set('applicationName', action.applicationName).toJS()
+
     case 'UPDATE_CONTROL_NAME' :
 
       var controlID = action.controlID;
@@ -96,8 +100,13 @@ export default function(state = initialState.builder, action, fullState = initia
 
     case 'ADD_NEW_CONTROL' :
 
+        if(action.controlConfig == "Select...")
+          return state;
+        
         const controlKey = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
         var controls = Immutable.Map(state.controls).set(controlKey, initialControlState(Object.keys(state.controls).length)).toJS();
+
+        controls[controlKey].designerControlType = action.controlConfig;
 
         var newMaster = Immutable.Map(state)
         .set('numControls', state.numControls + 1)
@@ -190,5 +199,6 @@ const initialControlState = () => ({
     curValue: 0,
     pinNumber: 14,
     analogOrDigital: "digital",
-    pinNegativeLogic: false
+    pinNegativeLogic: false,
+    designerControlType: "Virtual"
 })

@@ -123,3 +123,16 @@ export const setSVGText = (svgText) => ({
   type: 'SET_SVG_TEXT',
   svgText
 })
+
+export const addUser = (user) => ({
+	type: 'ADD_USER',
+	user
+})
+
+export const loginToFirebase = () => ({
+	type: 'LOGIN_TO_FIREBASE'
+})
+
+export const logoutOfFirebase = () => ({
+	type: 'LOGOUT_OF_FIREBASE'
+})

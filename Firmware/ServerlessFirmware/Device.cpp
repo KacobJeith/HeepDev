@@ -56,10 +56,18 @@ void AddVertexPointer(unsigned int pointer)
 	numberOfVertices++;
 }
 
-void AddVertex(struct Vertex_Byte myVertex)
+heepByte AddVertex(struct Vertex_Byte myVertex)
 {
-	unsigned int pointerToVertex = SetVertexInMemory_Byte(myVertex);
-	AddVertexPointer(pointerToVertex);
+	unsigned int pointerToVertex = 0;
+	if(SetVertexInMemory_Byte(myVertex, &pointerToVertex) == 0)
+	{	
+		AddVertexPointer(pointerToVertex);
+		return 0;
+	}
+	else
+	{
+		return 1;
+	}
 }
 
 void RemoveVertexListEntry(unsigned int pointer)
@@ -125,10 +133,6 @@ int SetControlValueByID(unsigned char controlID, unsigned int value, unsigned ch
 		if(controlList[i].controlID == controlID)
 		{
 			controlList[i].curValue = value;
-
-#ifdef USE_ANALYTICS
-			SetAnalyticsDataControlValueInMemory_Byte(controlID, value, deviceIDByte);
-#endif
 
 			if(setFromNetwork)
 				controlList[i].controlFlags = 0x01;

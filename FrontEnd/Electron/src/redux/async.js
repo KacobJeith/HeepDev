@@ -13,8 +13,6 @@ export var sendVertexToServer = (vertex) => {
 
   const messagePacket = {vertex: vertex};
 
-  console.log(messagePacket);
-
   performAJAX(url, messagePacket);
 };
 
@@ -45,6 +43,20 @@ export var sendPositionToServer = (deviceID, position) => {
   
 };
 
+export var sendWifiCredsToServer = (deviceID, ssid, password) => {
+
+  var messagePacket = {
+    deviceID: deviceID, 
+    ssid: ssid,
+    password: password
+  };
+
+  var url = urlPrefix.concat('/api/sendWifiCredsToDevice');
+  
+  performAJAX(url, messagePacket);
+  
+};
+
 export var sendDeleteVertexToServer = (vertex) => {
 
   var url = urlPrefix.concat('/api/deleteVertex');
@@ -64,6 +76,99 @@ export var refreshLocalDeviceState = () => {
   })
 }
 
+export var hardRefreshLocalDeviceState = () => {
+  var url = urlPrefix.concat('/api/hardRefreshLocalDeviceState');
+
+  performAJAX(url, {}, 'GET', (data) => {
+    
+    setup.store.dispatch(actions_classic.overwriteFromServer(data));
+  })
+}
+
+export const searchForAccessPoints = () => {
+  
+  var url = urlPrefix.concat('/api/searchForAccessPoints');
+
+  performAJAX(url, {}, 'GET', (data) => {
+    
+    setup.store.dispatch(actions_classic.setAccessPoints(data));
+  })
+
+}
+
+export const connectToAccessPoint = (ssid) => {
+
+  const messagePacket = {ssid: ssid};
+
+  var url = urlPrefix.concat('/api/connectToAccessPoint');
+
+  performAJAX(url, messagePacket, 'POST', (response) => {
+
+    if (response.success) {
+      const deviceID = Object.keys(response.data.devices)[0];
+
+      setup.store.dispatch(actions_classic.overwriteFromServer(response.data));
+      
+      const accessData = {
+        connectedTo: response.ssid,
+        currentlyConnecting: null,
+        failedAttempt: null,
+        deviceID: deviceID
+      }
+
+      setup.store.dispatch(actions_classic.setAccessData(accessData));
+      setup.store.dispatch(actions_classic.setDetailsPanelDeviceID(deviceID));
+
+    } else {
+
+      const accessData = {
+        connectedTo: null,
+        currentlyConnecting: null,
+        failedAttempt: response.ssid,
+        deviceID: deviceID
+      }
+
+      setup.store.dispatch(actions_classic.setAccessData(accessData));
+    }
+    
+  })
+
+}
+
+export const resetDeviceAndOSWifi = (deviceID) => {
+
+  const accessData = {
+    connectedTo: null,
+    currentlyConnecting: null,
+    failedAttempt: null,
+    deviceID: null
+  }
+  
+  setTimeout(() => setup.store.dispatch(actions_classic.setDetailsPanelDeviceID(null)), 100);
+  setTimeout(() => setup.store.dispatch(actions_classic.setAccessData(accessData)), 200);
+  
+  var url = urlPrefix.concat('/api/resetDeviceAndOSWifi');
+
+  performAJAX(url, {deviceID: deviceID}, 'POST', (response) => {
+
+    setup.store.dispatch(actions_classic.overwriteFromServer(response));    
+    
+  })
+
+}
+
+export const resetDeviceWifi = (deviceID) => {
+  
+  var url = urlPrefix.concat('/api/resetDeviceWifi');
+
+  performAJAX(url, {deviceID: deviceID}, 'POST', (response) => {
+
+    // setup.store.dispatch(actions_classic.overwriteFromServer(response));  
+    console.log('WifiReset: ', response);   
+    
+  })
+
+}
 
 export var performAJAX = (url, messagePacket, type = 'POST', callback = (data) => {} ) => {
   $.ajax({

@@ -45,7 +45,7 @@ int GetControlValueByID(unsigned controlID);
 
 void AddControl(struct Control myControl);
 
-void AddVertex(struct Vertex_Byte myVertex);
+heepByte AddVertex(struct Vertex_Byte myVertex);
 
 void SetupHeepTasks();
 
@@ -67,7 +67,16 @@ void AddRangeControl(char* controlName, int inputOutput, int highValue, int lowV
 void AddOnOffControl(char* controlName, int inputOutput, int startingValue);
 
 int GetControlValueByName(char* controlName);
+
 void SetControlValueByName(char* controlName, int newValue);
+void SetControlValueByNameAlwaysSend(char* controlName, int newValue);
+void SetControlValueByNameNoSend(char *controlName, int newValue);
+
+void SetControlValueByNameNoAnalytics(char *controlName, int newValue);
+void SetControlValueByNameNoAnalyticsNoSend(char *controlName, int newValue);
+void SetControlValueByNameNoAnalyticsAlwaysSend(char *controlName, int newValue);
+
+void SendControlsOnHeartBeat(unsigned long controlSendPeriod);
 
 heepByte GetWiFiFromMemory(char* WiFiSSID, char* WiFiPassword, int priority);
-void AddWiFiSettingsToMemory(char* WiFiSSID, int numCharSSID, char* WiFiPassword, int numCharPassword, heepByte* deviceID, heepByte IDPriority);
+heepByte AddWiFiSettingsToMemory(char* WiFiSSID, int numCharSSID, char* WiFiPassword, int numCharPassword, heepByte* deviceID, heepByte IDPriority);

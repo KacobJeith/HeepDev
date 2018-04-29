@@ -10,7 +10,7 @@ export var ConvertIPAddressToByteArray = (stringIP) => {
 }
 
 export var GetDeviceIDAsByteArray = (value) => {
-  var deviceIDbuf = Buffer.from(value, 'base64'); 
+  var deviceIDbuf = Buffer.from(value, 'hex'); 
   var deviceID = [...deviceIDbuf];
   return deviceID
 }
@@ -23,6 +23,19 @@ export var GetValueAsFixedSizeByteArray = (value, size) => {
   }
   
   return valueBytes
+}
+
+export var GetStringAsByteArray = (str) => {
+  console.log('STRING: ', str);
+  var myBuffer = [];
+  var buffer = new Buffer(str, 'utf-8');
+  for (var i = 0; i < buffer.length; i++) {
+      myBuffer.push(buffer[i]);
+  }
+
+  console.log(myBuffer);
+
+  return myBuffer
 }
 
 export var GetByteArrayFromValue = (value, numBytes = GetNecessaryBytes(value)) => {
@@ -64,4 +77,9 @@ export var GetIntFromByteArray = (buffer) => {
 export const ByteArrayToBase64String = (arrayBuffer) => {
   let base64String = new Buffer(arrayBuffer).toString('base64');
   return base64String
+}
+
+export const ByteArrayToHexString = (arrayBuffer) => {
+  let hexString = new Buffer(arrayBuffer).toString('hex');
+  return hexString
 }

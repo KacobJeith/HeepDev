@@ -4,7 +4,13 @@ import randomNumber from 'random-number-csprng'
 
 import { sys_phy_files } from './SystemPHYCompatibilities'
 
+import { applications } from '../assets/inoFiles.js'
+
 export const packageSourceFiles = (deviceDetails, controls) => {
+
+  console.log("About to print application Name")
+  console.log(deviceDetails.applicationName)
+  //console.log(inoFiles.ClimateSensorFile);
 
   console.log("Device: ", deviceDetails);
   console.log("Controls: ", controls);
@@ -37,7 +43,7 @@ export const packageSourceFiles = (deviceDetails, controls) => {
 
   setIDAndMAC((deviceIDarray, MACAddressArray) => {
 
-    zip.file('HeepDeviceDefinitions.h', generateDeviceDefinitionsFile(deviceIDarray, MACAddressArray, autoGenIncludes));
+    zip.file('HeepDeviceDefinitions.h', generateDeviceDefinitionsFile(deviceDetails.deviceName, deviceIDarray, MACAddressArray, autoGenIncludes));
 
     zip.generateAsync({type:"blob"})
     .then(function(content) {
@@ -62,21 +68,30 @@ const packageSimulationFiles = (deviceDetails, controls, zip) => {
   return zip
 }
 
+const getPreExistingInoFile = (deviceDetails) => {
+
+  return applications[deviceDetails.applicationName].file;
+}
+
 const composeInoFile = (deviceDetails, controls) => {
 
-    var fileContent = `
+  if(deviceDetails.applicationName != "Custom"){
+    return getPreExistingInoFile(deviceDetails);
+  }
+
+var fileContent = `
 #include "HeepDeviceDefinitions.h"\n`
 + initializeControls(controls)
 + createHardwareControlFunctionsArduinoSyntax(controls)
-+ CreateHardwareReadFunctions(controls)
-+ CreateHardwareWriteFunctions(controls)
++ CreateReadFunctions(controls)
++ CreateWriteFunctions(controls)
 + `void setup()
 {
 
   Serial.begin(115200);\n`
 + GetTabCharacter() + `InitializeControlHardware();\n`
 + setControls(controls)
-+ GetTabCharacter() + `StartHeep("`+ deviceDetails.deviceName + `", ` + deviceDetails.iconSelected + `);\n
++ GetTabCharacter() + `StartHeep(heepDeviceName, ` + deviceDetails.iconSelected + `);\n
 }
 
 void loop()
@@ -118,12 +133,16 @@ var createHardwareControlFunctionsArduinoSyntax = (controls) => {
   // output == 1, input == 0 
   // TODO: Make control direction into an enum with defined numbers just like Unity
   for (var i in controls) {
-    var arduinoDirection = "OUTPUT";
-    if(controls[i].controlDirection == 1){
-      arduinoDirection = "INPUT";
-    }
 
-    hardwareInitializations += `\n` + GetTabCharacter() + `pinMode(` + getPinDefineName(controls[i]) + `,` + arduinoDirection + `);`;
+    if(controls.designerControlType == "Pin")
+    {
+      var arduinoDirection = "OUTPUT";
+      if(controls[i].controlDirection == 1){
+        arduinoDirection = "INPUT";
+      }
+
+      hardwareInitializations += `\n` + GetTabCharacter() + `pinMode(` + getPinDefineName(controls[i]) + `,` + arduinoDirection + `);`;
+    }
   }
 
   hardwareInitializations += `\n}\n\n`;
@@ -131,57 +150,105 @@ var createHardwareControlFunctionsArduinoSyntax = (controls) => {
   return hardwareInitializations;
 }
 
-// TODO: Make this function handle control types that are not just pin reads
-var CreateHardwareReadFunctions = (controls) => {
-  var hardwareReadFunctions = ``;
+var CreatePinControlReadFunction = (control) => {
+  var readFunction = ``;
+
+  var notSign = ``;
+  if(control.pinNegativeLogic){
+    notSign = `!`;
+  }
+
+  readFunction += `int ` + GetReadFunctionName(control) + `(){\n`
+            + GetTabCharacter() + `int currentSetting = ` + notSign + control['analogOrDigital'] + `Read(` + getPinDefineName(control) + `);\n`
+            + GetTabCharacter() + `SetControlValueByName("` + control.controlName + `",currentSetting);\n`
+            + GetTabCharacter() + `return currentSetting;\n`
+            + `}\n\n`;
+
+  return readFunction;
+}
+
+var CreateVirtualControlReadFunction = (control) => {
+  var readFunction = ``;
+
+  readFunction += `int ` + GetReadFunctionName(control) + `(){\n`
+            + GetTabCharacter() + `int currentSetting = 0; //ToDo: Add your custom control logic here\n`
+            + GetTabCharacter() + `SetControlValueByName("` + control.controlName + `",currentSetting);\n`
+            + GetTabCharacter() + `return currentSetting;\n`
+            + `}\n\n`;
+
+  return readFunction;
+}
+
+var CreateReadFunctions = (controls) => {
+  var readFunctions = ``;
 
   // output == 1, input == 0 
   // TODO: Make control direction into an enum with defined numbers just like Unity
   for (var i in controls) {
-
-    var notSign = ``;
-    if(controls[i].pinNegativeLogic){
-      notSign = `!`;
-    }
 
     // Only react to outputs. Heep Outputs are Hardware Inputs
     if(controls[i].controlDirection == 1){
-      hardwareReadFunctions += `int ` + GetReadFunctionName(controls[i]) + `(){\n`
-        + GetTabCharacter() + `int currentSetting = ` + notSign + controls[i]['analogOrDigital'] + `Read(` + getPinDefineName(controls[i]) + `);\n`
-        + GetTabCharacter() + `SetControlValueByName("` + controls[i].controlName + `",currentSetting);\n`
-        + GetTabCharacter() + `return currentSetting;\n`
-        + `}\n\n`;
+      if(controls[i].designerControlType == "Pin"){
+          readFunctions += CreatePinControlReadFunction(controls[i]);
+      }
+      else{
+          readFunctions += CreateVirtualControlReadFunction(controls[i]);
+      }
     }
   }
 
-  return hardwareReadFunctions;
+  return readFunctions;
 
 }
 
-// TODO: Make this function handle control types that are not just pin writes
-var CreateHardwareWriteFunctions = (controls) => {
-  var hardwareWriteFunctions = ``;
+var CreatePinControlWriteunction = (control) => {
+  var writeFunction = ``;
+
+  var notSign = ``;
+  if(control.pinNegativeLogic){
+    notSign = `!`;
+  }
+
+  writeFunction += `int ` + GetWriteFunctionName(control) + `(){\n`
+        + GetTabCharacter() + `int currentSetting = GetControlValueByName("` + control.controlName + `");\n`
+        + GetTabCharacter() + control['analogOrDigital'] + `Write(` + getPinDefineName(control) + `,` + notSign + `currentSetting);\n`
+        + GetTabCharacter() + `return currentSetting;\n`
+        + `}\n\n`;
+
+  return writeFunction;
+}
+
+var CreateVirtualControlWriteFunction = (control) => {
+  var writeFunction = ``;
+
+  writeFunction += `int ` + GetWriteFunctionName(control) + `(){\n`
+        + GetTabCharacter() + `int currentSetting = GetControlValueByName("` + control.controlName + `");\n`
+        + GetTabCharacter() + `//ToDo: Add your custom control logic here\n`
+        + GetTabCharacter() + `return currentSetting;\n`
+        + `}\n\n`;
+
+  return writeFunction;
+}
+
+var CreateWriteFunctions = (controls) => {
+  var writeFunctions = ``;
 
   // output == 1, input == 0 
   // TODO: Make control direction into an enum with defined numbers just like Unity
   for (var i in controls) {
 
-    var notSign = ``;
-    if(controls[i].pinNegativeLogic){
-      notSign = `!`;
-    }
-
     // Only react to inputs. Heep inputs are Hardware Outputs
     if(controls[i].controlDirection == 0){
-      hardwareWriteFunctions += `int ` + GetWriteFunctionName(controls[i]) + `(){\n`
-        + GetTabCharacter() + `int currentSetting = GetControlValueByName("` + controls[i].controlName + `");\n`
-        + GetTabCharacter() + controls[i]['analogOrDigital'] + `Write(` + getPinDefineName(controls[i]) + `,` + notSign + `currentSetting);\n`
-        + GetTabCharacter() + `return currentSetting;\n`
-        + `}\n\n`;
+      if(controls[i].designerControlType == "Pin"){
+        writeFunctions += CreatePinControlWriteunction(controls[i]);
+      }
+      else{
+        writeFunctions += CreateVirtualControlWriteFunction(controls[i]);
+      }
     }
   }
 
-  return hardwareWriteFunctions;
+  return writeFunctions;
 
 }
 
@@ -214,7 +281,10 @@ const initializeControls = (controls) => {
 
   var controlDefs = ``;
   for (var i in controls) {
-    controlDefs += getPinDefine(controls[i]) + `\n`
+    if(controls[i].designerControlType == "Pin")
+    {
+      controlDefs += getPinDefine(controls[i]) + `\n`
+    }
   }
 
   return controlDefs
@@ -347,13 +417,14 @@ const setIDAndMAC = (launchDownloadCallback) => {
 
 }
 
-const generateDeviceDefinitionsFile = (deviceIDarray, MACAddressArray, autoGenIncludes) => {
+const generateDeviceDefinitionsFile = (deviceName, deviceIDarray, MACAddressArray, autoGenIncludes) => {
 
   var autoGenContent = `#include <Heep_API.h>\n`;
   autoGenContent += autoGenIncludes;
   autoGenContent += `heepByte deviceIDByte [STANDARD_ID_SIZE] = {` + convertIntToHex(deviceIDarray) + `};\n`;
   autoGenContent += `uint8_t mac[6] = {` + convertIntToHex(MACAddressArray) + `};\n`;
   autoGenContent += `unsigned char clearMemory = 1;\n`;
+  autoGenContent += `char* heepDeviceName = "` + deviceName + `";\n`;
   
   return autoGenContent
 }
@@ -393,9 +464,7 @@ const getIncludes_Simulation = (deviceDetails) => {
 }
 
 const getIncludes_ESP8266 = (deviceDetails) => {
-  return `String SSID = "` + deviceDetails.ssid + `";
-  String Password = "` + deviceDetails.ssidPassword + `";
-  #include "` + getCommsFileName(deviceDetails) + `"
+  return `#include "` + getCommsFileName(deviceDetails) + `"
   #include "ESP8266_NonVolatileMemory.h"
   #include "Arduino_Timer.h" \n`
 }

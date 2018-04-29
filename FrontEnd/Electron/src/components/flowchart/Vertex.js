@@ -8,90 +8,155 @@ var mapStateToProps = (state, ownProps) => (
 {
   id: ownProps.vertexID,
   vertex: state.vertexList[ownProps.vertexID],
-  inputPosition: getInputPosition(state, ownProps),
-  outputPosition: getOutputPosition(state, ownProps)
+  positions: state.positions,
+  activeState:  state.devices[state.vertexList[ownProps.vertexID].rxDeviceID] &&
+                state.devices[state.vertexList[ownProps.vertexID].txDeviceID] &&
+                state.devices[state.vertexList[ownProps.vertexID].rxDeviceID].active &&
+                state.devices[state.vertexList[ownProps.vertexID].txDeviceID].active,
+  dragging: state.flowchart.dragVertex,
+  scale: state.flowchart.scale,
+  txDeviceID: state.vertexList[ownProps.vertexID].txDeviceID,
+  rxDeviceID: state.vertexList[ownProps.vertexID].rxDeviceID,
+  txCollapsed: state.flowchart.devices[state.vertexList[ownProps.vertexID].txDeviceID] && state.flowchart.devices[state.vertexList[ownProps.vertexID].txDeviceID].collapsed ? state.flowchart.devices[state.vertexList[ownProps.vertexID].txDeviceID].collapsed : false,
+  rxCollapsed: state.flowchart.devices[state.vertexList[ownProps.vertexID].rxDeviceID] && state.flowchart.devices[state.vertexList[ownProps.vertexID].rxDeviceID].collapsed ? state.flowchart.devices[state.vertexList[ownProps.vertexID].rxDeviceID].collapsed : false,
 })
 
 class Vertex extends React.Component {
 	constructor() {
 		super();
 		this.state = {
-			color: 'black',
-			strokeWidth: 3
+			color: '#455a64',
+			strokeWidth: 3,
+      collapsedColor: '#9fa1a2'
 		}
 	}
 
 	sendDeleteVertexToServer() {
-		
 		this.props.deleteVertex(this.props.id, this.props.vertex)
-	}
+	};
+
+  getInputPosition = () => {
+  	let returnPosition = false;
+  	try {
+
+      let txControlName
+
+      if (this.props.txCollapsed == true) {
+        txControlName = this.props.txDeviceID + "_tx"
+      } else {
+        txControlName = generalUtils.getTxControlNameFromVertex(this.props.vertex)
+      }
+
+      const svgElement = document.getElementById(txControlName)
+      const svgElRect = svgElement.getBoundingClientRect()
+
+      const svgContainer = document.getElementById("deviceContainer")
+      const svgConRect = svgContainer.getBoundingClientRect()
+
+      const heightOffset = svgElRect.height / 2
+      const widthOffset = svgElRect.width / 2
+
+      returnPosition = {
+        top: (svgElRect.top + heightOffset - svgConRect.top) / this.props.scale,
+        left: (svgElRect.left + widthOffset - svgConRect.left) / this.props.scale,
+      };
+
+  	} catch(err){
+  	  }
+
+  	return returnPosition
+  };
+
+  getOutputPosition = () => {
+  	let returnPosition = false;
+  	try {
+
+      let rxControlName
+
+      if (this.props.rxCollapsed == true) {
+        rxControlName = this.props.rxDeviceID + "_rx"
+      } else {
+        rxControlName = generalUtils.getRxControlNameFromVertex(this.props.vertex)
+      }
+
+      const svgElement = document.getElementById(rxControlName)
+      const svgElRect = svgElement.getBoundingClientRect()
+
+      const svgContainer = document.getElementById("deviceContainer")
+      const svgConRect = svgContainer.getBoundingClientRect()
+
+      const heightOffset = svgElRect.height / 2
+      const widthOffset = svgElRect.width / 2
+
+      returnPosition = {
+        top: (svgElRect.top + heightOffset - svgConRect.top) / this.props.scale,
+        left: (svgElRect.left + widthOffset - svgConRect.left) / this.props.scale,
+      }
+
+  	} catch(err){
+  		//console.log('Found a dangling vertex: ', state.vertexList[ownProps.vertexID]);
+  	}
+
+  	return returnPosition
+  };
+
+  checkCollapsed() {
+    if (this.props.rxCollapsed || this.props.txCollapsed) {
+      return true
+    } else {
+      return false
+    }
+  }
 
 	render() {
+    const getInput = this.getInputPosition();
+    const getOutput = this.getOutputPosition();
 
-		if (this.props.inputPosition == false || this.props.outputPosition == false) {
+		if (getInput == false || getOutput == false) {
+      // console.log("false")
 			return <g/>
 		}
 
+    const rxClassName = 'vertex' + this.props.rxDeviceID.toString()
+    const txClassName = 'vertex' + this.props.txDeviceID.toString()
+
 		var inputs = {
+
 			vertex: {
+        id: this.props.id,
+        className: [rxClassName, txClassName, "test"].join(" "),
+        pointerEvents: 'all',
+        display: 'inline-block',
 				strokeWidth: this.state.strokeWidth,
-				stroke: this.state.color,
+				stroke: this.checkCollapsed() ? this.state.collapsedColor : this.state.color,
 				fill: 'transparent',
-				d: "M".concat(	String(this.props.inputPosition['left']), 
-								" ", 
-								String(this.props.inputPosition['top']), 
-								" Q ", 
-								String(Math.round(this.props.inputPosition['left'] + 30)),
-								" ",
-								String(Math.round(this.props.inputPosition['top'])),
-								", ",
-								String(Math.round(this.props.inputPosition['left'] + (this.props.outputPosition['left'] - this.props.inputPosition['left'])/2)),
-								" ", 
-								String(Math.round(this.props.inputPosition['top'] + (this.props.outputPosition['top'] - this.props.inputPosition['top'])/2)),
-								" T ", 
-								String(this.props.outputPosition['left']), 
-								" ", 
-								String(this.props.outputPosition['top'])),
-				onMouseEnter: () => this.setState({'color': 'red', 'strokeWidth': 4}),
-				onMouseLeave: () => this.setState({'color': 'black', 'strokeWidth': 3}),
-				onClick: () => this.sendDeleteVertexToServer(),
+        d: "M".concat(	String(getInput.left),
+                " ",
+                String(getInput.top),
+                " Q ",
+                String(Math.round(getInput.left) + 30),
+                " ",
+                String(Math.round(getInput.top)),
+                ", ",
+                String(Math.round(getInput.left + (getOutput.left - getInput.left)/2)),
+                " ",
+                String(Math.round(getInput.top + (getOutput.top - getInput.top)/2)),
+                " T ",
+                String(getOutput.left),
+                " ",
+                String(getOutput.top)),
+				onMouseEnter: () => this.checkCollapsed() ? this.setState({'strokeWidth': 3}) : this.setState({'color': '#d40000', 'strokeWidth': 5}),
+				onMouseLeave: () => this.checkCollapsed() ? this.setState({'strokeWidth': 3}) : this.setState({'color': '#455a64', 'strokeWidth': 3}),
+				onClick: () => this.checkCollapsed() ? null : this.sendDeleteVertexToServer(),
 				style: {
-					cursor: 'pointer'
+					cursor: this.checkCollapsed() ? 'move' : 'pointer',
+          opacity: this.props.activeState ? 1.0 : 0.2
 				}
 			}
 		}
-		
-
-		return <path {...inputs.vertex}/>;
+		return <path {...inputs.vertex}/>
 	}
 }
-
-var getInputPosition = (state, ownProps) => {
-	var returnPosition = false;
-	try {
-		var txControlName = generalUtils.getTxControlNameFromVertex(state.vertexList[ownProps.vertexID])
-		var deviceID = state.vertexList[ownProps.vertexID].txDeviceID;
-		returnPosition = state.positions[ deviceID ][ txControlName ];
-	} catch(err){
-		//console.log('Found a dangling vertex: ', state.vertexList[ownProps.vertexID]);
-	}
-
-	return returnPosition
-}
-
-var getOutputPosition = (state, ownProps) => {
-	var returnPosition = false;
-	try {
-		var RxControlName = generalUtils.getRxControlNameFromVertex(state.vertexList[ownProps.vertexID]);
-		var deviceID = state.vertexList[ownProps.vertexID].rxDeviceID
-		returnPosition = state.positions[ deviceID ][ RxControlName ];
-	} catch(err){
-		//console.log('Found a dangling vertex: ', state.vertexList[ownProps.vertexID]);
-	}
-
-	return returnPosition
-}
-
 
 var mapDispatchToProps = (dispatch) => {
   return bindActionCreators(Actions, dispatch)

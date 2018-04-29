@@ -4,6 +4,8 @@
 // The heepByte is our standard 8bit unit that we will work with
 typedef unsigned char heepByte;
 
+#define DEVICE_USES_WIFI
+
 #define STANDARD_ID_SIZE 4
 #define STANDARD_ID_SIZE_BASE_64 8 // 4 * ceiling(STANDRD_ID_SIZE/3)
 
@@ -14,8 +16,10 @@ typedef unsigned char heepByte;
 extern heepByte deviceIDByte [STANDARD_ID_SIZE];
 extern uint8_t mac[6];
 
+//#define USE_ANALYTICS
+// #define POST_ANALYTICS
 #ifdef USE_ANALYTICS
-heepByte base64DeviceIDByte [STANDARD_ID_SIZE_BASE_64];
+extern heepByte base64DeviceIDByte [STANDARD_ID_SIZE_BASE_64];
 #endif
 
 // Only one of these blocks is necessary. It will determine

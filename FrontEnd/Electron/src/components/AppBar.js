@@ -16,6 +16,7 @@ import Typography from 'material-ui/Typography';
 import Divider from 'material-ui/Divider';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui-icons/Menu';
+import Button from 'material-ui/Button';
 import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
 import ChevronRightIcon from 'material-ui-icons/ChevronRight';
 import AccountCircle from 'material-ui-icons/AccountCircle';
@@ -25,10 +26,12 @@ import Menu, { MenuItem }               from 'material-ui/Menu';
 
 import SimpleList from './SimpleList'
 import * as actions from '../redux/actions'
-import * as auth from '../firebase/FirebaseAuth'
+import * as actions_classic from '../redux/actions_classic'
 
 var mapStateToProps = (state) => ({
-  loginStatus: state.loginStatus
+  loginStatus: state.loginStatus,
+  userName: state.user ? state.user.displayName: '',
+  userImage: state.user ? state.user.photoURL : null
 })
 
 const drawerWidth = 240;
@@ -132,7 +135,7 @@ class AppBarDrawer extends React.Component {
   };
 
   handleLogout = () => {
-    auth.logout();
+    this.props.logoutOfFirebase();
     this.handleClose();
   }
 
@@ -146,10 +149,12 @@ class AppBarDrawer extends React.Component {
           color="inherit"
         >
           <Avatar
-            alt={auth.currentUser().displayName}
-            src={auth.getMyUserImagePath()}
+            alt={this.props.userName}
+            src={this.props.userImage}
             className={classNames(this.props.avatar, this.props.bigAvatar)}
-          />
+          >
+            {this.props.userImage ? null : this.props.userName.split(' ').map((word) => word[0])}
+          </Avatar>
         </IconButton>
         <Menu
           id="menu-appbar"
@@ -217,7 +222,7 @@ class AppBarDrawer extends React.Component {
 
     var inputs = {
       Logo: {
-        src: "https://firebasestorage.googleapis.com/v0/b/heep-3cddb.appspot.com/o/assets%2FLogo%2FSideBySide.png?alt=media&token=fa835081-275d-445e-be34-8241b08d687a",
+        src: 'src/assets/svg/SideBySide.svg',
         height: 50,
         style: {
           maxWidth: "250%",
@@ -232,7 +237,7 @@ class AppBarDrawer extends React.Component {
         className={classNames(classes.appBar, this.state.open && classes.appBarShift)}
       >
         <Toolbar disableGutters={!this.state.open}>
-          
+
 
           <IconButton
             color="inherit"
@@ -244,13 +249,13 @@ class AppBarDrawer extends React.Component {
           </IconButton>
 
           <NavLink to="/">
-            <IconButton >
+            <Button>
                 <img {...inputs.Logo}/>
-            </IconButton>
+            </Button>
           </NavLink>
 
           <div className={classes.flex}/>
-          
+
           {this.props.loginStatus ? this.loggedOn() : this.notLoggedOn()}
 
 
@@ -292,7 +297,7 @@ class AppBarDrawer extends React.Component {
       <div >
         {this.renderAppBar()}
         {this.renderDrawer()}
-        
+
       </div>
     );
   }
@@ -304,7 +309,7 @@ AppBarDrawer.propTypes = {
 };
 
 var mapDispatchToProps = (dispatch) => {
-  return bindActionCreators(actions, dispatch)
+  return bindActionCreators({...actions, ...actions_classic}, dispatch)
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles, { withTheme: true })(AppBarDrawer)))
