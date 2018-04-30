@@ -43,7 +43,7 @@ class Flowchart extends React.Component {
 	  Draggable.create("#deviceContainer", {
 	    type: "x, y",
 	    bounds: "#flowchart",
-	    edgeResistance: 1,
+	    edgeResistance: 0.9,
 	    allowContextMenu: true,
 	    zIndexBoost: false,
 	    onDrag: () => this.props.updateVertex()
@@ -94,12 +94,11 @@ class Flowchart extends React.Component {
 				id: 'vertexSVGSpace',
 				style: {
 					position: 'absolute',
-					width: 10000,
-					height: 10000,
-					viewBox: '0 0 4000 4000',
+					width: "100%",
+					height: "100%",
 					top: 0,
 					left: 0,
-					overflow: 'hidden'
+					overflow: 'hidden',
 				},
 			}
 		}
@@ -133,14 +132,14 @@ class Flowchart extends React.Component {
 	      	pageContainer: {
 	        	style: {
 					backgroundColor: '#e7e7e7',
-					height: 5000,
-					width: 5000
+					height: 4000,
+					width: 4000
 				}
 			},
 			flowchart: {
 				style: {
-					height: window.innerHeight,
-					width: window.innerWidth,
+					height: window.innerHeight - 64,
+					width: window.innerWidth - 72,
 					margin: 0,
 					backgroundColor: 'rgba(0, 0, 0, 0.54)',
 					overflow: "hidden"
@@ -150,26 +149,36 @@ class Flowchart extends React.Component {
 			    style: {
 					position: 'relative',
 					width: 3000,
-					height: 3000,
-					background: '#e7e7e7',
-			  		overflow: 'hidden'
+					height: 2000,
+			  	overflow: 'hidden'
 			    }
-			}
+			},
+      deviceBounds: {
+        top: 0,
+        left: 0,
+        style: {
+          width: 2700,
+          height: 1700,
+        }
+      }
 		}
 
 		return (
       <div {...inputs.pageContainer}>
 			<div id="flowchart" {...inputs.flowchart} ref="flowchart">
 					<div id="deviceContainer" {...inputs.deviceContainer}>
-            <div style={{
-    						transform: 'scale(' + this.props.scale + ')',
-    		          		transformOrigin: 'top left',
-                      width: '100%',
-                      height: '100%',
-                      overflow: 'hidden'
-    		          	}}>
-						{this.drawVertices()}
-						{this.drawDevices()}
+            <div id='deviceBounds' {...inputs.deviceBounds}>
+              <div id="zoomContainer"
+                style={{
+      						transform: 'scale(' + this.props.scale + ')',
+      		          		transformOrigin: 'top left',
+                        width: 50000,
+                        height: 50000,
+                        overflow: 'hidden',
+      		          	}}>
+  						{this.drawVertices()}
+  						{this.drawDevices()}
+            </div>
 					</div>
 				</div>
 				{this.flowchartOptions()}
