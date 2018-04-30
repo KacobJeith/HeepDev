@@ -184,8 +184,8 @@ class IIOT extends React.Component {
         link: 'interoperability', 
         title: 'Interoperability',
         bullets: [
-          'Focus on your product, not vender technology integrations',
-          'Leveraging the Heep application programming interface (HAPI), your assets communicate seamlessly for light fast operation',
+          'Focus on your product, not vendor technology integrations',
+          'Leveraging the Heep application programming interface (HAPI), your assets communicate seamlessly for lightning fast operation',
 
         ]
       },
