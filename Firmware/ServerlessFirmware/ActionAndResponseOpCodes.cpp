@@ -94,9 +94,16 @@ void FillOutputBufferWithIPChanged()
 {
 	ClearOutputBuffer();
 
+	HeepIPAddress myIP;
+	GetIPFromMemory(&myIP);
+
 	AddNewCharToOutputBuffer(MyIPChangedOpCode);
-	AddNewCharToOutputBuffer(STANDARD_ID_SIZE);
+	AddNewCharToOutputBuffer(STANDARD_ID_SIZE + 4);
 	AddDeviceIDToOutputBuffer_Byte(deviceIDByte);
+	AddNewCharToOutputBuffer(myIP.Octet4);
+	AddNewCharToOutputBuffer(myIP.Octet3);
+	AddNewCharToOutputBuffer(myIP.Octet2);
+	AddNewCharToOutputBuffer(myIP.Octet1);
 }
 
 void FillOutputBufferWithSetValCOP(unsigned char controlID, unsigned char value)
@@ -543,6 +550,11 @@ void ExecuteResetDeviceNetwork()
 	FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
 }
 
+void ExecuteMyIPChangedOpCode()
+{
+	// Search through Vertices... Replace destination IP Addresses
+}
+
 unsigned char IsROP()
 {
 	if(inputBuffer[0] == MemoryDumpOpCode 
@@ -599,6 +611,10 @@ void ExecuteControlOpCodes()
 	else if(ReceivedOpCode == ResetDeviceNetwork)
 	{
 		ExecuteResetDeviceNetwork();
+	}
+	else if(ReceivedOpCode == MyIPChangedOpCode)
+	{
+		ExecuteMyIPChangedOpCode();
 	}
 	else
 	{
