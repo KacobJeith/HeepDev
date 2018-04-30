@@ -51,6 +51,11 @@ const diy = () => <AsyncComponent moduleProvider={() => import(
   	/* webpackMode: "lazy" */
   	'./pages/diy')} />
 
+const CommercialApplications = () => <AsyncComponent moduleProvider={() => import(
+	/* webpackChunkName: "commercial" */
+  	/* webpackMode: "lazy" */
+  	'./pages/CommercialApplications')} />
+
 import Theme from './Theme'
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
 
@@ -113,6 +118,7 @@ class App extends React.Component {
 									<Route path="/About" component={About}/>
 									<Route path="/Shop" component={Store}/>
 									<Route path="/IndustrialHeep" component={iiot}/>
+									<Route path="/Business" component={CommercialApplications}/>
 {/* 									<Route path="/Tutorials" component={Tutorials}/> */}
 									<Route path="/product/:productID" component={ProductDetails}/>
 									<Route path="/Checkout" component={Checkout}/>
