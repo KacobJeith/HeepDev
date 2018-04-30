@@ -147,10 +147,11 @@ class Flowchart extends React.Component {
 			},
 			deviceContainer: {
 			    style: {
-					position: 'relative',
-					width: 3000,
-					height: 2000,
-			  	overflow: 'hidden'
+  					position: 'relative',
+  					width: 3000,
+  					height: 2000,
+  			  	overflow: 'hidden',
+            backgroundColor: '#e7e7e7',
 			    }
 			},
       deviceBounds: {
