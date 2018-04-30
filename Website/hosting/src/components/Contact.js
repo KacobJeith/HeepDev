@@ -1,12 +1,14 @@
 import React from 'react'
 import { bindActionCreators } from 'redux'
-import { Grid, Typography, TextField, Button, Hidden, Modal, Snackbar } from 'material-ui'
+import { Grid, Typography, TextField, Button, Hidden, Modal, Snackbar, Avatar } from 'material-ui'
 import { withStyles } from 'material-ui/styles'
 import SectionCard from './utilities/SectionCard'
 import * as Actions from '../redux/actions'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import * as validator from 'email-validator'
+import { logos } from '../assets/remote/Logos.js'
+
 
 const mapStateToProps = (state) => ({
 })
@@ -175,7 +177,7 @@ class Contact extends React.Component {
         SnackbarContentProps={{
           'aria-describedby': 'message-id',
         }}
-        message={<span id="message-id">We need a bit more information!</span>}
+        message={<span id="message-id">We need a bit more information to get started!</span>}
       />
     );
   
@@ -212,12 +214,13 @@ class Contact extends React.Component {
       <Grid item xs={12} md={6}>
         <Grid container direction="column"
           alignItems="center"
-          justify="center"
+          justify="space-around"
           style={{
             maxWidth: "100%",
-            margin: "0 auto"
+            margin: "0 auto",
+            height: '100%'
           }}>
-          <Grid item xs={12}>
+          <Grid item >
             <Typography variant='subheading'
               align='center'
               gutterBottom={true}
@@ -239,12 +242,17 @@ class Contact extends React.Component {
               }}>
               Heep Inc
             </Typography>
-            <Typography variant='subheading' align='center'>
+            <Typography variant='subheading' align='center' paragraph>
               250 44th St, Suite 211 <br/>
               Brooklyn, New York 11232 <br/>
               (347) - 921 - 4337
             </Typography>
           </Grid>
+          <Hidden smDown>
+            <Grid item >
+              {this.heepLogo()}
+            </Grid>
+          </Hidden>
         </Grid>
       </Grid>
     )
@@ -297,7 +305,15 @@ class Contact extends React.Component {
           onClick={() => this.setState({ modalOpen: false })}>
           <Grid item xs={12} sm={6} style={{maxHeight: '90%'}}>
             <div style={{position: 'relative'}} className={classes.paper}>
-              Test test test
+              <Typography variant="title" align="center" paragraph>
+                Thanks for reaching out!
+              </Typography>
+              {this.heepLogo()}
+              <Typography style={{
+                  paddingTop: 16
+                }} variant="subheading">
+                  We'll get back to you shortly. In the meantime, check out our site to learn more about Heep!
+              </Typography>
             </div>
           </Grid>
         </Grid>
@@ -305,11 +321,36 @@ class Contact extends React.Component {
     )
   }
 
+  heepLogo() {
+    const inputs = {
+      modalImageContainer: {
+        style: {
+          paddingTop: 16,
+          textAlign: 'center'
+        }
+      },
+      modalImage: {
+        src: logos.gradientLogo,
+        style: {
+          width: 200,
+          height: 200
+        }
+      },
+    }
+
+    return (
+      <Grid container justify='center'>
+        <Grid item>
+          <Avatar {...inputs.modalImage}/>
+        </Grid>
+      </Grid>
+    )
+  };
 
   render() {
     return(
       <div>
-        <Grid container style={{
+        <Grid container alignItems='stretch' style={{
           margin: "0 auto",
           maxWidth: "100%",
           paddingTop: 40
