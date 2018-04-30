@@ -98,12 +98,13 @@ void HandlePointersOnMemoryChange()
 	FillVertexListFromMemory();
 }
 
-enum Tasks {Defragment = 0, saveMemory = 1, PostData = 2};
+enum Tasks {Defragment = 0, saveMemory = 1, PostData = 2, CheckIP = 3};
 void SetupHeepTasks()
 {
 	ScheduleTask(Defragment);
 	ScheduleTask(saveMemory);
 	ScheduleTask(PostData);
+	ScheduleTask(CheckIP);
 }	
 
 void CommitMemory()
@@ -130,6 +131,12 @@ void PostDataToFirebase()
 }
 #endif
 #endif
+
+void HandleIPChanges()
+{
+	//GetIPFromMemory
+	//GetCurrentIP
+}
 
 // Control Daemon is untimed
 void ControlDaemon()
@@ -173,6 +180,10 @@ void PerformHeepTasks()
 		}
 #endif
 #endif
+		else if(curTask == CheckIP)
+		{
+			HandleIPChanges();
+		}
 	}
 
 	CheckServerForInputs();
