@@ -1,11 +1,12 @@
 import React from 'react'
 import { bindActionCreators } from 'redux'
-import { Grid, Typography, TextField, Button, Hidden } from 'material-ui'
+import { Grid, Typography, TextField, Button, Hidden, Modal, Snackbar } from 'material-ui'
 import { withStyles } from 'material-ui/styles'
 import SectionCard from './utilities/SectionCard'
 import * as Actions from '../redux/actions'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
+import * as validator from 'email-validator'
 
 const mapStateToProps = (state) => ({
 })
@@ -13,13 +14,17 @@ const mapStateToProps = (state) => ({
 const styles = theme => ({
   root: theme.mixins.gutters({
     padding: 20,
-    // paddingTop: 16,
-    // paddingBottom: 16,
     margin: theme.spacing.unit * 3,
   }),
   button: {
     margin: theme.spacing.unit,
   },
+  paper: {
+    position: 'absolute',
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing.unit * 4
+  }
 });
 
 class Contact extends React.Component {
@@ -27,7 +32,13 @@ class Contact extends React.Component {
     Name: '',
     Company: '',
     Email: '',
-    Message: ''
+    Message: '',
+    NameError: false,
+    CompanyError: false,
+    EmailError: false,
+    MessageError: false,
+    modalOpen: false,
+    snackBarOpen: false
   }
 
   contactTextField(label, multiline=false) {
@@ -47,6 +58,8 @@ class Contact extends React.Component {
          }}>
         <TextField
           label={label}
+          required
+          error={this.state[label + 'Error']}
           placeholder={label}
           multiline={multiline}
           rows="5"
@@ -66,10 +79,57 @@ class Contact extends React.Component {
           How can we help?
         </Typography>
         <Typography variant='subheading' align='left'>
-          Fill out the form below and we'll get back to you.
+          Fill out the form below and we'll get back to you shortly.
         </Typography>
       </Grid>
     )
+  }
+
+  validateInputs(successCallback = () => {console.log('success')}) {
+
+    var setErrorState = {
+      NameError: false,
+      CompanyError: false,
+      EmailError: false,
+      MessageError: false,
+      snackBarOpen: true
+    }
+    var blockSend = false;
+
+    if ( this.state.Name == '') {
+      setErrorState.NameError = true;
+      blockSend = true;
+    } else {
+      setErrorState.NameError = false;
+    }
+
+    if (!validator.validate(this.state.Email)) {
+      setErrorState.EmailError = true;
+      blockSend = true;
+    } else {
+      setErrorState.EmailError = false;
+    }
+
+    if ( this.state.Company == '') {
+      setErrorState.CompanyError = true;
+      blockSend = true;
+    } else {
+      setErrorState.CompanyError = false;
+    }
+
+    if ( this.state.Message == '') {
+      setErrorState.MessageError = true;
+      blockSend = true;
+    } else {
+      setErrorState.MessageError = false;
+    }
+
+    this.setState(setErrorState)
+
+    if (!blockSend) {
+      successCallback()
+    }
+
   }
 
   contactButton() {
@@ -79,7 +139,16 @@ class Contact extends React.Component {
       }}>
         <Grid container justify='flex-end' alignItems='center'>
           <Button variant='raised' color='secondary'
-            onClick={() => this.props.submitContactForm(this.state.Name, this.state.Company, this.state.Email, this.state.Message)}
+            onClick={() => {this.validateInputs( () => { 
+              this.props.submitContactForm(this.state.Name, this.state.Company, this.state.Email, this.state.Message)
+              this.setState({
+                Name: '',
+                Company: '',
+                Email: '',
+                Message: '',
+                modalOpen: true
+              })
+            })}}
           >
             <Typography variant='title' style={{color: "white"}}>
               Submit
@@ -88,6 +157,28 @@ class Contact extends React.Component {
         </Grid>
       </Grid>
     )
+  }
+
+  errorSnackBar() {
+
+    const { classes } = this.props;
+
+    return (
+      <Snackbar
+        anchorOrigin={{ 
+          vertical: 'top', 
+          horizontal: 'center' 
+        }}
+        open={this.state.snackBarOpen}
+        autoHideDuration={5000}
+        onClose={() => this.setState({snackBarOpen: false})}
+        SnackbarContentProps={{
+          'aria-describedby': 'message-id',
+        }}
+        message={<span id="message-id">We need a bit more information!</span>}
+      />
+    );
+  
   }
 
   contactForm() {
@@ -137,7 +228,7 @@ class Contact extends React.Component {
             </Typography>
             <Typography variant='subheading'
               align='center'>
-              Email us at support@heep.io
+              Email us at inquiries@heep.io
             </Typography>
             <br/>
             <br/>
@@ -180,6 +271,40 @@ class Contact extends React.Component {
     )
   }
 
+  formSubmissionModal() {
+    const { classes } = this.props;
+
+    const inputs = {
+      gridContainer: {
+        style: {
+          height: '100%',
+          width: '100%',
+          overflowX: 'hidden',
+          outline: 'none',
+          margin: 0
+        }
+      },
+    };
+
+    return (
+      <Modal
+        open={this.state.modalOpen}
+        onClose={() => this.setState({ modalOpen: false })}>
+        <Grid
+          container {...inputs.gridContainer}
+          justify='center'
+          alignItems='center'
+          onClick={() => this.setState({ modalOpen: false })}>
+          <Grid item xs={12} sm={6} style={{maxHeight: '90%'}}>
+            <div style={{position: 'relative'}} className={classes.paper}>
+              Test test test
+            </div>
+          </Grid>
+        </Grid>
+      </Modal>
+    )
+  }
+
 
   render() {
     return(
@@ -193,6 +318,8 @@ class Contact extends React.Component {
           {this.contactDetails()}
         </Grid>
         {this.mapSection()}
+        {this.formSubmissionModal()}
+        {this.errorSnackBar()}
     </div>
     );
   }
