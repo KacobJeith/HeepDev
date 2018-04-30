@@ -1,7 +1,14 @@
 import React from 'react'
+import { bindActionCreators } from 'redux'
 import { Grid, Typography, TextField, Button, Hidden } from 'material-ui'
 import { withStyles } from 'material-ui/styles'
 import SectionCard from './utilities/SectionCard'
+import * as Actions from '../redux/actions'
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
+
+const mapStateToProps = (state) => ({
+})
 
 const styles = theme => ({
   root: theme.mixins.gutters({
@@ -16,6 +23,12 @@ const styles = theme => ({
 });
 
 class Contact extends React.Component {
+  state = {
+    Name: '',
+    Company: '',
+    Email: '',
+    Message: ''
+  }
 
   contactTextField(label, multiline=false) {
     const inputs = {
@@ -38,6 +51,8 @@ class Contact extends React.Component {
           multiline={multiline}
           rows="5"
           margin="normal"
+          value={this.state[label]}
+          onChange={(event) => {this.setState({[label]: event.target.value})}}
           {...inputs.textField}
         />
       </Grid>
@@ -63,7 +78,9 @@ class Contact extends React.Component {
         paddingTop: 30,
       }}>
         <Grid container justify='flex-end' alignItems='center'>
-          <Button variant='raised' color='secondary'>
+          <Button variant='raised' color='secondary'
+            onClick={() => this.props.submitContactForm(this.state.Name, this.state.Company, this.state.Email, this.state.Message)}
+          >
             <Typography variant='title' style={{color: "white"}}>
               Submit
             </Typography>
@@ -181,4 +198,9 @@ class Contact extends React.Component {
   }
 }
 
-export default withStyles(styles)(Contact)
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(Actions, dispatch)
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)( withStyles(styles)(Contact)))

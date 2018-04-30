@@ -1,5 +1,4 @@
 import * as functions from 'firebase-functions'
-import * as respond from './responses.js'
 
 const cors = require('cors')({origin: true});
 var request = require('request');
@@ -23,14 +22,12 @@ exports.msSince2018Jan1 = functions.https.onRequest((request, response) => {
 
 exports.submitContactForm = functions.https.onRequest((req, res) => {
 
-	var data = {
-	  from: 'Heep <jacob@heep.io>',
-	  to: 'jacob@heep.io',
-	  subject: 'Thank you for Subscribing to Heep!',
-	  text: 'Thanks for your interest in Heep! \n\nHere at Heep we are working hard to bring you a better connected world. Stay tuned in the coming months for an announcement about our first batch of product releases. In the meantime, feel free to reach out to me at jacob@heep.io for any additional information or demo requests. \n\nCheers!'
+	const data = {
+	  from: `${req.body.name} <${req.body.email}>`,
+	  to: 'inquiries@heep.io',
+	  subject: `[${req.body.company}] - New Inquiry`,
+	  text: `${req.body.message}`
 	};
-
-	// data.to = req.body.email; 
 
 	console.log('Sending to:', data.to);
 	mailgun.messages().send(data, function(error, body) {
@@ -38,5 +35,5 @@ exports.submitContactForm = functions.https.onRequest((req, res) => {
 	});
 
 	console.log('Saved: ', req.body);
-	res.end("Thank you");
+	res.status(200).end("Message Sent");
 });
