@@ -134,8 +134,26 @@ void PostDataToFirebase()
 
 void HandleIPChanges()
 {
-	//GetIPFromMemory
-	//GetCurrentIP
+	HeepIPAddress IPFromMemory;
+	HeepIPAddress CurrentIP;
+
+	GetIPFromMemory(&IPFromMemory);
+	GetCurrentIP(&CurrentIP);
+
+	if(IPFromMemory.Octet4 != CurrentIP.Octet4
+		|| IPFromMemory.Octet3 != CurrentIP.Octet3
+		|| IPFromMemory.Octet2 != CurrentIP.Octet2
+		|| IPFromMemory.Octet1 != CurrentIP.Octet1)
+	{
+		// Handle Changed IP Address
+		SetIPInMemory_Byte(CurrentIP, deviceIDByte);
+		FillOutputBufferWithIPChanged();
+
+		// Send out our change broadcast 3 times and hope someone bites
+		// If they do not, a front end or sliding window protocol will handle
+		for(int i = 0; i < 3; i++)
+			BroadcastOutputBuffer();
+	}
 }
 
 // Control Daemon is untimed

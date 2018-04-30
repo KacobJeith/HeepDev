@@ -90,6 +90,15 @@ unsigned long CalculateCoreMemorySize()
 	return coreMemorySize + CalculateControlDataSize();
 }
 
+void FillOutputBufferWithIPChanged()
+{
+	ClearOutputBuffer();
+
+	AddNewCharToOutputBuffer(MyIPChangedOpCode);
+	AddNewCharToOutputBuffer(STANDARD_ID_SIZE);
+	AddDeviceIDToOutputBuffer_Byte(deviceIDByte);
+}
+
 void FillOutputBufferWithSetValCOP(unsigned char controlID, unsigned char value)
 {
 	ClearOutputBuffer();
