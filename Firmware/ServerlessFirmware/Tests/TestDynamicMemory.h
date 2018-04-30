@@ -1568,6 +1568,46 @@ void TestGetNumBytesFromMOP()
 	CheckResults(TestName, valueList, 1);
 }
 
+void TestGetIPFromMemory()
+{
+	std::string TestName = "Get IP From Memory";
+
+	ClearDeviceMemory();
+	heepByte deviceID[STANDARD_ID_SIZE];
+	CreateFakeDeviceID(deviceID);
+	HeepIPAddress myIP;
+	myIP.Octet4 = 192;
+	myIP.Octet3 = 168;
+	myIP.Octet2 = 1;
+	myIP.Octet1 = 100;
+	SetIPInMemory_Byte(myIP, deviceID);
+
+	HeepIPAddress recoveredIP;
+	GetIPFromMemory(&recoveredIP);
+
+	int memCheckStart = GetMemCounterStart();
+
+	ExpectedValue valueList [4];
+
+	valueList[0].valueName = "Octet 4";
+	valueList[0].expectedValue = 192;
+	valueList[0].actualValue = recoveredIP.Octet4;
+
+	valueList[1].valueName = "Octet 3";
+	valueList[1].expectedValue = 168;
+	valueList[1].actualValue = recoveredIP.Octet3;
+
+	valueList[2].valueName = "Octet 2";
+	valueList[2].expectedValue = 1;
+	valueList[2].actualValue = recoveredIP.Octet2;
+
+	valueList[3].valueName = "Octet 1";
+	valueList[3].expectedValue = 100;
+	valueList[3].actualValue = recoveredIP.Octet1;
+
+	CheckResults(TestName, valueList, 4);
+}
+
 void TestDynamicMemory()
 {	
 	TestAddIPToDeviceMemory();
@@ -1607,4 +1647,5 @@ void TestDynamicMemory()
  	TestAnalyticsMOPTimeGetter();
  	TestUserMOP();
 	TestGetNumBytesFromMOP();
+	TestGetIPFromMemory();
 }
