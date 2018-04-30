@@ -130,7 +130,12 @@ export const zoomIn = () => ({
 export const zoomOut = () => ({
   type: 'ZOOM_OUT_FLOWCHART'
 })
+
 export const resetDeviceWifi = (deviceID) => ({
   type: 'RESET_DEVICE_WIFI',
   deviceID
+})
+
+export const saveState = () => ({
+  type: 'SAVE_STATE',
 })

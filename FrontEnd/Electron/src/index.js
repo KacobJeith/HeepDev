@@ -65,7 +65,8 @@ const startState = {
     currentlyConnecting: null,
     failedAttempt: null,
     deviceID: null
-  }
+  },
+  savedStates: {},
 }
 
 export const initialState = Immutable.Map(startState);

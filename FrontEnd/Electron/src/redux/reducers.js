@@ -405,6 +405,12 @@ export default function(state = initialState, action) {
         return Immutable.fromJS(state).setIn(['flowchart', 'devices', action.deviceID, 'collapsed'], !state.flowchart.devices[action.deviceID].collapsed).toJS()
       }
 
+    case 'SAVE_STATE':
+      var currentState = Immutable.Map(state.controls).toJS();
+      const randomHash = makeid(5)
+
+      return Immutable.fromJS(state).setIn(['savedState', randomHash], currentState).toJS()
+
     default:
       console.log('Passed through first Switch');
   }
@@ -423,3 +429,12 @@ export default function(state = initialState, action) {
 const initialDeviceFlowchartState = () => ({
     collapsed: true,
 })
+
+function makeid(number) {
+  var text = "";
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+  for (var i = 0; i < number; i++)
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  return text;
+}
