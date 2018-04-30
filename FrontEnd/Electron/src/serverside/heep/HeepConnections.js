@@ -25,30 +25,56 @@ var heepPort = 5000;
 var searchComplete = false;
 var mostRecentSearch = {};
 
-export var SearchForHeepDevices = (numTimesTried = 0, callback = () => {}) => {
+export var SearchForHeepDevices = (searchMode = 'broadcast', numTimesTried = 0, callback = () => {}) => {
   var gateway = findGateway();
   var searchBuffer = Buffer.from([0x09, 0x00])
 
-  console.log(gateway)
+  console.log(gateway);
+  log.info('Searching for Devices on Gateway: ' + gateway);
+  log.info('Search Mode: ' + searchMode);
 
   if (gateway != undefined) {
     callback(true);
-    var client = dgram.createSocket("udp4");
-    client.bind(function(err, bytes){
-        console.log("Set Broadcast");
-        client.setBroadcast(true);
-        var address = generalUtils.joinAddress(gateway,255)
-        client.send(searchBuffer, 5000, address, function(err, bytes) {
-            console.log("Broadcast sent");
-            client.close();
-        });
-      });
+    if (searchMode == 'broadcast') {
+      PerformBroadcastSearch(gateway, searchBuffer);
+    } else if (searchMode == 'unicast') {
+      PerformUnicastSearch(gateway, searchBuffer);
+    }
+    
+
   } else {
     if (numTimesTried < 5) {
       setTimeout(() => SearchForHeepDevices(numTimesTried + 1, callback), 1000)
     }
   }
-  
+}
+
+const PerformBroadcastSearch = (gateway, searchBuffer) => {
+
+  var client = dgram.createSocket("udp4");
+  client.bind(function(err, bytes){
+    console.log("Set Broadcast");
+    client.setBroadcast(true);
+    const address = generalUtils.joinAddress(gateway,255)
+    client.send(searchBuffer, 5000, address, function(err, bytes) {
+        console.log("Broadcast sent");
+        client.close();
+    });
+  });
+}
+
+const PerformUnicastSearch = (gateway, searchBuffer) => {
+  console.log('Searching using Unicast Loop');
+  for (var i = 0; i < 255; i++) {
+
+    const client = dgram.createSocket("udp4");
+    const IPAddress = generalUtils.joinAddress(gateway, i)
+    // client.bind(function(err, bytes){
+      client.send(searchBuffer, heepPort, IPAddress, (err) => {
+        client.close();
+      });
+    // });
+  }
 }
 
 export var GetCurrentMasterState = () => {
@@ -178,6 +204,8 @@ var CheckIfNewValueAndSet = (deviceID, controlID, newValue) => {
 export var findGateway = () => {
   var networkInterfaces = os.networkInterfaces( );
 
+  log.info('Found Interfaces: ' + networkInterfaces);
+
   for (var interfaces in networkInterfaces) {
     for (var i = 0; i < networkInterfaces[interfaces].length; i++ ) {
       // console.log(networkInterfaces[interfaces][i])
@@ -216,6 +244,8 @@ udpServer.on('error', (err) => {
 udpServer.on('message', (msg, rinfo) => {
   ConsumeHeepResponse(msg, rinfo.address, rinfo.port);
   console.log(`server got: ${msg} from ${rinfo.address}:${rinfo.port}`);
+
+  log.info(`server got: ${msg} from ${rinfo.address}:${rinfo.port}`);
 });
 
 udpServer.on('listening', () => {

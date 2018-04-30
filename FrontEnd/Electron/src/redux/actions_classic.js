@@ -134,3 +134,8 @@ export const resetDeviceWifi = (deviceID) => ({
   type: 'RESET_DEVICE_WIFI',
   deviceID
 })
+
+export const setSearchMode = (searchMode) => ({
+  type: 'SET_SEARCH_MODE',
+  searchMode
+})
