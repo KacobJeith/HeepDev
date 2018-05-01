@@ -90,6 +90,8 @@ unsigned long CalculateCoreMemorySize()
 	return coreMemorySize + CalculateControlDataSize();
 }
 
+// The IP Must be added to this COP because the concept of an IP Address 
+// is not a fundamental component of the Heep OS.
 void FillOutputBufferWithIPChanged()
 {
 	ClearOutputBuffer();
@@ -553,6 +555,22 @@ void ExecuteResetDeviceNetwork()
 void ExecuteMyIPChangedOpCode()
 {
 	// Search through Vertices... Replace destination IP Addresses
+	struct Vertex_Byte newVertex;
+
+	int i = 0;
+	int initialNumberOfVertices = numberOfVertices;
+	for(i = 0; i < initialNumberOfVertices; i++)
+	{
+		GetVertexAtPointer_Byte(vertexPointerList[i], &newVertex);
+
+		if(CheckBufferEquality(newVertex.rxID, &inputBuffer[2], STANDARD_ID_SIZE))
+		{
+			deviceMemory[vertexPointerList[i] + ID_SIZE + ID_SIZE + 4] = inputBuffer[2 + STANDARD_ID_SIZE];
+			deviceMemory[vertexPointerList[i] + ID_SIZE + ID_SIZE + 5] = inputBuffer[3 + STANDARD_ID_SIZE];
+			deviceMemory[vertexPointerList[i] + ID_SIZE + ID_SIZE + 6] = inputBuffer[4 + STANDARD_ID_SIZE];
+			deviceMemory[vertexPointerList[i] + ID_SIZE + ID_SIZE + 7] = inputBuffer[5 + STANDARD_ID_SIZE];
+		}
+	}
 }
 
 unsigned char IsROP()

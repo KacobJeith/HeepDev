@@ -830,6 +830,97 @@ void TestNameOverflowDetection()
 	CheckResults(TestName, valueList, 3);
 }
 
+void TestMyIPChangedCOP()
+{
+	std::string TestName = "Test IP Changed COP";
+
+	ClearVertices();
+	ClearDeviceMemory();
+	ClearInputBuffer();
+	ClearOutputBuffer();
+
+	inputBuffer[0] = 0x0C;
+	inputBuffer[1] = 0x04;
+
+	inputBuffer[2] = 0xF1;
+	inputBuffer[3] = 0x02;
+	inputBuffer[4] = 0xB2;
+	inputBuffer[5] = 0x3C;
+
+	inputBuffer[6] = deviceIDByte[0];
+	inputBuffer[7] = deviceIDByte[1];
+	inputBuffer[8] = deviceIDByte[2];
+	inputBuffer[9] = deviceIDByte[3];
+
+	inputBuffer[10] = 0x01;
+	inputBuffer[11] = 0x02;
+
+	inputBuffer[12] = 0xC0;
+	inputBuffer[13] = 0xD0;
+	inputBuffer[14] = 0x20;
+	inputBuffer[15] = 0x02;
+	ExecuteControlOpCodes();
+
+	HeepIPAddress myIP;
+	myIP.Octet4 = 192;
+	myIP.Octet3 = 168;
+	myIP.Octet2 = 1;
+	myIP.Octet1 = 100;
+	SetIPInMemory_Byte(myIP, deviceIDByte);
+
+	FillOutputBufferWithIPChanged();
+	PrintOutputBuffer();
+
+	for(int i = 0; i < outputBufferLastByte; i++)
+	{
+		inputBuffer[i] = outputBuffer[i];
+	}
+
+	{
+		struct Vertex_Byte newVertex;
+		for(int i = 0; i < numberOfVertices; i++)
+		{
+			GetVertexAtPointer_Byte(vertexPointerList[i], &newVertex);
+
+			cout << (int)newVertex.rxIPAddress.Octet4 << "." 
+			<< (int)newVertex.rxIPAddress.Octet3 << "."
+			<< (int)newVertex.rxIPAddress.Octet2 << "."
+			<< (int)newVertex.rxIPAddress.Octet1 << endl;
+		}
+	}
+
+	ExecuteControlOpCodes();
+
+	{
+		struct Vertex_Byte newVertex;
+		for(int i = 0; i < numberOfVertices; i++)
+		{
+			GetVertexAtPointer_Byte(vertexPointerList[i], &newVertex);
+
+			cout << "After Execute: " << (int)newVertex.rxIPAddress.Octet4 << "." 
+			<< (int)newVertex.rxIPAddress.Octet3 << "."
+			<< (int)newVertex.rxIPAddress.Octet2 << "."
+			<< (int)newVertex.rxIPAddress.Octet1 << endl;
+		}
+	}
+	
+
+	// ExpectedValue valueList [3];
+	// valueList[0].valueName = "Less than max memory";
+	// valueList[0].expectedValue = 1;
+	// valueList[0].actualValue = curFilledMemory <= MAX_MEMORY;
+
+	// valueList[1].valueName = "ROP Should be Failure";
+	// valueList[1].expectedValue = ErrorOpCode;
+	// valueList[1].actualValue = shouldbeFailureCode;
+
+	// valueList[2].valueName = "ROP Should be Success";
+	// valueList[2].expectedValue = SuccessOpCode;
+	// valueList[2].actualValue = shouldBeSuccessCode;
+
+	// CheckResults(TestName, valueList, 3);
+}
+
 void TestActionAndResponseOpCodes()
 {
 	TestClearOutputBufferAndAddChar();
@@ -849,4 +940,5 @@ void TestActionAndResponseOpCodes()
 	CheckSetPositionOverflowHandling();
 	TestWiFiOverflowDetection();
 	TestNameOverflowDetection();
+	TestMyIPChangedCOP();
 }
