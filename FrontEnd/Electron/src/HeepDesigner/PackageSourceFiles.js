@@ -39,7 +39,7 @@ export const packageSourceFiles = (deviceDetails, controls) => {
       console.log("Did not match systemType");
   }
 
-  var nameZip = deviceDetails.deviceName + '.zip';
+  var nameZip = removeSpacesFromString(deviceDetails.deviceName) + '.zip';
 
   setIDAndMAC((deviceIDarray, MACAddressArray) => {
 
@@ -54,16 +54,20 @@ export const packageSourceFiles = (deviceDetails, controls) => {
 
 }
 
+const removeSpacesFromString = (NameToConvert) => {
+  return NameToConvert.split(' ').join('_');
+}
+
 const packageESP8266Files = (deviceDetails, controls, zip) => {
 
-  zip.file(deviceDetails.deviceName + ".ino", composeInoFile(deviceDetails, controls));
+  zip.file(removeSpacesFromString(deviceDetails.deviceName) + ".ino", composeInoFile(deviceDetails, controls));
 
   return zip
 }
 
 const packageSimulationFiles = (deviceDetails, controls, zip) => {
 
-  zip.file(deviceDetails.deviceName + ".ino", composeInoFile(deviceDetails, controls));
+  zip.file(removeSpacesFromString(deviceDetails.deviceName) + ".ino", composeInoFile(deviceDetails, controls));
 
   return zip
 }
@@ -104,7 +108,7 @@ void loop()
 }
 
 var getPinDefineName = (control) => {
-  var pinDefineStr = control.controlName.toUpperCase() + `_PIN`;
+  var pinDefineStr = removeSpacesFromString(control.controlName).toUpperCase() + `_PIN`;
   return pinDefineStr;
 }
 
@@ -118,12 +122,12 @@ var GetTabCharacter = () => {
 }
 
 var GetReadFunctionName = (control) => {
-  var ReadFunctionName = `Read` + control.controlName;
+  var ReadFunctionName = `Read` + removeSpacesFromString(control.controlName);
   return ReadFunctionName;
 }
 
 var GetWriteFunctionName = (control) => {
-  var WriteFunctionName = `Write` + control.controlName;
+  var WriteFunctionName = `Write` + removeSpacesFromString(control.controlName);
   return WriteFunctionName;
 }
 
