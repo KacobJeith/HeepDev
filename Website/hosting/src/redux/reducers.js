@@ -4,6 +4,7 @@ import 'babel-polyfill'
 import { initialState } from '../index'
 import * as actions from './actions'
 import * as shopify from '../shopify/Shopify'
+import * as async from './async'
 
 export default function(state = initialState, action) {
   switch (action.type) {
@@ -200,7 +201,6 @@ export default function(state = initialState, action) {
 
       import(/* webpackChunkName: "firebaseDatabase" */ '../firebase/FirebaseDatabase').then((database) => database.deletePlace(action.placeID));
 
-
       return state
 
     case 'DELETE_PLACE':
@@ -211,6 +211,13 @@ export default function(state = initialState, action) {
 
     case 'SET_SVG_TEXT':
       return Immutable.Map(state).set('svgText', action.svgText).toJS();
+
+    case 'SUBMIT_CONTACT_FORM':
+
+      async.submitContactForm(action.name, action.company, action.email, action.message);
+
+      return state;
+
 
     default:
       return state
