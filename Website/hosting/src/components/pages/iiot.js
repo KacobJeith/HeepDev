@@ -24,7 +24,7 @@ class IIOT extends React.Component {
   topBanner() {
 
     const inputs = {
-      backgroundColor: '#00adee',
+      backgroundColor: 'black',
       //TO-DO: Purchase video
       videoSrc: assets.bannerVideo,
       minHeight: 400,

@@ -21,7 +21,7 @@ class DIY extends React.Component {
   topBanner() {
 
       const inputs = {
-        backgroundColor: '#00adee',
+        backgroundColor: 'black',
         //TO-DO: Purchase video
         imagePath: banners.paperSignals,
         minHeight: 500,

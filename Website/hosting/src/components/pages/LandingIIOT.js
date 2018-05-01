@@ -33,7 +33,7 @@ class LandingIIOT extends React.Component {
   topBanner() {
 
       const inputs = {
-        backgroundColor: '#00adee',
+        backgroundColor: 'black',
         //TO-DO: Purchase video
         videoSrc: banners.networkVideo,
         minHeight: 400,
