@@ -571,6 +571,9 @@ void ExecuteMyIPChangedOpCode()
 			deviceMemory[vertexPointerList[i] + ID_SIZE + ID_SIZE + 7] = inputBuffer[5 + STANDARD_ID_SIZE];
 		}
 	}
+
+	char SuccessMessage [] = "Changed IP";
+	FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
 }
 
 unsigned char IsROP()
