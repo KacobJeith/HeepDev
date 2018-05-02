@@ -869,56 +869,57 @@ void TestMyIPChangedCOP()
 	SetIPInMemory_Byte(myIP, deviceIDByte);
 
 	FillOutputBufferWithIPChanged();
-	PrintOutputBuffer();
 
 	for(int i = 0; i < outputBufferLastByte; i++)
 	{
 		inputBuffer[i] = outputBuffer[i];
 	}
 
-	{
-		struct Vertex_Byte newVertex;
-		for(int i = 0; i < numberOfVertices; i++)
-		{
-			GetVertexAtPointer_Byte(vertexPointerList[i], &newVertex);
-
-			cout << (int)newVertex.rxIPAddress.Octet4 << "." 
-			<< (int)newVertex.rxIPAddress.Octet3 << "."
-			<< (int)newVertex.rxIPAddress.Octet2 << "."
-			<< (int)newVertex.rxIPAddress.Octet1 << endl;
-		}
-	}
+	struct Vertex_Byte beforeExecute;
+	GetVertexAtPointer_Byte(vertexPointerList[0], &beforeExecute);
+	HeepIPAddress beforeExecutionIP = beforeExecute.rxIPAddress;
 
 	ExecuteControlOpCodes();
 
-	{
-		struct Vertex_Byte newVertex;
-		for(int i = 0; i < numberOfVertices; i++)
-		{
-			GetVertexAtPointer_Byte(vertexPointerList[i], &newVertex);
-
-			cout << "After Execute: " << (int)newVertex.rxIPAddress.Octet4 << "." 
-			<< (int)newVertex.rxIPAddress.Octet3 << "."
-			<< (int)newVertex.rxIPAddress.Octet2 << "."
-			<< (int)newVertex.rxIPAddress.Octet1 << endl;
-		}
-	}
+	struct Vertex_Byte afterExecute;
+	GetVertexAtPointer_Byte(vertexPointerList[0], &afterExecute);
+	HeepIPAddress afterExecutionIP = afterExecute.rxIPAddress;
 	
 
-	// ExpectedValue valueList [3];
-	// valueList[0].valueName = "Less than max memory";
-	// valueList[0].expectedValue = 1;
-	// valueList[0].actualValue = curFilledMemory <= MAX_MEMORY;
+	ExpectedValue valueList [8];
+	valueList[0].valueName = "Before IP 4";
+	valueList[0].expectedValue = 0xC0;
+	valueList[0].actualValue = beforeExecutionIP.Octet4;
 
-	// valueList[1].valueName = "ROP Should be Failure";
-	// valueList[1].expectedValue = ErrorOpCode;
-	// valueList[1].actualValue = shouldbeFailureCode;
+	valueList[1].valueName = "Before IP 3";
+	valueList[1].expectedValue = 0xD0;
+	valueList[1].actualValue = beforeExecutionIP.Octet3;
 
-	// valueList[2].valueName = "ROP Should be Success";
-	// valueList[2].expectedValue = SuccessOpCode;
-	// valueList[2].actualValue = shouldBeSuccessCode;
+	valueList[2].valueName = "Before IP 2";
+	valueList[2].expectedValue = 0x20;
+	valueList[2].actualValue = beforeExecutionIP.Octet2;
 
-	// CheckResults(TestName, valueList, 3);
+	valueList[3].valueName = "Before IP 1";
+	valueList[3].expectedValue = 0x02;
+	valueList[3].actualValue = beforeExecutionIP.Octet1;
+
+	valueList[4].valueName = "After IP 4";
+	valueList[4].expectedValue = 192;
+	valueList[4].actualValue = afterExecutionIP.Octet4;
+
+	valueList[5].valueName = "After IP 3";
+	valueList[5].expectedValue = 168;
+	valueList[5].actualValue = afterExecutionIP.Octet3;
+
+	valueList[6].valueName = "After IP 2";
+	valueList[6].expectedValue = 1;
+	valueList[6].actualValue = afterExecutionIP.Octet2;
+
+	valueList[7].valueName = "After IP 1";
+	valueList[7].expectedValue = 100;
+	valueList[7].actualValue = afterExecutionIP.Octet1;
+
+	CheckResults(TestName, valueList, 8);
 }
 
 void TestActionAndResponseOpCodes()
