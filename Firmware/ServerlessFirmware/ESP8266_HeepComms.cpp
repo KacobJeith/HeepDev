@@ -172,6 +172,26 @@ void SendOutputBufferToIP(HeepIPAddress destIP)
 
 }
 
+void BroadcastOutputBuffer()
+{
+  IPAddress clientIP(255, 255, 255, 255);
+
+  Serial.println(clientIP);
+
+  Udp.beginPacket(clientIP, localPort);
+  Udp.write(outputBuffer, outputBufferLastByte);
+  Udp.endPacket();
+}
+
+void GetCurrentIP(struct HeepIPAddress* destIP)
+{
+  IPAddress localIP = WiFi.localIP();
+  destIP->Octet4 = localIP[0];
+  destIP->Octet3 = localIP[1];
+  destIP->Octet2 = localIP[2];
+  destIP->Octet1 = localIP[3];
+}
+
 #ifdef USE_ANALYTICS
 
 String base64_encode(const char* bytes_to_encode, unsigned int in_len) {
