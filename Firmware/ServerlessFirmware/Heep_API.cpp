@@ -145,6 +145,7 @@ void HandleIPChanges()
 		|| IPFromMemory.Octet2 != CurrentIP.Octet2
 		|| IPFromMemory.Octet1 != CurrentIP.Octet1)
 	{
+		FragmentAllOfMOP(DeviceIPOpCode);
 		// Handle Changed IP Address
 		SetIPInMemory_Byte(CurrentIP, deviceIDByte);
 		FillOutputBufferWithIPChanged();
