@@ -63,6 +63,10 @@ module.exports = {
       {
         test: /\.css$/,
         use: ['style-loader', 'css-loader']
+      },
+      {
+        test: /\.(h|cpp|ino)$/,
+        use: 'raw-loader'
       }
     ],
 

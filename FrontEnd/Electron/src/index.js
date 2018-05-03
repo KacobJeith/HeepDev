@@ -46,6 +46,7 @@ const startState = {
     selectedPlace: 'Enter New WiFi',
     ssid: '',
     ssidPassword: '',
+    applicationName: 'Custom',
     systemType: 'ESP8266',
     iconSelected: 1,
     selectingIcon: false,
@@ -54,6 +55,7 @@ const startState = {
   flowchart: {
     dragVertex: false,
     scale: 0.8,
+    devices: {},
   },
   liveModeReference: null,
   detailsPanelDeviceID: null,
@@ -63,6 +65,9 @@ const startState = {
     currentlyConnecting: null,
     failedAttempt: null,
     deviceID: null
+  },
+  preferences: {
+    searchMode: 'broadcast'
   }
 }
 
@@ -96,12 +101,13 @@ var loadDevicesFromServer = (url) => {
 
   $.ajax({
     url: url,
+    type: 'POST',
+    data: {searchMode: 'broadcast'},
     cache: false,
     success: (data) => {
 
       try {
         data.url = window.location.origin;
-        var immutableMap = Immutable.Map(data);
         store.dispatch(actions_classic.overwriteFromServer(data));
 
       }
@@ -116,6 +122,6 @@ var loadDevicesFromServer = (url) => {
     });
 }
 
-var timeoutRef = setInterval(() => loadDevicesFromServer(window.location.origin.concat('/api/findDevices')), 1000)
+var timeoutRef = setInterval(() => loadDevicesFromServer(window.location.origin.concat('/api/findDevices')), 2000)
 
-setTimeout(() => clearTimeout(timeoutRef), 5000);
+setTimeout(() => clearTimeout(timeoutRef), 6000);

@@ -4,7 +4,13 @@ import randomNumber from 'random-number-csprng'
 
 import { sys_phy_files } from './SystemPHYCompatibilities'
 
+import { applications } from '../assets/inoFiles.js'
+
 export const packageSourceFiles = (deviceDetails, controls) => {
+
+  console.log("About to print application Name")
+  console.log(deviceDetails.applicationName)
+  //console.log(inoFiles.ClimateSensorFile);
 
   console.log("Device: ", deviceDetails);
   console.log("Controls: ", controls);
@@ -33,11 +39,11 @@ export const packageSourceFiles = (deviceDetails, controls) => {
       console.log("Did not match systemType");
   }
 
-  var nameZip = deviceDetails.deviceName + '.zip';
+  var nameZip = removeSpacesFromString(deviceDetails.deviceName) + '.zip';
 
   setIDAndMAC((deviceIDarray, MACAddressArray) => {
 
-    zip.file('HeepDeviceDefinitions.h', generateDeviceDefinitionsFile(deviceIDarray, MACAddressArray, autoGenIncludes));
+    zip.file('HeepDeviceDefinitions.h', generateDeviceDefinitionsFile(deviceDetails.deviceName, deviceIDarray, MACAddressArray, autoGenIncludes));
 
     zip.generateAsync({type:"blob"})
     .then(function(content) {
@@ -48,23 +54,36 @@ export const packageSourceFiles = (deviceDetails, controls) => {
 
 }
 
+const removeSpacesFromString = (NameToConvert) => {
+  return NameToConvert.split(' ').join('_');
+}
+
 const packageESP8266Files = (deviceDetails, controls, zip) => {
 
-  zip.file(deviceDetails.deviceName + ".ino", composeInoFile(deviceDetails, controls));
+  zip.file(removeSpacesFromString(deviceDetails.deviceName) + ".ino", composeInoFile(deviceDetails, controls));
 
   return zip
 }
 
 const packageSimulationFiles = (deviceDetails, controls, zip) => {
 
-  zip.file(deviceDetails.deviceName + ".ino", composeInoFile(deviceDetails, controls));
+  zip.file(removeSpacesFromString(deviceDetails.deviceName) + ".ino", composeInoFile(deviceDetails, controls));
 
   return zip
 }
 
+const getPreExistingInoFile = (deviceDetails) => {
+
+  return applications[deviceDetails.applicationName].file;
+}
+
 const composeInoFile = (deviceDetails, controls) => {
 
-    var fileContent = `
+  if(deviceDetails.applicationName != "Custom"){
+    return getPreExistingInoFile(deviceDetails);
+  }
+
+var fileContent = `
 #include "HeepDeviceDefinitions.h"\n`
 + initializeControls(controls)
 + createHardwareControlFunctionsArduinoSyntax(controls)
@@ -76,7 +95,7 @@ const composeInoFile = (deviceDetails, controls) => {
   Serial.begin(115200);\n`
 + GetTabCharacter() + `InitializeControlHardware();\n`
 + setControls(controls)
-+ GetTabCharacter() + `StartHeep("`+ deviceDetails.deviceName + `", ` + deviceDetails.iconSelected + `);\n
++ GetTabCharacter() + `StartHeep(heepDeviceName, ` + deviceDetails.iconSelected + `);\n
 }
 
 void loop()
@@ -89,7 +108,7 @@ void loop()
 }
 
 var getPinDefineName = (control) => {
-  var pinDefineStr = control.controlName.toUpperCase() + `_PIN`;
+  var pinDefineStr = removeSpacesFromString(control.controlName).toUpperCase() + `_PIN`;
   return pinDefineStr;
 }
 
@@ -103,12 +122,12 @@ var GetTabCharacter = () => {
 }
 
 var GetReadFunctionName = (control) => {
-  var ReadFunctionName = `Read` + control.controlName;
+  var ReadFunctionName = `Read` + removeSpacesFromString(control.controlName);
   return ReadFunctionName;
 }
 
 var GetWriteFunctionName = (control) => {
-  var WriteFunctionName = `Write` + control.controlName;
+  var WriteFunctionName = `Write` + removeSpacesFromString(control.controlName);
   return WriteFunctionName;
 }
 
@@ -402,13 +421,14 @@ const setIDAndMAC = (launchDownloadCallback) => {
 
 }
 
-const generateDeviceDefinitionsFile = (deviceIDarray, MACAddressArray, autoGenIncludes) => {
+const generateDeviceDefinitionsFile = (deviceName, deviceIDarray, MACAddressArray, autoGenIncludes) => {
 
   var autoGenContent = `#include <Heep_API.h>\n`;
   autoGenContent += autoGenIncludes;
   autoGenContent += `heepByte deviceIDByte [STANDARD_ID_SIZE] = {` + convertIntToHex(deviceIDarray) + `};\n`;
   autoGenContent += `uint8_t mac[6] = {` + convertIntToHex(MACAddressArray) + `};\n`;
   autoGenContent += `unsigned char clearMemory = 1;\n`;
+  autoGenContent += `char* heepDeviceName = "` + deviceName + `";\n`;
   
   return autoGenContent
 }
@@ -448,9 +468,7 @@ const getIncludes_Simulation = (deviceDetails) => {
 }
 
 const getIncludes_ESP8266 = (deviceDetails) => {
-  return `String SSID = "` + deviceDetails.ssid + `";
-  String Password = "` + deviceDetails.ssidPassword + `";
-  #include "` + getCommsFileName(deviceDetails) + `"
+  return `#include "` + getCommsFileName(deviceDetails) + `"
   #include "ESP8266_NonVolatileMemory.h"
   #include "Arduino_Timer.h" \n`
 }

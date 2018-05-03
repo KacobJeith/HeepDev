@@ -15,6 +15,11 @@ export const updateVertex = () => ({
   type: 'UPDATE_VERTEX'
 })
 
+export const collapseDevice = (deviceID) => ({
+  type: 'COLLAPSE_DEVICE',
+  deviceID
+})
+
 //Icons
 export const addIcon = (deviceID, icon) => ({
   type: 'ADD_ICON',
@@ -128,4 +133,9 @@ export const zoomOut = () => ({
 export const resetDeviceWifi = (deviceID) => ({
   type: 'RESET_DEVICE_WIFI',
   deviceID
+})
+
+export const setSearchMode = (searchMode) => ({
+  type: 'SET_SEARCH_MODE',
+  searchMode
 })

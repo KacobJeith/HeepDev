@@ -252,10 +252,10 @@
                     "type": "gerber_layer"
                 }
             ],
-            "version": "X2"
+            "version": "RS274X"
         }
     ],
-    "timestamp": "2018-04-08T13:17:06",
+    "timestamp": "2018-04-08T23:42:22",
     "type": "EAGLE CAM job",
     "units": "metric",
     "version": "8.6.1"

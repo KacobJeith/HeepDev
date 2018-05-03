@@ -35,6 +35,10 @@ export default function(state = initialState.builder, action, fullState = initia
         .set('physicalLayer', Object.keys(sys_phy_files[action.system])[0])
         .toJS()
 
+    case 'UPDATE_APPLICATION_NAME' :
+
+      return Immutable.Map(state).set('applicationName', action.applicationName).toJS()
+
     case 'UPDATE_CONTROL_NAME' :
 
       var controlID = action.controlID;

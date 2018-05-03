@@ -281,13 +281,13 @@ export default function(state = initialState, action) {
 
     case 'REFRESH_FLOWCHART' :
 
-      async.refreshLocalDeviceState();
+      async.refreshLocalDeviceState(state.preferences.searchMode);
 
       return state
 
     case 'HARD_REFRESH_FLOWCHART' :
 
-      async.hardRefreshLocalDeviceState();
+      async.hardRefreshLocalDeviceState(state.preferences.searchMode);
 
       return state
 
@@ -310,7 +310,7 @@ export default function(state = initialState, action) {
       return Immutable.Map(state).set('places', newState).toJS()
 
     case 'START_LIVE_MODE':
-      var liveModeRef = async.startLiveMode();
+      var liveModeRef = async.startLiveMode(state.preferences.searchMode);
 
       return Immutable.Map(state).set('liveModeReference', liveModeRef).toJS();
 
@@ -352,13 +352,19 @@ export default function(state = initialState, action) {
 
       return Immutable.Map(state).set('accessPointData', action.packet).toJS()
 
+    case 'SET_SEARCH_MODE': 
+
+      return Immutable.fromJS(state)
+                      .setIn(['preferences','searchMode'], action.searchMode)
+                      .toJS()
+
     case 'RESET_DEVICE_AND_OS_WIFI':
 
-      async.resetDeviceAndOSWifi(action.deviceID);
+      async.resetDeviceAndOSWifi(action.deviceID, state.preferences.searchMode);
 
       return state
 
-    case 'RESET_DEVICE_WIFI': 
+    case 'RESET_DEVICE_WIFI':
 
       async.resetDeviceWifi(action.deviceID);
 
@@ -396,6 +402,15 @@ export default function(state = initialState, action) {
         return Immutable.fromJS(state).setIn(['flowchart', 'scale'], state.flowchart.scale + 0.1).toJS()
       }
 
+    case 'COLLAPSE_DEVICE':
+      if (state.flowchart.devices[action.deviceID] == undefined) {
+        var newState = Immutable.Map(state.flowchart.devices).toJS();
+        newState[action.deviceID] = initialDeviceFlowchartState()
+        return Immutable.fromJS(state).setIn(['flowchart', 'devices'], newState).toJS()
+      } else {
+        return Immutable.fromJS(state).setIn(['flowchart', 'devices', action.deviceID, 'collapsed'], !state.flowchart.devices[action.deviceID].collapsed).toJS()
+      }
+
     default:
       console.log('Passed through first Switch');
   }
@@ -410,3 +425,7 @@ export default function(state = initialState, action) {
   return state
 
 }
+
+const initialDeviceFlowchartState = () => ({
+    collapsed: true,
+})
