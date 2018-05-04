@@ -42,18 +42,22 @@ class About extends React.Component {
          }}
          justify='center' alignItems='center'>
           <Grid item  xs={12} md={8}>
+            <div className='testFont'>
+              TEST
+            </div>
+
             <Typography variant='headline' align='center'>
               Our Mission
             </Typography>
             <br/>
             <Typography variant='subheading' align='center' gutterBottom paragraph>
-              Heep leverages connectedness to empower people to be more productive, 
-              make better decisions, 
-              and enjoy a better quality of life. 
+              Heep leverages connectedness to empower people to be more productive,
+              make better decisions,
+              and enjoy a better quality of life.
             </Typography>
             <Typography variant='subheading' align='center' paragraph>
-              The Heep platform makes connectivity the simplest and most secure way to design any product. 
-              By reimagining IoT as a critical infrastructure rather than an add-on luxury, 
+              The Heep platform makes connectivity the simplest and most secure way to design any product.
+              By reimagining IoT as a critical infrastructure rather than an add-on luxury,
               Heep is able to deliver a scalable and intuitive experience at a fraction of the cost.
             </Typography>
           </Grid>
@@ -94,23 +98,23 @@ class About extends React.Component {
       PlugAndPlay: {
         title: 'Easy to Install',
         imagePath: svgs.plugAndPlay,
-        desc: `Unbox, wire, and play. 
-                Automate your home or booby trap it. 
-                We can set it up for you, so you don't have to worry about code. 
+        desc: `Unbox, wire, and play.
+                Automate your home or booby trap it.
+                We can set it up for you, so you don't have to worry about code.
                 Heep makes connecting things easy.`
       },
       CloudLess: {
         title: 'Cloud Less',
         imagePath: svgs.cloudLess,
-        desc: `Heep doesn't require an internet connection. 
-                We don't send things to the cloud, so rest assured, no one's listening in or watching you. 
+        desc: `Heep doesn't require an internet connection.
+                We don't send things to the cloud, so rest assured, no one's listening in or watching you.
                 You do you, so just relax.`
       },
       DeviceParty: {
         title: 'Device Party',
         imagePath: svgs.deviceParty,
-        desc: `Connect your devices and get them to talk with you and other devices. 
-                They send and receive commands, provide data, and interact with you. 
+        desc: `Connect your devices and get them to talk with you and other devices.
+                They send and receive commands, provide data, and interact with you.
                 Enable your environment.`
       },
     };
@@ -156,9 +160,9 @@ class About extends React.Component {
             </Typography>
             <br/>
             <Typography variant='subheading' align='center' paragraph>
-              Heep was founded in February 2017 with the dream of ubiquitous connectivity. 
-              We thought long and hard about what the world needs to make that happen. 
-              Thus, the Heep operating system was born. 
+              Heep was founded in February 2017 with the dream of ubiquitous connectivity.
+              We thought long and hard about what the world needs to make that happen.
+              Thus, the Heep operating system was born.
             </Typography>
           </Grid>
         </Grid>
