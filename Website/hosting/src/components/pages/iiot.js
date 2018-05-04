@@ -12,6 +12,8 @@ import AboutCard from '../AboutCard'
 import TeamModal from '../TeamModal'
 import SplitSectionCard from '../utilities/SplitSectionCard'
 
+import ContactUsSection from '../utilities/ContactUsSection'
+
 import assets from '../../assets/remote/iiotAssets.json'
 
 const titleVariant = 'title';
@@ -22,7 +24,7 @@ class IIOT extends React.Component {
   topBanner() {
 
     const inputs = {
-      backgroundColor: '#00adee',
+      backgroundColor: 'black',
       //TO-DO: Purchase video
       videoSrc: assets.bannerVideo,
       minHeight: 400,
@@ -110,7 +112,7 @@ class IIOT extends React.Component {
               {sectionInfo.title}
             </Typography>
 
-            <Typography variant='body1' align='left' gutterBottom style={{color: '#999'}}>
+            <Typography variant='body1' align='left' style={{color: '#999'}}>
               <ul>
                 {sectionInfo.bullets.map((thisBullet, index) => (
                   <li key={sectionInfo.link + index}>{thisBullet}</li>
@@ -149,6 +151,7 @@ class IIOT extends React.Component {
     );
   };
 
+<<<<<<< HEAD
   contactUs() {
     const inputs = {
       paddingTop: 25,
@@ -194,6 +197,8 @@ class IIOT extends React.Component {
     )
   };
 
+=======
+>>>>>>> 681ed0840379c1952f547d25c58d8b1a1267b5df
   render() {
 
     const sections = [
@@ -227,8 +232,8 @@ class IIOT extends React.Component {
         link: 'interoperability',
         title: 'Interoperability',
         bullets: [
-          'Focus on your product, not vender technology integrations',
-          'Leveraging the Heep application programming interface (HAPI), your assets communicate seamlessly for light fast operation',
+          'Focus on your product, not vendor technology integrations',
+          'Leveraging the Heep application programming interface (HAPI), your assets communicate seamlessly for lightning fast operation',
 
         ]
       },
@@ -257,7 +262,7 @@ class IIOT extends React.Component {
         {sections.map((sectionInfo, index) => {
           return this.splitSectionWithBullets(sectionInfo, index % 2 == 0 ? 'left' : 'right')
         })}
-        {this.contactUs()}
+        <ContactUsSection/>
       </div>
     );
   }

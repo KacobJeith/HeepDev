@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid } from 'material-ui'
+import { Grid, Hidden } from 'material-ui'
 
 const imageSection = (inputs, componentProps) => (
   <div style={{position: 'relative', width: '100%', }}>
@@ -30,14 +30,29 @@ const SplitSectionCard = (componentProps, richContent) => {
   };
 
   return(
-    <Grid container spacing={0} justify='center' alignItems='center' style={{...componentProps}} key={componentProps.imagePath}>
-      <Grid item sm={6} xs={10} style={{overflow: 'hidden'}}>
-        {componentProps.imageSide == 'left' ? imageSection(inputs, componentProps) : richContent}
-      </Grid>
-      <Grid item sm={6} xs={10} style={{overflow: 'hidden'}}>
-        {componentProps.imageSide == 'right' ? imageSection(inputs, componentProps) : richContent}
-      </Grid>
-    </Grid>
+    <div key={componentProps.imagePath}>
+      <Hidden only='xs'>
+        <Grid container spacing={0} justify='center' alignItems='center' style={{...componentProps}} >
+          <Grid item sm={6} xs={10} style={{overflow: 'hidden'}}>
+            {componentProps.imageSide == 'left' ? imageSection(inputs, componentProps) : richContent}
+          </Grid>
+          <Grid item sm={6} xs={10} style={{overflow: 'hidden'}}>
+            {componentProps.imageSide == 'right' ? imageSection(inputs, componentProps) : richContent}
+          </Grid>
+        </Grid>
+      </Hidden>
+      <Hidden smUp>
+        <Grid container spacing={0} justify='center' alignItems='center' style={{...componentProps}} >
+
+          <Grid item xs={12} style={{overflow: 'hidden'}}>
+            {imageSection(inputs, componentProps)}
+          </Grid>
+          <Grid item xs={10} style={{overflow: 'hidden'}}>
+            {richContent}
+          </Grid>
+        </Grid>
+      </Hidden>
+    </div>
   );
 };
 

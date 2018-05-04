@@ -8,7 +8,8 @@ const styles = theme => ({
   root: theme.mixins.gutters({
     paddingTop: 16,
     paddingBottom: 16,
-    marginBottom: theme.spacing.unit * 3,
+    height: 'calc(100% - 32px)',
+    margin: 0,
   }),
 });
 
