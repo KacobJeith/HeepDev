@@ -24,7 +24,7 @@ import Contact from './Contact'
 const Landing = () => <AsyncComponent moduleProvider={() => import(
 	/* webpackChunkName: "landing" */
   	/* webpackMode: "lazy" */
-  	'./landing/Landing')} />
+  	'./pages/LandingIIOT')} />
 
 const Store = () => <AsyncComponent moduleProvider={() => import(
 	/* webpackChunkName: "store" */
@@ -45,6 +45,11 @@ const iiot = () => <AsyncComponent moduleProvider={() => import(
 	/* webpackChunkName: "iiot" */
   	/* webpackMode: "lazy" */
   	'./pages/iiot')} />
+
+const diy = () => <AsyncComponent moduleProvider={() => import(
+	/* webpackChunkName: "diy" */
+  	/* webpackMode: "lazy" */
+  	'./pages/diy')} />
 
 import Theme from './Theme'
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
@@ -102,8 +107,9 @@ class App extends React.Component {
 							<div {...inputs.container}>
 								<div {...inputs.content}>
 									<Route path="/" component={AppBar}/>
-{/* 									<Route exact path="/" component={Landing}/> */}
-{/* 									<Route path="/Landing" component={Landing}/> */}
+									<Route exact path="/" component={Landing}/>
+									<Route path="/Landing" component={Landing}/>
+									<Route path="/DIY" component={diy}/>
 									<Route path="/About" component={About}/>
 									<Route path="/Shop" component={Store}/>
 									<Route path="/IndustrialHeep" component={iiot}/>
