@@ -13,6 +13,7 @@ import { withTheme } from 'material-ui/styles'
 
 import Add from 'material-ui-icons/Add'
 import Remove from 'material-ui-icons/Remove'
+import PhotoCamera from 'material-ui-icons/PhotoCamera'
 import { Button, Tooltip }  from 'material-ui'
 
 var mapStateToProps = (state) => ({
@@ -52,38 +53,56 @@ class Flowchart extends React.Component {
 
 	flowchartOptions() {
 		return (
-      <Tooltip id="tooltip-range"
-            title={Math.round(this.props.scale * 100) + "%"}
-            placement="top">
 			<div
 				id='flowchartOptions'
 				style={{
 					position:'fixed',
+					display: 'flex',
+					flexDirection: 'row-reverse',
 					bottom:  this.props.theme.spacing.unit,
 					right: this.props.theme.spacing.unit
 			}}>
-				<Button
-					mini
-					variant="fab"
-					color="primary"
-					aria-label="zoom-out"
-					onClick={() => this.props.zoomOut()}
-					style={{marginRight: this.props.theme.spacing.unit}}
-				>
-					<Remove/>
-				</Button>
-				<Button
-					mini
-					variant="fab"
-					color="primary"
-					aria-label="zoom-in"
-					onClick={() => this.props.zoomIn()}
-				>
-					<Add/>
-				</Button>
 
+				<Tooltip id="tooltip-range"
+				            title={Math.round(this.props.scale * 100) + "%"}
+				            placement="top">
+				    <div>
+						<Button
+							mini
+							variant="fab"
+							color="primary"
+							aria-label="zoom-out"
+							onClick={() => this.props.zoomOut()}
+							style={{marginRight: this.props.theme.spacing.unit}}
+						>
+							<Remove/>
+						</Button>
+						<Button
+							mini
+							variant="fab"
+							color="primary"
+							aria-label="zoom-in"
+							onClick={() => this.props.zoomIn()}
+						>
+							<Add/>
+						</Button>
+					</div>
+				</Tooltip>
+				<Tooltip id="tooltip-save-state"
+				            title='Save State Snapshot'
+				            placement="top">
+					<Button
+						mini
+						variant="fab"
+						color="primary"
+						aria-label="zoom-out"
+						onClick={() => this.props.saveState()}
+						style={{marginRight: this.props.theme.spacing.unit}}
+					>
+						<PhotoCamera/>
+					</Button>
+				</Tooltip>
 			</div>
-    </Tooltip>
 		)
 	};
 

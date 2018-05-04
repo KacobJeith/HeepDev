@@ -66,7 +66,7 @@ const startState = {
     failedAttempt: null,
     deviceID: null
   },
-  savedStates: {},
+  stateSnapshots: {},
 }
 
 export const initialState = Immutable.Map(startState);
