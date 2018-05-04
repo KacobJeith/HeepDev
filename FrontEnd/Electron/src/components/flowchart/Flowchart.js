@@ -14,6 +14,7 @@ import { withTheme } from 'material-ui/styles'
 import Add from 'material-ui-icons/Add'
 import Remove from 'material-ui-icons/Remove'
 import PhotoCamera from 'material-ui-icons/PhotoCamera'
+import SwitchCamera from 'material-ui-icons/SwitchCamera'
 import { Button, Tooltip }  from 'material-ui'
 
 var mapStateToProps = (state) => ({
@@ -100,6 +101,20 @@ class Flowchart extends React.Component {
 						style={{marginRight: this.props.theme.spacing.unit}}
 					>
 						<PhotoCamera/>
+					</Button>
+				</Tooltip>
+				<Tooltip id="tooltip-snapshot-return"
+				            title='Return to Snapshot'
+				            placement="top">
+					<Button
+						mini
+						variant="fab"
+						color="primary"
+						aria-label="snapshot-return"
+						onClick={() => this.props.returnToSnapshot()}
+						style={{marginRight: this.props.theme.spacing.unit}}
+					>
+						<SwitchCamera/>
 					</Button>
 				</Tooltip>
 			</div>

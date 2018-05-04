@@ -407,9 +407,25 @@ export default function(state = initialState, action) {
 
     case 'SAVE_STATE':
       var currentState = Immutable.Map(state.controls).toJS();
-      const randomHash = makeid(5)
+      const randomHash = 'lastSaved'; //makeid(5)
 
-      return Immutable.fromJS(state).setIn(['savedState', randomHash], currentState).toJS()
+      return Immutable.fromJS(state).setIn(['stateSnapshots', randomHash], currentState).toJS()
+
+    case 'RETURN_TO_SNAPSHOT':
+      var newState = Immutable.Map(state.controls).toJS();
+
+      for (var thisControl in state.stateSnapshots.lastSaved) {
+        if (thisControl != 'connections' && thisControl != 'controlStructure') {
+          if (state.stateSnapshots.lastSaved[thisControl].controlDirection == 0) {
+            const thisControlObject = state.stateSnapshots.lastSaved[thisControl];
+            newState[thisControl].valueCurrent = thisControlObject.valueCurrent;
+
+            async.sendValueToServer(thisControlObject.deviceID, thisControlObject.controlID, thisControlObject.valueCurrent)
+          }
+        }
+      }
+
+      return Immutable.fromJS(state).set(controls, newState).toJS()
 
     default:
       console.log('Passed through first Switch');
