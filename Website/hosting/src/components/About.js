@@ -42,10 +42,6 @@ class About extends React.Component {
          }}
          justify='center' alignItems='center'>
           <Grid item  xs={12} md={8}>
-            <div className='testFont'>
-              TEST
-            </div>
-
             <Typography variant='headline' align='center'>
               Our Mission
             </Typography>

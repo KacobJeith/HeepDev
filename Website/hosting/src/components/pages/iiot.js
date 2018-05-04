@@ -29,7 +29,7 @@ class IIOT extends React.Component {
     }
 
     return(
-      VideoBackgroundCard(inputs, 
+      VideoBackgroundCard(inputs,
         <Grid container direction='column' justify ='center' alignItems ='center' style={{
           width: '100%',
           minHeight: inputs.minHeight,
@@ -43,9 +43,9 @@ class IIOT extends React.Component {
 
           <Grid item xs={12} sm={8}>
             <Typography variant='subheading' align='center' style={{color:'#bbbbbb'}}>
-              By embedding Heep Intelligence throughout your process, 
-              you can unlock higher yields, 
-              plug security holes, 
+              By embedding Heep Intelligence throughout your process,
+              you can unlock higher yields,
+              plug security holes,
               and gain competitive advantages for your business.
             </Typography>
 
@@ -59,29 +59,29 @@ class IIOT extends React.Component {
   sectionLinks(sections) {
 
     return (
-      <Grid container alignItems='center' justify='center' spacing={0} 
+      <Grid container alignItems='center' justify='center' spacing={0}
         style={{
-          backgroundColor: this.props.theme.palette.primary.dark, 
+          backgroundColor: this.props.theme.palette.primary.dark,
           padding: this.props.theme.spacing.unit,
           width: '100%',
           margin: '0 auto'
         }}
       >
         {sections.map((nextSection) => (
-          <Grid item key={nextSection.link + 'key'} 
+          <Grid item key={nextSection.link + 'key'}
             style={{marginRight: 20}}
 
-          >    
-            <HashLink 
-                smooth 
-                to={"#" + nextSection.link} 
+          >
+            <HashLink
+                smooth
+                to={"#" + nextSection.link}
                 style={{
                   textDecoration: 'none',
                   outline: 'none',
                 }}
                 >
 
-                <Button variant='flat' style={{ textTransform: "capitalize", color: '#ddd'}}> 
+                <Button variant='flat' style={{ textTransform: "capitalize", color: '#ddd', fontStyle: 'italic'}}>
                   {nextSection.title}
                 </Button>
               </HashLink>
@@ -93,7 +93,7 @@ class IIOT extends React.Component {
 
   splitSectionWithBullets(sectionInfo, orientation) {
     const inputs = {
-      imageSide: orientation, 
+      imageSide: orientation,
       minHeight: 400,
       imagePath: assets[sectionInfo.link]
     };
@@ -113,7 +113,7 @@ class IIOT extends React.Component {
             <Typography variant='body1' align='left' gutterBottom style={{color: '#999'}}>
               <ul>
                 {sectionInfo.bullets.map((thisBullet, index) => (
-                  <li key={sectionInfo.link + index}>{thisBullet}</li> 
+                  <li key={sectionInfo.link + index}>{thisBullet}</li>
                 ))}
               </ul>
             </Typography>
@@ -122,20 +122,20 @@ class IIOT extends React.Component {
           {sectionInfo.moreInfoLink && (
             <Grid item xs={12}>
               <Grid container justify='center' alignItems='center'>
-                <HashLink 
-                  smooth 
-                  to={sectionInfo.moreInfoLink.externalLink ? 
-                    'IndustrialHeep' : 
-                    sectionInfo.moreInfoLink.link} 
+                <HashLink
+                  smooth
+                  to={sectionInfo.moreInfoLink.externalLink ?
+                    'IndustrialHeep' :
+                    sectionInfo.moreInfoLink.link}
                   style={{
                     textDecoration: 'none',
                     outline: 'none'
                   }}
                 >
                 <Button variant='flat' color='secondary' style={{ textTransform: "capitalize"}}
-                  onClick={sectionInfo.moreInfoLink.externalLink ? 
-                    () => window.open(sectionInfo.moreInfoLink.externalLink, '_blank') : 
-                    () => {}}> 
+                  onClick={sectionInfo.moreInfoLink.externalLink ?
+                    () => window.open(sectionInfo.moreInfoLink.externalLink, '_blank') :
+                    () => {}}>
                     {sectionInfo.moreInfoLink.text}
                     <ArrowForward style={{marginLeft: this.props.theme.spacing.unit}}/>
                   </Button>
@@ -143,7 +143,7 @@ class IIOT extends React.Component {
               </Grid>
             </Grid>
           )}
-          
+
         </Grid>
       )
     );
@@ -171,19 +171,19 @@ class IIOT extends React.Component {
             <Typography variant='subheading' align='center' paragraph>
               Contact us for a consulation on how Heep products can augment your operations.
             </Typography>
-           
+
           </Grid>
 
           <Grid item>
-            <HashLink 
-              smooth 
-              to={"/Contact#top"} 
+            <HashLink
+              smooth
+              to={"/Contact#top"}
               style={{
                 textDecoration: 'none',
                 outline: 'none'
               }}
             >
-            <Button variant='raised' color='secondary' style={{ textTransform: "capitalize"}}> 
+            <Button variant='raised' color='secondary' style={{ textTransform: "capitalize"}}>
                 Contact Us
               </Button>
             </HashLink>
@@ -198,7 +198,7 @@ class IIOT extends React.Component {
 
     const sections = [
       {
-        link: 'security', 
+        link: 'security',
         title: 'Security',
         bullets: [
           'Heep networks require no cloud connectivity. You control where your data gets sent.',
@@ -211,7 +211,7 @@ class IIOT extends React.Component {
         }
       },
       {
-        link: 'insights', 
+        link: 'insights',
         title: 'Insights',
         bullets: [
           'Optimize your technology investment for actionable insights, without the often costly overhead',
@@ -224,7 +224,7 @@ class IIOT extends React.Component {
         }
       },
       {
-        link: 'interoperability', 
+        link: 'interoperability',
         title: 'Interoperability',
         bullets: [
           'Focus on your product, not vender technology integrations',
@@ -233,7 +233,7 @@ class IIOT extends React.Component {
         ]
       },
       {
-        link: 'local-first', 
+        link: 'local-first',
         title: 'Local First',
         bullets: [
           'By prioritizing local-first communication, Heep control systems operate at maximum networks speeds with 100% uptime',
@@ -241,7 +241,7 @@ class IIOT extends React.Component {
         ]
       },
       {
-        link: 'simple-integration', 
+        link: 'simple-integration',
         title: 'Simplicity',
         bullets: [
           'Heep strives to offer single-wire designs for plug & play installation.',
