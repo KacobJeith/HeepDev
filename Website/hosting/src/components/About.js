@@ -52,13 +52,8 @@ class About extends React.Component {
               and enjoy a better quality of life.
             </Typography>
             <Typography variant='subheading' align='center' paragraph>
-<<<<<<< HEAD
               The Heep platform makes connectivity the simplest and most secure way to design any product.
               By reimagining IoT as a critical infrastructure rather than an add-on luxury,
-=======
-              The Heep platform makes connectivity the simplest and most secure way to design any product. 
-              By reimagining IoT as a critical infrastructure rather than a luxury gimmick, 
->>>>>>> 681ed0840379c1952f547d25c58d8b1a1267b5df
               Heep is able to deliver a scalable and intuitive experience at a fraction of the cost.
             </Typography>
           </Grid>
@@ -107,15 +102,9 @@ class About extends React.Component {
       CloudLess: {
         title: 'Cloud Less',
         imagePath: svgs.cloudLess,
-<<<<<<< HEAD
         desc: `Heep doesn't require an internet connection.
                 We don't send things to the cloud, so rest assured, no one's listening in or watching you.
-                You do you, so just relax.`
-=======
-        desc: `Heep doesn't require an internet connection. 
-                We don't send things to the cloud, so rest assured, no one's listening in or watching you. 
                 You do you, so just relax and enjoy.`
->>>>>>> 681ed0840379c1952f547d25c58d8b1a1267b5df
       },
       DeviceParty: {
         title: 'Device Party',
@@ -167,16 +156,10 @@ class About extends React.Component {
             </Typography>
             <br/>
             <Typography variant='subheading' align='center' paragraph>
-<<<<<<< HEAD
               Heep was founded in February 2017 with the dream of ubiquitous connectivity.
               We thought long and hard about what the world needs to make that happen.
               Thus, the Heep operating system was born.
-=======
-              Heep was founded in February 2017 with the dream of ubiquitous connectivity. 
-              We thought long and hard about what the world needs to make that happen. 
-              Thus, the Heep operating system was born. 
-              The Heep team hails from a diverse 
->>>>>>> 681ed0840379c1952f547d25c58d8b1a1267b5df
+              The Heep team hails from a diverse
             </Typography>
           </Grid>
         </Grid>

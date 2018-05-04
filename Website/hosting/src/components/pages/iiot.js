@@ -44,7 +44,7 @@ class IIOT extends React.Component {
           </Grid>
 
           <Grid item xs={12} sm={8}>
-            <Typography variant='subheading' align='center' style={{color:'#bbbbbb'}}>
+            <Typography variant='subheading' align='center' style={{color:'#d2d2d2'}}>
               By embedding Heep Intelligence throughout your process,
               you can unlock higher yields,
               plug security holes,
@@ -151,7 +151,6 @@ class IIOT extends React.Component {
     );
   };
 
-<<<<<<< HEAD
   contactUs() {
     const inputs = {
       paddingTop: 25,
@@ -197,8 +196,6 @@ class IIOT extends React.Component {
     )
   };
 
-=======
->>>>>>> 681ed0840379c1952f547d25c58d8b1a1267b5df
   render() {
 
     const sections = [

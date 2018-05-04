@@ -40,7 +40,7 @@ class LandingIIOT extends React.Component {
       }
 
       return(
-        VideoBackgroundCard(inputs, 
+        VideoBackgroundCard(inputs,
           <Grid container direction='column' justify ='center' alignItems ='center' style={{
             width: '100%',
             minHeight: inputs.minHeight,
@@ -68,15 +68,15 @@ class LandingIIOT extends React.Component {
       {
         title: 'Heep OS',
         // imagePath: svgs.cloudLess,
-        desc: ` The Heep OS is a memory sharing distributed operating system and control system. 
-                It is designed to require the smallest possible footprint on any member device. 
+        desc: ` The Heep OS is a memory sharing distributed operating system and control system.
+                It is designed to require the smallest possible footprint on any member device.
                 `
       },
       {
         title: 'Heep API (HAPI)',
         // imagePath: svgs.deviceParty,
-        desc: ` 
-                HAPI is a local first IoT protocol designed for speed and reliability. 
+        desc: `
+                HAPI is a local first IoT protocol designed for speed and reliability.
                 All communication is distilled into simple input/output relationships.
                 Connecting devices is as simple as loading a front end, and wiring two devices together in software.
                 All of the operations are local and fast. `
@@ -85,7 +85,7 @@ class LandingIIOT extends React.Component {
         title: 'Heep Hardware',
         // imagePath: 'https://docs.particle.io/assets/images/raspberry-pi.svg',
         desc: ` We designed the Heep Core from first principles so that no electronic device is excluded, no matter what physical layer the device talks over.
-                In concert with the Heep OS and HAPI, our products achieve maximum performance at application optimized costs. 
+                In concert with the Heep OS and HAPI, our products achieve maximum performance at application optimized costs.
                 `
       }
     ]
@@ -141,9 +141,9 @@ class LandingIIOT extends React.Component {
       },
       icon: {
         color: 'primary',
-        style: { 
+        style: {
           width: 100,
-          height: 100 
+          height: 100
         }
       }
     };
@@ -166,7 +166,7 @@ class LandingIIOT extends React.Component {
             </Grid>
           </Grid>
           <Grid item xs={6}>
-                <Typography variant='display1' align='center' paragraph>
+                <Typography variant='subheading' align='center' paragraph style={{fontSize: '1.8rem'}}>
                   {quote}
                 </Typography>
           </Grid>
@@ -185,7 +185,7 @@ class LandingIIOT extends React.Component {
 
   splitSectionWithBlurb(sectionInfo, orientation) {
     const inputs = {
-      imageSide: orientation, 
+      imageSide: orientation,
       minHeight: 400,
       imagePath: assets[sectionInfo.link]
     };
@@ -203,27 +203,27 @@ class LandingIIOT extends React.Component {
             </Typography>
 
             <Typography variant='body1' align='left' style={{color: '#999'}}>
-              
+
             </Typography>
 
           </Grid>
           {sectionInfo.moreInfoLink && (
             <Grid item xs={12}>
               <Grid container justify='center' alignItems='center'>
-                <HashLink 
-                  smooth 
-                  to={sectionInfo.moreInfoLink.externalLink ? 
-                    'IndustrialHeep' : 
-                    sectionInfo.moreInfoLink.link} 
+                <HashLink
+                  smooth
+                  to={sectionInfo.moreInfoLink.externalLink ?
+                    'IndustrialHeep' :
+                    sectionInfo.moreInfoLink.link}
                   style={{
                     textDecoration: 'none',
                     outline: 'none'
                   }}
                 >
                 <Button variant='flat' color='secondary' style={{ textTransform: "capitalize"}}
-                  onClick={sectionInfo.moreInfoLink.externalLink ? 
-                    () => window.open(sectionInfo.moreInfoLink.externalLink, '_blank') : 
-                    () => {}}> 
+                  onClick={sectionInfo.moreInfoLink.externalLink ?
+                    () => window.open(sectionInfo.moreInfoLink.externalLink, '_blank') :
+                    () => {}}>
                     {sectionInfo.moreInfoLink.text}
                     <ArrowForward style={{marginLeft: this.props.theme.spacing.unit}}/>
                   </Button>
@@ -231,7 +231,7 @@ class LandingIIOT extends React.Component {
               </Grid>
             </Grid>
           )}
-          
+
         </Grid>
       )
     );
@@ -239,7 +239,7 @@ class LandingIIOT extends React.Component {
 
   render() {
     const inputs = {
-      quote1: `From the smallest embedded chip, to lightning fast gaming PCs, 
+      quote1: `From the smallest embedded chip, to lightning fast gaming PCs,
                   Heep unlocks immersive, living, tangibly magical experiences.`,
       quote2: ``
     }

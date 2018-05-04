@@ -199,7 +199,8 @@ class MenuAppBar extends React.Component {
         style: {
           color: "white",
           paddingTop: 11,
-          paddingBottom: 11
+          paddingBottom: 11,
+          fontSize: '1.2rem'
         }
       },
       Button: {
@@ -218,7 +219,7 @@ class MenuAppBar extends React.Component {
       <Hidden xsDown={true}>
         <Button {...inputs.Button}>
           <NavLink to={navLink} {...inputs.NavLink}>
-            <Typography variant="subheading" {...inputs.Typography}>
+            <Typography variant="title" {...inputs.Typography}>
               {linkText}
             </Typography>
           </NavLink>
@@ -433,13 +434,6 @@ class MenuAppBar extends React.Component {
             </Hidden>
             {this.mobileAppBarLogo()}
             <div className={classes.flex}/>
-<<<<<<< HEAD
-            {this.appBarLink("/", "Home")}
-            {this.appBarLink("/IndustrialHeep", "Industry")}
-            {this.appBarLink("/About", "About")}
-            {this.appBarLink("/Contact", "Contact")}
-            {this.appBarLink("/Shop", "Shop")}
-=======
             {this.appBarLink("/", "HOME")}
             {this.appBarLink("/Business", "BUSINESS")}
             {this.appBarLink("/IndustrialHeep", "INDUSTRY")}
@@ -447,7 +441,6 @@ class MenuAppBar extends React.Component {
             {this.appBarLink("/About", "ABOUT")}
             {this.appBarLink("/Contact", "CONTACT")}
             {this.appBarLink("/Shop", "SHOP")}
->>>>>>> 681ed0840379c1952f547d25c58d8b1a1267b5df
 {/*             {this.appBarLink("/Developers", "Develop")} */}
             {this.appBarCart()}
 {/*             {this.avatarLogin()} */}
