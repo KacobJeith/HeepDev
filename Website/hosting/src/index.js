@@ -11,10 +11,6 @@ import WebFont from 'webfontloader'
 import { composeWithDevTools } from 'redux-devtools-extension';
 
  WebFont.load({
-   custom: {
-     families: ['Proxima Soft', 'Proxima Soft Bold'],
-     urls: ['src/assets/css/fonts.css']
-   },
    google: {
      families: ['Fjalla One']
    }
