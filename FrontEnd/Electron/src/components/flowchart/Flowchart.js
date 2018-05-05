@@ -10,12 +10,7 @@ import Device from './DevicePaper'
 import Vertex from './Vertex'
 import DeviceDetailsPanel from '../heep/DeviceDetailsPanel'
 import { withTheme } from 'material-ui/styles'
-
-import Add from 'material-ui-icons/Add'
-import Remove from 'material-ui-icons/Remove'
-import PhotoCamera from 'material-ui-icons/PhotoCamera'
-import SwitchCamera from 'material-ui-icons/SwitchCamera'
-import { Button, Tooltip }  from 'material-ui'
+import FlowchartOptions from './FlowchartOptions'
 
 var mapStateToProps = (state) => ({
   deviceArray: Object.keys(state.devices),
@@ -26,12 +21,6 @@ var mapStateToProps = (state) => ({
 
 
 class Flowchart extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			hoverRefresh: false
-		}
-	};
 
 	componentWillMount() {
 		this.props.setDetailsPanelDeviceID(null);
@@ -51,75 +40,6 @@ class Flowchart extends React.Component {
 	    onDrag: () => this.props.updateVertex()
 	  });
 	}
-
-	flowchartOptions() {
-		return (
-			<div
-				id='flowchartOptions'
-				style={{
-					position:'fixed',
-					display: 'flex',
-					flexDirection: 'row-reverse',
-					bottom:  this.props.theme.spacing.unit,
-					right: this.props.theme.spacing.unit
-			}}>
-
-				<Tooltip id="tooltip-range"
-				            title={Math.round(this.props.scale * 100) + "%"}
-				            placement="top">
-				    <div>
-						<Button
-							mini
-							variant="fab"
-							color="primary"
-							aria-label="zoom-out"
-							onClick={() => this.props.zoomOut()}
-							style={{marginRight: this.props.theme.spacing.unit}}
-						>
-							<Remove/>
-						</Button>
-						<Button
-							mini
-							variant="fab"
-							color="primary"
-							aria-label="zoom-in"
-							onClick={() => this.props.zoomIn()}
-						>
-							<Add/>
-						</Button>
-					</div>
-				</Tooltip>
-				<Tooltip id="tooltip-save-state"
-				            title='Save State Snapshot'
-				            placement="top">
-					<Button
-						mini
-						variant="fab"
-						color="primary"
-						aria-label="zoom-out"
-						onClick={() => this.props.saveState()}
-						style={{marginRight: this.props.theme.spacing.unit}}
-					>
-						<PhotoCamera/>
-					</Button>
-				</Tooltip>
-				<Tooltip id="tooltip-snapshot-return"
-				            title='Return to Snapshot'
-				            placement="top">
-					<Button
-						mini
-						variant="fab"
-						color="primary"
-						aria-label="snapshot-return"
-						onClick={() => this.props.returnToSnapshot()}
-						style={{marginRight: this.props.theme.spacing.unit}}
-					>
-						<SwitchCamera/>
-					</Button>
-				</Tooltip>
-			</div>
-		)
-	};
 
 	drawVertices() {
 
@@ -194,19 +114,19 @@ class Flowchart extends React.Component {
 		return (
       <div {...inputs.pageContainer}>
 			<div id="flowchart" {...inputs.flowchart} ref="flowchart">
-					<div id="deviceContainer" {...inputs.deviceContainer}>
-            <div style={{
-    						transform: 'scale(' + this.props.scale + ')',
-    		          		transformOrigin: 'top left',
-                      width: '100%',
-                      height: '100%',
-                      overflow: 'hidden'
-    		          	}}>
+				<div id="deviceContainer" {...inputs.deviceContainer}>
+            		<div style={{
+						transform: 'scale(' + this.props.scale + ')',
+						transformOrigin: 'top left',
+						width: '100%',
+						height: '100%',
+						overflow: 'hidden'
+		          	}}>
 						{this.drawVertices()}
 						{this.drawDevices()}
 					</div>
 				</div>
-				{this.flowchartOptions()}
+				<FlowchartOptions/>
 				<DeviceDetailsPanel/>
 			</div>
     </div>

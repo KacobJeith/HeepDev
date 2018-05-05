@@ -405,19 +405,24 @@ export default function(state = initialState, action) {
         return Immutable.fromJS(state).setIn(['flowchart', 'devices', action.deviceID, 'collapsed'], !state.flowchart.devices[action.deviceID].collapsed).toJS()
       }
 
-    case 'SAVE_STATE':
+    case 'SAVE_SNAPSHOT':
       var currentState = Immutable.Map(state.controls).toJS();
-      const randomHash = 'lastSaved'; //makeid(5)
+      const randomHash = makeid(8);
 
-      return Immutable.fromJS(state).setIn(['stateSnapshots', randomHash], currentState).toJS()
+      const newSnapshot = {
+        name: action.name,
+        controls: currentState
+      }
+
+      return Immutable.fromJS(state).setIn(['stateSnapshots', randomHash], newSnapshot).toJS()
 
     case 'RETURN_TO_SNAPSHOT':
       var newState = Immutable.Map(state.controls).toJS();
 
-      for (var thisControl in state.stateSnapshots.lastSaved) {
+      for (var thisControl in state.stateSnapshots[action.snapshotID].controls) {
         if (thisControl != 'connections' && thisControl != 'controlStructure') {
-          if (state.stateSnapshots.lastSaved[thisControl].controlDirection == 0) {
-            const thisControlObject = state.stateSnapshots.lastSaved[thisControl];
+          if (state.stateSnapshots[action.snapshotID].controls[thisControl].controlDirection == 0) {
+            const thisControlObject = state.stateSnapshots[action.snapshotID].controls[thisControl];
             newState[thisControl].valueCurrent = thisControlObject.valueCurrent;
 
             async.sendValueToServer(thisControlObject.deviceID, thisControlObject.controlID, thisControlObject.valueCurrent)

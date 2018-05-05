@@ -136,10 +136,12 @@ export const resetDeviceWifi = (deviceID) => ({
   deviceID
 })
 
-export const saveState = () => ({
-  type: 'SAVE_STATE',
+export const saveSnapshot = (name) => ({
+  type: 'SAVE_SNAPSHOT',
+  name
 })
 
-export const returnToSnapshot = () => ({
+export const returnToSnapshot = (snapshotID) => ({
   type: 'RETURN_TO_SNAPSHOT',
+  snapshotID
 })
