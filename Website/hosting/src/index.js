@@ -6,10 +6,15 @@ import reducers from './redux/reducers'
 import App from './components/App'
 import thunk from 'redux-thunk'
 import * as shopify from './shopify/Shopify'
+import WebFont from 'webfontloader'
 
 import { composeWithDevTools } from 'redux-devtools-extension';
 
-
+ WebFont.load({
+   google: {
+     families: ['Fjalla One']
+   }
+ });
 
 require('./service-worker-registration.js');
 

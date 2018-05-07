@@ -199,7 +199,8 @@ class MenuAppBar extends React.Component {
         style: {
           color: "white",
           paddingTop: 11,
-          paddingBottom: 11
+          paddingBottom: 11,
+          fontSize: '1.2rem'
         }
       },
       Button: {
@@ -218,7 +219,7 @@ class MenuAppBar extends React.Component {
       <Hidden xsDown={true}>
         <Button {...inputs.Button}>
           <NavLink to={navLink} {...inputs.NavLink}>
-            <Typography variant="subheading" {...inputs.Typography}>
+            <Typography variant="title" {...inputs.Typography}>
               {linkText}
             </Typography>
           </NavLink>
