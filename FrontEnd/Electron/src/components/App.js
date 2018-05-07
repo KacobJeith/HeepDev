@@ -21,7 +21,7 @@ import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
 
 const Analytics = () => <AsyncComponent moduleProvider={() => import(
 	/* webpackChunkName: "analytics" */
-  	/* webpackMode: "lazy" */ 
+  	/* webpackMode: "lazy" */
   	'./Analytics/AnalyticsMain')} />
 
 const mapStateToProps = (state) => ({
@@ -46,9 +46,9 @@ class App extends React.Component {
 				style: {
 				    flexGrow: 1,
 				    backgroundColor: 'white',
-				    marginTop: 64, 
+				    marginTop: 64,
 				    width:'100%',
-				    overflow: 'auto'
+				    overflow: 'auto',
 				  }
 			}
 	    }
@@ -77,7 +77,7 @@ class App extends React.Component {
 				    </div>
 				</MuiThemeProvider>
 			</Router>);
-	    
+
 	}
 }
 
@@ -87,4 +87,3 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)
-

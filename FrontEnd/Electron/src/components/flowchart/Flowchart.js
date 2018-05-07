@@ -134,20 +134,20 @@ class Flowchart extends React.Component {
 	render() {
 
 		const inputs = {
-	      	pageContainer: {
-	        	style: {
+    	pageContainer: {
+      	style: {
 					backgroundColor: '#e7e7e7',
 					height: 4000,
-					width: 4000
-				}
+					width: 4000,
+		    }
 			},
 			flowchart: {
 				style: {
-					height: window.innerHeight - 64,
-					width: window.innerWidth - 72,
+					height: document.documentElement.clientHeight - 64,
+					width: document.documentElement.clientWidth - 72,
 					margin: 0,
 					backgroundColor: 'rgba(0, 0, 0, 0.54)',
-					overflow: "hidden"
+          overflow: 'hidden'
 				}
 			},
 			deviceContainer: {
@@ -160,8 +160,6 @@ class Flowchart extends React.Component {
 			    }
 			},
       deviceBounds: {
-        top: 0,
-        left: 0,
         style: {
           width: 2700,
           height: 1700,
@@ -170,8 +168,7 @@ class Flowchart extends React.Component {
 		}
 
 		return (
-      <div {...inputs.pageContainer}>
-			<div id="flowchart" {...inputs.flowchart} ref="flowchart">
+			  <div id="flowchart" {...inputs.flowchart} ref="flowchart">
 					<div id="deviceContainer" {...inputs.deviceContainer}>
             <div id='deviceBounds' {...inputs.deviceBounds}>
               <div id="zoomContainer"
@@ -190,7 +187,6 @@ class Flowchart extends React.Component {
 				{this.flowchartOptions()}
 				<DeviceDetailsPanel/>
 			</div>
-    </div>
 		);
 
 	}
