@@ -3,14 +3,17 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { withRouter } from 'react-router-dom'
 import * as Actions from '../../redux/actions_classic'
+import fileDownload from 'react-file-download'
 
 import { withStyles } from 'material-ui/styles'
 
 import Add from 'material-ui-icons/Add'
+import FileUpload from 'material-ui-icons/FileUpload'
+import FileDownload from 'material-ui-icons/FileDownload'
 import Remove from 'material-ui-icons/Remove'
 import PhotoCamera from 'material-ui-icons/PhotoCamera'
 import SwitchCamera from 'material-ui-icons/SwitchCamera'
-import { Button, Tooltip, Modal, Paper, Menu, MenuItem }  from 'material-ui'
+import { Button, Tooltip, Modal, Paper, Menu, MenuItem, ListItemSecondaryAction, IconButton }  from 'material-ui'
 
 import GenericTextInput from '../utilities/GenericTextInput'
 
@@ -62,7 +65,6 @@ class FlowchartOptions extends React.Component {
 		<Modal
 			  open={this.state.newSnapshotModal}
 			  onClose={() => {
-			  	this.props.saneSnapshot(this.state.newSnapshotName);
 			  	this.setState({
 			  		newSnapshotModal: false,
 			  		newSnapshotName: ''
@@ -117,15 +119,27 @@ class FlowchartOptions extends React.Component {
 				  open={Boolean(this.state.anchorEl)}
 				  onClose={() => this.setState({anchorEl: null})}
 				>
-				  {Object.keys(this.props.snapshots).map((thisSnapshot) => (
-				  	<MenuItem key={thisSnapshot} onClick={() => this.props.returnToSnapshot(thisSnapshot)}>
-				  		{this.props.snapshots[thisSnapshot].name}
-				  	</MenuItem>
-				  	))}
+				  <MenuItem onClick={() => console.log('Upload Snapshot')}>
+				  		<FileUpload style={{marginRight: this.props.theme.spacing.unit}}/>
+				  		Upload Snapshot JSON
+				  </MenuItem>
 				  <MenuItem onClick={() => this.setState({newSnapshotModal: true})}>
 				  		<Add style={{marginRight: this.props.theme.spacing.unit}}/>
 				  		New Snapshot
+				  </MenuItem>
+				  {Object.keys(this.props.snapshots).map((thisSnapshot) => (
+				  	<MenuItem key={thisSnapshot} onClick={() => this.props.returnToSnapshot(thisSnapshot)}>
+				  		{this.props.snapshots[thisSnapshot].name}
+				  		<ListItemSecondaryAction>
+							<IconButton aria-label="Export" onClick={ () => {
+								console.log('export ', thisSnapshot);
+								fileDownload(JSON.stringify(this.props.snapshots[thisSnapshot], null, 2), this.props.snapshots[thisSnapshot].name + '_Snapshot.json')
+							}}>
+								<FileDownload />
+							</IconButton>
+						</ListItemSecondaryAction>
 				  	</MenuItem>
+				  	))}
 				</Menu>
 
 			</div>
