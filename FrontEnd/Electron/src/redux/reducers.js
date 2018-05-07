@@ -407,12 +407,27 @@ export default function(state = initialState, action) {
 
     case 'SAVE_SNAPSHOT':
       var currentState = Immutable.Map(state.controls).toJS();
-      const randomHash = makeid(8);
+      var randomHash = makeid(8);
 
       const newSnapshot = {
         name: action.name,
         controls: currentState
       }
+
+      return Immutable.fromJS(state).setIn(['stateSnapshots', randomHash], newSnapshot).toJS()
+
+    case 'OPEN_SNAPSHOT_UPLOAD':
+
+      async.parseSnapshotUpload(action.file)
+
+      return state
+
+    case 'SAVE_SNAPSHOT_UPLOAD':
+
+      var randomHash = makeid(8);
+      var newSnapshot = action.json;
+
+      console.log(newSnapshot)
 
       return Immutable.fromJS(state).setIn(['stateSnapshots', randomHash], newSnapshot).toJS()
 

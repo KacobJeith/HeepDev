@@ -119,18 +119,27 @@ class FlowchartOptions extends React.Component {
 				  open={Boolean(this.state.anchorEl)}
 				  onClose={() => this.setState({anchorEl: null})}
 				>
-				  <MenuItem onClick={() => console.log('Upload Snapshot')}>
-				  		<FileUpload style={{marginRight: this.props.theme.spacing.unit}}/>
-				  		Upload Snapshot JSON
-				  </MenuItem>
-				  <MenuItem onClick={() => this.setState({newSnapshotModal: true})}>
-				  		<Add style={{marginRight: this.props.theme.spacing.unit}}/>
-				  		New Snapshot
-				  </MenuItem>
-				  {Object.keys(this.props.snapshots).map((thisSnapshot) => (
-				  	<MenuItem key={thisSnapshot} onClick={() => this.props.returnToSnapshot(thisSnapshot)}>
-				  		{this.props.snapshots[thisSnapshot].name}
-				  		<ListItemSecondaryAction>
+					
+					<label style={{ textDecoration: 'none', outline: 'none'}}>
+					    <input type="file" style={{display: 'none'}}
+						    onChange={(event) => {
+		    					this.props.openSnapshotFile(event.target.files[0])
+	    				}}/>
+					    <MenuItem onClick={() => {
+					    	console.log('Upload Snapshot')
+					    }}>
+					    	<FileUpload style={{marginRight: this.props.theme.spacing.unit}}/>
+					    	Upload Snapshot JSON
+					    </MenuItem>
+					</label>
+					<MenuItem onClick={() => this.setState({newSnapshotModal: true})}>
+							<Add style={{marginRight: this.props.theme.spacing.unit}}/>
+							New Snapshot
+					</MenuItem>
+					{Object.keys(this.props.snapshots).map((thisSnapshot) => (
+						<MenuItem key={thisSnapshot} onClick={() => this.props.returnToSnapshot(thisSnapshot)}>
+							{this.props.snapshots[thisSnapshot].name}
+							<ListItemSecondaryAction>
 							<IconButton aria-label="Export" onClick={ () => {
 								console.log('export ', thisSnapshot);
 								fileDownload(JSON.stringify(this.props.snapshots[thisSnapshot], null, 2), this.props.snapshots[thisSnapshot].name + '_Snapshot.json')
@@ -138,8 +147,8 @@ class FlowchartOptions extends React.Component {
 								<FileDownload />
 							</IconButton>
 						</ListItemSecondaryAction>
-				  	</MenuItem>
-				  	))}
+						</MenuItem>
+					))}
 				</Menu>
 
 			</div>

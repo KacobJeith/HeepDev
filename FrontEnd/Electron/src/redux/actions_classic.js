@@ -145,3 +145,13 @@ export const returnToSnapshot = (snapshotID) => ({
   type: 'RETURN_TO_SNAPSHOT',
   snapshotID
 })
+
+export const openSnapshotFile = (file) => ({
+  type: 'OPEN_SNAPSHOT_UPLOAD',
+  file
+})
+
+export const saveSnapshotUpload = (json) => ({
+  type: 'SAVE_SNAPSHOT_UPLOAD',
+  json
+})
