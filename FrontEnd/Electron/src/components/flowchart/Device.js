@@ -27,6 +27,7 @@ class Device extends React.Component {
 
 	}
 
+
 	deviceName = () => (
 		<Typography variant='subheading' align='center' style={{userSelect: 'none', fontWeight: 'bold', fontSize: 18}}>
 			{this.props.device.name}

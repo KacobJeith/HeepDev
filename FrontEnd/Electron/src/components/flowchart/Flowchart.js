@@ -19,7 +19,6 @@ var mapStateToProps = (state) => ({
   detailsPanelOut: state.detailsPanelDeviceID != null,
 })
 
-
 class Flowchart extends React.Component {
 	constructor(props) {
 		super(props);
