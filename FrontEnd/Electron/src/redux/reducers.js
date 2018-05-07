@@ -422,10 +422,13 @@ export default function(state = initialState, action) {
       for (var thisControl in state.stateSnapshots[action.snapshotID].controls) {
         if (thisControl != 'connections' && thisControl != 'controlStructure') {
           if (state.stateSnapshots[action.snapshotID].controls[thisControl].controlDirection == 0) {
-            const thisControlObject = state.stateSnapshots[action.snapshotID].controls[thisControl];
-            newState[thisControl].valueCurrent = thisControlObject.valueCurrent;
 
-            async.sendValueToServer(thisControlObject.deviceID, thisControlObject.controlID, thisControlObject.valueCurrent)
+            if ( newState[thisControl]) { 
+              const thisControlObject = state.stateSnapshots[action.snapshotID].controls[thisControl];
+              newState[thisControl].valueCurrent = thisControlObject.valueCurrent;
+              async.sendValueToServer(thisControlObject.deviceID, thisControlObject.controlID, thisControlObject.valueCurrent)
+            }
+            
           }
         }
       }
