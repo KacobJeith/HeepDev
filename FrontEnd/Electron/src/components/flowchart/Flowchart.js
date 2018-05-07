@@ -34,7 +34,7 @@ class Flowchart extends React.Component {
 
 	componentDidMount() {
 		this.dragFlowchart()
-    window.addEventListener("resize", this.resizedWindow.bind(this))
+    	window.addEventListener("resize", this.resizedWindow.bind(this))
 	}
 
 	dragFlowchart() {
@@ -51,43 +51,6 @@ class Flowchart extends React.Component {
 	resizedWindow() {
 		this.setState({resize: !this.state.resize})
 	}
-
-	flowchartOptions() {
-		return (
-      <Tooltip id="tooltip-range"
-            title={Math.round(this.props.scale * 100) + "%"}
-            placement="top">
-			<div
-				id='flowchartOptions'
-				style={{
-					position:'fixed',
-					bottom:  this.props.theme.spacing.unit,
-					right: this.props.theme.spacing.unit
-			}}>
-				<Button
-					mini
-					variant="fab"
-					color="primary"
-					aria-label="zoom-out"
-					onClick={() => this.props.zoomOut()}
-					style={{marginRight: this.props.theme.spacing.unit}}
-				>
-					<Remove/>
-				</Button>
-				<Button
-					mini
-					variant="fab"
-					color="primary"
-					aria-label="zoom-in"
-					onClick={() => this.props.zoomIn()}
-				>
-					<Add/>
-				</Button>
-
-			</div>
-    </Tooltip>
-		)
-	};
 
 	drawVertices() {
 
