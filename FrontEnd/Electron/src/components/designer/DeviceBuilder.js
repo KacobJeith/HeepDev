@@ -28,6 +28,12 @@ class DeviceBuilder extends React.Component {
   render () {
 
     var inputs = {
+      container: {
+        style: {
+          height: window.innerHeight - 64,
+          overflow: "auto"
+        }
+      },
       builder: {
         style: {
           backgroundColor: "#f1f1f1",
@@ -49,24 +55,26 @@ class DeviceBuilder extends React.Component {
     }
 
     return (
-      <Grid container direction='column' spacing={24} style={{marginTop: 24, maxWidth: '100%', overflow: 'auto'}}>
-        <Grid item>
-            <DeviceIdentity/>
-        </Grid>
-        <Grid item>
-            <ControlBuilder/>
-        </Grid>
-        <Grid item xs>
-          <Grid container justify='flex-end' >
-            <Grid item style={{marginRight:24}}>
-              {this.downloadButton()}
+      <div {...inputs.container}>
+        <Grid container direction='column' spacing={24} style={{marginTop: 24, maxWidth: '100%', overflow: 'auto'}}>
+          <Grid item>
+              <DeviceIdentity/>
+          </Grid>
+          <Grid item>
+              <ControlBuilder/>
+          </Grid>
+          <Grid item xs>
+            <Grid container justify='flex-end' >
+              <Grid item style={{marginRight:24}}>
+                {this.downloadButton()}
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>
-        <Grid item >
-          <div {...inputs.spacer}/>
-        </Grid>
-     </Grid>
+          <Grid item >
+            <div {...inputs.spacer}/>
+          </Grid>
+       </Grid>
+     </div>
     );
   }
 }

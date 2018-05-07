@@ -21,6 +21,12 @@ var mapStateToProps = (state) => ({
 
 
 class Flowchart extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+      		resize: false
+		}
+	}
 
 	componentWillMount() {
 		this.props.setDetailsPanelDeviceID(null);
@@ -28,6 +34,7 @@ class Flowchart extends React.Component {
 
 	componentDidMount() {
 		this.dragFlowchart()
+    window.addEventListener("resize", this.resizedWindow.bind(this))
 	}
 
 	dragFlowchart() {
@@ -40,6 +47,47 @@ class Flowchart extends React.Component {
 	    onDrag: () => this.props.updateVertex()
 	  });
 	}
+
+	resizedWindow() {
+		this.setState({resize: !this.state.resize})
+	}
+
+	flowchartOptions() {
+		return (
+      <Tooltip id="tooltip-range"
+            title={Math.round(this.props.scale * 100) + "%"}
+            placement="top">
+			<div
+				id='flowchartOptions'
+				style={{
+					position:'fixed',
+					bottom:  this.props.theme.spacing.unit,
+					right: this.props.theme.spacing.unit
+			}}>
+				<Button
+					mini
+					variant="fab"
+					color="primary"
+					aria-label="zoom-out"
+					onClick={() => this.props.zoomOut()}
+					style={{marginRight: this.props.theme.spacing.unit}}
+				>
+					<Remove/>
+				</Button>
+				<Button
+					mini
+					variant="fab"
+					color="primary"
+					aria-label="zoom-in"
+					onClick={() => this.props.zoomIn()}
+				>
+					<Add/>
+				</Button>
+
+			</div>
+    </Tooltip>
+		)
+	};
 
 	drawVertices() {
 
@@ -83,39 +131,37 @@ class Flowchart extends React.Component {
 	render() {
 
 		const inputs = {
-	      	pageContainer: {
-	        	style: {
+			pageContainer: {
+					style: {
 					backgroundColor: '#e7e7e7',
 					height: 4000,
-					width: 4000
+					width: 4000,
 				}
 			},
 			flowchart: {
 				style: {
-					height: window.innerHeight - 64,
-					width: window.innerWidth - 72,
+					height: document.documentElement.clientHeight - 64,
+					width: document.documentElement.clientWidth - 72,
 					margin: 0,
 					backgroundColor: 'rgba(0, 0, 0, 0.54)',
-					overflow: "hidden"
+					overflow: 'hidden'
 				}
 			},
 			deviceContainer: {
 			    style: {
-  					position: 'relative',
-  					width: 3000,
-  					height: 2000,
-  			  	overflow: 'hidden',
-            backgroundColor: '#e7e7e7',
+					position: 'relative',
+					width: 3000,
+					height: 2000,
+					overflow: 'hidden',
+					backgroundColor: '#e7e7e7',
 			    }
 			},
-      deviceBounds: {
-        // top: 0,
-        // left: 0,
-        style: {
-          width: 2700,
-          height: 1700,
-        }
-      }
+			deviceBounds: {
+				style: {
+					width: 2700,
+					height: 1700,
+				}
+			}
 		}
 
 		return (
