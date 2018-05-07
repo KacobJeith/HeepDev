@@ -155,3 +155,9 @@ export const saveSnapshotUpload = (json) => ({
   type: 'SAVE_SNAPSHOT_UPLOAD',
   json
 })
+
+export const setSearchMode = (searchMode) => ({
+  type: 'SET_SEARCH_MODE',
+  searchMode
+})
+

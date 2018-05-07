@@ -67,6 +67,9 @@ const startState = {
     deviceID: null
   },
   stateSnapshots: {},
+  preferences: {
+    searchMode: 'broadcast'
+  }
 }
 
 export const initialState = Immutable.Map(startState);
@@ -99,12 +102,13 @@ var loadDevicesFromServer = (url) => {
 
   $.ajax({
     url: url,
+    type: 'POST',
+    data: {searchMode: 'broadcast'},
     cache: false,
     success: (data) => {
 
       try {
         data.url = window.location.origin;
-        var immutableMap = Immutable.Map(data);
         store.dispatch(actions_classic.overwriteFromServer(data));
 
       }
@@ -119,6 +123,6 @@ var loadDevicesFromServer = (url) => {
     });
 }
 
-var timeoutRef = setInterval(() => loadDevicesFromServer(window.location.origin.concat('/api/findDevices')), 1000)
+var timeoutRef = setInterval(() => loadDevicesFromServer(window.location.origin.concat('/api/findDevices')), 2000)
 
-setTimeout(() => clearTimeout(timeoutRef), 5000);
+setTimeout(() => clearTimeout(timeoutRef), 6000);

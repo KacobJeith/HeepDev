@@ -51,7 +51,7 @@ class DevicePaper extends React.Component {
   createDraggable () {
     Draggable.create("#_" + this.props.DeviceID, {
       type: "x,y",
-      bounds: "#vertexSVGSpace",
+      bounds: "#deviceBounds",
       edgeResistance: 0.9,
       allowContextMenu: true,
       throwProps: true,
