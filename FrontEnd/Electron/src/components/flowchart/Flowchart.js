@@ -27,7 +27,7 @@ class Flowchart extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			hoverRefresh: false
+      resize: false
 		}
 	};
 
@@ -37,6 +37,7 @@ class Flowchart extends React.Component {
 
 	componentDidMount() {
 		this.dragFlowchart()
+    window.addEventListener("resize", this.resizedWindow.bind(this))
 	}
 
 	dragFlowchart() {
@@ -49,6 +50,10 @@ class Flowchart extends React.Component {
 	    onDrag: () => this.props.updateVertex()
 	  });
 	}
+
+  resizedWindow() {
+    this.setState({resize: !this.state.resize})
+  }
 
 	flowchartOptions() {
 		return (
