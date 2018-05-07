@@ -63,7 +63,7 @@ class IIOT extends React.Component {
     return (
       <Grid container alignItems='center' justify='center' spacing={0}
         style={{
-          backgroundColor: this.props.theme.palette.primary.dark,
+          backgroundColor: "#143f53",
           padding: this.props.theme.spacing.unit,
           width: '100%',
           margin: '0 auto'

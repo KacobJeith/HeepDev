@@ -200,7 +200,9 @@ class MenuAppBar extends React.Component {
           color: "white",
           paddingTop: 11,
           paddingBottom: 11,
-          fontSize: '1.2rem'
+          fontSize: '1.2rem',
+          fontFamily: 'Oswald',
+          textTransform: 'capitalize'
         }
       },
       Button: {
@@ -219,9 +221,9 @@ class MenuAppBar extends React.Component {
       <Hidden smDown>
         <Button {...inputs.Button}>
           <NavLink to={navLink} {...inputs.NavLink}>
-            <Typography variant="title" {...inputs.Typography}>
+            <div {...inputs.Typography}>
               {linkText}
-            </Typography>
+            </div>
           </NavLink>
         </Button>
       </Hidden>
@@ -434,13 +436,13 @@ class MenuAppBar extends React.Component {
             </Hidden>
             {this.mobileAppBarLogo()}
             <div className={classes.flex}/>
-            {this.appBarLink("/", "HOME")}
-            {this.appBarLink("/Business", "BUSINESS")}
-            {this.appBarLink("/IndustrialHeep", "INDUSTRY")}
+            {this.appBarLink("/", "Home")}
+            {this.appBarLink("/Business", "Business")}
+            {this.appBarLink("/IndustrialHeep", "Industry")}
             {this.appBarLink("/DIY", "DIY")}
-            {this.appBarLink("/About", "ABOUT")}
-            {this.appBarLink("/Contact", "CONTACT")}
-            {this.appBarLink("/Shop", "SHOP")}
+            {this.appBarLink("/About", "About")}
+            {this.appBarLink("/Contact", "Contact")}
+            {this.appBarLink("/Shop", "Shop")}
 {/*             {this.appBarLink("/Developers", "Develop")} */}
             {this.appBarCart()}
 {/*             {this.avatarLogin()} */}
