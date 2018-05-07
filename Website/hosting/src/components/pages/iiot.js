@@ -111,15 +111,13 @@ class IIOT extends React.Component {
             <Typography variant={titleVariant} align={titleAlign}>
               {sectionInfo.title}
             </Typography>
-
-            <Typography variant='body1' align='left' style={{color: '#999'}}>
-              <ul>
+            <ul>
+              <Typography variant='body1' align='left' style={{color: '#999'}}>
                 {sectionInfo.bullets.map((thisBullet, index) => (
                   <li key={sectionInfo.link + index}>{thisBullet}</li>
                 ))}
-              </ul>
-            </Typography>
-
+              </Typography>
+            </ul>
           </Grid>
           {sectionInfo.moreInfoLink && (
             <Grid item xs={12}>
