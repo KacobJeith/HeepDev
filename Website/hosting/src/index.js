@@ -12,7 +12,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 
  WebFont.load({
    google: {
-     families: ['Fjalla One']
+     families: ['Fjalla One', 'Oswald']
    }
  });
 

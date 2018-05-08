@@ -200,7 +200,9 @@ class MenuAppBar extends React.Component {
           color: "white",
           paddingTop: 11,
           paddingBottom: 11,
-          fontSize: '1.2rem'
+          fontSize: '1.2rem',
+          fontFamily: 'Oswald',
+          textTransform: 'capitalize'
         }
       },
       Button: {
@@ -216,12 +218,12 @@ class MenuAppBar extends React.Component {
     };
 
     return (
-      <Hidden xsDown={true}>
+      <Hidden smDown>
         <Button {...inputs.Button}>
           <NavLink to={navLink} {...inputs.NavLink}>
-            <Typography variant="title" {...inputs.Typography}>
+            <div {...inputs.Typography}>
               {linkText}
-            </Typography>
+            </div>
           </NavLink>
         </Button>
       </Hidden>
@@ -280,7 +282,7 @@ class MenuAppBar extends React.Component {
 
   mobileAppBarLogo() {
     return (
-      <Hidden smUp={true}>
+      <Hidden mdUp>
         <Grid container justify='center' style={{
           width: '100%',
           height: '100%',
@@ -377,7 +379,7 @@ class MenuAppBar extends React.Component {
     }
 
     return (
-      <Hidden smUp={true}>
+      <Hidden mdUp>
           <IconButton
             {...inputs.menuButton}
             onClick={this.handleMobileMenuOpen}
@@ -426,21 +428,21 @@ class MenuAppBar extends React.Component {
 
     return (
       <div className={classes.root}>
-        <AppBar position="sticky" id='top' style={{overflowX: 'hidden'}}>
+        <AppBar position="fixed" id='top' style={{overflowX: 'hidden'}}>
           <Toolbar>
             {this.mobileMenu()}
-            <Hidden xsDown={true}>
+            <Hidden smDown>
               {this.appBarLogo()}
             </Hidden>
             {this.mobileAppBarLogo()}
             <div className={classes.flex}/>
-            {this.appBarLink("/", "HOME")}
-            {this.appBarLink("/Business", "BUSINESS")}
-            {this.appBarLink("/IndustrialHeep", "INDUSTRY")}
+            {this.appBarLink("/", "Home")}
+            {this.appBarLink("/Business", "Business")}
+            {this.appBarLink("/IndustrialHeep", "Industry")}
             {this.appBarLink("/DIY", "DIY")}
-            {this.appBarLink("/About", "ABOUT")}
-            {this.appBarLink("/Contact", "CONTACT")}
-            {this.appBarLink("/Shop", "SHOP")}
+            {this.appBarLink("/About", "About")}
+            {this.appBarLink("/Contact", "Contact")}
+            {this.appBarLink("/Shop", "Shop")}
 {/*             {this.appBarLink("/Developers", "Develop")} */}
             {this.appBarCart()}
 {/*             {this.avatarLogin()} */}
