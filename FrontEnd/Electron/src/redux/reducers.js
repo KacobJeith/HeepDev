@@ -411,6 +411,51 @@ export default function(state = initialState, action) {
         return Immutable.fromJS(state).setIn(['flowchart', 'devices', action.deviceID, 'collapsed'], !state.flowchart.devices[action.deviceID].collapsed).toJS()
       }
 
+    case 'SAVE_SNAPSHOT':
+      var currentState = Immutable.Map(state.controls).toJS();
+      var randomHash = makeid(8);
+
+      const newSnapshot = {
+        name: action.name,
+        controls: currentState
+      }
+
+      return Immutable.fromJS(state).setIn(['stateSnapshots', randomHash], newSnapshot).toJS()
+
+    case 'OPEN_SNAPSHOT_UPLOAD':
+
+      async.parseSnapshotUpload(action.file)
+
+      return state
+
+    case 'SAVE_SNAPSHOT_UPLOAD':
+
+      var randomHash = makeid(8);
+      var newSnapshot = action.json;
+
+      console.log(newSnapshot)
+
+      return Immutable.fromJS(state).setIn(['stateSnapshots', randomHash], newSnapshot).toJS()
+
+    case 'RETURN_TO_SNAPSHOT':
+      var newState = Immutable.Map(state.controls).toJS();
+
+      for (var thisControl in state.stateSnapshots[action.snapshotID].controls) {
+        if (thisControl != 'connections' && thisControl != 'controlStructure') {
+          if (state.stateSnapshots[action.snapshotID].controls[thisControl].controlDirection == 0) {
+
+            if ( newState[thisControl]) { 
+              const thisControlObject = state.stateSnapshots[action.snapshotID].controls[thisControl];
+              newState[thisControl].valueCurrent = thisControlObject.valueCurrent;
+              async.sendValueToServer(thisControlObject.deviceID, thisControlObject.controlID, thisControlObject.valueCurrent)
+            }
+            
+          }
+        }
+      }
+
+      return Immutable.fromJS(state).set(controls, newState).toJS()
+
     default:
       console.log('Passed through first Switch');
   }
@@ -429,3 +474,12 @@ export default function(state = initialState, action) {
 const initialDeviceFlowchartState = () => ({
     collapsed: true,
 })
+
+function makeid(number) {
+  var text = "";
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+  for (var i = 0; i < number; i++)
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  return text;
+}

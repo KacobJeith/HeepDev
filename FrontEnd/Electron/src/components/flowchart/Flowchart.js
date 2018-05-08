@@ -10,10 +10,7 @@ import Device from './DevicePaper'
 import Vertex from './Vertex'
 import DeviceDetailsPanel from '../heep/DeviceDetailsPanel'
 import { withTheme } from 'material-ui/styles'
-
-import Add from 'material-ui-icons/Add'
-import Remove from 'material-ui-icons/Remove'
-import { Button, Tooltip }  from 'material-ui'
+import FlowchartOptions from './FlowchartOptions'
 
 var mapStateToProps = (state) => ({
   deviceArray: Object.keys(state.devices),
@@ -27,9 +24,9 @@ class Flowchart extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-      resize: false
+      		resize: false
 		}
-	};
+	}
 
 	componentWillMount() {
 		this.props.setDetailsPanelDeviceID(null);
@@ -37,7 +34,7 @@ class Flowchart extends React.Component {
 
 	componentDidMount() {
 		this.dragFlowchart()
-    window.addEventListener("resize", this.resizedWindow.bind(this))
+    	window.addEventListener("resize", this.resizedWindow.bind(this))
 	}
 
 	dragFlowchart() {
@@ -51,46 +48,9 @@ class Flowchart extends React.Component {
 	  });
 	}
 
-  resizedWindow() {
-    this.setState({resize: !this.state.resize})
-  }
-
-	flowchartOptions() {
-		return (
-      <Tooltip id="tooltip-range"
-            title={Math.round(this.props.scale * 100) + "%"}
-            placement="top">
-			<div
-				id='flowchartOptions'
-				style={{
-					position:'fixed',
-					bottom:  this.props.theme.spacing.unit,
-					right: this.props.theme.spacing.unit
-			}}>
-				<Button
-					mini
-					variant="fab"
-					color="primary"
-					aria-label="zoom-out"
-					onClick={() => this.props.zoomOut()}
-					style={{marginRight: this.props.theme.spacing.unit}}
-				>
-					<Remove/>
-				</Button>
-				<Button
-					mini
-					variant="fab"
-					color="primary"
-					aria-label="zoom-in"
-					onClick={() => this.props.zoomIn()}
-				>
-					<Add/>
-				</Button>
-
-			</div>
-    </Tooltip>
-		)
-	};
+	resizedWindow() {
+		this.setState({resize: !this.state.resize})
+	}
 
 	drawVertices() {
 
@@ -134,12 +94,12 @@ class Flowchart extends React.Component {
 	render() {
 
 		const inputs = {
-    	pageContainer: {
-      	style: {
+			pageContainer: {
+					style: {
 					backgroundColor: '#e7e7e7',
 					height: 4000,
 					width: 4000,
-		    }
+				}
 			},
 			flowchart: {
 				style: {
@@ -147,46 +107,48 @@ class Flowchart extends React.Component {
 					width: document.documentElement.clientWidth - 72,
 					margin: 0,
 					backgroundColor: 'rgba(0, 0, 0, 0.54)',
-          overflow: 'hidden'
+					overflow: 'hidden'
 				}
 			},
 			deviceContainer: {
 			    style: {
-  					position: 'relative',
-  					width: 3000,
-  					height: 2000,
-  			  	overflow: 'hidden',
-            backgroundColor: '#e7e7e7',
+					position: 'relative',
+					width: 3000,
+					height: 2000,
+					overflow: 'hidden',
+					backgroundColor: '#e7e7e7',
 			    }
 			},
-      deviceBounds: {
-        style: {
-          width: 2700,
-          height: 1700,
-        }
-      }
+			deviceBounds: {
+				style: {
+					width: 2700,
+					height: 1700,
+				}
+			}
 		}
 
 		return (
-			  <div id="flowchart" {...inputs.flowchart} ref="flowchart">
-					<div id="deviceContainer" {...inputs.deviceContainer}>
-            <div id='deviceBounds' {...inputs.deviceBounds}>
-              <div id="zoomContainer"
-                style={{
-      						transform: 'scale(' + this.props.scale + ')',
-      		          		transformOrigin: 'top left',
-                        width: 50000,
-                        height: 50000,
-                        overflow: 'hidden',
-      		          	}}>
-  						{this.drawVertices()}
-  						{this.drawDevices()}
-            </div>
+		<div {...inputs.pageContainer}>
+			<div id="flowchart" {...inputs.flowchart} ref="flowchart">
+				<div id="deviceContainer" {...inputs.deviceContainer}>
+            		<div id='deviceBounds' {...inputs.deviceBounds}>
+						<div id="zoomContainer"
+								style={{
+										transform: 'scale(' + this.props.scale + ')',
+						          		transformOrigin: 'top left',
+								        width: 50000,
+								        height: 50000,
+								        overflow: 'hidden',
+						          	}}>
+									{this.drawVertices()}
+									{this.drawDevices()}
+						</div>
 					</div>
 				</div>
-				{this.flowchartOptions()}
+				<FlowchartOptions/>
 				<DeviceDetailsPanel/>
 			</div>
+    	</div>
 		);
 
 	}

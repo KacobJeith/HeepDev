@@ -66,6 +66,7 @@ const startState = {
     failedAttempt: null,
     deviceID: null
   },
+  stateSnapshots: {},
   preferences: {
     searchMode: 'broadcast'
   }
