@@ -32,11 +32,11 @@ module.exports = {
         icons: [
           {
             src: path.resolve('src/assets/Heep_Gradient.png'),
-            sizes: [96, 128, 192, 256, 384, 512] 
+            sizes: [96, 128, 192, 256, 384, 512]
           },
           {
             src: path.resolve('src/assets/Heep_Gradient.png'),
-            size: '1024x1024' 
+            size: '1024x1024'
           }
         ]
     })
@@ -65,9 +65,9 @@ module.exports = {
         include: /(node_modules)/,
         sideEffects: false
       },
-      { 
+      {
         exclude: /(node_modules)/,
-        test: /\.js$/, 
+        test: /\.js$/,
         use: {
           loader: 'babel-loader'
         },
@@ -78,8 +78,16 @@ module.exports = {
           loader: 'file-loader',
           options: {
             name: '[name].[ext]'
-          } 
+          }
         }
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
+      },
+      {
+        test: /\.(eot|svg|ttf|woff|woff2)$/,
+        loader: 'file-loader?name=/fonts/[name].[ext]',
       }
     ],
 

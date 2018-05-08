@@ -14,20 +14,33 @@ const Theme = createMuiTheme({
     }
   },
   typography: {
+    display1: {
+      fontFamily: 'Fjalla One',
+      textTransform: 'uppercase',
+      fontSize: '3rem'
+    },
     headline: {
       color: "rgba(0, 0, 0, 0.6)",
+      fontFamily: 'Fjalla One',
+      textTransform: 'uppercase',
+      fontSize: '2.2rem'
     },
     title: {
       color: "rgba(0, 0, 0, 0.6)",
+      fontFamily: 'Fjalla One',
+      textTransform: 'uppercase',
+      fontSize: '1.5rem'
     },
     subheading: {
-      color: "rgba(0, 0, 0, 0.7)"
+      color: "rgba(0, 0, 0, 0.6)",
+      fontSize: '1.3rem'
     },
     body2: {
       color: "rgba(0, 0, 0, 0.7)"
     },
     body1: {
-      color: "rgba(0, 0, 0, 0.7)"
+      color: "rgba(0, 0, 0, 0.7)",
+      fontSize: '1.2rem'
     },
   },
 });

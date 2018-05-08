@@ -30,6 +30,10 @@
         "function": "incoming"
       },
       {
+        "source": "/submitContactForm",
+        "function": "submitContactForm"
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       },
