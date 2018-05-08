@@ -19,6 +19,7 @@ import GenericTextInput from '../utilities/GenericTextInput'
 import IconSVGSelect from './IconSVGSelect'
 import {iconMappings} from '../../assets/svg/iconMappings'
 import AddPlaceModal from '../account/AddPlaceModal'
+import {applications} from "../../assets/inoFiles"
 
 var mapStateToProps = (state, ownProps) => ({
   deviceName: state.designer.deviceName,
@@ -28,7 +29,8 @@ var mapStateToProps = (state, ownProps) => ({
   places: state.places,
   selectedPlace: state.designer.selectedPlace,
   ssid: state.designer.ssid,
-  ssidPassword: state.designer.ssidPassword
+  ssidPassword: state.designer.ssidPassword,
+  applicationName: state.designer.applicationName
 })
 
 const styles = theme => ({
@@ -137,6 +139,24 @@ class DeviceIdentity extends React.Component {
       </Collapse>
   )
 
+  selectApplication = () => (
+
+    <FormControl className={this.props.classes.formControl} style={{width:'100%'}}>
+      <InputLabel htmlFor="type-helper">Application Type</InputLabel>
+      <Select
+        value={this.props.applicationName}
+        title='Select Application Type'
+        onChange={ (event) => {this.props.updateApplicationName(event.target.value)}}
+        input={<Input name="type-helper" id="type-helper" />}
+      >
+        {Object.keys(applications).map((thisKey) => (
+          <MenuItem value={thisKey} key={thisKey}>{thisKey}</MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+
+  )
+
   render () {
 
     return (
@@ -158,6 +178,9 @@ class DeviceIdentity extends React.Component {
             </Grid>
             <Grid item>
               {this.inputWifiCredentials()}
+            </Grid>
+            <Grid item>
+              {this.selectApplication()}
             </Grid>
           </Grid>
         </Grid>

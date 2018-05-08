@@ -14,13 +14,14 @@ import Designer from './designer/DeviceBuilder'
 import Flowchart from './flowchart/Flowchart'
 // import Analytics from './Analytics/AnalyticsMain'
 import SearchAccessPointsForm from './SearchAccessPointsForm'
+import Settings from './Settings'
 
 import Theme from './Theme'
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
 
 const Analytics = () => <AsyncComponent moduleProvider={() => import(
 	/* webpackChunkName: "analytics" */
-  	/* webpackMode: "lazy" */ 
+  	/* webpackMode: "lazy" */
   	'./Analytics/AnalyticsMain')} />
 
 const mapStateToProps = (state) => ({
@@ -45,9 +46,9 @@ class App extends React.Component {
 				style: {
 				    flexGrow: 1,
 				    backgroundColor: 'white',
-				    marginTop: 64, 
+				    marginTop: 64,
 				    width:'100%',
-				    overflow: 'auto'
+				    overflow: 'auto',
 				  }
 			}
 	    }
@@ -66,6 +67,7 @@ class App extends React.Component {
 						<div {...inputs.content} >
 							<Route exact path="/" component={Flowchart} key="Flow"/>
 							<Route path="/Classic" component={Flowchart} key="Flowchart"/>
+							<Route path="/Settings" component={Settings} key="Settings"/>
 							<Route path="/Designer" component={Designer} key="Designer"/>
 							<Route exact path="/auth" component={Auth}/>
 							<Route path="/Analytics/:deviceID?" component={Analytics} key="Analytics"/>
@@ -75,7 +77,7 @@ class App extends React.Component {
 				    </div>
 				</MuiThemeProvider>
 			</Router>);
-	    
+
 	}
 }
 
@@ -85,4 +87,3 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)
-

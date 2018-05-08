@@ -9,6 +9,8 @@ import * as Draggable from 'gsap/Draggable'
 var mapStateToProps = (state, ownProps) => ({
   control: state.controls[ownProps.thisControl],
   controlID: state.controls[ownProps.thisControl]['controlID'],
+  valueCurrent: state.controls[ownProps.thisControl]['valueCurrent'],
+  //value: state.controls[ownProps.thisControl]['valueCurrent'],
   value: boundCurrentValue(state, ownProps),
   DeviceID: ownProps.DeviceID
 })
@@ -56,14 +58,6 @@ class RangeController extends React.Component {
     this.direction = this.props.control['controlDirection'];
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (this.props.value != this.lastSentControlValue) {
-
-			this.setState({x: this.convertCtrlVal()});
-
-		}
-	}
-
   handleMouseEnter = () => {
     this.setState({radius: 11, fill: '#02a8f4', fontSize: 15, textCenter: 16})
     Draggable.get("#_" + this.props.DeviceID).disable()
@@ -86,6 +80,7 @@ class RangeController extends React.Component {
 
 	calcNewControlValue() {//15
 		var newVal = Math.round((this.state['x'] - this.displayMin)/(this.displayMax-this.displayMin)*(this.props.control['valueHigh']-this.props.control['valueLow']) + this.props.control['valueLow']);
+    console.log("calculating")
 		this.lastSentControlValue = newVal;
 		return newVal
 	}

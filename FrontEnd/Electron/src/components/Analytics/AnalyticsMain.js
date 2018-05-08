@@ -58,7 +58,7 @@ class AnalyticsMain extends React.Component {
         <ListItem button style={{padding: this.props.theme.spacing.unit * 1.5}}>
           <ListItemIcon >
             <img 
-              src={"/assets/svg/" + this.props.deviceImages[index] + ".svg"} 
+              src={"src/assets/svg/" + this.props.deviceImages[index] + ".svg"} 
               style={{maxHeight: '200%', maxWidth: '200%'}}/>
           </ListItemIcon>
           <ListItemText 

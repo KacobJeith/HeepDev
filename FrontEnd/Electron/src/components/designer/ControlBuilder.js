@@ -10,12 +10,13 @@ import GenericTextInput from '../utilities/GenericTextInput'
 import RangeOptions from './RangeOptions'
 import DefinePins from './DefinePins'
 
-import { Divider, Grid, Button } from 'material-ui'
+import { Divider, Grid, Button, Collapse } from 'material-ui'
 import { Delete } from 'material-ui-icons';
 
 import ControlOptions from './ControlOptions'
 
 var mapStateToProps = (state) => ({
+  isCustomApplication: state.designer.applicationName == "Custom",
   numControls: state.designer.numControls,
   controls: Object.keys(state.designer.controls)
 })
@@ -56,11 +57,13 @@ class ControlBuilder extends React.Component {
 
     return (
       <div style={{margin:24}}>
-        <div {...inputs.fieldInputs}>
-          {this.props.controls.map((key) => <ControlOptions controlKey={key} key={key}/>)}  
-        </div>
-        <div {...inputs.spacer}/>
-        <GenericSelect {...inputs.addNewControl}/>
+        <Collapse in={this.props.isCustomApplication} timeout={750} unmountOnExit>
+          <div {...inputs.fieldInputs}>
+            {this.props.controls.map((key) => <ControlOptions controlKey={key} key={key}/>)}  
+          </div>
+          <div {...inputs.spacer}/>
+          <GenericSelect {...inputs.addNewControl}/>
+        </Collapse> 
       </div>
          
     );

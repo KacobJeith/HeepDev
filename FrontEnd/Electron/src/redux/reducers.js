@@ -281,13 +281,13 @@ export default function(state = initialState, action) {
 
     case 'REFRESH_FLOWCHART' :
 
-      async.refreshLocalDeviceState();
+      async.refreshLocalDeviceState(state.preferences.searchMode);
 
       return state
 
     case 'HARD_REFRESH_FLOWCHART' :
 
-      async.hardRefreshLocalDeviceState();
+      async.hardRefreshLocalDeviceState(state.preferences.searchMode);
 
       return state
 
@@ -310,7 +310,7 @@ export default function(state = initialState, action) {
       return Immutable.Map(state).set('places', newState).toJS()
 
     case 'START_LIVE_MODE':
-      var liveModeRef = async.startLiveMode();
+      var liveModeRef = async.startLiveMode(state.preferences.searchMode);
 
       return Immutable.Map(state).set('liveModeReference', liveModeRef).toJS();
 
@@ -352,13 +352,19 @@ export default function(state = initialState, action) {
 
       return Immutable.Map(state).set('accessPointData', action.packet).toJS()
 
+    case 'SET_SEARCH_MODE': 
+
+      return Immutable.fromJS(state)
+                      .setIn(['preferences','searchMode'], action.searchMode)
+                      .toJS()
+
     case 'RESET_DEVICE_AND_OS_WIFI':
 
-      async.resetDeviceAndOSWifi(action.deviceID);
+      async.resetDeviceAndOSWifi(action.deviceID, state.preferences.searchMode);
 
       return state
 
-    case 'RESET_DEVICE_WIFI': 
+    case 'RESET_DEVICE_WIFI':
 
       async.resetDeviceWifi(action.deviceID);
 
@@ -396,6 +402,60 @@ export default function(state = initialState, action) {
         return Immutable.fromJS(state).setIn(['flowchart', 'scale'], state.flowchart.scale + 0.1).toJS()
       }
 
+    case 'COLLAPSE_DEVICE':
+      if (state.flowchart.devices[action.deviceID] == undefined) {
+        var newState = Immutable.Map(state.flowchart.devices).toJS();
+        newState[action.deviceID] = initialDeviceFlowchartState()
+        return Immutable.fromJS(state).setIn(['flowchart', 'devices'], newState).toJS()
+      } else {
+        return Immutable.fromJS(state).setIn(['flowchart', 'devices', action.deviceID, 'collapsed'], !state.flowchart.devices[action.deviceID].collapsed).toJS()
+      }
+
+    case 'SAVE_SNAPSHOT':
+      var currentState = Immutable.Map(state.controls).toJS();
+      var randomHash = makeid(8);
+
+      const newSnapshot = {
+        name: action.name,
+        controls: currentState
+      }
+
+      return Immutable.fromJS(state).setIn(['stateSnapshots', randomHash], newSnapshot).toJS()
+
+    case 'OPEN_SNAPSHOT_UPLOAD':
+
+      async.parseSnapshotUpload(action.file)
+
+      return state
+
+    case 'SAVE_SNAPSHOT_UPLOAD':
+
+      var randomHash = makeid(8);
+      var newSnapshot = action.json;
+
+      console.log(newSnapshot)
+
+      return Immutable.fromJS(state).setIn(['stateSnapshots', randomHash], newSnapshot).toJS()
+
+    case 'RETURN_TO_SNAPSHOT':
+      var newState = Immutable.Map(state.controls).toJS();
+
+      for (var thisControl in state.stateSnapshots[action.snapshotID].controls) {
+        if (thisControl != 'connections' && thisControl != 'controlStructure') {
+          if (state.stateSnapshots[action.snapshotID].controls[thisControl].controlDirection == 0) {
+
+            if ( newState[thisControl]) { 
+              const thisControlObject = state.stateSnapshots[action.snapshotID].controls[thisControl];
+              newState[thisControl].valueCurrent = thisControlObject.valueCurrent;
+              async.sendValueToServer(thisControlObject.deviceID, thisControlObject.controlID, thisControlObject.valueCurrent)
+            }
+            
+          }
+        }
+      }
+
+      return Immutable.fromJS(state).set(controls, newState).toJS()
+
     default:
       console.log('Passed through first Switch');
   }
@@ -409,4 +469,17 @@ export default function(state = initialState, action) {
 
   return state
 
+}
+
+const initialDeviceFlowchartState = () => ({
+    collapsed: true,
+})
+
+function makeid(number) {
+  var text = "";
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+  for (var i = 0; i < number; i++)
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  return text;
 }

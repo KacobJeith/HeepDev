@@ -14,7 +14,11 @@ var mapStateToProps = (state, ownProps) => (
                 state.devices[state.vertexList[ownProps.vertexID].rxDeviceID].active &&
                 state.devices[state.vertexList[ownProps.vertexID].txDeviceID].active,
   dragging: state.flowchart.dragVertex,
-  scale: state.flowchart.scale
+  scale: state.flowchart.scale,
+  txDeviceID: state.vertexList[ownProps.vertexID].txDeviceID,
+  rxDeviceID: state.vertexList[ownProps.vertexID].rxDeviceID,
+  txCollapsed: state.flowchart.devices[state.vertexList[ownProps.vertexID].txDeviceID] && state.flowchart.devices[state.vertexList[ownProps.vertexID].txDeviceID].collapsed ? state.flowchart.devices[state.vertexList[ownProps.vertexID].txDeviceID].collapsed : false,
+  rxCollapsed: state.flowchart.devices[state.vertexList[ownProps.vertexID].rxDeviceID] && state.flowchart.devices[state.vertexList[ownProps.vertexID].rxDeviceID].collapsed ? state.flowchart.devices[state.vertexList[ownProps.vertexID].rxDeviceID].collapsed : false,
 })
 
 class Vertex extends React.Component {
@@ -23,6 +27,7 @@ class Vertex extends React.Component {
 		this.state = {
 			color: '#455a64',
 			strokeWidth: 3,
+      collapsedColor: '#9fa1a2'
 		}
 	}
 
@@ -33,7 +38,14 @@ class Vertex extends React.Component {
   getInputPosition = () => {
   	let returnPosition = false;
   	try {
-      const txControlName = generalUtils.getTxControlNameFromVertex(this.props.vertex)
+
+      let txControlName
+
+      if (this.props.txCollapsed == true) {
+        txControlName = this.props.txDeviceID + "_tx"
+      } else {
+        txControlName = generalUtils.getTxControlNameFromVertex(this.props.vertex)
+      }
 
       const svgElement = document.getElementById(txControlName)
       const svgElRect = svgElement.getBoundingClientRect()
@@ -58,7 +70,14 @@ class Vertex extends React.Component {
   getOutputPosition = () => {
   	let returnPosition = false;
   	try {
-      const rxControlName = generalUtils.getRxControlNameFromVertex(this.props.vertex)
+
+      let rxControlName
+
+      if (this.props.rxCollapsed == true) {
+        rxControlName = this.props.rxDeviceID + "_rx"
+      } else {
+        rxControlName = generalUtils.getRxControlNameFromVertex(this.props.vertex)
+      }
 
       const svgElement = document.getElementById(rxControlName)
       const svgElRect = svgElement.getBoundingClientRect()
@@ -81,6 +100,14 @@ class Vertex extends React.Component {
   	return returnPosition
   };
 
+  checkCollapsed() {
+    if (this.props.rxCollapsed || this.props.txCollapsed) {
+      return true
+    } else {
+      return false
+    }
+  }
+
 	render() {
     const getInput = this.getInputPosition();
     const getOutput = this.getOutputPosition();
@@ -90,13 +117,18 @@ class Vertex extends React.Component {
 			return <g/>
 		}
 
+    const rxClassName = 'vertex' + this.props.rxDeviceID.toString()
+    const txClassName = 'vertex' + this.props.txDeviceID.toString()
+
 		var inputs = {
+
 			vertex: {
         id: this.props.id,
+        className: [rxClassName, txClassName, "test"].join(" "),
         pointerEvents: 'all',
         display: 'inline-block',
 				strokeWidth: this.state.strokeWidth,
-				stroke: this.state.color,
+				stroke: this.checkCollapsed() ? this.state.collapsedColor : this.state.color,
 				fill: 'transparent',
         d: "M".concat(	String(getInput.left),
                 " ",
@@ -113,17 +145,15 @@ class Vertex extends React.Component {
                 String(getOutput.left),
                 " ",
                 String(getOutput.top)),
-				onMouseEnter: () => this.setState({'color': '#d40000', 'strokeWidth': 4}),
-				onMouseLeave: () => this.setState({'color': '#455a64', 'strokeWidth': 3}),
-				onClick: () => this.sendDeleteVertexToServer(),
+				onMouseEnter: () => this.checkCollapsed() ? this.setState({'strokeWidth': 3}) : this.setState({'color': '#d40000', 'strokeWidth': 5}),
+				onMouseLeave: () => this.checkCollapsed() ? this.setState({'strokeWidth': 3}) : this.setState({'color': '#455a64', 'strokeWidth': 3}),
+				onClick: () => this.checkCollapsed() ? null : this.sendDeleteVertexToServer(),
 				style: {
-					cursor: 'pointer',
+					cursor: this.checkCollapsed() ? 'move' : 'pointer',
           opacity: this.props.activeState ? 1.0 : 0.2
 				}
 			}
 		}
-
-
 		return <path {...inputs.vertex}/>
 	}
 }

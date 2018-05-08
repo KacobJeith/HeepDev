@@ -15,6 +15,11 @@ export const updateVertex = () => ({
   type: 'UPDATE_VERTEX'
 })
 
+export const collapseDevice = (deviceID) => ({
+  type: 'COLLAPSE_DEVICE',
+  deviceID
+})
+
 //Icons
 export const addIcon = (deviceID, icon) => ({
   type: 'ADD_ICON',
@@ -125,7 +130,34 @@ export const zoomIn = () => ({
 export const zoomOut = () => ({
   type: 'ZOOM_OUT_FLOWCHART'
 })
+
 export const resetDeviceWifi = (deviceID) => ({
   type: 'RESET_DEVICE_WIFI',
   deviceID
 })
+
+export const saveSnapshot = (name) => ({
+  type: 'SAVE_SNAPSHOT',
+  name
+})
+
+export const returnToSnapshot = (snapshotID) => ({
+  type: 'RETURN_TO_SNAPSHOT',
+  snapshotID
+})
+
+export const openSnapshotFile = (file) => ({
+  type: 'OPEN_SNAPSHOT_UPLOAD',
+  file
+})
+
+export const saveSnapshotUpload = (json) => ({
+  type: 'SAVE_SNAPSHOT_UPLOAD',
+  json
+})
+
+export const setSearchMode = (searchMode) => ({
+  type: 'SET_SEARCH_MODE',
+  searchMode
+})
+

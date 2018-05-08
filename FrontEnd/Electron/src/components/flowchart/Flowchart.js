@@ -10,10 +10,7 @@ import Device from './DevicePaper'
 import Vertex from './Vertex'
 import DeviceDetailsPanel from '../heep/DeviceDetailsPanel'
 import { withTheme } from 'material-ui/styles'
-
-import Add from 'material-ui-icons/Add'
-import Remove from 'material-ui-icons/Remove'
-import { Button, Tooltip }  from 'material-ui'
+import FlowchartOptions from './FlowchartOptions'
 
 var mapStateToProps = (state) => ({
   deviceArray: Object.keys(state.devices),
@@ -27,75 +24,46 @@ class Flowchart extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			hoverRefresh: false
+      		resize: false
 		}
-	};
+	}
 
-  componentDidMount() {
-    this.dragFlowchart()
-  }
+	componentWillMount() {
+		this.props.setDetailsPanelDeviceID(null);
+	}
 
-  dragFlowchart() {
-      Draggable.create("#deviceContainer", {
-        type: "x, y",
-        bounds: "#flowchart",
-        edgeResistance: 1,
-        allowContextMenu: true,
-        zIndexBoost: false,
-        onDrag: () => this.props.updateVertex()
-      });
-  }
+	componentDidMount() {
+		this.dragFlowchart()
+    	window.addEventListener("resize", this.resizedWindow.bind(this))
+	}
 
-	flowchartOptions() {
-		return (
-      <Tooltip id="tooltip-range"
-            title={Math.round(this.props.scale * 100) + "%"}
-            placement="top">
-			<div
-				id='flowchartOptions'
-				style={{
-					position:'fixed',
-					bottom:  this.props.theme.spacing.unit,
-					right: this.props.theme.spacing.unit
-			}}>
-				<Button
-					mini
-					variant="fab"
-					color="primary"
-					aria-label="zoom-out"
-					onClick={() => this.props.zoomOut()}
-					style={{marginRight: this.props.theme.spacing.unit}}
-				>
-					<Remove/>
-				</Button>
-				<Button
-					mini
-					variant="fab"
-					color="primary"
-					aria-label="zoom-in"
-					onClick={() => this.props.zoomIn()}
-				>
-					<Add/>
-				</Button>
+	dragFlowchart() {
+	  Draggable.create("#deviceContainer", {
+	    type: "x, y",
+	    bounds: "#flowchart",
+	    edgeResistance: 0.9,
+	    allowContextMenu: true,
+	    zIndexBoost: false,
+	    onDrag: () => this.props.updateVertex()
+	  });
+	}
 
-			</div>
-    </Tooltip>
-		)
-	};
+	resizedWindow() {
+		this.setState({resize: !this.state.resize})
+	}
 
 	drawVertices() {
 
 		const inputs = {
 			vertexSVGSpace: {
-        	id: 'vertexSVGSpace',
+				id: 'vertexSVGSpace',
 				style: {
 					position: 'absolute',
-					width: 10000,
-					height: 10000,
-					viewBox: '0 0 4000 4000',
-    			top: 0,
-    			left: 0,
-          overflow: 'hidden'
+					width: "100%",
+					height: "100%",
+					top: 0,
+					left: 0,
+					overflow: 'hidden',
 				},
 			}
 		}
@@ -126,89 +94,61 @@ class Flowchart extends React.Component {
 	render() {
 
 		const inputs = {
-      pageContainer: {
-        style: {
-          backgroundColor: '#e7e7e7',
-          height: 5000,
-          width: 5000
-        }
-      },
+			pageContainer: {
+					style: {
+					backgroundColor: '#e7e7e7',
+					height: 4000,
+					width: 4000,
+				}
+			},
 			flowchart: {
 				style: {
-          // height: 1000,
-          // width: 1000,
-					height: window.innerHeight,
-					width: window.innerWidth,
-          margin: 0,
+					height: document.documentElement.clientHeight - 64,
+					width: document.documentElement.clientWidth - 72,
+					margin: 0,
 					backgroundColor: 'rgba(0, 0, 0, 0.54)',
-          overflow: "hidden"
+					overflow: 'hidden'
 				}
 			},
-			refresh: {
-			  width: 45,
-			  height: 45,
-			  type:"image/svg+xml",
-			  data: './dist/assets/svg/refresh.svg',
-			  style: {
-			  	position: 'absolute',
-			  }
+			deviceContainer: {
+			    style: {
+					position: 'relative',
+					width: 3000,
+					height: 2000,
+					overflow: 'hidden',
+					backgroundColor: '#e7e7e7',
+			    }
 			},
-			refreshContainer: {
+			deviceBounds: {
 				style: {
-					width: 50,
-					height: 50,
-					top: 2,
-					left: 2,
-					backgroundColor: this.state.hoverRefresh ? "rgba(0,0,0,0.1)" : "rgba(0,0,0,0)",
-					cursor: "pointer",
-					position: 'relative'
+					width: 2700,
+					height: 1700,
 				}
-			},
-			refreshButton: {
-				style: {
-					width: 50,
-					height: 50,
-					backgroundColor: this.state.hoverRefresh ? "rgba(0,0,0,0.1)" : "rgba(0,0,0,0)",
-					cursor: "pointer",
-					position: 'absolute'
-				},
-				onClick: () => {
-					console.log("clicked");
-					this.props.refreshFlowchart();
-				},
-        		onMouseEnter: () => this.setState({hoverRefresh: true}),
-        		onMouseLeave: () => this.setState({hoverRefresh: false})
-			},
-      		deviceContainer: {
-		        style: {
-		          position: 'relative',
-		          width: 3000,
-		          height: 3000,
-		          background: '#e7e7e7',
-              overflow: 'hidden'
-		        }
-		    }
+			}
 		}
 
 		return (
-      <div {...inputs.pageContainer}>
+		<div {...inputs.pageContainer}>
 			<div id="flowchart" {...inputs.flowchart} ref="flowchart">
-					<div id="deviceContainer" {...inputs.deviceContainer}>
-            <div style={{
-    						transform: 'scale(' + this.props.scale + ')',
-    		          		transformOrigin: 'top left',
-                      width: '100%',
-                      height: '100%',
-                      overflow: 'hidden'
-    		          	}}>
-						{this.drawVertices()}
-						{this.drawDevices()}
+				<div id="deviceContainer" {...inputs.deviceContainer}>
+            		<div id='deviceBounds' {...inputs.deviceBounds}>
+						<div id="zoomContainer"
+								style={{
+										transform: 'scale(' + this.props.scale + ')',
+						          		transformOrigin: 'top left',
+								        width: 50000,
+								        height: 50000,
+								        overflow: 'hidden',
+						          	}}>
+									{this.drawVertices()}
+									{this.drawDevices()}
+						</div>
 					</div>
 				</div>
-				{this.flowchartOptions()}
+				<FlowchartOptions/>
 				<DeviceDetailsPanel/>
 			</div>
-    </div>
+    	</div>
 		);
 
 	}

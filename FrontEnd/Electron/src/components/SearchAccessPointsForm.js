@@ -68,34 +68,36 @@ class SearchAccessPointsForm extends React.Component {
     }
 
     return (
-      <div>
+      <div style={{
+        paddingTop: 20
+      }}>
         <Typography variant="title" align='center' color="inherit">
             Connect to a Heep Device
         </Typography>
         <VerticalStepper {...inputs.stepper}/>
       </div>
     )
-  
+
   }
 
   selectAccessPoint() {
 
     return (
-      <List 
-        disablePadding 
+      <List
+        disablePadding
         dense
         subheader={
           <ListSubheader component="div" style={{padding: 0, backgroundColor: 'white'}}>
             Heep Access Points
           </ListSubheader>}>
-        
+
         <Divider/>
 
         {Object.keys(this.props.accessPoints).sort().map((accessPointSSID) => (
-          <ListItem 
-            button 
+          <ListItem
+            button
             onClick={() => { this.stopAPSearch(); this.props.connectToAccessPoint(accessPointSSID);}}
-            style={{paddingRight: 0}} 
+            style={{paddingRight: 0}}
             key={accessPointSSID}>
             <ListItemIcon>
                 <NetworkWifi/>
@@ -115,24 +117,24 @@ class SearchAccessPointsForm extends React.Component {
   listPlaceOptions() {
 
     return (
-      <List 
-        disablePadding 
+      <List
+        disablePadding
         dense
         subheader={
           <ListSubheader component="div" style={{padding: 0, backgroundColor: 'white'}}>
             Your Places
           </ListSubheader>}>
-        
+
         <Divider/>
 
         {Object.keys(this.props.places).map((thisPlaceKey) => (
-          <ListItem 
-            button 
-            onClick={() => { 
+          <ListItem
+            button
+            onClick={() => {
               console.log('selected: ', this.props.places[thisPlaceKey].name);
               this.props.sendWiFiCredentialsToDevice(this.props.accessPointStatus.deviceID, thisPlaceKey)
             }}
-            style={{paddingRight: 0}} 
+            style={{paddingRight: 0}}
             key={thisPlaceKey}>
             <ListItemIcon>
                 <NetworkWifi/>
@@ -148,13 +150,16 @@ class SearchAccessPointsForm extends React.Component {
   render () {
 
     return (
-      <Grid container justify='center' style={{margin: 0, maxWidth: '100%'}}>
-        <Grid item xs={7} >
-          {this.createAPForm()}
-        </Grid>
-        <DeviceDetailsPanel/>
-     </Grid>
-
+      <div style={{
+        height: window.innerHeight - 64
+      }}>
+        <Grid container justify='center' style={{margin: 0, maxWidth: '100%'}}>
+          <Grid item xs={7} >
+            {this.createAPForm()}
+          </Grid>
+          <DeviceDetailsPanel/>
+       </Grid>
+     </div>
 
     );
   }
