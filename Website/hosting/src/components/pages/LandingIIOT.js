@@ -12,7 +12,7 @@ import DesktopWindows from 'material-ui-icons/DesktopWindows'
 import ArrowForward from 'material-ui-icons/ArrowForward'
 
 import SectionCard from '../utilities/SectionCard'
-import AboutCard from '../AboutCard'
+import AboutCard from '../about/AboutCard'
 import CollectionPreview from '../utilities/CollectionPreview'
 import VideoBackgroundCard from '../utilities/VideoBackgroundCard'
 import { banners } from '../../assets/remote/Banners'
