@@ -91,9 +91,9 @@ class NestedList extends React.Component {
   )
 
   refreshFlowchart = () => (
-    <ListItem button>
+    <ListItem button onClick={ () => this.props.refreshFlowchart()}>
       <ListItemIcon>
-        <Refresh onClick={ () => this.props.refreshFlowchart()}/>
+        <Refresh />
       </ListItemIcon>
       <ListItemText inset primary="Soft Refresh" />
     </ListItem>

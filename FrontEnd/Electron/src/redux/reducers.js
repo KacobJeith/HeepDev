@@ -9,6 +9,7 @@ import { TweenLite } from 'gsap'
 import theme from '../components/Theme'
 import { persistStore, persistReducer } from 'redux-persist'
 import * as setup from '../index'
+import deepEqual from 'deep-equal'
 
 export default function(state = initialState, action) {
 
@@ -160,14 +161,34 @@ export default function(state = initialState, action) {
 //<----------------------------------------------------------------------------------------------------------------------------------->
 
     case 'OVERWRITE_WITH_SERVER_DATA':
+      
+      
 
-      return Immutable.Map(state).set('devices', action.fromServer.devices)
-                                 .set('analytics', action.fromServer.analytics)
-                                 .set('positions', action.fromServer.positions)
-                                 .set('controls', action.fromServer.controls)
-                                 .set('vertexList', action.fromServer.vertexList)
-                                 .set('icons', action.fromServer.icons)
-                                 .set('deviceWiFiCreds', action.fromServer.deviceWiFiCreds).toJS()
+      console.log('Copy Test: ', deepEqual(newStateDevices,  action.fromServer.devices));
+
+      var newStateDevices = checkDeepEquality(Immutable.Map(state.devices).toJS(), action.fromServer.devices)
+      var newStateControls = checkDeepEquality(Immutable.Map(state.controls).toJS(), action.fromServer.controls)
+      var newStatePositions = checkDeepEquality(Immutable.Map(state.positions).toJS(), action.fromServer.positions)
+      var newStateVertexList = checkDeepEquality(Immutable.Map(state.vertexList).toJS(), action.fromServer.vertexList)
+      var newStateAnalytics = checkDeepEquality(Immutable.Map(state.analytics).toJS(), action.fromServer.analytics)
+      var newStateWifi = checkDeepEquality(Immutable.Map(state.deviceWiFiCreds).toJS(), action.fromServer.deviceWiFiCreds)
+      
+
+      return Immutable.Map(state) .set('devices', newStateDevices)
+                                  .set('controls', newStateControls)
+                                  .set('positions', newStatePositions)
+                                  .set('vertexList', newStateVertexList)
+                                  .set('analytics', newStateAnalytics)
+                                  .set('deviceWiFiCreds', newStateWifi)
+                                  .toJS()
+                                  // action.fromServer.devices).toJS()
+      // return Immutable.Map(state).set('devices', action.fromServer.devices)
+      //                            .set('analytics', action.fromServer.analytics)
+      //                            .set('positions', action.fromServer.positions)
+      //                            .set('controls', action.fromServer.controls)
+      //                            .set('vertexList', action.fromServer.vertexList)
+      //                            .set('icons', action.fromServer.icons)
+      //                            .set('deviceWiFiCreds', action.fromServer.deviceWiFiCreds).toJS()
     case 'STORE_URL':
 
       return Immutable.Map(state).set('url', action.url).toJS()
@@ -484,4 +505,16 @@ function makeid(number) {
   for (var i = 0; i < number; i++)
     text += possible.charAt(Math.floor(Math.random() * possible.length));
   return text;
+}
+
+const checkDeepEquality = (newState, check) => {
+
+  for (var propToCheck in check) {
+    if (!deepEqual(newState[propToCheck], check[propToCheck])) {
+      console.log('Found an inequality: ', propToCheck)
+      newState[propToCheck] = check[propToCheck];
+    }
+  }
+
+  return newState
 }
