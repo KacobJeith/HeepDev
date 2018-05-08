@@ -148,7 +148,7 @@ class About extends React.Component {
   ourStory() {
     const inputs = {
       padding: 50,
-      backgroundColor: '#c9d6dd'
+      backgroundColor: "#143f53"
     };
 
     return(
@@ -158,7 +158,7 @@ class About extends React.Component {
           margin: '0 auto'
         }} justify ='center' alignItems ='center'>
           <Grid item xs={12}>
-            <Typography variant='headline' align='center' paragraph gutterBottom>
+            <Typography variant='headline' align='center' style={{color: "#f1f1f1"}} paragraph gutterBottom>
               Our Story
             </Typography>
           </Grid>
@@ -166,14 +166,15 @@ class About extends React.Component {
             style={{
               textAlign: 'center',
               display: 'block',
+              paddingBottom: 10
           }}>
             <img
-              src={logos.blueGrayLogo}
+              src={logos.gradientLogo}
               style={{maxHeight: 150}}
             />
           </Grid>
           <Grid item xs={12} md={6}>
-            <Typography variant='subheading' paragraph>
+            <Typography variant='subheading' style={{color: "#f1f1f1"}} paragraph>
               Heep was founded in February 2017 with the dream of ubiquitous connectivity.
               We thought long and hard about what the world needs to make that happen.
               Thus, the Heep operating system was born.
@@ -227,7 +228,7 @@ class About extends React.Component {
         <Grid container style={{
           maxWidth:'100%',
           margin: '0 auto',
-        }} justify='center' alignItems='spaceAround'>
+        }} justify='center'>
           <Grid item xs={12} style={{paddingBottom: 20}}>
             <Typography variant='headline' align='center'>
               Our Team
