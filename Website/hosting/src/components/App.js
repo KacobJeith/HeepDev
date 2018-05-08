@@ -79,6 +79,19 @@ class App extends React.Component {
         this.props.updateScrollPosition(window.scrollY)
     }
 
+  topSpacer() {
+    const inputs = {
+      style: {
+        height: 60,
+        width: '100%',
+      }
+    }
+
+    return (
+      <div id="testSpacer" {...inputs}/>
+    )
+  }
+
 	render() {
 		this.logPageView();
 
@@ -106,6 +119,7 @@ class App extends React.Component {
 			    	<MuiThemeProvider theme={Theme}>
 							<div {...inputs.container}>
 								<div {...inputs.content}>
+                  {this.topSpacer()}
 									<Route path="/" component={AppBar}/>
 									<Route exact path="/" component={Landing}/>
 									<Route path="/Landing" component={Landing}/>

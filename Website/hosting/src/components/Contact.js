@@ -141,7 +141,7 @@ class Contact extends React.Component {
       }}>
         <Grid container justify='flex-end' alignItems='center'>
           <Button variant='raised' color='secondary'
-            onClick={() => {this.validateInputs( () => { 
+            onClick={() => {this.validateInputs( () => {
               this.props.submitContactForm(this.state.Name, this.state.Company, this.state.Email, this.state.Message)
               this.setState({
                 Name: '',
@@ -167,9 +167,9 @@ class Contact extends React.Component {
 
     return (
       <Snackbar
-        anchorOrigin={{ 
-          vertical: 'top', 
-          horizontal: 'center' 
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'center'
         }}
         open={this.state.snackBarOpen}
         autoHideDuration={5000}
@@ -180,7 +180,7 @@ class Contact extends React.Component {
         message={<span id="message-id">We need a bit more information to get started!</span>}
       />
     );
-  
+
   }
 
   contactForm() {

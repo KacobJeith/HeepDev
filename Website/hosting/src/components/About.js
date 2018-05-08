@@ -29,8 +29,6 @@ class About extends React.Component {
 
   mission() {
     const inputs = {
-      paddingTop: 25,
-      paddingBottom: 25,
     };
 
     return (
@@ -38,7 +36,8 @@ class About extends React.Component {
         <Grid container style={{
           maxWidth:'100%',
           margin: '0 auto',
-          backgroundColor: '#B0BEC5'
+          backgroundColor: '#c9d6dd',
+          padding: 20
          }}
          justify='center' alignItems='center'>
           <Grid item  xs={12} md={8}>
@@ -46,12 +45,12 @@ class About extends React.Component {
               Our Mission
             </Typography>
             <br/>
-            <Typography variant='subheading' align='center' gutterBottom paragraph>
+            <Typography variant='subheading' gutterBottom paragraph>
               Heep leverages connectedness to empower people to be more productive,
               make better decisions,
               and enjoy a better quality of life.
             </Typography>
-            <Typography variant='subheading' align='center' paragraph>
+            <Typography variant='subheading' paragraph>
               The Heep platform makes connectivity the simplest and most secure way to design any product.
               By reimagining IoT as a critical infrastructure rather than an add-on luxury,
               Heep is able to deliver a scalable and intuitive experience at a fraction of the cost.
@@ -64,24 +63,19 @@ class About extends React.Component {
 
   ourValues() {
     const inputs = {
-      paddingTop: 25,
-      paddingBottom: 25,
     };
 
     return (
       SectionCard(inputs,
         <Grid container style={{
           maxWidth:'100%',
-          margin: '0 auto'
+          margin: '0 auto',
+          paddingTop: 20,
          }}
          justify='center' alignItems='center'>
           <Grid item  xs={12} md={8}>
-            <Typography variant='headline' align='center'>
-              Our Values
-            </Typography>
-            <br/>
-            <Typography variant='subheading' align='center' gutterBottom paragraph>
-              Open Source, Secure, Easy. Even for the Technophobe
+            <Typography variant='headline' align='center' gutterBottom paragraph>
+              Open Source. Secure. Easy.
             </Typography>
           </Grid>
         </Grid>
@@ -120,16 +114,17 @@ class About extends React.Component {
         <Grid container style={{
           maxWidth:'100%',
           overflowX: 'hidden',
-          margin: '0 auto'
+          margin: '0 auto',
+          paddingBottom: 20
         }}
           spacing={24} justify='center'>
-          <Grid item xs={12} md={3}>
+          <Grid item xs={8} sm={4} md={4} lg={3}>
             <AboutCard {...inputs.PlugAndPlay}/>
           </Grid>
-          <Grid item xs={12} md={3}>
+          <Grid item xs={8} sm={4} md={4} lg={3}>
             <AboutCard {...inputs.CloudLess}/>
           </Grid>
-          <Grid item xs={12} md={3}>
+          <Grid item xs={8} sm={4} md={4} lg={3}>
             <AboutCard {...inputs.DeviceParty}/>
           </Grid>
         </Grid>
@@ -141,7 +136,7 @@ class About extends React.Component {
     const inputs = {
       paddingTop: 25,
       paddingBottom: 25,
-      backgroundColor: '#B0BEC5'
+      backgroundColor: '#c9d6dd'
     };
 
     return(

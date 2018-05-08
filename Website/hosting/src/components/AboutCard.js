@@ -28,8 +28,8 @@ class AboutCard extends React.Component {
       imageAbout: {
         src: this.props.imagePath,
         style: {
-          maxWidth: '75%',
-          maxHeight: '75%',
+          maxWidth: '60%',
+          maxHeight: '60%',
         }
       },
     };
@@ -54,7 +54,7 @@ class AboutCard extends React.Component {
   descAbout() {
     return (
       <Typography style={{paddingTop: 16}}
-        component="p" align="center">
+        component="p">
           {this.props.desc}
       </Typography>
     )
