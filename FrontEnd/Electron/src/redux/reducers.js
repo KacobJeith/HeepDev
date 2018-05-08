@@ -162,10 +162,6 @@ export default function(state = initialState, action) {
 
     case 'OVERWRITE_WITH_SERVER_DATA':
       
-      
-
-      console.log('Copy Test: ', deepEqual(newStateDevices,  action.fromServer.devices));
-
       var newStateDevices = checkDeepEquality(Immutable.Map(state.devices).toJS(), action.fromServer.devices)
       var newStateControls = checkDeepEquality(Immutable.Map(state.controls).toJS(), action.fromServer.controls)
       var newStatePositions = checkDeepEquality(Immutable.Map(state.positions).toJS(), action.fromServer.positions)
@@ -173,7 +169,6 @@ export default function(state = initialState, action) {
       var newStateAnalytics = checkDeepEquality(Immutable.Map(state.analytics).toJS(), action.fromServer.analytics)
       var newStateWifi = checkDeepEquality(Immutable.Map(state.deviceWiFiCreds).toJS(), action.fromServer.deviceWiFiCreds)
       
-
       return Immutable.Map(state) .set('devices', newStateDevices)
                                   .set('controls', newStateControls)
                                   .set('positions', newStatePositions)
@@ -181,14 +176,6 @@ export default function(state = initialState, action) {
                                   .set('analytics', newStateAnalytics)
                                   .set('deviceWiFiCreds', newStateWifi)
                                   .toJS()
-                                  // action.fromServer.devices).toJS()
-      // return Immutable.Map(state).set('devices', action.fromServer.devices)
-      //                            .set('analytics', action.fromServer.analytics)
-      //                            .set('positions', action.fromServer.positions)
-      //                            .set('controls', action.fromServer.controls)
-      //                            .set('vertexList', action.fromServer.vertexList)
-      //                            .set('icons', action.fromServer.icons)
-      //                            .set('deviceWiFiCreds', action.fromServer.deviceWiFiCreds).toJS()
     case 'STORE_URL':
 
       return Immutable.Map(state).set('url', action.url).toJS()
