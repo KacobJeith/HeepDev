@@ -16,7 +16,7 @@ var mapStateToProps = (state) => ({
   deviceArray: Object.keys(state.devices),
   vertexList: state.vertexList,
   scale: state.flowchart.scale,
-  detailsPanelOut: state.detailsPanelDeviceID != null,
+  detailsPanelOut: state.detailsPanelDeviceID != null
 })
 
 class Flowchart extends React.Component {

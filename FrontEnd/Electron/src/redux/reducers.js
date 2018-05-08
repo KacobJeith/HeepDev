@@ -318,15 +318,21 @@ export default function(state = initialState, action) {
       return Immutable.Map(state).set('places', newState).toJS()
 
     case 'START_LIVE_MODE':
-      var liveModeRef = async.startLiveMode(state.preferences.searchMode);
 
-      return Immutable.Map(state).set('liveModeReference', liveModeRef).toJS();
+      var newState = Immutable.Map(state.flowchart)
+                              .set('liveModeReference', async.startLiveMode(state.preferences.searchMode))
+                              .toJS();
+
+      return Immutable.Map(state).set('flowchart', newState).toJS();
 
     case 'STOP_LIVE_MODE':
 
       async.stopLiveMode(state.liveModeReference);
+      var newState = Immutable.Map(state.flowchart)
+                              .set('liveModeReference', null)
+                              .toJS();
 
-      return Immutable.Map(state).set('liveModeReference', null).toJS();
+      return Immutable.Map(state).set('flowchart', newState).toJS();
 
     case 'SET_DETAILS_DEVICE_ID' :
 

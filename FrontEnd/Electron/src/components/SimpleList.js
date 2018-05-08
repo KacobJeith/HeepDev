@@ -14,7 +14,7 @@ import { Refresh, Build, TrackChanges, Home, ShowChart, DeleteSweep, ChildCare, 
 import { Divider, Tooltip } from 'material-ui'
 
 var mapStateToProps = (state) => ({
-  liveMode: state.liveModeReference
+  liveMode: state.flowchart.liveModeReference
 })
 
 const styles = theme => ({
@@ -35,7 +35,11 @@ class NestedList extends React.Component {
     this.setState({ open: !this.state.open });
   };
 
-  
+  componentWillMount() {
+    if (this.props.liveMode) {
+      this.props.startLiveMode()
+    }
+  }
 
   deviceBuilder = () => (
     <NavLink to="/designer" style={{
