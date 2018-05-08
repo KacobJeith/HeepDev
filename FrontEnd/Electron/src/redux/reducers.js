@@ -259,15 +259,13 @@ export default function(state = initialState, action) {
 
       return Immutable.Map(state).set('positions', newState).toJS()
 
-
     case 'POSITION_DEVICE_SEND':
 
       async.sendPositionToServer(action.deviceID, action.newPosition);
+      var newState = Immutable.Map(state.positions).toJS();
+      newState[action.deviceID] = action.newPosition;
 
-      return Immutable.fromJS(state)
-                      .setIn(['positions', action.deviceID, 'device', 'top'], action.newPosition.top)
-                      .setIn(['positions', action.deviceID, 'device', 'left'], action.newPosition.left)
-                      .toJS()
+      return Immutable.Map(state).set('positions', newState).toJS()
 
     case 'UPDATE_CONTROL_VALUE':
 
