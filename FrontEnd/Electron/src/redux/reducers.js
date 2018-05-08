@@ -471,7 +471,7 @@ export default function(state = initialState, action) {
       return Immutable.fromJS(state).set(controls, newState).toJS()
 
     default:
-      console.log('Passed through first Switch');
+      // console.log('Passed through first Switch');
   }
 
   const builderStartingState = Immutable.Map(state.designer).toJS();
@@ -502,7 +502,6 @@ const checkDeepEquality = (newState, check) => {
 
   for (var propToCheck in check) {
     if (!deepEqual(newState[propToCheck], check[propToCheck])) {
-      console.log('Found an inequality: ', propToCheck)
       newState[propToCheck] = check[propToCheck];
     }
   }
