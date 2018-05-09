@@ -91,7 +91,10 @@ export var ResetMasterState = () => {
 export var ResetDevicesActiveStatus = () => {
 
   for (var deviceID in masterState.devices) {
-    masterState.devices[deviceID].active = false
+    masterState.devices[deviceID].inactiveCount += 1
+    if ( masterState.devices[deviceID].inactiveCount  > 2 ) {
+      masterState.devices[deviceID].active = false
+    }
   }
 
 }
@@ -343,6 +346,7 @@ var AddDevice = (heepChunk, IPAddress) => {
     ipAddress: IPAddress,
     name: deviceName,
     active: true,
+    inactiveCount: 0,
     iconName: "lightbulb",
     version: 0
   }
@@ -371,7 +375,6 @@ var AddControl = (heepChunk) => {
   masterState.controls[tempCtrlName].deviceID = heepChunk.deviceID;
   var currentIndex = SetControlStructure(heepChunk.deviceID, tempCtrlName)
 
-  masterState.positions[heepChunk.deviceID][tempCtrlName] = SetControlPosition(heepChunk.deviceID, currentIndex, heepChunk.control.controlDirection);
   masterState.controls.connections[tempCtrlName] = [];
 }
 
@@ -390,15 +393,14 @@ var SetCustomIcon = (heepChunk) => {
 var SetNullPosition = (deviceID) => {
   
   var newPosition = {
-    device: {top: 0, left: 0}
+    top: 0, left: 0
   }
 
   masterState.positions[deviceID] = newPosition;
 }
 
 var SetDevicePosition = (heepChunk) => {
-  masterState.positions[heepChunk.deviceID].device = heepChunk.position;
-  RecalculateControlPositions(heepChunk.deviceID);
+  masterState.positions[heepChunk.deviceID] = heepChunk.position;
 }
 
 var SetDeviceWiFi = (heepChunk) => {
@@ -417,8 +419,7 @@ var SetDevicePositionFromBrowser = (deviceID, position) => {
     left: parseInt(position.left)
   }
 
-  masterState.positions[deviceID].device = newPosition;
-  RecalculateControlPositions(deviceID);
+  masterState.positions[deviceID] = newPosition;
 }
 
 var SetControlStructure = (deviceID, controlID) => {
@@ -456,39 +457,6 @@ var DeleteVertex = (vertex) => {
     masterState.controls.connections[txControl].splice(index, 1);
   }
 
-}
-
-var RecalculateControlPositions = (deviceID) => {
-  var startingPositions = masterState.positions[deviceID];
-  for (var controlName in startingPositions){
-    if (controlName == 'device'){ 
-      continue 
-    }
-
-    UpdateControlPosition(deviceID, controlName);
-  }
-}
-
-var UpdateControlPosition = (deviceID, controlName) => {
-  var devicePosition = masterState.positions[deviceID].device;
-  var thisPosition = masterState.positions[deviceID][controlName];
-  var direction = masterState.controls[controlName].controlDirection;
-
-  thisPosition.top = devicePosition['top'] + 45 + 1.5 + 25/2 + 55*(thisPosition.index - 1), 
-  thisPosition.left = direction == 0 ? devicePosition['left'] + 10 : devicePosition['left'] + 240;
-  
-}
-
-var SetControlPosition = (deviceID, index, direction) => {
-  var devicePosition = masterState.positions[deviceID]['device'];
-
-  var position = {
-    top: devicePosition['top'] + 45 + 1.5 + 25/2 + 55*(index - 1), 
-    left: direction == 0 ? devicePosition['left'] + 10 : devicePosition['left'] + 240,
-    index: index
-  }
-  
-  return position;
 }
 
 var SetAnalyticsData = (heepChunk) => {
