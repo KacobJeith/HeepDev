@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux'
 import { withRouter }         from 'react-router-dom'
 import PropTypes              from 'prop-types';
 import classNames             from 'classnames';
+import { logos }              from '../assets/remote/Logos'
 
 import * as actions           from '../redux/actions'
 
@@ -28,10 +29,14 @@ import {  AppBar,
 
 import MenuIcon               from 'material-ui-icons/Menu';
 import AccountCircle          from 'material-ui-icons/AccountCircle';
+import ContactMail            from 'material-ui-icons/ContactMail';
 import ShoppingCartIcon       from 'material-ui-icons/ShoppingCart';
 import ShopIcon               from 'material-ui-icons/ShoppingBasket'
 import AboutIcon              from 'material-ui-icons/Contacts'
 import DevelopIcon            from 'material-ui-icons/Code'
+import Home                   from 'material-ui-icons/Home'
+import Business                   from 'material-ui-icons/Business'
+
 
 import { withStyles }         from 'material-ui/styles';
 
@@ -194,7 +199,10 @@ class MenuAppBar extends React.Component {
         style: {
           color: "white",
           paddingTop: 11,
-          paddingBottom: 11
+          paddingBottom: 11,
+          fontSize: '1.2rem',
+          fontFamily: 'Oswald',
+          textTransform: 'capitalize'
         }
       },
       Button: {
@@ -210,12 +218,12 @@ class MenuAppBar extends React.Component {
     };
 
     return (
-      <Hidden xsDown={true}>
+      <Hidden smDown>
         <Button {...inputs.Button}>
           <NavLink to={navLink} {...inputs.NavLink}>
-            <Typography variant="subheading" {...inputs.Typography}>
+            <div {...inputs.Typography}>
               {linkText}
-            </Typography>
+            </div>
           </NavLink>
         </Button>
       </Hidden>
@@ -242,7 +250,7 @@ class MenuAppBar extends React.Component {
   appBarLogo() {
     const inputs = {
       Logo: {
-        src: 'src/assets/svg/SideBySide.svg',
+        src: logos.sideBySide,
         height: 50,
         style: {
           maxWidth: "250%"
@@ -274,7 +282,7 @@ class MenuAppBar extends React.Component {
 
   mobileAppBarLogo() {
     return (
-      <Hidden smUp={true}>
+      <Hidden mdUp>
         <Grid container justify='center' style={{
           width: '100%',
           height: '100%',
@@ -371,7 +379,7 @@ class MenuAppBar extends React.Component {
     }
 
     return (
-      <Hidden smUp={true}>
+      <Hidden mdUp>
           <IconButton
             {...inputs.menuButton}
             onClick={this.handleMobileMenuOpen}
@@ -399,10 +407,13 @@ class MenuAppBar extends React.Component {
                 >
 
                 {this.mobileMenuLogo()}
-                {this.mobileMenuCart()}
-                {this.mobileMenuLink('/About', 'About', <AboutIcon/>)}
+                {this.mobileMenuLink('/', 'Home', <Home/>)}
+                {this.mobileMenuLink('/IndustrialHeep', 'Industry', <Business/>)}
                 {this.mobileMenuLink('/Shop', 'Shop', <ShopIcon/>)}
-                {this.mobileMenuLink('/Developers', 'Develop', <DevelopIcon/>)}
+                {this.mobileMenuLink('/About', 'About', <AboutIcon/>)}
+                {this.mobileMenuLink('/Contact', 'Contact', <ContactMail/>)}
+                {this.mobileMenuCart()}
+{/*                 {this.mobileMenuLink('/Developers', 'Develop', <DevelopIcon/>)} */}
 
               </div>
             </Drawer>
@@ -417,19 +428,24 @@ class MenuAppBar extends React.Component {
 
     return (
       <div className={classes.root}>
-        <AppBar position="static" style={{overflowX: 'hidden'}}>
+        <AppBar position="fixed" id='top' style={{overflowX: 'hidden'}}>
           <Toolbar>
             {this.mobileMenu()}
-            <Hidden xsDown={true}>
+            <Hidden smDown>
               {this.appBarLogo()}
             </Hidden>
             {this.mobileAppBarLogo()}
             <div className={classes.flex}/>
+            {this.appBarLink("/", "Home")}
+            {this.appBarLink("/Business", "Business")}
+            {this.appBarLink("/IndustrialHeep", "Industry")}
+            {this.appBarLink("/DIY", "DIY")}
             {this.appBarLink("/About", "About")}
+            {this.appBarLink("/Contact", "Contact")}
             {this.appBarLink("/Shop", "Shop")}
-            {this.appBarLink("/Developers", "Develop")}
+{/*             {this.appBarLink("/Developers", "Develop")} */}
             {this.appBarCart()}
-            {this.avatarLogin()}
+{/*             {this.avatarLogin()} */}
           </Toolbar>
         </AppBar>
       </div>
