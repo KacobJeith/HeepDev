@@ -42,19 +42,13 @@
 			]
 		},
 		{
-			"title": "SECTION 7 - COOKIES",
-			"content": [
-				"Here is a list of cookies that we use. We’ve listed them here so you that you can choose if you want to opt-out of cookies or not. _session_id, unique token, sessional, Allows Shopify to store information about your session (referrer, landing page, etc). _shopify_visit, no data held, Persistent for 30 minutes from the last visit, Used by our website provider’s internal stats tracker to record the number of visits _shopify_uniq, no data held, expires midnight (relative to the visitor) of the next day, Counts the number of visits to a store by a single customer. cart, unique token, persistent for 2 weeks, Stores information about the contents of your cart. _secure_session_id, unique token, sessional storefront_digest, unique token, indefinite If the shop has a password, this is used to determine if the current visitor has access. "
-			]
-		},
-		{
-			"title": "SECTION 8 - AGE OF CONSENT",
+			"title": "SECTION 7 - AGE OF CONSENT",
 			"content": [
 				"By using this site, you represent that you are at least the age of majority in your state or province of residence, or that you are the age of majority in your state or province of residence and you have given us your consent to allow any of your minor dependents to use this site."
 			]
 		},
 		{
-			"title": "SECTION 9 - CHANGES TO THIS PRIVACY POLICY",
+			"title": "SECTION 8 - CHANGES TO THIS PRIVACY POLICY",
 			"content": [
 				"We reserve the right to modify this privacy policy at any time, so please review it frequently. Changes and clarifications will take effect immediately upon their posting on the website. If we make material changes to this policy, we will notify you here that it has been updated, so that you are aware of what information we collect, how we use it, and under what circumstances, if any, we use and/or disclose it. If our store is acquired or merged with another company, your information may be transferred to the new owners so that we may continue to sell products to you."
 			]
