@@ -43,6 +43,33 @@ class Contact extends React.Component {
     snackBarOpen: false
   }
 
+  topBanner() {
+    const inputs={
+      paddingTop: 25,
+      paddingBottom: 25,
+      // backgroundColor: '#5BC3F4',
+      background: 'linear-gradient(to bottom right, #2b5876, #4e4376)',
+      marginBottom: 40
+    }
+
+    return (
+      SectionCard(inputs,
+        <Grid container justify ='center' alignItems='center' spacing={24} style={{
+        maxWidth: '100%',
+        minHeight: 200,
+        margin: '0 auto'
+      }}>
+
+        <Grid item xs={6}>
+            <Typography variant='display1' align='center' paragraph style={{color: 'white'}}>
+              Contact Us
+            </Typography>
+        </Grid>
+      </Grid>
+      )
+    )
+  }
+
   contactTextField(label, multiline=false) {
     const inputs = {
       textField: {
@@ -220,7 +247,7 @@ class Contact extends React.Component {
             margin: "0 auto",
             height: '100%'
           }}>
-          <Grid item >
+          <Grid item style={{paddingBottom: 30}}>
             <Typography variant='subheading'
               align='center'
               gutterBottom={true}
@@ -350,6 +377,7 @@ class Contact extends React.Component {
   render() {
     return(
       <div>
+        {this.topBanner()}
         <Grid container alignItems='stretch' style={{
           margin: "0 auto",
           maxWidth: "100%",
