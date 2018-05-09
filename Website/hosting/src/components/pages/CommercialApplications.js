@@ -8,8 +8,6 @@ import { withRouter }         from 'react-router-dom'
 
 import SectionCard from '../utilities/SectionCard'
 import VideoBackgroundCard from '../utilities/VideoBackgroundCard'
-import AboutCard from '../AboutCard'
-import TeamModal from '../TeamModal'
 import SplitSectionCard from '../utilities/SplitSectionCard'
 
 import ContactUsSection from '../utilities/ContactUsSection'

@@ -27,7 +27,6 @@ class IIOT extends React.Component {
       //TO-DO: Purchase video
       videoSrc: videos.industry,
       minHeight: 400,
-      marginTop: 60,
       overlayColor: 'rgba(0,0,0, 0.7)'
     }
 
