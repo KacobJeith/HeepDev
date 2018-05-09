@@ -16,9 +16,8 @@ var mapStateToProps = (state) => ({
   deviceArray: Object.keys(state.devices),
   vertexList: state.vertexList,
   scale: state.flowchart.scale,
-  detailsPanelOut: state.detailsPanelDeviceID != null,
+  detailsPanelOut: state.detailsPanelDeviceID != null
 })
-
 
 class Flowchart extends React.Component {
 	constructor(props) {
@@ -131,24 +130,24 @@ class Flowchart extends React.Component {
 		<div {...inputs.pageContainer}>
 			<div id="flowchart" {...inputs.flowchart} ref="flowchart">
 				<div id="deviceContainer" {...inputs.deviceContainer}>
-            		<div id='deviceBounds' {...inputs.deviceBounds}>
+					<div id='deviceBounds' {...inputs.deviceBounds}>
 						<div id="zoomContainer"
-								style={{
-										transform: 'scale(' + this.props.scale + ')',
-						          		transformOrigin: 'top left',
-								        width: 50000,
-								        height: 50000,
-								        overflow: 'hidden',
-						          	}}>
-									{this.drawVertices()}
-									{this.drawDevices()}
+							style={{
+								transform: 'scale(' + this.props.scale + ')',
+								transformOrigin: 'top left',
+								width: 50000,
+								height: 50000,
+								overflow: 'hidden',
+						}}>
+							{this.drawVertices()}
+							{this.drawDevices()}
 						</div>
 					</div>
 				</div>
 				<FlowchartOptions/>
 				<DeviceDetailsPanel/>
 			</div>
-    	</div>
+		</div>
 		);
 
 	}

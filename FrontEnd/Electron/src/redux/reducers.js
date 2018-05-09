@@ -9,6 +9,7 @@ import { TweenLite } from 'gsap'
 import theme from '../components/Theme'
 import { persistStore, persistReducer } from 'redux-persist'
 import * as setup from '../index'
+import deepEqual from 'deep-equal'
 
 export default function(state = initialState, action) {
 
@@ -160,14 +161,21 @@ export default function(state = initialState, action) {
 //<----------------------------------------------------------------------------------------------------------------------------------->
 
     case 'OVERWRITE_WITH_SERVER_DATA':
-
-      return Immutable.Map(state).set('devices', action.fromServer.devices)
-                                 .set('analytics', action.fromServer.analytics)
-                                 .set('positions', action.fromServer.positions)
-                                 .set('controls', action.fromServer.controls)
-                                 .set('vertexList', action.fromServer.vertexList)
-                                 .set('icons', action.fromServer.icons)
-                                 .set('deviceWiFiCreds', action.fromServer.deviceWiFiCreds).toJS()
+      
+      var newStateDevices = checkDeepEquality(Immutable.Map(state.devices).toJS(), action.fromServer.devices)
+      var newStateControls = checkDeepEquality(Immutable.Map(state.controls).toJS(), action.fromServer.controls)
+      var newStatePositions = checkDeepEquality(Immutable.Map(state.positions).toJS(), action.fromServer.positions)
+      var newStateVertexList = checkDeepEquality(Immutable.Map(state.vertexList).toJS(), action.fromServer.vertexList)
+      var newStateAnalytics = checkDeepEquality(Immutable.Map(state.analytics).toJS(), action.fromServer.analytics)
+      var newStateWifi = checkDeepEquality(Immutable.Map(state.deviceWiFiCreds).toJS(), action.fromServer.deviceWiFiCreds)
+      
+      return Immutable.Map(state) .set('devices', newStateDevices)
+                                  .set('controls', newStateControls)
+                                  .set('positions', newStatePositions)
+                                  .set('vertexList', newStateVertexList)
+                                  .set('analytics', newStateAnalytics)
+                                  .set('deviceWiFiCreds', newStateWifi)
+                                  .toJS()
     case 'STORE_URL':
 
       return Immutable.Map(state).set('url', action.url).toJS()
@@ -233,8 +241,10 @@ export default function(state = initialState, action) {
       return Immutable.Map(state).set('vertexList', newState).set('controls', newStateControls).toJS();
 
     case 'UPDATE_VERTEX':
+      var newState = Immutable.Map(state.flowchart).toJS();
+      newState.dragVertex = !state.flowchart.dragVertex;
 
-      return Immutable.fromJS(state).setIn(['flowchart', 'dragVertex'], !state.flowchart.dragVertex).toJS()
+      return Immutable.Map(state).set('flowchart', newState).toJS()
 
     case 'POSITION_DEVICE':
       var newState = Immutable.Map(state.positions).toJS();
@@ -249,15 +259,13 @@ export default function(state = initialState, action) {
 
       return Immutable.Map(state).set('positions', newState).toJS()
 
-
     case 'POSITION_DEVICE_SEND':
 
       async.sendPositionToServer(action.deviceID, action.newPosition);
+      var newState = Immutable.Map(state.positions).toJS();
+      newState[action.deviceID] = action.newPosition;
 
-      return Immutable.fromJS(state)
-                      .setIn(['positions', action.deviceID, 'device', 'top'], action.newPosition.top)
-                      .setIn(['positions', action.deviceID, 'device', 'left'], action.newPosition.left)
-                      .toJS()
+      return Immutable.Map(state).set('positions', newState).toJS()
 
     case 'UPDATE_CONTROL_VALUE':
 
@@ -310,15 +318,21 @@ export default function(state = initialState, action) {
       return Immutable.Map(state).set('places', newState).toJS()
 
     case 'START_LIVE_MODE':
-      var liveModeRef = async.startLiveMode(state.preferences.searchMode);
 
-      return Immutable.Map(state).set('liveModeReference', liveModeRef).toJS();
+      var newState = Immutable.Map(state.flowchart)
+                              .set('liveModeReference', async.startLiveMode(state.preferences.searchMode))
+                              .toJS();
+
+      return Immutable.Map(state).set('flowchart', newState).toJS();
 
     case 'STOP_LIVE_MODE':
 
       async.stopLiveMode(state.liveModeReference);
+      var newState = Immutable.Map(state.flowchart)
+                              .set('liveModeReference', null)
+                              .toJS();
 
-      return Immutable.Map(state).set('liveModeReference', null).toJS();
+      return Immutable.Map(state).set('flowchart', newState).toJS();
 
     case 'SET_DETAILS_DEVICE_ID' :
 
@@ -457,7 +471,7 @@ export default function(state = initialState, action) {
       return Immutable.fromJS(state).set(controls, newState).toJS()
 
     default:
-      console.log('Passed through first Switch');
+      // console.log('Passed through first Switch');
   }
 
   const builderStartingState = Immutable.Map(state.designer).toJS();
@@ -482,4 +496,15 @@ function makeid(number) {
   for (var i = 0; i < number; i++)
     text += possible.charAt(Math.floor(Math.random() * possible.length));
   return text;
+}
+
+const checkDeepEquality = (newState, check) => {
+
+  for (var propToCheck in check) {
+    if (!deepEqual(newState[propToCheck], check[propToCheck])) {
+      newState[propToCheck] = check[propToCheck];
+    }
+  }
+
+  return newState
 }
