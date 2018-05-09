@@ -272,7 +272,7 @@ class LandingIIOT extends React.Component {
     ]
 
   	return (
-      <div className="topTest">
+      <div>
         {this.topBanner()}
 {/*         {this.iiotCollection()} */}
         {this.heepTechnology()}

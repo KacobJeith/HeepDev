@@ -14,7 +14,6 @@ import { composeWithDevTools } from 'redux-devtools-extension';
    google: {
      families: ['Fjalla One', 'Oswald']
    },
-   timeout: 500
  });
 
 require('./service-worker-registration.js');
