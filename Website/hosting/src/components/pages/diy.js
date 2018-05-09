@@ -8,7 +8,6 @@ import * as Actions from '../../redux/actions'
 import { Grid, Paper, Typography } from 'material-ui'
 
 import SectionCard from '../utilities/SectionCard'
-
 import VideoBackgroundCard from '../utilities/VideoBackgroundCard'
 import ContactUsSection from '../utilities/ContactUsSection'
 import { banners } from '../../assets/remote/Banners'
@@ -28,7 +27,7 @@ class DIY extends React.Component {
       }
 
       return(
-        SectionCard(inputs, 
+        SectionCard(inputs,
           <Grid container direction='column' justify ='center' alignItems ='center' style={{
             width: '100%',
             minHeight: inputs.minHeight,
@@ -70,11 +69,11 @@ class DIY extends React.Component {
         }}>
           <Grid item xs={8}>
                 <Typography variant='display1' align='center' paragraph>
-                  We are excited to see what you create with Heep. 
+                  We are excited to see what you create with Heep.
                 </Typography>
 
                 <Typography variant='display1' align='center' paragraph>
-                  Stay tuned for an announcement soon! 
+                  Stay tuned for an announcement soon!
                 </Typography>
           </Grid>
         </Grid>

@@ -9,7 +9,7 @@ import AsyncComponent from './AsyncComponent'
 import AppBar from './AppBar'
 import Footer from './Footer'
 // import Landing from './landing/Landing'
-import About from './About'
+import About from './about/About'
 import Build from './heep/Build'
 import Logout from './account/Logout'
 import Loading from './Loading'
@@ -79,6 +79,19 @@ class App extends React.Component {
         this.props.updateScrollPosition(window.scrollY)
     }
 
+  topSpacer() {
+    const inputs = {
+      style: {
+        height: 60,
+        width: '100%',
+      }
+    }
+
+    return (
+      <div id="testSpacer" {...inputs}/>
+    )
+  }
+
 	render() {
 		this.logPageView();
 
@@ -106,6 +119,7 @@ class App extends React.Component {
 			    	<MuiThemeProvider theme={Theme}>
 							<div {...inputs.container}>
 								<div {...inputs.content}>
+                  {this.topSpacer()}
 									<Route path="/" component={AppBar}/>
 									<Route exact path="/" component={Landing}/>
 									<Route path="/Landing" component={Landing}/>
