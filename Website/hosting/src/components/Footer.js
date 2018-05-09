@@ -3,6 +3,7 @@ import { connect }                    from 'react-redux'
 import { bindActionCreators }         from 'redux'
 import {  Link, NavLink, withRouter } from 'react-router-dom'
 import PropTypes                      from 'prop-types';
+import { HashLink } from "react-router-hash-link";
 
 import {  Grid,
           Hidden,
@@ -98,7 +99,8 @@ class Footer extends React.Component {
 
     return(
       <Grid item xs={12} sm={12}>
-        <NavLink to={url}
+        <HashLink to={url}
+        smooth
         style={{
           textDecoration: 'none',
           color: this.props.theme.palette.primary.contrastText
@@ -106,7 +108,7 @@ class Footer extends React.Component {
           <Typography variant={variant} color='inherit' align='center'>
             {text}
           </Typography>
-        </NavLink>
+        </HashLink>
       </Grid>
     )
   };
@@ -156,8 +158,8 @@ class Footer extends React.Component {
         >
           {this.textNavLink('About Us', '/About', 'caption')}
           {this.textNavLink('Contact Us', '/Contact', 'caption')}
-          {this.textNavLink('Privacy Policy', '/privacypolicy', 'caption')}
-          {this.textNavLink('Terms of Service', '/tos', 'caption')}
+          {this.textNavLink('Privacy Policy', '/privacypolicy#top', 'caption')}
+          {this.textNavLink('Terms of Service', '/tos#top', 'caption')}
         </Grid>
       </Grid>
     )
@@ -191,8 +193,8 @@ class Footer extends React.Component {
         >
           {this.textNavLink('About Us', '/About', 'subheading')}
           {this.textNavLink('Contact Us', '/Contact', 'subheading')}
-          {this.textNavLink('Privacy Policy', '/privacypolicy', 'subheading')}
-          {this.textNavLink('Terms of Service', '/tos', 'subheading')}
+          {this.textNavLink('Privacy Policy', '/privacypolicy#top', 'subheading')}
+          {this.textNavLink('Terms of Service', '/tos#top', 'subheading')}
         </Grid>
       </Grid>
     )

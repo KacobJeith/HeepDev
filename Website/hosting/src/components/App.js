@@ -94,7 +94,7 @@ class App extends React.Component {
     }
 
     return (
-      <div id="testSpacer" {...inputs}/>
+      <div id="top" {...inputs}/>
     )
   }
 

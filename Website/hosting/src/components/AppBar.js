@@ -428,7 +428,7 @@ class MenuAppBar extends React.Component {
 
     return (
       <div className={classes.root}>
-        <AppBar position="fixed" id='top' style={{overflowX: 'hidden'}}>
+        <AppBar position="fixed" style={{overflowX: 'hidden'}}>
           <Toolbar>
             {this.mobileMenu()}
             <Hidden smDown>
