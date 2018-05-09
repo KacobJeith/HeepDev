@@ -86,7 +86,7 @@ class IIOT extends React.Component {
               We make it easy.
             </Typography>
             <Typography variant='body1' align='center'>
-              A suite of products for solving real problems in industrial environments
+              We've developed a suite of products for solving real problems in industrial environments.
             </Typography>
           </Grid>
           <Grid item sm={4} md={3} {...productStyles.grid}>
