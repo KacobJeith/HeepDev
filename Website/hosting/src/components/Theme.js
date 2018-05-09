@@ -15,19 +15,19 @@ const Theme = createMuiTheme({
   },
   typography: {
     display1: {
-      fontFamily: 'Fjalla One',
+      fontFamily: `"Fjalla One", "Roboto", "Helvetica", "Arial", sans-serif`,
       textTransform: 'uppercase',
       fontSize: '3rem'
     },
     headline: {
       color: "rgba(0, 0, 0, 0.6)",
-      fontFamily: 'Fjalla One',
+      fontFamily: `"Fjalla One", "Roboto", "Helvetica", "Arial", sans-serif`,
       textTransform: 'uppercase',
       fontSize: '2.2rem'
     },
     title: {
       color: "rgba(0, 0, 0, 0.6)",
-      fontFamily: 'Fjalla One',
+      fontFamily: `"Fjalla One", "Roboto", "Helvetica", "Arial", sans-serif`,
       textTransform: 'uppercase',
       fontSize: '1.5rem'
     },

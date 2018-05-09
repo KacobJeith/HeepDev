@@ -201,7 +201,7 @@ class MenuAppBar extends React.Component {
           paddingTop: 11,
           paddingBottom: 11,
           fontSize: '1.2rem',
-          fontFamily: 'Oswald',
+          fontFamily: `"Oswald", "Roboto", "Helvetica", "Arial", sans-serif`,
           textTransform: 'capitalize'
         }
       },

@@ -13,7 +13,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
  WebFont.load({
    google: {
      families: ['Fjalla One', 'Oswald']
-   }
+   },
  });
 
 require('./service-worker-registration.js');
