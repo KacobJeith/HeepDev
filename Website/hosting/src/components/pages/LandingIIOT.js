@@ -16,6 +16,7 @@ import AboutCard from '../about/AboutCard'
 import CollectionPreview from '../utilities/CollectionPreview'
 import VideoBackgroundCard from '../utilities/VideoBackgroundCard'
 import { banners } from '../../assets/remote/Banners'
+import videos from '../../assets/remote/videos.json'
 import { svgs } from '../../assets/remote/SVGs'
 import ContactUsSection from '../utilities/ContactUsSection'
 
@@ -35,8 +36,9 @@ class LandingIIOT extends React.Component {
       const inputs = {
         backgroundColor: 'black',
         //TO-DO: Purchase video
-        videoSrc: banners.networkVideo,
+        videoSrc: videos.lightbulbs,
         minHeight: 400,
+        overlayColor: 'rgba(0,0,0, 0.4)'
       }
 
       return(

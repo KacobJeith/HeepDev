@@ -13,6 +13,7 @@ import SplitSectionCard from '../utilities/SplitSectionCard'
 import ContactUsSection from '../utilities/ContactUsSection'
 
 import assets from '../../assets/remote/iiotAssets.json'
+import videos from '../../assets/remote/videos.json'
 
 const titleVariant = 'title';
 const titleAlign = 'center';
@@ -24,12 +25,13 @@ class IIOT extends React.Component {
     const inputs = {
       backgroundColor: 'black',
       //TO-DO: Purchase video
-      videoSrc: assets.bannerVideo,
+      videoSrc: videos.industry,
       minHeight: 400,
+      overlayColor: 'rgba(0,0,0, 0.7)'
     }
 
     return(
-      VideoBackgroundCard(inputs,
+      VideoBackgroundCard(inputs, 
         <Grid container direction='column' justify ='center' alignItems ='center' style={{
           width: '100%',
           minHeight: inputs.minHeight,

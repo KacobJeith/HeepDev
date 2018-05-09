@@ -1,7 +1,7 @@
 import React from 'react'
 import { Grid, Hidden } from 'material-ui'
 
-const VideoBackgroundCard = (componentProps, wrappedComponent) => {
+const VideoBackgroundCard = (componentProps,  wrappedComponent) => {
 
   const inputs = {
     outerContainer: {
@@ -53,7 +53,7 @@ const VideoBackgroundCard = (componentProps, wrappedComponent) => {
     <div style={{...inputs.outerContainer, ...componentProps}}>
       <Hidden smUp>
         <div  {...inputs.constrainHeight}>
-          <video autoPlay loop muted width='100%' height='100%' id='iiotVid' >
+          <video autoPlay loop muted width='100%' height='100%' id='iiotVid'>
             <source src={componentProps.videoSrc} type="video/mp4"/>
             Your browser does not support the video tag.
           </video>
@@ -62,14 +62,14 @@ const VideoBackgroundCard = (componentProps, wrappedComponent) => {
 
       <Hidden xsDown>
         <div {...inputs.constrainWidth}>
-          <video autoPlay loop muted width='100%' height='100%' id='iiotVid' >
+          <video autoPlay loop muted width='100%' height='100%' id='iiotVid'>
             <source src={componentProps.videoSrc} type="video/mp4"/>
             Your browser does not support the video tag.
           </video>
         </div>
       </Hidden>
 
-      <div style={{position: 'absolute', top: 0, left: 0, zIndex: 2, width: '100%', backgroundColor: 'rgba(0,0,0, 0.5)' }}>
+      <div style={{position: 'absolute', top: 0, left: 0, zIndex: 2, width: '100%', backgroundColor: componentProps.overlayColor }}>
         {wrappedComponent}
       </div>
     </div>

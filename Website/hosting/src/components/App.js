@@ -14,12 +14,13 @@ import Build from './heep/Build'
 import Logout from './account/Logout'
 import Loading from './Loading'
 import UserAccount from './account/UserAccount'
-import DeviceBuilder from './heep/DeviceBuilder'
 import ProductDetails from './store/ProductDetails'
 import DownloadPage from './heep/DownloadPage'
 import ManageCart from './store/ManageCart'
 import Tutorials from './Tutorials'
 import Contact from './Contact'
+import PrivacyPolicy from './pages/PrivacyPolicy'
+import TermsOfService from './pages/TermsOfService'
 
 const Landing = () => <AsyncComponent moduleProvider={() => import(
 	/* webpackChunkName: "landing" */
@@ -50,6 +51,11 @@ const diy = () => <AsyncComponent moduleProvider={() => import(
 	/* webpackChunkName: "diy" */
   	/* webpackMode: "lazy" */
   	'./pages/diy')} />
+
+const CommercialApplications = () => <AsyncComponent moduleProvider={() => import(
+	/* webpackChunkName: "commercial" */
+  	/* webpackMode: "lazy" */
+  	'./pages/CommercialApplications')} />
 
 import Theme from './Theme'
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
@@ -88,7 +94,7 @@ class App extends React.Component {
     }
 
     return (
-      <div id="testSpacer" {...inputs}/>
+      <div id="top" {...inputs}/>
     )
   }
 
@@ -127,10 +133,13 @@ class App extends React.Component {
 									<Route path="/About" component={About}/>
 									<Route path="/Shop" component={Store}/>
 									<Route path="/IndustrialHeep" component={iiot}/>
+									<Route path="/Business" component={CommercialApplications}/>
 {/* 									<Route path="/Tutorials" component={Tutorials}/> */}
 									<Route path="/product/:productID" component={ProductDetails}/>
 									<Route path="/Checkout" component={Checkout}/>
 									<Route path="/MyCart" component={ManageCart}/>
+									<Route path="/privacypolicy" component={PrivacyPolicy}/>
+									<Route path="/tos" component={TermsOfService}/>
                   <Route path="/Contact" component={Contact}/>
 {/* 									<Route exact path="/auth" component={Auth}/> */}
 {/* 									<Route exact path="/Developers" component={DownloadPage}/> */}
