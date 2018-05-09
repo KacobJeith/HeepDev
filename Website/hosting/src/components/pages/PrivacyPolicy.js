@@ -20,7 +20,7 @@ class PrivacyPolicy extends React.Component {
       paddingBottom: 25,
       // backgroundColor: '#5BC3F4',
       background: 'linear-gradient(to bottom right, #1cbdb6, #37b8e9)',
-      marginBottom: 50
+      marginBottom: 40
     };
 
     return (
@@ -41,7 +41,7 @@ class PrivacyPolicy extends React.Component {
           </Grid>
         </Grid>
         )}
-        <Grid container direction='column' alignItems='center' style={{maxWidth: '100%', margin: 0}}
+        <Grid container direction='row' alignItems='stretch' justify='center' style={{maxWidth: '100%', margin: 0}}
         spacing={24}>
 
             {policy.sections.map((thisSection, sectionIndex) => (

@@ -20,7 +20,7 @@ class TermsOfService extends React.Component {
       paddingBottom: 25,
       // backgroundColor: '#5BC3F4',
       background: 'linear-gradient(to bottom right, #65D0CA, #9D24CA)',
-      marginBottom: 50
+      marginBottom: 40
     };
 
     return (
