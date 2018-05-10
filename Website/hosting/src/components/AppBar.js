@@ -209,7 +209,7 @@ class MenuAppBar extends React.Component {
       },
       Button: {
         style: {
-          textTransform: "capitalize"
+          textTransform: "capitalize",
         }
       },
       NavLink: {
@@ -221,13 +221,13 @@ class MenuAppBar extends React.Component {
 
     return (
       <Hidden xsDown>
-        <Button {...inputs.Button}>
-          <NavLink to={navLink} {...inputs.NavLink}>
-            <div {...inputs.Typography}>
-              {linkText}
-            </div>
-          </NavLink>
-        </Button>
+        <NavLink to={navLink} {...inputs.NavLink}>
+          <Button {...inputs.Button}>
+              <div {...inputs.Typography}>
+                {linkText}
+              </div>
+          </Button>
+        </NavLink>
       </Hidden>
     )
   };
@@ -412,7 +412,7 @@ class MenuAppBar extends React.Component {
                 {this.mobileMenuLink('/', 'Home', <Home/>)}
                 {this.mobileMenuLink('/Business', 'Business', <LocalMall/>)}
                 {this.mobileMenuLink('/IndustrialHeep', 'Industry', <Business/>)}
-                {this.mobileMenuLink('/DIY', 'DIY', <Build/>)}
+                {this.mobileMenuLink('/Makers', 'Makers', <Build/>)}
                 {/* {this.mobileMenuLink('/Shop', 'Shop', <ShopIcon/>)} */}
                 {this.mobileMenuLink('/About', 'About', <FaceIcon/>)}
                 {this.mobileMenuLink('/Contact', 'Contact', <Mail/>)}
@@ -443,12 +443,12 @@ class MenuAppBar extends React.Component {
             {this.appBarLink("/", "Home")}
             {this.appBarLink("/Business", "Business")}
             {this.appBarLink("/IndustrialHeep", "Industry")}
-            {this.appBarLink("/DIY", "DIY")}
+            {this.appBarLink("/Makers", "Makers")}
             {this.appBarLink("/About", "About")}
             {this.appBarLink("/Contact", "Contact")}
-            {this.appBarLink("/Shop", "Shop")}
+            {/* {this.appBarLink("/Shop", "Shop")} */}
 {/*             {this.appBarLink("/Developers", "Develop")} */}
-            {this.appBarCart()}
+            {/* {this.appBarCart()} */}
 {/*             {this.avatarLogin()} */}
           </Toolbar>
         </AppBar>
