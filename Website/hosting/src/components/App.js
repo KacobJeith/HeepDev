@@ -3,7 +3,6 @@ import {BrowserRouter as Router, Route} from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as Actions from '../redux/actions'
-import ReactGA from 'react-ga'
 import AsyncComponent from './AsyncComponent'
 
 import AppBar from './AppBar'
@@ -67,14 +66,7 @@ const mapStateToProps = (state) => ({
 class App extends React.Component {
 	constructor(props) {
 		super(props);
-		// ReactGA.initialize('UA-93098480-1');
 		this.handleScroll = this.handleScroll.bind(this)
-	}
-
-
-	logPageView() {
-	  // ReactGA.set({ page: window.location.pathname });
-	  // ReactGA.pageview(window.location.pathname);
 	}
 
 	componentDidMount() {
@@ -99,7 +91,7 @@ class App extends React.Component {
   }
 
 	render() {
-		this.logPageView();
+		
 
 		const inputs = {
 			container : {

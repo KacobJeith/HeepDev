@@ -13,8 +13,13 @@ import videos from '../../assets/remote/videos.json'
 import { svgs } from '../../assets/remote/SVGs'
 import { logos } from '../../assets/remote/Logos'
 import photos from '../../assets/remote/photos.json'
+import { logPageView } from '../../GoogleAnalytics'
 
 class About extends React.Component {
+
+  componentDidMount() {
+    logPageView()
+  }
 
   topBanner() {
 

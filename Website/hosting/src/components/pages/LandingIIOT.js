@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom'
 import { withStyles } from 'material-ui/styles';
 import * as Actions from '../../redux/actions'
 import { HashLink } from "react-router-hash-link";
+import { logPageView } from '../../GoogleAnalytics'
 
 import { Grid, Paper, Typography, Button } from 'material-ui'
 import Memory from 'material-ui-icons/Memory'
@@ -41,6 +42,10 @@ const styles = theme => ({
 });
 
 class LandingIIOT extends React.Component {
+
+  componentDidMount() {
+    logPageView()
+  }
 
   topBanner() {
 

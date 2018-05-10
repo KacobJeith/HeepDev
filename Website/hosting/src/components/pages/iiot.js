@@ -15,11 +15,16 @@ import ContactUsSection from '../utilities/ContactUsSection'
 import assets from '../../assets/remote/iiotAssets.json'
 import photos from '../../assets/remote/photos.json'
 import videos from '../../assets/remote/videos.json'
+import { logPageView } from '../../GoogleAnalytics'
 
 const titleVariant = 'title';
 const titleAlign = 'center';
 
 class IIOT extends React.Component {
+
+  componentDidMount() {
+    logPageView()
+  }
 
   topBanner() {
 

@@ -15,12 +15,16 @@ import ContactUsSection from '../utilities/ContactUsSection'
 import videos from '../../assets/remote/videos.json'
 import assets from '../../assets/remote/iiotAssets.json'
 import images from '../../assets/remote/general.json'
+import { logPageView } from '../../GoogleAnalytics'
 
 
 const titleVariant = 'title';
 const titleAlign = 'center';
 
 class CommercialApplications extends React.Component {
+  componentDidMount() {
+    logPageView()
+  }
 
   topBanner() {
 
