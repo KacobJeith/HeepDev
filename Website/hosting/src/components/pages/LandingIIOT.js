@@ -90,7 +90,7 @@ class LandingIIOT extends React.Component {
           <Typography
             variant="headline" component="headline"
             align="center"
-            style={{paddingTop: 24}}>
+            style={{paddingTop: 24, paddingBottom: 8}}>
               {title}
           </Typography>
           <Typography component="p">
