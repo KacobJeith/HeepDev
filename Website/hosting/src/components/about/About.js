@@ -5,9 +5,11 @@ import { Grid, Typography } from 'material-ui';
 import SectionCard from '../utilities/SectionCard'
 import AboutCard from './AboutCard'
 import TeamModal from './TeamModal'
+import VideoBackgroundCard from '../utilities/VideoBackgroundCard'
 
 import { founders } from '../../assets/remote/Founders'
 import { banners } from '../../assets/remote/Banners'
+import videos from '../../assets/remote/videos.json'
 import { svgs } from '../../assets/remote/SVGs'
 import { logos } from '../../assets/remote/Logos'
 import photos from '../../assets/remote/photos.json'
@@ -17,15 +19,28 @@ class About extends React.Component {
   topBanner() {
 
     const inputs = {
+      videoSrc: videos.officeLoop,
       paddingTop: 25,
       paddingBottom: 25,
       backgroundColor: '#9fb4c4',
-      imagePath: banners.brooklynBridge,
       minHeight: 400,
+      overlayColor: 'rgba(0,0,0, 0.15)'
     }
 
     return(
-      SectionCard(inputs, '')
+      VideoBackgroundCard(inputs, 
+        <Grid container direction='column' justify ='center' alignItems ='center' style={{
+          width: '100%',
+          minHeight: inputs.minHeight,
+          margin: '0 auto'
+        }}>
+          <Grid item xs={12} sm={8}>
+            <Typography variant='display1' align='center' style={{color:'white'}}>
+              
+            </Typography>
+          </Grid>
+        </Grid>
+      )
     )
   };
 

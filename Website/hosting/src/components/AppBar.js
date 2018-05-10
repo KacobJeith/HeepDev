@@ -411,10 +411,10 @@ class MenuAppBar extends React.Component {
                 {this.mobileMenuLink('/', 'Home', <Home/>)}
                 {this.mobileMenuLink('/Business', 'Business', <LocalMall/>)}
                 {this.mobileMenuLink('/IndustrialHeep', 'Industry', <Business/>)}
-                {this.mobileMenuLink('/Shop', 'Shop', <ShopIcon/>)}
+{/*                 {this.mobileMenuLink('/Shop', 'Shop', <ShopIcon/>)} */}
                 {this.mobileMenuLink('/About', 'About', <FaceIcon/>)}
                 {this.mobileMenuLink('/Contact', 'Contact', <Mail/>)}
-                {this.mobileMenuCart()}
+{/*                 {this.mobileMenuCart()} */}
 {/*                 {this.mobileMenuLink('/Developers', 'Develop', <DevelopIcon/>)} */}
 
               </div>
@@ -444,9 +444,9 @@ class MenuAppBar extends React.Component {
             {this.appBarLink("/DIY", "DIY")}
             {this.appBarLink("/About", "About")}
             {this.appBarLink("/Contact", "Contact")}
-            {this.appBarLink("/Shop", "Shop")}
+{/*             {this.appBarLink("/Shop", "Shop")} */}
 {/*             {this.appBarLink("/Developers", "Develop")} */}
-            {this.appBarCart()}
+{/*             {this.appBarCart()} */}
 {/*             {this.avatarLogin()} */}
           </Toolbar>
         </AppBar>

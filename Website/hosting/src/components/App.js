@@ -131,16 +131,16 @@ class App extends React.Component {
 									<Route path="/Landing" component={Landing}/>
 									<Route path="/DIY" component={diy}/>
 									<Route path="/About" component={About}/>
-									<Route path="/Shop" component={Store}/>
 									<Route path="/IndustrialHeep" component={iiot}/>
 									<Route path="/Business" component={CommercialApplications}/>
-{/* 									<Route path="/Tutorials" component={Tutorials}/> */}
-									<Route path="/product/:productID" component={ProductDetails}/>
-									<Route path="/Checkout" component={Checkout}/>
-									<Route path="/MyCart" component={ManageCart}/>
 									<Route path="/privacypolicy" component={PrivacyPolicy}/>
 									<Route path="/tos" component={TermsOfService}/>
-                  <Route path="/Contact" component={Contact}/>
+                  					<Route path="/Contact" component={Contact}/>
+{/* 									<Route path="/Tutorials" component={Tutorials}/> */}
+{/* 									<Route path="/product/:productID" component={ProductDetails}/> */}
+{/* 									<Route path="/Checkout" component={Checkout}/> */}
+{/* 									<Route path="/MyCart" component={ManageCart}/> */}
+{/* 									<Route path="/Shop" component={Store}/> */}
 {/* 									<Route exact path="/auth" component={Auth}/> */}
 {/* 									<Route exact path="/Developers" component={DownloadPage}/> */}
 {/* 									{this.props.loginStatus && <Route path="/User" component={UserAccount} key="user"/>} */}
