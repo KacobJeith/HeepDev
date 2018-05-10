@@ -219,7 +219,7 @@ class MenuAppBar extends React.Component {
     };
 
     return (
-      <Hidden smDown>
+      <Hidden xsDown>
         <Button {...inputs.Button}>
           <NavLink to={navLink} {...inputs.NavLink}>
             <div {...inputs.Typography}>
@@ -283,7 +283,7 @@ class MenuAppBar extends React.Component {
 
   mobileAppBarLogo() {
     return (
-      <Hidden mdUp>
+      <Hidden smUp>
         <Grid container justify='center' style={{
           width: '100%',
           height: '100%',
@@ -380,7 +380,7 @@ class MenuAppBar extends React.Component {
     }
 
     return (
-      <Hidden mdUp>
+      <Hidden smUp>
           <IconButton
             {...inputs.menuButton}
             onClick={this.handleMobileMenuOpen}
@@ -433,7 +433,7 @@ class MenuAppBar extends React.Component {
         <AppBar position="fixed" style={{overflowX: 'hidden'}}>
           <Toolbar>
             {this.mobileMenu()}
-            <Hidden smDown>
+            <Hidden xsDown>
               {this.appBarLogo()}
             </Hidden>
             {this.mobileAppBarLogo()}

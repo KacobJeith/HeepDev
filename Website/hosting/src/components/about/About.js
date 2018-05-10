@@ -44,7 +44,7 @@ class About extends React.Component {
          justify='center' alignItems='center'>
           <Grid item xs={12}>
             <Typography variant='headline' align='center' gutterBottom paragraph>
-              Our Mission
+              About Heep
             </Typography>
           </Grid>
           <Grid item xs={12} md={5}>
@@ -76,7 +76,6 @@ class About extends React.Component {
 
   ourValues() {
     const inputs = {
-      //background: 'linear-gradient(to bottom, #FFF, #143f53)'
     };
 
     return (
@@ -152,7 +151,7 @@ class About extends React.Component {
   ourStory() {
     const inputs = {
       padding: 50,
-      backgroundColor: "#143f53"
+      background: "linear-gradient(to bottom, #0e2d3c, #16465c, #0e2d3c)"
     };
 
     return(
