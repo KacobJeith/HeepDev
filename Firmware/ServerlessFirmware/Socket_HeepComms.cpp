@@ -168,6 +168,22 @@ void CheckServerForInputs()
     
 }
 
+int Write1Character1FromValue(unsigned char value, char* IPString, int startPoint)
+{
+  IPString[startPoint] = (value%10) + '0';
+  startPoint++;
+  return startPoint;
+}
+
+int Write2CharactersFromValue(unsigned char value, char* IPString, int startPoint)
+{
+  IPString[startPoint] = (value/10)%10 + '0';
+  startPoint++;
+  IPString[startPoint] = (value%10) + '0';
+  startPoint++;
+  return startPoint;
+}
+
 int Write3CharactersFromValue(unsigned char value, char* IPString, int startPoint)
 {
   IPString[startPoint] = (value/100)%10 + '0';
@@ -179,20 +195,33 @@ int Write3CharactersFromValue(unsigned char value, char* IPString, int startPoin
   return startPoint;
 }
 
+int WriteCharactersFromValue(unsigned char value, char* IPString, int startPoint)
+{
+    if(value < 10)
+        return Write1Character1FromValue(value, IPString, startPoint);
+    else if(value < 100)
+        return Write2CharactersFromValue(value, IPString, startPoint);
+    
+    return Write3CharactersFromValue(value, IPString, startPoint);
+}
+
+
+
 void WriteHeepIPToString(HeepIPAddress destIP, char* IPString)
 {
-  int counter = Write3CharactersFromValue(destIP.Octet4, IPString, 0);
+  int counter = WriteCharactersFromValue(destIP.Octet4, IPString, 0);
   IPString[counter] = '.'; counter++;
-  counter = Write3CharactersFromValue(destIP.Octet3, IPString, counter);
+  counter = WriteCharactersFromValue(destIP.Octet3, IPString, counter);
   IPString[counter] = '.'; counter++;
-  counter = Write3CharactersFromValue(destIP.Octet2, IPString, counter);
+  counter = WriteCharactersFromValue(destIP.Octet2, IPString, counter);
   IPString[counter] = '.'; counter++;
-  counter = Write3CharactersFromValue(destIP.Octet1, IPString, counter);
+  counter = WriteCharactersFromValue(destIP.Octet1, IPString, counter);
+  IPString[counter] = '\0';
 }
 
 void SendOutputBufferToIP(HeepIPAddress destIP)
 {
-    char IP [17];
+    char IP [18];
     WriteHeepIPToString(destIP, IP);
 
     int sockfd, n;
