@@ -19,7 +19,7 @@ class About extends React.Component {
     const inputs = {
       paddingTop: 25,
       paddingBottom: 25,
-      backgroundColor: '#00adee',
+      backgroundColor: '#9fb4c4',
       imagePath: banners.brooklynBridge,
       minHeight: 400,
     }
@@ -31,6 +31,7 @@ class About extends React.Component {
 
   mission() {
     const inputs = {
+      background: 'linear-gradient(to bottom, #9fb4c4, #FFF)',
     };
 
     return (
@@ -38,13 +39,12 @@ class About extends React.Component {
         <Grid container spacing={8} style={{
           maxWidth:'100%',
           margin: '0 auto',
-          backgroundColor: '#c9d6dd',
           padding: 50
          }}
          justify='center' alignItems='center'>
           <Grid item xs={12}>
             <Typography variant='headline' align='center' gutterBottom paragraph>
-              Our Mission
+              About Heep
             </Typography>
           </Grid>
           <Grid item xs={12} md={5}>
@@ -88,8 +88,11 @@ class About extends React.Component {
          justify='center' alignItems='center'>
           <Grid item xs={12} md={8}>
             <Typography variant='headline' align='center' gutterBottom paragraph>
-              Open Source, Secure, and Easy.
+              Open Source, Secure, and Easy
             </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            {this.aboutGraphics()}
           </Grid>
         </Grid>
       )
@@ -148,7 +151,7 @@ class About extends React.Component {
   ourStory() {
     const inputs = {
       padding: 50,
-      backgroundColor: "#143f53"
+      background: "linear-gradient(to bottom, #0e2d3c, #16465c, #0e2d3c)"
     };
 
     return(
@@ -257,7 +260,6 @@ class About extends React.Component {
         {this.topBanner()}
         {this.mission()}
         {this.ourValues()}
-        {this.aboutGraphics()}
         {this.ourStory()}
         {this.teamSection()}
       </div>

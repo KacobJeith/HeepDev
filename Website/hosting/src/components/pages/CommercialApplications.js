@@ -25,14 +25,14 @@ class CommercialApplications extends React.Component {
   topBanner() {
 
     const inputs = {
-      backgroundColor: '#00adee',
+      backgroundColor: 'black',
       //TO-DO: Purchase video
       videoSrc: videos.lightbulbs,
       minHeight: 400,
     }
 
     return(
-      VideoBackgroundCard(inputs, 
+      VideoBackgroundCard(inputs,
         <Grid container direction='column' justify ='center' alignItems ='center' style={{
           width: '100%',
           minHeight: inputs.minHeight,
@@ -40,13 +40,13 @@ class CommercialApplications extends React.Component {
         }}>
           <Grid item xs={12} sm={8}>
             <Typography variant='display1' align={titleAlign} style={{color:'white'}}>
-              Immerse your Customers in Living Experiences 
+              Immerse your Customers in Living Experiences
             </Typography>
           </Grid>
 
           <Grid item xs={12} sm={8}>
             <Typography variant='subheading' align='center' style={{color:'#bbbbbb'}}>
-              Heep control systems are enabling business to offer more dynamic experiences to their customers. 
+              Heep control systems are enabling business to offer more dynamic experiences to their customers.
             </Typography>
 
           </Grid>
@@ -59,29 +59,29 @@ class CommercialApplications extends React.Component {
   sectionLinks(sections) {
 
     return (
-      <Grid container alignItems='center' justify='center' spacing={0} 
+      <Grid container alignItems='center' justify='center' spacing={0}
         style={{
-          backgroundColor: this.props.theme.palette.primary.dark, 
+          background: "#063832",
           padding: this.props.theme.spacing.unit,
           width: '100%',
           margin: '0 auto'
         }}
       >
         {sections.map((nextSection) => (
-          <Grid item key={nextSection.link + 'key'} 
+          <Grid item key={nextSection.link + 'key'}
             style={{marginRight: 20}}
 
-          >    
-            <HashLink 
-                smooth 
-                to={"#" + nextSection.link} 
+          >
+            <HashLink
+                smooth
+                to={"#" + nextSection.link}
                 style={{
                   textDecoration: 'none',
                   outline: 'none',
                 }}
                 >
 
-                <Button variant='flat' style={{ textTransform: "capitalize", color: '#ddd'}}> 
+                <Button variant='flat' style={{ textTransform: "capitalize", color: '#ddd', fontWeight: 'bold'}}>
                   {nextSection.title}
                 </Button>
               </HashLink>
@@ -93,7 +93,7 @@ class CommercialApplications extends React.Component {
 
   splitSectionWithBullets(sectionInfo, orientation) {
     const inputs = {
-      imageSide: orientation, 
+      imageSide: orientation,
       minHeight: 400,
       imagePath: images[sectionInfo.link]
     };
@@ -113,7 +113,7 @@ class CommercialApplications extends React.Component {
             <Typography variant='body1' align='left' style={{color: '#999'}}>
               <ul>
                 {sectionInfo.bullets.map((thisBullet, index) => (
-                  <li key={sectionInfo.link + index}>{thisBullet}</li> 
+                  <li key={sectionInfo.link + index}>{thisBullet}</li>
                 ))}
               </ul>
             </Typography>
@@ -122,20 +122,20 @@ class CommercialApplications extends React.Component {
           {sectionInfo.moreInfoLink && (
             <Grid item xs={12}>
               <Grid container justify='center' alignItems='center'>
-                <HashLink 
-                  smooth 
-                  to={sectionInfo.moreInfoLink.externalLink ? 
-                    'Business' : 
-                    sectionInfo.moreInfoLink.link} 
+                <HashLink
+                  smooth
+                  to={sectionInfo.moreInfoLink.externalLink ?
+                    'Business' :
+                    sectionInfo.moreInfoLink.link}
                   style={{
                     textDecoration: 'none',
                     outline: 'none'
                   }}
                 >
                 <Button variant='flat' color='secondary' style={{ textTransform: "capitalize"}}
-                  onClick={sectionInfo.moreInfoLink.externalLink ? 
-                    () => window.open(sectionInfo.moreInfoLink.externalLink, '_blank') : 
-                    () => {}}> 
+                  onClick={sectionInfo.moreInfoLink.externalLink ?
+                    () => window.open(sectionInfo.moreInfoLink.externalLink, '_blank') :
+                    () => {}}>
                     {sectionInfo.moreInfoLink.text}
                     <ArrowForward style={{marginLeft: this.props.theme.spacing.unit}}/>
                   </Button>
@@ -143,7 +143,7 @@ class CommercialApplications extends React.Component {
               </Grid>
             </Grid>
           )}
-          
+
         </Grid>
       )
     );
@@ -153,7 +153,7 @@ class CommercialApplications extends React.Component {
 
     const sections = [
       {
-        link: 'missionChineseLight', 
+        link: 'missionChineseLight',
         title: 'Mission Chinese Food',
         bullets: [
           'Heep Partnered with Smooth Technology to bring the dining room at Mission Chinese Food to life',
@@ -165,7 +165,7 @@ class CommercialApplications extends React.Component {
         }
       },
       {
-        link: 'escapeTheRoomNuclear', 
+        link: 'escapeTheRoomNuclear',
         title: 'Escape The Room',
         bullets: [
           'Heep Partnered with Escape The Room to build immersive, magical Escape Rooms',

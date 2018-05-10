@@ -13,6 +13,7 @@ import SplitSectionCard from '../utilities/SplitSectionCard'
 import ContactUsSection from '../utilities/ContactUsSection'
 
 import assets from '../../assets/remote/iiotAssets.json'
+import photos from '../../assets/remote/photos.json'
 import videos from '../../assets/remote/videos.json'
 
 const titleVariant = 'title';
@@ -31,7 +32,7 @@ class IIOT extends React.Component {
     }
 
     return(
-      VideoBackgroundCard(inputs, 
+      VideoBackgroundCard(inputs,
         <Grid container direction='column' justify ='center' alignItems ='center' style={{
           width: '100%',
           minHeight: inputs.minHeight,
@@ -57,13 +58,57 @@ class IIOT extends React.Component {
     )
   };
 
+  productImages() {
+    const inputs = {
+      padding: 50,
+      background: 'linear-gradient(to bottom, #a3b8c9, #fff, #a3b8c9)'
+    }
+
+    const productStyles = {
+      grid: {
+        style: {
+          display: 'block',
+          textAlign: 'center'
+        }
+      },
+      product: {
+        style: {
+          maxWidth: 200
+        }
+      }
+    }
+
+    return (
+      SectionCard(inputs,
+        <Grid container justify='center' style={{maxWidth: '100%', margin: 0}}>
+          <Grid item xs={12} style={{paddingBottom: 30}}>
+            <Typography variant='headline' align='center'>
+              We make it easy.
+            </Typography>
+            <Typography variant='body1' align='center'>
+              We've developed a suite of products for solving real problems in industrial environments.
+            </Typography>
+          </Grid>
+          <Grid item sm={4} md={3} {...productStyles.grid}>
+            <img src={photos.RFID} {...productStyles.product}/>
+          </Grid>
+          <Grid item sm={4} md={3} {...productStyles.grid}>
+            <img src={photos.MagLockStraight} {...productStyles.product}/>
+          </Grid>
+          <Grid item sm={4} md={3} {...productStyles.grid}>
+            <img src={photos.PlaygroundAndShield} {...productStyles.product}/>
+          </Grid>
+        </Grid>
+      )
+    )
+  }
 
   sectionLinks(sections) {
 
     return (
       <Grid container alignItems='center' justify='center' spacing={0}
         style={{
-          backgroundColor: "#143f53",
+          background: "#143f53",
           padding: this.props.theme.spacing.unit,
           width: '100%',
           margin: '0 auto'
@@ -83,7 +128,7 @@ class IIOT extends React.Component {
                 }}
                 >
 
-                <Button variant='flat' style={{ textTransform: "capitalize", color: '#ddd', fontStyle: 'italic'}}>
+                <Button variant='flat' style={{ textTransform: "capitalize", color: '#ddd', fontWeight: 'bold'}}>
                   {nextSection.title}
                 </Button>
               </HashLink>
@@ -107,7 +152,7 @@ class IIOT extends React.Component {
           margin: '0 auto'
          }}
          justify='center' alignItems='center'>
-          <Grid item  xs={12} md={10}>
+          <Grid item  xs={12} md={10} style={{paddingTop: 15, paddingBottom: 15}}>
             <Typography variant={titleVariant} align={titleAlign}>
               {sectionInfo.title}
             </Typography>
@@ -254,6 +299,7 @@ class IIOT extends React.Component {
       <div>
         {this.topBanner()}
         {this.sectionLinks(sections)}
+        {this.productImages()}
         {sections.map((sectionInfo, index) => {
           return this.splitSectionWithBullets(sectionInfo, index % 2 == 0 ? 'left' : 'right')
         })}
