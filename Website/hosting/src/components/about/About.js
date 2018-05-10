@@ -88,7 +88,7 @@ class About extends React.Component {
          justify='center' alignItems='center'>
           <Grid item xs={12} md={8}>
             <Typography variant='headline' align='center' gutterBottom paragraph>
-              Open Source, Secure, and Easy.
+              Open Source, Secure, and Easy
             </Typography>
           </Grid>
           <Grid item xs={12}>
