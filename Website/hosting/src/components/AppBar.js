@@ -413,10 +413,10 @@ class MenuAppBar extends React.Component {
                 {this.mobileMenuLink('/Business', 'Business', <LocalMall/>)}
                 {this.mobileMenuLink('/IndustrialHeep', 'Industry', <Business/>)}
                 {this.mobileMenuLink('/DIY', 'DIY', <Build/>)}
-                {this.mobileMenuLink('/Shop', 'Shop', <ShopIcon/>)}
+                {/* {this.mobileMenuLink('/Shop', 'Shop', <ShopIcon/>)} */}
                 {this.mobileMenuLink('/About', 'About', <FaceIcon/>)}
                 {this.mobileMenuLink('/Contact', 'Contact', <Mail/>)}
-                {this.mobileMenuCart()}
+                {/* {this.mobileMenuCart()} */}
 {/*                 {this.mobileMenuLink('/Developers', 'Develop', <DevelopIcon/>)} */}
 
               </div>
