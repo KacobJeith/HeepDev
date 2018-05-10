@@ -37,6 +37,7 @@ import DevelopIcon            from 'material-ui-icons/Code'
 import Home                   from 'material-ui-icons/Home'
 import Business                   from 'material-ui-icons/Business'
 import LocalMall                   from 'material-ui-icons/LocalMall'
+import Build                  from 'material-ui-icons/Build'
 
 
 import { withStyles }         from 'material-ui/styles';
@@ -411,6 +412,7 @@ class MenuAppBar extends React.Component {
                 {this.mobileMenuLink('/', 'Home', <Home/>)}
                 {this.mobileMenuLink('/Business', 'Business', <LocalMall/>)}
                 {this.mobileMenuLink('/IndustrialHeep', 'Industry', <Business/>)}
+                {this.mobileMenuLink('/DIY', 'DIY', <Build/>)}
                 {this.mobileMenuLink('/Shop', 'Shop', <ShopIcon/>)}
                 {this.mobileMenuLink('/About', 'About', <FaceIcon/>)}
                 {this.mobileMenuLink('/Contact', 'Contact', <Mail/>)}
