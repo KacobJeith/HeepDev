@@ -22,13 +22,13 @@ class About extends React.Component {
       videoSrc: videos.officeLoop,
       paddingTop: 25,
       paddingBottom: 25,
-      backgroundColor: '#9fb4c4',
+      backgroundColor: '#d5c0b1',
       minHeight: 400,
       overlayColor: 'rgba(0,0,0, 0.15)'
     }
 
     return(
-      VideoBackgroundCard(inputs, 
+      VideoBackgroundCard(inputs,
         <Grid container direction='column' justify ='center' alignItems ='center' style={{
           width: '100%',
           minHeight: inputs.minHeight,
@@ -36,7 +36,7 @@ class About extends React.Component {
         }}>
           <Grid item xs={12} sm={8}>
             <Typography variant='display1' align='center' style={{color:'white'}}>
-              
+
             </Typography>
           </Grid>
         </Grid>
@@ -46,7 +46,7 @@ class About extends React.Component {
 
   mission() {
     const inputs = {
-      background: 'linear-gradient(to bottom, #9fb4c4, #FFF)',
+      background: 'linear-gradient(to bottom, #e7d1c1, #FFF)',
     };
 
     return (

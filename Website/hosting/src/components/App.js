@@ -129,7 +129,7 @@ class App extends React.Component {
 									<Route path="/" component={AppBar}/>
 									<Route exact path="/" component={Landing}/>
 									<Route path="/Landing" component={Landing}/>
-									<Route path="/DIY" component={diy}/>
+									<Route path="/Makers" component={diy}/>
 									<Route path="/About" component={About}/>
 									<Route path="/IndustrialHeep" component={iiot}/>
 									<Route path="/Business" component={CommercialApplications}/>
