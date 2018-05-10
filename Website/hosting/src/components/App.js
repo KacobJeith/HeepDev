@@ -3,23 +3,23 @@ import {BrowserRouter as Router, Route} from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as Actions from '../redux/actions'
-import ReactGA from 'react-ga'
 import AsyncComponent from './AsyncComponent'
 
 import AppBar from './AppBar'
 import Footer from './Footer'
 // import Landing from './landing/Landing'
-import About from './About'
+import About from './about/About'
 import Build from './heep/Build'
 import Logout from './account/Logout'
 import Loading from './Loading'
 import UserAccount from './account/UserAccount'
-import DeviceBuilder from './heep/DeviceBuilder'
 import ProductDetails from './store/ProductDetails'
 import DownloadPage from './heep/DownloadPage'
 import ManageCart from './store/ManageCart'
 import Tutorials from './Tutorials'
 import Contact from './Contact'
+import PrivacyPolicy from './pages/PrivacyPolicy'
+import TermsOfService from './pages/TermsOfService'
 
 const Landing = () => <AsyncComponent moduleProvider={() => import(
 	/* webpackChunkName: "landing" */
@@ -51,6 +51,11 @@ const diy = () => <AsyncComponent moduleProvider={() => import(
   	/* webpackMode: "lazy" */
   	'./pages/diy')} />
 
+const CommercialApplications = () => <AsyncComponent moduleProvider={() => import(
+	/* webpackChunkName: "commercial" */
+  	/* webpackMode: "lazy" */
+  	'./pages/CommercialApplications')} />
+
 import Theme from './Theme'
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
 
@@ -61,14 +66,7 @@ const mapStateToProps = (state) => ({
 class App extends React.Component {
 	constructor(props) {
 		super(props);
-		// ReactGA.initialize('UA-93098480-1');
 		this.handleScroll = this.handleScroll.bind(this)
-	}
-
-
-	logPageView() {
-	  // ReactGA.set({ page: window.location.pathname });
-	  // ReactGA.pageview(window.location.pathname);
 	}
 
 	componentDidMount() {
@@ -79,8 +77,21 @@ class App extends React.Component {
         this.props.updateScrollPosition(window.scrollY)
     }
 
+  topSpacer() {
+    const inputs = {
+      style: {
+        height: 60,
+        width: '100%',
+      }
+    }
+
+    return (
+      <div id="top" {...inputs}/>
+    )
+  }
+
 	render() {
-		this.logPageView();
+		
 
 		const inputs = {
 			container : {
@@ -106,18 +117,22 @@ class App extends React.Component {
 			    	<MuiThemeProvider theme={Theme}>
 							<div {...inputs.container}>
 								<div {...inputs.content}>
+                  {this.topSpacer()}
 									<Route path="/" component={AppBar}/>
 									<Route exact path="/" component={Landing}/>
 									<Route path="/Landing" component={Landing}/>
-									<Route path="/DIY" component={diy}/>
+									<Route path="/Makers" component={diy}/>
 									<Route path="/About" component={About}/>
-									<Route path="/Shop" component={Store}/>
 									<Route path="/IndustrialHeep" component={iiot}/>
+									<Route path="/Business" component={CommercialApplications}/>
+									<Route path="/privacypolicy" component={PrivacyPolicy}/>
+									<Route path="/tos" component={TermsOfService}/>
+                  					<Route path="/Contact" component={Contact}/>
 {/* 									<Route path="/Tutorials" component={Tutorials}/> */}
-									<Route path="/product/:productID" component={ProductDetails}/>
-									<Route path="/Checkout" component={Checkout}/>
-									<Route path="/MyCart" component={ManageCart}/>
-                  <Route path="/Contact" component={Contact}/>
+{/* 									<Route path="/product/:productID" component={ProductDetails}/> */}
+{/* 									<Route path="/Checkout" component={Checkout}/> */}
+{/* 									<Route path="/MyCart" component={ManageCart}/> */}
+{/* 									<Route path="/Shop" component={Store}/> */}
 {/* 									<Route exact path="/auth" component={Auth}/> */}
 {/* 									<Route exact path="/Developers" component={DownloadPage}/> */}
 {/* 									{this.props.loginStatus && <Route path="/User" component={UserAccount} key="user"/>} */}

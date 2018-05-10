@@ -103,9 +103,11 @@ class ProductCard extends React.Component {
         size: 'small',
         style: {
           margin: this.props.theme.spacing.unit,
-          padding: 0,
-          marginRight: this.props.theme.spacing.unit * 3,
-          paddingLeft: this.props.theme.spacing.unit * 3
+          height: 38,
+          paddingTop: 0,
+          paddingBottom: 0,
+          paddingLeft: this.props.theme.spacing.unit * 2,
+          color: "#ececec"
         },
         onClick: () => {
           this.props.addProductToCart(this.props.productID);
@@ -120,21 +122,14 @@ class ProductCard extends React.Component {
         }
       },
       shoppingCartIcon: {
-        nativeColor: this.props.theme.palette.secondary.contrastText,
         fontSize: true,
         style: {
           display:'inline-block',
           fontSize: Math.ceil(this.props.theme.typography.fontSize * 1.2),
-          margin: this.props.theme.spacing.unit
+          margin: this.props.theme.spacing.unit,
+          color: "#ececec"
         }
       },
-      typeButton: {
-        variant:'caption',
-        style: {
-          margin: this.props.theme.spacing.unit * 2,
-          color:this.props.theme.palette.secondary.contrastText
-        }
-      }
     }
 
     return (
@@ -147,7 +142,7 @@ class ProductCard extends React.Component {
             'primary')
           }
         </Button>
-        <Typography variant='body1' >
+        <Typography variant='body1' style={{paddingLeft: 10}} >
             ${this.props.product.variants[0].price}
         </Typography>
       </div>

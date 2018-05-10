@@ -32,8 +32,8 @@ var mapStateToProps = (state) => ({
 
 const extractControls = (state) => {
 
-  const inputs = state.controls.controlStructure[state.detailsPanelDeviceID].inputs;
-  const outputs = state.controls.controlStructure[state.detailsPanelDeviceID].outputs;
+  const inputs = state.controls.controlStructure[state.detailsPanelDeviceID] ? state.controls.controlStructure[state.detailsPanelDeviceID].inputs : [];
+  const outputs = state.controls.controlStructure[state.detailsPanelDeviceID] ? state.controls.controlStructure[state.detailsPanelDeviceID].outputs : [];
 
   const allControls = inputs.concat(outputs);
 

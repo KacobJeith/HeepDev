@@ -3,6 +3,7 @@ import { connect }                    from 'react-redux'
 import { bindActionCreators }         from 'redux'
 import {  Link, NavLink, withRouter } from 'react-router-dom'
 import PropTypes                      from 'prop-types';
+import { HashLink } from "react-router-hash-link";
 
 import {  Grid,
           Hidden,
@@ -27,7 +28,7 @@ class Footer extends React.Component {
 
   socialLogo(svg, url) {
     return (
-      <Grid item xs={4} sm={2} style={{textAlign: 'center'}}>
+      <Grid item xs={4} sm={3} style={{textAlign: 'center', display:'block'}}>
         <a href={url}>
           <img src={'src/assets/svg_social/' + svg + '.svg'}
             style={{maxHeight: 50}}
@@ -44,12 +45,11 @@ class Footer extends React.Component {
           spacing={8}
           justify='center'
           alignItems='center'
+          style={{margin: 0, maxWidth: '100%'}}
         >
           {this.socialLogo('instagram', 'https://www.instagram.com/heep_inc/')}
           {this.socialLogo('facebook-box', 'https://www.facebook.com/heepio/')}
           {this.socialLogo('linkedin-box', 'https://www.linkedin.com/company/heep-inc/')}
-          {this.socialLogo('pinterest', 'https://heep.io')}
-          {this.socialLogo('twitter', 'https://twitter.com/HeepCo')}
           {this.socialLogo('github-circle', 'https://github.com/HeepIO')}
         </Grid>
       </Grid>
@@ -98,7 +98,8 @@ class Footer extends React.Component {
 
     return(
       <Grid item xs={12} sm={12}>
-        <NavLink to={url}
+        <HashLink to={url}
+        smooth
         style={{
           textDecoration: 'none',
           color: this.props.theme.palette.primary.contrastText
@@ -106,7 +107,7 @@ class Footer extends React.Component {
           <Typography variant={variant} color='inherit' align='center'>
             {text}
           </Typography>
-        </NavLink>
+        </HashLink>
       </Grid>
     )
   };
@@ -120,10 +121,12 @@ class Footer extends React.Component {
           alignItems='flex-start'
           direction='column'
         >
-          {this.textNavLink('Account', '/User', 'caption')}
-          {this.textNavLink('Shop', '/Store', 'caption')}
-          {this.textNavLink('Blog', '/Blog', 'caption')}
-          {this.textNavLink('Developers', '/Developers', 'caption')}
+{/*           {this.textNavLink('Account', '/User', 'caption')} */}
+{/*           {this.textNavLink('Shop', '/Store', 'caption')} */}
+{/*           {this.textNavLink('Blog', '/Blog', 'caption')} */}
+{/*           {this.textNavLink('Developers', '/Developers', 'caption')} */}
+          {this.textNavLink('About Us', '/About', 'subheading')}
+          {this.textNavLink('Contact Us', '/Contact', 'subheading')}
         </Grid>
       </Grid>
     )
@@ -154,10 +157,10 @@ class Footer extends React.Component {
           direction='column'
           alignItems='flex-end'
         >
-          {this.textNavLink('About Us', '/About', 'caption')}
-          {this.textNavLink('Contact Us', '/Contact', 'caption')}
-          {this.textNavLink('Privacy Policy', '/privacypolicy', 'caption')}
-          {this.textNavLink('Terms of Service', '/tos', 'caption')}
+{/*           {this.textNavLink('About Us', '/About', 'caption')} */}
+{/*           {this.textNavLink('Contact Us', '/Contact', 'caption')} */}
+          {this.textNavLink('Privacy Policy', '/privacypolicy#top', 'subheading')}
+          {this.textNavLink('Terms of Service', '/tos#top', 'subheading')}
         </Grid>
       </Grid>
     )
@@ -191,8 +194,8 @@ class Footer extends React.Component {
         >
           {this.textNavLink('About Us', '/About', 'subheading')}
           {this.textNavLink('Contact Us', '/Contact', 'subheading')}
-          {this.textNavLink('Privacy Policy', '/privacypolicy', 'subheading')}
-          {this.textNavLink('Terms of Service', '/tos', 'subheading')}
+          {this.textNavLink('Privacy Policy', '/privacypolicy#top', 'subheading')}
+          {this.textNavLink('Terms of Service', '/tos#top', 'subheading')}
         </Grid>
       </Grid>
     )

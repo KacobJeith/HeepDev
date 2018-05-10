@@ -15,8 +15,8 @@ var mapStateToProps = (state, ownProps) => ({
   device: state.devices[ownProps.DeviceID],
   deviceID: ownProps.DeviceID,
   collapsed: state.flowchart.devices[ownProps.DeviceID] ? state.flowchart.devices[ownProps.DeviceID].collapsed : false,
-  controlInputs: state.controls.controlStructure[ownProps.DeviceID].inputs,
-  controlOutputs: state.controls.controlStructure[ownProps.DeviceID].outputs,
+  controlInputs: state.controls.controlStructure[ownProps.DeviceID] ? state.controls.controlStructure[ownProps.DeviceID].inputs : [],
+  controlOutputs: state.controls.controlStructure[ownProps.DeviceID] ? state.controls.controlStructure[ownProps.DeviceID].outputs : [],
   detailsPanelDeviceID: state.detailsPanelDeviceID
 })
 
@@ -26,6 +26,7 @@ class Device extends React.Component {
 		super(props);
 
 	}
+
 
 	deviceName = () => (
 		<Typography variant='subheading' align='center' style={{userSelect: 'none', fontWeight: 'bold', fontSize: 18}}>

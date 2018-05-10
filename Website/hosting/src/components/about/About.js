@@ -2,60 +2,92 @@ import React from 'react'
 
 import { Grid, Typography } from 'material-ui';
 
-import SectionCard from './utilities/SectionCard'
+import SectionCard from '../utilities/SectionCard'
 import AboutCard from './AboutCard'
 import TeamModal from './TeamModal'
+import VideoBackgroundCard from '../utilities/VideoBackgroundCard'
 
-import { founders } from '../assets/remote/Founders'
-import { banners } from '../assets/remote/Banners'
-import { svgs } from '../assets/remote/SVGs'
+import { founders } from '../../assets/remote/Founders'
+import { banners } from '../../assets/remote/Banners'
+import videos from '../../assets/remote/videos.json'
+import { svgs } from '../../assets/remote/SVGs'
+import { logos } from '../../assets/remote/Logos'
+import photos from '../../assets/remote/photos.json'
+import { logPageView } from '../../GoogleAnalytics'
 
 class About extends React.Component {
+
+  componentDidMount() {
+    logPageView()
+  }
 
   topBanner() {
 
     const inputs = {
+      videoSrc: videos.officeLoop,
       paddingTop: 25,
       paddingBottom: 25,
-      backgroundColor: '#00adee',
-      imagePath: banners.brooklynBridge,
+      backgroundColor: '#d5c0b1',
       minHeight: 400,
+      overlayColor: 'rgba(0,0,0, 0.15)'
     }
 
     return(
-      SectionCard(inputs, '')
+      VideoBackgroundCard(inputs,
+        <Grid container direction='column' justify ='center' alignItems ='center' style={{
+          width: '100%',
+          minHeight: inputs.minHeight,
+          margin: '0 auto'
+        }}>
+          <Grid item xs={12} sm={8}>
+            <Typography variant='display1' align='center' style={{color:'white'}}>
+
+            </Typography>
+          </Grid>
+        </Grid>
+      )
     )
   };
 
   mission() {
     const inputs = {
-      paddingTop: 25,
-      paddingBottom: 25,
+      background: 'linear-gradient(to bottom, #e7d1c1, #FFF)',
     };
 
     return (
       SectionCard(inputs,
-        <Grid container style={{
+        <Grid container spacing={8} style={{
           maxWidth:'100%',
           margin: '0 auto',
-          backgroundColor: '#B0BEC5'
+          padding: 50
          }}
          justify='center' alignItems='center'>
-          <Grid item  xs={12} md={8}>
-            <Typography variant='headline' align='center'>
-              Our Mission
+          <Grid item xs={12}>
+            <Typography variant='headline' align='center' gutterBottom paragraph>
+              About Heep
             </Typography>
-            <br/>
-            <Typography variant='subheading' align='center' gutterBottom paragraph>
-              Heep leverages connectedness to empower people to be more productive, 
-              make better decisions, 
-              and enjoy a better quality of life. 
+          </Grid>
+          <Grid item xs={12} md={5}>
+            <Typography variant='subheading' gutterBottom paragraph>
+              Heep leverages connectedness to empower people to be more productive,
+              make better decisions,
+              and enjoy a better quality of life.
             </Typography>
-            <Typography variant='subheading' align='center' paragraph>
-              The Heep platform makes connectivity the simplest and most secure way to design any product. 
-              By reimagining IoT as a critical infrastructure rather than a luxury gimmick, 
+            <Typography variant='subheading' paragraph>
+              The Heep platform makes connectivity the simplest and most secure way to design any product.
+              By reimagining IoT as a critical infrastructure rather than an add-on luxury,
               Heep is able to deliver a scalable and intuitive experience at a fraction of the cost.
             </Typography>
+          </Grid>
+          <Grid item xs={12} md={3}
+            style={{
+              textAlign: 'center',
+              display: 'block',
+          }}>
+            <img
+              src={photos.RFID}
+              style={{maxHeight: 230}}
+            />
           </Grid>
         </Grid>
       )
@@ -64,25 +96,23 @@ class About extends React.Component {
 
   ourValues() {
     const inputs = {
-      paddingTop: 25,
-      paddingBottom: 25,
     };
 
     return (
       SectionCard(inputs,
         <Grid container style={{
           maxWidth:'100%',
-          margin: '0 auto'
+          margin: '0 auto',
+          paddingTop: 50,
          }}
          justify='center' alignItems='center'>
-          <Grid item  xs={12} md={8}>
-            <Typography variant='headline' align='center'>
-              Our Values
+          <Grid item xs={12} md={8}>
+            <Typography variant='headline' align='center' gutterBottom paragraph>
+              Open Source, Secure, and Easy
             </Typography>
-            <br/>
-            <Typography variant='subheading' align='center' gutterBottom paragraph>
-              Open Source, Secure, Easy. Even for the Technophobe
-            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            {this.aboutGraphics()}
           </Grid>
         </Grid>
       )
@@ -94,23 +124,23 @@ class About extends React.Component {
       PlugAndPlay: {
         title: 'Easy to Install',
         imagePath: svgs.plugAndPlay,
-        desc: `Unbox, wire, and play. 
-                Automate your home or booby trap it. 
-                We can set it up for you, so you don't have to worry about code. 
+        desc: `Unbox, wire, and play.
+                Automate your home or booby trap it.
+                We can set it up for you, so you don't have to worry about code.
                 Heep makes connecting things easy.`
       },
       CloudLess: {
         title: 'Cloud Less',
         imagePath: svgs.cloudLess,
-        desc: `Heep doesn't require an internet connection. 
-                We don't send things to the cloud, so rest assured, no one's listening in or watching you. 
+        desc: `Heep doesn't require an internet connection.
+                We don't send things to the cloud, so rest assured, no one's listening in or watching you.
                 You do you, so just relax and enjoy.`
       },
       DeviceParty: {
         title: 'Device Party',
         imagePath: svgs.deviceParty,
-        desc: `Connect your devices and get them to talk with you and other devices. 
-                They send and receive commands, provide data, and interact with you. 
+        desc: `Connect your devices and get them to talk with you and other devices.
+                They send and receive commands, provide data, and interact with you.
                 Enable your environment.`
       },
     };
@@ -120,16 +150,17 @@ class About extends React.Component {
         <Grid container style={{
           maxWidth:'100%',
           overflowX: 'hidden',
-          margin: '0 auto'
+          margin: '0 auto',
+          paddingBottom: 50
         }}
           spacing={24} justify='center'>
-          <Grid item xs={12} md={3}>
+          <Grid item xs={8} sm={4} md={4} lg={3}>
             <AboutCard {...inputs.PlugAndPlay}/>
           </Grid>
-          <Grid item xs={12} md={3}>
+          <Grid item xs={8} sm={4} md={4} lg={3}>
             <AboutCard {...inputs.CloudLess}/>
           </Grid>
-          <Grid item xs={12} md={3}>
+          <Grid item xs={8} sm={4} md={4} lg={3}>
             <AboutCard {...inputs.DeviceParty}/>
           </Grid>
         </Grid>
@@ -139,9 +170,8 @@ class About extends React.Component {
 
   ourStory() {
     const inputs = {
-      paddingTop: 25,
-      paddingBottom: 25,
-      backgroundColor: '#B0BEC5'
+      padding: 50,
+      background: "linear-gradient(to bottom, #0e2d3c, #16465c, #0e2d3c)"
     };
 
     return(
@@ -150,16 +180,28 @@ class About extends React.Component {
           maxWidth:'100%',
           margin: '0 auto'
         }} justify ='center' alignItems ='center'>
-          <Grid item xs={12} md={8}>
-            <Typography variant='headline' align='center'>
+          <Grid item xs={12}>
+            <Typography variant='headline' align='center' style={{color: "#f1f1f1"}} paragraph gutterBottom>
               Our Story
             </Typography>
-            <br/>
-            <Typography variant='subheading' align='center' paragraph>
-              Heep was founded in February 2017 with the dream of ubiquitous connectivity. 
-              We thought long and hard about what the world needs to make that happen. 
-              Thus, the Heep operating system was born. 
-              The Heep team hails from a diverse 
+          </Grid>
+          <Grid item xs={12} md={2}
+            style={{
+              textAlign: 'center',
+              display: 'block',
+              paddingBottom: 10
+          }}>
+            <img
+              src={logos.gradientLogo}
+              style={{maxHeight: 150}}
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Typography variant='subheading' style={{color: "#f1f1f1"}} paragraph>
+              Heep was founded in February 2017 with the dream of ubiquitous connectivity.
+              We thought long and hard about what the world needs to make that happen.
+              Thus, the Heep operating system was born.
+              The Heep team hails from a diverse set of backgrounds.
             </Typography>
           </Grid>
         </Grid>
@@ -169,10 +211,6 @@ class About extends React.Component {
 
   teamSection() {
     const inputs = {
-      section: {
-        paddingTop: 25,
-        paddingBottom: 16,
-      },
       teamModal: {
         james: {
           name: 'James DeVito',
@@ -207,26 +245,28 @@ class About extends React.Component {
 
     return (
       <div style={{
-          marginBottom: 100}}>
-        {SectionCard(inputs.section,
-          <Typography variant='headline' align='center'>
-            Our Team
-          </Typography>
-        )}
+        paddingTop: 50,
+        paddingBottom: 50
+      }}>
         <Grid container style={{
           maxWidth:'100%',
-          margin: '0 auto'
+          margin: '0 auto',
         }} justify='center'>
-          <Grid item xs={12} md={3}>
+          <Grid item xs={12} style={{paddingBottom: 20}}>
+            <Typography variant='headline' align='center'>
+              Our Team
+            </Typography>
+          </Grid>
+          <Grid item xs={8} sm={5} md={3} style={{paddingBottom: 15}}>
             <TeamModal {...inputs.teamModal.jacob}/>
           </Grid>
-          <Grid item xs={12} md={3}>
+          <Grid item xs={8} sm={5} md={3} style={{paddingBottom: 15}}>
             <TeamModal {...inputs.teamModal.dylan}/>
           </Grid>
-          <Grid item xs={12} md={3}>
+          <Grid item xs={8} sm={5} md={3} style={{paddingBottom: 15}}>
             <TeamModal {...inputs.teamModal.james}/>
           </Grid>
-          <Grid item xs={12} md={3}>
+          <Grid item xs={8} sm={5} md={3} style={{paddingBottom: 15}}>
             <TeamModal {...inputs.teamModal.yenny}/>
           </Grid>
         </Grid>
@@ -240,7 +280,6 @@ class About extends React.Component {
         {this.topBanner()}
         {this.mission()}
         {this.ourValues()}
-        {this.aboutGraphics()}
         {this.ourStory()}
         {this.teamSection()}
       </div>

@@ -136,3 +136,11 @@ export const loginToFirebase = () => ({
 export const logoutOfFirebase = () => ({
 	type: 'LOGOUT_OF_FIREBASE'
 })
+
+export const submitContactForm = (name, company, email, message) => ({
+	type: 'SUBMIT_CONTACT_FORM',
+	name, 
+	company, 
+	email, 
+	message
+})

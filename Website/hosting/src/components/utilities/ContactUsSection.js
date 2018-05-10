@@ -16,6 +16,14 @@ class ContactUsSection extends React.Component {
       backgroundColor: '#C9D6DC'
     };
 
+    const buttonStyle = {
+       style: {
+         textTransform: "capitalize",
+         color: "#f3f4f2",
+         fontSize: "1.1rem"
+     }
+    }
+
     return(
       SectionCard(inputs,
         <Grid container direction='column' style={{
@@ -31,19 +39,21 @@ class ContactUsSection extends React.Component {
             <Typography variant='subheading' align='center' paragraph>
               Contact us for a consulation on how Heep products can augment your operations.
             </Typography>
-           
+
           </Grid>
 
-          <Grid item>
-            <HashLink 
-              smooth 
-              to={"/Contact#top"} 
+          <Grid item style={{
+            paddingTop: 15
+          }}>
+            <HashLink
+              smooth
+              to={"/Contact#top"}
               style={{
                 textDecoration: 'none',
                 outline: 'none'
               }}
             >
-            <Button variant='raised' color='secondary' style={{ textTransform: "capitalize"}}> 
+            <Button variant='raised' color='secondary' {...buttonStyle}>
                 Contact Us
               </Button>
             </HashLink>

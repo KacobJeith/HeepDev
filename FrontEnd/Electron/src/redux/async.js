@@ -195,6 +195,19 @@ export const stopLiveMode = (liveModeReference) => {
   clearTimeout(liveModeReference);
 }
 
+export const parseSnapshotUpload = (file) => {
 
+  var reader = new FileReader();
+
+  reader.onload = (function(theFile) {
+      return function(event) {
+        // console.log(JSON.parse(event.target.result))
+        var newSnapshot = JSON.parse(event.target.result);
+        setup.store.dispatch(actions_classic.saveSnapshotUpload(newSnapshot));
+      };
+    })(file);
+
+    reader.readAsText(file);
+}
 
 

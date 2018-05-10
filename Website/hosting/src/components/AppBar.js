@@ -29,13 +29,15 @@ import {  AppBar,
 
 import MenuIcon               from 'material-ui-icons/Menu';
 import AccountCircle          from 'material-ui-icons/AccountCircle';
-import ContactMail            from 'material-ui-icons/ContactMail';
+import Mail                   from 'material-ui-icons/Mail';
 import ShoppingCartIcon       from 'material-ui-icons/ShoppingCart';
 import ShopIcon               from 'material-ui-icons/ShoppingBasket'
-import AboutIcon              from 'material-ui-icons/Contacts'
+import FaceIcon              from 'material-ui-icons/Face'
 import DevelopIcon            from 'material-ui-icons/Code'
 import Home                   from 'material-ui-icons/Home'
 import Business                   from 'material-ui-icons/Business'
+import LocalMall                   from 'material-ui-icons/LocalMall'
+import Build                  from 'material-ui-icons/Build'
 
 
 import { withStyles }         from 'material-ui/styles';
@@ -199,12 +201,15 @@ class MenuAppBar extends React.Component {
         style: {
           color: "white",
           paddingTop: 11,
-          paddingBottom: 11
+          paddingBottom: 11,
+          fontSize: '1.2rem',
+          fontFamily: `"Oswald", "Roboto", "Helvetica", "Arial", sans-serif`,
+          textTransform: 'capitalize'
         }
       },
       Button: {
         style: {
-          textTransform: "capitalize"
+          textTransform: "capitalize",
         }
       },
       NavLink: {
@@ -215,14 +220,14 @@ class MenuAppBar extends React.Component {
     };
 
     return (
-      <Hidden xsDown={true}>
-        <Button {...inputs.Button}>
-          <NavLink to={navLink} {...inputs.NavLink}>
-            <Typography variant="subheading" {...inputs.Typography}>
-              {linkText}
-            </Typography>
-          </NavLink>
-        </Button>
+      <Hidden xsDown>
+        <NavLink to={navLink} {...inputs.NavLink}>
+          <Button {...inputs.Button}>
+              <div {...inputs.Typography}>
+                {linkText}
+              </div>
+          </Button>
+        </NavLink>
       </Hidden>
     )
   };
@@ -247,7 +252,7 @@ class MenuAppBar extends React.Component {
   appBarLogo() {
     const inputs = {
       Logo: {
-        src: 'src/assets/svg/SideBySide.svg',
+        src: logos.sideBySide,
         height: 50,
         style: {
           maxWidth: "250%"
@@ -279,7 +284,7 @@ class MenuAppBar extends React.Component {
 
   mobileAppBarLogo() {
     return (
-      <Hidden smUp={true}>
+      <Hidden smUp>
         <Grid container justify='center' style={{
           width: '100%',
           height: '100%',
@@ -328,7 +333,7 @@ class MenuAppBar extends React.Component {
     return (
       <div>
         <NavLink to="/MyCart" style={{textDecoration: 'none'}}>
-          <MenuItem>
+          <MenuItem style={{fontFamily: `"Oswald", "Roboto", "Helvetica", "Arial", sans-serif`,}}>
               <IconButton aria-label="Add to shopping cart"
                 style={{marginBottom: 0}}
               >
@@ -351,7 +356,7 @@ class MenuAppBar extends React.Component {
     return (
       <div>
       <NavLink to={link} style={styles.navLink}>
-        <MenuItem>
+        <MenuItem style={{fontFamily: `"Oswald", "Roboto", "Helvetica", "Arial", sans-serif`,}}>
           <IconButton>
             {linkIcon}
           </IconButton>
@@ -376,7 +381,7 @@ class MenuAppBar extends React.Component {
     }
 
     return (
-      <Hidden smUp={true}>
+      <Hidden smUp>
           <IconButton
             {...inputs.menuButton}
             onClick={this.handleMobileMenuOpen}
@@ -405,11 +410,13 @@ class MenuAppBar extends React.Component {
 
                 {this.mobileMenuLogo()}
                 {this.mobileMenuLink('/', 'Home', <Home/>)}
+                {this.mobileMenuLink('/Business', 'Business', <LocalMall/>)}
                 {this.mobileMenuLink('/IndustrialHeep', 'Industry', <Business/>)}
-                {this.mobileMenuLink('/Shop', 'Shop', <ShopIcon/>)}
-                {this.mobileMenuLink('/About', 'About', <AboutIcon/>)}
-                {this.mobileMenuLink('/Contact', 'Contact', <ContactMail/>)}
-                {this.mobileMenuCart()}
+                {this.mobileMenuLink('/Makers', 'Makers', <Build/>)}
+                {/* {this.mobileMenuLink('/Shop', 'Shop', <ShopIcon/>)} */}
+                {this.mobileMenuLink('/About', 'About', <FaceIcon/>)}
+                {this.mobileMenuLink('/Contact', 'Contact', <Mail/>)}
+                {/* {this.mobileMenuCart()} */}
 {/*                 {this.mobileMenuLink('/Developers', 'Develop', <DevelopIcon/>)} */}
 
               </div>
@@ -425,23 +432,23 @@ class MenuAppBar extends React.Component {
 
     return (
       <div className={classes.root}>
-        <AppBar position="sticky" id='top' style={{overflowX: 'hidden'}}>
+        <AppBar position="fixed" style={{overflowX: 'hidden'}}>
           <Toolbar>
             {this.mobileMenu()}
-            <Hidden xsDown={true}>
+            <Hidden xsDown>
               {this.appBarLogo()}
             </Hidden>
             {this.mobileAppBarLogo()}
             <div className={classes.flex}/>
-            {this.appBarLink("/", "HOME")}
-            {this.appBarLink("/Business", "BUSINESS")}
-            {this.appBarLink("/IndustrialHeep", "INDUSTRY")}
-            {this.appBarLink("/DIY", "DIY")}
-            {this.appBarLink("/About", "ABOUT")}
-            {this.appBarLink("/Contact", "CONTACT")}
-            {this.appBarLink("/Shop", "SHOP")}
+            {this.appBarLink("/", "Home")}
+            {this.appBarLink("/Business", "Business")}
+            {this.appBarLink("/IndustrialHeep", "Industry")}
+            {this.appBarLink("/Makers", "Makers")}
+            {this.appBarLink("/About", "About")}
+            {this.appBarLink("/Contact", "Contact")}
+            {/* {this.appBarLink("/Shop", "Shop")} */}
 {/*             {this.appBarLink("/Developers", "Develop")} */}
-            {this.appBarCart()}
+            {/* {this.appBarCart()} */}
 {/*             {this.avatarLogin()} */}
           </Toolbar>
         </AppBar>
