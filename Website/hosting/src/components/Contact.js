@@ -8,6 +8,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import * as validator from 'email-validator'
 import { logos } from '../assets/remote/Logos.js'
+import { logPageView } from '../GoogleAnalytics'
 
 
 const mapStateToProps = (state) => ({
@@ -41,6 +42,10 @@ class Contact extends React.Component {
     MessageError: false,
     modalOpen: false,
     snackBarOpen: false
+  }
+
+  componentDidMount() {
+    logPageView()
   }
 
   topBanner() {

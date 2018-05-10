@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom'
 import { withTheme } from 'material-ui/styles';
 import * as Actions from '../../redux/actions'
 import SectionCard from '../utilities/SectionCard'
+import { logPageView } from '../../GoogleAnalytics'
 
 import { Grid, Paper, Typography } from 'material-ui'
 import tos from '../../assets/TermsOfService.json'
@@ -13,6 +14,9 @@ var mapStateToProps = (state) => ({
 });
 
 class TermsOfService extends React.Component {
+  componentDidMount() {
+    logPageView()
+  }
 
   render() {
     const inputs = {

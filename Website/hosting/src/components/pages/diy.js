@@ -11,11 +11,16 @@ import SectionCard from '../utilities/SectionCard'
 import VideoBackgroundCard from '../utilities/VideoBackgroundCard'
 import ContactUsSection from '../utilities/ContactUsSection'
 import { banners } from '../../assets/remote/Banners'
+import { logPageView } from '../../GoogleAnalytics'
 
 var mapStateToProps = (state) => ({
 });
 
 class DIY extends React.Component {
+
+  componentDidMount() {
+    logPageView()
+  }
 
   topBanner() {
 

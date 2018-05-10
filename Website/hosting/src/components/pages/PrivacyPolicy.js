@@ -8,11 +8,15 @@ import SectionCard from '../utilities/SectionCard'
 
 import { Grid, Paper, Typography } from 'material-ui'
 import policy from '../../assets/PrivacyPolicy.json'
+import { logPageView } from '../../GoogleAnalytics'
 
 var mapStateToProps = (state) => ({
 });
 
 class PrivacyPolicy extends React.Component {
+  componentDidMount() {
+    logPageView()
+  }
 
   render() {
     const inputs = {

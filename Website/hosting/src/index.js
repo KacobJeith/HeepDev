@@ -7,6 +7,7 @@ import App from './components/App'
 import thunk from 'redux-thunk'
 import * as shopify from './shopify/Shopify'
 import WebFont from 'webfontloader'
+import * as GoogleAnalytics from './GoogleAnalytics'
 
 import { composeWithDevTools } from 'redux-devtools-extension';
 
@@ -17,6 +18,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
  });
 
 require('./service-worker-registration.js');
+GoogleAnalytics.initialize();
 
 const startState = {
   shopify: {},
@@ -52,4 +54,6 @@ render(
 );
 
 // import(/* webpackChunkName: "firebaseAuth" */ './firebase/FirebaseAuth').then((auth) => auth.initializeFirebase());
-shopify.InitializeShopify();
+// shopify.InitializeShopify();
+
+
