@@ -69,7 +69,7 @@ const VideoBackgroundCard = (componentProps,  wrappedComponent) => {
         </div>
       </Hidden>
 
-      <div style={{position: 'absolute', top: 0, left: 0, zIndex: 2, width: '100%', backgroundColor: componentProps.overlayColor }}>
+      <div style={{position: 'absolute', top: 0, left: 0, zIndex: 2, width: '100%', height: '100%', backgroundColor: componentProps.overlayColor }}>
         {wrappedComponent}
       </div>
     </div>
