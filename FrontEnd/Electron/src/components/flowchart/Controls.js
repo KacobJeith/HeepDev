@@ -12,6 +12,7 @@ import { TweenLite } from "gsap"
 
 var mapStateToProps = (state, ownProps) => ({
   control: state.controls[ownProps.controlID],
+  controlInputs: Object.keys(state.controls).filter((thisControl) => state.controls[thisControl].controlDirection == 0),
   collapsed: state.flowchart.devices[ownProps.DeviceID] ? state.flowchart.devices[ownProps.DeviceID].collapsed : false,
   deviceID: ownProps.deviceID,
   controlID: ownProps.controlID,
@@ -29,36 +30,20 @@ class Control extends React.Component {
 			controlHighlight: 'white',
       pointerEvents: 'all'
 		}
-
-
 		this.direction = this.props.control['controlDirection'];
 		this.leftIndent = this.direction == 0 ? 10 : 250;
-	}
+	};
 
 	selectInputVertex(event) {
 		this.props.addVertex(this.props.deviceID,
 							 this.props.control['controlID'],
 							 this.props.ip);
-	}
+	};
 
 	selectOutputVertex(event) {
 		this.props.selectOutput(this.props.deviceID,
 								this.props.control['controlID']);
-	}
-
-  resetDrag() {
-    const dragVertexPath = document.getElementById("dragVertex")
-    Draggable.get("#dragDot").disable()
-
-    TweenLite.set("#dragDot", {
-      clearProps: "transform",
-      x: 0,
-      y: 0,
-      visibility: 'hidden'
-    })
-
-    dragVertexPath.removeAttribute("d")
-  }
+	};
 
   getDragOutputPosition() {
     const svgElement = document.getElementById(this.props.controlID)
@@ -78,7 +63,7 @@ class Control extends React.Component {
     return startPosition
   };
 
-  updateVertexPath() {
+  updateDragVertexPath() {
     const bezierWeight = 0.675
     const dragDotPosition = document.getElementById("dragDot")
     const dragVertexPath = document.getElementById("dragVertex")
@@ -131,9 +116,10 @@ class Control extends React.Component {
     dragVertexPath.setAttribute("d", data)
   };
 
-  drawVertex() {
+  drawDragVertex() {
     const outputPosition = this.getDragOutputPosition()
     const outputElement = document.getElementById(this.props.controlID)
+    const controlInputs = this.props.controlInputs
 
     TweenLite.set("#dragDot", {
       x: outputPosition.left,
@@ -144,22 +130,49 @@ class Control extends React.Component {
     Draggable.create("#dragDot", {
       type: 'x, y',
       trigger: outputElement,
-      onDrag: () => this.updateVertexPath(),
-      onRelease: () => this.resetDrag()
-    });
+      onDrag: () => this.updateDragVertexPath(),
+      onRelease: () => this.resetDrag(),
+      onDragEnd: () => this.checkDragOverlap()
+    })
+  };
+
+  checkDragOverlap() {
+    const controlInputs = this.props.controlInputs
+
+    this.resetDrag()
+
+    for (let i = 0; i < controlInputs.length; i++) {
+      let inputControl = document.getElementById("_a62ce8b7")
+      if (Draggable.hitTest(inputControl, "#dragDot",  0)) {
+        console.log(inputControl)
+    }}
   }
+
+  resetDrag() {
+    const dragVertexPath = document.getElementById("dragVertex")
+    Draggable.get("#dragDot").disable()
+
+    TweenLite.set("#dragDot", {
+      clearProps: "transform",
+      x: 0,
+      y: 0,
+      visibility: 'hidden'
+    })
+
+    dragVertexPath.removeAttribute("d")
+  };
 
   handleMouseEnter() {
     this.setState({radius: 11}),
     Draggable.get("#_" + this.props.deviceID).disable()
-    this.drawVertex()
+    this.drawDragVertex()
     this.selectOutputVertex()
-  }
+  };
 
   handleMouseLeave() {
     this.setState({radius: 8}),
     Draggable.get("#_" + this.props.deviceID).enable()
-  }
+  };
 
 	drawControlKnob(ref) {
 
@@ -185,8 +198,8 @@ class Control extends React.Component {
 				// onClick: (event) => {this.direction == 0 ?
 				// 					 this.selectInputVertex(event) :
 				// 					 this.selectOutputVertex(event)},
-				onMouseEnter: () => this.handleMouseEnter(),
-				onMouseLeave: () => this.handleMouseLeave(),
+				onMouseEnter: () => this.direction == 0 ? null : this.handleMouseEnter(),
+				onMouseLeave: () => this.direction == 0 ? null : this.handleMouseLeave(),
 				cx: this.direction == 0 ? 11 : 0,
 				cy: 10,
 				r: this.state.radius,
