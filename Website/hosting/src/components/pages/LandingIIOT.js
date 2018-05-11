@@ -122,7 +122,7 @@ class LandingIIOT extends React.Component {
                 HAPI is a local first IoT protocol designed for speed and reliability.
                 All communication is distilled into simple input/output relationships.
                 Connecting devices is as simple as loading a front end, and wiring two devices together in software.
-                All of the operations are local and fast. `
+                `
       },
       hardware: {
         title: 'Heep Hardware',
