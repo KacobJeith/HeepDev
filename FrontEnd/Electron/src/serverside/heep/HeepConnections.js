@@ -12,7 +12,7 @@ const newMasterState = {
   devices: {},
   deviceWiFiCreds: {},
   positions: {},
-  controls: {controlStructure:{}, connections: {}},
+  controls: {connections: {}},
   vertexList: {},
   icons: {},
   url: '',
@@ -352,7 +352,6 @@ var AddDevice = (heepChunk, IPAddress) => {
   }
 
   SetNullPosition(deviceID);
-  masterState.controls.controlStructure[deviceID] = {inputs: [], outputs: []};
   masterState.icons = iconUtils.GetIconContent();
 }
 
@@ -373,7 +372,6 @@ var AddControl = (heepChunk) => {
   var tempCtrlName = generalUtils.nameControl(heepChunk.deviceID, heepChunk.control.controlID) 
   masterState.controls[tempCtrlName] = heepChunk.control;
   masterState.controls[tempCtrlName].deviceID = heepChunk.deviceID;
-  var currentIndex = SetControlStructure(heepChunk.deviceID, tempCtrlName)
 
   masterState.controls.connections[tempCtrlName] = [];
 }
@@ -420,22 +418,6 @@ var SetDevicePositionFromBrowser = (deviceID, position) => {
   }
 
   masterState.positions[deviceID] = newPosition;
-}
-
-var SetControlStructure = (deviceID, controlID) => {
-
-  if ( masterState.controls[controlID]['controlDirection'] == 0){
-    var inputs = masterState.controls.controlStructure[deviceID].inputs;
-    inputs.push(controlID);
-    return inputs.length
-
-  } else {
-    var outputs = masterState.controls.controlStructure[deviceID].outputs;
-    outputs.push(controlID);
-    return outputs.length
-
-  }
-
 }
 
 var AddVertex = (vertex) => {
