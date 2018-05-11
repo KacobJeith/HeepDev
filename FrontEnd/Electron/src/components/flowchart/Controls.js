@@ -8,6 +8,7 @@ import { Grid, Typography } from 'material-ui'
 import * as Utils from '../../serverside/utilities/generalUtilities'
 
 import * as Draggable from 'gsap/Draggable'
+import { TweenLite } from "gsap"
 
 var mapStateToProps = (state, ownProps) => ({
   control: state.controls[ownProps.controlID],
@@ -15,7 +16,8 @@ var mapStateToProps = (state, ownProps) => ({
   deviceID: ownProps.deviceID,
   controlID: ownProps.controlID,
   value: state.controls[ownProps.controlID].valueCurrent,
-  ip: state.devices[ownProps.deviceID].ipAddress
+  ip: state.devices[ownProps.deviceID].ipAddress,
+  scale: state.flowchart.scale,
 })
 
 
@@ -25,6 +27,7 @@ class Control extends React.Component {
 		this.state = {
 			radius: 8,
 			controlHighlight: 'white',
+      pointerEvents: 'all'
 		}
 
 
@@ -42,6 +45,51 @@ class Control extends React.Component {
 		this.props.selectOutput(this.props.deviceID,
 								this.props.control['controlID']);
 	}
+
+  drawVertex() {
+      const svgElement = document.getElementById(this.props.controlID)
+      const svgElRect = svgElement.getBoundingClientRect()
+
+      console.log(this.props.controlID)
+      console.log(svgElRect)
+
+      const svgContainer = document.getElementById("deviceContainer")
+      const svgConRect = svgContainer.getBoundingClientRect()
+
+      console.log(svgConRect)
+
+      const heightOffset = svgElRect.height / 2
+      const widthOffset = svgElRect.width / 2
+
+      const inputPosition = {
+        top: (svgElRect.top + heightOffset - svgConRect.top) / this.props.scale,
+        left: (svgElRect.left + widthOffset - svgConRect.left) / this.props.scale,
+      };
+
+      console.log(inputPosition)
+
+    TweenLite.set("#dragDot", {
+      x: inputPosition.left,
+      y: inputPosition.top,
+      visibility: 'visible'
+    })
+
+    Draggable.create("#dragDot", {
+      type: 'x, y',
+      trigger: svgElement
+    });
+  }
+
+  handleMouseEnter() {
+    this.setState({radius: 11}),
+    Draggable.get("#_" + this.props.deviceID).disable()
+    this.drawVertex()
+  }
+
+  handleMouseLeave() {
+    this.setState({radius: 8}),
+    Draggable.get("#_" + this.props.deviceID).enable()
+  }
 
 	drawControlKnob(ref) {
 
@@ -62,11 +110,12 @@ class Control extends React.Component {
 			},
 			circle: {
         id: this.props.controlID,
-				onClick: (event) => {this.direction == 0 ?
-									 this.selectInputVertex(event) :
-									 this.selectOutputVertex(event)},
-				onMouseEnter: () => this.setState({radius: 11}),
-				onMouseLeave: () => this.setState({radius: 8}),
+        // onClick: (event) => this.drawVertex(event),
+				// onClick: (event) => {this.direction == 0 ?
+				// 					 this.selectInputVertex(event) :
+				// 					 this.selectOutputVertex(event)},
+				onMouseEnter: () => this.handleMouseEnter(),
+				onMouseLeave: () => this.handleMouseLeave(),
 				cx: this.direction == 0 ? 11 : 0,
 				cy: 10,
 				r: this.state.radius,

@@ -64,7 +64,25 @@ class Flowchart extends React.Component {
 					left: 0,
 					overflow: 'hidden',
 				},
-			}
+			},
+      dragDot: {
+        id: 'dragDot',
+        cx: 0,
+        cy: 0,
+        r: 8,
+        fill: 'gray',
+        visibility: 'hidden',
+        onMouseEnter: () => Draggable.get("#deviceContainer").disable(),
+        onMouseLeave: () => Draggable.get("#deviceContainer").enable(),
+        style: {
+          cursor: 'grab',
+        }
+      },
+      dragVertex: {
+        id: 'dragVertex',
+        color: '#455A64',
+        strokeWidth: 3,
+      }
 		}
 
 		return (
@@ -74,6 +92,8 @@ class Flowchart extends React.Component {
               return <Vertex key={thisVertexKey} vertexID={thisVertexKey} />
 					}
 				})}
+        <circle {...inputs.dragDot}/>
+        <path {...inputs.dragVertex}/>
 			</svg>
 		)
 	};
@@ -139,8 +159,8 @@ class Flowchart extends React.Component {
 								height: 50000,
 								overflow: 'hidden',
 						}}>
-							{this.drawVertices()}
-							{this.drawDevices()}
+              {this.drawVertices()}
+              {this.drawDevices()}
 						</div>
 					</div>
 				</div>
