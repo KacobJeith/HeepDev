@@ -168,8 +168,6 @@ export default function(state = initialState, action) {
       var newStateVertexList = checkDeepEquality(Immutable.Map(state.vertexList).toJS(), action.fromServer.vertexList)
       var newStateAnalytics = checkDeepEquality(Immutable.Map(state.analytics).toJS(), action.fromServer.analytics)
       var newStateWifi = checkDeepEquality(Immutable.Map(state.deviceWiFiCreds).toJS(), action.fromServer.deviceWiFiCreds)
-
-      console.log('Discovered Devices: ', newStateDevices)
       
       return Immutable.Map(state) .set('devices', newStateDevices)
                                   .set('controls', newStateControls)
