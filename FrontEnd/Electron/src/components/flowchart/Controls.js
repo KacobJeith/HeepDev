@@ -46,6 +46,20 @@ class Control extends React.Component {
 								this.props.control['controlID']);
 	}
 
+  resetDrag() {
+    const dragVertexPath = document.getElementById("dragVertex")
+    Draggable.get("#dragDot").disable()
+
+    TweenLite.set("#dragDot", {
+      clearProps: "transform",
+      x: 0,
+      y: 0,
+      visibility: 'hidden'
+    })
+
+    dragVertexPath.removeAttribute("d")
+  }
+
   getDragOutputPosition() {
     const svgElement = document.getElementById(this.props.controlID)
     const svgElRect = svgElement.getBoundingClientRect()
@@ -130,7 +144,8 @@ class Control extends React.Component {
     Draggable.create("#dragDot", {
       type: 'x, y',
       trigger: outputElement,
-      onDrag: () => this.updateVertexPath()
+      onDrag: () => this.updateVertexPath(),
+      onRelease: () => this.resetDrag()
     });
   }
 
@@ -138,6 +153,7 @@ class Control extends React.Component {
     this.setState({radius: 11}),
     Draggable.get("#_" + this.props.deviceID).disable()
     this.drawVertex()
+    this.selectOutputVertex()
   }
 
   handleMouseLeave() {
@@ -165,7 +181,7 @@ class Control extends React.Component {
 			circle: {
         id: this.props.controlID,
         className: 'controlCircle',
-        // onClick: (event) => this.drawVertex(event),
+        // onClick: () => this.handleClick(),
 				// onClick: (event) => {this.direction == 0 ?
 				// 					 this.selectInputVertex(event) :
 				// 					 this.selectOutputVertex(event)},
