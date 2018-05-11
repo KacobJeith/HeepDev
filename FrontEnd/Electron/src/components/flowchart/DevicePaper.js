@@ -15,8 +15,8 @@ import Device from './Device'
 
 var mapStateToProps = (state, ownProps) => ({
   deviceID: ownProps.DeviceID,
-  position: state.positions[ownProps.DeviceID],
-  activeState: state.devices[ownProps.DeviceID].active,
+  position: state.positions[ownProps.DeviceID] ? state.positions[ownProps.DeviceID] : {top: 100, left: 100},
+  activeState: state.devices[ownProps.DeviceID] ? state.devices[ownProps.DeviceID].active : false,
   scale: state.flowchart.scale
 })
 

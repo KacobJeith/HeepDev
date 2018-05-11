@@ -162,7 +162,7 @@ export default function(state = initialState, action) {
 
     case 'OVERWRITE_WITH_SERVER_DATA':
       
-      var newStateDevices = checkDeepEquality(Immutable.Map(state.devices).toJS(), action.fromServer.devices)
+      var newStateDevices = checkDeepEqualityDevices(Immutable.Map(state.devices).toJS(), action.fromServer.devices)
       var newStateControls = checkDeepEquality(Immutable.Map(state.controls).toJS(), action.fromServer.controls)
       var newStatePositions = checkDeepEquality(Immutable.Map(state.positions).toJS(), action.fromServer.positions)
       var newStateVertexList = checkDeepEquality(Immutable.Map(state.vertexList).toJS(), action.fromServer.vertexList)
@@ -500,11 +500,32 @@ function makeid(number) {
   return text;
 }
 
-const checkDeepEquality = (newState, check) => {
+const checkDeepEquality = (newState, check, elseCase = () => {}) => {
 
   for (var propToCheck in check) {
     if (!deepEqual(newState[propToCheck], check[propToCheck])) {
       newState[propToCheck] = check[propToCheck];
+    } else {
+      newState[propToCheck] = elseCase(newState[propToCheck])
+    }
+  }
+
+  return newState
+}
+
+const checkDeepEqualityDevices = (newState, check) => {
+
+  // For any discovered devices, replace old data with new data
+  for (var propToCheck in check) {
+    if (!deepEqual(newState[propToCheck], check[propToCheck])) {
+      newState[propToCheck] = check[propToCheck];
+    }
+  }
+
+  // For any missing devices from the most recent device search, set active state to false
+  for (var originalDevices in newState) {
+    if (!(originalDevices in check)) {
+      newState[originalDevices].active = false
     }
   }
 
