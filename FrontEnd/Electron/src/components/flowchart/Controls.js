@@ -138,11 +138,11 @@ class Control extends React.Component {
 
   checkDragOverlap() {
     const controlInputs = this.props.controlInputs
-
+    console.log("running")
     this.resetDrag()
 
     for (let i = 0; i < controlInputs.length; i++) {
-      let inputControl = document.getElementById("_a62ce8b7")
+      let inputControl = document.getElementById(controlInputs[i])
       if (Draggable.hitTest(inputControl, "#dragDot",  0)) {
         console.log(inputControl)
     }}
