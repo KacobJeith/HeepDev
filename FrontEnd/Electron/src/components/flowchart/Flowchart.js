@@ -70,7 +70,7 @@ class Flowchart extends React.Component {
         cx: 0,
         cy: 0,
         r: 8,
-        fill: 'gray',
+        fill: '#455A64',
         visibility: 'hidden',
         onMouseEnter: () => Draggable.get("#deviceContainer").disable(),
         onMouseLeave: () => Draggable.get("#deviceContainer").enable(),
@@ -80,8 +80,9 @@ class Flowchart extends React.Component {
       },
       dragVertex: {
         id: 'dragVertex',
-        color: '#455A64',
+        stroke: '#455A64',
         strokeWidth: 3,
+        fill: 'none'
       }
 		}
 

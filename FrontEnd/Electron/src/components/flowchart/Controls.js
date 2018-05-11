@@ -46,37 +46,91 @@ class Control extends React.Component {
 								this.props.control['controlID']);
 	}
 
+  getDragOutputPosition() {
+    const svgElement = document.getElementById(this.props.controlID)
+    const svgElRect = svgElement.getBoundingClientRect()
+
+    const svgContainer = document.getElementById("deviceContainer")
+    const svgConRect = svgContainer.getBoundingClientRect()
+
+    const heightOffset = svgElRect.height / 2
+    const widthOffset = svgElRect.width / 2
+
+    const startPosition = {
+      top: (svgElRect.top + heightOffset - svgConRect.top) / this.props.scale,
+      left: (svgElRect.left + widthOffset - svgConRect.left) / this.props.scale,
+    };
+
+    return startPosition
+  };
+
+  updateVertexPath() {
+    const bezierWeight = 0.675
+    const dragDotPosition = document.getElementById("dragDot")
+    const dragVertexPath = document.getElementById("dragVertex")
+
+    const getOutput = this.getDragOutputPosition()
+    const getInput = {
+      left: dragDotPosition._gsTransform.x,
+      top: dragDotPosition._gsTransform.y
+    }
+
+    const data = "M".concat(	String(getInput.left),
+            " ",
+            String(getInput.top),
+            " Q ",
+            String(Math.round(getInput.left) + 30),
+            " ",
+            String(Math.round(getInput.top)),
+            ", ",
+            String(Math.round(getInput.left + (getOutput.left - getInput.left)/2)),
+            " ",
+            String(Math.round(getInput.top + (getOutput.top - getInput.top)/2)),
+            " T ",
+            String(getOutput.left),
+            " ",
+            String(getOutput.top))
+
+
+    const x1 = dragDotPosition._gsTransform.x;
+    const y1 = dragDotPosition._gsTransform.y;
+
+    const x4 = getOutput.left;
+    const y4 = getOutput.top;
+
+    const dx = Math.abs(x1 - x4) * bezierWeight;
+
+    const p1x = x1;
+    const p1y = y1;
+
+    const p2x = x1 - dx;
+    const p2y = y1;
+
+    const p4x = x4;
+    const p4y = y4;
+
+    const p3x = x4 + dx;
+    const p3y = y4;
+
+    // const data = `M${p1x} ${p1y} C ${p2x} ${p2y} ${p3x} ${p3y} ${p4x} ${p4y}`;
+
+    dragVertexPath.setAttribute("d", data)
+  };
+
   drawVertex() {
-      const svgElement = document.getElementById(this.props.controlID)
-      const svgElRect = svgElement.getBoundingClientRect()
-
-      console.log(this.props.controlID)
-      console.log(svgElRect)
-
-      const svgContainer = document.getElementById("deviceContainer")
-      const svgConRect = svgContainer.getBoundingClientRect()
-
-      console.log(svgConRect)
-
-      const heightOffset = svgElRect.height / 2
-      const widthOffset = svgElRect.width / 2
-
-      const inputPosition = {
-        top: (svgElRect.top + heightOffset - svgConRect.top) / this.props.scale,
-        left: (svgElRect.left + widthOffset - svgConRect.left) / this.props.scale,
-      };
-
-      console.log(inputPosition)
+    const outputPosition = this.getDragOutputPosition()
+    const outputElement = document.getElementById(this.props.controlID)
 
     TweenLite.set("#dragDot", {
-      x: inputPosition.left,
-      y: inputPosition.top,
+      x: outputPosition.left,
+      y: outputPosition.top,
       visibility: 'visible'
     })
 
     Draggable.create("#dragDot", {
       type: 'x, y',
-      trigger: svgElement
+      trigger: outputElement,
+      onDrag: () => this.updateVertexPath()
     });
   }
 
@@ -110,6 +164,7 @@ class Control extends React.Component {
 			},
 			circle: {
         id: this.props.controlID,
+        className: 'controlCircle',
         // onClick: (event) => this.drawVertex(event),
 				// onClick: (event) => {this.direction == 0 ?
 				// 					 this.selectInputVertex(event) :
