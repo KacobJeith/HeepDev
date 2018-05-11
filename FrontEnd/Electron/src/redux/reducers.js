@@ -505,8 +505,6 @@ const checkDeepEquality = (newState, check, elseCase = () => {}) => {
   for (var propToCheck in check) {
     if (!deepEqual(newState[propToCheck], check[propToCheck])) {
       newState[propToCheck] = check[propToCheck];
-    } else {
-      newState[propToCheck] = elseCase(newState[propToCheck])
     }
   }
 
