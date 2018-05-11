@@ -15,8 +15,8 @@ var mapStateToProps = (state, ownProps) => ({
   device: state.devices[ownProps.DeviceID],
   deviceID: ownProps.DeviceID,
   collapsed: state.flowchart.devices[ownProps.DeviceID] ? state.flowchart.devices[ownProps.DeviceID].collapsed : false,
-  controlInputs: state.controls.controlStructure[ownProps.DeviceID] ? state.controls.controlStructure[ownProps.DeviceID].inputs : [],
-  controlOutputs: state.controls.controlStructure[ownProps.DeviceID] ? state.controls.controlStructure[ownProps.DeviceID].outputs : [],
+  controlInputs: Object.keys(state.controls).filter((thisControl) => state.controls[thisControl].deviceID == ownProps.DeviceID && state.controls[thisControl].controlDirection == 0),
+  controlOutputs: Object.keys(state.controls).filter((thisControl) => state.controls[thisControl].deviceID == ownProps.DeviceID && state.controls[thisControl].controlDirection == 1),
   detailsPanelDeviceID: state.detailsPanelDeviceID
 })
 
