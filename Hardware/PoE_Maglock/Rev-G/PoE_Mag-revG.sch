@@ -6922,7 +6922,9 @@ Switches electronic signals</description>
 <part name="U$4" library="adafruit" library_urn="urn:adsk.eagle:library:420" deviceset="2.1MMJACK" device="THM"/>
 <part name="U$17" library="microbuilder" deviceset="GND" device=""/>
 <part name="D12" library="microbuilder" deviceset="DIODE" device="SOD-123" value="PMEG4030ER"/>
-<part name="U$16" library="microbuilder" deviceset="VBAT" device=""/>
+<part name="J11" library="adafruit" library_urn="urn:adsk.eagle:library:420" deviceset="1X2" device="-3.5MM"/>
+<part name="GND10" library="supply1" deviceset="GND" device=""/>
+<part name="U$18" library="microbuilder" deviceset="VBAT" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -6939,6 +6941,7 @@ Switches electronic signals</description>
 <text x="299.72" y="190.5" size="2.54" layer="97">MOSFET OUTPUTS</text>
 <text x="360.68" y="317.5" size="2.54" layer="97">I2C BREAKOUT</text>
 <text x="398.78" y="317.5" size="2.54" layer="97">SERIAL BREAKOUT</text>
+<text x="452.12" y="317.5" size="2.54" layer="97">POST FUSE PWR</text>
 </plain>
 <instances>
 <instance part="U4" gate="G$1" x="160.02" y="121.92"/>
@@ -7101,7 +7104,9 @@ Switches electronic signals</description>
 <instance part="U$4" gate="G$1" x="38.1" y="223.52"/>
 <instance part="U$17" gate="G$1" x="43.18" y="218.44"/>
 <instance part="D12" gate="G$1" x="53.34" y="226.06"/>
-<instance part="U$16" gate="G$1" x="66.04" y="226.06" rot="R270"/>
+<instance part="J11" gate="G$1" x="457.2" y="297.18"/>
+<instance part="GND10" gate="1" x="452.12" y="289.56"/>
+<instance part="U$18" gate="G$1" x="452.12" y="307.34"/>
 </instances>
 <busses>
 </busses>
@@ -7367,6 +7372,11 @@ Switches electronic signals</description>
 <pinref part="U$4" gate="G$1" pin="RING_SW"/>
 <wire x1="43.18" y1="223.52" x2="43.18" y2="220.98" width="0.1524" layer="91"/>
 <junction x="43.18" y="220.98"/>
+</segment>
+<segment>
+<pinref part="J11" gate="G$1" pin="2"/>
+<pinref part="GND10" gate="1" pin="GND"/>
+<wire x1="452.12" y1="292.1" x2="452.12" y2="297.18" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="RD-" class="0">
@@ -8233,9 +8243,9 @@ Switches electronic signals</description>
 <pinref part="U$1" gate="G$1" pin="VBAT"/>
 </segment>
 <segment>
-<pinref part="D12" gate="G$1" pin="C"/>
-<wire x1="55.88" y1="226.06" x2="63.5" y2="226.06" width="0.1524" layer="91"/>
-<pinref part="U$16" gate="G$1" pin="VBAT"/>
+<pinref part="J11" gate="G$1" pin="1"/>
+<pinref part="U$18" gate="G$1" pin="VBAT"/>
+<wire x1="452.12" y1="304.8" x2="452.12" y2="299.72" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$5" class="0">
@@ -8301,11 +8311,17 @@ Switches electronic signals</description>
 <wire x1="121.92" y1="223.52" x2="121.92" y2="226.06" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$2" class="0">
+<net name="POE+" class="0">
 <segment>
 <pinref part="X2" gate="G$1" pin="POE+"/>
 <wire x1="58.42" y1="60.96" x2="45.72" y2="60.96" width="0.1524" layer="91"/>
 <pinref part="R14" gate="G$1" pin="1"/>
+<label x="48.26" y="60.96" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="D12" gate="G$1" pin="C"/>
+<wire x1="55.88" y1="226.06" x2="63.5" y2="226.06" width="0.1524" layer="91"/>
+<label x="58.42" y="226.568" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="N$1" class="0">
