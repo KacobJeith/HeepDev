@@ -45,8 +45,8 @@ class Control extends React.Component {
 								this.props.control['controlID']);
 	};
 
-  getDragOutputPosition() {
-    const svgElement = document.getElementById(this.props.controlID)
+  getElementPosition(element) {
+    const svgElement = document.getElementById(element)
     const svgElRect = svgElement.getBoundingClientRect()
 
     const svgContainer = document.getElementById("deviceContainer")
@@ -55,12 +55,18 @@ class Control extends React.Component {
     const heightOffset = svgElRect.height / 2
     const widthOffset = svgElRect.width / 2
 
-    const startPosition = {
-      top: (svgElRect.top + heightOffset - svgConRect.top) / this.props.scale,
-      left: (svgElRect.left + widthOffset - svgConRect.left) / this.props.scale,
+    const topPosition = svgElRect.top + heightOffset - svgConRect.top
+    const leftPosition = svgElRect.left + widthOffset - svgConRect.left
+
+
+    const returnPosition = {
+      top: topPosition / this.props.scale,
+      left: leftPosition / this.props.scale,
+      bottom: (topPosition + svgElRect.height) / this.props.scale,
+      right: (leftPosition + svgElRect.width) / this.props.scale,
     };
 
-    return startPosition
+    return returnPosition
   };
 
   updateDragVertexPath() {
@@ -68,7 +74,7 @@ class Control extends React.Component {
     const dragDotPosition = document.getElementById("dragDot")
     const dragVertexPath = document.getElementById("dragVertex")
 
-    const getOutput = this.getDragOutputPosition()
+    const getOutput = this.getElementPosition(this.props.controlID)
     const getInput = {
       left: dragDotPosition._gsTransform.x,
       top: dragDotPosition._gsTransform.y
@@ -117,7 +123,7 @@ class Control extends React.Component {
   };
 
   drawDragVertex() {
-    const outputPosition = this.getDragOutputPosition()
+    const outputPosition = this.getElementPosition(this.props.controlID)
     const outputElement = document.getElementById(this.props.controlID)
     const controlInputs = this.props.controlInputs
 
@@ -131,20 +137,33 @@ class Control extends React.Component {
       type: 'x, y',
       trigger: outputElement,
       onDrag: () => this.updateDragVertexPath(),
-      onRelease: () => this.resetDrag(),
+      // onRelease: () => this.resetDrag(),
       onDragEnd: () => this.checkDragOverlap()
     })
   };
 
+  overlapFunction(rect1, rect2) {
+    let overlap = false
+
+    if( (rect1 != undefined) && (rect2 != undefined)) {
+      overlap = !(rect1.right < rect2.left ||
+                  rect1.left > rect2.right ||
+                  rect1.bottom < rect2.top ||
+                  rect1.top > rect2.bottom)
+      }
+
+    return overlap
+  }
+
   checkDragOverlap() {
     const controlInputs = this.props.controlInputs
-    console.log("running")
-    this.resetDrag()
+    const dragDotPosition = this.getElementPosition("dragDot")
 
     for (let i = 0; i < controlInputs.length; i++) {
-      let inputControl = document.getElementById(controlInputs[i])
-      if (Draggable.hitTest(inputControl, "#dragDot",  0)) {
-        console.log(inputControl)
+      const inputPosition = this.getElementPosition(controlInputs[i].toString())
+
+      if (this.overlapFunction(dragDotPosition, inputPosition)) {
+        this.resetDrag()
     }}
   }
 
