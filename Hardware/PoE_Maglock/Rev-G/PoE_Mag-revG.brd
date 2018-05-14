@@ -154,7 +154,7 @@
 <text x="55.245" y="42.06875" size="2.1844" layer="21" ratio="15">1</text>
 <text x="75.565" y="14.605" size="1.778" layer="21" ratio="20" rot="R90">+  -</text>
 <text x="26.035" y="50.4825" size="1.4224" layer="21" ratio="15">24V Passive PoE
-Maglock</text>
+Ultimate Maglock</text>
 <circle x="31.4325" y="9.31375" radius="0.25" width="0.7" layer="21"/>
 <text x="43.33875" y="23.65375" size="1.27" layer="21" font="fixed" ratio="15" distance="100">13</text>
 <text x="45.72" y="13.81125" size="1.27" layer="21" font="fixed" ratio="15" distance="100">RESET</text>
