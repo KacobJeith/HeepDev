@@ -6976,7 +6976,6 @@ Switches electronic signals</description>
 <part name="+3V14" library="supply1" deviceset="+3V3" device=""/>
 <part name="+3V15" library="supply1" deviceset="+3V3" device=""/>
 <part name="U$17" library="microbuilder" deviceset="GND" device=""/>
-<part name="D12" library="microbuilder" deviceset="DIODE" device="SOD-123" value="PMEG4030ER"/>
 <part name="J11" library="adafruit" library_urn="urn:adsk.eagle:library:420" deviceset="1X2" device="-3.5MM"/>
 <part name="X4" library="microbuilder" deviceset="DCBARREL" device="PTH"/>
 <part name="GND10" library="supply1" deviceset="GND" device=""/>
@@ -6993,7 +6992,7 @@ Switches electronic signals</description>
 <text x="251.46" y="218.44" size="1.778" layer="94">ICSP HEADER</text>
 <text x="83.82" y="251.46" size="2.54" layer="94" ratio="15" align="center">POWER SUPPLY: 3.3V BUCK</text>
 <text x="60.96" y="238.76" size="1.778" layer="97">VBAT is POE Voltage</text>
-<text x="370.84" y="259.08" size="2.54" layer="97">ANALOG BREAKOUTS</text>
+<text x="419.1" y="264.16" size="2.54" layer="97">ANALOG BREAKOUTS</text>
 <text x="299.72" y="190.5" size="2.54" layer="97">MOSFET OUTPUTS</text>
 <text x="360.68" y="317.5" size="2.54" layer="97">I2C BREAKOUT</text>
 <text x="398.78" y="317.5" size="2.54" layer="97">SERIAL BREAKOUT</text>
@@ -7158,7 +7157,6 @@ Switches electronic signals</description>
 <instance part="+3V14" gate="G$1" x="444.5" y="241.3" rot="R180"/>
 <instance part="+3V15" gate="G$1" x="421.64" y="241.3" rot="R180"/>
 <instance part="U$17" gate="G$1" x="43.18" y="218.44"/>
-<instance part="D12" gate="G$1" x="53.34" y="226.06"/>
 <instance part="J11" gate="G$1" x="457.2" y="297.18"/>
 <instance part="X4" gate="G$1" x="33.02" y="223.52"/>
 <instance part="GND10" gate="1" x="452.12" y="307.34" rot="R180"/>
@@ -7752,20 +7750,12 @@ Switches electronic signals</description>
 <pinref part="IC2" gate="G$1" pin="PF4(ADC4/TCK)"/>
 <label x="292.1" y="327.66" size="1.778" layer="95"/>
 </segment>
-<segment>
-<wire x1="363.22" y1="248.92" x2="353.06" y2="248.92" width="0.1524" layer="91"/>
-<label x="353.06" y="248.92" size="1.778" layer="95"/>
-</segment>
 </net>
 <net name="A2" class="0">
 <segment>
 <wire x1="289.56" y1="325.12" x2="304.8" y2="325.12" width="0.1524" layer="91"/>
 <pinref part="IC2" gate="G$1" pin="PF5(ADC5/TMS)"/>
 <label x="292.1" y="325.12" size="1.778" layer="95"/>
-</segment>
-<segment>
-<wire x1="363.22" y1="246.38" x2="353.06" y2="246.38" width="0.1524" layer="91"/>
-<label x="353.06" y="246.38" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="A1" class="0">
@@ -7775,8 +7765,9 @@ Switches electronic signals</description>
 <label x="292.1" y="322.58" size="1.778" layer="95"/>
 </segment>
 <segment>
-<wire x1="363.22" y1="243.84" x2="353.06" y2="243.84" width="0.1524" layer="91"/>
-<label x="353.06" y="243.84" size="1.778" layer="95"/>
+<pinref part="X1" gate="G$1" pin="2"/>
+<wire x1="421.64" y1="246.38" x2="411.48" y2="246.38" width="0.1524" layer="91"/>
+<label x="414.02" y="246.38" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="11" class="0">
@@ -7993,8 +7984,9 @@ Switches electronic signals</description>
 <label x="292.1" y="320.04" size="1.778" layer="95"/>
 </segment>
 <segment>
-<wire x1="363.22" y1="241.3" x2="353.06" y2="241.3" width="0.1524" layer="91"/>
-<label x="353.06" y="241.3" size="1.778" layer="95"/>
+<pinref part="X3" gate="G$1" pin="2"/>
+<wire x1="444.5" y1="246.38" x2="436.88" y2="246.38" width="0.1524" layer="91"/>
+<label x="439.42" y="246.38" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="3/SCL" class="0">
@@ -8376,16 +8368,9 @@ Switches electronic signals</description>
 <label x="48.26" y="60.96" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="D12" gate="G$1" pin="C"/>
-<wire x1="55.88" y1="226.06" x2="63.5" y2="226.06" width="0.1524" layer="91"/>
-<label x="58.42" y="226.568" size="1.778" layer="95"/>
-</segment>
-</net>
-<net name="N$1" class="0">
-<segment>
-<pinref part="D12" gate="G$1" pin="A"/>
-<wire x1="35.56" y1="226.06" x2="50.8" y2="226.06" width="0.1524" layer="91"/>
+<label x="45.72" y="226.568" size="1.778" layer="95"/>
 <pinref part="X4" gate="G$1" pin="PWR"/>
+<wire x1="35.56" y1="226.06" x2="50.8" y2="226.06" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
