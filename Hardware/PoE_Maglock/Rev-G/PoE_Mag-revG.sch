@@ -1836,6 +1836,106 @@ grid 3.5 mm, diameter 10 mm</description>
 <pad name="3" x="-3.5" y="0" drill="1" diameter="2.1844"/>
 <text x="-4.572" y="-3.048" size="0.4064" layer="27" ratio="10">&gt;VALUE</text>
 </package>
+<package name="DCJACK_2MM_PTH">
+<description>DJ Jack 2.0mm PTH Right-Angle</description>
+<wire x1="14.2" y1="-4.5" x2="14.2" y2="-2.4" width="0.2032" layer="21"/>
+<wire x1="3.3" y1="4.5" x2="0" y2="4.5" width="0.2032" layer="51"/>
+<wire x1="0" y1="-4.5" x2="3.3" y2="-4.5" width="0.2032" layer="51"/>
+<wire x1="0" y1="-4.5" x2="0" y2="4.5" width="0.2032" layer="51"/>
+<wire x1="3.3" y1="-4.5" x2="8.4" y2="-4.5" width="0.2032" layer="21"/>
+<wire x1="14.2" y1="-4.5" x2="13.1" y2="-4.5" width="0.2032" layer="21"/>
+<wire x1="3.3" y1="4.5" x2="14.2" y2="4.5" width="0.2032" layer="21"/>
+<wire x1="14.2" y1="4.5" x2="14.2" y2="2.6" width="0.2032" layer="21"/>
+<wire x1="3.3" y1="4.5" x2="3.3" y2="-4.5" width="0.2032" layer="21"/>
+<wire x1="3.3" y1="4.5" x2="3.3" y2="-4.5" width="0.2032" layer="51"/>
+<wire x1="3.3" y1="4.5" x2="12.45" y2="4.5" width="0.2032" layer="51"/>
+<wire x1="12.45" y1="4.5" x2="14.2" y2="4.5" width="0.2032" layer="51"/>
+<wire x1="14.2" y1="4.5" x2="14.2" y2="-4.5" width="0.2032" layer="51"/>
+<wire x1="14.2" y1="-4.5" x2="3.3" y2="-4.5" width="0.2032" layer="51"/>
+<wire x1="12.45" y1="4.5" x2="12.45" y2="-4.4" width="0.2032" layer="51"/>
+<pad name="PWR" x="13.6" y="0" drill="1" diameter="2.7" shape="long" rot="R270"/>
+<pad name="GND" x="7.35" y="0" drill="1" diameter="2.7" shape="long" rot="R270"/>
+<pad name="GNDBREAK" x="10.75" y="-4.8" drill="1" diameter="2.7" shape="long"/>
+<text x="0" y="5.08" size="0.8128" layer="25" ratio="18">&gt;NAME</text>
+<text x="0" y="-5.334" size="0.4064" layer="27" ratio="10">&gt;VALUE</text>
+<text x="1.27" y="3.302" size="0.8128" layer="51" rot="R270">DC 2.0/2.1</text>
+<wire x1="7.6" y1="-1.75" x2="7.1" y2="-1.75" width="0" layer="20"/>
+<wire x1="7.1" y1="-1.75" x2="6.85" y2="-1.5" width="0" layer="20" curve="-90"/>
+<wire x1="6.85" y1="-1.5" x2="6.85" y2="1.5" width="0" layer="20"/>
+<wire x1="6.85" y1="1.5" x2="7.1" y2="1.75" width="0" layer="20" curve="-90"/>
+<wire x1="7.1" y1="1.75" x2="7.6" y2="1.75" width="0" layer="20"/>
+<wire x1="7.6" y1="1.75" x2="7.85" y2="1.5" width="0" layer="20" curve="-90"/>
+<wire x1="7.85" y1="1.5" x2="7.85" y2="-1.5" width="0" layer="20"/>
+<wire x1="7.85" y1="-1.5" x2="7.6" y2="-1.75" width="0" layer="20" curve="-90"/>
+<wire x1="13.85" y1="-1.75" x2="13.35" y2="-1.75" width="0" layer="20"/>
+<wire x1="13.35" y1="-1.75" x2="13.1" y2="-1.5" width="0" layer="20" curve="-90"/>
+<wire x1="13.1" y1="-1.5" x2="13.1" y2="1.5" width="0" layer="20"/>
+<wire x1="13.1" y1="1.5" x2="13.35" y2="1.75" width="0" layer="20" curve="-90"/>
+<wire x1="13.35" y1="1.75" x2="13.85" y2="1.75" width="0" layer="20"/>
+<wire x1="13.85" y1="1.75" x2="14.1" y2="1.5" width="0" layer="20" curve="-90"/>
+<wire x1="14.1" y1="1.5" x2="14.1" y2="-1.5" width="0" layer="20"/>
+<wire x1="14.1" y1="-1.5" x2="13.85" y2="-1.75" width="0" layer="20" curve="-90"/>
+<wire x1="12.25" y1="-4.55" x2="12.25" y2="-5.05" width="0" layer="20"/>
+<wire x1="12.25" y1="-5.05" x2="12" y2="-5.3" width="0" layer="20" curve="-90"/>
+<wire x1="12" y1="-5.3" x2="9.5" y2="-5.3" width="0" layer="20"/>
+<wire x1="9.5" y1="-5.3" x2="9.25" y2="-5.05" width="0" layer="20" curve="-90"/>
+<wire x1="9.25" y1="-5.05" x2="9.25" y2="-4.55" width="0" layer="20"/>
+<wire x1="9.25" y1="-4.55" x2="9.5" y2="-4.3" width="0" layer="20" curve="-90"/>
+<wire x1="9.5" y1="-4.3" x2="12" y2="-4.3" width="0" layer="20"/>
+<wire x1="12" y1="-4.3" x2="12.25" y2="-4.55" width="0" layer="20" curve="-90"/>
+</package>
+<package name="DCJACK_2MM_SMT">
+<description>2.0/2.1mm DC Jack - SMT
+&lt;p&gt;4UConnector: 03267&lt;/p&gt;
+&lt;p&gt;Note: Small tRestrict polygon's were added to the ground pads to improve solderability when this part is used in combination with a ground pour.  By default, Eagle will product four large bridges to the ground pour significantly increasing the heat distribution on the pads and preventing lead-free solder from reflowing in certain situations.  For more details, see: http://www.microbuilder.eu/Blog/09-12-14/Reducing_Thermals_for_Large_Pads_in_Eagle.aspx&lt;/p&gt;</description>
+<wire x1="-4" y1="4.5" x2="-5" y2="3.5" width="0.2032" layer="51" curve="90"/>
+<wire x1="-5" y1="3.5" x2="-5" y2="-3.5" width="0.127" layer="51"/>
+<wire x1="-5" y1="-3.5" x2="-4" y2="-4.5" width="0.2032" layer="51" curve="90"/>
+<wire x1="-4" y1="-4.5" x2="10.254" y2="-4.5" width="0.127" layer="51"/>
+<wire x1="10.254" y1="-4.5" x2="10.254" y2="-1.492" width="0.127" layer="51"/>
+<wire x1="10.254" y1="-1.492" x2="9" y2="-1.492" width="0.127" layer="51"/>
+<wire x1="9" y1="-1.492" x2="9" y2="4.5" width="0.127" layer="51"/>
+<wire x1="9" y1="4.5" x2="-4" y2="4.5" width="0.127" layer="51"/>
+<wire x1="-4" y1="4.5" x2="-5" y2="3.5" width="0.2032" layer="21" curve="90"/>
+<wire x1="-5" y1="3.5" x2="-5" y2="-3.5" width="0.2032" layer="21"/>
+<wire x1="-5" y1="-3.5" x2="-4" y2="-4.5" width="0.2032" layer="21" curve="90"/>
+<wire x1="10.254" y1="-4.5" x2="10.254" y2="-1.492" width="0.2032" layer="21"/>
+<wire x1="10.254" y1="-1.492" x2="9" y2="-1.492" width="0.2032" layer="21"/>
+<wire x1="9" y1="-1.492" x2="9" y2="4.5" width="0.2032" layer="21"/>
+<wire x1="-1.668" y1="4.5" x2="-4" y2="4.5" width="0.2032" layer="21"/>
+<wire x1="4.682" y1="4.5" x2="1.588" y2="4.5" width="0.2032" layer="21"/>
+<wire x1="9" y1="4.5" x2="7.938" y2="4.5" width="0.2032" layer="21"/>
+<wire x1="-4" y1="-4.5" x2="-1.684" y2="-4.5" width="0.2032" layer="21"/>
+<wire x1="1.588" y1="-4.5" x2="4.666" y2="-4.5" width="0.2032" layer="21"/>
+<wire x1="7.938" y1="-4.5" x2="10.254" y2="-4.5" width="0.2032" layer="21"/>
+<smd name="1" x="0" y="5.5" dx="2.4" dy="2" layer="1"/>
+<smd name="1'" x="6.2" y="5.5" dx="2.4" dy="2" layer="1"/>
+<smd name="3" x="6.2" y="-5.5" dx="2.4" dy="2" layer="1"/>
+<smd name="2" x="0" y="-5.5" dx="2.4" dy="2" layer="1"/>
+<text x="0.762" y="2.794" size="1.4224" layer="21" ratio="12" rot="R90">+</text>
+<text x="-1.016" y="-3.81" size="0.8128" layer="21">GND</text>
+<hole x="0" y="0" drill="1.6"/>
+<hole x="4.5" y="0" drill="1.8"/>
+<text x="10.668" y="-4.318" size="0.4064" layer="27" ratio="10">&gt;VALUE</text>
+<text x="10.668" y="-3.683" size="0.8128" layer="27" ratio="18">&gt;NAME</text>
+</package>
+<package name="DCJACK_1.3MM_PTH">
+<wire x1="-2.5" y1="11.1" x2="-2.5" y2="0" width="0.127" layer="51"/>
+<wire x1="2.5" y1="11.1" x2="2.5" y2="0" width="0.127" layer="51"/>
+<wire x1="-2.5" y1="11.1" x2="2.5" y2="11.1" width="0.2032" layer="51"/>
+<wire x1="-2.5" y1="0" x2="2.5" y2="0" width="0.127" layer="51"/>
+<wire x1="-2.5" y1="11.1" x2="-2.5" y2="0" width="0.2032" layer="21"/>
+<wire x1="2.5" y1="11.1" x2="2.5" y2="0" width="0.2032" layer="21"/>
+<wire x1="1.5" y1="11.1" x2="2.5" y2="11.1" width="0.2032" layer="21"/>
+<wire x1="-2.5" y1="11.1" x2="-1.5" y2="11.1" width="0.2032" layer="21"/>
+<wire x1="-2.5" y1="0" x2="2.5" y2="0" width="0.2032" layer="21"/>
+<pad name="GND" x="0" y="6" drill="1.3" shape="long" rot="R90"/>
+<pad name="PWR" x="0" y="10.9" drill="1.3" shape="long" rot="R90"/>
+<pad name="GNDBREAK" x="2.8" y="8.3" drill="1.3" shape="long" rot="R90"/>
+<text x="-2.78" y="-0.35" size="0.8128" layer="25" ratio="18" rot="R90">&gt;NAME</text>
+<text x="3.38" y="-0.35" size="0.4064" layer="27" ratio="10" rot="R90">&gt;VALUE</text>
+<text x="-2.002" y="0.47" size="0.8128" layer="51">DC 1.3</text>
+</package>
 </packages>
 <symbols>
 <symbol name="CAPACITOR">
@@ -1982,6 +2082,32 @@ grid 3.5 mm, diameter 10 mm</description>
 <pin name="3" x="-5.08" y="-2.54" visible="pin" length="middle" direction="pas"/>
 <text x="-2.54" y="7.62" size="1.27" layer="95">&gt;NAME</text>
 <text x="-2.54" y="-7.62" size="1.27" layer="96">&gt;VALUE</text>
+</symbol>
+<symbol name="DCBARREL">
+<wire x1="-5.08" y1="-2.54" x2="-4.318" y2="-2.54" width="0.254" layer="94"/>
+<wire x1="-4.318" y1="-2.54" x2="-3.556" y2="-1.778" width="0.254" layer="94"/>
+<wire x1="-3.556" y1="-1.778" x2="-2.794" y2="-2.54" width="0.254" layer="94"/>
+<wire x1="-0.762" y1="3.175" x2="-0.762" y2="1.905" width="0.254" layer="94"/>
+<wire x1="-4.445" y1="3.175" x2="-4.445" y2="1.905" width="0.254" layer="94" curve="180"/>
+<wire x1="-0.762" y1="1.905" x2="-4.445" y2="1.905" width="0.254" layer="94"/>
+<wire x1="-0.762" y1="3.175" x2="-4.445" y2="3.175" width="0.254" layer="94"/>
+<wire x1="-0.762" y1="3.556" x2="0" y2="3.556" width="0.254" layer="94"/>
+<wire x1="0" y1="3.556" x2="0" y2="1.524" width="0.254" layer="94"/>
+<wire x1="0" y1="1.524" x2="-0.762" y2="1.524" width="0.254" layer="94"/>
+<wire x1="-0.762" y1="1.524" x2="-0.762" y2="3.556" width="0.254" layer="94"/>
+<wire x1="0" y1="0" x2="-1.524" y2="0" width="0.254" layer="94"/>
+<wire x1="0" y1="-2.54" x2="-1.524" y2="-2.54" width="0.254" layer="94"/>
+<wire x1="-1.524" y1="-2.54" x2="-2.794" y2="-2.54" width="0.254" layer="94"/>
+<wire x1="-1.524" y1="0" x2="-1.524" y2="-1.27" width="0.254" layer="94"/>
+<wire x1="-1.524" y1="-2.54" x2="-2.032" y2="-1.27" width="0.254" layer="94"/>
+<wire x1="-2.032" y1="-1.27" x2="-1.524" y2="-1.27" width="0.254" layer="94"/>
+<wire x1="-1.524" y1="-1.27" x2="-1.016" y2="-1.27" width="0.254" layer="94"/>
+<wire x1="-1.016" y1="-1.27" x2="-1.524" y2="-2.54" width="0.254" layer="94"/>
+<text x="-5.08" y="5.08" size="1.27" layer="95">&gt;NAME</text>
+<text x="-5.08" y="-5.08" size="1.27" layer="96">&gt;VALUE</text>
+<pin name="PWR" x="2.54" y="2.54" visible="pad" length="short" direction="pwr" rot="R180"/>
+<pin name="GNDBREAK" x="2.54" y="0" visible="pad" length="short" direction="pwr" rot="R180"/>
+<pin name="GND" x="2.54" y="-2.54" visible="pad" length="short" direction="pwr" rot="R180"/>
 </symbol>
 </symbols>
 <devicesets>
@@ -3063,6 +3189,47 @@ Vishay IHLP
 <connect gate="G$1" pin="1" pad="1"/>
 <connect gate="G$1" pin="2" pad="2"/>
 <connect gate="G$1" pin="3" pad="3"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="DCBARREL" prefix="X" uservalue="yes">
+<description>&lt;p&gt;&lt;b&gt;DC Barrel Jack&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;DCJACK_1.3MM_PTH&lt;/b&gt; - Through Hole 1.3mm Jack (4UConnector: 05536)&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;DCJACK_2MM_PTH&lt;/b&gt; - Through Hole 2.0/2.1 Jack (4UConnector: 05537)&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;DCJACK_2MM_SMT&lt;/b&gt; - SMT 2.0/2.1mm Jack(4UConnector: 03267)&lt;/p&gt;</description>
+<gates>
+<gate name="G$1" symbol="DCBARREL" x="0" y="0"/>
+</gates>
+<devices>
+<device name="PTH" package="DCJACK_2MM_PTH">
+<connects>
+<connect gate="G$1" pin="GND" pad="GND"/>
+<connect gate="G$1" pin="GNDBREAK" pad="GNDBREAK"/>
+<connect gate="G$1" pin="PWR" pad="PWR"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="SMT" package="DCJACK_2MM_SMT">
+<connects>
+<connect gate="G$1" pin="GND" pad="2"/>
+<connect gate="G$1" pin="GNDBREAK" pad="3"/>
+<connect gate="G$1" pin="PWR" pad="1 1'"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="1.3MM" package="DCJACK_1.3MM_PTH">
+<connects>
+<connect gate="G$1" pin="GND" pad="GND"/>
+<connect gate="G$1" pin="GNDBREAK" pad="GNDBREAK"/>
+<connect gate="G$1" pin="PWR" pad="PWR"/>
 </connects>
 <technologies>
 <technology name=""/>
@@ -6028,72 +6195,6 @@ Also note, the SNAP packages are for using a snappable style connector. We sell 
 <pad name="2" x="-1.7" y="0" drill="1" diameter="2.1844"/>
 <text x="3" y="5" size="1.27" layer="25" rot="R180">&gt;NAME</text>
 </package>
-<package name="PJ-102A" library_version="1">
-<wire x1="-4.6" y1="4.4" x2="4.4" y2="4.4" width="0.127" layer="21"/>
-<wire x1="4.4" y1="4.4" x2="4.4" y2="-10.2" width="0.127" layer="21"/>
-<wire x1="4.4" y1="-10.2" x2="-4.6" y2="-10.2" width="0.127" layer="21"/>
-<wire x1="-4.6" y1="-10.2" x2="-4.6" y2="4.4" width="0.127" layer="21"/>
-<pad name="RING_SW" x="-4.6" y="-6.29" drill="3" diameter="4.8" rot="R180"/>
-<pad name="TIP" x="0.1" y="-9.29" drill="3" diameter="4.8" rot="R180"/>
-<pad name="RING" x="0.1" y="-3.39" drill="3" diameter="4.8" rot="R180"/>
-</package>
-<package name="DCJACK_2MM_SMT" library_version="1">
-<description>2.0/2.1mm DC Jack - SMT
-&lt;p&gt;4UConnector: 03267&lt;/p&gt;
-&lt;p&gt;Note: Small tRestrict polygon's were added to the ground pads to improve solderability when this part is used in combination with a ground pour.  By default, Eagle will product four large bridges to the ground pour significantly increasing the heat distribution on the pads and preventing lead-free solder from reflowing in certain situations.  For more details, see: http://www.microbuilder.eu/Blog/09-12-14/Reducing_Thermals_for_Large_Pads_in_Eagle.aspx&lt;/p&gt;</description>
-<wire x1="-4" y1="4.5" x2="-5" y2="3.5" width="0.127" layer="51" curve="90"/>
-<wire x1="-5" y1="3.5" x2="-5" y2="-3.5" width="0.127" layer="51"/>
-<wire x1="-5" y1="-3.5" x2="-4" y2="-4.5" width="0.127" layer="51" curve="90"/>
-<wire x1="-4" y1="-4.5" x2="10.254" y2="-4.5" width="0.127" layer="51"/>
-<wire x1="10.254" y1="-4.5" x2="10.254" y2="-1.492" width="0.127" layer="51"/>
-<wire x1="10.254" y1="-1.492" x2="9" y2="-1.492" width="0.127" layer="51"/>
-<wire x1="9" y1="-1.492" x2="9" y2="4.5" width="0.127" layer="51"/>
-<wire x1="9" y1="4.5" x2="-4" y2="4.5" width="0.127" layer="51"/>
-<wire x1="-4" y1="4.5" x2="-5" y2="3.5" width="0.127" layer="21" curve="90"/>
-<wire x1="-5" y1="3.5" x2="-5" y2="-3.5" width="0.127" layer="21"/>
-<wire x1="-5" y1="-3.5" x2="-4" y2="-4.5" width="0.127" layer="21" curve="90"/>
-<wire x1="10.254" y1="-4.5" x2="10.254" y2="-1.492" width="0.127" layer="21"/>
-<wire x1="10.254" y1="-1.492" x2="9" y2="-1.492" width="0.127" layer="21"/>
-<wire x1="9" y1="-1.492" x2="9" y2="4.5" width="0.127" layer="21"/>
-<wire x1="-1.668" y1="4.5" x2="-4" y2="4.5" width="0.127" layer="21"/>
-<wire x1="4.682" y1="4.5" x2="1.588" y2="4.5" width="0.127" layer="21"/>
-<wire x1="9" y1="4.5" x2="7.938" y2="4.5" width="0.127" layer="21"/>
-<wire x1="-4" y1="-4.5" x2="-1.684" y2="-4.5" width="0.127" layer="21"/>
-<wire x1="1.588" y1="-4.5" x2="4.666" y2="-4.5" width="0.127" layer="21"/>
-<wire x1="7.938" y1="-4.5" x2="10.254" y2="-4.5" width="0.127" layer="21"/>
-<smd name="PWR1" x="0" y="5.5" dx="2.4" dy="2" layer="1"/>
-<smd name="PWR2" x="6.2" y="5.5" dx="2.4" dy="2" layer="1"/>
-<smd name="GNDBREAK" x="6.2" y="-5.5" dx="2.4" dy="2" layer="1"/>
-<smd name="GND" x="0" y="-5.5" dx="2.4" dy="2" layer="1"/>
-<text x="0.762" y="2.794" size="1.4224" layer="21" ratio="12" rot="R90">+</text>
-<text x="-1.016" y="-3.81" size="0.8128" layer="21">GND</text>
-<hole x="0" y="0" drill="1.6"/>
-<hole x="4.5" y="0" drill="1.8"/>
-<polygon width="0.0254" layer="41" spacing="0.254">
-<vertex x="1.27" y="-5.7404"/>
-<vertex x="1.27" y="-5.2578"/>
-<vertex x="1.2954" y="-5.2578"/>
-<vertex x="1.2954" y="-5.7404"/>
-</polygon>
-<polygon width="0.0254" layer="41" spacing="0.254">
-<vertex x="-0.254" y="-4.4196"/>
-<vertex x="0.2286" y="-4.4196"/>
-<vertex x="0.2286" y="-4.445"/>
-<vertex x="-0.254" y="-4.445"/>
-</polygon>
-<polygon width="0.0254" layer="41" spacing="0.254">
-<vertex x="4.9022" y="-5.7404"/>
-<vertex x="4.9022" y="-5.2578"/>
-<vertex x="4.9276" y="-5.2578"/>
-<vertex x="4.9276" y="-5.7404"/>
-</polygon>
-<polygon width="0.0254" layer="41" spacing="0.254">
-<vertex x="6.4262" y="-4.445"/>
-<vertex x="5.9436" y="-4.445"/>
-<vertex x="5.9436" y="-4.4196"/>
-<vertex x="6.4262" y="-4.4196"/>
-</polygon>
-</package>
 </packages>
 <symbols>
 <symbol name="1X2" library_version="1">
@@ -6103,21 +6204,6 @@ Also note, the SNAP packages are for using a snappable style connector. We sell 
 <wire x1="5.08" y1="5.08" x2="-2.54" y2="5.08" width="0.254" layer="94"/>
 <pin name="1" x="-5.08" y="2.54" visible="pin" length="middle" direction="pas"/>
 <pin name="2" x="-5.08" y="0" visible="pin" length="middle" direction="pas"/>
-</symbol>
-<symbol name="POWERJACK-1" library_version="1">
-<wire x1="2.54" y1="3.175" x2="0" y2="3.175" width="0.254" layer="94"/>
-<wire x1="0" y1="3.175" x2="-1.27" y2="2.54" width="0.254" layer="94"/>
-<wire x1="-1.27" y1="2.54" x2="0" y2="1.905" width="0.254" layer="94"/>
-<wire x1="0" y1="1.905" x2="2.54" y2="1.905" width="0.254" layer="94"/>
-<wire x1="2.54" y1="1.905" x2="2.54" y2="3.175" width="0.254" layer="94"/>
-<wire x1="2.54" y1="0" x2="2.54" y2="-1.27" width="0.254" layer="94"/>
-<wire x1="2.54" y1="-2.54" x2="1.27" y2="-2.54" width="0.254" layer="94"/>
-<wire x1="1.27" y1="-2.54" x2="0" y2="-1.27" width="0.254" layer="94"/>
-<wire x1="0" y1="-1.27" x2="-1.27" y2="-2.54" width="0.254" layer="94"/>
-<text x="-2.54" y="5.08" size="1.27" layer="95">&gt;NAME</text>
-<pin name="TIP" x="5.08" y="2.54" visible="off" length="short" rot="R180"/>
-<pin name="RING" x="5.08" y="-2.54" visible="off" length="short" rot="R180"/>
-<pin name="RING_SW" x="5.08" y="0" visible="off" length="short" rot="R180"/>
 </symbol>
 </symbols>
 <devicesets>
@@ -6132,36 +6218,6 @@ Also note, the SNAP packages are for using a snappable style connector. We sell 
 <connects>
 <connect gate="G$1" pin="1" pad="1"/>
 <connect gate="G$1" pin="2" pad="2"/>
-</connects>
-<technologies>
-<technology name=""/>
-</technologies>
-</device>
-</devices>
-</deviceset>
-<deviceset name="2.1MMJACK" library_version="1">
-<description>2.1mm x 5.5mm THM DC jack with internal switch. Digikey part #PJ-102A, 4UCON part #05537 &lt;br&gt;
-2.1mm x 5.5mm SMT DC jack with internal switch. Digikey part #PJ-002A-SMT, 4UCON part #03267
-&lt;p&gt;By microbuilder.eu &amp; adafruit.com&lt;/p&gt;</description>
-<gates>
-<gate name="G$1" symbol="POWERJACK-1" x="0" y="0"/>
-</gates>
-<devices>
-<device name="THM" package="PJ-102A">
-<connects>
-<connect gate="G$1" pin="RING" pad="RING"/>
-<connect gate="G$1" pin="RING_SW" pad="RING_SW"/>
-<connect gate="G$1" pin="TIP" pad="TIP"/>
-</connects>
-<technologies>
-<technology name=""/>
-</technologies>
-</device>
-<device name="SMT" package="DCJACK_2MM_SMT">
-<connects>
-<connect gate="G$1" pin="RING" pad="GND"/>
-<connect gate="G$1" pin="RING_SW" pad="GNDBREAK"/>
-<connect gate="G$1" pin="TIP" pad="PWR2"/>
 </connects>
 <technologies>
 <technology name=""/>
@@ -6919,12 +6975,12 @@ Switches electronic signals</description>
 <part name="GND31" library="supply1" deviceset="GND" device=""/>
 <part name="+3V14" library="supply1" deviceset="+3V3" device=""/>
 <part name="+3V15" library="supply1" deviceset="+3V3" device=""/>
-<part name="U$4" library="adafruit" library_urn="urn:adsk.eagle:library:420" deviceset="2.1MMJACK" device="THM"/>
 <part name="U$17" library="microbuilder" deviceset="GND" device=""/>
 <part name="D12" library="microbuilder" deviceset="DIODE" device="SOD-123" value="PMEG4030ER"/>
 <part name="J11" library="adafruit" library_urn="urn:adsk.eagle:library:420" deviceset="1X2" device="-3.5MM"/>
 <part name="GND10" library="supply1" deviceset="GND" device=""/>
 <part name="U$18" library="microbuilder" deviceset="VBAT" device=""/>
+<part name="X4" library="microbuilder" deviceset="DCBARREL" device="PTH"/>
 </parts>
 <sheets>
 <sheet>
@@ -7101,12 +7157,12 @@ Switches electronic signals</description>
 <instance part="GND31" gate="1" x="444.5" y="256.54" rot="R180"/>
 <instance part="+3V14" gate="G$1" x="444.5" y="241.3" rot="R180"/>
 <instance part="+3V15" gate="G$1" x="421.64" y="241.3" rot="R180"/>
-<instance part="U$4" gate="G$1" x="38.1" y="223.52"/>
 <instance part="U$17" gate="G$1" x="43.18" y="218.44"/>
 <instance part="D12" gate="G$1" x="53.34" y="226.06"/>
 <instance part="J11" gate="G$1" x="457.2" y="297.18"/>
 <instance part="GND10" gate="1" x="452.12" y="289.56"/>
 <instance part="U$18" gate="G$1" x="452.12" y="307.34"/>
+<instance part="X4" gate="G$1" x="33.02" y="223.52"/>
 </instances>
 <busses>
 </busses>
@@ -7367,11 +7423,12 @@ Switches electronic signals</description>
 <wire x1="444.5" y1="254" x2="444.5" y2="248.92" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="U$4" gate="G$1" pin="RING"/>
 <pinref part="U$17" gate="G$1" pin="GND"/>
-<pinref part="U$4" gate="G$1" pin="RING_SW"/>
-<wire x1="43.18" y1="223.52" x2="43.18" y2="220.98" width="0.1524" layer="91"/>
-<junction x="43.18" y="220.98"/>
+<wire x1="35.56" y1="223.52" x2="35.56" y2="220.98" width="0.1524" layer="91"/>
+<junction x="35.56" y="220.98"/>
+<pinref part="X4" gate="G$1" pin="GNDBREAK"/>
+<pinref part="X4" gate="G$1" pin="GND"/>
+<wire x1="35.56" y1="220.98" x2="43.18" y2="220.98" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="J11" gate="G$1" pin="2"/>
@@ -8326,9 +8383,9 @@ Switches electronic signals</description>
 </net>
 <net name="N$1" class="0">
 <segment>
-<pinref part="U$4" gate="G$1" pin="TIP"/>
 <pinref part="D12" gate="G$1" pin="A"/>
-<wire x1="43.18" y1="226.06" x2="50.8" y2="226.06" width="0.1524" layer="91"/>
+<wire x1="35.56" y1="226.06" x2="50.8" y2="226.06" width="0.1524" layer="91"/>
+<pinref part="X4" gate="G$1" pin="PWR"/>
 </segment>
 </net>
 </nets>
