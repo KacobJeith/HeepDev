@@ -19,6 +19,8 @@ var mapStateToProps = (state, ownProps) => ({
   value: state.controls[ownProps.controlID].valueCurrent,
   ip: state.devices[ownProps.deviceID].ipAddress,
   scale: state.flowchart.scale,
+  devices: state.devices,
+  controls: state.controls
 })
 
 
@@ -34,13 +36,11 @@ class Control extends React.Component {
 		this.leftIndent = this.direction == 0 ? 10 : 250;
 	};
 
-	selectInputVertex(event) {
-		this.props.addVertex(this.props.deviceID,
-							 this.props.control['controlID'],
-							 this.props.ip);
+	selectInputVertex(deviceID, controlID, ipAddr) {
+		this.props.addVertex(deviceID, controlID, ipAddr);
 	};
 
-	selectOutputVertex(event) {
+	selectOutputVertex() {
 		this.props.selectOutput(this.props.deviceID,
 								this.props.control['controlID']);
 	};
@@ -137,7 +137,8 @@ class Control extends React.Component {
       type: 'x, y',
       trigger: outputElement,
       onDrag: () => this.updateDragVertexPath(),
-      // onRelease: () => this.resetDrag(),
+      onDragStart: () => this.selectOutputVertex(),
+      // onRelease: () => this.checkDragOverlap(),
       onDragEnd: () => this.checkDragOverlap()
     })
   };
@@ -160,9 +161,15 @@ class Control extends React.Component {
     const dragDotPosition = this.getElementPosition("dragDot")
 
     for (let i = 0; i < controlInputs.length; i++) {
-      const inputPosition = this.getElementPosition(controlInputs[i].toString())
+      let currentInput = controlInputs[i].toString()
+      const inputPosition = this.getElementPosition(currentInput)
 
       if (this.overlapFunction(dragDotPosition, inputPosition)) {
+        const deviceID = this.props.controls[currentInput].deviceID
+        const ipAddress = this.props.devices[deviceID].ipAddress
+        const controlID = this.props.controls[currentInput].controlID
+        console.log(deviceID, currentInput, ipAddress)
+        this.selectInputVertex(deviceID, controlID, ipAddress)
         this.resetDrag()
     }}
   }
@@ -185,7 +192,6 @@ class Control extends React.Component {
     this.setState({radius: 11}),
     Draggable.get("#_" + this.props.deviceID).disable()
     this.drawDragVertex()
-    this.selectOutputVertex()
   };
 
   handleMouseLeave() {
