@@ -7,6 +7,7 @@ import * as Actions from '../../redux/actions_classic'
 import * as Draggable from 'gsap/Draggable'
 
 import Device from './DevicePaper'
+import DraggableVertex from './DraggableVertex.js'
 import Vertex from './Vertex'
 import DeviceDetailsPanel from '../heep/DeviceDetailsPanel'
 import { withTheme } from 'material-ui/styles'
@@ -65,25 +66,6 @@ class Flowchart extends React.Component {
 					overflow: 'hidden',
 				},
 			},
-      dragDot: {
-        id: 'dragDot',
-        cx: 0,
-        cy: 0,
-        r: 13,
-        fill: 'none',
-        visibility: 'hidden',
-        onMouseEnter: () => Draggable.get("#deviceContainer").disable(),
-        onMouseLeave: () => Draggable.get("#deviceContainer").enable(),
-        style: {
-          cursor: 'grab',
-        }
-      },
-      dragVertex: {
-        id: 'dragVertex',
-        stroke: '#455A64',
-        strokeWidth: 3,
-        fill: 'none'
-      }
 		}
 
 		return (
@@ -93,8 +75,7 @@ class Flowchart extends React.Component {
               return <Vertex key={thisVertexKey} vertexID={thisVertexKey} />
 					}
 				})}
-        <circle {...inputs.dragDot}/>
-        <path {...inputs.dragVertex}/>
+        <DraggableVertex/>
 			</svg>
 		)
 	};
