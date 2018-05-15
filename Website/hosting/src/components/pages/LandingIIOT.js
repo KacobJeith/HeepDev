@@ -7,10 +7,13 @@ import * as Actions from '../../redux/actions'
 import { HashLink } from "react-router-hash-link";
 import { logPageView } from '../../GoogleAnalytics'
 
-import { Grid, Paper, Typography, Button } from 'material-ui'
+import { Grid, Paper, Typography, Button, Avatar } from 'material-ui'
 import Memory from 'material-ui-icons/Memory'
 import DesktopWindows from 'material-ui-icons/DesktopWindows'
 import ArrowForward from 'material-ui-icons/ArrowForward'
+import SettingsInputComponent from 'material-ui-icons/SettingsInputComponent'
+import Equalizer from 'material-ui-icons/Equalizer'
+import VerifiedUser from 'material-ui-icons/VerifiedUser'
 import Code from 'material-ui-icons/Code'
 
 import SectionCard from '../utilities/SectionCard'
@@ -25,6 +28,8 @@ import ContactUsSection from '../utilities/ContactUsSection'
 
 import SplitSectionCard from '../utilities/SplitSectionCard'
 import assets from '../../assets/remote/general.json'
+import HowItWorks from './HowItWorks'
+
 
 const titleVariant = 'title';
 const titleAlign = 'center';
@@ -47,14 +52,64 @@ class LandingIIOT extends React.Component {
     logPageView()
   }
 
+  render() {
+    const inputs = {
+      quote1: `From the smallest embedded chip, to lightning fast gaming PCs,
+                  Heep unlocks immersive, living, tangibly magical experiences.`,
+      quote2: ``
+    }
+
+    const blurbs = [
+      {
+        title: 'Commercial Applications',
+        link: 'missionChinese',
+        moreInfoLink: {
+          text: 'Learn More',
+          link: '/Business'
+        }
+      },
+      {
+        title: 'Industrial Applications',
+        link: 'interoperability',
+        moreInfoLink: {
+          text: 'Learn More',
+          link: '/IndustrialHeep'
+        }
+      },
+      {
+        title: 'Consumer Applications',
+        link: 'paperSignals',
+        moreInfoLink: {
+          text: 'Learn More',
+          link: '/diy'
+        }
+      }
+    ]
+
+    return (
+      <div>
+        {this.topBanner()}
+{/*         {this.iiotCollection()} */}
+        <HowItWorks/>
+{/*         {this.heepTechnology()} */}
+{/*         {this.productLanding()} */}
+{/*         {this.bigQuote(inputs.quote1)} */}
+{/*         {blurbs.map((sectionInfo, index) => { */}
+{/*           return this.splitSectionWithBlurb(sectionInfo, index % 2 == 0 ? 'left' : 'right') */}
+{/*         })} */}
+        <ContactUsSection />
+      </div>
+      );
+  }
+
   topBanner() {
 
       const inputs = {
         backgroundColor: 'black',
         //TO-DO: Purchase video
-        videoSrc: videos.lightbulbs,
+        videoSrc: videos.industry,
         minHeight: 400,
-        overlayColor: 'rgba(0,0,0, 0.4)'
+        overlayColor: 'rgba(0,0,0, 0.7)'
       }
 
       return(
@@ -66,13 +121,13 @@ class LandingIIOT extends React.Component {
           }}>
             <Grid item xs={12} sm={8}>
               <Typography variant='display1' align='center' style={{color:'white'}}>
-                Heepify Your World
+                Edge As A Service
               </Typography>
             </Grid>
 
             <Grid item xs={12} sm={8}>
               <Typography variant='subheading' align='center' style={{color:'#bbbbbb'}}>
-                Enchanted, Connected, Accessible Technology for Humans
+                Augment your offering by leveraging the power of the Edge
               </Typography>
 
             </Grid>
@@ -208,13 +263,6 @@ class LandingIIOT extends React.Component {
     )
   }
 
-  iiotCollection() {
-
-    return(
-      <CollectionPreview collectionName='Industrial Automation'/>
-    )
-  }
-
   bigQuote(quote) {
     const fontSize = 36
 
@@ -307,55 +355,6 @@ class LandingIIOT extends React.Component {
       )
     );
   };
-
-  render() {
-    const inputs = {
-      quote1: `From the smallest embedded chip, to lightning fast gaming PCs,
-                  Heep unlocks immersive, living, tangibly magical experiences.`,
-      quote2: ``
-    }
-
-    const blurbs = [
-      {
-        title: 'Commercial Applications',
-        link: 'missionChinese',
-        moreInfoLink: {
-          text: 'Learn More',
-          link: '/Business'
-        }
-      },
-      {
-        title: 'Industrial Applications',
-        link: 'interoperability',
-        moreInfoLink: {
-          text: 'Learn More',
-          link: '/IndustrialHeep'
-        }
-      },
-      {
-        title: 'Consumer Applications',
-        link: 'paperSignals',
-        moreInfoLink: {
-          text: 'Learn More',
-          link: '/diy'
-        }
-      }
-    ]
-
-  	return (
-      <div>
-        {this.topBanner()}
-{/*         {this.iiotCollection()} */}
-        {this.heepTechnology()}
-        {this.productLanding()}
-        {this.bigQuote(inputs.quote1)}
-        {blurbs.map((sectionInfo, index) => {
-          return this.splitSectionWithBlurb(sectionInfo, index % 2 == 0 ? 'left' : 'right')
-        })}
-        <ContactUsSection />
-      </div>
-      );
-  }
 }
 
 

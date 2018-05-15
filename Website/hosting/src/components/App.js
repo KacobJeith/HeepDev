@@ -134,7 +134,7 @@ class App extends React.Component {
 {/* 									<Route path="/MyCart" component={ManageCart}/> */}
 {/* 									<Route path="/Shop" component={Store}/> */}
 {/* 									<Route exact path="/auth" component={Auth}/> */}
-{/* 									<Route exact path="/Developers" component={DownloadPage}/> */}
+									<Route exact path="/Developers" component={DownloadPage}/>
 {/* 									{this.props.loginStatus && <Route path="/User" component={UserAccount} key="user"/>} */}
 								</div>
 								<Route path="/" component={Footer}/>
