@@ -84,7 +84,7 @@ class HowItWorks extends React.Component {
             How It Works
           </Typography>
         </Grid>
-        <Grid item xs={12} md={5}>
+        <Grid item xs={12} md={7}>
           <Typography variant='subheading' gutterBottom paragraph>
             You have a great idea about how to improve industrial manufacturing by harnessing the power of the Internet of Things.
             Focus on improving your core service, not the mechanics of managing a fleet of sensors at the edge.
@@ -93,7 +93,7 @@ class HowItWorks extends React.Component {
             Your service will be more powerful, more resilient, and less costly. 
           </Typography>
         </Grid>
-        <Grid item xs={12} md={3}
+        <Grid item xs={12} md={4}
           style={{
             textAlign: 'center',
             display: 'block',

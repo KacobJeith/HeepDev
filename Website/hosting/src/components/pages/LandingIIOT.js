@@ -93,10 +93,10 @@ class LandingIIOT extends React.Component {
         <HowItWorks/>
 {/*         {this.heepTechnology()} */}
 {/*         {this.productLanding()} */}
-{/*         {this.bigQuote(inputs.quote1)} */}
-{/*         {blurbs.map((sectionInfo, index) => { */}
-{/*           return this.splitSectionWithBlurb(sectionInfo, index % 2 == 0 ? 'left' : 'right') */}
-{/*         })} */}
+        {this.bigQuote(inputs.quote1)}
+        {blurbs.map((sectionInfo, index) => {
+          return this.splitSectionWithBlurb(sectionInfo, index % 2 == 0 ? 'left' : 'right')
+        })}
         <ContactUsSection />
       </div>
       );
