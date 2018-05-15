@@ -80,21 +80,21 @@ class Control extends React.Component {
       top: dragDotPosition._gsTransform.y
     }
 
-    const data = "M".concat(	String(getInput.left),
-            " ",
-            String(getInput.top),
-            " Q ",
-            String(Math.round(getInput.left) + 30),
-            " ",
-            String(Math.round(getInput.top)),
-            ", ",
-            String(Math.round(getInput.left + (getOutput.left - getInput.left)/2)),
-            " ",
-            String(Math.round(getInput.top + (getOutput.top - getInput.top)/2)),
-            " T ",
-            String(getOutput.left),
-            " ",
-            String(getOutput.top))
+    // const data = "M".concat(	String(getInput.left),
+    //         " ",
+    //         String(getInput.top),
+    //         " Q ",
+    //         String(Math.round(getInput.left) - 30),
+    //         " ",
+    //         String(Math.round(getInput.top)),
+    //         ", ",
+    //         String(Math.round(getInput.left + (getOutput.left - getInput.left)/2)),
+    //         " ",
+    //         String(Math.round(getInput.top + (getOutput.top - getInput.top)/2)),
+    //         " T ",
+    //         String(getOutput.left),
+    //         " ",
+    //         String(getOutput.top))
 
 
     const x1 = dragDotPosition._gsTransform.x;
@@ -117,7 +117,7 @@ class Control extends React.Component {
     const p3x = x4 + dx;
     const p3y = y4;
 
-    // const data = `M${p1x} ${p1y} C ${p2x} ${p2y} ${p3x} ${p3y} ${p4x} ${p4y}`;
+    const data = `M${p1x} ${p1y} C ${p2x} ${p2y} ${p3x} ${p3y} ${p4x} ${p4y}`;
 
     dragVertexPath.setAttribute("d", data)
   };
@@ -138,7 +138,6 @@ class Control extends React.Component {
       trigger: outputElement,
       onDrag: () => this.updateDragVertexPath(),
       onDragStart: () => this.selectOutputVertex(),
-      // onRelease: () => this.checkDragOverlap(),
       onDragEnd: () => this.checkDragOverlap()
     })
   };
@@ -165,13 +164,15 @@ class Control extends React.Component {
       const inputPosition = this.getElementPosition(currentInput)
 
       if (this.overlapFunction(dragDotPosition, inputPosition)) {
+
         const deviceID = this.props.controls[currentInput].deviceID
         const ipAddress = this.props.devices[deviceID].ipAddress
         const controlID = this.props.controls[currentInput].controlID
-        console.log(deviceID, currentInput, ipAddress)
+
         this.selectInputVertex(deviceID, controlID, ipAddress)
-        this.resetDrag()
     }}
+
+    this.resetDrag()
   }
 
   resetDrag() {
@@ -219,10 +220,6 @@ class Control extends React.Component {
 			circle: {
         id: this.props.controlID,
         className: 'controlCircle',
-        // onClick: () => this.handleClick(),
-				// onClick: (event) => {this.direction == 0 ?
-				// 					 this.selectInputVertex(event) :
-				// 					 this.selectOutputVertex(event)},
 				onMouseEnter: () => this.direction == 0 ? null : this.handleMouseEnter(),
 				onMouseLeave: () => this.direction == 0 ? null : this.handleMouseLeave(),
 				cx: this.direction == 0 ? 11 : 0,

@@ -69,7 +69,7 @@ class Flowchart extends React.Component {
         id: 'dragDot',
         cx: 0,
         cy: 0,
-        r: 10,
+        r: 13,
         fill: 'none',
         visibility: 'hidden',
         onMouseEnter: () => Draggable.get("#deviceContainer").disable(),
