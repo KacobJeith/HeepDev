@@ -274,7 +274,7 @@ var ConsumeHeepResponse = (data, IPAddress, port) => {
   if (HeepResponse != false){
     if (HeepResponse.op == 0x0F) {
       //Memory Dump
-      AddMemoryChunksToMasterState(HeepResponse.memory, IPAddress);
+      AddMemoryChunksToMasterState(HeepResponse.memory, IPAddress, HeepResponse.deviceID);
 
     } else if ( HeepResponse.op == 0x10) {
       //Success
@@ -291,8 +291,8 @@ var ConsumeHeepResponse = (data, IPAddress, port) => {
   }
 }
 
-var AddMemoryChunksToMasterState = (heepChunks, IPAddress) => {
-  // console.log(heepChunks);  
+var AddMemoryChunksToMasterState = (heepChunks, IPAddress, respondingDevice) => {
+  console.log(heepChunks);  
 
   for (var i = 0; i < heepChunks.length; i++) {
 
@@ -333,13 +333,42 @@ var AddMemoryChunksToMasterState = (heepChunks, IPAddress) => {
     }
     
   }
+
+  CheckForVertexDeletions(heepChunks, respondingDevice)
+
+}
+
+var CheckForVertexDeletions = (heepChunks, respondingDevice) => {
+  // Logic: 
+  // Vertices are assumed to be saved onto the transmitting device. 
+  // If a known vertex is not found in the memory dump response, timeSinceDiscovered is incremented on that vertex
+
+  var foundVertices = [];
+  
+  Object.keys(masterState.vertexList).forEach((thisVertex) => {
+    if ( masterState.vertexList[thisVertex].txDeviceID == respondingDevice) {
+      
+      heepChunks.forEach((thisChunk) => {
+        if (thisChunk.op == 3) {
+          foundVertices.push(generalUtils.nameVertex(masterState.vertexList[thisVertex]));
+        }
+      })
+
+      console.log('Found Vertices: ', foundVertices)
+
+      if (foundVertices.includes(thisVertex)) {
+        masterState.vertexList[thisVertex].timeSinceDiscovered = 0;
+      } else {
+        masterState.vertexList[thisVertex].timeSinceDiscovered += 1;
+      }
+    }
+  })
 }
 
 var AddDevice = (heepChunk, IPAddress) => {
   var deviceID = heepChunk.deviceID;
   var deviceName = 'unset';
   var iconName = 'none';
-  //iconUtils.SetDeviceIconFromString(deviceID, deviceName, iconName);
 
   masterState.devices[deviceID] = {
     deviceID: deviceID,
