@@ -161,14 +161,14 @@ export default function(state = initialState, action) {
 //<----------------------------------------------------------------------------------------------------------------------------------->
 
     case 'OVERWRITE_WITH_SERVER_DATA':
-      
+
       var newStateDevices = checkDeepEquality(Immutable.Map(state.devices).toJS(), action.fromServer.devices)
       var newStateControls = checkDeepEquality(Immutable.Map(state.controls).toJS(), action.fromServer.controls)
       var newStatePositions = checkDeepEquality(Immutable.Map(state.positions).toJS(), action.fromServer.positions)
       var newStateVertexList = checkDeepEquality(Immutable.Map(state.vertexList).toJS(), action.fromServer.vertexList)
       var newStateAnalytics = checkDeepEquality(Immutable.Map(state.analytics).toJS(), action.fromServer.analytics)
       var newStateWifi = checkDeepEquality(Immutable.Map(state.deviceWiFiCreds).toJS(), action.fromServer.deviceWiFiCreds)
-      
+
       return Immutable.Map(state) .set('devices', newStateDevices)
                                   .set('controls', newStateControls)
                                   .set('positions', newStatePositions)
@@ -242,7 +242,7 @@ export default function(state = initialState, action) {
 
     case 'UPDATE_VERTEX':
       var newState = Immutable.Map(state.flowchart).toJS();
-      newState.dragVertex = !state.flowchart.dragVertex;
+      newState.updateVertex = !state.flowchart.updateVertex;
 
       return Immutable.Map(state).set('flowchart', newState).toJS()
 
@@ -366,7 +366,7 @@ export default function(state = initialState, action) {
 
       return Immutable.Map(state).set('accessPointData', action.packet).toJS()
 
-    case 'SET_SEARCH_MODE': 
+    case 'SET_SEARCH_MODE':
 
       return Immutable.fromJS(state)
                       .setIn(['preferences','searchMode'], action.searchMode)
@@ -458,12 +458,12 @@ export default function(state = initialState, action) {
         if (thisControl != 'connections' && thisControl != 'controlStructure') {
           if (state.stateSnapshots[action.snapshotID].controls[thisControl].controlDirection == 0) {
 
-            if ( newState[thisControl]) { 
+            if ( newState[thisControl]) {
               const thisControlObject = state.stateSnapshots[action.snapshotID].controls[thisControl];
               newState[thisControl].valueCurrent = thisControlObject.valueCurrent;
               async.sendValueToServer(thisControlObject.deviceID, thisControlObject.controlID, thisControlObject.valueCurrent)
             }
-            
+
           }
         }
       }

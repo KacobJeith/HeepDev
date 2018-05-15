@@ -53,7 +53,7 @@ const startState = {
     controls: {}
   },
   flowchart: {
-    dragVertex: false,
+    updateVertex: false,
     scale: 0.8,
     devices: {},
     liveModeReference: null,

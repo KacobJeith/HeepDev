@@ -15,6 +15,10 @@ export const updateVertex = () => ({
   type: 'UPDATE_VERTEX'
 })
 
+export const updateDragging = () => ({
+  type: 'UPDATE_DRAGGING'
+})
+
 export const collapseDevice = (deviceID) => ({
   type: 'COLLAPSE_DEVICE',
   deviceID
@@ -160,4 +164,3 @@ export const setSearchMode = (searchMode) => ({
   type: 'SET_SEARCH_MODE',
   searchMode
 })
-
