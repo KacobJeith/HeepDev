@@ -297,7 +297,15 @@ export default function(state = initialState, action) {
 
       async.hardRefreshLocalDeviceState(state.preferences.searchMode);
 
-      return state
+      var newState = Immutable.Map(state.devices).toJS();
+
+      for (var eachDevice in newState) {
+        if (!newState[eachDevice].active) {
+          delete newState[eachDevice]
+        }
+      }
+
+      return Immutable.Map(state).set('devices', newState).toJS()
 
     case 'SAVE_NEW_PLACE' :
 
