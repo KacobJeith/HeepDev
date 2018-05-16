@@ -352,17 +352,23 @@ var CheckForVertexDeletions = (heepChunks, respondingDevice) => {
       
       heepChunks.forEach((thisChunk) => {
         if (thisChunk.op == 3) {
-          console.log('Found Vertex: ', masterState.vertexList[thisVertex])
           foundVertices.push(generalUtils.nameVertex(thisChunk.vertex));
         }
       })
 
-      console.log('Found Vertices: ', foundVertices)
 
       if (foundVertices.includes(thisVertex)) {
         masterState.vertexList[thisVertex].timeSinceDiscovered = 0;
       } else {
-        masterState.vertexList[thisVertex].timeSinceDiscovered += 1;
+
+        // If very old, just remove the vertex to keep managed state at a minimum
+        if (masterState.vertexList[thisVertex].timeSinceDiscovered > 25) {
+            delete masterState.vertexList[thisVertex]
+        } else {
+          masterState.vertexList[thisVertex].timeSinceDiscovered += 1;
+        }
+        
+        
       }
     }
   })

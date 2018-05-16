@@ -545,7 +545,13 @@ const checkDeepEqualityVertices = (newState, check) => {
   // For any missing vertices from the most recent device search, increment timeSinceDiscovery
   for (var originalVertices in newState) {
     if (!(originalVertices in check) && originalVertices != 'selectedOutput') {
-      newState[originalVertices].timeSinceDiscovered += 1
+
+      // If very old, just remove the vertex to keep managed state at a minimum
+      if (newState[originalVertices].timeSinceDiscovered > 25) {
+          delete newState[originalVertices]
+      } else {
+        newState[originalVertices].timeSinceDiscovered += 1
+      }
     }
   }
 
