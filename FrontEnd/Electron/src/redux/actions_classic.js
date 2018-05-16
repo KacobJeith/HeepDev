@@ -164,7 +164,3 @@ export const setSearchMode = (searchMode) => ({
   type: 'SET_SEARCH_MODE',
   searchMode
 })
-
-export const updateDragVertex = () => ({
-  type: 'UPDATE_DRAG_VERTEX',
-})

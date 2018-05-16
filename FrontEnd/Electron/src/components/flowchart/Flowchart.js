@@ -15,8 +15,8 @@ import FlowchartOptions from './FlowchartOptions'
 
 var mapStateToProps = (state) => ({
   deviceArray: Object.keys(state.devices),
-  vertexList: state.vertexList,
-  scale: state.flowchart.scale,
+  vertexList: {},//state.vertexList,
+  scale: 1.0,//state.flowchart.scale,
   detailsPanelOut: state.detailsPanelDeviceID != null
 })
 
@@ -127,6 +127,8 @@ class Flowchart extends React.Component {
 				}
 			}
 		}
+
+    console.log('rerendering flowchart & svg space')
 
 		return (
 		<div {...inputs.pageContainer}>

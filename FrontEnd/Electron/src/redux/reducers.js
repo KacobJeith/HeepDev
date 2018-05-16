@@ -241,15 +241,16 @@ export default function(state = initialState, action) {
       return Immutable.Map(state).set('vertexList', newState).set('controls', newStateControls).toJS();
 
     case 'UPDATE_VERTEX':
-      var newState = Immutable.Map(state.flowchart).toJS();
-      newState.updateVertex = !state.flowchart.updateVertex;
+      // var newState = Immutable.Map(state.flowchart).toJS();
+      // newState.updateVertex = !state.flowchart.updateVertex;
 
-      return Immutable.Map(state).set('flowchart', newState).toJS()
+      return Immutable.Map(state).set('isDragging', !state.isDragging).toJS()
 
     case 'UPDATE_DRAGGING':
       var newState = Immutable.Map(state.flowchart).toJS();
-      newState.dragVertex = !state.flowchart.dragVertex;
-      console.log("dragging", state.flowchart.dragVertex)
+      // newState.dragVertex = !state.flowchart.dragVertex;
+      console.log("dragging", state.flowchart)
+      console.log('new: ', newState)
       return Immutable.Map(state).set('flowchart', newState).toJS()
 
     case 'POSITION_DEVICE':

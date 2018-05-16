@@ -70,7 +70,8 @@ const startState = {
   stateSnapshots: {},
   preferences: {
     searchMode: 'broadcast'
-  }
+  },
+  isDragging: false
 }
 
 export const initialState = Immutable.Map(startState);
