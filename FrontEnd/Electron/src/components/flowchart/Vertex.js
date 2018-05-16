@@ -13,6 +13,7 @@ var mapStateToProps = (state, ownProps) => (
                 state.devices[state.vertexList[ownProps.vertexID].txDeviceID] &&
                 state.devices[state.vertexList[ownProps.vertexID].rxDeviceID].active &&
                 state.devices[state.vertexList[ownProps.vertexID].txDeviceID].active,
+  display: state.vertexList[ownProps.vertexID].timeSinceDiscovered == 0,
   dragging: state.flowchart.dragVertex,
   scale: state.flowchart.scale,
   txDeviceID: state.vertexList[ownProps.vertexID].txDeviceID,
@@ -112,7 +113,7 @@ class Vertex extends React.Component {
     const getInput = this.getInputPosition();
     const getOutput = this.getOutputPosition();
 
-		if (getInput == false || getOutput == false) {
+		if (!this.props.display || getInput == false || getOutput == false) {
       // console.log("false")
 			return <g/>
 		}

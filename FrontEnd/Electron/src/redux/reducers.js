@@ -165,7 +165,7 @@ export default function(state = initialState, action) {
       var newStateDevices = checkDeepEqualityDevices(Immutable.Map(state.devices).toJS(), action.fromServer.devices)
       var newStateControls = checkDeepEquality(Immutable.Map(state.controls).toJS(), action.fromServer.controls)
       var newStatePositions = checkDeepEquality(Immutable.Map(state.positions).toJS(), action.fromServer.positions)
-      var newStateVertexList = checkDeepEquality(Immutable.Map(state.vertexList).toJS(), action.fromServer.vertexList)
+      var newStateVertexList = checkDeepEqualityVertices(Immutable.Map(state.vertexList).toJS(), action.fromServer.vertexList)
       var newStateAnalytics = checkDeepEquality(Immutable.Map(state.analytics).toJS(), action.fromServer.analytics)
       var newStateWifi = checkDeepEquality(Immutable.Map(state.deviceWiFiCreds).toJS(), action.fromServer.deviceWiFiCreds)
       
@@ -530,6 +530,21 @@ const checkDeepEqualityDevices = (newState, check) => {
   for (var originalDevices in newState) {
     if (!(originalDevices in check)) {
       newState[originalDevices].active = false
+    }
+  }
+
+  return newState
+}
+
+const checkDeepEqualityVertices = (newState, check) => {
+
+  // For any discovered vertices, replace old data with new data
+  newState = checkDeepEquality(newState, check);
+
+  // For any missing vertices from the most recent device search, increment timeSinceDiscovery
+  for (var originalVertices in newState) {
+    if (!(originalVertices in check) && originalVertices != 'selectedOutput') {
+      newState[originalVertices].timeSinceDiscovered += 1
     }
   }
 

@@ -245,8 +245,8 @@ udpServer.on('error', (err) => {
 });
 
 udpServer.on('message', (msg, rinfo) => {
-  ConsumeHeepResponse(msg, rinfo.address, rinfo.port);
   console.log(`server got: ${msg} from ${rinfo.address}:${rinfo.port}`);
+  ConsumeHeepResponse(msg, rinfo.address, rinfo.port);
 
   log.info(`server got: ${msg} from ${rinfo.address}:${rinfo.port}`);
 });
@@ -264,9 +264,9 @@ console.log("Done binding");
 
 
 var ConsumeHeepResponse = (data, IPAddress, port) => {
-  console.log('Device found at address: ', IPAddress + ':' + port.toString());
-  console.log('Stringified Data: ', data.toString());
-  console.log('Raw inbound Data: ', data);
+  // console.log('Device found at address: ', IPAddress + ':' + port.toString());
+  // console.log('Stringified Data: ', data.toString());
+  // console.log('Raw inbound Data: ', data);
 
   mostRecentSearch[IPAddress] = true;
   var HeepResponse = HAPIParser.ReadHeepResponse(data);
@@ -292,7 +292,7 @@ var ConsumeHeepResponse = (data, IPAddress, port) => {
 }
 
 var AddMemoryChunksToMasterState = (heepChunks, IPAddress, respondingDevice) => {
-  console.log(heepChunks);  
+  // console.log(heepChunks);  
 
   for (var i = 0; i < heepChunks.length; i++) {
 
@@ -343,13 +343,15 @@ var CheckForVertexDeletions = (heepChunks, respondingDevice) => {
   // Vertices are assumed to be saved onto the transmitting device. 
   // If a known vertex is not found in the memory dump response, timeSinceDiscovered is incremented on that vertex
 
-  var foundVertices = [];
-  
   Object.keys(masterState.vertexList).forEach((thisVertex) => {
-    if ( masterState.vertexList[thisVertex].txDeviceID == respondingDevice) {
+
+    var foundVertices = [];
+
+    if (masterState.vertexList[thisVertex].txDeviceID == respondingDevice) {
       
       heepChunks.forEach((thisChunk) => {
         if (thisChunk.op == 3) {
+          console.log('Found Vertex: ', masterState.vertexList[thisVertex])
           foundVertices.push(generalUtils.nameVertex(masterState.vertexList[thisVertex]));
         }
       })
