@@ -204,6 +204,7 @@ export default function(state = initialState, action) {
                        txControlID: state.vertexList.selectedOutput.txControlID,
                        rxDeviceID: action.rxDeviceID,
                        rxControlID: action.rxControlID,
+                       timeSinceDiscovered: 0,
                        rxIP: action.rxIP}
 
       var newVertexName = utils.nameVertex(newVertex);
