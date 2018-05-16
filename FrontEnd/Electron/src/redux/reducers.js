@@ -338,9 +338,9 @@ export default function(state = initialState, action) {
 
       if (action.deviceID == null ) {
         TweenLite.to('#flowchartOptions', 0.5, {x: 0, ease: Sine.easeInOut});
-        TweenLite.to('#detailsPanel', 0.5, {x: 258, ease: Sine.easeInOut});
+        TweenLite.to('#detailsPanel', 0.5, {x: 300, ease: Sine.easeInOut});
       } else {
-        TweenLite.to('#flowchartOptions', 0.5, {x: -258, ease: Sine.easeInOut});
+        TweenLite.to('#flowchartOptions', 0.5, {x: -300, ease: Sine.easeInOut});
         TweenLite.to('#detailsPanel', 0.5, {x: 0, ease: Sine.easeInOut});
       }
 

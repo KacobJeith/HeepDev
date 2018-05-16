@@ -41,7 +41,7 @@ const extractControls = (state) => {
 
 }
 
-const drawerWidth = 258;
+const drawerWidth = 300;
 
 const styles = theme => ({
   drawerPaper: {
@@ -71,10 +71,30 @@ class DeviceDetailsPanel extends React.Component {
       addPlaceModalopen: false
     }
 
+  render() {
+
+    const { classes, theme } = this.props;
+
+    return (  
+      <div style={{position: 'fixed', right:0, top: 0}} id='detailsPanel'>
+        <Drawer 
+          variant='permanent' 
+          open={this.props.deviceID != null} 
+          classes={{
+            paper: classNames(classes.drawerPaper, this.props.deviceID == null && classes.drawerPaperClose),
+          }}
+        >
+          {this.props.deviceID != null && (this.deviceDetails())}
+          
+        </Drawer>
+      </div>
+    );
+  }
+
   deviceDetails() {
     return (
       <div style={{
-        width: this.props.deviceID != null ? 250 : 0, 
+        width: this.props.deviceID != null ? drawerWidth : 0, 
         marginTop: 70,
         padding: this.props.theme.spacing.unit,
         position: 'relative',
@@ -248,25 +268,7 @@ class DeviceDetailsPanel extends React.Component {
     )
   }
 
-  render() {
-
-    const { classes, theme } = this.props;
-
-    return (  
-      <div style={{position: 'fixed', right:0, top: 0}} id='detailsPanel'>
-        <Drawer 
-          variant='permanent' 
-          open={this.props.deviceID != null} 
-          classes={{
-            paper: classNames(classes.drawerPaper, this.props.deviceID == null && classes.drawerPaperClose),
-          }}
-        >
-          {this.props.deviceID != null && (this.deviceDetails())}
-          
-        </Drawer>
-      </div>
-    );
-  }
+  
 }
 
 var mapDispatchToProps = (dispatch) => {

@@ -3,61 +3,48 @@ import React from 'react';
 import { connect }            from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { withRouter }         from 'react-router-dom'
-import * as actions           from '../../redux/actions'
+import * as actions           from '../../redux/actions_classic'
 
 import { withTheme } from 'material-ui/styles'
-import { Divider, Typography, Collapse, Tooltip } from 'material-ui'
+import { Divider, Typography, Collapse, Tooltip, Button, Menu } from 'material-ui'
 import List, { ListItem, ListItemIcon, ListItemText, ListSubheader } from 'material-ui/List'
 import { Redo, Undo, LinearScale, PowerSettingsNew, ExpandLess, ExpandMore } from 'material-ui-icons'
 
 var mapStateToProps = (state, ownProps) => ({
-  thisControl: state.controls[ownProps.controlID]
+  thisControl: state.controls[ownProps.controlID],
+  valueCurrent: state.controls[ownProps.controlID].valueCurrent
 })
 
 class DetailsPanelControlBlock extends React.Component {
   state = {
-    view: false
-  }
-
-  listField(field, value) {
-
-    return (
-      <ListItem key={field} > 
-        <ListItemText primary={field + ' : '} />
-        <Typography >
-          {value.toString()}
-        </Typography>
-      </ListItem>
-    )
-  }
-
-  controlIcons() {
-    return (
-      <div>
-        <ListItemIcon>
-          {this.props.thisControl.controlDirection == 0 ? 
-             <Tooltip id='tooltip-input' title='Input' placement="left"> 
-               <Redo /> 
-             </Tooltip>: 
-             <Tooltip id='tooltip-output' title='Output' placement="left"> 
-               <Undo/>
-             </Tooltip>}
-        </ListItemIcon>
-        <ListItemIcon>
-          {this.props.thisControl.controlType == 1 ?  
-           <Tooltip id='tooltip-range' title='Range' placement="left"> 
-               <LinearScale/> 
-           </Tooltip> : 
-           <Tooltip id='tooltip-onoff' title='On/Off' placement="left"> 
-               <PowerSettingsNew /> 
-           </Tooltip> }
-        </ListItemIcon>
-
-      </div>
-    )
+    view: false,
+    anchorEl: null
   }
 
   render() {
+
+    const buttonSize = 30;
+
+    const inputs = {
+      buttons: {
+        style: {
+          padding: 0,
+          height: buttonSize,
+          width: buttonSize,
+          minWidth: buttonSize
+        }
+      },
+      activeIcons: {
+        style: {
+          color: this.props.valueCurrent == 1 ? '#03a9f4' : '#7e838a'
+        }
+      },
+      inactiveIcons: {
+        style: {
+          color: '#7e838a'
+        }
+      },
+    }
 
     return (  
         <List 
@@ -69,7 +56,7 @@ class DetailsPanelControlBlock extends React.Component {
               onClick={() => this.setState({view: !this.state.view})}
               style={{paddingLeft: 4}}>
 
-              {this.controlIcons()}
+              {this.controlIcons(inputs)}
               <ListItemText primary={this.props.thisControl.controlName}/>
               {this.state.view ? <ExpandLess /> : <ExpandMore />}
 
@@ -89,6 +76,83 @@ class DetailsPanelControlBlock extends React.Component {
         
     );
   }
+
+
+  listField(field, value) {
+
+    return (
+      <ListItem key={field} > 
+        <ListItemText primary={field + ' : '} />
+        <Typography >
+          {value.toString()}
+        </Typography>
+      </ListItem>
+    )
+  }
+
+  controlIcons(inputs) {
+
+    return (
+      <div style={{width: 90}}>
+        <ListItemIcon>
+          {this.props.thisControl.controlDirection == 0 ? 
+            <Tooltip id='tooltip-input' title='Input' placement="left"> 
+              <Button {...inputs.buttons}>
+                <Redo {...inputs.inactiveIcons}/> 
+              </Button>
+            </Tooltip>: 
+            <Tooltip id='tooltip-output' title='Output' placement="left"> 
+              <Button {...inputs.buttons}>
+                <Undo {...inputs.inactiveIcons}/>
+              </Button>
+            </Tooltip>}
+        </ListItemIcon>
+        <ListItemIcon>
+          {this.props.thisControl.controlType == 1 ?  
+           this.rangeControl(inputs) : 
+           this.onOffControl(inputs) }
+        </ListItemIcon>
+
+      </div>
+    )
+  }
+
+  
+  rangeControl = (inputs) => (
+    <Tooltip id='tooltip-range' title='Range' placement="left"> 
+       <Button {...inputs.buttons}
+        onClick={(event) => {
+          event.stopPropagation();
+          this.setState({anchorEl: event.target})
+        }}
+       >
+           <LinearScale {...inputs.activeIcons}/> 
+           <Menu
+             id="range-menu"
+             anchorEl={this.state.anchorEl}
+             open={Boolean(this.state.anchorEl)}
+             onClose={() => this.setState({anchorEl: null})}
+           >
+            testttt
+           </Menu>
+       </Button>
+       
+    </Tooltip>
+  )
+
+  onOffControl = (inputs) => (
+    <Tooltip id='tooltip-onoff' title='On/Off' placement="left"> 
+       <Button 
+           onClick={(event) => {
+             event.stopPropagation();
+             this.props.updateControlValue(this.props.thisControl.deviceID, this.props.thisControl.controlID, this.props.valueCurrent == 0 ? 1: 0)
+           }}
+           {...inputs.buttons}
+       >
+           <PowerSettingsNew {...inputs.activeIcons}/>
+       </Button>
+    </Tooltip>
+  )
 }
 
 var mapDispatchToProps = (dispatch) => {
