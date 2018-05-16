@@ -13,7 +13,7 @@ var mapStateToProps = (state, ownProps) => (
                 state.devices[state.vertexList[ownProps.vertexID].txDeviceID] &&
                 state.devices[state.vertexList[ownProps.vertexID].rxDeviceID].active &&
                 state.devices[state.vertexList[ownProps.vertexID].txDeviceID].active,
-  display: state.vertexList[ownProps.vertexID].timeSinceDiscovered == 0,
+  display: state.vertexList[ownProps.vertexID].timeSinceDiscovered <= 1,
   dragging: state.flowchart.dragVertex,
   scale: state.flowchart.scale,
   txDeviceID: state.vertexList[ownProps.vertexID].txDeviceID,

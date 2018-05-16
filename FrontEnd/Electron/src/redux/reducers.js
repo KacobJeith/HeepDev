@@ -194,18 +194,14 @@ export default function(state = initialState, action) {
 
     case 'ADD_VERTEX':
 
-      var vertex = {...state.vertexList.selectedOutput, rxControlID: action.rxControlID,
-                                                        rxIP: action.rxIP,
-                                                        rxDeviceID: action.rxDeviceID};
-
-      async.sendVertexToServer(vertex);
-
       var newVertex = {txDeviceID: state.vertexList.selectedOutput.txDeviceID,
                        txControlID: state.vertexList.selectedOutput.txControlID,
                        rxDeviceID: action.rxDeviceID,
                        rxControlID: action.rxControlID,
                        timeSinceDiscovered: 0,
                        rxIP: action.rxIP}
+
+      async.sendVertexToServer(newVertex);
 
       var newVertexName = utils.nameVertex(newVertex);
 
