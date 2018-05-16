@@ -335,7 +335,7 @@ export default function(state = initialState, action) {
 
     case 'STOP_LIVE_MODE':
 
-      async.stopLiveMode(state.liveModeReference);
+      async.stopLiveMode(state.flowchart.liveModeReference);
       var newState = Immutable.Map(state.flowchart)
                               .set('liveModeReference', null)
                               .toJS();
