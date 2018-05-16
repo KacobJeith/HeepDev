@@ -342,6 +342,7 @@ var CheckForVertexDeletions = (heepChunks, respondingDevice) => {
   // Logic: 
   // Vertices are assumed to be saved onto the transmitting device. 
   // If a known vertex is not found in the memory dump response, timeSinceDiscovered is incremented on that vertex
+  console.log('Entire MasterState VertexList: ', masterState.vertexList);
 
   Object.keys(masterState.vertexList).forEach((thisVertex) => {
 
@@ -352,7 +353,7 @@ var CheckForVertexDeletions = (heepChunks, respondingDevice) => {
       heepChunks.forEach((thisChunk) => {
         if (thisChunk.op == 3) {
           console.log('Found Vertex: ', masterState.vertexList[thisVertex])
-          foundVertices.push(generalUtils.nameVertex(masterState.vertexList[thisVertex]));
+          foundVertices.push(generalUtils.nameVertex(thisChunk.vertex));
         }
       })
 
