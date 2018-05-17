@@ -71,7 +71,8 @@ const startState = {
   preferences: {
     searchMode: 'broadcast'
   },
-  isDragging: false
+  isDragging: false,
+  selectedOutput: {}
 }
 
 export const initialState = Immutable.Map(startState);

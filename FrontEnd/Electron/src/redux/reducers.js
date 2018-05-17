@@ -189,19 +189,19 @@ export default function(state = initialState, action) {
 
     case 'SELECT_OUTPUT':
 
-      var newState = Immutable.Map(state.vertexList).set('selectedOutput', {txDeviceID: action.txDeviceID, txControlID: action.txControlID}).toJS();
-      return Immutable.Map(state).set('vertexList', newState).toJS();
+      //var newState = Immutable.Map(state.vertexList).set('selectedOutput', {txDeviceID: action.txDeviceID, txControlID: action.txControlID}).toJS();
+      return Immutable.Map(state).set('selectedOutput', {txDeviceID: action.txDeviceID, txControlID: action.txControlID}).toJS();
 
     case 'ADD_VERTEX':
 
-      var vertex = {...state.vertexList.selectedOutput, rxControlID: action.rxControlID,
+      var vertex = {...state.selectedOutput, rxControlID: action.rxControlID,
                                                         rxIP: action.rxIP,
                                                         rxDeviceID: action.rxDeviceID};
 
       async.sendVertexToServer(vertex);
 
-      var newVertex = {txDeviceID: state.vertexList.selectedOutput.txDeviceID,
-                       txControlID: state.vertexList.selectedOutput.txControlID,
+      var newVertex = {txDeviceID: state.selectedOutput.txDeviceID,
+                       txControlID: state.selectedOutput.txControlID,
                        rxDeviceID: action.rxDeviceID,
                        rxControlID: action.rxControlID,
                        rxIP: action.rxIP}
@@ -213,7 +213,7 @@ export default function(state = initialState, action) {
       //CONTROL CHANGES
       var newStateControls = Immutable.Map(state.controls).toJS();
 
-      var txName = utils.nameControl(state.vertexList.selectedOutput.txDeviceID, state.vertexList.selectedOutput.txControlID);
+      var txName = utils.nameControl(state.electedOutput.txDeviceID, state.selectedOutput.txControlID);
       var rxName = utils.nameControl(action.rxDeviceID, action.rxControlID);
 
       newStateControls.connections[txName].push(rxName);
@@ -241,17 +241,17 @@ export default function(state = initialState, action) {
       return Immutable.Map(state).set('vertexList', newState).set('controls', newStateControls).toJS();
 
     case 'UPDATE_VERTEX':
-      // var newState = Immutable.Map(state.flowchart).toJS();
-      // newState.updateVertex = !state.flowchart.updateVertex;
+      var newState = Immutable.Map(state.flowchart).toJS();
+      newState.updateVertex = !state.flowchart.updateVertex;
 
-      return Immutable.Map(state).set('isDragging', !state.isDragging).toJS()
+      return Immutable.Map(state).set('updateVertex', newState).toJS()
 
     case 'UPDATE_DRAGGING':
-      var newState = Immutable.Map(state.flowchart).toJS();
-      // newState.dragVertex = !state.flowchart.dragVertex;
-      console.log("dragging", state.flowchart)
-      console.log('new: ', newState)
-      return Immutable.Map(state).set('flowchart', newState).toJS()
+      // var newState = Immutable.Map(state.flowchart).toJS();
+      // // newState.dragVertex = !state.flowchart.dragVertex;
+      // console.log("dragging", state.flowchart)
+      // console.log('new: ', newState)
+      return Immutable.Map(state).set('isDragging', !state.isDragging).toJS()
 
     case 'POSITION_DEVICE':
       var newState = Immutable.Map(state.positions).toJS();
