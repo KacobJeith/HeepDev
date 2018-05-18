@@ -11,9 +11,9 @@ var mapStateToProps = (state, ownProps) => ({
   controlInputs: Object.keys(state.controls).filter((thisControl) => state.controls[thisControl].controlDirection == 0),
   devices: state.devices,
   controls: state.controls,
-  startingPointDeviceID: (state.vertexList.selectedOutput == undefined) ? null : state.vertexList.selectedOutput.deviceID,
-  startingPointControlID: (state.vertexList.selectedOutput == undefined) ? null : state.vertexList.selectedOutput.controlID,
-  controlID: (state.vertexList.selectedOutput == undefined) ? null : state.vertexList.selectedOutput.txDeviceID + '.' + state.vertexList.selectedOutput.txControlID,
+  startingPointDeviceID: (state.selectedOutput == undefined) ? null : state.selectedOutput.deviceID,
+  startingPointControlID: (state.selectedOutput == undefined) ? null : state.selectedOutput.controlID,
+  controlID: (state.selectedOutput == undefined) ? null : state.selectedOutput.txDeviceID + '.' + state.vertexList.selectedOutput.txControlID,
   scale: state.flowchart.scale
 })
 
@@ -41,7 +41,7 @@ class DraggableVertex extends React.Component {
         fill: 'none'
       }
     }
-    console.log("rerendering Draggale Vertex")
+    console.log("rerendering Draggable Vertex")
 
     this.initializeDraggable()
 
@@ -71,7 +71,7 @@ class DraggableVertex extends React.Component {
       type: 'x, y',
       trigger: outputElement,
       onDrag: () => this.updatePath(),
-      onDragStart: () => this.props.updateDragging(),
+      // onDragStart: () => this.props.updateDragging(),
       onDragEnd: () => this.resetDrag(),
     })
   }

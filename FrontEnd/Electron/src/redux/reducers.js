@@ -244,7 +244,7 @@ export default function(state = initialState, action) {
       var newState = Immutable.Map(state.flowchart).toJS();
       newState.updateVertex = !state.flowchart.updateVertex;
 
-      return Immutable.Map(state).set('updateVertex', newState).toJS()
+      return Immutable.Map(state).set('flowchart', newState).toJS()
 
     case 'UPDATE_DRAGGING':
       // var newState = Immutable.Map(state.flowchart).toJS();
