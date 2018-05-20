@@ -46,6 +46,9 @@
 
 #define ResetDeviceNetwork			0x24
 
+#define USER_MOP_START_ID			0x50
+#define USER_MOP_END_ID				0x5A
+
 extern unsigned char deviceMemory[];
 extern unsigned int curFilledMemory; // Indicate the curent filled memory. 
 						 // Also serve as a place holder to 
@@ -53,6 +56,12 @@ extern unsigned int curFilledMemory; // Indicate the curent filled memory.
 extern unsigned char memoryChanged;
 
 extern unsigned char controlRegister;
+
+int GetNumBytesToReadForMOP(unsigned int pointer);
+heepByte GetMOPPointer(heepByte MOP, unsigned int *pointer, unsigned int *counter);
+
+heepByte AddUserMOP(heepByte userMOPNumber, heepByte* buffer, int bufferLength, heepByte* deviceID);
+heepByte GetUserMOP(heepByte userMOPNumber, heepByte* buffer, int* bytesReturned);
 
 void PerformPreOpCodeProcessing_Byte(heepByte* deviceID);
 void SetControlRegister();
