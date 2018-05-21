@@ -138,7 +138,7 @@ var createHardwareControlFunctionsArduinoSyntax = (controls) => {
   // TODO: Make control direction into an enum with defined numbers just like Unity
   for (var i in controls) {
 
-    if(controls.designerControlType == "Pin")
+    if(controls[i].designerControlType == "Pin")
     {
       var arduinoDirection = "OUTPUT";
       if(controls[i].controlDirection == 1){
