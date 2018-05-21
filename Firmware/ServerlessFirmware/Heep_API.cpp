@@ -224,7 +224,14 @@ int GetControlValueByName(char* controlName)
 	{
 		if(strcmp(controlName, controlList[i].controlName) == 0)
 		{
-			return controlList[i].curValue;
+			int retVal = controlList[i].curValue;
+
+			if(controlList[i].controlType == HEEP_MOMENTARY)
+			{
+				controlList[i].curValue = 0;
+			}
+			
+			return retVal;
 		}
 	}
 
