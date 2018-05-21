@@ -279,6 +279,25 @@ void TestMomentaryInputs()
 	CheckResults(TestName, valueList, 3);
 }
 
+
+void TestMomentaryOutputs()
+{
+	std::string TestName = "Test Momentary Outputs";
+
+	ClearDeviceMemory();
+	ClearControls();
+	AddMomentaryControl("Magellan", HEEP_OUTPUT);
+
+	SetControlValueByName("Magellan", 1);
+
+	ExpectedValue valueList [1];
+	valueList[0].valueName = "After Setting Value";
+	valueList[0].expectedValue = 0;
+	valueList[0].actualValue = controlList[0].curValue;
+
+	CheckResults(TestName, valueList, 1);
+}
+
 void TestHeepAPI()
 {
 	TestSchedulerRolloverProtection();
@@ -288,4 +307,5 @@ void TestHeepAPI()
 	TestCaptureAnalyticsToggle();
 	TestBase64Encode();
 	TestMomentaryInputs();
+	TestMomentaryOutputs();
 }
