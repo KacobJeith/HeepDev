@@ -56,11 +56,6 @@ void SendOutputByIDNoAnalytics(unsigned char controlID, unsigned int value)
 			}
 		}
 	}
-
-	if(GetControlTypeFromControlID(controlID) == HEEP_MOMENTARY)
-	{
-		SetControlValueByID(controlID, 0, 0);
-	}
 }
 
 void SendOutputByID(unsigned char controlID, unsigned int value)
@@ -256,6 +251,12 @@ int GetControlIndexByName(char* controlName)
 	return -1;
 }
 
+void HandleMomentaryOutputs(int controlIndex)
+{
+	if(controlList[controlIndex].controlType == HEEP_MOMENTARY)
+		controlList[controlIndex].curValue = 0;
+}
+
 void SetControlValueByName(char* controlName, int newValue)
 {
 	int controlIndex = GetControlIndexByName(controlName);
@@ -267,6 +268,7 @@ void SetControlValueByName(char* controlName, int newValue)
 			controlList[controlIndex].curValue = newValue;
 			SendOutputByID(controlList[controlIndex].controlID, controlList[controlIndex].curValue);
 		}
+		HandleMomentaryOutputs(controlIndex);
 	}
 }
 
@@ -278,6 +280,7 @@ void SetControlValueByNameAlwaysSend(char* controlName, int newValue)
 	{
 		controlList[controlIndex].curValue = newValue;
 		SendOutputByID(controlList[controlIndex].controlID, controlList[controlIndex].curValue);
+		HandleMomentaryOutputs(controlIndex);
 	}
 }
 
@@ -291,6 +294,7 @@ void SetControlValueByNameNoSend(char *controlName, int newValue)
 #ifdef USE_ANALYTICS
 		SetAnalyticsDataControlValueInMemory_Byte(controlList[controlIndex].controlID, controlList[controlIndex].curValue, deviceIDByte);
 #endif
+		HandleMomentaryOutputs(controlIndex);
 	}
 }
 
@@ -305,6 +309,7 @@ void SetControlValueByNameNoAnalytics(char *controlName, int newValue)
 			controlList[controlIndex].curValue = newValue;
 			SendOutputByIDNoAnalytics(controlList[controlIndex].controlID, controlList[controlIndex].curValue);
 		}
+		HandleMomentaryOutputs(controlIndex);
 	}
 }
 
@@ -315,6 +320,7 @@ void SetControlValueByNameNoAnalyticsNoSend(char *controlName, int newValue)
 	if(controlIndex != -1)
 	{
 		controlList[controlIndex].curValue = newValue;
+		HandleMomentaryOutputs(controlIndex);
 	}
 }
 
@@ -326,6 +332,7 @@ void SetControlValueByNameNoAnalyticsAlwaysSend(char *controlName, int newValue)
 	{
 		controlList[controlIndex].curValue = newValue;
 		SendOutputByIDNoAnalytics(controlList[controlIndex].controlID, controlList[controlIndex].curValue);
+		HandleMomentaryOutputs(controlIndex);
 	}
 }
 
