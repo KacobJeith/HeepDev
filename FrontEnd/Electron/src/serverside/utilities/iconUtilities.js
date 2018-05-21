@@ -12,9 +12,9 @@ export var SetDeviceIconFromString = (deviceID, deviceName, deviceIconName) => {
     deviceIconName = suggestedIcon;
   }
 
-  if (!(suggestedIcon in iconContent)) {
-    SaveIconFromFile(suggestedIcon);
-  }
+  // if (!(suggestedIcon in iconContent)) {
+  //   SaveIconFromFile(suggestedIcon);
+  // }
 
   iconContent[deviceID] = deviceIconName;
 
@@ -37,9 +37,9 @@ export var suggestIconForDevice = (deviceName) => {
     }
   }
 
-  if (!(suggestedIcon in iconContent)) {
-    SaveIconFromFile(suggestedIcon);
-  }
+  // if (!(suggestedIcon in iconContent)) {
+  //   SaveIconFromFile(suggestedIcon);
+  // }
 
   return suggestedIcon
 }

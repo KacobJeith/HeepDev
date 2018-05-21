@@ -162,10 +162,10 @@ export default function(state = initialState, action) {
 
     case 'OVERWRITE_WITH_SERVER_DATA':
       
-      var newStateDevices = checkDeepEquality(Immutable.Map(state.devices).toJS(), action.fromServer.devices)
+      var newStateDevices = checkDeepEqualityDevices(Immutable.Map(state.devices).toJS(), action.fromServer.devices)
       var newStateControls = checkDeepEquality(Immutable.Map(state.controls).toJS(), action.fromServer.controls)
       var newStatePositions = checkDeepEquality(Immutable.Map(state.positions).toJS(), action.fromServer.positions)
-      var newStateVertexList = checkDeepEquality(Immutable.Map(state.vertexList).toJS(), action.fromServer.vertexList)
+      var newStateVertexList = checkDeepEqualityVertices(Immutable.Map(state.vertexList).toJS(), action.fromServer.vertexList)
       var newStateAnalytics = checkDeepEquality(Immutable.Map(state.analytics).toJS(), action.fromServer.analytics)
       var newStateWifi = checkDeepEquality(Immutable.Map(state.deviceWiFiCreds).toJS(), action.fromServer.deviceWiFiCreds)
       
@@ -194,17 +194,14 @@ export default function(state = initialState, action) {
 
     case 'ADD_VERTEX':
 
-      var vertex = {...state.vertexList.selectedOutput, rxControlID: action.rxControlID,
-                                                        rxIP: action.rxIP,
-                                                        rxDeviceID: action.rxDeviceID};
-
-      async.sendVertexToServer(vertex);
-
       var newVertex = {txDeviceID: state.vertexList.selectedOutput.txDeviceID,
                        txControlID: state.vertexList.selectedOutput.txControlID,
                        rxDeviceID: action.rxDeviceID,
                        rxControlID: action.rxControlID,
+                       timeSinceDiscovered: 0,
                        rxIP: action.rxIP}
+
+      async.sendVertexToServer(newVertex);
 
       var newVertexName = utils.nameVertex(newVertex);
 
@@ -297,7 +294,15 @@ export default function(state = initialState, action) {
 
       async.hardRefreshLocalDeviceState(state.preferences.searchMode);
 
-      return state
+      var newState = Immutable.Map(state.devices).toJS();
+
+      for (var eachDevice in newState) {
+        if (!newState[eachDevice].active) {
+          delete newState[eachDevice]
+        }
+      }
+
+      return Immutable.Map(state).set('devices', newState).toJS()
 
     case 'SAVE_NEW_PLACE' :
 
@@ -327,7 +332,7 @@ export default function(state = initialState, action) {
 
     case 'STOP_LIVE_MODE':
 
-      async.stopLiveMode(state.liveModeReference);
+      async.stopLiveMode(state.flowchart.liveModeReference);
       var newState = Immutable.Map(state.flowchart)
                               .set('liveModeReference', null)
                               .toJS();
@@ -498,11 +503,51 @@ function makeid(number) {
   return text;
 }
 
-const checkDeepEquality = (newState, check) => {
+const checkDeepEquality = (newState, check, elseCase = () => {}) => {
 
   for (var propToCheck in check) {
     if (!deepEqual(newState[propToCheck], check[propToCheck])) {
       newState[propToCheck] = check[propToCheck];
+    }
+  }
+
+  return newState
+}
+
+const checkDeepEqualityDevices = (newState, check) => {
+
+  // For any discovered devices, replace old data with new data
+  for (var propToCheck in check) {
+    if (!deepEqual(newState[propToCheck], check[propToCheck])) {
+      newState[propToCheck] = check[propToCheck];
+    }
+  }
+
+  // For any missing devices from the most recent device search, set active state to false
+  for (var originalDevices in newState) {
+    if (!(originalDevices in check)) {
+      newState[originalDevices].active = false
+    }
+  }
+
+  return newState
+}
+
+const checkDeepEqualityVertices = (newState, check) => {
+
+  // For any discovered vertices, replace old data with new data
+  newState = checkDeepEquality(newState, check);
+
+  // For any missing vertices from the most recent device search, increment timeSinceDiscovery
+  for (var originalVertices in newState) {
+    if (!(originalVertices in check) && originalVertices != 'selectedOutput') {
+
+      // If very old, just remove the vertex to keep managed state at a minimum
+      if (newState[originalVertices].timeSinceDiscovered > 25) {
+          delete newState[originalVertices]
+      } else {
+        newState[originalVertices].timeSinceDiscovered += 1
+      }
     }
   }
 
