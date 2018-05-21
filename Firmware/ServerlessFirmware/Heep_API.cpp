@@ -56,6 +56,11 @@ void SendOutputByIDNoAnalytics(unsigned char controlID, unsigned int value)
 			}
 		}
 	}
+
+	if(GetControlTypeFromControlID(controlID) == HEEP_MOMENTARY)
+	{
+		SetControlValueByID(controlID, 0, 0);
+	}
 }
 
 void SendOutputByID(unsigned char controlID, unsigned int value)
@@ -230,7 +235,7 @@ int GetControlValueByName(char* controlName)
 			{
 				controlList[i].curValue = 0;
 			}
-			
+
 			return retVal;
 		}
 	}
