@@ -8,6 +8,7 @@
 #define HEEP_ONOFF 0
 #define HEEP_RANGE 1
 #define HEEP_BUFFER 2
+#define HEEP_MOMENTARY 3
 
 // Icon Types
 #define HEEP_ICON_NONE 0
@@ -65,6 +66,7 @@ void StartHeep(char* deviceName, heepByte deviceIcon);
 
 void AddRangeControl(char* controlName, int inputOutput, int highValue, int lowValue, int startingValue);
 void AddOnOffControl(char* controlName, int inputOutput, int startingValue);
+void AddMomentaryControl(char* controlName, int inputOutput);
 
 int GetControlValueByName(char* controlName);
 

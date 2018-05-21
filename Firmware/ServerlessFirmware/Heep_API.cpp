@@ -205,6 +205,19 @@ void AddOnOffControl(char* controlName, int inputOutput, int startingValue)
 	AddControl(newControl);
 }
 
+void AddMomentaryControl(char* controlName, int inputOutput)
+{
+	Control newControl;
+	newControl.controlName = controlName;
+	newControl.controlID = numberOfControls;
+	newControl.controlDirection = inputOutput;
+	newControl.controlType = HEEP_MOMENTARY;
+	newControl.highValue = 1;
+	newControl.lowValue = 0;
+	newControl.curValue = 0;
+	AddControl(newControl);
+}
+
 int GetControlValueByName(char* controlName)
 {
 	for(int i = 0; i < numberOfControls; i++)
