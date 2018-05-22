@@ -81,7 +81,12 @@ class DetailsPanelControlBlock extends React.Component {
   listField(field, value) {
 
     return (
-      <ListItem key={field} > 
+      <ListItem key={field} 
+        button={field == 'valueCurrent'}
+        onClick={(event) => {
+          this.setState({anchorEl: event.target})
+        }}
+      > 
         <ListItemText primary={field + ' : '} />
         <Typography >
           {value.toString()}
@@ -134,10 +139,11 @@ class DetailsPanelControlBlock extends React.Component {
              onClose={() => this.setState({anchorEl: null})}
              
            >
-            <div style={{padding: 24}}>
+            <div style={{padding: 24, textDecoration: 'none',
+                  outline: 'none'}}>
               <TextField
                 id="value"
-                label={this.props.thisControl.controlName}
+                label={this.props.thisControl.controlName + ' Value:'}
                 error={this.props.valueCurrent > this.props.thisControl.valueHigh || this.props.valueCurrent < this.props.thisControl.valueLow}
                 value={this.props.valueCurrent}
                 onChange={ (event) => {
