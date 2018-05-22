@@ -98,7 +98,7 @@ class DeviceDetailsPanel extends React.Component {
           size='small'
           style={{
             position: 'absolute', 
-            right: 4, 
+            right: 24, 
             height: 24,
             width: 24,
             top: 4, 
