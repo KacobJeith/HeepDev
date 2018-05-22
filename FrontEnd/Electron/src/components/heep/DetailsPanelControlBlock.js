@@ -135,20 +135,23 @@ class DetailsPanelControlBlock extends React.Component {
              
            >
             <div style={{padding: 24}}>
-            <TextField
-              id="value"
-              label={this.props.thisControl.controlName}
-              value={this.props.valueCurrent}
-              onChange={ (event) => {
-                event.stopPropagation();
-                this.props.updateControlValue(this.props.thisControl.deviceID, this.props.thisControl.controlID, event.target.value)
-              }}
-              type="number"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              
-            />
+              <TextField
+                id="value"
+                label={this.props.thisControl.controlName}
+                error={this.props.valueCurrent > this.props.thisControl.valueHigh || this.props.valueCurrent < this.props.thisControl.valueLow}
+                value={this.props.valueCurrent}
+                onChange={ (event) => {
+                  this.props.updateControlValue(this.props.thisControl.deviceID, this.props.thisControl.controlID, event.target.value)
+                }}
+                type="number"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                style={{
+                  textDecoration: 'none',
+                  outline: 'none'
+                }}
+              />
             </div>
            </Menu>
        </Button>
