@@ -78,5 +78,8 @@ void SetControlValueByNameNoAnalyticsAlwaysSend(char *controlName, int newValue)
 
 void SendControlsOnHeartBeat(unsigned long controlSendPeriod);
 
+heepByte AddUserMemory(heepByte userMemoryNumber, heepByte* buffer, int bufferLength);
+heepByte GetUserMemory(heepByte userMemoryNumber, heepByte* buffer, int* bytesReturned);
+
 heepByte GetWiFiFromMemory(char* WiFiSSID, char* WiFiPassword, int priority);
 heepByte AddWiFiSettingsToMemory(char* WiFiSSID, int numCharSSID, char* WiFiPassword, int numCharPassword, heepByte* deviceID, heepByte IDPriority);

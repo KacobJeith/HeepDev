@@ -192,6 +192,7 @@ export const startLiveMode = (searchMode) => {
 }
 
 export const stopLiveMode = (liveModeReference) => {
+  console.log('Clearing Live Mode: ', liveModeReference)
   clearTimeout(liveModeReference);
 }
 

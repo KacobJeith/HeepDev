@@ -664,3 +664,73 @@ void ImmediatelyClearAllOfMOP(heepByte inputMOP)
 	FragmentAllOfMOP(inputMOP);
 	DefragmentMemory();
 }
+
+int GetNumBytesToReadForMOP(unsigned int pointer)
+{
+	return deviceMemory[pointer + ID_SIZE + 1];
+}
+
+heepByte GetMOPPointer(heepByte MOP, unsigned int *pointer, unsigned int *counter)
+{
+	while(*counter < curFilledMemory)
+	{
+		if(deviceMemory[*counter] == MOP)
+		{
+			*pointer = *counter;
+
+			*counter = SkipOpCode(*counter);
+			return 0;
+		}
+		else
+		{
+			*counter = SkipOpCode(*counter);
+		}
+	}
+
+	return 1;
+}
+
+heepByte AddUserMOP(heepByte userMOPNumber, heepByte* buffer, int bufferLength, heepByte* deviceID)
+{
+	heepByte MOPNumber = userMOPNumber + USER_MOP_START_ID;
+
+	if(MOPNumber > USER_MOP_END_ID) // Outside of User MOP Zone. Return error
+		return 1;
+
+	if(WillMemoryOverflow( 1 + ID_SIZE + 1 + bufferLength)) // Memory will overflow, so return error
+		return 1;
+
+	PerformPreOpCodeProcessing_Byte(deviceID);
+
+	AddNewCharToMemory(MOPNumber);
+	AddIndexOrDeviceIDToMemory_Byte(deviceID);
+	AddNewCharToMemory((char)bufferLength);
+
+	AddBufferToMemory(buffer, bufferLength);
+
+	return 0;
+}
+
+heepByte GetUserMOP(heepByte userMOPNumber, heepByte* buffer, int* bytesReturned)
+{
+	heepByte MOPNumber = userMOPNumber + USER_MOP_START_ID;
+
+	if(MOPNumber > USER_MOP_END_ID) // Outside of User MOP Zone. Return error
+		return 1;
+
+	unsigned int pointer = 0;
+	unsigned int counter = 0;
+
+	if(GetMOPPointer(MOPNumber, &pointer, &counter) == 1) // Failed to find MOP
+		return 1;
+
+	// Get Num Bytes to Read
+	*bytesReturned = GetNumBytesToReadForMOP(pointer);
+
+	unsigned int bufferCounter = 0;
+	unsigned int deviceMemCounter = pointer + ID_SIZE + 2;
+
+	AddBufferToBuffer(buffer, deviceMemory, *bytesReturned, &bufferCounter, &deviceMemCounter);
+
+	return 0;
+}
