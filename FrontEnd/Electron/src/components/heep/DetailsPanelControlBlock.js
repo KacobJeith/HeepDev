@@ -84,7 +84,13 @@ class DetailsPanelControlBlock extends React.Component {
       <ListItem key={field} 
         button={field == 'valueCurrent'}
         onClick={(event) => {
-          this.setState({anchorEl: event.target})
+          if (field == 'valueCurrent') {
+            if (this.props.thisControl.controlType == 0) {
+              this.toggleOnOffControl();
+            } else {
+              this.setState({anchorEl: event.target})
+            }
+          }
         }}
       > 
         <ListItemText primary={field + ' : '} />
@@ -149,6 +155,12 @@ class DetailsPanelControlBlock extends React.Component {
                 onChange={ (event) => {
                   this.props.updateControlValue(this.props.thisControl.deviceID, this.props.thisControl.controlID, event.target.value)
                 }}
+                onKeyPress={(event) => {
+                  if (event.key === 'Enter') {
+                    this.setState({anchorEl: null})
+                    event.preventDefault();
+                  }
+                }}
                 type="number"
                 InputLabelProps={{
                   shrink: true,
@@ -165,12 +177,16 @@ class DetailsPanelControlBlock extends React.Component {
     </Tooltip>
   )
 
+  toggleOnOffControl = () => {
+    this.props.updateControlValue(this.props.thisControl.deviceID, this.props.thisControl.controlID, this.props.valueCurrent == 0 ? 1: 0);
+  }
+
   onOffControl = (inputs) => (
     <Tooltip id='tooltip-onoff' title='On/Off' placement="left"> 
        <Button 
            onClick={(event) => {
              event.stopPropagation();
-             this.props.updateControlValue(this.props.thisControl.deviceID, this.props.thisControl.controlID, this.props.valueCurrent == 0 ? 1: 0)
+             this.toggleOnOffControl();
            }}
            {...inputs.buttons}
        >
