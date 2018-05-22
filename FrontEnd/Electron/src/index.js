@@ -29,7 +29,6 @@ const startState = {
   deviceWiFiCreds: {},
   positions: {},
   controls: {
-    controlStructure:{},
     connections: {}
   },
   vertexList: {},

@@ -25,21 +25,10 @@ import classNames from 'classnames';
 var mapStateToProps = (state) => ({
   deviceID:  state.detailsPanelDeviceID,
   device: state.devices[state.detailsPanelDeviceID],
-  controls: state.detailsPanelDeviceID == null ? {} : extractControls(state),
+  controls: Object.keys(state.controls).filter((thisControl) => state.controls[thisControl] ? state.controls[thisControl].deviceID == state.detailsPanelDeviceID : false),
   places: state.places,
   deviceWiFiCreds: state.deviceWiFiCreds[state.detailsPanelDeviceID]
 })
-
-const extractControls = (state) => {
-
-  const inputs = state.controls.controlStructure[state.detailsPanelDeviceID] ? state.controls.controlStructure[state.detailsPanelDeviceID].inputs : [];
-  const outputs = state.controls.controlStructure[state.detailsPanelDeviceID] ? state.controls.controlStructure[state.detailsPanelDeviceID].outputs : [];
-
-  const allControls = inputs.concat(outputs);
-
-  return allControls
-
-}
 
 const drawerWidth = 300;
 
