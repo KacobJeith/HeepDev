@@ -6,7 +6,7 @@ import { withRouter }         from 'react-router-dom'
 import * as actions           from '../../redux/actions_classic'
 
 import { withTheme } from 'material-ui/styles'
-import { Divider, Typography, Collapse, Tooltip, Button, Menu } from 'material-ui'
+import { Divider, Typography, Collapse, Tooltip, Button, Menu, TextField } from 'material-ui'
 import List, { ListItem, ListItemIcon, ListItemText, ListSubheader } from 'material-ui/List'
 import { Redo, Undo, LinearScale, PowerSettingsNew, ExpandLess, ExpandMore } from 'material-ui-icons'
 
@@ -132,8 +132,24 @@ class DetailsPanelControlBlock extends React.Component {
              anchorEl={this.state.anchorEl}
              open={Boolean(this.state.anchorEl)}
              onClose={() => this.setState({anchorEl: null})}
+             
            >
-            testttt
+            <div style={{padding: 24}}>
+            <TextField
+              id="value"
+              label={this.props.thisControl.controlName}
+              value={this.props.valueCurrent}
+              onChange={ (event) => {
+                event.stopPropagation();
+                this.props.updateControlValue(this.props.thisControl.deviceID, this.props.thisControl.controlID, event.target.value)
+              }}
+              type="number"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              
+            />
+            </div>
            </Menu>
        </Button>
        
