@@ -13,7 +13,7 @@ var mapStateToProps = (state, ownProps) => ({
   controls: state.controls,
   startingPointDeviceID: (state.selectedOutput == undefined) ? null : state.selectedOutput.deviceID,
   startingPointControlID: (state.selectedOutput == undefined) ? null : state.selectedOutput.controlID,
-  controlID: (state.selectedOutput == undefined) ? null : state.selectedOutput.txDeviceID + '.' + state.vertexList.selectedOutput.txControlID,
+  controlID: (state.selectedOutput == undefined) ? null : state.selectedOutput.txDeviceID + '.' + state.selectedOutput.txControlID,
   scale: state.flowchart.scale
 })
 
