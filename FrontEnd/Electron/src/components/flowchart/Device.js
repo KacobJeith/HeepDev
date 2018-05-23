@@ -11,14 +11,12 @@ import InfoOutline from 'material-ui-icons/InfoOutline'
 import KeyboardArrowDown from 'material-ui-icons/KeyboardArrowDown'
 import { TweenLite } from 'gsap'
 
-var test = [];
-
 var mapStateToProps = (state, ownProps) => ({
   device: state.devices[ownProps.DeviceID],
   deviceID: ownProps.DeviceID,
   collapsed: state.flowchart.devices[ownProps.DeviceID] ? state.flowchart.devices[ownProps.DeviceID].collapsed : false,
-  controlInputs: test, //Object.keys(state.controls).filter((thisControl) => state.controls[thisControl] ? state.controls[thisControl].deviceID == ownProps.DeviceID && state.controls[thisControl].controlDirection == 0 : false),
-  controlOutputs: test,//Object.keys(state.controls).filter((thisControl) => state.controls[thisControl] ? state.controls[thisControl].deviceID == ownProps.DeviceID && state.controls[thisControl].controlDirection == 1 : false),
+  controlInputs: state.devices[ownProps.DeviceID].inputs,
+  controlOutputs: state.devices[ownProps.DeviceID].outputs,
   detailsPanelDeviceID: state.detailsPanelDeviceID
 })
 
