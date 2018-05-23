@@ -75,7 +75,7 @@ class Flowchart extends React.Component {
               			return <Vertex key={thisVertexKey} vertexID={thisVertexKey} />
 					}
 				})}
-        <DraggableVertex/>
+{/*         <DraggableVertex/> */}
 			</svg>
 		)
 	};
@@ -128,7 +128,7 @@ class Flowchart extends React.Component {
 			}
 		}
 
-    console.log("rerendering Flowchart")
+    // console.log("rerendering Flowchart")
 
 		return (
 		<div {...inputs.pageContainer}>

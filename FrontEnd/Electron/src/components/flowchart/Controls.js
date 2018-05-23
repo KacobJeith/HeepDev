@@ -42,13 +42,13 @@ class Control extends React.Component {
 	};
 
   handleMouseEnter() {
-    this.setState({radius: 11}),
+    this.setState({radius: 11});
     Draggable.get("#_" + this.props.deviceID).disable()
     this.selectOutputVertex(event)
   };
 
   handleMouseLeave() {
-    this.setState({radius: 8}),
+    this.setState({radius: 8});
     Draggable.get("#_" + this.props.deviceID).enable()
   };
 

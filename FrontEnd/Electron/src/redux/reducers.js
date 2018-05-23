@@ -245,10 +245,20 @@ export default function(state = initialState, action) {
 
     case 'UPDATE_DRAGGING':
       // var newState = Immutable.Map(state.flowchart).toJS();
-      // // newState.dragVertex = !state.flowchart.dragVertex;
+      // newState.isDragging = !newState.isDragging;
       // console.log("dragging", state.flowchart)
       // console.log('new: ', newState)
-      return Immutable.Map(state).set('isDragging', !state.isDragging).toJS()
+      // console.log('isDragging: ', newState)
+      // return Immutable.Map(state).set('flowchart', newState).toJS()
+
+      // var newState = Immutable.Map(state).toJS();
+      // // newState.updateVertex = !newState.isDragging;
+
+      // console.log('equal? ', newState === state)
+
+      // return newState
+
+      return { ...state, isDragging: !state.isDragging }
 
     case 'POSITION_DEVICE':
       var newState = Immutable.Map(state.positions).toJS();

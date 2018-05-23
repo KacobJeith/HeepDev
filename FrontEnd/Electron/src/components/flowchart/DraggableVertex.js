@@ -9,8 +9,8 @@ import * as Draggable from 'gsap/Draggable';
 
 var mapStateToProps = (state, ownProps) => ({
   controlInputs: Object.keys(state.controls).filter((thisControl) => state.controls[thisControl].controlDirection == 0),
-  devices: state.devices,
-  controls: state.controls,
+  // devices: state.devices,
+  // controls: state.controls,
   startingPointDeviceID: (state.selectedOutput == undefined) ? null : state.selectedOutput.deviceID,
   startingPointControlID: (state.selectedOutput == undefined) ? null : state.selectedOutput.controlID,
   controlID: (state.selectedOutput == undefined) ? null : state.selectedOutput.txDeviceID + '.' + state.selectedOutput.txControlID,
@@ -71,7 +71,8 @@ class DraggableVertex extends React.Component {
       type: 'x, y',
       trigger: outputElement,
       onDrag: () => this.updatePath(),
-      // onDragStart: () => this.props.updateDragging(),
+      onDragStart: () => this.props.updateDragging(),
+      // onDragStart: () => console.log('DRAGDRAGDRAG'), 
       onDragEnd: () => this.resetDrag(),
     })
   }
@@ -209,7 +210,7 @@ class DraggableVertex extends React.Component {
       y: 0,
       visibility: 'hidden'
     })
-    // this.props.updateDragging()
+    this.props.updateDragging()
     dragVertexPath.removeAttribute("d")
   };
 
