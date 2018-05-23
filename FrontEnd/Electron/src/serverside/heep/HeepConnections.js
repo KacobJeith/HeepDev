@@ -386,7 +386,9 @@ var AddDevice = (heepChunk, IPAddress) => {
     active: true,
     inactiveCount: 0,
     iconName: "lightbulb",
-    version: 0
+    version: 0,
+    inputs: [],
+    outputs: []
   }
 
   SetNullPosition(deviceID);
@@ -412,6 +414,15 @@ var AddControl = (heepChunk) => {
   masterState.controls[tempCtrlName].deviceID = heepChunk.deviceID;
 
   masterState.controls.connections[tempCtrlName] = [];
+
+  if (heepChunk.control.controlDirection == 0 && masterState.devices[heepChunk.deviceID].inputs.indexOf(tempCtrlName) < 0) {
+      masterState.devices[heepChunk.deviceID].inputs.push(tempCtrlName);
+  }
+
+  if (heepChunk.control.controlDirection == 1 && masterState.devices[heepChunk.deviceID].outputs.indexOf(tempCtrlName) < 0) {
+      masterState.devices[heepChunk.deviceID].outputs.push(tempCtrlName);
+  }
+      
 }
 
 var SetIconFromID = (heepChunk) => {
