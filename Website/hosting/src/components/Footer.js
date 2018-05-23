@@ -56,11 +56,11 @@ class Footer extends React.Component {
     )
   };
 
-  copyrightMadeInBrooklyn() {
+  copyrightMadeInNYC() {
     return(
       <Grid item xs={12}>
         <Typography variant="caption" color='inherit'>
-          &#169; 2018 Heep - Made with <span style={{color: 'red'}}>&#9829;</span> in Brooklyn
+          &#169; 2018 Heep - Made with <span style={{color: 'red'}}>&#9829;</span> in NYC
         </Typography>
       </Grid>
     )
@@ -125,8 +125,8 @@ class Footer extends React.Component {
 {/*           {this.textNavLink('Shop', '/Store', 'caption')} */}
 {/*           {this.textNavLink('Blog', '/Blog', 'caption')} */}
 {/*           {this.textNavLink('Developers', '/Developers', 'caption')} */}
-          {this.textNavLink('About Us', '/About', 'subheading')}
-          {this.textNavLink('Contact Us', '/Contact', 'subheading')}
+          {this.textNavLink('About Us', '/About#top', 'subheading')}
+          {this.textNavLink('Contact Us', '/Contact#top', 'subheading')}
         </Grid>
       </Grid>
     )
@@ -143,7 +143,7 @@ class Footer extends React.Component {
         >
           {this.heepLogo()}
           {this.socialLogoLinks()}
-          {this.copyrightMadeInBrooklyn()}
+          {this.copyrightMadeInNYC()}
         </Grid>
     </Grid>
     )
