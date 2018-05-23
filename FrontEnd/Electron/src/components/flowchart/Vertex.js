@@ -14,10 +14,15 @@ var mapStateToProps = (state, ownProps) => (
                 state.devices[state.vertexList[ownProps.vertexID].rxDeviceID].active &&
                 state.devices[state.vertexList[ownProps.vertexID].txDeviceID].active,
   updateVertex: state.flowchart.updateVertex,
+  display: state.vertexList[ownProps.vertexID].timeSinceDiscovered <= 1,
+  dragging: state.flowchart.dragVertex,
   scale: state.flowchart.scale,
   txDeviceID: state.vertexList[ownProps.vertexID].txDeviceID,
   rxDeviceID: state.vertexList[ownProps.vertexID].rxDeviceID,
-  txCollapsed: state.flowchart.devices[state.vertexList[ownProps.vertexID].txDeviceID] && state.flowchart.devices[state.vertexList[ownProps.vertexID].txDeviceID].collapsed ? state.flowchart.devices[state.vertexList[ownProps.vertexID].txDeviceID].collapsed : false,
+  txCollapsed: state.flowchart.devices[state.vertexList[ownProps.vertexID].txDeviceID] && 
+               state.flowchart.devices[state.vertexList[ownProps.vertexID].txDeviceID].collapsed ? 
+               state.flowchart.devices[state.vertexList[ownProps.vertexID].txDeviceID].collapsed : 
+               false,
   rxCollapsed: state.flowchart.devices[state.vertexList[ownProps.vertexID].rxDeviceID] && state.flowchart.devices[state.vertexList[ownProps.vertexID].rxDeviceID].collapsed ? state.flowchart.devices[state.vertexList[ownProps.vertexID].rxDeviceID].collapsed : false,
 })
 
@@ -112,7 +117,7 @@ class Vertex extends React.Component {
     const getInput = this.getInputPosition();
     const getOutput = this.getOutputPosition();
 
-		if (getInput == false || getOutput == false) {
+		if (!this.props.display || getInput == false || getOutput == false) {
       // console.log("false")
 			return <g/>
 		}

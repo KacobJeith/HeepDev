@@ -71,8 +71,8 @@ class Flowchart extends React.Component {
 		return (
 			<svg {...inputs.vertexSVGSpace}>
 				{Object.keys(this.props.vertexList).map((thisVertexKey) => {
-					if (thisVertexKey != 'selectedOutput'){
-              return <Vertex key={thisVertexKey} vertexID={thisVertexKey} />
+					if (thisVertexKey != 'selectedOutput'){// && this.props.vertexList[thisVertexKey].timeSinceDiscovered == 0){
+              			return <Vertex key={thisVertexKey} vertexID={thisVertexKey} />
 					}
 				})}
         <DraggableVertex/>

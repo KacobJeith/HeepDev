@@ -332,6 +332,16 @@ void SendControlsOnHeartBeat(unsigned long controlSendPeriod)
 				SendOutputByID(controlList[i].controlID, controlList[i].curValue);
 			}
 		}
-		lastHeartBeat = GetMillis();
+		lastHeartBeat = GetMillis(); 
 	}
+}
+
+heepByte AddUserMemory(heepByte userMemoryNumber, heepByte* buffer, int bufferLength)
+{
+	return AddUserMOP(userMemoryNumber, buffer, bufferLength, deviceIDByte);
+}
+
+heepByte GetUserMemory(heepByte userMemoryNumber, heepByte* buffer, int* bytesReturned)
+{
+	return GetUserMOP(userMemoryNumber, buffer, bytesReturned);
 }
