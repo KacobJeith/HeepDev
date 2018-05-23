@@ -96,7 +96,7 @@ class Contact extends React.Component {
           error={this.state[label + 'Error']}
           placeholder={label}
           multiline={multiline}
-          rows="5"
+          rows="4"
           margin="normal"
           value={this.state[label]}
           onChange={(event) => {this.setState({[label]: event.target.value})}}
