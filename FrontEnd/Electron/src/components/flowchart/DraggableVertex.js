@@ -26,8 +26,7 @@ class DraggableVertex extends React.Component {
         cx: 0,
         cy: 0,
         r: 13,
-        fill: 'blue',
-        // visibility: 'hidden',
+        fill: 'none',
         onMouseEnter: () => Draggable.get("#deviceContainer").disable(),
         onMouseLeave: () => Draggable.get("#deviceContainer").enable(),
         style: {
@@ -94,6 +93,8 @@ class DraggableVertex extends React.Component {
     const x1 = dragDotPosition._gsTransform.x;
     const y1 = dragDotPosition._gsTransform.y;
 
+    console.log(x1, y1)
+
     const x4 = getOutput.left;
     const y4 = getOutput.top;
 
@@ -115,8 +116,6 @@ class DraggableVertex extends React.Component {
 
     dragVertexPath.setAttribute("d", data)
     // console.log(dragDotPosition)
-
-    console.log(this.getElementPosition(dragDotPosition))
   };
 
   getElementPosition(element) {
@@ -188,21 +187,14 @@ class DraggableVertex extends React.Component {
   resetDrag() {
     const dragVertexPath = document.getElementById("dragVertex")
 
-    // Draggable.get("#dragDot").disable()
-
-    TweenLite.set("#dragDot", {
-      clearProps: "transform",
-      // x: outputPosition.left,
-      // y: outputPosition.top,
-      // // visibility: 'hidden'
-    })
+    this.props.updateDragging()
 
     this.setDot()
-    this.props.updateDragging()
+
     TweenLite.set('#dragVertex', {
       visibility: 'hidden'
     })
-    // dragVertexPath.removeAttribute("d")
+
   };
 
 
