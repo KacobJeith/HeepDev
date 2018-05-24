@@ -9,12 +9,12 @@ import * as Draggable from 'gsap/Draggable';
 
 var mapStateToProps = (state, ownProps) => ({
   // controlInputs: Object.keys(state.controls).filter((thisControl) => state.controls[thisControl].controlDirection == 0),
-  // devices: state.devices,
   controls: state.controls,
   startingPointDeviceID: (state.selectedOutput == undefined) ? null : state.selectedOutput.deviceID,
   startingPointControlID: (state.selectedOutput == undefined) ? null : state.selectedOutput.controlID,
   controlID: (state.selectedOutput == undefined) ? null : state.selectedOutput.txDeviceID + '.' + state.selectedOutput.txControlID,
-  scale: state.flowchart.scale
+  scale: state.flowchart.scale,
+  positions: state.positions
 })
 
 class DraggableVertex extends React.Component {
@@ -41,7 +41,6 @@ class DraggableVertex extends React.Component {
         fill: 'none'
       }
     }
-    console.log("rerendering Draggable Vertex")
 
     this.initializeDraggable()
 
@@ -55,23 +54,33 @@ class DraggableVertex extends React.Component {
 
   initializeDraggable() {
 
-    const outputPosition = this.getElementPosition(this.props.controlID)
     const outputElement = document.getElementById(this.props.controlID)
 
-    // this.props.dragVertex()
-
-    TweenLite.set("#dragDot", {
-      x: outputPosition.left,
-      y: outputPosition.top,
-      visibility: 'visible'
-    })
+    this.setDot()
 
     Draggable.create("#dragDot", {
       type: 'x, y',
       trigger: outputElement,
       onDrag: () => this.updatePath(),
-      onDragStart: () => this.props.updateDragging(),
-      onDragEnd: () => this.resetDrag(),
+      onDragStart: () => this.startDrag(),
+      onDragEnd: () => this.checkOverlap(),
+    })
+  }
+
+  setDot() {
+     const outputPosition = this.getElementPosition(this.props.controlID)
+
+     TweenLite.set("#dragDot", {
+      x: outputPosition.left,
+      y: outputPosition.top,
+    })
+
+  }
+
+  startDrag() {
+    this.props.updateDragging()
+    TweenLite.set("#dragVertex", {
+      visibility: 'visible'
     })
   }
 
@@ -81,27 +90,6 @@ class DraggableVertex extends React.Component {
     const dragVertexPath = document.getElementById("dragVertex")
 
     const getOutput = this.getElementPosition(this.props.controlID)
-    const getInput = {
-      left: dragDotPosition._gsTransform.x,
-      top: dragDotPosition._gsTransform.y
-    }
-
-    // const data = "M".concat(	String(getInput.left),
-    //         " ",
-    //         String(getInput.top),
-    //         " Q ",
-    //         String(Math.round(getInput.left) - 30),
-    //         " ",
-    //         String(Math.round(getInput.top)),
-    //         ", ",
-    //         String(Math.round(getInput.left + (getOutput.left - getInput.left)/2)),
-    //         " ",
-    //         String(Math.round(getInput.top + (getOutput.top - getInput.top)/2)),
-    //         " T ",
-    //         String(getOutput.left),
-    //         " ",
-    //         String(getOutput.top))
-
 
     const x1 = dragDotPosition._gsTransform.x;
     const y1 = dragDotPosition._gsTransform.y;
@@ -126,6 +114,9 @@ class DraggableVertex extends React.Component {
     const data = `M${p1x} ${p1y} C ${p2x} ${p2y} ${p3x} ${p3y} ${p4x} ${p4y}`;
 
     dragVertexPath.setAttribute("d", data)
+    // console.log(dragDotPosition)
+
+    console.log(this.getElementPosition(dragDotPosition))
   };
 
   getElementPosition(element) {
@@ -179,19 +170,16 @@ class DraggableVertex extends React.Component {
     const controlInputs = Object.keys(this.props.controls).filter((thisControl) => this.props.controls[thisControl].controlDirection == 0);
     const dragDotPosition = this.getElementPosition("dragDot")
 
-    console.log(dragDotPosition)
-
     for (let i = 0; i < controlInputs.length; i++) {
       let currentInput = controlInputs[i].toString()
       const inputPosition = this.getElementPosition(currentInput)
 
-      if (this.overlapFunction(dragDotPosition, inputPosition)) {
+      if (this.calculateOverlap(dragDotPosition, inputPosition)) {
 
         const deviceID = this.props.controls[currentInput].deviceID
-        const ipAddress = this.props.devices[deviceID].ipAddress
         const controlID = this.props.controls[currentInput].controlID
 
-        this.selectInputVertex(deviceID, controlID, ipAddress)
+        this.props.addVertex(deviceID, controlID)
     }}
 
     this.resetDrag()
@@ -200,16 +188,21 @@ class DraggableVertex extends React.Component {
   resetDrag() {
     const dragVertexPath = document.getElementById("dragVertex")
 
-    Draggable.get("#dragDot").disable()
+    // Draggable.get("#dragDot").disable()
 
     TweenLite.set("#dragDot", {
       clearProps: "transform",
-      x: 0,
-      y: 0,
+      // x: outputPosition.left,
+      // y: outputPosition.top,
+      // // visibility: 'hidden'
+    })
+
+    this.setDot()
+    this.props.updateDragging()
+    TweenLite.set('#dragVertex', {
       visibility: 'hidden'
     })
-    this.props.updateDragging()
-    dragVertexPath.removeAttribute("d")
+    // dragVertexPath.removeAttribute("d")
   };
 
 

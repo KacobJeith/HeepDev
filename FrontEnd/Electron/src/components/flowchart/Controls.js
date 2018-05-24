@@ -16,7 +16,6 @@ var mapStateToProps = (state, ownProps) => ({
   deviceID: ownProps.deviceID,
   controlID: ownProps.controlID,
   value: state.controls[ownProps.controlID].valueCurrent,
-  ip: state.devices[ownProps.deviceID].ipAddress,
 })
 
 class Control extends React.Component {
@@ -30,11 +29,6 @@ class Control extends React.Component {
 		this.direction = this.props.control['controlDirection'];
 		this.leftIndent = this.direction == 0 ? 10 : 250;
 	};
-
-  selectInputVertex(event) {
-		this.props.addVertex(this.props.deviceID, this.props.control['controlID'],
-							 this.props.ip);
-	}
 
 	selectOutputVertex() {
 		this.props.selectOutput(this.props.deviceID,

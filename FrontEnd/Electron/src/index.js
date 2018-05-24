@@ -56,7 +56,6 @@ const startState = {
     scale: 0.8,
     devices: {},
     liveModeReference: null,
-    dragVertex: false,
     isDragging: false
   },
   detailsPanelDeviceID: null,
@@ -71,7 +70,6 @@ const startState = {
   preferences: {
     searchMode: 'broadcast'
   },
-  isDragging: false,
   selectedOutput: {}
 }
 

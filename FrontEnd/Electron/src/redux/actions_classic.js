@@ -47,11 +47,10 @@ export const storeURL = (url) => ({
 
 
 //Vertex
-export const addVertex = (rxDeviceID, rxControlID, rxIP) => ({
+export const addVertex = (rxDeviceID, rxControlID) => ({
   type: 'ADD_VERTEX',
   rxDeviceID,
-  rxControlID,
-  rxIP
+  rxControlID
 })
 
 export const deleteVertex = (vertexID, vertex) => ({

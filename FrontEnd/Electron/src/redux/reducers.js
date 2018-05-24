@@ -199,7 +199,7 @@ export default function(state = initialState, action) {
                        rxDeviceID: action.rxDeviceID,
                        rxControlID: action.rxControlID,
                        timeSinceDiscovered: 0,
-                       rxIP: action.rxIP}
+                       rxIP: state.devices[action.rxDeviceID].ipAddress}
 
       async.sendVertexToServer(newVertex);
 
@@ -210,7 +210,7 @@ export default function(state = initialState, action) {
       //CONTROL CHANGES
       var newStateControls = Immutable.Map(state.controls).toJS();
 
-      var txName = utils.nameControl(state.electedOutput.txDeviceID, state.selectedOutput.txControlID);
+      var txName = utils.nameControl(state.selectedOutput.txDeviceID, state.selectedOutput.txControlID);
       var rxName = utils.nameControl(action.rxDeviceID, action.rxControlID);
 
       newStateControls.connections[txName].push(rxName);
@@ -244,21 +244,10 @@ export default function(state = initialState, action) {
       return Immutable.Map(state).set('flowchart', newState).toJS()
 
     case 'UPDATE_DRAGGING':
-      // var newState = Immutable.Map(state.flowchart).toJS();
-      // newState.isDragging = !newState.isDragging;
-      // console.log("dragging", state.flowchart)
-      // console.log('new: ', newState)
-      // console.log('isDragging: ', newState)
-      // return Immutable.Map(state).set('flowchart', newState).toJS()
+      var newState = Immutable.Map(state.flowchart).toJS();
+      newState.isDragging = !state.flowchart.isDragging;
 
-      // var newState = Immutable.Map(state).toJS();
-      // // newState.updateVertex = !newState.isDragging;
-
-      // console.log('equal? ', newState === state)
-
-      // return newState
-
-      return { ...state, isDragging: !state.isDragging }
+      return Immutable.Map(state).set('flowchart', newState).toJS()
 
     case 'POSITION_DEVICE':
       var newState = Immutable.Map(state.positions).toJS();
