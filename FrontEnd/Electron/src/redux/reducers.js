@@ -268,17 +268,19 @@ export default function(state = initialState, action) {
 
       var newState = Immutable.Map(state.controls).toJS();
       var identifier = utils.nameControl(action.deviceID, action.controlID);
+      var clampedValue = clamp(action.newValue, newState[identifier].valueLow, newState[identifier].valueHigh)
 
-      newState[identifier]['valueCurrent'] = action.newValue;
-      async.sendValueToServer(action.deviceID, action.controlID, action.newValue);
+      newState[identifier].valueCurrent = action.newValue;
+      async.sendValueToServer(action.deviceID, action.controlID, clampedValue);
 
       var connectedControl = '';
       for (var i = 0; i < newState.connections[identifier].length; i++){
         connectedControl = newState.connections[identifier][i];
 
         if (newState[connectedControl]) {
-          newState[connectedControl]['valueCurrent'] = action.newValue;
-          async.sendValueToServer(newState[connectedControl].deviceID, newState[connectedControl].controlID, action.newValue);
+
+          newState[connectedControl].valueCurrent = clampedValue;
+          async.sendValueToServer(newState[connectedControl].deviceID, newState[connectedControl].controlID, clampedValue);
         }
       }
 
@@ -343,9 +345,9 @@ export default function(state = initialState, action) {
 
       if (action.deviceID == null ) {
         TweenLite.to('#flowchartOptions', 0.5, {x: 0, ease: Sine.easeInOut});
-        TweenLite.to('#detailsPanel', 0.5, {x: 258, ease: Sine.easeInOut});
+        TweenLite.to('#detailsPanel', 0.5, {x: 300, ease: Sine.easeInOut});
       } else {
-        TweenLite.to('#flowchartOptions', 0.5, {x: -258, ease: Sine.easeInOut});
+        TweenLite.to('#flowchartOptions', 0.5, {x: -300, ease: Sine.easeInOut});
         TweenLite.to('#detailsPanel', 0.5, {x: 0, ease: Sine.easeInOut});
       }
 
@@ -552,4 +554,8 @@ const checkDeepEqualityVertices = (newState, check) => {
   }
 
   return newState
+}
+
+function clamp(num, min, max) {
+  return num <= min ? min : num >= max ? max : num;
 }

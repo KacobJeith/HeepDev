@@ -15,8 +15,7 @@ import FlowchartOptions from './FlowchartOptions'
 var mapStateToProps = (state) => ({
   deviceArray: Object.keys(state.devices),
   vertexList: state.vertexList,
-  scale: state.flowchart.scale,
-  detailsPanelOut: state.detailsPanelDeviceID != null
+  scale: state.flowchart.scale
 })
 
 class Flowchart extends React.Component {
