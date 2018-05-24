@@ -14,7 +14,7 @@ import { withTheme } from 'material-ui/styles'
 import FlowchartOptions from './FlowchartOptions'
 
 var mapStateToProps = (state) => ({
-  deviceArray: Object.keys(state.devices),
+  deviceArray: state.devices,
   vertexList: state.vertexList,
   scale: state.flowchart.scale,
   detailsPanelOut: state.detailsPanelDeviceID != null
@@ -75,7 +75,7 @@ class Flowchart extends React.Component {
               			return <Vertex key={thisVertexKey} vertexID={thisVertexKey} />
 					}
 				})}
-{/*         <DraggableVertex/> */}
+		        <DraggableVertex/>
 			</svg>
 		)
 	};
@@ -83,7 +83,7 @@ class Flowchart extends React.Component {
   drawDevices() {
     return (
       <div>
-        {this.props.deviceArray.map((thisDevice) => {
+        {Object.keys(this.props.deviceArray).map((thisDevice) => {
           return (
             <Device key={thisDevice} DeviceID={thisDevice}/>
           )

@@ -8,9 +8,9 @@ import { TweenLite } from "gsap"
 import * as Draggable from 'gsap/Draggable';
 
 var mapStateToProps = (state, ownProps) => ({
-  controlInputs: Object.keys(state.controls).filter((thisControl) => state.controls[thisControl].controlDirection == 0),
+  // controlInputs: Object.keys(state.controls).filter((thisControl) => state.controls[thisControl].controlDirection == 0),
   // devices: state.devices,
-  // controls: state.controls,
+  controls: state.controls,
   startingPointDeviceID: (state.selectedOutput == undefined) ? null : state.selectedOutput.deviceID,
   startingPointControlID: (state.selectedOutput == undefined) ? null : state.selectedOutput.controlID,
   controlID: (state.selectedOutput == undefined) ? null : state.selectedOutput.txDeviceID + '.' + state.selectedOutput.txControlID,
@@ -57,7 +57,6 @@ class DraggableVertex extends React.Component {
 
     const outputPosition = this.getElementPosition(this.props.controlID)
     const outputElement = document.getElementById(this.props.controlID)
-    const controlInputs = this.props.controlInputs
 
     // this.props.dragVertex()
 
@@ -72,7 +71,6 @@ class DraggableVertex extends React.Component {
       trigger: outputElement,
       onDrag: () => this.updatePath(),
       onDragStart: () => this.props.updateDragging(),
-      // onDragStart: () => console.log('DRAGDRAGDRAG'), 
       onDragEnd: () => this.resetDrag(),
     })
   }
@@ -178,7 +176,7 @@ class DraggableVertex extends React.Component {
   }
 
   checkOverlap() {
-    const controlInputs = this.props.controlInputs
+    const controlInputs = Object.keys(this.props.controls).filter((thisControl) => this.props.controls[thisControl].controlDirection == 0);
     const dragDotPosition = this.getElementPosition("dragDot")
 
     console.log(dragDotPosition)
