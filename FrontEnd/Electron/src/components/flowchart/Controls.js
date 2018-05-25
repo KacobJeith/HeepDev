@@ -132,6 +132,8 @@ class Control extends React.Component {
 
 		var controller = [];
 
+    console.log()
+
 		return (<div {...inputs.all}>
 
 					<Grid container direction='column' justify='center' alignItems='center' spacing={0}>

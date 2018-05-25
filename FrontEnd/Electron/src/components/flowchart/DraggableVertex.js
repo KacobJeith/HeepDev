@@ -26,9 +26,10 @@ class DraggableVertex extends React.Component {
         cx: 0,
         cy: 0,
         r: 13,
-        fill: 'none',
+        fill: '#76d0f1',
         onMouseEnter: () => Draggable.get("#deviceContainer").disable(),
         onMouseLeave: () => Draggable.get("#deviceContainer").enable(),
+        opacity: 0,
         style: {
           cursor: 'grab',
         }
@@ -81,10 +82,13 @@ class DraggableVertex extends React.Component {
     TweenLite.set("#dragVertex", {
       visibility: 'visible'
     })
+    TweenLite.set("#dragDot", {
+      opacity: 1
+    })
   }
 
   updatePath() {
-    const bezierWeight = 0.675
+    const bezierWeight = 0.5
     const dragDotPosition = document.getElementById("dragDot")
     const dragVertexPath = document.getElementById("dragVertex")
 
@@ -191,6 +195,10 @@ class DraggableVertex extends React.Component {
 
     TweenLite.set('#dragVertex', {
       visibility: 'hidden'
+    })
+
+    TweenLite.set('#dragDot', {
+      opacity: '0'
     })
 
   };

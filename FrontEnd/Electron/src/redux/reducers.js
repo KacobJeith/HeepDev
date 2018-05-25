@@ -201,9 +201,11 @@ export default function(state = initialState, action) {
                        timeSinceDiscovered: 0,
                        rxIP: state.devices[action.rxDeviceID].ipAddress}
 
-      async.sendVertexToServer(newVertex);
-
       var newVertexName = utils.nameVertex(newVertex);
+
+      if (!(newVertexName in state.vertexList && state.vertexList[newVertexName].timeSinceDiscovered==0)) {
+        async.sendVertexToServer(newVertex);
+      }
 
       var newState = Immutable.Map(state.vertexList).set(newVertexName, newVertex).toJS();
 

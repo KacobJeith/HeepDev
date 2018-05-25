@@ -19,9 +19,9 @@ var mapStateToProps = (state, ownProps) => (
   scale: state.flowchart.scale,
   txDeviceID: state.vertexList[ownProps.vertexID].txDeviceID,
   rxDeviceID: state.vertexList[ownProps.vertexID].rxDeviceID,
-  txCollapsed: state.flowchart.devices[state.vertexList[ownProps.vertexID].txDeviceID] && 
-               state.flowchart.devices[state.vertexList[ownProps.vertexID].txDeviceID].collapsed ? 
-               state.flowchart.devices[state.vertexList[ownProps.vertexID].txDeviceID].collapsed : 
+  txCollapsed: state.flowchart.devices[state.vertexList[ownProps.vertexID].txDeviceID] &&
+               state.flowchart.devices[state.vertexList[ownProps.vertexID].txDeviceID].collapsed ?
+               state.flowchart.devices[state.vertexList[ownProps.vertexID].txDeviceID].collapsed :
                false,
   rxCollapsed: state.flowchart.devices[state.vertexList[ownProps.vertexID].rxDeviceID] && state.flowchart.devices[state.vertexList[ownProps.vertexID].rxDeviceID].collapsed ? state.flowchart.devices[state.vertexList[ownProps.vertexID].rxDeviceID].collapsed : false,
 })
@@ -114,42 +114,63 @@ class Vertex extends React.Component {
   }
 
 	render() {
+    const bezierWeight = 0.95
+
     const getInput = this.getInputPosition();
     const getOutput = this.getOutputPosition();
+
+    const x1 = getInput.left;
+    const y1 = getInput.top;
+
+    const x4 = getOutput.left;
+    const y4 = getOutput.top;
+
+    const dx = (x1 - x4) / 2 * bezierWeight;
+
+    const p1x = x1;
+    const p1y = y1;
+
+    const p2x = x1 - dx;
+    const p2y = y1;
+
+    const p4x = x4;
+    const p4y = y4;
+
+    const p3x = x4 + dx;
+    const p3y = y4;
+
+    const data = `M${p1x} ${p1y} C ${p2x} ${p2y} ${p3x} ${p3y} ${p4x} ${p4y}`;
 
 		if (!this.props.display || getInput == false || getOutput == false) {
       // console.log("false")
 			return <g/>
 		}
 
-    const rxClassName = 'vertex' + this.props.rxDeviceID.toString()
-    const txClassName = 'vertex' + this.props.txDeviceID.toString()
-
 		var inputs = {
 
 			vertex: {
         id: this.props.id,
-        className: [rxClassName, txClassName, "test"].join(" "),
         pointerEvents: 'all',
         display: 'inline-block',
 				strokeWidth: this.state.strokeWidth,
 				stroke: this.checkCollapsed() ? this.state.collapsedColor : this.state.color,
 				fill: 'transparent',
-        d: "M".concat(	String(getInput.left),
-                " ",
-                String(getInput.top),
-                " Q ",
-                String(Math.round(getInput.left) + 30),
-                " ",
-                String(Math.round(getInput.top)),
-                ", ",
-                String(Math.round(getInput.left + (getOutput.left - getInput.left)/2)),
-                " ",
-                String(Math.round(getInput.top + (getOutput.top - getInput.top)/2)),
-                " T ",
-                String(getOutput.left),
-                " ",
-                String(getOutput.top)),
+        d: data,
+        // d: "M".concat(	String(getInput.left),
+        //         " ",
+        //         String(getInput.top),
+        //         " Q ",
+        //         String(Math.round(getInput.left) + 30),
+        //         " ",
+        //         String(Math.round(getInput.top)),
+        //         ", ",
+        //         String(Math.round(getInput.left + (getOutput.left - getInput.left)/2)),
+        //         " ",
+        //         String(Math.round(getInput.top + (getOutput.top - getInput.top)/2)),
+        //         " T ",
+        //         String(getOutput.left),
+        //         " ",
+        //         String(getOutput.top)),
 				onMouseEnter: () => this.checkCollapsed() ? this.setState({'strokeWidth': 3}) : this.setState({'color': '#d40000', 'strokeWidth': 5}),
 				onMouseLeave: () => this.checkCollapsed() ? this.setState({'strokeWidth': 3}) : this.setState({'color': '#455a64', 'strokeWidth': 3}),
 				onClick: () => this.checkCollapsed() ? null : this.sendDeleteVertexToServer(),
