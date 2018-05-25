@@ -93,8 +93,6 @@ class DraggableVertex extends React.Component {
     const x1 = dragDotPosition._gsTransform.x;
     const y1 = dragDotPosition._gsTransform.y;
 
-    console.log(x1, y1)
-
     const x4 = getOutput.left;
     const y4 = getOutput.top;
 
@@ -115,7 +113,7 @@ class DraggableVertex extends React.Component {
     const data = `M${p1x} ${p1y} C ${p2x} ${p2y} ${p3x} ${p3y} ${p4x} ${p4y}`;
 
     dragVertexPath.setAttribute("d", data)
-    // console.log(dragDotPosition)
+
   };
 
   getElementPosition(element) {
