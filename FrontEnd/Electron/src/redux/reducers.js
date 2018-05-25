@@ -162,20 +162,25 @@ export default function(state = initialState, action) {
 
     case 'OVERWRITE_WITH_SERVER_DATA':
 
-      var newStateDevices = checkDeepEqualityDevices(Immutable.Map(state.devices).toJS(), action.fromServer.devices)
-      var newStateControls = checkDeepEquality(Immutable.Map(state.controls).toJS(), action.fromServer.controls)
-      var newStatePositions = checkDeepEquality(Immutable.Map(state.positions).toJS(), action.fromServer.positions)
-      var newStateVertexList = checkDeepEqualityVertices(Immutable.Map(state.vertexList).toJS(), action.fromServer.vertexList)
-      var newStateAnalytics = checkDeepEquality(Immutable.Map(state.analytics).toJS(), action.fromServer.analytics)
-      var newStateWifi = checkDeepEquality(Immutable.Map(state.deviceWiFiCreds).toJS(), action.fromServer.deviceWiFiCreds)
+      if (!state.flowchart.isDragging) {
+        var newStateDevices = checkDeepEqualityDevices(Immutable.Map(state.devices).toJS(), action.fromServer.devices)
+        var newStateControls = checkDeepEquality(Immutable.Map(state.controls).toJS(), action.fromServer.controls)
+        var newStatePositions = checkDeepEquality(Immutable.Map(state.positions).toJS(), action.fromServer.positions)
+        var newStateVertexList = checkDeepEqualityVertices(Immutable.Map(state.vertexList).toJS(), action.fromServer.vertexList)
+        var newStateAnalytics = checkDeepEquality(Immutable.Map(state.analytics).toJS(), action.fromServer.analytics)
+        var newStateWifi = checkDeepEquality(Immutable.Map(state.deviceWiFiCreds).toJS(), action.fromServer.deviceWiFiCreds)
 
-      return Immutable.Map(state) .set('devices', newStateDevices)
-                                  .set('controls', newStateControls)
-                                  .set('positions', newStatePositions)
-                                  .set('vertexList', newStateVertexList)
-                                  .set('analytics', newStateAnalytics)
-                                  .set('deviceWiFiCreds', newStateWifi)
-                                  .toJS()
+        return Immutable.Map(state) .set('devices', newStateDevices)
+                                    .set('controls', newStateControls)
+                                    .set('positions', newStatePositions)
+                                    .set('vertexList', newStateVertexList)
+                                    .set('analytics', newStateAnalytics)
+                                    .set('deviceWiFiCreds', newStateWifi)
+                                    .toJS()
+      } else {
+        return state
+      }
+
     case 'STORE_URL':
 
       return Immutable.Map(state).set('url', action.url).toJS()
