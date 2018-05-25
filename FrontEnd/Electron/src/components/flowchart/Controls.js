@@ -7,66 +7,78 @@ import RangeContainer from './RangeController'
 import { Grid, Typography } from 'material-ui'
 import * as Utils from '../../serverside/utilities/generalUtilities'
 
+import * as Draggable from 'gsap/Draggable'
+import { TweenLite } from "gsap"
+
 var mapStateToProps = (state, ownProps) => ({
   control: state.controls[ownProps.controlID],
   collapsed: state.flowchart.devices[ownProps.DeviceID] ? state.flowchart.devices[ownProps.DeviceID].collapsed : false,
   deviceID: ownProps.deviceID,
   controlID: ownProps.controlID,
   value: state.controls[ownProps.controlID].valueCurrent,
-  ip: state.devices[ownProps.deviceID].ipAddress
+  isDragging: state.flowchart.isDragging
 })
 
+const smallRadius = 12
+const largeRadius = 18
 
 class Control extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			radius: 8,
+			radius: smallRadius,
 			controlHighlight: 'white',
+      pointerEvents: 'all'
 		}
-
-
 		this.direction = this.props.control['controlDirection'];
 		this.leftIndent = this.direction == 0 ? 10 : 250;
-	}
+	};
 
-	selectInputVertex(event) {
-		this.props.addVertex(this.props.deviceID,
-							 this.props.control['controlID'],
-							 this.props.ip);
-	}
-
-	selectOutputVertex(event) {
+	selectOutputVertex() {
 		this.props.selectOutput(this.props.deviceID,
 								this.props.control['controlID']);
-	}
+	};
+
+  handleMouseEnter() {
+    this.setState({radius: largeRadius});
+    Draggable.get("#_" + this.props.deviceID).disable()
+    this.selectOutputVertex(event)
+  };
+
+  handleMouseLeave() {
+    this.setState({radius: smallRadius});
+    Draggable.get("#_" + this.props.deviceID).enable()
+  };
 
 	drawControlKnob(ref) {
 
 		const inputs = {
-			vertexKnob: {
+			knobDiv: {
 				style: {
-					width: 10,
+					// width: 10,
 					top: 5,
-					height: 20,
+					// height: 20,
 					position:'absolute',
-					right: this.direction == 0 ? null : -13,
-					left: this.direction == 0 ? -14 : null
+					right: this.direction == 0 ? null : -largeRadius * 2 - 2,
+					left: this.direction == 0 ? -largeRadius * 2 - 2: null
 				}
 			},
 			circleContainer: {
-				height: 20,
-				width: 12
+				height: largeRadius * 2,
+				width: largeRadius * 2,
+        style: {
+          // background: 'gray'
+        }
 			},
 			circle: {
         id: this.props.controlID,
-				onClick: (event) => {this.direction == 0 ?
-									 this.selectInputVertex(event) :
-									 this.selectOutputVertex(event)},
-				onMouseEnter: () => this.setState({radius: 11}),
-				onMouseLeave: () => this.setState({radius: 8}),
-				cx: this.direction == 0 ? 11 : 0,
-				cy: 10,
+        className: 'controlCircle',
+        // onMouseEnter: (event) => {(this.direction == 0 && !this.props.dragVertex) ?
+				// 					 null : this.handleMouseEnter()},
+				onMouseEnter: () => (this.direction == 0 || this.props.isDragging == true) ? this.setState({radius: 11}) : this.handleMouseEnter(),
+				onMouseLeave: () => (this.direction == 0) ? this.setState({radius: smallRadius}) : this.handleMouseLeave(),
+				cx: this.direction == 0 ? largeRadius*2 : 0,
+				cy: largeRadius,
 				r: this.state.radius,
 				fill: this.direction == 0 ? "#00baff" : '#00cb7b',
 				style: {
@@ -76,7 +88,7 @@ class Control extends React.Component {
 		}
 
 		return (
-			<div {...inputs.vertexKnob}>
+			<div {...inputs.knobDiv}>
 				<svg {...inputs.circleContainer} ref={ref}>
 					<circle {...inputs.circle} />
 				</svg>
@@ -119,6 +131,8 @@ class Control extends React.Component {
 		}
 
 		var controller = [];
+
+    console.log()
 
 		return (<div {...inputs.all}>
 

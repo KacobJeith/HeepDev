@@ -52,10 +52,11 @@ const startState = {
     controls: {}
   },
   flowchart: {
-    dragVertex: false,
+    updateVertex: false,
     scale: 0.8,
     devices: {},
     liveModeReference: null,
+    isDragging: false
   },
   detailsPanelDeviceID: null,
   accessPoints: {},
@@ -68,7 +69,8 @@ const startState = {
   stateSnapshots: {},
   preferences: {
     searchMode: 'broadcast'
-  }
+  },
+  selectedOutput: {}
 }
 
 export const initialState = Immutable.Map(startState);
