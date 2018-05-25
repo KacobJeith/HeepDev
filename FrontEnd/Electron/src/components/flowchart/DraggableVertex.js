@@ -88,7 +88,7 @@ class DraggableVertex extends React.Component {
   }
 
   updatePath() {
-    const bezierWeight = 0.5
+    const bezierWeight = 0.35
     const dragDotPosition = document.getElementById("dragDot")
     const dragVertexPath = document.getElementById("dragVertex")
 

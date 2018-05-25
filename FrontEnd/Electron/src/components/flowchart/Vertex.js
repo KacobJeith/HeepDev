@@ -114,7 +114,7 @@ class Vertex extends React.Component {
   }
 
 	render() {
-    const bezierWeight = 0.95
+    const bezierWeight = 0.35
 
     const getInput = this.getInputPosition();
     const getOutput = this.getOutputPosition();
@@ -125,21 +125,15 @@ class Vertex extends React.Component {
     const x4 = getOutput.left;
     const y4 = getOutput.top;
 
-    const dx = (x1 - x4) / 2 * bezierWeight;
+    const dx = Math.abs(x1 - x4) * bezierWeight;
 
-    const p1x = x1;
-    const p1y = y1;
+    const x2 = x1 + dx;
+    const y2 = y1;
 
-    const p2x = x1 - dx;
-    const p2y = y1;
+    const x3 = x4 - dx;
+    const y3 = y4;
 
-    const p4x = x4;
-    const p4y = y4;
-
-    const p3x = x4 + dx;
-    const p3y = y4;
-
-    const data = `M${p1x} ${p1y} C ${p2x} ${p2y} ${p3x} ${p3y} ${p4x} ${p4y}`;
+    const data = `M${x1} ${y1} C ${x2} ${y2} ${x3} ${y3} ${x4} ${y4}`;
 
 		if (!this.props.display || getInput == false || getOutput == false) {
       // console.log("false")
