@@ -58,11 +58,6 @@ class DetailsPanelVertexBlock extends React.Component {
               button 
               onClick={() => this.setState({view: !this.state.view})}
               style={{paddingLeft: 4}}>
-{/*               <ListItemIcon > */}
-{/*                 <Button {...inputs.buttons}> */}
-{/*                   <ArrowRightAlt {...inputs.inactiveIcons}/> */}
-{/*                 </Button> */}
-{/*               </ListItemIcon> */}
               <ListItemIcon >
                 <Button {...inputs.buttons}
                   onClick={(event) => {
