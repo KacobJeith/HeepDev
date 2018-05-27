@@ -53,10 +53,9 @@ export const addVertex = (rxDeviceID, rxControlID) => ({
   rxControlID
 })
 
-export const deleteVertex = (vertexID, vertex) => ({
+export const deleteVertex = (vertexID) => ({
   type: 'DELETE_VERTEX',
-  vertexID,
-  vertex
+  vertexID
 })
 
 export const selectOutput = (txDeviceID, txControlID) => ({

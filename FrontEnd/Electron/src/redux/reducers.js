@@ -226,15 +226,17 @@ export default function(state = initialState, action) {
 
     case 'DELETE_VERTEX':
 
-      async.sendDeleteVertexToServer(action.vertex);
+      const thisVertex = state.vertexList[action.vertexID];
+      
+      async.sendDeleteVertexToServer(thisVertex);
 
       var newState = Immutable.Map(state.vertexList).delete(action.vertexID).toJS();
 
       //CONTROLS
       var newStateControls = Immutable.Map(state.controls).toJS();
 
-      var txName = utils.getTxControlNameFromVertex(action.vertex);
-      var rxName = utils.getRxControlNameFromVertex(action.vertex);
+      var txName = utils.getTxControlNameFromVertex(thisVertex);
+      var rxName = utils.getRxControlNameFromVertex(thisVertex);
 
       var index = newStateControls.connections[txName].indexOf(rxName);
 

@@ -8,7 +8,7 @@ import * as actions           from '../../redux/actions_classic'
 import { withTheme } from 'material-ui/styles'
 import { Divider, Typography, Collapse, Tooltip, Button, Menu, TextField } from 'material-ui'
 import List, { ListItem, ListItemIcon, ListItemText, ListSubheader } from 'material-ui/List'
-import { Redo, Undo, LinearScale, PowerSettingsNew, ExpandLess, ExpandMore } from 'material-ui-icons'
+import { Redo, Undo, LinearScale, PowerSettingsNew, ExpandLess, ExpandMore, Delete } from 'material-ui-icons'
 
 var mapStateToProps = (state, ownProps) => ({
   thisVertex: state.vertexList[ownProps.vertexID],
@@ -58,11 +58,27 @@ class DetailsPanelVertexBlock extends React.Component {
               button 
               onClick={() => this.setState({view: !this.state.view})}
               style={{paddingLeft: 4}}>
-
+{/*               <ListItemIcon > */}
+{/*                 <Button {...inputs.buttons}> */}
+{/*                   <ArrowRightAlt {...inputs.inactiveIcons}/> */}
+{/*                 </Button> */}
+{/*               </ListItemIcon> */}
+              <ListItemIcon >
+                <Button {...inputs.buttons}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    this.props.deleteVertex(this.props.vertexID)
+                  }}
+                >
+                  <Delete {...inputs.inactiveIcons}/>
+                </Button>
+              </ListItemIcon>
               <ListItemText primary={this.props.txControl.controlName + ' -> ' + this.props.rxControl.controlName}/>
               {this.state.view ? <ExpandLess /> : <ExpandMore />}
 
             </ListItem>
+
+
             
             <Collapse in={this.state.view} timeout="auto" unmountOnExit>
               <div>
