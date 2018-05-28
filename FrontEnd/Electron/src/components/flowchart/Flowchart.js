@@ -94,12 +94,20 @@ class Flowchart extends React.Component {
 	render() {
 
 		const inputs = {
+			parentDiv: {
+				style: {
+					overflow: 'hidden',
+					width: '100%',
+					height: '100%'
+				}
+
+			},
 			pageContainer: {
 					style: {
 					backgroundColor: '#e7e7e7',
 					height: 4000,
 					width: 4000,
-          overflow: 'hidden'
+          			overflow: 'hidden'
 				}
 			},
 			flowchart: {

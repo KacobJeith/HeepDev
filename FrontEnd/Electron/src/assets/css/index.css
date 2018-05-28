@@ -3,10 +3,11 @@
   padding: 0px;
 }
 
-body {
+html, body {
   margin: 0;
   height: 100%;
-  overflow: hidden
+  overflow: hidden;
+  width: 100%;
 }
 
 .dragVertex {
