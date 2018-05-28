@@ -7,16 +7,16 @@ import * as Actions from '../../redux/actions_classic'
 import * as Draggable from 'gsap/Draggable'
 
 import Device from './DevicePaper'
+import DraggableVertex from './DraggableVertex.js'
 import Vertex from './Vertex'
 import DeviceDetailsPanel from '../heep/DeviceDetailsPanel'
 import { withTheme } from 'material-ui/styles'
 import FlowchartOptions from './FlowchartOptions'
 
 var mapStateToProps = (state) => ({
-  deviceArray: Object.keys(state.devices),
+  deviceArray: state.devices,
   vertexList: state.vertexList,
-  scale: state.flowchart.scale,
-  detailsPanelOut: state.detailsPanelDeviceID != null
+  scale: state.flowchart.scale
 })
 
 class Flowchart extends React.Component {
@@ -64,16 +64,17 @@ class Flowchart extends React.Component {
 					left: 0,
 					overflow: 'hidden',
 				},
-			}
+			},
 		}
 
 		return (
 			<svg {...inputs.vertexSVGSpace}>
 				{Object.keys(this.props.vertexList).map((thisVertexKey) => {
-					if (thisVertexKey != 'selectedOutput'){
-              return <Vertex key={thisVertexKey} vertexID={thisVertexKey} />
+					if (thisVertexKey != 'selectedOutput'){// && this.props.vertexList[thisVertexKey].timeSinceDiscovered == 0){
+              			return <Vertex key={thisVertexKey} vertexID={thisVertexKey} />
 					}
 				})}
+		        <DraggableVertex/>
 			</svg>
 		)
 	};
@@ -81,7 +82,7 @@ class Flowchart extends React.Component {
   drawDevices() {
     return (
       <div>
-        {this.props.deviceArray.map((thisDevice) => {
+        {Object.keys(this.props.deviceArray).map((thisDevice) => {
           return (
             <Device key={thisDevice} DeviceID={thisDevice}/>
           )
@@ -126,6 +127,8 @@ class Flowchart extends React.Component {
 			}
 		}
 
+    // console.log("rerendering Flowchart")
+
 		return (
 		<div {...inputs.pageContainer}>
 			<div id="flowchart" {...inputs.flowchart} ref="flowchart">
@@ -139,8 +142,8 @@ class Flowchart extends React.Component {
 								height: 50000,
 								overflow: 'hidden',
 						}}>
-							{this.drawVertices()}
-							{this.drawDevices()}
+              {this.drawVertices()}
+              {this.drawDevices()}
 						</div>
 					</div>
 				</div>

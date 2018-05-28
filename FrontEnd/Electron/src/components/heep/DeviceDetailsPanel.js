@@ -25,23 +25,12 @@ import classNames from 'classnames';
 var mapStateToProps = (state) => ({
   deviceID:  state.detailsPanelDeviceID,
   device: state.devices[state.detailsPanelDeviceID],
-  controls: state.detailsPanelDeviceID == null ? {} : extractControls(state),
+  controls: Object.keys(state.controls).filter((thisControl) => state.controls[thisControl] ? state.controls[thisControl].deviceID == state.detailsPanelDeviceID : false),
   places: state.places,
   deviceWiFiCreds: state.deviceWiFiCreds[state.detailsPanelDeviceID]
 })
 
-const extractControls = (state) => {
-
-  const inputs = state.controls.controlStructure[state.detailsPanelDeviceID] ? state.controls.controlStructure[state.detailsPanelDeviceID].inputs : [];
-  const outputs = state.controls.controlStructure[state.detailsPanelDeviceID] ? state.controls.controlStructure[state.detailsPanelDeviceID].outputs : [];
-
-  const allControls = inputs.concat(outputs);
-
-  return allControls
-
-}
-
-const drawerWidth = 258;
+const drawerWidth = 300;
 
 const styles = theme => ({
   drawerPaper: {
@@ -71,10 +60,30 @@ class DeviceDetailsPanel extends React.Component {
       addPlaceModalopen: false
     }
 
+  render() {
+
+    const { classes, theme } = this.props;
+
+    return (  
+      <div style={{position: 'fixed', right:0, top: 0}} id='detailsPanel'>
+        <Drawer 
+          variant='permanent' 
+          open={this.props.deviceID != null} 
+          classes={{
+            paper: classNames(classes.drawerPaper, this.props.deviceID == null && classes.drawerPaperClose),
+          }}
+        >
+          {this.props.deviceID != null && (this.deviceDetails())}
+          
+        </Drawer>
+      </div>
+    );
+  }
+
   deviceDetails() {
     return (
       <div style={{
-        width: this.props.deviceID != null ? 250 : 0, 
+        width: this.props.deviceID != null ? drawerWidth : 0, 
         marginTop: 70,
         padding: this.props.theme.spacing.unit,
         position: 'relative',
@@ -89,7 +98,7 @@ class DeviceDetailsPanel extends React.Component {
           size='small'
           style={{
             position: 'absolute', 
-            right: 4, 
+            right: 24, 
             height: 24,
             width: 24,
             top: 4, 
@@ -248,25 +257,7 @@ class DeviceDetailsPanel extends React.Component {
     )
   }
 
-  render() {
-
-    const { classes, theme } = this.props;
-
-    return (  
-      <div style={{position: 'fixed', right:0, top: 0}} id='detailsPanel'>
-        <Drawer 
-          variant='permanent' 
-          open={this.props.deviceID != null} 
-          classes={{
-            paper: classNames(classes.drawerPaper, this.props.deviceID == null && classes.drawerPaperClose),
-          }}
-        >
-          {this.props.deviceID != null && (this.deviceDetails())}
-          
-        </Drawer>
-      </div>
-    );
-  }
+  
 }
 
 var mapDispatchToProps = (dispatch) => {

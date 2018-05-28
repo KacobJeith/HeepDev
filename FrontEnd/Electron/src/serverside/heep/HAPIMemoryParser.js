@@ -236,7 +236,8 @@ export var ReadControl = (thisBlockData) => { // OP 2
     rxDeviceID: ReadDeviceID(thisBlockData.slice(1, 5)),
     txControlID: thisBlockData[5],
     rxControlID: thisBlockData[6],
-    rxIP: thisBlockData.slice(7).join('.')
+    rxIP: thisBlockData.slice(7).join('.'),
+    timeSinceDiscovered: 0
   };
 
   return thisVertex

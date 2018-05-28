@@ -66,8 +66,10 @@ void CreateServer(int portno)
     //keep listening for data
     while(1)
     {
+#ifdef HEEP_DEBUG
         printf("Waiting for data...");
         fflush(stdout);
+#endif
          
         //try to receive some data, this is a blocking call
         if ((recv_len = recvfrom(s, recvBuffer, BUFLEN, 0, (struct sockaddr *) &si_other, &slen)) == -1)
@@ -78,9 +80,14 @@ void CreateServer(int portno)
 
         respondedToLastConnect = 0;
 
+#ifdef HEEP_DEBUG
         //print details of the client/peer and the data received
         printf("Received packet from %s:%d\n", inet_ntoa(si_other.sin_addr), ntohs(si_other.sin_port));
         printf("Data: %s\n" , recvBuffer);
+#endif
+
+        inet_ntoa(si_other.sin_addr);
+        ntohs(si_other.sin_port);
          
     }
  
@@ -92,7 +99,9 @@ int TCP_PORT = 5000;
 
 void ServerThread()
 { 
+#ifdef HEEP_DEBUG
     std::cout << "Begin Server" << std::endl;
+#endif
     CreateServer(TCP_PORT);
 }
 
@@ -108,7 +117,12 @@ void CheckServerForInputs()
     if(respondedToLastConnect == 0)
     {
       si_other.sin_port = htons(5000);
+
+#ifdef HEEP_DEBUG
       std::cout << "Time to respond to " << inet_ntoa(si_other.sin_addr) << " " << ntohs(si_other.sin_port) << std::endl;
+#endif
+        inet_ntoa(si_other.sin_addr);
+        ntohs(si_other.sin_port);
 
         int n = 0;
 
@@ -117,7 +131,11 @@ void CheckServerForInputs()
           inputBuffer[i] = recvBuffer[i];
         }
 
-        if(HandleHeepCommunications()) return;
+        if(HandleHeepCommunications())
+        {
+            respondedToLastConnect = 1;
+            return;
+        }
 
         int s;
         socklen_t slen = sizeof(si_other);
@@ -128,11 +146,13 @@ void CheckServerForInputs()
             die("socket");
         }
 
+#ifdef HEEP_DEBUG
         for(int i = 0; i < outputBufferLastByte; i++)
         {
           std::cout << outputBuffer[i] << " ";
         }
         std::cout << std::endl;
+#endif
 
         //now reply the client with the same data
         if (sendto(s, outputBuffer, outputBufferLastByte, 0, (struct sockaddr*) &si_other, slen) == -1)
@@ -140,10 +160,28 @@ void CheckServerForInputs()
             die("sendto()");
         }
 
+        close(s);
+
         lastConnectFd = -1;
         respondedToLastConnect = 1;
     }
     
+}
+
+int Write1Character1FromValue(unsigned char value, char* IPString, int startPoint)
+{
+  IPString[startPoint] = (value%10) + '0';
+  startPoint++;
+  return startPoint;
+}
+
+int Write2CharactersFromValue(unsigned char value, char* IPString, int startPoint)
+{
+  IPString[startPoint] = (value/10)%10 + '0';
+  startPoint++;
+  IPString[startPoint] = (value%10) + '0';
+  startPoint++;
+  return startPoint;
 }
 
 int Write3CharactersFromValue(unsigned char value, char* IPString, int startPoint)
@@ -157,20 +195,33 @@ int Write3CharactersFromValue(unsigned char value, char* IPString, int startPoin
   return startPoint;
 }
 
+int WriteCharactersFromValue(unsigned char value, char* IPString, int startPoint)
+{
+    if(value < 10)
+        return Write1Character1FromValue(value, IPString, startPoint);
+    else if(value < 100)
+        return Write2CharactersFromValue(value, IPString, startPoint);
+    
+    return Write3CharactersFromValue(value, IPString, startPoint);
+}
+
+
+
 void WriteHeepIPToString(HeepIPAddress destIP, char* IPString)
 {
-  int counter = Write3CharactersFromValue(destIP.Octet4, IPString, 0);
+  int counter = WriteCharactersFromValue(destIP.Octet4, IPString, 0);
   IPString[counter] = '.'; counter++;
-  counter = Write3CharactersFromValue(destIP.Octet3, IPString, counter);
+  counter = WriteCharactersFromValue(destIP.Octet3, IPString, counter);
   IPString[counter] = '.'; counter++;
-  counter = Write3CharactersFromValue(destIP.Octet2, IPString, counter);
+  counter = WriteCharactersFromValue(destIP.Octet2, IPString, counter);
   IPString[counter] = '.'; counter++;
-  counter = Write3CharactersFromValue(destIP.Octet1, IPString, counter);
+  counter = WriteCharactersFromValue(destIP.Octet1, IPString, counter);
+  IPString[counter] = '\0';
 }
 
 void SendOutputBufferToIP(HeepIPAddress destIP)
 {
-    char IP [17];
+    char IP [18];
     WriteHeepIPToString(destIP, IP);
 
     int sockfd, n;
@@ -182,7 +233,9 @@ void SendOutputBufferToIP(HeepIPAddress destIP)
 
     server = gethostbyname(IP);
     if (server == NULL) {
+#ifdef HEEP_DEBUG
         fprintf(stderr,"ERROR, no such host\n");
+#endif
         exit(0);
     }
     bzero((char *) &serv_addr, sizeof(serv_addr));
@@ -198,11 +251,14 @@ void SendOutputBufferToIP(HeepIPAddress destIP)
         die("socket");
     }
 
+// Strange bug on this line. Must comment out debug checks for code to send. Seems like timing
+//#ifdef HEEP_DEBUG
     for(int i = 0; i < outputBufferLastByte; i++)
     {
       std::cout << outputBuffer[i] << " ";
     }
     std::cout << std::endl;
+//#endif
 
     //now reply the client with the same data
     if (sendto(s, outputBuffer, outputBufferLastByte, 0, (struct sockaddr*) &serv_addr, slen) == -1)

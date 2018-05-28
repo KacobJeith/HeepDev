@@ -12,7 +12,7 @@ const newMasterState = {
   devices: {},
   deviceWiFiCreds: {},
   positions: {},
-  controls: {controlStructure:{}, connections: {}},
+  controls: {connections: {}},
   vertexList: {},
   icons: {},
   url: '',
@@ -245,8 +245,8 @@ udpServer.on('error', (err) => {
 });
 
 udpServer.on('message', (msg, rinfo) => {
-  ConsumeHeepResponse(msg, rinfo.address, rinfo.port);
   console.log(`server got: ${msg} from ${rinfo.address}:${rinfo.port}`);
+  ConsumeHeepResponse(msg, rinfo.address, rinfo.port);
 
   log.info(`server got: ${msg} from ${rinfo.address}:${rinfo.port}`);
 });
@@ -264,9 +264,9 @@ console.log("Done binding");
 
 
 var ConsumeHeepResponse = (data, IPAddress, port) => {
-  console.log('Device found at address: ', IPAddress + ':' + port.toString());
-  console.log('Stringified Data: ', data.toString());
-  console.log('Raw inbound Data: ', data);
+  // console.log('Device found at address: ', IPAddress + ':' + port.toString());
+  // console.log('Stringified Data: ', data.toString());
+  // console.log('Raw inbound Data: ', data);
 
   mostRecentSearch[IPAddress] = true;
   var HeepResponse = HAPIParser.ReadHeepResponse(data);
@@ -274,7 +274,7 @@ var ConsumeHeepResponse = (data, IPAddress, port) => {
   if (HeepResponse != false){
     if (HeepResponse.op == 0x0F) {
       //Memory Dump
-      AddMemoryChunksToMasterState(HeepResponse.memory, IPAddress);
+      AddMemoryChunksToMasterState(HeepResponse.memory, IPAddress, HeepResponse.deviceID);
 
     } else if ( HeepResponse.op == 0x10) {
       //Success
@@ -291,7 +291,7 @@ var ConsumeHeepResponse = (data, IPAddress, port) => {
   }
 }
 
-var AddMemoryChunksToMasterState = (heepChunks, IPAddress) => {
+var AddMemoryChunksToMasterState = (heepChunks, IPAddress, respondingDevice) => {
   // console.log(heepChunks);  
 
   for (var i = 0; i < heepChunks.length; i++) {
@@ -333,13 +333,51 @@ var AddMemoryChunksToMasterState = (heepChunks, IPAddress) => {
     }
     
   }
+
+  CheckForVertexDeletions(heepChunks, respondingDevice)
+
+}
+
+var CheckForVertexDeletions = (heepChunks, respondingDevice) => {
+  // Logic: 
+  // Vertices are assumed to be saved onto the transmitting device. 
+  // If a known vertex is not found in the memory dump response, timeSinceDiscovered is incremented on that vertex
+  console.log('Entire MasterState VertexList: ', masterState.vertexList);
+
+  Object.keys(masterState.vertexList).forEach((thisVertex) => {
+
+    var foundVertices = [];
+
+    if (masterState.vertexList[thisVertex].txDeviceID == respondingDevice) {
+      
+      heepChunks.forEach((thisChunk) => {
+        if (thisChunk.op == 3) {
+          foundVertices.push(generalUtils.nameVertex(thisChunk.vertex));
+        }
+      })
+
+
+      if (foundVertices.includes(thisVertex)) {
+        masterState.vertexList[thisVertex].timeSinceDiscovered = 0;
+      } else {
+
+        // If very old, just remove the vertex to keep managed state at a minimum
+        if (masterState.vertexList[thisVertex].timeSinceDiscovered > 25) {
+            delete masterState.vertexList[thisVertex]
+        } else {
+          masterState.vertexList[thisVertex].timeSinceDiscovered += 1;
+        }
+        
+        
+      }
+    }
+  })
 }
 
 var AddDevice = (heepChunk, IPAddress) => {
   var deviceID = heepChunk.deviceID;
   var deviceName = 'unset';
   var iconName = 'none';
-  //iconUtils.SetDeviceIconFromString(deviceID, deviceName, iconName);
 
   masterState.devices[deviceID] = {
     deviceID: deviceID,
@@ -348,11 +386,12 @@ var AddDevice = (heepChunk, IPAddress) => {
     active: true,
     inactiveCount: 0,
     iconName: "lightbulb",
-    version: 0
+    version: 0,
+    inputs: [],
+    outputs: []
   }
 
   SetNullPosition(deviceID);
-  masterState.controls.controlStructure[deviceID] = {inputs: [], outputs: []};
   masterState.icons = iconUtils.GetIconContent();
 }
 
@@ -373,9 +412,17 @@ var AddControl = (heepChunk) => {
   var tempCtrlName = generalUtils.nameControl(heepChunk.deviceID, heepChunk.control.controlID) 
   masterState.controls[tempCtrlName] = heepChunk.control;
   masterState.controls[tempCtrlName].deviceID = heepChunk.deviceID;
-  var currentIndex = SetControlStructure(heepChunk.deviceID, tempCtrlName)
 
   masterState.controls.connections[tempCtrlName] = [];
+
+  if (heepChunk.control.controlDirection == 0 && masterState.devices[heepChunk.deviceID].inputs.indexOf(tempCtrlName) < 0) {
+      masterState.devices[heepChunk.deviceID].inputs.push(tempCtrlName);
+  }
+
+  if (heepChunk.control.controlDirection == 1 && masterState.devices[heepChunk.deviceID].outputs.indexOf(tempCtrlName) < 0) {
+      masterState.devices[heepChunk.deviceID].outputs.push(tempCtrlName);
+  }
+      
 }
 
 var SetIconFromID = (heepChunk) => {
@@ -420,22 +467,6 @@ var SetDevicePositionFromBrowser = (deviceID, position) => {
   }
 
   masterState.positions[deviceID] = newPosition;
-}
-
-var SetControlStructure = (deviceID, controlID) => {
-
-  if ( masterState.controls[controlID]['controlDirection'] == 0){
-    var inputs = masterState.controls.controlStructure[deviceID].inputs;
-    inputs.push(controlID);
-    return inputs.length
-
-  } else {
-    var outputs = masterState.controls.controlStructure[deviceID].outputs;
-    outputs.push(controlID);
-    return outputs.length
-
-  }
-
 }
 
 var AddVertex = (vertex) => {

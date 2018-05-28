@@ -161,21 +161,26 @@ export default function(state = initialState, action) {
 //<----------------------------------------------------------------------------------------------------------------------------------->
 
     case 'OVERWRITE_WITH_SERVER_DATA':
-      
-      var newStateDevices = checkDeepEquality(Immutable.Map(state.devices).toJS(), action.fromServer.devices)
-      var newStateControls = checkDeepEquality(Immutable.Map(state.controls).toJS(), action.fromServer.controls)
-      var newStatePositions = checkDeepEquality(Immutable.Map(state.positions).toJS(), action.fromServer.positions)
-      var newStateVertexList = checkDeepEquality(Immutable.Map(state.vertexList).toJS(), action.fromServer.vertexList)
-      var newStateAnalytics = checkDeepEquality(Immutable.Map(state.analytics).toJS(), action.fromServer.analytics)
-      var newStateWifi = checkDeepEquality(Immutable.Map(state.deviceWiFiCreds).toJS(), action.fromServer.deviceWiFiCreds)
-      
-      return Immutable.Map(state) .set('devices', newStateDevices)
-                                  .set('controls', newStateControls)
-                                  .set('positions', newStatePositions)
-                                  .set('vertexList', newStateVertexList)
-                                  .set('analytics', newStateAnalytics)
-                                  .set('deviceWiFiCreds', newStateWifi)
-                                  .toJS()
+
+      if (!state.flowchart.isDragging) {
+        var newStateDevices = checkDeepEqualityDevices(Immutable.Map(state.devices).toJS(), action.fromServer.devices)
+        var newStateControls = checkDeepEquality(Immutable.Map(state.controls).toJS(), action.fromServer.controls)
+        var newStatePositions = checkDeepEquality(Immutable.Map(state.positions).toJS(), action.fromServer.positions)
+        var newStateVertexList = checkDeepEqualityVertices(Immutable.Map(state.vertexList).toJS(), action.fromServer.vertexList)
+        var newStateAnalytics = checkDeepEquality(Immutable.Map(state.analytics).toJS(), action.fromServer.analytics)
+        var newStateWifi = checkDeepEquality(Immutable.Map(state.deviceWiFiCreds).toJS(), action.fromServer.deviceWiFiCreds)
+
+        return Immutable.Map(state) .set('devices', newStateDevices)
+                                    .set('controls', newStateControls)
+                                    .set('positions', newStatePositions)
+                                    .set('vertexList', newStateVertexList)
+                                    .set('analytics', newStateAnalytics)
+                                    .set('deviceWiFiCreds', newStateWifi)
+                                    .toJS()
+      } else {
+        return state
+      }
+
     case 'STORE_URL':
 
       return Immutable.Map(state).set('url', action.url).toJS()
@@ -189,31 +194,30 @@ export default function(state = initialState, action) {
 
     case 'SELECT_OUTPUT':
 
-      var newState = Immutable.Map(state.vertexList).set('selectedOutput', {txDeviceID: action.txDeviceID, txControlID: action.txControlID}).toJS();
-      return Immutable.Map(state).set('vertexList', newState).toJS();
+      //var newState = Immutable.Map(state.vertexList).set('selectedOutput', {txDeviceID: action.txDeviceID, txControlID: action.txControlID}).toJS();
+      return Immutable.Map(state).set('selectedOutput', {txDeviceID: action.txDeviceID, txControlID: action.txControlID}).toJS();
 
     case 'ADD_VERTEX':
 
-      var vertex = {...state.vertexList.selectedOutput, rxControlID: action.rxControlID,
-                                                        rxIP: action.rxIP,
-                                                        rxDeviceID: action.rxDeviceID};
-
-      async.sendVertexToServer(vertex);
-
-      var newVertex = {txDeviceID: state.vertexList.selectedOutput.txDeviceID,
-                       txControlID: state.vertexList.selectedOutput.txControlID,
+      var newVertex = {txDeviceID: state.selectedOutput.txDeviceID,
+                       txControlID: state.selectedOutput.txControlID,
                        rxDeviceID: action.rxDeviceID,
                        rxControlID: action.rxControlID,
-                       rxIP: action.rxIP}
+                       timeSinceDiscovered: 0,
+                       rxIP: state.devices[action.rxDeviceID].ipAddress}
 
       var newVertexName = utils.nameVertex(newVertex);
+
+      if (!(newVertexName in state.vertexList && state.vertexList[newVertexName].timeSinceDiscovered==0)) {
+        async.sendVertexToServer(newVertex);
+      }
 
       var newState = Immutable.Map(state.vertexList).set(newVertexName, newVertex).toJS();
 
       //CONTROL CHANGES
       var newStateControls = Immutable.Map(state.controls).toJS();
 
-      var txName = utils.nameControl(state.vertexList.selectedOutput.txDeviceID, state.vertexList.selectedOutput.txControlID);
+      var txName = utils.nameControl(state.selectedOutput.txDeviceID, state.selectedOutput.txControlID);
       var rxName = utils.nameControl(action.rxDeviceID, action.rxControlID);
 
       newStateControls.connections[txName].push(rxName);
@@ -242,7 +246,13 @@ export default function(state = initialState, action) {
 
     case 'UPDATE_VERTEX':
       var newState = Immutable.Map(state.flowchart).toJS();
-      newState.dragVertex = !state.flowchart.dragVertex;
+      newState.updateVertex = !state.flowchart.updateVertex;
+
+      return Immutable.Map(state).set('flowchart', newState).toJS()
+
+    case 'UPDATE_DRAGGING':
+      var newState = Immutable.Map(state.flowchart).toJS();
+      newState.isDragging = !state.flowchart.isDragging;
 
       return Immutable.Map(state).set('flowchart', newState).toJS()
 
@@ -271,17 +281,19 @@ export default function(state = initialState, action) {
 
       var newState = Immutable.Map(state.controls).toJS();
       var identifier = utils.nameControl(action.deviceID, action.controlID);
+      var clampedValue = clamp(action.newValue, newState[identifier].valueLow, newState[identifier].valueHigh)
 
-      newState[identifier]['valueCurrent'] = action.newValue;
-      async.sendValueToServer(action.deviceID, action.controlID, action.newValue);
+      newState[identifier].valueCurrent = action.newValue;
+      async.sendValueToServer(action.deviceID, action.controlID, clampedValue);
 
       var connectedControl = '';
       for (var i = 0; i < newState.connections[identifier].length; i++){
         connectedControl = newState.connections[identifier][i];
 
         if (newState[connectedControl]) {
-          newState[connectedControl]['valueCurrent'] = action.newValue;
-          async.sendValueToServer(newState[connectedControl].deviceID, newState[connectedControl].controlID, action.newValue);
+
+          newState[connectedControl].valueCurrent = clampedValue;
+          async.sendValueToServer(newState[connectedControl].deviceID, newState[connectedControl].controlID, clampedValue);
         }
       }
 
@@ -297,7 +309,15 @@ export default function(state = initialState, action) {
 
       async.hardRefreshLocalDeviceState(state.preferences.searchMode);
 
-      return state
+      var newState = Immutable.Map(state.devices).toJS();
+
+      for (var eachDevice in newState) {
+        if (!newState[eachDevice].active) {
+          delete newState[eachDevice]
+        }
+      }
+
+      return Immutable.Map(state).set('devices', newState).toJS()
 
     case 'SAVE_NEW_PLACE' :
 
@@ -327,7 +347,7 @@ export default function(state = initialState, action) {
 
     case 'STOP_LIVE_MODE':
 
-      async.stopLiveMode(state.liveModeReference);
+      async.stopLiveMode(state.flowchart.liveModeReference);
       var newState = Immutable.Map(state.flowchart)
                               .set('liveModeReference', null)
                               .toJS();
@@ -338,9 +358,9 @@ export default function(state = initialState, action) {
 
       if (action.deviceID == null ) {
         TweenLite.to('#flowchartOptions', 0.5, {x: 0, ease: Sine.easeInOut});
-        TweenLite.to('#detailsPanel', 0.5, {x: 258, ease: Sine.easeInOut});
+        TweenLite.to('#detailsPanel', 0.5, {x: 300, ease: Sine.easeInOut});
       } else {
-        TweenLite.to('#flowchartOptions', 0.5, {x: -258, ease: Sine.easeInOut});
+        TweenLite.to('#flowchartOptions', 0.5, {x: -300, ease: Sine.easeInOut});
         TweenLite.to('#detailsPanel', 0.5, {x: 0, ease: Sine.easeInOut});
       }
 
@@ -366,7 +386,7 @@ export default function(state = initialState, action) {
 
       return Immutable.Map(state).set('accessPointData', action.packet).toJS()
 
-    case 'SET_SEARCH_MODE': 
+    case 'SET_SEARCH_MODE':
 
       return Immutable.fromJS(state)
                       .setIn(['preferences','searchMode'], action.searchMode)
@@ -458,12 +478,12 @@ export default function(state = initialState, action) {
         if (thisControl != 'connections' && thisControl != 'controlStructure') {
           if (state.stateSnapshots[action.snapshotID].controls[thisControl].controlDirection == 0) {
 
-            if ( newState[thisControl]) { 
+            if ( newState[thisControl]) {
               const thisControlObject = state.stateSnapshots[action.snapshotID].controls[thisControl];
               newState[thisControl].valueCurrent = thisControlObject.valueCurrent;
               async.sendValueToServer(thisControlObject.deviceID, thisControlObject.controlID, thisControlObject.valueCurrent)
             }
-            
+
           }
         }
       }
@@ -498,7 +518,7 @@ function makeid(number) {
   return text;
 }
 
-const checkDeepEquality = (newState, check) => {
+const checkDeepEquality = (newState, check, elseCase = () => {}) => {
 
   for (var propToCheck in check) {
     if (!deepEqual(newState[propToCheck], check[propToCheck])) {
@@ -507,4 +527,48 @@ const checkDeepEquality = (newState, check) => {
   }
 
   return newState
+}
+
+const checkDeepEqualityDevices = (newState, check) => {
+
+  // For any discovered devices, replace old data with new data
+  for (var propToCheck in check) {
+    if (!deepEqual(newState[propToCheck], check[propToCheck])) {
+      newState[propToCheck] = check[propToCheck];
+    }
+  }
+
+  // For any missing devices from the most recent device search, set active state to false
+  for (var originalDevices in newState) {
+    if (!(originalDevices in check)) {
+      newState[originalDevices].active = false
+    }
+  }
+
+  return newState
+}
+
+const checkDeepEqualityVertices = (newState, check) => {
+
+  // For any discovered vertices, replace old data with new data
+  newState = checkDeepEquality(newState, check);
+
+  // For any missing vertices from the most recent device search, increment timeSinceDiscovery
+  for (var originalVertices in newState) {
+    if (!(originalVertices in check) && originalVertices != 'selectedOutput') {
+
+      // If very old, just remove the vertex to keep managed state at a minimum
+      if (newState[originalVertices].timeSinceDiscovered > 25) {
+          delete newState[originalVertices]
+      } else {
+        newState[originalVertices].timeSinceDiscovered += 1
+      }
+    }
+  }
+
+  return newState
+}
+
+function clamp(num, min, max) {
+  return num <= min ? min : num >= max ? max : num;
 }

@@ -13,11 +13,16 @@ var mapStateToProps = (state, ownProps) => (
                 state.devices[state.vertexList[ownProps.vertexID].txDeviceID] &&
                 state.devices[state.vertexList[ownProps.vertexID].rxDeviceID].active &&
                 state.devices[state.vertexList[ownProps.vertexID].txDeviceID].active,
+  updateVertex: state.flowchart.updateVertex,
+  display: state.vertexList[ownProps.vertexID].timeSinceDiscovered <= 1,
   dragging: state.flowchart.dragVertex,
   scale: state.flowchart.scale,
   txDeviceID: state.vertexList[ownProps.vertexID].txDeviceID,
   rxDeviceID: state.vertexList[ownProps.vertexID].rxDeviceID,
-  txCollapsed: state.flowchart.devices[state.vertexList[ownProps.vertexID].txDeviceID] && state.flowchart.devices[state.vertexList[ownProps.vertexID].txDeviceID].collapsed ? state.flowchart.devices[state.vertexList[ownProps.vertexID].txDeviceID].collapsed : false,
+  txCollapsed: state.flowchart.devices[state.vertexList[ownProps.vertexID].txDeviceID] &&
+               state.flowchart.devices[state.vertexList[ownProps.vertexID].txDeviceID].collapsed ?
+               state.flowchart.devices[state.vertexList[ownProps.vertexID].txDeviceID].collapsed :
+               false,
   rxCollapsed: state.flowchart.devices[state.vertexList[ownProps.vertexID].rxDeviceID] && state.flowchart.devices[state.vertexList[ownProps.vertexID].rxDeviceID].collapsed ? state.flowchart.devices[state.vertexList[ownProps.vertexID].rxDeviceID].collapsed : false,
 })
 
@@ -109,42 +114,57 @@ class Vertex extends React.Component {
   }
 
 	render() {
+    const bezierWeight = 0.35
+
     const getInput = this.getInputPosition();
     const getOutput = this.getOutputPosition();
 
-		if (getInput == false || getOutput == false) {
+    const x1 = getInput.left;
+    const y1 = getInput.top;
+
+    const x4 = getOutput.left;
+    const y4 = getOutput.top;
+
+    const dx = Math.abs(x1 - x4) * bezierWeight;
+
+    const x2 = x1 + dx;
+    const y2 = y1;
+
+    const x3 = x4 - dx;
+    const y3 = y4;
+
+    const data = `M${x1} ${y1} C ${x2} ${y2} ${x3} ${y3} ${x4} ${y4}`;
+
+		if (!this.props.display || getInput == false || getOutput == false) {
       // console.log("false")
 			return <g/>
 		}
-
-    const rxClassName = 'vertex' + this.props.rxDeviceID.toString()
-    const txClassName = 'vertex' + this.props.txDeviceID.toString()
 
 		var inputs = {
 
 			vertex: {
         id: this.props.id,
-        className: [rxClassName, txClassName, "test"].join(" "),
         pointerEvents: 'all',
         display: 'inline-block',
 				strokeWidth: this.state.strokeWidth,
 				stroke: this.checkCollapsed() ? this.state.collapsedColor : this.state.color,
 				fill: 'transparent',
-        d: "M".concat(	String(getInput.left),
-                " ",
-                String(getInput.top),
-                " Q ",
-                String(Math.round(getInput.left) + 30),
-                " ",
-                String(Math.round(getInput.top)),
-                ", ",
-                String(Math.round(getInput.left + (getOutput.left - getInput.left)/2)),
-                " ",
-                String(Math.round(getInput.top + (getOutput.top - getInput.top)/2)),
-                " T ",
-                String(getOutput.left),
-                " ",
-                String(getOutput.top)),
+        d: data,
+        // d: "M".concat(	String(getInput.left),
+        //         " ",
+        //         String(getInput.top),
+        //         " Q ",
+        //         String(Math.round(getInput.left) + 30),
+        //         " ",
+        //         String(Math.round(getInput.top)),
+        //         ", ",
+        //         String(Math.round(getInput.left + (getOutput.left - getInput.left)/2)),
+        //         " ",
+        //         String(Math.round(getInput.top + (getOutput.top - getInput.top)/2)),
+        //         " T ",
+        //         String(getOutput.left),
+        //         " ",
+        //         String(getOutput.top)),
 				onMouseEnter: () => this.checkCollapsed() ? this.setState({'strokeWidth': 3}) : this.setState({'color': '#d40000', 'strokeWidth': 5}),
 				onMouseLeave: () => this.checkCollapsed() ? this.setState({'strokeWidth': 3}) : this.setState({'color': '#455a64', 'strokeWidth': 3}),
 				onClick: () => this.checkCollapsed() ? null : this.sendDeleteVertexToServer(),
