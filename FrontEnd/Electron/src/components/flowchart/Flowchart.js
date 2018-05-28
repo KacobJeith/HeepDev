@@ -99,6 +99,7 @@ class Flowchart extends React.Component {
 					backgroundColor: '#e7e7e7',
 					height: 4000,
 					width: 4000,
+          overflow: 'hidden'
 				}
 			},
 			flowchart: {
