@@ -139,6 +139,7 @@ class Flowchart extends React.Component {
     // console.log("rerendering Flowchart")
 
 		return (
+		<div {...inputs.parentDiv}>
 		<div {...inputs.pageContainer}>
 			<div id="flowchart" {...inputs.flowchart} ref="flowchart">
 				<div id="deviceContainer" {...inputs.deviceContainer}>
@@ -159,6 +160,7 @@ class Flowchart extends React.Component {
 				<FlowchartOptions/>
 				<DeviceDetailsPanel/>
 			</div>
+		</div>
 		</div>
 		);
 
