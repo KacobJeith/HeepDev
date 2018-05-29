@@ -14,8 +14,10 @@ var mapStateToProps = (state, ownProps) => ({
   thisVertex: state.vertexList[ownProps.vertexID],
   rxDevice: state.devices[state.vertexList[ownProps.vertexID].rxDeviceID],
   txDevice: state.devices[state.vertexList[ownProps.vertexID].txDeviceID],
-  txControl: state.controls[state.vertexList[ownProps.vertexID].txDeviceID + '.' + state.vertexList[ownProps.vertexID].txControlID],
-  rxControl: state.controls[state.vertexList[ownProps.vertexID].rxDeviceID + '.' + state.vertexList[ownProps.vertexID].rxControlID],
+  txControlName: state.controls[state.vertexList[ownProps.vertexID].txDeviceID + '.' + state.vertexList[ownProps.vertexID].txControlID].controlName,
+  rxControlName: state.controls[state.vertexList[ownProps.vertexID]] != undefined ? 
+              state.controls[state.vertexList[ownProps.vertexID].rxDeviceID + '.' + state.vertexList[ownProps.vertexID].rxControlID].controlName :
+              state.vertexList[ownProps.vertexID].rxDeviceID + '.' + state.vertexList[ownProps.vertexID].rxControlID
 })
 
 class DetailsPanelVertexBlock extends React.Component {
@@ -68,7 +70,7 @@ class DetailsPanelVertexBlock extends React.Component {
                   <Delete {...inputs.inactiveIcons}/>
                 </Button>
               </ListItemIcon>
-              <ListItemText primary={this.props.txControl.controlName + ' -> ' + this.props.rxControl.controlName}/>
+              <ListItemText primary={this.props.txControlName + ' -> ' + this.props.rxControlName}/>
               {this.state.view ? <ExpandLess /> : <ExpandMore />}
 
             </ListItem>
