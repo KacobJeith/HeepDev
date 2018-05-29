@@ -60,16 +60,16 @@ class LandingIIOT extends React.Component {
     }
 
     const blurbs = [
+      // {
+      //   title: 'Commercial Applications',
+      //   link: 'missionChinese',
+      //   moreInfoLink: {
+      //     text: 'Learn More',
+      //     link: '/Business'
+      //   }
+      // },
       {
-        title: 'Commercial Applications',
-        link: 'missionChinese',
-        moreInfoLink: {
-          text: 'Learn More',
-          link: '/Business'
-        }
-      },
-      {
-        title: 'Industrial Applications',
+        title: 'Heep for Enterprise',
         link: 'interoperability',
         moreInfoLink: {
           text: 'Learn More',
@@ -77,7 +77,7 @@ class LandingIIOT extends React.Component {
         }
       },
       {
-        title: 'Consumer Applications',
+        title: 'Heep for Everyone',
         link: 'paperSignals',
         moreInfoLink: {
           text: 'Learn More',
@@ -130,6 +130,24 @@ class LandingIIOT extends React.Component {
                 Augment your offering by leveraging the power of the Edge
               </Typography>
 
+            </Grid>
+
+            <Grid item xs={12}>
+              <Grid container justify='center' alignItems='center'>
+                <HashLink
+                  smooth
+                  to={'/IndustrialHeep#top'}
+                  style={{
+                    textDecoration: 'none',
+                    outline: 'none',
+                    marginTop: this.props.theme.spacing.unit * 2
+                  }}
+                >
+                <Button variant='raised' color='secondary' style={{ textTransform: "capitalize"}}>
+                    Learn More
+                  </Button>
+                </HashLink>
+              </Grid>
             </Grid>
           </Grid>
         )

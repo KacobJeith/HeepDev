@@ -312,6 +312,7 @@ class HowItWorks extends React.Component {
 
           {productIDs.map((thisProduct) => (
             <Grid item xs={4} {...productStyles.grid}
+              key={thisProduct + 'image'}
               onMouseEnter={() => this.setState({[thisProduct]: true })} 
               onMouseLeave={() => this.setState({[thisProduct]: false })}
               onClick={() => this.setState({[thisProduct + 'Selected']: !this.state[thisProduct + 'Selected']})}

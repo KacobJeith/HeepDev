@@ -41,7 +41,7 @@ const Auth = () => <AsyncComponent moduleProvider={() => import(
   	/* webpackMode: "lazy" */
   	'./account/Auth')} />
 
-const iiot = () => <AsyncComponent moduleProvider={() => import(
+const Technology = () => <AsyncComponent moduleProvider={() => import(
 	/* webpackChunkName: "iiot" */
   	/* webpackMode: "lazy" */
   	'./pages/iiot')} />
@@ -51,10 +51,6 @@ const diy = () => <AsyncComponent moduleProvider={() => import(
   	/* webpackMode: "lazy" */
   	'./pages/diy')} />
 
-const CommercialApplications = () => <AsyncComponent moduleProvider={() => import(
-	/* webpackChunkName: "commercial" */
-  	/* webpackMode: "lazy" */
-  	'./pages/CommercialApplications')} />
 
 import Theme from './Theme'
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
@@ -123,8 +119,8 @@ class App extends React.Component {
 									<Route path="/Landing" component={Landing}/>
 									<Route path="/Makers" component={diy}/>
 									<Route path="/About" component={About}/>
-									<Route path="/IndustrialHeep" component={iiot}/>
-									<Route path="/Business" component={CommercialApplications}/>
+									<Route path="/Technology" component={Technology}/>
+{/* 									<Route path="/Business" component={CommercialApplications}/> */}
 									<Route path="/privacypolicy" component={PrivacyPolicy}/>
 									<Route path="/tos" component={TermsOfService}/>
                   					<Route path="/Contact" component={Contact}/>
