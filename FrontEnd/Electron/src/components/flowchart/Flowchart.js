@@ -94,6 +94,13 @@ class Flowchart extends React.Component {
 	render() {
 
 		const inputs = {
+			parentDiv: {
+				style: {
+					overflow: 'hidden',
+					width: '100%',
+					height: '100%'
+				}
+			},
 			pageContainer: {
 					style: {
 					backgroundColor: '#e7e7e7',
@@ -130,6 +137,7 @@ class Flowchart extends React.Component {
     // console.log("rerendering Flowchart")
 
 		return (
+		<div {...inputs.parentDiv}>
 		<div {...inputs.pageContainer}>
 			<div id="flowchart" {...inputs.flowchart} ref="flowchart">
 				<div id="deviceContainer" {...inputs.deviceContainer}>
@@ -150,6 +158,7 @@ class Flowchart extends React.Component {
 				<FlowchartOptions/>
 				<DeviceDetailsPanel/>
 			</div>
+		</div>
 		</div>
 		);
 
