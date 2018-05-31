@@ -16,6 +16,7 @@ import ArrowForward from 'material-ui-icons/ArrowForward'
 import SectionCard from '../utilities/SectionCard'
 import CollectionPreview from '../utilities/CollectionPreview'
 import photos from '../../assets/remote/photos.json'
+import FeaturesTable from './FeaturesTable'
 
 
 var mapStateToProps = (state) => ({
@@ -144,9 +145,7 @@ class HowItWorks extends React.Component {
         {this.numberedItem(1, 
           <Grid container direction='column' justify='center' alignItems='center' style={{margin: 0}}>
             <Grid item >
-              <Typography variant='title' gutterBottom paragraph>
-                Customize Your OS.
-              </Typography>
+              {this.numberedTitle(1, 'Customize Your OS.')}
             </Grid>
             <Grid item >
               <Typography variant='body1' gutterBottom paragraph>
@@ -168,29 +167,6 @@ class HowItWorks extends React.Component {
                   this.optionPaper(inputsSwFocus[section].title, inputsSwFocus[section].desc, inputsSwFocus[section].icon, section)
               ))}
               </Grid>
-              <Grid container style={{
-                  maxWidth:'100%',
-                  overflowX: 'hidden',
-                  margin: '0 auto'
-                }} spacing={24} justify='center' alignItems='stretch'
-              >
-                {Object.keys(inputsSwFocus).map((section) => (
-                  <Grid item xs={12} md={4} 
-                    style={{cursor: 'pointer'}}
-                    key={section + 'select'}
-                  >
-                    <Grid container direction='column' justify='center' alignItems='center'>
-                      <Grid item>
-                        <Checkbox
-                          checked={this.state[section + 'Selected']}
-                          onChange={() => this.setState({[section + 'Selected']: !this.state[section + 'Selected']})}
-                          value={section + 'Selected'}
-                        />
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                ))}
-              </Grid>
             </Grid>
           </Grid>
         )}
@@ -199,22 +175,31 @@ class HowItWorks extends React.Component {
     )
   }
 
+  numberedTitle = (number, title) => (
+    <Grid container justify='center' alignItems='center'>
+      <Grid item>
+        <Avatar style={{backgroundColor: '#455a64'}}> {number} </Avatar>
+      </Grid> 
+      <Grid item >
+        <Typography variant='title'>
+          {title}
+        </Typography>
+      </Grid>
+    </Grid>
+  )
+
   chooseYourFleet = () => (
     <Grid item >
       {this.numberedItem(2, 
         <Grid container direction='column' justify='center' alignItems='center' style={{margin: 0}}>
           <Grid item >
-            <Typography variant='title' gutterBottom paragraph>
-              Choose your Fleet.
-            </Typography>
+              {this.numberedTitle(2, 'Choose Your Fleet')}
           </Grid>
           <Grid item >
+
             <Typography variant='body1' gutterBottom paragraph>
-              Choose from a diverse array of supported hardware, or develop on your hardware of choice! 
-              Heep is designed for ultimate cross compatibility, so with a little bit of setup, 
-              the power of the Heep OS can be extended to your hardware, guaranteed.
-              If you do choose to build on Heep hardware, 
-              we can offer additional support in cloning your system to new facilities at the touch of a button. 
+              Choose from a diverse array of supported hardware, or develop on your hardware of choice: 
+              
             </Typography>
           </Grid>
 
@@ -233,7 +218,7 @@ class HowItWorks extends React.Component {
               }}
             >
             <Button variant='flat' color='secondary' style={{ textTransform: "capitalize"}}>
-                Explore Heep Hardware
+                Explore Supported Hardware
                 <ArrowForward style={{marginLeft: this.props.theme.spacing.unit}}/>
               </Button>
             </HashLink>
@@ -245,36 +230,31 @@ class HowItWorks extends React.Component {
 
   easyIntegration = () => (
     <Grid item >
-      {this.numberedItem(2, 
+      {this.numberedItem(3, 
         <Grid container direction='column' justify='center' alignItems='center' style={{margin: 0}}>
           <Grid item >
-            <Typography variant='title' gutterBottom paragraph>
-              Supercharge Your Service
-            </Typography>
+            {this.numberedTitle(3, 'Integration & Support')}
           </Grid>
           <Grid item >
             <Typography variant='body1' gutterBottom paragraph>
-              With the Enterprise license, your Heep devices don't just integrate seamlessly with each other, 
-              they seamlessly connect to your codebase to augment your offering. 
+              It's easy to build Heep right into your existing projects, but sometimes you want some extra help. 
+              Contact us for details on our advisory and technical support services.
             </Typography>
-            <Typography variant='body1' gutterBottom paragraph>
-              Check out our developer documentation for more details on how Heep plugs right in to your existing project.
-            </Typography>
+            <FeaturesTable/>
           </Grid>
 
           <Grid item>
 
             <HashLink
               smooth
-              to='/Developers#top'
+              to='/Contact#top'
               style={{
                 textDecoration: 'none',
                 outline: 'none'
               }}
             >
-            <Button variant='flat' color='secondary' style={{ textTransform: "capitalize"}}>
-                Learn More
-                <ArrowForward style={{marginLeft: this.props.theme.spacing.unit}}/>
+            <Button variant='raised' color='secondary' style={{ textTransform: "capitalize", color: '#FFF'}}>
+                Contact Us for Pricing
               </Button>
             </HashLink>
           </Grid>
@@ -340,13 +320,14 @@ class HowItWorks extends React.Component {
       >
 
             <Paper className={classes.root} 
-              elevation={this.state[section] ? 4 : 2}
+              elevation={(this.state[section] || this.state[section + 'Selected'] ) ? 8 : 2}
               onMouseEnter={() => this.setState({[section]: true })} 
               onMouseLeave={() => this.setState({[section]: false })}
               onClick={() => this.setState({[section + 'Selected']: !this.state[section + 'Selected']})}
               style={{
                 transition: "transform 400ms",
-                transform: this.state[section] ? "translate(0px, -5px)" : "translate(0px, 0px)"
+                opacity: (this.state[section] || this.state[section + 'Selected'] ) ? 0.6 : 1.0,
+                transform: (this.state[section] || this.state[section + 'Selected'] ) ? "translate(0px, -5px)" : "translate(0px, 0px)"
               }}
             >
               <div style={{textAlign: 'center', display: 'block'}}>
@@ -376,13 +357,13 @@ class HowItWorks extends React.Component {
       padding: 50
      }}
      justify='center' alignItems='center'>
-      <Grid item xs={2}>
-        <Typography variant='display3' gutterBottom >
-          <Avatar style={{backgroundColor: '#455a64'}}> {number} </Avatar>
-        </Typography>
-      </Grid>
+{/*       <Grid item xs={2}> */}
+{/*         <Typography variant='display3' gutterBottom > */}
+{/*           <Avatar style={{backgroundColor: '#455a64'}}> {number} </Avatar> */}
+{/*         </Typography> */}
+{/*       </Grid> */}
 
-      <Grid item xs={10}>
+      <Grid item xs={12}>
         {wrappedComponent}
       </Grid>
 
