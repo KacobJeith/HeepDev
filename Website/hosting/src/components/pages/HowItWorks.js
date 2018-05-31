@@ -53,21 +53,30 @@ class HowItWorks extends React.Component {
     };
 
     return (
-      SectionCard(inputs,
-        <Grid container direction='column' spacing={40} style={{
+      <div>
+
+        {SectionCard({},
+          <Grid container direction='column' spacing={40} style={{
           maxWidth:'100%',
           margin: '0 auto',
-          padding: 50
-         }}
-         justify='center' alignItems='center'>
+          padding: 0
+          }}>
+            {this.howItWorksSummary()}
+          </Grid>
+        )}
 
-          {this.howItWorksSummary()}
-          {this.customizeYourOS()}
-          {this.chooseYourFleet()}
-          {this.easyIntegration()}
-            
-        </Grid>
-      )
+        {SectionCard(inputs,
+          <Grid container direction='column' spacing={40} style={{
+          maxWidth:'100%',
+          margin: '0 auto',
+          padding: 0
+          }}>
+            {this.customizeYourOS()}
+            {this.chooseYourFleet()}
+            {this.easyIntegration()}
+          </Grid>
+        )}
+      </div>
     );
   }
 
@@ -141,7 +150,7 @@ class HowItWorks extends React.Component {
 
     return (
 
-      <Grid item >
+      <Grid item style={{paddingTop: 50}}>
           <Grid container direction='column' justify='center' alignItems='center' style={{margin: 0}}>
             <Grid item >
               {this.numberedTitle(1, 'Customize Your OS.')}
