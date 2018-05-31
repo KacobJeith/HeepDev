@@ -54,7 +54,7 @@ class HowItWorks extends React.Component {
 
     return (
       SectionCard(inputs,
-        <Grid container direction='column' spacing={8} style={{
+        <Grid container direction='column' spacing={40} style={{
           maxWidth:'100%',
           margin: '0 auto',
           padding: 50
@@ -87,9 +87,10 @@ class HowItWorks extends React.Component {
         </Grid>
         <Grid item xs={12} md={7}>
           <Typography variant='subheading' gutterBottom paragraph>
-            You have a great idea about how to improve industrial manufacturing by harnessing the power of the Internet of Things.
-            Focus on improving your core service, not the mechanics of managing a fleet of sensors at the edge.
-            This is where Heep can help. 
+            Focus on improving your process, not the mechanics of managing a fleet of sensors at the edge.
+ 
+          </Typography>
+          <Typography variant='subheading' gutterBottom paragraph>
             The Heep OS enables you to extend the reach of your services by allowing you to intuitively manage devices on the edge.
             Your service will be more powerful, more resilient, and less costly. 
           </Typography>
@@ -141,8 +142,6 @@ class HowItWorks extends React.Component {
     return (
 
       <Grid item >
-
-        {this.numberedItem(1, 
           <Grid container direction='column' justify='center' alignItems='center' style={{margin: 0}}>
             <Grid item >
               {this.numberedTitle(1, 'Customize Your OS.')}
@@ -151,8 +150,7 @@ class HowItWorks extends React.Component {
               <Typography variant='body1' gutterBottom paragraph>
                 Try out our free tier first, or jump right in to develop on one of our enterprise tiers. 
                 Optimize for Control Systems, Analytics, Two-Factor Authentication, or any combination of the above. 
-                No matter what, the full force of the Heep OS is at your disposal - 
-                you can extend the OS with OP code custom to your needs. 
+
               </Typography>
             </Grid>
 
@@ -169,7 +167,7 @@ class HowItWorks extends React.Component {
               </Grid>
             </Grid>
           </Grid>
-        )}
+        
       </Grid>
 
     )
@@ -190,7 +188,6 @@ class HowItWorks extends React.Component {
 
   chooseYourFleet = () => (
     <Grid item >
-      {this.numberedItem(2, 
         <Grid container direction='column' justify='center' alignItems='center' style={{margin: 0}}>
           <Grid item >
               {this.numberedTitle(2, 'Choose Your Fleet')}
@@ -224,13 +221,11 @@ class HowItWorks extends React.Component {
             </HashLink>
           </Grid>
         </Grid>
-      )}
     </Grid>
   )
 
   easyIntegration = () => (
     <Grid item >
-      {this.numberedItem(3, 
         <Grid container direction='column' justify='center' alignItems='center' style={{margin: 0}}>
           <Grid item >
             {this.numberedTitle(3, 'Integration & Support')}
@@ -259,7 +254,6 @@ class HowItWorks extends React.Component {
             </HashLink>
           </Grid>
         </Grid>
-      )}
     </Grid>
   )
 
@@ -326,7 +320,7 @@ class HowItWorks extends React.Component {
               onClick={() => this.setState({[section + 'Selected']: !this.state[section + 'Selected']})}
               style={{
                 transition: "transform 400ms",
-                opacity: (this.state[section] || this.state[section + 'Selected'] ) ? 0.6 : 1.0,
+                backgroundColor: this.state[section + 'Selected']  ? '#E7F7FF' : 'white',
                 transform: (this.state[section] || this.state[section + 'Selected'] ) ? "translate(0px, -5px)" : "translate(0px, 0px)"
               }}
             >
@@ -343,32 +337,9 @@ class HowItWorks extends React.Component {
                 {desc}
               </Typography>
             </Paper>
-{/*           </Grid> */}
-{/*         </Grid> */}
       </Grid>
     )
   }
-
-
-  numberedItem = (number, wrappedComponent) => (
-    <Grid container spacing={8} style={{
-      maxWidth:'100%',
-      margin: '0 auto',
-      padding: 50
-     }}
-     justify='center' alignItems='center'>
-{/*       <Grid item xs={2}> */}
-{/*         <Typography variant='display3' gutterBottom > */}
-{/*           <Avatar style={{backgroundColor: '#455a64'}}> {number} </Avatar> */}
-{/*         </Typography> */}
-{/*       </Grid> */}
-
-      <Grid item xs={12}>
-        {wrappedComponent}
-      </Grid>
-
-     </Grid>
-  )
 }
 
 

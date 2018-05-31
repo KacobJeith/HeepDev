@@ -73,17 +73,17 @@ class LandingIIOT extends React.Component {
         link: 'interoperability',
         moreInfoLink: {
           text: 'Learn More',
-          link: '/IndustrialHeep'
+          link: '/Technology#top'
         }
       },
-      {
-        title: 'Heep for Everyone',
-        link: 'paperSignals',
-        moreInfoLink: {
-          text: 'Learn More',
-          link: '/diy'
-        }
-      }
+      // {
+      //   title: 'Heep for Everyone',
+      //   link: 'paperSignals',
+      //   moreInfoLink: {
+      //     text: 'Learn More',
+      //     link: '/diy'
+      //   }
+      // }
     ]
 
     return (
@@ -136,7 +136,7 @@ class LandingIIOT extends React.Component {
               <Grid container justify='center' alignItems='center'>
                 <HashLink
                   smooth
-                  to={'/IndustrialHeep#top'}
+                  to={'/Technology#top'}
                   style={{
                     textDecoration: 'none',
                     outline: 'none',
