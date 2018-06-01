@@ -5,11 +5,11 @@ import {Table, TableBody, TableCell, TableHead, TableRow, Paper, Button} from 'm
 import Check from 'material-ui-icons/Check'
 
 const CustomTableCell = withStyles(theme => ({
-  typeHead: {
+  head: {
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.common.white,
   },
-  typeBody: {
+  body: {
     fontSize: 14,
   },
 }))(TableCell);

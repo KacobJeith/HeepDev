@@ -39,10 +39,10 @@ class HowItWorks extends React.Component {
     controlSelected: false,
     analyticsSelected: false,
     authenticationSelected: false,
-    RFID: false, 
+    RFID: false,
     MagLockStraight: false,
     PlaygroundAndShield: false,
-    RFIDSelected: false, 
+    RFIDSelected: false,
     MagLockStraightSelected: false,
     PlaygroundAndShieldSelected: false,
   }
@@ -97,11 +97,11 @@ class HowItWorks extends React.Component {
         <Grid item xs={12} md={7}>
           <Typography variant='subheading' gutterBottom paragraph>
             Focus on improving your process, not the mechanics of managing a fleet of sensors at the edge.
- 
+
           </Typography>
           <Typography variant='subheading' gutterBottom paragraph>
             The Heep OS enables you to extend the reach of your services by allowing you to intuitively manage devices on the edge.
-            Your service will be more powerful, more resilient, and less costly. 
+            Your service will be more powerful, more resilient, and less costly.
           </Typography>
         </Grid>
         <Grid item xs={12} md={4}
@@ -138,7 +138,7 @@ class HowItWorks extends React.Component {
       analytics: {
         title: 'Analytics',
         icon: <Equalizer {...iconStyle}/>,
-        desc: `Capture granular control and custom events, 
+        desc: `Capture granular control and custom events,
                 send ultra compressed analytic data to the destination of your choice.`
       },
       authentication: {
@@ -157,13 +157,13 @@ class HowItWorks extends React.Component {
             </Grid>
             <Grid item >
               <Typography variant='body1' gutterBottom paragraph>
-                Try out our free tier first, or jump right in to develop on one of our enterprise tiers. 
-                Optimize for Control Systems, Analytics, Two-Factor Authentication, or any combination of the above. 
+                Try out our free tier first, or jump right in to develop on one of our enterprise tiers.
+                Optimize for Control Systems, Analytics, Two-Factor Authentication, or any combination of the above.
 
               </Typography>
             </Grid>
 
-            <Grid item> 
+            <Grid item>
               <Grid container style={{
                   maxWidth:'100%',
                   overflowX: 'hidden',
@@ -176,17 +176,17 @@ class HowItWorks extends React.Component {
               </Grid>
             </Grid>
           </Grid>
-        
+
       </Grid>
 
     )
   }
 
   numberedTitle = (number, title) => (
-    <Grid container justify='center' alignItems='center'>
+    <Grid container justify='center' alignItems='center' spacing={16}>
       <Grid item>
         <Avatar style={{backgroundColor: '#455a64'}}> {number} </Avatar>
-      </Grid> 
+      </Grid>
       <Grid item >
         <Typography variant='title'>
           {title}
@@ -204,8 +204,8 @@ class HowItWorks extends React.Component {
           <Grid item >
 
             <Typography variant='body1' gutterBottom paragraph>
-              Choose from a diverse array of supported hardware, or develop on your hardware of choice: 
-              
+              Choose from a diverse array of supported hardware, or develop on your hardware of choice:
+
             </Typography>
           </Grid>
 
@@ -241,13 +241,13 @@ class HowItWorks extends React.Component {
           </Grid>
           <Grid item >
             <Typography variant='body1' gutterBottom paragraph>
-              It's easy to build Heep right into your existing projects, but sometimes you want some extra help. 
+              It's easy to build Heep right into your existing projects, but sometimes you want some extra help.
               Contact us for details on our advisory and technical support services.
             </Typography>
             <FeaturesTable/>
           </Grid>
 
-          <Grid item>
+          <Grid item style={{marginTop: 20}}>
 
             <HashLink
               smooth
@@ -296,7 +296,7 @@ class HowItWorks extends React.Component {
           {productIDs.map((thisProduct) => (
             <Grid item xs={4} {...productStyles.grid}
               key={thisProduct + 'image'}
-              onMouseEnter={() => this.setState({[thisProduct]: true })} 
+              onMouseEnter={() => this.setState({[thisProduct]: true })}
               onMouseLeave={() => this.setState({[thisProduct]: false })}
               onClick={() => this.setState({[thisProduct + 'Selected']: !this.state[thisProduct + 'Selected']})}
               style={{
@@ -317,14 +317,14 @@ class HowItWorks extends React.Component {
     const { classes } = this.props;
 
     return (
-      <Grid item xs={12} md={4} 
+      <Grid item xs={12} md={4}
         style={{cursor: 'pointer'}}
         key={section}
       >
 
-            <Paper className={classes.root} 
+            <Paper className={classes.root}
               elevation={(this.state[section] || this.state[section + 'Selected'] ) ? 8 : 2}
-              onMouseEnter={() => this.setState({[section]: true })} 
+              onMouseEnter={() => this.setState({[section]: true })}
               onMouseLeave={() => this.setState({[section]: false })}
               onClick={() => this.setState({[section + 'Selected']: !this.state[section + 'Selected']})}
               style={{
