@@ -64,20 +64,29 @@ class About extends React.Component {
          justify='center' alignItems='center'>
           <Grid item xs={12}>
             <Typography variant='headline' align='center' gutterBottom paragraph>
-              About Heep
+              Our Mission
             </Typography>
           </Grid>
           <Grid item xs={12} md={5}>
             <Typography variant='subheading' gutterBottom paragraph>
-              Heep leverages connectedness to empower people to be more productive,
-              make better decisions,
-              and enjoy a better quality of life.
+              Here at Heep we are driven by the mission to make technology more accessible to people and businesses, 
+              so that we humans are empowered to enjoy a more unified, immersive, enchanted world. 
             </Typography>
             <Typography variant='subheading' paragraph>
-              The Heep platform makes connectivity the simplest and most secure way to design any product.
-              By reimagining IoT as a critical infrastructure rather than an add-on luxury,
-              Heep is able to deliver a scalable and intuitive experience at a fraction of the cost.
+              Our suite of technologies target the most crippling economic, social, and technical barriers 
+              to realizing a world in which we can seamlessly interact with the soup of technology around us. 
+              We believe strongly in the power of open source. 
+              We believe that your data belongs to you.
+
             </Typography>
+            <Typography variant='subheading' paragraph>
+              It starts with a common language, and it starts at the edge. 
+
+{/*               Heep software can be used to empower even the tiniest and most accessible processors to become full citizens of the connected world. */}
+{/*               This is transforming the way businesses build control systems, which in turn is making a real impact on our daily experience. */}
+{/*               By prioritizing user security, network performance, and hardware unit cost, we hope to help engineers unlock new creative and innovative solutions. */}
+            </Typography>
+
           </Grid>
           <Grid item xs={12} md={3}
             style={{
@@ -122,7 +131,7 @@ class About extends React.Component {
   aboutGraphics() {
     const inputs = {
       PlugAndPlay: {
-        title: 'Easy to Install',
+        title: 'Simple',
         imagePath: svgs.plugAndPlay,
         desc: `Unbox, wire, and play.
                 Automate your home or booby trap it.
@@ -130,17 +139,17 @@ class About extends React.Component {
                 Heep makes connecting things easy.`
       },
       CloudLess: {
-        title: 'Cloud Less',
+        title: 'Cloud Free',
         imagePath: svgs.cloudLess,
         desc: `Heep doesn't require an internet connection.
                 We don't send things to the cloud, so rest assured, no one's listening in or watching you.
                 You do you, so just relax and enjoy.`
       },
       DeviceParty: {
-        title: 'Device Party',
+        title: 'Mesh',
         imagePath: svgs.deviceParty,
-        desc: `Connect your devices and get them to talk with you and other devices.
-                They send and receive commands, provide data, and interact with you.
+        desc: `Heep devices self assemble into a robust, secure local network.
+                The Heep mesh is self-healing and lightning fast. 
                 Enable your environment.`
       },
     };
@@ -198,11 +207,13 @@ class About extends React.Component {
           </Grid>
           <Grid item xs={12} md={6}>
             <Typography variant='subheading' style={{color: "#f1f1f1"}} paragraph>
-              Heep was founded in February 2017 with the dream of ubiquitous connectivity.
-              We thought long and hard about what the world needs to make that happen.
-              Thus, the Heep operating system was born.
-              The Heep team hails from a diverse set of backgrounds.
+              Our team assembled from diverse industries: semiconductor manufacturing, e-commerce, music, and finance. 
+              United by our dream of harnessing ubiquitous connectivity to improve experiences and unlock creative design, we founded Heep in February 2017. 
             </Typography>
+{/*             <Typography variant='subheading' style={{color: "#f1f1f1"}} paragraph> */}
+{/*               Since then, we have stayed */}
+{/*  */}
+{/*             </Typography> */}
           </Grid>
         </Grid>
       )
@@ -279,7 +290,7 @@ class About extends React.Component {
       <div>
         {this.topBanner()}
         {this.mission()}
-        {this.ourValues()}
+{/*         {this.ourValues()} */}
         {this.ourStory()}
         {this.teamSection()}
       </div>
