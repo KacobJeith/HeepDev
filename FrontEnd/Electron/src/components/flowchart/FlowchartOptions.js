@@ -15,6 +15,8 @@ import PhotoCamera from 'material-ui-icons/PhotoCamera'
 import SwitchCamera from 'material-ui-icons/SwitchCamera'
 import Lock from 'material-ui-icons/Lock'
 import LockOpen from 'material-ui-icons/LockOpen'
+import Visibility from 'material-ui-icons/Visibility'
+import VisibilityOff from 'material-ui-icons/VisibilityOff'
 import * as Draggable from 'gsap/Draggable';
 import { Button, Tooltip, Modal, Paper, Menu, MenuItem, ListItemSecondaryAction, IconButton }  from 'material-ui'
 
@@ -23,6 +25,7 @@ import GenericTextInput from '../utilities/GenericTextInput'
 var mapStateToProps = (state) => ({
   scale: state.flowchart.scale,
   snapshots: state.stateSnapshots,
+  showVertices: state.flowchart.showVertices,
   lockState: state.flowchart.lockState,
   devices: state.devices
 })
@@ -57,7 +60,8 @@ class FlowchartOptions extends React.Component {
 					bottom:  this.props.theme.spacing.unit,
 					right: this.props.theme.spacing.unit
 			}}>
-        {this.lockButton()}
+				{this.hideVertices()}
+        		{this.lockButton()}
 				{this.newSnapshotButton()}
 				{this.selectSnapshotButton()}
 				{this.zoomOptions()}
@@ -83,6 +87,31 @@ class FlowchartOptions extends React.Component {
 				</Button>
 			</div>
 		</Tooltip>
+  )
+
+  hideVertices = () => (
+  	<div>
+	  	{this.props.lockState ? 
+	  		<Tooltip id="tooltip-snapshot-vert"
+		            title={this.props.showVertices ? 'Hide Vertices' : 'Show Vertices'}
+		            placement="top">
+	            <div>
+					<Button
+						mini
+						variant="fab"
+						color="primary"
+						aria-label="snapshot-return"
+						style={{marginRight: this.props.theme.spacing.unit}}
+	          			onClick={() => console.log('toggle verts')}
+					>
+	          			{this.props.showVertices ? <Visibility/> : <VisibilityOff/>}
+					</Button>
+				</div>
+			</Tooltip>
+			: 
+			<div/>
+		}
+	</div>
   )
 
   toggleDraggable() {

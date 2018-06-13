@@ -56,6 +56,7 @@ const startState = {
     scale: 0.8,
     devices: {},
     liveModeReference: null,
+    showVertices: true,
     isDragging: false,
     lockState: false
   },
