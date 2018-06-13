@@ -14,7 +14,8 @@ var mapStateToProps = (state, ownProps) => ({
   startingPointControlID: (state.selectedOutput == undefined) ? null : state.selectedOutput.controlID,
   controlID: (state.selectedOutput == undefined) ? null : state.selectedOutput.txDeviceID + '.' + state.selectedOutput.txControlID,
   scale: state.flowchart.scale,
-  positions: state.positions
+  positions: state.positions,
+  lockState: state.flowchart.lockState
 })
 
 class DraggableVertex extends React.Component {
