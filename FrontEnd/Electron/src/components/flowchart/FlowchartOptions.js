@@ -13,13 +13,18 @@ import FileDownload from 'material-ui-icons/FileDownload'
 import Remove from 'material-ui-icons/Remove'
 import PhotoCamera from 'material-ui-icons/PhotoCamera'
 import SwitchCamera from 'material-ui-icons/SwitchCamera'
+import Lock from 'material-ui-icons/Lock'
+import LockOpen from 'material-ui-icons/LockOpen'
+import * as Draggable from 'gsap/Draggable';
 import { Button, Tooltip, Modal, Paper, Menu, MenuItem, ListItemSecondaryAction, IconButton }  from 'material-ui'
 
 import GenericTextInput from '../utilities/GenericTextInput'
 
 var mapStateToProps = (state) => ({
   scale: state.flowchart.scale,
-  snapshots: state.stateSnapshots
+  snapshots: state.stateSnapshots,
+  lockState: state.flowchart.lockState,
+  devices: state.devices
 })
 
 const styles = theme => ({
@@ -52,14 +57,47 @@ class FlowchartOptions extends React.Component {
 					bottom:  this.props.theme.spacing.unit,
 					right: this.props.theme.spacing.unit
 			}}>
+        {this.lockButton()}
 				{this.newSnapshotButton()}
 				{this.selectSnapshotButton()}
 				{this.zoomOptions()}
-
 				{this.newSnapshotModal()}
 			</div>
 		)
 	}
+
+  lockButton = () => (
+    <Tooltip id="tooltip-snapshot-return"
+	            title={this.props.lockState ? 'Unlock Devices' : 'Lock Devices'}
+	            placement="top">
+            <div>
+				<Button
+					mini
+					variant="fab"
+					color="primary"
+					aria-label="snapshot-return"
+					style={{marginRight: this.props.theme.spacing.unit}}
+          onClick={() => this.toggleDraggable()}
+				>
+          {this.props.lockState ? <Lock/> : <LockOpen/>}
+				</Button>
+			</div>
+		</Tooltip>
+  )
+
+  toggleDraggable() {
+    this.props.updateLockState()
+    if (this.props.lockState) {
+      for (var deviceID in this.props.devices) {
+        Draggable.get("#_" + deviceID).enable()
+      }
+    }
+    else {
+      for (var deviceID in this.props.devices) {
+        Draggable.get("#_" + deviceID).disable()
+      }
+    }
+  }
 
 	newSnapshotModal = () => (
 		<Modal
@@ -71,7 +109,7 @@ class FlowchartOptions extends React.Component {
 			  	});
 			}}>
 			  <Paper className={this.props.classes.paper}>
-			  	<GenericTextInput 
+			  	<GenericTextInput
 			  	  value={this.state.newSnapshotName}
 			  	  width='100%'
 			  	  title='New Snapshot Name'
@@ -82,8 +120,8 @@ class FlowchartOptions extends React.Component {
 			  		flexDirection: 'row-reverse',
 			  		width: '100%'
 			  	}}>
-			  		<Button 
-			  			variant='raised' 
+			  		<Button
+			  			variant='raised'
 			  			color='primary'
 			  			onClick={() => {
 			  				this.props.saveSnapshot(this.state.newSnapshotName)
@@ -119,7 +157,7 @@ class FlowchartOptions extends React.Component {
 				  open={Boolean(this.state.anchorEl)}
 				  onClose={() => this.setState({anchorEl: null})}
 				>
-					
+
 					<label style={{ textDecoration: 'none', outline: 'none'}}>
 					    <input type="file" style={{display: 'none'}}
 						    onChange={(event) => {

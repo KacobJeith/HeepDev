@@ -17,7 +17,8 @@ var mapStateToProps = (state, ownProps) => ({
   deviceID: ownProps.DeviceID,
   position: state.positions[ownProps.DeviceID] ? state.positions[ownProps.DeviceID] : {top: 100, left: 100},
   activeState: state.devices[ownProps.DeviceID] ? state.devices[ownProps.DeviceID].active : false,
-  scale: state.flowchart.scale
+  scale: state.flowchart.scale,
+  lockState: state.flowchart.lockState
 })
 
 
@@ -31,6 +32,9 @@ class DevicePaper extends React.Component {
 
   componentDidMount() {
     this.createDraggable()
+    if (this.props.lockState) {
+      Draggable.get("#_" + this.props.DeviceID).disable()
+    }
     // this.initialPosition = {top: this.props.position.top, left: this.props.position.left};
     this.newPosition = {top: this.props.position.top, left: this.props.position.left};
   }

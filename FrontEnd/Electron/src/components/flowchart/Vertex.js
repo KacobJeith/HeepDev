@@ -24,6 +24,7 @@ var mapStateToProps = (state, ownProps) => (
                state.flowchart.devices[state.vertexList[ownProps.vertexID].txDeviceID].collapsed :
                false,
   rxCollapsed: state.flowchart.devices[state.vertexList[ownProps.vertexID].rxDeviceID] && state.flowchart.devices[state.vertexList[ownProps.vertexID].rxDeviceID].collapsed ? state.flowchart.devices[state.vertexList[ownProps.vertexID].rxDeviceID].collapsed : false,
+  lockState: state.flowchart.lockState
 })
 
 class Vertex extends React.Component {
@@ -105,8 +106,8 @@ class Vertex extends React.Component {
   	return returnPosition
   };
 
-  checkCollapsed() {
-    if (this.props.rxCollapsed || this.props.txCollapsed) {
+  checkEnabled() {
+    if (this.props.rxCollapsed || this.props.txCollapsed || this.props.lockState) {
       return true
     } else {
       return false
@@ -147,7 +148,7 @@ class Vertex extends React.Component {
         pointerEvents: 'all',
         display: 'inline-block',
 				strokeWidth: this.state.strokeWidth,
-				stroke: this.checkCollapsed() ? this.state.collapsedColor : this.state.color,
+				stroke: this.checkEnabled() ? this.state.collapsedColor : this.state.color,
 				fill: 'transparent',
         d: data,
         // d: "M".concat(	String(getInput.left),
@@ -165,11 +166,11 @@ class Vertex extends React.Component {
         //         String(getOutput.left),
         //         " ",
         //         String(getOutput.top)),
-				onMouseEnter: () => this.checkCollapsed() ? this.setState({'strokeWidth': 3}) : this.setState({'color': '#d40000', 'strokeWidth': 5}),
-				onMouseLeave: () => this.checkCollapsed() ? this.setState({'strokeWidth': 3}) : this.setState({'color': '#455a64', 'strokeWidth': 3}),
-				onClick: () => this.checkCollapsed() ? null : this.sendDeleteVertexToServer(),
+				onMouseEnter: () => this.checkEnabled() ? this.setState({'strokeWidth': 3}) : this.setState({'color': '#d40000', 'strokeWidth': 5}),
+				onMouseLeave: () => this.checkEnabled() ? this.setState({'strokeWidth': 3}) : this.setState({'color': '#455a64', 'strokeWidth': 3}),
+				onClick: () => this.checkEnabled() ? null : this.sendDeleteVertexToServer(),
 				style: {
-					cursor: this.checkCollapsed() ? 'move' : 'pointer',
+					cursor: this.checkEnabled() ? 'move' : 'pointer',
           opacity: this.props.activeState ? 1.0 : 0.2
 				}
 			}
