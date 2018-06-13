@@ -14,8 +14,8 @@ var mapStateToProps = (state, ownProps) => ({
   thisVertex: state.vertexList[ownProps.vertexID],
   rxDevice: state.devices[state.vertexList[ownProps.vertexID].rxDeviceID],
   txDevice: state.devices[state.vertexList[ownProps.vertexID].txDeviceID],
-  txControlName: state.controls[state.vertexList[ownProps.vertexID].txDeviceID + '.' + state.vertexList[ownProps.vertexID].txControlID].controlName,
-  rxControlName: state.controls[state.vertexList[ownProps.vertexID]] != undefined ? 
+  txControlID: state.controls[state.vertexList[ownProps.vertexID].txDeviceID + '.' + state.vertexList[ownProps.vertexID].txControlID].controlName,
+  rxControlName: state.controls[state.vertexList[ownProps.vertexID].rxDeviceID + '.' + state.vertexList[ownProps.vertexID].rxControlID] != undefined ? 
               state.controls[state.vertexList[ownProps.vertexID].rxDeviceID + '.' + state.vertexList[ownProps.vertexID].rxControlID].controlName :
               state.vertexList[ownProps.vertexID].rxDeviceID + '.' + state.vertexList[ownProps.vertexID].rxControlID
 })
