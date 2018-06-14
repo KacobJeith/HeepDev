@@ -167,3 +167,7 @@ export const setSearchMode = (searchMode) => ({
 export const updateLockState = () => ({
   type: 'UPDATE_LOCK_STATE'
 })
+
+export const updateVertexVisibility = () => ({
+  type: 'UPDATE_VERTEX_VISIBILITY'
+})

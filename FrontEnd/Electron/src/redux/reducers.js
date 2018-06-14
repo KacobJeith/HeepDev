@@ -497,6 +497,12 @@ export default function(state = initialState, action) {
 
       return Immutable.Map(state).set('flowchart', newState).toJS()
 
+    case 'UPDATE_VERTEX_VISIBILITY' :
+      var newState = Immutable.Map(state.flowchart).toJS();
+      newState.showVertices = !state.flowchart.showVertices;
+
+      return Immutable.Map(state).set('flowchart', newState).toJS()
+
     default:
       // console.log('Passed through first Switch');
   }
