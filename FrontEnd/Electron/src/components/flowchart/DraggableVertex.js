@@ -62,10 +62,11 @@ class DraggableVertex extends React.Component {
     Draggable.create("#dragDot", {
       type: 'x, y',
       trigger: outputElement,
-      onDrag: () => this.updatePath(),
-      onDragStart: () => this.startDrag(),
-      onDragEnd: () => this.checkOverlap(),
+      onDrag: () => this.props.lockState ? null : this.updatePath(),
+      onDragStart: () => this.props.lockState ? null : this.startDrag(),
+      onDragEnd: () => this.props.lockState ? null : this.checkOverlap(),
     })
+
   }
 
   setDot() {

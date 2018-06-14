@@ -91,11 +91,13 @@ class FlowchartOptions extends React.Component {
       for (var deviceID in this.props.devices) {
         Draggable.get("#_" + deviceID).enable()
       }
+      // Draggable.get("#dragDot").enable()
     }
     else {
       for (var deviceID in this.props.devices) {
         Draggable.get("#_" + deviceID).disable()
       }
+      // Draggable.get("#dragDot").disable()
     }
   }
 
