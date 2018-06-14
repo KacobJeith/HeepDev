@@ -16,7 +16,8 @@ var mapStateToProps = (state, ownProps) => ({
   deviceID: ownProps.deviceID,
   controlID: ownProps.controlID,
   value: state.controls[ownProps.controlID].valueCurrent,
-  isDragging: state.flowchart.isDragging
+  isDragging: state.flowchart.isDragging,
+  lockState: state.flowchart.lockState
 })
 
 const smallRadius = 12
@@ -41,13 +42,13 @@ class Control extends React.Component {
 
   handleMouseEnter() {
     this.setState({radius: largeRadius});
-    Draggable.get("#_" + this.props.deviceID).disable()
+    this.props.lockState ? null : Draggable.get("#_" + this.props.deviceID).disable()
     this.selectOutputVertex(event)
   };
 
   handleMouseLeave() {
     this.setState({radius: smallRadius});
-    Draggable.get("#_" + this.props.deviceID).enable()
+    this.props.lockState ? null : Draggable.get("#_" + this.props.deviceID).enable()
   };
 
 	drawControlKnob(ref) {

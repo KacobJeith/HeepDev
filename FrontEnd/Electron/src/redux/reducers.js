@@ -490,6 +490,19 @@ export default function(state = initialState, action) {
 
       return Immutable.fromJS(state).set(controls, newState).toJS()
 
+    case 'UPDATE_LOCK_STATE' :
+      var newState = Immutable.Map(state.flowchart).toJS();
+      newState.lockState = !state.flowchart.lockState;
+      console.log("update lock state")
+
+      return Immutable.Map(state).set('flowchart', newState).toJS()
+
+    case 'UPDATE_VERTEX_VISIBILITY' :
+      var newState = Immutable.Map(state.flowchart).toJS();
+      newState.showVertices = !state.flowchart.showVertices;
+
+      return Immutable.Map(state).set('flowchart', newState).toJS()
+
     default:
       // console.log('Passed through first Switch');
   }

@@ -56,7 +56,9 @@ const startState = {
     scale: 0.8,
     devices: {},
     liveModeReference: null,
-    isDragging: false
+    showVertices: true,
+    isDragging: false,
+    lockState: false
   },
   detailsPanelDeviceID: null,
   accessPoints: {},
