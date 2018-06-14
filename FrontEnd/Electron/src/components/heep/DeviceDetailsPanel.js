@@ -6,7 +6,7 @@ import { withRouter }         from 'react-router-dom'
 import * as actions           from '../../redux/actions_classic'
 
 import { withStyles, withTheme } from 'material-ui/styles';
-import { Drawer, Button, Divider, Paper, Typography, IconButton, Menu, MenuItem, Collapse } from 'material-ui';
+import { Grid, Drawer, Button, Divider, Paper, Typography, IconButton, Menu, MenuItem, Collapse } from 'material-ui';
 import List, { ListItem, ListItemIcon, ListItemText, ListSubheader } from 'material-ui/List';
 
 import Close from 'material-ui-icons/Close'
@@ -39,10 +39,12 @@ const styles = theme => ({
     position: 'relative',
     width: drawerWidth,
     overflowX: 'hidden',
+    elevation: 4,
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
+    backgroundColor: '#fafafa'
   },
   drawerPaperClose: {
     overflowX: 'hidden',
@@ -67,7 +69,13 @@ class DeviceDetailsPanel extends React.Component {
     const { classes, theme } = this.props;
 
     return (  
-      <div style={{position: 'fixed', right:0, top: 0}} id='detailsPanel'>
+      <div style={{
+          position: 'fixed', 
+          right:0,
+          top: 0
+         }} 
+         id='detailsPanel'
+      >
         <Drawer 
           variant='permanent' 
           open={this.props.deviceID != null} 
@@ -116,7 +124,7 @@ class DeviceDetailsPanel extends React.Component {
         <List 
           disablePadding 
           dense
-          subheader={<ListSubheader component="div" style={{padding: 0, backgroundColor: 'white'}}>Device Details</ListSubheader>}>
+          subheader={<ListSubheader component="div" style={{padding: 0, backgroundColor: '#fafafa'}}>Device Details</ListSubheader>}>
           
           <Divider/>
 
@@ -143,7 +151,7 @@ class DeviceDetailsPanel extends React.Component {
         disablePadding 
         dense
         subheader={
-          <ListSubheader component="div" style={{padding: 0, backgroundColor: 'white'}}>
+          <ListSubheader component="div" style={{padding: 0, backgroundColor: '#fafafa'}}>
             Controls
           </ListSubheader>}>
         
@@ -162,7 +170,7 @@ class DeviceDetailsPanel extends React.Component {
       disablePadding 
       dense
       subheader={
-        <ListSubheader component="div" style={{padding: 0, backgroundColor: 'white'}}>
+        <ListSubheader component="div" style={{padding: 0, backgroundColor: '#fafafa'}}>
           Vertices
         </ListSubheader>}>
       
@@ -191,12 +199,37 @@ class DeviceDetailsPanel extends React.Component {
     }
 
     return (
-      <ListItem style={{paddingRight: 0}}>
-        <ListItemIcon>
-            <object {...inputs.primary}/>
-        </ListItemIcon>
-        <ListItemText primary={this.props.device.name} />
-      </ListItem>
+      <Grid 
+        container 
+        alignItems='center' 
+        justify='center' 
+        spacing={16}
+        style={{
+          marginTop: 24
+        }}
+      >
+
+        <Grid item xs={12}>
+          <Grid 
+            container 
+            alignItems='center' 
+            justify='center' 
+            style={{
+              width: '100%'
+            }}
+          >
+            <Grid item>
+              <Typography variant='title'>
+                {this.props.device.name}
+              </Typography>
+            </Grid>
+          </Grid>
+        </Grid>
+        <Grid item xs={5}>
+          <object {...inputs.primary}/>
+        </Grid>
+        
+      </Grid>
     )
   }
 
@@ -217,7 +250,7 @@ class DeviceDetailsPanel extends React.Component {
     return (
       <List disablePadding dense
         subheader={
-          <ListSubheader component="div" style={{padding: 0, backgroundColor: 'white'}}>
+          <ListSubheader component="div" style={{padding: 0, backgroundColor: '#fafafa'}}>
             Options
           </ListSubheader>}>
         
