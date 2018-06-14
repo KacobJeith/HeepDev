@@ -91,7 +91,7 @@ class FlowchartOptions extends React.Component {
 
   hideVertices = () => (
   	<div>
-	  	{this.props.lockState ? 
+	  	{true ? 
 	  		<Tooltip id="tooltip-snapshot-vert"
 		            title={this.props.showVertices ? 'Hide Vertices' : 'Show Vertices'}
 		            placement="top">
@@ -102,7 +102,7 @@ class FlowchartOptions extends React.Component {
 						color="primary"
 						aria-label="snapshot-return"
 						style={{marginRight: this.props.theme.spacing.unit}}
-	          			onClick={() => console.log('toggle verts')}
+	          			onClick={() => this.props.updateVertexVisibility()}
 					>
 	          			{this.props.showVertices ? <Visibility/> : <VisibilityOff/>}
 					</Button>
