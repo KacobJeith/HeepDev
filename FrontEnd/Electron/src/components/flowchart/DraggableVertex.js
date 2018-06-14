@@ -32,7 +32,7 @@ class DraggableVertex extends React.Component {
         onMouseLeave: () => Draggable.get("#deviceContainer").enable(),
         opacity: 0,
         style: {
-          cursor: 'grab',
+          cursor: 'pointer'
         }
       },
       dragVertex: {
