@@ -173,7 +173,7 @@ class CommercialApplications extends React.Component {
         title: 'Escape The Room',
         bullets: [
           'Heep Partnered with Escape The Room to build immersive, magical Escape Rooms',
-          'While on the surface puzzles and games are embedded in set pieces, escape rooms are high tech behind the scenes.',
+          // 'We don\'t usually think of Escape Rooms as control systems, but behind the scenes there is a network of Heep devices powering the experience.',
           'Heep opened up the creative process for escape room designers - the complexity of managing cross-puzzle communications disappeared'
         ],
         moreInfoLink: {

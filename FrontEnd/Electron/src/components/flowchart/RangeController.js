@@ -12,7 +12,8 @@ var mapStateToProps = (state, ownProps) => ({
   valueCurrent: state.controls[ownProps.thisControl]['valueCurrent'],
   //value: state.controls[ownProps.thisControl]['valueCurrent'],
   value: boundCurrentValue(state, ownProps),
-  DeviceID: ownProps.DeviceID
+  DeviceID: ownProps.DeviceID,
+  lockState: state.flowchart.lockState
 })
 
 const boundCurrentValue = (state, ownProps) => {
@@ -66,6 +67,7 @@ class RangeController extends React.Component {
   handleMouseLeave = () => {
     this.setState({radius: 9.5, fill: '#455a64', fontSize: 9, textCenter: 14})
     Draggable.get("#_" + this.props.DeviceID).enable()
+
   }
 
 	convertCtrlVal() {
@@ -80,7 +82,6 @@ class RangeController extends React.Component {
 
 	calcNewControlValue() {//15
 		var newVal = Math.round((this.state['x'] - this.displayMin)/(this.displayMax-this.displayMin)*(this.props.control['valueHigh']-this.props.control['valueLow']) + this.props.control['valueLow']);
-    console.log("calculating")
 		this.lastSentControlValue = newVal;
 		return newVal
 	}

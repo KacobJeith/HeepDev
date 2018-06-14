@@ -53,10 +53,9 @@ export const addVertex = (rxDeviceID, rxControlID) => ({
   rxControlID
 })
 
-export const deleteVertex = (vertexID, vertex) => ({
+export const deleteVertex = (vertexID) => ({
   type: 'DELETE_VERTEX',
-  vertexID,
-  vertex
+  vertexID
 })
 
 export const selectOutput = (txDeviceID, txControlID) => ({
@@ -162,4 +161,12 @@ export const saveSnapshotUpload = (json) => ({
 export const setSearchMode = (searchMode) => ({
   type: 'SET_SEARCH_MODE',
   searchMode
+})
+
+export const updateLockState = () => ({
+  type: 'UPDATE_LOCK_STATE'
+})
+
+export const updateVertexVisibility = () => ({
+  type: 'UPDATE_VERTEX_VISIBILITY'
 })

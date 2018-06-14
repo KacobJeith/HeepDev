@@ -17,6 +17,7 @@ import ExpandMore from 'material-ui-icons/ExpandMore'
 import AutoRenew from 'material-ui-icons/AutoRenew'
 
 import DetailsPanelControlBlock from './DetailsPanelControlBlock'
+import DetailsPanelVertex from './DetailsPanelVertex'
 import PlaceListItem from './PlaceListItem'
 import AddPlaceModal from '../account/AddPlaceModal'
 
@@ -25,9 +26,10 @@ import classNames from 'classnames';
 var mapStateToProps = (state) => ({
   deviceID:  state.detailsPanelDeviceID,
   device: state.devices[state.detailsPanelDeviceID],
-  controls: Object.keys(state.controls).filter((thisControl) => state.controls[thisControl] ? state.controls[thisControl].deviceID == state.detailsPanelDeviceID : false),
+  controls: state.devices[state.detailsPanelDeviceID] ? state.devices[state.detailsPanelDeviceID].inputs.concat(state.devices[state.detailsPanelDeviceID].outputs): [],//Object.keys(state.controls).filter((thisControl) => state.controls[thisControl] ? state.controls[thisControl].deviceID == state.detailsPanelDeviceID : false),
   places: state.places,
-  deviceWiFiCreds: state.deviceWiFiCreds[state.detailsPanelDeviceID]
+  deviceWiFiCreds: state.deviceWiFiCreds[state.detailsPanelDeviceID],
+  allVertices: state.vertexList
 })
 
 const drawerWidth = 300;
@@ -118,14 +120,18 @@ class DeviceDetailsPanel extends React.Component {
           
           <Divider/>
 
-          {Object.keys(this.props.device).map((field) => (
-            this.deviceIdentity(field, this.props.device[field])
-          ))}
+          {Object.keys(this.props.device).map((field) => {
+            if (field != 'inputs' && field != 'outputs') {
+              return this.deviceIdentity(field, this.props.device[field])
+            }
+          })}
         </List>
 
         {this.deviceOptions()}
 
         {this.listControls()}
+
+        {this.listVertices()}
         
       </div>
     )
@@ -150,6 +156,26 @@ class DeviceDetailsPanel extends React.Component {
       </List>
     )
   }
+
+  listVertices = () => (
+    <List 
+      disablePadding 
+      dense
+      subheader={
+        <ListSubheader component="div" style={{padding: 0, backgroundColor: 'white'}}>
+          Vertices
+        </ListSubheader>}>
+      
+      <Divider/>
+
+      {Object.keys(this.props.allVertices).map((thisVertexID) => {
+        if (this.props.allVertices[thisVertexID].txDeviceID == this.props.deviceID) {
+          return <DetailsPanelVertex key={thisVertexID} vertexID={thisVertexID}/>
+        }
+      })}
+
+    </List>
+  )
 
   detailsTitle() {
 
