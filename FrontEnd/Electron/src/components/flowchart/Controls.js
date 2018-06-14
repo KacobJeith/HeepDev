@@ -17,7 +17,8 @@ var mapStateToProps = (state, ownProps) => ({
   controlID: ownProps.controlID,
   value: state.controls[ownProps.controlID].valueCurrent,
   isDragging: state.flowchart.isDragging,
-  lockState: state.flowchart.lockState
+  lockState: state.flowchart.lockState,
+  showVertices: state.flowchart.showVertices
 })
 
 const smallRadius = 12
@@ -29,7 +30,7 @@ class Control extends React.Component {
 		this.state = {
 			radius: smallRadius,
 			controlHighlight: 'white',
-      pointerEvents: 'all'
+      		pointerEvents: 'all'
 		}
 		this.direction = this.props.control['controlDirection'];
 		this.leftIndent = this.direction == 0 ? 10 : 250;
@@ -82,6 +83,7 @@ class Control extends React.Component {
 				cy: largeRadius,
 				r: this.state.radius,
 				fill: this.direction == 0 ? "#00baff" : '#00cb7b',
+				opacity: this.props.showVertices ? 1.0 : 0.25,
 				style: {
 					cursor: 'pointer',
 				}
