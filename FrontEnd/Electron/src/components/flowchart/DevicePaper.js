@@ -86,7 +86,7 @@ class DevicePaper extends React.Component {
     					margin: 10,
     					padding: 3,
               width: 330,
-    					cursor: '-webkit-grab',
+    					cursor: this.props.lockState ? 'default' : '-webkit-grab',
     					position: 'absolute',
     					color: 'black',
               pointerEvents: 'visible',
