@@ -40,7 +40,8 @@ class OnOffController extends React.Component {
 				style={{
 					maxWidth:'100%', 
 					borderRadius: 5,
-					height: 40, 
+					top: -3, 
+					height: 36, 
 					width: 80
 				}}>
 				<PowerSettingsNew {...inputs.buttonIcon}/>

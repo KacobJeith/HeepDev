@@ -39,7 +39,7 @@ class RangeController extends React.Component {
 
 		this.state = {
 			x: this.convertCtrlVal(),
-			radius: 9,
+			radius: 11,
 			mouseDrag: false,
 			fill: '#455a64',
 			fontSize: 8.5,
