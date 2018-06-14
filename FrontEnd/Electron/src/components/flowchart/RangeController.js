@@ -39,11 +39,11 @@ class RangeController extends React.Component {
 
 		this.state = {
 			x: this.convertCtrlVal(),
-			radius: 7,
-      mouseDrag: false,
-      fill: '#455a64',
-      fontSize: 8.5,
-      textCenter: 14,
+			radius: 9,
+			mouseDrag: false,
+			fill: '#455a64',
+			fontSize: 8.5,
+			textCenter: 14,
 		}
 
 		this.dragging = 0;
@@ -59,12 +59,12 @@ class RangeController extends React.Component {
 	}
 
   handleMouseEnter = () => {
-    this.setState({radius: 11, fill: '#02a8f4', fontSize: 15, textCenter: 16})
+    this.setState({radius: 15, fill: '#02a8f4', fontSize: 14, textCenter: 16})
     Draggable.get("#_" + this.props.DeviceID).disable()
   }
 
   handleMouseLeave = () => {
-    this.setState({radius: 7, fill: '#455a64', fontSize: 8.5, textCenter: 14})
+    this.setState({radius: 11, fill: '#455a64', fontSize: 10, textCenter: 14})
     Draggable.get("#_" + this.props.DeviceID).enable()
   }
 
@@ -160,7 +160,7 @@ class RangeController extends React.Component {
 				width: 68,
 				height: 35,
 				viewBox: '0 0 68 35',
-        overflow: 'visible'
+        		overflow: 'visible'
 			},
 			unselected:{
 				strokeWidth: 1,
