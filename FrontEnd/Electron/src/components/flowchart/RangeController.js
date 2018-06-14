@@ -12,7 +12,8 @@ var mapStateToProps = (state, ownProps) => ({
   valueCurrent: state.controls[ownProps.thisControl]['valueCurrent'],
   //value: state.controls[ownProps.thisControl]['valueCurrent'],
   value: boundCurrentValue(state, ownProps),
-  DeviceID: ownProps.DeviceID
+  DeviceID: ownProps.DeviceID,
+  lockState: state.flowchart.lockState
 })
 
 const boundCurrentValue = (state, ownProps) => {
@@ -60,12 +61,12 @@ class RangeController extends React.Component {
 
   handleMouseEnter = () => {
     this.setState({radius: 11, fill: '#02a8f4', fontSize: 15, textCenter: 16})
-    Draggable.get("#_" + this.props.DeviceID).disable()
+    this.props.lockState ? null : Draggable.get("#_" + this.props.DeviceID).disable()
   }
 
   handleMouseLeave = () => {
     this.setState({radius: 7, fill: '#455a64', fontSize: 8.5, textCenter: 14})
-    Draggable.get("#_" + this.props.DeviceID).enable()
+    this.props.lockState ? null : Draggable.get("#_" + this.props.DeviceID).enable()
   }
 
 	convertCtrlVal() {
