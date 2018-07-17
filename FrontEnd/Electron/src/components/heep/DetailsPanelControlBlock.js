@@ -107,12 +107,12 @@ class DetailsPanelControlBlock extends React.Component {
       <div style={{width: 90}}>
         <ListItemIcon>
           {this.props.thisControl.controlDirection == 0 ? 
-            <Tooltip id='tooltip-input' title='Input' placement="left"> 
+            <Tooltip id='tooltip-input' title='Input' placement="left" style={{marginRight: 8}}> 
               <Button {...inputs.buttons}>
                 <Redo {...inputs.inactiveIcons}/> 
               </Button>
             </Tooltip>: 
-            <Tooltip id='tooltip-output' title='Output' placement="left"> 
+            <Tooltip id='tooltip-output' title='Output' placement="left" style={{marginRight: 8}}> 
               <Button {...inputs.buttons}>
                 <Undo {...inputs.inactiveIcons}/>
               </Button>
