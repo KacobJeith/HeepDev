@@ -145,10 +145,6 @@ void ControlDaemon()
 	}
 }
 
-#ifdef POST_ANALYTICS
-heepByte sentContextAlready = 0;
-#endif
-
 void PerformHeepTasks()
 {
 	if(resetHeepNetwork)
@@ -172,19 +168,7 @@ void PerformHeepTasks()
 #ifdef USE_ANALYTICS
 #ifdef POST_ANALYTICS
 		else if(curTask == PostData)
-		{
-			if(sentContextAlready == 0)
-			{
-				char* testName = "Grabbage";
-				PostNameToFirebase(testName, strlen(testName), deviceIDByte);
-				for(int i = 0; i < numberOfControls; i++)
-				{
-					PostControlToFirebase(controlList[i].controlID, controlList[i].controlType, controlList[i].controlDirection, controlList[i].highValue, controlList[i].lowValue, controlList[i].controlName, deviceIDByte);
-				}
-				
-				sentContextAlready = 1;
-			}
-			
+		{	
 			PostDataToFirebase();
 		}
 #endif
@@ -325,6 +309,14 @@ void StartHeep(char* deviceName, heepByte deviceIcon)
 	SetupHeepDevice(deviceName, deviceIcon);
 	SetupHeepTasks();
   	CreateInterruptServer(); 
+
+#ifdef POST_ANALYTICS
+	PostNameToFirebase(deviceName, strlen(deviceName), deviceIDByte);
+	for(int i = 0; i < numberOfControls; i++)
+	{
+		PostControlToFirebase(controlList[i].controlID, controlList[i].controlType, controlList[i].controlDirection, controlList[i].highValue, controlList[i].lowValue, controlList[i].controlName, deviceIDByte);
+	}
+#endif
 }
 
 heepByte HandleHeepCommunications()
