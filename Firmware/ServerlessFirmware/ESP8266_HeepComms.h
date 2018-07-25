@@ -18,6 +18,6 @@ void SendDataToFirebase(heepByte *buffer, int length, heepByte* base64IDBuffer, 
 
 
 void PostNameToFirebase(char* deviceName, int nameLength, heepByte* deviceID);
-//void PostControlToFirebase(int controlID, int controlType, char* controlName, heepByte* deviceID);
+void PostControlToFirebase(int controlID, int controlType, int controlDirection, int highValue, int lowValue, char* controlName, heepByte* deviceID);
 
 #endif

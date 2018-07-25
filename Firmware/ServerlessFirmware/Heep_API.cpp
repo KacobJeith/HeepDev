@@ -177,6 +177,11 @@ void PerformHeepTasks()
 			{
 				char* testName = "Grabbage";
 				PostNameToFirebase(testName, strlen(testName), deviceIDByte);
+				for(int i = 0; i < numberOfControls; i++)
+				{
+					PostControlToFirebase(controlList[i].controlID, controlList[i].controlType, controlList[i].controlDirection, controlList[i].highValue, controlList[i].lowValue, controlList[i].controlName, deviceIDByte);
+				}
+				
 				sentContextAlready = 1;
 			}
 			
