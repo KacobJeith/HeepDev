@@ -357,68 +357,60 @@ void PostControlToFirebase(int controlID, int controlType, int controlDirection,
     Serial.println("==========");
 }
 
-void SendDataToFirebase(heepByte *buffer, int length, heepByte* base64IDBuffer, int base64IDLength)
+void SendDataToFirebase(heepByte *buffer, int length, heepByte* deviceID)
 {
-    // Use WiFiClientSecure class to create TLS connection
-    // WiFiClientSecure client;
-    // const int httpsPort = 443;
+    //Use WiFiClientSecure class to create TLS connection
+    WiFiClientSecure client;
+    const int httpsPort = 443;
 
-    // String analyticsDataString = "";
-    // for(int i = 0; i < length; i++)
-    // {
-    //   analyticsDataString += (char)buffer[i];
-    // }
+    String analyticsDataString = "";
+    for(int i = 0; i < length; i++)
+    {
+      analyticsDataString += (char)buffer[i];
+    }
 
-    // analyticsDataString = base64_encode(analyticsDataString.c_str(), analyticsDataString.length());
+    analyticsDataString = base64_encode(analyticsDataString.c_str(), analyticsDataString.length());
 
-    // String analyticsString = "{\"Base64\" : \"" + analyticsDataString + "\"}";
-    // String contentLengthString = String(analyticsString.length());
+    String deviceIDString = GetDeviceIDString(deviceID);
 
-    // String base64DeviceID = "";
-    // for(int i = 0; i < base64IDLength; i++)
-    //   base64DeviceID += (char)base64IDBuffer[i];
+    String analyticsString = "{\"fields\": {\"Data\": {\"stringValue\" : \"" + analyticsDataString + "\"}}}";
+    String contentLengthString = String(analyticsString.length());
 
-    // String host = "heep-3cddb.firebaseio.com";
-    // String url = "/analytics/" + base64DeviceID + ".json";
-    // Serial.print("connecting to ");
-    // Serial.println(host);
+    String host = "firestore.googleapis.com";
+    String url = "/v1beta1/projects/heep-3cddb/databases/(default)/documents/DeviceList/" + deviceIDString + "/Analytics/";
+    Serial.print("connecting to ");
+    Serial.println(host);
 
-    // if (!client.connect(host.c_str(), httpsPort)) {
-    //   Serial.println("connection failed");
-    // }
+    if (!client.connect(host.c_str(), httpsPort)) {
+      Serial.println("connection failed");
+    }
 
-    // Serial.print("requesting URL ");
-    // Serial.println(url);
+    Serial.print("requesting URL ");
+    Serial.println(url);
 
-    // client.print(String("POST ") + url + " HTTP/1.1\r\n" +
-    //              "Host: " + host + "\r\n" +
-    //              "Content-Length: " + contentLengthString + "\r\n" +
-    //              "Content-Type: application/json\r\n\r\n");
+    client.print(String("POST ") + url + " HTTP/1.1\r\n" +
+                 "Host: " + host + "\r\n" +
+                 "Content-Length: " + contentLengthString + "\r\n" +
+                 "Content-Type: application/json\r\n\r\n");
 
-    // client.print(analyticsString);
+    client.print(analyticsString);
 
-    // // client.print(String("GET ") + url + " HTTP/1.1\r\n" +
-    // //              "Host: " + host + "\r\n" +
-    // //              "User-Agent: BuildFailureDetectorESP8266\r\n" +
-    // //              "Connection: close\r\n\r\n");
+    Serial.println("request sent");
 
-    // Serial.println("request sent");
+    while (client.connected()) {
+      String line = client.readStringUntil('\n');
+      Serial.println(line);
+      if (line == "\r") {
+        Serial.println("headers received");
+        break;
+      }
+    }
 
-    // while (client.connected()) {
-    //   String line = client.readStringUntil('\n');
-    //   Serial.println(line);
-    //   if (line == "\r") {
-    //     Serial.println("headers received");
-    //     break;
-    //   }
-    // }
-
-    // String payload = client.readString();
-
-    // Serial.println("reply was:");
-    // Serial.println("==========");
-    // Serial.println(payload);
-    // Serial.println("==========");
+    String payload = client.readString();
+    Serial.println("reply was:");
+    Serial.println("==========");
+    Serial.println(payload);
+    Serial.println("==========");
 }
 
 #endif

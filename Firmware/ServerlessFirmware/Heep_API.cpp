@@ -125,7 +125,7 @@ void PostDataToFirebase()
 
 	if(outputBufferLastByte > 0)
 	{
-		SendDataToFirebase(outputBuffer, outputBufferLastByte, base64DeviceIDByte, STANDARD_ID_SIZE_BASE_64);
+		SendDataToFirebase(outputBuffer, outputBufferLastByte, deviceIDByte);
 	}
 }
 #endif
