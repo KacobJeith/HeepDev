@@ -216,6 +216,17 @@ String base64_encode(const char* bytes_to_encode, unsigned int in_len) {
 
 }
 
+String GetDeviceIDString(heepByte* deviceID)
+{
+  char hexstr[8];
+  int i;
+  for (i=0; i < 4; i++) {
+      sprintf(hexstr+i*2, "%02x", deviceID[i]);
+  }
+  String deviceIDString = hexstr;
+  return deviceIDString;
+}
+
 void PostNameToFirebase(char* deviceName, int nameLength, heepByte* deviceID)
 {
     // Use WiFiClientSecure class to create TLS connection
@@ -227,8 +238,8 @@ void PostNameToFirebase(char* deviceName, int nameLength, heepByte* deviceID)
     {
       nameDataString += deviceName[i];
     }
-
-    String deviceIDString = "AEF21345";
+    
+    String deviceIDString = GetDeviceIDString(deviceID);
 
     String nameString = "{\"fields\": {\"Name\": {\"stringValue\" : \"" + nameDataString + "\"}}}";
     String contentLengthString = String(nameString.length());
