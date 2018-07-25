@@ -23,10 +23,6 @@ void SetupHeepDevice(char* deviceName, char deviceIcon)
 		ReadMemory(&controlRegister, deviceMemory, &curFilledMemory);
 		FillVertexListFromMemory();
 	}
-
-#ifdef POST_ANALYTICS
-	SendContextToFirebase(deviceName, strlen(deviceName), deviceIDByte, controlList, numberOfControls);
-#endif
 }
 
 void FactoryReset(char* deviceName, char iconEnum)
@@ -149,6 +145,10 @@ void ControlDaemon()
 	}
 }
 
+#ifdef POST_ANALYTICS
+heepByte sentContextAlready = 0;
+#endif
+
 void PerformHeepTasks()
 {
 	if(resetHeepNetwork)
@@ -173,6 +173,13 @@ void PerformHeepTasks()
 #ifdef POST_ANALYTICS
 		else if(curTask == PostData)
 		{
+			if(sentContextAlready == 0)
+			{
+				char* testName = "Grabbage";
+				PostNameToFirebase(testName, strlen(testName), deviceIDByte);
+				sentContextAlready = 1;
+			}
+			
 			PostDataToFirebase();
 		}
 #endif
