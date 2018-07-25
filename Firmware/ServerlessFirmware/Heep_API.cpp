@@ -23,6 +23,10 @@ void SetupHeepDevice(char* deviceName, char deviceIcon)
 		ReadMemory(&controlRegister, deviceMemory, &curFilledMemory);
 		FillVertexListFromMemory();
 	}
+
+#ifdef POST_ANALYTICS
+	SendContextToFirebase(deviceName, strlen(deviceName), deviceIDByte, controlList, numberOfControls);
+#endif
 }
 
 void FactoryReset(char* deviceName, char iconEnum)
