@@ -454,7 +454,18 @@ uint64_t GetRealTimeFromNetwork()
   Serial.println(payload);
   Serial.println("==========");
 
-  return 0;
+  uint64_t timeValue = 0;
+  for(int i = 0; i < payload.length(); i++)
+  {
+    timeValue = timeValue*10 + payload[i] - '0';
+  }
+
+  // for(int i = 4; i >= 0; i--)
+  // {
+  //   Serial.println((int) (0xFF & (timeValue >> i*8)) );
+  // }
+
+  return timeValue;
 }
 
 #endif
