@@ -16,6 +16,11 @@ void SendOutputBufferToIP(struct HeepIPAddress destIP)
 
 }
 
+uint64_t GetRealTimeFromNetwork()
+{
+	return 0;
+}
+
 #ifdef USE_ANALYTICS
 void SendDataToFirebase(heepByte *buffer, int length, heepByte* base64IDBuffer, int base64IDLength)
 {

@@ -24,3 +24,8 @@ uint64_t GetAnalyticsTime()
 		return millis();
 	}
 }
+
+void SetAnalyticsTime(uint64_t realTime)
+{
+	
+}

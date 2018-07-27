@@ -304,6 +304,14 @@ void SetControlValueByNameNoAnalyticsAlwaysSend(char *controlName, int newValue)
 	}
 }
 
+#ifdef POST_ANALYTICS
+void GetCurrentRealTime()
+{
+	uint64_t realTime = GetRealTimeFromNetwork();
+	SetAnalyticsTime(realTime);
+}
+#endif
+
 void StartHeep(char* deviceName, heepByte deviceIcon)
 {
 	SetupHeepDevice(deviceName, deviceIcon);
@@ -316,6 +324,8 @@ void StartHeep(char* deviceName, heepByte deviceIcon)
 	{
 		PostControlToFirebase(controlList[i].controlID, controlList[i].controlType, controlList[i].controlDirection, controlList[i].highValue, controlList[i].lowValue, controlList[i].controlName, deviceIDByte);
 	}
+
+	GetCurrentRealTime();
 #endif
 }
 
