@@ -413,4 +413,48 @@ void SendDataToFirebase(heepByte *buffer, int length, heepByte* deviceID)
     Serial.println("==========");
 }
 
+uint64_t GetRealTimeFromNetwork()
+{
+  WiFiClientSecure client;
+  const int httpsPort = 443;
+
+  String host = "us-central1-heep-3cddb.cloudfunctions.net";
+  String url = "/msSince2018Jan1";
+
+  Serial.print("connecting to ");
+  Serial.println(host);
+
+  if (!client.connect(host.c_str(), httpsPort)) {
+    Serial.println("connection failed");
+    return 0;
+  }
+
+  Serial.print("requesting URL ");
+  Serial.println(url);
+
+  client.print(String("GET ") + url + " HTTP/1.1\r\n" +
+               "Host: " + host + "\r\n" +
+               "User-Agent: BuildFailureDetectorESP8266\r\n" +
+               "Connection: close\r\n\r\n");
+
+  Serial.println("request sent");
+
+  while (client.connected()) {
+    String line = client.readStringUntil('\n');
+    Serial.println(line);
+    if (line == "\r") {
+      Serial.println("headers received");
+      break;
+    }
+  }
+
+  String payload = client.readString();
+  Serial.println("reply was:");
+  Serial.println("==========");
+  Serial.println(payload);
+  Serial.println("==========");
+
+  return 0;
+}
+
 #endif

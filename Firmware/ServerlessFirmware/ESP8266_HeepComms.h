@@ -20,4 +20,6 @@ void SendDataToFirebase(heepByte *buffer, int length, heepByte* deviceID);
 void PostNameToFirebase(char* deviceName, int nameLength, heepByte* deviceID);
 void PostControlToFirebase(int controlID, int controlType, int controlDirection, int highValue, int lowValue, char* controlName, heepByte* deviceID);
 
+uint64_t GetRealTimeFromNetwork();
+
 #endif
