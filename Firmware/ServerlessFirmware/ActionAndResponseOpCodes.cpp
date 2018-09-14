@@ -90,6 +90,24 @@ unsigned long CalculateCoreMemorySize()
 	return coreMemorySize + CalculateControlDataSize();
 }
 
+// The IP Must be added to this COP because the concept of an IP Address 
+// is not a fundamental component of the Heep OS.
+void FillOutputBufferWithIPChanged()
+{
+	ClearOutputBuffer();
+
+	HeepIPAddress myIP;
+	GetIPFromMemory(&myIP);
+
+	AddNewCharToOutputBuffer(MyIPChangedOpCode);
+	AddNewCharToOutputBuffer(STANDARD_ID_SIZE + 4);
+	AddDeviceIDToOutputBuffer_Byte(deviceIDByte);
+	AddNewCharToOutputBuffer(myIP.Octet4);
+	AddNewCharToOutputBuffer(myIP.Octet3);
+	AddNewCharToOutputBuffer(myIP.Octet2);
+	AddNewCharToOutputBuffer(myIP.Octet1);
+}
+
 void FillOutputBufferWithSetValCOP(unsigned char controlID, unsigned char value)
 {
 	ClearOutputBuffer();
@@ -534,6 +552,30 @@ void ExecuteResetDeviceNetwork()
 	FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
 }
 
+void ExecuteMyIPChangedOpCode()
+{
+	// Search through Vertices... Replace destination IP Addresses
+	struct Vertex_Byte newVertex;
+
+	int i = 0;
+	int initialNumberOfVertices = numberOfVertices;
+	for(i = 0; i < initialNumberOfVertices; i++)
+	{
+		GetVertexAtPointer_Byte(vertexPointerList[i], &newVertex);
+
+		if(CheckBufferEquality(newVertex.rxID, &inputBuffer[2], STANDARD_ID_SIZE))
+		{
+			deviceMemory[vertexPointerList[i] + ID_SIZE + ID_SIZE + 4] = inputBuffer[2 + STANDARD_ID_SIZE];
+			deviceMemory[vertexPointerList[i] + ID_SIZE + ID_SIZE + 5] = inputBuffer[3 + STANDARD_ID_SIZE];
+			deviceMemory[vertexPointerList[i] + ID_SIZE + ID_SIZE + 6] = inputBuffer[4 + STANDARD_ID_SIZE];
+			deviceMemory[vertexPointerList[i] + ID_SIZE + ID_SIZE + 7] = inputBuffer[5 + STANDARD_ID_SIZE];
+		}
+	}
+
+	char SuccessMessage [] = "Changed IP";
+	FillOutputBufferWithSuccess(SuccessMessage, strlen(SuccessMessage));
+}
+
 unsigned char IsROP()
 {
 	if(inputBuffer[0] == MemoryDumpOpCode 
@@ -590,6 +632,10 @@ void ExecuteControlOpCodes()
 	else if(ReceivedOpCode == ResetDeviceNetwork)
 	{
 		ExecuteResetDeviceNetwork();
+	}
+	else if(ReceivedOpCode == MyIPChangedOpCode)
+	{
+		ExecuteMyIPChangedOpCode();
 	}
 	else
 	{

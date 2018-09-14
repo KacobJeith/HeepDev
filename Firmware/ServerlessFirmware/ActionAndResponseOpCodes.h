@@ -16,6 +16,9 @@ void AddAnalyticsStringToOutputBufferAndDeleteMOPs();
 unsigned long CalculateControlDataSize();
 
 unsigned long CalculateCoreMemorySize();
+
+void FillOutputBufferWithIPChanged();
+
 void FillOutputBufferWithSetValCOP(unsigned char controlID, unsigned char value);
 
 void FillOutputBufferWithSetValCOPBuffer(unsigned char controlID, heepByte* buffer, int bufferLength);
@@ -52,6 +55,8 @@ void ExecuteSetWiFiDataOpCode();
 void ExecuteSetDeviceNameOpCode();
 
 void ExecuteResetDeviceNetwork();
+
+void ExecuteMyIPChangedOpCode();
 
 // Updated
 // Validate that a MOP can be added. Then restructure it for localIDs as necessary

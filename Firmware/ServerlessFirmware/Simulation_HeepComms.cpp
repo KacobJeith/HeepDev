@@ -16,6 +16,16 @@ void SendOutputBufferToIP(struct HeepIPAddress destIP)
 
 }
 
+void BroadcastOutputBuffer()
+{
+
+}
+
+void GetCurrentIP(struct HeepIPAddress* destIP)
+{
+	
+}
+
 #ifdef USE_ANALYTICS
 uint64_t GetRealTimeFromNetwork()
 {

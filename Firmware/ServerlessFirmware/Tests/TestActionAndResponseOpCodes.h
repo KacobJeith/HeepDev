@@ -830,6 +830,98 @@ void TestNameOverflowDetection()
 	CheckResults(TestName, valueList, 3);
 }
 
+void TestMyIPChangedCOP()
+{
+	std::string TestName = "Test IP Changed COP";
+
+	ClearVertices();
+	ClearDeviceMemory();
+	ClearInputBuffer();
+	ClearOutputBuffer();
+
+	inputBuffer[0] = 0x0C;
+	inputBuffer[1] = 0x04;
+
+	inputBuffer[2] = 0xF1;
+	inputBuffer[3] = 0x02;
+	inputBuffer[4] = 0xB2;
+	inputBuffer[5] = 0x3C;
+
+	inputBuffer[6] = deviceIDByte[0];
+	inputBuffer[7] = deviceIDByte[1];
+	inputBuffer[8] = deviceIDByte[2];
+	inputBuffer[9] = deviceIDByte[3];
+
+	inputBuffer[10] = 0x01;
+	inputBuffer[11] = 0x02;
+
+	inputBuffer[12] = 0xC0;
+	inputBuffer[13] = 0xD0;
+	inputBuffer[14] = 0x20;
+	inputBuffer[15] = 0x02;
+	ExecuteControlOpCodes();
+
+	HeepIPAddress myIP;
+	myIP.Octet4 = 192;
+	myIP.Octet3 = 168;
+	myIP.Octet2 = 1;
+	myIP.Octet1 = 100;
+	SetIPInMemory_Byte(myIP, deviceIDByte);
+
+	FillOutputBufferWithIPChanged();
+
+	for(int i = 0; i < outputBufferLastByte; i++)
+	{
+		inputBuffer[i] = outputBuffer[i];
+	}
+
+	struct Vertex_Byte beforeExecute;
+	GetVertexAtPointer_Byte(vertexPointerList[0], &beforeExecute);
+	HeepIPAddress beforeExecutionIP = beforeExecute.rxIPAddress;
+
+	ExecuteControlOpCodes();
+
+	struct Vertex_Byte afterExecute;
+	GetVertexAtPointer_Byte(vertexPointerList[0], &afterExecute);
+	HeepIPAddress afterExecutionIP = afterExecute.rxIPAddress;
+	
+
+	ExpectedValue valueList [8];
+	valueList[0].valueName = "Before IP 4";
+	valueList[0].expectedValue = 0xC0;
+	valueList[0].actualValue = beforeExecutionIP.Octet4;
+
+	valueList[1].valueName = "Before IP 3";
+	valueList[1].expectedValue = 0xD0;
+	valueList[1].actualValue = beforeExecutionIP.Octet3;
+
+	valueList[2].valueName = "Before IP 2";
+	valueList[2].expectedValue = 0x20;
+	valueList[2].actualValue = beforeExecutionIP.Octet2;
+
+	valueList[3].valueName = "Before IP 1";
+	valueList[3].expectedValue = 0x02;
+	valueList[3].actualValue = beforeExecutionIP.Octet1;
+
+	valueList[4].valueName = "After IP 4";
+	valueList[4].expectedValue = 192;
+	valueList[4].actualValue = afterExecutionIP.Octet4;
+
+	valueList[5].valueName = "After IP 3";
+	valueList[5].expectedValue = 168;
+	valueList[5].actualValue = afterExecutionIP.Octet3;
+
+	valueList[6].valueName = "After IP 2";
+	valueList[6].expectedValue = 1;
+	valueList[6].actualValue = afterExecutionIP.Octet2;
+
+	valueList[7].valueName = "After IP 1";
+	valueList[7].expectedValue = 100;
+	valueList[7].actualValue = afterExecutionIP.Octet1;
+
+	CheckResults(TestName, valueList, 8);
+}
+
 void TestActionAndResponseOpCodes()
 {
 	TestClearOutputBufferAndAddChar();
@@ -849,4 +941,5 @@ void TestActionAndResponseOpCodes()
 	CheckSetPositionOverflowHandling();
 	TestWiFiOverflowDetection();
 	TestNameOverflowDetection();
+	TestMyIPChangedCOP();
 }

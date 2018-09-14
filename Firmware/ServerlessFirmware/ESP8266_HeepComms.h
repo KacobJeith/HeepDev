@@ -6,6 +6,9 @@ void CreateInterruptServer();
 void CheckServerForInputs();
 void SendOutputBufferToIP(struct HeepIPAddress destIP);
 
+void BroadcastOutputBuffer();
+void GetCurrentIP(struct HeepIPAddress* destIP);
+
 #ifdef USE_ANALYTICS
 
 static const char* base64_chars_esp = 

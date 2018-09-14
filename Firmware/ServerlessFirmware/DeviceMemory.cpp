@@ -393,6 +393,23 @@ heepByte UpdateXYInMemory_Byte(int x, int y, heepByte* deviceID)
 	return 0;
 }
 
+heepByte GetIPFromMemory(struct HeepIPAddress* theIP)
+{
+	unsigned int pointer = 0;
+	unsigned int counter = 0;
+
+	if(GetMOPPointer(DeviceIPOpCode, &pointer, &counter) == 1) // Failed to find MOP
+		return 1;
+
+	unsigned int deviceMemCounter = pointer + ID_SIZE + 2;
+	theIP->Octet4 = deviceMemory[deviceMemCounter++];
+	theIP->Octet3 = deviceMemory[deviceMemCounter++];
+	theIP->Octet2 = deviceMemory[deviceMemCounter++];
+	theIP->Octet1 = deviceMemory[deviceMemCounter++];
+
+	return 0;
+}
+
 void SetIPInMemory_Byte(struct HeepIPAddress theIP, heepByte* deviceID)
 {
 	PerformPreOpCodeProcessing_Byte(deviceID);

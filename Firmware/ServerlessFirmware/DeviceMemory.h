@@ -46,6 +46,8 @@
 
 #define ResetDeviceNetwork			0x24
 
+#define MyIPChangedOpCode			0x25
+
 #define USER_MOP_START_ID			0x50
 #define USER_MOP_END_ID				0x5A
 
@@ -103,6 +105,7 @@ void SetXYInMemory_Byte(int x, int y, heepByte* deviceID);
 
 heepByte UpdateXYInMemory_Byte(int x, int y, heepByte* deviceID);
 
+heepByte GetIPFromMemory(struct HeepIPAddress* theIP);
 void SetIPInMemory_Byte(struct HeepIPAddress theIP, heepByte* deviceID);
 void DeleteVertexAtPointer(unsigned long pointer);
 int GetVertexAtPointer_Byte(unsigned long pointer, struct Vertex_Byte* returnedVertex);
