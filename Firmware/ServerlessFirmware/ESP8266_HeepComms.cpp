@@ -216,9 +216,150 @@ String base64_encode(const char* bytes_to_encode, unsigned int in_len) {
 
 }
 
-void SendDataToFirebase(heepByte *buffer, int length, heepByte* base64IDBuffer, int base64IDLength)
+String GetDeviceIDString(heepByte* deviceID)
+{
+  char hexstr[8];
+  int i;
+  for (i=0; i < 4; i++) {
+      sprintf(hexstr+i*2, "%02x", deviceID[i]);
+  }
+  String deviceIDString = hexstr;
+  return deviceIDString;
+}
+
+void PostNameToFirebase(char* deviceName, int nameLength, heepByte* deviceID)
 {
     // Use WiFiClientSecure class to create TLS connection
+    WiFiClientSecure client;
+    const int httpsPort = 443;
+
+    String nameDataString = "";
+    for(int i = 0; i < nameLength; i++)
+    {
+      nameDataString += deviceName[i];
+    }
+    
+    String deviceIDString = GetDeviceIDString(deviceID);
+
+    String nameString = "{\"fields\": {\"Name\": {\"stringValue\" : \"" + nameDataString + "\"}}}";
+    String contentLengthString = String(nameString.length());
+
+    String host = "firestore.googleapis.com";
+    String url = "/v1beta1/projects/heep-3cddb/databases/(default)/documents/DeviceList/" + deviceIDString;
+    Serial.print("connecting to ");
+    Serial.println(host);
+
+    if (!client.connect(host.c_str(), httpsPort)) {
+      Serial.println("connection failed");
+    }
+
+    Serial.print("requesting URL ");
+    Serial.println(url);
+
+    client.print(String("PATCH ") + url + " HTTP/1.1\r\n" +
+                 "Host: " + host + "\r\n" +
+                 "Content-Length: " + contentLengthString + "\r\n" +
+                 "Content-Type: application/json\r\n\r\n");
+
+    client.print(nameString);
+
+    Serial.println("request sent");
+
+    while (client.connected()) {
+      String line = client.readStringUntil('\n');
+      Serial.println(line);
+      if (line == "\r") {
+        Serial.println("headers received");
+        break;
+      }
+    }
+
+    String payload = client.readString();
+    Serial.println("reply was:");
+    Serial.println("==========");
+    Serial.println(payload);
+    Serial.println("==========");
+}
+
+void PostControlToFirebase(int controlID, int controlType, int controlDirection, int highValue, int lowValue, char* controlName, heepByte* deviceID)
+{
+  // Use WiFiClientSecure class to create TLS connection
+    WiFiClientSecure client;
+    const int httpsPort = 443;
+
+    String controlNameString = "";
+    for(int i = 0; i < strlen(controlName); i++)
+    {
+      controlNameString += controlName[i];
+    }
+    
+    String deviceIDString = GetDeviceIDString(deviceID);
+
+    String controlString = "{"                 
+                           "\"fields\": {"           
+                            "\"Name\": {       "
+                             "\"stringValue\": \"" + controlNameString + "\""
+                            "},"
+                            "\"Type\": {"
+                              "\"integerValue\" : " + controlType +
+                            "},"
+                            "\"HighValue\": {"
+                            "  \"integerValue\" : " + highValue +
+                            "},"
+                            "\"LowValue\": {"
+                              "\"integerValue\" : " + lowValue +
+                            "},"
+                            "\"Direction\": {"
+                              "\"integerValue\" : " + controlDirection +
+                            "},"
+                            "\"ID\": {"
+                              "\"integerValue\" : " + controlID +
+                            "}"
+                           "}"
+                          "}";
+
+    String controlStringLength = String(controlString.length());
+
+    String host = "firestore.googleapis.com";
+    String url = "/v1beta1/projects/heep-3cddb/databases/(default)/documents/DeviceList/" + deviceIDString + "/Controls/Control" + controlID;
+    Serial.print("connecting to ");
+    Serial.println(host);
+
+    if (!client.connect(host.c_str(), httpsPort)) {
+      Serial.println("connection failed");
+    }
+
+    Serial.print("requesting URL ");
+    Serial.println(url);
+
+    client.print(String("PATCH ") + url + " HTTP/1.1\r\n" +
+                 "Host: " + host + "\r\n" +
+                 "Content-Length: " + controlStringLength + "\r\n" +
+                 "Content-Type: application/json\r\n\r\n");
+
+    client.print(controlString);
+
+    Serial.println("request sent");
+
+    while (client.connected()) {
+      String line = client.readStringUntil('\n');
+      Serial.println(line);
+      if (line == "\r") {
+        Serial.println("headers received");
+        break;
+      }
+    }
+
+    String payload = client.readString();
+    Serial.println("reply was:");
+    Serial.println("==========");
+    Serial.println(payload);
+    Serial.println("==========");
+}
+
+void SendDataToFirebase(heepByte *buffer, int length, heepByte* deviceID)
+{
+    //Use WiFiClientSecure class to create TLS connection
     WiFiClientSecure client;
     const int httpsPort = 443;
 
@@ -230,15 +371,13 @@ void SendDataToFirebase(heepByte *buffer, int length, heepByte* base64IDBuffer, 
 
     analyticsDataString = base64_encode(analyticsDataString.c_str(), analyticsDataString.length());
 
-    String analyticsString = "{\"Base64\" : \"" + analyticsDataString + "\"}";
+    String deviceIDString = GetDeviceIDString(deviceID);
+
+    String analyticsString = "{\"fields\": {\"Data\": {\"stringValue\" : \"" + analyticsDataString + "\"}}}";
     String contentLengthString = String(analyticsString.length());
 
-    String base64DeviceID = "";
-    for(int i = 0; i < base64IDLength; i++)
-      base64DeviceID += (char)base64IDBuffer[i];
-
-    String host = "heep-3cddb.firebaseio.com";
-    String url = "/analytics/" + base64DeviceID + ".json";
+    String host = "firestore.googleapis.com";
+    String url = "/v1beta1/projects/heep-3cddb/databases/(default)/documents/DeviceList/" + deviceIDString + "/Analytics/";
     Serial.print("connecting to ");
     Serial.println(host);
 
@@ -256,11 +395,6 @@ void SendDataToFirebase(heepByte *buffer, int length, heepByte* base64IDBuffer, 
 
     client.print(analyticsString);
 
-    // client.print(String("GET ") + url + " HTTP/1.1\r\n" +
-    //              "Host: " + host + "\r\n" +
-    //              "User-Agent: BuildFailureDetectorESP8266\r\n" +
-    //              "Connection: close\r\n\r\n");
-
     Serial.println("request sent");
 
     while (client.connected()) {
@@ -273,11 +407,65 @@ void SendDataToFirebase(heepByte *buffer, int length, heepByte* base64IDBuffer, 
     }
 
     String payload = client.readString();
-
     Serial.println("reply was:");
     Serial.println("==========");
     Serial.println(payload);
     Serial.println("==========");
+}
+
+uint64_t GetRealTimeFromNetwork()
+{
+  WiFiClientSecure client;
+  const int httpsPort = 443;
+
+  String host = "us-central1-heep-3cddb.cloudfunctions.net";
+  String url = "/msSince2018Jan1";
+
+  Serial.print("connecting to ");
+  Serial.println(host);
+
+  if (!client.connect(host.c_str(), httpsPort)) {
+    Serial.println("connection failed");
+    return 0;
+  }
+
+  Serial.print("requesting URL ");
+  Serial.println(url);
+
+  client.print(String("GET ") + url + " HTTP/1.1\r\n" +
+               "Host: " + host + "\r\n" +
+               "User-Agent: BuildFailureDetectorESP8266\r\n" +
+               "Connection: close\r\n\r\n");
+
+  Serial.println("request sent");
+
+  while (client.connected()) {
+    String line = client.readStringUntil('\n');
+    Serial.println(line);
+    if (line == "\r") {
+      Serial.println("headers received");
+      break;
+    }
+  }
+
+  String payload = client.readString();
+  Serial.println("reply was:");
+  Serial.println("==========");
+  Serial.println(payload);
+  Serial.println("==========");
+
+  uint64_t timeValue = 0;
+  for(int i = 0; i < payload.length(); i++)
+  {
+    timeValue = timeValue*10 + payload[i] - '0';
+  }
+
+  // for(int i = 4; i >= 0; i--)
+  // {
+  //   Serial.println((int) (0xFF & (timeValue >> i*8)) );
+  // }
+
+  return timeValue;
 }
 
 #endif

@@ -125,7 +125,7 @@ void PostDataToFirebase()
 
 	if(outputBufferLastByte > 0)
 	{
-		SendDataToFirebase(outputBuffer, outputBufferLastByte, base64DeviceIDByte, STANDARD_ID_SIZE_BASE_64);
+		SendDataToFirebase(outputBuffer, outputBufferLastByte, deviceIDByte);
 	}
 }
 #endif
@@ -168,7 +168,7 @@ void PerformHeepTasks()
 #ifdef USE_ANALYTICS
 #ifdef POST_ANALYTICS
 		else if(curTask == PostData)
-		{
+		{	
 			PostDataToFirebase();
 		}
 #endif
@@ -336,11 +336,29 @@ void SetControlValueByNameNoAnalyticsAlwaysSend(char *controlName, int newValue)
 	}
 }
 
+#ifdef POST_ANALYTICS
+void GetCurrentRealTime()
+{
+	uint64_t realTime = GetRealTimeFromNetwork();
+	SetAnalyticsTime(realTime);
+}
+#endif
+
 void StartHeep(char* deviceName, heepByte deviceIcon)
 {
 	SetupHeepDevice(deviceName, deviceIcon);
 	SetupHeepTasks();
   	CreateInterruptServer(); 
+
+#ifdef POST_ANALYTICS
+	PostNameToFirebase(deviceName, strlen(deviceName), deviceIDByte);
+	for(int i = 0; i < numberOfControls; i++)
+	{
+		PostControlToFirebase(controlList[i].controlID, controlList[i].controlType, controlList[i].controlDirection, controlList[i].highValue, controlList[i].lowValue, controlList[i].controlName, deviceIDByte);
+	}
+
+	GetCurrentRealTime();
+#endif
 }
 
 heepByte HandleHeepCommunications()
