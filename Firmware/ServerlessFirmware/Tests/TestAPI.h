@@ -251,6 +251,53 @@ void TestBase64Encode()
 #endif
 }
 
+void TestMomentaryInputs()
+{
+	std::string TestName = "Test Momentary Inputs";
+
+	ClearDeviceMemory();
+	ClearControls();
+	AddMomentaryControl("Jelly", HEEP_INPUT);
+
+	controlList[0].curValue = 1;
+
+	ExpectedValue valueList [3];
+	valueList[0].valueName = "Before Get Value";
+	valueList[0].expectedValue = 1;
+	valueList[0].actualValue = controlList[0].curValue;
+
+	int myValue = GetControlValueByName("Jelly");
+
+	valueList[1].valueName = "Returned Value";
+	valueList[1].expectedValue = 1;
+	valueList[1].actualValue = myValue;
+
+	valueList[2].valueName = "After Get Value";
+	valueList[2].expectedValue = 0;
+	valueList[2].actualValue = controlList[0].curValue;
+
+	CheckResults(TestName, valueList, 3);
+}
+
+
+void TestMomentaryOutputs()
+{
+	std::string TestName = "Test Momentary Outputs";
+
+	ClearDeviceMemory();
+	ClearControls();
+	AddMomentaryControl("Magellan", HEEP_OUTPUT);
+
+	SetControlValueByName("Magellan", 1);
+
+	ExpectedValue valueList [1];
+	valueList[0].valueName = "After Setting Value";
+	valueList[0].expectedValue = 0;
+	valueList[0].actualValue = controlList[0].curValue;
+
+	CheckResults(TestName, valueList, 1);
+}
+
 void TestHeepAPI()
 {
 	TestSchedulerRolloverProtection();
@@ -259,4 +306,6 @@ void TestHeepAPI()
 	TestAddBufferToBuffer64Bit();
 	TestCaptureAnalyticsToggle();
 	TestBase64Encode();
+	TestMomentaryInputs();
+	TestMomentaryOutputs();
 }

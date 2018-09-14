@@ -205,13 +205,33 @@ void AddOnOffControl(char* controlName, int inputOutput, int startingValue)
 	AddControl(newControl);
 }
 
+void AddMomentaryControl(char* controlName, int inputOutput)
+{
+	Control newControl;
+	newControl.controlName = controlName;
+	newControl.controlID = numberOfControls;
+	newControl.controlDirection = inputOutput;
+	newControl.controlType = HEEP_MOMENTARY;
+	newControl.highValue = 1;
+	newControl.lowValue = 0;
+	newControl.curValue = 0;
+	AddControl(newControl);
+}
+
 int GetControlValueByName(char* controlName)
 {
 	for(int i = 0; i < numberOfControls; i++)
 	{
 		if(strcmp(controlName, controlList[i].controlName) == 0)
 		{
-			return controlList[i].curValue;
+			int retVal = controlList[i].curValue;
+
+			if(controlList[i].controlType == HEEP_MOMENTARY)
+			{
+				controlList[i].curValue = 0;
+			}
+
+			return retVal;
 		}
 	}
 
@@ -231,6 +251,12 @@ int GetControlIndexByName(char* controlName)
 	return -1;
 }
 
+void HandleMomentaryOutputs(int controlIndex)
+{
+	if(controlList[controlIndex].controlType == HEEP_MOMENTARY)
+		controlList[controlIndex].curValue = 0;
+}
+
 void SetControlValueByName(char* controlName, int newValue)
 {
 	int controlIndex = GetControlIndexByName(controlName);
@@ -242,6 +268,7 @@ void SetControlValueByName(char* controlName, int newValue)
 			controlList[controlIndex].curValue = newValue;
 			SendOutputByID(controlList[controlIndex].controlID, controlList[controlIndex].curValue);
 		}
+		HandleMomentaryOutputs(controlIndex);
 	}
 }
 
@@ -253,6 +280,7 @@ void SetControlValueByNameAlwaysSend(char* controlName, int newValue)
 	{
 		controlList[controlIndex].curValue = newValue;
 		SendOutputByID(controlList[controlIndex].controlID, controlList[controlIndex].curValue);
+		HandleMomentaryOutputs(controlIndex);
 	}
 }
 
@@ -266,6 +294,7 @@ void SetControlValueByNameNoSend(char *controlName, int newValue)
 #ifdef USE_ANALYTICS
 		SetAnalyticsDataControlValueInMemory_Byte(controlList[controlIndex].controlID, controlList[controlIndex].curValue, deviceIDByte);
 #endif
+		HandleMomentaryOutputs(controlIndex);
 	}
 }
 
@@ -280,6 +309,7 @@ void SetControlValueByNameNoAnalytics(char *controlName, int newValue)
 			controlList[controlIndex].curValue = newValue;
 			SendOutputByIDNoAnalytics(controlList[controlIndex].controlID, controlList[controlIndex].curValue);
 		}
+		HandleMomentaryOutputs(controlIndex);
 	}
 }
 
@@ -290,6 +320,7 @@ void SetControlValueByNameNoAnalyticsNoSend(char *controlName, int newValue)
 	if(controlIndex != -1)
 	{
 		controlList[controlIndex].curValue = newValue;
+		HandleMomentaryOutputs(controlIndex);
 	}
 }
 
@@ -301,6 +332,7 @@ void SetControlValueByNameNoAnalyticsAlwaysSend(char *controlName, int newValue)
 	{
 		controlList[controlIndex].curValue = newValue;
 		SendOutputByIDNoAnalytics(controlList[controlIndex].controlID, controlList[controlIndex].curValue);
+		HandleMomentaryOutputs(controlIndex);
 	}
 }
 
